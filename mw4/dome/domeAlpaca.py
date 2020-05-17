@@ -54,7 +54,6 @@ class DomeAlpaca(AlpacaClass):
         self.settlingWait = PyQt5.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
-        self.client.signals.deviceConnected.connect(self.startCommunication)
 
     @property
     def settlingTime(self):

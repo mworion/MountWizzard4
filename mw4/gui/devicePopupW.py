@@ -376,6 +376,4 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         finally:
             self.ui.ascomDevice.setText(deviceName)
 
-        print(deviceName)
-
         return True

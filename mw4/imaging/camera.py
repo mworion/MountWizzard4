@@ -17,12 +17,17 @@
 ###########################################################
 # standard libraries
 import logging
+import platform
+
 # external packages
 import PyQt5
+
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.imaging.cameraIndi import CameraIndi
 from mw4.imaging.cameraAlpaca import CameraAlpaca
+if platform.system() == 'Windows':
+    from mw4.imaging.cameraAscom import CameraAscom
 
 
 class CameraSignals(PyQt5.QtCore.QObject):
@@ -66,8 +71,17 @@ class Camera:
         self.run = {
             'indi': CameraIndi(self.app, self.signals, self.data),
             'alpaca': CameraAlpaca(self.app, self.signals, self.data),
-            'ascom': self,
         }
+
+        if platform.system() == 'Windows':
+            self.run['ascom'] = CameraAscom(self.app, self.signals, self.data)
+
+            ascomSignals = self.run['ascom'].signals
+            ascomSignals.serverConnected.connect(self.signals.serverConnected)
+            ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+            ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
+            ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
         self.name = ''
         self.host = ('localhost', 7624)
         self.isGeometry = False
@@ -113,6 +127,7 @@ class Camera:
         :return: success
         """
 
+        print('start communication')
         if self.framework in self.run.keys():
             suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
             return suc
@@ -126,7 +141,7 @@ class Camera:
         :return: success
 
         """
-
+        print('stop communication')
         if self.framework in self.run.keys():
             suc = self.run[self.framework].stopCommunication()
             return suc

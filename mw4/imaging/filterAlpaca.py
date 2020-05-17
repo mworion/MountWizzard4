@@ -45,8 +45,6 @@ class FilterAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
 
-        self.client.signals.deviceConnected.connect(self.startCommunication)
-
     def getInitialConfig(self):
         """
 

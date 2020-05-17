@@ -411,6 +411,8 @@ class SettDevice(object):
             driverData['framework'] = framework
             name = driverData.get('ascomName', '')
             driverClass.name = name
+            index = self.drivers[driver]['uiDropDown'].currentIndex()
+            self.drivers[driver]['uiDropDown'].setItemText(index, f'ascom - {name}')
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('astrometry'):
             framework = 'astrometry'

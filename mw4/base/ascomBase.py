@@ -23,13 +23,11 @@ import uuid
 
 # external packages
 import PyQt5.QtCore
-import requests
-
 # local imports
 from mw4.base.loggerMW import CustomLogger
 
 
-class AlpacaSignals(PyQt5.QtCore.QObject):
+class AscomSignals(PyQt5.QtCore.QObject):
 
     """
     The AlpacaSignals class offers a list of signals to be used and instantiated by
@@ -40,7 +38,7 @@ class AlpacaSignals(PyQt5.QtCore.QObject):
     QObject and the Mount class itself is subclassed from object
     """
 
-    __all__ = ['AlpacaSignals']
+    __all__ = ['AscomSignals']
 
     serverConnected = PyQt5.QtCore.pyqtSignal()
     serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
@@ -48,15 +46,15 @@ class AlpacaSignals(PyQt5.QtCore.QObject):
     deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
 
 
-class AlpacaBase(object):
+class AscomBase(object):
     """
-    the class AlpacaClass inherits all information and handling of alpaca devices
+    the class AscomBase inherits all information and handling of alpaca devices
     this class will be only referenced from other classes and not directly used
 
-        >>> a = AlpacaBase()
+        >>> a = AscomBase()
     """
 
-    __all__ = ['AlpacaBase']
+    __all__ = ['AscomBase']
 
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
@@ -64,7 +62,7 @@ class AlpacaBase(object):
     def __init__(self):
         super().__init__()
 
-        self.signals = AlpacaSignals()
+        self.signals = AscomSignals()
 
         self._baseUrl = ''
         self.number = 0

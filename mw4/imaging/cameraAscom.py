@@ -23,18 +23,17 @@ from astropy.io import fits
 from PyQt5.QtTest import QTest
 
 # local imports
-from mw4.base.alpacaClass import AlpacaClass
-from mw4.base.alpacaBase import Camera
+from mw4.base.ascomClass import AscomClass
 from mw4.base.tpool import Worker
 from mw4.base import transform
 
 
-class CameraAlpaca(AlpacaClass):
+class CameraAscom(AscomClass):
     """
-    the class CameraAlpaca inherits all information and handling of the CameraAlpaca device.
+    the class CameraAscom inherits all information and handling of the Ascom device.
     """
 
-    __all__ = ['CameraAlpaca',
+    __all__ = ['CameraAscom',
                ]
 
     # specific timing for device
@@ -46,7 +45,6 @@ class CameraAlpaca(AlpacaClass):
 
         # as we have in the base class only the base client there, we will get more
         # specialized with Dome (which is derived from the base class)
-        self.client = Camera()
         self.signals = signals
         self.data = data
         self.abortExpose = False
@@ -59,6 +57,7 @@ class CameraAlpaca(AlpacaClass):
 
         super().getInitialConfig()
 
+        """
         self.dataEntry(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
         self.dataEntry(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
         # self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
@@ -71,6 +70,7 @@ class CameraAlpaca(AlpacaClass):
         self.dataEntry(self.client.biny(), 'CCD_BINNING.VERT_BIN')
         self.dataEntry(self.client.startx(), 'CCD_FRAME.X')
         self.dataEntry(self.client.starty(), 'CCD_FRAME.Y')
+        """
 
         return True
 
@@ -80,6 +80,7 @@ class CameraAlpaca(AlpacaClass):
         :return: true for test purpose
         """
 
+        """
         self.dataEntry(self.client.camerastate(),
                        'CAMERA.STATE')
         self.dataEntry(self.client.ccdtemperature(),
@@ -96,6 +97,7 @@ class CameraAlpaca(AlpacaClass):
         self.dataEntry(self.client.fastreadout(),
                        'READOUT_QUALITY.QUALITY_LOW',
                        'READOUT_QUALITY.QUALITY_HIGH')
+        """
 
         return True
 

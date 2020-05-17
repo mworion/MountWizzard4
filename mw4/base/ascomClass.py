@@ -92,6 +92,11 @@ class AscomClass(object):
         """
 
         self.client.connected = True
+        suc = self.client.connected
+
+        print('initial', suc)
+        if not suc:
+            return False
 
         if not self.serverConnected:
             self.serverConnected = True
@@ -100,7 +105,7 @@ class AscomClass(object):
         if not self.deviceConnected:
             self.deviceConnected = True
             self.client.signals.deviceConnected.emit(f'{self.name}')
-            self.app.message.emit(f'Alpaca device found: [{self.name}]', 0)
+            self.app.message.emit(f'Ascom device found:  [{self.name}]', 0)
 
         self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.Name
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.DriverVersion
@@ -217,7 +222,6 @@ class AscomClass(object):
         :param loadConfig:
         :return: True for test purpose
         """
-        return
 
         pythoncom.CoInitialize()
         print('pythoncom CoInitialize')
@@ -240,7 +244,6 @@ class AscomClass(object):
 
         :return: true for test purpose
         """
-        return
 
         self.stopTimer()
         self.deviceConnected = False

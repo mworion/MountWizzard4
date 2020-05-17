@@ -155,7 +155,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.astapSearchRadius.setValue(deviceData.get('astapSearchRadius', 20))
 
         # populating ascom
-        self.ui.ascomDevice.setText(deviceData.get('ascomName', ''))
+        self.ui.ascomDevice.setText('ASCOM.' + deviceData.get('ascomName', ''))
 
         # for fw in self.framework:
         tabWidget = self.ui.tab.findChild(PyQt5.QtWidgets.QWidget, selectedFramework)
@@ -215,7 +215,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.data[self.driver]['astapTimeout'] = self.ui.astapTimeout.value()
 
         # collecting ascom data
-        self.data[self.driver]['ascomName'] = self.ui.ascomDevice.text()
+        self.data[self.driver]['ascomName'] = self.ui.ascomDevice.text()[6:]
 
         # setting framework
         index = self.ui.tab.currentIndex()

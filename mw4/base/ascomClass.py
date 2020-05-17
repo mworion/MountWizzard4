@@ -227,7 +227,7 @@ class AscomClass(object):
         print('Dispatch')
         pythoncom.CoInitialize()
         try:
-            self.client = Dispatch(self.name)
+            self.client = Dispatch('ASCOM.' + self.name)
         except Exception as e:
             self.log.critical(f'Error: [{e}]')
             return False
@@ -252,7 +252,6 @@ class AscomClass(object):
         self.stopTimer()
         self.deviceConnected = False
         self.serverConnected = False
-        self.client.connected = False
         self.client = None
         pythoncom.CoUninitialize()
 

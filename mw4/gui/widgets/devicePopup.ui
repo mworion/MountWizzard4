@@ -63,7 +63,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="indi">
     <attribute name="title">
@@ -177,7 +177,7 @@
       <string>Search</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="indiNameList">
+    <widget class="QComboBox" name="indiDeviceList">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -878,7 +878,7 @@
       <string>Folder index</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="astrometryIndex">
+    <widget class="QLineEdit" name="astrometryIndexPath">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -953,7 +953,7 @@
       <string>Select</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="astrometryNameList">
+    <widget class="QComboBox" name="astrometryDeviceList">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -1166,7 +1166,7 @@
       <string>Device Name</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="astapName">
+    <widget class="QLineEdit" name="astapDevice">
      <property name="enabled">
       <bool>false</bool>
      </property>

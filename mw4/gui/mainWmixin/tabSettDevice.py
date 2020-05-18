@@ -171,7 +171,7 @@ class SettDevice(object):
             environment = self.app.astrometry.run['astrometry'].environment
             if environment:
                 nameList = list(environment.keys())
-                self.driversData[driver]['astrometryNameList'] = nameList
+                self.driversData[driver]['astrometryDeviceList'] = nameList
 
             environment = self.app.astrometry.run['astap'].environment
             if environment:
@@ -423,7 +423,7 @@ class SettDevice(object):
 
             driverClass.timeout = driverData.get('astrometryTimeout', 30)
             driverClass.searchRadius = driverData.get('astrometrySearchRadius', 20)
-            indexPath = driverData.get('astrometryIndex', '')
+            indexPath = driverData.get('astrometryIndexPath', '')
             driverClass.indexPath = indexPath
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'astrometry - {name}')

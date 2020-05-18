@@ -68,24 +68,54 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
                  data=None):
 
         super().__init__()
+        self.data = data
+        self.driver = driver
+        self.deviceType = deviceType
+        self.availFramework = availFramework
+        self.returnValues = {'close': 'cancel'}
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self)
         self.initUI()
         self.setWindowModality(PyQt5.QtCore.Qt.ApplicationModal)
-        self.data = data
-        self.driver = driver
-        self.deviceType = deviceType
-        self.availFramework = availFramework
-        self.indiClass = None
-        self.indiSearchNameList = ()
-        self.indiSearchType = None
-        self.returnValues = {'close': 'cancel'}
-
-        # setting to center of parent image
         x = geometry[0] + int((geometry[2] - self.width()) / 2)
         y = geometry[1] + int((geometry[3] - self.height()) / 2)
         self.move(x, y)
+
+        """
+        self.deviceFramework = {
+            'indi': {'host': self.ui.indiHost,
+                     'port': self.ui.indiPort,
+                     'device': self.ui.indiDeviceList,
+                     'messages': self.ui.indiMessages,
+                     'loadConfig': self.ui.indiLoadConfig,
+                     },
+            'alpaca': {'host': self.ui.alpacaHost,
+                       'port': self.ui.alpacaPort,
+                       'device': self.ui.alpacaDevice,
+                       'number': self.ui.alpacaNumber,
+                       'user': self.ui.alpacaUser,
+                       'password': self.ui.alpacaPassword,
+                       'protocol': self.ui.alpacaProtocol,
+                       },
+            'ascom': {'device': self.ui.ascomDevice,
+                      },
+            'astrometry': {'device': self.ui.astrometryDeviceList,
+                           'searchRadius': self.ui.astrometrySearchRadius,
+                           'timeout': self.ui.astrometryTimeout,
+                           'indexPath': self.ui.astrometryIndexPath,
+                           },
+            'astap': {'device': self.ui.astapDeviceList,
+                      'searchRadius': self.ui.astapSearchRadius,
+                      'timeout': self.ui.astapTimeout,
+                      'indexPath': self.ui.astapIndexPath,
+                      },
+        }
+        """
+
+        self._indiClass = None
+        self._indiSearchNameList = ()
+        self._indiSearchType = None
 
         self.ui.cancel.clicked.connect(self.close)
         self.ui.ok.clicked.connect(self.storeConfig)
@@ -107,23 +137,23 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         # populate data
         deviceData = self.data.get(self.driver, {})
         selectedFramework = deviceData.get('framework', '')
-        self.indiSearchType = self.indiTypes.get(self.deviceType, 0xff)
+        self._indiSearchType = self.indiTypes.get(self.deviceType, 0xff)
 
         self.setWindowTitle(f'Setup for: {self.driver}')
 
         # populating indi data
         self.ui.indiHost.setText(deviceData.get('indiHost', 'localhost'))
         self.ui.indiPort.setText(deviceData.get('indiPort', '7624'))
-        self.ui.indiNameList.clear()
-        self.ui.indiNameList.setView(PyQt5.QtWidgets.QListView())
+        self.ui.indiDeviceList.clear()
+        self.ui.indiDeviceList.setView(PyQt5.QtWidgets.QListView())
         indiName = deviceData.get('indiName', '')
-        nameList = deviceData.get('indiNameList', [])
+        nameList = deviceData.get('indiDeviceList', [])
         if not nameList:
-            self.ui.indiNameList.addItem('-')
+            self.ui.indiDeviceList.addItem('-')
         for i, name in enumerate(nameList):
-            self.ui.indiNameList.addItem(name)
+            self.ui.indiDeviceList.addItem(name)
             if indiName == name:
-                self.ui.indiNameList.setCurrentIndex(i)
+                self.ui.indiDeviceList.setCurrentIndex(i)
         self.ui.indiMessages.setChecked(deviceData.get('indiMessages', False))
         self.ui.indiLoadConfig.setChecked(deviceData.get('indiLoadConfig', False))
 
@@ -134,28 +164,28 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         device, number = deviceData.get('alpacaName', '"":0').split(':')
         self.ui.alpacaDevice.setText(device)
         self.ui.alpacaNumber.setValue(int(number))
-        self.ui.alpacaUser.setText(deviceData.get('alpacaUser', 'user'))
-        self.ui.alpacaPassword.setText(deviceData.get('alpacaPassword', 'password'))
+        self.ui.alpacaUser.setText(deviceData.get('alpacaUser', ''))
+        self.ui.alpacaPassword.setText(deviceData.get('alpacaPassword', ''))
 
         # populating astrometry
-        nameList = deviceData.get('astrometryNameList', [])
+        nameList = deviceData.get('astrometryDeviceList', [])
         if not nameList:
-            self.ui.astrometryNameList.addItem('-')
+            self.ui.astrometryDeviceList.addItem('-')
         for i, name in enumerate(nameList):
-            self.ui.astrometryNameList.addItem(name)
+            self.ui.astrometryDeviceList.addItem(name)
             if indiName == name:
-                self.ui.astrometryNameList.setCurrentIndex(i)
-        self.ui.astrometryIndex.setText(deviceData.get('astrometryIndex', '/usr/'))
+                self.ui.astrometryDeviceList.setCurrentIndex(i)
+        self.ui.astrometryIndexPath.setText(deviceData.get('astrometryIndexPath', '/usr/'))
         self.ui.astrometryTimeout.setValue(deviceData.get('astrometryTimeout', 30))
         self.ui.astrometrySearchRadius.setValue(deviceData.get('astrometrySearchRadius', 20))
 
         # populating astap
-        self.ui.astapName.setText(deviceData.get('astapName', 'astap'))
+        self.ui.astapDevice.setText(deviceData.get('astapName', 'astap'))
         self.ui.astapTimeout.setValue(deviceData.get('astapTimeout', 30))
         self.ui.astapSearchRadius.setValue(deviceData.get('astapSearchRadius', 20))
 
         # populating ascom
-        self.ui.ascomDevice.setText('ASCOM.' + deviceData.get('ascomName', ''))
+        self.ui.ascomDevice.setText(deviceData.get('ascomName', ''))
 
         # for fw in self.framework:
         tabWidget = self.ui.tab.findChild(PyQt5.QtWidgets.QWidget, selectedFramework)
@@ -179,13 +209,13 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         # collecting indi data
         self.data[self.driver]['indiHost'] = self.ui.indiHost.text()
         self.data[self.driver]['indiPort'] = self.ui.indiPort.text()
-        self.data[self.driver]['indiName'] = self.ui.indiNameList.currentText()
+        self.data[self.driver]['indiName'] = self.ui.indiDeviceList.currentText()
 
-        model = self.ui.indiNameList.model()
+        model = self.ui.indiDeviceList.model()
         nameList = []
         for index in range(model.rowCount()):
             nameList.append(model.item(index).text())
-        self.data[self.driver]['indiNameList'] = nameList
+        self.data[self.driver]['indiDeviceList'] = nameList
         self.data[self.driver]['indiMessages'] = self.ui.indiMessages.isChecked()
         self.data[self.driver]['indiLoadConfig'] = self.ui.indiLoadConfig.isChecked()
 
@@ -199,23 +229,23 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.data[self.driver]['alpacaPassword'] = self.ui.alpacaPassword.text()
 
         # collecting astrometry data
-        self.data[self.driver]['astrometryName'] = self.ui.astrometryNameList.currentText()
-        model = self.ui.astrometryNameList.model()
+        self.data[self.driver]['astrometryName'] = self.ui.astrometryDeviceList.currentText()
+        model = self.ui.astrometryDeviceList.model()
         nameList = []
         for index in range(model.rowCount()):
             nameList.append(model.item(index).text())
-        self.data[self.driver]['astrometryNameList'] = nameList
-        self.data[self.driver]['astrometryIndex'] = self.ui.astrometryIndex.text()
+        self.data[self.driver]['astrometryDeviceList'] = nameList
+        self.data[self.driver]['astrometryIndexPath'] = self.ui.astrometryIndexPath.text()
         self.data[self.driver]['astrometrySearchRadius'] = self.ui.astrometrySearchRadius.value()
         self.data[self.driver]['astrometryTimeout'] = self.ui.astrometryTimeout.value()
 
         # collecting astap data
-        self.data[self.driver]['astapName'] = self.ui.astapName.text()
+        self.data[self.driver]['astapName'] = self.ui.astapDevice.text()
         self.data[self.driver]['astapSearchRadius'] = self.ui.astapSearchRadius.value()
         self.data[self.driver]['astapTimeout'] = self.ui.astapTimeout.value()
 
         # collecting ascom data
-        self.data[self.driver]['ascomName'] = self.ui.ascomDevice.text()[6:]
+        self.data[self.driver]['ascomName'] = self.ui.ascomDevice.text()
 
         # setting framework
         index = self.ui.tab.currentIndex()
@@ -279,7 +309,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         :return: success
         """
 
-        device = self.indiClass.client.devices.get(deviceName)
+        device = self._indiClass.client.devices.get(deviceName)
         if not device:
             return False
 
@@ -288,13 +318,13 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         if interface is None:
             return False
 
-        if self.indiSearchType is None:
+        if self._indiSearchType is None:
             return False
 
         interface = int(interface)
 
-        if interface & self.indiSearchType:
-            self.indiSearchNameList.append(deviceName)
+        if interface & self._indiSearchType:
+            self._indiSearchNameList.append(deviceName)
 
         return True
 
@@ -311,33 +341,33 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         :return:  success finding
         """
 
-        self.indiSearchNameList = list()
+        self._indiSearchNameList = list()
 
         if self.driver in self.indiDefaults:
-            self.indiSearchNameList.append(self.indiDefaults[self.driver])
+            self._indiSearchNameList.append(self.indiDefaults[self.driver])
 
         else:
             host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))
-            self.indiClass = IndiClass()
-            self.indiClass.host = host
+            self._indiClass = IndiClass()
+            self._indiClass.host = host
 
-            self.indiClass.client.signals.defText.connect(self.addDevicesWithType)
-            self.indiClass.client.connectServer()
-            self.indiClass.client.watchDevice()
+            self._indiClass.client.signals.defText.connect(self.addDevicesWithType)
+            self._indiClass.client.connectServer()
+            self._indiClass.client.watchDevice()
             msg = PyQt5.QtWidgets.QMessageBox
             msg.information(self,
                             'Searching Devices',
                             f'Search for [{self.driver}] could take some seconds!')
-            self.indiClass.client.disconnectServer()
+            self._indiClass.client.disconnectServer()
 
-        self.ui.indiNameList.clear()
-        self.ui.indiNameList.setView(PyQt5.QtWidgets.QListView())
+        self.ui.indiDeviceList.clear()
+        self.ui.indiDeviceList.setView(PyQt5.QtWidgets.QListView())
 
-        for name in self.indiSearchNameList:
+        for name in self._indiSearchNameList:
             self.log.info(f'Indi search found: {name}')
 
-        for deviceName in self.indiSearchNameList:
-            self.ui.indiNameList.addItem(deviceName)
+        for deviceName in self._indiSearchNameList:
+            self.ui.indiDeviceList.addItem(deviceName)
 
         return True
 

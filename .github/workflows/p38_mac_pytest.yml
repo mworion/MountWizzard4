@@ -4,8 +4,8 @@ name: PyTest for Unittest
 on:
   push:
     paths:
-      - 'mw4/**'
-      - 'setup.py'
+      # - 'mw4/**'
+      # - 'setup.py'
       - '.github/workflows/p38_mac_pytest.yml'
 
 jobs:

@@ -48,7 +48,7 @@ jobs:
 
     - name: Install package
       run: |
-        python -m pip install dist/mountwizzard4-*.tar.gz
+        python -m pip install dist/mountwizzard4-0.150.16b1.tar.gz
 
     - name: Install pytest
       run: |

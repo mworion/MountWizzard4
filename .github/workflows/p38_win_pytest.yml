@@ -1,12 +1,12 @@
 # test script on python 3.8 and Windows
-name: PyTest for Unittest Windows
+name: PyTest Units Win
 
 on:
   push:
     paths:
       - 'mw4/**'
       - 'setup.py'
-      - '.github/workflows/p38_mac_pytest.yml'
+      - '.github/workflows/p38_win_pytest.yml'
 
 jobs:
   build:

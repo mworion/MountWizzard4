@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.160.16b1
+----------
+- added ascom framwork
+- removed duplicate starting of drivers
+- added ascom camera
+- added windows unittesting in github
+
 0.150.15
 --------
 - moved measurement setup to device settings

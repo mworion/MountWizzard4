@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.160.16b1
+0.150.16b1
 ----------
 - added ascom framwork
 - removed duplicate starting of drivers

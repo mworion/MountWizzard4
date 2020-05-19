@@ -4,7 +4,7 @@ name: PyTest Units Win
 on:
   push:
     paths:
-      - 'mw4/**'
+      # - 'mw4/**'
       - 'setup.py'
       - '.github/workflows/p38_win_pytest.yml'
 

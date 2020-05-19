@@ -6,7 +6,7 @@ on:
     paths:
       # - 'mw4/**'
       # - 'setup.py'
-      - '.github/workflows/p38_mac_pytest.yml'
+      - '.github/workflows/p38_ubuntu_pytest.yml'
 
 jobs:
   build:

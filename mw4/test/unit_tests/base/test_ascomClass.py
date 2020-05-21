@@ -28,7 +28,7 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
 if platform.system() == 'Windows':
-    from win32com.client import Dispatch
+    import win32com.client
     import pythoncom
 
 # local import
@@ -55,24 +55,16 @@ def test_getInitialConfig_1():
         DriverVersion = '1'
         DriverInfo = 'test1'
 
-    app.client = Test()
-    suc = app.getInitialConfig()
-    assert not suc
-
-
-def test_getInitialConfig_2():
     app.serverConnected = False
     app.deviceConnected = False
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=True):
-        suc = app.getInitialConfig()
-        assert suc
-        assert app.serverConnected
-        assert app.deviceConnected
-        assert app.data['DRIVER_INFO.DRIVER_NAME'] is None
-        assert app.data['DRIVER_INFO.DRIVER_VERSION'] is None
-        assert app.data['DRIVER_INFO.DRIVER_EXEC'] == ''
+    app.client = Test()
+    suc = app.getInitialConfig()
+    assert suc
+    assert app.serverConnected
+    assert app.deviceConnected
+    assert app.data['DRIVER_INFO.DRIVER_NAME'] == 'test'
+    assert app.data['DRIVER_INFO.DRIVER_VERSION'] == '1'
+    assert app.data['DRIVER_INFO.DRIVER_EXEC'] == 'test1'
 
 
 def test_startTimer():
@@ -118,43 +110,51 @@ def test_dataEntry_3():
 
 
 def test_pollStatus_1():
-    app.deviceConnected = True
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=False):
-        suc = app.pollStatus()
-        assert not suc
-        assert not app.deviceConnected
+    class Test:
+        connected = False
+        Name = 'test'
+        DriverVersion = '1'
+        DriverInfo = 'test1'
+
+    app.serverConnected = False
+    app.deviceConnected = False
+    app.client = Test()
+
+    suc = app.pollStatus()
+    assert not suc
+    assert not app.deviceConnected
 
 
 def test_pollStatus_2():
-    app.deviceConnected = False
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=True):
-        suc = app.pollStatus()
-        assert suc
-        assert app.deviceConnected
+    class Test:
+        connected = False
+        Name = 'test'
+        DriverVersion = '1'
+        DriverInfo = 'test1'
+
+    app.serverConnected = False
+    app.deviceConnected = True
+    app.client = Test()
+
+    suc = app.pollStatus()
+    assert not suc
+    assert not app.deviceConnected
 
 
 def test_pollStatus_3():
-    app.deviceConnected = True
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=True):
-        suc = app.pollStatus()
-        assert suc
-        assert app.deviceConnected
+    class Test:
+        connected = True
+        Name = 'test'
+        DriverVersion = '1'
+        DriverInfo = 'test1'
 
-
-def test_pollStatus_4():
+    app.serverConnected = False
     app.deviceConnected = False
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=False):
-        suc = app.pollStatus()
-        assert not suc
-        assert not app.deviceConnected
+    app.client = Test()
+
+    suc = app.pollStatus()
+    assert suc
+    assert app.deviceConnected
 
 
 def test_emitData():
@@ -182,11 +182,33 @@ def test_startPollStatus():
     assert suc
 
 
-def test_startCommunication():
+def test_startCommunication_1():
+    if platform.system() != 'Windows':
+        return
+
     with mock.patch.object(app,
                            'startTimer'):
-        suc = app.startCommunication()
-        assert suc
+        with mock.patch.object(pythoncom,
+                               'CoInitialize'):
+            with mock.patch.object(win32com.client,
+                                   'Dispatch'):
+                suc = app.startCommunication()
+                assert suc
+
+
+def test_startCommunication_2():
+    if platform.system() != 'Windows':
+        return
+
+    with mock.patch.object(app,
+                           'startTimer'):
+        with mock.patch.object(pythoncom,
+                               'CoInitialize'):
+            with mock.patch.object(win32com.client,
+                                   'Dispatch',
+                                   side_effect=Exception()):
+                suc = app.startCommunication()
+                assert not suc
 
 
 def test_stopCommunication():

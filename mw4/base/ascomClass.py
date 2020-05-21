@@ -19,7 +19,7 @@
 import logging
 import platform
 if platform.system() == 'Windows':
-    from win32com.client import Dispatch
+    import win32com.client
     import pythoncom
 
 # external packages
@@ -225,7 +225,7 @@ class AscomClass(object):
 
         pythoncom.CoInitialize()
         try:
-            self.client = Dispatch(self.name)
+            self.client = win32com.client.Dispatch(self.name)
         except Exception as e:
             self.log.critical(f'Error: [{e}]')
             return False

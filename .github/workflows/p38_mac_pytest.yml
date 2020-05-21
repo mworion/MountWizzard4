@@ -59,7 +59,9 @@ jobs:
 
     - name: Running unit tests
       run: |
-        pytest mw4/test/unit_tests --cov=mw4/ --cov-report=xml
+        # actual coverage only on windows
+        # pytest mw4/test/unit_tests --cov=mw4/ --cov-report=xml
+        pytest mw4/test/unit_tests
 
 
     - name: Upload coverage to codecov

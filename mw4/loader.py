@@ -329,7 +329,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
     for file in files:
         if splashW is not None:
             splashW.showMessage('Loading {0}'.format(file))
-        filePath = mwGlob['dataDir'] + '/' + file
+        filePath = os.path.abspath(mwGlob['dataDir'] + '/' + file)
         if os.path.isfile(filePath):
             continue
         # as we cannot access data from Qt resource system, we have to convert it to

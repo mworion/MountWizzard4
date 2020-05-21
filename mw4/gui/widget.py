@@ -204,12 +204,12 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
             else:
                 short = ''
                 ext = ''
+            nameList.append(os.path.abspath(name))
             shortList.append(short)
-            nameList.append(name)
             extList.append(ext)
 
         if len(names) == 1:
-            return name, short, ext
+            return nameList[0], shortList[0], extList[0]
         else:
             return nameList, shortList, extList
 

@@ -141,6 +141,12 @@ def test_solveASTAP_2(app):
 
 def test_solveASTAP_3(app):
     app.name = 'ASTAP-Mac'
+    app.environment = {
+        'ASTAP-Mac': {
+            'programPath': '',
+            'indexPath': '',
+        }
+    }
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=False):
@@ -150,6 +156,12 @@ def test_solveASTAP_3(app):
 
 def test_solveASTAP_4(app):
     app.name = 'ASTAP-Mac'
+    app.environment = {
+        'ASTAP-Mac': {
+            'programPath': '',
+            'indexPath': '',
+        }
+    }
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=True):
@@ -159,6 +171,12 @@ def test_solveASTAP_4(app):
 
 def test_solveASTAP_5(app):
     app.name = 'ASTAP-Mac'
+    app.environment = {
+        'ASTAP-Mac': {
+            'programPath': '',
+            'indexPath': '',
+        }
+    }
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=True):

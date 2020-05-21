@@ -37,6 +37,9 @@ def module_setup_teardown(qtbot):
     files = glob.glob('mw4/test/config/*.cfg')
     for f in files:
         os.remove(f)
+    files = glob.glob('mw4/test/data/*.*')
+    for f in files:
+        os.remove(f)
 
     yield
 
@@ -125,3 +128,8 @@ def test_extractDataFiles_4(qtbot):
                            return_value=False):
         suc = loader.extractDataFiles(mwGlob=mwGlob)
         assert suc
+    assert os.path.isfile('mw4/test/data/Leap_Second.dat')
+    assert os.path.isfile('mw4/test/data/deltat.data')
+    assert os.path.isfile('mw4/test/data/deltat.preds')
+    assert os.path.isfile('mw4/test/data/de421_23.bsp')
+    assert os.path.isfile('mw4/test/data/active.txt')

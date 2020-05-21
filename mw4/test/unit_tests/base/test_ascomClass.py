@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 from unittest import mock
+import platform
 import faulthandler
 faulthandler.enable()
 
@@ -26,9 +27,12 @@ import pytest
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
+if platform.system() == 'Windows':
+    from win32com.client import Dispatch
+    import pythoncom
 
 # local import
-from mw4.base.alpacaClass import AlpacaClass
+from mw4.base.ascomClass import AscomClass
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -37,27 +41,11 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
 
     global app
-    app = AlpacaClass(app=Test(), data={}, threadPool=QThreadPool())
+    app = AscomClass(app=Test(), data={}, threadPool=QThreadPool())
 
     yield
 
     app.threadPool.waitForDone(1000)
-
-
-def test_properties_1():
-    app.host = ('localhost', 11111)
-    app.name = 'test'
-    app.name = 'test:2'
-    app.apiVersion = 1
-    app.protocol = 1
-
-
-def test_properties_2():
-    host = app.host
-    assert host == ('localhost', 11111)
-    assert app.name == ''
-    assert app.apiVersion == 1
-    assert app.protocol == 'http'
 
 
 def test_getInitialConfig_1():

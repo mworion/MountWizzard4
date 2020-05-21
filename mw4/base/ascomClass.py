@@ -17,8 +17,10 @@
 ###########################################################
 # standard libraries
 import logging
-from win32com.client import Dispatch
-import pythoncom
+import platform
+if platform.system() == 'Windows':
+    from win32com.client import Dispatch
+    import pythoncom
 
 # external packages
 import PyQt5.QtCore
@@ -223,7 +225,7 @@ class AscomClass(object):
 
         pythoncom.CoInitialize()
         try:
-            self.client = Dispatch('ASCOM.' + self.name)
+            self.client = Dispatch(self.name)
         except Exception as e:
             self.log.critical(f'Error: [{e}]')
             return False

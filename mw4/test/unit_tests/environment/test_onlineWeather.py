@@ -145,11 +145,6 @@ def test_getOpenWeatherMapDataWorker_1():
 
 
 def test_getOpenWeatherMapDataWorker_2():
-    val = app.getOpenWeatherMapDataWorker('http://localhost')
-    assert val is None
-
-
-def test_getOpenWeatherMapDataWorker_3():
     class Test:
         status_code = 300
     with mock.patch.object(requests,
@@ -159,7 +154,7 @@ def test_getOpenWeatherMapDataWorker_3():
         assert val is None
 
 
-def test_getOpenWeatherMapDataWorker_4():
+def test_getOpenWeatherMapDataWorker_3():
     class Test:
         status_code = 300
     with mock.patch.object(requests,
@@ -170,7 +165,7 @@ def test_getOpenWeatherMapDataWorker_4():
         assert val is None
 
 
-def test_getOpenWeatherMapDataWorker_5():
+def test_getOpenWeatherMapDataWorker_4():
     class Test:
         status_code = 200
 

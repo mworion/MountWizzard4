@@ -49,11 +49,15 @@ def module_setup_teardown():
 
 
 def test_getInitialConfig_1():
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=False):
-        suc = app.getInitialConfig()
-        assert not suc
+    class Test:
+        connected = False
+        Name = 'test'
+        DriverVersion = '1'
+        DriverInfo = 'test1'
+
+    app.client = Test()
+    suc = app.getInitialConfig()
+    assert not suc
 
 
 def test_getInitialConfig_2():

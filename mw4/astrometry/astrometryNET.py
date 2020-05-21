@@ -74,7 +74,7 @@ class AstrometryNET(object):
         """
 
         if platform.system() == 'Darwin':
-            home = os.environ.get('HOME')
+            home = os.environ.get('HOME', '')
             self.environment = {
                 'CloudMakers': {
                     'programPath': '/Applications/Astrometry.app/Contents/MacOS',

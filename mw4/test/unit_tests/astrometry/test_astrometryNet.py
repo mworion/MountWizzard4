@@ -146,6 +146,12 @@ def test_solveNet_1(app):
 
 def test_solveNet_2(app):
     app.name = 'KStars'
+    app.environment = {
+        'KStars': {
+            'programPath': '',
+            'indexPath': '',
+        }
+    }
     app.indexPath = 'mw4/test/temp'
     with mock.patch.object(app,
                            'runImage2xy',
@@ -156,6 +162,12 @@ def test_solveNet_2(app):
 
 def test_solveNet_3(app):
     app.name = 'KStars'
+    app.environment = {
+        'KStars': {
+            'programPath': '',
+            'indexPath': '',
+        }
+    }
     app.indexPath = 'mw4/test/temp'
     with mock.patch.object(app,
                            'runImage2xy',
@@ -169,6 +181,12 @@ def test_solveNet_3(app):
 
 def test_solveNet_4(app):
     app.name = 'KStars'
+    app.environment = {
+        'KStars': {
+            'programPath': '',
+            'indexPath': '',
+        }
+    }
     app.indexPath = 'mw4/test/temp'
     with mock.patch.object(app,
                            'runImage2xy',
@@ -182,6 +200,12 @@ def test_solveNet_4(app):
 
 def test_solveNet_5(app):
     app.name = 'CloudMakers'
+    app.environment = {
+        'CloudMakers': {
+            'programPath': '',
+            'indexPath': '',
+        }
+    }
     app.indexPath = 'mw4/test/temp'
     with mock.patch.object(app,
                            'runImage2xy',
@@ -199,6 +223,12 @@ def test_solveNet_5(app):
 
 def test_solveNet_6(app):
     app.name = 'KStars'
+    app.environment = {
+        'KStars': {
+            'programPath': '',
+            'indexPath': '',
+        }
+    }
     app.indexPath = 'mw4/test/temp'
     with mock.patch.object(app,
                            'runImage2xy',
@@ -216,6 +246,12 @@ def test_solveNet_6(app):
 
 def test_solveNet_7(app):
     app.name = 'KStars'
+    app.environment = {
+        'KStars': {
+            'programPath': '',
+            'indexPath': '',
+        }
+    }
     app.indexPath = 'mw4/test/temp'
     with mock.patch.object(app,
                            'runImage2xy',

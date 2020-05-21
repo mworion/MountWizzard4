@@ -23,7 +23,7 @@ import PyQt5.QtCore
 # import .NET / COM Handling
 
 if platform.system() == 'Windows':
-    from win32com.client import Dispatch
+    import win32com.client
 
 # local import
 from mw4.base.indiClass import IndiClass
@@ -168,12 +168,13 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.alpacaPassword.setText(deviceData.get('alpacaPassword', ''))
 
         # populating astrometry
+        astrometryName = deviceData.get('astrometryName', '')
         nameList = deviceData.get('astrometryDeviceList', [])
         if not nameList:
             self.ui.astrometryDeviceList.addItem('-')
         for i, name in enumerate(nameList):
             self.ui.astrometryDeviceList.addItem(name)
-            if indiName == name:
+            if astrometryName == name:
                 self.ui.astrometryDeviceList.setCurrentIndex(i)
         self.ui.astrometryIndexPath.setText(deviceData.get('astrometryIndexPath', '/usr/'))
         self.ui.astrometryTimeout.setValue(deviceData.get('astrometryTimeout', 30))
@@ -398,7 +399,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         deviceName = self.ui.ascomDevice.text()
 
         try:
-            chooser = Dispatch('ASCOM.Utilities.Chooser')
+            chooser = win32com.client.Dispatch('ASCOM.Utilities.Chooser')
             chooser.DeviceType = self.deviceType
             deviceName = chooser.Choose(deviceName)
 

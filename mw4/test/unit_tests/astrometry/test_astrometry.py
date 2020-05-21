@@ -283,6 +283,7 @@ def test_solveThreading_5(app):
     app.framework = 'astap'
     file = 'mw4/test/image/m51.fit'
     suc = app.solveThreading(fitsPath=file)
+    app.mutexSolve.unlock()
     assert not suc
 
 

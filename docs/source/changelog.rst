@@ -1,12 +1,17 @@
 Changelog
 =========
+The changelog contains the user related function or environment updates. For a detailed list if changes, please refer
+to the commit list on GitHub.
+
+0.150.16b2
+----------
+- keeping satellite name filter when changing sources and applying it directly
 
 0.150.16b1
 ----------
-- added ascom framwork
+- added ascom framework
 - removed duplicate starting of drivers
 - added ascom camera
-- added windows unittesting in github
 
 0.150.15
 --------

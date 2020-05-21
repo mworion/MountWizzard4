@@ -309,7 +309,7 @@ def writeSystemInfo(mwGlob=None):
 
 def extractDataFiles(mwGlob=None, splashW=None):
     """
-    we have the necessary files for leap second, ephemerides and satellite already stored
+    we have the necessary files for leap second, ephemeris and satellite already stored
     in the files system of the app. we bring them to the file system of the user, if they
     do not exist.
 

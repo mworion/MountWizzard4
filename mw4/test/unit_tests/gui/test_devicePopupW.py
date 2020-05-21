@@ -111,7 +111,7 @@ def test_AddDevicesWithType_1(qtbot):
     qtbot.addWidget(app)
 
     device = Device()
-    app.indiClass = IndiClass()
+    app._indiClass = IndiClass()
     with mock.patch.object(device,
                            'getText',
                            return_value={'DRIVER_INTERFACE': None}):
@@ -128,8 +128,8 @@ def test_AddDevicesWithType_2(qtbot):
     qtbot.addWidget(app)
 
     device = Device()
-    app.indiClass = IndiClass()
-    app.indiClass.client.devices['telescope'] = device
+    app._indiClass = IndiClass()
+    app._indiClass.client.devices['telescope'] = device
     with mock.patch.object(device,
                            'getText',
                            return_value={'DRIVER_INTERFACE': None}):
@@ -146,9 +146,9 @@ def test_AddDevicesWithType_3(qtbot):
     qtbot.addWidget(app)
 
     device = Device()
-    app.indiClass = IndiClass()
-    app.indiClass.client.devices['telescope'] = device
-    app.indiSearchType = None
+    app._indiClass = IndiClass()
+    app._indiClass.client.devices['telescope'] = device
+    app._indiSearchType = None
     with mock.patch.object(device,
                            'getText',
                            return_value={'DRIVER_INTERFACE': 0}):
@@ -165,10 +165,10 @@ def test_AddDevicesWithType_4(qtbot):
     qtbot.addWidget(app)
 
     device = Device()
-    app.indiClass = IndiClass()
-    app.indiClass.client.devices['telescope'] = device
-    app.indiSearchType = 1
-    app.indiSearchNameList = list()
+    app._indiClass = IndiClass()
+    app._indiClass.client.devices['telescope'] = device
+    app._indiSearchType = 1
+    app._indiSearchNameList = list()
     with mock.patch.object(device,
                            'getText',
                            return_value={'DRIVER_INTERFACE': 1}):

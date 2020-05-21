@@ -377,7 +377,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         :return:
         """
 
-        folder = self.ui.astrometryIndex.text()
+        folder = self.ui.astrometryIndexPath.text()
         saveFilePath, name, ext = self.openDir(self,
                                                'Select Astrometry Index',
                                                folder,
@@ -385,7 +385,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         if not name:
             return False
 
-        self.ui.astrometryIndex.setText(saveFilePath)
+        self.ui.astrometryIndexPath.setText(saveFilePath)
 
         return True
 

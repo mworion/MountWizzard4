@@ -1,5 +1,5 @@
 # test script on python 3.8 and MacOSX
-name: PyTest Units OSX
+name: PyTest Units MacOS
 
 on:
   push:

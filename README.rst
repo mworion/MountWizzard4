@@ -42,7 +42,9 @@ Version, build and code coverage status
 ---------------------------------------
 |PYPI_VERSION| |DownLoadsAbs| |DownLoadsMonth|
 
-|PYTEST OSX| |PYTEST Win| |CODECOV| |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS|
+|PYTEST MacOS| |PYTEST Win| |CODECOV|
+
+|CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS|
 
 Coverage chart: 
 
@@ -73,7 +75,7 @@ CS Michel
     :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. |PYTEST OSX| image:: https://github.com/mworion/MountWizzard4/workflows/PyTest%20Units%20OSX/badge.svg
+.. |PYTEST MacOS| image:: https://github.com/mworion/MountWizzard4/workflows/PyTest%20Units%20MacOS/badge.svg
 .. |PYTEST WIN| image:: https://github.com/mworion/MountWizzard4/workflows/PyTest%20Units%20Win/badge.svg
 .. |CODECOV| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
 .. |CODECOV_CHART| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/icicle.svg

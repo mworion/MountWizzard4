@@ -13,7 +13,12 @@ For full operation MW4 needs actually a running:
 INDI server(s) (see: https://indilib.org) where your devices are connected to.
 
 ASCOM Alpaca remote server (see: https://ascom-standards.org/Developer/Alpaca.htm) abstracting
-your ASCOM devices or devices which speak native ASCOM Alpaca.
+your ASCOM devices or devices which speak native ASCOM Alpaca if you want to connect over IP with your
+environment.
+
+For the core devices there is fom 0.150.16 on native ASCOM support (Windows platform only). Please
+be reminded, that ASCOM has 32bit and 64bit driver implementations and MW4 could also be installed in
+32bit or 64 bit environment. None of them could be mixed! Normally ths should not be an issue...
 
 In addition an online connection is used for some services which might be very helpful.
 

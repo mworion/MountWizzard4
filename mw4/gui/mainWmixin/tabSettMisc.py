@@ -278,6 +278,7 @@ class SettMisc(object):
                     ]
 
         timeStart = time.time()
+        self.log.info(f'Installing: [{versionPackage}]')
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
@@ -286,6 +287,7 @@ class SettMisc(object):
                                             )
             for stdout_line in iter(self.process.stdout.readline, ""):
                 # nicely format text
+                self.log.debug(f'Message raw: [{stdout_line}]')
                 line = self.formatPIP(line=stdout_line)
                 if line:
                     self.app.message.emit(line, 0)

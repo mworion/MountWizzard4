@@ -106,7 +106,7 @@ class AscomClass(object):
         if not self.deviceConnected:
             self.deviceConnected = True
             self.ascomSignals.deviceConnected.emit(f'{self.name}')
-            self.app.message.emit(f'Ascom device found:  [{self.name}]', 0)
+            self.app.message.emit(f'ASCOM device found:  [{self.name}]', 0)
 
         self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.Name
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.DriverVersion
@@ -172,12 +172,12 @@ class AscomClass(object):
         if self.deviceConnected and not suc:
             self.deviceConnected = False
             self.ascomSignals.deviceDisconnected.emit(f'{self.name}')
-            self.app.message.emit(f'Ascom device remove: [{self.name}]', 0)
+            self.app.message.emit(f'ASCOM device remove: [{self.name}]', 0)
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
             self.ascomSignals.deviceConnected.emit(f'{self.name}')
-            self.app.message.emit(f'Ascom device found:  [{self.name}]', 0)
+            self.app.message.emit(f'ASCOM device found:  [{self.name}]', 0)
 
         else:
             pass
@@ -253,6 +253,6 @@ class AscomClass(object):
 
         self.ascomSignals.deviceDisconnected.emit(f'{self.name}')
         self.ascomSignals.serverDisconnected.emit({f'{self.name}': 0})
-        self.app.message.emit(f'Ascom device remove: [{self.name}]', 0)
+        self.app.message.emit(f'ASCOM device remove: [{self.name}]', 0)
 
         return True

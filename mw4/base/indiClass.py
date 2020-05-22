@@ -100,7 +100,7 @@ class IndiClass(object):
 
         if self.name:
             suc = self.client.watchDevice(self.name)
-            self.log.info(f'Indi watch: {self.name}, watch: result:{suc}')
+            self.log.info(f'INDI watch: {self.name}, watch: result:{suc}')
             return suc
         return False
 
@@ -111,7 +111,7 @@ class IndiClass(object):
         :return: true for test purpose
         """
 
-        self.log.info(f'Indi server disconnected, devices: {devices}')
+        self.log.info(f'INDI server disconnected, devices: {devices}')
         return True
 
     def newDevice(self, deviceName):
@@ -127,7 +127,7 @@ class IndiClass(object):
             self.device = self.client.getDevice(deviceName)
             self.app.message.emit(f'INDI device found:   [{deviceName}]', 0)
         else:
-            self.log.warning(f'Indi device snoop: {deviceName}')
+            self.log.warning(f'INDI device snoop: {deviceName}')
 
         return True
 

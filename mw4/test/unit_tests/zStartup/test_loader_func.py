@@ -37,12 +37,6 @@ def module_setup_teardown(qtbot):
     files = glob.glob('mw4/test/config/*.cfg')
     for f in files:
         os.remove(f)
-    files = glob.glob('mw4/test/data/*.*')
-    for f in files:
-        if 'empty' in f:
-            continue
-        os.remove(f)
-
     yield
 
 

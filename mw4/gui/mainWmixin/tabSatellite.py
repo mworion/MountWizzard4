@@ -107,7 +107,7 @@ class Satellite(object):
         filterStr = self.ui.filterText.text()
 
         for row in range(listSat.model().rowCount()):
-            isFound = filterStr in listSat.model().index(row).data()
+            isFound = filterStr.lower() in listSat.model().index(row).data().lower()
             isVisible = isFound or not filterStr
 
             if isVisible:

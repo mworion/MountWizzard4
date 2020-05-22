@@ -20,6 +20,8 @@ import pytest
 from unittest import mock
 import logging
 import faulthandler
+import locale
+locale.setlocale(locale.LC_ALL, 'en_US')
 faulthandler.enable()
 
 # external packages
@@ -188,7 +190,7 @@ def test_updateOrbit_4():
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     app.ui.mainTabWidget.setCurrentIndex(1)
     app.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
     suc = app.updateOrbit()
@@ -199,7 +201,7 @@ def test_updateOrbit_5():
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     app.ui.mainTabWidget.setCurrentIndex(5)
     app.app.uiWindows = {'showSatelliteW': {'test': 1}}
     suc = app.updateOrbit()
@@ -227,7 +229,7 @@ def test_programTLEToMount_3():
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
@@ -251,7 +253,7 @@ def test_programTLEToMount_4():
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
@@ -286,14 +288,22 @@ def test_calcTLEParams_2():
 
 
 def test_showRises_1():
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    app.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    tle = ['NOAA 8',
+           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
+           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+
+    test = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    print('test', test.model.no_kozai)
+    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    print(app.satellite.model.no_kozai)
+
     with mock.patch.object(EarthSatellite,
                            'find_events',
                            return_value=(app.app.mount.obsSite.timeJD, [1])):
+        print(app.satellite.model.no_kozai)
         suc = app.showRises()
+        print(app.satellite.model.no_kozai)
         assert suc
 
 
@@ -305,7 +315,7 @@ def test_showRises_2():
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    app.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     with mock.patch.object(EarthSatellite,
                            'find_events',
                            return_value=([t0, t1, t2],
@@ -323,7 +333,7 @@ def test_showRises_3():
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    app.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     with mock.patch.object(EarthSatellite,
                            'find_events',
                            return_value=([t0, t1, t2, t3],
@@ -346,7 +356,7 @@ def test_extractSatelliteData_2():
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(*tle[1:3], name=tle[0])
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
     app.satellites = {'NOAA 8': sat,
                       'Test1': sat}
@@ -363,7 +373,7 @@ def test_extractSatelliteData_3():
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(*tle[1:3], name=tle[0])
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
     app.satellites = {'NOAA 8': sat,
                       'Test1': sat}
@@ -388,7 +398,7 @@ def test_extractSatelliteData_4():
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(*tle[1:3], name=tle[0])
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
     app.satellites = {'NOAA 8': sat,
                       'Test1': sat}

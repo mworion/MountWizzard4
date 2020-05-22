@@ -22,7 +22,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.150.16b1',
+    version='0.150.16',
     packages=[
         'mw4',
         'mw4.astrometry',

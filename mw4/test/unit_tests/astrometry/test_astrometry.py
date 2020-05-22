@@ -274,17 +274,22 @@ def test_solveThreading_3(app):
 def test_solveThreading_4(app):
     app.framework = 'astap'
     file = 'mw4/test/image/m51.fit'
-    suc = app.solveThreading(fitsPath=file)
-    assert suc
+    with mock.patch.object(app.threadPool,
+                           'start'):
+        suc = app.solveThreading(fitsPath=file)
+        app.mutexSolve.unlock()
+        assert suc
 
 
 def test_solveThreading_5(app):
     app.mutexSolve.lock()
     app.framework = 'astap'
     file = 'mw4/test/image/m51.fit'
-    suc = app.solveThreading(fitsPath=file)
-    app.mutexSolve.unlock()
-    assert not suc
+    with mock.patch.object(app.threadPool,
+                           'start'):
+        suc = app.solveThreading(fitsPath=file)
+        app.mutexSolve.unlock()
+        assert not suc
 
 
 def test_abort_1(app):

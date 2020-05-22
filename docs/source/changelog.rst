@@ -6,7 +6,10 @@ to the commit list on GitHub.
 0.150.16b2
 ----------
 - keeping satellite name filter when changing sources and applying it directly
-- added ascom dome as it is needed for first model build
+- added ascom dome
+- added ascom filterwheel
+- added ascom telescope
+- added ascom focuser
 
 0.150.16b1
 ----------

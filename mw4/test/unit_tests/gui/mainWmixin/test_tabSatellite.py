@@ -20,8 +20,8 @@ import pytest
 from unittest import mock
 import logging
 import faulthandler
-import locale
-locale.setlocale(locale.LC_ALL, 'en_US')
+# import locale
+# locale.setlocale(locale.LC_ALL, 'en_US')
 faulthandler.enable()
 
 # external packages
@@ -554,3 +554,17 @@ def test_stopTrack_3():
                            return_value=True):
         suc = app.stopTrack()
         assert suc
+
+"""
+def test_brandon():
+    from sgp4.api import Satrec, accelerated
+    print('Accelerated?', accelerated)
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
+    sat = Satrec.twoline2rv(tle[1], tle[2])
+    print(sat.no_kozai)
+    a = 1/0
+"""

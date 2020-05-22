@@ -256,7 +256,8 @@ class SettMisc(object):
         elif line.startswith('Installing') or line.startswith('Building'):
             line = line.split(':')[0]
 
-        elif line.startswith('Successfully'):
+        else:
+            # line.startswith('Successfully'):
             line = line.split('\n')[0]
 
         return line
@@ -278,21 +279,19 @@ class SettMisc(object):
                     ]
 
         timeStart = time.time()
-        self.log.info(f'Installing: [{versionPackage}]')
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
-                                            stderr=subprocess.PIPE,
+                                            stderr=subprocess.STDOUT,
                                             text=True,
                                             )
             for stdout_line in iter(self.process.stdout.readline, ""):
                 # nicely format text
-                self.log.debug(f'Message raw: [{stdout_line}]')
                 line = self.formatPIP(line=stdout_line)
                 if line:
                     self.app.message.emit(line, 0)
 
-            _, stderr = self.process.communicate(timeout=timeout)
+            output = self.process.communicate(timeout=timeout)[0]
 
         except subprocess.TimeoutExpired as e:
             self.log.critical(e)
@@ -306,8 +305,7 @@ class SettMisc(object):
             delta = time.time() - timeStart
             self.log.info(f'pip install took {delta}s return code: '
                           + str(self.process.returncode)
-                          + ' stderr: '
-                          + stderr.replace('\n', ' ')
+                          + f' output: [{output}]'
                           )
 
         success = (self.process.returncode == 0)
@@ -361,7 +359,7 @@ class SettMisc(object):
 
         versionPackage = self.ui.versionAvailable.text()
         self.changeStyleDynamic(self.ui.installVersion, 'running', True)
-        self.app.message.emit('Installing selected version ... please wait', 1)
+        self.app.message.emit(f'Installing [{versionPackage}] please wait', 1)
 
         worker = tpool.Worker(self.runInstall,
                               versionPackage=versionPackage,

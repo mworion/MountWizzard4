@@ -212,6 +212,9 @@ def test_startCommunication_2():
 
 
 def test_stopCommunication():
+    if platform.system() != 'Windows':
+        return
+
     app.deviceConnected = True
     app.serverConnected = True
     with mock.patch.object(app,

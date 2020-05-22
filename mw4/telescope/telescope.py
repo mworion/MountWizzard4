@@ -17,14 +17,18 @@
 ###########################################################
 # standard libraries
 import logging
+import platform
 
 # external packages
 import PyQt5
+if platform.system() == 'Windows':
+    from mw4.telescope.telescopeAscom import TelescopeAscom
 
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.telescope.telescopeIndi import TelescopeIndi
 from mw4.telescope.telescopeAlpaca import TelescopeAlpaca
+from mw4.telescope.telescopeAscom import TelescopeAscom
 
 
 class TelescopeSignals(PyQt5.QtCore.QObject):
@@ -65,6 +69,16 @@ class Telescope:
             'indi': TelescopeIndi(self.app, self.signals, self.data),
             'alpaca': TelescopeAlpaca(self.app, self.signals, self.data),
         }
+
+        if platform.system() == 'Windows':
+            self.run['ascom'] = TelescopeAscom(self.app, self.signals, self.data)
+
+            ascomSignals = self.run['ascom'].ascomSignals
+            ascomSignals.serverConnected.connect(self.signals.serverConnected)
+            ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+            ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
+            ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
         self.name = ''
         self.host = ('localhost', 7624)
 

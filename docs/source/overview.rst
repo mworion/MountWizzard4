@@ -15,7 +15,8 @@ Some more video's are linked from the documentation.
 
 For full operation MW4 needs actually running INDI Server(s), connected to your devices. In
 addition an online connection is used for some services which are helpful, but not necessary.
-MW4 will support ASCOM Alpaca in the next step as well.
+MW4 supports ASCOM Alpaca for all devices, but the framework seems to be still unstable.
+MW4 also support the basic ASCOM devices (camera, dome) on Windows environment.
 
 It is recommended to use mount firmware 2.16 or later as some of the functions don't work
 with older firmware versions.

@@ -13445,7 +13445,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -20790,7 +20790,7 @@ When clicking the button, you could change the value.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="logLevelMW">
+      <widget class="QGroupBox" name="LoglevelGroup">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -20884,7 +20884,7 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox">
+      <widget class="QGroupBox" name="CopyrightGroup">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -20917,7 +20917,7 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_57">
+      <widget class="QGroupBox" name="FirmwareGroup">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -21278,7 +21278,7 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_58">
+      <widget class="QGroupBox" name="AudioGroup">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -21498,7 +21498,7 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_59">
+      <widget class="QGroupBox" name="InternetOnlineGroup">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -21541,7 +21541,7 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_60">
+      <widget class="QGroupBox" name="UpdaterGroup">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -21565,7 +21565,7 @@ p, li { white-space: pre-wrap; }
           <x>280</x>
           <y>20</y>
           <width>75</width>
-          <height>21</height>
+          <height>46</height>
          </rect>
         </property>
         <property name="toolTip">
@@ -21701,25 +21701,6 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="readOnly">
          <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="getVersion">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>280</x>
-          <y>45</y>
-          <width>75</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Starting process for updating MountWizzard4 to selected version. The button remeins blue as long as the installations is running.</string>
-        </property>
-        <property name="text">
-         <string>Search</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="versionAvailable">

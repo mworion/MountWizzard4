@@ -17,9 +17,15 @@
 ###########################################################
 # standard libraries
 import logging
+import platform
+
 # external packages
 import PyQt5
 import numpy as np
+if platform.system() == 'Windows':
+    from mw4.dome.domeAscom import DomeAscom
+
+
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.dome.domeIndi import DomeIndi
@@ -68,8 +74,17 @@ class Dome:
             'indi': DomeIndi(self.app, self.signals, self.data),
             'alpaca': DomeAlpaca(self.app, self.signals, self.data),
         }
-        self.name = ''
 
+        if platform.system() == 'Windows':
+            self.run['ascom'] = DomeAscom(self.app, self.signals, self.data)
+
+            ascomSignals = self.run['ascom'].ascomSignals
+            ascomSignals.serverConnected.connect(self.signals.serverConnected)
+            ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+            ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
+            ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
+        self.name = ''
         self.host = ('localhost', 7624)
         self.isGeometry = False
 

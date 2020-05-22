@@ -21,18 +21,17 @@
 import PyQt5
 
 # local imports
-from mw4.base.alpacaClass import AlpacaClass
-from mw4.base.alpacaBase import Dome
+from mw4.base.ascomClass import AscomClass
 
 
-class DomeAlpaca(AlpacaClass):
+class DomeAscom(AscomClass):
     """
     the class Dome inherits all information and handling of the Dome device. there will be
     some parameters who will define the slewing position of the dome relating to the
-    mount.dome = DomeAlpaca(app=None)
+    mount.dome = DomeAscom(app=None)
     """
 
-    __all__ = ['DomeAlpaca',
+    __all__ = ['DomeAscom',
                ]
 
     # specific timing for device
@@ -44,7 +43,6 @@ class DomeAlpaca(AlpacaClass):
 
         # as we have in the base class only the base client there, we will get more
         # specialized with Dome (which is derived from the base class)
-        self.client = Dome()
         self.signals = signals
         self.data = data
         self.settlingTime = 0
@@ -113,8 +111,8 @@ class DomeAlpaca(AlpacaClass):
 
         :return: true for test purpose
         """
-        self.dataEntry(self.client.azimuth(), 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
-        self.dataEntry(self.client.slewing(), 'slewing')
+        self.dataEntry(self.client.Azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
+        self.dataEntry(self.client.Slewing, 'slewing')
         return True
 
     def slewToAltAz(self, altitude=0, azimuth=0):
@@ -127,7 +125,7 @@ class DomeAlpaca(AlpacaClass):
         :return: success
         """
 
-        self.client.slewtoazimuth(Azimuth=azimuth)
+        self.client.SlewToAzimuth(azimuth)
         self.slewing = True
 
         return True

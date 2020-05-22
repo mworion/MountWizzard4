@@ -330,17 +330,17 @@ def extractDataFiles(mwGlob=None, splashW=None):
         if splashW is not None:
             splashW.showMessage('Loading {0}'.format(file))
 
-        filePath = os.path.abspath(mwGlob['dataDir'] + '/' + file)
+        filePath = mwGlob['dataDir'] + '/' + file
 
         if os.path.isfile(filePath):
             continue
 
         # as we cannot access data from Qt resource system directly for copy,
-        # we have to convert it to ByteIO first and run it via stream
+        # we have to convert it to ByteIO first and run
         stream = PyQt5.QtCore.QFile(f':/data/{file}')
         stream.open(PyQt5.QtCore.QFile.ReadOnly)
 
-        with open(filePath, 'wb') as outFile:
+        with open(filePath, 'wb+') as outFile:
             outFile.write(stream.readAll())
 
         stream.close()

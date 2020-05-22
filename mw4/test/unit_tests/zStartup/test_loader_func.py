@@ -22,6 +22,7 @@ import os
 import glob
 import unittest.mock as mock
 import socket
+import platform
 import faulthandler
 faulthandler.enable()
 
@@ -117,8 +118,11 @@ def test_extractDataFiles_3(qtbot):
 
 
 def test_extractDataFiles_4(qtbot):
-    mwGlob = dict()
-    mwGlob['dataDir'] = 'mw4/test/data'
+    if platform.system() == 'Windows':
+        return
+
+    mwGlob = {'dataDir': 'mw4/test/data'}
+
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):

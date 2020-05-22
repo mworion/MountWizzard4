@@ -20,16 +20,15 @@
 # external packages
 
 # local imports
-from mw4.base.alpacaClass import AlpacaClass
-from mw4.base.alpacaBase import Focuser
+from mw4.base.ascomClass import AscomClass
 
 
-class FocuserAlpaca(AlpacaClass):
+class FilterAscom(AscomClass):
     """
-    the class focuser inherits all information and handling of the focuser device.
+    the class filter inherits all information and handling of the filter device.
     """
 
-    __all__ = ['FocuserAlpaca',
+    __all__ = ['FilterAscom',
                ]
 
     # specific timing for device
@@ -41,17 +40,26 @@ class FocuserAlpaca(AlpacaClass):
 
         # as we have in the base class only the base client there, we will get more
         # specialized with Dome (which is derived from the base class)
-        self.client = Focuser()
         self.signals = signals
         self.data = data
 
     def getInitialConfig(self):
         """
 
-        :return: true for test purpose
+        :return: success
         """
 
         super().getInitialConfig()
+
+        names = self.client.Names
+
+        if names is None:
+            return False
+
+        for i, name in enumerate(names):
+            if name is None:
+                continue
+            self.dataEntry(name, f'FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}')
 
         return True
 
@@ -61,6 +69,21 @@ class FocuserAlpaca(AlpacaClass):
         :return: true for test purpose
         """
 
-        self.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] = self.client.position()
+        position = self.client.Position
+
+        if position == -1 or position is None:
+            return False
+
+        self.dataEntry(position, 'FILTER_SLOT.FILTER_SLOT_VALUE')
+
+        return True
+
+    def sendFilterNumber(self, filterNumber=0):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.client.Position = filterNumber
 
         return True

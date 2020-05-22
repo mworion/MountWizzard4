@@ -17,14 +17,18 @@
 ###########################################################
 # standard libraries
 import logging
+import platform
 
 # external packages
 import PyQt5
+if platform.system() == 'Windows':
+    from mw4.imaging.focuserAscom import FocuserAscom
 
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.imaging.focuserIndi import FocuserIndi
 from mw4.imaging.focuserAlpaca import FocuserAlpaca
+from mw4.imaging.focuserAscom import FocuserAscom
 
 
 class FocuserSignals(PyQt5.QtCore.QObject):
@@ -65,6 +69,16 @@ class Focuser:
             'indi': FocuserIndi(self.app, self.signals, self.data),
             'alpaca': FocuserAlpaca(self.app, self.signals, self.data),
         }
+
+        if platform.system() == 'Windows':
+            self.run['ascom'] = FocuserAscom(self.app, self.signals, self.data)
+
+            ascomSignals = self.run['ascom'].ascomSignals
+            ascomSignals.serverConnected.connect(self.signals.serverConnected)
+            ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+            ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
+            ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
         self.name = ''
         self.host = ('localhost', 7624)
         self.isGeometry = False

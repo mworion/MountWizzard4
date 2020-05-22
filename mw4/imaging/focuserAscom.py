@@ -20,16 +20,15 @@
 # external packages
 
 # local imports
-from mw4.base.alpacaClass import AlpacaClass
-from mw4.base.alpacaBase import Focuser
+from mw4.base.ascomClass import AscomClass
 
 
-class FocuserAlpaca(AlpacaClass):
+class FocuserAscom(AscomClass):
     """
     the class focuser inherits all information and handling of the focuser device.
     """
 
-    __all__ = ['FocuserAlpaca',
+    __all__ = ['FocuserAscom',
                ]
 
     # specific timing for device
@@ -41,7 +40,6 @@ class FocuserAlpaca(AlpacaClass):
 
         # as we have in the base class only the base client there, we will get more
         # specialized with Dome (which is derived from the base class)
-        self.client = Focuser()
         self.signals = signals
         self.data = data
 
@@ -61,6 +59,6 @@ class FocuserAlpaca(AlpacaClass):
         :return: true for test purpose
         """
 
-        self.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] = self.client.position()
+        self.dataEntry(self.client.Position, 'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION')
 
         return True

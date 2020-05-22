@@ -26,7 +26,7 @@ from mw4.base.alpacaBase import FilterWheel
 
 class FilterAlpaca(AlpacaClass):
     """
-    the class Telescope inherits all information and handling of the Telescope device.
+    the class filter inherits all information and handling of the filter device.
     """
 
     __all__ = ['FilterAlpaca',

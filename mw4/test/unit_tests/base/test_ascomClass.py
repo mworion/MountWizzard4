@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 from unittest import mock
+import platform
 import faulthandler
 faulthandler.enable()
 
@@ -26,9 +27,12 @@ import pytest
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
+if platform.system() == 'Windows':
+    import win32com.client
+    import pythoncom
 
 # local import
-from mw4.base.alpacaClass import AlpacaClass
+from mw4.base.ascomClass import AscomClass
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -37,50 +41,30 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
 
     global app
-    app = AlpacaClass(app=Test(), data={}, threadPool=QThreadPool())
+    app = AscomClass(app=Test(), data={}, threadPool=QThreadPool())
 
     yield
 
     app.threadPool.waitForDone(1000)
 
 
-def test_properties_1():
-    app.host = ('localhost', 11111)
-    app.name = 'test'
-    app.name = 'test:2'
-    app.apiVersion = 1
-    app.protocol = 1
-
-
-def test_properties_2():
-    host = app.host
-    assert host == ('localhost', 11111)
-    assert app.name == ''
-    assert app.apiVersion == 1
-    assert app.protocol == 'http'
-
-
 def test_getInitialConfig_1():
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=False):
-        suc = app.getInitialConfig()
-        assert not suc
+    class Test:
+        connected = False
+        Name = 'test'
+        DriverVersion = '1'
+        DriverInfo = 'test1'
 
-
-def test_getInitialConfig_2():
     app.serverConnected = False
     app.deviceConnected = False
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=True):
-        suc = app.getInitialConfig()
-        assert suc
-        assert app.serverConnected
-        assert app.deviceConnected
-        assert app.data['DRIVER_INFO.DRIVER_NAME'] is None
-        assert app.data['DRIVER_INFO.DRIVER_VERSION'] is None
-        assert app.data['DRIVER_INFO.DRIVER_EXEC'] == ''
+    app.client = Test()
+    suc = app.getInitialConfig()
+    assert suc
+    assert app.serverConnected
+    assert app.deviceConnected
+    assert app.data['DRIVER_INFO.DRIVER_NAME'] == 'test'
+    assert app.data['DRIVER_INFO.DRIVER_VERSION'] == '1'
+    assert app.data['DRIVER_INFO.DRIVER_EXEC'] == 'test1'
 
 
 def test_startTimer():
@@ -126,43 +110,51 @@ def test_dataEntry_3():
 
 
 def test_pollStatus_1():
-    app.deviceConnected = True
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=False):
-        suc = app.pollStatus()
-        assert not suc
-        assert not app.deviceConnected
+    class Test:
+        connected = False
+        Name = 'test'
+        DriverVersion = '1'
+        DriverInfo = 'test1'
+
+    app.serverConnected = False
+    app.deviceConnected = False
+    app.client = Test()
+
+    suc = app.pollStatus()
+    assert not suc
+    assert not app.deviceConnected
 
 
 def test_pollStatus_2():
-    app.deviceConnected = False
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=True):
-        suc = app.pollStatus()
-        assert suc
-        assert app.deviceConnected
+    class Test:
+        connected = False
+        Name = 'test'
+        DriverVersion = '1'
+        DriverInfo = 'test1'
+
+    app.serverConnected = False
+    app.deviceConnected = True
+    app.client = Test()
+
+    suc = app.pollStatus()
+    assert not suc
+    assert not app.deviceConnected
 
 
 def test_pollStatus_3():
-    app.deviceConnected = True
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=True):
-        suc = app.pollStatus()
-        assert suc
-        assert app.deviceConnected
+    class Test:
+        connected = True
+        Name = 'test'
+        DriverVersion = '1'
+        DriverInfo = 'test1'
 
-
-def test_pollStatus_4():
+    app.serverConnected = False
     app.deviceConnected = False
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=False):
-        suc = app.pollStatus()
-        assert not suc
-        assert not app.deviceConnected
+    app.client = Test()
+
+    suc = app.pollStatus()
+    assert suc
+    assert app.deviceConnected
 
 
 def test_emitData():
@@ -190,11 +182,33 @@ def test_startPollStatus():
     assert suc
 
 
-def test_startCommunication():
+def test_startCommunication_1():
+    if platform.system() != 'Windows':
+        return
+
     with mock.patch.object(app,
                            'startTimer'):
-        suc = app.startCommunication()
-        assert suc
+        with mock.patch.object(pythoncom,
+                               'CoInitialize'):
+            with mock.patch.object(win32com.client,
+                                   'Dispatch'):
+                suc = app.startCommunication()
+                assert suc
+
+
+def test_startCommunication_2():
+    if platform.system() != 'Windows':
+        return
+
+    with mock.patch.object(app,
+                           'startTimer'):
+        with mock.patch.object(pythoncom,
+                               'CoInitialize'):
+            with mock.patch.object(win32com.client,
+                                   'Dispatch',
+                                   side_effect=Exception()):
+                suc = app.startCommunication()
+                assert not suc
 
 
 def test_stopCommunication():

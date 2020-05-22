@@ -250,6 +250,10 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
+        if binning > min(self.data.get('CCD_BINNING.HOR_BIN_MAX', 1),
+                         self.data.get('CCD_BINNING.VERT_BIN_MAX', 1)):
+            return False
+
         self.abortExpose = False
         worker = Worker(self.workerExpose,
                         imagePath=imagePath,

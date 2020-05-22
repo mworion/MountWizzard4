@@ -133,6 +133,7 @@ class Satellite(object):
             self.ui.listSatelliteNames.addItem(entryName)
         self.ui.listSatelliteNames.sortItems()
         self.ui.listSatelliteNames.update()
+        self.filterSatelliteNamesList()
 
         return True
 
@@ -210,6 +211,9 @@ class Satellite(object):
 
         if key not in self.satelliteSourceURLs:
             return False
+
+        # we could delete a filter when selecting new database
+        # self.ui.filterText.setText('')
 
         source = self.satelliteSourceURLs[key]
         reload = self.ui.isOnline.isChecked()

@@ -216,7 +216,9 @@ def test_stopCommunication():
     app.serverConnected = True
     with mock.patch.object(app,
                            'stopTimer'):
-        suc = app.stopCommunication()
-        assert suc
-        assert not app.serverConnected
-        assert not app.deviceConnected
+        with mock.patch.object(pythoncom,
+                               'CoUninitialize'):
+            suc = app.stopCommunication()
+            assert suc
+            assert not app.serverConnected
+            assert not app.deviceConnected

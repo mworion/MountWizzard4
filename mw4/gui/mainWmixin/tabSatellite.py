@@ -17,8 +17,11 @@
 ###########################################################
 # standard libraries
 import os
+
 # external packages
 import PyQt5
+import numpy as np
+
 # local import
 from mw4.base.tpool import Worker
 
@@ -345,11 +348,13 @@ class Satellite(object):
         :return: True for test purpose
         """
 
-        minAlt = 5
-
+        minAlt = self.app.mount.setting.horizonLimitLow
         loc = self.app.mount.obsSite.location
         obs = self.app.mount.obsSite
-        t0 = obs.timeJD
+
+        orbitCycleTime = np.pi / self.satellite.model.no_kozai / 12 / 60
+
+        t0 = obs.ts.tt_jd(obs.timeJD.tt - orbitCycleTime)
         t1 = obs.ts.tt_jd(obs.timeJD.tt + 3)
 
         t, events = self.satellite.find_events(loc, t0, t1, altitude_degrees=minAlt)
@@ -371,24 +376,34 @@ class Satellite(object):
 
         fString = "%Y-%m-%d  %H:%M"
 
+        # collecting the events
         index = 0
+        satOrbits = dict()
         for ti, event in zip(t, events):
-            if index > 2:
-                break
             if event == 0:
-                passUI[index]['rise'].setText(f'{ti.utc_strftime(fString)}')
+                satOrbits[index] = {'rise': ti}
             elif event == 1:
                 continue
             elif event == 2:
-                passUI[index]['settle'].setText(f'{ti.utc_strftime(fString)}')
+                if index not in satOrbits:
+                    continue
+                satOrbits[index]['settle'] = ti
                 index += 1
+
+        for satOrbit in satOrbits:
+            if satOrbit > 2:
+                break
+            timeRise = satOrbits[satOrbit]['rise'].utc_strftime(fString)
+            timeSettle = satOrbits[satOrbit]['settle'].utc_strftime(fString)
+            passUI[satOrbit]['rise'].setText(f'{timeRise}')
+            passUI[satOrbit]['settle'].setText(f'{timeSettle}')
 
         while index < 3:
             passUI[index]['rise'].setText('-')
             passUI[index]['settle'].setText('-')
             index += 1
 
-        return True
+        return satOrbits
 
     def extractSatelliteData(self, satName=''):
         """
@@ -441,18 +456,17 @@ class Satellite(object):
         self.ui.satTransitEndUTC.setText('-')
         self.ui.satNeedFlip.setText('-')
 
-        #
         self.updateOrbit()
         self.programTLEDataToMount()
         self.calcOrbitFromTLEInMount()
-        self.showRises()
+        satOrbits = self.showRises()
 
         winObj = self.app.uiWindows['showSatelliteW']
 
         if not winObj['classObj']:
             return False
 
-        winObj['classObj'].signals.show.emit(self.satellite)
+        winObj['classObj'].signals.show.emit(self.satellite, satOrbits)
         return True
 
     def signalExtractSatelliteData(self, widget=None):

@@ -63,7 +63,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="indi">
     <attribute name="title">
@@ -780,7 +780,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Copy the protocol, host address, port, user and password settings to all ALPACA devices</string>
+      <string>Starting the ASCOM device chooser.</string>
      </property>
      <property name="text">
       <string>ASCOM device setup</string>
@@ -834,7 +834,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>User for alpaca device</string>
+      <string>Drvice name of ASCOM driver.</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -961,6 +961,9 @@
        <width>201</width>
        <height>21</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Select the device.</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_mountIP_6">

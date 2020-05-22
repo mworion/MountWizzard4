@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -8992,6 +8992,9 @@ to mount</string>
       <property name="readOnly">
        <bool>false</bool>
       </property>
+      <property name="color" stdset="0">
+       <string>red</string>
+      </property>
      </widget>
      <widget class="QLineEdit" name="satTransitEndUTC_1">
       <property name="enabled">
@@ -9034,6 +9037,9 @@ to mount</string>
       </property>
       <property name="readOnly">
        <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>red</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satTransitEndUTC_2">
@@ -9078,6 +9084,9 @@ to mount</string>
       <property name="readOnly">
        <bool>false</bool>
       </property>
+      <property name="color" stdset="0">
+       <string>yellow</string>
+      </property>
      </widget>
      <widget class="QLineEdit" name="satTransitStartUTC_2">
       <property name="enabled">
@@ -9120,6 +9129,9 @@ to mount</string>
       </property>
       <property name="readOnly">
        <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>yellow</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satTransitEndUTC_3">
@@ -9164,6 +9176,9 @@ to mount</string>
       <property name="readOnly">
        <bool>false</bool>
       </property>
+      <property name="color" stdset="0">
+       <string>green</string>
+      </property>
      </widget>
      <widget class="QLineEdit" name="satTransitStartUTC_3">
       <property name="enabled">
@@ -9206,6 +9221,9 @@ to mount</string>
       </property>
       <property name="readOnly">
        <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>green</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_298">
@@ -9600,7 +9618,7 @@ Hint if mount will need a flip when following satellite.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Button text park menu 0</string>
+       <string>Filter for selecting satellite names. The filter is not case sensitive.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>

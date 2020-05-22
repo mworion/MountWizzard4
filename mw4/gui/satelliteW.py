@@ -45,7 +45,7 @@ class SatelliteWindowSignals(PyQt5.QtCore.QObject):
 
     __all__ = ['SatelliteWindowSignals']
 
-    show = PyQt5.QtCore.pyqtSignal(object)
+    show = PyQt5.QtCore.pyqtSignal(object, object)
     update = PyQt5.QtCore.pyqtSignal(object, object, object)
 
 
@@ -90,7 +90,7 @@ class SatelliteWindow(widget.MWidget):
         self.satEarthMat = self.embedMatplot(self.ui.satEarth, constrainedLayout=False)
         self.satEarthMat.parentWidget().setStyleSheet(self.BACK_BG)
 
-        self.signals.show.connect(self.receiveSatelliteAndShow)
+        self.signals.show.connect(self.drawSatellite)
         self.signals.update.connect(self.updatePositions)
 
         # as we cannot access data from Qt resource system, we have to convert it to
@@ -196,28 +196,6 @@ class SatelliteWindow(widget.MWidget):
                                 circle.codes])
         marker = mpath.Path(verts, codes)
         return marker
-
-    def receiveSatelliteAndShow(self, satellite=None):
-        """
-        receiveSatelliteAndShow receives a signal with the content of the selected satellite.
-        it locally sets it an draws the the complete view
-
-        :param satellite:
-        :return: true for test purpose
-        """
-
-        if satellite is None:
-            self.drawSatellite()
-            return False
-
-        self.satellite = satellite
-        if satellite.model.no < 0.02:
-            self.FORECAST_TIME = 24
-        else:
-            self.FORECAST_TIME = 3
-        self.drawSatellite()
-
-        return True
 
     def updatePositions(self, observe=None, subpoint=None, altaz=None):
         """
@@ -690,22 +668,25 @@ class SatelliteWindow(widget.MWidget):
             axe.figure.canvas.draw()
             return False
 
-        # orbital calculations
-        alt, az, _ = difference.altaz()
-        alt = alt.degrees
-        az = az.degrees
+        colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
 
-        # draw path
-        axe.plot(az,
-                 alt,
-                 marker='o',
-                 markersize=1,
-                 linestyle='none',
-                 color=self.M_YELLOW)
+        # orbital calculations
+        for diff in difference:
+            alt, az, _ = difference[diff].altaz()
+            alt = alt.degrees
+            az = az.degrees
+
+            # draw path
+            axe.plot(az,
+                     alt,
+                     marker='.',
+                     markersize=3,
+                     linestyle='none',
+                     color=colors[diff])
 
         # draw actual position
-        self.plotSatPosHorizon, = axe.plot(az[0],
-                                           alt[0],
+        self.plotSatPosHorizon, = axe.plot(180,
+                                           -10,
                                            marker=self.markerSatellite(),
                                            markersize=16,
                                            linewidth=2,
@@ -716,23 +697,55 @@ class SatelliteWindow(widget.MWidget):
         axe.figure.canvas.draw()
         return True
 
-    def drawSatellite(self):
+    def drawSatellite(self, satellite=None, satOrbits=None):
         """
-        drawSatellite draws 3 different views of the actual satellite situation: a sphere
-        a horizon view and an earth view.
+        drawSatellite draws 4 different views of the actual satellite situation: two sphere
+        views, a horizon view and an earth view.
 
+        :param satellite:
+        :param satOrbits:
         :return: True for test purpose
         """
+        if satellite is None:
+            self.drawSatellite(0)
+            return False
 
+        self.satellite = satellite
+        location = self.app.mount.obsSite.location
         timescale = self.app.mount.obsSite.ts
-        forecast = np.arange(0, self.FORECAST_TIME, 0.005 * self.FORECAST_TIME / 3) / 24
+
+        dayAngle = satellite.model.no_kozai * 24 * 60 / np.pi * 180
+
+        if dayAngle < 400:
+            # this means less than one orbit per day (geostationary)
+            forecastTime = 24
+        else:
+            forecastTime = 3
+
+        forecast = np.arange(0, forecastTime, 0.005 * forecastTime / 3) / 24
         now = timescale.now()
         timeVector = timescale.tt_jd(now.tt + forecast)
+
+        timeVectorsHorizon = dict()
+
+        for satOrbit in satOrbits:
+            if satOrbit > 2:
+                break
+            timeRise = satOrbits[satOrbit]['rise']
+            timeSettle = satOrbits[satOrbit]['settle']
+            showTime = timeSettle.tt - timeRise.tt
+            forecast = np.arange(0, showTime, 0.002 * showTime)
+            timeVectorsHorizon[satOrbit] = timescale.tt_jd(timeRise.tt + forecast)
 
         if self.satellite is not None:
             observe = self.satellite.at(timeVector)
             subpoint = observe.subpoint()
-            difference = (self.satellite - self.app.mount.obsSite.location).at(timeVector)
+
+            difference = dict()
+            for timeVectorHorizon in timeVectorsHorizon:
+                diff = (self.satellite - location).at(timeVectorsHorizon[timeVectorHorizon])
+                difference[timeVectorHorizon] = diff
+
         else:
             observe = subpoint = difference = None
 

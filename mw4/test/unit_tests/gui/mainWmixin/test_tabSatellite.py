@@ -293,18 +293,13 @@ def test_showRises_1():
            '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
 
     test = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    print('test', test.model.no_kozai)
     app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-
-    print(app.satellite.model.no_kozai)
 
     with mock.patch.object(EarthSatellite,
                            'find_events',
                            return_value=(app.app.mount.obsSite.timeJD, [1])):
-        print(app.satellite.model.no_kozai)
-        suc = app.showRises()
-        print(app.satellite.model.no_kozai)
-        assert suc
+        val = app.showRises()
+        assert isinstance(val, dict)
 
 
 def test_showRises_2():
@@ -320,8 +315,8 @@ def test_showRises_2():
                            'find_events',
                            return_value=([t0, t1, t2],
                                          [0, 2, 1])):
-        suc = app.showRises()
-        assert suc
+        val = app.showRises()
+        assert isinstance(val, dict)
 
 
 def test_showRises_3():
@@ -338,8 +333,8 @@ def test_showRises_3():
                            'find_events',
                            return_value=([t0, t1, t2, t3],
                                          [2, 2, 2, 2])):
-        suc = app.showRises()
-        assert suc
+        val = app.showRises()
+        assert isinstance(val, dict)
 
 
 def test_signalExtractSatelliteData_1a():

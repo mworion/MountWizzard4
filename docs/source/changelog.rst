@@ -3,6 +3,10 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed list if changes, please refer
 to the commit list on GitHub.
 
+0.150.17b1
+----------
+workaround for satellite in windows / german environments
+
 0.150.16
 ----------
 - keeping satellite name filter when changing sources and applying it directly

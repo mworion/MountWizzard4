@@ -65,7 +65,6 @@ class CameraAscom(AscomClass):
         self.dataEntry(self.client.PixelSizeY, 'CCD_INFO.CCD_PIXEL_SIZE_Y')
         self.dataEntry(self.client.MaxBinX, 'CCD_BINNING.HOR_BIN_MAX')
         self.dataEntry(self.client.MaxBinY, 'CCD_BINNING.VERT_BIN_MAX')
-        
         self.dataEntry(self.client.BinX, 'CCD_BINNING.HOR_BIN')
         self.dataEntry(self.client.BinY, 'CCD_BINNING.VERT_BIN')
         self.dataEntry(self.client.StartX, 'CCD_FRAME.X')

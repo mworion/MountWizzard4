@@ -122,27 +122,6 @@ def test_resizeEvent(qtbot):
     app.resizeEvent(None)
 
 
-def test_receiveSatelliteAndShow_1(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    suc = app.receiveSatelliteAndShow()
-    assert not suc
-
-
-def test_receiveSatelliteAndShow_2(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    satellite = EarthSatellite(*tle[1:3], name=tle[0])
-
-    suc = app.receiveSatelliteAndShow(satellite=satellite)
-    assert suc
-
-
 def test_updatePositions_1(qtbot):
     app = SatelliteWindow(app=Test())
     qtbot.addWidget(app)
@@ -309,3 +288,24 @@ def test_drawHorizonView_1(qtbot):
     qtbot.addWidget(app)
 
     app.drawHorizonView()
+
+
+def test_drawSatellite_1(qtbot):
+    app = SatelliteWindow(app=Test())
+    qtbot.addWidget(app)
+
+    suc = app.drawSatellite()
+    assert not suc
+
+
+def test_drawSatellite_2(qtbot):
+    app = SatelliteWindow(app=Test())
+    qtbot.addWidget(app)
+
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
+    satellite = EarthSatellite(*tle[1:3], name=tle[0])
+
+    suc = app.drawSatellite(satellite=satellite)
+    assert suc

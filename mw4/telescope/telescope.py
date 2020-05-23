@@ -21,14 +21,13 @@ import platform
 
 # external packages
 import PyQt5
-if platform.system() == 'Windows':
-    from mw4.telescope.telescopeAscom import TelescopeAscom
 
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.telescope.telescopeIndi import TelescopeIndi
 from mw4.telescope.telescopeAlpaca import TelescopeAlpaca
-from mw4.telescope.telescopeAscom import TelescopeAscom
+if platform.system() == 'Windows':
+    from mw4.telescope.telescopeAscom import TelescopeAscom
 
 
 class TelescopeSignals(PyQt5.QtCore.QObject):

@@ -136,7 +136,7 @@ class HemisphereWindowExt(object):
             self.changeStyleDynamic(self.app.mainW.ui.statusDualAxisTracking, 'color', 'yellow')
         else:
             self.app.mount.setting.setDualAxisTracking(self.statusDAT)
-            self.changeStyleDynamic(self.app.mainW.ui.statusDualAxisTracking,  'color', '')
+            self.changeStyleDynamic(self.app.mainW.ui.statusDualAxisTracking, 'color', '')
 
         self.drawHemisphere()
 

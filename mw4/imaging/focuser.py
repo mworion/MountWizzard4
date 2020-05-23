@@ -21,14 +21,13 @@ import platform
 
 # external packages
 import PyQt5
-if platform.system() == 'Windows':
-    from mw4.imaging.focuserAscom import FocuserAscom
 
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.imaging.focuserIndi import FocuserIndi
 from mw4.imaging.focuserAlpaca import FocuserAlpaca
-from mw4.imaging.focuserAscom import FocuserAscom
+if platform.system() == 'Windows':
+    from mw4.imaging.focuserAscom import FocuserAscom
 
 
 class FocuserSignals(PyQt5.QtCore.QObject):

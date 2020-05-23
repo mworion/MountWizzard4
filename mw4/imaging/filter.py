@@ -21,14 +21,13 @@ import platform
 
 # external packages
 import PyQt5
-if platform.system() == 'Windows':
-    from mw4.imaging.filterAscom import FilterAscom
 
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.imaging.filterIndi import FilterIndi
 from mw4.imaging.filterAlpaca import FilterAlpaca
-from mw4.imaging.filterAscom import FilterAscom
+if platform.system() == 'Windows':
+    from mw4.imaging.filterAscom import FilterAscom
 
 
 class FilterSignals(PyQt5.QtCore.QObject):

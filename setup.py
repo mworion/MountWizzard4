@@ -58,8 +58,7 @@ setup(
         'opencv-python-headless==4.2.0.34',
     ]
     + (['pypiwin32==223'] if "Windows" == platform.system() else [])
-    + (['comtypes==1.1.7'] if "Windows" == platform.system() else [])
-    ,
+    + (['comtypes==1.1.7'] if "Windows" == platform.system() else []),
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='mworion',

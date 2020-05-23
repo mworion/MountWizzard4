@@ -20,8 +20,6 @@ import pytest
 from unittest import mock
 import logging
 import faulthandler
-# import locale
-# locale.setlocale(locale.LC_ALL, 'en_US')
 faulthandler.enable()
 
 # external packages
@@ -380,7 +378,7 @@ def test_extractSatelliteData_3():
 def test_extractSatelliteData_4():
     class Test1(QObject):
         update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object)
+        show = pyqtSignal(object, object)
 
     class Test(QObject):
         signals = Test1()
@@ -550,6 +548,7 @@ def test_stopTrack_3():
         suc = app.stopTrack()
         assert suc
 
+
 """
 def test_brandon():
     from sgp4.api import Satrec, accelerated
@@ -561,5 +560,9 @@ def test_brandon():
     ]
     sat = Satrec.twoline2rv(tle[1], tle[2])
     print(sat.no_kozai)
+    print(sat.inclo)
+    print(sat.nodeo)
+    print(sat.ecco)
+    print(sat.argpo)
     a = 1/0
 """

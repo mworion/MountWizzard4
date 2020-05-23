@@ -533,6 +533,8 @@ def test_generateSaveModel_1():
               'decJNowM': Angle(degrees=0),
               'raJNowS': Angle(hours=0),
               'decJNowS': Angle(degrees=0),
+              'angularPosRA': Angle(degrees=0),
+              'angularPosDEC': Angle(degrees=0),
               'raJ2000S': Angle(hours=0),
               'decJ2000S': Angle(degrees=0),
               'siderealTime': Angle(hours=0),

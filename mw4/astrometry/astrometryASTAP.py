@@ -285,13 +285,13 @@ class AstrometryASTAP(object):
 
             if solver == 'ASTAP-Win':
                 program = self.environment[solver]['programPath'] + '/astap.exe'
-                index = '/*.290'
+                index = self.environment[solver]['indexPath'] + '/*.290'
             elif solver == 'ASTAP-Mac':
                 program = self.environment[solver]['programPath'] + '/astap'
-                index = '/*.290'
+                index = self.environment[solver]['indexPath'] + '/*.290'
             elif solver == 'ASTAP-Linux':
                 program = self.environment[solver]['programPath'] + '/astap'
-                index = '/*.290'
+                index = self.environment[solver]['indexPath'] + '/*.290'
 
             # checking binaries
             if not os.path.isfile(program):
@@ -299,7 +299,7 @@ class AstrometryASTAP(object):
                 suc = False
 
             # checking indexes
-            if not glob.glob(self.environment[solver]['indexPath'] + index):
+            if not glob.glob(index):
                 self.log.info('no index files found')
                 suc = False
 

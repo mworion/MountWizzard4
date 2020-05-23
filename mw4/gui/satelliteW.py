@@ -706,8 +706,12 @@ class SatelliteWindow(widget.MWidget):
         :param satOrbits:
         :return: True for test purpose
         """
-        if satellite is None:
-            self.drawSatellite(0)
+
+        if satellite is None or satOrbits is None:
+            self.drawSphere1()
+            self.drawSphere2()
+            self.drawEarth()
+            self.drawHorizonView()
             return False
 
         self.satellite = satellite
@@ -737,17 +741,13 @@ class SatelliteWindow(widget.MWidget):
             forecast = np.arange(0, showTime, 0.002 * showTime)
             timeVectorsHorizon[satOrbit] = timescale.tt_jd(timeRise.tt + forecast)
 
-        if self.satellite is not None:
-            observe = self.satellite.at(timeVector)
-            subpoint = observe.subpoint()
+        observe = self.satellite.at(timeVector)
+        subpoint = observe.subpoint()
 
-            difference = dict()
-            for timeVectorHorizon in timeVectorsHorizon:
-                diff = (self.satellite - location).at(timeVectorsHorizon[timeVectorHorizon])
-                difference[timeVectorHorizon] = diff
-
-        else:
-            observe = subpoint = difference = None
+        difference = dict()
+        for timeVectorHorizon in timeVectorsHorizon:
+            diff = (self.satellite - location).at(timeVectorsHorizon[timeVectorHorizon])
+            difference[timeVectorHorizon] = diff
 
         self.drawSphere1(observe=observe)
         self.drawSphere2(observe=observe, subpoint=subpoint)

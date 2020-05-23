@@ -307,5 +307,7 @@ def test_drawSatellite_2(qtbot):
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
-    suc = app.drawSatellite(satellite=satellite)
+    satOrbits = {}
+
+    suc = app.drawSatellite(satellite=satellite, satOrbits=satOrbits)
     assert suc

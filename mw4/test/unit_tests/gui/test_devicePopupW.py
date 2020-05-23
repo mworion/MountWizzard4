@@ -194,19 +194,67 @@ def test_searchDevices_2(qtbot):
                     assert suc
 
 
-def test_selectAstrometryIndex_1(qtbot):
+def test_selectAstrometryIndexPath_1(qtbot):
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('', '', '')):
-        suc = app.selectAstrometryIndex()
+        suc = app.selectAstrometryIndexPath()
         assert not suc
 
 
-def test_selectAstrometryIndex_2(qtbot):
+def test_selectAstrometryIndexPath_2(qtbot):
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('test', 'test', 'test')):
-        suc = app.selectAstrometryIndex()
+        suc = app.selectAstrometryIndexPath()
+        assert suc
+
+
+def test_selectAstrometryAppPath_1(qtbot):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('', '', '')):
+        suc = app.selectAstrometryAppPath()
+        assert not suc
+
+
+def test_selectAstrometryAppPath_2(qtbot):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('test', 'test', 'test')):
+        suc = app.selectAstrometryAppPath()
+        assert suc
+
+
+def test_selectAstapIndexPath_1(qtbot):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('', '', '')):
+        suc = app.selectAstapIndexPath()
+        assert not suc
+
+
+def test_selectAstapIndexPath_2(qtbot):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('test', 'test', 'test')):
+        suc = app.selectAstapIndexPath()
+        assert suc
+
+
+def test_selectAstapAppPath_1(qtbot):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('', '', '')):
+        suc = app.selectAstapAppPath()
+        assert not suc
+
+
+def test_selectAstapAppPath_2(qtbot):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('test', 'test', 'test')):
+        suc = app.selectAstapAppPath()
         assert suc
 
 

@@ -120,7 +120,10 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.cancel.clicked.connect(self.close)
         self.ui.ok.clicked.connect(self.storeConfig)
         self.ui.indiSearch.clicked.connect(self.searchDevices)
-        self.ui.selectAstrometryIndex.clicked.connect(self.selectAstrometryIndex)
+        self.ui.selectAstrometryIndexPath.clicked.connect(self.selectAstrometryIndexPath)
+        self.ui.selectAstrometryAppPath.clicked.connect(self.selectAstrometryAppPath)
+        self.ui.selectAstapIndexPath.clicked.connect(self.selectAstapIndexPath)
+        self.ui.selectAstapAppPath.clicked.connect(self.selectAstapAppPath)
         self.ui.copyAlpaca.clicked.connect(self.copyAllAlpacaSettings)
         self.ui.copyIndi.clicked.connect(self.copyAllIndiSettings)
         self.ui.ascomSelector.clicked.connect(self.setupAscomDriver)
@@ -176,11 +179,14 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
             self.ui.astrometryDeviceList.addItem(name)
             if astrometryName == name:
                 self.ui.astrometryDeviceList.setCurrentIndex(i)
-        self.ui.astrometryIndexPath.setText(deviceData.get('astrometryIndexPath', '/usr/'))
+        self.ui.astrometryIndexPath.setText(deviceData.get('astrometryIndexPath', '/'))
+        self.ui.astrometryAppPath.setText(deviceData.get('astrometryAppPath', '/'))
         self.ui.astrometryTimeout.setValue(deviceData.get('astrometryTimeout', 30))
         self.ui.astrometrySearchRadius.setValue(deviceData.get('astrometrySearchRadius', 20))
 
         # populating astap
+        self.ui.astapIndexPath.setText(deviceData.get('astapIndexPath', '/'))
+        self.ui.astapAppPath.setText(deviceData.get('astapAppPath', '/'))
         self.ui.astapDevice.setText(deviceData.get('astapName', 'astap'))
         self.ui.astapTimeout.setValue(deviceData.get('astapTimeout', 30))
         self.ui.astapSearchRadius.setValue(deviceData.get('astapSearchRadius', 20))
@@ -237,11 +243,14 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
             nameList.append(model.item(index).text())
         self.data[self.driver]['astrometryDeviceList'] = nameList
         self.data[self.driver]['astrometryIndexPath'] = self.ui.astrometryIndexPath.text()
+        self.data[self.driver]['astrometryAppPath'] = self.ui.astrometryAppPath.text()
         self.data[self.driver]['astrometrySearchRadius'] = self.ui.astrometrySearchRadius.value()
         self.data[self.driver]['astrometryTimeout'] = self.ui.astrometryTimeout.value()
 
         # collecting astap data
         self.data[self.driver]['astapName'] = self.ui.astapDevice.text()
+        self.data[self.driver]['astapIndexPath'] = self.ui.astapIndexPath.text()
+        self.data[self.driver]['astapAppPath'] = self.ui.astapAppPath.text()
         self.data[self.driver]['astapSearchRadius'] = self.ui.astapSearchRadius.value()
         self.data[self.driver]['astapTimeout'] = self.ui.astapTimeout.value()
 
@@ -372,7 +381,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
         return True
 
-    def selectAstrometryIndex(self):
+    def selectAstrometryIndexPath(self):
         """
 
         :return:
@@ -380,13 +389,67 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
         folder = self.ui.astrometryIndexPath.text()
         saveFilePath, name, ext = self.openDir(self,
-                                               'Select Astrometry Index',
+                                               'Select Astrometry Index Path',
                                                folder,
                                                )
         if not name:
             return False
 
         self.ui.astrometryIndexPath.setText(saveFilePath)
+
+        return True
+
+    def selectAstrometryAppPath(self):
+        """
+
+        :return:
+        """
+
+        folder = self.ui.astrometryAppPath.text()
+        saveFilePath, name, ext = self.openDir(self,
+                                               'Select Astrometry App Path',
+                                               folder,
+                                               )
+        if not name:
+            return False
+
+        self.ui.astrometryAppPath.setText(saveFilePath)
+
+        return True
+
+    def selectAstapAppPath(self):
+        """
+
+        :return:
+        """
+
+        folder = self.ui.astapAppPath.text()
+        saveFilePath, name, ext = self.openDir(self,
+                                               'Select ASTAP App Path',
+                                               folder,
+                                               )
+        if not name:
+            return False
+
+        self.ui.astapAppPath.setText(saveFilePath)
+
+        return True
+
+    def selectAstapIndexPath(self):
+        """
+
+        :return:
+        """
+
+        folder = self.ui.astapIndexPath.text()
+        saveFilePath, name, ext = self.openDir(self,
+                                               'Select ASTAP Index Path',
+                                               folder,
+                                               )
+        if not name:
+            return False
+
+        self.ui.astapIndexPath.setText(saveFilePath)
 
         return True
 

@@ -437,6 +437,8 @@ class SettDevice(object):
 
             driverClass.timeout = driverData.get('astapTimeout', 30)
             driverClass.searchRadius = driverData.get('astapSearchRadius', 20)
+            indexPath = driverData.get('astapIndexPath', '')
+            driverClass.indexPath = indexPath
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'astap - {name}')
 

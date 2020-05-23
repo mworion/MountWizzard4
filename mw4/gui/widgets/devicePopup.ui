@@ -63,7 +63,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="indi">
     <attribute name="title">
@@ -932,7 +932,7 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="selectAstrometryIndex">
+    <widget class="QPushButton" name="selectAstrometryIndexPath">
      <property name="geometry">
       <rect>
        <x>310</x>
@@ -1166,7 +1166,7 @@
     </widget>
     <widget class="QLineEdit" name="astrometryAppPath">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -1218,9 +1218,9 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="selectAstrometryApp">
+    <widget class="QPushButton" name="selectAstrometryAppPath">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -1481,9 +1481,9 @@
       <string>deg FOV</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="astrometryIndexPath_2">
+    <widget class="QLineEdit" name="astapIndexPath">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -1571,9 +1571,9 @@
       <string>Folder index</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="astrometryAppPath_2">
+    <widget class="QLineEdit" name="astapAppPath">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -1625,9 +1625,9 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="selectASTAPIndex">
+    <widget class="QPushButton" name="selectAstapIndexPath">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -1649,9 +1649,9 @@
       <string>Select</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="selectASTAPApp">
+    <widget class="QPushButton" name="selectAstapAppPath">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>

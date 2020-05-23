@@ -6,6 +6,8 @@ to the commit list on GitHub.
 0.150.17b2
 ----------
 - filter for satellite names not case sensitive
+- added in satellite windows horizon view the next 3 passes in colors
+- added some data for modeling analyse
 
 0.150.17b1
 ----------

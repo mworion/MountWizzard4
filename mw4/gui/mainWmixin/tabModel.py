@@ -407,6 +407,8 @@ class Model(object):
 
         mPoint['raJNowM'] = self.app.mount.obsSite.raJNow
         mPoint['decJNowM'] = self.app.mount.obsSite.decJNow
+        mPoint['angularPosRA'] = self.app.mount.obsSite.angualPosRA
+        mPoint['angularPosDEC'] = self.app.mount.obsSite.angularPosDEC
         mPoint['siderealTime'] = self.app.mount.obsSite.timeSidereal
         mPoint['julianDate'] = self.app.mount.obsSite.timeJD
         mPoint['pierside'] = self.app.mount.obsSite.pierside

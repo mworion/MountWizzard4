@@ -674,6 +674,8 @@ class Model(object):
             sPoint.update(mPoint)
             sPoint['raJNowM'] = sPoint['raJNowM'].hours
             sPoint['decJNowM'] = sPoint['decJNowM'].degrees
+            sPoint['angularPosRA'] = sPoint['angularPosRA'].degrees
+            sPoint['angularPosDEC'] = sPoint['angularPosDEC'].degrees
             sPoint['raJNowS'] = sPoint['raJNowS'].hours
             sPoint['decJNowS'] = sPoint['decJNowS'].degrees
             sPoint['raJ2000S'] = sPoint['raJ2000S'].hours

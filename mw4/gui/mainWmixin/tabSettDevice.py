@@ -171,16 +171,16 @@ class SettDevice(object):
 
             nameASTROMETRY = self.app.astrometry.run['astrometry'].name
             d['astrometryDeviceList'] = [nameASTROMETRY]
-            if not d['astrometryAppPath']:
+            if not d.get('astrometryAppPath', ''):
                 d['astrometryAppPath'] = self.app.astrometry.run['astrometry'].appPath
-            if not d['astrometryIndexPath']:
+            if not d.get('astrometryIndexPath', ''):
                 d['astrometryIndexPath'] = self.app.astrometry.run['astrometry'].indexPath
 
             nameASTAP = self.app.astrometry.run['astap'].name
             d['astapDeviceList'] = [nameASTAP]
-            if not d['astapAppPath']:
+            if not d.get('astapAppPath', ''):
                 d['astapAppPath'] = self.app.astrometry.run['astap'].appPath
-            if not d['astapIndexPath']:
+            if not d.get('astapIndexPath', ''):
                 d['astapIndexPath'] = self.app.astrometry.run['astap'].indexPath
 
         self.setupDeviceGui()

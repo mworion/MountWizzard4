@@ -46,7 +46,8 @@ def module_setup_teardown(qtbot):
                       pathToData='mw4/test/data')
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
-        mwGlob = {'imageDir': 'mw4/test/image'}
+        mwGlob = {'imageDir': 'mw4/test/image',
+                  'modelDir': 'mw4/test/model',}
 
     widget = QWidget()
     ui = Ui_MainWindow()

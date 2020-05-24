@@ -375,8 +375,10 @@ class Astrometry:
         """
 
         self.signals.serverConnected.emit()
-        self.signals.deviceConnected.emit(self.name)
-        self.app.message.emit(f'ASTROMETRY found:    [{self.name}]', 0)
+        sucApp, sucIndex = self.checkAvailability()
+        if sucApp and sucIndex:
+            self.signals.deviceConnected.emit(self.name)
+            self.app.message.emit(f'ASTROMETRY found:    [{self.name}]', 0)
 
         return True
 

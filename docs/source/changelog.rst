@@ -7,6 +7,7 @@ to the commit list on GitHub.
 --------
 - extended file / directory selection view
 - check if selected directories for astrometry / astap are valid
+- showing valid app and index selections with colors
 
 0.150.17b3
 ----------

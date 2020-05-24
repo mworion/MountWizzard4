@@ -403,16 +403,16 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         :return: success
         """
 
-        sucApp, sucInd = self.app.astrometry.run[framework].checkAvailability()
+        sucApp, sucIndex = self.app.astrometry.run[framework].checkAvailability()
         if framework == 'astap':
             color = 'green' if sucApp else 'red'
             self.changeStyleDynamic(self.ui.astapAppPath, 'color', color)
-            color = 'green' if sucInd else 'red'
+            color = 'green' if sucIndex else 'red'
             self.changeStyleDynamic(self.ui.astapIndexPath, 'color', color)
         else:
             color = 'green' if sucApp else 'red'
             self.changeStyleDynamic(self.ui.astrometryAppPath, 'color', color)
-            color = 'green' if sucInd else 'red'
+            color = 'green' if sucIndex else 'red'
             self.changeStyleDynamic(self.ui.astrometryIndexPath, 'color', color)
 
         return True

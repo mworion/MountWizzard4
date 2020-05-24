@@ -52,27 +52,6 @@ def app():
     yield app
 
 
-def test_setSolverEnviron_1(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        app.setEnvironment()
-
-
-def test_setSolverEnviron_2(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Linux'):
-        app.setEnvironment()
-
-
-def test_setSolverEnviron_3(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        app.setEnvironment()
-
-
 def test_runImage2xy_1(app):
     suc = app.runImage2xy()
     assert not suc

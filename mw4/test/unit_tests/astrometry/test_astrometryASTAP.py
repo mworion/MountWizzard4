@@ -51,30 +51,6 @@ def app():
     yield app
 
 
-def test_setSolverEnviron_1(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        app.setEnvironment()
-        assert 'ASTAP-Win' in list(app.environment.keys())
-
-
-def test_setSolverEnviron_2(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Linux'):
-        app.setEnvironment()
-        assert 'ASTAP-Linux' in list(app.environment.keys())
-
-
-def test_setSolverEnviron_3(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        app.setEnvironment()
-        assert 'ASTAP-Mac' in list(app.environment.keys())
-
-
 def test_runASTAP_1(app):
     suc = app.runASTAP()
     assert not suc

@@ -16,6 +16,8 @@
 #
 ###########################################################
 # standard libraries
+import glob
+import json
 
 # external packages
 import PyQt5.QtCore
@@ -43,6 +45,7 @@ class ManageModel(object):
             self.clickable = clickable
 
         self.runningOptimize = False
+        self.fittedModelFound = False
 
         ms = self.app.mount.signals
         ms.alignDone.connect(self.showModelPosition)
@@ -60,6 +63,7 @@ class ManageModel(object):
         self.ui.runOptimize.clicked.connect(self.runOptimize)
         self.ui.cancelOptimize.clicked.connect(self.cancelOptimize)
         self.ui.deleteWorstPoint.clicked.connect(self.deleteWorstPoint)
+        self.ui.test.clicked.connect(self.findFittingModel)
 
         model = self.app.mount.model
         self.ui.targetRMS.valueChanged.connect(lambda: self.showModelPosition(model))
@@ -113,6 +117,56 @@ class ManageModel(object):
             self.ui.nameList.addItem(name)
         self.ui.nameList.sortItems()
         self.ui.nameList.update()
+        return True
+
+    def findValue(self, buildStar, mountModel):
+        """
+
+        :param buildStar:
+        :param mountModel:
+        :return: success
+        """
+
+        for mountStar in mountModel.starList:
+            val1 = buildStar['errorDEC']
+            val2 = mountStar.errorDEC()
+            if not val1 or not val2:
+                continue
+            if abs(val1 - val2) > 0.0001:
+                continue
+            # print(val1, val2, abs(val1 - val2))
+            val1 = buildStar['errorRA']
+            val2 = mountStar.errorRA()
+            if not val1 or not val2:
+                continue
+            if abs(val1 - val2) > 0.0001:
+                continue
+            # print(val1, val2, abs(val1 - val2))
+            # print(buildStar['errorRMS'], mountStar.errorRMS)
+            return True
+
+        return False
+
+    def findFittingModel(self):
+        """
+        findFittingModel takes the actual loaded model from the mount and tries to find
+        the fitting model run data. therefore it compares up to 5 points to find out.
+
+        :return: success
+        """
+        mountModel = self.app.mount.model
+        modelFileList = glob.glob(self.app.mwGlob['modelDir'] + '/*.model')
+
+        found = False
+        for modelFile in modelFileList:
+            # print(modelFile)
+            with open(modelFile, 'r') as inFile:
+                buildModelData = json.load(inFile)
+                for buildStar in buildModelData:
+                    suc = self.findValue(buildStar, mountModel)
+                    if suc:
+                        pass
+                        # print(modelFile)
         return True
 
     def generatePolar(self, widget=None, title=''):
@@ -505,6 +559,10 @@ class ManageModel(object):
         self.ui.clearModel.setEnabled(True)
         self.app.mount.signals.alignDone.disconnect(self.clearRefreshModel)
         self.app.message.emit('Align model data refreshed', 0)
+        suc = self.findFittingModel()
+        if suc:
+            self.app.message.emit('Stored model run found', 0)
+
         return True
 
     def refreshModel(self):

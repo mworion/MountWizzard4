@@ -20,6 +20,7 @@ import logging
 import subprocess
 import os
 import glob
+import fnmatch
 import time
 import platform
 
@@ -58,44 +59,22 @@ class AstrometryASTAP(object):
 
         self.result = {'success': False}
         self.process = None
-        self.name = ''
-        self.indexPath = ''
         self.apiKey = ''
         self.timeout = 30
         self.searchRadius = 20
-        self.environment = {}
-
-        self.setEnvironment()
-
-    def setEnvironment(self):
-        """
-
-        :return: true for test purpose
-        """
+        self.name = 'ASTAP'
 
         if platform.system() == 'Darwin':
-            self.environment = {
-                'ASTAP-Mac': {
-                    'programPath': '/Applications/ASTAP.app/Contents/MacOS',
-                    'indexPath': '/usr/local/opt/astap',
-                }
-            }
+            self.appPath = '/Applications/ASTAP.app/Contents/MacOS'
+            self.indexPath = '/usr/local/opt/astap'
 
         elif platform.system() == 'Linux':
-            self.environment = {
-                'ASTAP-Linux': {
-                    'programPath': '/opt/astap',
-                    'indexPath': '/opt/astap',
-                },
-            }
+            self.appPath = '/opt/astap'
+            self.indexPath = '/opt/astap'
 
         elif platform.system() == 'Windows':
-            self.environment = {
-                'ASTAP-Win': {
-                    'programPath': 'C:\\Program Files\\astap',
-                    'indexPath': 'C:\\Program Files\\astap',
-                },
-            }
+            self.appPath = 'C:\\Program Files\\astap'
+            self.indexPath = 'C:\\Program Files\\astap'
 
     def runASTAP(self, binPath='', tempFile='', fitsPath='', options=''):
         """
@@ -201,7 +180,7 @@ class AstrometryASTAP(object):
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
-        binPathASTAP = self.environment[self.name]['programPath'] + '/astap'
+        binPathASTAP = self.appPath + '/astap'
 
         raFITS, decFITS, scaleFITS, _, _ = self.readFitsData(fitsPath=fitsPath)
 
@@ -276,35 +255,29 @@ class AstrometryASTAP(object):
             astrometry.net namely image2xy and solve-field
             ASTP files
 
-        :return: available solver environments
+        :return: working environment found
         """
 
-        available = list()
-        for solver in self.environment:
-            suc = True
+        if platform.system() == 'Darwin':
+            program = self.appPath + '/astap.exe'
+            index = self.indexPath + '/*.290'
+        elif platform.system() == 'Linux':
+            program = self.appPath + '/astap'
+            index = self.indexPath + '/*.290'
+        elif platform.system() == 'Windows':
+            program = self.appPath + '/astap'
+            index = self.indexPath + '/*.290'
 
-            if solver == 'ASTAP-Win':
-                program = self.environment[solver]['programPath'] + '/astap.exe'
-                index = self.environment[solver]['indexPath'] + '/*.290'
-            elif solver == 'ASTAP-Mac':
-                program = self.environment[solver]['programPath'] + '/astap'
-                index = self.environment[solver]['indexPath'] + '/*.290'
-            elif solver == 'ASTAP-Linux':
-                program = self.environment[solver]['programPath'] + '/astap'
-                index = self.environment[solver]['indexPath'] + '/*.290'
+        # checking binaries
+        if not os.path.isfile(program):
+            self.log.info(f'{program} not found')
+            return False
 
-            # checking binaries
-            if not os.path.isfile(program):
-                self.log.info(f'{program} not found')
-                suc = False
+        # checking indexes
+        if not glob.glob(index):
+            self.log.info('no index files found')
+            return False
 
-            # checking indexes
-            if not glob.glob(index):
-                self.log.info('no index files found')
-                suc = False
+        self.log.info('Binary and index files available for ASTAP')
 
-            if suc:
-                available.append(solver)
-                self.log.info(f'binary and index files available for {solver}')
-
-        return available
+        return True

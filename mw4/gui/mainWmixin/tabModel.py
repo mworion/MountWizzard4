@@ -912,7 +912,8 @@ class Model(object):
             self.app.message.emit('No modeling start because more than 99 points', 2)
             return False
 
-        if not self.app.astrometry.checkAvailability():
+        sucApp, sucIndex = self.app.astrometry.checkAvailability()
+        if not (sucApp and sucIndex):
             self.app.message.emit('No valid configuration for plate solver', 2)
             return False
 

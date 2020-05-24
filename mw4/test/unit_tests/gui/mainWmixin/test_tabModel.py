@@ -850,7 +850,7 @@ def test_modelBuild_2a():
                            return_value=True):
         with mock.patch.object(app.app.astrometry,
                                'checkAvailability',
-                               return_value=True):
+                               return_value=(True, True)):
             suc = app.modelBuild()
             assert suc
 
@@ -866,7 +866,7 @@ def test_modelBuild_3():
                            return_value=True):
         with mock.patch.object(app.app.astrometry,
                                'checkAvailability',
-                               return_value=True):
+                               return_value=(True, True)):
             suc = app.modelBuild()
             assert not suc
 
@@ -882,7 +882,7 @@ def test_modelBuild_4():
                            return_value=False):
         with mock.patch.object(app.app.astrometry,
                                'checkAvailability',
-                               return_value=True):
+                               return_value=(True, True)):
             suc = app.modelBuild()
             assert not suc
 
@@ -902,7 +902,7 @@ def test_modelBuild_5():
                                return_value=False):
             with mock.patch.object(app.app.astrometry,
                                    'checkAvailability',
-                                   return_value=True):
+                                   return_value=(True, True)):
                 suc = app.modelBuild()
                 assert not suc
 
@@ -922,7 +922,7 @@ def test_modelBuild_6():
                                return_value=True):
             with mock.patch.object(app.app.astrometry,
                                    'checkAvailability',
-                                   return_value=True):
+                                   return_value=(True, True)):
                 suc = app.modelBuild()
                 assert suc
 

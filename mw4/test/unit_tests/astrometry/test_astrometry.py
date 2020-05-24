@@ -19,7 +19,6 @@
 from unittest import mock
 import pytest
 import os
-import platform
 import numpy as np
 import shutil
 import glob
@@ -29,6 +28,8 @@ faulthandler.enable()
 # external packages
 from astropy.io import fits
 from PyQt5.QtCore import QThreadPool
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QObject
 
 # local import
 from mw4.astrometry.astrometry import Astrometry
@@ -36,8 +37,9 @@ from mw4.astrometry.astrometry import Astrometry
 
 @pytest.fixture(autouse=True, scope='function')
 def app():
-    class Test:
+    class Test(QObject):
         threadPool = QThreadPool()
+        message = pyqtSignal(object, object)
 
     shutil.copy('mw4/test/testData/astrometry.cfg', 'mw4/test/temp/astrometry.cfg')
     shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')

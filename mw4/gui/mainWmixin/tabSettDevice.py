@@ -430,6 +430,8 @@ class SettDevice(object):
             driverClass.searchRadius = driverData.get('astrometrySearchRadius', 20)
             indexPath = driverData.get('astrometryIndexPath', '')
             driverClass.indexPath = indexPath
+            appPath = driverData.get('astrometryAppPath', '')
+            driverClass.appPath = appPath
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'astrometry - {name}')
 
@@ -444,6 +446,8 @@ class SettDevice(object):
             driverClass.searchRadius = driverData.get('astapSearchRadius', 20)
             indexPath = driverData.get('astapIndexPath', '')
             driverClass.indexPath = indexPath
+            appPath = driverData.get('astapAppPath', '')
+            driverClass.appPath = appPath
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'astap - {name}')
 

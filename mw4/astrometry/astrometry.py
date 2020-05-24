@@ -376,6 +376,7 @@ class Astrometry:
 
         self.signals.serverConnected.emit()
         self.signals.deviceConnected.emit(self.name)
+        self.app.message.emit(f'ASTROMETRY found:    [{self.name}]', 0)
 
         return True
 
@@ -388,5 +389,6 @@ class Astrometry:
 
         self.signals.serverDisconnected.emit({self.name: 0})
         self.signals.deviceDisconnected.emit(self.name)
+        self.app.message.emit(f'ASTROMETRY remove:   [{self.name}]', 0)
 
         return True

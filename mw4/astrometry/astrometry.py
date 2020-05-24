@@ -89,6 +89,7 @@ class Astrometry:
         self.name = ''
         self.apiKey = ''
         self.indexPath = ''
+        self.appPath = ''
         self.searchRadius = 20
         self.timeout = 30
         self.host = ('localhost', 7624)
@@ -113,6 +114,16 @@ class Astrometry:
         self._indexPath = value
         if self.framework in self.run.keys():
             self.run[self.framework].indexPath = value
+
+    @property
+    def appPath(self):
+        return self.appPath
+
+    @appPath.setter
+    def appPath(self, value):
+        self._appPath = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].appPath = value
 
     @property
     def host(self):

@@ -351,41 +351,29 @@ class AstrometryNET(object):
             astrometry.net namely image2xy and solve-field
             ASTP files
 
-        :return: available solver environments
+        :return: working environment found
         """
 
-        available = list()
-        program = ''
-        index = ''
+        if platform.system() == 'Darwin':
+            program = self.appPath + '/solve-field'
+            index = self.indexPath + '/*.fits'
+        elif platform.system() == 'Linux':
+            program = self.appPath + '/solve-field'
+            index = self.indexPath + '/*.fits'
+        elif platform.system() == 'Windows':
+            program = ''
+            index = ''
 
-        for solver in self.environment:
-            suc = True
+        # checking binaries
+        if not os.path.isfile(program):
+            self.log.info(f'{program} not found')
+            return False
 
-            if solver == 'KStars':
-                program = self.environment[solver]['programPath'] + '/solve-field'
-                index = '/*.fits'
-            elif solver == 'CloudMakers':
-                program = self.environment[solver]['programPath'] + '/solve-field'
-                index = '/*.fits'
-            elif solver == 'local-all':
-                program = self.environment[solver]['programPath'] + '/solve-field'
-                index = '/*.fits'
-            elif solver == 'local-user':
-                program = self.environment[solver]['programPath'] + '/solve-field'
-                index = '/*.fits'
+        # checking indexes
+        if not glob.glob(index):
+            self.log.info('no index files found')
+            return False
 
-            # checking binaries
-            if not os.path.isfile(program):
-                self.log.info(f'{program} not found')
-                suc = False
+        self.log.info('Binary and index files available for ASTROMETRY.NET')
 
-            # checking indexes
-            if not glob.glob(self.environment[solver]['indexPath'] + index):
-                self.log.info('no index files found')
-                suc = False
-
-            if suc:
-                available.append(solver)
-                self.log.info(f'binary and index files available for {solver}')
-
-        return available
+        return True

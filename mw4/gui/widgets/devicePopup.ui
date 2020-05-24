@@ -864,8 +864,8 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>40</y>
-       <width>81</width>
+       <y>65</y>
+       <width>146</width>
        <height>21</height>
       </rect>
      </property>
@@ -875,7 +875,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Folder index</string>
+      <string>Folder astrometry index</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="astrometryIndexPath">
@@ -884,9 +884,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>40</y>
-       <width>201</width>
+       <x>10</x>
+       <y>90</y>
+       <width>346</width>
        <height>21</height>
       </rect>
      </property>
@@ -936,7 +936,7 @@
      <property name="geometry">
       <rect>
        <x>310</x>
-       <y>40</y>
+       <y>65</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -957,7 +957,7 @@
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>70</y>
+       <y>120</y>
        <width>201</width>
        <height>21</height>
       </rect>
@@ -970,7 +970,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>70</y>
+       <y>120</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -988,7 +988,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>130</y>
+       <y>180</y>
        <width>86</width>
        <height>21</height>
       </rect>
@@ -1009,7 +1009,7 @@
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>100</y>
+       <y>150</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -1048,7 +1048,7 @@
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>130</y>
+       <y>180</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -1087,7 +1087,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>100</y>
+       <y>150</y>
        <width>86</width>
        <height>21</height>
       </rect>
@@ -1108,7 +1108,7 @@
      <property name="geometry">
       <rect>
        <x>160</x>
-       <y>130</y>
+       <y>180</y>
        <width>21</width>
        <height>21</height>
       </rect>
@@ -1129,7 +1129,7 @@
      <property name="geometry">
       <rect>
        <x>160</x>
-       <y>100</y>
+       <y>150</y>
        <width>61</width>
        <height>21</height>
       </rect>
@@ -1151,7 +1151,7 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>81</width>
+       <width>106</width>
        <height>21</height>
       </rect>
      </property>
@@ -1161,7 +1161,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Folder app</string>
+      <string>Folder application</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="astrometryAppPath">
@@ -1170,9 +1170,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>10</y>
-       <width>201</width>
+       <x>10</x>
+       <y>35</y>
+       <width>346</width>
        <height>21</height>
       </rect>
      </property>
@@ -1251,7 +1251,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>70</y>
+       <y>120</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -1265,65 +1265,11 @@
       <string>Device Name</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="astapDevice">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>70</y>
-       <width>201</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="mouseTracking">
-      <bool>false</bool>
-     </property>
-     <property name="acceptDrops">
-      <bool>false</bool>
-     </property>
-     <property name="toolTip">
-      <string>Name fo the astap solver</string>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="maxLength">
-      <number>50</number>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-     <property name="dragEnabled">
-      <bool>true</bool>
-     </property>
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
     <widget class="QDoubleSpinBox" name="astapTimeout">
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>130</y>
+       <y>180</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -1362,7 +1308,7 @@
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>100</y>
+       <y>150</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -1401,7 +1347,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>130</y>
+       <y>180</y>
        <width>86</width>
        <height>21</height>
       </rect>
@@ -1422,7 +1368,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>100</y>
+       <y>150</y>
        <width>86</width>
        <height>21</height>
       </rect>
@@ -1443,7 +1389,7 @@
      <property name="geometry">
       <rect>
        <x>160</x>
-       <y>130</y>
+       <y>180</y>
        <width>21</width>
        <height>21</height>
       </rect>
@@ -1464,7 +1410,7 @@
      <property name="geometry">
       <rect>
        <x>160</x>
-       <y>100</y>
+       <y>150</y>
        <width>61</width>
        <height>21</height>
       </rect>
@@ -1487,9 +1433,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>40</y>
-       <width>201</width>
+       <x>10</x>
+       <y>90</y>
+       <width>346</width>
        <height>21</height>
       </rect>
      </property>
@@ -1535,51 +1481,15 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_mountIP_18">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Folder app</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_mountIP_19">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Folder index</string>
-     </property>
-    </widget>
     <widget class="QLineEdit" name="astapAppPath">
      <property name="enabled">
       <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>10</y>
-       <width>201</width>
+       <x>10</x>
+       <y>35</y>
+       <width>346</width>
        <height>21</height>
       </rect>
      </property>
@@ -1632,7 +1542,7 @@
      <property name="geometry">
       <rect>
        <x>310</x>
-       <y>40</y>
+       <y>65</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -1671,6 +1581,55 @@
      </property>
      <property name="text">
       <string>Select</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="astapDeviceList">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>120</y>
+       <width>201</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Select the device.</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_mountIP_18">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>65</y>
+       <width>146</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Folder astrometry index</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_mountIP_19">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>106</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Folder application</string>
      </property>
     </widget>
    </widget>

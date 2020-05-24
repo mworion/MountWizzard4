@@ -164,19 +164,24 @@ class SettDevice(object):
         configData = self.app.config.get('driversData', {})
 
         for driver in self.drivers:
-            self.driversData[driver] = configData.get(driver, {})
+            d = self.driversData[driver] = configData.get(driver, {})
+
             if driver != 'astrometry':
                 continue
 
-            environment = self.app.astrometry.run['astrometry'].environment
-            if environment:
-                nameList = list(environment.keys())
-                self.driversData[driver]['astrometryDeviceList'] = nameList
+            nameASTROMETRY = self.app.astrometry.run['astrometry'].name
+            d['astrometryDeviceList'] = [nameASTROMETRY]
+            if not d['astrometryAppPath']:
+                d['astrometryAppPath'] = self.app.astrometry.run['astrometry'].appPath
+            if not d['astrometryIndexPath']:
+                d['astrometryIndexPath'] = self.app.astrometry.run['astrometry'].indexPath
 
-            environment = self.app.astrometry.run['astap'].environment
-            if environment:
-                name = list(environment.keys())[0]
-                self.driversData[driver]['astapName'] = name
+            nameASTAP = self.app.astrometry.run['astap'].name
+            d['astapDeviceList'] = [nameASTAP]
+            if not d['astapAppPath']:
+                d['astapAppPath'] = self.app.astrometry.run['astap'].appPath
+            if not d['astapIndexPath']:
+                d['astapIndexPath'] = self.app.astrometry.run['astap'].indexPath
 
         self.setupDeviceGui()
 

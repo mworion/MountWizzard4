@@ -185,9 +185,16 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.astrometrySearchRadius.setValue(deviceData.get('astrometrySearchRadius', 20))
 
         # populating astap
+        astapName = deviceData.get('astapName', '')
+        nameList = deviceData.get('astapDeviceList', [])
+        if not nameList:
+            self.ui.astapDeviceList.addItem('-')
+        for i, name in enumerate(nameList):
+            self.ui.astapDeviceList.addItem(name)
+            if astapName == name:
+                self.ui.astrometryDeviceList.setCurrentIndex(i)
         self.ui.astapIndexPath.setText(deviceData.get('astapIndexPath', '/'))
         self.ui.astapAppPath.setText(deviceData.get('astapAppPath', '/'))
-        self.ui.astapDevice.setText(deviceData.get('astapName', 'astap'))
         self.ui.astapTimeout.setValue(deviceData.get('astapTimeout', 30))
         self.ui.astapSearchRadius.setValue(deviceData.get('astapSearchRadius', 20))
 
@@ -248,7 +255,12 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.data[self.driver]['astrometryTimeout'] = self.ui.astrometryTimeout.value()
 
         # collecting astap data
-        self.data[self.driver]['astapName'] = self.ui.astapDevice.text()
+        self.data[self.driver]['astapName'] = self.ui.astapDeviceList.currentText()
+        model = self.ui.astapDeviceList.model()
+        nameList = []
+        for index in range(model.rowCount()):
+            nameList.append(model.item(index).text())
+        self.data[self.driver]['astapDeviceList'] = nameList
         self.data[self.driver]['astapIndexPath'] = self.ui.astapIndexPath.text()
         self.data[self.driver]['astapAppPath'] = self.ui.astapAppPath.text()
         self.data[self.driver]['astapSearchRadius'] = self.ui.astapSearchRadius.value()

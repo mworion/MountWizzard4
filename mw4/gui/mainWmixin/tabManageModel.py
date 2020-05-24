@@ -154,6 +154,9 @@ class ManageModel(object):
 
         :return: success
         """
+
+        return False
+
         mountModel = self.app.mount.model
         modelFileList = glob.glob(self.app.mwGlob['modelDir'] + '/*.model')
 

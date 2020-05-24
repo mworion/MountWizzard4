@@ -307,7 +307,8 @@ class SettDevice(object):
             # selecting the device type
             deviceType = self.drivers[driver]['deviceType']
 
-            self.popupUi = DevicePopup(geometry=geometry,
+            self.popupUi = DevicePopup(app=self.app,
+                                       geometry=geometry,
                                        driver=driver,
                                        deviceType=deviceType,
                                        availFramework=availFramework,

@@ -61,6 +61,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
     }
 
     def __init__(self,
+                 app=None,
                  geometry=None,
                  driver='',
                  deviceType='',
@@ -68,6 +69,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
                  data=None):
 
         super().__init__()
+        self.app = app
         self.data = data
         self.driver = driver
         self.deviceType = deviceType
@@ -183,6 +185,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.astrometryAppPath.setText(deviceData.get('astrometryAppPath', '/'))
         self.ui.astrometryTimeout.setValue(deviceData.get('astrometryTimeout', 30))
         self.ui.astrometrySearchRadius.setValue(deviceData.get('astrometrySearchRadius', 20))
+        self.checkAvailability('astrometry')
 
         # populating astap
         astapName = deviceData.get('astapName', '')
@@ -197,6 +200,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.astapAppPath.setText(deviceData.get('astapAppPath', '/'))
         self.ui.astapTimeout.setValue(deviceData.get('astapTimeout', 30))
         self.ui.astapSearchRadius.setValue(deviceData.get('astapSearchRadius', 20))
+        self.checkAvailability('astap')
 
         # populating ascom
         self.ui.ascomDevice.setText(deviceData.get('ascomName', ''))
@@ -393,21 +397,23 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
         return True
 
-    def selectAstrometryIndexPath(self):
+    def checkAvailability(self, framework):
         """
 
-        :return:
+        :return: success
         """
 
-        folder = self.ui.astrometryIndexPath.text()
-        saveFilePath, name, ext = self.openDir(self,
-                                               'Select Astrometry Index Path',
-                                               folder,
-                                               )
-        if not name:
-            return False
-
-        self.ui.astrometryIndexPath.setText(saveFilePath)
+        sucApp, sucInd = self.app.astrometry.run[framework].checkAvailability()
+        if framework == 'astap':
+            color = 'green' if sucApp else 'red'
+            self.changeStyleDynamic(self.ui.astapAppPath, 'color', color)
+            color = 'green' if sucInd else 'red'
+            self.changeStyleDynamic(self.ui.astapIndexPath, 'color', color)
+        else:
+            color = 'green' if sucApp else 'red'
+            self.changeStyleDynamic(self.ui.astrometryAppPath, 'color', color)
+            color = 'green' if sucInd else 'red'
+            self.changeStyleDynamic(self.ui.astrometryIndexPath, 'color', color)
 
         return True
 
@@ -425,7 +431,33 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         if not name:
             return False
 
-        self.ui.astrometryAppPath.setText(saveFilePath)
+        if platform.system() == 'Darwin' and ext == '.app':
+            if 'Astrometry.app' in saveFilePath:
+                saveFilePath += '/Contents/MacOS/'
+            else:
+                saveFilePath += '/Contents/MacOS/astrometry/bin'
+
+        if self.checkAvailability('astrometry'):
+            self.ui.astrometryAppPath.setText(saveFilePath)
+
+        return True
+
+    def selectAstrometryIndexPath(self):
+        """
+
+        :return:
+        """
+
+        folder = self.ui.astrometryIndexPath.text()
+        saveFilePath, name, ext = self.openDir(self,
+                                               'Select Astrometry Index Path',
+                                               folder,
+                                               )
+        if not name:
+            return False
+
+        if self.checkAvailability('astrometry'):
+            self.ui.astrometryIndexPath.setText(saveFilePath)
 
         return True
 
@@ -443,7 +475,11 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         if not name:
             return False
 
-        self.ui.astapAppPath.setText(saveFilePath)
+        if platform.system() == 'Darwin' and ext == '.app':
+            saveFilePath += '/Contents/MacOS/astap'
+
+        if self.checkAvailability('astap'):
+            self.ui.astapAppPath.setText(saveFilePath)
 
         return True
 
@@ -461,7 +497,8 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         if not name:
             return False
 
-        self.ui.astapIndexPath.setText(saveFilePath)
+        if self.checkAvailability('astap'):
+            self.ui.astapIndexPath.setText(saveFilePath)
 
         return True
 

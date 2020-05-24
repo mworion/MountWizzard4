@@ -238,7 +238,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
             dlg.setFilter(PyQt5.QtCore.QDir.Files)
 
         # remove unnecessary widgets from the file selector box
-        dlg.findChildren(PyQt5.QtWidgets.QListView, 'sidebar')[0].setVisible(False)
+        # dlg.findChildren(PyQt5.QtWidgets.QListView, 'sidebar')[0].setVisible(False)
         dlg.findChildren(PyQt5.QtWidgets.QComboBox, 'lookInCombo')[0].setVisible(False)
         dlg.findChildren(PyQt5.QtWidgets.QLabel, 'lookInLabel')[0].setVisible(False)
         dlg.findChildren(PyQt5.QtWidgets.QWidget, 'backButton')[0].setVisible(False)
@@ -249,7 +249,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.findChildren(PyQt5.QtWidgets.QWidget, 'detailModeButton')[0].setVisible(False)
 
         # position the window to parent in the center
-        width = 400
+        width = 500
         height = 400
         ph = window.geometry().height()
         pw = window.geometry().width()
@@ -257,7 +257,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         py = window.geometry().y()
         dlg.setGeometry(px + int(0.5 * (pw - width)),
                         py + int(0.5 * (ph - height)),
-                        400, 400)
+                        width, height)
         return dlg
 
     @staticmethod

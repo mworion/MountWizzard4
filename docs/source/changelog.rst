@@ -3,6 +3,11 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed list if changes, please refer
 to the commit list on GitHub.
 
+0.150.17
+--------
+- extended file / directory selection view
+- check if selected directories for astrometry / astap are valid
+
 0.150.17b3
 ----------
 - added path configuration for astrometry and astap

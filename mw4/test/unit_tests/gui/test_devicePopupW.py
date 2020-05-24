@@ -30,18 +30,29 @@ from PyQt5.QtGui import QCloseEvent
 from indibase.indiBase import Device
 if platform.system() == 'Windows':
     import win32com.client
-
-from indibase.qtIndiBase import Client
+from PyQt5.QtCore import QThreadPool
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QObject
 
 # local import
 from mw4.gui.devicePopupW import DevicePopup
 from mw4.base.indiClass import IndiClass
+from indibase.qtIndiBase import Client
 from mw4.gui.widget import MWidget
+from mw4.astrometry.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown(qtbot):
     global app, data, geometry, availFramework
+
+    class Test1(QObject):
+        threadPool = QThreadPool()
+        message = pyqtSignal(object, object)
+
+    class Test:
+        astrometry = Astrometry(app=Test1())
+
     data = {
         'telescope':
             {
@@ -53,7 +64,8 @@ def module_setup_teardown(qtbot):
 
     with mock.patch.object(DevicePopup,
                            'show'):
-        app = DevicePopup(geometry=geometry,
+        app = DevicePopup(app=Test(),
+                          geometry=geometry,
                           data=data,
                           availFramework=availFramework,
                           driver='telescope',

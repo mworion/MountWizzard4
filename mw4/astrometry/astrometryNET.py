@@ -290,7 +290,7 @@ class AstrometryNET(object):
         # split between ekos and cloudmakers as cloudmakers use an older version of
         # solve-field, which need the option '--no-fits2fits', whereas the actual
         # version used in KStars throws an error using this option.
-        if 'CloudMakers' in self.appPath:
+        if 'Astrometry.app' in self.appPath:
             options.append('--no-fits2fits')
 
         suc = self.runSolveField(binPath=binPathSolveField,
@@ -367,13 +367,17 @@ class AstrometryNET(object):
         # checking binaries
         if not os.path.isfile(program):
             self.log.info(f'{program} not found')
-            return False
+            sucProgram = False
+        else:
+            sucProgram = True
 
         # checking indexes
         if not glob.glob(index):
             self.log.info('no index files found')
-            return False
+            sucIndex = False
+        else:
+            sucIndex = True
 
         self.log.info('Binary and index files available for ASTROMETRY.NET')
 
-        return True
+        return sucProgram, sucIndex

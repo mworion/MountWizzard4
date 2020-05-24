@@ -192,7 +192,7 @@ def test_checkAvailability_1(app):
                                    'system',
                                    return_value='Darwin'):
                 suc = app.checkAvailability()
-                assert suc
+                assert suc == (True, True)
 
 
 def test_checkAvailability_2(app):
@@ -206,7 +206,7 @@ def test_checkAvailability_2(app):
                                    'system',
                                    return_value='Linux'):
                 suc = app.checkAvailability()
-                assert suc
+                assert suc == (True, True)
 
 
 def test_checkAvailability_3(app):
@@ -220,4 +220,4 @@ def test_checkAvailability_3(app):
                                    'system',
                                    return_value='Windows'):
                 suc = app.checkAvailability()
-                assert suc
+                assert suc == (True, True)

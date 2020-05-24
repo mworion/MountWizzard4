@@ -259,25 +259,29 @@ class AstrometryASTAP(object):
         """
 
         if platform.system() == 'Darwin':
-            program = self.appPath + '/astap.exe'
+            program = self.appPath + '/astap'
             index = self.indexPath + '/*.290'
         elif platform.system() == 'Linux':
             program = self.appPath + '/astap'
             index = self.indexPath + '/*.290'
         elif platform.system() == 'Windows':
-            program = self.appPath + '/astap'
+            program = self.appPath + '/astap.exe'
             index = self.indexPath + '/*.290'
 
         # checking binaries
         if not os.path.isfile(program):
             self.log.info(f'{program} not found')
-            return False
+            sucProgram = False
+        else:
+            sucProgram = True
 
         # checking indexes
         if not glob.glob(index):
             self.log.info('no index files found')
-            return False
+            sucIndex = False
+        else:
+            sucIndex = True
 
         self.log.info('Binary and index files available for ASTAP')
 
-        return True
+        return sucProgram, sucIndex

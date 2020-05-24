@@ -361,7 +361,7 @@ class Astrometry:
         """
 
         if self.framework not in self.run:
-            return []
+            return (False, False)
 
         val = self.run[self.framework].checkAvailability()
         return val

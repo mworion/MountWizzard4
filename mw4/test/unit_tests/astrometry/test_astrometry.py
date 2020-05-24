@@ -312,16 +312,16 @@ def test_abort_2(app):
 def test_checkAvailability_1(app):
     app.framework = 'test'
     val = app.checkAvailability()
-    assert not val
+    assert val == (False, False)
 
 
 def test_checkAvailability_2(app):
     app.framework = 'astap'
     with mock.patch.object(app.run['astap'],
                            'checkAvailability',
-                           return_value=['ASTAP-Mac']):
+                           return_value=(True, True)):
         val = app.checkAvailability()
-        assert val == ['ASTAP-Mac']
+        assert val == (True, True)
 
 
 def test_startCommunication(app):

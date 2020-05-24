@@ -1,5 +1,4 @@
 from mountcontrol.mount import Mount
-import time
 
 
 def main():

@@ -3,11 +3,19 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed list if changes, please refer
 to the commit list on GitHub.
 
-0.150.17
+0.150.19
 --------
 - extended file / directory selection view
 - check if selected directories for astrometry / astap are valid
 - showing valid app and index selections with colors
+
+0.150.18
+--------
+- fixes
+
+0.150.17
+--------
+- fixes
 
 0.150.17b3
 ----------

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1200</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>800</width>
-    <height>600</height>
+    <width>1200</width>
+    <height>900</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -80,16 +80,16 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <property name="leftMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="topMargin">
        <number>8</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="spacing">
        <number>0</number>
@@ -103,7 +103,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Shows the satellite path vertical over ground.</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -126,16 +126,16 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_7">
       <property name="leftMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="topMargin">
        <number>8</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="spacing">
        <number>0</number>
@@ -149,7 +149,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Shows the visible track of the satellite when being observed from the position of the mount. </string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -172,16 +172,16 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <property name="leftMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="topMargin">
        <number>8</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="spacing">
        <number>0</number>
@@ -195,7 +195,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Shows the visible track of the satellite when being observed from the position of the mount. </string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -218,16 +218,16 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <property name="leftMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="topMargin">
        <number>8</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="spacing">
        <number>0</number>
@@ -241,7 +241,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Show the satellite path in orbit. The observer is moving with the earth turning. We get normally a classical path for the satellite.</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -269,8 +269,8 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>15</y>
-        <width>166</width>
+        <y>20</y>
+        <width>296</width>
         <height>21</height>
        </rect>
       </property>
@@ -305,7 +305,7 @@
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>15</y>
+        <y>20</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -332,8 +332,8 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>40</y>
-        <width>166</width>
+        <y>45</y>
+        <width>296</width>
         <height>21</height>
        </rect>
       </property>
@@ -371,8 +371,8 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>65</y>
-        <width>166</width>
+        <y>70</y>
+        <width>296</width>
         <height>21</height>
        </rect>
       </property>
@@ -410,8 +410,8 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>90</y>
-        <width>166</width>
+        <y>95</y>
+        <width>296</width>
         <height>21</height>
        </rect>
       </property>
@@ -449,8 +449,8 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>115</y>
-        <width>166</width>
+        <y>120</y>
+        <width>296</width>
         <height>21</height>
        </rect>
       </property>
@@ -481,15 +481,15 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLineEdit" name="filter">
+     <widget class="QLineEdit" name="subframe">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>140</y>
-        <width>166</width>
+        <y>145</y>
+        <width>51</width>
         <height>21</height>
        </rect>
       </property>
@@ -524,7 +524,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>40</y>
+        <y>45</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -544,7 +544,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>65</y>
+        <y>70</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -564,7 +564,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>90</y>
+        <y>95</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -584,7 +584,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>115</y>
+        <y>120</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -604,7 +604,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>140</y>
+        <y>145</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -617,38 +617,36 @@
        </font>
       </property>
       <property name="text">
-       <string>Filter</string>
+       <string>Subframe</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_6">
+     <widget class="QCheckBox" name="winsorizedLimit">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>165</y>
-        <width>76</width>
+        <x>90</x>
+        <y>175</y>
+        <width>231</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
        </font>
       </property>
       <property name="text">
-       <string>empty</string>
+       <string>Winzorized Sigma data processing</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="empty">
+     <widget class="QLineEdit" name="flipped">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>165</y>
-        <width>166</width>
+        <x>215</x>
+        <y>145</y>
+        <width>51</width>
         <height>21</height>
        </rect>
       </property>
@@ -679,6 +677,70 @@
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>145</y>
+        <width>56</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Flipped</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="limit">
+      <property name="geometry">
+       <rect>
+        <x>335</x>
+        <y>175</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="singleStep">
+       <double>3.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>3.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>205</y>
+        <width>341</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Pierside West: green    Pierside East: yellow</string>
+      </property>
+     </widget>
     </widget>
    </item>
    <item row="0" column="2">
@@ -697,16 +759,16 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_6">
       <property name="leftMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="topMargin">
        <number>8</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="spacing">
        <number>0</number>
@@ -720,7 +782,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Shows the satellite path vertical over ground.</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -743,16 +805,16 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_8">
       <property name="leftMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="topMargin">
        <number>8</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="spacing">
        <number>0</number>
@@ -766,7 +828,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Show the satellite path in orbit. The observer is moving with the earth turning. We get normally a classical path for the satellite.</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -783,16 +845,16 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_9">
       <property name="leftMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="topMargin">
        <number>8</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="spacing">
        <number>0</number>
@@ -806,7 +868,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Show the satellite path in orbit. The observer is moving with the earth turning. We get normally a classical path for the satellite.</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -823,16 +885,16 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_10">
       <property name="leftMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="topMargin">
        <number>8</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="spacing">
        <number>0</number>
@@ -846,7 +908,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Show the satellite path in orbit. The observer is moving with the earth turning. We get normally a classical path for the satellite.</string>
+         <string/>
         </property>
        </widget>
       </item>

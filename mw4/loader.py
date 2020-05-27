@@ -358,7 +358,7 @@ def main():
     """
 
     # setting locale
-    locale.setlocale(locale.LC_ALL, 'en_US')
+    locale.setlocale(locale.LC_ALL, '')
 
     # initiating the main app
     app = MyApp(sys.argv)

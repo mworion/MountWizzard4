@@ -54,7 +54,3 @@ jobs:
     - name: Check depedencies explicitly
       run: |
         python -m pip check mountwizzard4
-
-    - name: Test Run
-      run: |
-        python mw4/loader.py test

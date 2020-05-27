@@ -350,7 +350,7 @@ class Satellite(object):
 
         minAlt = self.app.mount.setting.horizonLimitLow
         if minAlt is None:
-            mitAlt = 0
+            minAlt = 0
         loc = self.app.mount.obsSite.location
         obs = self.app.mount.obsSite
 

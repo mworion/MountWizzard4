@@ -20,7 +20,6 @@ import logging
 import subprocess
 import os
 import glob
-import fnmatch
 import time
 import platform
 

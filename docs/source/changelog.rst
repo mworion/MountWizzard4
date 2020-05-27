@@ -3,6 +3,12 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed
 changes list, please refer to the commit list on GitHub.
 
+0.150.20
+--------
+- added analyse window
+- removed workaround for sgp4 lib locale problem
+- quickfix for locale setting on ubuntu caused by the workaround
+
 0.150.19
 --------
 - extended file / directory selection view

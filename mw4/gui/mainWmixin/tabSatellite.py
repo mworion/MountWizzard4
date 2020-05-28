@@ -390,6 +390,8 @@ class Satellite(object):
                 if index not in satOrbits:
                     continue
                 satOrbits[index]['settle'] = ti
+                if ti.tt < obs.timeJD.tt:
+                    continue
                 index += 1
 
         for satOrbit in satOrbits:

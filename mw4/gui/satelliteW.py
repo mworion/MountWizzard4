@@ -367,7 +367,7 @@ class SatelliteWindow(widget.MWidget):
 
         # drawing satellite
         x, y, z = observe.position.km
-        axe.plot(x, y, z, color=self.M_YELLOW)
+        axe.plot(x, y, z, color=self.M_WHITE)
 
         self.plotSatPosSphere1, = axe.plot([x[0]], [y[0]], [z[0]],
                                            marker=self.markerSatellite(),
@@ -487,7 +487,7 @@ class SatelliteWindow(widget.MWidget):
         x, y, z = transform.sphericalToCartesian(azimuth=lon,
                                                  altitude=lat,
                                                  radius=elev)
-        axe.plot(x, y, z, color=self.M_YELLOW)
+        axe.plot(x, y, z, color=self.M_WHITE)
 
         # draw satellite position
         self.plotSatPosSphere2, = axe.plot([x[0]], [y[0]], [z[0]],
@@ -573,7 +573,7 @@ class SatelliteWindow(widget.MWidget):
                  marker='o',
                  markersize=1,
                  linestyle='none',
-                 color=self.M_YELLOW)
+                 color=self.M_WHITE)
 
         # show the actual position
         self.plotSatPosEarth, = axe.plot(lon[0],

@@ -59,6 +59,8 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.shorteningStart = True
         self.raRef = None
         self.decRef = None
+        self.angularPosRaRef = None
+        self.angularPosDecRef = None
         self.devices = {}
 
         self.data = {}
@@ -120,6 +122,8 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.data['time'] = np.empty(shape=[0, 1], dtype='datetime64')
         self.data['raJNow'] = np.empty(shape=[0, 1])
         self.data['decJNow'] = np.empty(shape=[0, 1])
+        self.data['angularPosRA'] = np.empty(shape=[0, 1])
+        self.data['angularPosDEC'] = np.empty(shape=[0, 1])
         self.data['status'] = np.empty(shape=[0, 1])
 
         self.data['sensorWeatherTemp'] = np.empty(shape=[0, 1])
@@ -170,15 +174,17 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         raJNow = 0
         decJNow = 0
+        angPosRa = 0
+        angPosDec = 0
         if obs.raJNow is None:
-            return raJNow, decJNow
+            return raJNow, decJNow, angPosRa, angPosDec
 
         length = len(dat['status'])
         period = min(length, 10)
         hasMean = length > 0 and period > 0
 
         if not hasMean:
-            return raJNow, decJNow
+            return raJNow, decJNow, angPosRa, angPosDec
 
         periodData = dat['status'][-period:]
         hasValidData = all(x is not None for x in periodData)
@@ -193,15 +199,24 @@ class MeasureData(PyQt5.QtCore.QObject):
                 self.raRef = obs.raJNow._degrees
             if self.decRef is None:
                 self.decRef = obs.decJNow.degrees
+            if self.angularPosRaRef is None:
+                self.angularPosRaRef = obs.angularPosRA.degrees
+            if self.angularPosDecRef is None:
+                self.angularPosDecRef = obs.angularPosDEC.degrees
 
             # we would like to have the difference in arcsec
             raJNow = (obs.raJNow._degrees - self.raRef) * 3600
             decJNow = (obs.decJNow.degrees - self.decRef) * 3600
+            # we would like to have the difference in arcsec
+            angPosRa = (obs.angularPosRA.degrees - self.angularPosRaRef) * 3600
+            angPosDec = (obs.angularPosDEC.degrees - self.angularPosDecRef) * 3600
         else:
             self.raRef = None
             self.decRef = None
+            self.angularPosRaRef = None
+            self.angularPosDecRef = None
 
-        return raJNow, decJNow
+        return raJNow, decJNow, angPosRa, angPosDec
 
     def checkStart(self, lenData):
         """
@@ -284,11 +299,13 @@ class MeasureData(PyQt5.QtCore.QObject):
         dat = self.data
 
         # gathering all the necessary data
-        raJNow, decJNow = self.calculateReference()
+        raJNow, decJNow, angularPosRA, angularPosDEC  = self.calculateReference()
         timeStamp = self.app.mount.obsSite.timeJD.utc_datetime().replace(tzinfo=None)
         dat['time'] = np.append(dat['time'], np.datetime64(timeStamp))
         dat['raJNow'] = np.append(dat['raJNow'], raJNow)
         dat['decJNow'] = np.append(dat['decJNow'], decJNow)
+        dat['angularPosRA'] = np.append(dat['angularPosRA'], angularPosRA)
+        dat['angularPosDEC'] = np.append(dat['angularPosDEC'], angularPosDEC)
         dat['status'] = np.append(dat['status'], self.app.mount.obsSite.status)
 
         sens = self.app.sensorWeather

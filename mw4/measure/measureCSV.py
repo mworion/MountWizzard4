@@ -78,6 +78,8 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
         fieldnames = ['time',
                       'raJNow',
                       'decJNow',
+                      'angularPosRA',
+                      'angularPosDEC',
                       'status',
                       'sensorWeatherTemp',
                       'sensorWeatherHum',

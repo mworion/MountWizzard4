@@ -63,6 +63,8 @@ class MeasureWindow(widget.MWidget):
         self.plotFunc = {'None': None,
                          'RA Stability': self.plotRa,
                          'DEC Stability': self.plotDec,
+                         'RA Angular Stability': self.plotAngularPosRa,
+                         'DEC Angular Stability': self.plotAngularPosDec,
                          'Temperature': self.plotTemperature,
                          'Pressure': self.plotPressure,
                          'Humidity': self.plotHumidity,
@@ -278,7 +280,7 @@ class MeasureWindow(widget.MWidget):
         :param cycle: cycle time for measurement
         :return: success
         """
-        ylabel = 'delta RA [arcsec]'
+        ylabel = 'Delta RA [arcsec]'
         start = -self.NUMBER_POINTS * cycle
         axe.set_title(title,
                       color=self.M_BLUE,
@@ -318,7 +320,7 @@ class MeasureWindow(widget.MWidget):
         :param cycle: cycle time for measurement
         :return: success
         """
-        ylabel = 'delta DEC [arcsec]'
+        ylabel = 'Delta DEC [arcsec]'
         start = -self.NUMBER_POINTS * cycle
         axe.set_title(title,
                       color=self.M_BLUE,
@@ -330,6 +332,83 @@ class MeasureWindow(widget.MWidget):
                        fontsize=12)
         axe.plot(data['time'][start:-1:cycle],
                  data['decJNow'][start:-1:cycle],
+                 marker=None,
+                 markersize=3,
+                 color=self.M_WHITE,
+                 )
+        axe.grid(True, color=self.M_GREY, alpha=1)
+        axe.set_ylim(-4, 4)
+        axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
+                                                             integer=True,
+                                                             min_n_ticks=4,
+                                                             prune='both',
+                                                             ))
+        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+                                                                      ))
+        return True
+
+    def plotAngularPosRa(self, axe=None, title='', data=None, cycle=None):
+        """
+        plotAngularPosRa show the specific graph for plotting the ra absolute positions.
+
+        :param axe: axe for plotting
+        :param title: title text
+        :param data: data location
+        :param cycle: cycle time for measurement
+        :return: success
+        """
+        ylabel = 'Delta RA Angular [arcsec]'
+        start = -self.NUMBER_POINTS * cycle
+        axe.set_title(title,
+                      color=self.M_BLUE,
+                      fontweight='bold',
+                      fontsize=16)
+        axe.set_ylabel(ylabel,
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+        axe.plot(data['time'][start:-1:cycle],
+                 data['angularPosRA'][start:-1:cycle],
+                 marker=None,
+                 markersize=3,
+                 color=self.M_WHITE,
+                 )
+        axe.grid(True, color=self.M_GREY, alpha=1)
+        axe.set_ylim(-4, 4)
+        axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
+                                                             integer=True,
+                                                             min_n_ticks=4,
+                                                             prune='both',
+                                                             ))
+        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+                                                                      ))
+        return True
+
+    def plotAngularPosDec(self, axe=None, title='', data=None, cycle=None):
+        """
+        drawRaDec show the specific graph for plotting the ra dec deviations. this
+        is done with two color and axes to distinguish the values for ra and dec.
+        ideally the values are around zero, but the scales of ra and dec axis have to be
+        different.
+
+        :param axe: axe for plotting
+        :param title: title text
+        :param data: data location
+        :param cycle: cycle time for measurement
+        :return: success
+        """
+        ylabel = 'Delta DEC Angular [arcsec]'
+        start = -self.NUMBER_POINTS * cycle
+        axe.set_title(title,
+                      color=self.M_BLUE,
+                      fontweight='bold',
+                      fontsize=16)
+        axe.set_ylabel(ylabel,
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+        axe.plot(data['time'][start:-1:cycle],
+                 data['angularPosDEC'][start:-1:cycle],
                  marker=None,
                  markersize=3,
                  color=self.M_WHITE,

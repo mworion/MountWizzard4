@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -4999,7 +4999,7 @@ to mount</string>
        <string notr="true"/>
       </property>
       <property name="text">
-       <string>Generate</string>
+       <string>Apply</string>
       </property>
      </widget>
      <widget class="QPushButton" name="loadBuildPoints">
@@ -13479,7 +13479,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -17155,7 +17155,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>Enable geometry calculations</string>
+         <string>Enable GEM offset calculations</string>
         </property>
         <property name="checked">
          <bool>false</bool>

@@ -65,6 +65,7 @@ class SettParkPos(object):
         self.ui.domeEastOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
 
         # signals from functions
         self.app.update1s.connect(self.updateCoverStatGui)
@@ -101,9 +102,7 @@ class SettParkPos(object):
             textField.setText(config.get(keyConfig, '-'))
         self.updateParkPosButtonText()
 
-        self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 0))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
-        self.setSettlingTimes()
 
         return True
 
@@ -135,7 +134,6 @@ class SettParkPos(object):
             keyConfig = 'posAz{0:1d}'.format(i)
             config[keyConfig] = textField.text()
 
-        config['settleTimeMount'] = self.ui.settleTimeMount.value()
         config['settleTimeDome'] = self.ui.settleTimeDome.value()
 
         return True
@@ -337,14 +335,12 @@ class SettParkPos(object):
         self.app.cover.sendCoverPark(park=False)
         return True
 
-    def setSettlingTimes(self):
+    def setDomeSettlingTime(self):
         """
 
         :return: true for test purpose
         """
 
-        # setting overall parameters
-        self.app.mount.settlingTime = self.ui.settleTimeMount.value()
         self.app.dome.settlingTime = self.ui.settleTimeDome.value()
 
         return True

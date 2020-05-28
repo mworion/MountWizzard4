@@ -216,3 +216,8 @@ def test_setMountMAC_6():
     app.app.mount.MAC = '00:00:00:00:00:00'
     suc = app.setMountMAC(Test())
     assert suc
+
+
+def test_setDomeSettlingTime_1():
+    suc = app.setDeomSettlingTime()
+    assert suc

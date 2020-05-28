@@ -3,6 +3,13 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed
 changes list, please refer to the commit list on GitHub.
 
+0.150.21
+--------
+- adding angular ra / dec measurement
+- optimizing satellite passes selection
+- optimized coloring
+- referenced sgp4 lib v 2.12 for finally closing issue with satellite div / zero
+
 0.150.20
 --------
 - added analyse window

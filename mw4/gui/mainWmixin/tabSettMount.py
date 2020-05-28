@@ -43,6 +43,7 @@ class SettMount(object):
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
         self.app.mount.signals.settingDone.connect(self.setMountMAC)
         self.ui.openWeatherMapKey.editingFinished.connect(self.setOpenWeatherMapAPIKey)
+        self.ui.settleTimeMount.valueChanged.connect(self.setMountSettlingTime)
 
     def initConfig(self):
         """
@@ -58,6 +59,7 @@ class SettMount(object):
         self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
         self.ui.openWeatherMapKey.setText(config.get('openWeatherMapKey', ''))
         self.setOpenWeatherMapAPIKey()
+        self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 0))
 
         return True
 
@@ -72,6 +74,7 @@ class SettMount(object):
         config['mountMAC'] = self.ui.mountMAC.text()
         config['rackCompMAC'] = self.ui.rackCompMAC.text()
         config['openWeatherMapKey'] = self.ui.openWeatherMapKey.text()
+        config['settleTimeMount'] = self.ui.settleTimeMount.value()
 
         return True
 
@@ -190,5 +193,15 @@ class SettMount(object):
             return False
 
         weather.keyAPI = self.ui.openWeatherMapKey.text()
+
+        return True
+
+    def setMountSettlingTime(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.app.mount.settlingTime = self.ui.settleTimeMount.value()
 
         return True

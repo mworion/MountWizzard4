@@ -76,10 +76,10 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
 
         self.csvFile = open(csvFilename, 'w+')
         fieldnames = ['time',
-                      'raJNow',
-                      'decJNow',
-                      'angularPosRA',
-                      'angularPosDEC',
+                      'deltaRaJNow',
+                      'deltaDecJNow',
+                      'deltaAngularPosRA',
+                      'deltaAngularPosDEC',
                       'status',
                       'sensorWeatherTemp',
                       'sensorWeatherHum',

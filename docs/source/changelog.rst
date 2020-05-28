@@ -9,6 +9,7 @@ changes list, please refer to the commit list on GitHub.
 - optimizing satellite passes selection
 - optimized coloring
 - referenced sgp4 lib v 2.12 for finally closing issue with satellite div / zero
+- bugfix changing settling time immediately
 
 0.150.20
 --------

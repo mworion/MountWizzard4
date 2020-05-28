@@ -278,6 +278,6 @@ def test_setCoverUnpark_1():
     assert suc
 
 
-def test_setDomeSettlingTime_1():
-    suc = app.setDeomSettlingTime()
+def test_setMountSettlingTime_1():
+    suc = app.setMountSettlingTime()
     assert suc

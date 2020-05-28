@@ -218,6 +218,6 @@ def test_setMountMAC_6():
     assert suc
 
 
-def test_setDomeSettlingTime_1():
-    suc = app.setDomSettlingTime()
+def test_setMountSettlingTime_1():
+    suc = app.setMountSettlingTime()
     assert suc

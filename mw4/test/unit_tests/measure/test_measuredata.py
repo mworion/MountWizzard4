@@ -110,21 +110,29 @@ def test_setEmptyData():
 def test_calculateReference_1():
     app.raRef = 0
     app.decRef = 0
+    app.angularPosRaRef = 0
+    app.angularPosDecRef = 0
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
     app.data['status'] = np.array([])
-    ra, dec = app.calculateReference()
+    ra, dec, raA, decA = app.calculateReference()
     assert ra == 0
     assert dec == 0
+    assert raA == 0
+    assert decA == 0
 
 
 def test_calculateReference_2():
     app.raRef = 0
     app.decRef = 0
+    app.angularPosRaRef = 0
+    app.angularPosDecRef = 0
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
+    app.app.mount.obsSite.angularPosRA = 1
+    app.app.mount.obsSite.angularPosDEC = 1
     app.data['status'] = np.array([0, 0, 0, 0, 0])
-    ra, dec = app.calculateReference()
+    ra, dec, raA, decA = app.calculateReference()
     assert round(ra, 0) == 54000
     assert dec == 3600
 
@@ -132,10 +140,14 @@ def test_calculateReference_2():
 def test_calculateReference_3():
     app.raRef = 7.5
     app.decRef = 0.5
+    app.angularPosRaRef = 7.5
+    app.angularPosDecRef = 0.5
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
+    app.app.mount.obsSite.angularPosRA = 1
+    app.app.mount.obsSite.angularPosDEC = 1
     app.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
-    ra, dec = app.calculateReference()
+    ra, dec, raA, decA = app.calculateReference()
     assert round(ra, 0) == 27000
     assert dec == 1800
 
@@ -143,49 +155,77 @@ def test_calculateReference_3():
 def test_calculateReference_4():
     app.raRef = 27000
     app.decRef = 1800
+    app.angularPosRaRef = 27000
+    app.angularPosDecRef = 1800
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
+    app.app.mount.obsSite.angularPosRA = 1
+    app.app.mount.obsSite.angularPosDEC = 1
     app.data['status'] = np.array([0, 0, 0, 0, 1, 0, 0, 0])
-    ra, dec = app.calculateReference()
+    ra, dec, raA, decA = app.calculateReference()
     assert ra == 0
     assert dec == 0
     assert app.raRef is None
     assert app.decRef is None
+    assert raA == 0
+    assert decA == 0
+    assert app.angularPosRaRef is None
+    assert app.angularPosDecRef is None
 
 
 def test_calculateReference_5():
     app.raRef = None
     app.decRef = None
+    app.angularPosRaRef = None
+    app.angularPosDecRef = None
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
+    app.app.mount.obsSite.angularPosRA = 1
+    app.app.mount.obsSite.angularPosDEC = 1
     app.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
-    ra, dec = app.calculateReference()
+    ra, dec, raA, decA = app.calculateReference()
     assert ra == 0
     assert dec == 0
     assert app.raRef is not None
     assert app.decRef is not None
+    assert raA == 0
+    assert decA == 0
+    assert app.angularPosRaRef is not None
+    assert app.angularPosDecRef is not None
 
 
 def test_calculateReference_6():
     app.raRef = 0
     app.decRef = 0
+    app.angularPosRaRef = 0
+    app.angularPosDecRef = 0
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
+    app.app.mount.obsSite.angularPosRA = 1 / 24 * 360
+    app.app.mount.obsSite.angularPosDEC = 1
     app.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
-    ra, dec = app.calculateReference()
+    ra, dec, raA, decA = app.calculateReference()
     assert round(ra, 0) == 54000
     assert dec == 3600.0
+    assert round(raA, 0) == 54000
+    assert decA == 3600.0
 
 
 def test_calculateReference_7():
     app.raRef = 0
     app.decRef = 0
+    app.angularPosRaRef = 0
+    app.angularPosDecRef = 0
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
+    app.app.mount.obsSite.angularPosRA = 1
+    app.app.mount.obsSite.angularPosDEC = 1
     app.data['status'] = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-    ra, dec = app.calculateReference()
+    ra, dec, raA, decA = app.calculateReference()
     assert ra == 0.0
     assert dec == 0.0
+    assert raA == 0.0
+    assert decA == 0.0
 
 
 def test_checkStart_1():

@@ -176,6 +176,7 @@ class MeasureData(PyQt5.QtCore.QObject):
         decJNow = 0
         angPosRa = 0
         angPosDec = 0
+
         if obs.raJNow is None:
             return raJNow, decJNow, angPosRa, angPosDec
 
@@ -207,9 +208,11 @@ class MeasureData(PyQt5.QtCore.QObject):
             # we would like to have the difference in arcsec
             raJNow = (obs.raJNow._degrees - self.raRef) * 3600
             decJNow = (obs.decJNow.degrees - self.decRef) * 3600
+
             # we would like to have the difference in arcsec
             angPosRa = (obs.angularPosRA.degrees - self.angularPosRaRef) * 3600
             angPosDec = (obs.angularPosDEC.degrees - self.angularPosDecRef) * 3600
+
         else:
             self.raRef = None
             self.decRef = None

@@ -45,6 +45,7 @@ setup(
     install_requires=[
         'mountcontrol==0.165',
         'indibase==0.133',
+        'numpy==1.18.4',
         'PyQt5==5.14.2; platform_machine != "armv7l"',
         'PyQtWebEngine==5.14.0; platform_machine != "armv7l"',
         'matplotlib==3.2.1',
@@ -53,7 +54,6 @@ setup(
         'scipy==1.4.1',
         'requests==2.23.0',
         'requests_toolbelt==0.9.1',
-        'numpy==1.18.4',
         'skyfield==1.20',
         'sgp4==2.12',
         'qimage2ndarray==1.8.3',

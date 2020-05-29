@@ -257,9 +257,6 @@ class AnalyseWindow(widget.MWidget):
         if not loadFilePath:
             return False
 
-        if not isinstance(loadFilePath, str):
-            return False
-
         with open(loadFilePath, 'r') as infile:
             modelJSON = json.load(infile)
 

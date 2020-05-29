@@ -181,9 +181,9 @@ def test_getIndexPoint_0():
     plane = []
     epsilon = 0
     index = app.getIndexPoint(event=event,
-                                          plane=plane,
-                                          epsilon=epsilon,
-                                          )
+                              plane=plane,
+                              epsilon=epsilon,
+                              )
     assert not index
 
 
@@ -192,9 +192,9 @@ def test_getIndexPoint_1():
     plane = None
     epsilon = 0
     index = app.getIndexPoint(event=event,
-                                          plane=plane,
-                                          epsilon=epsilon,
-                                          )
+                              plane=plane,
+                              epsilon=epsilon,
+                              )
     assert not index
 
 
@@ -207,9 +207,9 @@ def test_getIndexPoint_2():
     plane = None
     epsilon = 0
     index = app.getIndexPoint(event=event,
-                                          plane=plane,
-                                          epsilon=epsilon,
-                                          )
+                              plane=plane,
+                              epsilon=epsilon,
+                              )
     assert not index
 
 
@@ -222,9 +222,9 @@ def test_getIndexPoint_3():
     plane = [(45, 0), (45, 360)]
     epsilon = 0
     index = app.getIndexPoint(event=event,
-                                          plane=plane,
-                                          epsilon=epsilon,
-                                          )
+                              plane=plane,
+                              epsilon=epsilon,
+                              )
     assert not index
 
 
@@ -237,9 +237,9 @@ def test_getIndexPoint_4():
     plane = [(45, 0), (45, 360)]
     epsilon = 200
     index = app.getIndexPoint(event=event,
-                                          plane=plane,
-                                          epsilon=epsilon,
-                                          )
+                              plane=plane,
+                              epsilon=epsilon,
+                              )
     assert index == 0
 
 
@@ -252,9 +252,9 @@ def test_getIndexPoint_5():
     plane = [(45, 0), (45, 360)]
     epsilon = 200
     index = app.getIndexPoint(event=event,
-                                          plane=plane,
-                                          epsilon=epsilon,
-                                          )
+                              plane=plane,
+                              epsilon=epsilon,
+                              )
     assert index == 1
 
 
@@ -262,8 +262,8 @@ def test_getIndexPointX_1():
     event = None
     plane = None
     index = app.getIndexPointX(event=event,
-                                           plane=plane,
-                                           )
+                               plane=plane,
+                               )
     assert not index
 
 
@@ -275,8 +275,8 @@ def test_getIndexPointX_2():
     event.ydata = 45
     plane = None
     index = app.getIndexPointX(event=event,
-                                           plane=plane,
-                                           )
+                               plane=plane,
+                               )
     assert not index
 
 
@@ -288,8 +288,8 @@ def test_getIndexPointX_3():
     event.ydata = 45
     plane = [(45, 0), (45, 360)]
     index = app.getIndexPointX(event=event,
-                                           plane=plane,
-                                           )
+                               plane=plane,
+                               )
     assert index == 0
 
 
@@ -301,8 +301,8 @@ def test_getIndexPointX_4():
     event.ydata = 45
     plane = [(45, 0), (45, 360)]
     index = app.getIndexPointX(event=event,
-                                           plane=plane,
-                                           )
+                               plane=plane,
+                               )
     assert index == 0
 
 
@@ -314,8 +314,8 @@ def test_getIndexPointX_5():
     event.ydata = 45
     plane = [(45, 0), (45, 180), (45, 360)]
     index = app.getIndexPointX(event=event,
-                                           plane=plane,
-                                           )
+                               plane=plane,
+                               )
     assert index == 1
 
 
@@ -327,8 +327,8 @@ def test_getIndexPointX_6():
     event.ydata = 45
     plane = [(45, 0)]
     index = app.getIndexPointX(event=event,
-                                           plane=plane,
-                                           )
+                               plane=plane,
+                               )
     assert not index
 
 

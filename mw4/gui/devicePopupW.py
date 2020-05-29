@@ -476,7 +476,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
             return False
 
         if platform.system() == 'Darwin' and ext == '.app':
-            saveFilePath += '/Contents/MacOS/astap'
+            saveFilePath += '/Contents/MacOS'
 
         if self.checkAvailability('astap'):
             self.ui.astapAppPath.setText(saveFilePath)

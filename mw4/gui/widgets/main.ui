@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -13503,7 +13503,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -17020,7 +17020,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>221</height>
+         <height>226</height>
         </rect>
        </property>
        <property name="title">
@@ -17054,7 +17054,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>335</x>
-          <y>140</y>
+          <y>120</y>
           <width>21</width>
           <height>21</height>
          </rect>
@@ -17075,7 +17075,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>335</x>
-          <y>80</y>
+          <y>70</y>
           <width>21</width>
           <height>21</height>
          </rect>
@@ -17096,7 +17096,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>15</x>
-          <y>80</y>
+          <y>70</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -17117,7 +17117,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>15</x>
-          <y>110</y>
+          <y>95</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -17159,7 +17159,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>15</x>
-          <y>170</y>
+          <y>175</y>
           <width>264</width>
           <height>21</height>
          </rect>
@@ -17189,7 +17189,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>335</x>
-          <y>50</y>
+          <y>45</y>
           <width>21</width>
           <height>21</height>
          </rect>
@@ -17210,7 +17210,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>335</x>
-          <y>110</y>
+          <y>95</y>
           <width>21</width>
           <height>21</height>
          </rect>
@@ -17231,7 +17231,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>15</x>
-          <y>50</y>
+          <y>45</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -17252,7 +17252,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>15</x>
-          <y>140</y>
+          <y>120</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -17289,7 +17289,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>50</y>
+          <y>45</y>
           <width>86</width>
           <height>22</height>
          </rect>
@@ -17305,7 +17305,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>80</y>
+          <y>70</y>
           <width>86</width>
           <height>22</height>
          </rect>
@@ -17321,7 +17321,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>110</y>
+          <y>95</y>
           <width>86</width>
           <height>22</height>
          </rect>
@@ -17337,7 +17337,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>140</y>
+          <y>120</y>
           <width>86</width>
           <height>22</height>
          </rect>
@@ -17353,7 +17353,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>190</y>
+          <y>195</y>
           <width>111</width>
           <height>21</height>
          </rect>
@@ -17366,7 +17366,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>15</x>
-          <y>190</y>
+          <y>195</y>
           <width>211</width>
           <height>21</height>
          </rect>
@@ -17390,6 +17390,64 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="checked">
          <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="offLAT">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>145</y>
+          <width>86</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_136">
+        <property name="geometry">
+         <rect>
+          <x>335</x>
+          <y>145</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>m</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_137">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>145</y>
+          <width>121</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>LAT offset</string>
         </property>
        </widget>
       </widget>
@@ -17485,7 +17543,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>245</y>
+         <y>250</y>
          <width>366</width>
          <height>56</height>
         </rect>
@@ -17709,6 +17767,27 @@ When clicking the button, you could change the value.</string>
          <string>Unpark</string>
         </property>
        </widget>
+      </widget>
+      <widget class="QLabel" name="label_150">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>370</y>
+         <width>356</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>C: crosspoint OTA axis/Lateral offset (pos if right of center)</string>
+       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="ParkPos">
@@ -20971,7 +21050,7 @@ When clicking the button, you could change the value.</string>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial','Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial';&quot;&gt;pyqt5, matplotlib, wakeonlan, numpy, requests, astropy, skyfield, qimage2ndarray, importlib_metadata, opencv&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial';&quot;&gt;pyqt5, matplotlib, wakeonlan, numpy, requests, astropy, skyfield, qimage2ndarray, importlib_metadata, opencv, scipy&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>

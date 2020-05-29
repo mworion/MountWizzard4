@@ -62,6 +62,7 @@ class SettParkPos(object):
         self.ui.checkDomeGeometry.clicked.connect(self.setUseGeometryInMount)
         self.ui.domeRadius.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.offGEM.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.offLAT.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeEastOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometryInMount)
@@ -87,6 +88,7 @@ class SettParkPos(object):
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
         self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
         self.ui.offGEM.setValue(config.get('offGEM', 0))
+        self.ui.offLAT.setValue(config.get('offLAT', 0))
         self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
         self.ui.checkAutomaticDome.setChecked(config.get('checkAutomaticDome', False))
         self.setUseGeometryInMount()
@@ -121,6 +123,7 @@ class SettParkPos(object):
         config['domeEastOffset'] = self.ui.domeEastOffset.value()
         config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
         config['offGEM'] = self.ui.offGEM.value()
+        config['offLAT'] = self.ui.offLAT.value()
         config['checkDomeGeometry'] = self.ui.checkDomeGeometry.isChecked()
         config['checkAutomaticDome'] = self.ui.checkAutomaticDome.isChecked()
 
@@ -259,6 +262,7 @@ class SettParkPos(object):
             self.app.message.emit('Critical dome radius, please check', 2)
 
         self.app.mount.geometry.offGEM = self.ui.offGEM.value()
+        self.app.mount.geometry.offLAT = - self.ui.offLAT.value()
         self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
         self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
         self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()

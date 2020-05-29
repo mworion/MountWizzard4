@@ -85,21 +85,6 @@ def test_closeEvent_1(qtbot, app):
     app.closeEvent(QCloseEvent())
 
 
-def test_winsorize_1(app):
-    val = app.winsorize(1)
-    assert val == 1
-
-
-def test_winsorize_2(app):
-    val = app.winsorize([1, 2, 3, 4, 5], 0.1)
-    assert len(val) == 5
-
-
-def test_winsorize_3(app):
-    val = app.winsorize([1, 2, 3, 4, 5], -0.1)
-    assert len(val) == 5
-
-
 def test_loadModel_1(app):
     with mock.patch.object(app,
                            'openFile',

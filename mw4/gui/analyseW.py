@@ -26,6 +26,7 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib import ticker
 import numpy as np
+from scipy.stats.mstats import winsorize
 
 # local import
 from mw4.base.loggerMW import CustomLogger
@@ -158,87 +159,6 @@ class AnalyseWindow(widget.MWidget):
         self.show()
 
         return True
-
-    @staticmethod
-    def winsorize(value, limits=None, inclusive=(True, True), inplace=False, axis=None):
-        """
-        Copyright (c) 2001, 2002 Enthought, Inc.
-        All rights reserved.
-
-        Copyright (c) 2003-2012 SciPy Developers.
-        All rights reserved.
-
-        Redistribution and use in source and binary forms, with or without
-        modification, are permitted provided that the following conditions are met:
-
-          a. Redistributions of source code must retain the above copyright notice,
-             this list of conditions and the following disclaimer.
-          b. Redistributions in binary form must reproduce the above copyright
-             notice, this list of conditions and the following disclaimer in the
-             documentation and/or other materials provided with the distribution.
-          c. Neither the name of Enthought nor the names of the SciPy Developers
-             may be used to endorse or promote products derived from this software
-             without specific prior written permission.
-
-
-        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-        ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS
-        BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-        OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-        SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-        INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-        CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-        ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
-        THE POSSIBILITY OF SUCH DAMAGE.
-        """
-
-        def _winsorize1D(a, low_limit, up_limit, low_include, up_include):
-            n = a.count()
-            idx = a.argsort()
-            if low_limit:
-                if low_include:
-                    lowidx = int(low_limit * n)
-                else:
-                    lowidx = np.round(low_limit * n)
-                a[idx[:lowidx]] = a[idx[lowidx]]
-            if up_limit is not None:
-                if up_include:
-                    upidx = n - int(n * up_limit)
-                else:
-                    upidx = n - np.round(n * up_limit)
-                a[idx[upidx:]] = a[idx[upidx - 1]]
-            return a
-
-        a = np.ma.array(value, copy=np.logical_not(inplace))
-
-        if limits is None:
-            return a
-
-        if (not isinstance(limits, tuple)) and isinstance(limits, float):
-            limits = (limits, limits)
-
-        # Check the limits
-        (lolim, uplim) = limits
-        if lolim is not None:
-            if lolim > 1.0:
-                lolim = 1
-            if lolim < 0:
-                lolim = 0
-
-        if uplim is not None:
-            if uplim > 1.0:
-                uplim = 1
-            if uplim < 0:
-                uplim = 0
-
-        (loinc, upinc) = inclusive
-        if axis is None:
-            shp = a.shape
-            return _winsorize1D(a.ravel(), lolim, uplim, loinc, upinc).reshape(shp)
-        else:
-            return a.apply_along_axis(_winsorize1D, axis, a, lolim, uplim, loinc, upinc)
 
     def loadModel(self):
         """
@@ -381,7 +301,7 @@ class AnalyseWindow(widget.MWidget):
         errors = model['errorRA_S']
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = self.winsorize(errors, limits=self.ui.limit.value() / 100)
+            errors = winsorize(errors, limits=self.ui.limit.value() / 100)
 
         index = range(0, len(errors))
 
@@ -423,7 +343,7 @@ class AnalyseWindow(widget.MWidget):
         errors = model['errorDEC_S']
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = self.winsorize(errors, limits=self.ui.limit.value() / 100)
+            errors = winsorize(errors, limits=self.ui.limit.value() / 100)
 
         index = range(0, len(errors))
 
@@ -465,7 +385,7 @@ class AnalyseWindow(widget.MWidget):
         errors = model['errorRA']
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = self.winsorize(errors, limits=self.ui.limit.value() / 100)
+            errors = winsorize(errors, limits=self.ui.limit.value() / 100)
 
         index = range(0, len(errors))
 
@@ -507,7 +427,7 @@ class AnalyseWindow(widget.MWidget):
         errors = model['errorDEC']
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = self.winsorize(errors, limits=self.ui.limit.value() / 100)
+            errors = winsorize(errors, limits=self.ui.limit.value() / 100)
 
         index = range(0, len(errors))
 
@@ -550,7 +470,7 @@ class AnalyseWindow(widget.MWidget):
         errors = model['scaleS']
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = self.winsorize(errors, limits=self.ui.limit.value() / 100)
+            errors = winsorize(errors, limits=self.ui.limit.value() / 100)
 
         index = range(0, len(errors))
 
@@ -653,7 +573,7 @@ class AnalyseWindow(widget.MWidget):
         errors, pierside = zip(*sorted(zip(errors, model['pierside'])))
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = self.winsorize(errors, limits=self.ui.limit.value() / 100)
+            errors = winsorize(errors, limits=self.ui.limit.value() / 100)
 
         index = range(0, len(errors))
 

@@ -302,7 +302,7 @@ class MeasureData(PyQt5.QtCore.QObject):
         dat = self.data
 
         # gathering all the necessary data
-        raJNow, decJNow, angularPosRA, angularPosDEC  = self.calculateReference()
+        raJNow, decJNow, angularPosRA, angularPosDEC = self.calculateReference()
         timeStamp = self.app.mount.obsSite.timeJD.utc_datetime().replace(tzinfo=None)
         dat['time'] = np.append(dat['time'], np.datetime64(timeStamp))
         dat['raJNow'] = np.append(dat['raJNow'], raJNow)

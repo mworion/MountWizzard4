@@ -123,6 +123,7 @@ class Model(object):
         """
         config = self.app.config['mainW']
         self.ui.checkDeleteModelFirst.setChecked(config.get('checkDeleteModelFirst', False))
+        self.ui.checkDisableDAT.setChecked(config.get('checkDisableDAT', False))
 
         return True
 
@@ -136,6 +137,7 @@ class Model(object):
         """
         config = self.app.config['mainW']
         config['checkDeleteModelFirst'] = self.ui.checkDeleteModelFirst.isChecked()
+        config['checkDisableDAT'] = self.ui.checkDisableDAT.isChecked()
 
         return True
 
@@ -478,6 +480,9 @@ class Model(object):
         :return: True for test purpose
         """
 
+        if not self.ui.checkDisableDAT.isChecked():
+            return False
+
         if self.statusDAT is None:
             self.statusDAT = self.app.mount.setting.statusDualAxisTracking
 
@@ -492,6 +497,9 @@ class Model(object):
 
         :return: true for test purpose
         """
+
+        if not self.ui.checkDisableDAT.isChecked():
+            return False
 
         if self.statusDAT is None:
             return False

@@ -3,12 +3,21 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed
 changes list, please refer to the commit list on GitHub.
 
+0.150.23
+--------
+- added checkbox for disabling dual axis tracking while model build
+-
+
+0.150.22
+--------
+- update sgp4 library to 2.12
+
 0.150.21
 --------
 - adding angular ra / dec measurement
 - optimizing satellite passes selection
 - optimized coloring
-- referenced sgp4 lib v 2.12 for finally closing issue with satellite div / zero
+- referenced sgp4 lib v 2.11 for finally closing issue with satellite div / zero
 - bugfix changing settling time immediately
 
 0.150.20

@@ -6855,7 +6855,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>Select on or more existing model data files and program them into the mount as a new mount model. Only existing models are used. It is ideal for combining multiple model runs, like adding a DSO path to an overall model.</string>
+       <string>Opens an analyse window showing multiple informations about the model context.</string>
       </property>
       <property name="text">
        <string>Analyse model build window</string>
@@ -7466,7 +7466,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>Deletes the actual model before starting the next model run.</string>
+       <string>Disables dual axis tracking and restores the status after model build. In case of automatic disabling a yellow frame shown around DAT setting.</string>
       </property>
       <property name="text">
        <string>Disable dual axis tracking while model build</string>

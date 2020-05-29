@@ -374,6 +374,7 @@ def test_modelSlew_3():
 
 
 def test_changeStatusDAT_1():
+    app.ui.checkDisableDAT.setChecked(True)
     app.app.mount.setting.statusDualAxisTracking = True
     with mock.patch.object(app.app.mount.setting,
                            'setDualAxisTracking'):
@@ -383,6 +384,7 @@ def test_changeStatusDAT_1():
 
 
 def test_changeStatusDAT_2():
+    app.ui.checkDisableDAT.setChecked(True)
     app.app.mount.setting.statusDualAxisTracking = False
     with mock.patch.object(app.app.mount.setting,
                            'setDualAxisTracking'):
@@ -392,6 +394,7 @@ def test_changeStatusDAT_2():
 
 
 def test_changeStatusDAT_3():
+    app.ui.checkDisableDAT.setChecked(True)
     app.statusDAT = True
     app.app.mount.setting.statusDualAxisTracking = True
     with mock.patch.object(app.app.mount.setting,
@@ -401,18 +404,37 @@ def test_changeStatusDAT_3():
         assert app.statusDAT
 
 
+def test_changeStatusDAT_4():
+    app.ui.checkDisableDAT.setChecked(False)
+    app.statusDAT = True
+    app.app.mount.setting.statusDualAxisTracking = True
+    with mock.patch.object(app.app.mount.setting,
+                           'setDualAxisTracking'):
+        suc = app.changeStatusDAT()
+        assert not suc
+        assert app.statusDAT
+
+
 def test_restoreStatusDAT_1():
+    app.ui.checkDisableDAT.setChecked(True)
     app.statusDAT = None
     suc = app.restoreStatusDAT()
     assert not suc
 
 
 def test_restoreStatusDAT_2():
+    app.ui.checkDisableDAT.setChecked(True)
     app.statusDAT = True
     with mock.patch.object(app.app.mount.setting,
                            'setDualAxisTracking'):
         suc = app.restoreStatusDAT()
         assert suc
+
+
+def test_restoreStatusDAT_3():
+    app.ui.checkDisableDAT.setChecked(False)
+    suc = app.restoreStatusDAT()
+    assert not suc
 
 
 def test_clearQueues():

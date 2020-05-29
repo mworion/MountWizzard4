@@ -3,10 +3,13 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed
 changes list, please refer to the commit list on GitHub.
 
-0.150.23
+0.150.23b2
 --------
 - added checkbox for disabling dual axis tracking while model build
--
+- added coloring and more data for model analyse
+- adding Dome LAT geometry for dome slewing
+- reversing the order files are shown (newest first)
+- changed model names: prefix to postfix to prioritize date / time
 
 0.150.22
 --------

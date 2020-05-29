@@ -38,6 +38,17 @@ __all__ = [
 ]
 
 
+class FileSortProxyModel(PyQt5.QtCore.QSortFilterProxyModel):
+    """
+    FileSortProxyModel enables a proxy solution for reversing the order of all file dialogues.
+    The sorting is now Descending meaning the last added files will be on top.
+    This is don by just overwriting the sort method
+    """
+
+    def sort(self, column, order):
+        self.sourceModel().sort(0, PyQt5.QtCore.Qt.DescendingOrder)
+
+
 class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
     """
     MWidget defines the common parts for all windows used in MountWizzard 4. namely the
@@ -231,6 +242,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.setStyleSheet(self.getStyle())
         dlg.setViewMode(PyQt5.QtWidgets.QFileDialog.List)
         dlg.setModal(True)
+        dlg.setProxyModel(FileSortProxyModel(self))
 
         if enableDir:
             dlg.setFilter(PyQt5.QtCore.QDir.Files | PyQt5.QtCore.QDir.AllDirs)

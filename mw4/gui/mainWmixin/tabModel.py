@@ -844,7 +844,7 @@ class Model(object):
 
         # collection locations for files and generate directories if necessary
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        self.modelName = f'm-{self.lastGenerator}-{nameTime}'
+        self.modelName = f'm-{nameTime}-{self.lastGenerator}'
         self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
 
         if not os.path.isdir(self.imageDir):

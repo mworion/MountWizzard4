@@ -204,6 +204,15 @@ class MWStyles(object):
         border-style: outset;
         border-color: red;
     }
+    QLabel[color='green'] {
+        color: green;
+    }
+    QLabel[color='yellow'] {
+        color: yellow;
+    }
+    QLabel[color='red'] {
+        color: red;
+    }
     
     /* Group Box */
     QGroupBox {

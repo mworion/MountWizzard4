@@ -651,20 +651,24 @@ class Model(object):
         :return: True for test purpose
         """
 
-        starList = self.app.mount.model.starList
+        model = self.app.mount.model
 
-        if len(starList) != len(self.model):
-            text = f'length starList [{len(starList)}] and length '
+        if len(model.starList) != len(self.model):
+            text = f'length starList [{len(model.starList)}] and length '
             text += f'model [{len(self.model)}] is different'
             self.log.info(text)
             self.model = []
 
         for i, mPoint in enumerate(self.model):
-            mPoint['errorRMS'] = starList[i].errorRMS
-            mPoint['errorRA'] = starList[i].errorRA()
-            mPoint['errorDEC'] = starList[i].errorDEC()
-            mPoint['errorAngle'] = starList[i].errorAngle.degrees
-            mPoint['errorIndex'] = starList[i].number
+            mPoint['errorRMS'] = model.starList[i].errorRMS
+            mPoint['errorRA'] = model.starList[i].errorRA()
+            mPoint['errorDEC'] = model.starList[i].errorDEC()
+            mPoint['errorAngle'] = model.starList[i].errorAngle.degrees
+            mPoint['errorIndex'] = model.starList[i].number
+            mPoint['modelTerms'] = model.terms
+            mPoint['modelErrorRMS'] = model.errorRMS
+            mPoint['modelOrthoError'] = model.orthoError.degrees * 3600
+            mPoint['modelPolarError'] = model.polarError.degrees * 3600
 
         return True
 

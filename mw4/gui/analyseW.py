@@ -188,6 +188,17 @@ class AnalyseWindow(widget.MWidget):
         self.ui.subframe.setText(f'{modelJSON[0]["subFrame"]:3.0f} %')
         self.ui.flipped.setText(str(modelJSON[0]['flippedS']))
 
+        if 'polarError' in modelJSON[0]:
+            self.ui.polarError.setText(f'{modelJSON[0]["polarError"]:5.1f}')
+        if 'modelTerms' in modelJSON[0]:
+            self.ui.modelTerms.setText(f'{modelJSON[0]["modelTerms"]:02.0f}')
+        if 'modelErrorRMS' in modelJSON[0]:
+            self.ui.modelErrorRMS.setText(f'{modelJSON[0]["modelErrorRMS"]:5.1f}')
+        if 'modelOrthoError' in modelJSON[0]:
+            self.ui.modelOrthoError.setText(f'{modelJSON[0]["modelOrthoError"]:5.1f}')
+        if 'modelPolarError' in modelJSON[0]:
+            self.ui.modelPolarError.setText(f'{modelJSON[0]["modelPolarError"]:5.1f}')
+
         self.modelJSON = modelJSON
         self.drawAll()
 

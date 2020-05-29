@@ -22,7 +22,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.150.22',
+    version='0.150.23b1',
     packages=[
         'mw4',
         'mw4.astrometry',
@@ -49,6 +49,7 @@ setup(
         'PyQtWebEngine==5.14.0; platform_machine != "armv7l"',
         'matplotlib==3.2.1',
         'astropy==4.0.1',
+        'photutils==0.7.2',
         'scipy==1.4.1',
         'requests==2.23.0',
         'requests_toolbelt==0.9.1',

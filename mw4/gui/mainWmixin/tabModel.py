@@ -110,9 +110,6 @@ class Model(object):
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
         self.ui.batchModel.clicked.connect(self.loadProgramModel)
 
-        self.app.dome.signals.slewFinished.connect(lambda: print('dome'))
-        self.app.mount.signals.slewFinished.connect(lambda: print('mount'))
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui

@@ -189,6 +189,30 @@ def test_plotDec_1():
     assert suc
 
 
+def test_plotAngularPosRA_1():
+    fig = app.measureMat.figure
+    app.setupAxes(figure=fig, numberPlots=1)
+    axe = app.measureMat.figure.axes[0]
+    suc = app.plotAngularPosRa(axe=axe,
+                               title='test',
+                               data=app.app.measure.data,
+                               cycle=1,
+                               )
+    assert suc
+
+
+def test_plotAngularPosDec_1():
+    fig = app.measureMat.figure
+    app.setupAxes(figure=fig, numberPlots=1)
+    axe = app.measureMat.figure.axes[0]
+    suc = app.plotAngularPosDec(axe=axe,
+                                title='test',
+                                data=app.app.measure.data,
+                                cycle=1,
+                                )
+    assert suc
+
+
 def test_plotTemperature_1():
     fig = app.measureMat.figure
     app.setupAxes(figure=fig, numberPlots=1)

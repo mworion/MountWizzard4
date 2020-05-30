@@ -246,8 +246,10 @@ class Model(object):
 
         modelPercent = (count + 1) / number
         timeElapsed = time.time() - self.startModeling
+        # base time (time needed per cycle) is updated and gets better each cycle
+        baseTime = timeElapsed / modelPercent
 
-        timeEstimation = (1 / modelPercent * timeElapsed) * (1 - modelPercent)
+        timeEstimation = baseTime * (1 - modelPercent)
         finished = timedelta(seconds=timeEstimation) + datetime.now()
 
         self.ui.timeToFinish.setText(time.strftime('%M:%S', time.gmtime(timeEstimation)))

@@ -23,9 +23,9 @@ import PyQt5.QtWidgets
 from astropy.io import fits
 from astropy import wcs
 from astropy.nddata import Cutout2D
-from astropy.visualization import AsymmetricPercentileInterval
-from astropy.visualization import SqrtStretch
-from astropy.visualization import ImageNormalize
+from astropy.visualization import MinMaxInterval
+from astropy.visualization import AsinhStretch
+from astropy.visualization import imshow_norm
 import matplotlib.pyplot as plt
 from skyfield.api import Angle
 import numpy as np
@@ -96,12 +96,12 @@ class ImageWindow(widget.MWidget):
                           'Spectral': 'nipy_spectral',
                           }
 
-        self.stretchValues = {'Low X': (98, 99.999),
-                              'Low': (90, 99.995),
-                              'Mid': (50, 99.99),
-                              'High': (20, 99.98),
-                              'Super': (10, 99.9),
-                              'Super X': (1, 99.8),
+        self.stretchValues = {'Low X': 0.4,
+                              'Low': 0.2,
+                              'Mid': 0.1,
+                              'High': 0.05,
+                              'Super': 0.025,
+                              'Super X': 0.01,
                               }
 
         self.zoomLevel = {' 1x Zoom': 1,
@@ -468,21 +468,11 @@ class ImageWindow(widget.MWidget):
             return None
 
         fallback = list(self.stretchValues.keys())[0]
-        values = self.stretchValues.get(self.ui.stretch.currentText(), fallback)
+        value = self.stretchValues.get(self.ui.stretch.currentText(), fallback)
 
-        interval = AsymmetricPercentileInterval(*values)
-        vmin, vmax = interval.get_limits(image)
-        # cutout the noise
-        delta = vmax - vmin
-        vmin = min(vmin + delta * 0.01, vmax)
+        stretch = AsinhStretch(a=value)
 
-        norm = ImageNormalize(image,
-                              vmin=vmin,
-                              vmax=vmax,
-                              stretch=SqrtStretch(),
-                              )
-
-        return norm, vmin, vmax
+        return stretch
 
     def colorImage(self):
         """
@@ -671,7 +661,7 @@ class ImageWindow(widget.MWidget):
         imageData = self.zoomImage(image=imageData, wcsObject=wcsObject)
 
         # normalization
-        norm, iMin, iMax = self.stretchImage(image=imageData)
+        stretch = self.stretchImage(image=imageData)
 
         # we process a colormap if we have a greyscale image
         colorMap = self.colorImage()
@@ -686,7 +676,13 @@ class ImageWindow(widget.MWidget):
             fig, axe = self.setupNormal(figure=self.imageMat.figure, header=header)
 
         # finally show it
-        axe.imshow(imageData, norm=norm, cmap=colorMap, origin='lower')
+        imshow_norm(imageData,
+                    ax=axe,
+                    origin='lower',
+                    interval=MinMaxInterval(),
+                    stretch=stretch,
+                    cmap=colorMap)
+
         axe.figure.canvas.draw()
 
         return True

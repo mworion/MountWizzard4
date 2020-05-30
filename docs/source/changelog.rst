@@ -12,6 +12,7 @@ changes list, please refer to the commit list on GitHub.
 - reversing the order files are shown (newest first)
 - changed model names: prefix to postfix to prioritize date / time
 - protection again exposure overrun when
+- revised dome slewing detection algorithm for ascom / alpaca polling
 
 0.150.22
 

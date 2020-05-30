@@ -53,7 +53,7 @@
     <number>4</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0,0,0,1">
+    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0,1">
      <property name="spacing">
       <number>4</number>
      </property>
@@ -290,25 +290,12 @@
          <widget class="QCheckBox" name="checkUseWCS">
           <property name="minimumSize">
            <size>
-            <width>80</width>
-            <height>25</height>
+            <width>0</width>
+            <height>0</height>
            </size>
           </property>
           <property name="text">
-           <string>Show RA / DEC</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Line" name="line_5">
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <property name="midLineWidth">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <string>Show distortion</string>
           </property>
          </widget>
         </item>
@@ -326,104 +313,18 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QCheckBox" name="checkShowSources">
+          <property name="text">
+           <string>Show sources</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>
      <item>
       <widget class="Line" name="line_4">
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="midLineWidth">
-        <number>1</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="attributsgroup">
-       <property name="title">
-        <string>Image attributes</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,0,0,0,1">
-        <property name="spacing">
-         <number>4</number>
-        </property>
-        <property name="leftMargin">
-         <number>10</number>
-        </property>
-        <property name="topMargin">
-         <number>4</number>
-        </property>
-        <property name="rightMargin">
-         <number>15</number>
-        </property>
-        <property name="bottomMargin">
-         <number>4</number>
-        </property>
-        <item>
-         <spacer name="verticalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>5</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="hasWCS">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>WCS Header</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="hasDistortion">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="text">
-           <string>Distortion Param</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="isFlipped">
-          <property name="text">
-           <string>Is Flipped</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>10</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="Line" name="line_3">
        <property name="frameShadow">
         <enum>QFrame::Plain</enum>
        </property>
@@ -524,10 +425,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="imagelayout">
-     <property name="spacing">
-      <number>2</number>
-     </property>
+    <layout class="QGridLayout" name="gridLayout_2">
      <property name="leftMargin">
       <number>2</number>
      </property>
@@ -540,7 +438,7 @@
      <property name="bottomMargin">
       <number>2</number>
      </property>
-     <item>
+     <item row="0" column="0">
       <widget class="QGroupBox" name="groupBox">
        <property name="minimumSize">
         <size>
@@ -557,177 +455,68 @@
        <property name="title">
         <string>Fits Header</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
-        <property name="spacing">
-         <number>2</number>
-        </property>
+       <layout class="QGridLayout" name="gridLayout">
         <property name="leftMargin">
-         <number>4</number>
+         <number>2</number>
         </property>
         <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
          <number>4</number>
         </property>
-        <property name="bottomMargin">
+        <property name="rightMargin">
          <number>2</number>
         </property>
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Object Name</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="object">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>RA [hours]</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="ra">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>DEC [deg]</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="dec">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Rotation [deg]</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="rotation">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Scale [arcs/pixel]</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="scale">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>Exposure Time [s]</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="expTime">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_10">
-          <property name="text">
-           <string>Filter</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="filter">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_11">
-          <property name="text">
-           <string>Binning X</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="binX">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_12">
-          <property name="text">
-           <string>Binning Y</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="binY">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
+        <property name="bottomMargin">
+         <number>4</number>
+        </property>
+        <property name="horizontalSpacing">
+         <number>0</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>1</number>
+        </property>
+        <item row="18" column="0" colspan="2">
          <widget class="QLabel" name="label_9">
           <property name="text">
            <string>CCD Temp [deg]</string>
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QLineEdit" name="ccdTemp">
+        <item row="7" column="0" colspan="2">
+         <widget class="QLineEdit" name="rotation">
           <property name="enabled">
            <bool>false</bool>
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>SQM [mpas]</string>
+        <item row="11" column="0" colspan="2">
+         <widget class="QLineEdit" name="expTime">
+          <property name="enabled">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
-        <item>
+        <item row="21" column="0" colspan="2">
          <widget class="QLineEdit" name="sqm">
           <property name="enabled">
            <bool>false</bool>
           </property>
          </widget>
         </item>
-        <item>
+        <item row="8" column="0" colspan="2">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Scale [arcs/pixel]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QLineEdit" name="ra">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="23" column="0">
          <spacer name="verticalSpacer_2">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -740,10 +529,202 @@
           </property>
          </spacer>
         </item>
+        <item row="10" column="0" colspan="2">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Exposure Time [s]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" colspan="2">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Rotation [deg]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="20" column="0" colspan="2">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>SQM [mpas]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="0" colspan="2">
+         <widget class="QLineEdit" name="filter">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="19" column="0" colspan="2">
+         <widget class="QLineEdit" name="ccdTemp">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QLineEdit" name="object">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="0">
+         <widget class="QLineEdit" name="binX">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0" colspan="2">
+         <widget class="QLineEdit" name="scale">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="1">
+         <widget class="QLineEdit" name="binY">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="1">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Bin Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Bin X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>DEC [deg]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0" colspan="2">
+         <widget class="QLineEdit" name="dec">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0" colspan="2">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Filter</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>RA [hours]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Object Name</string>
+          </property>
+         </widget>
+        </item>
+        <item row="24" column="0" colspan="2">
+         <widget class="QGroupBox" name="attributsgroup">
+          <property name="title">
+           <string>Image attributes</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,0,0,0,1">
+           <property name="spacing">
+            <number>4</number>
+           </property>
+           <property name="leftMargin">
+            <number>4</number>
+           </property>
+           <property name="topMargin">
+            <number>8</number>
+           </property>
+           <property name="rightMargin">
+            <number>4</number>
+           </property>
+           <property name="bottomMargin">
+            <number>4</number>
+           </property>
+           <item>
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>5</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="hasWCS">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>16</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>WCS Header</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="hasDistortion">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="text">
+              <string>Distortion Param</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="isFlipped">
+             <property name="text">
+              <string>Is Flipped</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>10</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QWidget" name="image" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">

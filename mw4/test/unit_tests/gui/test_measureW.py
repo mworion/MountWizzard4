@@ -74,6 +74,8 @@ def module_setup_teardown(qtbot):
         'skyTemp': np.full([5, 1], 1.0),
         'raJNow': np.full([5, 1], 1.0),
         'decJNow': np.full([5, 1], 1.0),
+        'angularPosRA': np.full([5, 1], 1.0),
+        'angularPosDEC': np.full([5, 1], 1.0),
         'status': np.full([5, 1], 1.0),
         'powCurr1': np.full([5, 1], 1.0),
         'powCurr2': np.full([5, 1], 1.0),

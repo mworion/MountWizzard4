@@ -59,9 +59,19 @@ class AstrometryNET(object):
         self.result = {'success': False}
         self.process = None
         self.apiKey = ''
+        self.indexPath = ''
+        self.appPath = ''
         self.timeout = 30
         self.searchRadius = 20
         self.name = 'ASTROMETRY.NET'
+
+        self.setDefaultPath()
+
+    def setDefaultPath(self):
+        """
+
+        :return: true for test purpose
+        """
 
         if platform.system() == 'Darwin':
             home = os.environ.get('HOME', '')
@@ -75,6 +85,8 @@ class AstrometryNET(object):
         elif platform.system() == 'Windows':
             self.appPath = ''
             self.indexPath = ''
+
+        return True
 
     def runImage2xy(self, binPath='', tempPath='', fitsPath=''):
         """

@@ -59,9 +59,18 @@ class AstrometryASTAP(object):
         self.result = {'success': False}
         self.process = None
         self.apiKey = ''
+        self.indexPath = ''
+        self.appPath = ''
         self.timeout = 30
         self.searchRadius = 20
         self.name = 'ASTAP'
+        self.setDefaultPath()
+
+    def setDefaultPath(self):
+        """
+
+        :return: true for test purpose
+        """
 
         if platform.system() == 'Darwin':
             self.appPath = '/Applications/ASTAP.app/Contents/MacOS'
@@ -74,6 +83,8 @@ class AstrometryASTAP(object):
         elif platform.system() == 'Windows':
             self.appPath = 'C:\\Program Files\\astap'
             self.indexPath = 'C:\\Program Files\\astap'
+
+        return True
 
     def runASTAP(self, binPath='', tempFile='', fitsPath='', options=''):
         """

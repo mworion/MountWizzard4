@@ -61,6 +61,33 @@ def app():
     yield app
 
 
+def test_setDefaultPath_1(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        suc = app.setDefaultPath()
+        assert suc
+        assert app.appPath == '/Applications/ASTAP.app/Contents/MacOS'
+
+
+def test_setDefaultPath_2(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Linux'):
+        suc = app.setDefaultPath()
+        assert suc
+        assert app.appPath == '/opt/astap'
+
+
+def test_setDefaultPath_3(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        suc = app.setDefaultPath()
+        assert suc
+        assert app.appPath == 'C:\\Program Files\\astap'
+
+
 def test_runASTAP_1(app):
     suc = app.runASTAP()
     assert not suc

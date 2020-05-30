@@ -24,6 +24,7 @@ import platform
 import subprocess
 import shutil
 import faulthandler
+import subprocess
 faulthandler.enable()
 
 # external packages
@@ -60,6 +61,33 @@ def app():
     shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
 
     yield app
+
+
+def test_setDefaultPath_1(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        suc = app.setDefaultPath()
+        assert suc
+        assert app.appPath == '/Applications/KStars.app/Contents/MacOS/astrometry/bin'
+
+
+def test_setDefaultPath_2(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Linux'):
+        suc = app.setDefaultPath()
+        assert suc
+        assert app.appPath == '/usr/bin'
+
+
+def test_setDefaultPath_3(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        suc = app.setDefaultPath()
+        assert suc
+        assert app.appPath == ''
 
 
 def test_runImage2xy_1(app):

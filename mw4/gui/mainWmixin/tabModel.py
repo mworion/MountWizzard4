@@ -121,6 +121,7 @@ class Model(object):
         config = self.app.config['mainW']
         self.ui.checkDeleteModelFirst.setChecked(config.get('checkDeleteModelFirst', False))
         self.ui.checkDisableDAT.setChecked(config.get('checkDisableDAT', False))
+        self.ui.checkEnableBackup.setChecked(config.get('checkEnableBackup', False))
 
         return True
 
@@ -135,6 +136,7 @@ class Model(object):
         config = self.app.config['mainW']
         config['checkDeleteModelFirst'] = self.ui.checkDeleteModelFirst.isChecked()
         config['checkDisableDAT'] = self.ui.checkDisableDAT.isChecked()
+        config['checkEnableBackup'] = self.ui.checkEnableBackup.isChecked()
 
         return True
 
@@ -799,13 +801,33 @@ class Model(object):
         self.defaultGUI()
         self.restoreStatusDAT()
 
-        # finally do it
+        # doing backups
+        # actual > back >>> back-3
+        if self.ui.checkEnableBackup.isChecked():
+            self.app.message.emit('Backing up models', 0)
+            self.app.mount.model.storeName('temp')
+            self.app.mount.model.loadName('back-2')
+            self.app.mount.model.deleteName('back-3')
+            self.app.mount.model.storeName('back-3')
+            self.app.mount.model.loadName('back-1')
+            self.app.mount.model.deleteName('back-2')
+            self.app.mount.model.storeName('back-2')
+            self.app.mount.model.loadName('back')
+            self.app.mount.model.deleteName('back-1')
+            self.app.mount.model.storeName('back-1')
+            self.app.mount.model.loadName('temp')
+            self.app.mount.model.deleteName('back')
+            self.app.mount.model.storeName('back')
+            self.app.mount.model.deleteName('temp')
+
+    # finally do it
         self.app.message.emit('Programming model to mount', 0)
         build = self.generateBuildData(model=self.model)
         suc = self.app.mount.model.programAlign(build)
 
         if suc:
             self.saveModelPrepare()
+            self.app.mount.model.storeName('actual')
             self.app.message.emit('Model programmed with success', 0)
         else:
             self.app.message.emit('Model programming error', 2)
@@ -817,6 +839,9 @@ class Model(object):
 
         self.app.message.emit(f'Modeling finished:  {self.modelName}', 1)
         self.playSound('ModelingFinished')
+
+        self.app.message.emit('Refreshing model view', 0)
+        self.refreshName()
 
         return True
 

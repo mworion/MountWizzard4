@@ -539,6 +539,8 @@ def test_retrofitModel_2():
     app.app.mount.model.addStar(point)
     app.app.mount.model.addStar(point)
     app.app.mount.model.addStar(point)
+    app.app.mount.model.orthoError = 1
+    app.app.mount.model.polarError = 1
 
     mPoint = {'test': 1}
     app.model = list()

@@ -35,21 +35,28 @@ from PyQt5.QtCore import QObject
 from mw4.astrometry.astrometry import Astrometry
 
 
+@pytest.fixture(autouse=True, scope='module')
+def module_setup_teardown():
+
+    yield
+
+    files = glob.glob('mw4/test/image/*.fit*')
+    for f in files:
+        os.remove(f)
+
+
 @pytest.fixture(autouse=True, scope='function')
 def app():
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(object, object)
 
-    shutil.copy('mw4/test/testData/astrometry.cfg', 'mw4/test/temp/astrometry.cfg')
     shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
+    shutil.copy('mw4/test/testData/astrometry.cfg', 'mw4/test/temp/astrometry.cfg')
     app = Astrometry(app=Test(), tempDir='mw4/test/temp')
 
     yield app
 
-    files = glob.glob('mw4/test/image/*.fit*')
-    for f in files:
-        os.remove(f)
 
 
 def test_properties_1(app):

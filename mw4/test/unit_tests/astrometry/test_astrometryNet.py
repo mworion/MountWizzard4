@@ -34,6 +34,16 @@ from astropy.io import fits
 from mw4.astrometry.astrometry import AstrometryNET, Astrometry
 
 
+@pytest.fixture(autouse=True, scope='module')
+def module_setup_teardown():
+
+    yield
+
+    files = glob.glob('mw4/test/image/*.fit*')
+    for f in files:
+        os.remove(f)
+
+
 @pytest.fixture(autouse=True, scope='function')
 def app():
     class Test:

@@ -420,7 +420,7 @@ class Model(object):
         mPoint['pierside'] = self.app.mount.obsSite.pierside
 
         self.solveQueue.put(mPoint)
-        self.log.info(f'put to solve [{mPoint}]')
+        self.log.info(f'Queued to solve [{mPoint}]')
 
         text = f'Exposing image-{mPoint["countSequence"]:03d}: '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'

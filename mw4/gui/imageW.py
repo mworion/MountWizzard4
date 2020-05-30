@@ -696,7 +696,7 @@ class ImageWindow(widget.MWidget):
 
         if self.ui.checkShowSources.isChecked():
             mean, median, std = sigma_clipped_stats(imageData, sigma=3.0)
-            daoFind = DAOStarFinder(fwhm=3.0, threshold=5.*std)
+            daoFind = DAOStarFinder(fwhm=3.0, threshold=5.0 * std)
             sources = daoFind(imageData - median)
             positions = np.transpose((sources['xcentroid'], sources['ycentroid']))
             apertures = CircularAperture(positions, r=10.0)

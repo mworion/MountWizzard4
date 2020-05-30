@@ -225,8 +225,8 @@ def test_stretchImage_1():
 
 def test_stretchImage_2():
     image = np.zeros([100, 100], dtype=np.uint8)
-    suc, a, b = app.stretchImage(image=image)
-    assert isinstance(suc, astropy.visualization.mpl_normalize.ImageNormalize)
+    val = app.stretchImage(image=image)
+    assert isinstance(val, astropy.visualization.AsinhStretch)
 
 
 def test_colorImage_1():

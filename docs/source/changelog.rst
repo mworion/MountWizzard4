@@ -13,6 +13,7 @@ changes list, please refer to the commit list on GitHub.
 - changed model names: prefix to postfix to prioritize date / time
 - protection again exposure overrun when
 - revised dome slewing detection algorithm for ascom / alpaca polling
+- image window gui update. MW4 could show detected sources in image
 
 0.150.22
 

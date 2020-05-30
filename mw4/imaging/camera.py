@@ -21,6 +21,7 @@ import platform
 
 # external packages
 import PyQt5
+from PyQt5.QtTest import QTest
 
 # local imports
 from mw4.base.loggerMW import CustomLogger
@@ -65,6 +66,7 @@ class Camera:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = CameraSignals()
+        self.exposing = False
 
         self.data = {}
         self.framework = None
@@ -97,6 +99,8 @@ class Camera:
         indiSignals.serverDisconnected.connect(self.signals.serverDisconnected)
         indiSignals.deviceConnected.connect(self.signals.deviceConnected)
         indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
+        self.signals.saved.connect(self.resetExposed)
 
     @property
     def host(self):
@@ -223,6 +227,15 @@ class Camera:
         else:
             return False
 
+    def resetExposed(self):
+        """
+
+        :return: True for test purpose
+        """
+        self.exposing = False
+
+        return True
+
     def expose(self,
                imagePath='',
                expTime=3,
@@ -257,6 +270,11 @@ class Camera:
 
         posX, posY, width, height = result
 
+        # this protects against overrun
+        while self.exposing:
+            QTest.qWait(200)
+
+        self.exposing = True
         suc = self.run[self.framework].expose(imagePath=imagePath,
                                               expTime=expTime,
                                               binning=binning,
@@ -275,6 +293,7 @@ class Camera:
         :return: success
         """
 
+        self.exposing = False
         if self.framework not in self.run.keys():
             return False
 

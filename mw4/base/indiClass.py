@@ -392,11 +392,11 @@ class IndiClass(object):
         if self.showMessages:
             if text.startswith('[WARNING]'):
                 text = self.removePrefix(text, '[WARNING]')
-                self.app.message.emit(device + ' -> ' + text, 0)
+                self.app.message.emit(f'INDI {device:15s} {text}', 0)
             elif text.startswith('[ERROR]'):
                 text = self.removePrefix(text, '[ERROR]')
-                self.app.message.emit(device + ' -> ' + text, 2)
+                self.app.message.emit(f'INDI {device:15s} {text}', 2)
             else:
-                self.app.message.emit(device + ' -> ' + text, 0)
+                self.app.message.emit(f'INDI {device:15s} {text}', 0)
             return True
         return False

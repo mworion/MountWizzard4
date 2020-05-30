@@ -29,7 +29,7 @@ changes list, please refer to the commit list on GitHub.
 
 - added analyse window
 - removed workaround for sgp4 lib locale problem
-- quickfix for locale setting on ubuntu caused by the workaround
+- quick fix for locale setting on ubuntu caused by the workaround
 
 0.150.19
 

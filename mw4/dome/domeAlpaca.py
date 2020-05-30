@@ -50,6 +50,8 @@ class DomeAlpaca(AlpacaClass):
         self.settlingTime = 0
         self.azimuth = 0
         self.slewing = False
+        self.targetAzimuth = -999
+        self.targetAltitude = -999
 
         self.settlingWait = PyQt5.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
@@ -91,20 +93,25 @@ class DomeAlpaca(AlpacaClass):
         """
 
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
-        isSlewing = self.data.get('slewing', False)
+        statusIsSlewing = self.data.get('slewing', False)
+        hasReachedTarget = (azimuth - self.targetAzimuth) < 0.1
+        isSlewing = statusIsSlewing or not hasReachedTarget
+        hasStopped = self.slewing and not statusIsSlewing and hasReachedTarget
+
+        if isSlewing:
+            self.slewing = True
+
+        if hasStopped:
+            # start timer for settling time and emit signal afterwards
+            self.settlingWait.start(self.settlingTime)
+            self.slewing = False
 
         self.signals.azimuth.emit(azimuth)
 
-        if isSlewing:
+        if self.slewing:
             self.signals.message.emit('slewing')
         else:
             self.signals.message.emit('')
-
-        if self.slewing and not isSlewing:
-            # start timer for settling time and emit signal afterwards
-            self.settlingWait.start(self.settlingTime)
-
-        self.slewing = isSlewing
 
         return True
 
@@ -127,7 +134,9 @@ class DomeAlpaca(AlpacaClass):
         :return: success
         """
 
-        self.client.slewtoazimuth(Azimuth=azimuth)
         self.slewing = True
+        self.targetAzimuth = azimuth
+        self.targetAltitude = altitude
+        self.client.slewtoazimuth(Azimuth=azimuth)
 
         return True

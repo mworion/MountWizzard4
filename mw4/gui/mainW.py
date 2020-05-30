@@ -17,7 +17,7 @@
 ###########################################################
 # standard libraries
 import logging
-import datetime
+from datetime import datetime
 import gc
 import platform
 
@@ -597,7 +597,7 @@ class MainWindow(MWidget,
         :return: True for test purpose
         """
 
-        self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
+        self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
         if self.ui.isOnline.isChecked():
             text = 'Internet Online Mode'
         else:

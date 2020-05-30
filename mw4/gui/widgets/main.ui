@@ -7490,7 +7490,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>Disables dual axis tracking and restores the status after model build. In case of automatic disabling a yellow frame shown around DAT setting.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Store the actual model under back and shifts older backup from back to back-1 to back-2 to back-3&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>Enable model backups before program</string>

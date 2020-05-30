@@ -40,18 +40,23 @@ jobs:
         python -m PyQt5.uic.pyuic mw4/gui/widgets/satellite.ui -o mw4/gui/widgets/satellite_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/analyse.ui -o mw4/gui/widgets/analyse_ui.py
         python -m PyQt5.pyrcc_main mw4/resource/resources.qrc -o mw4/resource/resources.py
+
     - name: Build package
       run: |
         pip install setuptools wheel
         python setup.py sdist
+
     - name: Install package
       run: |
+        python -m pip install cython
         mv dist/mountwizzard*.* dist/mw.tar.gz
         python -m pip install dist/mw.tar.gz
+
     - name: Install pytest
       run: |
         python -m pip install pytest
         python -m pip install pytest-qt
+
     - name: Running unit tests
       run: |
         pytest mw4/test/unit_tests

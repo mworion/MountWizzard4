@@ -48,6 +48,7 @@ jobs:
 
     - name: Install package
       run: |
+        python -m pip install cython
         mv dist/mountwizzard*.* dist/mw.tar.gz
         python -m pip install dist/mw.tar.gz
 

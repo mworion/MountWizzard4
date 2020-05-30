@@ -304,13 +304,13 @@ class Model(object):
                 text = f'Solving failed for image-{count:03d}'
                 self.app.message.emit(text, 2)
 
-            text = f'Solved   image-{count:03d}: '
+            text = f'Solved   image-{count:03d}:  '
             text += f'Ra: {transform.convertToHMS(mPoint["raJ2000S"])} '
             text += f'({mPoint["raJ2000S"].hours:4.3f}), '
             text += f'Dec: {transform.convertToDMS(mPoint["decJ2000S"])} '
             text += f'({mPoint["decJ2000S"].degrees:4.3f}), '
             self.app.message.emit(text, 0)
-            text = f'                    '
+            text = f'                     '
             text += f'Angle: {mPoint["angleS"]:3.0f}, '
             text += f'Scale: {mPoint["scaleS"]:4.3f}, '
             text += f'Error: {mPoint["errorRMS_S"]:4.1f}'
@@ -364,7 +364,7 @@ class Model(object):
                                            updateFits=False,
                                            )
 
-        text = f'Solving  image-{mPoint["countSequence"]:03d}: '
+        text = f'Solving  image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
         self.app.message.emit(text, 0)
         self.ui.mSolve.setText(f'{mPoint["countSequence"] + 1:2d}')
@@ -422,7 +422,7 @@ class Model(object):
         self.solveQueue.put(mPoint)
         self.log.info(f'Queued to solve [{mPoint}]')
 
-        text = f'Exposing image-{mPoint["countSequence"]:03d}: '
+        text = f'Exposing image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
         self.app.message.emit(text, 0)
         self.ui.mImage.setText(f'{mPoint["countSequence"] + 1 :2d}')
@@ -466,7 +466,7 @@ class Model(object):
         self.imageQueue.put(mPoint)
         self.log.info(f'Queued to image [{mPoint}]')
 
-        text = f'Slewing  mount:     point: {mPoint["countSequence"]:03d}, '
+        text = f'Slewing  mount:      point: {mPoint["countSequence"]:03d}, '
         text += f'altitude: {mPoint["altitude"]:3.0f}, '
         text += f'azimuth: {mPoint["azimuth"]:3.0f}'
         self.app.message.emit(text, 0)
@@ -723,7 +723,7 @@ class Model(object):
         self.retrofitModel()
 
         # now saving the model
-        self.app.message.emit(f'Writing model:      {self.modelName} ', 1)
+        self.app.message.emit(f'Writing model:       {self.modelName} ', 1)
 
         saveData = self.generateSaveModel()
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
@@ -839,7 +839,7 @@ class Model(object):
             self.app.message.emit('Deleting model images', 0)
             shutil.rmtree(self.imageDir, ignore_errors=True)
 
-        self.app.message.emit(f'Modeling finished:  {self.modelName}', 1)
+        self.app.message.emit(f'Modeling finished:    {self.modelName}', 1)
         self.playSound('ModelingFinished')
 
         self.app.message.emit('Refreshing model view', 0)
@@ -885,7 +885,7 @@ class Model(object):
 
         # now everything is prepared and we could start modeling
         self.clearQueues()
-        self.app.message.emit(f'Modeling start:     {self.modelName}', 1)
+        self.app.message.emit(f'Modeling start:      {self.modelName}', 1)
 
         # collection all necessary information
         exposureTime = self.ui.expTime.value()

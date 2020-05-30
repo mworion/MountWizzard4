@@ -71,6 +71,9 @@ def module_setup_teardown(qtbot):
                   'imageDir': 'mw4/test/image'}
         uiWindows = {'showImageW': {'classObj': None}}
 
+    def refreshName():
+        return
+
     widget = QWidget()
     ui = Ui_MainWindow()
     ui.setupUi(widget)
@@ -84,6 +87,7 @@ def module_setup_teardown(qtbot):
     app.lastGenerator = 'test'
     app.log = CustomLogger(logging.getLogger(__name__), {})
     app.threadPool = QThreadPool()
+    app.refreshName = refreshName
 
     qtbot.addWidget(app)
 

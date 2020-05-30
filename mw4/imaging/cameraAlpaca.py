@@ -223,6 +223,7 @@ class CameraAlpaca(AlpacaClass):
                 header['TELESCOP'] = self.app.mount.firmware.product
 
             hdu.writeto(imagePath, overwrite=True)
+            self.log.warning(f'Saved Image: [{imagePath}]')
 
         if self.abortExpose:
             imagePath = ''

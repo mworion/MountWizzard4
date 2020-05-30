@@ -20,12 +20,17 @@ import os
 
 # external packages
 import PyQt5.QtWidgets
+
 from astropy.io import fits
 from astropy import wcs
 from astropy.nddata import Cutout2D
 from astropy.visualization import MinMaxInterval
 from astropy.visualization import AsinhStretch
 from astropy.visualization import imshow_norm
+from astropy.stats import sigma_clipped_stats
+from photutils import CircularAperture
+from photutils import DAOStarFinder
+
 import matplotlib.pyplot as plt
 from skyfield.api import Angle
 import numpy as np
@@ -160,6 +165,7 @@ class ImageWindow(widget.MWidget):
         self.ui.checkShowGrid.setChecked(config.get('checkShowGrid', True))
         self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
         self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
+        self.ui.checkShowSources.setChecked(config.get('checkShowSources', False))
 
         return True
 
@@ -188,6 +194,7 @@ class ImageWindow(widget.MWidget):
         config['checkShowGrid'] = self.ui.checkShowGrid.isChecked()
         config['checkAutoSolve'] = self.ui.checkAutoSolve.isChecked()
         config['checkEmbedData'] = self.ui.checkEmbedData.isChecked()
+        config['checkShowSources'] = self.ui.checkShowSources.isChecked()
 
         return True
 
@@ -210,6 +217,7 @@ class ImageWindow(widget.MWidget):
         self.ui.checkUseWCS.clicked.connect(self.showCurrent)
         self.ui.checkShowGrid.clicked.connect(self.showCurrent)
         self.ui.checkShowCrosshair.clicked.connect(self.showCurrent)
+        self.ui.checkShowSources.clicked.connect(self.showCurrent)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
@@ -242,6 +250,7 @@ class ImageWindow(widget.MWidget):
         self.ui.checkUseWCS.clicked.disconnect(self.showCurrent)
         self.ui.checkShowGrid.clicked.disconnect(self.showCurrent)
         self.ui.checkShowCrosshair.clicked.disconnect(self.showCurrent)
+        self.ui.checkShowSources.clicked.disconnect(self.showCurrent)
         self.ui.solve.clicked.disconnect(self.solveCurrent)
         self.ui.expose.clicked.disconnect(self.exposeImage)
         self.ui.exposeN.clicked.disconnect(self.exposeImageN)
@@ -684,6 +693,15 @@ class ImageWindow(widget.MWidget):
                     cmap=colorMap)
 
         axe.figure.canvas.draw()
+
+        if self.ui.checkShowSources.isChecked():
+            mean, median, std = sigma_clipped_stats(imageData, sigma=3.0)
+            daoFind = DAOStarFinder(fwhm=3.0, threshold=5.*std)
+            sources = daoFind(imageData - median)
+            positions = np.transpose((sources['xcentroid'], sources['ycentroid']))
+            apertures = CircularAperture(positions, r=10.0)
+            apertures.plot(axes=axe, color=self.M_BLUE, lw=1.0, alpha=0.8)
+            axe.figure.canvas.draw()
 
         return True
 

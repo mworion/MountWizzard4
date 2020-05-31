@@ -445,7 +445,7 @@ class Model(object):
         self.log.info('Slew started')
 
         if self.slewQueue.empty():
-            self.log.warning('empty slew queue')
+            self.log.warning('Empty slew queue')
             return False
 
         mPoint = self.slewQueue.get()
@@ -458,10 +458,18 @@ class Model(object):
         if not suc:
             return False
 
-        self.app.dome.slewDome(altitude=mPoint['altitude'],
-                               azimuth=mPoint['azimuth'],
-                               geometry=self.ui.checkDomeGeometry.isChecked()
-                               )
+        if self.deviceStat['dome']:
+            useGeometry = self.ui.checkDomeGeometry.isChecked()
+            alt = mPoint['altitude']
+            az = mPoint['azimuth']
+
+            delta = self.app.dome.slewDome(altitude=alt, azimuth=az, geometry=useGeometry)
+
+            geoStat = 'Geometry corrected' if useGeometry else 'Equal mount'
+            text = f'Slewing  dome:       point: {mPoint["countSequence"]:03d}, '
+            text += f'{geoStat}, az: {az:3.1f} delta: {delta:3.1f}'
+            self.app.message.emit(text, 0)
+
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
         self.log.info(f'Queued to image [{mPoint}]')
@@ -470,6 +478,7 @@ class Model(object):
         text += f'altitude: {mPoint["altitude"]:3.0f}, '
         text += f'azimuth: {mPoint["azimuth"]:3.0f}'
         self.app.message.emit(text, 0)
+
         self.ui.mPoints.setText(f'{mPoint["lenSequence"]:2d}')
         self.ui.mSlew.setText(f'{mPoint["countSequence"] + 1:2d}')
 

@@ -193,11 +193,7 @@ class Dome:
             alt = altitude
             az = azimuth
 
-        geoStat = 'Geometry corrected' if geometry else 'Equal mount'
         delta = azimuth - az
-        text = f'Slewing  dome:       {geoStat}, az: {az:3.1f} delta: {delta:3.1f}'
-        self.app.message.emit(text, 0)
+        self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
 
-        suc = self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
-
-        return suc
+        return delta

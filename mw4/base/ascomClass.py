@@ -181,7 +181,10 @@ class AscomClass(object):
         :return: success
         """
 
-        suc = self.client.connected
+        try:
+            suc = self.client.connected
+        except Exception as e:
+            self.log.warning(f'Connection status error [{self.name}]: [{e}]')
 
         if self.deviceConnected and not suc:
             self.deviceConnected = False

@@ -90,9 +90,9 @@ class DomeAscom(AscomClass):
         :return: true for test purpose
         """
 
-        azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
+        azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', -1)
         statusIsSlewing = self.data.get('slewing', False)
-        hasReachedTarget = (azimuth - self.targetAzimuth) < 0.1
+        hasReachedTarget = abs(azimuth - self.targetAzimuth) < 0.1
         isSlewing = statusIsSlewing or not hasReachedTarget
         hasStopped = self.slewing and not statusIsSlewing and hasReachedTarget
 

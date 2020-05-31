@@ -122,8 +122,9 @@ class AstrometryASTAP(object):
             return False
         else:
             delta = time.time() - timeStart
-            self.log.info(f'astap took {delta}s return code: '
+            self.log.info(f'ASTAP took {delta}s return code: '
                           + str(self.process.returncode)
+                          + f' [{fitsPath}]'
                           + ' stderr: '
                           + stderr.decode().replace('\n', ' ')
                           + ' stdout: '

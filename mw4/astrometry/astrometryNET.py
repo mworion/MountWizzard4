@@ -120,8 +120,9 @@ class AstrometryNET(object):
             return False
         else:
             delta = time.time() - timeStart
-            self.log.info(f'image2xy took {delta}s return code: '
+            self.log.info(f'IMAGE2XY took {delta}s return code: '
                           + str(self.process.returncode)
+                          + f' [{fitsPath}]'
                           + ' stderr: '
                           + stderr.decode().replace('\n', ' ')
                           + ' stdout: '
@@ -131,7 +132,7 @@ class AstrometryNET(object):
         success = (self.process.returncode == 0)
         return success
 
-    def runSolveField(self, binPath='', configPath='', tempPath='', options=''):
+    def runSolveField(self, binPath='', configPath='', tempPath='', options='', fitsPath=''):
         """
         runSolveField solves finally the xy star list and writes the WCS data in a fits
         file format
@@ -140,6 +141,7 @@ class AstrometryNET(object):
         :param configPath: full path to astrometry.cfg file
         :param tempPath:  full path to star file
         :param options: additional solver options e.g. ra and dec hint
+        :param fitsPath:  full path to fits file
         :return: success
         """
 
@@ -175,8 +177,9 @@ class AstrometryNET(object):
             return False
         else:
             delta = time.time() - timeStart
-            self.log.info(f'solve-field took {delta}s return code: '
+            self.log.info(f'SOLVE-FIELD took {delta}s return code: '
                           + str(self.process.returncode)
+                          + f' [{fitsPath}]'
                           + ' stderr: '
                           + stderr.decode().replace('\n', ' ')
                           + ' stdout: '
@@ -268,7 +271,7 @@ class AstrometryNET(object):
                                fitsPath=fitsPath,
                                )
         if not suc:
-            self.log.error(f'image2xy error in [{fitsPath}]')
+            self.log.error(f'IMAGE2XY error in [{fitsPath}]')
             self.result['message'] = 'image2xy failed'
             return False
 
@@ -309,19 +312,20 @@ class AstrometryNET(object):
                                  configPath=configPath,
                                  tempPath=tempPath,
                                  options=options,
+                                 fitsPath=fitsPath,
                                  )
         if not suc:
-            self.log.error(f'solve-field error in [{fitsPath}]')
+            self.log.error(f'SOLVE-FIELD error in [{fitsPath}]')
             self.result['message'] = 'solve-field error'
             return False
 
         if not os.path.isfile(solvedPath):
-            self.log.info(f'solve files for [{fitsPath}] missing')
+            self.log.info(f'Solve files for [{fitsPath}] missing')
             self.result['message'] = 'solve failed'
             return False
 
         if not os.path.isfile(wcsPath):
-            self.log.info(f'solve files for [{wcsPath}] missing')
+            self.log.info(f'Solve files for [{wcsPath}] missing')
             self.result['message'] = 'solve failed'
             return False
 

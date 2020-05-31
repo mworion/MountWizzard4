@@ -36,6 +36,7 @@ if platform.system() == 'Windows':
 # local import
 from mw4.imaging.cameraAscom import CameraAscom
 from mw4.imaging.camera import CameraSignals
+from mw4.base.ascomClass import AscomClass
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -96,8 +97,11 @@ def test_getInitialConfig_1():
 
 def test_getInitialConfig_2():
     app.deviceConnected = False
-    suc = app.getInitialConfig()
-    assert not suc
+    with mock.patch.object(AscomClass,
+                           'getInitialConfig',
+                           return_value=True):
+        suc = app.getInitialConfig()
+        assert not suc
 
 
 def test_workerPollData_1():

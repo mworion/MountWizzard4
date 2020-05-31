@@ -29,6 +29,7 @@ from PyQt5.QtCore import pyqtSignal
 # local import
 from mw4.imaging.focuserAscom import FocuserAscom
 from mw4.imaging.focuser import FocuserSignals
+from mw4.base.ascomClass import AscomClass
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -58,8 +59,11 @@ def test_getInitialConfig_1():
 
 def test_getInitialConfig_2():
     app.deviceConnected = False
-    suc = app.getInitialConfig()
-    assert not suc
+    with mock.patch.object(AscomClass,
+                           'getInitialConfig',
+                           return_value=True):
+        suc = app.getInitialConfig()
+        assert not suc
 
 
 def test_workerPollData_1():

@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import unittest.mock as mock
 import platform
 import faulthandler
 faulthandler.enable()
@@ -32,6 +33,7 @@ if platform.system() == 'Windows':
 # local import
 from mw4.imaging.filterAscom import FilterAscom
 from mw4.imaging.filter import FilterSignals
+from mw4.base.ascomClass import AscomClass
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -56,14 +58,20 @@ def module_setup_teardown():
 
 def test_getInitialConfig_0():
     app.deviceConnected = False
-    suc = app.getInitialConfig()
-    assert not suc
+    with mock.patch.object(AscomClass,
+                           'getInitialConfig',
+                           return_value=True):
+        suc = app.getInitialConfig()
+        assert not suc
 
 
 def test_getInitialConfig_1():
     app.deviceConnected = True
-    suc = app.getInitialConfig()
-    assert suc
+    with mock.patch.object(AscomClass,
+                           'getInitialConfig',
+                           return_value=True):
+        suc = app.getInitialConfig()
+        assert suc
 
 
 def test_getInitialConfig_2():

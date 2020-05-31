@@ -316,7 +316,7 @@ class Model(object):
             text += f'Error: {mPoint["errorRMS_S"]:4.1f}'
             self.app.message.emit(text, 0)
         else:
-            text = f'Solving  image-{count:03d}: solving error: {mPoint.get("message")}'
+            text = f'Solving  image-{count:03d}:  {mPoint.get("message")}'
             self.app.message.emit(text, 2)
 
         self.updateProgress(number=number,
@@ -805,6 +805,11 @@ class Model(object):
         while not self.modelQueue.empty():
             mPoint = self.modelQueue.get()
             self.model.append(mPoint)
+
+        if len(self.model) < 3:
+            self.app.message.emit(f'Modeling finished:    {self.modelName}', 2)
+            self.app.message.emit(f'Model not enough valid model point', 2)
+            return False
 
         # stopping other activities
         self.defaultSignals()

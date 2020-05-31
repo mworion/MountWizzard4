@@ -740,9 +740,9 @@ class ImageWindow(widget.MWidget):
                                focalLength=focalLength
                                )
 
-        self.app.message.emit(f'Exposing: [{os.path.basename(imagePath)}]', 0)
+        self.app.message.emit(f'Exposing:            [{os.path.basename(imagePath)}]', 0)
         text = f'Duration:{self.expTime:3.0f}s  Bin:{self.binning:1.0f}  Sub:{subFrame:3.0f}%'
-        self.app.message.emit(f'     {text}', 0)
+        self.app.message.emit(f'                     {text}', 0)
 
         return True
 
@@ -758,7 +758,7 @@ class ImageWindow(widget.MWidget):
 
         self.deviceStat['expose'] = False
         self.app.camera.signals.saved.disconnect(self.exposeImageDone)
-        self.app.message.emit(f'Exposed:  [{os.path.basename(imagePath)}]', 0)
+        self.app.message.emit(f'Exposed:             [{os.path.basename(imagePath)}]', 0)
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -798,7 +798,7 @@ class ImageWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        self.app.message.emit(f'Exposed: [{os.path.basename(imagePath)}]', 0)
+        self.app.message.emit(f'Exposed:            [{os.path.basename(imagePath)}]', 0)
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -885,7 +885,7 @@ class ImageWindow(widget.MWidget):
             text += f'Error: {result["errorRMS_S"]:4.1f}'
             self.app.message.emit(text, 0)
         else:
-            text = f'Solving error: {result.get("message")}'
+            text = f'Solving error:       {result.get("message")}'
             self.app.message.emit(text, 2)
             return False
 
@@ -923,7 +923,7 @@ class ImageWindow(widget.MWidget):
                                            )
         self.deviceStat['solve'] = True
         self.app.astrometry.signals.done.connect(self.solveDone)
-        self.app.message.emit(f'Solving: [{os.path.basename(imagePath)}]', 0)
+        self.app.message.emit(f'Solving:             [{os.path.basename(imagePath)}]', 0)
 
         return True
 

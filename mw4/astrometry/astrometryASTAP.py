@@ -138,7 +138,7 @@ class AstrometryASTAP(object):
                           + stdout.decode().replace('\n', ' ')
                           )
 
-        return self.process.returncode
+        return int(self.process.returncode)
 
     @staticmethod
     def getWCSHeader(wcsTextFile=None):
@@ -224,7 +224,7 @@ class AstrometryASTAP(object):
                                  options=options,
                                  )
 
-        if retValue != '0':
+        if not retValue:
             text = self.returnCodes.get(retValue, 'Unknown code')
             self.result['message'] = f'ASTAP error: [{text}]'
             self.log.error(f'ASTAP error [{text}] in [{fitsPath}]')

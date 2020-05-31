@@ -732,7 +732,7 @@ class Model(object):
         self.retrofitModel()
 
         # now saving the model
-        self.app.message.emit(f'Writing model:        {self.modelName} ', 0)
+        self.app.message.emit(f'Writing model:       [{self.modelName}]', 0)
 
         saveData = self.generateSaveModel()
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'

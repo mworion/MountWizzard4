@@ -49,6 +49,9 @@ class TelescopeAscom(AscomClass):
         :return: true for test purpose
         """
 
+        if not self.deviceConnected:
+            return False
+
         super().getInitialConfig()
 
         value = self.client.ApertureDiameter

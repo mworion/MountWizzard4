@@ -102,6 +102,7 @@ class AlpacaClass(object):
         self.client.connected(Connected=True)
         suc = self.client.connected()
         if not suc:
+            self.app.message.emit(f'ALPACA connect error:[{self.name}]', 2)
             return False
 
         if not self.serverConnected:
@@ -173,6 +174,7 @@ class AlpacaClass(object):
         """
 
         suc = self.client.connected()
+
         if self.deviceConnected and not suc:
             self.deviceConnected = False
             self.client.signals.deviceDisconnected.emit(f'{self.name}')

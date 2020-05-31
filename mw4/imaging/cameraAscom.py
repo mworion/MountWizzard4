@@ -55,6 +55,9 @@ class CameraAscom(AscomClass):
         :return: true for test purpose
         """
 
+        if not self.deviceConnected:
+            return False
+
         super().getInitialConfig()
 
         self.dataEntry(self.client.CameraXSize, 'CCD_INFO.CCD_MAX_X')
@@ -77,6 +80,9 @@ class CameraAscom(AscomClass):
 
         :return: true for test purpose
         """
+
+        if not self.deviceConnected:
+            return False
 
         self.dataEntry(self.client.CameraState,
                        'CAMERA.STATE')
@@ -107,6 +113,9 @@ class CameraAscom(AscomClass):
         canFast = self.data.get('CAN_FAST', False)
 
         if not canFast:
+            return False
+
+        if not self.deviceConnected:
             return False
 
         if fastReadout:

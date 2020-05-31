@@ -49,6 +49,9 @@ class FilterAscom(AscomClass):
         :return: success
         """
 
+        if not self.deviceConnected:
+            return False
+
         super().getInitialConfig()
 
         names = self.client.Names
@@ -69,6 +72,9 @@ class FilterAscom(AscomClass):
         :return: true for test purpose
         """
 
+        if not self.deviceConnected:
+            return False
+
         position = self.client.Position
 
         if position == -1 or position is None:
@@ -83,6 +89,9 @@ class FilterAscom(AscomClass):
 
         :return: true for test purpose
         """
+
+        if not self.deviceConnected:
+            return False
 
         self.client.Position = filterNumber
 

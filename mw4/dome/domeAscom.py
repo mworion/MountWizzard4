@@ -118,8 +118,13 @@ class DomeAscom(AscomClass):
 
         :return: true for test purpose
         """
+
+        if not self.deviceConnected:
+            return False
+
         self.dataEntry(self.client.Azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.dataEntry(self.client.Slewing, 'slewing')
+
         return True
 
     def slewToAltAz(self, altitude=0, azimuth=0):
@@ -131,6 +136,9 @@ class DomeAscom(AscomClass):
         :param azimuth:
         :return: success
         """
+
+        if not self.deviceConnected:
+            return False
 
         self.slewing = True
         self.targetAzimuth = azimuth

@@ -378,14 +378,14 @@ class AstrometryNET(object):
 
         # checking binaries
         if not os.path.isfile(program):
-            self.log.info(f'{program} not found')
+            self.log.info(f'[{program}] not found')
             sucProgram = False
         else:
             sucProgram = True
 
         # checking indexes
         if not glob.glob(index):
-            self.log.info('no index files found')
+            self.log.info('No index files found')
             sucIndex = False
         else:
             sucIndex = True

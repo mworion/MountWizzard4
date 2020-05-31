@@ -49,6 +49,9 @@ class FocuserAscom(AscomClass):
         :return: true for test purpose
         """
 
+        if not self.deviceConnected:
+            return False
+
         super().getInitialConfig()
 
         return True
@@ -58,6 +61,9 @@ class FocuserAscom(AscomClass):
 
         :return: true for test purpose
         """
+
+        if not self.deviceConnected:
+            return False
 
         self.dataEntry(self.client.Position, 'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION')
 

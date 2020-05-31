@@ -27,9 +27,9 @@ from astropy.nddata import Cutout2D
 from astropy.visualization import MinMaxInterval
 from astropy.visualization import AsinhStretch
 from astropy.visualization import imshow_norm
-from astropy.stats import sigma_clipped_stats
-from photutils import CircularAperture
-from photutils import DAOStarFinder
+# from astropy.stats import sigma_clipped_stats
+# from photutils import CircularAperture
+# from photutils import DAOStarFinder
 
 import matplotlib.pyplot as plt
 from skyfield.api import Angle
@@ -694,6 +694,7 @@ class ImageWindow(widget.MWidget):
 
         axe.figure.canvas.draw()
 
+        """
         if self.ui.checkShowSources.isChecked():
             mean, median, std = sigma_clipped_stats(imageData, sigma=3.0)
             daoFind = DAOStarFinder(fwhm=3.0, threshold=5.0 * std)
@@ -702,6 +703,7 @@ class ImageWindow(widget.MWidget):
             apertures = CircularAperture(positions, r=10.0)
             apertures.plot(axes=axe, color=self.M_BLUE, lw=1.0, alpha=0.8)
             axe.figure.canvas.draw()
+        """
 
         return True
 

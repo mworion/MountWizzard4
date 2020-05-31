@@ -97,6 +97,7 @@ class AscomClass(object):
         suc = self.client.connected
 
         if not suc:
+            self.app.message.emit(f'ASCOM connect error: [{self.name}]', 2)
             return False
 
         if not self.serverConnected:
@@ -246,6 +247,8 @@ class AscomClass(object):
         """
 
         self.stopTimer()
+        if self.client:
+            self.client.connected = False
         self.deviceConnected = False
         self.serverConnected = False
         self.client = None

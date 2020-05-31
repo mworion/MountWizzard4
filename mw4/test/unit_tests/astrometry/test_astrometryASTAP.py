@@ -112,7 +112,7 @@ def test_runASTAP_2(app):
                            'Popen',
                            return_value=Test()):
         val = app.runASTAP()
-        assert val == '1'
+        assert val == 1
 
 
 def test_runASTAP_3(app):
@@ -162,7 +162,7 @@ def test_solveASTAP_3(app):
     }
     with mock.patch.object(app,
                            'runASTAP',
-                           return_value='1'):
+                           return_value=1):
         suc = app.solve(fitsPath='mw4/test/image/m51.fit')
         assert not suc
 
@@ -177,7 +177,7 @@ def test_solveASTAP_4(app):
     }
     with mock.patch.object(app,
                            'runASTAP',
-                           return_value='0'):
+                           return_value=0):
         suc = app.solve(fitsPath='mw4/test/image/m51.fit')
         assert not suc
 
@@ -192,7 +192,7 @@ def test_solveASTAP_5(app):
     }
     with mock.patch.object(app,
                            'runASTAP',
-                           return_value='0'):
+                           return_value=0):
         with mock.patch.object(os,
                                'remove',
                                return_value=True):

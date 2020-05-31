@@ -92,12 +92,12 @@ class DomeAscom(AscomClass):
 
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', -1)
         statusIsSlewing = self.data.get('slewing', False)
-        hasReachedTarget = abs(azimuth - self.targetAzimuth) < 0.1
-        isSlewing = statusIsSlewing or not hasReachedTarget
-        hasStopped = self.slewing and not statusIsSlewing and hasReachedTarget
 
-        if isSlewing:
-            self.slewing = True
+        hasReachedTarget = abs(azimuth - self.targetAzimuth) < 0.1
+        hasStopped = self.slewing and (not statusIsSlewing or hasReachedTarget)
+
+        if not self.slewing:
+            self.slewing = statusIsSlewing and not hasReachedTarget
 
         if hasStopped:
             # start timer for settling time and emit signal afterwards

@@ -49,10 +49,10 @@ class FilterAscom(AscomClass):
         :return: success
         """
 
+        super().getInitialConfig()
+
         if not self.deviceConnected:
             return False
-
-        super().getInitialConfig()
 
         names = self.client.Names
 

@@ -49,10 +49,10 @@ class FocuserAscom(AscomClass):
         :return: true for test purpose
         """
 
+        super().getInitialConfig()
+
         if not self.deviceConnected:
             return False
-
-        super().getInitialConfig()
 
         return True
 

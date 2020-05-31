@@ -55,10 +55,10 @@ class CameraAscom(AscomClass):
         :return: true for test purpose
         """
 
+        super().getInitialConfig()
+
         if not self.deviceConnected:
             return False
-
-        super().getInitialConfig()
 
         self.dataEntry(self.client.CameraXSize, 'CCD_INFO.CCD_MAX_X')
         self.dataEntry(self.client.CameraYSize, 'CCD_INFO.CCD_MAX_Y')

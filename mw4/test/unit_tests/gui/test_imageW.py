@@ -382,7 +382,7 @@ def test_exposeImageDone_1(qtbot):
         with qtbot.waitSignal(app.signals.showImage):
             suc = app.exposeImageDone()
             assert suc
-    assert ['Exposed:  []', 0] == blocker.args
+    assert ['Exposed:             []', 0] == blocker.args
 
 
 def test_exposeImageDone_2(qtbot):
@@ -392,7 +392,7 @@ def test_exposeImageDone_2(qtbot):
         with qtbot.waitSignal(app.signals.solveImage):
             suc = app.exposeImageDone()
             assert suc
-    assert ['Exposed:  []', 0] == blocker.args
+    assert ['Exposed:             []', 0] == blocker.args
 
 
 def test_exposeImage_1():
@@ -408,7 +408,7 @@ def test_exposeImageNDone_1(qtbot):
         with qtbot.waitSignal(app.signals.showImage):
             suc = app.exposeImageNDone()
             assert suc
-    assert ['Exposed: []', 0] == blocker.args
+    assert ['Exposed:            []', 0] == blocker.args
 
 
 def test_exposeImageNDone_2(qtbot):
@@ -418,7 +418,7 @@ def test_exposeImageNDone_2(qtbot):
         with qtbot.waitSignal(app.signals.solveImage):
             suc = app.exposeImageNDone()
             assert suc
-    assert ['Exposed: []', 0] == blocker.args
+    assert ['Exposed:            []', 0] == blocker.args
 
 
 def test_exposeImageN_1():
@@ -490,7 +490,7 @@ def test_solveDone_2(qtbot):
     with qtbot.waitSignal(app.app.message) as blocker:
         suc = app.solveDone(result=result)
         assert not suc
-    assert ['Solving error: test', 2] == blocker.args
+    assert ['Solving error:       test', 2] == blocker.args
 
 
 def test_solveDone_3(qtbot):
@@ -512,7 +512,7 @@ def test_solveDone_3(qtbot):
     with qtbot.waitSignal(app.app.message) as blocker:
         suc = app.solveDone(result=result)
         assert suc
-    assert ['Solved : Ra: 10:00:00 (10.000), Dec: +20:00:00 (20.000), ', 0] == blocker.args
+    assert ['Solved :             RA: 10:00:00 (10.000), DEC: +20:00:00 (20.000), ', 0] == blocker.args
 
 
 def test_solveDone_4(qtbot):

@@ -8,7 +8,8 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PyQT5 for python
+# GUI with PyQT5 for python !
+
 #
 # written in python3 , (c) 2019, 2020 by mworion
 #
@@ -71,6 +72,9 @@ def module_setup_teardown(qtbot):
                   'imageDir': 'mw4/test/image'}
         uiWindows = {'showImageW': {'classObj': None}}
 
+    def refreshModel():
+        return
+
     def refreshName():
         return
 
@@ -88,6 +92,7 @@ def module_setup_teardown(qtbot):
     app.log = CustomLogger(logging.getLogger(__name__), {})
     app.threadPool = QThreadPool()
     app.refreshName = refreshName
+    app.refreshModel = refreshModel
 
     qtbot.addWidget(app)
 
@@ -194,7 +199,7 @@ def test_modelSolveDone_1(qtbot):
     with qtbot.waitSignal(app.app.message) as blocker:
         suc = app.modelSolveDone(result)
         assert suc
-    assert ['Solving  image-003: solving error: test', 2] == blocker.args
+    assert ['Solving  image-003:  test', 2] == blocker.args
 
 
 def test_modelSolveDone_2():
@@ -763,7 +768,7 @@ def test_modelFinished_1(qtbot):
                            'programAlign',
                            return_value=False):
         suc = app.modelFinished()
-        assert suc
+        assert not suc
 
 
 def test_modelFinished_2(qtbot):
@@ -795,6 +800,8 @@ def test_modelFinished_2(qtbot):
          'errorRMS': 3,
          }
 
+    app.modelQueue.put(inputData)
+    app.modelQueue.put(inputData)
     app.modelQueue.put(inputData)
 
     app.app.camera.signals.saved.connect(app.modelSolve)

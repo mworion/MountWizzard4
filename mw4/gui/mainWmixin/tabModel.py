@@ -732,7 +732,7 @@ class Model(object):
         self.retrofitModel()
 
         # now saving the model
-        self.app.message.emit(f'Writing model:       {self.modelName} ', 1)
+        self.app.message.emit(f'Writing model:        {self.modelName} ', 0)
 
         saveData = self.generateSaveModel()
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
@@ -756,7 +756,7 @@ class Model(object):
         """
 
         if len(self.model) < 3:
-            self.log.info(f'only {len(self.model)} points available')
+            self.log.info(f'Only {len(self.model)} points available')
             return False
 
         # setting signal for callback when the model in memory is refreshed
@@ -836,7 +836,7 @@ class Model(object):
             self.app.mount.model.storeName('back')
             self.app.mount.model.deleteName('temp')
 
-    # finally do it
+        # finally do it
         self.app.message.emit('Programming model to mount', 0)
         build = self.generateBuildData(model=self.model)
         suc = self.app.mount.model.programAlign(build)
@@ -855,8 +855,6 @@ class Model(object):
 
         self.app.message.emit(f'Modeling finished:    {self.modelName}', 1)
         self.playSound('ModelingFinished')
-
-        self.app.message.emit('Refreshing model view', 0)
         self.refreshName()
 
         return True

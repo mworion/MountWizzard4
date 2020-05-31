@@ -50,7 +50,7 @@ def setupLogging():
     # standard DEBUG    will be INFO        all functional interface parameters
     # missing TRACE     will be debug       all low level communications (IP, SPI, etc)
     #
-    logging.getLogger('mountcontrol').setLevel(logging.INFO)
+    logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
     logging.getLogger('indibase').setLevel(logging.INFO)
 
     # setting different log level for imported packages to avoid unnecessary data
@@ -69,9 +69,11 @@ def setCustomLoggingLevel(level='WARN'):
 
     :return: true for test purpose
     """
+
     logging.getLogger().setLevel(level)
     logging.getLogger('indibase').setLevel(level)
     logging.getLogger('mountcontrol').setLevel(level)
+
     return True
 
 

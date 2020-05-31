@@ -151,6 +151,9 @@ class CameraAscom(AscomClass):
         :return: success
         """
 
+        if not self.deviceConnected:
+            return False
+
         binning = int(binning)
         posX = int(posX)
         posY = int(posY)

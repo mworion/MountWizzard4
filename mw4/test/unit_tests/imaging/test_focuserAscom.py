@@ -51,11 +51,25 @@ def module_setup_teardown():
 
 
 def test_getInitialConfig_1():
+    app.deviceConnected = True
     suc = app.getInitialConfig()
     assert suc
 
 
+def test_getInitialConfig_2():
+    app.deviceConnected = False
+    suc = app.getInitialConfig()
+    assert not suc
+
+
 def test_workerPollData_1():
+    app.deviceConnected = True
     suc = app.workerPollData()
     assert suc
     assert app.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] == 1
+
+
+def test_workerPollData_2():
+    app.deviceConnected = False
+    suc = app.workerPollData()
+    assert not suc

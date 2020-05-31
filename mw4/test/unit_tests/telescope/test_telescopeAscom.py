@@ -54,12 +54,20 @@ def module_setup_teardown():
     yield
 
 
+def test_getInitialConfig_0():
+    app.deviceConnected = False
+    suc = app.getInitialConfig()
+    assert not suc
+
+
 def test_getInitialConfig_1():
+    app.deviceConnected = True
     suc = app.getInitialConfig()
     assert suc
 
 
 def test_getInitialConfig_2():
+    app.deviceConnected = True
     suc = app.getInitialConfig()
     assert suc
     assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100

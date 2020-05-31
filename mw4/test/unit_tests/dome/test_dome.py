@@ -98,6 +98,12 @@ def test_stopCommunication_2():
     assert suc
 
 
+def test_slewDome_0():
+    app.data = {}
+    suc = app.slewDome()
+    assert not suc
+
+
 def test_slewDome_1():
     app.data = {}
     suc = app.slewDome()
@@ -118,8 +124,8 @@ def test_slewDome_3():
     with mock.patch.object(app,
                            'calcGeometry',
                            return_value=(10, 10)):
-        suc = app.slewDome(geometry=True)
-        assert not suc
+        val = app.slewDome(geometry=True)
+        assert val == -10
 
 
 def test_slewDome_4():
@@ -129,8 +135,8 @@ def test_slewDome_4():
     with mock.patch.object(app,
                            'calcGeometry',
                            return_value=(np.nan, 10)):
-        suc = app.slewDome(geometry=True)
-        assert not suc
+        val = app.slewDome(geometry=True)
+        assert val == -10
 
 
 def test_slewDome_5():
@@ -140,5 +146,5 @@ def test_slewDome_5():
     with mock.patch.object(app,
                            'calcGeometry',
                            return_value=(10, np.nan)):
-        suc = app.slewDome(geometry=True)
-        assert not suc
+        val = app.slewDome(geometry=True)
+        assert val == 0

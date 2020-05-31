@@ -89,17 +89,34 @@ def module_setup_teardown():
 
 
 def test_getInitialConfig_1():
+    app.deviceConnected = True
     suc = app.getInitialConfig()
     assert suc
 
 
+def test_getInitialConfig_2():
+    app.deviceConnected = False
+    suc = app.getInitialConfig()
+    assert not suc
+
+
 def test_workerPollData_1():
+    app.deviceConnected = True
     app.data['CAN_FAST'] = True
     suc = app.workerPollData()
     assert suc
 
 
 def test_workerPollData_2():
+    app.deviceConnected = True
+    app.data['CAN_FAST'] = False
+
+    suc = app.workerPollData()
+    assert not suc
+
+
+def test_workerPollData_3():
+    app.deviceConnected = False
     app.data['CAN_FAST'] = False
 
     suc = app.workerPollData()
@@ -119,24 +136,41 @@ def test_pollData_2():
 
 
 def test_sendDownloadMode_1():
+    app.deviceConnected = True
     app.data['CAN_FAST'] = True
     suc = app.sendDownloadMode()
     assert suc
 
 
 def test_sendDownloadMode_2():
+    app.deviceConnected = True
     app.data['CAN_FAST'] = True
     suc = app.sendDownloadMode(fastReadout=True)
     assert suc
 
 
 def test_sendDownloadMode_3():
+    app.deviceConnected = True
     app.data['CAN_FAST'] = False
     suc = app.sendDownloadMode()
     assert not suc
 
 
+def test_sendDownloadMode_4():
+    app.deviceConnected = False
+    app.data['CAN_FAST'] = False
+    suc = app.sendDownloadMode()
+    assert not suc
+
+
+def test_workerExpose_0():
+    app.deviceConnected = False
+    suc = app.workerExpose()
+    assert not suc
+
+
 def test_workerExpose_1():
+    app.deviceConnected = True
     app.data['CAN_FAST'] = False
     app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
     app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
@@ -149,6 +183,7 @@ def test_workerExpose_1():
 
 
 def test_workerExpose_2():
+    app.deviceConnected = True
     app.data['CAN_FAST'] = False
     app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
     app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
@@ -163,6 +198,7 @@ def test_workerExpose_2():
 
 
 def test_workerExpose_3():
+    app.deviceConnected = True
     app.data['CAN_FAST'] = False
     app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
     app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000

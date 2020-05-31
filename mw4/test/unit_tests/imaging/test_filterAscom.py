@@ -54,18 +54,27 @@ def module_setup_teardown():
     yield
 
 
+def test_getInitialConfig_0():
+    app.deviceConnected = False
+    suc = app.getInitialConfig()
+    assert not suc
+
+
 def test_getInitialConfig_1():
+    app.deviceConnected = True
     suc = app.getInitialConfig()
     assert suc
 
 
 def test_getInitialConfig_2():
+    app.deviceConnected = True
     app.client.Names = None
     suc = app.getInitialConfig()
     assert not suc
 
 
 def test_getInitialConfig_3():
+    app.deviceConnected = True
     app.client.Names = ['test', 'test1']
     suc = app.getInitialConfig()
     assert suc
@@ -73,13 +82,22 @@ def test_getInitialConfig_3():
     assert app.data['FILTER_NAME.FILTER_SLOT_NAME_1'] == 'test1'
 
 
+def test_workerPollData_0():
+    app.deviceConnected = False
+    app.client.Position = -1
+    suc = app.workerPollData()
+    assert not suc
+
+
 def test_workerPollData_1():
+    app.deviceConnected = True
     app.client.Position = -1
     suc = app.workerPollData()
     assert not suc
 
 
 def test_workerPollData_2():
+    app.deviceConnected = True
     app.client.Position = 1
     suc = app.workerPollData()
     assert suc
@@ -87,6 +105,13 @@ def test_workerPollData_2():
 
 
 def test_sendFilterNumber_1():
+    app.deviceConnected = True
     suc = app.sendFilterNumber(3)
     assert suc
     assert app.client.Position == 3
+
+
+def test_sendFilterNumber_2():
+    app.deviceConnected = False
+    suc = app.sendFilterNumber(3)
+    assert not suc

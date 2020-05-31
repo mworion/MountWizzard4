@@ -46,6 +46,13 @@ class AstrometryASTAP(object):
                'abort',
                ]
 
+    returnCodes = {0: 'No errors',
+                   1: 'No solution',
+                   2: 'Not enough stars detected',
+                   3: 'Error reading image file',
+                   32: 'No Star database found',
+                   33: 'Error reading star database'}
+
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
 
@@ -175,13 +182,6 @@ class AstrometryASTAP(object):
         :return: success
         """
 
-        returnCodes = {0: 'No errors',
-                       1: 'No solution',
-                       2: 'Not enough stars detected',
-                       3: 'Error reading image file',
-                       32: 'No Star database found',
-                       33: 'Error reading star database'}
-
         self.process = None
         self.result = {'success': False}
 
@@ -225,7 +225,7 @@ class AstrometryASTAP(object):
                                  )
 
         if retValue:
-            text = returnCodes.get(self.process.returncode, 'Unknown code')
+            text = self.returnCodes.get(self.process.returncode, 'Unknown code')
             self.result['message'] = f'ASTAP error: [{text}]'
             self.log.error(f'ASTAP error [{text}] in [{fitsPath}]')
             return False

@@ -96,18 +96,20 @@ class AscomClass(object):
         :return: success of reconnecting to server
         """
 
-        retry = 3
-        while retry > 0:
+        retry = 0
+        while retry < 6:
             try:
+                retry += 1
                 self.client.connected = True
             except Exception as e:
                 self.log.warning(f'Connection error [{self.name}]: [{e}]')
             else:
                 suc = self.client.connected
+                self.log.info(f'[{self.name}] connected, [{retry}] retries needed')
             finally:
                 if suc:
                     break
-                time.sleep(0.3)
+                time.sleep(0.2)
 
         if not suc:
             self.app.message.emit(f'ASCOM connect error: [{self.name}]', 2)

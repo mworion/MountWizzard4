@@ -186,7 +186,8 @@ class Astrometry:
             raHint = transform.convertToAngle(ra, isHours=True)
             decHint = transform.convertToAngle(dec, isHours=False)
 
-        self.log.info(f'RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale: {scaleHint}')
+        self.log.info(f'Header RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale:'
+                      f' {scaleHint}')
 
         return raHint, decHint, scaleHint, ra, dec
 

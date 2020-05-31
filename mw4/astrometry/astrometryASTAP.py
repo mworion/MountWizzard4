@@ -123,7 +123,7 @@ class AstrometryASTAP(object):
         else:
             delta = time.time() - timeStart
             self.log.info(f'ASTAP took {delta}s return code: '
-                          + str(self.process.returncode)
+                          + f'{self.process.returncode}'
                           + f' [{fitsPath}]'
                           + ' stderr: '
                           + stderr.decode().replace('\n', ' ')
@@ -131,9 +131,7 @@ class AstrometryASTAP(object):
                           + stdout.decode().replace('\n', ' ')
                           )
 
-        success = (self.process.returncode == 0)
-
-        return success
+        return self.process.returncode
 
     @staticmethod
     def getWCSHeader(wcsTextFile=None):
@@ -177,6 +175,13 @@ class AstrometryASTAP(object):
         :return: success
         """
 
+        returnCodes = {0: 'No errors',
+                       1: 'No solution',
+                       2: 'Not enough stars detected',
+                       3: 'Error reading image file',
+                       32: 'No Star database found',
+                       33: 'Error reading star database'}
+
         self.process = None
         self.result = {'success': False}
 
@@ -213,19 +218,21 @@ class AstrometryASTAP(object):
                    '0',
                    ]
 
-        suc = self.runASTAP(binPath=binPathASTAP,
-                            fitsPath=fitsPath,
-                            tempFile=tempFile,
-                            options=options,
-                            )
-        if not suc:
-            self.result['message'] = 'astap error'
-            self.log.error(f'astap error in [{fitsPath}]')
+        retValue = self.runASTAP(binPath=binPathASTAP,
+                                 fitsPath=fitsPath,
+                                 tempFile=tempFile,
+                                 options=options,
+                                 )
+
+        if retValue:
+            text = returnCodes.get(self.process.returncode, 'Unknown code')
+            self.result['message'] = f'ASTAP error: [{text}]'
+            self.log.error(f'ASTAP error [{text}] in [{fitsPath}]')
             return False
 
         if not os.path.isfile(wcsPath):
-            self.result['message'] = 'solve failed'
-            self.log.info(f'solve files for [{wcsPath}] missing')
+            self.result['message'] = 'Solve failed'
+            self.log.info(f'Solve files for [{wcsPath}] missing')
             return False
 
         with open(wcsPath) as wcsTextFile:

@@ -298,7 +298,7 @@ class Model(object):
             mPoint['decJNowS'] = decJNowS
 
             if mPoint['errorRMS_S'] < self.MAX_ERROR_MODEL_POINT:
-                self.log.info(f'Queued to model [{mPoint}]')
+                self.log.info(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
                 self.modelQueue.put(mPoint)
             else:
                 text = f'Solving failed for image-{count:03d}'
@@ -359,7 +359,7 @@ class Model(object):
             imageWObj.signals.showImage.emit(mPoint["imagePath"])
 
         self.resultQueue.put(mPoint)
-        self.log.info(f'Queued to result [{mPoint}]')
+        self.log.info(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         self.app.astrometry.solveThreading(fitsPath=mPoint["imagePath"],
                                            updateFits=False,
                                            )
@@ -420,7 +420,7 @@ class Model(object):
         mPoint['pierside'] = self.app.mount.obsSite.pierside
 
         self.solveQueue.put(mPoint)
-        self.log.info(f'Queued to solve [{mPoint}]')
+        self.log.info(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
         text = f'Exposing image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
@@ -472,7 +472,7 @@ class Model(object):
 
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
-        self.log.info(f'Queued to image [{mPoint}]')
+        self.log.info(f'Queued to image [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
         text = f'Slewing  mount:      point: {mPoint["countSequence"]:03d}, '
         text += f'altitude: {mPoint["altitude"]:3.0f}, '

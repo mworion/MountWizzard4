@@ -39,7 +39,7 @@ echo ""
 echo "----------------------------------------"
 echo "Updating pip installer"
 
-echo ""python3 -m pip install --upgrade pip >> install.log
+python3 -m pip install --upgrade pip >> install.log
 
 # now starting to install all things
 echo ""

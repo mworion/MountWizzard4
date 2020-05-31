@@ -18,6 +18,7 @@
 # standard libraries
 import logging
 import platform
+import time
 if platform.system() == 'Windows':
     import win32com.client
     import pythoncom
@@ -89,12 +90,24 @@ class AscomClass(object):
 
     def getInitialConfig(self):
         """
+        getInitialConfig starts connecting the ascom device with retry and send the
+        corresponding signals. basis information will be collected, too.
 
         :return: success of reconnecting to server
         """
 
-        self.client.connected = True
-        suc = self.client.connected
+        retry = 3
+        while retry > 0:
+            try:
+                self.client.connected = True
+            except Exception as e:
+                self.log.warning(f'Connection error [{self.name}]: [{e}]')
+            else:
+                suc = self.client.connected
+            finally:
+                if suc:
+                    break
+                time.sleep(0.3)
 
         if not suc:
             self.app.message.emit(f'ASCOM connect error: [{self.name}]', 2)

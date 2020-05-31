@@ -296,7 +296,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         for driver in self.data:
             self.data[driver]['indiHost'] = self.ui.indiHost.text()
             self.data[driver]['indiPort'] = self.ui.indiPort.text()
-            self.data[driver]['indiMessages'] = self.ui.indiLoadConfig.isChecked()
+            self.data[driver]['indiMessages'] = self.ui.indiMessages.isChecked()
             self.data[driver]['indiLoadConfig'] = self.ui.indiLoadConfig.isChecked()
 
         # memorizing that copy was done:

@@ -19,6 +19,7 @@
 import pytest
 import os
 import json
+import csv
 import binascii
 import unittest.mock as mock
 import faulthandler
@@ -53,8 +54,8 @@ def module_setup_teardown():
             os.remove(os.path.join(config, item))
 
     app = DataPoint(app=Test(),
-                     configDir='mw4/test/config',
-                     )
+                    configDir='mw4/test/config',
+                    )
     yield
 
 
@@ -212,7 +213,7 @@ def test_genGreaterCircle4():
 def test_checkFormat_1():
     a = [[1, 1], [1, 1]]
     suc = app.checkFormat(a)
-    assert suc
+    assert not suc
 
 
 def test_checkFormat_2():
@@ -231,6 +232,12 @@ def test_checkFormat_4():
     a = 'test'
     suc = app.checkFormat(a)
     assert not suc
+
+
+def test_checkFormat_5():
+    a = [(1, 1), (1, 1)]
+    suc = app.checkFormat(a)
+    assert suc
 
 
 def test_buildP1():
@@ -520,6 +527,70 @@ def test_saveBuildP_12():
     assert os.path.isfile(fileName)
 
 
+def test_loadJSON_1():
+    val = app.loadJSON(fileName='')
+    assert val is None
+
+
+def test_loadJSON_2():
+    with open('mw4/test/config/test.bpts', 'w') as outfile:
+        outfile.writelines('[test, ]],[]}')
+
+    val = app.loadJSON(fileName='test')
+    assert val is None
+
+
+def test_loadJSON_3():
+    with open('mw4/test/config/test.bpts', 'wb') as outfile:
+        outfile.write(binascii.unhexlify('9f'))
+
+    val = app.loadJSON(fileName='test')
+    assert val is None
+
+
+def test_loadJSON_4():
+    values = [(1, 1), (2, 2)]
+    with open('mw4/test/config/test.bpts', 'w') as outfile:
+        json.dump(values,
+                  outfile,
+                  indent=4)
+
+    val = app.loadJSON(fileName='test')
+    assert val == [(1, 1), (2, 2)]
+
+
+def test_loadCSV_1():
+    val = app.loadCSV(fileName='')
+    assert val is None
+
+
+def test_loadCSV_2():
+    with open('mw4/test/config/test.csv', 'w') as outfile:
+        outfile.writelines('[test, ]],[]}')
+
+    val = app.loadCSV(fileName='test')
+    assert val is None
+
+
+def test_loadCSV_3():
+    with open('mw4/test/config/test.csv', 'wb') as outfile:
+        outfile.write(binascii.unhexlify('9f'))
+
+    val = app.loadCSV(fileName='test')
+    assert val is None
+
+
+def test_loadCSV_4():
+    values = [(1, 1), (2, 2)]
+    with open('mw4/test/config/test.csv', 'w') as outfile:
+        writer = csv.writer(outfile)
+        for val in values:
+            writer.writerow(val)
+
+    val = app.loadCSV(fileName='test')
+    assert val == [(1, 1), (2, 2)]
+
+
 def test_loadBuildP_11():
     # wrong fileName given
     suc = app.loadBuildP()
@@ -544,28 +615,6 @@ def test_loadBuildP_13():
     suc = app.loadBuildP(fileName='test')
     assert suc
     assert app.buildP == values
-
-
-def test_loadBuildP_14():
-    # load with wrong content
-    app.buildPFile = ''
-    fileName = 'mw4/test/config/test.bpts'
-    with open(fileName, 'wb') as outfile:
-        outfile.write(binascii.unhexlify('9f'))
-    suc = app.loadBuildP(fileName='test')
-    assert not suc
-    assert app.buildP == []
-
-
-def test_loadBuildP_15():
-    # load with wrong content 2
-    app.buildPFile = ''
-    fileName = 'mw4/test/config/test.bpts'
-    with open(fileName, 'w') as outfile:
-        outfile.writelines('[test, ]],[]}')
-    suc = app.loadBuildP(fileName='test')
-    assert not suc
-    assert app.buildP == []
 
 
 def test_loadBuildP_16():

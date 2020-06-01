@@ -467,6 +467,8 @@ class DataPoint(object):
             self.clearBuildP()
             return False
         self._buildP = value
+
+        # backup solution
         if csv:
             self.saveBuildP(fileName=fileName)
         return True
@@ -509,13 +511,14 @@ class DataPoint(object):
         except Exception as e:
             self.log.warning('Cannot load: {0}, error: {1}'.format(fileName, e))
             return False
+        else:
+            value = [tuple(x) for x in value]
 
         suc = self.checkFormat(value)
         if not suc:
             self.clearHorizonP()
             return False
-        # json makes list out of tuple, was to be reversed
-        value = [tuple(x) for x in value]
+
         self._horizonP = value
         return True
 

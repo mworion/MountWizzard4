@@ -174,3 +174,11 @@ def install_all(c):
     with c.cd('./dist'):
         runMW(c, 'pip install indibase.tar.gz')
         runMW(c, 'pip install mountcontrol.tar.gz')
+
+
+@task(pre=[])
+def test_win(c):
+    printMW('installing on windows vm and test')
+    with c.cd('./support/Windows'):
+        runMW(c, 'ssh mw@astro-windows.fritz.box "mkdir /Users/mw/Desktop/work"')
+        runMW(c, 'scp MW4_Install.bat mw@astro-windows.fritz.box:/Users/mw/Desktop')

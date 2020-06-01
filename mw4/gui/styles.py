@@ -204,6 +204,11 @@ class MWStyles(object):
         border-style: outset;
         border-color: red;
     }
+    QLineEdit[status='on'] {
+        color: black;
+        border-width: 2px;
+        background-color: rgb(32, 144, 192);
+    }
     QLabel[color='green'] {
         color: green;
     }

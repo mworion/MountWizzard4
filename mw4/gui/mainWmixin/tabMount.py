@@ -204,6 +204,7 @@ class Mount(object):
         if sett.UTCExpire is not None:
             ui = self.ui.UTCExpire
             ui.setText(sett.UTCExpire)
+
             # coloring if close to end:
             now = datetime.datetime.now()
             expire = datetime.datetime.strptime(sett.UTCExpire, '%Y-%m-%d')
@@ -214,33 +215,49 @@ class Mount(object):
                 self.changeStyleDynamic(ui, 'color', 'yellow')
             else:
                 self.changeStyleDynamic(ui, 'color', '')
-        else:
-            self.ui.UTCExpire.setText('-')
+        self.guiSetText(self.ui.UTCExpire, 's', sett.UTCExpire)
 
-        if sett.statusUnattendedFlip is not None:
-            self.ui.statusUnattendedFlip.setText('ON' if sett.statusUnattendedFlip else 'OFF')
+        ui = self.ui.statusUnattendedFlip
+        if sett.statusUnattendedFlip is None:
+            text = '-'
+            self.changeStyleDynamic(ui, 'status', '')
+        elif sett.statusUnattendedFlip:
+            text = 'ON'
+            self.changeStyleDynamic(ui, 'status', 'on')
         else:
-            self.ui.statusUnattendedFlip.setText('-')
+            text = 'OFF'
+            self.changeStyleDynamic(ui, 'status', '')
+        self.guiSetText(ui, 's', text)
 
-        if sett.statusDualAxisTracking is not None:
-            self.ui.statusDualAxisTracking.setText(
-                'ON' if sett.statusDualAxisTracking else 'OFF')
+        ui = self.ui.statusDualAxisTracking
+        if sett.statusDualAxisTracking is None:
+            text = '-'
+            self.changeStyleDynamic(ui, 'status', '')
+        elif sett.statusDualAxisTracking:
+            text = 'ON'
+            self.changeStyleDynamic(ui, 'status', 'on')
         else:
-            self.ui.statusDualAxisTracking.setText('-')
+            text = 'OFF'
+            self.changeStyleDynamic(ui, 'status', '')
+        self.guiSetText(ui, 's', text)
 
-        if sett.statusRefraction is not None:
-            status = sett.statusRefraction
-            self.ui.statusRefraction.setText('ON' if status else 'OFF')
-            if status:
-                self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
-                self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
-            else:
-                self.changeStyleDynamic(self.ui.refractionTemp1, 'color', 'yellow')
-                self.changeStyleDynamic(self.ui.refractionPress1, 'color', 'yellow')
-        else:
-            self.ui.statusRefraction.setText('-')
+        ui = self.ui.statusRefraction
+        if sett.statusRefraction is None:
+            text = '-'
+            self.changeStyleDynamic(ui, 'status', '')
             self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
             self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
+        elif sett.statusRefraction:
+            text = 'ON'
+            self.changeStyleDynamic(ui, 'status', 'on')
+            self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
+            self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
+        else:
+            text = 'OFF'
+            self.changeStyleDynamic(ui, 'status', '')
+            self.changeStyleDynamic(self.ui.refractionTemp1, 'color', 'yellow')
+            self.changeStyleDynamic(self.ui.refractionPress1, 'color', 'yellow')
+        self.guiSetText(ui, 's', text)
 
         return True
 
@@ -254,18 +271,33 @@ class Mount(object):
         :return:    True if ok for testing
         """
 
-        self.ui.statusGPSSynced.setText('YES' if sett.gpsSynced else 'NO')
-
-        if sett.wakeOnLan is not None:
-            self.ui.statusWOL.setText(sett.wakeOnLan)
+        ui = self.ui.statusGPSSynced
+        if sett.gpsSynced is None:
+            text = '-'
+            self.changeStyleDynamic(ui, 'status', '')
+        elif sett.gpsSynced:
+            text = 'YES'
+            self.changeStyleDynamic(ui, 'status', 'on')
         else:
-            self.ui.statusWOL.setText('-')
+            text = 'NO'
+            self.changeStyleDynamic(ui, 'status', '')
+        self.guiSetText(ui, 's', text)
 
-        if sett.typeConnection is None:
-            return False
+        ui = self.ui.statusWOL
+        if sett.wakeOnLan is None:
+            text = '-'
+            self.changeStyleDynamic(ui, 'status', '')
+        elif sett.wakeOnLan == 'ON':
+            text = 'ON'
+            self.changeStyleDynamic(ui, 'status', 'on')
+        else:
+            text = 'OFF'
+            self.changeStyleDynamic(ui, 'status', '')
+        self.guiSetText(ui, 's', text)
 
-        text = self.typeConnectionTexts[sett.typeConnection]
-        self.ui.mountTypeConnection.setText(text)
+        if sett.typeConnection is not None:
+            text = self.typeConnectionTexts[sett.typeConnection]
+            self.ui.mountTypeConnection.setText(text)
 
         return True
 

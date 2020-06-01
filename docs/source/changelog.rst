@@ -3,6 +3,12 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed
 changes list, please refer to the commit list on GitHub.
 
+0.150.25
+
+- ASCOM driver retries
+- Shotdown ASCOM with more time
+- Text updates
+
 0.150.23
 
 - added checkbox for disabling dual axis tracking while model build

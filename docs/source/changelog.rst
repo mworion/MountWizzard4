@@ -6,8 +6,9 @@ changes list, please refer to the commit list on GitHub.
 0.150.25
 
 - ASCOM driver retries
-- Shotdown ASCOM with more time
-- Text updates
+- shutdown ASCOM with more time
+- text updates
+- adding csv import and convert to local format for model points
 
 0.150.23
 

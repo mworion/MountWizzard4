@@ -15,18 +15,50 @@
 # Licence APL2.0
 #
 ###########################################################
-from invoke import task
+from invoke import task, context
 from PIL import Image
 import glob
+import time
+
+#
+# defining all necessary virtual client login for building over all platforms
+#
+
+# defining environment for ubuntu
+clientUbuntu = 'astro-ubuntu.fritz.box'
+userUbuntu = 'mw@' + clientUbuntu
+workUbuntu = '/home/mw/test'
+workUbuntuSCP = userUbuntu + ':/home/mw/test'
+
+# same for windows10 with cmd.exe as shell
+clientWindows = 'astro-windows.fritz.box'
+userWindows = 'mw@' + clientWindows
+workWindows = 'test'
+workWindowsSCP = userWindows + ':/Users/mw/test'
+
+
+def runMWd(c, param):
+    c.run(param)
 
 
 def runMW(c, param):
-    # c.run(param, echo=False, hide='out')
-    c.run(param)
+    c.run(param, echo=False, hide='out')
 
 
 def printMW(param):
     print('\n\033[95m\033[1m' + param + '\033[0m')
+
+
+def printMWp(param):
+    print('\033[95m\033[1m' + param + '\033[0m')
+
+
+@task
+def clean_mountwizzard(c):
+    printMW('clean mountwizzard')
+    runMW(c, 'rm -rf .pytest_cache')
+    runMW(c, 'rm -rf mw4.egg-info')
+    runMW(c, 'find ./mw4 | grep -E "(__pycache__)" | xargs rm -rf')
 
 
 @task
@@ -74,9 +106,9 @@ def version_doc(c):
 @task
 def build_resource(c):
     printMW('building resources')
-    # runMW(c, 'cp ./data/deltat.data ./mw4/resource/deltat.data')
-    # runMW(c, 'cp ./data/deltat.preds ./mw4/resource/deltat.preds')
-    # runMW(c, 'cp ./data/Leap_Second.dat ./mw4/resource/Leap_Second.dat')
+    runMW(c, 'cp ./data/deltat.data ./mw4/resource/deltat.data')
+    runMW(c, 'cp ./data/deltat.preds ./mw4/resource/deltat.preds')
+    runMW(c, 'cp ./data/Leap_Second.dat ./mw4/resource/Leap_Second.dat')
     resourceDir = './mw4/resource/'
     runMW(c, f'pyrcc5 -o {resourceDir}resources.py {resourceDir}resources.qrc')
 
@@ -138,7 +170,7 @@ def build_mw(c):
     printMW('building dist mountwizzard4')
     with c.cd('.'):
         runMW(c, 'rm -f dist/mountwizzard4*.tar.gz')
-        runMW(c, 'python setup.py sdist')
+        runMW(c, 'python setup.py sdist bdist_wheel')
         runMW(c, 'cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz')
 
 
@@ -178,7 +210,42 @@ def install_all(c):
 
 @task(pre=[])
 def test_win(c):
-    printMW('installing on windows vm and test')
-    with c.cd('./support/Windows'):
-        runMW(c, 'ssh mw@astro-windows.fritz.box "mkdir /Users/mw/Desktop/work"')
-        runMW(c, 'scp MW4_Install.bat mw@astro-windows.fritz.box:/Users/mw/Desktop')
+    printMW('test windows install')
+    printMWp('...delete test dir')
+    runMW(c, f'ssh {userWindows} "if exist {workWindows} rd /s /q {workWindows}"')
+    printMWp('...make test dir')
+    runMW(c, f'ssh {userWindows} "if not exist {workWindows} mkdir {workWindows}"')
+    time.sleep(1)
+
+    with c.cd('dist'):
+        printMWp('...copy *.tar.gz to test dir')
+        runMWd(c, f'scp -r mountwizzard4.tar.gz {workWindowsSCP}')
+
+    with c.cd('support/Windows'):
+        printMWp('...copy install script to test dir')
+        runMWd(c, f'scp -r MW4_InstallTest.bat {workWindowsSCP}')
+        printMWp('...run install script in test dir')
+        runMWd(c, f'ssh {userWindows} "cd {workWindows} && MW4_InstallTest.bat"')
+        printMWp('...copy run script to test dir')
+        runMWd(c, f'scp -r MW4_RunTest.bat {workWindowsSCP}')
+        printMWp('...run MountWizzard4 for 3 seconds')
+        runMWd(c, f'ssh {userWindows} "cd {workWindows} && MW4_RunTest.bat"')
+
+
+@task(pre=[])
+def check_win(c):
+    printMW('run windows install script from support')
+    printMWp('...delete test dir')
+    runMW(c, f'ssh {userWindows} "if exist {workWindows} rd /s /q {workWindows}"')
+    printMWp('...make test dir')
+    runMW(c, f'ssh {userWindows} "if not exist {workWindows} mkdir {workWindows}"')
+    time.sleep(1)
+    with c.cd('support/Windows'):
+        printMWp('...copy install script to test dir')
+        runMWd(c, f'scp -r MW4_Install.bat {workWindowsSCP}')
+        printMWp('...run install script in test dir')
+        runMWd(c, f'ssh {userWindows} "cd {workWindows} && MW4_Install.bat"')
+        printMWp('...copy run script to test dir')
+        runMWd(c, f'scp -r MW4_RunTest.bat {workWindowsSCP}')
+        printMWp('...run MountWizzard4 for 3 seconds')
+        runMWd(c, f'ssh {userWindows} "cd {workWindows} && MW4_RunTest.bat"')

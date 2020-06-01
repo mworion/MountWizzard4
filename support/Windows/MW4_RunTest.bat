@@ -1,0 +1,1 @@
+venv\Scripts\activate && venv\Scripts\python.exe venv\Lib\site-packages\mw4\loader.py test > runTest.log

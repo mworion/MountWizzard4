@@ -124,7 +124,7 @@ echo.
 
 echo . >> install.log
 echo Installing mountwizzard4 - take a minute >> install.log
-venv\Scripts\activate && python -m pip install mountwizzard4 --upgrade --no-cache-dir --disable-pip-version-check >>install.log
+venv\Scripts\activate && python -m pip install mountwizzard4.tar.gz --disable-pip-version-check >>install.log
 
 echo.
 echo ---------------------------------------------

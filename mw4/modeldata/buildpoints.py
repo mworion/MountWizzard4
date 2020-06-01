@@ -20,6 +20,7 @@ import logging
 import os
 import json
 import random
+import csv
 # external packages
 import numpy as np
 import skyfield.api
@@ -234,16 +235,6 @@ class DataPoint(object):
         self._horizonP = value
         self.checkHorizonBoundaries()
 
-    @staticmethod
-    def checkFormat(value):
-        if not isinstance(value, list):
-            return False
-        if not all([isinstance(x, list) for x in value]):
-            return False
-        if not all([len(x) == 2 for x in value]):
-            return False
-        return True
-
     def addHorizonP(self, value=None, position=None):
         """
         addHorizonP extends the list of modeldata points. the new point could be added at the
@@ -396,35 +387,88 @@ class DataPoint(object):
 
         return True
 
-    def loadBuildP(self, fileName=None):
+    def loadJSON(self, fileName):
         """
-        loadBuildP loads a modeldata pints file and stores the data in the buildP list.
-        necessary conversion are made.
 
         :param fileName: name of file to be handled
-        :return: success
+        :return: value: loaded data
         """
-
-        if fileName is None:
-            return False
         fileName = self.configDir + '/' + fileName + '.bpts'
         if not os.path.isfile(fileName):
-            return False
+            return None
 
         try:
             with open(fileName, 'r') as handle:
                 value = json.load(handle)
         except Exception as e:
-            self.log.warning('Cannot load: {0}, error: {1}'.format(fileName, e))
+            self.log.warning('Cannot BPTS load: {0}, error: {1}'.format(fileName, e))
+            value = None
+        else:
+            value = [tuple(x) for x in value]
+        return value
+
+    def loadCSV(self, fileName):
+        """
+
+        :param fileName: name of file to be handled
+        :return: value: loaded data
+        """
+        fileName = self.configDir + '/' + fileName + '.csv'
+        if not os.path.isfile(fileName):
+            return None
+
+        try:
+            value = []
+            with open(fileName, 'r') as handle:
+                reader = csv.reader(handle)
+                for x in reader:
+                    convertedX = [float(val) for val in x]
+                    value.append(convertedX)
+        except Exception as e:
+            self.log.warning('Cannot CSV load: {0}, error: {1}'.format(fileName, e))
+            value = None
+        else:
+            value = [tuple(x) for x in value]
+        return value
+
+    @staticmethod
+    def checkFormat(value):
+        if not isinstance(value, list):
+            return False
+        if not all([isinstance(x, tuple) for x in value]):
+            return False
+        if not all([len(x) == 2 for x in value]):
+            return False
+        return True
+
+    def loadBuildP(self, fileName=None, csv=False):
+        """
+        loadBuildP loads a modeldata pints file and stores the data in the buildP list.
+        necessary conversion are made.
+
+        :param fileName: name of file to be handled
+        :param csv: load a csv file
+        :return: success
+        """
+
+        if fileName is None:
+            return False
+
+        if csv:
+            value = self.loadCSV(fileName)
+        else:
+            value = self.loadJSON(fileName)
+
+        if value is None:
             return False
 
         suc = self.checkFormat(value)
         if not suc:
             self.clearBuildP()
             return False
-        # json makes list out of tuple, was to be reversed
-        value = [tuple(x) for x in value]
         self._buildP = value
+        if csv:
+            self.saveBuildP(fileName=fileName)
         return True
 
     def saveBuildP(self, fileName=None):

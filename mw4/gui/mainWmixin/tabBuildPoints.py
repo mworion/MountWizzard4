@@ -470,12 +470,14 @@ class BuildPoints(object):
         loadFilePath, fileName, ext = self.openFile(self,
                                                     'Open build point file',
                                                     folder,
-                                                    'Build point files (*.bpts)',
+                                                    'Build point files (*.bpts, *.csv)',
                                                     )
         if not loadFilePath:
             return False
 
-        suc = self.app.data.loadBuildP(fileName=fileName)
+        isCSV = ext == '.csv'
+
+        suc = self.app.data.loadBuildP(fileName=fileName, csv=isCSV)
         if suc:
             self.ui.buildPFileName.setText(fileName)
             self.app.message.emit('Build file [{0}] loaded'.format(fileName), 0)

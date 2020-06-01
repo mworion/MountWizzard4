@@ -170,7 +170,7 @@ def build_mw(c):
     printMW('building dist mountwizzard4')
     with c.cd('.'):
         runMW(c, 'rm -f dist/mountwizzard4*.tar.gz')
-        runMW(c, 'python setup.py sdist bdist_wheel')
+        runMW(c, 'python setup.py sdist')
         runMW(c, 'cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz')
 
 

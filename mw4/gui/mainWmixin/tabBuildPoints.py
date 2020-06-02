@@ -467,10 +467,11 @@ class BuildPoints(object):
         """
 
         folder = self.app.mwGlob['configDir']
+        fileTypes = 'Build Point Files (*.bpts);; CSV Files (*.csv)'
         loadFilePath, fileName, ext = self.openFile(self,
                                                     'Open build point file',
                                                     folder,
-                                                    'Build point files (*.bpts, *.csv)',
+                                                    fileTypes,
                                                     )
         if not loadFilePath:
             return False

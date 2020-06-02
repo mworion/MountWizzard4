@@ -206,8 +206,8 @@ class HemisphereWindowExt(object):
         if event.ydata is None:
             return False
 
-        self.ui.altitude.setText(f'{event.xdata:3.1f}')
-        self.ui.azimuth.setText(f'{event.ydata:3.1f}')
+        self.ui.altitude.setText(f'{event.ydata:3.1f}')
+        self.ui.azimuth.setText(f'{event.xdata:3.1f}')
         return True
 
     def onMouseNormal(self, event):

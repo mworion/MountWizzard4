@@ -10,5 +10,6 @@ configuration you should do the following steps:
 
     mount
     camera
+    settings
 
 

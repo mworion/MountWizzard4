@@ -11,6 +11,7 @@ changes list, please refer to the commit list on GitHub.
 - adding csv import and convert to local format for model points
 - refinement geometry calculations, more message output
 - adding version info to analyse
+- improving readability of gui (on/off now blue/black)
 
 0.150.24
 

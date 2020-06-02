@@ -272,6 +272,39 @@ def test_clearBuildP():
     assert len(app.buildP) == 0
 
 
+def check_checkHorizonBoundaries_1():
+    suc = app.checkHorizonBoundaries()
+    assert suc
+
+
+def check_checkHorizonBoundaries_2():
+    app.buildP = []
+    suc = app.checkHorizonBoundaries()
+    assert suc
+    assert app.buildP == [(0, 0), (0, 360)]
+
+
+def check_checkHorizonBoundaries_3():
+    app.buildP = [(0, 10), (0, 30)]
+    suc = app.checkHorizonBoundaries()
+    assert suc
+    assert app.buildP == [(0, 0), (0, 10), (0, 30), (0, 360)]
+
+
+def check_checkHorizonBoundaries_4():
+    app.buildP = [(0, 0), (0, 30)]
+    suc = app.checkHorizonBoundaries()
+    assert suc
+    assert app.buildP == [(0, 0), (0, 30), (0, 360)]
+
+
+def check_checkHorizonBoundaries_5():
+    app.buildP = [(0, 10), (0, 360)]
+    suc = app.checkHorizonBoundaries()
+    assert suc
+    assert app.buildP == [(0, 0), (0, 10), (0, 360)]
+
+
 def test_addBuildP1():
     app.buildP = ()
     suc = app.addBuildP((10, 10))

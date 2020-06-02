@@ -527,12 +527,11 @@ def test_solveDone_4(qtbot):
         'errorRMS_S': 3,
         'flippedS': False,
         'imagePath': 'test',
-        'solvedPath': 'test',
+        'solvedPath': 'testFile',
         'message': 'test',
     }
 
     app.app.astrometry.signals.done.connect(app.solveDone)
-    app.signals.showImage.disconnect(app.showImage)
     with qtbot.waitSignal(app.signals.showImage):
         suc = app.solveDone(result=result)
         assert suc

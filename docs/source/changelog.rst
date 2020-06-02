@@ -12,6 +12,7 @@ changes list, please refer to the commit list on GitHub.
 - refinement geometry calculations, more message output
 - adding version info to analyse
 - improving readability of gui (on/off now blue/black)
+- added manual ASCOM connect and disconnect drivers
 
 0.150.24
 

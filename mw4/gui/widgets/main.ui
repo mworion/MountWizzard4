@@ -14434,7 +14434,7 @@ Hint if mount will need a flip when following satellite.</string>
        </property>
        <widget class="QPushButton" name="ascomConnect">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -14453,7 +14453,7 @@ Hint if mount will need a flip when following satellite.</string>
        </widget>
        <widget class="QPushButton" name="ascomDisconnect">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -14470,9 +14470,9 @@ Hint if mount will need a flip when following satellite.</string>
          <string>Disconnect</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkASCOMAutomaticConnect">
+       <widget class="QCheckBox" name="checkASCOMAutoConnect">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>

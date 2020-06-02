@@ -188,6 +188,8 @@ class SettDevice(object):
         for driver in self.drivers:
             self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
 
+        self.ui.checkASCOMAutoConnect.setChecked(config.get('checkASCOMAutoConnect', False))
+
         self.dispatch(driverName='all')
 
         return True
@@ -214,6 +216,8 @@ class SettDevice(object):
             if driver not in self.driversData:
                 continue
             configData[driver] = self.driversData[driver]
+
+        config['checkASCOMAutoConnect'] = self.ui.checkASCOMAutoConnect.isChecked()
 
         return True
 
@@ -459,11 +463,12 @@ class SettDevice(object):
 
         return True
 
-    def dispatchStartDriver(self, driver=None):
+    def dispatchStartDriver(self, driver=None, ascom=True):
         """
         dispatchStartDriver
 
         :param driver:
+        :param ascom: flag if ascom driver should be started, too
         :return success of start
         """
 
@@ -474,6 +479,10 @@ class SettDevice(object):
         if self.drivers[driver]['uiDropDown'].currentText().startswith('internal'):
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[driver] = True
+
+        elif self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
+            if not ascom:
+                return False
 
         # and finally start it
         self.app.message.emit(f'Enabled device:      [{driver}]', 0)
@@ -506,6 +515,7 @@ class SettDevice(object):
 
         isGui = not isinstance(driverName, str)
         isAll = not isGui and driverName == 'all'
+        autoASCOM = self.ui.checkASCOMAutoConnect.isChecked()
 
         for driver in self.drivers:
             if not isGui and (driverName != driver) and not isAll:
@@ -518,7 +528,7 @@ class SettDevice(object):
                 continue
 
             self.dispatchConfigDriver(driver=driver)
-            self.dispatchStartDriver(driver=driver)
+            self.dispatchStartDriver(driver=driver, ascom=autoASCOM)
 
         return True
 

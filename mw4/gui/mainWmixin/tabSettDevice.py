@@ -138,6 +138,9 @@ class SettDevice(object):
 
         self.driversData = {}
 
+        self.ui.ascomConnect.clicked.connect(self.manualStartAllAscomDrivers)
+        self.ui.ascomDisconnect.clicked.connect(self.manualStopAllAscomDrivers)
+
         for driver in self.drivers:
             self.drivers[driver]['uiDropDown'].activated.connect(self.dispatch)
             if self.drivers[driver]['uiSetup'] is not None:
@@ -330,12 +333,23 @@ class SettDevice(object):
 
         return True
 
-    def dispatchStopDriver(self, driver=None):
+    def dispatchStopDriver(self, driver=None, autoASCOM=True, onlyASCOM=False):
         """
         dispatchStopDriver stops the named driver.
 
+        :param driver:
+        :param autoASCOM: flag if ascom driver should be started, too
+        :param onlyASCOM: flag if only ascom driver should be affected
         :return: returns status if we are finished
         """
+
+        if not self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
+            if onlyASCOM:
+                return False
+
+        elif self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
+            if not (autoASCOM or onlyASCOM):
+                return False
 
         # if there is a change we first have to stop running drivers and reset gui
         # if it's the startup (which has no name set, we don't need to stop)
@@ -367,16 +381,31 @@ class SettDevice(object):
 
         return True
 
-    def dispatchConfigDriver(self, driver=None):
+    def manualStopAllAscomDrivers(self):
+        """
+
+        :return: True for test purpose
+        """
+        for driver in self.drivers:
+            self.dispatchStopDriver(driver=driver, onlyASCOM=True)
+
+        return True
+
+    def dispatchConfigDriver(self, driver=None, onlyASCOM=False):
         """
         dispatchConfigDriver
 
         :param driver:
+        :param onlyASCOM: flag if only ascom driver should be affected
         :return: True for test purpose
         """
 
         if not driver:
             return False
+
+        if not self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
+            if onlyASCOM:
+                return False
 
         driverData = self.driversData.get(driver, {})
         driverClass = self.drivers[driver]['class']
@@ -463,26 +492,41 @@ class SettDevice(object):
 
         return True
 
-    def dispatchStartDriver(self, driver=None, ascom=True):
+    def manualStartAllAscomDrivers(self):
+        """
+
+        :return: True for test purpose
+        """
+        for driver in self.drivers:
+            self.dispatchConfigDriver(driver=driver, onlyASCOM=True)
+            self.dispatchStartDriver(driver=driver, onlyASCOM=True)
+
+        return True
+
+    def dispatchStartDriver(self, driver=None, autoASCOM=True, onlyASCOM=False):
         """
         dispatchStartDriver
 
         :param driver:
-        :param ascom: flag if ascom driver should be started, too
+        :param autoASCOM: flag if ascom driver should be started, too
+        :param onlyASCOM: flag if only ascom driver should be affected
         :return success of start
         """
 
         if not driver:
             return False
 
-        # for built-in i actually not check their presence as the should function
-        if self.drivers[driver]['uiDropDown'].currentText().startswith('internal'):
-            self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
-            self.deviceStat[driver] = True
+        if not self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
+            if onlyASCOM:
+                return False
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
-            if not ascom:
+            if not (autoASCOM or onlyASCOM):
                 return False
+
+        elif self.drivers[driver]['uiDropDown'].currentText().startswith('internal'):
+            self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
+            self.deviceStat[driver] = True
 
         # and finally start it
         self.app.message.emit(f'Enabled device:      [{driver}]', 0)
@@ -524,11 +568,11 @@ class SettDevice(object):
             if isGui and (self.sender() != self.drivers[driver]['uiDropDown']):
                 continue
 
-            if not self.dispatchStopDriver(driver=driver):
+            if not self.dispatchStopDriver(driver=driver, autoASCOM=autoASCOM):
                 continue
 
             self.dispatchConfigDriver(driver=driver)
-            self.dispatchStartDriver(driver=driver, ascom=autoASCOM)
+            self.dispatchStartDriver(driver=driver, autoASCOM=autoASCOM)
 
         return True
 

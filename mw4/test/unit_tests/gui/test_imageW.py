@@ -532,6 +532,7 @@ def test_solveDone_4(qtbot):
     }
 
     app.app.astrometry.signals.done.connect(app.solveDone)
+    app.signals.showImage.disconnect(app.showImage)
     with qtbot.waitSignal(app.signals.showImage):
         suc = app.solveDone(result=result)
         assert suc
@@ -543,7 +544,7 @@ def test_solveImage_1(qtbot):
 
 
 def test_solveImage_2(qtbot):
-    suc = app.solveImage('test')
+    suc = app.solveImage(imagePath='testFile')
     assert not suc
 
 

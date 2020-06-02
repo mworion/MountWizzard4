@@ -60,6 +60,7 @@ def module_setup_teardown(qtbot):
 
     app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
+    app.guiSetText = MWidget().guiSetText
     app.deleteLater = MWidget().deleteLater
     app.log = CustomLogger(logging.getLogger(__name__), {})
     app.threadPool = QThreadPool()
@@ -272,21 +273,21 @@ def test_updateSetSyncGUI_1():
     app.app.mount.setting.gpsSynced = True
     suc = app.updateSetSyncGUI(app.app.mount.setting)
     assert app.ui.statusGPSSynced.text() == 'YES'
-    assert not suc
+    assert suc
 
 
 def test_updateSetSyncGUI_2():
     app.app.mount.setting.gpsSynced = False
     suc = app.updateSetSyncGUI(app.app.mount.setting)
     assert app.ui.statusGPSSynced.text() == 'NO'
-    assert not suc
+    assert suc
 
 
 def test_updateSetSyncGUI_3():
     app.app.mount.setting.typeConnection = None
     app.app.mount.setting.wakeOnLan = '0'
     suc = app.updateSetSyncGUI(app.app.mount.setting)
-    assert not suc
+    assert suc
 
 
 def test_updateSetSyncGUI_4():

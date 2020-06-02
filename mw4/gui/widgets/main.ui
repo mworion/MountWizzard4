@@ -14415,10 +14415,13 @@ Hint if mount will need a flip when following satellite.</string>
        </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_57">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>215</y>
+         <y>315</y>
          <width>366</width>
          <height>71</height>
         </rect>
@@ -14430,6 +14433,9 @@ Hint if mount will need a flip when following satellite.</string>
         <bool>true</bool>
        </property>
        <widget class="QPushButton" name="ascomConnect">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -14446,6 +14452,9 @@ Hint if mount will need a flip when following satellite.</string>
         </property>
        </widget>
        <widget class="QPushButton" name="ascomDisconnect">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>125</x>
@@ -14462,6 +14471,9 @@ Hint if mount will need a flip when following satellite.</string>
         </property>
        </widget>
        <widget class="QCheckBox" name="checkASCOMAutomaticConnect">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>10</x>

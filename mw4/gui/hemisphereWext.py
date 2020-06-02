@@ -510,17 +510,40 @@ class HemisphereWindowExt(object):
                              )
         if reply != msg.Yes:
             return False
+
         suc = self.app.mount.obsSite.setTargetRaDec(ra_hours=ra,
                                                     dec_degrees=dec,
                                                     )
-        alt = self.app.mount.obsSite.Alt.degrees
-        az = self.app.mount.obsSite.Az.degrees
-        if suc:
-            self.app.dome.slewDome(altitude=alt,
-                                   azimuth=az,
-                                   geometry=self.app.mainW.ui.checkDomeGeometry.isChecked()
-                                   )
-            suc = self.app.mount.obsSite.startSlewing(slewType=f'{alignType}')
+        if not suc:
+            self.app.message.emit(f'Cannot slew to: {name}', 2)
+            return False
+
+        altitude = self.app.mount.obsSite.Alt.degrees
+        azimuth = self.app.mount.obsSite.Az.degrees
+
+        useGeometry = self.app.mainW.ui.checkDomeGeometry.isChecked()
+
+        if useGeometry:
+            haT = self.app.mount.obsSite.haJNowTarget
+            decT = self.app.mount.obsSite.decJNowTarget
+            piersideT = self.app.mount.obsSite.piersideTarget
+            lat = self.app.mount.obsSite.location.latitude
+            delta = self.app.dome.slewDome(altitude=altitude,
+                                           azimuth=azimuth,
+                                           piersideT=piersideT,
+                                           haT=haT,
+                                           decT=decT,
+                                           lat=lat)
+        else:
+            delta = self.app.dome.slewDome(altitude=altitude,
+                                           azimuth=azimuth)
+
+        geoStat = 'Geometry corrected' if useGeometry else 'Equal mount'
+        text = f'Slewing dome:        {geoStat}, az: {azimuth:3.1f} delta: {delta:3.1f}'
+        self.app.message.emit(text, 0)
+
+        suc = self.app.mount.obsSite.startSlewing(slewType=f'{alignType}')
+
         if not suc:
             self.app.message.emit(f'Cannot slew to: {name}', 2)
         else:

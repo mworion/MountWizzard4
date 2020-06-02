@@ -241,12 +241,28 @@ class HemisphereWindowExt(object):
             return False
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
                                                     az_degrees=azimuth)
-        if suc:
+
+        if not suc:
+            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
+            return False
+
+        if self.app.mainW.ui.checkDomeGeometry.isChecked():
+            haT = self.app.mount.obsSite.haJNowTarget
+            decT = self.app.mount.obsSite.decJNowTarget
+            piersideT = self.app.mount.obsSite.piersideTarget
+            lat = self.app.mount.obsSite.location.latitude.degrees
             self.app.dome.slewDome(altitude=altitude,
                                    azimuth=azimuth,
-                                   geometry=self.app.mainW.ui.checkDomeGeometry.isChecked()
-                                   )
-            suc = self.app.mount.obsSite.startSlewing()
+                                   piersideT=piersideT,
+                                   haT=haT,
+                                   decT=decT,
+                                   lat=lat)
+        else:
+            self.app.dome.slewDome(altitude=altitude,
+                                   azimuth=azimuth)
+
+        suc = self.app.mount.obsSite.startSlewing()
+
         if suc:
             self.app.message.emit('Starting slew', 0)
         else:

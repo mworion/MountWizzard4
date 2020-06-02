@@ -113,7 +113,7 @@ def test_slewDome_1():
 def test_slewDome_2():
     app.data = {'AZ': 1}
     app.framework = 'indi'
-    suc = app.slewDome(geometry=False)
+    suc = app.slewDome()
     assert not suc
 
 
@@ -121,10 +121,10 @@ def test_slewDome_3():
     app.data = {'AZ': 1}
     app.framework = 'indi'
 
-    with mock.patch.object(app,
-                           'calcGeometry',
+    with mock.patch.object(app.app.mount.geometry,
+                           'calcTransformationMatrices',
                            return_value=(10, 10)):
-        val = app.slewDome(geometry=True)
+        val = app.slewDome(piersideT='W')
         assert val == -10
 
 
@@ -132,10 +132,10 @@ def test_slewDome_4():
     app.data = {'AZ': 1}
     app.framework = 'indi'
 
-    with mock.patch.object(app,
-                           'calcGeometry',
+    with mock.patch.object(app.app.mount.geometry,
+                           'calcTransformationMatrices',
                            return_value=(np.nan, 10)):
-        val = app.slewDome(geometry=True)
+        val = app.slewDome(piersideT='W')
         assert val == -10
 
 
@@ -143,8 +143,8 @@ def test_slewDome_5():
     app.data = {'AZ': 1}
     app.framework = 'indi'
 
-    with mock.patch.object(app,
-                           'calcGeometry',
+    with mock.patch.object(app.app.mount.geometry,
+                           'calcTransformationMatrices',
                            return_value=(10, np.nan)):
-        val = app.slewDome(geometry=True)
+        val = app.slewDome(piersideT='W')
         assert val == 0

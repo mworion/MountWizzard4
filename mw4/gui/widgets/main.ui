@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -5341,7 +5341,7 @@ to mount</string>
       </rect>
      </property>
      <property name="title">
-      <string>Generate model points as greater circles</string>
+      <string>Generate model points as parallels of declination</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
@@ -6858,7 +6858,7 @@ to mount</string>
        <string>Opens an analyse window showing multiple informations about the model context.</string>
       </property>
       <property name="text">
-       <string>Analyse model build window</string>
+       <string>Open analyse model build window</string>
       </property>
      </widget>
     </widget>
@@ -13527,7 +13527,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -21826,7 +21826,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <property name="toolTip">
-         <string>Starting process for updating MountWizzard4 to selected version. The button remeins blue as long as the installations is running.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starting process for updating MountWizzard4 to selected version. The button remains blue as long as the installations is running.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Install</string>

@@ -46,7 +46,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Model Build File Analyse</string>
+   <string>Model Build File Analysis</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
@@ -73,7 +73,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Right Ascention - point errors after solving</string>
+      <string>Right Ascension - point errors after solving</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
@@ -165,7 +165,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Right Ascention - model errors after model build</string>
+      <string>Right Ascension - model errors after model build</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
@@ -790,7 +790,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Polar Erorr</string>
+       <string>Polar Error</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_10">
@@ -810,7 +810,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Ortho Erorr</string>
+       <string>Ortho Error</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="modelPolarError">
@@ -1340,7 +1340,7 @@
    <item row="2" column="2">
     <widget class="QGroupBox" name="groupBox_9">
      <property name="title">
-      <string>Model - error distibution</string>
+      <string>Model - error distribution</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>

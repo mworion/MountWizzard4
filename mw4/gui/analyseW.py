@@ -467,7 +467,7 @@ class AnalyseWindow(widget.MWidget):
         """
 
         axe, fig = self.generateFlat(widget=self.scaleImage)
-        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.2f',))
+        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.3f',))
 
         axe.set_xlabel('Star',
                        color=self.M_BLUE,

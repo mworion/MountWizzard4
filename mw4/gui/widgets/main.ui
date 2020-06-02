@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -5821,7 +5821,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>If checked, all model points are deleted, which are below the horizon mask.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 tries to start build model point from the pierside where the mount is actually.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>Avoid meridian flip when starting</string>

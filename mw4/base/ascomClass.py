@@ -99,6 +99,7 @@ class AscomClass(object):
         retry = 0
         while retry < 6:
             try:
+                suc = False
                 retry += 1
                 self.client.connected = True
             except Exception as e:

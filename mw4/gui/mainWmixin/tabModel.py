@@ -465,7 +465,7 @@ class Model(object):
                 haT = self.app.mount.obsSite.haJNowTarget
                 decT = self.app.mount.obsSite.decJNowTarget
                 piersideT = self.app.mount.obsSite.piersideTarget
-                lat = self.app.mount.obsSite.location.latitude.degrees
+                lat = self.app.mount.obsSite.location.latitude
                 delta = self.app.dome.slewDome(altitude=alt,
                                                azimuth=az,
                                                piersideT=piersideT,

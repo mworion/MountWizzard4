@@ -246,25 +246,31 @@ class HemisphereWindowExt(object):
             self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
             return False
 
-        if self.app.mainW.ui.checkDomeGeometry.isChecked():
+        useGeometry = self.app.mainW.ui.checkDomeGeometry.isChecked()
+
+        if useGeometry:
             haT = self.app.mount.obsSite.haJNowTarget
             decT = self.app.mount.obsSite.decJNowTarget
             piersideT = self.app.mount.obsSite.piersideTarget
-            lat = self.app.mount.obsSite.location.latitude.degrees
-            self.app.dome.slewDome(altitude=altitude,
-                                   azimuth=azimuth,
-                                   piersideT=piersideT,
-                                   haT=haT,
-                                   decT=decT,
-                                   lat=lat)
+            lat = self.app.mount.obsSite.location.latitude
+            delta = self.app.dome.slewDome(altitude=altitude,
+                                           azimuth=azimuth,
+                                           piersideT=piersideT,
+                                           haT=haT,
+                                           decT=decT,
+                                           lat=lat)
         else:
-            self.app.dome.slewDome(altitude=altitude,
-                                   azimuth=azimuth)
+            delta = self.app.dome.slewDome(altitude=altitude,
+                                           azimuth=azimuth)
+
+        geoStat = 'Geometry corrected' if useGeometry else 'Equal mount'
+        text = f'Slewing dome:        {geoStat}, az: {azimuth:3.1f} delta: {delta:3.1f}'
+        self.app.message.emit(text, 0)
 
         suc = self.app.mount.obsSite.startSlewing()
 
         if suc:
-            self.app.message.emit('Starting slew', 0)
+            self.app.message.emit('Slewing mount', 0)
         else:
             self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
         return suc

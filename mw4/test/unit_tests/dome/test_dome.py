@@ -27,6 +27,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 from mountcontrol.mount import Mount
 import numpy as np
+from skyfield.api import Angle
 
 # local import
 from mw4.dome.dome import Dome
@@ -123,8 +124,8 @@ def test_slewDome_3():
 
     with mock.patch.object(app.app.mount.geometry,
                            'calcTransformationMatrices',
-                           return_value=(10, 10)):
-        val = app.slewDome(piersideT='W')
+                           return_value=(Angle(degrees=10), Angle(degrees=10))):
+        val = app.slewDome(piersideT='W', haT=Angle(degrees=0), decT=Angle(degrees=0))
         assert val == -10
 
 
@@ -134,9 +135,9 @@ def test_slewDome_4():
 
     with mock.patch.object(app.app.mount.geometry,
                            'calcTransformationMatrices',
-                           return_value=(np.nan, 10)):
-        val = app.slewDome(piersideT='W')
-        assert val == -10
+                           return_value=(None, Angle(degrees=10))):
+        val = app.slewDome(piersideT='W', haT=Angle(degrees=0), decT=Angle(degrees=0))
+        assert val == 0
 
 
 def test_slewDome_5():
@@ -145,6 +146,6 @@ def test_slewDome_5():
 
     with mock.patch.object(app.app.mount.geometry,
                            'calcTransformationMatrices',
-                           return_value=(10, np.nan)):
-        val = app.slewDome(piersideT='W')
+                           return_value=(Angle(degrees=10), None)):
+        val = app.slewDome(piersideT='W', haT=Angle(degrees=0), decT=Angle(degrees=0))
         assert val == 0

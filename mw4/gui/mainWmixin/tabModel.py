@@ -452,9 +452,7 @@ class Model(object):
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
                                                     az_degrees=mPoint['azimuth'],
                                                     )
-        # target could not be set and will be omitted
-        # todo: what happens when this occurs ? The signal to move on will be missing (no
-        #  download)
+
         if not suc:
             return False
 
@@ -463,7 +461,20 @@ class Model(object):
             alt = mPoint['altitude']
             az = mPoint['azimuth']
 
-            delta = self.app.dome.slewDome(altitude=alt, azimuth=az, geometry=useGeometry)
+            if useGeometry:
+                haT = self.app.mount.obsSite.haJNowTarget
+                decT = self.app.mount.obsSite.decJNowTarget
+                piersideT = self.app.mount.obsSite.piersideTarget
+                lat = self.app.mount.obsSite.location.latitude.degrees
+                delta = self.app.dome.slewDome(altitude=alt,
+                                               azimuth=az,
+                                               piersideT=piersideT,
+                                               haT=haT,
+                                               decT=decT,
+                                               lat=lat)
+            else:
+                delta = self.app.dome.slewDome(altitude=alt,
+                                               azimuth=az)
 
             geoStat = 'Geometry corrected' if useGeometry else 'Equal mount'
             text = f'Slewing  dome:       point: {mPoint["countSequence"]:03d}, '

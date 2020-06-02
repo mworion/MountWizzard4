@@ -156,19 +156,15 @@ class Dome:
         suc = self.run[self.framework].stopCommunication()
         return suc
 
-    def calcGeometry(self):
-        """
-
-        :return:
-        """
-        return self.app.mount.calcTransformationMatrices()
-
-    def slewDome(self, altitude=0, azimuth=0, geometry=False):
+    def slewDome(self, altitude=0, azimuth=0, piersideT='', haT=0, decT=0, lat=0):
         """
 
         :param altitude:
         :param azimuth:
-        :param geometry:
+        :param piersideT: target of pierside for slew
+        :param haT: target hours angle for slew
+        :param decT: target declination for slew
+        :param lat: latitude of mount position
         :return: success
         """
 
@@ -177,8 +173,11 @@ class Dome:
 
         # todo: should we really set attributes in classes from external ?
 
-        if geometry:
-            alt, az = self.calcGeometry()
+        if piersideT:
+            alt, az = self.app.mount.calcTransformationMatrices(ha=haT,
+                                                                dec=decT,
+                                                                lat=lat,
+                                                                pierside=piersideT)
 
             # todo: correct calculation that this is not necessary
             if alt is np.nan or az is np.nan:

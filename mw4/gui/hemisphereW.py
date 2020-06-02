@@ -168,6 +168,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         """
         self.app.update10s.disconnect(self.updateAlignStar)
         self.app.update0_1s.disconnect(self.resizeTimer)
+        self.app.redrawHemisphere.disconnect(self.drawHemisphere)
+        self.app.mount.signals.settingDone.disconnect(self.updateSettings)
         self.storeConfig()
 
         # restore DAT status
@@ -185,9 +187,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkPolarAlignment.clicked.disconnect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.disconnect(self.drawHemisphere)
         self.ui.checkShowAlignStar.clicked.disconnect(self.configOperationMode)
-        self.app.redrawHemisphere.disconnect(self.drawHemisphere)
         self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
-        self.app.mount.signals.settingDone.disconnect(self.updateSettings)
         self.app.dome.signals.azimuth.disconnect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.disconnect(self.updateDome)
         self.app.dome.signals.serverDisconnected.disconnect(self.updateDome)
@@ -838,6 +838,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :param axes: matplotlib axes object
         :return: true for test purpose
         """
+
         visible = self.ui.checkShowAlignStar.isChecked()
         self.starsAlignAnnotate = list()
         hip = self.app.hipparcos

@@ -185,7 +185,7 @@ class AnalyseWindow(widget.MWidget):
         self.ui.solver.setText(modelJSON[0]['astrometryApp'])
         self.ui.binning.setText(f'{modelJSON[0]["binning"]}')
         self.ui.time.setText(modelJSON[0]['julianDate'])
-        self.ui.subframe.setText(f'{modelJSON[0]["subFrame"]:3.0f} %')
+        self.ui.subframe.setText(f'{modelJSON[0]["subFrame"]:3.0f}')
         self.ui.flipped.setText(str(modelJSON[0]['flippedS']))
 
         if 'polarError' in modelJSON[0]:
@@ -198,6 +198,8 @@ class AnalyseWindow(widget.MWidget):
             self.ui.modelOrthoError.setText(f'{modelJSON[0]["modelOrthoError"]:5.1f}')
         if 'modelPolarError' in modelJSON[0]:
             self.ui.modelPolarError.setText(f'{modelJSON[0]["modelPolarError"]:5.1f}')
+        if 'version' in modelJSON[0]:
+            self.ui.version.setText(f'{modelJSON[0]["version"]}')
 
         self.modelJSON = modelJSON
         self.drawAll()

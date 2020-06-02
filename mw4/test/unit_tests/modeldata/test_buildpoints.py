@@ -616,9 +616,8 @@ def test_loadCSV_3():
 def test_loadCSV_4():
     values = [(1, 1), (2, 2)]
     with open('mw4/test/config/test.csv', 'w') as outfile:
-        writer = csv.writer(outfile)
-        for val in values:
-            writer.writerow(val)
+        outfile.writelines('1, 1\n')
+        outfile.writelines('2, 2\n')
 
     val = app.loadCSV(fileName='test')
     assert val == [(1, 1), (2, 2)]

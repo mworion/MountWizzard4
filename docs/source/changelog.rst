@@ -5,10 +5,16 @@ changes list, please refer to the commit list on GitHub.
 
 0.150.25
 
-- ASCOM driver retries
+- ASCOM driver retries implemented, actual 5 retries
 - shutdown ASCOM with more time
 - text updates
 - adding csv import and convert to local format for model points
+- refinement geometry calculations, more message output
+- adding version info to analyse
+
+0.150.24
+
+- fixes
 
 0.150.23
 

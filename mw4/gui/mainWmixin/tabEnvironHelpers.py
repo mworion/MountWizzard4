@@ -21,6 +21,7 @@
 from skyfield import almanac
 
 # local import
+from mw4.base.tpool import Worker
 
 
 class EnvironHelpers(object):
@@ -37,9 +38,12 @@ class EnvironHelpers(object):
             self.ui = ui
             self.clickable = clickable
 
+        self.daysTwilight = list()
+        self.timeTwilight = list()
+        self.colorTwilight = list()
+
         self.twilight = self.embedMatplot(self.ui.twilight)
-        self.searchTwilight()
-        self.drawTwilight()
+        self.app.mount.signals.locationDone.connect(self.searchTwilightWorker)
 
     def initConfig(self):
         """
@@ -49,6 +53,7 @@ class EnvironHelpers(object):
 
         :return: True for test purpose
         """
+
         config = self.app.config['mainW']
 
         return True
@@ -61,6 +66,7 @@ class EnvironHelpers(object):
 
         :return: True for test purpose
         """
+
         config = self.app.config['mainW']
 
         return True
@@ -84,32 +90,56 @@ class EnvironHelpers(object):
 
         axe.set_ylim(0, 24)
 
-        ts = self.app.mount.obsSite.ts
-        location = self.app.mount.obsSite.location
-        eph = self.app.planets
-
-        t0 = ts.utc(2020, 1, 1, 0)
-        t1 = ts.utc(2020, 12, 31, 24)
-        f = almanac.dark_twilight_day(eph, location)
-        times, events = almanac.find_discrete(t0, t1, f)
-
         colors = [self.M_BLUE,
                   self.M_YELLOW,
                   self.M_RED,
                   self.M_WHITE,
                   self.M_GREEN]
 
-        for ti, event in zip(times, events):
-            hour = int(ti.utc_datetime().strftime('%H'))
-            minute = int(ti.utc_datetime().strftime('%M'))
-
-            y = (hour + minute / 60 + 12) % 24
-            day = int(ti.utc_datetime().strftime('%j'))
-
-            axe.plot(day, y, marker='.', linestyle=None, color=colors[event])
+        for day, time, color in zip(self.daysTwilight,
+                                    self.timeTwilight,
+                                    self.colorTwilight):
+            axe.plot(day,
+                     time,
+                     marker='.',
+                     color=colors[color])
 
         axe.figure.canvas.draw()
 
+        return True
+
+    def searchTwilightWorker(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        obs = self.app.mount.obsSite
+        location = self.app.mount.obsSite.location
+        eph = self.app.planets
+
+        t0 = obs.ts.tt_jd(int(obs.timeJD.tt) - 54.5)
+        t1 = obs.ts.tt_jd(int(obs.timeJD.tt) + 55.5)
+
+        f = almanac.dark_twilight_day(eph, location)
+
+        t, e = almanac.find_discrete(t0, t1, f)
+
+        self.daysTwilight = list()
+        self.timeTwilight = list()
+        self.colorTwilight = list()
+
+        for ti, event in zip(t, e):
+            hour = int(ti.utc_datetime().strftime('%H'))
+            minute = int(ti.utc_datetime().strftime('%M'))
+
+            y = (hour - 12 + minute / 60) % 24
+            day = int(ti.utc_datetime().strftime('%j'))
+            self.daysTwilight.append(day)
+            self.timeTwilight.append(y)
+            self.colorTwilight.append(event)
+
+        self.drawTwilight()
         return True
 
     def searchTwilight(self):
@@ -117,4 +147,9 @@ class EnvironHelpers(object):
 
         :return: true for test purpose
         """
+
+        worker = Worker(self.searchTwilightWorker)
+        worker.signals.finished.connect(self.drawTwilight)
+        self.threadPool.start(worker)
+
         return True

@@ -42,7 +42,8 @@ def runMWd(c, param):
 
 
 def runMW(c, param):
-    c.run(param, echo=False, hide='out')
+    # c.run(param, echo=False, hide='out')
+    c.run(param)
 
 
 def printMW(param):

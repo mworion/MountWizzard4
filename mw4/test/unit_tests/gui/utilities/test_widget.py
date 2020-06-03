@@ -390,3 +390,47 @@ def test_findIndexValue_3():
     val = app.findIndexValue(ui=ui,
                              searchString='indi')
     assert val == 2
+
+
+def test_generatePolar_1():
+    axe, fig = app.generatePolar()
+    assert axe is None
+    assert fig is None
+
+
+def test_generatePolar_2():
+    ui = PyQt5.QtWidgets.QWidget()
+    widget = app.embedMatplot(ui)
+    axe, fig = app.generatePolar(widget=widget)
+    assert axe
+    assert fig
+
+
+def test_generatePolar_3():
+    ui = PyQt5.QtWidgets.QWidget()
+    widget = app.embedMatplot(ui)
+    axe, fig = app.generatePolar(widget=widget, title='test')
+    assert axe
+    assert fig
+
+
+def test_generateFlat_1():
+    axe, fig = app.generateFlat()
+    assert axe is None
+    assert fig is None
+
+
+def test_generateFlat_2():
+    ui = PyQt5.QtWidgets.QWidget()
+    widget = app.embedMatplot(ui)
+    axe, fig = app.generateFlat(widget=widget)
+    assert axe
+    assert fig
+
+
+def test_generateFlat_3():
+    ui = PyQt5.QtWidgets.QWidget()
+    widget = app.embedMatplot(ui)
+    axe, fig = app.generateFlat(widget=widget, title='test')
+    assert axe
+    assert fig

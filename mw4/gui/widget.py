@@ -489,3 +489,89 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                     return index
 
         return 0
+
+    def generatePolar(self, widget=None, title=''):
+        """
+
+        :param widget:
+        :param title:
+        :return:
+        """
+
+        if widget is None:
+            return None, None
+        if not hasattr(widget, 'figure'):
+            return None, None
+
+        fig = widget.figure
+        fig.clf()
+        axe = fig.add_subplot(1,
+                              1,
+                              1,
+                              polar=True,
+                              facecolor=self.M_GREY_DARK)
+        axe.grid(True,
+                 color=self.M_GREY,
+                 )
+
+        if title:
+            axe.set_title(title,
+                          color=self.M_BLUE,
+                          fontweight='bold',
+                          pad=15,
+                          )
+
+        axe.tick_params(axis='x',
+                        colors=self.M_BLUE,
+                        labelsize=12,
+                        )
+        axe.tick_params(axis='y',
+                        colors=self.M_BLUE,
+                        labelsize=12,
+                        )
+        axe.set_theta_zero_location('N')
+        axe.set_rlabel_position(45)
+        axe.set_theta_direction(-1)
+        xLabel = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+        axe.set_xticklabels(xLabel)
+
+        return axe, fig
+
+    def generateFlat(self, widget=None, title=''):
+        """
+
+        :param widget:
+        :param title:
+        :return:
+        """
+
+        if widget is None:
+            return None, None
+        if not hasattr(widget, 'figure'):
+            return None, None
+
+        figure = widget.figure
+        figure.clf()
+        axe = figure.add_subplot(1, 1, 1, facecolor=self.M_GREY_DARK)
+
+        axe.spines['bottom'].set_color(self.M_BLUE)
+        axe.spines['top'].set_color(self.M_BLUE)
+        axe.spines['left'].set_color(self.M_BLUE)
+        axe.spines['right'].set_color(self.M_BLUE)
+        axe.grid(True, color=self.M_GREY)
+
+        if title:
+            axe.set_title(title,
+                          color=self.M_BLUE,
+                          fontweight='bold',
+                          pad=15,
+                          )
+
+        axe.tick_params(axis='x',
+                        colors=self.M_BLUE,
+                        labelsize=12)
+        axe.tick_params(axis='y',
+                        colors=self.M_BLUE,
+                        labelsize=12)
+
+        return axe, figure

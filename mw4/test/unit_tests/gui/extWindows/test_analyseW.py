@@ -30,6 +30,7 @@ from PyQt5.QtCore import pyqtSignal
 
 # local import
 from mw4.gui.analyseW import AnalyseWindow
+from mw4.gui.widget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -47,6 +48,8 @@ def app(qtbot):
     with mock.patch.object(AnalyseWindow,
                            'show'):
         app = AnalyseWindow(app=Test())
+        app.generateFlat = MWidget().generateFlat
+        app.generatePolar = MWidget().generatePolar
         qtbot.addWidget(app)
         yield app
 
@@ -100,39 +103,3 @@ def test_loadModel_2(app):
                                          'test.model', '.model')):
         suc = app.loadModel()
         assert suc
-
-
-def test_generatePolar_1(app):
-    axe, fig = app.generatePolar()
-    assert axe is None
-    assert fig is None
-
-
-def test_generatePolar_2(app):
-    axe, fig = app.generatePolar(widget=app.raPointErrors)
-    assert axe
-    assert fig
-
-
-def test_generatePolar_3(app):
-    axe, fig = app.generatePolar(widget=app.raPointErrors, title='test')
-    assert axe
-    assert fig
-
-
-def test_generateFlat_1(app):
-    axe, fig = app.generateFlat()
-    assert axe is None
-    assert fig is None
-
-
-def test_generateFlat_2(app):
-    axe, fig = app.generateFlat(widget=app.raPointErrors)
-    assert axe
-    assert fig
-
-
-def test_generateFlat_3(app):
-    axe, fig = app.generateFlat(widget=app.raPointErrors, title='test')
-    assert axe
-    assert fig

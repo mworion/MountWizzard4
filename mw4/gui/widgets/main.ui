@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -4842,6 +4842,27 @@ to mount</string>
        <bool>false</bool>
       </property>
      </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="twilight">
+    <attribute name="title">
+     <string>Twilight</string>
+    </attribute>
+    <widget class="QWidget" name="twilight_2" native="true">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>5</y>
+       <width>776</width>
+       <height>426</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Modelpoints">

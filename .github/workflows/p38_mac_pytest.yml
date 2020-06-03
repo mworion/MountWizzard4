@@ -74,7 +74,7 @@ jobs:
         pytest mw4/test/unit_tests/modeldata
         pytest mw4/test/unit_tests/powerswitch
         pytest mw4/test/unit_tests/remote
-        pytest mw4/test/unit_tests/telesopce
+        pytest mw4/test/unit_tests/telescope
         pytest mw4/test/unit_tests/zStartup
 
     - name: Upload coverage to codecov

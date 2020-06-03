@@ -45,6 +45,7 @@ if platform.machine() not in excludedPlatforms:
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.mainWmixin.tabMount import Mount
 from mw4.gui.mainWmixin.tabEnviron import EnvironGui
+from mw4.gui.mainWmixin.tabEnvironHelpers import EnvironHelpers
 from mw4.gui.mainWmixin.tabModel import Model
 from mw4.gui.mainWmixin.tabBuildPoints import BuildPoints
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
@@ -64,6 +65,7 @@ from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 class MainWindow(MWidget,
                  Mount,
                  EnvironGui,
+                 EnvironHelpers,
                  Model,
                  BuildPoints,
                  ManageModel,

@@ -38,9 +38,14 @@ class EnvironHelpers(object):
             self.ui = ui
             self.clickable = clickable
 
-        self.daysTwilight = list()
-        self.timeTwilight = list()
-        self.colorTwilight = list()
+        self.civilT1 = list()
+        self.nauticalT1 = list()
+        self.astronomicalT1 = list()
+        self.darkT1 = list()
+        self.civilT2 = list()
+        self.nauticalT2 = list()
+        self.astronomicalT2 = list()
+        self.darkT2 = list()
 
         self.twilight = self.embedMatplot(self.ui.twilight)
         self.app.mount.signals.locationDone.connect(self.searchTwilightWorker)
@@ -87,22 +92,28 @@ class EnvironHelpers(object):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-
+        axe.grid(False)
         axe.set_ylim(0, 24)
 
-        colors = [self.M_BLUE,
-                  self.M_YELLOW,
-                  self.M_RED,
-                  self.M_WHITE,
-                  self.M_GREEN]
+        val = self.civilT1 + list(reversed(self.civilT2))
+        x = [x[0] for x in val]
+        y = [x[1] for x in val]
+        axe.fill(x, y, self.M_BLUE1)
 
-        for day, time, color in zip(self.daysTwilight,
-                                    self.timeTwilight,
-                                    self.colorTwilight):
-            axe.plot(day,
-                     time,
-                     marker='.',
-                     color=colors[color])
+        val = self.nauticalT1 + list(reversed(self.nauticalT2))
+        x = [x[0] for x in val]
+        y = [x[1] for x in val]
+        axe.fill(x, y, self.M_BLUE2)
+
+        val = self.astronomicalT1 + list(reversed(self.astronomicalT2))
+        x = [x[0] for x in val]
+        y = [x[1] for x in val]
+        axe.fill(x, y, self.M_BLUE3)
+
+        val = self.darkT1 + list(reversed(self.darkT2))
+        x = [x[0] for x in val]
+        y = [x[1] for x in val]
+        axe.fill(x, y, self.M_BLUE4)
 
         axe.figure.canvas.draw()
 
@@ -118,26 +129,50 @@ class EnvironHelpers(object):
         location = self.app.mount.obsSite.location
         eph = self.app.planets
 
-        t0 = obs.ts.tt_jd(int(obs.timeJD.tt) - 54.5)
-        t1 = obs.ts.tt_jd(int(obs.timeJD.tt) + 55.5)
+        t0 = obs.ts.tt_jd(int(obs.timeJD.tt) - 5)
+        t1 = obs.ts.tt_jd(int(obs.timeJD.tt) + 5)
 
         f = almanac.dark_twilight_day(eph, location)
 
         t, e = almanac.find_discrete(t0, t1, f)
 
-        self.daysTwilight = list()
-        self.timeTwilight = list()
-        self.colorTwilight = list()
+        self.civilT1 = list()
+        self.nauticalT1 = list()
+        self.astronomicalT1 = list()
+        self.darkT1 = list()
+        self.civilT2 = list()
+        self.nauticalT2 = list()
+        self.astronomicalT2 = list()
+        self.darkT2 = list()
 
+        stat = 4
         for ti, event in zip(t, e):
             hour = int(ti.utc_datetime().strftime('%H'))
             minute = int(ti.utc_datetime().strftime('%M'))
 
-            y = (hour - 12 + minute / 60) % 24
+            y = round(hour + minute / 60, 3)
             day = int(ti.utc_datetime().strftime('%j'))
-            self.daysTwilight.append(day)
-            self.timeTwilight.append(y)
-            self.colorTwilight.append(event)
+
+            print(stat, event, day, y)
+
+            if stat == 4 and event == 3:
+                self.civilT1.append([day, y])
+            elif stat == 3 and event == 2:
+                self.nauticalT1.append([day, y])
+            elif stat == 2 and event == 1:
+                self.astronomicalT1.append([day, y])
+            elif stat == 1 and event == 0:
+                self.darkT1.append([day, y])
+            elif stat == 0 and event == 1:
+                self.darkT2.append([day, y])
+            elif stat == 1 and event == 2:
+                self.astronomicalT2.append([day, y])
+            elif stat == 2 and event == 3:
+                self.nauticalT2.append([day, y])
+            elif stat == 3 and event == 4:
+                self.civilT2.append([day, y])
+
+            stat = event
 
         self.drawTwilight()
         return True

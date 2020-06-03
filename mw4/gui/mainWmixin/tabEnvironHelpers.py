@@ -19,6 +19,8 @@
 
 # external packages
 from skyfield import almanac
+from matplotlib import ticker
+import matplotlib.dates as mdates
 
 # local import
 from mw4.base.tpool import Worker
@@ -76,7 +78,7 @@ class EnvironHelpers(object):
 
         return True
 
-    def drawTwilight(self):
+    def drawTwilight(self, minDay=None, maxDay=None):
         """
 
         :return: true for test purpose
@@ -92,29 +94,46 @@ class EnvironHelpers(object):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        axe.grid(False)
+
+        axe.set_yticks([0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24])
+        axe.set_yticklabels(['12', '14', '16', '18', '20', '22', '24',
+                             '02', '04', '06', '08', '10', '12'])
+
+        axe.grid(color=self.M_GREY, alpha=0.5)
         axe.set_ylim(0, 24)
+        if minDay is not None and maxDay is not None:
+            axe.set_xlim(minDay, maxDay)
+        fig.autofmt_xdate()
 
         val = self.civilT1 + list(reversed(self.civilT2))
         x = [x[0] for x in val]
         y = [x[1] for x in val]
         axe.fill(x, y, self.M_BLUE1)
+        axe.plot(x, y, self.M_BLUE1)
 
         val = self.nauticalT1 + list(reversed(self.nauticalT2))
         x = [x[0] for x in val]
         y = [x[1] for x in val]
         axe.fill(x, y, self.M_BLUE2)
+        axe.plot(x, y, self.M_GREY)
 
         val = self.astronomicalT1 + list(reversed(self.astronomicalT2))
         x = [x[0] for x in val]
         y = [x[1] for x in val]
         axe.fill(x, y, self.M_BLUE3)
+        axe.plot(x, y, self.M_GREY)
 
         val = self.darkT1 + list(reversed(self.darkT2))
         x = [x[0] for x in val]
         y = [x[1] for x in val]
         axe.fill(x, y, self.M_BLUE4)
+        axe.plot(x, y, self.M_GREY)
 
+        axe.format_xdata = mdates.DateFormatter('%m-%d')
+        axe.get_xaxis().set_major_locator(ticker.MaxNLocator(nbins=12,
+                                                             min_n_ticks=12,
+                                                             prune='both',
+                                                             ))
         axe.figure.canvas.draw()
 
         return True
@@ -129,11 +148,10 @@ class EnvironHelpers(object):
         location = self.app.mount.obsSite.location
         eph = self.app.planets
 
-        t0 = obs.ts.tt_jd(int(obs.timeJD.tt) - 5)
-        t1 = obs.ts.tt_jd(int(obs.timeJD.tt) + 5)
+        t0 = obs.ts.tt_jd(int(obs.timeJD.tt) - 180)
+        t1 = obs.ts.tt_jd(int(obs.timeJD.tt) + 180)
 
         f = almanac.dark_twilight_day(eph, location)
-
         t, e = almanac.find_discrete(t0, t1, f)
 
         self.civilT1 = list()
@@ -146,14 +164,17 @@ class EnvironHelpers(object):
         self.darkT2 = list()
 
         stat = 4
+        minDay = t0.utc_datetime()
+        maxDay = t1.utc_datetime()
         for ti, event in zip(t, e):
             hour = int(ti.utc_datetime().strftime('%H'))
             minute = int(ti.utc_datetime().strftime('%M'))
 
-            y = round(hour + minute / 60, 3)
-            day = int(ti.utc_datetime().strftime('%j'))
+            y = (hour + 12 + minute / 60) % 24
+            day = ti.utc_datetime()
 
-            print(stat, event, day, y)
+            minDay = min(minDay, day)
+            maxDay = max(maxDay, day)
 
             if stat == 4 and event == 3:
                 self.civilT1.append([day, y])
@@ -174,7 +195,7 @@ class EnvironHelpers(object):
 
             stat = event
 
-        self.drawTwilight()
+        self.drawTwilight(minDay=minDay, maxDay=maxDay)
         return True
 
     def searchTwilight(self):

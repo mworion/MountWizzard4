@@ -467,23 +467,23 @@ class BuildPoints(object):
         """
 
         folder = self.app.mwGlob['configDir']
-        fileTypes = 'Build Point Files (*.bpts);; CSV Files (*.csv)'
+        fileTypes = 'Build Point Files (*.bpts);; CSV Files (*.csv);; MW3 Files (*.txt)'
         loadFilePath, fileName, ext = self.openFile(self,
                                                     'Open build point file',
                                                     folder,
-                                                    fileTypes,
-                                                    )
+                                                    fileTypes)
         if not loadFilePath:
             return False
 
-        isCSV = ext == '.csv'
+        suc = self.app.data.loadBuildP(fileName=fileName, ext=ext)
 
-        suc = self.app.data.loadBuildP(fileName=fileName, csv=isCSV)
         if suc:
             self.ui.buildPFileName.setText(fileName)
-            self.app.message.emit('Build file [{0}] loaded'.format(fileName), 0)
+            self.app.message.emit(f'Build file [{fileName}] loaded', 0)
         else:
-            self.app.message.emit('Build file [{0}] cannot no be loaded'.format(fileName), 2)
+            self.app.message.emit(f'Build file [{fileName}] cannot no be loaded', 2)
+
+        self.genBuildFile()
 
         return True
 
@@ -502,9 +502,9 @@ class BuildPoints(object):
         suc = self.app.data.saveBuildP(fileName=fileName)
 
         if suc:
-            self.app.message.emit('Build file [{0}] saved'.format(fileName), 0)
+            self.app.message.emit(f'Build file [{fileName}] saved', 0)
         else:
-            self.app.message.emit('Build file [{0}] cannot no be saved'.format(fileName), 2)
+            self.app.message.emit(f'Build file [{fileName}] cannot no be saved', 2)
 
         return True
 
@@ -528,9 +528,9 @@ class BuildPoints(object):
 
         if suc:
             self.ui.buildPFileName.setText(fileName)
-            self.app.message.emit('Build file [{0}] saved'.format(fileName), 0)
+            self.app.message.emit(f'Build file [{fileName}] saved', 0)
         else:
-            self.app.message.emit('Build file [{0}] cannot no be saved'.format(fileName), 2)
+            self.app.message.emit(f'Build file [{fileName}] cannot no be saved', 2)
 
         return True
 

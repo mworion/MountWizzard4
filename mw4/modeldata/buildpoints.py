@@ -401,13 +401,14 @@ class DataPoint(object):
 
         return True
 
-    def loadJSON(self, fileName):
+    def loadJSON(self, fileName, ext):
         """
 
         :param fileName: name of file to be handled
+        :param ext: extension of file to be handled
         :return: value: loaded data
         """
-        fileName = self.configDir + '/' + fileName + '.bpts'
+        fileName = self.configDir + '/' + fileName + ext
         if not os.path.isfile(fileName):
             return None
 
@@ -421,23 +422,29 @@ class DataPoint(object):
             value = [tuple(x) for x in value]
         return value
 
-    def loadCSV(self, fileName):
+    def loadCSV(self, fileName, ext, delimiter=','):
         """
 
         :param fileName: name of file to be handled
+        :param ext: extension of file to be handled
+        :param delimiter: delimiter of file to be handled
         :return: value: loaded data
         """
-        fileName = self.configDir + '/' + fileName + '.csv'
+        fileName = self.configDir + '/' + fileName + ext
         if not os.path.isfile(fileName):
             return None
 
         try:
             value = []
             with open(fileName, 'r') as handle:
-                reader = csv.reader(handle)
+                reader = csv.reader(handle, delimiter=delimiter)
                 for x in reader:
+                    x = x[:2]
                     convertedX = [float(val) for val in x]
-                    value.append(convertedX)
+                    if delimiter == ',':
+                        value.append(convertedX)
+                    else:
+                        value.append(reversed(convertedX))
         except Exception as e:
             self.log.warning('Cannot CSV load: {0}, error: {1}'.format(fileName, e))
             value = None
@@ -455,28 +462,31 @@ class DataPoint(object):
             return False
         return True
 
-    def loadBuildP(self, fileName=None, csv=False):
+    def loadBuildP(self, fileName=None, ext='.bpts'):
         """
         loadBuildP loads a modeldata pints file and stores the data in the buildP list.
         necessary conversion are made.
 
         :param fileName: name of file to be handled
-        :param csv: load a csv file
+        :param ext: load extension type
         :return: success
         """
 
         if fileName is None:
             return False
 
-        if csv:
-            value = self.loadCSV(fileName)
-        else:
-            value = self.loadJSON(fileName)
+        if ext == '.csv':
+            value = self.loadCSV(fileName, ext)
+        elif ext == '.bpts':
+            value = self.loadJSON(fileName, ext)
+        elif ext == '.txt':
+            value = self.loadCSV(fileName, ext, delimiter=':')
 
         if value is None:
             return False
 
         suc = self.checkFormat(value)
+
         if not suc:
             self.clearBuildP()
             return False
@@ -497,43 +507,46 @@ class DataPoint(object):
 
         if fileName is None:
             return False
+
         fileName = self.configDir + '/' + fileName + '.bpts'
+
         with open(fileName, 'w') as handle:
             json.dump(self.buildP,
                       handle,
                       indent=4)
         return True
 
-    def loadHorizonP(self, fileName=None):
+    def loadHorizonP(self, fileName=None, ext='.hpts'):
         """
         loadHorizonP loads a modeldata pints file and stores the data in the buildP list.
         necessary conversion are made.
 
         :param fileName: name of file to be handled
+        :param ext: load extension type
         :return: success
         """
 
         if fileName is None:
             return False
-        fileName = self.configDir + '/' + fileName + '.hpts'
-        if not os.path.isfile(fileName):
-            return False
 
-        try:
-            with open(fileName, 'r') as handle:
-                value = json.load(handle)
-        except Exception as e:
-            self.log.warning('Cannot load: {0}, error: {1}'.format(fileName, e))
-            return False
-        else:
-            value = [tuple(x) for x in value]
+        if ext == '.csv':
+            value = self.loadCSV(fileName, ext)
+        elif ext == '.hpts':
+            value = self.loadJSON(fileName, ext)
+        elif ext == '.txt':
+            value = self.loadCSV(fileName, ext, delimiter=':')
 
         suc = self.checkFormat(value)
+
         if not suc:
             self.clearHorizonP()
             return False
 
         self._horizonP = value
+
+        # backup solution
+        if csv:
+            self.saveHorizonP(fileName=fileName)
         return True
 
     @staticmethod

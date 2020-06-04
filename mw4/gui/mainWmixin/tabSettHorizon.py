@@ -74,21 +74,25 @@ class SettHorizon(object):
         """
 
         folder = self.app.mwGlob['configDir']
+        fileTypes = 'Horizon mask files (*.hpts);; CSV Files (*.csv);; MW3 Files (*.txt)'
         loadFilePath, fileName, ext = self.openFile(self,
                                                     'Open horizon mask file',
                                                     folder,
-                                                    'Horizon mask files (*.hpts)',
-                                                    )
+                                                    fileTypes)
         if not loadFilePath:
             return False
-        suc = self.app.data.loadHorizonP(fileName=fileName)
+
+        suc = self.app.data.loadHorizonP(fileName=fileName, ext=ext)
+
         if suc:
             self.ui.horizonFileName.setText(fileName)
-            self.app.message.emit('Horizon mask [{0}] loaded'.format(fileName), 0)
+            self.app.message.emit(f'Horizon mask [{fileName}] loaded', 0)
             self.app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
         else:
-            self.app.message.emit('Horizon mask [{0}] cannot no be loaded'
-                                  .format(fileName), 2)
+            self.app.message.emit(f'Horizon mask [{fileName}] cannot no be loaded', 2)
+
+        self.app.redrawHemisphere.emit()
+
         return True
 
     def saveHorizonMask(self):
@@ -104,10 +108,9 @@ class SettHorizon(object):
             return False
         suc = self.app.data.saveHorizonP(fileName=fileName)
         if suc:
-            self.app.message.emit('Horizon mask [{0}] saved'.format(fileName), 0)
+            self.app.message.emit(f'Horizon mask [{fileName}] saved', 0)
         else:
-            self.app.message.emit('Horizon mask [{0}] cannot no be saved'
-                                  .format(fileName), 2)
+            self.app.message.emit(f'Horizon mask [{fileName}] cannot no be saved', 2)
         return True
 
     def saveHorizonMaskAs(self):
@@ -128,8 +131,7 @@ class SettHorizon(object):
         suc = self.app.data.saveHorizonP(fileName=fileName)
         if suc:
             self.ui.horizonFileName.setText(fileName)
-            self.app.message.emit('Horizon mask [{0}] saved'.format(fileName), 0)
+            self.app.message.emit(f'Horizon mask [{fileName}] saved', 0)
         else:
-            self.app.message.emit('Horizon mask [{0}] cannot no be saved'
-                                  .format(fileName), 2)
+            self.app.message.emit(f'Horizon mask [{fileName}] cannot no be saved', 2)
         return True

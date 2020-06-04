@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -5020,7 +5020,7 @@ to mount</string>
        <string notr="true"/>
       </property>
       <property name="text">
-       <string>Apply</string>
+       <string>Show</string>
       </property>
      </widget>
      <widget class="QPushButton" name="loadBuildPoints">

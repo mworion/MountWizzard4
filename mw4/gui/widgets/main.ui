@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -6798,7 +6798,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>270</y>
+       <y>260</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -6889,7 +6889,7 @@ to mount</string>
        <x>410</x>
        <y>25</y>
        <width>366</width>
-       <height>231</height>
+       <height>216</height>
       </rect>
      </property>
      <property name="title">
@@ -7448,35 +7448,11 @@ to mount</string>
        <string>Pause</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkDeleteModelFirst">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>165</y>
-        <width>356</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>Deletes the actual model before starting the next model run.</string>
-      </property>
-      <property name="text">
-       <string>Delete model before start of model build</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-     </widget>
      <widget class="QCheckBox" name="checkDisableDAT">
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>185</y>
+        <y>170</y>
         <width>356</width>
         <height>20</height>
        </rect>
@@ -7500,7 +7476,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>205</y>
+        <y>190</y>
         <width>356</width>
         <height>20</height>
        </rect>

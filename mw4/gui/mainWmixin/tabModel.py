@@ -119,7 +119,6 @@ class Model(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.checkDeleteModelFirst.setChecked(config.get('checkDeleteModelFirst', False))
         self.ui.checkDisableDAT.setChecked(config.get('checkDisableDAT', False))
         self.ui.checkEnableBackup.setChecked(config.get('checkEnableBackup', False))
 
@@ -134,7 +133,6 @@ class Model(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['checkDeleteModelFirst'] = self.ui.checkDeleteModelFirst.isChecked()
         config['checkDisableDAT'] = self.ui.checkDisableDAT.isChecked()
         config['checkEnableBackup'] = self.ui.checkEnableBackup.isChecked()
 
@@ -980,15 +978,17 @@ class Model(object):
             self.app.message.emit('No valid configuration for plate solver', 2)
             return False
 
-        if self.ui.checkDeleteModelFirst.isChecked():
-            suc = self.app.mount.model.clearAlign()
-            if not suc:
-                self.app.message.emit('Actual model cannot be cleared', 2)
-                return False
-            else:
-                self.app.message.emit('Actual model clearing, waiting 2s', 0)
-                QTest.qWait(2000)
-                self.app.message.emit('Actual model cleared', 0)
+        self.app.mount.model.deleteName('backup')
+        self.app.mount.model.storeName('backup')
+
+        suc = self.app.mount.model.clearAlign()
+        if not suc:
+            self.app.message.emit('Actual model cannot be cleared', 2)
+            return False
+        else:
+            self.app.message.emit('Actual model clearing, waiting 1s', 0)
+            QTest.qWait(1000)
+            self.app.message.emit('Actual model cleared', 0)
 
         value = self.ui.settleTimeMount.value()
         if value < 2:
@@ -1038,6 +1038,18 @@ class Model(object):
             loadFilePath = [loadFilePath]
 
         self.app.message.emit('Programing models', 1)
+
+        self.app.mount.model.deleteName('backup')
+        self.app.mount.model.storeName('backup')
+
+        suc = self.app.mount.model.clearAlign()
+        if not suc:
+            self.app.message.emit('Actual model cannot be cleared', 2)
+            return False
+        else:
+            self.app.message.emit('Actual model clearing, waiting 1s', 0)
+            QTest.qWait(1000)
+            self.app.message.emit('Actual model cleared', 0)
 
         modelJSON = list()
         for index, file in enumerate(loadFilePath):

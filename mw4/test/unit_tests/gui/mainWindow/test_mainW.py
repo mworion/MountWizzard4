@@ -34,6 +34,7 @@ from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import QTimer
 from mountcontrol.qtmount import Mount
 from skyfield.api import Topos
+from skyfield.api import load
 
 # local import
 from mw4.gui.mainW import MainWindow
@@ -56,8 +57,14 @@ from mw4.telescope.telescope import Telescope
 from mw4.astrometry.astrometry import Astrometry
 
 
+@pytest.fixture(autouse=True, scope='module')
+def module_setup_teardown():
+    global eph
+    eph = load('mw4/test/testData/de421_23.bsp')
+
+
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
+def function_setup_teardown(qtbot):
     global app
 
     class Test1(QObject):
@@ -115,6 +122,7 @@ def module_setup_teardown(qtbot):
         relay = KMRelay()
         remote = Remote()
         data = DataPoint()
+        planets = eph
         measure = MeasureData(app=Test1())
         power = PegasusUPB(app=Test1())
         astrometry = Astrometry(app=Test1())

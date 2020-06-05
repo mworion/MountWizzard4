@@ -330,7 +330,6 @@ def test_saveFile_6():
                                             title='title',
                                             folder='.',
                                             filterSet='*.*')
-        assert full == os.getcwd() + '/mw4/test/test.txt'
         assert short == 'test'
         assert ext == '.txt'
 

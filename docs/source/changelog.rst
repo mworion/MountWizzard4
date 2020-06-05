@@ -14,6 +14,8 @@ changes list, please refer to the commit list on GitHub.
 - improving readability of gui (on/off now blue/black)
 - added manual ASCOM connect and disconnect drivers
 - MW4 could read MW3 horizon and build points files and convert them to local format
+- added almanac functions (twilight, lunar nodes)
+- image window detects sources in image
 
 0.150.24
 
@@ -29,7 +31,7 @@ changes list, please refer to the commit list on GitHub.
 - changed model names: prefix to postfix to prioritize date / time
 - protection again exposure overrun when
 - revised dome slewing detection algorithm for ascom / alpaca polling
-- image window gui update. MW4 could show detected sources in image
+- image window gui update
 
 0.150.22
 

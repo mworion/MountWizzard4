@@ -130,8 +130,50 @@ class DataPoint(object):
 
         self.app = app
         self.configDir = configDir
-        self._horizonP = [(0, 0), (0, 360)]
+        self._horizonP = list()
         self._buildP = list()
+
+    @staticmethod
+    def checkHorizonBoundaries(value):
+        """
+        checkHorizonBoundaries secures that the horizon always has the points (0, 0) at the
+        beginning of the list and (0, 360) at the end of the list.
+
+        :return: True for test purpose
+        """
+
+        if not value:
+            retValue = [(0, 0), (0, 360)]
+            return retValue
+
+        retValue = list() + value
+
+        if retValue[0] != (0, 0):
+            retValue = [(0, 0)] + retValue
+
+        horMax = len(retValue)
+        if retValue[horMax - 1] != (0, 360):
+            retValue = retValue + [(0, 360)]
+
+        return retValue
+
+    @property
+    def horizonP(self):
+        value = self.checkHorizonBoundaries(self._horizonP)
+        return value
+
+    @horizonP.setter
+    def horizonP(self, value):
+        if not isinstance(value, list):
+            self._horizonP.clear()
+            return
+        if not all([isinstance(x, tuple) for x in value]):
+            self.log.warning('Malformed value: {0}'.format(value))
+            self._horizonP.clear()
+            return
+        self._horizonP.clear()
+        self._horizonP += value
+        return
 
     @property
     def buildP(self):
@@ -143,7 +185,7 @@ class DataPoint(object):
             self._buildP = list()
             return
         if not all([isinstance(x, tuple) for x in value]):
-            self.log.warning('malformed value: {0}'.format(value))
+            self.log.warning('Malformed value: {0}'.format(value))
             self._buildP = list()
             return
         self._buildP = value
@@ -208,46 +250,7 @@ class DataPoint(object):
         return True
 
     def clearBuildP(self):
-        self._buildP = list()
-
-    def checkHorizonBoundaries(self):
-        """
-        checkHorizonBoundaries secures that the horizon always has the points (0, 0) at the
-        beginning of the list and (0, 360) at the end of the list.
-
-        :return: True for test purpose
-        """
-
-        if not self._horizonP:
-            self._horizonP.insert(0, (0, 0))
-            self._horizonP.insert(0, (0, 360))
-
-        if self._horizonP[0] != (0, 0):
-            self._horizonP.insert(0, (0, 0))
-
-        horMax = len(self._horizonP)
-        if self._horizonP[horMax - 1] != (0, 360):
-            self._horizonP.insert(horMax, (0, 360))
-
-        return True
-
-    @property
-    def horizonP(self):
-        self._horizonP = sorted(self._horizonP, key=lambda x: x[1])
-        self.checkHorizonBoundaries()
-        return self._horizonP
-
-    @horizonP.setter
-    def horizonP(self, value):
-        if not isinstance(value, list):
-            self.clearHorizonP()
-            return
-        if not all([isinstance(x, tuple) for x in value]):
-            self.log.warning('malformed value: {0}'.format(value))
-            self.clearHorizonP()
-            return
-        self._horizonP = value
-        self.checkHorizonBoundaries()
+        self._buildP.clear()
 
     def addHorizonP(self, value=None, position=None):
         """
@@ -268,7 +271,7 @@ class DataPoint(object):
             self.log.warning('malformed value: {0}'.format(value))
             return False
         if position is None:
-            position = len(self._horizonP)
+            position = len(self.horizonP)
         if not isinstance(position, (int, float)):
             self.log.warning('malformed position: {0}'.format(position))
             return False
@@ -293,15 +296,11 @@ class DataPoint(object):
         if position < 0 or position > len(self._horizonP) - 1:
             self.log.warning('invalid position: {0}'.format(position))
             return False
-        if self._horizonP[position] == (0, 0):
-            return False
-        if self._horizonP[position] == (0, 360):
-            return False
         self._horizonP.pop(position)
         return True
 
     def clearHorizonP(self):
-        self._horizonP = [(0, 0), (0, 360)]
+        self._horizonP.clear()
 
     def isAboveHorizon(self, point):
         """
@@ -319,8 +318,8 @@ class DataPoint(object):
             point = (point[0], 0)
         x = range(0, 361)
         y = np.interp(x,
-                      [i[1] for i in self._horizonP],
-                      [i[0] for i in self._horizonP],
+                      [i[1] for i in self.horizonP],
+                      [i[0] for i in self.horizonP],
                       )
         if point[0] > y[int(point[1])]:
             return True
@@ -475,6 +474,7 @@ class DataPoint(object):
         if fileName is None:
             return False
 
+        value = None
         if ext == '.csv':
             value = self.loadCSV(fileName, ext)
         elif ext == '.bpts':
@@ -529,6 +529,7 @@ class DataPoint(object):
         if fileName is None:
             return False
 
+        value = None
         if ext == '.csv':
             value = self.loadCSV(fileName, ext)
         elif ext == '.hpts':
@@ -542,7 +543,7 @@ class DataPoint(object):
             self.clearHorizonP()
             return False
 
-        self._horizonP = value
+        self.horizonP = value
 
         # backup solution
         if csv:

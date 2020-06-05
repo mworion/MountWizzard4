@@ -286,7 +286,11 @@ class HemisphereWindowExt(object):
         :return:
         """
 
-        index = self.getIndexPointX(event=event, plane=data.horizonP) + 1
+        index = self.getIndexPointX(event=event, plane=data.horizonP)
+
+        if index is None:
+            return False
+
         suc = data.addHorizonP(value=(event.ydata, event.xdata),
                                position=index)
         return suc
@@ -302,9 +306,13 @@ class HemisphereWindowExt(object):
         """
 
         index = self.getIndexPoint(event=event, plane=data.horizonP)
+
+        if index is None:
+            return False
+
         suc = False
         if len(data.horizonP) > 2:
-            suc = data.delHorizonP(position=index)
+            suc = data.delHorizonP(position=index - 1)
         return suc
 
     def editHorizonMask(self, data=None, event=None):

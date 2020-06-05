@@ -82,6 +82,9 @@ def module_setup_teardown(qtbot):
                       pathToData='mw4/test/data')
         mount.obsSite.Alt = Angle(degrees=45)
         mount.obsSite.Az = Angle(degrees=45)
+        mount.obsSite.location = Topos(latitude_degrees=20,
+                                       longitude_degrees=10,
+                                       elevation_m=500)
 
         camera = Camera(app=Test2())
         dome = Dome(app=Test2())
@@ -451,6 +454,60 @@ def test_onMouseNormal_7():
     event.xdata = 180
     event.ydata = 45
     app.app.dome.framework = 'indi'
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, '1', 1)):
+            with mock.patch.object(app.app.mount.obsSite,
+                                   'setTargetAltAz',
+                                   return_value=True):
+                with mock.patch.object(app.app.mount.obsSite,
+                                       'startSlewing',
+                                       return_value=True):
+                    suc = app.onMouseNormal(event=event)
+                    assert suc
+
+
+def test_onMouseNormal_8():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 1
+    event.dblclick = True
+    event.xdata = 180
+    event.ydata = 45
+    app.app.dome.framework = 'indi'
+    app.app.mainW.ui.checkDomeGeometry.setChecked(True)
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, '1', 1)):
+            with mock.patch.object(app.app.mount.obsSite,
+                                   'setTargetAltAz',
+                                   return_value=True):
+                with mock.patch.object(app.app.mount.obsSite,
+                                       'startSlewing',
+                                       return_value=True):
+                    suc = app.onMouseNormal(event=event)
+                    assert suc
+
+
+def test_onMouseNormal_9():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 1
+    event.dblclick = True
+    event.xdata = 180
+    event.ydata = 45
+    app.app.dome.framework = 'indi'
+    app.app.mainW.ui.checkDomeGeometry.setChecked(False)
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.Yes):
@@ -1009,6 +1066,60 @@ def test_onMouseStar_9():
     app.app.hipparcos.az = [180]
     app.app.hipparcos.alt = [45]
     app.app.hipparcos.name = ['test']
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, '1', 1)):
+            with mock.patch.object(app.app.mount.obsSite,
+                                   'setTargetRaDec',
+                                   return_value=True):
+                suc = app.onMouseStar(event=event)
+                assert not suc
+
+
+def test_onMouseStar_9():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 3
+    event.dblclick = False
+    event.xdata = 180
+    event.ydata = 45
+    app.app.dome.framework = 'indi'
+    app.app.hipparcos.az = [180]
+    app.app.hipparcos.alt = [45]
+    app.app.hipparcos.name = ['test']
+    app.app.mainW.ui.checkDomeGeometry.setChecked(True)
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, '1', 1)):
+            with mock.patch.object(app.app.mount.obsSite,
+                                   'setTargetRaDec',
+                                   return_value=True):
+                suc = app.onMouseStar(event=event)
+                assert not suc
+
+
+def test_onMouseStar_10():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 3
+    event.dblclick = False
+    event.xdata = 180
+    event.ydata = 45
+    app.app.dome.framework = 'indi'
+    app.app.hipparcos.az = [180]
+    app.app.hipparcos.alt = [45]
+    app.app.hipparcos.name = ['test']
+    app.app.mainW.ui.checkDomeGeometry.setChecked(False)
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.Yes):

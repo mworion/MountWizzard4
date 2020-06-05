@@ -58,6 +58,7 @@ class Almanac(object):
         self.ui.checkTimezoneLocal.clicked.connect(self.displayTwilightData)
 
         self.app.update1s.connect(self.updateMoonPhase)
+        self.lunarNodes()
 
     def initConfig(self):
         """
@@ -295,7 +296,8 @@ class Almanac(object):
         self.ui.twilightEvents.clear()
 
         for timeE, event in zip(t, e):
-            text += f'{timeE.astimezone(tz).strftime("%H:%M:%S")} {almanac.TWILIGHTS[event]}\n'
+            text += f'{timeE.astimezone(tz).strftime("%H:%M:%S")}  '
+            text += f'{almanac.TWILIGHTS[event]}\n'
 
         text = text.rstrip('\n')
         self.ui.twilightEvents.insertPlainText(text)
@@ -382,5 +384,21 @@ class Almanac(object):
         for ti, yi in zip(t, y):
             print(yi, ti.utc_iso())
         """
+
+        return True
+
+    def lunarNodes(self):
+        """
+
+        :return: true for test purpose
+        """
+        ts = self.app.mount.obsSite.ts
+        timeJD = self.app.mount.obsSite.timeJD
+
+        t0 = ts.tt_jd(int(timeJD.tt))
+        t1 = ts.tt_jd(int(timeJD.tt) + 29)
+        t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(self.app.planets))
+
+        self.ui.lunarNodes.setText(f'{almanac.MOON_NODES[y[0]]}')
 
         return True

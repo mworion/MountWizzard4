@@ -25,7 +25,6 @@ import PyQt5.uic
 import requests
 import numpy as np
 import qimage2ndarray
-from skyfield import almanac
 
 # local import
 from mw4.base.tpool import Worker
@@ -433,6 +432,7 @@ class Environ(object):
                 line = maxRow
         imgArr = np.delete(imgArr, toDelete, axis=0)
 
+        """
         # removing some columns
         m = np.isin(imgArr, [[32, 32, 32]])
         toDelete = []
@@ -446,6 +446,7 @@ class Environ(object):
             elif not m[:, i].all():
                 col = maxCol
         imgArr = np.delete(imgArr, toDelete, axis=1)
+        """
 
         # re transfer to QImage from numpy array
         imageBase = qimage2ndarray.array2qimage(dim * imgArr)

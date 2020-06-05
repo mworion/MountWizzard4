@@ -45,7 +45,7 @@ if platform.machine() not in excludedPlatforms:
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.mainWmixin.tabMount import Mount
 from mw4.gui.mainWmixin.tabEnviron import EnvironGui
-from mw4.gui.mainWmixin.tabEnvironHelpers import EnvironHelpers
+# from mw4.gui.mainWmixin.tabEnvironHelpers import EnvironHelpers
 from mw4.gui.mainWmixin.tabModel import Model
 from mw4.gui.mainWmixin.tabBuildPoints import BuildPoints
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
@@ -65,7 +65,7 @@ from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 class MainWindow(MWidget,
                  Mount,
                  EnvironGui,
-                 EnvironHelpers,
+                 # EnvironHelpers,
                  Model,
                  BuildPoints,
                  ManageModel,
@@ -247,10 +247,15 @@ class MainWindow(MWidget,
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
 
-        # todo: remove analysis tab while not developed
+        # todo: remove analysis and twilight tab while not developed
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Twilight')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
 
         self.mwSuper('initConfig')

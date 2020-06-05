@@ -13,6 +13,7 @@ changes list, please refer to the commit list on GitHub.
 - adding version info to analyse
 - improving readability of gui (on/off now blue/black)
 - added manual ASCOM connect and disconnect drivers
+- MW4 could read MW3 horizon and build points files and convert them to local format
 
 0.150.24
 

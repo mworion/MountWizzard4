@@ -16,9 +16,11 @@
 #
 ###########################################################
 # standard libraries
+import copy
 
 # external packages
 from skyfield import almanac
+from skyfield.api import load
 from matplotlib import ticker
 import matplotlib.dates as mdates
 
@@ -50,7 +52,8 @@ class EnvironHelpers(object):
         self.darkT2 = list()
 
         self.twilight = self.embedMatplot(self.ui.twilight)
-        self.app.mount.signals.locationDone.connect(self.searchTwilightWorker)
+        # self.app.mount.signals.locationDone.connect(self.searchTwilightWorker)
+        self.searchTwilight()
 
     def initConfig(self):
         """
@@ -78,11 +81,14 @@ class EnvironHelpers(object):
 
         return True
 
-    def drawTwilight(self, minDay=None, maxDay=None):
+    def drawTwilight(self, dayLimits):
         """
 
         :return: true for test purpose
         """
+
+        minDay, maxDay = dayLimits
+
         axe, fig = self.generateFlat(widget=self.twilight,
                                      title='Twilight')
 
@@ -144,15 +150,24 @@ class EnvironHelpers(object):
         :return: true for test purpose
         """
 
-        obs = self.app.mount.obsSite
-        location = self.app.mount.obsSite.location
+        print('worker')
+        self.ts = load.timescale(builtin=True)
+        print('timescale')
+        self.timeJD = copy.copy(self.app.mount.obsSite.timeJD)
+        print('timeJD')
+        location = copy.copy(self.app.mount.obsSite.location)
         eph = self.app.planets
 
-        t0 = obs.ts.tt_jd(int(obs.timeJD.tt) - 180)
-        t1 = obs.ts.tt_jd(int(obs.timeJD.tt) + 180)
+        print(self.timeJD)
+        print(location)
+
+        t0 = self.ts.tt_jd(int(self.timeJD.tt) - 5)
+        t1 = self.ts.tt_jd(int(self.timeJD.tt) + 5)
 
         f = almanac.dark_twilight_day(eph, location)
+        print(f)
         t, e = almanac.find_discrete(t0, t1, f)
+        print(t, e)
 
         self.civilT1 = list()
         self.nauticalT1 = list()
@@ -195,8 +210,7 @@ class EnvironHelpers(object):
 
             stat = event
 
-        self.drawTwilight(minDay=minDay, maxDay=maxDay)
-        return True
+        return (minDay, maxDay)
 
     def searchTwilight(self):
         """
@@ -205,7 +219,7 @@ class EnvironHelpers(object):
         """
 
         worker = Worker(self.searchTwilightWorker)
-        worker.signals.finished.connect(self.drawTwilight)
+        worker.signals.result.connect(self.drawTwilight)
         self.threadPool.start(worker)
 
         return True

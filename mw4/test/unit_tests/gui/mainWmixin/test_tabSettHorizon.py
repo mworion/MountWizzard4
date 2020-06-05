@@ -54,6 +54,7 @@ def module_setup_teardown(qtbot):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
                       pathToData='mw4/test/data')
         update1s = pyqtSignal()
+        redrawHemisphere = pyqtSignal()
         message = pyqtSignal(str, int)
         mwGlob = {'configDir': 'mw4/test/config'}
         data = DataPoint(app=Test1(), configDir='mw4/test/config')

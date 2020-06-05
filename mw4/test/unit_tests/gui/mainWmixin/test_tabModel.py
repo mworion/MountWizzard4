@@ -884,11 +884,14 @@ def test_modelBuild_2a():
     with mock.patch.object(app,
                            'modelCore',
                            return_value=True):
-        with mock.patch.object(app.app.astrometry,
-                               'checkAvailability',
-                               return_value=(True, True)):
-            suc = app.modelBuild()
-            assert suc
+        with mock.patch.object(app.app.mount.model,
+                               'clearAlign',
+                               return_value=True):
+            with mock.patch.object(app.app.astrometry,
+                                   'checkAvailability',
+                                   return_value=(True, True)):
+                suc = app.modelBuild()
+                assert suc
 
 
 def test_modelBuild_3():
@@ -929,7 +932,6 @@ def test_modelBuild_5():
 
     app.app.data = Test()
 
-    app.ui.checkDeleteModelFirst.setChecked(True)
     with mock.patch.object(app,
                            'modelCore',
                            return_value=False):
@@ -949,7 +951,6 @@ def test_modelBuild_6():
 
     app.app.data = Test()
 
-    app.ui.checkDeleteModelFirst.setChecked(True)
     with mock.patch.object(app,
                            'modelCore',
                            return_value=True):
@@ -990,8 +991,11 @@ def test_loadProgramModel_2():
     with mock.patch.object(app.app.mount.model,
                            'programAlign',
                            return_value=True):
-        suc = app.loadProgramModel()
-        assert suc
+        with mock.patch.object(app.app.mount.model,
+                               'clearAlign',
+                               return_value=True):
+            suc = app.loadProgramModel()
+            assert suc
 
 
 def test_updateAlignGui_numberStars():

@@ -4482,7 +4482,7 @@ to mount</string>
     <widget class="QGroupBox" name="refractionGroup_2">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>10</x>
        <y>290</y>
        <width>566</width>
        <height>131</height>
@@ -4535,13 +4535,166 @@ to mount</string>
       </property>
      </widget>
     </widget>
+   </widget>
+   <widget class="QWidget" name="Almanac">
+    <attribute name="title">
+     <string>Almanac</string>
+    </attribute>
+    <widget class="QGroupBox" name="refractionGroup_4">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>10</y>
+       <width>506</width>
+       <height>421</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>110</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="title">
+      <string>Twilight yearly plot (in UTC)</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QWidget" name="twilight" native="true">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="autoFillBackground">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QGroupBox" name="refractionGroup_5">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>10</y>
+       <width>261</width>
+       <height>206</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>110</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="title">
+      <string>Twilight times upcoming night</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QGroupBox" name="groupBoxCoordinateSystems_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>150</y>
+        <width>246</width>
+        <height>46</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Different types of sorting model points</string>
+      </property>
+      <property name="title">
+       <string>Timezone</string>
+      </property>
+      <widget class="QRadioButton" name="checkTimezoneLocal">
+       <property name="geometry">
+        <rect>
+         <x>115</x>
+         <y>20</y>
+         <width>106</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setting display time to local timezone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Local</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="checkTimezoneUTC">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>20</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setting display time to UTC&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>UTC</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QTextBrowser" name="twilightEvents">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>25</y>
+        <width>246</width>
+        <height>116</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Displaying the upcoming twilight events.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </widget>
     <widget class="QGroupBox" name="refractionGroup_3">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>290</y>
-       <width>196</width>
-       <height>131</height>
+       <x>520</x>
+       <y>270</y>
+       <width>261</width>
+       <height>161</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -4565,8 +4718,8 @@ to mount</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>55</x>
-        <y>105</y>
+        <x>115</x>
+        <y>130</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -4613,8 +4766,8 @@ to mount</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>70</x>
-        <y>15</y>
+        <x>135</x>
+        <y>20</y>
         <width>116</width>
         <height>21</height>
        </rect>
@@ -4658,8 +4811,8 @@ to mount</string>
      <widget class="QLabel" name="label_146">
       <property name="geometry">
        <rect>
-        <x>105</x>
-        <y>105</y>
+        <x>170</x>
+        <y>130</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -4683,10 +4836,10 @@ to mount</string>
      <widget class="QLabel" name="moonPic">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>40</y>
-        <width>60</width>
-        <height>60</height>
+        <x>80</x>
+        <y>45</y>
+        <width>80</width>
+        <height>80</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -4703,7 +4856,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>15</y>
+        <y>20</y>
         <width>31</width>
         <height>21</height>
        </rect>
@@ -4747,9 +4900,9 @@ to mount</string>
      <widget class="QLabel" name="label_155">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>15</y>
-        <width>21</width>
+        <x>50</x>
+        <y>20</y>
+        <width>56</width>
         <height>21</height>
        </rect>
       </property>
@@ -4760,7 +4913,7 @@ to mount</string>
        </font>
       </property>
       <property name="text">
-       <string>deg</string>
+       <string>Degrees</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -4776,7 +4929,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>105</y>
+        <y>130</y>
         <width>26</width>
         <height>21</height>
        </rect>
@@ -4820,9 +4973,9 @@ to mount</string>
      <widget class="QLabel" name="label_161">
       <property name="geometry">
        <rect>
-        <x>35</x>
-        <y>105</y>
-        <width>16</width>
+        <x>40</x>
+        <y>130</y>
+        <width>71</width>
         <height>21</height>
        </rect>
       </property>
@@ -4833,7 +4986,7 @@ to mount</string>
        </font>
       </property>
       <property name="text">
-       <string>%</string>
+       <string>% of phase</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -4842,27 +4995,6 @@ to mount</string>
        <bool>false</bool>
       </property>
      </widget>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="Twilight">
-    <attribute name="title">
-     <string>Twilight</string>
-    </attribute>
-    <widget class="QWidget" name="twilight" native="true">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>5</y>
-       <width>776</width>
-       <height>426</height>
-      </rect>
-     </property>
-     <property name="autoFillBackground">
-      <bool>true</bool>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Modelpoints">

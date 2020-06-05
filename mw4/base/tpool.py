@@ -56,10 +56,12 @@ class Worker(PyQt5.QtCore.QRunnable):
 
     def __init__(self, fn, *args, **kwargs):
         super(Worker, self).__init__()
+
         # Store constructor arguments (re-used for processing)
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
+
         # the worker signal must not be a class variable, but instance otherwise
         # we get trouble when having multiple threads running
         self.signals = WorkerSignals()
@@ -74,9 +76,10 @@ class Worker(PyQt5.QtCore.QRunnable):
 
         try:
             result = self.fn(*self.args, **self.kwargs)
+
         except Exception:
             # as we want to send a clear message to the log file
-            exc_type, exc_value, exc_traceback = sys.exc_info()
+            exc_type, exc_value, exc_traceback = sys.exc_info()[:2]
             tb = exc_traceback
 
             # moving toward the end of the trace
@@ -90,7 +93,9 @@ class Worker(PyQt5.QtCore.QRunnable):
             errorString = f'{file}, line {line} {exc_value}'
             self.log.critical(errorString)
             self.signals.error.emit(errorString)
+
         else:
             self.signals.result.emit(result)
+
         finally:
             self.signals.finished.emit()

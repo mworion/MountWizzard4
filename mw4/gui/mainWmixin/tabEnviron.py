@@ -51,7 +51,6 @@ class Environ(object):
                                   }
 
         self.refractionSource = ''
-        self.moonPhasePercent = 0
         self.filteredTemperature = None
         self.filteredPressure = None
 
@@ -86,7 +85,6 @@ class Environ(object):
         self.app.update1s.connect(self.updateSkymeterGUI)
         self.app.update1s.connect(self.updateSensorWeatherGui)
         self.app.update30m.connect(self.updateClearOutside)
-        self.app.update1s.connect(self.updateMoonPhase)
 
     def initConfig(self):
         """
@@ -104,7 +102,6 @@ class Environ(object):
         self.refractionSource = config.get('refractionSource', '')
         self.setRefractionSourceGui()
         self.updateClearOutside()
-        # self.updateMoonPhase()
 
         return True
 
@@ -611,88 +608,5 @@ class Environ(object):
             self.ui.directWeatherHumidity.setText(f'{setting.weatherHumidity:3.0f}')
         if setting.weatherDewPoint is not None:
             self.ui.directWeatherDewPoint.setText(f'{setting.weatherDewPoint:4.1f}')
-
-        return True
-
-    def updateMoonPhase(self):
-        """
-
-        :return: true for test purpose
-        """
-        phasesText = {
-            'New moon': {
-                'range': (0, 1),
-                'pic': ':/moon/new.png',
-            },
-            'Waxing crescent': {
-                'range': (1, 23),
-                'pic': ':/moon/waxing_crescent.png',
-            },
-            'First Quarter': {
-                'range': (23, 27),
-                'pic': ':/moon/first_quarter.png',
-            },
-            'Waxing Gibbous': {
-                'range': (27, 48),
-                'pic': ':/moon/waxing_gibbous.png',
-            },
-            'Full moon': {
-                'range': (48, 52),
-                'pic': ':/moon/full.png',
-            },
-            'Waning Gibbous': {
-                'range': (52, 73),
-                'pic': ':/moon/waning_gibbous.png',
-            },
-            'Third quarter': {
-                'range': (73, 77),
-                'pic': ':/moon/third_quarter.png',
-            },
-            'Waning crescent': {
-                'range': (77, 99),
-                'pic': ':/moon/waning_crescent.png',
-            },
-            'New moon ': {
-                'range': (99, 100),
-                'pic': ':/moon/new.png',
-            },
-        }
-
-        # todo: is the calculation of the moon phase better separate ?
-        sun = self.app.planets['sun']
-        moon = self.app.planets['moon']
-        earth = self.app.planets['earth']
-
-        e = earth.at(self.app.mount.obsSite.timeJD)
-        _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
-        _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
-
-        now = self.app.mount.obsSite.ts.now()
-        moonPhaseIllumination = almanac.fraction_illuminated(self.app.planets, 'moon', now)
-        moonPhaseDegree = (moonLon.degrees - sunLon.degrees) % 360.0
-        moonPhasePercent = moonPhaseDegree / 360
-
-        self.ui.moonPhaseIllumination.setText(f'{moonPhaseIllumination * 100:3.2f}')
-        self.ui.moonPhasePercent.setText(f'{100* moonPhasePercent:3.0f}')
-        self.ui.moonPhaseDegree.setText(f'{moonPhaseDegree:3.0f}')
-
-        for phase in phasesText:
-            if int(moonPhasePercent * 100) not in range(*phasesText[phase]['range']):
-                continue
-            self.ui.moonPhaseText.setText(phase)
-            pixmap = PyQt5.QtGui.QPixmap(phasesText[phase]['pic']).scaled(60, 60)
-            self.ui.moonPic.setPixmap(pixmap)
-
-        """
-        # forecast 48 hours
-        ts = self.app.mount.obsSite.ts
-        t0 = ts.utc(2019, 12, 1, 5)
-        t1 = ts.utc(2019, 12, 31, 5)
-        e = self.app.planets
-        loc = self.app.mount.obsSite.location
-        t, y = almanac.find_discrete(t0, t1, almanac.dark_twilight_day(e, loc))
-        for ti, yi in zip(t, y):
-            print(yi, ti.utc_iso())
-        """
 
         return True

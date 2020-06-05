@@ -36,7 +36,7 @@ from skyfield.toposlib import Topos
 import numpy as np
 
 # local import
-from mw4.gui.mainWmixin.tabEnviron import EnvironGui
+from mw4.gui.mainWmixin.tabEnviron import Environ
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.widget import MWidget
 from mw4.environment.sensorWeather import SensorWeather
@@ -77,8 +77,8 @@ def module_setup_teardown(qtbot):
     ui = Ui_MainWindow()
     ui.setupUi(widget)
 
-    app = EnvironGui(app=Test(), ui=ui,
-                     clickable=MWidget().clickable)
+    app = Environ(app=Test(), ui=ui,
+                  clickable=MWidget().clickable)
     app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
@@ -580,9 +580,4 @@ def test_updateDirectWeatherGui_3():
 
     app.deviceStat['directWeather'] = True
     suc = app.updateDirectWeatherGui(setting=Test())
-    assert suc
-
-
-def test_updateMoonPhase_1():
-    suc = app.updateMoonPhase()
     assert suc

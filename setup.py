@@ -54,7 +54,7 @@ setup(
         'scipy==1.4.1',
         'requests==2.23.0',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.20',
+        'skyfield==1.21',
         'sgp4==2.12',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==1.6.0',

@@ -45,7 +45,7 @@ if platform.machine() not in excludedPlatforms:
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.mainWmixin.tabMount import Mount
 from mw4.gui.mainWmixin.tabEnviron import Environ
-from mw4.gui.mainWmixin.tabEnvironAddon import EnvironAddon
+from mw4.gui.mainWmixin.tabAlmanac import Almanac
 from mw4.gui.mainWmixin.tabModel import Model
 from mw4.gui.mainWmixin.tabBuildPoints import BuildPoints
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
@@ -65,7 +65,7 @@ from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 class MainWindow(MWidget,
                  Mount,
                  Environ,
-                 EnvironAddon,
+                 Almanac,
                  Model,
                  BuildPoints,
                  ManageModel,
@@ -168,6 +168,7 @@ class MainWindow(MWidget,
         self.modelPositionPlot = self.embedMatplot(self.ui.modelPosition)
         self.errorAscendingPlot = self.embedMatplot(self.ui.errorAscending)
         self.errorDistributionPlot = self.embedMatplot(self.ui.errorDistribution)
+        self.twilight = self.embedMatplot(self.ui.twilight, constrainedLayout=True)
 
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
@@ -247,12 +248,12 @@ class MainWindow(MWidget,
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
 
-        # todo: remove analysis and twilight tab while not developed
+        # todo: remove analysis and almanac tab while not developed
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
 
-        # tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Twilight')
+        # tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Almanac')
         # tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         # self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
 

@@ -203,7 +203,7 @@ def test_updateOrbit_5():
     app.ui.mainTabWidget.setCurrentIndex(5)
     app.app.uiWindows = {'showSatelliteW': {'test': 1}}
     suc = app.updateOrbit()
-    assert suc
+    assert not suc
 
 
 def test_programTLEToMount_1():

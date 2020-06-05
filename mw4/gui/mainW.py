@@ -44,8 +44,8 @@ if platform.machine() not in excludedPlatforms:
 
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.mainWmixin.tabMount import Mount
-from mw4.gui.mainWmixin.tabEnviron import EnvironGui
-# from mw4.gui.mainWmixin.tabEnvironHelpers import EnvironHelpers
+from mw4.gui.mainWmixin.tabEnviron import Environ
+from mw4.gui.mainWmixin.tabEnvironAddon import EnvironAddon
 from mw4.gui.mainWmixin.tabModel import Model
 from mw4.gui.mainWmixin.tabBuildPoints import BuildPoints
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
@@ -64,8 +64,8 @@ from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 
 class MainWindow(MWidget,
                  Mount,
-                 EnvironGui,
-                 # EnvironHelpers,
+                 Environ,
+                 EnvironAddon,
                  Model,
                  BuildPoints,
                  ManageModel,
@@ -252,9 +252,9 @@ class MainWindow(MWidget,
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
 
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Twilight')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+        # tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Twilight')
+        # tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        # self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
 
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
 

@@ -170,6 +170,15 @@ def test_extractNames_5():
     assert ext == ['.cfg', '.cfg']
 
 
+def test_extractNames_6():
+    name = ['', 'c:/test.cfg']
+    name, short, ext = app.extractNames(name)
+    assert name == [os.path.abspath(''),
+                    os.path.abspath('c:/test.cfg')]
+    assert short == ['', 'test']
+    assert ext == ['', '.cfg']
+
+
 def test_prepareFileDialog_1():
     suc = app.prepareFileDialog()
     assert not suc
@@ -243,6 +252,24 @@ def test_openFile_5():
         assert ext == ''
 
 
+def test_openFile_6():
+    window = PyQt5.QtWidgets.QWidget()
+    with mock.patch.object(app,
+                           'runDialog',
+                           return_value=1):
+        with mock.patch.object(PyQt5.QtWidgets.QFileDialog,
+                               'selectedFiles',
+                               return_value=('test1', 'test2')):
+            full, short, ext = app.openFile(window=window,
+                                            title='title',
+                                            folder='.',
+                                            filterSet='*.*',
+                                            multiple=True)
+            assert full == ''
+            assert short == ''
+            assert ext == ''
+
+
 def test_saveFile_1():
     full, short, ext = app.saveFile()
     assert full == ''
@@ -281,14 +308,31 @@ def test_saveFile_5():
     window = PyQt5.QtWidgets.QWidget()
     with mock.patch.object(app,
                            'runDialog',
-                           return_value=1):
+                           return_value=0):
         full, short, ext = app.saveFile(window=window,
                                         title='title',
                                         folder='.',
                                         filterSet='*.*')
-        assert full == os.getcwd()
-        assert short == 'MountWizzard4'
+        assert full == ''
+        assert short == ''
         assert ext == ''
+
+
+def test_saveFile_6():
+    window = PyQt5.QtWidgets.QWidget()
+    with mock.patch.object(app,
+                           'runDialog',
+                           return_value=1):
+        with mock.patch.object(PyQt5.QtWidgets.QFileDialog,
+                               'selectedFiles',
+                               return_value=(['mw4/test/test.txt'])):
+            full, short, ext = app.saveFile(window=window,
+                                            title='title',
+                                            folder='.',
+                                            filterSet='*.*')
+        assert full == os.getcwd() + '/mw4/test/test.txt'
+        assert short == 'test'
+        assert ext == '.txt'
 
 
 def test_openDir_1():
@@ -400,13 +444,20 @@ def test_generatePolar_1():
 
 def test_generatePolar_2():
     ui = PyQt5.QtWidgets.QWidget()
+    axe, fig = app.generatePolar(widget=ui)
+    assert axe is None
+    assert fig is None
+
+
+def test_generatePolar_3():
+    ui = PyQt5.QtWidgets.QWidget()
     widget = app.embedMatplot(ui)
     axe, fig = app.generatePolar(widget=widget)
     assert axe
     assert fig
 
 
-def test_generatePolar_3():
+def test_generatePolar_4():
     ui = PyQt5.QtWidgets.QWidget()
     widget = app.embedMatplot(ui)
     axe, fig = app.generatePolar(widget=widget, title='test')
@@ -422,13 +473,20 @@ def test_generateFlat_1():
 
 def test_generateFlat_2():
     ui = PyQt5.QtWidgets.QWidget()
+    axe, fig = app.generateFlat(widget=ui)
+    assert axe is None
+    assert fig is None
+
+
+def test_generateFlat_3():
+    ui = PyQt5.QtWidgets.QWidget()
     widget = app.embedMatplot(ui)
     axe, fig = app.generateFlat(widget=widget)
     assert axe
     assert fig
 
 
-def test_generateFlat_3():
+def test_generateFlat_4():
     ui = PyQt5.QtWidgets.QWidget()
     widget = app.embedMatplot(ui)
     axe, fig = app.generateFlat(widget=widget, title='test')

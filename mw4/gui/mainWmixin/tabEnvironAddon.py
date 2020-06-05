@@ -16,11 +16,9 @@
 #
 ###########################################################
 # standard libraries
-import copy
 
 # external packages
 from skyfield import almanac
-from skyfield.api import load
 from matplotlib import ticker
 import matplotlib.dates as mdates
 
@@ -28,7 +26,7 @@ import matplotlib.dates as mdates
 from mw4.base.tpool import Worker
 
 
-class EnvironHelpers(object):
+class EnvironAddon(object):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -52,8 +50,8 @@ class EnvironHelpers(object):
         self.darkT2 = list()
 
         self.twilight = self.embedMatplot(self.ui.twilight)
-        # self.app.mount.signals.locationDone.connect(self.searchTwilightWorker)
-        self.searchTwilight()
+        self.app.mount.signals.locationDone.connect(self.searchTwilightWorker)
+        # self.searchTwilight()
 
     def initConfig(self):
         """
@@ -150,24 +148,15 @@ class EnvironHelpers(object):
         :return: true for test purpose
         """
 
-        print('worker')
-        self.ts = load.timescale(builtin=True)
-        print('timescale')
-        self.timeJD = copy.copy(self.app.mount.obsSite.timeJD)
-        print('timeJD')
-        location = copy.copy(self.app.mount.obsSite.location)
-        eph = self.app.planets
+        ts = self.app.mount.obsSite.ts
+        timeJD = self.app.mount.obsSite.timeJD
+        location = self.app.mount.obsSite.location
 
-        print(self.timeJD)
-        print(location)
+        t0 = ts.tt_jd(int(timeJD.tt) - 180)
+        t1 = ts.tt_jd(int(timeJD.tt) + 180)
 
-        t0 = self.ts.tt_jd(int(self.timeJD.tt) - 5)
-        t1 = self.ts.tt_jd(int(self.timeJD.tt) + 5)
-
-        f = almanac.dark_twilight_day(eph, location)
-        print(f)
+        f = almanac.dark_twilight_day(self.app.planets, location)
         t, e = almanac.find_discrete(t0, t1, f)
-        print(t, e)
 
         self.civilT1 = list()
         self.nauticalT1 = list()
@@ -210,6 +199,7 @@ class EnvironHelpers(object):
 
             stat = event
 
+        self.drawTwilight((minDay, maxDay))
         return (minDay, maxDay)
 
     def searchTwilight(self):

@@ -4848,7 +4848,7 @@ to mount</string>
     <attribute name="title">
      <string>Twilight</string>
     </attribute>
-    <widget class="QWidget" name="twilight_2" native="true">
+    <widget class="QWidget" name="twilight" native="true">
      <property name="enabled">
       <bool>true</bool>
      </property>

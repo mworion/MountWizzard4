@@ -561,7 +561,7 @@ def test_saveBuildP_12():
 
 
 def test_loadJSON_1():
-    val = app.loadJSON(fileName='')
+    val = app.loadJSON(fileName='', ext='')
     assert val is None
 
 
@@ -569,7 +569,7 @@ def test_loadJSON_2():
     with open('mw4/test/config/test.bpts', 'w') as outfile:
         outfile.writelines('[test, ]],[]}')
 
-    val = app.loadJSON(fileName='test')
+    val = app.loadJSON(fileName='test', ext='.bpts')
     assert val is None
 
 
@@ -577,7 +577,7 @@ def test_loadJSON_3():
     with open('mw4/test/config/test.bpts', 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
 
-    val = app.loadJSON(fileName='test')
+    val = app.loadJSON(fileName='test', ext='.bpts')
     assert val is None
 
 
@@ -588,12 +588,12 @@ def test_loadJSON_4():
                   outfile,
                   indent=4)
 
-    val = app.loadJSON(fileName='test')
+    val = app.loadJSON(fileName='test', ext='.bpts')
     assert val == [(1, 1), (2, 2)]
 
 
 def test_loadCSV_1():
-    val = app.loadCSV(fileName='')
+    val = app.loadCSV(fileName='', ext='.csv')
     assert val is None
 
 
@@ -601,7 +601,7 @@ def test_loadCSV_2():
     with open('mw4/test/config/test.csv', 'w') as outfile:
         outfile.writelines('[test, ]],[]}')
 
-    val = app.loadCSV(fileName='test')
+    val = app.loadCSV(fileName='test', ext='.csv')
     assert val is None
 
 
@@ -609,7 +609,7 @@ def test_loadCSV_3():
     with open('mw4/test/config/test.csv', 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
 
-    val = app.loadCSV(fileName='test')
+    val = app.loadCSV(fileName='test', ext='.csv')
     assert val is None
 
 
@@ -619,7 +619,7 @@ def test_loadCSV_4():
         outfile.writelines('1, 1\n')
         outfile.writelines('2, 2\n')
 
-    val = app.loadCSV(fileName='test')
+    val = app.loadCSV(fileName='test', ext='.csv')
     assert val == [(1, 1), (2, 2)]
 
 

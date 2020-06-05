@@ -35,6 +35,7 @@ from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
 import skyfield.api
 from skyfield.api import Angle
+from skyfield.api import Topos
 from mountcontrol.modelStar import ModelStar
 
 # local import
@@ -66,6 +67,9 @@ def module_setup_teardown(qtbot):
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
                       pathToData='mw4/test/data')
+        mount.obsSite.location = Topos(latitude_degrees=20,
+                                       longitude_degrees=10,
+                                       elevation_m=500)
         camera = Camera(app=Test1())
         astrometry = Astrometry(app=Test1())
         dome = Dome(app=Test1())
@@ -376,11 +380,40 @@ def test_modelSlew_3():
     app.slewQueue.put(mPoint)
     with mock.patch.object(app.app.camera,
                            'expose'):
-        with mock.patch.object(app.app.mount.obsSite,
-                               'setTargetAltAz',
-                               return_value=True):
-            suc = app.modelSlew()
-            assert suc
+        with mock.patch.object(app.app.dome,
+                               'slewDome',
+                               return_value=0):
+            with mock.patch.object(app.app.mount.obsSite,
+                                   'setTargetAltAz',
+                                   return_value=True):
+                suc = app.modelSlew()
+                assert suc
+
+
+def test_modelSlew_4():
+    app.deviceStat['dome'] = True
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'azimuth': 0,
+              'altitude': 0,
+              }
+    app.slewQueue.put(mPoint)
+    app.ui.checkDomeGeometry.setChecked(True)
+    with mock.patch.object(app.app.camera,
+                           'expose'):
+        with mock.patch.object(app.app.dome,
+                               'slewDome',
+                               return_value=0):
+            with mock.patch.object(app.app.mount.obsSite,
+                                   'setTargetAltAz',
+                                   return_value=True):
+                suc = app.modelSlew()
+                assert suc
 
 
 def test_changeStatusDAT_1():
@@ -781,25 +814,25 @@ def test_modelFinished_2(qtbot):
     app.playSound = playSound
 
     inputData = {
-         'raJ2000S': skyfield.api.Angle(hours=0),
-         'decJ2000S': skyfield.api.Angle(degrees=0),
-         'angleS': 0,
-         'scaleS': 1,
-         'errorRMS_S': 1,
-         'flippedS': False,
-         'success': True,
-         'message': 'test',
-         'raJNowM': skyfield.api.Angle(hours=0),
-         'decJNowM': skyfield.api.Angle(degrees=0),
-         'raJNowS': skyfield.api.Angle(hours=0),
-         'decJNowS': skyfield.api.Angle(degrees=0),
-         'siderealTime': skyfield.api.Angle(hours=0),
-         'julianDate': Julian(),
-         'pierside': 'E',
-         'errorRA': 1,
-         'errorDEC': 2,
-         'errorRMS': 3,
-         }
+        'raJ2000S': skyfield.api.Angle(hours=0),
+        'decJ2000S': skyfield.api.Angle(degrees=0),
+        'angleS': 0,
+        'scaleS': 1,
+        'errorRMS_S': 1,
+        'flippedS': False,
+        'success': True,
+        'message': 'test',
+        'raJNowM': skyfield.api.Angle(hours=0),
+        'decJNowM': skyfield.api.Angle(degrees=0),
+        'raJNowS': skyfield.api.Angle(hours=0),
+        'decJNowS': skyfield.api.Angle(degrees=0),
+        'siderealTime': skyfield.api.Angle(hours=0),
+        'julianDate': Julian(),
+        'pierside': 'E',
+        'errorRA': 1,
+        'errorDEC': 2,
+        'errorRMS': 3,
+    }
 
     app.modelQueue.put(inputData)
     app.modelQueue.put(inputData)
@@ -810,6 +843,52 @@ def test_modelFinished_2(qtbot):
     app.app.astrometry.signals.done.connect(app.modelSolveDone)
     app.collector.ready.connect(app.modelImage)
 
+    with mock.patch.object(app.app.mount.model,
+                           'programAlign',
+                           return_value=True):
+        suc = app.modelFinished()
+        assert suc
+
+
+def test_modelFinished_3(qtbot):
+    class Julian:
+        ut1 = 2458635.168
+
+    def playSound(a):
+        return
+    app.playSound = playSound
+
+    inputData = {
+        'raJ2000S': skyfield.api.Angle(hours=0),
+        'decJ2000S': skyfield.api.Angle(degrees=0),
+        'angleS': 0,
+        'scaleS': 1,
+        'errorRMS_S': 1,
+        'flippedS': False,
+        'success': True,
+        'message': 'test',
+        'raJNowM': skyfield.api.Angle(hours=0),
+        'decJNowM': skyfield.api.Angle(degrees=0),
+        'raJNowS': skyfield.api.Angle(hours=0),
+        'decJNowS': skyfield.api.Angle(degrees=0),
+        'siderealTime': skyfield.api.Angle(hours=0),
+        'julianDate': Julian(),
+        'pierside': 'E',
+        'errorRA': 1,
+        'errorDEC': 2,
+        'errorRMS': 3,
+    }
+
+    app.modelQueue.put(inputData)
+    app.modelQueue.put(inputData)
+    app.modelQueue.put(inputData)
+
+    app.app.camera.signals.saved.connect(app.modelSolve)
+    app.app.camera.signals.integrated.connect(app.modelSlew)
+    app.app.astrometry.signals.done.connect(app.modelSolveDone)
+    app.collector.ready.connect(app.modelImage)
+
+    app.ui.checkEnableBackup.setChecked(True)
     with mock.patch.object(app.app.mount.model,
                            'programAlign',
                            return_value=True):

@@ -64,7 +64,7 @@ class EnvironHelpers(object):
         :return: True for test purpose
         """
 
-        config = self.app.config['mainW']
+        # config = self.app.config['mainW']
 
         return True
 
@@ -77,7 +77,7 @@ class EnvironHelpers(object):
         :return: True for test purpose
         """
 
-        config = self.app.config['mainW']
+        # config = self.app.config['mainW']
 
         return True
 

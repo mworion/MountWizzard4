@@ -452,6 +452,20 @@ class MainWindow(MWidget,
         pixmap = PyQt5.QtGui.QPixmap(':/pics/offset.png').scaled(301, 301)
         self.ui.picDome1.setPixmap(pixmap)
         self.wIcon(self.ui.copyFromDomeDriver, PyQt5.QtGui.QIcon(':/icon/copy.svg'))
+        self.wIcon(self.ui.coverPark, PyQt5.QtGui.QIcon(':/icon/exit-down.svg'))
+        self.wIcon(self.ui.coverUnpark, PyQt5.QtGui.QIcon(':/icon/exit-up.svg'))
+
+        # park positions
+        self.wIcon(self.ui.posSave0, PyQt5.QtGui.QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave1, PyQt5.QtGui.QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave2, PyQt5.QtGui.QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave3, PyQt5.QtGui.QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave4, PyQt5.QtGui.QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave5, PyQt5.QtGui.QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave6, PyQt5.QtGui.QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave7, PyQt5.QtGui.QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave8, PyQt5.QtGui.QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave9, PyQt5.QtGui.QIcon(':/icon/download.svg'))
 
         # misc setting
         self.wIcon(self.ui.installVersion, PyQt5.QtGui.QIcon(':/icon/world.svg'))

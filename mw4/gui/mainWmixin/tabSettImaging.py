@@ -189,11 +189,15 @@ class SettImaging(object):
 
         :return: true for test purpose
         """
-        value = float(self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0))
-        self.ui.focalLength.setValue(value)
+        value = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0)
+        if value is not None:
+            value = float(value)
+            self.ui.focalLength.setValue(value)
 
-        value = float(self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_APERTURE', 0))
-        self.ui.aperture.setValue(value)
+        value = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_APERTURE', 0)
+        if value is not None:
+            value = float(value)
+            self.ui.aperture.setValue(value)
 
         return True
 

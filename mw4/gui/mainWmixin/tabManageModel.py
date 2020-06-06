@@ -63,7 +63,7 @@ class ManageModel(object):
         self.ui.runOptimize.clicked.connect(self.runOptimize)
         self.ui.cancelOptimize.clicked.connect(self.cancelOptimize)
         self.ui.deleteWorstPoint.clicked.connect(self.deleteWorstPoint)
-        self.ui.test.clicked.connect(self.findFittingModel)
+        # self.ui.test.clicked.connect(self.findFittingModel)
 
         model = self.app.mount.model
         self.ui.targetRMS.valueChanged.connect(lambda: self.showModelPosition(model))

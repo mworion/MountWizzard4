@@ -144,7 +144,8 @@ class SettDevice(object):
         for driver in self.drivers:
             self.drivers[driver]['uiDropDown'].activated.connect(self.dispatch)
             if self.drivers[driver]['uiSetup'] is not None:
-                self.drivers[driver]['uiSetup'].clicked.connect(self.setupPopUp)
+                ui = self.drivers[driver]['uiSetup']
+                ui.clicked.connect(self.setupPopUp)
 
             if not hasattr(self.drivers[driver]['class'], 'signals'):
                 continue

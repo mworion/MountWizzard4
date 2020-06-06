@@ -190,7 +190,7 @@ class Almanac(object):
         y = [0.5, 1.5, 1.5, 0.5, 0.5]
         axe.fill(x, y, self.M_GREY, alpha=0.5)
         axe.plot(x, y, self.M_GREY)
-        axe.annotate('Today', (midLim - 18, 0.75),
+        axe.annotate('Today', (midLim - 12, 0.75),
                      color=self.M_WHITE, weight='bold')
 
         axe.figure.canvas.draw()

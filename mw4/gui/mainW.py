@@ -107,7 +107,6 @@ class MainWindow(MWidget,
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.initUI()
-        self.setupIcons()
         self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
 
         # link cross widget gui signals as all ui widgets have to be present
@@ -192,7 +191,6 @@ class MainWindow(MWidget,
 
         # initial call for writing the gui
         self.initConfig()
-        self.show()
 
         # show other extended windows
         self.showExtendedWindows()
@@ -261,6 +259,8 @@ class MainWindow(MWidget,
 
         self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
+        self.setupIcons()
+        self.show()
 
         return True
 
@@ -346,53 +346,115 @@ class MainWindow(MWidget,
         :return:    True if success for test
         """
 
-        self.wIcon(self.ui.saveConfigAs, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
-        self.wIcon(self.ui.loadFrom, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
-        self.wIcon(self.ui.saveConfig, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
-        self.wIcon(self.ui.saveConfigQuit, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
-        self.wIcon(self.ui.runFlexure, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+        # main window
+        self.wIcon(self.ui.saveConfigAs, PyQt5.QtGui.QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.loadFrom, PyQt5.QtGui.QIcon(':/icon/load.svg'))
+        self.wIcon(self.ui.saveConfig, PyQt5.QtGui.QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.saveConfigQuit, PyQt5.QtGui.QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.mountOn, PyQt5.QtGui.QIcon(':/icon/power-on.svg'))
+        self.wIcon(self.ui.mountOff, PyQt5.QtGui.QIcon(':/icon/power-off.svg'))
+        self.wIcon(self.ui.stop, PyQt5.QtGui.QIcon(':/icon/bolt-alt.svg'))
+        self.wIcon(self.ui.tracking, PyQt5.QtGui.QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.flipMount, PyQt5.QtGui.QIcon(':/icon/flip.svg'))
+        self.wIcon(self.ui.setSiderealTracking, PyQt5.QtGui.QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.setLunarTracking, PyQt5.QtGui.QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.setSolarTracking, PyQt5.QtGui.QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.park, PyQt5.QtGui.QIcon(':/icon/park.svg'))
 
-        self.wIcon(self.ui.plateSolveSync, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        # model points
+        self.wIcon(self.ui.loadBuildPoints, PyQt5.QtGui.QIcon(':/icon/load.svg'))
+        self.wIcon(self.ui.saveBuildPoints, PyQt5.QtGui.QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.saveBuildPointsAs, PyQt5.QtGui.QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.loadHorizonMask, PyQt5.QtGui.QIcon(':/icon/load.svg'))
+        self.wIcon(self.ui.saveHorizonMask, PyQt5.QtGui.QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.saveHorizonMaskAs, PyQt5.QtGui.QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.clearBuildP, PyQt5.QtGui.QIcon(':/icon/trash.svg'))
+        self.wIcon(self.ui.genBuildGrid, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildMax, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildMed, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildNorm, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildMin, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildFile, PyQt5.QtGui.QIcon(':/icon/show.svg'))
+        self.wIcon(self.ui.genBuildAlign3, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildAlign6, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildAlign9, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildGrid, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildSpiralMax, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildSpiralMed, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildSpiralNorm, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildSpiralMin, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildDSO, PyQt5.QtGui.QIcon(':/icon/run.svg'))
+
+        # model
+        self.wIcon(self.ui.plateSolveSync,  PyQt5.QtGui.QIcon(':/icon/start.svg'))
         pixmap = PyQt5.QtGui.QPixmap(':/pics/azimuth1.png')
         self.ui.picAZ.setPixmap(pixmap)
         pixmap = PyQt5.QtGui.QPixmap(':/pics/altitude1.png')
         self.ui.picALT.setPixmap(pixmap)
+
+        self.wIcon(self.ui.cancelModel,  PyQt5.QtGui.QIcon(':/icon/cross-circle.svg'))
+        self.wIcon(self.ui.runModel, PyQt5.QtGui.QIcon(':/icon/start.svg'))
+        self.wIcon(self.ui.pauseModel, PyQt5.QtGui.QIcon(':/icon/pause.svg'))
+        self.wIcon(self.ui.batchModel, PyQt5.QtGui.QIcon(':/icon/choose.svg'))
+        self.wIcon(self.ui.openAnalyseW, PyQt5.QtGui.QIcon(':/icon/bar-chart.svg'))
+
+        # manage model
+        self.wIcon(self.ui.runOptimize,  PyQt5.QtGui.QIcon(':/icon/start.svg'))
+        self.wIcon(self.ui.cancelOptimize,  PyQt5.QtGui.QIcon(':/icon/cross-circle.svg'))
+        self.wIcon(self.ui.deleteWorstPoint,  PyQt5.QtGui.QIcon(':/icon/circle-minus.svg'))
+        self.wIcon(self.ui.clearModel,  PyQt5.QtGui.QIcon(':/icon/trash.svg'))
+
+        self.wIcon(self.ui.loadName, PyQt5.QtGui.QIcon(':/icon/load.svg'))
+        self.wIcon(self.ui.saveName, PyQt5.QtGui.QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.deleteName, PyQt5.QtGui.QIcon(':/icon/trash.svg'))
+        self.wIcon(self.ui.refreshName, PyQt5.QtGui.QIcon(':/icon/reload.svg'))
+        self.wIcon(self.ui.refreshModel, PyQt5.QtGui.QIcon(':/icon/reload.svg'))
+
+        # satellite
+        self.wIcon(self.ui.stopSatelliteTracking,  PyQt5.QtGui.QIcon(':/icon/cross-circle.svg'))
+        self.wIcon(self.ui.startSatelliteTracking, PyQt5.QtGui.QIcon(':/icon/start.svg'))
+
+        # analyse
+        self.wIcon(self.ui.runFlexure, PyQt5.QtGui.QIcon(':/icon/start.svg'))
+        self.wIcon(self.ui.runHysteresis, PyQt5.QtGui.QIcon(':/icon/check-circle.svg'))
+        self.wIcon(self.ui.cancelAnalyse, PyQt5.QtGui.QIcon(':/icon/cross-circle.svg'))
+
+        # tools
+        self.wIcon(self.ui.renameStart, PyQt5.QtGui.QIcon(':/icon/start.svg'))
+        self.wIcon(self.ui.renameInputSelect, PyQt5.QtGui.QIcon(':/icon/folder.svg'))
+        self.wIcon(self.ui.posButton0, PyQt5.QtGui.QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton1, PyQt5.QtGui.QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton2, PyQt5.QtGui.QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton3, PyQt5.QtGui.QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton4, PyQt5.QtGui.QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton5, PyQt5.QtGui.QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton6, PyQt5.QtGui.QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton7, PyQt5.QtGui.QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton8, PyQt5.QtGui.QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton9, PyQt5.QtGui.QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.slewSpeedLow, PyQt5.QtGui.QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.slewSpeedMed, PyQt5.QtGui.QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.slewSpeedHigh, PyQt5.QtGui.QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.slewSpeedMax, PyQt5.QtGui.QIcon(':/icon/speed.svg'))
+
+        # driver setting
+        for driver in self.drivers:
+            if self.drivers[driver]['uiSetup'] is not None:
+                ui = self.drivers[driver]['uiSetup']
+                self.wIcon(ui, PyQt5.QtGui.QIcon(':/icon/cogs.svg'))
+        self.wIcon(self.ui.ascomConnect, PyQt5.QtGui.QIcon(':/icon/link.svg'))
+        self.wIcon(self.ui.ascomDisconnect, PyQt5.QtGui.QIcon(':/icon/unlink.svg'))
+
+        # imaging
+        self.wIcon(self.ui.copyFromTelescopeDriver, PyQt5.QtGui.QIcon(':/icon/copy.svg'))
+
+        # dome setting
         pixmap = PyQt5.QtGui.QPixmap(':/pics/offset.png').scaled(301, 301)
         self.ui.picDome1.setPixmap(pixmap)
+        self.wIcon(self.ui.copyFromDomeDriver, PyQt5.QtGui.QIcon(':/icon/copy.svg'))
 
-        self.wIcon(self.ui.cancelModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.runModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-
-        self.wIcon(self.ui.genBuildGrid, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildMax, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildMed, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildNorm, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildFile, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildAlign3, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildAlign6, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildAlign9, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildGrid, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildSpiralMax, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildSpiralMed, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildSpiralNorm, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildSpiralMin, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildDSO, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-
-        self.wIcon(self.ui.runOptimize, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.cancelOptimize, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.loadName, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
-        self.wIcon(self.ui.saveName, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
-        self.wIcon(self.ui.deleteName, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
-        self.wIcon(self.ui.refreshName, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
-        self.wIcon(self.ui.refreshModel, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
-
-        self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
-
-        self.wIcon(self.ui.mountOn, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.mountOff, PyQt5.QtWidgets.QStyle.SP_MessageBoxCritical)
-        self.wIcon(self.ui.renameStart, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        # misc setting
+        self.wIcon(self.ui.installVersion, PyQt5.QtGui.QIcon(':/icon/world.svg'))
 
         return True
 

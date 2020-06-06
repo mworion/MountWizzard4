@@ -94,8 +94,11 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         if not icon:
             return False
 
-        iconset = PyQt5.QtWidgets.qApp.style().standardIcon(icon)
-        gui.setIcon(PyQt5.QtGui.QIcon(iconset))
+        if not isinstance(icon, PyQt5.QtGui.QIcon):
+            iconset = PyQt5.QtWidgets.qApp.style().standardIcon(icon)
+            icon = PyQt5.QtGui.QIcon(iconset)
+
+        gui.setIcon(icon)
         gui.setProperty('iconset', True)
         gui.style().unpolish(gui)
         gui.style().polish(gui)

@@ -68,14 +68,14 @@ def test_getInitialConfig_1():
 
 
 def test_startTimer():
-    with mock.patch.object(PyQt5.QtCore.QTimer(),
+    with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
         suc = app.startTimer()
         assert suc
 
 
 def test_stopTimer():
-    with mock.patch.object(PyQt5.QtCore.QTimer(),
+    with mock.patch.object(PyQt5.QtCore.QTimer,
                            'stop'):
         suc = app.stopTimer()
         assert suc

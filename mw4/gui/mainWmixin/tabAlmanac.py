@@ -207,6 +207,9 @@ class Almanac(object):
         timeJD = self.app.mount.obsSite.timeJD
         location = self.app.mount.obsSite.location
 
+        if location is None:
+            return False
+
         t0 = ts.tt_jd(int(timeJD.tt) - 182)
         t1 = ts.tt_jd(int(timeJD.tt) + 182)
 
@@ -280,6 +283,9 @@ class Almanac(object):
         ts = self.app.mount.obsSite.ts
         timeJD = self.app.mount.obsSite.timeJD
         location = self.app.mount.obsSite.location
+
+        if location is None:
+            return False
 
         t0 = ts.tt_jd(int(timeJD.tt))
         t1 = ts.tt_jd(int(timeJD.tt) + 1)

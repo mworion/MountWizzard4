@@ -13713,7 +13713,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -17286,6 +17286,19 @@ When clicking the button, you could change the value.</string>
          <double>1.000000000000000</double>
         </property>
        </widget>
+      </widget>
+      <widget class="QPushButton" name="test3D">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>215</y>
+         <width>131</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Test 3D</string>
+       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="Dome">

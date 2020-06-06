@@ -37,6 +37,7 @@ from mw4.gui.measureW import MeasureWindow
 from mw4.gui.imageW import ImageWindow
 from mw4.gui.satelliteW import SatelliteWindow
 from mw4.gui.analyseW import AnalyseWindow
+from mw4.gui.mount3DW import Mount3DWindow
 from mw4.base.platformConfig import excludedPlatforms
 if platform.machine() not in excludedPlatforms:
     # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
@@ -145,6 +146,12 @@ class MainWindow(MWidget,
             'classObj': None,
             'name': 'AnalyseDialog',
             'class': AnalyseWindow,
+        }
+        self.uiWindows['showMount3DW'] = {
+            'button': self.ui.test3D,
+            'classObj': None,
+            'name': 'Mount3DDialog',
+            'class': Mount3DWindow,
         }
         # todo: we can only add keypad on arm when we have compiled version
         if platform.machine() not in excludedPlatforms:

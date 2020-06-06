@@ -21,6 +21,7 @@ from unittest import mock
 import logging
 import shutil
 import faulthandler
+from pathlib import Path
 faulthandler.enable()
 
 # external packages
@@ -49,11 +50,14 @@ from mw4.base.loggerMW import CustomLogger
 def module_setup_teardown(qtbot):
     global ui, widget, Test, Test1, app
 
-    shutil.copy('mw4/test/testData/de421_23.bsp', 'mw4/test/data/de421_23.bsp')
+    src = Path('mw4/test/testData/de421_23.bsp')
+    dst = Path('mw4/test/data/de421_23.bsp')
+
+    shutil.copy(src, dst)
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData=Path('mw4/test/data'))
         update10s = pyqtSignal()
         threadPool = QThreadPool()
 
@@ -64,7 +68,7 @@ def module_setup_teardown(qtbot):
         update30m = pyqtSignal()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData=Path('mw4/test/data'))
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
@@ -500,7 +504,7 @@ def test_updateClearOutsideImage_3():
     image = QImage('mw4/test/testData/forecast.png')
     pixmapBase = QPixmap().fromImage(image)
 
-    with open('mw4/test/testData/forecast.png', 'rb') as image:
+    with open(Path('mw4/test/testData/forecast.png'), 'rb') as image:
         f = image.read()
         b = bytes(f)
 

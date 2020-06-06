@@ -18,6 +18,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+from pathlib import Path
 import faulthandler
 faulthandler.enable()
 
@@ -43,11 +44,11 @@ def module_setup_teardown(qtbot):
         config = {'mainW': {}}
         threadPool = QThreadPool()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData=Path('mw4/test/data'))
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
         mwGlob = {'imageDir': 'mw4/test/image',
-                  'modelDir': 'mw4/test/model',}
+                  'modelDir': 'mw4/test/model'}
 
     widget = QWidget()
     ui = Ui_MainWindow()

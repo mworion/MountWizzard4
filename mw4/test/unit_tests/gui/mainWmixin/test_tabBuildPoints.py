@@ -19,6 +19,7 @@
 import pytest
 from unittest import mock
 import logging
+from pathlib import Path
 import faulthandler
 faulthandler.enable()
 
@@ -43,7 +44,7 @@ def module_setup_teardown(qtbot):
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData=Path('mw4/test/data'))
 
     class Test(QObject):
         config = {'mainW': {}}
@@ -51,11 +52,11 @@ def module_setup_teardown(qtbot):
         message = pyqtSignal(str, int)
         mwGlob = {'configDir': 'mw4/test/config'}
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData=Path('mw4/test/data'))
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
-        data = DataPoint(app=Test1(), configDir='mw4/test/config')
+        data = DataPoint(app=Test1(), configDir=Path('mw4/test/config'))
         uiWindows = {'showHemisphereW': {'classObj': None}}
 
     widget = QWidget()

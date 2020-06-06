@@ -4545,7 +4545,7 @@ to mount</string>
       <rect>
        <x>5</x>
        <y>10</y>
-       <width>506</width>
+       <width>501</width>
        <height>421</height>
       </rect>
      </property>
@@ -4595,9 +4595,9 @@ to mount</string>
     <widget class="QGroupBox" name="refractionGroup_5">
      <property name="geometry">
       <rect>
-       <x>520</x>
+       <x>515</x>
        <y>10</y>
-       <width>261</width>
+       <width>266</width>
        <height>201</height>
       </rect>
      </property>
@@ -4621,7 +4621,7 @@ to mount</string>
        <rect>
         <x>5</x>
         <y>150</y>
-        <width>251</width>
+        <width>256</width>
         <height>46</height>
        </rect>
       </property>
@@ -4679,8 +4679,8 @@ to mount</string>
        <rect>
         <x>5</x>
         <y>25</y>
-        <width>251</width>
-        <height>116</height>
+        <width>256</width>
+        <height>121</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -4691,9 +4691,9 @@ to mount</string>
     <widget class="QGroupBox" name="refractionGroup_3">
      <property name="geometry">
       <rect>
-       <x>520</x>
+       <x>515</x>
        <y>280</y>
-       <width>261</width>
+       <width>266</width>
        <height>151</height>
       </rect>
      </property>
@@ -4718,7 +4718,7 @@ to mount</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>115</x>
+        <x>120</x>
         <y>120</y>
         <width>51</width>
         <height>21</height>
@@ -4766,7 +4766,7 @@ to mount</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>135</x>
+        <x>140</x>
         <y>20</y>
         <width>116</width>
         <height>21</height>
@@ -4811,7 +4811,7 @@ to mount</string>
      <widget class="QLabel" name="label_146">
       <property name="geometry">
        <rect>
-        <x>170</x>
+        <x>175</x>
         <y>120</y>
         <width>81</width>
         <height>21</height>
@@ -4999,9 +4999,9 @@ to mount</string>
     <widget class="QGroupBox" name="refractionGroup_6">
      <property name="geometry">
       <rect>
-       <x>520</x>
+       <x>515</x>
        <y>220</y>
-       <width>261</width>
+       <width>266</width>
        <height>51</height>
       </rect>
      </property>
@@ -5028,7 +5028,7 @@ to mount</string>
        <rect>
         <x>10</x>
         <y>20</y>
-        <width>241</width>
+        <width>251</width>
         <height>21</height>
        </rect>
       </property>

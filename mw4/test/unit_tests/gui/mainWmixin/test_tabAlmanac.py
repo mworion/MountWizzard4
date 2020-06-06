@@ -19,6 +19,7 @@
 import pytest
 from unittest import mock
 import logging
+from pathlib import Path
 import shutil
 import faulthandler
 faulthandler.enable()
@@ -42,11 +43,14 @@ from mw4.base.loggerMW import CustomLogger
 def module_setup_teardown(qtbot):
     global ui, widget, Test, Test1, app
 
-    shutil.copy('mw4/test/testData/de421_23.bsp', 'mw4/test/data/de421_23.bsp')
+    src = Path('mw4/test/testData/de421_23.bsp')
+    dst = Path('mw4/test/data/de421_23.bsp')
+
+    shutil.copy(src, dst)
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData=Path('mw4/test/data'))
         update10s = pyqtSignal()
         threadPool = QThreadPool()
 
@@ -57,7 +61,7 @@ def module_setup_teardown(qtbot):
         update30m = pyqtSignal()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData=Path('mw4/test/data'))
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)

@@ -387,9 +387,9 @@ class MainWindow(MWidget,
 
         # model
         self.wIcon(self.ui.plateSolveSync, PyQt5.QtGui.QIcon(':/icon/start.svg'))
-        pixmap = PyQt5.QtGui.QPixmap(':/pics/azimuth1.png')
+        pixmap = PyQt5.QtGui.QPixmap(':/pics/azimuth.png')
         self.ui.picAZ.setPixmap(pixmap)
-        pixmap = PyQt5.QtGui.QPixmap(':/pics/altitude1.png')
+        pixmap = PyQt5.QtGui.QPixmap(':/pics/altitude.png')
         self.ui.picALT.setPixmap(pixmap)
 
         self.wIcon(self.ui.cancelModel, PyQt5.QtGui.QIcon(':/icon/cross-circle.svg'))

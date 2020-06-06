@@ -41,7 +41,9 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
 
     global app
-    app = AscomClass(app=Test(), data={}, threadPool=QThreadPool())
+    with mock.patch.object(PyQt5.QtCore.QTimer,
+                           'start'):
+        app = AscomClass(app=Test(), data={}, threadPool=QThreadPool())
 
     yield
 
@@ -68,10 +70,8 @@ def test_getInitialConfig_1():
 
 
 def test_startTimer():
-    with mock.patch.object(PyQt5.QtCore.QTimer,
-                           'start'):
-        suc = app.startTimer()
-        assert suc
+    suc = app.startTimer()
+    assert suc
 
 
 def test_stopTimer():

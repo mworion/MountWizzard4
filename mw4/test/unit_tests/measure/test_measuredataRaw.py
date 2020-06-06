@@ -22,6 +22,7 @@ import faulthandler
 faulthandler.enable()
 
 # external packages
+import PyQt5
 
 # local import
 from mw4.measure.measureRaw import MeasureDataRaw
@@ -40,9 +41,10 @@ def module_setup_teardown():
             return True
 
     global app
-    app = MeasureDataRaw(parent=Test1())
-
-    yield
+    with mock.patch.object(PyQt5.QtCore.QTimer,
+                           'start'):
+        app = MeasureDataRaw(parent=Test1())
+        yield
 
 
 def test_startCommunication():

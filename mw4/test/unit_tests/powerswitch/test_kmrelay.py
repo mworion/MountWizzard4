@@ -23,6 +23,7 @@ import faulthandler
 faulthandler.enable()
 
 # external packages
+import PyQt5
 
 # local import
 from mw4.powerswitch.kmRelay import KMRelay
@@ -31,9 +32,10 @@ from mw4.powerswitch.kmRelay import KMRelay
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
-    app = KMRelay()
-
-    yield
+    with mock.patch.object(PyQt5.QtCore.QTimer,
+                           'start'):
+        app = KMRelay()
+        yield
 
 
 def test_host_0():

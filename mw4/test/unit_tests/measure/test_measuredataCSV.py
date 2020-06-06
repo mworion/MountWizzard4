@@ -22,9 +22,9 @@ import faulthandler
 faulthandler.enable()
 import csv
 
-
 # external packages
 from mountcontrol.mount import Mount
+import PyQt5
 
 # local import
 from mw4.measure.measureCSV import MeasureDataCSV
@@ -47,9 +47,10 @@ def module_setup_teardown():
                       pathToData='mw4/test/data')
 
     global app
-    app = MeasureDataCSV(app=Test(), parent=Test1())
-
-    yield
+    with mock.patch.object(PyQt5.QtCore.QTimer,
+                           'start'):
+        app = MeasureDataCSV(app=Test(), parent=Test1())
+        yield
 
 
 def test_startCommunication():

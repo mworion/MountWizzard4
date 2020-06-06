@@ -39,7 +39,9 @@ class Signal(PyQt5.QtCore.QObject):
 def module_setup_teardown():
     global app
     m = Signal()
-    app = indiClass.IndiClass(m)
+    with mock.patch.object(PyQt5.QtCore.QTimer,
+                           'start'):
+        app = indiClass.IndiClass(m)
 
     yield
 

@@ -23,6 +23,7 @@ import faulthandler
 faulthandler.enable()
 
 # external packages
+import PyQt5
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
@@ -51,9 +52,11 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
 
     global app
-    app = TelescopeAscom(app=Test(), signals=TelescopeSignals(), data={})
-    app.client = Test1()
-    yield
+    with mock.patch.object(PyQt5.QtCore.QTimer,
+                           'start'):
+        app = TelescopeAscom(app=Test(), signals=TelescopeSignals(), data={})
+        app.client = Test1()
+        yield
 
 
 def test_getInitialConfig_0():

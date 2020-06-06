@@ -43,10 +43,10 @@ from mw4.base.loggerMW import CustomLogger
 def module_setup_teardown(qtbot):
     global ui, widget, Test, Test1, app
 
-    src = Path('mw4/test/testData/de421_23.bsp')
-    dst = Path('mw4/test/data/de421_23.bsp')
+    source = Path('mw4/test/testData/de421_23.bsp')
+    destination = Path('mw4/test/data/de421_23.bsp')
 
-    shutil.copy(src, dst)
+    shutil.copyfile(source, destination)
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,

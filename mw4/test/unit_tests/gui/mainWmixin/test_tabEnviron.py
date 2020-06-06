@@ -53,7 +53,7 @@ def module_setup_teardown(qtbot):
     src = Path('mw4/test/testData/de421_23.bsp')
     dst = Path('mw4/test/data/de421_23.bsp')
 
-    shutil.copy(src, dst)
+    shutil.copyfile(src, dst)
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,

@@ -386,23 +386,23 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.genBuildDSO, PyQt5.QtGui.QIcon(':/icon/run.svg'))
 
         # model
-        self.wIcon(self.ui.plateSolveSync,  PyQt5.QtGui.QIcon(':/icon/start.svg'))
+        self.wIcon(self.ui.plateSolveSync, PyQt5.QtGui.QIcon(':/icon/start.svg'))
         pixmap = PyQt5.QtGui.QPixmap(':/pics/azimuth1.png')
         self.ui.picAZ.setPixmap(pixmap)
         pixmap = PyQt5.QtGui.QPixmap(':/pics/altitude1.png')
         self.ui.picALT.setPixmap(pixmap)
 
-        self.wIcon(self.ui.cancelModel,  PyQt5.QtGui.QIcon(':/icon/cross-circle.svg'))
+        self.wIcon(self.ui.cancelModel, PyQt5.QtGui.QIcon(':/icon/cross-circle.svg'))
         self.wIcon(self.ui.runModel, PyQt5.QtGui.QIcon(':/icon/start.svg'))
         self.wIcon(self.ui.pauseModel, PyQt5.QtGui.QIcon(':/icon/pause.svg'))
         self.wIcon(self.ui.batchModel, PyQt5.QtGui.QIcon(':/icon/choose.svg'))
         self.wIcon(self.ui.openAnalyseW, PyQt5.QtGui.QIcon(':/icon/bar-chart.svg'))
 
         # manage model
-        self.wIcon(self.ui.runOptimize,  PyQt5.QtGui.QIcon(':/icon/start.svg'))
-        self.wIcon(self.ui.cancelOptimize,  PyQt5.QtGui.QIcon(':/icon/cross-circle.svg'))
-        self.wIcon(self.ui.deleteWorstPoint,  PyQt5.QtGui.QIcon(':/icon/circle-minus.svg'))
-        self.wIcon(self.ui.clearModel,  PyQt5.QtGui.QIcon(':/icon/trash.svg'))
+        self.wIcon(self.ui.runOptimize, PyQt5.QtGui.QIcon(':/icon/start.svg'))
+        self.wIcon(self.ui.cancelOptimize, PyQt5.QtGui.QIcon(':/icon/cross-circle.svg'))
+        self.wIcon(self.ui.deleteWorstPoint, PyQt5.QtGui.QIcon(':/icon/circle-minus.svg'))
+        self.wIcon(self.ui.clearModel, PyQt5.QtGui.QIcon(':/icon/trash.svg'))
 
         self.wIcon(self.ui.loadName, PyQt5.QtGui.QIcon(':/icon/load.svg'))
         self.wIcon(self.ui.saveName, PyQt5.QtGui.QIcon(':/icon/save.svg'))
@@ -411,7 +411,7 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.refreshModel, PyQt5.QtGui.QIcon(':/icon/reload.svg'))
 
         # satellite
-        self.wIcon(self.ui.stopSatelliteTracking,  PyQt5.QtGui.QIcon(':/icon/cross-circle.svg'))
+        self.wIcon(self.ui.stopSatelliteTracking, PyQt5.QtGui.QIcon(':/icon/cross-circle.svg'))
         self.wIcon(self.ui.startSatelliteTracking, PyQt5.QtGui.QIcon(':/icon/start.svg'))
 
         # analyse

@@ -378,8 +378,11 @@ def test_onMouseNormal_2():
     event.inaxes = True
     event.button = 0
     event.dblclick = False
-    suc = app.onMouseNormal(event=event)
-    assert not suc
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.No):
+        suc = app.onMouseNormal(event=event)
+        assert not suc
 
 
 def test_onMouseNormal_3():
@@ -389,8 +392,11 @@ def test_onMouseNormal_3():
     event.inaxes = True
     event.button = 1
     event.dblclick = False
-    suc = app.onMouseNormal(event=event)
-    assert not suc
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.No):
+        suc = app.onMouseNormal(event=event)
+        assert not suc
 
 
 def test_onMouseNormal_4():
@@ -400,8 +406,11 @@ def test_onMouseNormal_4():
     event.inaxes = True
     event.button = 0
     event.dblclick = True
-    suc = app.onMouseNormal(event=event)
-    assert not suc
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.No):
+        suc = app.onMouseNormal(event=event)
+        assert not suc
 
 
 def test_onMouseNormal_5():
@@ -931,8 +940,11 @@ def test_onMouseStar_2():
     event.inaxes = True
     event.button = 2
     event.dblclick = False
-    suc = app.onMouseStar(event=event)
-    assert not suc
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.No):
+        suc = app.onMouseStar(event=event)
+        assert not suc
 
 
 def test_onMouseStar_3():
@@ -942,8 +954,11 @@ def test_onMouseStar_3():
     event.inaxes = True
     event.button = 1
     event.dblclick = True
-    suc = app.onMouseStar(event=event)
-    assert not suc
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.No):
+        suc = app.onMouseStar(event=event)
+        assert not suc
 
 
 def test_onMouseStar_4():
@@ -1024,8 +1039,11 @@ def test_onMouseStar_7():
     app.app.hipparcos.az = []
     app.app.hipparcos.alt = []
     app.app.hipparcos.name = []
-    suc = app.onMouseStar(event=event)
-    assert not suc
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.No):
+        suc = app.onMouseStar(event=event)
+        assert not suc
 
 
 def test_onMouseStar_8():
@@ -1079,7 +1097,7 @@ def test_onMouseStar_9():
                 assert not suc
 
 
-def test_onMouseStar_9():
+def test_onMouseStar_10():
     class Test:
         pass
     event = Test()
@@ -1106,7 +1124,7 @@ def test_onMouseStar_9():
                 assert not suc
 
 
-def test_onMouseStar_10():
+def test_onMouseStar_11():
     class Test:
         pass
     event = Test()

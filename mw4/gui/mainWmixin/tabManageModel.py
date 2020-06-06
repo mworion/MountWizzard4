@@ -155,12 +155,12 @@ class ManageModel(object):
         :return: success
         """
 
-        return False
-
         mountModel = self.app.mount.model
         modelFileList = glob.glob(self.app.mwGlob['modelDir'] + '/*.model')
 
-        found = False
+        return
+
+        # found = False
         for modelFile in modelFileList:
             # print(modelFile)
             with open(modelFile, 'r') as inFile:

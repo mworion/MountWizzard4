@@ -16,6 +16,7 @@ changes list, please refer to the commit list on GitHub.
 - MW4 could read MW3 horizon and build points files and convert them to local format
 - added almanac functions (twilight, lunar nodes)
 - image window detects sources in image
+- revised icons and some gui implementations
 
 0.150.24
 

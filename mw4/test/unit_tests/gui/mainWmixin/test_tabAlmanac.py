@@ -17,10 +17,8 @@
 ###########################################################
 # standard libraries
 import pytest
-from unittest import mock
 import logging
 from pathlib import Path
-import shutil
 import faulthandler
 faulthandler.enable()
 
@@ -42,11 +40,6 @@ from mw4.base.loggerMW import CustomLogger
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown(qtbot):
     global ui, widget, Test, Test1, app
-
-    source = Path('mw4/test/testData/de421_23.bsp')
-    destination = Path('mw4/test/data/de421_23.bsp')
-
-    shutil.copyfile(source, destination)
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,

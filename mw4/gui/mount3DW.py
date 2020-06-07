@@ -195,21 +195,10 @@ class Mount3DWindow(widget.MWidget):
         pierside = mount.obsSite.pierside
         lat = mount.obsSite.location.latitude
 
-        # initializing the mount
-        mount.geometry.initializeGeometry('10micron GM1000HPS')
-
-        # setting values
-        mount.geometry.domeRadius = 1.5
-        mount.geometry.offNorth = 0
-        mount.geometry.offEast = 0.01
-        mount.geometry.offVert = 0.08
-        mount.geometry.offLAT = 0.15
-        mount.geometry.offGEM = 0.42
-
-        alt, az = mount.geometry.calcTransformationMatrices(ha=ha,
-                                                            dec=dec,
-                                                            lat=lat,
-                                                            pierside=pierside)
+        mount.geometry.calcTransformationMatrices(ha=ha,
+                                                  dec=dec,
+                                                  lat=lat,
+                                                  pierside=pierside)
 
         points = mount.geometry.transVector
 

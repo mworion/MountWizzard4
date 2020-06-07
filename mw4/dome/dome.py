@@ -171,13 +171,13 @@ class Dome:
         if not self.data:
             return False
 
-        # todo: should we really set attributes in classes from external ?
+        geometry = self.app.mount.geometry
 
         if piersideT:
-            alt, az = self.app.mount.geometry.calcTransformationMatrices(ha=haT,
-                                                                         dec=decT,
-                                                                         lat=lat,
-                                                                         pierside=piersideT)
+            alt, az = geometry.calcTransformationMatrices(ha=haT,
+                                                          dec=decT,
+                                                          lat=lat,
+                                                          pierside=piersideT)
 
             if alt is None or az is None:
                 self.log.warning(f'Geometry E: {haT.radians}, {decT.radians}, {piersideT}')

@@ -22,7 +22,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.150.25b7',
+    version='0.150.25b9',
     packages=[
         'mw4',
         'mw4.astrometry',
@@ -54,6 +54,7 @@ setup(
         'scipy==1.4.1',
         'requests==2.23.0',
         'requests_toolbelt==0.9.1',
+        'jplephem>=2.13',
         'skyfield==1.21',
         'sgp4==2.12',
         'qimage2ndarray==1.8.3',

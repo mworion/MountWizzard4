@@ -201,15 +201,15 @@ class Mount3DWindow(widget.MWidget):
         # setting values
         mount.geometry.domeRadius = 1.5
         mount.geometry.offNorth = 0
-        mount.geometry.offEast = 0
-        mount.geometry.offVert = 0.1
-        mount.geometry.offLAT = 0.1
-        mount.geometry.offGEM = 0.25
+        mount.geometry.offEast = 0.01
+        mount.geometry.offVert = 0.08
+        mount.geometry.offLAT = 0.15
+        mount.geometry.offGEM = 0.42
 
-        mount.geometry.calcTransformationMatrices(ha=ha,
-                                                  dec=dec,
-                                                  lat=lat,
-                                                  pierside=pierside)
+        alt, az = mount.geometry.calcTransformationMatrices(ha=ha,
+                                                            dec=dec,
+                                                            lat=lat,
+                                                            pierside=pierside)
 
         points = mount.geometry.transVector
 

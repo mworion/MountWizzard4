@@ -302,7 +302,7 @@ class Almanac(object):
         self.ui.twilightEvents.clear()
 
         for timeE, event in zip(t, e):
-            text += f'{timeE.astimezone(tz).strftime("%H:%M:%S")}  '
+            text += f'{timeE.astimezone(tz).strftime("%H:%M:%S")} '
             text += f'{almanac.TWILIGHTS[event]}\n'
 
         text = text.rstrip('\n')

@@ -23,6 +23,8 @@ import faulthandler
 faulthandler.enable()
 
 # external packages
+import matplotlib
+matplotlib.use('Qt5Agg')
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtCore import QObject

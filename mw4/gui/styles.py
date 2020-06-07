@@ -401,6 +401,14 @@ class MWStyles(object):
         height: 16px;
     }
     /* Push Buttons */
+    QPushButton[iconset='true'] {
+        text-align: left;
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+    QPushButton:focus {
+        outline: none;
+    }
     QPushButton {
         background-color: #202020;
         color: #C0C0C0;
@@ -463,17 +471,9 @@ class MWStyles(object):
         background-color: #202020;
         color: #C0C0C0;
     }
-    QPushButton[iconset='true'] {
-        text-align: center;
-        padding-left: 3px;
-        padding-right: 3px;
-    }
-    QPushButton:focus {
-        outline: none;
-    }
     QPushButton:disabled {
         background-color: #101010;
-        color: #202020;
+        color: #606060;
         border-color: #202020;
         border-width: 1px;
         border-style: outset;

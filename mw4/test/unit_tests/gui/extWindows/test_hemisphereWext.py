@@ -367,8 +367,11 @@ def test_onMouseNormal_1():
         pass
     event = Test()
     event.inaxes = False
-    suc = app.onMouseNormal(event=event)
-    assert not suc
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        suc = app.onMouseNormal(event=event)
+        assert not suc
 
 
 def test_onMouseNormal_2():
@@ -929,8 +932,11 @@ def test_onMouseStar_1():
     event = Test()
     event.inaxes = False
     event.dblclick = False
-    suc = app.onMouseStar(event=event)
-    assert not suc
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        suc = app.onMouseStar(event=event)
+        assert not suc
 
 
 def test_onMouseStar_2():

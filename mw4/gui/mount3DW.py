@@ -18,10 +18,36 @@
 # standard libraries
 
 # external packages
+from matplotlib.text import Annotation
+from mpl_toolkits.mplot3d.proj3d import proj_transform
+from mpl_toolkits.mplot3d.axes3d import Axes3D
 
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import mount3D_ui
+
+
+class Annotation3D(Annotation):
+    def __init__(self, text, xyz, *args, **kwargs):
+        super().__init__(text, xy=(0,0), *args, **kwargs)
+        self._xyz = xyz
+
+    def draw(self, renderer):
+        x2, y2, z2 = proj_transform(*self._xyz, renderer.M)
+        self.xy = (x2, y2)
+        super().draw(renderer)
+
+
+def _annotate3D(ax, text, xyz, *args, **kwargs):
+    """
+    Add anotation `text` to an `Axes3d` instance.
+    """
+
+    annotation= Annotation3D(text, xyz, *args, **kwargs)
+    ax.add_artist(annotation)
+
+
+setattr(Axes3D, 'annotate3D', _annotate3D)
 
 
 class Mount3DWindow(widget.MWidget):
@@ -44,6 +70,8 @@ class Mount3DWindow(widget.MWidget):
         self.ui = mount3D_ui.Ui_Mount3DDialog()
         self.ui.setupUi(self)
         self.initUI()
+        self.axes = None
+        self.figures = None
 
         self.mount3d = self.embedMatplot(self.ui.mount3d, constrainedLayout=False)
         self.mount3d.parentWidget().setStyleSheet(self.BACK_BG)
@@ -116,34 +144,23 @@ class Mount3DWindow(widget.MWidget):
         # gui signals
         super().closeEvent(closeEvent)
 
-    def showWindow(self):
-        """
-        showWindow starts constructing the main window for satellite view and shows the
-        window content
-
-        :return: True for test purpose
-        """
-        self.show()
-
-        return True
-
-    def drawMount(self):
-        """
-        :return: success
+    def generatePlots(self):
         """
 
-        figures = [self.mountTop.figure,
-                   self.mountX.figure,
-                   self.mountY.figure,
-                   self.mount3d.figure]
-        axes = []
+        :return:
+        """
+        self.figures = [self.mountTop.figure,
+                        self.mountX.figure,
+                        self.mountY.figure,
+                        self.mount3d.figure]
+        self.axes = []
 
-        for fig in figures:
+        for fig in self.figures:
             fig.clf()
             fig.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
-            axes.append(fig.add_subplot(111, projection='3d'))
+            self.axes.append(fig.add_subplot(111, projection='3d'))
 
-        for axe in axes:
+        for axe in self.axes:
             axe.axes.set_xlim3d(left=-1, right=1)
             axe.axes.set_ylim3d(bottom=-1, top=1)
             axe.axes.set_zlim3d(bottom=0, top=2)
@@ -177,16 +194,33 @@ class Mount3DWindow(widget.MWidget):
             axe.set_zlabel('Z direction', color=self.M_BLUE)
 
         # top view
-        axes[0].view_init(90, 180)
+        self.axes[0].view_init(90, 180)
 
         # side view X
-        axes[1].view_init(0, 180)
+        self.axes[1].view_init(0, 180)
 
         # side view Y
-        axes[2].view_init(0, 90)
+        self.axes[2].view_init(0, 90)
 
         # iso view
-        axes[3].view_init(30, 210)
+        self.axes[3].view_init(30, 210)
+
+    def showWindow(self):
+        """
+        showWindow starts constructing the main window for satellite view and shows the
+        window content
+
+        :return: True for test purpose
+        """
+        self.generatePlots()
+        self.show()
+
+        return True
+
+    def drawMount(self):
+        """
+        :return: success
+        """
 
         # getting information from mount and draw it
         mount = self.app.mount
@@ -205,53 +239,82 @@ class Mount3DWindow(widget.MWidget):
         if points is None:
             return
 
-        for axe in axes:
+        for axe in self.axes:
+            axe.cla()
+
+        self.axes[0].view_init(90, 180)
+        self.axes[1].view_init(0, 180)
+        self.axes[2].view_init(0, 90)
+        self.axes[3].view_init(30, 210)
+
+        for axe in self.axes:
+            axe.axes.set_xlim3d(left=-1, right=1)
+            axe.axes.set_ylim3d(bottom=-1, top=1)
+            axe.axes.set_zlim3d(bottom=0, top=2)
             # base point
             p0 = points[0]
             axe.plot([p0[0]],
                      [p0[1]],
                      [p0[2]],
-                     marker='o', markersize=5, color=self.M_RED)
+                     marker='o', markersize=7, color=self.M_RED)
+            axe.annotate3D('Reference Point',
+                           p0,
+                           xytext=(-10, -10),
+                           textcoords='offset points',
+                           fontsize=16, fontweight='bold',
+                           color=self.M_RED, alpha=0.8)
 
             # offsets north east vertical
             p1 = points[1]
             axe.plot([p0[0], p1[0]],
                      [p0[1], p1[1]],
                      [p0[2], p1[2]],
-                     lw=1, color=self.M_GREY)
+                     lw=5, color=self.M_WHITE_L, alpha=0.5)
             axe.plot([p1[0]],
                      [p1[1]],
                      [p1[2]],
-                     marker='o', markersize=1, color=self.M_GREY)
+                     marker='o', markersize=7, color=self.M_WHITE_L)
+            axe.annotate3D('Base Point Mount',
+                           p1,
+                           xytext=(-10, -10),
+                           textcoords='offset points',
+                           fontsize=16, fontweight='bold',
+                           color=self.M_WHITE_L, alpha=0.8)
 
             # offsets to turning point azimuth
             p2 = points[2]
             axe.plot([p1[0], p2[0]],
                      [p1[1], p2[1]],
                      [p1[2], p2[2]],
-                     lw=1, color=self.M_GREY)
+                     lw=1, color=self.M_GREY, alpha=0.5)
             axe.plot([p2[0]],
                      [p2[1]],
                      [p2[2]],
                      marker='o', markersize=1, color=self.M_GREY)
 
-            # offsets to lat compensation
+            # offsets to latitude compensation
             p3 = points[3]
             axe.plot([p2[0], p3[0]],
                      [p2[1], p3[1]],
                      [p2[2], p3[2]],
-                     lw=1, color=self.M_GREY)
+                     lw=1, color=self.M_GREY, alpha=0.5)
             axe.plot([p3[0]],
                      [p3[1]],
                      [p3[2]],
-                     marker='o', markersize=5, color=self.M_YELLOW)
+                     marker='o', markersize=7, color=self.M_PINK)
+            axe.annotate3D('Altitude Adjust Axe',
+                           p3,
+                           xytext=(-10, -10),
+                           textcoords='offset points',
+                           fontsize=16, fontweight='bold',
+                           color=self.M_PINK, alpha=0.8)
 
             # offsets to GEM point
             p4 = points[4]
             axe.plot([p3[0], p4[0]],
                      [p3[1], p4[1]],
                      [p3[2], p4[2]],
-                     lw=1, color=self.M_GREY)
+                     lw=1, color=self.M_GREY, alpha=0.5)
             axe.plot([p4[0]],
                      [p4[1]],
                      [p4[2]],
@@ -262,66 +325,74 @@ class Mount3DWindow(widget.MWidget):
             axe.plot([p4[0], p5[0]],
                      [p4[1], p5[1]],
                      [p4[2], p5[2]],
-                     lw=1, color=self.M_GREY)
+                     lw=1, color=self.M_GREY, alpha=0.5)
             axe.plot([p5[0]],
                      [p5[1]],
                      [p5[2]],
-                     marker='o', markersize=5, color=self.M_GREEN)
-
-            # offsets
-            p6 = points[6]
-            axe.plot([p5[0], p6[0]],
-                     [p5[1], p6[1]],
-                     [p5[2], p6[2]],
-                     lw=1, color=self.M_GREY)
-            axe.plot([p6[0]],
-                     [p6[1]],
-                     [p6[2]],
-                     marker='o', markersize=1, color=self.M_BLUE)
-
-            # offsets to GEM point
-            p7 = points[7]
-            axe.plot([p6[0], p7[0]],
-                     [p6[1], p7[1]],
-                     [p6[2], p7[2]],
-                     lw=1, color=self.M_GREY)
-            axe.plot([p7[0]],
-                     [p7[1]],
-                     [p7[2]],
-                     marker='o', markersize=1, color=self.M_GREY)
+                     marker='o', markersize=7, color=self.M_YELLOW)
+            axe.annotate3D('GEM Point',
+                           p5,
+                           xytext=(-10, -10),
+                           textcoords='offset points',
+                           fontsize=16, fontweight='bold',
+                           color=self.M_YELLOW, alpha=0.8)
 
             # offsets from GEM to OTA
             p8 = points[8]
-            axe.plot([p7[0], p8[0]],
-                     [p7[1], p8[1]],
-                     [p7[2], p8[2]],
-                     lw=1, color=self.M_GREY)
+            axe.plot([p5[0], p8[0]],
+                     [p5[1], p8[1]],
+                     [p5[2], p8[2]],
+                     lw=5, color=self.M_YELLOW, alpha=0.5)
             axe.plot([p8[0]],
                      [p8[1]],
                      [p8[2]],
                      marker='o', markersize=3, color=self.M_RED)
+            axe.annotate3D('GEM - OTA distance',
+                           p5 + (p8 - p5) / 2,
+                           xytext=(-10, -10),
+                           textcoords='offset points',
+                           fontsize=16, fontweight='bold',
+                           color=self.M_YELLOW, alpha=0.8)
 
             # offsets from OTA LAT
             p9 = points[9]
             axe.plot([p8[0], p9[0]],
                      [p8[1], p9[1]],
                      [p8[2], p9[2]],
-                     lw=3, color=self.M_GREEN)
+                     lw=5, color=self.M_BLUE, alpha=0.5)
             axe.plot([p9[0]],
                      [p9[1]],
                      [p9[2]],
                      marker='o', markersize=3, color=self.M_BLUE)
+            axe.annotate3D('LAT Offset',
+                           p8 + (p9 - p8) / 2,
+                           xytext=(-10, -10),
+                           textcoords='offset points',
+                           fontsize=16, fontweight='bold',
+                           color=self.M_BLUE, alpha=0.8)
 
             # offsets from OTA to sky
             p10 = points[10]
             axe.plot([p9[0], p10[0]],
                      [p9[1], p10[1]],
                      [p9[2], p10[2]],
-                     lw=3, color=self.M_GREEN)
+                     lw=20, color=self.M_GREEN, alpha=0.5)
             axe.plot([p10[0]],
                      [p10[1]],
                      [p10[2]],
-                     marker='o', markersize=3, color=self.M_RED)
+                     marker='o', markersize=7, color=self.M_RED)
+            axe.annotate3D('OTA',
+                           p9 + (p10 - p9) / 2,
+                           xytext=(-10, -10),
+                           textcoords='offset points',
+                           fontsize=16, fontweight='bold',
+                           color=self.M_GREEN, alpha=0.8)
+            axe.annotate3D('TELESCOPE LENS',
+                           p10,
+                           xytext=(-10, -10),
+                           textcoords='offset points',
+                           fontsize=16, fontweight='bold',
+                           color=self.M_RED, alpha=0.8)
 
             axe.figure.canvas.draw()
 

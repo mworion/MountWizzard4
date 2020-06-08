@@ -49,6 +49,7 @@ class Almanac(object):
         self.nauticalT2 = list()
         self.astronomicalT2 = list()
         self.darkT2 = list()
+        self.thread = None
 
         self.moonPhasePercent = 0
 
@@ -87,6 +88,9 @@ class Almanac(object):
         config = self.app.config['mainW']
         config['checkTimezoneUTC'] = self.ui.checkTimezoneUTC.isChecked()
         config['checkTimezoneLocal'] = self.ui.checkTimezoneLocal.isChecked()
+
+        if self.thread:
+            self.thread.join()
 
         return True
 
@@ -267,8 +271,8 @@ class Almanac(object):
         :return: true for test purpose
         """
 
-        x = threading.Thread(target=self.searchTwilightWorker)
-        x.start()
+        self.thread = threading.Thread(target=self.searchTwilightWorker)
+        self.thread.start()
 
         return True
 

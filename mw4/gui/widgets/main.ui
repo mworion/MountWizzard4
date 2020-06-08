@@ -17300,6 +17300,19 @@ When clicking the button, you could change the value.</string>
         <string>Test 3D</string>
        </property>
       </widget>
+      <widget class="QPushButton" name="testSimulator">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>260</y>
+         <width>131</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Test Simulator</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="Dome">
       <attribute name="title">

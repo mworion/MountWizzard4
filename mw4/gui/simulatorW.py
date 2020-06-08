@@ -18,6 +18,10 @@
 # standard libraries
 
 # external packages
+from PyQt5.QtWidgets import QWidget
+from PyQt5.Qt3DExtras import Qt3DWindow
+from PyQt5.Qt3DExtras import QFirstPersonCameraController
+from PyQt5.Qt3DCore import QEntity
 
 # local import
 from mw4.base.loggerMW import CustomLogger
@@ -39,6 +43,16 @@ class SimulatorWindow(widget.MWidget):
         self.ui = simulator_ui.Ui_SimulatorDialog()
         self.ui.setupUi(self)
         self.initUI()
+
+        self.view = Qt3DWindow()
+        self.container = QWidget.createWindowContainer(self.view)
+        # adding it to window widget
+        self.ui.simulator.addWidget(self.container)
+        self.rootEntity = QEntity()
+        cameraEntity = self.view.camera()
+        camController = QFirstPersonCameraController(self.rootEntity)
+        camController.setCamera(cameraEntity)
+        self.view.setRootEntity(self.rootEntity)
 
         self.initConfig()
         self.showWindow()

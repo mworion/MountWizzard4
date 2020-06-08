@@ -510,7 +510,7 @@ class Environ(object):
         """
 
         if not self.ui.isOnline.isChecked():
-            pixmap = PyQt5.QtGui.QPixmap(':/clearoutsideoff.png')
+            pixmap = PyQt5.QtGui.QPixmap(':/pics/clearoutsideoff.png')
             self.ui.picClearOutside.setPixmap(pixmap)
             return False
 

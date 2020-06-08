@@ -5,6 +5,7 @@
     <file>data</file>
     <file>icon</file>
     <file>pics</file>
+    <file>model3D</file>
     <file>webif/pic</file>
     <file>webif/virtkeypad.html</file>
     <file>webif/virtkeypad.css</file>

@@ -133,6 +133,18 @@ If a source frame has a checkbox, this source can be chosen for using it's data 
 refraction update. As you may have different options in this window, you have the choice to
 pick a source.
 
+Almanac Tab
+-----------
+MW4 assists you in getting some context information what's going on during the night imaging
+conditions.
+
+.. note:: The almanac populated only when the mount is connected
+
+.. image:: image/almanac_tab.png
+    :align: center
+    :scale: 71%
+
+
 Model Points Tab
 ----------------
 Before starting the model build, you need to choose which set of reference points you would

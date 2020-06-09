@@ -26,6 +26,26 @@ import requests
 from mw4.base.loggerMW import CustomLogger
 
 
+class RelaySignals(PyQt5.QtCore.QObject):
+    """
+    The WeatherSignals class offers a list of signals to be used and instantiated by
+    the Mount class to get signals for triggers for finished tasks to
+    enable a gui to update their values transferred to the caller back.
+
+    This has to be done in a separate class as the signals have to be subclassed from
+    QObject and the Mount class itself is subclassed from object
+    """
+
+    __all__ = ['RelaySignals']
+
+    statusReady = PyQt5.QtCore.pyqtSignal()
+
+    serverConnected = PyQt5.QtCore.pyqtSignal()
+    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
+
+
 class KMRelay(PyQt5.QtCore.QObject):
     """
     The class KMRelay inherits all information and handling of KMtronic relay board
@@ -36,12 +56,6 @@ class KMRelay(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['KMRelay',
-               'startCommunication',
-               'stopCommunication',
-               'cyclePolling',
-               'pulse',
-               'switch',
-               'set',
                ]
 
     logger = logging.getLogger(__name__)
@@ -55,8 +69,6 @@ class KMRelay(PyQt5.QtCore.QObject):
     TIMEOUT = 0.5
     # width for pulse
     PULSEWIDTH = 0.5
-    # signal if correct status received and decoded
-    statusReady = PyQt5.QtCore.pyqtSignal()
 
     def __init__(self,
                  host=None,
@@ -65,6 +77,7 @@ class KMRelay(PyQt5.QtCore.QObject):
                  ):
         super().__init__()
 
+        self.signals = RelaySignals()
         # minimum set for driver package built in
         self.framework = None
         self.data = {}
@@ -231,7 +244,7 @@ class KMRelay(PyQt5.QtCore.QObject):
             value = [int(s) for s in value]
             self.status[value[0] - 1] = value[1]
 
-        self.statusReady.emit()
+        self.signals.statusReady.emit()
         return True
 
     def getByte(self, relayNumber=0, state=False):

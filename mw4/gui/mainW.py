@@ -579,9 +579,9 @@ class MainWindow(MWidget,
             'Relay': {'statID': 'relay',
                       'tab': self.ui.mainTabWidget,
                       },
-            # 'KMTronic': {'statID': 'relay',
-            #             'tab': self.ui.settingsTabWidget,
-            #             },
+            'KMTronic': {'statID': 'relay',
+                         'tab': self.ui.settingsTabWidget,
+                         },
         }
 
         tabChanged = False

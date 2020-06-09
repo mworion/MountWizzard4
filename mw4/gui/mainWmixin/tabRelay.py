@@ -34,7 +34,7 @@ class Relay(object):
             self.ui = ui
             self.clickable = clickable
 
-        self.app.relay.statusReady.connect(self.updateRelayGui)
+        self.app.relay.signals.statusReady.connect(self.updateRelayGui)
 
     def initConfig(self):
         # config = self.app.config['mainW']

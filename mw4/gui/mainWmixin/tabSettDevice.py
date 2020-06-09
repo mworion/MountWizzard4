@@ -347,8 +347,7 @@ class SettDevice(object):
         if not self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
             if onlyASCOM:
                 return False
-
-        elif self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
+        else:
             if not (autoASCOM or onlyASCOM):
                 return False
 
@@ -521,11 +520,11 @@ class SettDevice(object):
             if onlyASCOM:
                 return False
 
-        elif self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
+        if self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
             if not (autoASCOM or onlyASCOM):
                 return False
 
-        elif self.drivers[driver]['uiDropDown'].currentText().startswith('internal'):
+        if self.drivers[driver]['uiDropDown'].currentText().startswith('internal'):
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[driver] = True
 

@@ -149,6 +149,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         except Exception as e:
             self.log.critical(f'Failed loading planets: {e}')
             self.planets = None
+        finally:
+            pass
 
         self.relay = KMRelay(host='localhost')
         self.sensorWeather = SensorWeather(self)

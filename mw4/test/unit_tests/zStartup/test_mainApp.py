@@ -52,7 +52,7 @@ def module_setup_teardown(qapp):
         with mock.patch.object(PyQt5.QtCore.QTimer,
                                'start'):
             app = MountWizzard4(mwGlob=mwGlob, application=qapp)
-            yield
+            yield app
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -105,6 +105,60 @@ def test_storeConfig_2():
 
     if app.uiWindows['showMessageW']['classObj']:
         del app.uiWindows['showMessageW']['classObj']
+
+
+def test_sendUpdate_1():
+    app.timerCounter = 0
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_2():
+    app.timerCounter = 4
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_3():
+    app.timerCounter = 19
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_4():
+    app.timerCounter = 79
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_5():
+    app.timerCounter = 574
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_6():
+    app.timerCounter = 1800 - 12 - 1
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_7():
+    app.timerCounter = 6000 - 13 - 1
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_8():
+    app.timerCounter = 18000 - 14 - 1
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_9():
+    app.timerCounter = 36000 - 15 - 1
+    suc = app.sendUpdate()
+    assert suc
 
 
 def test_quit_1():

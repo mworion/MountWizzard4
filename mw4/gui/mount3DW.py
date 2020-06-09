@@ -29,7 +29,7 @@ from mw4.gui.widgets import mount3D_ui
 
 class Annotation3D(Annotation):
     def __init__(self, text, xyz, *args, **kwargs):
-        super().__init__(text, xy=(0,0), *args, **kwargs)
+        super().__init__(text, xy=(0, 0), *args, **kwargs)
         self._xyz = xyz
 
     def draw(self, renderer):
@@ -43,7 +43,7 @@ def _annotate3D(ax, text, xyz, *args, **kwargs):
     Add anotation `text` to an `Axes3d` instance.
     """
 
-    annotation= Annotation3D(text, xyz, *args, **kwargs)
+    annotation = Annotation3D(text, xyz, *args, **kwargs)
     ax.add_artist(annotation)
 
 

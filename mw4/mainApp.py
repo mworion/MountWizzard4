@@ -145,10 +145,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # get all planets for calculation
         try:
-            self.ephermeris = self.mount.obsSite.loader('de421_23.bsp')
+            self.ephemeris = self.mount.obsSite.loader('de421_23.bsp')
         except Exception as e:
             self.log.critical(f'Failed loading planets: {e}')
-            self.ephermeris = None
+            self.ephemeris = None
         finally:
             pass
 
@@ -275,7 +275,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         self.timer0_1s.stop()
         self.mount.stopTimers()
-        self.relay.timerTask.stop()
 
         return True
 
@@ -289,7 +288,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.mountUp = False
         self.threadPool.waitForDone(5000)
         self.message.emit('MountWizzard4 manual stopped', 1)
-        self.application.quit()
+        # self.application.quit()
         return True
 
     @staticmethod

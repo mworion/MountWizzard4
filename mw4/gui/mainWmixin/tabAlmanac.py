@@ -217,7 +217,7 @@ class Almanac(object):
         t0 = ts.tt_jd(int(timeJD.tt) - 182)
         t1 = ts.tt_jd(int(timeJD.tt) + 182)
 
-        f = almanac.dark_twilight_day(self.app.ephermeris, location)
+        f = almanac.dark_twilight_day(self.app.ephemeris, location)
         t, e = almanac.find_discrete(t0, t1, f)
 
         self.civilT1 = list()
@@ -294,7 +294,7 @@ class Almanac(object):
         t0 = ts.tt_jd(int(timeJD.tt))
         t1 = ts.tt_jd(int(timeJD.tt) + 1)
 
-        f = almanac.dark_twilight_day(self.app.ephermeris, location)
+        f = almanac.dark_twilight_day(self.app.ephemeris, location)
         t, e = almanac.find_discrete(t0, t1, f)
 
         if self.ui.checkTimezoneUTC.isChecked():
@@ -359,16 +359,16 @@ class Almanac(object):
         }
 
         # todo: is the calculation of the moon phase better separate ?
-        sun = self.app.ephermeris['sun']
-        moon = self.app.ephermeris['moon']
-        earth = self.app.ephermeris['earth']
+        sun = self.app.ephemeris['sun']
+        moon = self.app.ephemeris['moon']
+        earth = self.app.ephemeris['earth']
 
         e = earth.at(self.app.mount.obsSite.timeJD)
         _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
         _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
 
         now = self.app.mount.obsSite.ts.now()
-        moonPhaseIllumination = almanac.fraction_illuminated(self.app.ephermeris, 'moon', now)
+        moonPhaseIllumination = almanac.fraction_illuminated(self.app.ephemeris, 'moon', now)
         moonPhaseDegree = (moonLon.degrees - sunLon.degrees) % 360.0
         moonPhasePercent = moonPhaseDegree / 360
 
@@ -407,7 +407,7 @@ class Almanac(object):
 
         t0 = ts.tt_jd(int(timeJD.tt))
         t1 = ts.tt_jd(int(timeJD.tt) + 29)
-        t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(self.app.ephermeris))
+        t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(self.app.ephemeris))
 
         self.ui.lunarNodes.setText(f'{almanac.MOON_NODES[y[0]]}')
 

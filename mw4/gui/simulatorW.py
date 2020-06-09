@@ -289,4 +289,3 @@ class SimulatorWindow(widget.MWidget):
         if self.domeMesh:
             radius = self.app.mainW.ui.domeRadius.value()
             self.domeMesh.setRadius(radius)
-

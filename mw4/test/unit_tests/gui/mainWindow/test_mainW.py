@@ -122,7 +122,7 @@ def function_setup_teardown(qtbot):
         relay = KMRelay()
         remote = Remote()
         data = DataPoint()
-        planets = eph
+        ephemeris = eph
         measure = MeasureData(app=Test1())
         power = PegasusUPB(app=Test1())
         astrometry = Astrometry(app=Test1())

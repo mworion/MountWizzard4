@@ -40,7 +40,9 @@ def test_start_parameters(qapp):
                            'show'):
         with mock.patch.object(PyQt5.QtCore.QTimer,
                                'start'):
-            with mock.patch.object(sys,
-                                   'argv',
-                                   ['test']):
-                MountWizzard4(mwGlob=mwGlob, application=qapp)
+            with mock.patch.object(PyQt5.QtCore.QBasicTimer,
+                                   'start'):
+                with mock.patch.object(sys,
+                                       'argv',
+                                       ['test']):
+                    MountWizzard4(mwGlob=mwGlob, application=qapp)

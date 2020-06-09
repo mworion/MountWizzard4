@@ -51,8 +51,10 @@ def module_setup_teardown(qapp):
                            'show'):
         with mock.patch.object(PyQt5.QtCore.QTimer,
                                'start'):
-            app = MountWizzard4(mwGlob=mwGlob, application=qapp)
-            yield app
+            with mock.patch.object(PyQt5.QtCore.QBasicTimer,
+                                   'start'):
+                app = MountWizzard4(mwGlob=mwGlob, application=qapp)
+                yield app
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -220,6 +222,11 @@ def test_loadConfig_4():
     assert app.config['version'] == '4.0'
 
 
+def test_convertData():
+    val = app.convertData('test')
+    assert val == 'test'
+
+
 def test_saveConfig_1():
     app.config = {'profileName': 'config'}
 
@@ -279,7 +286,7 @@ def test_loadMountData_2():
     suc = app.loadMountData(False)
     assert not suc
 
-"""
+
 def test_loadMountData_3():
     app.mountUp = True
     with mock.patch.object(app.mainW,
@@ -288,7 +295,7 @@ def test_loadMountData_3():
                                'displayTwilightData'):
             suc = app.loadMountData(False)
             assert not suc
-"""
+
 
 def test_loadMountData_4():
     app.mountUp = True

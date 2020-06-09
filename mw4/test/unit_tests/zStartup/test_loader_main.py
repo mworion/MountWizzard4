@@ -68,17 +68,18 @@ def test_main_1(qtbot):
               'workDir': 'mw4/test',
               'modeldata': '4.0',
               }
-
-    with mock.patch.object(loader,
-                           'MyApp',
-                           return_value=Test()):
-        with mock.patch.object(mainApp,
-                               'MountWizzard4'):
-            with mock.patch.object(loader,
-                                   'setupWorkDirs',
-                                   return_value=mwGlob):
-                with mock.patch.object(sys,
-                                       'exit'):
-                    with mock.patch.object(PyQt5.QtWidgets.QWidget,
-                                           'show'):
-                        loader.main()
+    with mock.patch.object(PyQt5.QtCore.QTimer,
+                           'start'):
+        with mock.patch.object(loader,
+                               'MyApp',
+                               return_value=Test()):
+            with mock.patch.object(mainApp,
+                                   'MountWizzard4'):
+                with mock.patch.object(loader,
+                                       'setupWorkDirs',
+                                       return_value=mwGlob):
+                    with mock.patch.object(sys,
+                                           'exit'):
+                        with mock.patch.object(PyQt5.QtWidgets.QWidget,
+                                               'show'):
+                            loader.main()

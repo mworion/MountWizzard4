@@ -56,12 +56,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
     standard screen size will be 800x600 pixel
     """
 
-    __all__ = ['closeEvent',
-               'wIcon',
-               'initUI',
-               'changeStyleSheet',
-               'clearPolar',
-               'integrateMatplotlib',
+    __all__ = ['MWidget',
                ]
 
     logger = logging.getLogger(__name__)

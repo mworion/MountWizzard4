@@ -288,7 +288,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.mountUp = False
         self.threadPool.waitForDone(5000)
         self.message.emit('MountWizzard4 manual stopped', 1)
-        # self.application.quit()
+        self.application.quit()
         return True
 
     @staticmethod

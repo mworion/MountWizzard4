@@ -21,10 +21,8 @@ import platform
 
 # external packages
 import PyQt5
-import numpy as np
 if platform.system() == 'Windows':
     from mw4.dome.domeAscom import DomeAscom
-
 
 # local imports
 from mw4.base.loggerMW import CustomLogger

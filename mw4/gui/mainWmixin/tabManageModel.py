@@ -158,8 +158,6 @@ class ManageModel(object):
         mountModel = self.app.mount.model
         modelFileList = glob.glob(self.app.mwGlob['modelDir'] + '/*.model')
 
-        return
-
         # found = False
         for modelFile in modelFileList:
             # print(modelFile)
@@ -562,9 +560,9 @@ class ManageModel(object):
         self.ui.clearModel.setEnabled(True)
         self.app.mount.signals.alignDone.disconnect(self.clearRefreshModel)
         self.app.message.emit('Align model data refreshed', 0)
-        suc = self.findFittingModel()
-        if suc:
-            self.app.message.emit('Stored model run found', 0)
+        # suc = self.findFittingModel()
+        # if suc:
+        #    self.app.message.emit('Stored model run found', 0)
 
         return True
 

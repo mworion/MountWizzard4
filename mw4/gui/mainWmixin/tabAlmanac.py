@@ -217,7 +217,7 @@ class Almanac(object):
         t0 = ts.tt_jd(int(timeJD.tt) - 182)
         t1 = ts.tt_jd(int(timeJD.tt) + 182)
 
-        f = almanac.dark_twilight_day(self.app.planets, location)
+        f = almanac.dark_twilight_day(self.app.ephermeris, location)
         t, e = almanac.find_discrete(t0, t1, f)
 
         self.civilT1 = list()
@@ -294,7 +294,7 @@ class Almanac(object):
         t0 = ts.tt_jd(int(timeJD.tt))
         t1 = ts.tt_jd(int(timeJD.tt) + 1)
 
-        f = almanac.dark_twilight_day(self.app.planets, location)
+        f = almanac.dark_twilight_day(self.app.ephermeris, location)
         t, e = almanac.find_discrete(t0, t1, f)
 
         if self.ui.checkTimezoneUTC.isChecked():
@@ -359,16 +359,16 @@ class Almanac(object):
         }
 
         # todo: is the calculation of the moon phase better separate ?
-        sun = self.app.planets['sun']
-        moon = self.app.planets['moon']
-        earth = self.app.planets['earth']
+        sun = self.app.ephermeris['sun']
+        moon = self.app.ephermeris['moon']
+        earth = self.app.ephermeris['earth']
 
         e = earth.at(self.app.mount.obsSite.timeJD)
         _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
         _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
 
         now = self.app.mount.obsSite.ts.now()
-        moonPhaseIllumination = almanac.fraction_illuminated(self.app.planets, 'moon', now)
+        moonPhaseIllumination = almanac.fraction_illuminated(self.app.ephermeris, 'moon', now)
         moonPhaseDegree = (moonLon.degrees - sunLon.degrees) % 360.0
         moonPhasePercent = moonPhaseDegree / 360
 
@@ -388,7 +388,7 @@ class Almanac(object):
         ts = self.app.mount.obsSite.ts
         t0 = ts.utc(2019, 12, 1, 5)
         t1 = ts.utc(2019, 12, 31, 5)
-        e = self.app.planets
+        e = self.app.ephermeris
         loc = self.app.mount.obsSite.location
         t, y = almanac.find_discrete(t0, t1, almanac.dark_twilight_day(e, loc))
         for ti, yi in zip(t, y):
@@ -407,7 +407,7 @@ class Almanac(object):
 
         t0 = ts.tt_jd(int(timeJD.tt))
         t1 = ts.tt_jd(int(timeJD.tt) + 29)
-        t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(self.app.planets))
+        t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(self.app.ephermeris))
 
         self.ui.lunarNodes.setText(f'{almanac.MOON_NODES[y[0]]}')
 

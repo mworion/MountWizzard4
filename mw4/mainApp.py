@@ -145,10 +145,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # get all planets for calculation
         try:
-            self.planets = self.mount.obsSite.loader('de421_23.bsp')
+            self.ephermeris = self.mount.obsSite.loader('de421_23.bsp')
         except Exception as e:
             self.log.critical(f'Failed loading planets: {e}')
-            self.planets = None
+            self.ephermeris = None
         finally:
             pass
 

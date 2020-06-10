@@ -58,7 +58,7 @@ def module_setup_teardown(qtbot):
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
-        planets = mount.obsSite.loader('de421_23.bsp')
+        ephemeris = mount.obsSite.loader('de421_23.bsp')
 
     widget = QWidget()
     ui = Ui_MainWindow()

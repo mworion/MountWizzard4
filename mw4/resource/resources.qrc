@@ -1,6 +1,5 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-    <file>moon</file>
     <file>sound</file>
     <file>data</file>
     <file>icon</file>

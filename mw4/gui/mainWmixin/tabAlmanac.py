@@ -96,6 +96,8 @@ class Almanac(object):
 
     def drawTwilight(self, minDay, maxDay):
         """
+        draw Twilight takes the different stats for each day during a year (half a year to the past,
+        half year to the future) and draws the chart for UTC time only.
 
         :return: true for test purpose
         """
@@ -203,6 +205,9 @@ class Almanac(object):
 
     def searchTwilightWorker(self):
         """
+        searchTwilightWorker is the worker method which does the search for twilight events during
+        one year with actual day as middle point. As this search take some time and the gui should be still
+        responsive, this method will runf in a separat thread.
 
         :return: true for test purpose
         """
@@ -267,6 +272,7 @@ class Almanac(object):
 
     def searchTwilight(self):
         """
+        serach twilight just starts the worker in a separate thread.
 
         :return: true for test purpose
         """
@@ -316,6 +322,9 @@ class Almanac(object):
 
     def updateMoonPhase(self):
         """
+        updateMoonPhase searches for moon events, moon phase and illumination percentage. It will also
+        write some description for the moon phase. In addition I will show an image of the moon showing 
+        the moon phase as picture.
 
         :return: true for test purpose
         """
@@ -382,18 +391,6 @@ class Almanac(object):
             self.ui.moonPhaseText.setText(phase)
             pixmap = QPixmap(phasesText[phase]['pic']).scaled(60, 60)
             self.ui.moonPic.setPixmap(pixmap)
-
-        """
-        # forecast 48 hours
-        ts = self.app.mount.obsSite.ts
-        t0 = ts.utc(2019, 12, 1, 5)
-        t1 = ts.utc(2019, 12, 31, 5)
-        e = self.app.ephermeris
-        loc = self.app.mount.obsSite.location
-        t, y = almanac.find_discrete(t0, t1, almanac.dark_twilight_day(e, loc))
-        for ti, yi in zip(t, y):
-            print(yi, ti.utc_iso())
-        """
 
         return True
 

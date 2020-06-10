@@ -30,6 +30,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install PyQt5
+        python -m pip install PyQt3D
         python -m PyQt5.uic.pyuic mw4/gui/widgets/devicePopup.ui -o mw4/gui/widgets/devicePopup_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/hemisphere.ui -o mw4/gui/widgets/hemisphere_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/image.ui -o mw4/gui/widgets/image_ui.py

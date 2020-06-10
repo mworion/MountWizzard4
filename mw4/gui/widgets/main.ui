@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>11</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -4692,9 +4692,9 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>515</x>
-       <y>280</y>
+       <y>270</y>
        <width>266</width>
-       <height>151</height>
+       <height>161</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -4719,7 +4719,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>120</x>
-        <y>120</y>
+        <y>135</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -4767,7 +4767,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>140</x>
-        <y>20</y>
+        <y>15</y>
         <width>116</width>
         <height>21</height>
        </rect>
@@ -4812,7 +4812,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>175</x>
-        <y>120</y>
+        <y>135</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -4836,10 +4836,10 @@ to mount</string>
      <widget class="QLabel" name="moonPic">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>40</y>
-        <width>80</width>
-        <height>80</height>
+        <x>70</x>
+        <y>35</y>
+        <width>100</width>
+        <height>100</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -4856,7 +4856,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
+        <y>15</y>
         <width>31</width>
         <height>21</height>
        </rect>
@@ -4901,7 +4901,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>50</x>
-        <y>20</y>
+        <y>15</y>
         <width>56</width>
         <height>21</height>
        </rect>
@@ -4929,7 +4929,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>120</y>
+        <y>135</y>
         <width>26</width>
         <height>21</height>
        </rect>
@@ -4974,7 +4974,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>120</y>
+        <y>135</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -5000,7 +5000,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>515</x>
-       <y>220</y>
+       <y>215</y>
        <width>266</width>
        <height>51</height>
       </rect>
@@ -13713,7 +13713,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>

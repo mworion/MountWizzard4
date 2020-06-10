@@ -20,7 +20,8 @@ import threading
 from dateutil.tz import tzlocal, tzutc
 
 # external packages
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
+from PyQt5.QtCore import Qt, QPointF
 from skyfield import almanac
 import numpy as np
 
@@ -34,6 +35,36 @@ class Almanac(object):
     to this class. therefore window classes will have a threadPool for managing async
     processing if needed.
     """
+
+    phasesText = {
+        'New moon': {
+            'range': (0, 1),
+        },
+        'Waxing crescent': {
+            'range': (1, 23),
+        },
+        'First Quarter': {
+            'range': (23, 27),
+        },
+        'Waxing Gibbous': {
+            'range': (27, 48),
+        },
+        'Full moon': {
+            'range': (48, 52),
+        },
+        'Waning Gibbous': {
+            'range': (52, 73),
+        },
+        'Third quarter': {
+            'range': (73, 77),
+        },
+        'Waning crescent': {
+            'range': (77, 99),
+        },
+        'New moon': {
+            'range': (99, 100),
+        },
+    }
 
     def __init__(self, app=None, ui=None, clickable=None):
         if app:
@@ -50,8 +81,6 @@ class Almanac(object):
         self.astronomicalT2 = list()
         self.darkT2 = list()
         self.thread = None
-
-        self.moonPhasePercent = 0
 
         self.app.mount.signals.locationDone.connect(self.searchTwilight)
         self.app.mount.signals.locationDone.connect(self.displayTwilightData)
@@ -322,61 +351,22 @@ class Almanac(object):
 
     def updateMoonPhase(self):
         """
-        updateMoonPhase searches for moon events, moon phase and illumination percentage. It will also
-        write some description for the moon phase. In addition I will show an image of the moon showing 
-        the moon phase as picture.
+        updateMoonPhase searches for moon events, moon phase and illumination percentage.
+        It will also write some description for the moon phase. In addition I will show an
+        image of the moon showing the moon phase as picture.
 
         :return: true for test purpose
         """
-        phasesText = {
-            'New moon': {
-                'range': (0, 1),
-                'pic': ':/moon/new.png',
-            },
-            'Waxing crescent': {
-                'range': (1, 23),
-                'pic': ':/moon/waxing_crescent.png',
-            },
-            'First Quarter': {
-                'range': (23, 27),
-                'pic': ':/moon/first_quarter.png',
-            },
-            'Waxing Gibbous': {
-                'range': (27, 48),
-                'pic': ':/moon/waxing_gibbous.png',
-            },
-            'Full moon': {
-                'range': (48, 52),
-                'pic': ':/moon/full.png',
-            },
-            'Waning Gibbous': {
-                'range': (52, 73),
-                'pic': ':/moon/waning_gibbous.png',
-            },
-            'Third quarter': {
-                'range': (73, 77),
-                'pic': ':/moon/third_quarter.png',
-            },
-            'Waning crescent': {
-                'range': (77, 99),
-                'pic': ':/moon/waning_crescent.png',
-            },
-            'New moon ': {
-                'range': (99, 100),
-                'pic': ':/moon/new.png',
-            },
-        }
 
-        # todo: is the calculation of the moon phase better separate ?
         sun = self.app.ephemeris['sun']
         moon = self.app.ephemeris['moon']
         earth = self.app.ephemeris['earth']
+        now = self.app.mount.obsSite.ts.now()
 
         e = earth.at(self.app.mount.obsSite.timeJD)
         _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
         _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
 
-        now = self.app.mount.obsSite.ts.now()
         moonPhaseIllumination = almanac.fraction_illuminated(self.app.ephemeris, 'moon', now)
         moonPhaseDegree = (moonLon.degrees - sunLon.degrees) % 360.0
         moonPhasePercent = moonPhaseDegree / 360
@@ -385,12 +375,64 @@ class Almanac(object):
         self.ui.moonPhasePercent.setText(f'{100* moonPhasePercent:3.0f}')
         self.ui.moonPhaseDegree.setText(f'{moonPhaseDegree:3.0f}')
 
-        for phase in phasesText:
-            if int(moonPhasePercent * 100) not in range(*phasesText[phase]['range']):
+        for phase in self.phasesText:
+            if int(moonPhasePercent * 100) not in range(*self.phasesText[phase]['range']):
                 continue
             self.ui.moonPhaseText.setText(phase)
-            pixmap = QPixmap(phasesText[phase]['pic']).scaled(60, 60)
-            self.ui.moonPic.setPixmap(pixmap)
+
+        width = self.ui.moonPic.width()
+        height = self.ui.moonPic.height()
+
+        mask = QPixmap(width, height)
+        maskP = QPainter(mask)
+        maskP.setBrush(Qt.SolidPattern)
+        maskP.setBrush(QColor(255, 255, 255))
+        maskP.drawRect(0, 0, width, height)
+
+        if moonPhaseDegree <= 90:
+            r = np.cos(np.radians(moonPhaseDegree)) * width / 2
+            maskP.setBrush(QColor(0, 0, 0))
+            maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
+
+            maskP.setBrush(QColor(0, 0, 0))
+            maskP.drawRect(0, 0, width / 2, height)
+
+        elif 90 < moonPhaseDegree <= 180:
+            maskP.setBrush(QColor(0, 0, 0))
+            maskP.drawRect(0, 0, width / 2, height)
+
+            r = - np.cos(np.radians(moonPhaseDegree)) * width / 2
+            maskP.setBrush(QColor(255, 255, 255))
+            maskP.setPen(QPen(QColor(255, 255, 255)))
+            maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
+
+        elif 180 < moonPhaseDegree <= 270:
+            maskP.setBrush(QColor(0, 0, 0))
+            maskP.drawRect(width / 2, 0, width / 2, height)
+
+            r = - np.cos(np.radians(moonPhaseDegree)) * width / 2
+            maskP.setBrush(QColor(255, 255, 255))
+            maskP.setPen(QPen(QColor(255, 255, 255)))
+            maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
+
+        else:
+            r = np.cos(np.radians(moonPhaseDegree)) * width / 2
+            maskP.setPen(QPen(QColor(0, 0, 0)))
+            maskP.setBrush(QColor(0, 0, 0))
+            maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
+
+            maskP.setBrush(QColor(0, 0, 0))
+            maskP.drawRect(width / 2, 0, width / 2, height)
+
+        maskP.end()
+
+        moon = QPixmap(':/pics/moon.png').scaled(width, height)
+        moonP = QPainter(moon)
+        moonP.setCompositionMode(QPainter.CompositionMode_Multiply)
+        moonP.drawPixmap(0, 0, mask)
+        moonP.end()
+
+        self.ui.moonPic.setPixmap(moon)
 
         return True
 

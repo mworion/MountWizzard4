@@ -15,6 +15,7 @@
 # Licence APL2.0
 #
 ###########################################################
+import mw4.base.packageConfig as Config
 # standard libraries
 import logging
 from datetime import datetime
@@ -39,10 +40,11 @@ from mw4.gui.measureW import MeasureWindow
 from mw4.gui.imageW import ImageWindow
 from mw4.gui.satelliteW import SatelliteWindow
 from mw4.gui.analyseW import AnalyseWindow
-from mw4.gui.mount3DW import Mount3DWindow
-from mw4.gui.simulatorW import SimulatorWindow
-from mw4.base.platformConfig import excludedPlatforms
-if platform.machine() not in excludedPlatforms:
+if Config.featureFlags['dome3D']:
+    from mw4.gui.mount3DW import Mount3DWindow
+if Config.featureFlags['simulator']:
+    from mw4.gui.simulatorW import SimulatorWindow
+if platform.machine() not in Config.excludedPlatforms:
     # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
     from mw4.gui.keypadW import KeypadWindow
 
@@ -150,20 +152,22 @@ class MainWindow(MWidget,
             'name': 'AnalyseDialog',
             'class': AnalyseWindow,
         }
-        self.uiWindows['showSimulatorW'] = {
-            'button': self.ui.test3D,
-            'classObj': None,
-            'name': 'Mount3DDialog',
-            'class': Mount3DWindow,
-        }
-        self.uiWindows['showMount3DW'] = {
-            'button': self.ui.testSimulator,
-            'classObj': None,
-            'name': 'SimulatorDialog',
-            'class': SimulatorWindow,
-        }
+        if Config.featureFlags['simulator']:
+            self.uiWindows['showSimulatorW'] = {
+                'button': self.ui.mountConnected,
+                'classObj': None,
+                'name': 'Mount3DDialog',
+                'class': Mount3DWindow,
+            }
+        if Config.featureFlags['dome3D']:
+            self.uiWindows['showMount3DW'] = {
+                'button': self.ui.picDome1,
+                'classObj': None,
+                'name': 'SimulatorDialog',
+                'class': SimulatorWindow,
+            }
         # todo: we can only add keypad on arm when we have compiled version
-        if platform.machine() not in excludedPlatforms:
+        if platform.machine() not in Config.excludedPlatforms:
             self.uiWindows['showKeypadW'] = {
                 'button': self.ui.openKeypadW,
                 'classObj': None,
@@ -262,11 +266,11 @@ class MainWindow(MWidget,
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
 
-        # todo: remove analysis tab while not developed
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+        if not Config.featureFlags['analyse']:
+            tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
+            tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
 
         self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')

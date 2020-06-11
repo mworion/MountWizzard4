@@ -15,6 +15,7 @@
 # Licence APL2.0
 #
 ###########################################################
+import mw4.base.packageConfig as Config
 # standard libraries
 import time
 import subprocess
@@ -24,8 +25,7 @@ from distutils.version import StrictVersion
 
 # external packages
 import PyQt5
-from mw4.base.platformConfig import excludedPlatforms
-if platform.machine() not in excludedPlatforms:
+if platform.machine() not in Config.excludedPlatforms:
     import PyQt5.QtMultimedia
 import requests
 from importlib_metadata import version
@@ -460,7 +460,7 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
-        if platform.machine() not in excludedPlatforms:
+        if platform.machine() not in Config.excludedPlatforms:
             return False
 
         self.audioSignalsSet['Beep'] = ':/sound/beep.wav'

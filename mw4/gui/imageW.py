@@ -15,6 +15,7 @@
 # Licence APL2.0
 #
 ###########################################################
+import mw4.base.packageConfig as Config
 # standard libraries
 import os
 
@@ -28,8 +29,9 @@ from astropy.visualization import MinMaxInterval
 from astropy.visualization import AsinhStretch
 from astropy.visualization import imshow_norm
 from astropy.stats import sigma_clipped_stats
-from photutils import CircularAperture
-from photutils import DAOStarFinder
+if Config.featureFlags['sourceExtraction'] or Config.featureFlags['tiltMap']:
+    from photutils import CircularAperture
+    from photutils import DAOStarFinder
 
 import matplotlib.pyplot as plt
 from skyfield.api import Angle
@@ -165,7 +167,7 @@ class ImageWindow(widget.MWidget):
         self.ui.checkShowGrid.setChecked(config.get('checkShowGrid', True))
         self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
         self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
-        self.ui.checkShowSources.setChecked(config.get('checkShowSources', False))
+        # self.ui.checkShowSources.setChecked(config.get('checkShowSources', False))
 
         return True
 
@@ -194,7 +196,7 @@ class ImageWindow(widget.MWidget):
         config['checkShowGrid'] = self.ui.checkShowGrid.isChecked()
         config['checkAutoSolve'] = self.ui.checkAutoSolve.isChecked()
         config['checkEmbedData'] = self.ui.checkEmbedData.isChecked()
-        config['checkShowSources'] = self.ui.checkShowSources.isChecked()
+        # config['checkShowSources'] = self.ui.checkShowSources.isChecked()
 
         return True
 
@@ -694,14 +696,15 @@ class ImageWindow(widget.MWidget):
 
         axe.figure.canvas.draw()
 
-        if self.ui.checkShowSources.isChecked():
-            mean, median, std = sigma_clipped_stats(imageData, sigma=3.0)
-            daoFind = DAOStarFinder(fwhm=3.0, threshold=5.0 * std)
-            sources = daoFind(imageData - median)
-            positions = np.transpose((sources['xcentroid'], sources['ycentroid']))
-            apertures = CircularAperture(positions, r=10.0)
-            apertures.plot(axes=axe, color=self.M_BLUE, lw=1.0, alpha=0.8)
-            axe.figure.canvas.draw()
+        if Config.featureFlags['sourceExtraction']:
+            if self.ui.checkShowSources.isChecked():
+                mean, median, std = sigma_clipped_stats(imageData, sigma=3.0)
+                daoFind = DAOStarFinder(fwhm=3.0, threshold=5.0 * std)
+                sources = daoFind(imageData - median)
+                positions = np.transpose((sources['xcentroid'], sources['ycentroid']))
+                apertures = CircularAperture(positions, r=10.0)
+                apertures.plot(axes=axe, color=self.M_BLUE, lw=1.0, alpha=0.8)
+                axe.figure.canvas.draw()
 
         return True
 

@@ -13713,7 +13713,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -16929,7 +16929,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>116</height>
+         <height>86</height>
         </rect>
        </property>
        <property name="title">
@@ -17089,8 +17089,8 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="groupBox_63">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>110</y>
+         <x>5</x>
+         <y>205</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -17167,8 +17167,8 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="groupBox_64">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>15</y>
+         <x>5</x>
+         <y>265</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -17194,7 +17194,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>145</y>
+         <y>110</y>
          <width>366</width>
          <height>51</height>
         </rect>

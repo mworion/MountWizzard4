@@ -29,9 +29,8 @@ from astropy.visualization import MinMaxInterval
 from astropy.visualization import AsinhStretch
 from astropy.visualization import imshow_norm
 from astropy.stats import sigma_clipped_stats
-if Config.featureFlags['sourceExtraction'] or Config.featureFlags['tiltMap']:
-    from photutils import CircularAperture
-    from photutils import DAOStarFinder
+from photutils import CircularAperture
+from photutils import DAOStarFinder
 
 import matplotlib.pyplot as plt
 from skyfield.api import Angle

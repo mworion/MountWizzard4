@@ -40,10 +40,8 @@ from mw4.gui.measureW import MeasureWindow
 from mw4.gui.imageW import ImageWindow
 from mw4.gui.satelliteW import SatelliteWindow
 from mw4.gui.analyseW import AnalyseWindow
-if Config.featureFlags['dome3D']:
-    from mw4.gui.mount3DW import Mount3DWindow
-if Config.featureFlags['simulator']:
-    from mw4.gui.simulatorW import SimulatorWindow
+from mw4.gui.mount3DW import Mount3DWindow
+from mw4.gui.simulatorW import SimulatorWindow
 if platform.machine() not in Config.excludedPlatforms:
     # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
     from mw4.gui.keypadW import KeypadWindow

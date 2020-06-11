@@ -41,8 +41,6 @@ class SettDome(object):
             self.clickable = clickable
 
         # signals on gui
-        self.ui.coverPark.clicked.connect(self.setCoverPark)
-        self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
         self.ui.checkDomeGeometry.clicked.connect(self.setUseGeometryInMount)
         self.ui.domeRadius.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.offGEM.valueChanged.connect(self.setUseGeometryInMount)
@@ -53,7 +51,6 @@ class SettDome(object):
         self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
 
         # signals from functions
-        self.app.update1s.connect(self.updateCoverStatGui)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
 
     def initConfig(self):
@@ -150,51 +147,6 @@ class SettDome(object):
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
         self.ui.domeVerticalOffset.setValue(value)
 
-        return True
-
-    def updateCoverStatGui(self):
-        """
-        updateCoverStatGui changes the style of the button related to the state of the
-        FlipFlat cover
-
-        :return: True for test purpose
-        """
-
-        value = self.app.cover.data.get('Status.Cover', '-').strip().upper()
-        if value == 'OPEN':
-            self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
-        elif value == 'CLOSED':
-            self.changeStyleDynamic(self.ui.coverPark, 'running', True)
-        else:
-            self.changeStyleDynamic(self.ui.coverPark, 'running', False)
-            self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
-
-        value = self.app.cover.data.get('Status.Cover', '-')
-        self.ui.coverStatusText.setText(value)
-
-        value = self.app.cover.data.get('Status.Motor', '-')
-        self.ui.coverMotorText.setText(value)
-
-        return True
-
-    def setCoverPark(self):
-        """
-        setCoverPark closes the cover
-
-        :return: success
-        """
-
-        self.app.cover.sendCoverPark(park=True)
-        return True
-
-    def setCoverUnpark(self):
-        """
-        setCoverPark opens the cover
-
-        :return: success
-        """
-
-        self.app.cover.sendCoverPark(park=False)
         return True
 
     def setDomeSettlingTime(self):

@@ -42,8 +42,11 @@ class SettImaging(object):
         self.clickable(self.ui.coolerTemp).connect(self.setCoolerTemp)
         self.clickable(self.ui.filterNumber).connect(self.setFilterNumber)
         self.clickable(self.ui.filterName).connect(self.setFilterName)
+        self.ui.coverPark.clicked.connect(self.setCoverPark)
+        self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
 
         # cyclic actions
+        self.app.update1s.connect(self.updateCoverStatGui)
         self.app.update1s.connect(self.updateParameters)
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
         self.ui.aperture.valueChanged.connect(self.updateParameters)
@@ -365,4 +368,49 @@ class SettImaging(object):
 
         self.app.camera.sendCoolerSwitch(coolerOn=False)
 
+        return True
+
+    def updateCoverStatGui(self):
+        """
+        updateCoverStatGui changes the style of the button related to the state of the
+        FlipFlat cover
+
+        :return: True for test purpose
+        """
+
+        value = self.app.cover.data.get('Status.Cover', '-').strip().upper()
+        if value == 'OPEN':
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
+        elif value == 'CLOSED':
+            self.changeStyleDynamic(self.ui.coverPark, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.coverPark, 'running', False)
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
+
+        value = self.app.cover.data.get('Status.Cover', '-')
+        self.ui.coverStatusText.setText(value)
+
+        value = self.app.cover.data.get('Status.Motor', '-')
+        self.ui.coverMotorText.setText(value)
+
+        return True
+
+    def setCoverPark(self):
+        """
+        setCoverPark closes the cover
+
+        :return: success
+        """
+
+        self.app.cover.sendCoverPark(park=True)
+        return True
+
+    def setCoverUnpark(self):
+        """
+        setCoverPark opens the cover
+
+        :return: success
+        """
+
+        self.app.cover.sendCoverPark(park=False)
         return True

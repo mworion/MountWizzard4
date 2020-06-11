@@ -38,6 +38,7 @@ from mw4.gui.widget import MWidget
 from mw4.imaging.camera import Camera
 from mw4.imaging.focuser import Focuser
 from mw4.imaging.filter import Filter
+from mw4.cover.flipflat import FlipFlat
 from mw4.telescope.telescope import Telescope
 from mw4.base.loggerMW import CustomLogger
 
@@ -61,6 +62,7 @@ def module_setup_teardown(qtbot):
         focuser = Focuser(app=Test1())
         filter = Filter(app=Test1())
         telescope = Telescope(app=Test1())
+        cover = FlipFlat(app=Test1())
 
     widget = QWidget()
     ui = Ui_MainWindow()
@@ -220,4 +222,32 @@ def test_setCoolerOn():
 
 def test_setCoolerOff():
     suc = app.setCoolerOff()
+    assert suc
+
+
+def test_updateCoverStatGui_1():
+    app.app.cover.data['Status.Cover'] = 'OPEN'
+    suc = app.updateCoverStatGui()
+    assert suc
+
+
+def test_updateCoverStatGui_2():
+    app.app.cover.data['Status.Cover'] = 'CLOSED'
+    suc = app.updateCoverStatGui()
+    assert suc
+
+
+def test_updateCoverStatGui_3():
+    app.app.cover.data['Status.Cover'] = '...'
+    suc = app.updateCoverStatGui()
+    assert suc
+
+
+def test_setCoverPark_1():
+    suc = app.setCoverPark()
+    assert suc
+
+
+def test_setCoverUnpark_1():
+    suc = app.setCoverUnpark()
     assert suc

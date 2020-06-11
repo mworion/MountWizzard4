@@ -156,14 +156,14 @@ class MainWindow(MWidget,
         }
         if Config.featureFlags['simulator']:
             self.uiWindows['showSimulatorW'] = {
-                'button': self.ui.mountConnected,
+                'button': self.ui.domeConnected,
                 'classObj': None,
                 'name': 'Mount3DDialog',
                 'class': Mount3DWindow,
             }
         if Config.featureFlags['dome3D']:
             self.uiWindows['showMount3DW'] = {
-                'button': self.ui.picDome1,
+                'button': self.ui.mountConnected,
                 'classObj': None,
                 'name': 'SimulatorDialog',
                 'class': SimulatorWindow,

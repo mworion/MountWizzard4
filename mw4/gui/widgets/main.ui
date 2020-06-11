@@ -13713,7 +13713,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -22404,7 +22404,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QPushButton" name="domeConnected">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -22717,7 +22717,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QPushButton" name="mountConnected">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>

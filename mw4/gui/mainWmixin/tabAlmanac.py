@@ -61,7 +61,7 @@ class Almanac(object):
         'Waning crescent': {
             'range': (77, 99),
         },
-        'New moon': {
+        'New moon ': {
             'range': (99, 100),
         },
     }
@@ -234,9 +234,9 @@ class Almanac(object):
 
     def searchTwilightWorker(self):
         """
-        searchTwilightWorker is the worker method which does the search for twilight events during
-        one year with actual day as middle point. As this search take some time and the gui should be still
-        responsive, this method will runf in a separat thread.
+        searchTwilightWorker is the worker method which does the search for twilight events
+        during one year with actual day as middle point. As this search take some time and
+        the gui should be still responsive, this method will run in a separate thread.
 
         :return: true for test purpose
         """

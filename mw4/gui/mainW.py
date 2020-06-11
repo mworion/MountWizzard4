@@ -63,6 +63,7 @@ from mw4.gui.mainWmixin.tabSettDevice import SettDevice
 from mw4.gui.mainWmixin.tabSettMount import SettMount
 from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
 from mw4.gui.mainWmixin.tabSettImaging import SettImaging
+from mw4.gui.mainWmixin.tabSettDome import SettDome
 from mw4.gui.mainWmixin.tabSettParkPos import SettParkPos
 from mw4.gui.mainWmixin.tabSettRelay import SettRelay
 from mw4.gui.mainWmixin.tabSettMisc import SettMisc
@@ -83,6 +84,7 @@ class MainWindow(MWidget,
                  SettMount,
                  SettHorizon,
                  SettImaging,
+                 SettDome,
                  SettParkPos,
                  SettRelay,
                  SettMisc,

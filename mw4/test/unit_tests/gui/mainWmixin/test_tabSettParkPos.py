@@ -34,8 +34,6 @@ from skyfield.toposlib import Topos
 from mw4.gui.mainWmixin.tabSettParkPos import SettParkPos
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.widget import MWidget
-from mw4.dome.dome import Dome
-from mw4.cover.flipflat import FlipFlat
 from mw4.base.loggerMW import CustomLogger
 
 
@@ -60,8 +58,6 @@ def module_setup_teardown(qtbot):
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
-        dome = Dome(app=Test1())
-        cover = FlipFlat(app=Test1())
 
     widget = QWidget()
     ui = Ui_MainWindow()
@@ -231,53 +227,4 @@ def test_saveActualPosition_4():
     app.app.mount.obsSite.Az = 40
     app.sender = Sender
     suc = app.saveActualPosition()
-    assert suc
-
-
-def test_toggleUseGeometry_1():
-    suc = app.setUseGeometryInMount()
-    assert suc
-
-
-def test_toggleUseGeometry_2():
-    app.ui.domeRadius.setValue(0.3)
-    suc = app.setUseGeometryInMount()
-    assert suc
-
-
-def test_updateDomeGeometry_1():
-    suc = app.updateDomeGeometryToGui()
-    assert suc
-
-
-def test_updateCoverStatGui_1():
-    app.app.cover.data['Status.Cover'] = 'OPEN'
-    suc = app.updateCoverStatGui()
-    assert suc
-
-
-def test_updateCoverStatGui_2():
-    app.app.cover.data['Status.Cover'] = 'CLOSED'
-    suc = app.updateCoverStatGui()
-    assert suc
-
-
-def test_updateCoverStatGui_3():
-    app.app.cover.data['Status.Cover'] = '...'
-    suc = app.updateCoverStatGui()
-    assert suc
-
-
-def test_setCoverPark_1():
-    suc = app.setCoverPark()
-    assert suc
-
-
-def test_setCoverUnpark_1():
-    suc = app.setCoverUnpark()
-    assert suc
-
-
-def test_setDomeSettlingTime_1():
-    suc = app.setDomeSettlingTime()
     assert suc

@@ -56,22 +56,6 @@ class SettParkPos(object):
         for button in self.posSaveButtons:
             button.clicked.connect(self.saveActualPosition)
 
-        # signals on gui
-        self.ui.coverPark.clicked.connect(self.setCoverPark)
-        self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
-        self.ui.checkDomeGeometry.clicked.connect(self.setUseGeometryInMount)
-        self.ui.domeRadius.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.offGEM.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.offLAT.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.domeEastOffset.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
-
-        # signals from functions
-        self.app.update1s.connect(self.updateCoverStatGui)
-        self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -83,16 +67,6 @@ class SettParkPos(object):
 
         config = self.app.config['mainW']
 
-        self.ui.domeRadius.setValue(config.get('domeRadius', 3))
-        self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
-        self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
-        self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
-        self.ui.offGEM.setValue(config.get('offGEM', 0))
-        self.ui.offLAT.setValue(config.get('offLAT', 0))
-        self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
-        self.ui.checkAutomaticDome.setChecked(config.get('checkAutomaticDome', False))
-        self.setUseGeometryInMount()
-
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)
             textField.setText(config.get(keyConfig, 'Park Pos {0:1d}'.format(i)))
@@ -103,8 +77,6 @@ class SettParkPos(object):
             keyConfig = 'posAz{0:1d}'.format(i)
             textField.setText(config.get(keyConfig, '-'))
         self.updateParkPosButtonText()
-
-        self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
 
         return True
 
@@ -118,14 +90,6 @@ class SettParkPos(object):
         """
 
         config = self.app.config['mainW']
-        config['domeRadius'] = self.ui.domeRadius.value()
-        config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
-        config['domeEastOffset'] = self.ui.domeEastOffset.value()
-        config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
-        config['offGEM'] = self.ui.offGEM.value()
-        config['offLAT'] = self.ui.offLAT.value()
-        config['checkDomeGeometry'] = self.ui.checkDomeGeometry.isChecked()
-        config['checkAutomaticDome'] = self.ui.checkAutomaticDome.isChecked()
 
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)
@@ -136,8 +100,6 @@ class SettParkPos(object):
         for i, textField in enumerate(self.posAz):
             keyConfig = 'posAz{0:1d}'.format(i)
             config[keyConfig] = textField.text()
-
-        config['settleTimeDome'] = self.ui.settleTimeDome.value()
 
         return True
 
@@ -242,109 +204,5 @@ class SettParkPos(object):
 
             alt.setText(f'{obs.Alt.degrees:3.0f}')
             az.setText(f'{obs.Az.degrees:3.0f}')
-
-        return True
-
-    def setUseGeometryInMount(self):
-        """
-        setUseGeometryInMount updates the mount class with the new setting if use geometry for
-        dome calculation should be used or not.
-
-        :return: true for test purpose
-        """
-
-        if self.ui.checkAutomaticDome.isChecked():
-            self.updateDomeGeometryToGui()
-
-        value = self.ui.domeRadius.value()
-        self.app.mount.geometry.domeRadius = value
-        if value < 0.5:
-            self.app.message.emit('Critical dome radius, please check', 2)
-
-        self.app.mount.geometry.offGEM = self.ui.offGEM.value()
-        self.app.mount.geometry.offLAT = - self.ui.offLAT.value()
-        self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
-        self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
-        self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
-
-        return True
-
-    def updateDomeGeometryToGui(self):
-        """
-        updateDomeGeometryToGui takes the information gathered from the driver and programs
-        them into the mount class and gui for later use.
-
-        :return: true for test purpose
-        """
-
-        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_OTA_OFFSET', 0))
-        self.ui.offGEM.setValue(value)
-
-        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_DOME_RADIUS', 0))
-        self.ui.domeRadius.setValue(value)
-
-        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT', 0))
-        self.ui.domeNorthOffset.setValue(value)
-
-        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT', 0))
-        self.ui.domeEastOffset.setValue(value)
-
-        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
-        self.ui.domeVerticalOffset.setValue(value)
-
-        return True
-
-    def updateCoverStatGui(self):
-        """
-        updateCoverStatGui changes the style of the button related to the state of the
-        FlipFlat cover
-
-        :return: True for test purpose
-        """
-
-        value = self.app.cover.data.get('Status.Cover', '-').strip().upper()
-        if value == 'OPEN':
-            self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
-        elif value == 'CLOSED':
-            self.changeStyleDynamic(self.ui.coverPark, 'running', True)
-        else:
-            self.changeStyleDynamic(self.ui.coverPark, 'running', False)
-            self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
-
-        value = self.app.cover.data.get('Status.Cover', '-')
-        self.ui.coverStatusText.setText(value)
-
-        value = self.app.cover.data.get('Status.Motor', '-')
-        self.ui.coverMotorText.setText(value)
-
-        return True
-
-    def setCoverPark(self):
-        """
-        setCoverPark closes the cover
-
-        :return: success
-        """
-
-        self.app.cover.sendCoverPark(park=True)
-        return True
-
-    def setCoverUnpark(self):
-        """
-        setCoverPark opens the cover
-
-        :return: success
-        """
-
-        self.app.cover.sendCoverPark(park=False)
-        return True
-
-    def setDomeSettlingTime(self):
-        """
-
-        :return: true for test purpose
-        """
-
-        self.app.dome.settlingTime = self.ui.settleTimeDome.value()
 
         return True

@@ -1,0 +1,208 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+#
+# written in python 3, (c) 2019, 2020 by mworion
+#
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+# external packages
+# local import
+
+
+class SettDome(object):
+    """
+    the main window class handles the main menu as well as the show and no show part of
+    any other window. all necessary processing for functions of that gui will be linked
+    to this class. therefore window classes will have a threadpool for managing async
+    processing if needed.
+
+    as the mainW class is very big i have chosen to use mixins to extend the readability
+    of the code and extend the mainW class by additional parent classes.
+
+    SettParkPos handles all topics around setting und handling park positions for the mount
+    and cover.
+    """
+
+    def __init__(self, app=None, ui=None, clickable=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
+
+        # signals on gui
+        self.ui.coverPark.clicked.connect(self.setCoverPark)
+        self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
+        self.ui.checkDomeGeometry.clicked.connect(self.setUseGeometryInMount)
+        self.ui.domeRadius.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.offGEM.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.offLAT.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeEastOffset.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
+
+        # signals from functions
+        self.app.update1s.connect(self.updateCoverStatGui)
+        self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
+
+    def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
+
+        config = self.app.config['mainW']
+
+        self.ui.domeRadius.setValue(config.get('domeRadius', 3))
+        self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
+        self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
+        self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
+        self.ui.offGEM.setValue(config.get('offGEM', 0))
+        self.ui.offLAT.setValue(config.get('offLAT', 0))
+        self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
+        self.ui.checkAutomaticDome.setChecked(config.get('checkAutomaticDome', False))
+        self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
+
+        self.setUseGeometryInMount()
+
+        return True
+
+    def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
+
+        config = self.app.config['mainW']
+        config['domeRadius'] = self.ui.domeRadius.value()
+        config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
+        config['domeEastOffset'] = self.ui.domeEastOffset.value()
+        config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
+        config['offGEM'] = self.ui.offGEM.value()
+        config['offLAT'] = self.ui.offLAT.value()
+        config['checkDomeGeometry'] = self.ui.checkDomeGeometry.isChecked()
+        config['checkAutomaticDome'] = self.ui.checkAutomaticDome.isChecked()
+        config['settleTimeDome'] = self.ui.settleTimeDome.value()
+
+        return True
+
+    def setUseGeometryInMount(self):
+        """
+        setUseGeometryInMount updates the mount class with the new setting if use geometry for
+        dome calculation should be used or not.
+
+        :return: true for test purpose
+        """
+
+        if self.ui.checkAutomaticDome.isChecked():
+            self.updateDomeGeometryToGui()
+
+        value = self.ui.domeRadius.value()
+        self.app.mount.geometry.domeRadius = value
+        if value < 0.5:
+            self.app.message.emit('Critical dome radius, please check', 2)
+
+        self.app.mount.geometry.offGEM = self.ui.offGEM.value()
+        self.app.mount.geometry.offLAT = - self.ui.offLAT.value()
+        self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
+        self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
+        self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
+
+        return True
+
+    def updateDomeGeometryToGui(self):
+        """
+        updateDomeGeometryToGui takes the information gathered from the driver and programs
+        them into the mount class and gui for later use.
+
+        :return: true for test purpose
+        """
+
+        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_OTA_OFFSET', 0))
+        self.ui.offGEM.setValue(value)
+
+        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_DOME_RADIUS', 0))
+        self.ui.domeRadius.setValue(value)
+
+        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT', 0))
+        self.ui.domeNorthOffset.setValue(value)
+
+        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT', 0))
+        self.ui.domeEastOffset.setValue(value)
+
+        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
+        self.ui.domeVerticalOffset.setValue(value)
+
+        return True
+
+    def updateCoverStatGui(self):
+        """
+        updateCoverStatGui changes the style of the button related to the state of the
+        FlipFlat cover
+
+        :return: True for test purpose
+        """
+
+        value = self.app.cover.data.get('Status.Cover', '-').strip().upper()
+        if value == 'OPEN':
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
+        elif value == 'CLOSED':
+            self.changeStyleDynamic(self.ui.coverPark, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.coverPark, 'running', False)
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
+
+        value = self.app.cover.data.get('Status.Cover', '-')
+        self.ui.coverStatusText.setText(value)
+
+        value = self.app.cover.data.get('Status.Motor', '-')
+        self.ui.coverMotorText.setText(value)
+
+        return True
+
+    def setCoverPark(self):
+        """
+        setCoverPark closes the cover
+
+        :return: success
+        """
+
+        self.app.cover.sendCoverPark(park=True)
+        return True
+
+    def setCoverUnpark(self):
+        """
+        setCoverPark opens the cover
+
+        :return: success
+        """
+
+        self.app.cover.sendCoverPark(park=False)
+        return True
+
+    def setDomeSettlingTime(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.app.dome.settlingTime = self.ui.settleTimeDome.value()
+
+        return True

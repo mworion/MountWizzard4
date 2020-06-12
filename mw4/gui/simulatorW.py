@@ -24,7 +24,7 @@ from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
 from PyQt5.Qt3DExtras import Qt3DWindow
 from PyQt5.Qt3DExtras import QOrbitCameraController
-from PyQt5.Qt3DExtras import QSphereMesh, QPlaneMesh, QConeMesh, QCylinderMesh, QCuboidMesh
+from PyQt5.Qt3DExtras import QSphereMesh, QPlaneMesh, QCylinderMesh, QCuboidMesh
 from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
 from PyQt5.Qt3DRender import QMesh
 from PyQt5.Qt3DCore import QEntity, QTransform
@@ -89,8 +89,8 @@ class SimulatorWindow(widget.MWidget):
         self.rootEntity = QEntity()
         self.camera = self.view.camera()
         self.camera.lens().setPerspectiveProjection(45.0, 16.0 / 9.0, 0.1, 1000.0)
-        self.camera.setPosition(QVector3D(2, 3, 2))
-        self.camera.setViewCenter(QVector3D(0.0, 0.0, 0.0))
+        self.camera.setPosition(QVector3D(2, 3, 1))
+        self.camera.setViewCenter(QVector3D(0.0, 1.2, 0.0))
         self.camController = QOrbitCameraController(self.rootEntity)
         self.camController.setCamera(self.camera)
         self.view.setRootEntity(self.rootEntity)
@@ -101,9 +101,9 @@ class SimulatorWindow(widget.MWidget):
         self.gemTrans = None
         self.gemCorrTrans = None
         self.gemMesh = None
-        self.latTrans = None
-        self.latCorrTrans = None
-        self.latMesh = None
+        self.otaRingTrans = None
+        self.otaTubeTrans = None
+        self.otaImagetrainTrans = None
 
         self.domeMesh = None
 
@@ -289,18 +289,63 @@ class SimulatorWindow(widget.MWidget):
         self.gemTrans.setTranslation(QVector3D(159.0, 0.0, 338.5 + 5.0))
         gem.addComponent(self.gemMesh)
         gem.addComponent(self.gemTrans)
-        gem.addComponent(Materials().aluminiumS)
+        gem.addComponent(Materials().aluminiumB)
 
         gemCorr = QEntity(gem)
         self.gemCorrTrans = QTransform()
         self.gemCorrTrans.setTranslation(QVector3D(0.0, 0.0, 5.0))
         gemCorr.addComponent(self.gemCorrTrans)
 
-        ota1 = QEntity(gemCorr)
-        ota1Mesh = QMesh()
-        ota1Mesh.setSource(QUrl('qrc:/model3D/ota-plate.stl'))
-        ota1.addComponent(ota1Mesh)
-        ota1.addComponent(Materials().aluminiumR)
+        otaPlate = QEntity(gemCorr)
+        otaPlateMesh = QMesh()
+        otaPlateMesh.setSource(QUrl('qrc:/model3D/ota-plate.stl'))
+        otaPlate.addComponent(otaPlateMesh)
+        otaPlate.addComponent(Materials().aluminiumS)
+
+        otaRing = QEntity(otaPlate)
+        otaRingMesh = QMesh()
+        otaRingMesh.setSource(QUrl('qrc:/model3D/ota-ring-s.stl'))
+        self.otaRingTrans = QTransform()
+        self.otaRingTrans.setScale3D(QVector3D(1.0, 1.0, 1.0))
+        otaRing.addComponent(otaRingMesh)
+        otaRing.addComponent(self.otaRingTrans)
+        otaRing.addComponent(Materials().aluminiumR)
+
+        otaTube = QEntity(otaPlate)
+        otaTubeMesh = QMesh()
+        otaTubeMesh.setSource(QUrl('qrc:/model3D/ota-tube-s.stl'))
+        self.otaTubeTrans = QTransform()
+        self.otaTubeTrans.setScale3D(QVector3D(1.0, 1.0, 1.0))
+        otaTube.addComponent(otaTubeMesh)
+        otaTube.addComponent(self.otaTubeTrans)
+        otaTube.addComponent(Materials().white)
+
+        otaImagetrain = QEntity(gemCorr)
+        otaImagetrainMesh = QMesh()
+        otaImagetrainMesh.setSource(QUrl('qrc:/model3D/ota-imagetrain.stl'))
+        self.otaImagetrainTrans = QTransform()
+        self.otaImagetrainTrans.setScale3D(QVector3D(1.0, 1.0, 1.0))
+        otaImagetrain.addComponent(otaImagetrainMesh)
+        otaImagetrain.addComponent(self.otaImagetrainTrans)
+        otaImagetrain.addComponent(Materials().aluminiumS)
+
+        otaCCD = QEntity(otaImagetrain)
+        otaCCDMesh = QMesh()
+        otaCCDMesh.setSource(QUrl('qrc:/model3D/ota-ccd.stl'))
+        otaCCD.addComponent(otaCCDMesh)
+        otaCCD.addComponent(Materials().aluminiumB)
+
+        otaFocus = QEntity(otaImagetrain)
+        otaFocusMesh = QMesh()
+        otaFocusMesh.setSource(QUrl('qrc:/model3D/ota-focus.stl'))
+        otaFocus.addComponent(otaFocusMesh)
+        otaFocus.addComponent(Materials().aluminiumR)
+
+        otaFocusTop = QEntity(otaImagetrain)
+        otaFocusTopMesh = QMesh()
+        otaFocusTopMesh.setSource(QUrl('qrc:/model3D/ota-focus-top.stl'))
+        otaFocusTop.addComponent(otaFocusTopMesh)
+        otaFocusTop.addComponent(Materials().white)
 
     def createWorld(self, rootEntity):
         """
@@ -368,12 +413,22 @@ class SimulatorWindow(widget.MWidget):
                 self.decTrans.setRotationZ(- angDEC.degrees)
 
         if self.app.mount.geometry.offGemPlate:
-            gem = self.app.mount.geometry.offPlateOTA * 1000
+            offPlateOTA = self.app.mount.geometry.offPlateOTA * 1000
             lat = - self.app.mainW.ui.offLAT.value() * 1000
-            self.gemMesh.setZExtent(gem)
-            self.gemMesh.setYExtent(abs(lat) + 60)
-            self.gemTrans.setTranslation(QVector3D(159.0, lat / 2, 338.5 + gem / 2))
-            self.gemCorrTrans.setTranslation(QVector3D(0.0, lat / 2, gem / 2))
+            self.gemMesh.setYExtent(abs(lat) + 80)
+            self.gemTrans.setTranslation(QVector3D(159.0, lat / 2, 338.5))
+            self.gemCorrTrans.setTranslation(QVector3D(0.0, lat / 2, 0.0))
+
+            scaleRad = (offPlateOTA - 25) / 55
+            scaleRad = max(scaleRad, 1)
+
+            self.otaRingTrans.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+            self.otaRingTrans.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+
+            self.otaTubeTrans.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+            self.otaTubeTrans.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+
+            self.otaImagetrainTrans.setTranslation(QVector3D(0.0, 0.0, 65 * (scaleRad - 1)))
 
 
     """

@@ -21,13 +21,12 @@
 from PyQt5.QtCore import QSize, QUrl
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QVector3D
-from PyQt5.QtGui import QQuaternion
 from PyQt5.QtWidgets import QWidget
 from PyQt5.Qt3DExtras import Qt3DWindow
 from PyQt5.Qt3DExtras import QOrbitCameraController
-from PyQt5.Qt3DExtras import QSphereMesh, QPlaneMesh, QConeMesh, QCylinderMesh
+from PyQt5.Qt3DExtras import QSphereMesh, QPlaneMesh, QConeMesh, QCylinderMesh, QCuboidMesh
 from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
-from PyQt5.Qt3DRender import QGeometryRenderer, QMesh
+from PyQt5.Qt3DRender import QMesh
 from PyQt5.Qt3DCore import QEntity, QTransform
 
 # local import
@@ -96,8 +95,16 @@ class SimulatorWindow(widget.MWidget):
         self.camController.setCamera(self.camera)
         self.view.setRootEntity(self.rootEntity)
 
-        self.tubeTrans = None
-        self.mountTrans = None
+        self.latTrans = None
+        self.raTrans = None
+        self.decTrans = None
+        self.gemTrans = None
+        self.gemCorrTrans = None
+        self.gemMesh = None
+        self.latTrans = None
+        self.latCorrTrans = None
+        self.latMesh = None
+
         self.domeMesh = None
 
         self.initConfig()
@@ -178,52 +185,122 @@ class SimulatorWindow(widget.MWidget):
 
     def createOTA(self, rootEntity):
         """
+        first transformation is from
+            fusion360 (x is north, y is west, z is up), scale in mm
+            Qt3D (-z is north, x is east, y is up) scale is m
+        and set as reference. from there on we are in the fusion coordinate system
 
-        :param rootEntity:
+        :param rootEntity: root of the §D models
         :return:
         """
 
-        mount = QEntity(rootEntity)
-        self.mountTrans = QTransform()
-        self.mountTrans.setTranslation(QVector3D(0, 1, 0))
-        self.mountTrans.setRotationX(-60)
-        mount.addComponent(self.mountTrans)
+        ref = QEntity(rootEntity)
+        refTrans = QTransform()
+        refTrans.setScale(0.001)
+        refTrans.setRotationY(90)
+        refTrans.setRotationX(-90)
+        ref.addComponent(refTrans)
 
-        f1 = QEntity(mount)
-        f1Mesh = QMesh()
-        f1Mesh.setSource(QUrl('qrc:/model3D/test1.stl'))
-        f1Trans = QTransform()
-        f1Trans.setScale(0.001)
-        f1.addComponent(f1Trans)
-        f1.addComponent(f1Mesh)
-        f1.addComponent(Materials().aluminiumS)
+        pillar = QEntity(ref)
+        pillarMesh = QCylinderMesh()
+        pillarMesh.setRadius(100)
+        pillarMesh.setLength(960)
+        pillarTrans = QTransform()
+        pillarTrans.setTranslation(QVector3D(0.0, 0.0, 480.0))
+        pillarTrans.setRotationX(90)
+        pillarMat = QMetalRoughMaterial()
+        pillar.addComponent(pillarTrans)
+        pillar.addComponent(pillarMesh)
+        pillar.addComponent(pillarMat)
 
-        f2 = QEntity(mount)
-        f2Mesh = QMesh()
-        f2Mesh.setSource(QUrl('qrc:/model3D/test2.stl'))
-        f2Trans = QTransform()
-        f2Trans.setScale(0.001)
-        f2.addComponent(f2Trans)
-        f2.addComponent(f2Mesh)
-        f2.addComponent(Materials().white)
+        mountBase = QEntity(ref)
+        mountBaseMesh = QMesh()
+        mountBaseMesh.setSource(QUrl('qrc:/model3D/mont-base.stl'))
+        mountBaseTrans = QTransform()
+        mountBaseTrans.setTranslation(QVector3D(0.0, 0.0, 1000.0))
+        mountBase.addComponent(mountBaseTrans)
+        mountBase.addComponent(mountBaseMesh)
+        mountBase.addComponent(Materials().aluminiumS)
 
-        f3 = QEntity(mount)
-        f3Mesh = QMesh()
-        f3Mesh.setSource(QUrl('qrc:/model3D/test3.stl'))
-        f3Trans = QTransform()
-        f3Trans.setScale(0.001)
-        f3.addComponent(f3Trans)
-        f3.addComponent(f3Mesh)
-        f3.addComponent(Materials().aluminiumB)
+        mountKnobs = QEntity(mountBase)
+        mountKnobsMesh = QMesh()
+        mountKnobsMesh.setSource(QUrl('qrc:/model3D/mont-base-knobs.stl'))
+        mountKnobs.addComponent(mountKnobsMesh)
+        mountKnobs.addComponent(Materials().stainless)
 
-        f4 = QEntity(mount)
-        f4Mesh = QMesh()
-        f4Mesh.setSource(QUrl('qrc:/model3D/test4.stl'))
-        f4Trans = QTransform()
-        f4Trans.setScale(0.001)
-        f4.addComponent(f4Trans)
-        f4.addComponent(f4Mesh)
-        f4.addComponent(Materials().aluminiumR)
+        lat = QEntity(mountBase)
+        self.latTrans = QTransform()
+        self.latTrans.setTranslation(QVector3D(0.0, 0.0, 70.0))
+        self.latTrans.setRotationY(-(90-48))
+        lat.addComponent(self.latTrans)
+
+        montRa = QEntity(lat)
+        montRaMesh = QMesh()
+        montRaMesh.setSource(QUrl('qrc:/model3D/mont-ra.stl'))
+        montRaTrans = QTransform()
+        montRaTrans.setTranslation(QVector3D(0.0, 0.0, -70.0))
+        montRa.addComponent(montRaTrans)
+        montRa.addComponent(montRaMesh)
+        montRa.addComponent(Materials().aluminiumS)
+
+        ra = QEntity(montRa)
+        self.raTrans = QTransform()
+        self.raTrans.setTranslation(QVector3D(0.0, 0.0, 190.0))
+        ra.addComponent(self.raTrans)
+
+        montDec = QEntity(ra)
+        montDecMesh = QMesh()
+        montDecMesh.setSource(QUrl('qrc:/model3D/mont-dec.stl'))
+        montDecTrans = QTransform()
+        montDecTrans.setTranslation(QVector3D(0.0, 0.0, -190.0))
+        montDec.addComponent(montDecTrans)
+        montDec.addComponent(montDecMesh)
+        montDec.addComponent(Materials().aluminiumS)
+
+        montDecWeights = QEntity(ra)
+        montDecWeightsMesh = QMesh()
+        montDecWeightsMesh.setSource(QUrl('qrc:/model3D/mont-dec-weights.stl'))
+        montDecWeightsTrans = QTransform()
+        montDecWeightsTrans.setTranslation(QVector3D(0.0, 0.0, -190.0))
+        montDecWeights.addComponent(montDecWeightsTrans)
+        montDecWeights.addComponent(montDecWeightsMesh)
+        montDecWeights.addComponent(Materials().stainless)
+
+        dec = QEntity(montDec)
+        self.decTrans = QTransform()
+        self.decTrans.setTranslation(QVector3D(159.0, 0.0, 190.0))
+        dec.addComponent(self.decTrans)
+
+        montHead = QEntity(dec)
+        montHeadMesh = QMesh()
+        montHeadMesh.setSource(QUrl('qrc:/model3D/mont-dec-head.stl'))
+        montHeadTrans = QTransform()
+        montHeadTrans.setTranslation(QVector3D(-159.0, 0.0, -190.0))
+        montHead.addComponent(montHeadTrans)
+        montHead.addComponent(montHeadMesh)
+        montHead.addComponent(Materials().aluminiumS)
+
+        gem = QEntity(montHead)
+        self.gemMesh = QCuboidMesh()
+        self.gemMesh.setXExtent(100)
+        self.gemMesh.setYExtent(60)
+        self.gemMesh.setZExtent(10)
+        self.gemTrans = QTransform()
+        self.gemTrans.setTranslation(QVector3D(159.0, 0.0, 338.5 + 5.0))
+        gem.addComponent(self.gemMesh)
+        gem.addComponent(self.gemTrans)
+        gem.addComponent(Materials().aluminiumS)
+
+        gemCorr = QEntity(gem)
+        self.gemCorrTrans = QTransform()
+        self.gemCorrTrans.setTranslation(QVector3D(0.0, 0.0, 5.0))
+        gemCorr.addComponent(self.gemCorrTrans)
+
+        ota1 = QEntity(gemCorr)
+        ota1Mesh = QMesh()
+        ota1Mesh.setSource(QUrl('qrc:/model3D/ota-plate.stl'))
+        ota1.addComponent(ota1Mesh)
+        ota1.addComponent(Materials().aluminiumR)
 
     def createWorld(self, rootEntity):
         """
@@ -239,11 +316,12 @@ class SimulatorWindow(widget.MWidget):
         floorTrans = QTransform()
         floorTrans.setTranslation(QVector3D(0.0, 0.0, -1.0))
         floorMat = QDiffuseSpecularMaterial()
-        floorMat.setAmbient(QColor(0, 64, 0))
+        floorMat.setAmbient(QColor(32, 144, 192))
         floor.addComponent(floorTrans)
         floor.addComponent(floorMat)
         floor.addComponent(floorMesh)
 
+        """
         dome = QEntity(rootEntity)
         self.domeMesh = QSphereMesh()
         self.domeMesh.setRadius(1.5)
@@ -256,6 +334,7 @@ class SimulatorWindow(widget.MWidget):
         domeMat.setAmbient(self.COLOR_3D)
         dome.addComponent(self.domeMesh)
         dome.addComponent(domeMat)
+        """
 
     def createScene(self, rootEntity):
         """
@@ -273,19 +352,32 @@ class SimulatorWindow(widget.MWidget):
         :return:
         """
 
+        """
         if self.mountTrans:
             north = self.app.mainW.ui.domeNorthOffset.value()
             east = self.app.mainW.ui.domeEastOffset.value()
             vertical = self.app.mainW.ui.domeVerticalOffset.value()
             self.mountTrans.setTranslation(QVector3D(east, vertical, -north))
+        """
 
-        if self.tubeTrans:
+        if self.raTrans and self.decTrans:
             angRA = self.app.mount.obsSite.angularPosRA
             angDEC = self.app.mount.obsSite.angularPosDEC
             if angRA and angDEC:
-                # self.tubeTrans.setRotationY(angRA.degrees)
-                self.tubeTrans.setRotationZ(- angDEC.degrees)
+                self.raTrans.setRotationX(- angRA.degrees + 90)
+                self.decTrans.setRotationZ(- angDEC.degrees)
 
+        if self.app.mount.geometry.offGemPlate:
+            gem = self.app.mount.geometry.offPlateOTA * 1000
+            lat = - self.app.mainW.ui.offLAT.value() * 1000
+            self.gemMesh.setZExtent(gem)
+            self.gemMesh.setYExtent(abs(lat) + 60)
+            self.gemTrans.setTranslation(QVector3D(159.0, lat / 2, 338.5 + gem / 2))
+            self.gemCorrTrans.setTranslation(QVector3D(0.0, lat / 2, gem / 2))
+
+
+    """
         if self.domeMesh:
             radius = self.app.mainW.ui.domeRadius.value()
             self.domeMesh.setRadius(radius)
+        """

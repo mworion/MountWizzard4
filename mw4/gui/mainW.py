@@ -154,17 +154,17 @@ class MainWindow(MWidget,
         }
         if Config.featureFlags['simulator']:
             self.uiWindows['showSimulatorW'] = {
-                'button': self.ui.domeConnected,
-                'classObj': None,
-                'name': 'Mount3DDialog',
-                'class': Mount3DWindow,
-            }
-        if Config.featureFlags['dome3D']:
-            self.uiWindows['showMount3DW'] = {
                 'button': self.ui.mountConnected,
                 'classObj': None,
                 'name': 'SimulatorDialog',
                 'class': SimulatorWindow,
+            }
+        if Config.featureFlags['dome3D']:
+            self.uiWindows['showMount3DW'] = {
+                'button': self.ui.domeConnected,
+                'classObj': None,
+                'name': 'Mount3DDialog',
+                'class': Mount3DWindow,
             }
         # todo: we can only add keypad on arm when we have compiled version
         if platform.machine() not in Config.excludedPlatforms:

@@ -21,4 +21,4 @@ featureFlags = {'dome3D': False,
                 'simulator': True,
                 'analyse': False,
                 'sourceExtraction': False,
-                'tiltMap': True}
+                'tiltMap': False}

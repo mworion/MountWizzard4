@@ -49,9 +49,10 @@ class SettDome(object):
         self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
+        self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
 
         # signals from functions
-        self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
+        self.app.mount.signals.firmwareDone.connect(self.setUseGeometryInMount)
 
     def initConfig(self):
         """
@@ -73,8 +74,6 @@ class SettDome(object):
         self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
         self.ui.checkAutomaticDome.setChecked(config.get('checkAutomaticDome', False))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
-
-        self.setUseGeometryInMount()
 
         return True
 

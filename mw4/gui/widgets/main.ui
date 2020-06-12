@@ -17745,7 +17745,7 @@ When clicking the button, you could change the value.</string>
          <double>2.000000000000000</double>
         </property>
         <property name="singleStep">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
        </widget>
        <widget class="QDoubleSpinBox" name="domeEastOffset">
@@ -17767,7 +17767,7 @@ When clicking the button, you could change the value.</string>
          <double>2.000000000000000</double>
         </property>
         <property name="singleStep">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
        </widget>
        <widget class="QDoubleSpinBox" name="domeVerticalOffset">
@@ -17789,7 +17789,7 @@ When clicking the button, you could change the value.</string>
          <double>5.000000000000000</double>
         </property>
         <property name="singleStep">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
        </widget>
        <widget class="QDoubleSpinBox" name="offGEM">
@@ -17805,7 +17805,7 @@ When clicking the button, you could change the value.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="singleStep">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
        </widget>
        <widget class="QPushButton" name="copyFromDomeDriver">
@@ -17870,7 +17870,7 @@ When clicking the button, you could change the value.</string>
          <double>2.000000000000000</double>
         </property>
         <property name="singleStep">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="label_136">

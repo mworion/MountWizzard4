@@ -95,6 +95,7 @@ class SimulatorWindow(widget.MWidget):
         self.camController.setCamera(self.camera)
         self.view.setRootEntity(self.rootEntity)
 
+        self.columnTrans = None
         self.latTrans = None
         self.raTrans = None
         self.decTrans = None
@@ -110,7 +111,11 @@ class SimulatorWindow(widget.MWidget):
         self.initConfig()
         self.showWindow()
 
-        self.app.update1s.connect(self.updateGeometry)
+        # connect ui signals
+        self.app.redrawSimulator.connect(self.updateSettings)
+
+        # connect functional signals
+        self.app.mount.signals.pointDone.connect(self.updatePositions)
 
     def initConfig(self):
         """
@@ -201,19 +206,21 @@ class SimulatorWindow(widget.MWidget):
         refTrans.setRotationX(-90)
         ref.addComponent(refTrans)
 
-        pillar = QEntity(ref)
-        pillarMesh = QCylinderMesh()
-        pillarMesh.setRadius(100)
-        pillarMesh.setLength(960)
-        pillarTrans = QTransform()
-        pillarTrans.setTranslation(QVector3D(0.0, 0.0, 480.0))
-        pillarTrans.setRotationX(90)
-        pillarMat = QMetalRoughMaterial()
-        pillar.addComponent(pillarTrans)
-        pillar.addComponent(pillarMesh)
-        pillar.addComponent(pillarMat)
+        column = QEntity(ref)
+        columnMesh = QMesh()
+        self.columnTrans = QTransform()
+        columnMesh.setSource(QUrl('qrc:/model3D/observatory-column.stl'))
+        column.addComponent(columnMesh)
+        column.addComponent(self.columnTrans)
+        column.addComponent(Materials().aluminiumS)
 
-        mountBase = QEntity(ref)
+        compassRose = QEntity(ref)
+        compassRoseMesh = QMesh()
+        compassRoseMesh.setSource(QUrl('qrc:/model3D/observatory-rose.stl'))
+        compassRose.addComponent(compassRoseMesh)
+        compassRose.addComponent(Materials().stainless)
+
+        mountBase = QEntity(column)
         mountBaseMesh = QMesh()
         mountBaseMesh.setSource(QUrl('qrc:/model3D/mont-base.stl'))
         mountBaseTrans = QTransform()
@@ -391,7 +398,33 @@ class SimulatorWindow(widget.MWidget):
         self.createWorld(rootEntity)
         self.createOTA(rootEntity)
 
-    def updateGeometry(self):
+    def updateSettings(self):
+        """
+
+        :return:
+        """
+
+        if self.app.mount.geometry.offGemPlate:
+            offPlateOTA = self.app.mount.geometry.offPlateOTA * 1000
+            lat = - self.app.mainW.ui.offLAT.value() * 1000
+            self.gemMesh.setYExtent(abs(lat) + 80)
+            self.gemTrans.setTranslation(QVector3D(159.0, lat / 2, 338.5))
+            self.gemCorrTrans.setTranslation(QVector3D(0.0, lat / 2, 0.0))
+
+            scaleRad = (offPlateOTA - 25) / 55
+            scaleRad = max(scaleRad, 1)
+
+            self.otaRingTrans.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+            self.otaRingTrans.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+
+            self.otaTubeTrans.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+            self.otaTubeTrans.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+
+            self.otaImagetrainTrans.setTranslation(QVector3D(0.0, 0.0, 65 * (scaleRad - 1)))
+
+        return True
+
+    def updatePositions(self):
         """
 
         :return:
@@ -412,27 +445,4 @@ class SimulatorWindow(widget.MWidget):
                 self.raTrans.setRotationX(- angRA.degrees + 90)
                 self.decTrans.setRotationZ(- angDEC.degrees)
 
-        if self.app.mount.geometry.offGemPlate:
-            offPlateOTA = self.app.mount.geometry.offPlateOTA * 1000
-            lat = - self.app.mainW.ui.offLAT.value() * 1000
-            self.gemMesh.setYExtent(abs(lat) + 80)
-            self.gemTrans.setTranslation(QVector3D(159.0, lat / 2, 338.5))
-            self.gemCorrTrans.setTranslation(QVector3D(0.0, lat / 2, 0.0))
-
-            scaleRad = (offPlateOTA - 25) / 55
-            scaleRad = max(scaleRad, 1)
-
-            self.otaRingTrans.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
-            self.otaRingTrans.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
-
-            self.otaTubeTrans.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
-            self.otaTubeTrans.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
-
-            self.otaImagetrainTrans.setTranslation(QVector3D(0.0, 0.0, 65 * (scaleRad - 1)))
-
-
-    """
-        if self.domeMesh:
-            radius = self.app.mainW.ui.domeRadius.value()
-            self.domeMesh.setRadius(radius)
-        """
+        return True

@@ -70,6 +70,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     message = PyQt5.QtCore.pyqtSignal(str, int)
     messageQueue = Queue()
     redrawHemisphere = PyQt5.QtCore.pyqtSignal()
+    redrawSimulator = PyQt5.QtCore.pyqtSignal()
     remoteCommand = PyQt5.QtCore.pyqtSignal(str)
 
     # all cyclic tasks

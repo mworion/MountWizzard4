@@ -118,7 +118,10 @@ class SimulatorWindow(widget.MWidget):
         self.otaRingTrans = None
         self.otaTubeTrans = None
         self.otaImagetrainTrans = None
-        self.domeMesh = None
+
+        self.domeWallTrans = None
+        self.domeFloorTrans = None
+        self.domeSphereTrans = None
 
         self.initConfig()
         self.showWindow()
@@ -415,21 +418,27 @@ class SimulatorWindow(widget.MWidget):
         domeFloor = QEntity(ref)
         domeFloorMesh = QMesh()
         domeFloorMesh.setSource(QUrl('qrc:/model3D/dome-floor.stl'))
+        self.domeFloorTrans = QTransform()
         domeFloorMat = QDiffuseSpecularMaterial()
         domeFloorMat.setAmbient(QColor(32, 144, 192))
-        domeFloor.addComponent(domeFloorMat)
         domeFloor.addComponent(domeFloorMesh)
+        domeFloor.addComponent(self.domeFloorTrans)
+        domeFloor.addComponent(domeFloorMat)
 
         domeWall = QEntity(ref)
         domeWallMesh = QMesh()
         domeWallMesh.setSource(QUrl('qrc:/model3D/dome-wall.stl'))
-        domeWall.addComponent(Materials().transparent)
+        self.domeWallTrans = QTransform()
         domeWall.addComponent(domeWallMesh)
+        domeWall.addComponent(self.domeWallTrans)
+        domeWall.addComponent(Materials().transparent)
 
         domeSphere = QEntity(ref)
         domeSphereMesh = QMesh()
         domeSphereMesh.setSource(QUrl('qrc:/model3D/dome-sphere.stl'))
+        self.domeSphereTrans = QTransform()
         domeSphere.addComponent(domeSphereMesh)
+        domeSphere.addComponent(self.domeSphereTrans)
         domeSphere.addComponent(Materials().transparent)
 
     def createScene(self, rootEntity):
@@ -479,6 +488,17 @@ class SimulatorWindow(widget.MWidget):
         self.domeColumnTrans.setTranslation(QVector3D(north, -east, vertical))
         self.domeCompassRoseTrans.setTranslation(QVector3D(north, -east, 0))
         self.domeCompassRoseCharTrans.setTranslation(QVector3D(north, -east, 0))
+
+        if not self.domeSphereTrans:
+            return False
+
+        radius = self.app.mainW.ui.domeRadius.value() * 1000
+        scale = 1 + (radius - 1250) / 1250
+        corrZ = - (scale - 1) * 1000
+        self.domeFloorTrans.setScale3D(QVector3D(scale, scale, 1))
+        self.domeWallTrans.setScale3D(QVector3D(scale, scale, 1))
+        self.domeSphereTrans.setScale3D(QVector3D(scale, scale, scale))
+        self.domeSphereTrans.setTranslation(QVector3D(0, 0, corrZ))
 
         return True
 

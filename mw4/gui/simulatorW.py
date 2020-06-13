@@ -102,9 +102,13 @@ class SimulatorWindow(widget.MWidget):
         # self.camera.setUpVector(QVector3D(0.0, .00, 0.0))
         self.camController = QOrbitCameraController(self.rootEntity)
         self.camController.setCamera(self.camera)
+        self.camController.setLinearSpeed(5.0)
+        self.camController.setLookSpeed(90)
         self.view.setRootEntity(self.rootEntity)
 
-        self.columnTrans = None
+        self.domeColumnTrans = None
+        self.domeCompassRoseTrans = None
+        self.domeCompassRoseCharTrans = None
         self.latTrans = None
         self.raTrans = None
         self.decTrans = None
@@ -225,21 +229,31 @@ class SimulatorWindow(widget.MWidget):
         refTrans.setRotationX(-90)
         ref.addComponent(refTrans)
 
-        column = QEntity(ref)
-        columnMesh = QMesh()
-        self.columnTrans = QTransform()
-        columnMesh.setSource(QUrl('qrc:/model3D/observatory-column.stl'))
-        column.addComponent(columnMesh)
-        column.addComponent(self.columnTrans)
-        column.addComponent(Materials().aluminiumS)
+        domeColumn = QEntity(ref)
+        domeColumnMesh = QMesh()
+        self.domeColumnTrans = QTransform()
+        domeColumnMesh.setSource(QUrl('qrc:/model3D/dome-column.stl'))
+        domeColumn.addComponent(domeColumnMesh)
+        domeColumn.addComponent(self.domeColumnTrans)
+        domeColumn.addComponent(Materials().aluminiumS)
 
-        compassRose = QEntity(ref)
-        compassRoseMesh = QMesh()
-        compassRoseMesh.setSource(QUrl('qrc:/model3D/observatory-rose.stl'))
-        compassRose.addComponent(compassRoseMesh)
-        compassRose.addComponent(Materials().stainless)
+        domeCompassRose = QEntity(ref)
+        domeCompassRoseMesh = QMesh()
+        self.domeCompassRoseTrans = QTransform()
+        domeCompassRoseMesh.setSource(QUrl('qrc:/model3D/dome-rose.stl'))
+        domeCompassRose.addComponent(self.domeCompassRoseTrans)
+        domeCompassRose.addComponent(domeCompassRoseMesh)
+        domeCompassRose.addComponent(Materials().stainless)
 
-        mountBase = QEntity(column)
+        domeCompassRoseChar = QEntity(ref)
+        domeCompassRoseCharMesh = QMesh()
+        self.domeCompassRoseCharTrans = QTransform()
+        domeCompassRoseCharMesh.setSource(QUrl('qrc:/model3D/dome-rose-char.stl'))
+        domeCompassRoseChar.addComponent(self.domeCompassRoseCharTrans)
+        domeCompassRoseChar.addComponent(domeCompassRoseCharMesh)
+        domeCompassRoseChar.addComponent(Materials().aluminiumB)
+
+        mountBase = QEntity(domeColumn)
         mountBaseMesh = QMesh()
         mountBaseMesh.setSource(QUrl('qrc:/model3D/mont-base.stl'))
         mountBaseTrans = QTransform()
@@ -434,23 +448,37 @@ class SimulatorWindow(widget.MWidget):
         :return:
         """
 
-        if self.app.mount.geometry.offGemPlate:
-            offPlateOTA = self.app.mount.geometry.offPlateOTA * 1000
-            lat = - self.app.mainW.ui.offLAT.value() * 1000
-            self.gemMesh.setYExtent(abs(lat) + 80)
-            self.gemTrans.setTranslation(QVector3D(159.0, lat / 2, 338.5))
-            self.gemCorrTrans.setTranslation(QVector3D(0.0, lat / 2, 0.0))
+        if not self.app.mount.geometry.offGemPlate:
+            return False
 
-            scaleRad = (offPlateOTA - 25) / 55
-            scaleRad = max(scaleRad, 1)
+        # ota geometry
+        offPlateOTA = self.app.mount.geometry.offPlateOTA * 1000
+        lat = - self.app.mainW.ui.offLAT.value() * 1000
 
-            self.otaRingTrans.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
-            self.otaRingTrans.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+        self.gemMesh.setYExtent(abs(lat) + 80)
+        self.gemTrans.setTranslation(QVector3D(159.0, lat / 2, 338.5))
+        self.gemCorrTrans.setTranslation(QVector3D(0.0, lat / 2, 0.0))
 
-            self.otaTubeTrans.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
-            self.otaTubeTrans.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+        scaleRad = (offPlateOTA - 25) / 55
+        scaleRad = max(scaleRad, 1)
 
-            self.otaImagetrainTrans.setTranslation(QVector3D(0.0, 0.0, 65 * (scaleRad - 1)))
+        self.otaRingTrans.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+        self.otaRingTrans.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+        self.otaTubeTrans.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+        self.otaTubeTrans.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+        self.otaImagetrainTrans.setTranslation(QVector3D(0.0, 0.0, 65 * (scaleRad - 1)))
+
+        # location of column
+
+        if not self.domeColumnTrans:
+            return False
+
+        north = self.app.mainW.ui.domeNorthOffset.value() * 1000
+        east = self.app.mainW.ui.domeEastOffset.value() * 1000
+        vertical = self.app.mainW.ui.domeVerticalOffset.value() * 1000
+        self.domeColumnTrans.setTranslation(QVector3D(north, -east, vertical))
+        self.domeCompassRoseTrans.setTranslation(QVector3D(north, -east, 0))
+        self.domeCompassRoseCharTrans.setTranslation(QVector3D(north, -east, 0))
 
         return True
 
@@ -458,14 +486,6 @@ class SimulatorWindow(widget.MWidget):
         """
 
         :return:
-        """
-
-        """
-        if self.mountTrans:
-            north = self.app.mainW.ui.domeNorthOffset.value()
-            east = self.app.mainW.ui.domeEastOffset.value()
-            vertical = self.app.mainW.ui.domeVerticalOffset.value()
-            self.mountTrans.setTranslation(QVector3D(east, vertical, -north))
         """
 
         if not (self.raTrans and self.decTrans):

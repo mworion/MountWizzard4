@@ -24,9 +24,9 @@ from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
 from PyQt5.Qt3DExtras import Qt3DWindow
 from PyQt5.Qt3DExtras import QOrbitCameraController
-from PyQt5.Qt3DExtras import QSphereMesh, QPlaneMesh, QCylinderMesh, QCuboidMesh
-from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
-from PyQt5.Qt3DRender import QMesh
+from PyQt5.Qt3DExtras import QSphereMesh, QCylinderMesh, QCuboidMesh
+from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial, QPhongAlphaMaterial
+from PyQt5.Qt3DRender import QMesh, QGeometryRenderer
 from PyQt5.Qt3DCore import QEntity, QTransform
 
 # local import
@@ -66,6 +66,13 @@ class Materials():
         self.stainless.setSpecular(QColor(255, 255, 230))
         self.stainless.setShininess(0.9)
 
+        self.transparent = QPhongAlphaMaterial()
+        self.transparent.setAmbient(QColor(1, 1, 1, 1))
+        self.transparent.setDiffuse(QColor(1, 1, 1, 1))
+        self.transparent.setSpecular(QColor(1, 1, 1, 1))
+        self.transparent.setShininess(1)
+        self.transparent.setAlpha(0.2)
+
 
 class SimulatorWindow(widget.MWidget):
 
@@ -84,13 +91,15 @@ class SimulatorWindow(widget.MWidget):
 
         self.view = Qt3DWindow()
         self.container = QWidget.createWindowContainer(self.view)
+
         # adding it to window widget
         self.ui.simulator.addWidget(self.container)
+
         self.rootEntity = QEntity()
         self.camera = self.view.camera()
         self.camera.lens().setPerspectiveProjection(45.0, 16.0 / 9.0, 0.1, 1000.0)
-        self.camera.setPosition(QVector3D(2, 3, 1))
-        self.camera.setViewCenter(QVector3D(0.0, 1.2, 0.0))
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        # self.camera.setUpVector(QVector3D(0.0, .00, 0.0))
         self.camController = QOrbitCameraController(self.rootEntity)
         self.camController.setCamera(self.camera)
         self.view.setRootEntity(self.rootEntity)
@@ -105,16 +114,13 @@ class SimulatorWindow(widget.MWidget):
         self.otaRingTrans = None
         self.otaTubeTrans = None
         self.otaImagetrainTrans = None
-
         self.domeMesh = None
 
         self.initConfig()
         self.showWindow()
 
-        # connect ui signals
-        self.app.redrawSimulator.connect(self.updateSettings)
-
         # connect functional signals
+        self.app.redrawSimulator.connect(self.updateSettings)
         self.app.mount.signals.pointDone.connect(self.updatePositions)
 
     def initConfig(self):
@@ -140,6 +146,12 @@ class SimulatorWindow(widget.MWidget):
         width = config.get('width', 800)
         self.resize(width, height)
 
+        if 'cameraPositionX' in config:
+            x = config['cameraPositionX']
+            y = config['cameraPositionY']
+            z = config['cameraPositionZ']
+            self.camera.setPosition(QVector3D(x, y, z))
+
         return True
 
     def storeConfig(self):
@@ -157,6 +169,11 @@ class SimulatorWindow(widget.MWidget):
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
         config['width'] = self.width()
+
+        pos = self.camera.position()
+        config['cameraPositionX'] = pos.x()
+        config['cameraPositionY'] = pos.y()
+        config['cameraPositionZ'] = pos.z()
 
         return True
 
@@ -184,6 +201,8 @@ class SimulatorWindow(widget.MWidget):
         # background color
         self.view.defaultFrameGraph().setClearColor(QColor(20, 20, 20))
         self.createScene(self.rootEntity)
+        self.updatePositions()
+        self.updateSettings()
         self.show()
 
         return True
@@ -227,7 +246,7 @@ class SimulatorWindow(widget.MWidget):
         mountBaseTrans.setTranslation(QVector3D(0.0, 0.0, 1000.0))
         mountBase.addComponent(mountBaseTrans)
         mountBase.addComponent(mountBaseMesh)
-        mountBase.addComponent(Materials().aluminiumS)
+        mountBase.addComponent(Materials().aluminiumR)
 
         mountKnobs = QEntity(mountBase)
         mountKnobsMesh = QMesh()
@@ -361,32 +380,43 @@ class SimulatorWindow(widget.MWidget):
         :return:
         """
 
-        floor = QEntity(rootEntity)
-        floorMesh = QPlaneMesh()
-        floorMesh.setWidth(20)
-        floorMesh.setHeight(20)
-        floorTrans = QTransform()
-        floorTrans.setTranslation(QVector3D(0.0, 0.0, -1.0))
-        floorMat = QDiffuseSpecularMaterial()
-        floorMat.setAmbient(QColor(32, 144, 192))
-        floor.addComponent(floorTrans)
-        floor.addComponent(floorMat)
-        floor.addComponent(floorMesh)
+        ref = QEntity(rootEntity)
+        refTrans = QTransform()
+        refTrans.setScale(0.001)
+        refTrans.setRotationY(90)
+        refTrans.setRotationX(-90)
+        ref.addComponent(refTrans)
 
-        """
-        dome = QEntity(rootEntity)
-        self.domeMesh = QSphereMesh()
-        self.domeMesh.setRadius(1.5)
-        self.domeMesh.setPrimitiveType(QGeometryRenderer.Lines)
-        self.domeMesh.setRings(18)
-        self.domeMesh.setSlices(24)
-        domeTrans = QTransform()
-        domeTrans.setTranslation(QVector3D(0, 0, 0.0))
-        domeMat = QDiffuseSpecularMaterial()
-        domeMat.setAmbient(self.COLOR_3D)
-        dome.addComponent(self.domeMesh)
-        dome.addComponent(domeMat)
-        """
+        environ = QEntity(ref)
+        environMesh = QMesh()
+        environMesh.setSource(QUrl('qrc:/model3D/dome-environ.stl'))
+        environMat = QMetalRoughMaterial()
+        environMat.setBaseColor(QColor(32, 128, 32))
+        environMat.setAmbientOcclusion(QColor(64, 128, 32))
+        environMat.setRoughness(1000)
+        environMat.setTextureScale(100)
+        environ.addComponent(environMat)
+        environ.addComponent(environMesh)
+
+        domeFloor = QEntity(ref)
+        domeFloorMesh = QMesh()
+        domeFloorMesh.setSource(QUrl('qrc:/model3D/dome-floor.stl'))
+        domeFloorMat = QDiffuseSpecularMaterial()
+        domeFloorMat.setAmbient(QColor(32, 144, 192))
+        domeFloor.addComponent(domeFloorMat)
+        domeFloor.addComponent(domeFloorMesh)
+
+        domeWall = QEntity(ref)
+        domeWallMesh = QMesh()
+        domeWallMesh.setSource(QUrl('qrc:/model3D/dome-wall.stl'))
+        domeWall.addComponent(Materials().transparent)
+        domeWall.addComponent(domeWallMesh)
+
+        domeSphere = QEntity(ref)
+        domeSphereMesh = QMesh()
+        domeSphereMesh.setSource(QUrl('qrc:/model3D/dome-sphere.stl'))
+        domeSphere.addComponent(domeSphereMesh)
+        domeSphere.addComponent(Materials().transparent)
 
     def createScene(self, rootEntity):
         """
@@ -438,11 +468,16 @@ class SimulatorWindow(widget.MWidget):
             self.mountTrans.setTranslation(QVector3D(east, vertical, -north))
         """
 
-        if self.raTrans and self.decTrans:
-            angRA = self.app.mount.obsSite.angularPosRA
-            angDEC = self.app.mount.obsSite.angularPosDEC
-            if angRA and angDEC:
-                self.raTrans.setRotationX(- angRA.degrees + 90)
-                self.decTrans.setRotationZ(- angDEC.degrees)
+        if not (self.raTrans and self.decTrans):
+            return False
+
+        angRA = self.app.mount.obsSite.angularPosRA
+        angDEC = self.app.mount.obsSite.angularPosDEC
+
+        if not (angRA and angDEC):
+            return False
+
+        self.raTrans.setRotationX(- angRA.degrees + 90)
+        self.decTrans.setRotationZ(- angDEC.degrees)
 
         return True

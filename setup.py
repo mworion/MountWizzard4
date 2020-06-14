@@ -22,7 +22,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.150.25b14',
+    version='0.150.25',
     packages=[
         'mw4',
         'mw4.astrometry',
@@ -56,7 +56,6 @@ setup(
         'requests==2.23.0',
         'requests_toolbelt==0.9.1',
         'skyfield==1.22',
-        'sgp4==2.12',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==1.6.0',
         'opencv-python-headless==4.2.0.34',

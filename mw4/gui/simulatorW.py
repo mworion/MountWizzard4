@@ -274,7 +274,7 @@ class SimulatorWindow(widget.MWidget):
         lat = QEntity(mountBase)
         self.latTrans = QTransform()
         self.latTrans.setTranslation(QVector3D(0.0, 0.0, 70.0))
-        self.latTrans.setRotationY(-(90-48))
+        self.latTrans.setRotationY(- (90 - 48))
         lat.addComponent(self.latTrans)
 
         montRa = QEntity(lat)

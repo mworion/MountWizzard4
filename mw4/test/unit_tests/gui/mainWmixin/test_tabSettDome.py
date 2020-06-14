@@ -53,6 +53,7 @@ def module_setup_teardown(qtbot):
         threadPool = QThreadPool()
         update1s = pyqtSignal()
         update30m = pyqtSignal()
+        redrawSimulator = pyqtSignal()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
                       pathToData='mw4/test/data')

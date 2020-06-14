@@ -15,6 +15,7 @@
 # Licence APL2.0
 #
 ###########################################################
+import mw4.base.packageConfig as Config
 # standard libraries
 import unittest.mock as mock
 import pytest
@@ -99,6 +100,7 @@ def function_setup_teardown(qtbot):
         config = {'mainW': {},
                   'showImageW': True}
         update1s = pyqtSignal()
+        redrawSimulator = pyqtSignal()
         update3s = pyqtSignal()
         update30m = pyqtSignal()
         remoteCommand = pyqtSignal(str)

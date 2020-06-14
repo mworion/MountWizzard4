@@ -87,6 +87,8 @@ class Almanac(object):
         self.ui.checkTimezoneUTC.clicked.connect(self.displayTwilightData)
         self.ui.checkTimezoneLocal.clicked.connect(self.displayTwilightData)
 
+        self.searchTwilight()
+        self.displayTwilightData()
         self.app.update1s.connect(self.updateMoonPhase)
         self.lunarNodes()
 
@@ -387,19 +389,21 @@ class Almanac(object):
         maskP = QPainter(mask)
         maskP.setBrush(Qt.SolidPattern)
         maskP.setBrush(QColor(255, 255, 255))
+        maskP.setPen(QPen(QColor(255, 255, 255)))
         maskP.drawRect(0, 0, width, height)
 
         if moonPhaseDegree <= 90:
+            maskP.setBrush(QColor(48, 48, 48))
+            maskP.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
+
             r = np.cos(np.radians(moonPhaseDegree)) * width / 2
-            maskP.setBrush(QColor(0, 0, 0))
+            maskP.setBrush(QColor(48, 48, 48))
+            maskP.setPen(QPen(QColor(48, 48, 48)))
             maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
 
-            maskP.setBrush(QColor(0, 0, 0))
-            maskP.drawRect(0, 0, width / 2, height)
-
         elif 90 < moonPhaseDegree <= 180:
-            maskP.setBrush(QColor(0, 0, 0))
-            maskP.drawRect(0, 0, width / 2, height)
+            maskP.setBrush(QColor(48, 48, 48))
+            maskP.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 
             r = - np.cos(np.radians(moonPhaseDegree)) * width / 2
             maskP.setBrush(QColor(255, 255, 255))
@@ -407,8 +411,8 @@ class Almanac(object):
             maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
 
         elif 180 < moonPhaseDegree <= 270:
-            maskP.setBrush(QColor(0, 0, 0))
-            maskP.drawRect(width / 2, 0, width / 2, height)
+            maskP.setBrush(QColor(48, 48, 48))
+            maskP.drawPie(0, 0, width, height, - 90 * 16, 180 * 16)
 
             r = - np.cos(np.radians(moonPhaseDegree)) * width / 2
             maskP.setBrush(QColor(255, 255, 255))
@@ -416,13 +420,13 @@ class Almanac(object):
             maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
 
         else:
-            r = np.cos(np.radians(moonPhaseDegree)) * width / 2
-            maskP.setPen(QPen(QColor(0, 0, 0)))
-            maskP.setBrush(QColor(0, 0, 0))
-            maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
+            maskP.setBrush(QColor(48, 48, 48))
+            maskP.drawPie(0, 0, width, height, -90 * 16, 180 * 16)
 
-            maskP.setBrush(QColor(0, 0, 0))
-            maskP.drawRect(width / 2, 0, width / 2, height)
+            r = np.cos(np.radians(moonPhaseDegree)) * width / 2
+            maskP.setPen(QPen(QColor(48, 48, 48)))
+            maskP.setBrush(QColor(48, 48, 48))
+            maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
 
         maskP.end()
 

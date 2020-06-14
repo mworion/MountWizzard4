@@ -98,11 +98,6 @@ class MWStyles(object):
         font-weight: normal;
         font-size: 13pt;
     }
-    QTextEdit {
-        color: #C0C0C0;
-        background-color: #202020;
-        border-radius: 0px;
-    }
     QToolTip {
         font-size: 13pt;
     }
@@ -134,16 +129,19 @@ class MWStyles(object):
         font-weight: normal;
         font-size: 10pt;
     }
-    QTextEdit {
-        color: #C0C0C0;
-        background-color: #202020;
-        border-radius: 0px;
-    }
     QToolTip {
         font-size: 13pt;
     }
     """
     BASIC_STYLE = """
+    QWidget {
+        color: rgb(32, 144, 192);
+    }
+    QTextEdit {
+        color: #C0C0C0;
+        background-color: #202020;
+        border-radius: 0px;
+    }
     QToolTip {
         border-width: 2px;
         border-style: outset;

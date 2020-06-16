@@ -18,7 +18,7 @@
 
 excludedPlatforms = ['armv7l']
 featureFlags = {'dome3D': False,
-                'simulator': False,
+                'simulator': True,
                 'analyse': False,
                 'sourceExtraction': False,
                 'tiltMap': False}

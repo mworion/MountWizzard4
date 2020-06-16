@@ -221,9 +221,22 @@ class SimulatorWindow(widget.MWidget):
             Qt3D (-z is north, x is east, y is up) scale is m
         and set as reference. from there on we are in the fusion coordinate system
 
-        :param rootEntity: root of the §D models
+        dict {'name of model': {'parent': }}
+
+        :param rootEntity: root of the 3D models
         :return:
         """
+
+        model = {
+            'name of model': {
+                'parent': self,
+                'source': None,
+                'trans': None,
+                'rot': None,
+                'scale': None,
+                'mat': None,
+            }
+        }
 
         ref = QEntity(rootEntity)
         refTrans = QTransform()

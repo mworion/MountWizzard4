@@ -48,6 +48,8 @@ from mw4.resource import resources
 logger = logging.getLogger()
 log = CustomLogger(logger, {})
 
+featureFlags = {'analyse': True}
+
 
 class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
     """

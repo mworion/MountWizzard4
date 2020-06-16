@@ -196,7 +196,12 @@ class AnalyseWindow(widget.MWidget):
         if 'modelPolarError' in modelJSON[0]:
             self.ui.modelPolarError.setText(f'{modelJSON[0]["modelPolarError"]:5.1f}')
         if 'version' in modelJSON[0]:
-            self.ui.version.setText(f'{modelJSON[0]["version"]}')
+            version = modelJSON[0]["version"].lstrip('MountWizzard4 - v')
+            self.ui.version.setText(f'{version}')
+        if 'focalLength' in modelJSON[0]:
+            self.ui.focalLength.setText(f'{modelJSON[0]["focalLength"]:4.0f}')
+        if 'profile' in modelJSON[0]:
+            self.ui.profile.setText(f'{modelJSON[0]["profile"]}')
 
         self.modelJSON = modelJSON
         self.drawAll()

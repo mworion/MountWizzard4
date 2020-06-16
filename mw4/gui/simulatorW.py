@@ -123,6 +123,8 @@ class SimulatorWindow(widget.MWidget):
         self.domeFloorTrans = None
         self.domeSphereTrans = None
 
+        self.model = None
+
         self.initConfig()
         self.showWindow()
 
@@ -214,7 +216,181 @@ class SimulatorWindow(widget.MWidget):
 
         return True
 
+    def linkModel(self, model, name):
+        """
+
+        :param model:
+        :param name:
+        :return:
+        """
+
+        currMod = model[name]
+
+        parent = currMod.get('parent', None)
+        if parent and model.get(parent, None):
+            currMod['entity'] = QEntity(model[parent]['entity'])
+        else:
+            currMod['entity'] = QEntity(self.rootEntity)
+
+        source = currMod.get('source', None)
+        if source:
+            if isinstance(source, str):
+                mesh = QMesh()
+                mesh.setSource(QUrl(f'qrc:/model3D/{source}'))
+            currMod['entity'].addComponent(mesh)
+
+        trans = currMod.get('trans', None)
+        rot = currMod.get('rot', None)
+        scale = currMod.get('scale', None)
+        if trans or rot or scale:
+            transform = QTransform()
+
+            if trans and isinstance(trans, list) and len(trans) == 3:
+                transform.setTranslation(QVector3D(*trans))
+
+            if rot and isinstance(rot, list) and len(rot) == 3:
+                transform.setRotationX(rot[0])
+                transform.setRotationY(rot[1])
+                transform.setRotationZ(rot[2])
+
+            if scale and isinstance(scale, list) and len(scale) == 3:
+                transform.setScale3D(QVector3D(*scale))
+
+            currMod['entity'].addComponent(transform)
+
+        mat = currMod.get('mat', None)
+        if mat:
+            currMod['entity'].addComponent(mat)
+
     def createOTA(self, rootEntity):
+        """
+        first transformation is from
+            fusion360 (x is north, y is west, z is up), scale in mm
+            Qt3D (-z is north, x is east, y is up) scale is m
+        and set as reference. from there on we are in the fusion coordinate system
+
+        dict {'name of model': {'parent': }}
+
+        :param rootEntity: root of the 3D models
+        :return:
+        """
+
+        self.model = {
+            'ref': {
+                'parent': None,
+                'source': None,
+                'trans': None,
+                'rot': [-90, 90, 0],
+                'scale': [0.001, 0.001, 0.001],
+                'mat': None,
+            },
+            'domeColumn': {
+                'parent': 'ref',
+                'source': 'dome-column.stl',
+                'mat': Materials().aluminiumS,
+            },
+            'domeCompassRose': {
+                'parent': 'ref',
+                'source': 'dome-rose.stl',
+                'mat': Materials().aluminiumS,
+            },
+            'domeCompassRoseChar': {
+                'parent': 'ref',
+                'source': 'dome-rose-char.stl',
+                'mat': Materials().aluminiumB,
+            },
+            'mountBase': {
+                'parent': 'domeColumn',
+                'source': 'mont-base.stl',
+                'trans': [0, 0, 1000],
+                'mat': Materials().aluminiumR,
+            },
+            'mountKnobs': {
+                'parent': 'mountBase',
+                'source': 'mont-base-knobs.stl',
+                'mat': Materials().stainless,
+            },
+            'lat': {
+                'parent': 'mountBase',
+                'trans': [0, 0, 70],
+                'rot': [0, -90 + 48, 0],
+            },
+            'montRa': {
+                'parent': 'lat',
+                'source': 'mont-ra.stl',
+                'trans': [0, 0, -70],
+                'mat': Materials().aluminiumS,
+            },
+            'ra': {
+                'parent': 'montRa',
+                'trans': [0, 0, 190],
+            },
+            'montDec': {
+                'parent': 'ra',
+                'source': 'mont-dec.stl',
+                'trans': [0, 0, -190],
+                'mat': Materials().aluminiumS,
+            },
+            'montDecWeights': {
+                'parent': 'ra',
+                'source': 'mont-dec-weights.stl',
+                'trans': [0, 0, -190],
+                'mat': Materials().stainless,
+            },
+            'dec': {
+                'parent': 'montDec',
+                'trans': [159, 0, -190],
+            },
+            'montHead': {
+                'parent': 'dec',
+                'source': 'mont-dec-head.stl',
+                'trans': [-159, 0, -190],
+                'mat': Materials().aluminiumS,
+            },
+            'otaPlate': {
+                'parent': 'montHead',
+                'source': 'ota-plate.stl',
+                'mat': Materials().aluminiumS,
+            },
+            'otaRing': {
+                'parent': 'ra',
+                'source': 'ota-ring-s.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().aluminiumR,
+            },
+            'otaTube': {
+                'parent': 'otaPlate',
+                'source': 'ota-tube-s.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().white,
+            },
+            'otaImagetrain': {
+                'parent': 'otaTube',
+                'source': 'ota-imagetrain.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().white,
+            },
+            'otaCCD': {
+                'parent': 'otaImagetrain',
+                'source': 'ota-ccd.stl',
+                'mat': Materials().aluminiumB,
+            },
+            'otaFocus': {
+                'parent': 'otaImagetrain',
+                'source': 'ota-focus.stl',
+                'mat': Materials().aluminiumR,
+            },
+            'otaFocusTop': {
+                'parent': 'otaImagetrain',
+                'source': 'ota-focus-top.stl',
+                'mat': Materials().white,
+            },
+        }
+
+        for name in self.model:
+            self.linkModel(self.model, name)
+
+    def createOTAa(self, rootEntity):
         """
         first transformation is from
             fusion360 (x is north, y is west, z is up), scale in mm
@@ -229,14 +405,18 @@ class SimulatorWindow(widget.MWidget):
 
         model = {
             'name of model': {
-                'parent': self,
+                'parent': None,
                 'source': None,
                 'trans': None,
                 'rot': None,
                 'scale': None,
                 'mat': None,
+                'entity': None,
             }
         }
+
+        for name in model:
+            self.linkModel(model, name)
 
         ref = QEntity(rootEntity)
         refTrans = QTransform()
@@ -461,7 +641,7 @@ class SimulatorWindow(widget.MWidget):
         :return:
         """
 
-        self.createWorld(rootEntity)
+        # self.createWorld(rootEntity)
         self.createOTA(rootEntity)
 
     def updateSettings(self):
@@ -469,6 +649,7 @@ class SimulatorWindow(widget.MWidget):
 
         :return:
         """
+        return
 
         if not self.app.mount.geometry.offGemPlate:
             return False
@@ -520,6 +701,7 @@ class SimulatorWindow(widget.MWidget):
 
         :return:
         """
+        return
 
         if not (self.raTrans and self.decTrans):
             return False

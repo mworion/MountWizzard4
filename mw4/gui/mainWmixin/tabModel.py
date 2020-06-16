@@ -716,7 +716,8 @@ class Model(object):
             sPoint['decJ2000S'] = sPoint['decJ2000S'].radians
             sPoint['siderealTime'] = sPoint['siderealTime'].hours
             sPoint['julianDate'] = sPoint['julianDate'].utc_iso()
-            sPoint['version'] = f'MountWizzard4 - v{self.app.__version__}'
+            sPoint['version'] = f'{self.app.__version__}'
+            sPoint['profile'] = self.ui.profile.text()
 
             modelDataForSave.append(sPoint)
         return modelDataForSave

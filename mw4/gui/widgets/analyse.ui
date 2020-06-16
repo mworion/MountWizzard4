@@ -332,7 +332,7 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>70</y>
+        <y>95</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -371,7 +371,7 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>95</y>
+        <y>120</y>
         <width>296</width>
         <height>21</height>
        </rect>
@@ -410,7 +410,7 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>120</y>
+        <y>145</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -438,6 +438,9 @@
       <property name="text">
        <string/>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
       <property name="readOnly">
        <bool>true</bool>
       </property>
@@ -449,7 +452,7 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>145</y>
+        <y>70</y>
         <width>296</width>
         <height>21</height>
        </rect>
@@ -527,7 +530,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>70</y>
+        <y>95</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -547,7 +550,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>95</y>
+        <y>120</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -567,7 +570,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>120</y>
+        <y>145</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -587,7 +590,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>145</y>
+        <y>70</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -1085,7 +1088,7 @@
       <property name="geometry">
        <rect>
         <x>145</x>
-        <y>70</y>
+        <y>95</y>
         <width>46</width>
         <height>21</height>
        </rect>
@@ -1132,7 +1135,7 @@
        <rect>
         <x>90</x>
         <y>45</y>
-        <width>296</width>
+        <width>96</width>
         <height>21</height>
        </rect>
       </property>
@@ -1201,6 +1204,147 @@
       </property>
       <property name="text">
        <string>%</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="profile">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>285</x>
+        <y>45</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Name of Model Points file, where the data is stored. </string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_18">
+      <property name="geometry">
+       <rect>
+        <x>215</x>
+        <y>45</y>
+        <width>46</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Profile</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_19">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>145</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Focal len</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="focalLength">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>285</x>
+        <y>145</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Name of Model Points file, where the data is stored. </string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_20">
+      <property name="geometry">
+       <rect>
+        <x>345</x>
+        <y>145</y>
+        <width>46</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>mm</string>
       </property>
      </widget>
     </widget>

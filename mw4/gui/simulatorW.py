@@ -339,7 +339,7 @@ class SimulatorWindow(widget.MWidget):
             },
             'dec': {
                 'parent': 'montDec',
-                'trans': [159, 0, -190],
+                'trans': [159, 0, 190],
             },
             'montHead': {
                 'parent': 'dec',
@@ -347,13 +347,17 @@ class SimulatorWindow(widget.MWidget):
                 'trans': [-159, 0, -190],
                 'mat': Materials().aluminiumS,
             },
-            'otaPlate': {
+            'gem': {
                 'parent': 'montHead',
+                'trans': [159, 0, 338.5],
+            },
+            'otaPlate': {
+                'parent': 'gem',
                 'source': 'ota-plate.stl',
                 'mat': Materials().aluminiumS,
             },
             'otaRing': {
-                'parent': 'ra',
+                'parent': 'otaPlate',
                 'source': 'ota-ring-s.stl',
                 'scale': [1, 1, 1],
                 'mat': Materials().aluminiumR,
@@ -368,7 +372,7 @@ class SimulatorWindow(widget.MWidget):
                 'parent': 'otaTube',
                 'source': 'ota-imagetrain.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().white,
+                'mat': Materials().aluminiumS,
             },
             'otaCCD': {
                 'parent': 'otaImagetrain',

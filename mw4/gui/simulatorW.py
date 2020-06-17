@@ -106,24 +106,8 @@ class SimulatorWindow(widget.MWidget):
         self.camController.setLookSpeed(90)
         self.view.setRootEntity(self.rootEntity)
 
-        self.domeColumnTrans = None
-        self.domeCompassRoseTrans = None
-        self.domeCompassRoseCharTrans = None
-        self.latTrans = None
-        self.raTrans = None
-        self.decTrans = None
-        self.gemTrans = None
-        self.gemCorrTrans = None
-        self.gemMesh = None
-        self.otaRingTrans = None
-        self.otaTubeTrans = None
-        self.otaImagetrainTrans = None
-
-        self.domeWallTrans = None
-        self.domeFloorTrans = None
-        self.domeSphereTrans = None
-
         self.model = None
+        self.world = None
 
         self.initConfig()
         self.showWindow()
@@ -216,11 +200,12 @@ class SimulatorWindow(widget.MWidget):
 
         return True
 
-    def linkModel(self, model, name):
+    def linkModel(self, model, name, rootEntity):
         """
 
         :param model:
         :param name:
+        :param rootEntity:
         :return:
         """
 
@@ -228,16 +213,17 @@ class SimulatorWindow(widget.MWidget):
 
         parent = currMod.get('parent', None)
         if parent and model.get(parent, None):
-            currMod['entity'] = QEntity(model[parent]['entity'])
+            currMod['e'] = QEntity(model[parent]['e'])
         else:
-            currMod['entity'] = QEntity(self.rootEntity)
+            currMod['e'] = QEntity(rootEntity)
 
         source = currMod.get('source', None)
         if source:
             if isinstance(source, str):
                 mesh = QMesh()
                 mesh.setSource(QUrl(f'qrc:/model3D/{source}'))
-            currMod['entity'].addComponent(mesh)
+            currMod['e'].addComponent(mesh)
+            currMod['m'] = mesh
 
         trans = currMod.get('trans', None)
         rot = currMod.get('rot', None)
@@ -256,11 +242,12 @@ class SimulatorWindow(widget.MWidget):
             if scale and isinstance(scale, list) and len(scale) == 3:
                 transform.setScale3D(QVector3D(*scale))
 
-            currMod['entity'].addComponent(transform)
+            currMod['e'].addComponent(transform)
+            currMod['t'] = transform
 
         mat = currMod.get('mat', None)
         if mat:
-            currMod['entity'].addComponent(mat)
+            currMod['e'].addComponent(mat)
 
     def createOTA(self, rootEntity):
         """
@@ -287,16 +274,19 @@ class SimulatorWindow(widget.MWidget):
             'domeColumn': {
                 'parent': 'ref',
                 'source': 'dome-column.stl',
+                'scale': [1, 1, 1],
                 'mat': Materials().aluminiumS,
             },
             'domeCompassRose': {
                 'parent': 'ref',
                 'source': 'dome-rose.stl',
+                'scale': [1, 1, 1],
                 'mat': Materials().aluminiumS,
             },
             'domeCompassRoseChar': {
                 'parent': 'ref',
                 'source': 'dome-rose-char.stl',
+                'scale': [1, 1, 1],
                 'mat': Materials().aluminiumB,
             },
             'mountBase': {
@@ -369,7 +359,7 @@ class SimulatorWindow(widget.MWidget):
                 'mat': Materials().white,
             },
             'otaImagetrain': {
-                'parent': 'otaTube',
+                'parent': 'gem',
                 'source': 'ota-imagetrain.stl',
                 'scale': [1, 1, 1],
                 'mat': Materials().aluminiumS,
@@ -392,200 +382,7 @@ class SimulatorWindow(widget.MWidget):
         }
 
         for name in self.model:
-            self.linkModel(self.model, name)
-
-    def createOTAa(self, rootEntity):
-        """
-        first transformation is from
-            fusion360 (x is north, y is west, z is up), scale in mm
-            Qt3D (-z is north, x is east, y is up) scale is m
-        and set as reference. from there on we are in the fusion coordinate system
-
-        dict {'name of model': {'parent': }}
-
-        :param rootEntity: root of the 3D models
-        :return:
-        """
-
-        model = {
-            'name of model': {
-                'parent': None,
-                'source': None,
-                'trans': None,
-                'rot': None,
-                'scale': None,
-                'mat': None,
-                'entity': None,
-            }
-        }
-
-        for name in model:
-            self.linkModel(model, name)
-
-        ref = QEntity(rootEntity)
-        refTrans = QTransform()
-        refTrans.setScale(0.001)
-        refTrans.setRotationY(90)
-        refTrans.setRotationX(-90)
-        ref.addComponent(refTrans)
-
-        domeColumn = QEntity(ref)
-        domeColumnMesh = QMesh()
-        self.domeColumnTrans = QTransform()
-        domeColumnMesh.setSource(QUrl('qrc:/model3D/dome-column.stl'))
-        domeColumn.addComponent(domeColumnMesh)
-        domeColumn.addComponent(self.domeColumnTrans)
-        domeColumn.addComponent(Materials().aluminiumS)
-
-        domeCompassRose = QEntity(ref)
-        domeCompassRoseMesh = QMesh()
-        self.domeCompassRoseTrans = QTransform()
-        domeCompassRoseMesh.setSource(QUrl('qrc:/model3D/dome-rose.stl'))
-        domeCompassRose.addComponent(self.domeCompassRoseTrans)
-        domeCompassRose.addComponent(domeCompassRoseMesh)
-        domeCompassRose.addComponent(Materials().stainless)
-
-        domeCompassRoseChar = QEntity(ref)
-        domeCompassRoseCharMesh = QMesh()
-        self.domeCompassRoseCharTrans = QTransform()
-        domeCompassRoseCharMesh.setSource(QUrl('qrc:/model3D/dome-rose-char.stl'))
-        domeCompassRoseChar.addComponent(self.domeCompassRoseCharTrans)
-        domeCompassRoseChar.addComponent(domeCompassRoseCharMesh)
-        domeCompassRoseChar.addComponent(Materials().aluminiumB)
-
-        mountBase = QEntity(domeColumn)
-        mountBaseMesh = QMesh()
-        mountBaseMesh.setSource(QUrl('qrc:/model3D/mont-base.stl'))
-        mountBaseTrans = QTransform()
-        mountBaseTrans.setTranslation(QVector3D(0.0, 0.0, 1000.0))
-        mountBase.addComponent(mountBaseTrans)
-        mountBase.addComponent(mountBaseMesh)
-        mountBase.addComponent(Materials().aluminiumR)
-
-        mountKnobs = QEntity(mountBase)
-        mountKnobsMesh = QMesh()
-        mountKnobsMesh.setSource(QUrl('qrc:/model3D/mont-base-knobs.stl'))
-        mountKnobs.addComponent(mountKnobsMesh)
-        mountKnobs.addComponent(Materials().stainless)
-
-        lat = QEntity(mountBase)
-        self.latTrans = QTransform()
-        self.latTrans.setTranslation(QVector3D(0.0, 0.0, 70.0))
-        self.latTrans.setRotationY(- (90 - 48))
-        lat.addComponent(self.latTrans)
-
-        montRa = QEntity(lat)
-        montRaMesh = QMesh()
-        montRaMesh.setSource(QUrl('qrc:/model3D/mont-ra.stl'))
-        montRaTrans = QTransform()
-        montRaTrans.setTranslation(QVector3D(0.0, 0.0, -70.0))
-        montRa.addComponent(montRaTrans)
-        montRa.addComponent(montRaMesh)
-        montRa.addComponent(Materials().aluminiumS)
-
-        ra = QEntity(montRa)
-        self.raTrans = QTransform()
-        self.raTrans.setTranslation(QVector3D(0.0, 0.0, 190.0))
-        ra.addComponent(self.raTrans)
-
-        montDec = QEntity(ra)
-        montDecMesh = QMesh()
-        montDecMesh.setSource(QUrl('qrc:/model3D/mont-dec.stl'))
-        montDecTrans = QTransform()
-        montDecTrans.setTranslation(QVector3D(0.0, 0.0, -190.0))
-        montDec.addComponent(montDecTrans)
-        montDec.addComponent(montDecMesh)
-        montDec.addComponent(Materials().aluminiumS)
-
-        montDecWeights = QEntity(ra)
-        montDecWeightsMesh = QMesh()
-        montDecWeightsMesh.setSource(QUrl('qrc:/model3D/mont-dec-weights.stl'))
-        montDecWeightsTrans = QTransform()
-        montDecWeightsTrans.setTranslation(QVector3D(0.0, 0.0, -190.0))
-        montDecWeights.addComponent(montDecWeightsTrans)
-        montDecWeights.addComponent(montDecWeightsMesh)
-        montDecWeights.addComponent(Materials().stainless)
-
-        dec = QEntity(montDec)
-        self.decTrans = QTransform()
-        self.decTrans.setTranslation(QVector3D(159.0, 0.0, 190.0))
-        dec.addComponent(self.decTrans)
-
-        montHead = QEntity(dec)
-        montHeadMesh = QMesh()
-        montHeadMesh.setSource(QUrl('qrc:/model3D/mont-dec-head.stl'))
-        montHeadTrans = QTransform()
-        montHeadTrans.setTranslation(QVector3D(-159.0, 0.0, -190.0))
-        montHead.addComponent(montHeadTrans)
-        montHead.addComponent(montHeadMesh)
-        montHead.addComponent(Materials().aluminiumS)
-
-        gem = QEntity(montHead)
-        self.gemMesh = QCuboidMesh()
-        self.gemMesh.setXExtent(100)
-        self.gemMesh.setYExtent(60)
-        self.gemMesh.setZExtent(10)
-        self.gemTrans = QTransform()
-        self.gemTrans.setTranslation(QVector3D(159.0, 0.0, 338.5 + 5.0))
-        gem.addComponent(self.gemMesh)
-        gem.addComponent(self.gemTrans)
-        gem.addComponent(Materials().aluminiumB)
-
-        gemCorr = QEntity(gem)
-        self.gemCorrTrans = QTransform()
-        self.gemCorrTrans.setTranslation(QVector3D(0.0, 0.0, 5.0))
-        gemCorr.addComponent(self.gemCorrTrans)
-
-        otaPlate = QEntity(gemCorr)
-        otaPlateMesh = QMesh()
-        otaPlateMesh.setSource(QUrl('qrc:/model3D/ota-plate.stl'))
-        otaPlate.addComponent(otaPlateMesh)
-        otaPlate.addComponent(Materials().aluminiumS)
-
-        otaRing = QEntity(otaPlate)
-        otaRingMesh = QMesh()
-        otaRingMesh.setSource(QUrl('qrc:/model3D/ota-ring-s.stl'))
-        self.otaRingTrans = QTransform()
-        self.otaRingTrans.setScale3D(QVector3D(1.0, 1.0, 1.0))
-        otaRing.addComponent(otaRingMesh)
-        otaRing.addComponent(self.otaRingTrans)
-        otaRing.addComponent(Materials().aluminiumR)
-
-        otaTube = QEntity(otaPlate)
-        otaTubeMesh = QMesh()
-        otaTubeMesh.setSource(QUrl('qrc:/model3D/ota-tube-s.stl'))
-        self.otaTubeTrans = QTransform()
-        self.otaTubeTrans.setScale3D(QVector3D(1.0, 1.0, 1.0))
-        otaTube.addComponent(otaTubeMesh)
-        otaTube.addComponent(self.otaTubeTrans)
-        otaTube.addComponent(Materials().white)
-
-        otaImagetrain = QEntity(gemCorr)
-        otaImagetrainMesh = QMesh()
-        otaImagetrainMesh.setSource(QUrl('qrc:/model3D/ota-imagetrain.stl'))
-        self.otaImagetrainTrans = QTransform()
-        self.otaImagetrainTrans.setScale3D(QVector3D(1.0, 1.0, 1.0))
-        otaImagetrain.addComponent(otaImagetrainMesh)
-        otaImagetrain.addComponent(self.otaImagetrainTrans)
-        otaImagetrain.addComponent(Materials().aluminiumS)
-
-        otaCCD = QEntity(otaImagetrain)
-        otaCCDMesh = QMesh()
-        otaCCDMesh.setSource(QUrl('qrc:/model3D/ota-ccd.stl'))
-        otaCCD.addComponent(otaCCDMesh)
-        otaCCD.addComponent(Materials().aluminiumB)
-
-        otaFocus = QEntity(otaImagetrain)
-        otaFocusMesh = QMesh()
-        otaFocusMesh.setSource(QUrl('qrc:/model3D/ota-focus.stl'))
-        otaFocus.addComponent(otaFocusMesh)
-        otaFocus.addComponent(Materials().aluminiumR)
-
-        otaFocusTop = QEntity(otaImagetrain)
-        otaFocusTopMesh = QMesh()
-        otaFocusTopMesh.setSource(QUrl('qrc:/model3D/ota-focus-top.stl'))
-        otaFocusTop.addComponent(otaFocusTopMesh)
-        otaFocusTop.addComponent(Materials().white)
+            self.linkModel(self.model, name, rootEntity)
 
     def createWorld(self, rootEntity):
         """
@@ -594,49 +391,43 @@ class SimulatorWindow(widget.MWidget):
         :return:
         """
 
-        ref = QEntity(rootEntity)
-        refTrans = QTransform()
-        refTrans.setScale(0.001)
-        refTrans.setRotationY(90)
-        refTrans.setRotationX(-90)
-        ref.addComponent(refTrans)
+        self.world = {
+            'ref': {
+                'parent': None,
+                'source': None,
+                'trans': None,
+                'rot': [-90, 90, 0],
+                'scale': [0.001, 0.001, 0.001],
+                'mat': None,
+            },
+            'environ': {
+                'parent': 'ref',
+                'source': 'dome-environ.stl',
+                'mat': Materials().aluminiumB,
+            },
+            'domeFloor': {
+                'parent': 'ref',
+                'source': 'dome-floor.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().aluminiumS,
+            },
+            'domeWall': {
+                'parent': 'ref',
+                'source': 'dome-wall.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().transparent,
+            },
+            'domeSphere': {
+                'parent': 'ref',
+                'source': 'dome-sphere.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().transparent,
+            },
 
-        environ = QEntity(ref)
-        environMesh = QMesh()
-        environMesh.setSource(QUrl('qrc:/model3D/dome-environ.stl'))
-        environMat = QMetalRoughMaterial()
-        environMat.setBaseColor(QColor(32, 128, 32))
-        environMat.setAmbientOcclusion(QColor(64, 128, 32))
-        environMat.setRoughness(1000)
-        environMat.setTextureScale(100)
-        environ.addComponent(environMat)
-        environ.addComponent(environMesh)
+        }
 
-        domeFloor = QEntity(ref)
-        domeFloorMesh = QMesh()
-        domeFloorMesh.setSource(QUrl('qrc:/model3D/dome-floor.stl'))
-        self.domeFloorTrans = QTransform()
-        domeFloorMat = QDiffuseSpecularMaterial()
-        domeFloorMat.setAmbient(QColor(32, 144, 192))
-        domeFloor.addComponent(domeFloorMesh)
-        domeFloor.addComponent(self.domeFloorTrans)
-        domeFloor.addComponent(domeFloorMat)
-
-        domeWall = QEntity(ref)
-        domeWallMesh = QMesh()
-        domeWallMesh.setSource(QUrl('qrc:/model3D/dome-wall.stl'))
-        self.domeWallTrans = QTransform()
-        domeWall.addComponent(domeWallMesh)
-        domeWall.addComponent(self.domeWallTrans)
-        domeWall.addComponent(Materials().transparent)
-
-        domeSphere = QEntity(ref)
-        domeSphereMesh = QMesh()
-        domeSphereMesh.setSource(QUrl('qrc:/model3D/dome-sphere.stl'))
-        self.domeSphereTrans = QTransform()
-        domeSphere.addComponent(domeSphereMesh)
-        domeSphere.addComponent(self.domeSphereTrans)
-        domeSphere.addComponent(Materials().transparent)
+        for name in self.world:
+            self.linkModel(self.world, name, rootEntity)
 
     def createScene(self, rootEntity):
         """
@@ -645,7 +436,7 @@ class SimulatorWindow(widget.MWidget):
         :return:
         """
 
-        # self.createWorld(rootEntity)
+        self.createWorld(rootEntity)
         self.createOTA(rootEntity)
 
     def updateSettings(self):
@@ -653,7 +444,6 @@ class SimulatorWindow(widget.MWidget):
 
         :return:
         """
-        return
 
         if not self.app.mount.geometry.offGemPlate:
             return False
@@ -662,41 +452,34 @@ class SimulatorWindow(widget.MWidget):
         offPlateOTA = self.app.mount.geometry.offPlateOTA * 1000
         lat = - self.app.mainW.ui.offLAT.value() * 1000
 
-        self.gemMesh.setYExtent(abs(lat) + 80)
-        self.gemTrans.setTranslation(QVector3D(159.0, lat / 2, 338.5))
-        self.gemCorrTrans.setTranslation(QVector3D(0.0, lat / 2, 0.0))
-
         scaleRad = (offPlateOTA - 25) / 55
         scaleRad = max(scaleRad, 1)
 
-        self.otaRingTrans.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
-        self.otaRingTrans.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
-        self.otaTubeTrans.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
-        self.otaTubeTrans.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
-        self.otaImagetrainTrans.setTranslation(QVector3D(0.0, 0.0, 65 * (scaleRad - 1)))
+        self.model['otaRing']['t'].setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+        self.model['otaRing']['t'].setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+        self.model['otaTube']['t'].setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+        self.model['otaTube']['t'].setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+        self.model['otaImagetrain']['t'].setTranslation(QVector3D(0.0, 0.0, 65 * (scaleRad - 1)))
 
         # location of column
 
-        if not self.domeColumnTrans:
+        if 't' not in self.world['domeFloor']:
             return False
 
         north = self.app.mainW.ui.domeNorthOffset.value() * 1000
         east = self.app.mainW.ui.domeEastOffset.value() * 1000
         vertical = self.app.mainW.ui.domeVerticalOffset.value() * 1000
-        self.domeColumnTrans.setTranslation(QVector3D(north, -east, vertical))
-        self.domeCompassRoseTrans.setTranslation(QVector3D(north, -east, 0))
-        self.domeCompassRoseCharTrans.setTranslation(QVector3D(north, -east, 0))
-
-        if not self.domeSphereTrans:
-            return False
+        self.model['domeColumn']['t'].setTranslation(QVector3D(north, -east, vertical))
+        self.model['domeCompassRose']['t'].setTranslation(QVector3D(north, -east, 0))
+        self.model['domeCompassRoseChar']['t'].setTranslation(QVector3D(north, -east, 0))
 
         radius = self.app.mainW.ui.domeRadius.value() * 1000
         scale = 1 + (radius - 1250) / 1250
         corrZ = - (scale - 1) * 1000
-        self.domeFloorTrans.setScale3D(QVector3D(scale, scale, 1))
-        self.domeWallTrans.setScale3D(QVector3D(scale, scale, 1))
-        self.domeSphereTrans.setScale3D(QVector3D(scale, scale, scale))
-        self.domeSphereTrans.setTranslation(QVector3D(0, 0, corrZ))
+        self.world['domeFloor']['t'].setScale3D(QVector3D(scale, scale, 1))
+        self.world['domeWall']['t'].setScale3D(QVector3D(scale, scale, 1))
+        self.world['domeSphere']['t'].setScale3D(QVector3D(scale, scale, scale))
+        self.world['domeSphere']['t'].setTranslation(QVector3D(0, 0, corrZ))
 
         return True
 
@@ -705,9 +488,8 @@ class SimulatorWindow(widget.MWidget):
 
         :return:
         """
-        return
 
-        if not (self.raTrans and self.decTrans):
+        if ('t' not in self.model['ra'] and 't' not in self.model['dec']):
             return False
 
         angRA = self.app.mount.obsSite.angularPosRA
@@ -716,7 +498,7 @@ class SimulatorWindow(widget.MWidget):
         if not (angRA and angDEC):
             return False
 
-        self.raTrans.setRotationX(- angRA.degrees + 90)
-        self.decTrans.setRotationZ(- angDEC.degrees)
+        self.model['ra']['t'].setRotationX(- angRA.degrees + 90)
+        self.model['dec']['t'].setRotationZ(- angDEC.degrees)
 
         return True

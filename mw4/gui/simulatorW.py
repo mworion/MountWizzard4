@@ -51,6 +51,11 @@ class Materials():
         self.aluminiumR.setDiffuse(QColor(128, 64, 64))
         self.aluminiumR.setSpecular(QColor(255, 192, 192))
 
+        self.aluminiumG = QDiffuseSpecularMaterial()
+        self.aluminiumG.setAmbient(QColor(64, 192, 64))
+        self.aluminiumG.setDiffuse(QColor(64, 128, 64))
+        self.aluminiumG.setSpecular(QColor(192, 255, 192))
+
         self.white = QDiffuseSpecularMaterial()
         self.white.setAmbient(QColor(228, 228, 228))
         self.white.setShininess(0.7)
@@ -321,6 +326,12 @@ class SimulatorWindow(widget.MWidget):
                 'trans': [0, 0, -190],
                 'mat': Materials().aluminiumS,
             },
+            'montDecKnobs': {
+                'parent': 'ra',
+                'source': 'mont-dec-knobs.stl',
+                'trans': [0, 0, -190],
+                'mat': Materials().stainless,
+            },
             'montDecWeights': {
                 'parent': 'ra',
                 'source': 'mont-dec-weights.stl',
@@ -333,9 +344,15 @@ class SimulatorWindow(widget.MWidget):
             },
             'montHead': {
                 'parent': 'dec',
-                'source': 'mont-dec-head.stl',
+                'source': 'mont-head.stl',
                 'trans': [-159, 0, -190],
                 'mat': Materials().aluminiumS,
+            },
+            'montHeadKnobs': {
+                'parent': 'dec',
+                'source': 'mont-head-knobs.stl',
+                'trans': [-159, 0, -190],
+                'mat': Materials().stainless,
             },
             'gem': {
                 'parent': 'montHead',
@@ -403,7 +420,7 @@ class SimulatorWindow(widget.MWidget):
             'environ': {
                 'parent': 'ref',
                 'source': 'dome-environ.stl',
-                'mat': Materials().aluminiumB,
+                'mat': Materials().aluminiumG,
             },
             'domeFloor': {
                 'parent': 'ref',

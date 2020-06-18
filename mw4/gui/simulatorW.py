@@ -295,7 +295,7 @@ class SimulatorWindow(widget.MWidget):
                 'mat': Materials().aluminiumB,
             },
             'mountBase': {
-                'parent': 'domeColumn',
+                'parent': 'ref',
                 'source': 'mont-base.stl',
                 'trans': [0, 0, 1000],
                 'mat': Materials().aluminiumR,
@@ -486,13 +486,16 @@ class SimulatorWindow(widget.MWidget):
         north = self.app.mainW.ui.domeNorthOffset.value() * 1000
         east = self.app.mainW.ui.domeEastOffset.value() * 1000
         vertical = self.app.mainW.ui.domeVerticalOffset.value() * 1000
-        self.model['domeColumn']['t'].setTranslation(QVector3D(north, -east, vertical))
+        scale = (960 + vertical) / 960
+        self.model['domeColumn']['t'].setTranslation(QVector3D(north, -east, 0))
+        self.model['domeColumn']['t'].setScale3D(QVector3D(1, 1, scale))
+        self.model['mountBase']['t'].setTranslation(QVector3D(north, -east, 1000 + vertical))
         self.model['domeCompassRose']['t'].setTranslation(QVector3D(north, -east, 0))
         self.model['domeCompassRoseChar']['t'].setTranslation(QVector3D(north, -east, 0))
 
         radius = self.app.mainW.ui.domeRadius.value() * 1000
         scale = 1 + (radius - 1250) / 1250
-        corrZ = - (scale - 1) * 1000
+        corrZ = - (scale - 1) * 800
         self.world['domeFloor']['t'].setScale3D(QVector3D(scale, scale, 1))
         self.world['domeWall']['t'].setScale3D(QVector3D(scale, scale, 1))
         self.world['domeSphere']['t'].setScale3D(QVector3D(scale, scale, scale))

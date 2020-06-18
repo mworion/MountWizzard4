@@ -17,11 +17,14 @@
 ###########################################################
 # standard libraries
 import datetime
+
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 from mountcontrol.convert import stringToAngle
+from skyfield.toposlib import Topos
+
 # local import
 from mw4.base import transform
 
@@ -740,9 +743,14 @@ class Mount(object):
         if not ok:
             return False
 
-        topo = (stringToAngle(value),
-                obs.location.latitude,
-                obs.location.elevation.m)
+        value = stringToAngle(value)
+
+        if value is None:
+            return False
+
+        topo = Topos(longitude=value,
+                     latitude=obs.location.latitude,
+                     elevation_m=obs.location.elevation.m)
         obs.location = topo
 
         if not self.deviceStat.get('mount', ''):
@@ -779,9 +787,14 @@ class Mount(object):
         if not ok:
             return False
 
-        topo = (obs.location.longitude,
-                stringToAngle(value),
-                obs.location.elevation.m)
+        value = stringToAngle(value)
+
+        if value is None:
+            return False
+
+        topo = Topos(longitude=obs.location.longitude,
+                     latitude=value,
+                     elevation_m=obs.location.elevation.m)
         obs.location = topo
 
         if not self.deviceStat.get('mount', ''):
@@ -820,9 +833,9 @@ class Mount(object):
         if not ok:
             return False
 
-        topo = (obs.location.longitude,
-                obs.location.latitude,
-                value)
+        topo = Topos(longitude=obs.location.longitude,
+                     latitude=obs.location.latitude,
+                     elevation_m=value)
         obs.location = topo
 
         if not self.deviceStat.get('mount', ''):

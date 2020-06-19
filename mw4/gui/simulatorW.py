@@ -18,15 +18,15 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtCore import QSize, QUrl
+from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
 from PyQt5.Qt3DExtras import Qt3DWindow
 from PyQt5.Qt3DExtras import QOrbitCameraController
-from PyQt5.Qt3DExtras import QSphereMesh, QCylinderMesh, QCuboidMesh
-from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial, QPhongAlphaMaterial
-from PyQt5.Qt3DRender import QMesh, QGeometryRenderer
+from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
+from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
+from PyQt5.Qt3DRender import QMesh
 from PyQt5.Qt3DCore import QEntity, QTransform
 
 # local import
@@ -76,19 +76,24 @@ class Materials():
         self.stainless.setSpecular(QColor(255, 255, 230))
         self.stainless.setShininess(0.9)
 
-        self.transparent20 = QPhongAlphaMaterial()
-        self.transparent20.setAmbient(QColor(1, 1, 1, 1))
-        self.transparent20.setDiffuse(QColor(1, 1, 1, 1))
-        self.transparent20.setSpecular(QColor(1, 1, 1, 1))
-        self.transparent20.setShininess(1)
-        self.transparent20.setAlpha(0.2)
+        self.dome1 = QPhongMaterial()
+        self.dome1.setAmbient(QColor(164, 164, 192))
+        self.dome1.setDiffuse(QColor(164, 164, 192))
+        self.dome1.setSpecular(QColor(164, 164, 192))
+        self.dome1.setShininess(0.5)
 
-        self.transparent50 = QPhongAlphaMaterial()
-        self.transparent50.setAmbient(QColor(1, 1, 1, 1))
-        self.transparent50.setDiffuse(QColor(1, 1, 1, 1))
-        self.transparent50.setSpecular(QColor(1, 1, 1, 1))
-        self.transparent50.setShininess(1)
-        self.transparent50.setAlpha(1)
+        self.dome2 = QPhongMaterial()
+        self.dome2.setAmbient(QColor(128, 128, 192))
+        self.dome2.setDiffuse(QColor(128, 128, 192))
+        self.dome2.setSpecular(QColor(128, 128, 192))
+        self.dome2.setShininess(0.7)
+
+        self.transparent = QPhongAlphaMaterial()
+        self.transparent.setAmbient(QColor(16, 16, 16))
+        self.transparent.setDiffuse(QColor(16, 16, 16, 255))
+        self.transparent.setSpecular(QColor(16, 16, 16))
+        self.transparent.setShininess(0.8)
+        self.transparent.setAlpha(0.8)
 
 
 class SimulatorWindow(widget.MWidget):
@@ -263,6 +268,7 @@ class SimulatorWindow(widget.MWidget):
 
         mat = currMod.get('mat', None)
         if mat:
+            currMod['m'] = mat
             currMod['e'].addComponent(mat)
 
     def createOTA(self, rootEntity):
@@ -443,25 +449,25 @@ class SimulatorWindow(widget.MWidget):
                 'parent': 'ref',
                 'source': 'dome-wall.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().transparent50,
+                'mat': Materials().dome1,
             },
             'domeSphere': {
                 'parent': 'ref',
                 'source': 'dome-sphere.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().transparent50,
+                'mat': Materials().dome1,
             },
             'domeDoor1': {
                 'parent': 'domeSphere',
                 'source': 'dome-door1.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumB,
+                'mat': Materials().dome2,
             },
             'domeDoor2': {
                 'parent': 'domeSphere',
                 'source': 'dome-door2.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumB,
+                'mat': Materials().dome2,
             },
 
         }
@@ -481,7 +487,7 @@ class SimulatorWindow(widget.MWidget):
 
     def updateSettings(self):
         """
-        updateSettings resizes parts depenting on the setting made in the dome tab. likewise
+        updateSettings resize parts depending on the setting made in the dome tab. likewise
         some transformations have to be reverted as they are propagated through entity linking.
 
         :return:
@@ -523,6 +529,15 @@ class SimulatorWindow(widget.MWidget):
         self.world['domeSphere']['t'].setScale3D(QVector3D(scale, scale, scale))
         self.world['domeSphere']['t'].setTranslation(QVector3D(0, 0, corrZ))
 
+        domeEntities = ['domeWall', 'domeSphere', 'domeDoor1', 'domeDoor2']
+        transparent = self.app.mainW.ui.checkDomeTransparent.isChecked()
+
+        for entity in domeEntities:
+            if transparent:
+                self.world[entity]['e'].addComponent(Materials().transparent)
+            else:
+                self.world[entity]['e'].addComponent(Materials().dome2)
+
         return True
 
     def updateMount(self):
@@ -562,7 +577,7 @@ class SimulatorWindow(widget.MWidget):
         visible = self.app.mainW.deviceStat.get('dome', False)
         if visible is None:
             visible = False
-        
+
         for entity in domeEntities:
             self.world[entity]['e'].setEnabled(visible)
 

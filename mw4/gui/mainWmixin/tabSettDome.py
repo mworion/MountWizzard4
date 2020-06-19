@@ -42,6 +42,7 @@ class SettDome(object):
 
         # signals on gui
         self.ui.checkDomeGeometry.clicked.connect(self.setUseGeometryInMount)
+        self.ui.checkDomeTransparent.clicked.connect(lambda: self.app.redrawSimulator.emit())
         self.ui.domeRadius.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.offGEM.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.offLAT.valueChanged.connect(self.setUseGeometryInMount)
@@ -72,6 +73,7 @@ class SettDome(object):
         self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
         self.ui.offGEM.setValue(config.get('offGEM', 0))
         self.ui.offLAT.setValue(config.get('offLAT', 0))
+        self.ui.checkDomeTransparent.setChecked(config.get('checkDomeTransparent', False))
         self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
         self.ui.checkAutomaticDome.setChecked(config.get('checkAutomaticDome', False))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
@@ -95,6 +97,7 @@ class SettDome(object):
         config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
         config['offGEM'] = self.ui.offGEM.value()
         config['offLAT'] = self.ui.offLAT.value()
+        config['checkDomeTransparent'] = self.ui.checkDomeTransparent.isChecked()
         config['checkDomeGeometry'] = self.ui.checkDomeGeometry.isChecked()
         config['checkAutomaticDome'] = self.ui.checkAutomaticDome.isChecked()
         config['settleTimeDome'] = self.ui.settleTimeDome.value()

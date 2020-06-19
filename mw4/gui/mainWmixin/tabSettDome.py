@@ -65,7 +65,8 @@ class SettDome(object):
 
         config = self.app.config['mainW']
 
-        self.ui.domeRadius.setValue(config.get('domeRadius', 3))
+        self.ui.domeRadius.setValue(config.get('domeRadius', 1.5))
+        self.ui.domeShutterWidth.setValue(config.get('domeShutterWidth', 0.2))
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
         self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
@@ -88,6 +89,7 @@ class SettDome(object):
 
         config = self.app.config['mainW']
         config['domeRadius'] = self.ui.domeRadius.value()
+        config['domeShutterWidth'] = self.ui.domeShutterWidth.value()
         config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
         config['domeEastOffset'] = self.ui.domeEastOffset.value()
         config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
@@ -138,6 +140,9 @@ class SettDome(object):
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_DOME_RADIUS', 0))
         self.ui.domeRadius.setValue(value)
+
+        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_SHUTTER_WIDTH', 0))
+        self.ui.domeShutterWidth.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT', 0))
         self.ui.domeNorthOffset.setValue(value)

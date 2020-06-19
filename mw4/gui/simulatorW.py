@@ -38,23 +38,28 @@ class Materials():
     def __init__(self):
         self.aluminiumS = QMetalRoughMaterial()
         self.aluminiumS.setBaseColor(QColor(127, 127, 127))
-        self.aluminiumS.setMetalness(0.7)
-        self.aluminiumS.setRoughness(0.1)
+        self.aluminiumS.setMetalness(0.9)
+        self.aluminiumS.setRoughness(0.5)
 
         self.aluminiumB = QDiffuseSpecularMaterial()
         self.aluminiumB.setAmbient(QColor(64, 64, 128))
         self.aluminiumB.setDiffuse(QColor(64, 64, 128))
-        self.aluminiumB.setSpecular(QColor(192, 192, 255))
+        # self.aluminiumB.setSpecular(QColor(192, 192, 255))
 
         self.aluminiumR = QDiffuseSpecularMaterial()
         self.aluminiumR.setAmbient(QColor(192, 64, 64))
         self.aluminiumR.setDiffuse(QColor(128, 64, 64))
-        self.aluminiumR.setSpecular(QColor(255, 192, 192))
+        # self.aluminiumR.setSpecular(QColor(255, 192, 192))
 
         self.aluminiumG = QDiffuseSpecularMaterial()
         self.aluminiumG.setAmbient(QColor(64, 192, 64))
         self.aluminiumG.setDiffuse(QColor(64, 128, 64))
-        self.aluminiumG.setSpecular(QColor(192, 255, 192))
+        # self.aluminiumG.setSpecular(QColor(192, 255, 192))
+
+        self.aluminium = QDiffuseSpecularMaterial()
+        self.aluminium.setAmbient(QColor(164, 164, 164))
+        self.aluminium.setDiffuse(QColor(164, 164, 164))
+        # self.aluminiumG.setSpecular(QColor(192, 255, 192))
 
         self.white = QDiffuseSpecularMaterial()
         self.white.setAmbient(QColor(228, 228, 228))
@@ -71,12 +76,19 @@ class Materials():
         self.stainless.setSpecular(QColor(255, 255, 230))
         self.stainless.setShininess(0.9)
 
-        self.transparent = QPhongAlphaMaterial()
-        self.transparent.setAmbient(QColor(1, 1, 1, 1))
-        self.transparent.setDiffuse(QColor(1, 1, 1, 1))
-        self.transparent.setSpecular(QColor(1, 1, 1, 1))
-        self.transparent.setShininess(1)
-        self.transparent.setAlpha(0.2)
+        self.transparent20 = QPhongAlphaMaterial()
+        self.transparent20.setAmbient(QColor(1, 1, 1, 1))
+        self.transparent20.setDiffuse(QColor(1, 1, 1, 1))
+        self.transparent20.setSpecular(QColor(1, 1, 1, 1))
+        self.transparent20.setShininess(1)
+        self.transparent20.setAlpha(0.2)
+
+        self.transparent50 = QPhongAlphaMaterial()
+        self.transparent50.setAmbient(QColor(1, 1, 1, 1))
+        self.transparent50.setDiffuse(QColor(1, 1, 1, 1))
+        self.transparent50.setSpecular(QColor(1, 1, 1, 1))
+        self.transparent50.setShininess(1)
+        self.transparent50.setAlpha(1)
 
 
 class SimulatorWindow(widget.MWidget):
@@ -302,7 +314,7 @@ class SimulatorWindow(widget.MWidget):
             'mountKnobs': {
                 'parent': 'mountBase',
                 'source': 'mont-base-knobs.stl',
-                'mat': Materials().stainless,
+                'mat': Materials().aluminium,
             },
             'lat': {
                 'parent': 'mountBase',
@@ -329,7 +341,7 @@ class SimulatorWindow(widget.MWidget):
                 'parent': 'ra',
                 'source': 'mont-dec-knobs.stl',
                 'trans': [0, 0, -190],
-                'mat': Materials().stainless,
+                'mat': Materials().aluminium,
             },
             'montDecWeights': {
                 'parent': 'ra',
@@ -351,7 +363,7 @@ class SimulatorWindow(widget.MWidget):
                 'parent': 'dec',
                 'source': 'mont-head-knobs.stl',
                 'trans': [-159, 0, -190],
-                'mat': Materials().stainless,
+                'mat': Materials().aluminium,
             },
             'gem': {
                 'parent': 'montHead',
@@ -431,25 +443,25 @@ class SimulatorWindow(widget.MWidget):
                 'parent': 'ref',
                 'source': 'dome-wall.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().transparent,
+                'mat': Materials().transparent50,
             },
             'domeSphere': {
                 'parent': 'ref',
                 'source': 'dome-sphere.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().transparent,
+                'mat': Materials().transparent50,
             },
             'domeDoor1': {
                 'parent': 'domeSphere',
                 'source': 'dome-door1.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().transparent,
+                'mat': Materials().aluminiumB,
             },
             'domeDoor2': {
                 'parent': 'domeSphere',
                 'source': 'dome-door2.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().transparent,
+                'mat': Materials().aluminiumB,
             },
 
         }
@@ -469,6 +481,8 @@ class SimulatorWindow(widget.MWidget):
 
     def updateSettings(self):
         """
+        updateSettings resizes parts depenting on the setting made in the dome tab. likewise
+        some transformations have to be reverted as they are propagated through entity linking.
 
         :return:
         """
@@ -513,6 +527,7 @@ class SimulatorWindow(widget.MWidget):
 
     def updateMount(self):
         """
+        updateMount moves ra and dec axis according to the values in the mount.
 
         :return:
         """
@@ -533,15 +548,42 @@ class SimulatorWindow(widget.MWidget):
 
     def updateDome(self):
         """
+        updateDome moves dome components
+        you normally have to revert your transformation in linked entities if they have
+        fixed sizes because they propagate transformations.
+        for the shutter i would like to keep the width setting unscaled with increasing dome
+        radius
 
         :return:
         """
 
-        if 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION' not in self.app.dome.data:
-            return False
+        domeEntities = ['domeWall', 'domeSphere', 'domeDoor1', 'domeDoor2']
 
-        az = self.app.dome.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION']
+        visible = self.app.mainW.deviceStat.get('dome', False)
+        if visible is None:
+            visible = False
+        
+        for entity in domeEntities:
+            self.world[entity]['e'].setEnabled(visible)
 
-        self.world['domeSphere']['t'].setRotationZ(az)
+        if 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION' in self.app.dome.data:
+            az = self.app.dome.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION']
+            self.world['domeSphere']['t'].setRotationZ(az)
+
+        if 'DOME_SHUTTER.SHUTTER_OPEN' in self.app.dome.data:
+            radius = self.app.mainW.ui.domeRadius.value() * 1000
+            scale = 1 + (radius - 1250) / 1250
+
+            self.world['domeDoor1']['t'].setScale3D(QVector3D(1, scale, 1))
+            self.world['domeDoor2']['t'].setScale3D(QVector3D(1, scale, 1))
+
+            stat = self.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN']
+            width = self.app.mainW.ui.domeShutterWidth.value() * 1000 / 2 / scale
+            if stat:
+                self.world['domeDoor1']['t'].setTranslation(QVector3D(0, width, 0))
+                self.world['domeDoor2']['t'].setTranslation(QVector3D(0, -width, 0))
+            else:
+                self.world['domeDoor1']['t'].setTranslation(QVector3D(0, 0, 0))
+                self.world['domeDoor2']['t'].setTranslation(QVector3D(0, 0, 0))
 
         return True

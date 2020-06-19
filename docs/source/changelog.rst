@@ -3,6 +3,10 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed
 changes list, please refer to the commit list on GitHub.
 
+0.150.26
+- improved almanac (moon phase etc)
+- newer libraries (matplotlib 3.2.2)
+
 0.150.25
 
 - ASCOM driver retries implemented, actual 5 retries

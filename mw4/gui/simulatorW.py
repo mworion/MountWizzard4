@@ -118,8 +118,9 @@ class SimulatorWindow(widget.MWidget):
         self.showWindow()
 
         # connect functional signals
+        self.app.update1s.connect(self.updateDome)
         self.app.redrawSimulator.connect(self.updateSettings)
-        self.app.mount.signals.pointDone.connect(self.updatePositions)
+        self.app.mount.signals.pointDone.connect(self.updateMount)
 
     def initConfig(self):
         """
@@ -199,8 +200,6 @@ class SimulatorWindow(widget.MWidget):
         # background color
         self.view.defaultFrameGraph().setClearColor(QColor(20, 20, 20))
         self.createScene(self.rootEntity)
-        self.updatePositions()
-        self.updateSettings()
         self.show()
 
         return True
@@ -440,6 +439,18 @@ class SimulatorWindow(widget.MWidget):
                 'scale': [1, 1, 1],
                 'mat': Materials().transparent,
             },
+            'domeDoor1': {
+                'parent': 'domeSphere',
+                'source': 'dome-door1.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().transparent,
+            },
+            'domeDoor2': {
+                'parent': 'domeSphere',
+                'source': 'dome-door2.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().transparent,
+            },
 
         }
 
@@ -462,21 +473,18 @@ class SimulatorWindow(widget.MWidget):
         :return:
         """
 
-        if not self.app.mount.geometry.offGemPlate:
-            return False
+        if self.app.mount.geometry.offGemPlate:
+            offPlateOTA = self.app.mount.geometry.offPlateOTA * 1000
+            lat = - self.app.mainW.ui.offLAT.value() * 1000
 
-        # ota geometry
-        offPlateOTA = self.app.mount.geometry.offPlateOTA * 1000
-        lat = - self.app.mainW.ui.offLAT.value() * 1000
+            scaleRad = (offPlateOTA - 25) / 55
+            scaleRad = max(scaleRad, 1)
 
-        scaleRad = (offPlateOTA - 25) / 55
-        scaleRad = max(scaleRad, 1)
-
-        self.model['otaRing']['t'].setScale3D(QVector3D(1.0, scaleRad, scaleRad))
-        self.model['otaRing']['t'].setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
-        self.model['otaTube']['t'].setScale3D(QVector3D(1.0, scaleRad, scaleRad))
-        self.model['otaTube']['t'].setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
-        self.model['otaImagetrain']['t'].setTranslation(QVector3D(0.0, 0.0, 65 * (scaleRad - 1)))
+            self.model['otaRing']['t'].setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+            self.model['otaRing']['t'].setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+            self.model['otaTube']['t'].setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+            self.model['otaTube']['t'].setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+            self.model['otaImagetrain']['t'].setTranslation(QVector3D(0.0, 0.0, 65 * (scaleRad - 1)))
 
         # location of column
 
@@ -503,7 +511,7 @@ class SimulatorWindow(widget.MWidget):
 
         return True
 
-    def updatePositions(self):
+    def updateMount(self):
         """
 
         :return:
@@ -520,5 +528,20 @@ class SimulatorWindow(widget.MWidget):
 
         self.model['ra']['t'].setRotationX(- angRA.degrees + 90)
         self.model['dec']['t'].setRotationZ(- angDEC.degrees)
+
+        return True
+
+    def updateDome(self):
+        """
+
+        :return:
+        """
+
+        if 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION' not in self.app.dome.data:
+            return False
+
+        az = self.app.dome.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION']
+
+        self.world['domeSphere']['t'].setRotationZ(az)
 
         return True

@@ -4528,10 +4528,10 @@ to mount</string>
        <number>0</number>
       </property>
       <property name="text">
-       <string>Clear Outside panel when connected to internet</string>
+       <string>Offline Mode</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
      </widget>
     </widget>
@@ -4559,22 +4559,25 @@ to mount</string>
       <string/>
      </property>
      <property name="title">
-      <string>Twilight phases per year (time in UTC)</string>
+      <string>Annual twilight phases</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QLabel" name="twilightClearOutside">
+     <widget class="QLabel" name="onlineTwilight">
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>25</y>
+        <y>20</y>
         <width>491</width>
-        <height>386</height>
+        <height>396</height>
        </rect>
       </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::NoContextMenu</enum>
+      </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>Offline Mode</string>
       </property>
      </widget>
     </widget>

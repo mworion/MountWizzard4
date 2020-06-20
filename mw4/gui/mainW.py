@@ -68,6 +68,7 @@ from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 
 
 class MainWindow(MWidget,
+                 SettMisc,
                  Mount,
                  Environ,
                  Almanac,
@@ -85,7 +86,6 @@ class MainWindow(MWidget,
                  SettDome,
                  SettParkPos,
                  SettRelay,
-                 SettMisc,
                  ):
     """
     the main window class handles the main menu as well as the show and no show part of

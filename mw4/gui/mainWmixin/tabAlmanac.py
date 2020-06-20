@@ -19,12 +19,15 @@
 from dateutil.tz import tzlocal, tzutc
 
 # external packages
+import PyQt5.QtCore
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
 from PyQt5.QtCore import Qt, QPointF
 from skyfield import almanac
 import numpy as np
+import qimage2ndarray
 
 # local import
+from mw4.base.tpool import Worker
 
 
 class Almanac(object):
@@ -83,9 +86,10 @@ class Almanac(object):
         self.app.mount.signals.locationDone.connect(self.displayTwilightData)
         self.ui.checkTimezoneUTC.clicked.connect(self.displayTwilightData)
         self.ui.checkTimezoneLocal.clicked.connect(self.displayTwilightData)
+        self.ui.isOnline.stateChanged.connect(self.updateOnlineTwilight)
 
         self.displayTwilightData()
-        self.app.update1s.connect(self.updateMoonPhase)
+        self.app.update30m.connect(self.updateMoonPhase)
         self.lunarNodes()
 
     def initConfig(self):
@@ -100,6 +104,8 @@ class Almanac(object):
         config = self.app.config['mainW']
         self.ui.checkTimezoneUTC.setChecked(config.get('checkTimezoneUTC', True))
         self.ui.checkTimezoneLocal.setChecked(config.get('checkTimezoneLocal', False))
+        self.updateMoonPhase()
+        self.updateOnlineTwilight()
 
         return True
 
@@ -115,6 +121,103 @@ class Almanac(object):
         config = self.app.config['mainW']
         config['checkTimezoneUTC'] = self.ui.checkTimezoneUTC.isChecked()
         config['checkTimezoneLocal'] = self.ui.checkTimezoneLocal.isChecked()
+
+        return True
+
+    @staticmethod
+    def processOnlineTwilightImage(image=None):
+        """
+        processClearOutsideImage takes the image, split it and puts the image
+        to the Gui. for the transformation qimage2ndarray is used because of the speed
+        for the calculations. dim is a factor which reduces the lightness of the overall
+        image
+
+        :param image:
+        :return: success
+        """
+        dim = 0.85
+
+        image.convertToFormat(PyQt5.QtGui.QImage.Format_RGB32)
+        imageBase = image.copy(10, 50, 732, 735)
+
+        imgArr = qimage2ndarray.rgb_view(imageBase)
+        imgArr = np.delete(imgArr, range(620, 700), axis=0)
+        imgArr = np.delete(imgArr, range(0, 80), axis=0)
+        imageBase = qimage2ndarray.array2qimage(dim * imgArr)
+
+        pixmap = PyQt5.QtGui.QPixmap().fromImage(imageBase)
+        pixmap = pixmap.scaledToHeight(396)
+
+        return pixmap
+
+    def updateOnlineTwilightImage(self, data=None):
+        """
+        updateOnlineTwilightImage takes the returned data from a web fetch and makes an image
+        out of it
+
+        :param data:
+        :return: success
+        """
+
+        if data is None:
+            return False
+
+        image = PyQt5.QtGui.QImage()
+
+        if not hasattr(data, 'content'):
+            return False
+        if not isinstance(data.content, bytes):
+            return False
+
+        image.loadFromData(data.content)
+
+        pixmapBase = self.processOnlineTwilightImage(image=image)
+        self.ui.onlineTwilight.setPixmap(pixmapBase)
+
+        return True
+
+    def getOnlineTwilight(self, url=''):
+        """
+        getOnlineTwilight initiates the worker thread to get the web data fetched
+
+        :param url:
+        :return:
+        """
+        worker = Worker(self.getWebDataWorker, url)
+        worker.signals.result.connect(self.updateOnlineTwilightImage)
+        self.threadPool.start(worker)
+
+    def updateOnlineTwilight(self):
+        """
+        updateOnlineTwilight downloads the actual clear outside image and displays it in
+        environment tab. it checks first if online is set, otherwise not download will take
+        place. it will be updated every 30 minutes.
+
+        confirmation for using the service :
+
+        Grant replied Aug 5, 10:01am
+        Hi Michael,
+        No problem at all embedding the forecast as shown in your image :-)
+        We appreciate the support.
+        Kindest Regards,
+        Grant
+
+        :return: success
+        """
+
+        if not self.ui.isOnline.isChecked():
+            pixmap = PyQt5.QtGui.QPixmap(':/pics/offlineMode.png')
+            self.ui.onlineTwilight.setPixmap(pixmap)
+            return False
+
+        # prepare coordinates for website
+        loc = self.app.mount.obsSite.location
+        lat = loc.latitude.degrees
+        lon = loc.longitude.degrees
+
+        webSite = 'http://clearoutside.com/annual_darkness_image/'
+        url = f'{webSite}{lat:4.2f}/{lon:4.2f}/annual_darkness.png'
+        self.getOnlineTwilight(url=url)
 
         return True
 

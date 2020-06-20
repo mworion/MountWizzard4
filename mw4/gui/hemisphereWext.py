@@ -140,7 +140,7 @@ class HemisphereWindowExt(object):
         :return: index or none
         """
 
-        if event is None:remove
+        if event is None:
             return None
         if plane is None:
             return None

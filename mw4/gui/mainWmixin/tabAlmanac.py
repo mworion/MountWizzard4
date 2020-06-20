@@ -75,14 +75,11 @@ class Almanac(object):
             self.ui = ui
             self.clickable = clickable
 
-        self.civilT1 = list()
-        self.nauticalT1 = list()
-        self.astronomicalT1 = list()
-        self.darkT1 = list()
-        self.civilT2 = list()
-        self.nauticalT2 = list()
-        self.astronomicalT2 = list()
-        self.darkT2 = list()
+        self.civil = None
+        self.nautical = None
+        self.astronomical = None
+        self.dark = None
+
         self.thread = None
 
         self.app.mount.signals.locationDone.connect(self.searchTwilight)
@@ -99,7 +96,7 @@ class Almanac(object):
         :return: True for test purpose
         """
 
-        config = self.app.config['mainW']
+        # config = self.app.config['mainW']
 
         self.updateMoonPhase()
         self.searchTwilight()
@@ -117,7 +114,7 @@ class Almanac(object):
         :return: True for test purpose
         """
 
-        config = self.app.config['mainW']
+        # config = self.app.config['mainW']
 
         if self.thread:
             self.thread.join()
@@ -160,25 +157,25 @@ class Almanac(object):
         axe.grid(color=self.M_GREY, alpha=0.5)
         axe.set_ylim(0, 24)
 
-        val = self.civilT1 + list(reversed(self.civilT2))
+        val = self.civil[0]
         x = [x[0].tt for x in val]
         y = [x[1] for x in val]
         axe.fill(x, y, self.M_BLUE1)
         axe.plot(x, y, self.M_BLUE1)
 
-        val = self.nauticalT1 + list(reversed(self.nauticalT2))
+        val = self.nautical[0]
         x = [x[0].tt for x in val]
         y = [x[1] for x in val]
         axe.fill(x, y, self.M_BLUE2)
         axe.plot(x, y, self.M_GREY)
 
-        val = self.astronomicalT1 + list(reversed(self.astronomicalT2))
+        val = self.astronomical[0]
         x = [x[0].tt for x in val]
         y = [x[1] for x in val]
         axe.fill(x, y, self.M_BLUE3)
         axe.plot(x, y, self.M_GREY)
 
-        val = self.darkT1 + list(reversed(self.darkT2))
+        val = self.dark[0]
         x = [x[0].tt for x in val]
         y = [x[1] for x in val]
         axe.fill(x, y, self.M_BLUE4)
@@ -255,14 +252,14 @@ class Almanac(object):
         f = almanac.dark_twilight_day(self.app.ephemeris, location)
         t, e = almanac.find_discrete(t0, t1, f)
 
-        self.civilT1 = list()
-        self.nauticalT1 = list()
-        self.astronomicalT1 = list()
-        self.darkT1 = list()
-        self.civilT2 = list()
-        self.nauticalT2 = list()
-        self.astronomicalT2 = list()
-        self.darkT2 = list()
+        self.civil = [[]]
+        civilP = 0
+        self.nautical = [[]]
+        nauticalP = 0
+        self.astronomical = [[]]
+        astronomicalP = 0
+        self.dark = [[]]
+        darkP = 0
 
         stat = 4
         minDay = None
@@ -270,28 +267,29 @@ class Almanac(object):
             hour = int(ti.astimezone(tzlocal()).strftime('%H'))
             minute = int(ti.astimezone(tzlocal()).strftime('%M'))
 
-            y = (hour + minute / 60)
+            y = (hour + 12 + minute / 60) % 24
             day = ti
 
             if minDay is None:
                 minDay = day
 
             if stat == 4 and event == 3:
-                self.civilT1.append([day, y])
+                self.civil[civilP].append([day, y])
             elif stat == 3 and event == 2:
-                self.nauticalT1.append([day, y])
+                self.nautical[nauticalP].append([day, y])
             elif stat == 2 and event == 1:
-                self.astronomicalT1.append([day, y])
+                self.astronomical[astronomicalP].append([day, y])
             elif stat == 1 and event == 0:
-                self.darkT1.append([day, y])
+                self.dark[darkP].append([day, y])
             elif stat == 0 and event == 1:
-                self.darkT2.append([day, y])
+                self.dark[darkP].insert(0, [day, y])
             elif stat == 1 and event == 2:
-                self.astronomicalT2.append([day, y])
+                self.astronomical[astronomicalP].insert(0, [day, y])
             elif stat == 2 and event == 3:
-                self.nauticalT2.append([day, y])
+                self.nautical[nauticalP].insert(0, [day, y])
             elif stat == 3 and event == 4:
-                self.civilT2.append([day, y])
+                self.civil[civilP].insert(0, [day, y])
+
             stat = event
 
         maxDay = day

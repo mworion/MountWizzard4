@@ -111,15 +111,8 @@ class HemisphereWindowExt(object):
         setOperationMode changes the operation mode of the hemisphere window(s) depending
         on the choice, colors and styles will be changed.
 
-        if we have operation mode star (polar alignment), dual axis tracking will be disabled
-        and we memorize the status. in other operation modes we reconstruct the setting
-
         :return: success
         """
-
-        # first time sync the status
-        if self.statusDAT is None:
-            self.statusDAT = self.app.mount.setting.statusDualAxisTracking
 
         if self.ui.checkEditNone.isChecked():
             self.operationMode = 'normal'
@@ -129,14 +122,6 @@ class HemisphereWindowExt(object):
             self.operationMode = 'horizon'
         elif self.ui.checkPolarAlignment.isChecked():
             self.operationMode = 'star'
-
-        if self.operationMode == 'star':
-            self.statusDAT = self.app.mount.setting.statusDualAxisTracking
-            self.app.mount.setting.setDualAxisTracking(False)
-            self.changeStyleDynamic(self.app.mainW.ui.statusDualAxisTracking, 'color', 'yellow')
-        else:
-            self.app.mount.setting.setDualAxisTracking(self.statusDAT)
-            self.changeStyleDynamic(self.app.mainW.ui.statusDualAxisTracking, 'color', '')
 
         self.drawHemisphere()
 
@@ -155,7 +140,7 @@ class HemisphereWindowExt(object):
         :return: index or none
         """
 
-        if event is None:
+        if event is None:remove
             return None
         if plane is None:
             return None

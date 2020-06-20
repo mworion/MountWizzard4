@@ -22,7 +22,7 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
-from PyQt5.Qt3DExtras import Qt3DWindow, QCuboidMesh
+from PyQt5.Qt3DExtras import Qt3DWindow, QCuboidMesh, QSphereMesh
 from PyQt5.Qt3DExtras import QOrbitCameraController
 from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
 from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
@@ -178,6 +178,7 @@ class SimulatorWindow(widget.MWidget):
 
         self.ui.checkDomeTransparent.setChecked(config.get('checkDomeTransparent', False))
         self.ui.checkDomeDisable.setChecked(config.get('checkDomeDisable', False))
+        self.ui.checkShowPointer.setChecked(config.get('checkShowPointer', False))
 
         return True
 
@@ -204,6 +205,7 @@ class SimulatorWindow(widget.MWidget):
 
         config['checkDomeTransparent'] = self.ui.checkDomeTransparent.isChecked()
         config['checkDomeDisable'] = self.ui.checkDomeDisable.isChecked()
+        config['checkShowPointer'] = self.ui.checkShowPointer.isChecked()
 
         return True
 
@@ -262,6 +264,11 @@ class SimulatorWindow(widget.MWidget):
                 mesh.setXExtent(source[1])
                 mesh.setYExtent(source[2])
                 mesh.setZExtent(source[3])
+            elif isinstance(source[0], QSphereMesh):
+                mesh = source[0]
+                mesh.setRadius(source[1])
+                mesh.setRings(source[2])
+                mesh.setSlices(source[3])
             currMod['e'].addComponent(mesh)
             currMod['m'] = mesh
 
@@ -328,13 +335,19 @@ class SimulatorWindow(widget.MWidget):
                 'parent': 'ref',
                 'source': 'dome-rose-char.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumS,
+                'mat': Materials().white,
             },
             'mountBase': {
                 'parent': 'ref',
                 'source': 'mont-base.stl',
                 'trans': [0, 0, 1000],
                 'mat': Materials().aluminiumS,
+            },
+            'pointer': {
+                'parent': 'ref',
+                'source': [QSphereMesh(), 50, 30, 30],
+                'scale': [1, 1, 1],
+                'mat': Materials().aluminiumB,
             },
             'mountKnobs': {
                 'parent': 'mountBase',
@@ -532,7 +545,7 @@ class SimulatorWindow(widget.MWidget):
 
         if self.app.mount.obsSite.location:
             latitude = self.app.mount.obsSite.location.latitude.degrees
-            self.model['lat']['t'].setRotationY(-90 + abs(latitude))
+            self.model['lat']['t'].setRotationY(- abs(latitude))
 
         if self.app.mount.geometry.offGemPlate:
             offPlateOTA = self.app.mount.geometry.offPlateOTA * 1000
@@ -626,6 +639,28 @@ class SimulatorWindow(widget.MWidget):
 
         self.model['ra']['t'].setRotationX(- angRA.degrees + 90)
         self.model['dec']['t'].setRotationZ(- angDEC.degrees)
+
+        lat = self.app.mount.obsSite.location.latitude
+        ha = self.app.mount.obsSite.haJNow
+        dec = self.app.mount.obsSite.decJNow
+        pierside = self.app.mount.obsSite.pierside
+
+        if not self.ui.checkShowPointer.isChecked():
+            self.model['pointer']['e'].setEnabled(False)
+            return False
+
+        self.model['pointer']['e'].setEnabled(True)
+        geometry = self.app.mount.geometry
+        _, _, x, y, z = geometry.calcTransformationMatrices(ha=ha,
+                                                            dec=dec,
+                                                            lat=lat,
+                                                            pierside=pierside)
+
+        x = x * 1000
+        y = y * 1000
+        z = z * 1000 + 1000
+
+        self.model['pointer']['t'].setTranslation(QVector3D(x, y, z))
 
         return True
 

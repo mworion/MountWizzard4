@@ -13702,7 +13702,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -22054,7 +22054,7 @@ p, li { white-space: pre-wrap; }
          </font>
         </property>
         <property name="toolTip">
-         <string>When selected data fiels for weather, satellites and programm updates will be loaded over internet.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When selected data fiels for weather, almanac, satellites and programm updates will be loaded over internet.&lt;/p&gt;&lt;p&gt;The transferred data is lat / lon coordinates. If you don't want to transfer this data, please uncheck online.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>online and update data files if necessary</string>

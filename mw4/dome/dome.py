@@ -172,10 +172,10 @@ class Dome:
         geometry = self.app.mount.geometry
 
         if piersideT:
-            alt, az = geometry.calcTransformationMatrices(ha=haT,
-                                                          dec=decT,
-                                                          lat=lat,
-                                                          pierside=piersideT)
+            alt, az, _, _, _ = geometry.calcTransformationMatrices(ha=haT,
+                                                                   dec=decT,
+                                                                   lat=lat,
+                                                                   pierside=piersideT)
 
             if alt is None or az is None:
                 self.log.warning(f'Geometry E: {haT.radians}, {decT.radians}, {piersideT}')

@@ -67,7 +67,7 @@
     <item>
      <widget class="QGroupBox" name="groupBox">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -75,24 +75,63 @@
       <property name="title">
        <string>Settings</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
+      <property name="large" stdset="0">
+       <bool>true</bool>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
        <property name="spacing">
-        <number>0</number>
+        <number>4</number>
        </property>
        <property name="leftMargin">
         <number>8</number>
        </property>
        <property name="topMargin">
-        <number>8</number>
+        <number>10</number>
        </property>
        <property name="rightMargin">
         <number>8</number>
        </property>
        <property name="bottomMargin">
-        <number>0</number>
+        <number>4</number>
        </property>
        <item>
+        <widget class="QCheckBox" name="checkDomeDisable">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Dome disable</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="checkDomeTransparent">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <pointsize>10</pointsize>

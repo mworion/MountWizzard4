@@ -38,8 +38,13 @@ class Materials():
     def __init__(self):
         self.aluminiumS = QMetalRoughMaterial()
         self.aluminiumS.setBaseColor(QColor(127, 127, 127))
-        self.aluminiumS.setMetalness(0.9)
+        self.aluminiumS.setMetalness(0.7)
         self.aluminiumS.setRoughness(0.5)
+
+        self.aluminiumGrey = QMetalRoughMaterial()
+        self.aluminiumGrey.setBaseColor(QColor(164, 164, 192))
+        self.aluminiumGrey.setMetalness(0.3)
+        self.aluminiumGrey.setRoughness(0.5)
 
         self.aluminiumB = QDiffuseSpecularMaterial()
         self.aluminiumB.setAmbient(QColor(64, 64, 128))
@@ -172,6 +177,7 @@ class SimulatorWindow(widget.MWidget):
             self.camera.setPosition(QVector3D(x, y, z))
 
         self.ui.checkDomeTransparent.setChecked(config.get('checkDomeTransparent', False))
+        self.ui.checkDomeDisable.setChecked(config.get('checkDomeDisable', False))
 
         return True
 
@@ -197,6 +203,7 @@ class SimulatorWindow(widget.MWidget):
         config['cameraPositionZ'] = pos.z()
 
         config['checkDomeTransparent'] = self.ui.checkDomeTransparent.isChecked()
+        config['checkDomeDisable'] = self.ui.checkDomeDisable.isChecked()
 
         return True
 
@@ -315,19 +322,19 @@ class SimulatorWindow(widget.MWidget):
                 'parent': 'ref',
                 'source': 'dome-rose.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumS,
+                'mat': Materials().aluminiumR,
             },
             'domeCompassRoseChar': {
                 'parent': 'ref',
                 'source': 'dome-rose-char.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumB,
+                'mat': Materials().aluminiumS,
             },
             'mountBase': {
                 'parent': 'ref',
                 'source': 'mont-base.stl',
                 'trans': [0, 0, 1000],
-                'mat': Materials().aluminiumR,
+                'mat': Materials().aluminiumS,
             },
             'mountKnobs': {
                 'parent': 'mountBase',
@@ -461,7 +468,7 @@ class SimulatorWindow(widget.MWidget):
                 'parent': 'ref',
                 'source': 'dome-floor.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumS,
+                'mat': Materials().aluminiumGrey,
             },
             'domeWall': {
                 'parent': 'ref',
@@ -474,6 +481,18 @@ class SimulatorWindow(widget.MWidget):
                 'source': 'dome-sphere.stl',
                 'scale': [1, 1, 1],
                 'mat': Materials().dome1,
+            },
+            'domeSlit1': {
+                'parent': 'domeSphere',
+                'source': 'dome-slit1.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().dome2,
+            },
+            'domeSlit2': {
+                'parent': 'domeSphere',
+                'source': 'dome-slit2.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().dome2,
             },
             'domeDoor1': {
                 'parent': 'domeSphere',
@@ -553,14 +572,39 @@ class SimulatorWindow(widget.MWidget):
         self.world['domeSphere']['t'].setScale3D(QVector3D(scale, scale, scale))
         self.world['domeSphere']['t'].setTranslation(QVector3D(0, 0, corrZ))
 
-        domeEntities = ['domeWall', 'domeSphere', 'domeDoor1', 'domeDoor2']
+        domeEntities = {
+            'domeWall': {
+                'trans': Materials().transparent,
+                'solid': Materials().dome1
+            },
+            'domeSphere': {
+                'trans': Materials().transparent,
+                'solid': Materials().dome1
+            },
+            'domeSlit1': {
+                'trans': Materials().transparent,
+                'solid': Materials().dome2
+            },
+            'domeSlit2': {
+                'trans': Materials().transparent,
+                'solid': Materials().dome2
+            },
+            'domeDoor1': {
+                'trans': Materials().transparent,
+                'solid': Materials().dome2
+            },
+            'domeDoor2': {
+                'trans': Materials().transparent,
+                'solid': Materials().dome2
+            },
+        }
         transparent = self.ui.checkDomeTransparent.isChecked()
 
         for entity in domeEntities:
             if transparent:
-                self.world[entity]['e'].addComponent(Materials().transparent)
+                self.world[entity]['e'].addComponent(domeEntities[entity]['trans'])
             else:
-                self.world[entity]['e'].addComponent(Materials().dome2)
+                self.world[entity]['e'].addComponent(domeEntities[entity]['solid'])
 
         return True
 
@@ -596,11 +640,16 @@ class SimulatorWindow(widget.MWidget):
         :return:
         """
 
-        domeEntities = ['domeWall', 'domeSphere', 'domeDoor1', 'domeDoor2']
+        domeEntities = ['domeWall', 'domeSphere', 'domeSlit1',
+                        'domeSlit2', 'domeDoor1', 'domeDoor2']
 
-        visible = self.app.mainW.deviceStat.get('dome', False)
-        if visible is None:
-            visible = False
+        devicePresent = self.app.mainW.deviceStat.get('dome', False)
+        if devicePresent is None:
+            devicePresent = False
+
+        viewDisabled = self.ui.checkDomeDisable.isChecked()
+
+        visible = devicePresent and not viewDisabled
 
         for entity in domeEntities:
             self.world[entity]['e'].setEnabled(visible)

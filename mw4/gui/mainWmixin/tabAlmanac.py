@@ -16,6 +16,7 @@
 #
 ###########################################################
 # standard libraries
+import threading
 from dateutil.tz import tzlocal, tzutc
 
 # external packages
@@ -82,12 +83,15 @@ class Almanac(object):
         self.nauticalT2 = list()
         self.astronomicalT2 = list()
         self.darkT2 = list()
+        self.thread = None
 
+        self.app.mount.signals.locationDone.connect(self.searchTwilight)
         self.app.mount.signals.locationDone.connect(self.displayTwilightData)
         self.ui.checkTimezoneUTC.clicked.connect(self.displayTwilightData)
         self.ui.checkTimezoneLocal.clicked.connect(self.displayTwilightData)
         self.ui.isOnline.stateChanged.connect(self.updateOnlineTwilight)
 
+        self.searchTwilight()
         self.displayTwilightData()
         self.app.update30m.connect(self.updateMoonPhase)
         self.lunarNodes()
@@ -121,6 +125,197 @@ class Almanac(object):
         config = self.app.config['mainW']
         config['checkTimezoneUTC'] = self.ui.checkTimezoneUTC.isChecked()
         config['checkTimezoneLocal'] = self.ui.checkTimezoneLocal.isChecked()
+
+        if self.thread:
+            self.thread.join()
+
+        return True
+
+    def drawTwilight(self, minDay, maxDay):
+        """
+        draw Twilight takes the different stats for each day during a year (half a year to the past,
+        half year to the future) and draws the chart for UTC time only.
+
+        :return: true for test purpose
+        """
+
+        if minDay is None or maxDay is None:
+            return False
+
+        ts = self.app.mount.obsSite.ts
+        minLim = int(minDay.tt) + 1
+        maxLim = int(maxDay.tt) - 1
+        midLim = minLim + (maxLim - minLim) / 2
+
+        axe, fig = self.generateFlat(widget=self.twilight)
+
+        yTicks = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]
+        yLabels = ['12', '14', '16', '18', '20', '22', '24',
+                   '02', '04', '06', '08', '10', '12']
+
+        axe.set_yticks(yTicks)
+        axe.set_yticklabels(yLabels)
+
+        xTicks = np.arange(minLim, maxLim, (maxLim - minLim) / 11)
+        xLabels = ts.tt_jd(xTicks).utc_strftime('%m-%d')
+        xLabels[0] = ''
+        axe.set_xlim(minLim, maxLim)
+
+        axe.set_xticks(xTicks)
+        axe.set_xticklabels(xLabels)
+
+        axe.grid(color=self.M_GREY, alpha=0.5)
+        axe.set_ylim(0, 24)
+
+        val = self.civilT1 + list(reversed(self.civilT2))
+        x = [x[0].tt for x in val]
+        y = [x[1] for x in val]
+        axe.fill(x, y, self.M_BLUE1)
+        axe.plot(x, y, self.M_BLUE1)
+
+        val = self.nauticalT1 + list(reversed(self.nauticalT2))
+        x = [x[0].tt for x in val]
+        y = [x[1] for x in val]
+        axe.fill(x, y, self.M_BLUE2)
+        axe.plot(x, y, self.M_GREY)
+
+        val = self.astronomicalT1 + list(reversed(self.astronomicalT2))
+        x = [x[0].tt for x in val]
+        y = [x[1] for x in val]
+        axe.fill(x, y, self.M_BLUE3)
+        axe.plot(x, y, self.M_GREY)
+
+        val = self.darkT1 + list(reversed(self.darkT2))
+        x = [x[0].tt for x in val]
+        y = [x[1] for x in val]
+        axe.fill(x, y, self.M_BLUE4)
+        axe.plot(x, y, self.M_GREY)
+
+        x = [midLim - 2, midLim - 2, midLim + 2, midLim + 2]
+        y = [0, 24, 24, 0]
+        axe.fill(x, y, self.M_GREY, alpha=0.5)
+
+        # draw legend
+        d = 0
+        x = [minLim + 5 + d, minLim + 5 + d, minLim + 85 + d,
+             minLim + 85 + d, minLim + 5 + d]
+        y = [22.5, 23.5, 23.5, 22.5, 22.5]
+        axe.fill(x, y, self.M_BLUE1)
+        axe.plot(x, y, self.M_GREY)
+        axe.annotate('Civil', (minLim + 12 + d, 22.75),
+                     color=self.M_WHITE, weight='bold')
+
+        d = 90
+        x = [minLim + 5 + d, minLim + 5 + d, minLim + 85 + d,
+             minLim + 85 + d, minLim + 5 + d]
+        axe.fill(x, y, self.M_BLUE2)
+        axe.plot(x, y, self.M_GREY)
+        axe.annotate('Nautical', (minLim + 12 + d, 22.75),
+                     color=self.M_WHITE, weight='bold')
+
+        d = 180
+        x = [minLim + 5 + d, minLim + 5 + d, minLim + 85 + d,
+             minLim + 85 + d, minLim + 5 + d]
+        axe.fill(x, y, self.M_BLUE3)
+        axe.plot(x, y, self.M_GREY)
+        axe.annotate('Astronomical', (minLim + 12 + d, 22.75),
+                     color=self.M_WHITE, weight='bold')
+
+        d = 270
+        x = [minLim + 5 + d, minLim + 5 + d, minLim + 85 + d,
+             minLim + 85 + d, minLim + 5 + d]
+        axe.fill(x, y, self.M_BLUE4)
+        axe.plot(x, y, self.M_GREY)
+        axe.annotate('Dark', (minLim + 12 + d, 22.75),
+                     color=self.M_WHITE, weight='bold')
+
+        x = [midLim - 20, midLim - 20, midLim + 20, midLim + 20, midLim - 20]
+        y = [0.5, 1.5, 1.5, 0.5, 0.5]
+        axe.fill(x, y, self.M_GREY, alpha=0.5)
+        axe.plot(x, y, self.M_GREY)
+        axe.annotate('Today', (midLim - 12, 0.75),
+                     color=self.M_WHITE, weight='bold')
+
+        axe.figure.canvas.draw()
+
+        return True
+
+    def searchTwilightWorker(self):
+        """
+        searchTwilightWorker is the worker method which does the search for twilight events
+        during one year with actual day as middle point. As this search take some time and
+        the gui should be still responsive, this method will run in a separate thread.
+
+        :return: true for test purpose
+        """
+
+        ts = self.app.mount.obsSite.ts
+        timeJD = self.app.mount.obsSite.timeJD
+        location = self.app.mount.obsSite.location
+
+        if location is None:
+            return False
+
+        t0 = ts.tt_jd(int(timeJD.tt) - 182)
+        t1 = ts.tt_jd(int(timeJD.tt) + 182)
+
+        f = almanac.dark_twilight_day(self.app.ephemeris, location)
+        t, e = almanac.find_discrete(t0, t1, f)
+
+        self.civilT1 = list()
+        self.nauticalT1 = list()
+        self.astronomicalT1 = list()
+        self.darkT1 = list()
+        self.civilT2 = list()
+        self.nauticalT2 = list()
+        self.astronomicalT2 = list()
+        self.darkT2 = list()
+
+        stat = 4
+        minDay = None
+        for ti, event in zip(t, e):
+            hour = int(ti.utc_datetime().strftime('%H'))
+            minute = int(ti.utc_datetime().strftime('%M'))
+
+            y = (hour + 12 + minute / 60) % 24
+            day = ti
+
+            if minDay is None:
+                minDay = day
+
+            if stat == 4 and event == 3:
+                self.civilT1.append([day, y])
+            elif stat == 3 and event == 2:
+                self.nauticalT1.append([day, y])
+            elif stat == 2 and event == 1:
+                self.astronomicalT1.append([day, y])
+            elif stat == 1 and event == 0:
+                self.darkT1.append([day, y])
+            elif stat == 0 and event == 1:
+                self.darkT2.append([day, y])
+            elif stat == 1 and event == 2:
+                self.astronomicalT2.append([day, y])
+            elif stat == 2 and event == 3:
+                self.nauticalT2.append([day, y])
+            elif stat == 3 and event == 4:
+                self.civilT2.append([day, y])
+            stat = event
+
+        maxDay = day
+
+        self.drawTwilight(minDay, maxDay)
+
+        return
+
+    def searchTwilight(self):
+        """
+        serach twilight just starts the worker in a separate thread.
+
+        :return: true for test purpose
+        """
+
+        self.thread = threading.Thread(target=self.searchTwilightWorker)
+        self.thread.start()
 
         return True
 

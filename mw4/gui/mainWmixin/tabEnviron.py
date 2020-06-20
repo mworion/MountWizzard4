@@ -432,6 +432,22 @@ class Environ(object):
                 line = maxRow
         imgArr = np.delete(imgArr, toDelete, axis=0)
 
+        """
+        # removing some columns
+        m = np.isin(imgArr, [[32, 32, 32]])
+        toDelete = []
+        maxCol = 1
+        col = maxCol
+        for i in range(0, len(m[1, :])):
+            if not col and m[:, i].all() and i > 15:
+                toDelete.append(i)
+            elif col:
+                col -= 1
+            elif not m[:, i].all():
+                col = maxCol
+        imgArr = np.delete(imgArr, toDelete, axis=1)
+        """
+
         # re transfer to QImage from numpy array
         imageBase = qimage2ndarray.array2qimage(dim * imgArr)
         pixmapBase = PyQt5.QtGui.QPixmap().fromImage(imageBase)

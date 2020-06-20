@@ -4528,10 +4528,10 @@ to mount</string>
        <number>0</number>
       </property>
       <property name="text">
-       <string>Offline Mode</string>
+       <string>Clear Outside panel when connected to internet</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
      </widget>
     </widget>
@@ -4559,27 +4559,38 @@ to mount</string>
       <string/>
      </property>
      <property name="title">
-      <string>Annual twilight phases</string>
+      <string>Twilight phases per year (time in UTC)</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QLabel" name="onlineTwilight">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>20</y>
-        <width>491</width>
-        <height>396</height>
-       </rect>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <property name="leftMargin">
+       <number>4</number>
       </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::NoContextMenu</enum>
+      <property name="topMargin">
+       <number>8</number>
       </property>
-      <property name="text">
-       <string>Offline Mode</string>
+      <property name="rightMargin">
+       <number>4</number>
       </property>
-     </widget>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QWidget" name="twilight" native="true">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="autoFillBackground">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
     <widget class="QGroupBox" name="refractionGroup_5">
      <property name="geometry">
@@ -13702,7 +13713,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -17968,6 +17979,36 @@ When clicking the button, you could change the value.</string>
          <string>m</string>
         </property>
        </widget>
+       <widget class="QCheckBox" name="checkDomeTransparent">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>215</y>
+          <width>264</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>If enabled, MW4 will calculate the dome shutter displacement based on the real geometry and azimuth of dome will be different to azimuth of mount.</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Dome transparent in simulator</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QLabel" name="picDome1">
        <property name="geometry">
@@ -22054,7 +22095,7 @@ p, li { white-space: pre-wrap; }
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When selected data fiels for weather, almanac, satellites and programm updates will be loaded over internet.&lt;/p&gt;&lt;p&gt;The transferred data is lat / lon coordinates. If you don't want to transfer this data, please uncheck online.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>When selected data fiels for weather, satellites and programm updates will be loaded over internet.</string>
         </property>
         <property name="text">
          <string>online and update data files if necessary</string>

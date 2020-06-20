@@ -22,7 +22,7 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
-from PyQt5.Qt3DExtras import Qt3DWindow
+from PyQt5.Qt3DExtras import Qt3DWindow, QCuboidMesh
 from PyQt5.Qt3DExtras import QOrbitCameraController
 from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
 from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
@@ -243,6 +243,11 @@ class SimulatorWindow(widget.MWidget):
             if isinstance(source, str):
                 mesh = QMesh()
                 mesh.setSource(QUrl(f'qrc:/model3D/{source}'))
+            elif isinstance(source[0], QCuboidMesh):
+                mesh = source[0]
+                mesh.setXExtent(source[1])
+                mesh.setYExtent(source[2])
+                mesh.setZExtent(source[3])
             currMod['e'].addComponent(mesh)
             currMod['m'] = mesh
 
@@ -268,7 +273,7 @@ class SimulatorWindow(widget.MWidget):
 
         mat = currMod.get('mat', None)
         if mat:
-            currMod['m'] = mat
+            currMod['mat'] = mat
             currMod['e'].addComponent(mat)
 
     def createOTA(self, rootEntity):
@@ -373,10 +378,16 @@ class SimulatorWindow(widget.MWidget):
             },
             'gem': {
                 'parent': 'montHead',
+                'source': [QCuboidMesh(), 100, 60, 10],
                 'trans': [159, 0, 338.5],
+                'mat': Materials().aluminiumB,
+            },
+            'gemCorr': {
+                'parent': 'gem',
+                'scale': [1, 1, 1],
             },
             'otaPlate': {
-                'parent': 'gem',
+                'parent': 'gemCorr',
                 'source': 'ota-plate.stl',
                 'mat': Materials().aluminiumS,
             },
@@ -384,7 +395,7 @@ class SimulatorWindow(widget.MWidget):
                 'parent': 'otaPlate',
                 'source': 'ota-ring-s.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumR,
+                'mat': Materials().aluminiumS,
             },
             'otaTube': {
                 'parent': 'otaPlate',
@@ -393,7 +404,7 @@ class SimulatorWindow(widget.MWidget):
                 'mat': Materials().white,
             },
             'otaImagetrain': {
-                'parent': 'gem',
+                'parent': 'gemCorr',
                 'source': 'ota-imagetrain.stl',
                 'scale': [1, 1, 1],
                 'mat': Materials().aluminiumS,
@@ -493,9 +504,17 @@ class SimulatorWindow(widget.MWidget):
         :return:
         """
 
+        if self.app.mount.obsSite.location:
+            latitude = self.app.mount.obsSite.location.latitude.degrees
+            self.model['lat']['t'].setRotationY(-90 + abs(latitude))
+
         if self.app.mount.geometry.offGemPlate:
             offPlateOTA = self.app.mount.geometry.offPlateOTA * 1000
             lat = - self.app.mainW.ui.offLAT.value() * 1000
+
+            self.model['gem']['m'].setYExtent(abs(lat) + 80)
+            self.model['gem']['t'].setTranslation(QVector3D(159.0, lat / 2, 338.5))
+            self.model['gemCorr']['t'].setTranslation(QVector3D(0.0, lat / 2, 0.0))
 
             scaleRad = (offPlateOTA - 25) / 55
             scaleRad = max(scaleRad, 1)
@@ -505,8 +524,6 @@ class SimulatorWindow(widget.MWidget):
             self.model['otaTube']['t'].setScale3D(QVector3D(1.0, scaleRad, scaleRad))
             self.model['otaTube']['t'].setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
             self.model['otaImagetrain']['t'].setTranslation(QVector3D(0.0, 0.0, 65 * (scaleRad - 1)))
-
-        # location of column
 
         if 't' not in self.world['domeFloor']:
             return False

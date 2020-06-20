@@ -187,7 +187,6 @@ class MainWindow(MWidget,
         self.modelPositionPlot = self.embedMatplot(self.ui.modelPosition)
         self.errorAscendingPlot = self.embedMatplot(self.ui.errorAscending)
         self.errorDistributionPlot = self.embedMatplot(self.ui.errorDistribution)
-        self.twilight = self.embedMatplot(self.ui.twilight, constrainedLayout=True)
 
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)

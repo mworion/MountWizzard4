@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>11</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -4559,7 +4559,7 @@ to mount</string>
       <string/>
      </property>
      <property name="title">
-      <string>Twilight phases per year (time in UTC)</string>
+      <string>Annual twilight phases</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
@@ -4598,7 +4598,7 @@ to mount</string>
        <x>515</x>
        <y>10</y>
        <width>266</width>
-       <height>201</height>
+       <height>156</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -4616,64 +4616,6 @@ to mount</string>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QGroupBox" name="groupBoxCoordinateSystems_4">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>150</y>
-        <width>256</width>
-        <height>46</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Different types of sorting model points</string>
-      </property>
-      <property name="title">
-       <string>Timezone</string>
-      </property>
-      <widget class="QRadioButton" name="checkTimezoneLocal">
-       <property name="geometry">
-        <rect>
-         <x>115</x>
-         <y>20</y>
-         <width>106</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setting display time to local timezone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Local</string>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="checkTimezoneUTC">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>20</y>
-         <width>81</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setting display time to UTC&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>UTC</string>
-       </property>
-      </widget>
-     </widget>
      <widget class="QTextBrowser" name="twilightEvents">
       <property name="geometry">
        <rect>
@@ -4692,9 +4634,9 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>515</x>
-       <y>270</y>
+       <y>230</y>
        <width>266</width>
-       <height>161</height>
+       <height>201</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -4719,7 +4661,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>120</x>
-        <y>135</y>
+        <y>175</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -4812,7 +4754,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>175</x>
-        <y>135</y>
+        <y>175</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -4836,10 +4778,10 @@ to mount</string>
      <widget class="QLabel" name="moonPic">
       <property name="geometry">
        <rect>
-        <x>70</x>
-        <y>35</y>
-        <width>100</width>
-        <height>100</height>
+        <x>60</x>
+        <y>40</y>
+        <width>130</width>
+        <height>130</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -4929,7 +4871,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>135</y>
+        <y>175</y>
         <width>26</width>
         <height>21</height>
        </rect>
@@ -4974,7 +4916,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>135</y>
+        <y>175</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -5000,7 +4942,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>515</x>
-       <y>215</y>
+       <y>175</y>
        <width>266</width>
        <height>51</height>
       </rect>

@@ -134,6 +134,9 @@ class SimulatorWindow(widget.MWidget):
         self.initConfig()
         self.showWindow()
 
+        # connect to gui
+        self.ui.checkDomeTransparent.clicked.connect(self.updateSettings)
+
         # connect functional signals
         self.app.update1s.connect(self.updateDome)
         self.app.redrawSimulator.connect(self.updateSettings)
@@ -168,6 +171,8 @@ class SimulatorWindow(widget.MWidget):
             z = config['cameraPositionZ']
             self.camera.setPosition(QVector3D(x, y, z))
 
+        self.ui.checkDomeTransparent.setChecked(config.get('checkDomeTransparent', False))
+
         return True
 
     def storeConfig(self):
@@ -190,6 +195,8 @@ class SimulatorWindow(widget.MWidget):
         config['cameraPositionX'] = pos.x()
         config['cameraPositionY'] = pos.y()
         config['cameraPositionZ'] = pos.z()
+
+        config['checkDomeTransparent'] = self.ui.checkDomeTransparent.isChecked()
 
         return True
 
@@ -547,7 +554,7 @@ class SimulatorWindow(widget.MWidget):
         self.world['domeSphere']['t'].setTranslation(QVector3D(0, 0, corrZ))
 
         domeEntities = ['domeWall', 'domeSphere', 'domeDoor1', 'domeDoor2']
-        transparent = self.app.mainW.ui.checkDomeTransparent.isChecked()
+        transparent = self.ui.checkDomeTransparent.isChecked()
 
         for entity in domeEntities:
             if transparent:

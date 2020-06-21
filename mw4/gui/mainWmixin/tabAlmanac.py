@@ -157,29 +157,41 @@ class Almanac(object):
         axe.grid(color=self.M_GREY, alpha=0.5)
         axe.set_ylim(0, 24)
 
-        val = self.civil[0]
-        x = [x[0].tt for x in val]
-        y = [x[1] for x in val]
-        axe.fill(x, y, self.M_BLUE1)
-        axe.plot(x, y, self.M_BLUE1)
+        for i in self.civil:
+            val = self.civil[i]
+            if not len(val):
+                break
+            x = [x[0].tt for x in val]
+            y = [x[1] for x in val]
+            axe.fill(x, y, self.M_BLUE1)
+            axe.plot(x, y, self.M_BLUE1)
 
-        val = self.nautical[0]
-        x = [x[0].tt for x in val]
-        y = [x[1] for x in val]
-        axe.fill(x, y, self.M_BLUE2)
-        axe.plot(x, y, self.M_GREY)
+        for i in self.nautical:
+            val = self.nautical[i]
+            if not len(val):
+                break
+            x = [x[0].tt for x in val]
+            y = [x[1] for x in val]
+            axe.fill(x, y, self.M_BLUE2)
+            axe.plot(x, y, self.M_GREY)
 
-        val = self.astronomical[0]
-        x = [x[0].tt for x in val]
-        y = [x[1] for x in val]
-        axe.fill(x, y, self.M_BLUE3)
-        axe.plot(x, y, self.M_GREY)
+        for i in self.astronomical:
+            val = self.astronomical[i]
+            if not len(val):
+                break
+            x = [x[0].tt for x in val]
+            y = [x[1] for x in val]
+            axe.fill(x, y, self.M_BLUE3)
+            axe.plot(x, y, self.M_GREY)
 
-        val = self.dark[0]
-        x = [x[0].tt for x in val]
-        y = [x[1] for x in val]
-        axe.fill(x, y, self.M_BLUE4)
-        axe.plot(x, y, self.M_GREY)
+        for i in self.dark:
+            val = self.dark[i]
+            if not len(val):
+                break
+            x = [x[0].tt for x in val]
+            y = [x[1] for x in val]
+            axe.fill(x, y, self.M_BLUE4)
+            axe.plot(x, y, self.M_GREY)
 
         x = [midLim - 2, midLim - 2, midLim + 2, midLim + 2]
         y = [0, 24, 24, 0]
@@ -252,47 +264,84 @@ class Almanac(object):
         f = almanac.dark_twilight_day(self.app.ephemeris, location)
         t, e = almanac.find_discrete(t0, t1, f)
 
-        self.civil = [[]]
+        self.civil = {0: []}
         civilP = 0
-        self.nautical = [[]]
+        self.nautical = {0: []}
         nauticalP = 0
-        self.astronomical = [[]]
+        self.astronomical = {0: []}
         astronomicalP = 0
-        self.dark = [[]]
+        self.dark = {0: []}
         darkP = 0
+        civilE = False
+        nauticalE = False
+        astronomicalE = False
+        darkE = False
 
         stat = 4
+        lastDay = round(t0.tt + 0.5, 0)
+
         minDay = None
         for ti, event in zip(t, e):
             hour = int(ti.astimezone(tzlocal()).strftime('%H'))
             minute = int(ti.astimezone(tzlocal()).strftime('%M'))
 
             y = (hour + 12 + minute / 60) % 24
-            day = ti
+            day = round(ti.tt + 0.5, 0)
 
             if minDay is None:
-                minDay = day
+                minDay = ti
+
+            if day != lastDay:
+                if not civilE:
+                    if len(self.civil[civilP]):
+                        civilP += 1
+                        self.civil[civilP] = []
+                if not nauticalE:
+                    if len(self.nautical[nauticalP]):
+                        nauticalP += 1
+                        self.nautical[nauticalP] = []
+                if not astronomicalE:
+                    if len(self.astronomical[astronomicalP]):
+                        astronomicalP += 1
+                        self.astronomical[astronomicalP] = []
+                if not darkE:
+                    if len(self.dark[darkP]):
+                        darkP += 1
+                        self.dark[darkP] = []
+                lastDay = day
+                civilE = False
+                nauticalE = False
+                astronomicalE = False
+                darkE = False
 
             if stat == 4 and event == 3:
-                self.civil[civilP].append([day, y])
+                self.civil[civilP].append([ti, y])
+                civilE = True
             elif stat == 3 and event == 2:
-                self.nautical[nauticalP].append([day, y])
+                self.nautical[nauticalP].append([ti, y])
+                nauticalE = True
             elif stat == 2 and event == 1:
-                self.astronomical[astronomicalP].append([day, y])
+                self.astronomical[astronomicalP].append([ti, y])
+                astronomicalE = True
             elif stat == 1 and event == 0:
-                self.dark[darkP].append([day, y])
+                self.dark[darkP].append([ti, y])
+                darkE = True
             elif stat == 0 and event == 1:
-                self.dark[darkP].insert(0, [day, y])
+                self.dark[darkP].insert(0, [ti, y])
+                darkE = True
             elif stat == 1 and event == 2:
-                self.astronomical[astronomicalP].insert(0, [day, y])
+                self.astronomical[astronomicalP].insert(0, [ti, y])
+                astronomicalE = True
             elif stat == 2 and event == 3:
-                self.nautical[nauticalP].insert(0, [day, y])
+                self.nautical[nauticalP].insert(0, [ti, y])
+                nauticalE = True
             elif stat == 3 and event == 4:
-                self.civil[civilP].insert(0, [day, y])
+                self.civil[civilP].insert(0, [ti, y])
+                civilE = True
 
             stat = event
 
-        maxDay = day
+        maxDay = ti
 
         self.drawTwilight(minDay, maxDay)
 
@@ -300,7 +349,7 @@ class Almanac(object):
 
     def searchTwilight(self):
         """
-        serach twilight just starts the worker in a separate thread.
+        search twilight just starts the worker in a separate thread.
 
         :return: true for test purpose
         """

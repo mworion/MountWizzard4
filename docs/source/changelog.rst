@@ -4,7 +4,7 @@ The changelog contains the user related function or environment updates. For a d
 changes list, please refer to the commit list on GitHub.
 
 0.150.26
-- improved almanac (moon phase etc)
+- improved almanac (moon phase etc, runs now in local time also for drawing)
 - newer libraries (matplotlib 3.2.2)
 
 0.150.25

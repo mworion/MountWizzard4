@@ -33,7 +33,6 @@ from photutils import CircularAperture
 from photutils import DAOStarFinder
 
 import matplotlib.pyplot as plt
-import matplotlib.tri as tri
 from skyfield.api import Angle
 import numpy as np
 import cv2
@@ -722,20 +721,23 @@ class ImageWindow(widget.MWidget):
 
         elif self.ui.checkShowSharp.isChecked() and Config.featureFlags['imageAdv']:
             sharpness = sources['sharpness']
-            xi = range(0, imageData.shape[1])
-            yi = range(0, imageData.shape[0])
-            triAng = tri.Triangulation(x, y)
-            interpolator = tri.LinearTriInterpolator(triAng, sharpness)
-            Xi, Yi = np.meshgrid(xi, yi)
-            zi = interpolator(Xi, Yi)
 
-            contour = axe.contourf(xi, yi, zi,
-                                   levels=np.linspace(0, 1, 21),
-                                   cmap="RdYlGn",
-                                   vmin=0, vmax=1)
-            colorbar = fig.colorbar(contour, ax=axe)
-            colorbar.set_label('Sharpness [target -> 0.5 - 0.8]', color=self.M_BLUE)
-            axe.plot(x, y, 'ko', ms=3)
+            area = 200 * (1 - sharpness) + 20
+            axe.set_title('Sharpness [target -> 0.5 - 0.8]',
+                          color=self.M_BLUE,
+                          fontsize=14)
+
+            scatter = axe.scatter(x,
+                                  y,
+                                  c=sharpness,
+                                  vmin=0,
+                                  vmax=1,
+                                  s=area,
+                                  cmap="RdYlGn",
+                                  zorder=0,
+                                  )
+
+            colorbar = fig.colorbar(scatter, ax=axe)
             yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
             plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
@@ -743,21 +745,23 @@ class ImageWindow(widget.MWidget):
             r1 = sources['roundness1']
             r2 = sources['roundness2']
             rg = np.sqrt(r1*r1 + r2*r2)
-            xi = range(0, imageData.shape[1])
-            yi = range(0, imageData.shape[0])
-            triAng = tri.Triangulation(x, y)
-            interpolator = tri.LinearTriInterpolator(triAng, rg)
-            Xi, Yi = np.meshgrid(xi, yi)
-            zi = interpolator(Xi, Yi)
 
-            contour = axe.contourf(xi, yi, zi,
-                                   levels=np.linspace(0, 1, 21),
-                                   cmap="RdYlGn_r",
-                                   vmin=0, vmax=1)
+            area = 200 * rg + 20
+            axe.set_title('Roundness [target -> 0]',
+                          color=self.M_BLUE,
+                          fontsize=14)
 
-            colorbar = fig.colorbar(contour, ax=axe)
-            colorbar.set_label('Roundness [target -> 0]', color=self.M_BLUE)
-            axe.plot(x, y, 'ko', ms=3)
+            scatter = axe.scatter(x,
+                                  y,
+                                  c=rg,
+                                  vmin=0,
+                                  vmax=1,
+                                  s=area,
+                                  cmap="RdYlGn_r",
+                                  zorder=0,
+                                  )
+
+            colorbar = fig.colorbar(scatter, ax=axe)
             yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
             plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 

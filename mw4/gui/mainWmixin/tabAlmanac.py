@@ -144,15 +144,15 @@ class Almanac(object):
                    '02', '04', '06', '08', '10', '12']
 
         axe.set_yticks(yTicks)
-        axe.set_yticklabels(yLabels)
+        axe.set_yticklabels(yLabels, fontsize=10)
 
         xTicks = np.arange(minLim, maxLim, (maxLim - minLim) / 11)
-        xLabels = ts.tt_jd(xTicks).utc_strftime('%m-%d')
+        xLabels = ts.tt_jd(xTicks).utc_strftime('%d%b')
         xLabels[0] = ''
         axe.set_xlim(minLim, maxLim)
 
         axe.set_xticks(xTicks)
-        axe.set_xticklabels(xLabels)
+        axe.set_xticklabels(xLabels, fontsize=10)
 
         axe.grid(color=self.M_GREY, alpha=0.5)
         axe.set_ylim(0, 24)

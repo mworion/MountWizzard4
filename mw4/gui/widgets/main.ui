@@ -4585,6 +4585,12 @@ to mount</string>
         <property name="enabled">
          <bool>true</bool>
         </property>
+        <property name="toolTip">
+         <string>Annual twilight show the different phases for your location and your local time.
+As the calulation is time consuming, it will be done only once per start of the app.
+y-axis is local day time and x-axis is date.
+MW4 will show the actual day always in the middel of the chart.</string>
+        </property>
         <property name="autoFillBackground">
          <bool>true</bool>
         </property>
@@ -4626,7 +4632,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Displaying the upcoming twilight events.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Displaying the upcoming twilight events which really happen at your site. Unseen events are not in the list</string>
       </property>
      </widget>
     </widget>
@@ -4992,7 +4998,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Moon phase description</string>
+       <string>Shows the actual lunar node for your site.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>

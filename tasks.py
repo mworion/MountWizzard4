@@ -230,6 +230,7 @@ def test_win(c):
     printMW('test windows install')
     printMWp('...delete test dir')
     runMW(c, f'ssh {userWindows} "if exist {workWindows} rd /s /q {workWindows}"')
+    time.sleep(1)
     printMWp('...make test dir')
     runMW(c, f'ssh {userWindows} "if not exist {workWindows} mkdir {workWindows}"')
     time.sleep(1)
@@ -245,6 +246,7 @@ def test_win(c):
         runMWd(c, f'ssh {userWindows} "cd {workWindows} && MW4_InstallTest.bat"')
         printMWp('...copy run script to test dir')
         runMWd(c, f'scp -r MW4_RunTest.bat {workWindowsSCP}')
+        runMWd(c, f'scp -r MW4_Run.bat {workWindowsSCP}')
         printMWp('...run MountWizzard4 for 3 seconds')
         runMWd(c, f'ssh {userWindows} "cd {workWindows} && MW4_RunTest.bat"')
 

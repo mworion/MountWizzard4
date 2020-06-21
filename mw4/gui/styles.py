@@ -88,12 +88,12 @@ class MWStyles(object):
         font-weight: normal;
         font-size: 30pt;
     }
-    QGroupBox[large='true']{
+    QGroupBox[large='true'] {
         font-family: Arial;
         font-weight: bold;
         font-size: 13pt;
     } 
-    QGroupBox{
+    QGroupBox {
         font-family: Arial;
         font-weight: normal;
         font-size: 11pt;
@@ -119,12 +119,12 @@ class MWStyles(object):
         font-weight: bold;
         font-size: 20pt;
     } 
-    QGroupBox[large='true']{
+    QGroupBox[large='true'] {
         font-family: Arial;
         font-weight: normal;
         font-size: 10pt;
     }    
-    QGroupBox{
+    QGroupBox {
         font-family: Arial;
         font-weight: normal;
         font-size: 9pt;
@@ -132,10 +132,10 @@ class MWStyles(object):
     QTextBrowser {
         font-family: courier;
         font-weight: normal;
-        font-size: 10pt;
+        font-size: 8pt;
     }
     QToolTip {
-        font-size: 13pt;
+        font-size: 10pt;
     }
     """
     BASIC_STYLE = """
@@ -160,7 +160,7 @@ class MWStyles(object):
         background-color: transparent;
         color: #C0C0C0;
     }
-    QLabel:disabled{
+    QLabel:disabled {
         background-color: transparent;
         color: #404040;
     }

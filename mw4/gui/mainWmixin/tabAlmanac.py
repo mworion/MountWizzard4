@@ -371,6 +371,14 @@ class Almanac(object):
         :return: true for test purpose
         """
 
+        colors = {
+            0: self.COLOR_BLUE4,
+            1: self.COLOR_BLUE3,
+            2: self.COLOR_BLUE2,
+            3: self.COLOR_BLUE1,
+            4: self.COLOR_WHITE1,
+        }
+
         ts = self.app.mount.obsSite.ts
         timeJD = self.app.mount.obsSite.timeJD
         location = self.app.mount.obsSite.location
@@ -388,11 +396,12 @@ class Almanac(object):
         self.ui.twilightEvents.clear()
 
         for timeE, event in zip(t, e):
+            self.ui.twilightEvents.setTextColor(colors[event])
+            self.ui.twilightEvents.setFontWeight(PyQt5.QtGui.QFont.Bold)
             text += f'{timeE.astimezone(tzlocal()).strftime("%H:%M:%S")} '
-            text += f'{almanac.TWILIGHTS[event]}\n'
-
-        text = text.rstrip('\n')
-        self.ui.twilightEvents.insertPlainText(text)
+            text += f'{almanac.TWILIGHTS[event]}'
+            self.ui.twilightEvents.insertPlainText(text)
+            text = '\n'
 
         return True
 

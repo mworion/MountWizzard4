@@ -304,9 +304,16 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="checkShowEccentricity">
+         <widget class="QRadioButton" name="checkShowRound">
           <property name="text">
            <string>Round</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="checkShowFlux">
+          <property name="text">
+           <string>Flux</string>
           </property>
          </widget>
         </item>

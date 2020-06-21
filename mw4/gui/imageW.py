@@ -168,7 +168,7 @@ class ImageWindow(widget.MWidget):
         self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
         self.ui.checkShowSources.setChecked(config.get('checkShowSources', False))
         self.ui.checkShowImage.setChecked(config.get('checkShowImage', True))
-        self.ui.checkShowEccentricity.setChecked(config.get('checkShowEccentricity', False))
+        self.ui.checkShowRound.setChecked(config.get('checkShowRound', False))
         self.ui.checkShowSharp.setChecked(config.get('checkShowSharp', False))
 
         return True
@@ -200,7 +200,7 @@ class ImageWindow(widget.MWidget):
         config['checkEmbedData'] = self.ui.checkEmbedData.isChecked()
         config['checkShowSources'] = self.ui.checkShowSources.isChecked()
         config['checkShowImage'] = self.ui.checkShowImage.isChecked()
-        config['checkShowEccentricity'] = self.ui.checkShowEccentricity.isChecked()
+        config['checkShowRound'] = self.ui.checkShowRound.isChecked()
         config['checkShowSharp'] = self.ui.checkShowSharp.isChecked()
 
         return True
@@ -227,7 +227,8 @@ class ImageWindow(widget.MWidget):
         self.ui.checkShowSources.clicked.connect(self.showCurrent)
         self.ui.checkShowImage.clicked.connect(self.showCurrent)
         self.ui.checkShowSharp.clicked.connect(self.showCurrent)
-        self.ui.checkShowEccentricity.clicked.connect(self.showCurrent)
+        self.ui.checkShowRound.clicked.connect(self.showCurrent)
+        self.ui.checkShowFlux.clicked.connect(self.showCurrent)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
@@ -263,7 +264,8 @@ class ImageWindow(widget.MWidget):
         self.ui.checkShowSources.clicked.disconnect(self.showCurrent)
         self.ui.checkShowImage.clicked.disconnect(self.showCurrent)
         self.ui.checkShowSharp.clicked.disconnect(self.showCurrent)
-        self.ui.checkShowEccentricity.clicked.disconnect(self.showCurrent)
+        self.ui.checkShowRound.clicked.disconnect(self.showCurrent)
+        self.ui.checkShowFlux.clicked.disconnect(self.showCurrent)
         self.ui.solve.clicked.disconnect(self.solveCurrent)
         self.ui.expose.clicked.disconnect(self.exposeImage)
         self.ui.exposeN.clicked.disconnect(self.exposeImageN)
@@ -528,7 +530,10 @@ class ImageWindow(widget.MWidget):
         figure.clf()
         axe = figure.add_subplot(1, 1, 1,
                                  projection=wcsObject,
-                                 facecolor=self.M_BLACK)
+                                 facecolor=self.M_GREY_LIGHT)
+
+        figure.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
+        axeCB = figure.add_axes([0.88, 0.1, 0.02, 0.8])
 
         axe.coords.frame.set_color(self.M_BLUE)
 
@@ -558,7 +563,7 @@ class ImageWindow(widget.MWidget):
         axe1.set_ticklabel_position('tb')
         axe1.set_axislabel_position('tb')
 
-        return figure, axe
+        return figure, axe, axeCB
 
     def setupNormal(self, figure=None, header=None):
         """
@@ -577,7 +582,10 @@ class ImageWindow(widget.MWidget):
 
         figure.clf()
         axe = figure.add_subplot(1, 1, 1,
-                                 facecolor=self.M_BLACK)
+                                 facecolor=self.M_GREY_LIGHT)
+
+        figure.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
+        axeCB = figure.add_axes([0.88, 0.1, 0.02, 0.8])
 
         factor = self.zoomLevel[self.ui.zoom.currentText()]
         sizeX = header.get('NAXIS1', 1) / factor
@@ -611,7 +619,10 @@ class ImageWindow(widget.MWidget):
         axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
 
-        return figure, axe
+        axe.set_xlim(0, sizeX)
+        axe.set_ylim(0, sizeY)
+
+        return figure, axe, axeCB
 
     def stackImages(self, imageData=None, header=None):
         """
@@ -693,9 +704,9 @@ class ImageWindow(widget.MWidget):
 
         # check which type of presentation we would like to have
         if hasDistortion and useWCS:
-            fig, axe = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
+            fig, axe, axeCB = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
         else:
-            fig, axe = self.setupNormal(figure=self.imageMat.figure, header=header)
+            fig, axe, axeCB = self.setupNormal(figure=self.imageMat.figure, header=header)
 
         if Config.featureFlags['imageAdv']:
             mean, median, std = sigma_clipped_stats(imageData, sigma=3.0)
@@ -706,12 +717,17 @@ class ImageWindow(widget.MWidget):
             y = sources['ycentroid']
 
         if self.ui.checkShowImage.isChecked():
-            imshow_norm(imageData,
-                        ax=axe,
-                        origin='lower',
-                        interval=MinMaxInterval(),
-                        stretch=stretch,
-                        cmap=colorMap)
+            img = imshow_norm(imageData,
+                              ax=axe,
+                              origin='lower',
+                              interval=MinMaxInterval(),
+                              stretch=stretch,
+                              cmap=colorMap,
+                              aspect='auto')
+            colorbar = fig.colorbar(img[0], cax=axeCB)
+            colorbar.set_label('Value [pixel value]', color=self.M_BLUE, fontsize=12)
+            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
         # The object centers are in pixels and the magnitude estimate measures the ratio of
         # the maximum density enhancement to the detection threshold. Sharpness is
@@ -721,47 +737,41 @@ class ImageWindow(widget.MWidget):
 
         elif self.ui.checkShowSharp.isChecked() and Config.featureFlags['imageAdv']:
             sharpness = sources['sharpness']
-
-            area = 200 * (1 - sharpness) + 20
-            axe.set_title('Sharpness [target -> 0.5 - 0.8]',
-                          color=self.M_BLUE,
-                          fontsize=14)
-
-            scatter = axe.scatter(x,
-                                  y,
-                                  c=sharpness,
-                                  vmin=0,
-                                  vmax=1,
+            area = 50 * (1 - sharpness) + 3
+            scatter = axe.scatter(x, y, c=sharpness,
+                                  vmin=0, vmax=1,
                                   s=area,
-                                  cmap="RdYlGn",
-                                  zorder=0,
-                                  )
+                                  cmap='RdYlGn')
 
-            colorbar = fig.colorbar(scatter, ax=axe)
+            colorbar = fig.colorbar(scatter, cax=axeCB)
+            colorbar.set_label('Sharpness [target -> 0.5 - 0.8]', color=self.M_BLUE, fontsize=12)
             yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
             plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        elif self.ui.checkShowEccentricity.isChecked() and Config.featureFlags['imageAdv']:
+        elif self.ui.checkShowRound.isChecked() and Config.featureFlags['imageAdv']:
             r1 = sources['roundness1']
             r2 = sources['roundness2']
             rg = np.sqrt(r1*r1 + r2*r2)
-
-            area = 200 * rg + 20
-            axe.set_title('Roundness [target -> 0]',
-                          color=self.M_BLUE,
-                          fontsize=14)
-
-            scatter = axe.scatter(x,
-                                  y,
-                                  c=rg,
-                                  vmin=0,
-                                  vmax=1,
+            area = 50 * rg + 3
+            scatter = axe.scatter(x, y, c=rg,
+                                  vmin=0, vmax=1,
                                   s=area,
-                                  cmap="RdYlGn_r",
-                                  zorder=0,
-                                  )
+                                  cmap='RdYlGn_r')
 
-            colorbar = fig.colorbar(scatter, ax=axe)
+            colorbar = fig.colorbar(scatter, cax=axeCB)
+            colorbar.set_label('Roundness [target -> 0]', color=self.M_BLUE, fontsize=12)
+            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+
+        elif self.ui.checkShowFlux.isChecked() and Config.featureFlags['imageAdv']:
+            flux = np.log(sources['flux'])
+            area = 3 * flux
+            scatter = axe.scatter(x, y, c=flux,
+                                  s=area,
+                                  cmap='viridis')
+
+            colorbar = fig.colorbar(scatter, cax=axeCB)
+            colorbar.set_label('Flux [log(x)]', color=self.M_BLUE, fontsize=12)
             yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
             plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
@@ -778,7 +788,16 @@ class ImageWindow(widget.MWidget):
 
         :return: true for test purpose
         """
+        isFlux = self.ui.checkShowFlux.isChecked()
+        isRound = self.ui.checkShowRound.isChecked()
+        isSharp = self.ui.checkShowSharp.isChecked()
+        if isRound or isFlux or isSharp:
+            self.ui.checkUseWCS.setChecked(False)
+            self.ui.checkShowGrid.setChecked(False)
+            self.ui.checkShowCrosshair.setChecked(False)
+
         self.showContent(self.imageFileName)
+
         return True
 
     def exposeRaw(self):

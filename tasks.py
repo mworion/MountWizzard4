@@ -31,7 +31,7 @@ workUbuntu = '/home/mw/test'
 workUbuntuSCP = userUbuntu + ':/home/mw/test'
 
 # same for windows10 with cmd.exe as shell
-clientWindows = 'astro-windows.fritz.box'
+clientWindows = 'astro-windows-p376.fritz.box'
 userWindows = 'mw@' + clientWindows
 workWindows = 'test'
 workWindowsSCP = userWindows + ':/Users/mw/test'

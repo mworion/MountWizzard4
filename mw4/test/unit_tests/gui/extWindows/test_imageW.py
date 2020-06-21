@@ -168,7 +168,7 @@ def test_selectImage_2(qtbot):
                            'openFile',
                            return_value=('c:/test/test.fits', 'test', '.fits')):
         with qtbot.waitSignal(app.app.message) as blocker:
-            with qtbot.waitSignal(app.signals.showImage):
+            with qtbot.waitSignal(app.signals.showContent):
                 suc = app.selectImage()
                 assert suc
         assert ['Image [test] selected', 0] == blocker.args
@@ -333,13 +333,13 @@ def test_stackImages_3():
 
 def test_showImage_1():
     app.imageFileName = ''
-    suc = app.showImage()
+    suc = app.showContent()
     assert not suc
 
 
 def test_showImage_2():
     app.imageFileName = 'test'
-    suc = app.showImage()
+    suc = app.showContent()
     assert not suc
 
 
@@ -379,7 +379,7 @@ def test_exposeImageDone_1(qtbot):
     app.ui.checkAutoSolve.setChecked(False)
     app.app.camera.signals.saved.connect(app.exposeImageDone)
     with qtbot.waitSignal(app.app.message) as blocker:
-        with qtbot.waitSignal(app.signals.showImage):
+        with qtbot.waitSignal(app.signals.showContent):
             suc = app.exposeImageDone()
             assert suc
     assert ['Exposed:             []', 0] == blocker.args
@@ -405,7 +405,7 @@ def test_exposeImageNDone_1(qtbot):
     app.ui.checkAutoSolve.setChecked(False)
     app.app.camera.signals.saved.connect(app.exposeImageDone)
     with qtbot.waitSignal(app.app.message) as blocker:
-        with qtbot.waitSignal(app.signals.showImage):
+        with qtbot.waitSignal(app.signals.showContent):
             suc = app.exposeImageNDone()
             assert suc
     assert ['Exposed:            []', 0] == blocker.args
@@ -438,7 +438,7 @@ def test_abortImage_1(qtbot):
 
 
 def test_abortImage_2(qtbot):
-    app.app.camera.signals.saved.connect(app.showImage)
+    app.app.camera.signals.saved.connect(app.showContent)
     app.ui.exposeN.setEnabled(True)
     app.ui.expose.setEnabled(False)
     app.app.camera.signals.saved.connect(app.exposeRaw)
@@ -452,7 +452,7 @@ def test_abortImage_2(qtbot):
 
 
 def test_abortImage_3(qtbot):
-    app.app.camera.signals.saved.connect(app.showImage)
+    app.app.camera.signals.saved.connect(app.showContent)
     app.ui.exposeN.setEnabled(False)
     app.ui.expose.setEnabled(True)
     app.app.camera.signals.saved.connect(app.exposeImageDone)
@@ -532,7 +532,7 @@ def test_solveDone_4(qtbot):
     }
 
     app.app.astrometry.signals.done.connect(app.solveDone)
-    with qtbot.waitSignal(app.signals.showImage):
+    with qtbot.waitSignal(app.signals.showContent):
         suc = app.solveDone(result=result)
         assert suc
 

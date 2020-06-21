@@ -33,6 +33,7 @@ from photutils import CircularAperture
 from photutils import DAOStarFinder
 
 import matplotlib.pyplot as plt
+import matplotlib.tri as tri
 from skyfield.api import Angle
 import numpy as np
 import cv2
@@ -102,12 +103,12 @@ class ImageWindow(widget.MWidget):
                           'Spectral': 'nipy_spectral',
                           }
 
-        self.stretchValues = {'Low X': 0.4,
-                              'Low': 0.2,
-                              'Mid': 0.1,
-                              'High': 0.05,
-                              'Super': 0.025,
-                              'Super X': 0.01,
+        self.stretchValues = {'Low X': 0.2,
+                              'Low': 0.1,
+                              'Mid': 0.5,
+                              'High': 0.025,
+                              'Super': 0.005,
+                              'Super X': 0.0025,
                               }
 
         self.zoomLevel = {' 1x Zoom': 1,
@@ -166,7 +167,10 @@ class ImageWindow(widget.MWidget):
         self.ui.checkShowGrid.setChecked(config.get('checkShowGrid', True))
         self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
         self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
-        # self.ui.checkShowSources.setChecked(config.get('checkShowSources', False))
+        self.ui.checkShowSources.setChecked(config.get('checkShowSources', False))
+        self.ui.checkShowImage.setChecked(config.get('checkShowImage', True))
+        self.ui.checkShowEccentricity.setChecked(config.get('checkShowEccentricity', False))
+        self.ui.checkShowSharp.setChecked(config.get('checkShowSharp', False))
 
         return True
 
@@ -195,7 +199,10 @@ class ImageWindow(widget.MWidget):
         config['checkShowGrid'] = self.ui.checkShowGrid.isChecked()
         config['checkAutoSolve'] = self.ui.checkAutoSolve.isChecked()
         config['checkEmbedData'] = self.ui.checkEmbedData.isChecked()
-        # config['checkShowSources'] = self.ui.checkShowSources.isChecked()
+        config['checkShowSources'] = self.ui.checkShowSources.isChecked()
+        config['checkShowImage'] = self.ui.checkShowImage.isChecked()
+        config['checkShowEccentricity'] = self.ui.checkShowEccentricity.isChecked()
+        config['checkShowSharp'] = self.ui.checkShowSharp.isChecked()
 
         return True
 
@@ -219,13 +226,16 @@ class ImageWindow(widget.MWidget):
         self.ui.checkShowGrid.clicked.connect(self.showCurrent)
         self.ui.checkShowCrosshair.clicked.connect(self.showCurrent)
         self.ui.checkShowSources.clicked.connect(self.showCurrent)
+        self.ui.checkShowImage.clicked.connect(self.showCurrent)
+        self.ui.checkShowSharp.clicked.connect(self.showCurrent)
+        self.ui.checkShowEccentricity.clicked.connect(self.showCurrent)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.signals.showCurrent.connect(self.showCurrent)
-        self.signals.showImage.connect(self.showImage)
+        self.signals.showImage.connect(self.showContent)
         self.signals.solveImage.connect(self.solveImage)
 
         return True
@@ -252,13 +262,16 @@ class ImageWindow(widget.MWidget):
         self.ui.checkShowGrid.clicked.disconnect(self.showCurrent)
         self.ui.checkShowCrosshair.clicked.disconnect(self.showCurrent)
         self.ui.checkShowSources.clicked.disconnect(self.showCurrent)
+        self.ui.checkShowImage.clicked.disconnect(self.showCurrent)
+        self.ui.checkShowSharp.clicked.disconnect(self.showCurrent)
+        self.ui.checkShowEccentricity.clicked.disconnect(self.showCurrent)
         self.ui.solve.clicked.disconnect(self.solveCurrent)
         self.ui.expose.clicked.disconnect(self.exposeImage)
         self.ui.exposeN.clicked.disconnect(self.exposeImageN)
         self.ui.abortImage.clicked.disconnect(self.abortImage)
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
         self.signals.showCurrent.disconnect(self.showCurrent)
-        self.signals.showImage.disconnect(self.showImage)
+        self.signals.showImage.disconnect(self.showContent)
         self.signals.solveImage.disconnect(self.solveImage)
 
         plt.close(self.imageMat.figure)
@@ -623,9 +636,9 @@ class ImageWindow(widget.MWidget):
         self.imageStack = np.add(self.imageStack, imageData)
         return self.imageStack / self.numberStack
 
-    def showImage(self, imagePath=''):
+    def showContent(self, imagePath=''):
         """
-        showImage shows the fits image. therefore it calculates color map, stretch,
+        showContent shows the fits image. therefore it calculates color map, stretch,
         zoom and other topics.
 
         :param imagePath:
@@ -685,25 +698,74 @@ class ImageWindow(widget.MWidget):
         else:
             fig, axe = self.setupNormal(figure=self.imageMat.figure, header=header)
 
-        # finally show it
-        imshow_norm(imageData,
-                    ax=axe,
-                    origin='lower',
-                    interval=MinMaxInterval(),
-                    stretch=stretch,
-                    cmap=colorMap)
+        if Config.featureFlags['imageAdv']:
+            mean, median, std = sigma_clipped_stats(imageData, sigma=3.0)
+            daoFind = DAOStarFinder(fwhm=2.5, threshold=5.0 * std)
+            sources = daoFind(imageData - median)
+            positions = np.transpose((sources['xcentroid'], sources['ycentroid']))
+            x = sources['xcentroid']
+            y = sources['ycentroid']
+
+        if self.ui.checkShowImage.isChecked():
+            imshow_norm(imageData,
+                        ax=axe,
+                        origin='lower',
+                        interval=MinMaxInterval(),
+                        stretch=stretch,
+                        cmap=colorMap)
+
+        # The object centers are in pixels and the magnitude estimate measures the ratio of
+        # the maximum density enhancement to the detection threshold. Sharpness is
+        # typically around .5 to .8 for a star with a fwhm psf similar to the pattern star.
+        # Both s-round and g-round are close to zero for a truly round star. Id is the
+        # sequence number of the star in the list.
+
+        elif self.ui.checkShowSharp.isChecked() and Config.featureFlags['imageAdv']:
+            sharpness = sources['sharpness']
+            xi = range(0, imageData.shape[1])
+            yi = range(0, imageData.shape[0])
+            triAng = tri.Triangulation(x, y)
+            interpolator = tri.LinearTriInterpolator(triAng, sharpness)
+            Xi, Yi = np.meshgrid(xi, yi)
+            zi = interpolator(Xi, Yi)
+
+            contour = axe.contourf(xi, yi, zi,
+                                   levels=np.linspace(0, 1, 21),
+                                   cmap="RdYlGn",
+                                   vmin=0, vmax=1)
+            colorbar = fig.colorbar(contour, ax=axe)
+            colorbar.set_label('Sharpness [target -> 0.5 - 0.8]', color=self.M_BLUE)
+            axe.plot(x, y, 'ko', ms=3)
+            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+
+        elif self.ui.checkShowEccentricity.isChecked() and Config.featureFlags['imageAdv']:
+            r1 = sources['roundness1']
+            r2 = sources['roundness2']
+            rg = np.sqrt(r1*r1 + r2*r2)
+            xi = range(0, imageData.shape[1])
+            yi = range(0, imageData.shape[0])
+            triAng = tri.Triangulation(x, y)
+            interpolator = tri.LinearTriInterpolator(triAng, rg)
+            Xi, Yi = np.meshgrid(xi, yi)
+            zi = interpolator(Xi, Yi)
+
+            contour = axe.contourf(xi, yi, zi,
+                                   levels=np.linspace(0, 1, 21),
+                                   cmap="RdYlGn_r",
+                                   vmin=0, vmax=1)
+
+            colorbar = fig.colorbar(contour, ax=axe)
+            colorbar.set_label('Roundness [target -> 0]', color=self.M_BLUE)
+            axe.plot(x, y, 'ko', ms=3)
+            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+
+        if self.ui.checkShowSources.isChecked() and Config.featureFlags['imageAdv']:
+            apertures = CircularAperture(positions, r=10.0)
+            apertures.plot(axes=axe, color=self.M_BLUE, lw=1.0, alpha=0.8)
 
         axe.figure.canvas.draw()
-
-        if Config.featureFlags['sourceExtraction']:
-            if self.ui.checkShowSources.isChecked():
-                mean, median, std = sigma_clipped_stats(imageData, sigma=3.0)
-                daoFind = DAOStarFinder(fwhm=3.0, threshold=5.0 * std)
-                sources = daoFind(imageData - median)
-                positions = np.transpose((sources['xcentroid'], sources['ycentroid']))
-                apertures = CircularAperture(positions, r=10.0)
-                apertures.plot(axes=axe, color=self.M_BLUE, lw=1.0, alpha=0.8)
-                axe.figure.canvas.draw()
 
         return True
 
@@ -712,7 +774,7 @@ class ImageWindow(widget.MWidget):
 
         :return: true for test purpose
         """
-        self.showImage(self.imageFileName)
+        self.showContent(self.imageFileName)
         return True
 
     def exposeRaw(self):
@@ -750,7 +812,7 @@ class ImageWindow(widget.MWidget):
         """
         exposeImageDone is the partner method to exposeImage. it resets the gui elements
         to it's default state and disconnects the signal for the callback. finally when
-        all elements are done it emits the showImage signal.
+        all elements are done it emits the showContent signal.
 
         :param imagePath:
         :return: True for test purpose
@@ -792,7 +854,7 @@ class ImageWindow(widget.MWidget):
         """
         exposeImageNDone is the partner method to exposeImage. it resets the gui elements
         to it's default state and disconnects the signal for the callback. finally when
-        all elements are done it emits the showImage signal.
+        all elements are done it emits the showContent signal.
 
         :param imagePath:
         :return: True for test purpose

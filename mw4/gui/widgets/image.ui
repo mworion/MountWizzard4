@@ -53,7 +53,7 @@
     <number>4</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0,1">
+    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0,0,0,1">
      <property name="spacing">
       <number>4</number>
      </property>
@@ -253,6 +253,67 @@
       </layout>
      </item>
      <item>
+      <widget class="Line" name="line_13">
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="midLineWidth">
+        <number>1</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="title">
+        <string>Show</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="spacing">
+         <number>4</number>
+        </property>
+        <property name="leftMargin">
+         <number>10</number>
+        </property>
+        <property name="topMargin">
+         <number>4</number>
+        </property>
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>4</number>
+        </property>
+        <item>
+         <widget class="QRadioButton" name="checkShowImage">
+          <property name="text">
+           <string>Image</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="checkShowSharp">
+          <property name="text">
+           <string>Sharp</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="checkShowEccentricity">
+          <property name="text">
+           <string>Round</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <widget class="Line" name="line_2">
        <property name="frameShadow">
         <enum>QFrame::Plain</enum>
@@ -268,7 +329,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox_3">
        <property name="title">
-        <string>Views / Coords</string>
+        <string>Coords</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0,0">
         <property name="spacing">
@@ -328,7 +389,7 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When selected, MW$ will automatically search for source in image and show them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Show sources</string>
+           <string>Sources</string>
           </property>
          </widget>
         </item>

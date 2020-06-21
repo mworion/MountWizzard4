@@ -354,7 +354,7 @@ class Model(object):
         # showing the expose image in the image window
         imageWObj = self.app.uiWindows['showImageW']['classObj']
         if imageWObj:
-            imageWObj.signals.showImage.emit(mPoint["imagePath"])
+            imageWObj.signals.showContent.emit(mPoint["imagePath"])
 
         self.resultQueue.put(mPoint)
         self.log.info(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')

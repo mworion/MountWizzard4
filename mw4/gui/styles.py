@@ -99,7 +99,7 @@ class MWStyles(object):
         font-size: 11pt;
     } 
     QTextBrowser {
-        font-family: courier;
+        font-family: Courier-New;
         font-weight: normal;
         font-size: 13pt;
     }
@@ -130,9 +130,9 @@ class MWStyles(object):
         font-size: 9pt;
     }
     QTextBrowser {
-        font-family: courier;
+        font-family: Courier-New;
         font-weight: normal;
-        font-size: 8pt;
+        font-size: 9pt;
     }
     QToolTip {
         font-size: 10pt;

@@ -99,7 +99,7 @@ class MWStyles(object):
         font-size: 11pt;
     } 
     QTextBrowser {
-        font-family: Courier-New;
+        font-family: Courier;
         font-weight: normal;
         font-size: 13pt;
     }

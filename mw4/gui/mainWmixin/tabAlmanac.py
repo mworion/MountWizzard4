@@ -161,6 +161,7 @@ class Almanac(object):
             val = self.civil[i]
             if not len(val):
                 break
+            val.append(val[0])
             x = [x[0].tt for x in val]
             y = [x[1] for x in val]
             axe.fill(x, y, self.M_BLUE1)
@@ -170,6 +171,7 @@ class Almanac(object):
             val = self.nautical[i]
             if not len(val):
                 break
+            val.append(val[0])
             x = [x[0].tt for x in val]
             y = [x[1] for x in val]
             axe.fill(x, y, self.M_BLUE2)
@@ -179,6 +181,7 @@ class Almanac(object):
             val = self.astronomical[i]
             if not len(val):
                 break
+            val.append(val[0])
             x = [x[0].tt for x in val]
             y = [x[1] for x in val]
             axe.fill(x, y, self.M_BLUE3)
@@ -188,6 +191,7 @@ class Almanac(object):
             val = self.dark[i]
             if not len(val):
                 break
+            val.append(val[0])
             x = [x[0].tt for x in val]
             y = [x[1] for x in val]
             axe.fill(x, y, self.M_BLUE4)

@@ -17,7 +17,7 @@
 ###########################################################
 # standard libraries
 import threading
-from dateutil.tz import tzlocal, tzutc
+from dateutil.tz import tzlocal
 
 # external packages
 import PyQt5.QtCore
@@ -25,10 +25,8 @@ from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
 from PyQt5.QtCore import Qt, QPointF
 from skyfield import almanac
 import numpy as np
-import qimage2ndarray
 
 # local import
-from mw4.base.tpool import Worker
 
 
 class Almanac(object):

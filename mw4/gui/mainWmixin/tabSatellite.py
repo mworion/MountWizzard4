@@ -21,6 +21,7 @@ import os
 # external packages
 import PyQt5
 import numpy as np
+from sgp4.exporter import export_tle
 
 # local import
 from mw4.base.tpool import Worker
@@ -140,34 +141,6 @@ class Satellite(object):
 
         return True
 
-    @staticmethod
-    def loadRawTLEData(filePath=''):
-        """
-        loadRawTLEData load the two line elements from the source file and stores is separately
-        in a dictionary, because we need that data later for transfer it to the mount
-        computer. unfortunately the loader from skyfield does not store the original TLE
-        data, but only parses it and throws the original away.
-
-        :param filePath:
-        :return: satellitesRawTLE
-        """
-
-        data = dict()
-        with open(filePath, mode='r') as tleFile:
-            while True:
-                l0 = tleFile.readline()
-                l1 = tleFile.readline()
-                l2 = tleFile.readline()
-
-                if l0 == '':
-                    break
-                data[l0.strip()] = {'line0': l0.strip('\n'),
-                                    'line1': l1.strip('\n'),
-                                    'line2': l2.strip('\n'),
-                                    }
-
-        return data
-
     def loadTLEDataFromSourceURLsWorker(self, source='', reload=False):
         """
         loadTLEDataFromSourceURLsWorker selects from a drop down list of possible satellite
@@ -190,11 +163,6 @@ class Satellite(object):
         filePath = f'{dirPath}/{fileName}'
 
         if not os.path.isfile(filePath):
-            return False
-
-        self.satellitesRawTLE = self.loadRawTLEData(filePath=filePath)
-
-        if len(self.satellites) != len(self.satellitesRawTLE):
             return False
 
         return True
@@ -311,10 +279,11 @@ class Satellite(object):
             self.app.message.emit(f'Actual satellite is  [{self.satellite.name}]', 0)
         else:
             self.app.message.emit(f'Programming [{self.satellite.name}] to mount', 0)
-            data = self.satellitesRawTLE[self.satellite.name]
-            suc = satellite.setTLE(line0=data['line0'],
-                                   line1=data['line1'],
-                                   line2=data['line2'])
+            line0 = self.satellite.name
+            line1, line2 = export_tle(self.satellite.model)
+            suc = satellite.setTLE(line0=line0,
+                                   line1=line1,
+                                   line2=line2)
             if not suc:
                 self.app.message.emit('Error program TLE', 2)
                 return False

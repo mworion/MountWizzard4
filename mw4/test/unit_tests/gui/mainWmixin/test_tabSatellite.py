@@ -31,6 +31,7 @@ from mountcontrol.qtmount import Mount
 from skyfield.toposlib import Topos
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle
+from sgp4.exporter import export_tle
 
 # local import
 from mw4.gui.mainWmixin.tabSatellite import Satellite
@@ -285,13 +286,26 @@ def test_calcTLEParams_2():
         assert suc
 
 
+def test_tle_export_1():
+    tle = ['NOAA 8',
+           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
+           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+
+    satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    line1, line2 = export_tle(satellite.model)
+
+    assert tle[0] == satellite.name
+    assert tle[1] == line1
+    assert tle[2] == line2
+
+
 def test_showRises_1():
     tle = ['NOAA 8',
            '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
            '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
 
-    test = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    test = EarthSatellite(tle[1], tle[2], name=tle[0])
+    app.satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
 
     with mock.patch.object(EarthSatellite,
                            'find_events',

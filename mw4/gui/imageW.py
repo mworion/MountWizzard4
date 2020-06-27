@@ -223,7 +223,7 @@ class ImageWindow(widget.MWidget):
         """
 
         self.show()
-        self.showCurrent()
+        # self.showCurrent()
 
         # gui signals
         self.ui.load.clicked.connect(self.selectImage)
@@ -330,6 +330,7 @@ class ImageWindow(widget.MWidget):
             self.ui.expose.setEnabled(False)
             self.ui.load.setEnabled(False)
             self.ui.abortImage.setEnabled(True)
+
         else:
             self.ui.solve.setEnabled(True)
             self.ui.expose.setEnabled(True)
@@ -407,7 +408,7 @@ class ImageWindow(widget.MWidget):
         wcs distorted coordinates.
         still plenty of work to be done, because very often the labels are not shown
 
-        :return: true
+        :return: true for test purpose
         """
 
         self.fig.clf()
@@ -453,7 +454,7 @@ class ImageWindow(widget.MWidget):
         setupNormal build the image widget to show it with pixels as axes. the center of
         the image will have coordinates 0,0.
 
-        :return: True
+        :return: True for test purpose
         """
 
         self.fig.clf()
@@ -498,7 +499,7 @@ class ImageWindow(widget.MWidget):
         self.axe.set_xlim(0, sizeX)
         self.axe.set_ylim(0, sizeY)
 
-        return
+        return True
 
     def colorImage(self):
         """
@@ -671,6 +672,11 @@ class ImageWindow(widget.MWidget):
         :return:
         """
 
+        if self.image is None:
+            return False
+        if self.header is None:
+            return False
+
         self.updateWindowsStats()
 
         # check if distortion is in header
@@ -679,7 +685,6 @@ class ImageWindow(widget.MWidget):
             hasCelestial = wcsObject.has_celestial
             hasDistortion = wcsObject.has_distortion
         else:
-            wcsObject = None
             hasCelestial = False
             hasDistortion = False
 
@@ -721,7 +726,7 @@ class ImageWindow(widget.MWidget):
 
         if Config.featureFlags['imageAdv'] and not self.sources:
             worker = Worker(self.workerPhotometry)
-            worker.signals.result.connect(self.prepareImage)
+            worker.signals.finished.connect(self.preparePlot)
             self.threadPool.start(worker)
 
         self.preparePlot()
@@ -744,14 +749,13 @@ class ImageWindow(widget.MWidget):
 
         self.ui.numberStacks.setText(f'mean of: {self.numberStack:4.0f}')
 
-        # if first image, we just store the data as reference frame
         if self.imageStack is None:
             self.imageStack = self.image
             self.numberStack = 1
+        else:
+            self.imageStack = np.add(self.imageStack, self.image)
+            self.numberStack += 1
 
-        # now we are going to stack the results
-        self.numberStack += 1
-        self.imageStack = np.add(self.imageStack, self.image)
         self.image = self.imageStack / self.numberStack
 
         return True
@@ -785,7 +789,7 @@ class ImageWindow(widget.MWidget):
 
         return True
 
-    def showImage(self, imagePath):
+    def showImage(self, imagePath=''):
         """
         tho idea of processing the image data until it is shown on screen is to split the
         pipeline in several atomic steps, which follow each other. each step is calling the
@@ -814,6 +818,11 @@ class ImageWindow(widget.MWidget):
         with fits.open(imagePath, mode='update') as fitsHandle:
             self.image = fitsHandle[0].data
             self.header = fitsHandle[0].header
+
+        if self.image is None:
+            return False
+        if self.header is None:
+            return False
 
         # todo: if it's an exposure directly, I get a bayer mosaic ??
         if 'BAYERPAT' in self.header and len(self.image.shape) > 2:

@@ -15,6 +15,7 @@
 # Licence APL2.0
 #
 ###########################################################
+import mw4.base.packageConfig as Config
 # standard libraries
 import unittest.mock as mock
 import pytest
@@ -26,6 +27,7 @@ faulthandler.enable()
 
 # external packages
 import astropy.visualization
+from astropy.visualization import AsinhStretch
 from astropy.io import fits
 from astropy import wcs
 from skyfield.api import Angle
@@ -69,6 +71,7 @@ def module_setup_teardown(qtbot):
         config = {'mainW': {},
                   'showImageW': True}
         update1s = pyqtSignal()
+        showImage = pyqtSignal(str)
         message = pyqtSignal(str, int)
         mainW = Test1()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
@@ -77,6 +80,7 @@ def module_setup_teardown(qtbot):
         astrometry = Astrometry(app=Test2())
         uiWindows = {'showImageW': {}}
         mwGlob = {'imageDir': 'mw4/test/image'}
+        threadPool = QThreadPool()
         deviceStat = {'camera': True,
                       'astrometry': True}
 
@@ -135,8 +139,10 @@ def test_setupDropDownGui():
 
 def test_updateWindowsStats_1():
     app.deviceStat['expose'] = True
-    app.deviceStat['exposeN'] = True
+    app.deviceStat['exposeN'] = False
     app.deviceStat['solve'] = True
+    app.app.deviceStat['camera'] = False
+    app.app.deviceStat['astrometry'] = True
     app.deviceStat['imaging'] = True
     app.deviceStat['astrometry'] = True
 
@@ -146,10 +152,19 @@ def test_updateWindowsStats_1():
 
 def test_updateWindowsStats_2():
     app.deviceStat['expose'] = False
-    app.deviceStat['exposeN'] = False
+    app.deviceStat['exposeN'] = True
     app.deviceStat['solve'] = False
+    app.app.deviceStat['camera'] = True
+    app.app.deviceStat['astrometry'] = False
     app.deviceStat['imaging'] = False
     app.deviceStat['astrometry'] = False
+
+    suc = app.updateWindowsStats()
+    assert suc
+
+
+def test_updateWindowsStats_3():
+    app.ui.checkShowFlux.setChecked(True)
 
     suc = app.updateWindowsStats()
     assert suc
@@ -168,193 +183,343 @@ def test_selectImage_2(qtbot):
                            'openFile',
                            return_value=('c:/test/test.fits', 'test', '.fits')):
         with qtbot.waitSignal(app.app.message) as blocker:
-            with qtbot.waitSignal(app.signals.showContent):
+            with qtbot.waitSignal(app.app.showImage):
                 suc = app.selectImage()
                 assert suc
         assert ['Image [test] selected', 0] == blocker.args
         assert app.folder == 'c:/test'
 
 
-def test_writeHeaderToGUI_1():
-    header = fits.PrimaryHDU().header
-    suc = app.writeHeaderToGUI(header=header)
-    assert suc == (False, None)
-
-
-def test_writeHeaderToGUI_2():
-    header = fits.PrimaryHDU().header
-    header['naxis'] = 2
-    suc = app.writeHeaderToGUI(header=header)
-    assert not suc[0]
-
-
-def test_zoomImage_1():
-    image = None
-    header = fits.PrimaryHDU().header
-    header['naxis'] = 2
-    wcsObject = wcs.WCS(header)
-    suc = app.zoomImage(image=image, wcsObject=wcsObject)
-    assert suc is None
-
-
-def test_zoomImage_2():
-    image = np.zeros([100, 100], dtype=np.uint8)
-    header = fits.PrimaryHDU().header
-    header['naxis'] = 2
-    wcsObject = wcs.WCS(header)
-    app.ui.zoom.setCurrentIndex(0)
-    suc = app.zoomImage(image=image, wcsObject=wcsObject)
-    assert suc.shape == (100, 100)
-
-
-def test_zoomImage_3():
-    image = np.zeros([100, 100], dtype=np.uint8)
-    header = fits.PrimaryHDU().header
-    header['naxis'] = 2
-    wcsObject = wcs.WCS(header)
-    app.ui.zoom.setCurrentIndex(1)
-    suc = app.zoomImage(image=image, wcsObject=wcsObject)
-    assert suc.shape == (50, 50)
-
-
-def test_stretchImage_1():
-    image = None
-    suc = app.stretchImage(image=image)
-    assert suc is None
-
-
-def test_stretchImage_2():
-    image = np.zeros([100, 100], dtype=np.uint8)
-    val = app.stretchImage(image=image)
-    assert isinstance(val, astropy.visualization.AsinhStretch)
-
-
-def test_colorImage_1():
-    app.ui.color.setCurrentIndex(0)
-    suc = app.colorImage()
-    assert suc == 'gray'
-
-
-def test_colorImage_2():
-    app.ui.color.setCurrentIndex(1)
-    suc = app.colorImage()
-    assert suc == 'plasma'
-
-
 def test_setupDistorted_1():
     header = fits.PrimaryHDU().header
     header['naxis'] = 2
 
-    axe = app.setupDistorted()
-    assert not axe
-
-
-def test_setupDistorted_2():
-    header = fits.PrimaryHDU().header
-    header['naxis'] = 2
-    fig = app.imageMat.figure
-
-    axe = app.setupDistorted(figure=fig)
-    assert not axe
+    suc = app.setupDistorted()
+    assert suc
+    assert app.axe is not None
+    assert app.axeCB is None
 
 
 def test_setupDistorted_3():
-    header = fits.PrimaryHDU().header
-    header['naxis'] = 2
-    wcsObject = wcs.WCS(header)
-    fig = app.imageMat.figure
+    app.header = fits.PrimaryHDU().header
+    app.header['naxis'] = 2
 
-    axe = app.setupDistorted(figure=fig, wcsObject=wcsObject)
-    assert axe
+    suc = app.setupDistorted()
+    assert suc
+    assert app.axe is not None
+    assert app.axeCB is None
 
 
 def test_setupNormal_1():
     app.ui.checkShowGrid.setChecked(True)
     app.ui.checkShowCrosshair.setChecked(True)
-    header = fits.PrimaryHDU().header
-    header['naxis'] = 2
+    app.header = fits.PrimaryHDU().header
+    app.header['naxis'] = 2
 
-    axe = app.setupNormal()
-    assert not axe
+    suc = app.setupNormal()
+    assert suc
+    assert app.axe is not None
+    assert app.axeCB is not None
 
 
 def test_setupNormal_2():
     app.ui.checkShowGrid.setChecked(True)
     app.ui.checkShowCrosshair.setChecked(True)
-    header = fits.PrimaryHDU().header
-    header['naxis'] = 2
-    fig = app.imageMat.figure
+    app.header = fits.PrimaryHDU().header
+    app.header['naxis'] = 2
 
-    axe = app.setupNormal(figure=fig)
-    assert not axe
+    suc = app.setupNormal()
+    assert suc
+    assert app.axe is not None
+    assert app.axeCB is not None
 
 
 def test_setupNormal_3():
     app.ui.checkShowGrid.setChecked(True)
     app.ui.checkShowCrosshair.setChecked(True)
-    header = fits.PrimaryHDU().header
-    header['naxis'] = 2
-    fig = app.imageMat.figure
+    app.header = fits.PrimaryHDU().header
+    app.header['naxis'] = 2
 
-    axe = app.setupNormal(figure=fig, header=header)
-    assert axe
+    suc = app.setupNormal()
+    assert suc
+    assert app.axe is not None
+    assert app.axeCB is not None
 
 
 def test_setupNormal_4():
     app.ui.checkShowGrid.setChecked(False)
     app.ui.checkShowCrosshair.setChecked(False)
-    header = fits.PrimaryHDU().header
-    header['naxis'] = 2
-    fig = app.imageMat.figure
+    app.header = fits.PrimaryHDU().header
+    app.header['naxis'] = 2
 
-    axe = app.setupNormal(figure=fig, header=header)
-    assert axe
+    suc = app.setupNormal()
+    assert suc
+    assert app.axe is not None
+    assert app.axeCB is not None
+
+
+def test_colorImage_1():
+    app.ui.color.setCurrentIndex(0)
+    suc = app.colorImage()
+    assert suc
+    assert app.colorMap == 'gray'
+
+
+def test_colorImage_2():
+    app.ui.color.setCurrentIndex(1)
+    suc = app.colorImage()
+    assert suc
+    assert app.colorMap == 'plasma'
+
+
+def test_stretchImage_1():
+    suc = app.stretchImage()
+    assert suc
+
+
+def test_stretchImage_2():
+    suc = app.stretchImage()
+    assert suc
+    assert isinstance(app.stretch, astropy.visualization.AsinhStretch)
+
+
+def test_imagePlot_1():
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.axe = app.fig.add_subplot()
+    app.axeCB = app.fig.add_axes()
+    app.stretch = AsinhStretch()
+    app.colorMap = 'rainbow'
+    suc = app.imagePlot()
+    assert suc
+
+
+def test_imagePlot_2():
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.header = fits.PrimaryHDU().header
+    app.axe = app.fig.add_subplot()
+    app.axeCB = app.fig.add_axes()
+    app.stretch = AsinhStretch()
+    app.colorMap = 'rainbow'
+    app.sources = {'xcentroid': 50 * np.ones([1]),
+                   'ycentroid': 50 * np.ones([1]),
+                   'sharpness': 0.5 * np.ones([1]),
+                   'roundness1': 0.5 * np.ones([1]),
+                   'roundness2': 0.5 * np.ones([1]),
+                   'flux': 5 * np.ones([1]),
+                   }
+    app.mean = np.zeros([100, 100], dtype=np.uint8)
+    app.ui.checkShowSources.setChecked(True)
+    suc = app.imagePlot()
+    assert suc
+
+
+def test_imagePlot_3():
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.header = fits.PrimaryHDU().header
+    app.axe = app.fig.add_subplot()
+    app.axeCB = app.fig.add_axes()
+    app.stretch = AsinhStretch()
+    app.colorMap = 'rainbow'
+    app.sources = {'xcentroid': 50 * np.ones([1]),
+                   'ycentroid': 50 * np.ones([1]),
+                   'sharpness': 0.5 * np.ones([1]),
+                   'roundness1': 0.5 * np.ones([1]),
+                   'roundness2': 0.5 * np.ones([1]),
+                   'flux': 5 * np.ones([1]),
+                   }
+    app.mean = np.zeros([100, 100], dtype=np.uint8)
+    app.ui.checkShowSharp.setChecked(True)
+    suc = app.imagePlot()
+    assert suc
+
+
+def test_imagePlot_4():
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.header = fits.PrimaryHDU().header
+    app.axe = app.fig.add_subplot()
+    app.axeCB = app.fig.add_axes()
+    app.stretch = AsinhStretch()
+    app.colorMap = 'rainbow'
+    app.sources = {'xcentroid': 50 * np.ones([1]),
+                   'ycentroid': 50 * np.ones([1]),
+                   'sharpness': 0.5 * np.ones([1]),
+                   'roundness1': 0.5 * np.ones([1]),
+                   'roundness2': 0.5 * np.ones([1]),
+                   'flux': 5 * np.ones([1]),
+                   }
+    app.mean = np.zeros([100, 100], dtype=np.uint8)
+    app.ui.checkShowRound.setChecked(True)
+    suc = app.imagePlot()
+    assert suc
+
+
+def test_imagePlot_5():
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.header = fits.PrimaryHDU().header
+    app.axe = app.fig.add_subplot()
+    app.axeCB = app.fig.add_axes()
+    app.stretch = AsinhStretch()
+    app.colorMap = 'rainbow'
+    app.sources = {'xcentroid': 50 * np.ones([1]),
+                   'ycentroid': 50 * np.ones([1]),
+                   'sharpness': 0.5 * np.ones([1]),
+                   'roundness1': 0.5 * np.ones([1]),
+                   'roundness2': 0.5 * np.ones([1]),
+                   'flux': 5 * np.ones([1]),
+                   }
+    app.mean = np.zeros([100, 100], dtype=np.uint8)
+    app.ui.checkShowFlux.setChecked(True)
+    suc = app.imagePlot()
+    assert suc
+
+
+def test_writeHeaderDataToGUI_1():
+    app.header = fits.PrimaryHDU().header
+    suc = app.writeHeaderDataToGUI()
+    assert suc
+
+
+def test_writeHeaderDataToGUI_2():
+    app.header = fits.PrimaryHDU().header
+    app.header['naxis'] = 2
+    suc = app.writeHeaderDataToGUI()
+    assert suc
+
+
+def test_preparePlot_1():
+    app.image = None
+    app.header = None
+    suc = app.preparePlot()
+    assert not suc
+
+
+def test_preparePlot_2():
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.header = None
+    suc = app.preparePlot()
+    assert not suc
+
+
+def test_preparePlot_3():
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.header = fits.PrimaryHDU().header
+    suc = app.preparePlot()
+    assert suc
+
+
+def test_preparePlot_4():
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.header = fits.PrimaryHDU().header
+    app.header['CTYPE1'] = '2'
+    suc = app.preparePlot()
+    assert suc
+
+
+def test_preparePlot_5():
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.header = fits.PrimaryHDU().header
+    app.header['CTYPE1'] = '2'
+    app.ui.checkUseWCS.setChecked(True)
+    with mock.patch.object(wcs.WCS,
+                           'has_distortion',
+                           return_value=True):
+        app.setupDistorted = app.setupNormal
+        suc = app.preparePlot()
+        assert suc
+
+
+def test_workerPhotometry_1():
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    suc = app.workerPhotometry()
+    assert suc
+    assert app.mean is not None
+    assert app.std is not None
+    assert app.median is not None
+    assert app.sources is None
+
+
+def test_prepareImage_1():
+    Config.featureFlags['imageAdv'] = False
+    suc = app.prepareImage()
+    assert suc
+
+
+def test_prepareImage_2():
+    Config.featureFlags['imageAdv'] = True
+    app.sources = None
+    with mock.patch.object(app,
+                           'workerPhotometry'):
+        suc = app.prepareImage()
+        assert suc
 
 
 def test_stackImages_1():
-    val = app.stackImages()
-    assert val is None
-    assert app.numberStack == 1
+    app.ui.checkStackImages.setChecked(False)
+    suc = app.stackImages()
+    assert not suc
+    assert app.imageStack is None
+    assert app.ui.numberStacks.text() == 'single'
 
 
 def test_stackImages_2():
-    val = app.stackImages(5)
-    assert val == 5
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.imageStack = np.zeros([50, 50], dtype=np.uint8)
+    app.header = fits.PrimaryHDU().header
+    app.ui.checkStackImages.setChecked(True)
+
+    suc = app.stackImages()
+    assert suc
+    assert app.imageStack.shape == app.image.shape
     assert app.numberStack == 1
 
 
 def test_stackImages_3():
-    app.imageStack = None
-    app.stackImages(5)
-    val = app.stackImages(3)
-    assert val == 4
-    assert app.numberStack == 2
+    app.numberStack = 5
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.imageStack = np.zeros([100, 100], dtype=np.uint8)
+    app.header = fits.PrimaryHDU().header
+    app.ui.checkStackImages.setChecked(True)
+
+    suc = app.stackImages()
+    assert suc
+    assert app.numberStack == 6
+
+
+def test_zoomImage_1():
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.header = fits.PrimaryHDU().header
+    app.header['naxis'] = 2
+    app.ui.zoom.setCurrentIndex(0)
+    suc = app.zoomImage()
+    assert not suc
+    assert app.image.shape == (100, 100)
+
+
+def test_zoomImage_2():
+    app.image = np.zeros([100, 100], dtype=np.uint8)
+    app.header = fits.PrimaryHDU().header
+    app.header['naxis'] = 2
+    app.ui.zoom.setCurrentIndex(1)
+    suc = app.zoomImage()
+    assert suc
+    assert app.image.shape == (50, 50)
 
 
 def test_showImage_1():
     app.imageFileName = ''
-    suc = app.showContent()
+    suc = app.showImage()
     assert not suc
 
 
 def test_showImage_2():
     app.imageFileName = 'test'
-    suc = app.showContent()
+    suc = app.showImage()
     assert not suc
 
 
 def test_showImage_3():
     shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
-    app.imageFileName = 'mw4/test/image/m51.fit'
-    suc = app.showCurrent()
-    assert suc
-
-
-def test_showImage_4():
-    app.ui.checkStackImages.setChecked(True)
-    shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
-    app.imageFileName = 'mw4/test/image/m51.fit'
-    suc = app.showCurrent()
+    suc = app.showImage(imagePath='mw4/test/image/m51.fit')
     assert suc
 
 
@@ -379,7 +544,7 @@ def test_exposeImageDone_1(qtbot):
     app.ui.checkAutoSolve.setChecked(False)
     app.app.camera.signals.saved.connect(app.exposeImageDone)
     with qtbot.waitSignal(app.app.message) as blocker:
-        with qtbot.waitSignal(app.signals.showContent):
+        with qtbot.waitSignal(app.app.showImage):
             suc = app.exposeImageDone()
             assert suc
     assert ['Exposed:             []', 0] == blocker.args
@@ -405,7 +570,7 @@ def test_exposeImageNDone_1(qtbot):
     app.ui.checkAutoSolve.setChecked(False)
     app.app.camera.signals.saved.connect(app.exposeImageDone)
     with qtbot.waitSignal(app.app.message) as blocker:
-        with qtbot.waitSignal(app.signals.showContent):
+        with qtbot.waitSignal(app.app.showImage):
             suc = app.exposeImageNDone()
             assert suc
     assert ['Exposed:            []', 0] == blocker.args
@@ -438,7 +603,7 @@ def test_abortImage_1(qtbot):
 
 
 def test_abortImage_2(qtbot):
-    app.app.camera.signals.saved.connect(app.showContent)
+    app.app.camera.signals.saved.connect(app.showImage)
     app.ui.exposeN.setEnabled(True)
     app.ui.expose.setEnabled(False)
     app.app.camera.signals.saved.connect(app.exposeRaw)
@@ -452,7 +617,7 @@ def test_abortImage_2(qtbot):
 
 
 def test_abortImage_3(qtbot):
-    app.app.camera.signals.saved.connect(app.showContent)
+    app.app.camera.signals.saved.connect(app.showImage)
     app.ui.exposeN.setEnabled(False)
     app.ui.expose.setEnabled(True)
     app.app.camera.signals.saved.connect(app.exposeImageDone)
@@ -532,7 +697,7 @@ def test_solveDone_4(qtbot):
     }
 
     app.app.astrometry.signals.done.connect(app.solveDone)
-    with qtbot.waitSignal(app.signals.showContent):
+    with qtbot.waitSignal(app.app.showImage):
         suc = app.solveDone(result=result)
         assert suc
 

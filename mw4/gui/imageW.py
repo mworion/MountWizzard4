@@ -21,6 +21,8 @@ import os
 
 # external packages
 import PyQt5.QtWidgets
+from PyQt5.QtCore import QModelIndex
+from PyQt5.QtGui import QBrush
 
 from astropy.io import fits
 from astropy import wcs
@@ -102,6 +104,14 @@ class ImageWindow(widget.MWidget):
             'exposeN': False,
             'solve': False,
         }
+        self.view = {0: 'Image',
+                     1: 'Image & WCS coordinates',
+                     2: 'Image & detected sources',
+                     3: 'Photometry - Sharpness',
+                     4: 'Photometry - Roundness',
+                     5: 'Photometry - Flux',
+                     }
+
         self.colorMaps = {'Grey': 'gray',
                           'Cool': 'plasma',
                           'Rainbow': 'rainbow',
@@ -166,19 +176,16 @@ class ImageWindow(widget.MWidget):
         self.setupDropDownGui()
         self.ui.color.setCurrentIndex(config.get('color', 0))
         self.ui.zoom.setCurrentIndex(config.get('zoom', 0))
+        self.ui.view.setCurrentIndex(config.get('view', 0))
+
         self.ui.stretch.setCurrentIndex(config.get('stretch', 0))
         self.imageFileName = config.get('imageFileName', '')
         self.folder = self.app.mwGlob.get('imageDir', '')
-        self.ui.checkUseWCS.setChecked(config.get('checkUseWCS', False))
         self.ui.checkStackImages.setChecked(config.get('checkStackImages', False))
         self.ui.checkShowCrosshair.setChecked(config.get('checkShowCrosshair', False))
         self.ui.checkShowGrid.setChecked(config.get('checkShowGrid', True))
         self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
         self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
-        self.ui.checkShowSources.setChecked(config.get('checkShowSources', False))
-        self.ui.checkShowImage.setChecked(config.get('checkShowImage', True))
-        self.ui.checkShowRound.setChecked(config.get('checkShowRound', False))
-        self.ui.checkShowSharp.setChecked(config.get('checkShowSharp', False))
 
         return True
 
@@ -199,18 +206,14 @@ class ImageWindow(widget.MWidget):
         config['width'] = self.width()
         config['color'] = self.ui.color.currentIndex()
         config['zoom'] = self.ui.zoom.currentIndex()
+        config['view'] = self.ui.view.currentIndex()
         config['stretch'] = self.ui.stretch.currentIndex()
         config['imageFileName'] = self.imageFileName
-        config['checkUseWCS'] = self.ui.checkUseWCS.isChecked()
         config['checkStackImages'] = self.ui.checkStackImages.isChecked()
         config['checkShowCrosshair'] = self.ui.checkShowCrosshair.isChecked()
         config['checkShowGrid'] = self.ui.checkShowGrid.isChecked()
         config['checkAutoSolve'] = self.ui.checkAutoSolve.isChecked()
         config['checkEmbedData'] = self.ui.checkEmbedData.isChecked()
-        config['checkShowSources'] = self.ui.checkShowSources.isChecked()
-        config['checkShowImage'] = self.ui.checkShowImage.isChecked()
-        config['checkShowRound'] = self.ui.checkShowRound.isChecked()
-        config['checkShowSharp'] = self.ui.checkShowSharp.isChecked()
 
         return True
 
@@ -223,21 +226,16 @@ class ImageWindow(widget.MWidget):
         """
 
         self.show()
-        # self.showCurrent()
+        self.showCurrent()
 
         # gui signals
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.preparePlot)
         self.ui.stretch.currentIndexChanged.connect(self.preparePlot)
         self.ui.zoom.currentIndexChanged.connect(self.showCurrent)
-        self.ui.checkUseWCS.clicked.connect(self.preparePlot)
+        self.ui.view.currentIndexChanged.connect(self.preparePlot)
         self.ui.checkShowGrid.clicked.connect(self.preparePlot)
         self.ui.checkShowCrosshair.clicked.connect(self.preparePlot)
-        self.ui.checkShowSources.clicked.connect(self.preparePlot)
-        self.ui.checkShowImage.clicked.connect(self.preparePlot)
-        self.ui.checkShowSharp.clicked.connect(self.preparePlot)
-        self.ui.checkShowRound.clicked.connect(self.preparePlot)
-        self.ui.checkShowFlux.clicked.connect(self.preparePlot)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
@@ -267,14 +265,9 @@ class ImageWindow(widget.MWidget):
         self.ui.color.currentIndexChanged.disconnect(self.preparePlot)
         self.ui.stretch.currentIndexChanged.disconnect(self.preparePlot)
         self.ui.zoom.currentIndexChanged.disconnect(self.showCurrent)
-        self.ui.checkUseWCS.clicked.disconnect(self.preparePlot)
+        self.ui.view.currentIndexChanged.disconnect(self.preparePlot)
         self.ui.checkShowGrid.clicked.disconnect(self.preparePlot)
         self.ui.checkShowCrosshair.clicked.disconnect(self.preparePlot)
-        self.ui.checkShowSources.clicked.disconnect(self.preparePlot)
-        self.ui.checkShowImage.clicked.disconnect(self.preparePlot)
-        self.ui.checkShowSharp.clicked.disconnect(self.preparePlot)
-        self.ui.checkShowRound.clicked.disconnect(self.preparePlot)
-        self.ui.checkShowFlux.clicked.disconnect(self.preparePlot)
         self.ui.solve.clicked.disconnect(self.solveCurrent)
         self.ui.expose.clicked.disconnect(self.exposeImage)
         self.ui.exposeN.clicked.disconnect(self.exposeImageN)
@@ -309,6 +302,11 @@ class ImageWindow(widget.MWidget):
         self.ui.stretch.setView(PyQt5.QtWidgets.QListView())
         for text in self.stretchValues:
             self.ui.stretch.addItem(text)
+
+        self.ui.view.clear()
+        self.ui.view.setView(PyQt5.QtWidgets.QListView())
+        for text in self.view:
+            self.ui.view.addItem(self.view[text])
 
         return True
 
@@ -364,14 +362,6 @@ class ImageWindow(widget.MWidget):
             self.changeStyleDynamic(self.ui.solve, 'running', 'true')
         else:
             self.changeStyleDynamic(self.ui.solve, 'running', 'false')
-
-        isFlux = self.ui.checkShowFlux.isChecked()
-        isRound = self.ui.checkShowRound.isChecked()
-        isSharp = self.ui.checkShowSharp.isChecked()
-        if isRound or isFlux or isSharp:
-            self.ui.checkUseWCS.setChecked(False)
-            self.ui.checkShowGrid.setChecked(False)
-            self.ui.checkShowCrosshair.setChecked(False)
 
         return True
 
@@ -549,9 +539,10 @@ class ImageWindow(widget.MWidget):
             y = self.sources['ycentroid']
             imageDisp = self.image - self.mean
         else:
+            positions = None
             imageDisp = self.image
 
-        if self.ui.checkShowImage.isChecked():
+        if self.ui.view.currentIndex() in [0, 1, 2]:
             imageDisp[imageDisp < 0] = 0
             img = imshow_norm(imageDisp,
                               ax=self.axe,
@@ -567,11 +558,11 @@ class ImageWindow(widget.MWidget):
                 yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
                 plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-            if self.ui.checkShowSources.isChecked() and self.sources:
-                apertures = CircularAperture(positions, r=10.0)
-                apertures.plot(axes=self.axe, color=self.M_BLUE, lw=1.0, alpha=0.8)
+        if self.ui.view.currentIndex() == 2 and positions is not None:
+            apertures = CircularAperture(positions, r=10.0)
+            apertures.plot(axes=self.axe, color=self.M_BLUE, lw=1.0, alpha=0.8)
 
-        elif self.ui.checkShowSharp.isChecked() and self.sources:
+        if self.ui.view.currentIndex() == 3 and self.sources:
             sharpness = self.sources['sharpness']
             area = 50 * (1 - sharpness) + 3
             scatter = self.axe.scatter(x, y, c=sharpness,
@@ -584,7 +575,7 @@ class ImageWindow(widget.MWidget):
             yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
             plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        elif self.ui.checkShowRound.isChecked() and self.sources:
+        if self.ui.view.currentIndex() == 4 and self.sources:
             r1 = self.sources['roundness1']
             r2 = self.sources['roundness2']
             rg = np.sqrt(r1*r1 + r2*r2)
@@ -599,7 +590,7 @@ class ImageWindow(widget.MWidget):
             yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
             plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        elif self.ui.checkShowFlux.isChecked() and self.sources:
+        if self.ui.view.currentIndex() == 5 and self.sources:
             flux = np.log(self.sources['flux'])
             area = 3 * flux
             scatter = self.axe.scatter(x, y, c=flux,
@@ -691,7 +682,12 @@ class ImageWindow(widget.MWidget):
         self.ui.hasDistortion.setEnabled(hasDistortion)
         self.ui.hasWCS.setEnabled(hasCelestial)
 
-        useWCS = self.ui.checkUseWCS.isChecked()
+        if hasDistortion:
+            self.ui.view.view().setRowHidden(1, False)
+        else:
+            self.ui.view.view().setRowHidden(1, True)
+
+        useWCS = (self.ui.view.currentIndex() == 1)
 
         if hasDistortion and useWCS:
             self.setupDistorted()

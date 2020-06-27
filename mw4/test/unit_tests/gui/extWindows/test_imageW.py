@@ -163,13 +163,6 @@ def test_updateWindowsStats_2():
     assert suc
 
 
-def test_updateWindowsStats_3():
-    app.ui.checkShowFlux.setChecked(True)
-
-    suc = app.updateWindowsStats()
-    assert suc
-
-
 def test_selectImage_1():
     with mock.patch.object(MWidget,
                            'openFile',
@@ -289,6 +282,7 @@ def test_imagePlot_1():
     app.axeCB = app.fig.add_axes()
     app.stretch = AsinhStretch()
     app.colorMap = 'rainbow'
+    app.ui.view.setCurrentIndex(0)
     suc = app.imagePlot()
     assert suc
 
@@ -308,7 +302,7 @@ def test_imagePlot_2():
                    'flux': 5 * np.ones([1]),
                    }
     app.mean = np.zeros([100, 100], dtype=np.uint8)
-    app.ui.checkShowSources.setChecked(True)
+    app.ui.view.setCurrentIndex(1)
     suc = app.imagePlot()
     assert suc
 
@@ -328,7 +322,7 @@ def test_imagePlot_3():
                    'flux': 5 * np.ones([1]),
                    }
     app.mean = np.zeros([100, 100], dtype=np.uint8)
-    app.ui.checkShowSharp.setChecked(True)
+    app.ui.view.setCurrentIndex(2)
     suc = app.imagePlot()
     assert suc
 
@@ -348,7 +342,7 @@ def test_imagePlot_4():
                    'flux': 5 * np.ones([1]),
                    }
     app.mean = np.zeros([100, 100], dtype=np.uint8)
-    app.ui.checkShowRound.setChecked(True)
+    app.ui.view.setCurrentIndex(4)
     suc = app.imagePlot()
     assert suc
 
@@ -368,7 +362,7 @@ def test_imagePlot_5():
                    'flux': 5 * np.ones([1]),
                    }
     app.mean = np.zeros([100, 100], dtype=np.uint8)
-    app.ui.checkShowFlux.setChecked(True)
+    app.ui.view.setCurrentIndex(5)
     suc = app.imagePlot()
     assert suc
 
@@ -419,7 +413,7 @@ def test_preparePlot_5():
     app.image = np.zeros([100, 100], dtype=np.uint8)
     app.header = fits.PrimaryHDU().header
     app.header['CTYPE1'] = '2'
-    app.ui.checkUseWCS.setChecked(True)
+    app.ui.view.setCurrentIndex(1)
     with mock.patch.object(wcs.WCS,
                            'has_distortion',
                            return_value=True):

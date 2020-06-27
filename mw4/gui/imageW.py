@@ -386,7 +386,6 @@ class ImageWindow(widget.MWidget):
         self.ui.imageFileName.setText(name)
         self.imageFileName = loadFilePath
         self.app.message.emit(f'Image [{name}] selected', 0)
-        self.ui.checkUseWCS.setChecked(False)
         self.folder = os.path.dirname(loadFilePath)
         self.app.showImage.emit(self.imageFileName)
 

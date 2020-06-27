@@ -18,18 +18,18 @@ disconnected, green shows connected devices), and shows status text output from 
 Buttons below the status indicators can open, show additional status, or close additional
 windows for advanced features.
 
-Area 2
-^^^^^^
+Area 2: Overview and time
+^^^^^^^^^^^^^^^^^^^^^^^^^
 ...shows actual computer time, UTC, and the actual profile. In header section there is
 hint if MW4 work actually in online (internet connected) or offline mode.
 
-Area 3
-^^^^^^
+Area 3: Start / Stop / Boot / Shutdown
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ...manages loading / saving profiles, boot and shutdown of the mount (if WOL (Wake on LAN)
 is enabled and the MAC address of the mount is known)
 
-Area 4
-^^^^^^
+Area 4: Functions area
+^^^^^^^^^^^^^^^^^^^^^^
 ...shows different tabs for different use cases.
 
 MW4 comes uses tooltips which should help you understand which button or widget is used

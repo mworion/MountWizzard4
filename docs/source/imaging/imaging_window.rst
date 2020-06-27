@@ -8,7 +8,7 @@ model build. It is split in different areas to work with.
     :scale: 71%
 
 Area 1: Image exposing and solving
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------
 MW4 supports single (expose 1) and multiple (expose N) exposures. Continuous imaging could be
 stopped with abort. You also could explicitly load a fits file (extension .fit or .fits).
 If you have a plate solver (e.g. ASTAP) installed, you could solve the actual displayed
@@ -28,29 +28,31 @@ When "stacking" is checked, MW4 will add all exposed images (expose N running) a
 the mean of the image.
 
 Area 2: FITS Header entries
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------
 Some of the FITS header entry of the actual image are shown.
 
 Area 3: Image attributes
-^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------
 MW4 calculates and extracts some image attributes. For example if a WCS header information
 is available, the distortion parameters are present or the actual image is flipped with
 regard to real position in sky.
 
 Area 4: Image display
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 Show the image and it's different view selected in area 5. For standard view the scale is
 pixel with 0/0 to be the center of the image. There will be a colorbar in each view with the
 values of the image.
 
 Area 5: View options
-^^^^^^^^^^^^^^^^^^^^
+--------------------
 For the image you have different options to alter the main view of the image:
 
 .. list-table:: Image views
-    :widths: 25, 75
+    :widths: 30, 70
     :header-rows: 1
 
+    *   - Drop down entry
+        - Explanation
     *   - Image
         - standard visualization of the image in greyscale. MW4 does not support colors
     *   - Image & WCS coordinates
@@ -64,7 +66,8 @@ For the image you have different options to alter the main view of the image:
     *   - Photometry - Flux
         - sextractor based algorithm: value for flux of the sources
 
-Some examples for the windows:
+Some examples for the windows
+-----------------------------
 
 View Image with WCS distortion:
 

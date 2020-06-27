@@ -396,7 +396,7 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit(f'Image [{name}] selected', 0)
         self.ui.checkUseWCS.setChecked(False)
         self.folder = os.path.dirname(loadFilePath)
-        self.signals.showImage.emit(self.imageFileName)
+        self.app.showImage.emit(self.imageFileName)
 
         return True
 
@@ -415,7 +415,7 @@ class ImageWindow(widget.MWidget):
                                         facecolor=self.M_GREY_LIGHT)
 
         self.fig.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
-        self.axeCB = self.fig.add_axes([0.88, 0.1, 0.02, 0.8])
+        self.axeCB = None
 
         self.axe.coords.frame.set_color(self.M_BLUE)
 
@@ -558,10 +558,13 @@ class ImageWindow(widget.MWidget):
                               stretch=self.stretch,
                               cmap=self.colorMap,
                               aspect='auto')
-            colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
-            colorbar.set_label('Value [pixel value]', color=self.M_BLUE, fontsize=12)
-            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+
+            if self.axeCB:
+                colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
+                colorbar.set_label('Value [pixel value]', color=self.M_BLUE, fontsize=12)
+                yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+                plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+
             if self.ui.checkShowSources.isChecked() and self.sources:
                 apertures = CircularAperture(positions, r=10.0)
                 apertures.plot(axes=self.axe, color=self.M_BLUE, lw=1.0, alpha=0.8)
@@ -667,6 +670,8 @@ class ImageWindow(widget.MWidget):
         :return:
         """
 
+        self.updateWindowsStats()
+
         # check if distortion is in header
         if 'CTYPE1' in self.header:
             wcsObject = wcs.WCS(self.header, relax=True)
@@ -763,8 +768,7 @@ class ImageWindow(widget.MWidget):
                               position=position,
                               size=size,
                               wcs=wcs.WCS(self.header, relax=True),
-                              copy=True,
-                              )
+                              copy=True).data
 
         return True
 
@@ -784,8 +788,6 @@ class ImageWindow(widget.MWidget):
         :param imagePath:
         :return:
         """
-
-        self.updateWindowsStats()
 
         if not imagePath:
             return False
@@ -876,7 +878,7 @@ class ImageWindow(widget.MWidget):
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         else:
-            self.signals.showImage.emit(imagePath)
+            self.app.showImage.emit(imagePath)
 
         return True
 
@@ -916,7 +918,7 @@ class ImageWindow(widget.MWidget):
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         else:
-            self.signals.showImage.emit(imagePath)
+            self.app.showImage.emit(imagePath)
 
         self.exposeRaw()
 
@@ -1005,7 +1007,7 @@ class ImageWindow(widget.MWidget):
         isStack = self.ui.checkStackImages.isChecked()
         isAutoSolve = self.ui.checkAutoSolve.isChecked()
         if not isStack or isAutoSolve:
-            self.signals.showImage.emit(result['solvedPath'])
+            self.app.showImage.emit(result['solvedPath'])
 
         return True
 

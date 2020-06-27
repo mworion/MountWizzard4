@@ -41,6 +41,7 @@ import cv2
 from mw4.base import transform
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
+from mw4.base.tpool import Worker
 
 
 class ImageWindowSignals(PyQt5.QtCore.QObject):
@@ -56,7 +57,6 @@ class ImageWindowSignals(PyQt5.QtCore.QObject):
     __all__ = ['ImageWindowSignals']
 
     showCurrent = PyQt5.QtCore.pyqtSignal()
-    showImage = PyQt5.QtCore.pyqtSignal(object)
     solveImage = PyQt5.QtCore.pyqtSignal(object)
 
 
@@ -83,12 +83,17 @@ class ImageWindow(widget.MWidget):
         self.imageFileNameOld = ''
         self.expTime = 1
         self.binning = 1
+
+        self.image = None
+        self.header = None
         self.imageStack = None
-        self.raStack = 0
-        self.decStack = 0
-        self.angleStack = 0
-        self.scaleStack = 0
         self.numberStack = 0
+        self.colorMap = None
+        self.stretch = None
+        self.sources = None
+        self.mean = None
+        self.median = None
+        self.std = None
         self.folder = ''
 
         self.deviceStat = {
@@ -119,6 +124,9 @@ class ImageWindow(widget.MWidget):
 
         self.imageMat = self.embedMatplot(self.ui.image, constrainedLayout=False)
         self.imageMat.parentWidget().setStyleSheet(self.BACK_BG)
+        self.fig = self.imageMat.figure
+        self.axe = None
+        self.axeCB = None
 
         # cyclic updates
         self.app.update1s.connect(self.updateWindowsStats)
@@ -218,25 +226,25 @@ class ImageWindow(widget.MWidget):
 
         # gui signals
         self.ui.load.clicked.connect(self.selectImage)
-        self.ui.color.currentIndexChanged.connect(self.showCurrent)
-        self.ui.stretch.currentIndexChanged.connect(self.showCurrent)
+        self.ui.color.currentIndexChanged.connect(self.preparePlot)
+        self.ui.stretch.currentIndexChanged.connect(self.preparePlot)
         self.ui.zoom.currentIndexChanged.connect(self.showCurrent)
-        self.ui.checkUseWCS.clicked.connect(self.showCurrent)
-        self.ui.checkShowGrid.clicked.connect(self.showCurrent)
-        self.ui.checkShowCrosshair.clicked.connect(self.showCurrent)
-        self.ui.checkShowSources.clicked.connect(self.showCurrent)
-        self.ui.checkShowImage.clicked.connect(self.showCurrent)
-        self.ui.checkShowSharp.clicked.connect(self.showCurrent)
-        self.ui.checkShowRound.clicked.connect(self.showCurrent)
-        self.ui.checkShowFlux.clicked.connect(self.showCurrent)
+        self.ui.checkUseWCS.clicked.connect(self.preparePlot)
+        self.ui.checkShowGrid.clicked.connect(self.preparePlot)
+        self.ui.checkShowCrosshair.clicked.connect(self.preparePlot)
+        self.ui.checkShowSources.clicked.connect(self.preparePlot)
+        self.ui.checkShowImage.clicked.connect(self.preparePlot)
+        self.ui.checkShowSharp.clicked.connect(self.preparePlot)
+        self.ui.checkShowRound.clicked.connect(self.preparePlot)
+        self.ui.checkShowFlux.clicked.connect(self.preparePlot)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.signals.showCurrent.connect(self.showCurrent)
-        self.signals.showImage.connect(self.showContent)
         self.signals.solveImage.connect(self.solveImage)
+        self.app.showImage.connect(self.showImage)
 
         return True
 
@@ -255,25 +263,26 @@ class ImageWindow(widget.MWidget):
 
         # gui signals
         self.ui.load.clicked.disconnect(self.selectImage)
-        self.ui.color.currentIndexChanged.disconnect(self.showCurrent)
-        self.ui.stretch.currentIndexChanged.disconnect(self.showCurrent)
+        self.ui.color.currentIndexChanged.disconnect(self.preparePlot)
+        self.ui.stretch.currentIndexChanged.disconnect(self.preparePlot)
         self.ui.zoom.currentIndexChanged.disconnect(self.showCurrent)
-        self.ui.checkUseWCS.clicked.disconnect(self.showCurrent)
-        self.ui.checkShowGrid.clicked.disconnect(self.showCurrent)
-        self.ui.checkShowCrosshair.clicked.disconnect(self.showCurrent)
-        self.ui.checkShowSources.clicked.disconnect(self.showCurrent)
-        self.ui.checkShowImage.clicked.disconnect(self.showCurrent)
-        self.ui.checkShowSharp.clicked.disconnect(self.showCurrent)
-        self.ui.checkShowRound.clicked.disconnect(self.showCurrent)
-        self.ui.checkShowFlux.clicked.disconnect(self.showCurrent)
+        self.ui.checkUseWCS.clicked.disconnect(self.preparePlot)
+        self.ui.checkShowGrid.clicked.disconnect(self.preparePlot)
+        self.ui.checkShowCrosshair.clicked.disconnect(self.preparePlot)
+        self.ui.checkShowSources.clicked.disconnect(self.preparePlot)
+        self.ui.checkShowImage.clicked.disconnect(self.preparePlot)
+        self.ui.checkShowSharp.clicked.disconnect(self.preparePlot)
+        self.ui.checkShowRound.clicked.disconnect(self.preparePlot)
+        self.ui.checkShowFlux.clicked.disconnect(self.preparePlot)
         self.ui.solve.clicked.disconnect(self.solveCurrent)
         self.ui.expose.clicked.disconnect(self.exposeImage)
         self.ui.exposeN.clicked.disconnect(self.exposeImageN)
         self.ui.abortImage.clicked.disconnect(self.abortImage)
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
         self.signals.showCurrent.disconnect(self.showCurrent)
-        self.signals.showImage.disconnect(self.showContent)
         self.signals.solveImage.disconnect(self.solveImage)
+
+        self.app.showImage.disconnect(self.showImage)
 
         plt.close(self.imageMat.figure)
         super().closeEvent(closeEvent)
@@ -354,6 +363,14 @@ class ImageWindow(widget.MWidget):
         else:
             self.changeStyleDynamic(self.ui.solve, 'running', 'false')
 
+        isFlux = self.ui.checkShowFlux.isChecked()
+        isRound = self.ui.checkShowRound.isChecked()
+        isSharp = self.ui.checkShowSharp.isChecked()
+        if isRound or isFlux or isSharp:
+            self.ui.checkUseWCS.setChecked(False)
+            self.ui.checkShowGrid.setChecked(False)
+            self.ui.checkShowCrosshair.setChecked(False)
+
         return True
 
     def selectImage(self):
@@ -383,162 +400,27 @@ class ImageWindow(widget.MWidget):
 
         return True
 
-    def writeHeaderToGUI(self, header=None):
-        """
-        writeHeaderToGUI tries to read relevant values from FITS header and possible
-        replace values and write them to the imageW gui
-
-        :param header: header of fits file
-        :return: hasCelestial, hasDistortion
-        """
-
-        name = header.get('OBJECT', '').upper()
-        self.ui.object.setText(f'{name}')
-
-        ra = Angle(degrees=header.get('RA', 0))
-        dec = Angle(degrees=header.get('DEC', 0))
-
-        # ra will be in hours
-        self.ui.ra.setText(f'{ra.hstr(warn=False)}')
-        self.ui.dec.setText(f'{dec.dstr()}')
-
-        scale = header.get('SCALE', 0)
-        rotation = header.get('ANGLE', 0)
-        self.ui.scale.setText(f'{scale:5.3f}')
-        self.ui.rotation.setText(f'{rotation:6.3f}')
-
-        ccdTemp = header.get('CCD-TEMP', 0)
-        self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
-
-        expTime1 = header.get('EXPOSURE', 0)
-        expTime2 = header.get('EXPTIME', 0)
-        expTime = max(expTime1, expTime2)
-        self.ui.expTime.setText(f'{expTime:5.1f}')
-
-        filterCCD = header.get('FILTER', 0)
-        self.ui.filter.setText(f'{filterCCD}')
-
-        binX = header.get('XBINNING', 0)
-        binY = header.get('YBINNING', 0)
-        self.ui.binX.setText(f'{binX:1.0f}')
-        self.ui.binY.setText(f'{binY:1.0f}')
-
-        sqm = max(header.get('SQM', 0),
-                  header.get('SKY-QLTY', 0),
-                  header.get('MPSAS', 0),
-                  )
-        self.ui.sqm.setText(f'{sqm:5.2f}')
-
-        flipped = bool(header.get('FLIPPED', False))
-        self.ui.isFlipped.setEnabled(flipped)
-
-        # check if distortion is in header
-        if 'CTYPE1' in header:
-            wcsObject = wcs.WCS(header, relax=True)
-            hasCelestial = wcsObject.has_celestial
-            hasDistortion = wcsObject.has_distortion
-        else:
-            wcsObject = None
-            hasCelestial = False
-            hasDistortion = False
-
-        self.ui.hasDistortion.setEnabled(hasDistortion)
-        self.ui.hasWCS.setEnabled(hasCelestial)
-
-        return hasDistortion, wcsObject
-
-    def zoomImage(self, image=None, wcsObject=None):
-        """
-        zoomImage cutouts a portion of the original image to zoom in the image itself.
-        it returns a copy of the image with an updated wcs content. we have to be careful
-        about the use of Cutout2D, because they are mixing x and y coordinates. so position
-        is in (x, y), but size ind in (y, x)
-
-        :param image:
-        :param wcsObject:
-        :return:
-        """
-
-        if image is None:
-            return None
-
-        sizeY, sizeX = image.shape
-
-        fallback = list(self.zoomLevel.keys())[0]
-        factor = self.zoomLevel.get(self.ui.zoom.currentText(), fallback)
-
-        position = (int(sizeX / 2), int(sizeY / 2))
-        size = (int(sizeY / factor), int(sizeX / factor))
-
-        cutout = Cutout2D(image,
-                          position=position,
-                          size=size,
-                          wcs=wcsObject,
-                          copy=True,
-                          )
-
-        return cutout.data
-
-    def stretchImage(self, image=None):
-        """
-        stretchImage take the actual image and calculated norm based on the min, max
-        derived from interval which is calculated with AsymmetricPercentileInterval.
-
-        :param image: image
-        :return: norm for plot
-        """
-
-        if image is None:
-            return None
-
-        fallback = list(self.stretchValues.keys())[0]
-        value = self.stretchValues.get(self.ui.stretch.currentText(), fallback)
-
-        stretch = AsinhStretch(a=value)
-
-        return stretch
-
-    def colorImage(self):
-        """
-        colorImage take the index from gui and generates the colormap for image show
-        command from matplotlib
-
-        :return: color map
-        """
-
-        fallback = list(self.colorMaps.keys())[0]
-        colorMap = self.colorMaps.get(self.ui.color.currentText(), fallback)
-
-        return colorMap
-
-    def setupDistorted(self, figure=None, wcsObject=None):
+    def setupDistorted(self):
         """
         setupDistorted tries to setup all necessary context for displaying the image with
         wcs distorted coordinates.
         still plenty of work to be done, because very often the labels are not shown
 
-        :param figure:
-        :param wcsObject:
-        :return: axes object to plot onto
+        :return: true
         """
 
-        if figure is None:
-            return False
-        if wcsObject is None:
-            return False
+        self.fig.clf()
+        self.axe = self.fig.add_subplot(1, 1, 1,
+                                        projection=wcs.WCS(self.header, relax=True),
+                                        facecolor=self.M_GREY_LIGHT)
 
-        figure.clf()
-        axe = figure.add_subplot(1, 1, 1,
-                                 projection=wcsObject,
-                                 facecolor=self.M_GREY_LIGHT)
+        self.fig.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
+        self.axeCB = self.fig.add_axes([0.88, 0.1, 0.02, 0.8])
 
-        figure.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
-        axeCB = figure.add_axes([0.88, 0.1, 0.02, 0.8])
+        self.axe.coords.frame.set_color(self.M_BLUE)
 
-        axe.coords.frame.set_color(self.M_BLUE)
-
-        axe0 = axe.coords[0]
-        axe1 = axe.coords[1]
+        axe0 = self.axe.coords[0]
+        axe1 = self.axe.coords[1]
 
         if self.ui.checkShowGrid.isChecked():
             axe0.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
@@ -563,97 +445,347 @@ class ImageWindow(widget.MWidget):
         axe1.set_ticklabel_position('tb')
         axe1.set_axislabel_position('tb')
 
-        return figure, axe, axeCB
+        return True
 
-    def setupNormal(self, figure=None, header=None):
+    def setupNormal(self):
         """
         setupNormal build the image widget to show it with pixels as axes. the center of
         the image will have coordinates 0,0.
 
-        :param figure:
-        :param header:
-        :return: axes object to plot onto
+        :return: True
         """
 
-        if figure is None:
-            return False
-        if header is None:
-            return False
+        self.fig.clf()
+        self.axe = self.fig.add_subplot(1, 1, 1,
+                                        facecolor=self.M_GREY_LIGHT)
 
-        figure.clf()
-        axe = figure.add_subplot(1, 1, 1,
-                                 facecolor=self.M_GREY_LIGHT)
-
-        figure.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
-        axeCB = figure.add_axes([0.88, 0.1, 0.02, 0.8])
+        self.fig.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
+        self.axeCB = self.fig.add_axes([0.88, 0.1, 0.02, 0.8])
 
         factor = self.zoomLevel[self.ui.zoom.currentText()]
-        sizeX = header.get('NAXIS1', 1) / factor
-        sizeY = header.get('NAXIS2', 1) / factor
+        sizeX = self.header.get('NAXIS1', 1) / factor
+        sizeY = self.header.get('NAXIS2', 1) / factor
         midX = int(sizeX / 2)
         midY = int(sizeY / 2)
         number = 10
 
         if self.ui.checkShowCrosshair.isChecked():
-            axe.axvline(midX, color=self.M_RED)
-            axe.axhline(midY, color=self.M_RED)
+            self.axe.axvline(midX, color=self.M_RED)
+            self.axe.axhline(midY, color=self.M_RED)
 
         if self.ui.checkShowGrid.isChecked():
-            axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
+            self.axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
 
-        axe.tick_params(axis='x', which='major', colors=self.M_BLUE, labelsize=12)
-        axe.tick_params(axis='y', which='major', colors=self.M_BLUE, labelsize=12)
+        self.axe.tick_params(axis='x', which='major', colors=self.M_BLUE, labelsize=12)
+        self.axe.tick_params(axis='y', which='major', colors=self.M_BLUE, labelsize=12)
 
         valueX, _ = np.linspace(-midX, midX, num=number, retstep=True)
         textX = list((str(int(x)) for x in valueX))
         ticksX = list((x + midX for x in valueX))
-        axe.set_xticklabels(textX)
-        axe.set_xticks(ticksX)
+        self.axe.set_xticklabels(textX)
+        self.axe.set_xticks(ticksX)
 
         valueY, _ = np.linspace(-midY, midY, num=number, retstep=True)
         textY = list((str(int(x)) for x in valueY))
         ticksY = list((x + midY for x in valueY))
-        axe.set_yticklabels(textY)
-        axe.set_yticks(ticksY)
+        self.axe.set_yticklabels(textY)
+        self.axe.set_yticks(ticksY)
 
-        axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
-        axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
+        self.axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
+        self.axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
 
-        axe.set_xlim(0, sizeX)
-        axe.set_ylim(0, sizeY)
+        self.axe.set_xlim(0, sizeX)
+        self.axe.set_ylim(0, sizeY)
 
-        return figure, axe, axeCB
+        return
 
-    def stackImages(self, imageData=None, header=None):
+    def colorImage(self):
+        """
+        colorImage take the index from gui and generates the colormap for image show
+        command from matplotlib
+
+        :return: True
         """
 
-        :param imageData:
-        :param header: is only used, when stacking with alignment
+        fallback = list(self.colorMaps.keys())[0]
+        self.colorMap = self.colorMaps.get(self.ui.color.currentText(), fallback)
+
+        return True
+
+    def stretchImage(self):
+        """
+        stretchImage take the actual image and calculated norm based on the min, max
+        derived from interval which is calculated with AsymmetricPercentileInterval.
+
+        :return: True
+        """
+
+        fallback = list(self.stretchValues.keys())[0]
+        value = self.stretchValues.get(self.ui.stretch.currentText(), fallback)
+
+        self.stretch = AsinhStretch(a=value)
+
+        return True
+
+    def imagePlot(self):
+        """
+        different image views
+
+        The object centers are in pixels and the magnitude estimate measures the ratio of
+        the maximum density enhancement to the detection threshold. Sharpness is
+        typically around .5 to .8 for a star with a fwhm psf similar to the pattern star.
+        Both s-round and g-round are close to zero for a truly round star. Id is the
+        sequence number of the star in the list.
+
         :return:
         """
 
-        if np.shape(imageData) != np.shape(self.imageStack):
+        if self.sources:
+            positions = np.transpose((self.sources['xcentroid'],
+                                      self.sources['ycentroid']))
+            x = self.sources['xcentroid']
+            y = self.sources['ycentroid']
+            imageDisp = self.image - self.mean
+        else:
+            imageDisp = self.image
+
+        if self.ui.checkShowImage.isChecked():
+            imageDisp[imageDisp < 0] = 0
+            img = imshow_norm(imageDisp,
+                              ax=self.axe,
+                              origin='lower',
+                              interval=MinMaxInterval(),
+                              stretch=self.stretch,
+                              cmap=self.colorMap,
+                              aspect='auto')
+            colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
+            colorbar.set_label('Value [pixel value]', color=self.M_BLUE, fontsize=12)
+            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+            if self.ui.checkShowSources.isChecked() and self.sources:
+                apertures = CircularAperture(positions, r=10.0)
+                apertures.plot(axes=self.axe, color=self.M_BLUE, lw=1.0, alpha=0.8)
+
+        elif self.ui.checkShowSharp.isChecked() and self.sources:
+            sharpness = self.sources['sharpness']
+            area = 50 * (1 - sharpness) + 3
+            scatter = self.axe.scatter(x, y, c=sharpness,
+                                       vmin=0, vmax=1,
+                                       s=area,
+                                       cmap='RdYlGn')
+
+            colorbar = self.fig.colorbar(scatter, cax=self.axeCB)
+            colorbar.set_label('Sharpness [target -> 0.5 - 0.8]', color=self.M_BLUE, fontsize=12)
+            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+
+        elif self.ui.checkShowRound.isChecked() and self.sources:
+            r1 = self.sources['roundness1']
+            r2 = self.sources['roundness2']
+            rg = np.sqrt(r1*r1 + r2*r2)
+            area = 50 * rg + 3
+            scatter = self.axe.scatter(x, y, c=rg,
+                                       vmin=0, vmax=1,
+                                       s=area,
+                                       cmap='RdYlGn_r')
+
+            colorbar = self.fig.colorbar(scatter, cax=self.axeCB)
+            colorbar.set_label('Roundness [target -> 0]', color=self.M_BLUE, fontsize=12)
+            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+
+        elif self.ui.checkShowFlux.isChecked() and self.sources:
+            flux = np.log(self.sources['flux'])
+            area = 3 * flux
+            scatter = self.axe.scatter(x, y, c=flux,
+                                       s=area,
+                                       cmap='viridis')
+
+            colorbar = self.fig.colorbar(scatter, cax=self.axeCB)
+            colorbar.set_label('Flux [log(x)]', color=self.M_BLUE, fontsize=12)
+            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+
+        self.axe.figure.canvas.draw()
+
+        return True
+
+    def writeHeaderDataToGUI(self):
+        """
+        writeHeaderDataToGUI tries to read relevant values from FITS header and possible
+        replace values and write them to the imageW gui
+
+        :return: True for test purpose
+        """
+
+        name = self.header.get('OBJECT', '').upper()
+        self.ui.object.setText(f'{name}')
+
+        ra = Angle(degrees=self.header.get('RA', 0))
+        dec = Angle(degrees=self.header.get('DEC', 0))
+
+        # ra will be in hours
+        self.ui.ra.setText(f'{ra.hstr(warn=False)}')
+        self.ui.dec.setText(f'{dec.dstr()}')
+
+        scale = self.header.get('SCALE', 0)
+        rotation = self.header.get('ANGLE', 0)
+        self.ui.scale.setText(f'{scale:5.3f}')
+        self.ui.rotation.setText(f'{rotation:6.3f}')
+
+        ccdTemp = self.header.get('CCD-TEMP', 0)
+        self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
+
+        expTime1 = self.header.get('EXPOSURE', 0)
+        expTime2 = self.header.get('EXPTIME', 0)
+        expTime = max(expTime1, expTime2)
+        self.ui.expTime.setText(f'{expTime:5.1f}')
+
+        filterCCD = self.header.get('FILTER', 0)
+        self.ui.filter.setText(f'{filterCCD}')
+
+        binX = self.header.get('XBINNING', 0)
+        binY = self.header.get('YBINNING', 0)
+        self.ui.binX.setText(f'{binX:1.0f}')
+        self.ui.binY.setText(f'{binY:1.0f}')
+
+        sqm = max(self.header.get('SQM', 0),
+                  self.header.get('SKY-QLTY', 0),
+                  self.header.get('MPSAS', 0),
+                  )
+        self.ui.sqm.setText(f'{sqm:5.2f}')
+
+        flipped = bool(self.header.get('FLIPPED', False))
+        self.ui.isFlipped.setEnabled(flipped)
+
+        return True
+
+    def preparePlot(self):
+        """
+        wcs header, stretch, color, distortion, select plot mode
+
+        :return:
+        """
+
+        # check if distortion is in header
+        if 'CTYPE1' in self.header:
+            wcsObject = wcs.WCS(self.header, relax=True)
+            hasCelestial = wcsObject.has_celestial
+            hasDistortion = wcsObject.has_distortion
+        else:
+            wcsObject = None
+            hasCelestial = False
+            hasDistortion = False
+
+        self.ui.hasDistortion.setEnabled(hasDistortion)
+        self.ui.hasWCS.setEnabled(hasCelestial)
+
+        useWCS = self.ui.checkUseWCS.isChecked()
+
+        if hasDistortion and useWCS:
+            self.setupDistorted()
+        else:
+            self.setupNormal()
+
+        self.writeHeaderDataToGUI()
+        self.stretchImage()
+        self.colorImage()
+        self.imagePlot()
+
+        return True
+
+    def prepareImage(self):
+        """
+        background, source extraction
+
+        :return:
+        """
+
+        if Config.featureFlags['imageAdv'] and not self.sources:
+            self.mean, self.median, self.std = sigma_clipped_stats(self.image, sigma=3.0)
+            daoFind = DAOStarFinder(fwhm=2.5, threshold=5.0 * self.std)
+            self.sources = daoFind(self.image - self.median)
+
+        self.preparePlot()
+
+        return True
+
+    def stackImages(self):
+        """
+
+        :return:
+        """
+
+        if not self.ui.checkStackImages.isChecked():
             self.imageStack = None
+            self.ui.numberStacks.setText('single')
+            return False
+
+        if np.shape(self.image) != np.shape(self.imageStack):
+            self.imageStack = None
+
+        self.ui.numberStacks.setText(f'mean of: {self.numberStack:4.0f}')
 
         # if first image, we just store the data as reference frame
         if self.imageStack is None:
-            self.imageStack = imageData
+            self.imageStack = self.image
             self.numberStack = 1
-            return imageData
 
         # now we are going to stack the results
         self.numberStack += 1
-        self.imageStack = np.add(self.imageStack, imageData)
-        return self.imageStack / self.numberStack
+        self.imageStack = np.add(self.imageStack, self.image)
+        self.image = self.imageStack / self.numberStack
 
-    def showContent(self, imagePath=''):
+        return True
+
+    def zoomImage(self):
         """
-        showContent shows the fits image. therefore it calculates color map, stretch,
-        zoom and other topics.
+        zoomImage cutouts a portion of the original image to zoom in the image itself.
+        it returns a copy of the image with an updated wcs content. we have to be careful
+        about the use of Cutout2D, because they are mixing x and y coordinates. so position
+        is in (x, y), but size ind in (y, x)
+
+        :return: true
+        """
+
+        sizeY, sizeX = self.image.shape
+
+        fallback = list(self.zoomLevel.keys())[0]
+        factor = self.zoomLevel.get(self.ui.zoom.currentText(), fallback)
+
+        if factor == 1:
+            return
+
+        position = (int(sizeX / 2), int(sizeY / 2))
+        size = (int(sizeY / factor), int(sizeX / factor))
+
+        self.image = Cutout2D(self.image,
+                              position=position,
+                              size=size,
+                              wcs=wcs.WCS(self.header, relax=True),
+                              copy=True,
+                              )
+
+        return True
+
+    def showImage(self, imagePath):
+        """
+        tho idea of processing the image data until it is shown on screen is to split the
+        pipeline in several atomic steps, which follow each other. each step is calling the
+        next one and depending which user interaction is done and how the use case for
+        changing the view is the entrance of the pipeline is chosen adequately.
+
+        so we have step 1 loading data and processing if to final monochrome and sized format
+        - loading data
+        - debayer if necessary
+        - getting header data and cleaning it up
+        - zoom and stack
 
         :param imagePath:
-        :return: success
+        :return:
         """
+
+        self.updateWindowsStats()
 
         if not imagePath:
             return False
@@ -665,121 +797,24 @@ class ImageWindow(widget.MWidget):
         self.ui.imageFileName.setText(short)
 
         with fits.open(imagePath, mode='update') as fitsHandle:
-            imageData = fitsHandle[0].data
-            header = fitsHandle[0].header
+            self.image = fitsHandle[0].data
+            self.header = fitsHandle[0].header
 
-        # check the bayer options, i normally us only RGGB pattern
         # todo: if it's an exposure directly, I get a bayer mosaic ??
-        if 'BAYERPAT' in header and len(imageData.shape) > 2:
-            imageData = cv2.cvtColor(imageData, cv2.COLOR_BAYER_BG2GRAY)
+        if 'BAYERPAT' in self.header and len(self.image.shape) > 2:
+            self.image = cv2.cvtColor(self.image, cv2.COLOR_BAYER_BG2GRAY)
 
         # correct faulty headers, because some imaging programs did not
         # interpret the Keywords in the right manner (SGPro)
-        if header.get('CTYPE1', '').endswith('DEF'):
-            header['CTYPE1'] = header['CTYPE1'].replace('DEF', 'TAN')
-        if header.get('CTYPE2', '').endswith('DEF'):
-            header['CTYPE2'] = header['CTYPE2'].replace('DEF', 'TAN')
+        if self.header.get('CTYPE1', '').endswith('DEF'):
+            self.header['CTYPE1'] = self.header['CTYPE1'].replace('DEF', 'TAN')
+        if self.header.get('CTYPE2', '').endswith('DEF'):
+            self.header['CTYPE2'] = self.header['CTYPE2'].replace('DEF', 'TAN')
 
-        if self.ui.checkStackImages.isChecked():
-            imageData = self.stackImages(imageData=imageData, header=header)
-            self.ui.numberStacks.setText(f'mean of: {self.numberStack:4.0f}')
-        else:
-            self.imageStack = None
-            self.ui.numberStacks.setText('single')
-
-        # check the data content and capabilities
-        hasDistortion, wcsObject = self.writeHeaderToGUI(header=header)
-
-        # process the image for viewing: stretching
-        imageData = self.zoomImage(image=imageData, wcsObject=wcsObject)
-
-        # normalization
-        stretch = self.stretchImage(image=imageData)
-
-        # we process a colormap if we have a greyscale image
-        colorMap = self.colorImage()
-
-        # check the data content and capabilities
-        useWCS = self.ui.checkUseWCS.isChecked()
-
-        # check which type of presentation we would like to have
-        if hasDistortion and useWCS:
-            fig, axe, axeCB = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
-        else:
-            fig, axe, axeCB = self.setupNormal(figure=self.imageMat.figure, header=header)
-
-        if Config.featureFlags['imageAdv']:
-            mean, median, std = sigma_clipped_stats(imageData, sigma=3.0)
-            daoFind = DAOStarFinder(fwhm=2.5, threshold=5.0 * std)
-            sources = daoFind(imageData - median)
-            positions = np.transpose((sources['xcentroid'], sources['ycentroid']))
-            x = sources['xcentroid']
-            y = sources['ycentroid']
-
-        if self.ui.checkShowImage.isChecked():
-            img = imshow_norm(imageData,
-                              ax=axe,
-                              origin='lower',
-                              interval=MinMaxInterval(),
-                              stretch=stretch,
-                              cmap=colorMap,
-                              aspect='auto')
-            colorbar = fig.colorbar(img[0], cax=axeCB)
-            colorbar.set_label('Value [pixel value]', color=self.M_BLUE, fontsize=12)
-            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
-
-        # The object centers are in pixels and the magnitude estimate measures the ratio of
-        # the maximum density enhancement to the detection threshold. Sharpness is
-        # typically around .5 to .8 for a star with a fwhm psf similar to the pattern star.
-        # Both s-round and g-round are close to zero for a truly round star. Id is the
-        # sequence number of the star in the list.
-
-        elif self.ui.checkShowSharp.isChecked() and Config.featureFlags['imageAdv']:
-            sharpness = sources['sharpness']
-            area = 50 * (1 - sharpness) + 3
-            scatter = axe.scatter(x, y, c=sharpness,
-                                  vmin=0, vmax=1,
-                                  s=area,
-                                  cmap='RdYlGn')
-
-            colorbar = fig.colorbar(scatter, cax=axeCB)
-            colorbar.set_label('Sharpness [target -> 0.5 - 0.8]', color=self.M_BLUE, fontsize=12)
-            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
-
-        elif self.ui.checkShowRound.isChecked() and Config.featureFlags['imageAdv']:
-            r1 = sources['roundness1']
-            r2 = sources['roundness2']
-            rg = np.sqrt(r1*r1 + r2*r2)
-            area = 50 * rg + 3
-            scatter = axe.scatter(x, y, c=rg,
-                                  vmin=0, vmax=1,
-                                  s=area,
-                                  cmap='RdYlGn_r')
-
-            colorbar = fig.colorbar(scatter, cax=axeCB)
-            colorbar.set_label('Roundness [target -> 0]', color=self.M_BLUE, fontsize=12)
-            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
-
-        elif self.ui.checkShowFlux.isChecked() and Config.featureFlags['imageAdv']:
-            flux = np.log(sources['flux'])
-            area = 3 * flux
-            scatter = axe.scatter(x, y, c=flux,
-                                  s=area,
-                                  cmap='viridis')
-
-            colorbar = fig.colorbar(scatter, cax=axeCB)
-            colorbar.set_label('Flux [log(x)]', color=self.M_BLUE, fontsize=12)
-            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
-
-        if self.ui.checkShowSources.isChecked() and Config.featureFlags['imageAdv']:
-            apertures = CircularAperture(positions, r=10.0)
-            apertures.plot(axes=axe, color=self.M_BLUE, lw=1.0, alpha=0.8)
-
-        axe.figure.canvas.draw()
+        self.zoomImage()
+        self.stackImages()
+        self.sources = None
+        self.prepareImage()
 
         return True
 
@@ -788,15 +823,8 @@ class ImageWindow(widget.MWidget):
 
         :return: true for test purpose
         """
-        isFlux = self.ui.checkShowFlux.isChecked()
-        isRound = self.ui.checkShowRound.isChecked()
-        isSharp = self.ui.checkShowSharp.isChecked()
-        if isRound or isFlux or isSharp:
-            self.ui.checkUseWCS.setChecked(False)
-            self.ui.checkShowGrid.setChecked(False)
-            self.ui.checkShowCrosshair.setChecked(False)
 
-        self.showContent(self.imageFileName)
+        self.showImage(self.imageFileName)
 
         return True
 

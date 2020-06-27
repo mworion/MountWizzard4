@@ -74,6 +74,7 @@ class ImageWindow(widget.MWidget):
         super().__init__()
 
         self.app = app
+        self.threadPool = app.threadPool
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
         self.initUI()
@@ -699,6 +700,18 @@ class ImageWindow(widget.MWidget):
 
         return True
 
+    def workerPhotometry(self):
+        """
+
+        :return:
+        """
+
+        self.mean, self.median, self.std = sigma_clipped_stats(self.image, sigma=3.0)
+        daoFind = DAOStarFinder(fwhm=2.5, threshold=5.0 * self.std)
+        self.sources = daoFind(self.image - self.median)
+
+        return True
+
     def prepareImage(self):
         """
         background, source extraction
@@ -707,9 +720,9 @@ class ImageWindow(widget.MWidget):
         """
 
         if Config.featureFlags['imageAdv'] and not self.sources:
-            self.mean, self.median, self.std = sigma_clipped_stats(self.image, sigma=3.0)
-            daoFind = DAOStarFinder(fwhm=2.5, threshold=5.0 * self.std)
-            self.sources = daoFind(self.image - self.median)
+            worker = Worker(self.workerPhotometry)
+            worker.signals.result.connect(self.prepareImage)
+            self.threadPool.start(worker)
 
         self.preparePlot()
 

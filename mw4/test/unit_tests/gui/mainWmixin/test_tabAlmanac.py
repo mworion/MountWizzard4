@@ -71,6 +71,13 @@ def module_setup_teardown(qtbot):
     app.deleteLater = MWidget().deleteLater
     app.guiSetText = MWidget().guiSetText
     app.embedMatplot = MWidget().embedMatplot
+    app.generateFlat = MWidget().generateFlat
+    app.COLOR_BLUE1 = MWidget().COLOR_BLUE1
+    app.COLOR_BLUE2 = MWidget().COLOR_BLUE2
+    app.COLOR_BLUE3 = MWidget().COLOR_BLUE3
+    app.COLOR_BLUE4 = MWidget().COLOR_BLUE4
+    app.COLOR_WHITE1 = MWidget().COLOR_WHITE1
+    app.twilight = QWidget()
     app.deviceStat = dict()
     app.log = CustomLogger(logging.getLogger(__name__), {})
     app.threadPool = QThreadPool()

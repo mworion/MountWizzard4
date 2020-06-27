@@ -923,7 +923,7 @@ def test_setLongitude_2(qtbot):
     app.app.mount.obsSite.location = lat, lon, elev
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
-                           return_value=(10, True)):
+                           return_value=('+160*30:45.5', True)):
         suc = app.setLongitude()
         assert not suc
 
@@ -936,7 +936,7 @@ def test_setLongitude_3(qtbot):
     app.app.mount.obsSite.location = lat, lon, elev
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
-                           return_value=(10, False)):
+                           return_value=('+160*30:45.5', False)):
         suc = app.setLongitude()
         assert not suc
 
@@ -949,7 +949,7 @@ def test_setLongitude_4(qtbot):
     app.app.mount.obsSite.location = lat, lon, elev
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
-                           return_value=(10, True)):
+                           return_value=('+160*30:45.5', True)):
         with mock.patch.object(app.app.mount.obsSite,
                                'setLongitude',
                                return_value=False):
@@ -965,7 +965,7 @@ def test_setLongitude_5(qtbot):
     app.app.mount.obsSite.location = lat, lon, elev
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
-                           return_value=(10, True)):
+                           return_value=('+160*30:45.5', True)):
         with mock.patch.object(app.app.mount.obsSite,
                                'setLongitude',
                                return_value=True):
@@ -990,7 +990,7 @@ def test_setLatitude_2(qtbot):
     app.app.mount.obsSite.location = lat, lon, elev
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
-                           return_value=(10, True)):
+                           return_value=('+45*30:45.5', True)):
         suc = app.setLatitude()
         assert not suc
 
@@ -1002,7 +1002,7 @@ def test_setLatitude_3(qtbot):
     app.app.mount.obsSite.location = lat, lon, elev
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
-                           return_value=(10, False)):
+                           return_value=('+45*30:45.5', False)):
         suc = app.setLatitude()
         assert not suc
 
@@ -1015,7 +1015,7 @@ def test_setLatitude_4(qtbot):
     app.app.mount.obsSite.location = lat, lon, elev
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
-                           return_value=(10, True)):
+                           return_value=('+45*30:45.5', True)):
         with mock.patch.object(app.app.mount.obsSite,
                                'setLatitude',
                                return_value=False):
@@ -1031,7 +1031,7 @@ def test_setLatitude_5(qtbot):
     app.app.mount.obsSite.location = lat, lon, elev
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
-                           return_value=(10, True)):
+                           return_value=('+45*30:45.5', True)):
         with mock.patch.object(app.app.mount.obsSite,
                                'setLatitude',
                                return_value=True):

@@ -63,6 +63,7 @@ def module_setup_teardown(qtbot):
         config = {'mainW': {}}
         threadPool = QThreadPool()
         update1s = pyqtSignal()
+        showImage = pyqtSignal(str)
         __version__ = 'test'
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,

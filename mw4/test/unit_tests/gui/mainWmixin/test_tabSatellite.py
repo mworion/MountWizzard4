@@ -124,11 +124,6 @@ def test_setupSatelliteGui_2():
     assert suc
 
 
-def test_loadTLEData_1():
-    suc = app.loadRawTLEData(filePath='mw4/test/data/active.txt')
-    assert suc
-
-
 def test_loadSatelliteSourceWorker_1():
     suc = app.loadTLEDataFromSourceURLsWorker()
     assert not suc
@@ -136,11 +131,8 @@ def test_loadSatelliteSourceWorker_1():
 
 def test_loadSatelliteSourceWorker_2():
     app.ui.satelliteSource.addItem('Active')
-    with mock.patch.object(app,
-                           'loadRawTLEData',
-                           return_value=False):
-        suc = app.loadTLEDataFromSourceURLsWorker()
-        assert not suc
+    suc = app.loadTLEDataFromSourceURLsWorker()
+    assert not suc
 
 
 def test_loadSatelliteSourceWorker_3():

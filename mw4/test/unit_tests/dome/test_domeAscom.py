@@ -44,6 +44,7 @@ def module_setup_teardown():
         Name = 'test'
         DriverVersion = '1'
         DriverInfo = 'test1'
+        shutterstatus = '4'
 
         @staticmethod
         def SlewToAzimuth(azimuth):

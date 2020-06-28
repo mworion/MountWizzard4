@@ -122,7 +122,9 @@ class DataPoint(object):
                     120, 0, 120, 0, 120, 0, 120, 0, 120, 0, 120, 0],
             }
 
-    def __init__(self, app=None):
+    def __init__(self,
+                 app=None,
+                 ):
 
         self.app = app
         self.configDir = app.mwGlob['configDir']

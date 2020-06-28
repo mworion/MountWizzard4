@@ -16,6 +16,7 @@
 #
 ###########################################################
 # standard libraries
+import collections
 
 # external packages
 import PyQt5.QtCore
@@ -193,6 +194,22 @@ class SettDevice(object):
             signals.deviceConnected.connect(self.deviceConnected)
             signals.deviceDisconnected.connect(self.deviceDisconnected)
 
+    def dictMerge(self, dct, merge_dct):
+        """ Recursive dict merge. Inspired by :meth:``dict.update()``, instead of
+        updating only top-level keys, dictMerge recurses down into dicts nested
+        to an arbitrary depth, updating keys. The ``merge_dct`` is merged into
+        ``dct``.
+        :param dct: dict onto which the merge is executed
+        :param merge_dct: dct merged into dct
+        :return: None
+        """
+        for k, v in merge_dct.items():
+            if (k in dct and isinstance(dct[k], dict)
+                    and isinstance(merge_dct[k], collections.Mapping)):
+                self.dictMerge(dct[k], merge_dct[k])
+            else:
+                dct[k] = merge_dct[k]
+
     def cleanData(self, data, driver):
         """
 
@@ -209,7 +226,7 @@ class SettDevice(object):
                 'frameworks': {},
             }
         for fw in self.drivers[driver]['class'].run:
-            data['frameworks'][fw].update(self.frameworks.get(fw, {}))
+            self.dictMerge(data['frameworks'][fw], self.frameworks.get(fw, {}))
 
         return data
 

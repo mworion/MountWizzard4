@@ -67,7 +67,6 @@ class DataPoint(object):
 
         >>> data = DataPoint(
         >>>                  app=None,
-        >>>                  configDir=None,
         >>>                  )
     """
 
@@ -125,11 +124,10 @@ class DataPoint(object):
 
     def __init__(self,
                  app=None,
-                 configDir=None,
                  ):
 
         self.app = app
-        self.configDir = configDir
+        self.configDir = app.mwGlob['configDir']
         self._horizonP = list()
         self._buildP = list()
 

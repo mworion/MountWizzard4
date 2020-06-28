@@ -168,11 +168,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.telescope = Telescope(self)
         self.skymeter = Skymeter(self)
         self.power = PegasusUPB(self)
-        self.data = DataPoint(self, configDir=self.mwGlob['configDir'])
+        self.data = DataPoint(self)
         self.hipparcos = Hipparcos(self)
         self.measure = MeasureData(self)
         self.remote = Remote(self)
-        self.astrometry = Astrometry(self, tempDir=mwGlob['tempDir'])
+        self.astrometry = Astrometry(self)
 
         self.uiWindows = {}
 

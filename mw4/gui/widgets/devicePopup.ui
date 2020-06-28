@@ -67,7 +67,7 @@
    </property>
    <widget class="QWidget" name="INDI">
     <attribute name="title">
-     <string>INDI / INDIGO</string>
+     <string>INDI</string>
     </attribute>
     <widget class="QLabel" name="label_mountIP_3">
      <property name="geometry">
@@ -301,39 +301,6 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QCheckBox" name="indiCopyConfig">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>185</y>
-       <width>201</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="text">
-      <string>Copy config to all devices</string>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="tristate">
-      <bool>false</bool>
-     </property>
-    </widget>
    </widget>
    <widget class="QWidget" name="ALPACA">
     <attribute name="title">
@@ -498,7 +465,7 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QComboBox" name="alpacaProtocolList">
+    <widget class="QComboBox" name="alpacaProtocol">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -667,39 +634,6 @@
        <width>201</width>
        <height>21</height>
       </rect>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="alpacaCopyConfig">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>190</y>
-       <width>201</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="text">
-      <string>Copy config to all devices</string>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="tristate">
-      <bool>false</bool>
      </property>
     </widget>
    </widget>

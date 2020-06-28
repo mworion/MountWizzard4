@@ -19,9 +19,8 @@
 import platform
 
 # external packages
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QWidget, QMessageBox, QListView, QComboBox, QLineEdit
-from PyQt5.QtWidgets import QCheckBox, QDoubleSpinBox
+import PyQt5.QtCore
+# import .NET / COM Handling
 
 if platform.system() == 'Windows':
     import win32com.client
@@ -32,7 +31,7 @@ from mw4.gui import widget
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 
 
-class DevicePopup(QDialog, widget.MWidget):
+class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
     """
     the DevicePopup window class handles
 
@@ -60,10 +59,10 @@ class DevicePopup(QDialog, widget.MWidget):
     }
 
     framework2tabs = {
-        'indi': 'INDI / INDIGO',
+        'indi': 'INDI',
         'ascom': 'ASCOM',
         'alpaca': 'ALPACA',
-        'astrometry': 'ASTROMETRY',
+        'astrometry': '',
         'astap': 'ASTAP',
     }
 
@@ -77,53 +76,47 @@ class DevicePopup(QDialog, widget.MWidget):
         self.app = app
         self.data = data
         self.driver = driver
+        self.returnValues = {'close': 'cancel'}
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self)
         self.initUI()
+
         self.setWindowModality(Qt.ApplicationModal)
         x = geometry[0] + int((geometry[2] - self.width()) / 2)
         y = geometry[1] + int((geometry[3] - self.height()) / 2)
         self.move(x, y)
 
-        self.indiClass = None
-        self.indiSearchType = self.indiTypes[driver]
-        self.indiSearchNameList = None
-        self.returnValues = {'close': 'cancel'}
         self.framework2gui = {
             'indi': {
                 'host': self.ui.indiHost,
                 'port': self.ui.indiPort,
-                'deviceList': self.ui.indiDeviceList,
+                'device': self.ui.indiDeviceList,
                 'messages': self.ui.indiMessages,
                 'loadConfig': self.ui.indiLoadConfig,
-                'copyConfig': self.ui.indiCopyConfig,
             },
             'alpaca': {
                 'host': self.ui.alpacaHost,
                 'port': self.ui.alpacaPort,
-                'deviceList': self.ui.alpacaDeviceList,
-                'protocolList': self.ui.alpacaProtocolList,
+                'device': self.ui.alpacaDeviceList,
                 'user': self.ui.alpacaUser,
                 'password': self.ui.alpacaPassword,
-                'copyConfig': self.ui.alpacaCopyConfig,
+                'protocol': self.ui.alpacaProtocol,
             },
             'ascom': {
                 'device': self.ui.ascomDevice,
             },
             'astrometry': {
-                'deviceList': self.ui.astrometryDeviceList,
+                'device': self.ui.astrometryDeviceList,
                 'searchRadius': self.ui.astrometrySearchRadius,
                 'timeout': self.ui.astrometryTimeout,
-                'appPath': self.ui.astrometryIndexPath,
-                'indexPath': self.ui.astrometryAppPath,
+                'indexPath': self.ui.astrometryIndexPath,
             },
             'astap': {
-                'deviceList': self.ui.astapDeviceList,
+                'device': self.ui.astapDeviceList,
                 'searchRadius': self.ui.astapSearchRadius,
                 'timeout': self.ui.astapTimeout,
-                'appPath': self.ui.astapIndexPath,
-                'indexPath': self.ui.astapAppPath,
+                'indexPath': self.ui.astapIndexPath,
             },
         }
 
@@ -134,12 +127,14 @@ class DevicePopup(QDialog, widget.MWidget):
         self.ui.selectAstrometryAppPath.clicked.connect(self.selectAstrometryAppPath)
         self.ui.selectAstapIndexPath.clicked.connect(self.selectAstapIndexPath)
         self.ui.selectAstapAppPath.clicked.connect(self.selectAstapAppPath)
+        self.ui.copyAlpaca.clicked.connect(self.copyAllAlpacaSettings)
+        self.ui.copyIndi.clicked.connect(self.copyAllIndiSettings)
         self.ui.ascomSelector.clicked.connect(self.setupAscomDriver)
 
         self.initConfig()
         self.show()
 
-    def selectTabs(self):
+    def prepareTabs(self):
         """
         show only the tabs needed for available frameworks and properties to be entered
         as there might be differences in tab text and framework name internally there is a
@@ -150,21 +145,16 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: True for test purpose
         """
 
-        firstFramework = next(iter(self.data['frameworks']))
-        framework = self.data.get('framework')
-
-        if not framework:
-            framework = firstFramework
-
+        framework = self.data['framework']
         frameworkTabText = self.framework2tabs[framework]
         frameworkTabList = [self.framework2tabs[x] for x in self.data['frameworks']]
 
-        tabWidget = self.ui.tab.findChild(QWidget, frameworkTabText)
+        tabWidget = self.ui.tab.findChild(PyQt5.QtWidgets.QWidget, frameworkTabText)
         tabIndex = self.ui.tab.indexOf(tabWidget)
         self.ui.tab.setCurrentIndex(tabIndex)
 
         for index in range(0, self.ui.tab.count()):
-            if self.ui.tab.tabText(index) in frameworkTabList:
+            if self.ui.tab.tabText(index).lower() in self.availFramework:
                 self.ui.tab.setTabEnabled(index, True)
             else:
                 self.ui.tab.setTabEnabled(index, False)
@@ -194,9 +184,9 @@ class DevicePopup(QDialog, widget.MWidget):
                 if isinstance(ui, QComboBox):
                     ui.clear()
                     ui.setView(QListView())
-                    for i, device in enumerate(frameworks[fw][prop]):
+                    for i, device in enumerate(frameworks[fw]['deviceList']):
                         ui.addItem(device)
-                        if frameworks[fw]['deviceName'] == device:
+                        if frameworks[fw]['device'] == device:
                             ui.setCurrentIndex(i)
 
                 elif isinstance(ui, QLineEdit):
@@ -220,7 +210,7 @@ class DevicePopup(QDialog, widget.MWidget):
         """
 
         self.setWindowTitle(f'Setup for: {self.driver}')
-        self.selectTabs()
+        self.prepareTabs()
         self.populateTabs()
 
         return True
@@ -237,23 +227,18 @@ class DevicePopup(QDialog, widget.MWidget):
         frameworks = self.data['frameworks']
 
         for fw in frameworks:
-            for prop in list(frameworks[fw]):
+            for prop in frameworks[fw]:
                 if prop not in self.framework2gui[fw]:
                     continue
 
                 ui = self.framework2gui[fw][prop]
 
                 if isinstance(ui, QComboBox):
-                    frameworks[fw]['deviceName'] = ui.currentText()
-                    frameworks[fw][prop].clear()
-                    for index in range(ui.model().rowCount()):
-                        frameworks[fw][prop].append(ui.model().item(index).text())
+                    frameworks[fw]['device'] = ui.currentText()
 
                 elif isinstance(ui, QLineEdit):
                     if isinstance(frameworks[fw][prop], str):
                         frameworks[fw][prop] = ui.text()
-                    elif isinstance(frameworks[fw][prop], int):
-                        frameworks[fw][prop] = int(ui.text())
                     else:
                         frameworks[fw][prop] = float(ui.text())
 
@@ -268,36 +253,24 @@ class DevicePopup(QDialog, widget.MWidget):
 
         return True
 
-    def readFramework(self):
-        """
-        readFramework determines, which tab was selected when leaving and writes the
-        adequate selection into the property. as the headline might be different from the
-        keywords, a translation table (self.framework2gui) is used.
-
-        :return: True for test purpose
-        """
-
-        index = self.ui.tab.currentIndex()
-        currentSelection = self.ui.tab.tabText(index)
-        fw = ''
-        for fw in self.data['frameworks']:
-            if currentSelection == self.framework2gui[fw]:
-                break
-        self.data['framework'] = fw
-
-        return True
-
     def storeConfig(self):
         """
-        storeConfig collects all the data changed
 
         :return: true for test purpose
         """
 
         self.readTabs()
-        self.readFramework()
         self.returnValues['close'] = 'ok'
         self.close()
+        return
+        nameList = []
+        for index in range(model.rowCount()):
+            nameList.append(model.item(index).text())
+        self.data[self.driver]['astrometryDeviceList'] = nameList
+        self.data[self.driver]['astrometryIndexPath'] = self.ui.astrometryIndexPath.text()
+        self.data[self.driver]['astrometryAppPath'] = self.ui.astrometryAppPath.text()
+        self.data[self.driver]['astrometrySearchRadius'] = self.ui.astrometrySearchRadius.value()
+        self.data[self.driver]['astrometryTimeout'] = self.ui.astrometryTimeout.value()
 
         return True
 
@@ -312,7 +285,7 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: success
         """
 
-        device = self.indiClass.client.devices.get(deviceName)
+        device = self._indiClass.client.devices.get(deviceName)
         if not device:
             return False
 
@@ -321,13 +294,13 @@ class DevicePopup(QDialog, widget.MWidget):
         if interface is None:
             return False
 
-        if self.indiSearchType is None:
+        if self._indiSearchType is None:
             return False
 
         interface = int(interface)
 
-        if interface & self.indiSearchType:
-            self.indiSearchNameList.append(deviceName)
+        if interface & self._indiSearchType:
+            self._indiSearchNameList.append(deviceName)
 
         return True
 
@@ -344,32 +317,32 @@ class DevicePopup(QDialog, widget.MWidget):
         :return:  success finding
         """
 
-        self.indiSearchNameList = list()
+        self._indiSearchNameList = list()
 
         if self.driver in self.indiDefaults:
-            self.indiSearchNameList.append(self.indiDefaults[self.driver])
+            self._indiSearchNameList.append(self.indiDefaults[self.driver])
 
         else:
             host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))
-            self.indiClass = IndiClass()
-            self.indiClass.host = host
+            self._indiClass = IndiClass()
+            self._indiClass.host = host
 
-            self.indiClass.client.signals.defText.connect(self.addDevicesWithType)
-            self.indiClass.client.connectServer()
-            self.indiClass.client.watchDevice()
-            msg = QMessageBox
+            self._indiClass.client.signals.defText.connect(self.addDevicesWithType)
+            self._indiClass.client.connectServer()
+            self._indiClass.client.watchDevice()
+            msg = PyQt5.QtWidgets.QMessageBox
             msg.information(self,
                             'Searching Devices',
                             f'Search for [{self.driver}] could take some seconds!')
-            self.indiClass.client.disconnectServer()
+            self._indiClass.client.disconnectServer()
 
         self.ui.indiDeviceList.clear()
-        self.ui.indiDeviceList.setView(QListView())
+        self.ui.indiDeviceList.setView(PyQt5.QtWidgets.QListView())
 
-        for name in self.indiSearchNameList:
+        for name in self._indiSearchNameList:
             self.log.info(f'Indi search found: {name}')
 
-        for deviceName in self.indiSearchNameList:
+        for deviceName in self._indiSearchNameList:
             self.ui.indiDeviceList.addItem(deviceName)
 
         return True

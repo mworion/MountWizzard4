@@ -62,7 +62,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         'indi': 'INDI',
         'ascom': 'ASCOM',
         'alpaca': 'ALPACA',
-        'astrometry': '',
+        'astrometry': 'ASTROMETRY',
         'astap': 'ASTAP',
     }
 
@@ -91,29 +91,29 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
             'indi': {
                 'host': self.ui.indiHost,
                 'port': self.ui.indiPort,
-                'device': self.ui.indiDeviceList,
+                'deviceList': self.ui.indiDeviceList,
                 'messages': self.ui.indiMessages,
                 'loadConfig': self.ui.indiLoadConfig,
             },
             'alpaca': {
                 'host': self.ui.alpacaHost,
                 'port': self.ui.alpacaPort,
-                'device': self.ui.alpacaDeviceList,
+                'deviceList': self.ui.alpacaDeviceList,
+                'protocolList': self.ui.alpacaProtocolList,
                 'user': self.ui.alpacaUser,
                 'password': self.ui.alpacaPassword,
-                'protocol': self.ui.alpacaProtocol,
             },
             'ascom': {
                 'device': self.ui.ascomDevice,
             },
             'astrometry': {
-                'device': self.ui.astrometryDeviceList,
+                'deviceList': self.ui.astrometryDeviceList,
                 'searchRadius': self.ui.astrometrySearchRadius,
                 'timeout': self.ui.astrometryTimeout,
                 'indexPath': self.ui.astrometryIndexPath,
             },
             'astap': {
-                'device': self.ui.astapDeviceList,
+                'deviceList': self.ui.astapDeviceList,
                 'searchRadius': self.ui.astapSearchRadius,
                 'timeout': self.ui.astapTimeout,
                 'indexPath': self.ui.astapIndexPath,
@@ -127,14 +127,12 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.selectAstrometryAppPath.clicked.connect(self.selectAstrometryAppPath)
         self.ui.selectAstapIndexPath.clicked.connect(self.selectAstapIndexPath)
         self.ui.selectAstapAppPath.clicked.connect(self.selectAstapAppPath)
-        self.ui.copyAlpaca.clicked.connect(self.copyAllAlpacaSettings)
-        self.ui.copyIndi.clicked.connect(self.copyAllIndiSettings)
         self.ui.ascomSelector.clicked.connect(self.setupAscomDriver)
 
         self.initConfig()
         self.show()
 
-    def prepareTabs(self):
+    def selectTabs(self):
         """
         show only the tabs needed for available frameworks and properties to be entered
         as there might be differences in tab text and framework name internally there is a
@@ -184,9 +182,9 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
                 if isinstance(ui, QComboBox):
                     ui.clear()
                     ui.setView(QListView())
-                    for i, device in enumerate(frameworks[fw]['deviceList']):
+                    for i, device in enumerate(frameworks[fw][prop]):
                         ui.addItem(device)
-                        if frameworks[fw]['device'] == device:
+                        if frameworks[fw][prop[:-4]] == device:
                             ui.setCurrentIndex(i)
 
                 elif isinstance(ui, QLineEdit):
@@ -210,7 +208,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         """
 
         self.setWindowTitle(f'Setup for: {self.driver}')
-        self.prepareTabs()
+        self.selectTabs()
         self.populateTabs()
 
         return True
@@ -234,7 +232,10 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
                 ui = self.framework2gui[fw][prop]
 
                 if isinstance(ui, QComboBox):
-                    frameworks[fw]['device'] = ui.currentText()
+                    frameworks[fw][prop[:-4]] = ui.currentText()
+                    frameworks[fw][prop].clear()
+                    for index in range(ui.model().rowCount()):
+                        frameworks[fw][prop].append(ui.model().item(index).text())
 
                 elif isinstance(ui, QLineEdit):
                     if isinstance(frameworks[fw][prop], str):
@@ -253,6 +254,24 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
         return True
 
+    def readFramework(self):
+        """
+        readFramework determines, which tab was selected when leaving and writes the
+        adequate selection into the property. as the headline might be different from the
+        keywords, a translation table (self.framework2gui) is used.
+
+        :return: True for test purpose
+        """
+
+        index = self.ui.tab.currentIndex()
+        currentSelection = self.ui.tab.tabText(index)
+        for fw in self.data['frameworks']:
+            if currentSelection == self.framework2gui[fw]:
+                break
+        self.data['framework'] = fw
+
+        return True
+
     def storeConfig(self):
         """
 
@@ -260,17 +279,9 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         """
 
         self.readTabs()
+        self.readFramework()
         self.returnValues['close'] = 'ok'
         self.close()
-        return
-        nameList = []
-        for index in range(model.rowCount()):
-            nameList.append(model.item(index).text())
-        self.data[self.driver]['astrometryDeviceList'] = nameList
-        self.data[self.driver]['astrometryIndexPath'] = self.ui.astrometryIndexPath.text()
-        self.data[self.driver]['astrometryAppPath'] = self.ui.astrometryAppPath.text()
-        self.data[self.driver]['astrometrySearchRadius'] = self.ui.astrometrySearchRadius.value()
-        self.data[self.driver]['astrometryTimeout'] = self.ui.astrometryTimeout.value()
 
         return True
 

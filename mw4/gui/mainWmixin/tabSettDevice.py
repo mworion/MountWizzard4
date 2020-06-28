@@ -305,11 +305,12 @@ class SettDevice(object):
             'frameworks':
                 {
                     'alpaca': {
-                        'device': '',
+                        'device': 'device 3',
                         'deviceList': ['device 1', 'device 2', 'device 3'],
                         'host': 'localhost',
                         'port': 11111,
-                        'protocol': 'https',
+                        'protocol': 'http',
+                        'protocolList': ['https', 'http'],
                         'user': '',
                         'password': '',
                     },

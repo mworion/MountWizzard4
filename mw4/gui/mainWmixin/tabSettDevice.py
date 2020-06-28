@@ -300,6 +300,10 @@ class SettDevice(object):
         :return:
         """
 
+        # there is one definition when using selection lists for offering QComboBoxes:
+        # the list name for a property to be set through this lists is the property name
+        # with an postfix 'List' like 'protocol' and 'protocolList'
+
         data = {
             'deviceType': 'dome',
             'frameworks':

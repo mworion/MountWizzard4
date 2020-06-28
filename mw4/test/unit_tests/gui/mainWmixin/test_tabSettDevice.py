@@ -232,7 +232,7 @@ def test_setupPopUp_1():
         with mock.patch.object(DevicePopup,
                                'exec_',
                                return_value=False):
-            suc = app.setupPopUp()
+            suc = app.setupPopup()
             assert not suc
 
 

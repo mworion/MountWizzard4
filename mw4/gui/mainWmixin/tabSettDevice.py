@@ -292,6 +292,54 @@ class SettDevice(object):
 
         return True
 
+    def callPopUp(self, driver, geometry):
+        """
+
+        :param driver:
+        :param geometry:
+        :return:
+        """
+
+        data = {
+            'deviceType': 'dome',
+            'frameworks':
+                {
+                    'alpaca': {
+                        'device': '',
+                        'deviceList': ['device 1', 'device 2', 'device 3'],
+                        'host': 'localhost',
+                        'port': 11111,
+                        'protocol': 'https',
+                        'user': '',
+                        'password': '',
+                    },
+                    'ascom': {
+                        'device': 'test',
+                    },
+                    'indi': {
+                        'device': '',
+                        'deviceList': ['indi 1', 'indi 2', 'indi 3'],
+                        'host': 'localhost',
+                        'port': 7624,
+                        'loadConfig': False,
+                        'messages': False,
+                    },
+                },
+            'framework': 'ascom',
+            'defaultDevice': '',
+        }
+
+        self.popupUi = DevicePopup(app=self.app,
+                                   geometry=geometry,
+                                   driver=driver,
+                                   data=data)
+        self.popupUi.exec_()
+        print(data)
+        if self.popupUi.returnValues.get('close', 'cancel') == 'cancel':
+            return False
+        else:
+            return True
+
     def setupPopUp(self):
         """
         setupPopUp calculates the geometry data to place the popup centered on top of the
@@ -302,35 +350,18 @@ class SettDevice(object):
         :return: True for test purpose
         """
 
+        geometry = self.pos().x(), self.pos().y(), self.width(), self.height()
+        suc = False
+
         for driver in self.drivers:
             if self.sender() != self.drivers[driver]['uiSetup']:
                 continue
+            suc = self.callPopUp(driver, geometry)
+            break
 
-            # calculate geometry of parent window to center the popup
-            geometry = self.pos().x(), self.pos().y(), self.width(), self.height()
-
-            # collect all available frameworks
-            availFramework = list(self.drivers[driver]['class'].run.keys())
-
-            # selecting the device type
-            deviceType = self.drivers[driver]['deviceType']
-
-            self.popupUi = DevicePopup(app=self.app,
-                                       geometry=geometry,
-                                       driver=driver,
-                                       deviceType=deviceType,
-                                       availFramework=availFramework,
-                                       data=self.driversData)
-
-            # memorizing the driver we have to update
-            self.popupUi.exec_()
-            if self.popupUi.returnValues.get('close', 'cancel') == 'cancel':
-                return False
-            else:
-                break
-
-        self.processPopupResults(driverSelected=driver,
-                                 returnValues=self.popupUi.returnValues)
+        if suc:
+            self.processPopupResults(driverSelected=driver,
+                                     returnValues=self.popupUi.returnValues)
 
         return True
 

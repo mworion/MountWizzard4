@@ -193,6 +193,26 @@ class SettDevice(object):
             signals.deviceConnected.connect(self.deviceConnected)
             signals.deviceDisconnected.connect(self.deviceDisconnected)
 
+    def cleanData(self, data, driver):
+        """
+
+        :param data:
+        :param driver:
+        :return: cleaned data
+        """
+
+        if not data:
+            data = {
+                'framework': '',
+                'deviceType': driver,
+                'defaultDevice': '',
+                'frameworks': {},
+            }
+        for fw in self.drivers[driver]['class'].run:
+            data['frameworks'][fw].update(self.frameworks.get(fw, {}))
+
+        return data
+
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -207,14 +227,7 @@ class SettDevice(object):
 
         for driver in self.drivers:
             data = driversData.get(driver, {})
-            self.driversData[driver] = {
-                'framework': '',
-                'deviceType': driver,
-                'defaultDevice': '',
-                'frameworks': {},
-            }
-            for fw in self.drivers[driver]['class'].run:
-                self.driversData[driver]['frameworks'][fw] = self.frameworks.get(fw, {})
+            self.driversData[driver] = self.cleanData(data, driver)
 
         self.setupDeviceGui()
         for driver in self.drivers:

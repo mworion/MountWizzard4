@@ -36,6 +36,44 @@ class SettDevice(object):
     devices types in self.drivers are name related to ascom definitions
     """
 
+    frameworks = {
+        'alpaca': {
+            'device': '',
+            'deviceList': [],
+            'host': 'localhost',
+            'port': 11111,
+            'protocol': '',
+            'protocolList': ['https', 'http'],
+            'user': '',
+            'password': '',
+            'copyConfig': False,
+        },
+        'ascom': {
+            'device': 'test',
+        },
+        'indi': {
+            'device': '',
+            'deviceList': [],
+            'host': 'localhost',
+            'port': 7624,
+            'loadConfig': False,
+            'messages': False,
+            'copyConfig': False,
+        },
+        'astrometry': {
+            'searchRadius': 10,
+            'timeout': 30,
+            'appPath': '',
+            'indexPath': '',
+        },
+        'astap': {
+            'searchRadius': 10,
+            'timeout': 30,
+            'appPath': '',
+            'indexPath': '',
+        },
+    }
+
     def __init__(self, app=None, ui=None, clickable=None):
         if app:
             self.app = app
@@ -145,7 +183,7 @@ class SettDevice(object):
             self.drivers[driver]['uiDropDown'].activated.connect(self.dispatch)
             if self.drivers[driver]['uiSetup'] is not None:
                 ui = self.drivers[driver]['uiSetup']
-                ui.clicked.connect(self.setupPopUp)
+                ui.clicked.connect(self.setupPopup)
 
             if not hasattr(self.drivers[driver]['class'], 'signals'):
                 continue
@@ -165,36 +203,24 @@ class SettDevice(object):
         """
 
         config = self.app.config.get('mainW', {})
-        configData = self.app.config.get('driversData', {})
+        driversData = self.app.config.get('driversData', {})
 
         for driver in self.drivers:
-            d = self.driversData[driver] = configData.get(driver, {})
-
-            if driver != 'astrometry':
-                continue
-
-            nameASTROMETRY = self.app.astrometry.run['astrometry'].name
-            d['astrometryDeviceList'] = [nameASTROMETRY]
-            if not d.get('astrometryAppPath', ''):
-                d['astrometryAppPath'] = self.app.astrometry.run['astrometry'].appPath
-            if not d.get('astrometryIndexPath', ''):
-                d['astrometryIndexPath'] = self.app.astrometry.run['astrometry'].indexPath
-
-            nameASTAP = self.app.astrometry.run['astap'].name
-            d['astapDeviceList'] = [nameASTAP]
-            if not d.get('astapAppPath', ''):
-                d['astapAppPath'] = self.app.astrometry.run['astap'].appPath
-            if not d.get('astapIndexPath', ''):
-                d['astapIndexPath'] = self.app.astrometry.run['astap'].indexPath
+            data = driversData.get(driver, {})
+            self.driversData[driver] = {
+                'framework': '',
+                'deviceType': driver,
+                'defaultDevice': '',
+                'frameworks': {},
+            }
+            for fw in self.drivers[driver]['class'].run:
+                self.driversData[driver]['frameworks'][fw] = self.frameworks.get(fw, {})
 
         self.setupDeviceGui()
-
         for driver in self.drivers:
             self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
-
         self.ui.checkASCOMAutoConnect.setChecked(config.get('checkASCOMAutoConnect', False))
-
-        self.dispatch(driverName='all')
+        self.dispatch(driver='all')
 
         return True
 
@@ -211,7 +237,7 @@ class SettDevice(object):
 
         if 'driversData' not in self.app.config:
             self.app.config['driversData'] = {}
-        configData = self.app.config['driversData']
+        driversData = self.app.config['driversData']
 
         for driver in self.drivers:
             config[driver] = self.drivers[driver]['uiDropDown'].currentIndex()
@@ -219,7 +245,7 @@ class SettDevice(object):
         for driver in self.drivers:
             if driver not in self.driversData:
                 continue
-            configData[driver] = self.driversData[driver]
+            driversData[driver] = self.driversData[driver]
 
         config['checkASCOMAutoConnect'] = self.ui.checkASCOMAutoConnect.isChecked()
 
@@ -264,90 +290,52 @@ class SettDevice(object):
 
         return True
 
-    def processPopupResults(self, driverSelected=None, returnValues=None):
+    def processPopupResults(self, driver=None):
         """
+        processPopupResults takes sets the actual drop down in the device settings lists to
+        the choice of the popup window. after that it reinitialises the selected driver with
+        the new data.
 
         :return: True for test purpose
         """
 
-        # check if copy are made. if so, than restart all drivers related
-        if returnValues.get('copyIndi', False):
-            for driver in self.drivers:
-                if not self.drivers[driver]['class'].framework == 'indi':
-                    continue
-                self.dispatch(driverName=driver)
+        selectedFramework = self.driversData[driver]['framework']
 
-        elif returnValues.get('copyAlpaca', False):
-            for driver in self.drivers:
-                if not self.drivers[driver]['class'].framework == 'alpaca':
-                    continue
-                self.dispatch(driverName=driver)
+        index = self.findIndexValue(self.drivers[driver]['uiDropDown'], selectedFramework)
+        self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
 
-        # if we choose a framework and it's available, we select it from drop down
-        selectedFramework = self.driversData[driverSelected].get('framework', '')
-        index = self.findIndexValue(self.drivers[driverSelected]['uiDropDown'], selectedFramework)
-        self.drivers[driverSelected]['uiDropDown'].setCurrentIndex(index)
-
-        self.dispatch(driverName=driverSelected)
+        self.dispatch(driver=driver)
 
         return True
 
-    def callPopUp(self, driver, geometry):
+    def callPopup(self, driver, geometry):
         """
+        callPopup prepares the data and calls and processes the returned data.
+
+        there is one definition when using selection lists for offering QComboBoxes:
+        the list name for a property to be set through this lists is the property name
+        with an postfix 'List' like 'protocol' and 'protocolList'
 
         :param driver:
         :param geometry:
-        :return:
+        :return: True if OK and false if cancel
         """
 
-        # there is one definition when using selection lists for offering QComboBoxes:
-        # the list name for a property to be set through this lists is the property name
-        # with an postfix 'List' like 'protocol' and 'protocolList'
-
-        data = {
-            'deviceType': 'dome',
-            'frameworks':
-                {
-                    'alpaca': {
-                        'device': 'device 3',
-                        'deviceList': ['device 1', 'device 2', 'device 3'],
-                        'host': 'localhost',
-                        'port': 11111,
-                        'protocol': 'http',
-                        'protocolList': ['https', 'http'],
-                        'user': '',
-                        'password': '',
-                    },
-                    'ascom': {
-                        'device': 'test',
-                    },
-                    'indi': {
-                        'device': '',
-                        'deviceList': ['indi 1', 'indi 2', 'indi 3'],
-                        'host': 'localhost',
-                        'port': 7624,
-                        'loadConfig': False,
-                        'messages': False,
-                    },
-                },
-            'framework': 'ascom',
-            'defaultDevice': '',
-        }
-
+        data = self.driversData[driver]
         self.popupUi = DevicePopup(app=self.app,
                                    geometry=geometry,
                                    driver=driver,
                                    data=data)
         self.popupUi.exec_()
-        print(data)
+        print(self.driversData)
         if self.popupUi.returnValues.get('close', 'cancel') == 'cancel':
             return False
         else:
             return True
 
-    def setupPopUp(self):
+    def setupPopup(self):
         """
-        setupPopUp calculates the geometry data to place the popup centered on top of the
+        setupPopup calculates the geometry data to place the popup centered on top of the
         parent window and call it with all necessary data. The popup is modal and we connect
         the signal of the destroyed window to update the dispatching value for all changes
         drivers
@@ -361,12 +349,11 @@ class SettDevice(object):
         for driver in self.drivers:
             if self.sender() != self.drivers[driver]['uiSetup']:
                 continue
-            suc = self.callPopUp(driver, geometry)
+            suc = self.callPopup(driver, geometry)
             break
 
         if suc:
-            self.processPopupResults(driverSelected=driver,
-                                     returnValues=self.popupUi.returnValues)
+            self.processPopupResults(driver=driver)
 
         return True
 
@@ -573,7 +560,7 @@ class SettDevice(object):
 
         return suc
 
-    def dispatch(self, driverName=None):
+    def dispatch(self, driver=None):
         """
         dispatch is the central method to start / stop the drivers, setting the parameters
         and managing the boot / shutdown.
@@ -589,49 +576,49 @@ class SettDevice(object):
         then changing the settings
         then starting the new ones
 
-        :param driverName:
+        :param driver:
         :return: true for test purpose
         """
 
-        isGui = not isinstance(driverName, str)
-        isAll = not isGui and driverName == 'all'
+        isGui = not isinstance(driver, str)
+        isAll = not isGui and driver == 'all'
         autoASCOM = self.ui.checkASCOMAutoConnect.isChecked()
 
-        for driver in self.drivers:
-            if not isGui and (driverName != driver) and not isAll:
+        for d in self.drivers:
+            if not isGui and (driver != d) and not isAll:
                 continue
 
-            if isGui and (self.sender() != self.drivers[driver]['uiDropDown']):
+            if isGui and (self.sender() != self.drivers[d]['uiDropDown']):
                 continue
 
-            if not self.dispatchStopDriver(driver=driver, autoASCOM=autoASCOM):
+            if not self.dispatchStopDriver(driver=d, autoASCOM=autoASCOM):
                 continue
 
-            self.dispatchConfigDriver(driver=driver)
-            self.dispatchStartDriver(driver=driver, autoASCOM=autoASCOM)
+            self.dispatchConfigDriver(driver=d)
+            self.dispatchStartDriver(driver=d, autoASCOM=autoASCOM)
 
         return True
 
-    def scanValid(self, driver=None, deviceName=''):
+    def scanValid(self, driver=None, device=''):
         """
         scanValid checks if the calling device fits to the summary of all devices and gives
         back if it should be skipped
 
-        :param deviceName:
+        :param device:
         :param driver:
         :return:
         """
 
         if not driver:
             return False
-        if not deviceName:
+        if not device:
             return False
 
         if hasattr(self.drivers[driver]['class'], 'signals'):
             if self.sender() != self.drivers[driver]['class'].signals:
                 return False
         else:
-            if self.drivers[driver]['class'].name != deviceName:
+            if self.drivers[driver]['class'].name != device:
                 return False
         return True
 

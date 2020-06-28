@@ -94,6 +94,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
                 'deviceList': self.ui.indiDeviceList,
                 'messages': self.ui.indiMessages,
                 'loadConfig': self.ui.indiLoadConfig,
+                'copyConfig': self.ui.indiCopyConfig,
             },
             'alpaca': {
                 'host': self.ui.alpacaHost,
@@ -102,6 +103,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
                 'protocolList': self.ui.alpacaProtocolList,
                 'user': self.ui.alpacaUser,
                 'password': self.ui.alpacaPassword,
+                'copyConfig': self.ui.alpacaCopyConfig,
             },
             'ascom': {
                 'device': self.ui.ascomDevice,
@@ -240,6 +242,8 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
                 elif isinstance(ui, QLineEdit):
                     if isinstance(frameworks[fw][prop], str):
                         frameworks[fw][prop] = ui.text()
+                    elif isinstance(frameworks[fw][prop], int):
+                        frameworks[fw][prop] = int(ui.text())
                     else:
                         frameworks[fw][prop] = float(ui.text())
 
@@ -274,6 +278,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
     def storeConfig(self):
         """
+        storeConfig collects all the data changed
 
         :return: true for test purpose
         """

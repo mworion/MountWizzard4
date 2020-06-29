@@ -222,6 +222,9 @@ class Astrometry:
         entries starting with some keywords given in selection. we starting with
         HISTORY
 
+        CRVAL1 and CRVAL2 give the center coordinate as right ascension and declination or
+        longitude and latitude in decimal degrees.
+
         :param fitsHeader:
         :param wcsHeader:
         :param updateFits:

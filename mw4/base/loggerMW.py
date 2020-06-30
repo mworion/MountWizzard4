@@ -19,7 +19,9 @@
 import logging
 import warnings
 import datetime
+
 # external packages
+
 # local imports
 
 
@@ -30,7 +32,7 @@ def setupLogging():
     :return: true for test purpose
     """
     warnings.filterwarnings('ignore')
-    name = 'mw4-{0}.log'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
+    name = 'mw4-{0}.log'.format(datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d"))
     logging.basicConfig(level=logging.DEBUG,
                         format='[%(asctime)s]'
                                '[%(levelname)1.1s]'

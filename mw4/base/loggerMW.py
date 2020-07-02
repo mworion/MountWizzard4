@@ -19,6 +19,7 @@
 import logging
 import warnings
 import datetime
+from dateutil.tz import tzutc
 
 # external packages
 
@@ -31,6 +32,11 @@ def setupLogging():
 
     :return: true for test purpose
     """
+    def timeTz(*args):
+        return datetime.datetime.now(tzutc()).timetuple()
+
+    logging.Formatter.converter = timeTz
+
     warnings.filterwarnings('ignore')
     name = 'mw4-{0}.log'.format(datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d"))
     logging.basicConfig(level=logging.DEBUG,

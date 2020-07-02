@@ -155,12 +155,12 @@ class Satellite(object):
         if not source:
             return False
 
-        satellites = self.app.mount.obsSite.loader.tle_file(source, reload=reload)
-        self.satellites = {sat.name: sat for sat in satellites}
-
         fileName = os.path.basename(source)
         dirPath = self.app.mwGlob['dataDir']
         filePath = f'{dirPath}/{fileName}'
+
+        satellites = self.app.mount.obsSite.loader.tle_file(source, reload=reload)
+        self.satellites = {sat.name: sat for sat in satellites}
 
         if not os.path.isfile(filePath):
             return False
@@ -189,11 +189,16 @@ class Satellite(object):
         source = self.satelliteSourceURLs[key]
         reload = self.ui.isOnline.isChecked()
 
+        """
         worker = Worker(self.loadTLEDataFromSourceURLsWorker,
                         source=source,
                         reload=reload)
-        worker.signals.result.connect(self.setupSatelliteNameList)
+        worker.signals.finished.connect(self.setupSatelliteNameList)
         self.threadPool.start(worker)
+        """
+
+        self.loadTLEDataFromSourceURLsWorker(source=source, reload=reload)
+        self.setupSatelliteNameList()
 
         return True
 

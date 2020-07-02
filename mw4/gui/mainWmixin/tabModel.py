@@ -994,7 +994,9 @@ class Model(object):
 
         # check if imaging in window is running and abort it if necessary
         if self.app.uiWindows['showImageW']['classObj']:
-            self.app.uiWindows['showImageW']['classObj'].abortImage()
+            winImage = self.app.uiWindows['showImageW']['classObj']
+            if winImage.deviceStat['expose'] or winImage.deviceStat['exposeN']:
+                winImage.abortImage()
 
         self.changeStyleDynamic(self.ui.runModel, 'running', True)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', True)

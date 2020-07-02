@@ -141,7 +141,7 @@ class Satellite(object):
 
         return True
 
-    def loadTLEDataFromSourceURLsWorker(self, source='', reload=False):
+    def loadTLEDataFromSourceURLsWorker(self, source='', isOnline=False):
         """
         loadTLEDataFromSourceURLsWorker selects from a drop down list of possible satellite
         data sources on the web and once selected downloads the data. depending of the
@@ -159,7 +159,8 @@ class Satellite(object):
         dirPath = self.app.mwGlob['dataDir']
         filePath = f'{dirPath}/{fileName}'
 
-        satellites = self.app.mount.obsSite.loader.tle_file(source, reload=reload)
+        satellites = self.app.mount.obsSite.loader.tle_file(source, reload=isOnline)
+
         self.satellites = {sat.name: sat for sat in satellites}
 
         if not os.path.isfile(filePath):
@@ -187,18 +188,17 @@ class Satellite(object):
         # self.ui.filterText.setText('')
 
         source = self.satelliteSourceURLs[key]
-        reload = self.ui.isOnline.isChecked()
-
-        """
+        isOnline = self.ui.isOnline.isChecked()
         worker = Worker(self.loadTLEDataFromSourceURLsWorker,
                         source=source,
-                        reload=reload)
+                        isOnline=isOnline)
         worker.signals.finished.connect(self.setupSatelliteNameList)
         self.threadPool.start(worker)
-        """
 
+        """
         self.loadTLEDataFromSourceURLsWorker(source=source, reload=reload)
         self.setupSatelliteNameList()
+        """
 
         return True
 

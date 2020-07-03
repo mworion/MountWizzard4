@@ -18,8 +18,8 @@ connect over IP with your environment.
 
 For the core devices there is fom 0.150.16 on native ASCOM support (Windows platform only).
 Please be reminded, that ASCOM has 32bit and 64bit driver implementations and MW4 could also
-be installed in 32bit or 64 bit environment. None of them could be mixed! Normally ths
-should not be an issue...
+be installed in 32bit or 64 bit python environment. They could be not be mixed! 32bit python
+supports only 32bit drivers and vice versa. Normally this should not be an issue...
 
 In addition an online connection is used for some services which might be very helpful.
 

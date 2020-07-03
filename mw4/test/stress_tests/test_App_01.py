@@ -16,6 +16,7 @@
 #
 ###########################################################
 # standard libraries
+import os
 
 # external packages
 import pytest
@@ -46,18 +47,22 @@ def module_setup_teardown():
     global tp
 
     tp = QThreadPool()
+    if os.path.isfile('mw4/test/config/config.cfg'):
+        os.remove('mw4/test/config/config.cfg')
+    if os.path.isfile('mw4/test/config/profile'):
+        os.remove('mw4/test/config/profile')
 
     yield
 
-    tp.waitForDone(1000)
+    tp.waitForDone(3000)
 
 
 def test_1(qtbot, qapp):
+    # open all windows and close them
     def run():
         qapp.exec_()
 
     app = MountWizzard4(mwGlob=mwglob, application=qapp)
-    qtbot.add_widget(app.mainW)
 
     worker = Worker(run)
     tp.start(worker)
@@ -78,226 +83,17 @@ def test_1(qtbot, qapp):
 
 
 def test_2(qtbot, qapp):
-    def run():
-        qapp.exec_()
-
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-    qtbot.add_widget(app.mainW)
-
-    worker = Worker(run)
-    tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMessageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showImageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showHemisphereW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMeasureW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showSatelliteW']['classObj'], 1000)
-    QTest.qWait(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
-
-
-def test_3(qtbot, qapp):
-    def run():
-        qapp.exec_()
-
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-    qtbot.add_widget(app.mainW)
-
-    worker = Worker(run)
-    tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMessageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showImageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showHemisphereW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMeasureW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showSatelliteW']['classObj'], 1000)
-    QTest.qWait(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
-
-
-def test_4(qtbot, qapp):
-    def run():
-        qapp.exec_()
-
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-    qtbot.add_widget(app.mainW)
-
-    worker = Worker(run)
-    tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMessageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showImageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showHemisphereW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMeasureW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showSatelliteW']['classObj'], 1000)
-    QTest.qWait(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
-
-
-def test_5(qtbot, qapp):
-    def run():
-        qapp.exec_()
-
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-    qtbot.add_widget(app.mainW)
-
-    worker = Worker(run)
-    tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMessageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showImageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showHemisphereW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMeasureW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showSatelliteW']['classObj'], 1000)
-    QTest.qWait(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
-
-
-def test_6(qtbot, qapp):
-    def run():
-        qapp.exec_()
-
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-    qtbot.add_widget(app.mainW)
-
-    worker = Worker(run)
-    tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMessageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showImageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showHemisphereW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMeasureW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showSatelliteW']['classObj'], 1000)
-    QTest.qWait(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
-
-
-def test_7(qtbot, qapp):
-    def run():
-        qapp.exec_()
-
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-    qtbot.add_widget(app.mainW)
-
-    worker = Worker(run)
-    tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMessageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showImageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showHemisphereW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMeasureW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showSatelliteW']['classObj'], 1000)
-    QTest.qWait(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
-
-
-def test_8(qtbot, qapp):
-    def run():
-        qapp.exec_()
-
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-    qtbot.add_widget(app.mainW)
-
-    worker = Worker(run)
-    tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMessageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showImageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showHemisphereW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMeasureW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showSatelliteW']['classObj'], 1000)
-    QTest.qWait(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
-
-
-def test_9(qtbot, qapp):
-    def run():
-        qapp.exec_()
-
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-    qtbot.add_widget(app.mainW)
-
-    worker = Worker(run)
-    tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMessageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showImageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showHemisphereW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMeasureW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showSatelliteW']['classObj'], 1000)
-    QTest.qWait(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
-
-
-def test_10(qtbot, qapp):
-    def run():
-        qapp.exec_()
-
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-    qtbot.add_widget(app.mainW)
-
-    worker = Worker(run)
-    tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMessageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showImageW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showHemisphereW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMeasureW']['classObj'], 1000)
-    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showSatelliteW']['classObj'], 1000)
-    QTest.qWait(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
-
+    # Profile load / save
+    # Open hemisphere and select all stars
+    # open hemisphere and add horizon point / model point
+    # get online and check if environment is present
+    # select satellite open sat window
+    # select indi camera simulator and open image window expose one image
+    # select astap and solve on image
+    # Rename images from tool
+    # choosing simulation drivers
+    # changing simulation drivers
+    # Setting drivers
+    # connect / disconnect ascom
+    # updating mw
+    pass

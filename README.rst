@@ -5,25 +5,27 @@ Overview
 --------
 Welcome to MountWizzard4 is a utility for 10micron users for improving the workflow for
 astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu tested). As a python
-application, it should run in all environments which support python 3.6-3.8 including
-Qt as a Gui framework.
+application, it should run in all environments supporting python 3.6-3.8 and PyQt5 as a Gui
+framework.
 
-For full operation MW4 needs actually a running:
+For being fully operational, MW4 needs:
 
 INDI server(s) (see: https://indilib.org) where your devices are connected to.
 
-ASCOM Alpaca remote server (see: https://ascom-standards.org/Developer/Alpaca.htm) abstracting
-your ASCOM devices or devices which speak native ASCOM Alpaca if you want to connect over IP with your
-environment.
+ASCOM Alpaca remote server (see: https://ascom-standards.org/Developer/Alpaca.htm)
+abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if you want to
+connect over IP with your environment.
 
-For the core devices there is fom 0.150.16 on native ASCOM support (Windows platform only). Please
-be reminded, that ASCOM has 32bit and 64bit driver implementations and MW4 could also be installed in
-32bit or 64 bit environment. None of them could be mixed! Normally ths should not be an issue...
+For the core devices there is fom 0.150.16 on native ASCOM support (Windows platform only).
+Please be reminded, that ASCOM has 32bit and 64bit driver implementations and MW4 could also
+be installed in 32bit or 64 bit python environment. They could be not be mixed! 32bit python
+supports only 32bit drivers and vice versa. Normally this should not be an issue...
 
 In addition an online connection is used for some services which might be very helpful.
 
 It is recommended to use mount firmware 2.16 (ideally 2.16.11) or later as some of the
-functions don't work with older firmware versions.
+functions don't work with older firmware versions. It should not be a problem using older
+versions. A HW pre2012 might also have some issues.
 
 Documentation
 -------------
@@ -69,7 +71,7 @@ Any feedback welcome!
 Finally
 -------
 MountWizzard4 is still in beta development. The use this software is at your own risk! No
-responsibility for damages to your mount or other equipment or your environment. Please take
+responsibility for damages to your mount or other equipment or your environment, please take
 care yourself!
 
 Hope this tool makes fun and helps for your hobby,

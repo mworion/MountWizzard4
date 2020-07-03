@@ -21,9 +21,6 @@ import os
 
 # external packages
 import PyQt5.QtWidgets
-from PyQt5.QtCore import QModelIndex
-from PyQt5.QtGui import QBrush
-
 from astropy.io import fits
 from astropy import wcs
 from astropy.nddata import Cutout2D

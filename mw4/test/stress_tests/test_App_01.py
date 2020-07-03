@@ -58,6 +58,7 @@ def module_setup_teardown():
 
 
 def test_1(qtbot, qapp):
+    # open all windows and close them
     def run():
         qapp.exec_()
 
@@ -82,15 +83,10 @@ def test_1(qtbot, qapp):
 
 
 def test_2(qtbot, qapp):
-    def run():
-        qapp.exec_()
-
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-
-    worker = Worker(run)
-    tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
-
-    QTest.qWait(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
-
+    # Profile load / save
+    # Open hemisphere and select all stars
+    # open hemisphere and add horizon point / model point
+    # get online and check if environment is present
+    # select satellite open sat window
+    #
+    pass

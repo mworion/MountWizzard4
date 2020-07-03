@@ -40,7 +40,7 @@ def setupLogging():
     warnings.filterwarnings('ignore')
     name = 'mw4-{0}.log'.format(datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d"))
     logging.basicConfig(level=logging.DEBUG,
-                        format='[%(asctime)s]'
+                        format='[%(asctime)s.%(msecs)03d]'
                                '[%(levelname)1.1s]'
                                # '[%(threadName)-.2s]'
                                # '[%(funcName)4.4s]'

@@ -88,5 +88,12 @@ def test_2(qtbot, qapp):
     # open hemisphere and add horizon point / model point
     # get online and check if environment is present
     # select satellite open sat window
-    #
+    # select indi camera simulator and open image window expose one image
+    # select astap and solve on image
+    # Rename images from tool
+    # choosing simulation drivers
+    # changing simulation drivers
+    # Setting drivers
+    # connect / disconnect ascom
+    # updating mw
     pass

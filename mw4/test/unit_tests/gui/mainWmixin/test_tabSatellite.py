@@ -137,7 +137,7 @@ def test_loadSatelliteSourceWorker_2():
 
 def test_loadSatelliteSourceWorker_3():
     source = 'http://www.celestrak.com/NORAD/elements/visual.txt'
-    suc = app.loadTLEDataFromSourceURLsWorker(source=source, reload=False)
+    suc = app.loadTLEDataFromSourceURLsWorker(source=source, isOnline=False)
     assert suc
 
 

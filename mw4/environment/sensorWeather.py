@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 import logging
+import platform
 
 # external packages
 import PyQt5
@@ -25,6 +26,8 @@ import PyQt5
 from mw4.base.loggerMW import CustomLogger
 from mw4.environment.sensorWeatherIndi import SensorWeatherIndi
 from mw4.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
+if platform.system() == 'Windows':
+    from mw4.environment.sensorWeatherAscom import SensorWeatherAscom
 
 
 class SensorWeatherSignals(PyQt5.QtCore.QObject):
@@ -65,6 +68,16 @@ class SensorWeather:
             'indi': SensorWeatherIndi(self.app, self.signals, self.data),
             'alpaca': SensorWeatherAlpaca(self.app, self.signals, self.data),
         }
+
+        if platform.system() == 'Windows':
+            self.run['ascom'] = SensorWeatherAscom(self.app, self.signals, self.data)
+
+            ascomSignals = self.run['ascom'].ascomSignals
+            ascomSignals.serverConnected.connect(self.signals.serverConnected)
+            ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+            ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
+            ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
         self.name = ''
         self.host = ('localhost', 7624)
 

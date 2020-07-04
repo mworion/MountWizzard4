@@ -21,13 +21,13 @@ import platform
 
 # external packages
 import PyQt5
-if platform.system() == 'Windows':
-    from mw4.dome.domeAscom import DomeAscom
 
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.dome.domeIndi import DomeIndi
 from mw4.dome.domeAlpaca import DomeAlpaca
+if platform.system() == 'Windows':
+    from mw4.dome.domeAscom import DomeAscom
 
 
 class DomeSignals(PyQt5.QtCore.QObject):

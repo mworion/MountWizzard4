@@ -62,8 +62,10 @@ class SensorWeatherAlpaca(AlpacaClass):
 
         :return: true for test purpose
         """
+
         self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = self.client.temperature()
         self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = self.client.pressure()
         self.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = self.client.dewpoint()
         self.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = self.client.humidity()
+
         return True

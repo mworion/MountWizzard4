@@ -160,13 +160,23 @@ class SimulatorWindow(widget.MWidget):
         self.camController.setLinearSpeed(5.0)
         self.camController.setLookSpeed(90)
         self.view.setRootEntity(self.rootEntity)
-        self.pLight = QPointLight()
-        self.dLight = QDirectionalLight()
-        self.eLight = QEnvironmentLight()
-        # self.eLight.
-        self.rootEntity.addComponent(self.eLight)
-        self.rootEntity.addComponent(self.pLight)
-        self.rootEntity.addComponent(self.dLight)
+        self.view.defaultFrameGraph().setClearColor(QColor(40, 40, 40))
+
+        self.pL0E = QEntity(self.rootEntity)
+        self.pL0 = QPointLight(self.pL0E)
+        self.pL0.setIntensity(0.8)
+        self.pL0ETransform = QTransform()
+        self.pL0ETransform.setTranslation(QVector3D(3, 20, 3))
+        self.pL0E.addComponent(self.pL0)
+        self.pL0E.addComponent(self.pL0ETransform)
+
+        self.pL1E = QEntity(self.rootEntity)
+        self.pL1 = QPointLight(self.pL1E)
+        self.pL1.setIntensity(0.5)
+        self.pL1ETransform = QTransform()
+        self.pL1ETransform.setTranslation(QVector3D(-5, 20, -5))
+        self.pL1E.addComponent(self.pL1)
+        self.pL1E.addComponent(self.pL1ETransform)
 
         self.model = None
         self.world = None
@@ -181,6 +191,7 @@ class SimulatorWindow(widget.MWidget):
         self.ui.topWestView.clicked.connect(self.topWestView)
         self.ui.eastView.clicked.connect(self.eastView)
         self.ui.westView.clicked.connect(self.westView)
+        self.ui.checkPL.clicked.connect(self.setPL)
 
         # connect functional signals
         self.app.update1s.connect(self.updateDome)
@@ -271,13 +282,17 @@ class SimulatorWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        # background color
-        self.view.defaultFrameGraph().setClearColor(QColor(20, 20, 20))
         self.createScene(self.rootEntity)
+        self.setPL()
         self.setDomeTransparency()
         self.show()
 
         return True
+
+    def setPL(self):
+
+        self.pL0E.setEnabled(self.ui.checkPL.isChecked())
+        self.pL1E.setEnabled(not self.ui.checkPL.isChecked())
 
     def topView(self):
         """

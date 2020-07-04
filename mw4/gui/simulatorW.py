@@ -26,7 +26,7 @@ from PyQt5.Qt3DExtras import Qt3DWindow, QCuboidMesh, QSphereMesh
 from PyQt5.Qt3DExtras import QOrbitCameraController
 from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
 from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
-from PyQt5.Qt3DRender import QMesh
+from PyQt5.Qt3DRender import QMesh, QPointLight, QEnvironmentLight, QDirectionalLight
 from PyQt5.Qt3DCore import QEntity, QTransform
 
 # local import
@@ -106,6 +106,33 @@ class SimulatorWindow(widget.MWidget):
     __all__ = ['SimulatorWindow',
                ]
 
+    domeEntities = {
+        'domeWall': {
+            'trans': Materials().transparent,
+            'solid': Materials().dome1
+        },
+        'domeSphere': {
+            'trans': Materials().transparent,
+            'solid': Materials().dome1
+        },
+        'domeSlit1': {
+            'trans': Materials().transparent,
+            'solid': Materials().dome2
+        },
+        'domeSlit2': {
+            'trans': Materials().transparent,
+            'solid': Materials().dome2
+        },
+        'domeDoor1': {
+            'trans': Materials().transparent,
+            'solid': Materials().dome2
+        },
+        'domeDoor2': {
+            'trans': Materials().transparent,
+            'solid': Materials().dome2
+        },
+    }
+
     def __init__(self, app):
         super().__init__()
 
@@ -133,6 +160,13 @@ class SimulatorWindow(widget.MWidget):
         self.camController.setLinearSpeed(5.0)
         self.camController.setLookSpeed(90)
         self.view.setRootEntity(self.rootEntity)
+        self.pLight = QPointLight()
+        self.dLight = QDirectionalLight()
+        self.eLight = QEnvironmentLight()
+        # self.eLight.
+        self.rootEntity.addComponent(self.eLight)
+        self.rootEntity.addComponent(self.pLight)
+        self.rootEntity.addComponent(self.dLight)
 
         self.model = None
         self.world = None
@@ -181,6 +215,7 @@ class SimulatorWindow(widget.MWidget):
             y = config['cameraPositionY']
             z = config['cameraPositionZ']
             self.camera.setPosition(QVector3D(x, y, z))
+            self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
         self.ui.checkDomeTransparent.setChecked(config.get('checkDomeTransparent', False))
         self.ui.checkDomeDisable.setChecked(config.get('checkDomeDisable', False))
@@ -239,6 +274,7 @@ class SimulatorWindow(widget.MWidget):
         # background color
         self.view.defaultFrameGraph().setClearColor(QColor(20, 20, 20))
         self.createScene(self.rootEntity)
+        self.setDomeTransparency()
         self.show()
 
         return True
@@ -601,6 +637,22 @@ class SimulatorWindow(widget.MWidget):
         self.createWorld(rootEntity)
         self.createOTA(rootEntity)
 
+    def setDomeTransparency(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        transparent = self.ui.checkDomeTransparent.isChecked()
+
+        for entity in self.domeEntities:
+            if transparent:
+                self.world[entity]['e'].addComponent(self.domeEntities[entity]['trans'])
+            else:
+                self.world[entity]['e'].addComponent(self.domeEntities[entity]['solid'])
+
+        return True
+
     def updateSettings(self):
         """
         updateSettings resize parts depending on the setting made in the dome tab. likewise
@@ -651,39 +703,7 @@ class SimulatorWindow(widget.MWidget):
         self.world['domeSphere']['t'].setScale3D(QVector3D(scale, scale, scale))
         self.world['domeSphere']['t'].setTranslation(QVector3D(0, 0, corrZ))
 
-        domeEntities = {
-            'domeWall': {
-                'trans': Materials().transparent,
-                'solid': Materials().dome1
-            },
-            'domeSphere': {
-                'trans': Materials().transparent,
-                'solid': Materials().dome1
-            },
-            'domeSlit1': {
-                'trans': Materials().transparent,
-                'solid': Materials().dome2
-            },
-            'domeSlit2': {
-                'trans': Materials().transparent,
-                'solid': Materials().dome2
-            },
-            'domeDoor1': {
-                'trans': Materials().transparent,
-                'solid': Materials().dome2
-            },
-            'domeDoor2': {
-                'trans': Materials().transparent,
-                'solid': Materials().dome2
-            },
-        }
-        transparent = self.ui.checkDomeTransparent.isChecked()
-
-        for entity in domeEntities:
-            if transparent:
-                self.world[entity]['e'].addComponent(domeEntities[entity]['trans'])
-            else:
-                self.world[entity]['e'].addComponent(domeEntities[entity]['solid'])
+        self.setDomeTransparency()
 
         return True
 

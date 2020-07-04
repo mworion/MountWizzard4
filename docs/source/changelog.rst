@@ -3,6 +3,10 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed
 changes list, please refer to the commit list on GitHub.
 
+0.150.28
+- adding ascom skymeter
+- adding ascom sensor
+
 0.150.27
 - photometry in image window, showing flux, roundness, sharpness, sources
 - subtracting background

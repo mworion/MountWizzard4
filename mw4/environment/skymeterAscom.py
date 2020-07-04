@@ -62,7 +62,7 @@ class SkymeterAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.data['SKY_QUALITY.SKY_TEMPERATURE'] = self.client.skytemperature
+        self.data['SKY_QUALITY.SKY_TEMPERATURE'] = self.client.temperature
         self.data['SKY_QUALITY.SKY_BRIGHTNESS'] = self.client.skyquality
 
         return True

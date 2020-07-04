@@ -72,13 +72,16 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Left mouse button :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;While the left mouse button is pressed, mouse movement along x-axis moves the camera left and right and movement along y-axis moves it up and down.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Right mouse button :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;While the right mouse button is pressed, mouse movement along x-axis pans the camera around the camera view center and movement along y-axis tilts it around the camera view center.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Both left and right mouse button &lt;/span&gt;:&lt;/p&gt;&lt;p&gt;While both the left and the right mouse button are pressed, mouse movement along y-axis zooms the camera in and out without changing the view center.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Mouse scroll wheel :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Zooms the camera in and out without changing the view center.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Arrow keys :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Move the camera vertically and horizontally relative to camera viewport.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Page up and page down keys :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Move the camera forwards and backwards.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Shift key : &lt;/span&gt;&lt;/p&gt;&lt;p&gt;Changes the behavior of the up and down arrow keys to zoom the camera in and out without changing the view center. The other movement keys are disabled.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Alt key :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Changes the behovior of the arrow keys to pan and tilt the camera around the view center. Disables the page up and page down keys.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Escape :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Moves the camera so that entire scene is visible in the camera viewport.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
       <property name="title">
        <string>Settings</string>
       </property>
       <property name="large" stdset="0">
        <bool>true</bool>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0">
        <property name="spacing">
         <number>4</number>
        </property>
@@ -157,6 +160,84 @@
          </property>
          <property name="text">
           <string>Intersect Point</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line">
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="midLineWidth">
+          <number>1</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="topView">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Top View</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="topWestView">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Top West View</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="westView">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>West View</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="topEastView">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Top East View</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="eastView">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>East View</string>
          </property>
         </widget>
        </item>

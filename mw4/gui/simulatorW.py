@@ -126,7 +126,8 @@ class SimulatorWindow(widget.MWidget):
         self.camera = self.view.camera()
         self.camera.lens().setPerspectiveProjection(45.0, 16.0 / 9.0, 0.1, 1000.0)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
-        # self.camera.setUpVector(QVector3D(0.0, .00, 0.0))
+        self.camera.setPosition(QVector3D(5.0, 15.0, 3.0))
+        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
         self.camController = QOrbitCameraController(self.rootEntity)
         self.camController.setCamera(self.camera)
         self.camController.setLinearSpeed(5.0)
@@ -141,6 +142,11 @@ class SimulatorWindow(widget.MWidget):
 
         # connect to gui
         self.ui.checkDomeTransparent.clicked.connect(self.updateSettings)
+        self.ui.topView.clicked.connect(self.topView)
+        self.ui.topEastView.clicked.connect(self.topEastView)
+        self.ui.topWestView.clicked.connect(self.topWestView)
+        self.ui.eastView.clicked.connect(self.eastView)
+        self.ui.westView.clicked.connect(self.westView)
 
         # connect functional signals
         self.app.update1s.connect(self.updateDome)
@@ -237,7 +243,67 @@ class SimulatorWindow(widget.MWidget):
 
         return True
 
-    def linkModel(self, model, name, rootEntity):
+    def topView(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setPosition(QVector3D(0.0, 10.0, 0.0))
+
+        return True
+
+    def topEastView(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
+        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+
+        return True
+
+    def topWestView(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
+        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+
+        return True
+
+    def eastView(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
+        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+
+        return True
+
+    def westView(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
+        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+
+        return True
+
+    @staticmethod
+    def linkModel(model, name, rootEntity):
         """
 
         :param model:

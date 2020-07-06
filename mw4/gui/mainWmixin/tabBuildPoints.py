@@ -69,10 +69,10 @@ class BuildPoints(object):
         self.ui.genBuildSpiralNorm.clicked.connect(self.genBuildSpiralNorm)
         self.ui.genBuildSpiralMin.clicked.connect(self.genBuildSpiralMin)
         self.ui.clearBuildP.clicked.connect(self.clearBuildP)
-        self.ui.checkSortNothing.clicked.connect(self.updateSorting)
-        self.ui.checkSortEW.clicked.connect(self.updateSorting)
-        self.ui.checkSortHL.clicked.connect(self.updateSorting)
-        self.ui.checkAvoidFlip.clicked.connect(self.updateSorting)
+        self.ui.checkSortNothing.clicked.connect(self.autoSortPoints)
+        self.ui.checkSortEW.clicked.connect(self.autoSortPoints)
+        self.ui.checkSortHL.clicked.connect(self.autoSortPoints)
+        self.ui.checkAvoidFlip.clicked.connect(self.autoSortPoints)
         self.ui.checkAutoDeleteMeridian.clicked.connect(self.autoDeletePoints)
         self.ui.checkAutoDeleteHorizon.clicked.connect(self.autoDeletePoints)
 
@@ -186,8 +186,7 @@ class BuildPoints(object):
             self.app.message.emit('Could not generate grid', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
 
         self.ui.numberGridPointsRow.setEnabled(True)
         self.ui.numberGridPointsCol.setEnabled(True)
@@ -211,8 +210,7 @@ class BuildPoints(object):
             self.app.message.emit('Could not generate 3 align stars', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
 
         return True
 
@@ -231,8 +229,7 @@ class BuildPoints(object):
             self.app.message.emit('Could not generate 6 align stars', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
 
         return True
 
@@ -251,8 +248,7 @@ class BuildPoints(object):
             self.app.message.emit('Could not generate 9 align stars', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
 
         return True
 
@@ -271,8 +267,7 @@ class BuildPoints(object):
             self.app.message.emit('Build points [max] cannot be generated', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
 
         return True
 
@@ -291,8 +286,7 @@ class BuildPoints(object):
             self.app.message.emit('Build points [med] cannot be generated', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
 
         return True
 
@@ -311,8 +305,7 @@ class BuildPoints(object):
             self.app.message.emit('Build points [norm] cannot be generated', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
 
         return True
 
@@ -331,8 +324,7 @@ class BuildPoints(object):
             self.app.message.emit('Build points [min] cannot be generated', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
 
         return True
 
@@ -377,8 +369,7 @@ class BuildPoints(object):
             self.app.message.emit('DSO Path cannot be generated', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
 
         self.ui.numberDSOPoints.setEnabled(True)
         self.ui.durationDSO.setEnabled(True)
@@ -404,8 +395,8 @@ class BuildPoints(object):
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
+
         return True
 
     def genBuildSpiralMed(self):
@@ -421,8 +412,8 @@ class BuildPoints(object):
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
+
         return True
 
     def genBuildSpiralNorm(self):
@@ -438,8 +429,8 @@ class BuildPoints(object):
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
+
         return True
 
     def genBuildSpiralMin(self):
@@ -455,8 +446,8 @@ class BuildPoints(object):
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
+
         return True
 
     def loadBuildFile(self):
@@ -553,8 +544,7 @@ class BuildPoints(object):
             self.app.message.emit(text, 2)
             return False
 
-        self.autoDeletePoints()
-        self.autoSortPoints()
+        self.processPoints()
 
         return True
 
@@ -585,8 +575,6 @@ class BuildPoints(object):
         if self.ui.checkAutoDeleteMeridian.isChecked():
             self.app.data.deleteCloseMeridian()
 
-        self.app.redrawHemisphere.emit()
-
         return True
 
     def autoSortPoints(self):
@@ -616,16 +604,17 @@ class BuildPoints(object):
         else:
             self.app.data.sort(eastwest=eastwest, highlow=highlow)
 
-        self.app.redrawHemisphere.emit()
-
         return True
 
-    def updateSorting(self):
+    def processPoints(self):
         """
 
         :return: True for test purpose
         """
+
+        self.autoDeletePoints()
         self.autoSortPoints()
         self.app.redrawHemisphere.emit()
+        self.app.sendBuildPoints.emit(self.app.data.buildP)
 
         return True

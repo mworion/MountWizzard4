@@ -18,6 +18,7 @@
 # standard libraries
 
 # external packages
+import numpy as np
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QVector3D
@@ -180,6 +181,7 @@ class SimulatorWindow(widget.MWidget):
 
         self.model = None
         self.world = None
+        self.points = None
 
         self.initConfig()
         self.showWindow()
@@ -196,6 +198,7 @@ class SimulatorWindow(widget.MWidget):
         # connect functional signals
         self.app.update1s.connect(self.updateDome)
         self.app.redrawSimulator.connect(self.updateSettings)
+        self.app.sendBuildPoints.connect(self.createBuildPoints)
         self.app.mount.signals.pointDone.connect(self.updateMount)
 
     def initConfig(self):
@@ -641,6 +644,43 @@ class SimulatorWindow(widget.MWidget):
 
         for name in self.world:
             self.linkModel(self.world, name, rootEntity)
+
+    def createBuildPoints(self, points):
+        """
+
+        :return: success
+        """
+
+        if not self.world:
+            return False
+
+        if self.points:
+            for point in self.points:
+                del self.points[point]
+
+        self.points = list()
+        radius = 20
+
+        for point in points:
+            entity = QEntity()
+            mesh = QSphereMesh()
+            mesh.setRadius(30)
+            mesh.setRings(30)
+            mesh.setSlices(30)
+            trans = QTransform()
+            alt = np.radians(point[0])
+            az = np.radians(point[1])
+            x = radius * np.sin(az)
+            y = radius * np.cos(az)
+            z = radius * np.sin(alt)
+            trans.setTranslation(QVector3D(x, y, z))
+            entity.addComponent(mesh)
+            entity.addComponent(trans)
+            entity.addComponent(Materials().aluminiumR)
+            entity.setParent(self.world['ref']['e'])
+            self.points.append(entity)
+
+        return True
 
     def createScene(self, rootEntity):
         """

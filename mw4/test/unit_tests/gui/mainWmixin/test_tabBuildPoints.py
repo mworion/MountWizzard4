@@ -546,6 +546,6 @@ def test_autoSortPoints_2():
     assert suc
 
 
-def test_updateSorting():
-    suc = app.updateSorting()
+def test_processPoints():
+    suc = app.processPoints()
     assert suc

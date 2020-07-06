@@ -31,6 +31,7 @@ from PyQt5.Qt3DRender import QMesh, QPointLight, QEnvironmentLight, QDirectional
 from PyQt5.Qt3DCore import QEntity, QTransform
 
 # local import
+from mw4.base import transform
 from mw4.gui import widget
 from mw4.gui.widgets import simulator_ui
 
@@ -181,7 +182,7 @@ class SimulatorWindow(widget.MWidget):
 
         self.model = None
         self.world = None
-        self.points = None
+        self.points = []
 
         self.initConfig()
         self.showWindow()
@@ -650,19 +651,22 @@ class SimulatorWindow(widget.MWidget):
 
         :return: success
         """
+        if not points:
+            return False
 
         if not self.world:
             return False
 
         if self.points:
             for point in self.points:
-                del self.points[point]
+                point.setParent(None)
+                del point
 
-        self.points = list()
-        radius = 20
+        self.points.clear()
+        radius = 5 * 1000
 
         for point in points:
-            entity = QEntity()
+            entity = QEntity(self.world['ref']['e'])
             mesh = QSphereMesh()
             mesh.setRadius(30)
             mesh.setRings(30)
@@ -670,14 +674,11 @@ class SimulatorWindow(widget.MWidget):
             trans = QTransform()
             alt = np.radians(point[0])
             az = np.radians(point[1])
-            x = radius * np.sin(az)
-            y = radius * np.cos(az)
-            z = radius * np.sin(alt)
-            trans.setTranslation(QVector3D(x, y, z))
+            x, y, z = transform.sphericalToCartesian(alt, az, radius)
+            trans.setTranslation(QVector3D(x, y, 1000 + z))
             entity.addComponent(mesh)
             entity.addComponent(trans)
             entity.addComponent(Materials().aluminiumR)
-            entity.setParent(self.world['ref']['e'])
             self.points.append(entity)
 
         return True

@@ -300,6 +300,6 @@ class AstrometryASTAP(object):
         else:
             sucIndex = True
 
-        self.log.info('Binary and index files available for ASTAP')
+        self.log.info(f'ASTAP OK, app:{program} index:{index}')
 
         return sucProgram, sucIndex

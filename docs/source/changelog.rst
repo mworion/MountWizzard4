@@ -3,15 +3,23 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed
 changes list, please refer to the commit list on GitHub.
 
+0.151.1
+
+- extension icon suppport
+- refactoring device manangement
+
 0.150.28
+
 - adding ascom skymeter
 - adding ascom sensor
 
 0.150.27
+
 - photometry in image window, showing flux, roundness, sharpness, sources
-- subtracting background
+- subtracting background in images shown in image window
 
 0.150.26
+
 - improved almanac (moon phase etc, runs now in local time also for drawing)
 - newer libraries (matplotlib 3.2.2)
 

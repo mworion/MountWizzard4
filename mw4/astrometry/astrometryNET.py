@@ -394,6 +394,6 @@ class AstrometryNET(object):
         else:
             sucIndex = True
 
-        self.log.info('Binary and index files available for ASTROMETRY.NET')
+        self.log.info(f'astrometry.net OK, app:{program} index:{index}')
 
         return sucProgram, sucIndex

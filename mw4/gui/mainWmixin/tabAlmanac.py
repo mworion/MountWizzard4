@@ -347,7 +347,7 @@ class Almanac(object):
 
         self.drawTwilight(minDay, maxDay)
 
-        return
+        return True
 
     def searchTwilight(self):
         """

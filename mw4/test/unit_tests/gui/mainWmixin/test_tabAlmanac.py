@@ -17,6 +17,8 @@
 ###########################################################
 # standard libraries
 import pytest
+import threading
+from unittest import mock
 import logging
 from pathlib import Path
 import faulthandler
@@ -29,6 +31,7 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
 from skyfield.api import Topos
+import matplotlib
 
 # local import
 from mw4.gui.mainWmixin.tabAlmanac import Almanac
@@ -66,9 +69,8 @@ def module_setup_teardown(qtbot):
 
     app = Almanac(app=Test(), ui=ui,
                   clickable=MWidget().clickable)
+
     app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.close = MWidget().close
-    app.deleteLater = MWidget().deleteLater
     app.guiSetText = MWidget().guiSetText
     app.embedMatplot = MWidget().embedMatplot
     app.generateFlat = MWidget().generateFlat
@@ -77,25 +79,64 @@ def module_setup_teardown(qtbot):
     app.COLOR_BLUE3 = MWidget().COLOR_BLUE3
     app.COLOR_BLUE4 = MWidget().COLOR_BLUE4
     app.COLOR_WHITE1 = MWidget().COLOR_WHITE1
-    app.twilight = QWidget()
+    app.M_GREY = MWidget().M_GREY
+    app.M_BLUE1 = MWidget().M_BLUE1
+    app.M_BLUE2 = MWidget().M_BLUE2
+    app.M_BLUE3 = MWidget().M_BLUE3
+    app.M_BLUE4 = MWidget().M_BLUE4
+    app.M_WHITE = MWidget().M_WHITE
+    app.twilight = MWidget().embedMatplot(QWidget())
     app.deviceStat = dict()
     app.log = CustomLogger(logging.getLogger(__name__), {})
     app.threadPool = QThreadPool()
-
-    qtbot.addWidget(app)
 
     yield
 
     app.threadPool.waitForDone(1000)
 
 
-def test_initConfig_1():
-    suc = app.initConfig()
+def test_storeConfig_1():
+    suc = app.storeConfig()
     assert suc
 
 
-def test_storeConfig_1():
-    suc = app.storeConfig()
+def test_drawTwilight_1():
+    ts = app.app.mount.obsSite.ts
+    timeJD = app.app.mount.obsSite.timeJD
+    t0 = ts.tt_jd(int(timeJD.tt) - 182)
+    t1 = ts.tt_jd(int(timeJD.tt) + 182)
+
+    app.civil = dict()
+    app.nautical = dict()
+    app.astronomical = dict()
+    app.dark = dict()
+    app.civil[0] = [[t0, 10], [t0, 10]]
+    app.nautical[0] = [[t0, 10], [t0, 10]]
+    app.astronomical[0] = [[t0, 10], [t0, 10]]
+    app.dark[0] = [[t0, 10], [t0, 10]]
+
+    with mock.patch.object(matplotlib.backends.backend_qt5agg.FigureCanvasQTAgg,
+                           'draw'):
+        suc = app.drawTwilight(t0, t1)
+        assert suc
+
+
+def test_searchTwilightWorker_1():
+    with mock.patch.object(app,
+                           'drawTwilight'):
+        suc = app.searchTwilightWorker()
+        assert suc
+
+
+def test_searchTwilight_1():
+    with mock.patch.object(threading.Thread,
+                           'start'):
+        suc = app.searchTwilight()
+        assert suc
+
+
+def test_displayTwilightData_1():
+    suc = app.displayTwilightData()
     assert suc
 
 

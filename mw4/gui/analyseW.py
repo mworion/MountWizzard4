@@ -180,7 +180,7 @@ class AnalyseWindow(widget.MWidget):
         self.ui.filename.setText(os.path.basename(loadFilePath))
         self.ui.eposure.setText(f'{modelJSON[0]["exposureTime"]}')
         self.ui.solver.setText(modelJSON[0]['astrometryApp'])
-        self.ui.binning.setText(f'{modelJSON[0]["binning"]}')
+        self.ui.binning.setText(f'{modelJSON[0]["binning"]:1.0f}')
         self.ui.time.setText(modelJSON[0]['julianDate'])
         self.ui.subframe.setText(f'{modelJSON[0]["subFrame"]:3.0f}')
         self.ui.flipped.setText(str(modelJSON[0]['flippedS']))
@@ -202,6 +202,9 @@ class AnalyseWindow(widget.MWidget):
             self.ui.focalLength.setText(f'{modelJSON[0]["focalLength"]:4.0f}')
         if 'profile' in modelJSON[0]:
             self.ui.profile.setText(f'{modelJSON[0]["profile"]}')
+        if 'firmware' in modelJSON[0]:
+            self.ui.firmware.setText(f'{modelJSON[0]["firmware"]}')
+        self.ui.firmware.setText('2.16.18')
 
         self.modelJSON = modelJSON
         self.drawAll()

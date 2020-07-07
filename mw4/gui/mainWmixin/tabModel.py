@@ -715,6 +715,7 @@ class Model(object):
             sPoint['julianDate'] = sPoint['julianDate'].utc_iso()
             sPoint['version'] = f'{self.app.__version__}'
             sPoint['profile'] = self.ui.profile.text()
+            sPoint['firmware'] = self.ui.vString.text()
 
             modelDataForSave.append(sPoint)
         return modelDataForSave

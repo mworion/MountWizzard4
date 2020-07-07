@@ -64,8 +64,8 @@
    <property name="spacing">
     <number>4</number>
    </property>
-   <item row="0" column="1">
-    <widget class="QGroupBox" name="groupBox_3">
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox_7">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -73,12 +73,12 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Right Ascension - point errors after solving</string>
+      <string>Model - model point positions in hemisphere</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <layout class="QGridLayout" name="gridLayout_5">
+     <layout class="QGridLayout" name="gridLayout_8">
       <property name="leftMargin">
        <number>4</number>
       </property>
@@ -95,53 +95,7 @@
        <number>0</number>
       </property>
       <item row="0" column="0">
-       <widget class="QWidget" name="raPointErrors" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QGroupBox" name="groupBox_6">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="title">
-      <string>Declination - model errors after model build</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_7">
-      <property name="leftMargin">
-       <number>4</number>
-      </property>
-      <property name="topMargin">
-       <number>8</number>
-      </property>
-      <property name="rightMargin">
-       <number>4</number>
-      </property>
-      <property name="bottomMargin">
-       <number>4</number>
-      </property>
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QWidget" name="decModelErrors" native="true">
+       <widget class="QWidget" name="modelPositions" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -188,6 +142,224 @@
       </property>
       <item row="0" column="0">
        <widget class="QWidget" name="raModelErrors" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Right Ascension - point errors after solving</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QWidget" name="raPointErrors" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QGroupBox" name="groupBox_8">
+     <property name="title">
+      <string>Model - point error in ascending order</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_9">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QWidget" name="errorAscending" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Declination - point errors after solving</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_6">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QWidget" name="decPointErrors" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QGroupBox" name="groupBox_9">
+     <property name="title">
+      <string>Model - error distribution</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_10">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QWidget" name="errorDistribution" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QGroupBox" name="groupBox_6">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Declination - model errors after model build</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_7">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QWidget" name="decModelErrors" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -268,9 +440,9 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>80</x>
         <y>20</y>
-        <width>296</width>
+        <width>311</width>
         <height>21</height>
        </rect>
       </property>
@@ -306,7 +478,7 @@
        <rect>
         <x>5</x>
         <y>20</y>
-        <width>81</width>
+        <width>71</width>
         <height>21</height>
        </rect>
       </property>
@@ -331,8 +503,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>95</y>
+        <x>80</x>
+        <y>105</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -360,6 +532,9 @@
       <property name="text">
        <string/>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
       <property name="readOnly">
        <bool>true</bool>
       </property>
@@ -370,9 +545,9 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>120</y>
-        <width>296</width>
+        <x>270</x>
+        <y>80</y>
+        <width>121</width>
         <height>21</height>
        </rect>
       </property>
@@ -409,9 +584,9 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>225</x>
-        <y>95</y>
-        <width>31</width>
+        <x>270</x>
+        <y>105</y>
+        <width>51</width>
         <height>21</height>
        </rect>
       </property>
@@ -451,9 +626,9 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>70</y>
-        <width>296</width>
+        <x>80</x>
+        <y>80</y>
+        <width>141</width>
         <height>21</height>
        </rect>
       </property>
@@ -490,8 +665,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>320</x>
-        <y>95</y>
+        <x>270</x>
+        <y>180</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -529,8 +704,8 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>95</y>
+        <x>5</x>
+        <y>105</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -549,9 +724,9 @@
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>120</y>
-        <width>76</width>
+        <x>225</x>
+        <y>80</y>
+        <width>46</width>
         <height>21</height>
        </rect>
       </property>
@@ -569,9 +744,9 @@
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>95</y>
-        <width>26</width>
+        <x>190</x>
+        <y>105</y>
+        <width>71</width>
         <height>21</height>
        </rect>
       </property>
@@ -583,14 +758,14 @@
        </font>
       </property>
       <property name="text">
-       <string>Bin</string>
+       <string>Binning</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>70</y>
+        <x>5</x>
+        <y>80</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -609,9 +784,9 @@
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>95</y>
-        <width>41</width>
+        <x>190</x>
+        <y>180</y>
+        <width>76</width>
         <height>21</height>
        </rect>
       </property>
@@ -623,15 +798,15 @@
        </font>
       </property>
       <property name="text">
-       <string>Subfr</string>
+       <string>Subframe</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="winsorizedLimit">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>240</y>
-        <width>231</width>
+        <x>190</x>
+        <y>255</y>
+        <width>131</width>
         <height>21</height>
        </rect>
       </property>
@@ -641,7 +816,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Winzorized Sigma data processing</string>
+       <string>Winzorized Sigma</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="flipped">
@@ -650,8 +825,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>285</x>
-        <y>170</y>
+        <x>270</x>
+        <y>155</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -689,8 +864,8 @@
      <widget class="QLabel" name="label_7">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>170</y>
+        <x>190</x>
+        <y>155</y>
         <width>56</width>
         <height>21</height>
        </rect>
@@ -709,8 +884,8 @@
      <widget class="QDoubleSpinBox" name="limit">
       <property name="geometry">
        <rect>
-        <x>325</x>
-        <y>240</y>
+        <x>335</x>
+        <y>255</y>
         <width>41</width>
         <height>21</height>
        </rect>
@@ -733,35 +908,12 @@
        <double>3.000000000000000</double>
       </property>
      </widget>
-     <widget class="QLabel" name="pointsEast">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>270</y>
-        <width>136</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string> Points Pierside East</string>
-      </property>
-      <property name="color" stdset="0">
-       <string>yellow</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_8">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>145</y>
-        <width>76</width>
+        <x>5</x>
+        <y>205</y>
+        <width>71</width>
         <height>21</height>
        </rect>
       </property>
@@ -779,8 +931,8 @@
      <widget class="QLabel" name="label_9">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>195</y>
+        <x>5</x>
+        <y>180</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -799,8 +951,8 @@
      <widget class="QLabel" name="label_10">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>195</y>
+        <x>5</x>
+        <y>155</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -822,8 +974,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>285</x>
-        <y>195</y>
+        <x>80</x>
+        <y>180</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -864,8 +1016,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>195</y>
+        <x>80</x>
+        <y>155</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -906,8 +1058,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>145</y>
+        <x>80</x>
+        <y>205</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -945,8 +1097,8 @@
      <widget class="QLabel" name="label_11">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>170</y>
+        <x>5</x>
+        <y>130</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -968,8 +1120,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>170</y>
+        <x>80</x>
+        <y>130</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1007,8 +1159,8 @@
      <widget class="QLabel" name="label_12">
       <property name="geometry">
        <rect>
-        <x>340</x>
-        <y>195</y>
+        <x>135</x>
+        <y>180</y>
         <width>46</width>
         <height>21</height>
        </rect>
@@ -1027,8 +1179,8 @@
      <widget class="QLabel" name="label_13">
       <property name="geometry">
        <rect>
-        <x>145</x>
-        <y>195</y>
+        <x>135</x>
+        <y>155</y>
         <width>46</width>
         <height>21</height>
        </rect>
@@ -1047,8 +1199,8 @@
      <widget class="QLabel" name="label_14">
       <property name="geometry">
        <rect>
-        <x>145</x>
-        <y>170</y>
+        <x>135</x>
+        <y>130</y>
         <width>46</width>
         <height>21</height>
        </rect>
@@ -1067,8 +1219,8 @@
      <widget class="QLabel" name="label_15">
       <property name="geometry">
        <rect>
-        <x>375</x>
-        <y>95</y>
+        <x>325</x>
+        <y>180</y>
         <width>16</width>
         <height>21</height>
        </rect>
@@ -1087,8 +1239,8 @@
      <widget class="QLabel" name="label_16">
       <property name="geometry">
        <rect>
-        <x>145</x>
-        <y>95</y>
+        <x>135</x>
+        <y>105</y>
         <width>26</width>
         <height>21</height>
        </rect>
@@ -1104,38 +1256,15 @@
        <string>sec</string>
       </property>
      </widget>
-     <widget class="QLabel" name="pointsWest">
-      <property name="geometry">
-       <rect>
-        <x>180</x>
-        <y>270</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Points Pierside West</string>
-      </property>
-      <property name="color" stdset="0">
-       <string>green</string>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="version">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>45</y>
-        <width>81</width>
+        <x>80</x>
+        <y>55</y>
+        <width>76</width>
         <height>21</height>
        </rect>
       </property>
@@ -1169,8 +1298,8 @@
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>45</y>
+        <x>5</x>
+        <y>55</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -1189,8 +1318,8 @@
      <widget class="QLabel" name="label_17">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>240</y>
+        <x>380</x>
+        <y>255</y>
         <width>16</width>
         <height>21</height>
        </rect>
@@ -1212,9 +1341,9 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>290</x>
-        <y>45</y>
-        <width>96</width>
+        <x>270</x>
+        <y>55</y>
+        <width>121</width>
         <height>21</height>
        </rect>
       </property>
@@ -1248,8 +1377,8 @@
      <widget class="QLabel" name="label_18">
       <property name="geometry">
        <rect>
-        <x>245</x>
-        <y>45</y>
+        <x>225</x>
+        <y>55</y>
         <width>46</width>
         <height>21</height>
        </rect>
@@ -1268,9 +1397,9 @@
      <widget class="QLabel" name="label_19">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>145</y>
-        <width>66</width>
+        <x>190</x>
+        <y>130</y>
+        <width>86</width>
         <height>21</height>
        </rect>
       </property>
@@ -1282,7 +1411,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Focal len</string>
+       <string>Focallength</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="focalLength">
@@ -1291,8 +1420,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>285</x>
-        <y>145</y>
+        <x>270</x>
+        <y>130</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1330,8 +1459,8 @@
      <widget class="QLabel" name="label_20">
       <property name="geometry">
        <rect>
-        <x>345</x>
-        <y>145</y>
+        <x>325</x>
+        <y>130</y>
         <width>46</width>
         <height>21</height>
        </rect>
@@ -1353,8 +1482,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>180</x>
-        <y>45</y>
+        <x>165</x>
+        <y>55</y>
         <width>56</width>
         <height>21</height>
        </rect>
@@ -1389,8 +1518,8 @@
      <widget class="QLabel" name="label_21">
       <property name="geometry">
        <rect>
-        <x>175</x>
-        <y>45</y>
+        <x>160</x>
+        <y>55</y>
         <width>16</width>
         <height>21</height>
        </rect>
@@ -1406,178 +1535,52 @@
        <string>/</string>
       </property>
      </widget>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QGroupBox" name="groupBox_5">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="title">
-      <string>Declination - point errors after solving</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_6">
-      <property name="leftMargin">
-       <number>4</number>
+     <widget class="QLabel" name="pointsWest">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>255</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
       </property>
-      <property name="topMargin">
-       <number>8</number>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
       </property>
-      <property name="rightMargin">
-       <number>4</number>
+      <property name="text">
+       <string>Points Pierside West</string>
       </property>
-      <property name="bottomMargin">
-       <number>4</number>
+      <property name="color" stdset="0">
+       <string>green</string>
       </property>
-      <property name="spacing">
-       <number>0</number>
+     </widget>
+     <widget class="QLabel" name="pointsEast">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>270</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
       </property>
-      <item row="0" column="0">
-       <widget class="QWidget" name="decPointErrors" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="groupBox_7">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="title">
-      <string>Model - model point positions in hemisphere</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_8">
-      <property name="leftMargin">
-       <number>4</number>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
       </property>
-      <property name="topMargin">
-       <number>8</number>
+      <property name="text">
+       <string>Points Pierside East</string>
       </property>
-      <property name="rightMargin">
-       <number>4</number>
+      <property name="color" stdset="0">
+       <string>yellow</string>
       </property>
-      <property name="bottomMargin">
-       <number>4</number>
-      </property>
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QWidget" name="modelPositions" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QGroupBox" name="groupBox_8">
-     <property name="title">
-      <string>Model - point error in ascending order</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_9">
-      <property name="leftMargin">
-       <number>4</number>
-      </property>
-      <property name="topMargin">
-       <number>8</number>
-      </property>
-      <property name="rightMargin">
-       <number>4</number>
-      </property>
-      <property name="bottomMargin">
-       <number>4</number>
-      </property>
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QWidget" name="errorAscending" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QGroupBox" name="groupBox_9">
-     <property name="title">
-      <string>Model - error distribution</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_10">
-      <property name="leftMargin">
-       <number>4</number>
-      </property>
-      <property name="topMargin">
-       <number>8</number>
-      </property>
-      <property name="rightMargin">
-       <number>4</number>
-      </property>
-      <property name="bottomMargin">
-       <number>4</number>
-      </property>
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QWidget" name="errorDistribution" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     </widget>
     </widget>
    </item>
   </layout>

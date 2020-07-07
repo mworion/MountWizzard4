@@ -157,6 +157,14 @@ class AnalyseWindow(widget.MWidget):
 
         return True
 
+    def convertModelData(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        return True
+
     def loadModel(self):
         """
         loadModel selects one or more models from the files system
@@ -185,6 +193,8 @@ class AnalyseWindow(widget.MWidget):
         self.ui.subframe.setText(f'{modelJSON[0]["subFrame"]:3.0f}')
         self.ui.flipped.setText(str(modelJSON[0]['flippedS']))
 
+        self.convertModelData()
+
         if 'polarError' in modelJSON[0]:
             self.ui.polarError.setText(f'{modelJSON[0]["polarError"]:5.1f}')
         if 'modelTerms' in modelJSON[0]:
@@ -204,7 +214,6 @@ class AnalyseWindow(widget.MWidget):
             self.ui.profile.setText(f'{modelJSON[0]["profile"]}')
         if 'firmware' in modelJSON[0]:
             self.ui.firmware.setText(f'{modelJSON[0]["firmware"]}')
-        self.ui.firmware.setText('2.16.18')
 
         self.modelJSON = modelJSON
         self.drawAll()

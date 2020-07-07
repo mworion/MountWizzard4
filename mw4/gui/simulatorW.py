@@ -736,7 +736,7 @@ class SimulatorWindow(widget.MWidget):
             self.model['otaRing']['t'].setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
             self.model['otaTube']['t'].setScale3D(QVector3D(1.0, scaleRad, scaleRad))
             self.model['otaTube']['t'].setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
-            self.model['otaImagetrain']['t'].setTranslation(QVector3D(0.0, 0.0, 65 * (scaleRad - 1)))
+            self.model['otaImagetrain']['t'].setTranslation(QVector3D(0, 0, 65 * (scaleRad - 1)))
 
         if 't' not in self.world['domeFloor']:
             return False

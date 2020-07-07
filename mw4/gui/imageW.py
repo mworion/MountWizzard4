@@ -574,7 +574,7 @@ class ImageWindow(widget.MWidget):
         if self.ui.view.currentIndex() == 4 and self.sources:
             r1 = self.sources['roundness1']
             r2 = self.sources['roundness2']
-            rg = np.sqrt(r1*r1 + r2*r2)
+            rg = np.sqrt(r1 * r1 + r2 * r2)
             area = 50 * rg + 3
             scatter = self.axe.scatter(x, y, c=rg,
                                        vmin=0, vmax=1,

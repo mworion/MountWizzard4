@@ -108,33 +108,6 @@ class SimulatorWindow(widget.MWidget):
     __all__ = ['SimulatorWindow',
                ]
 
-    domeEntities = {
-        'domeWall': {
-            'trans': Materials().transparent,
-            'solid': Materials().dome1
-        },
-        'domeSphere': {
-            'trans': Materials().transparent,
-            'solid': Materials().dome1
-        },
-        'domeSlit1': {
-            'trans': Materials().transparent,
-            'solid': Materials().dome2
-        },
-        'domeSlit2': {
-            'trans': Materials().transparent,
-            'solid': Materials().dome2
-        },
-        'domeDoor1': {
-            'trans': Materials().transparent,
-            'solid': Materials().dome2
-        },
-        'domeDoor2': {
-            'trans': Materials().transparent,
-            'solid': Materials().dome2
-        },
-    }
-
     def __init__(self, app):
         super().__init__()
 
@@ -699,13 +672,40 @@ class SimulatorWindow(widget.MWidget):
         :return: True for test purpose
         """
 
+        domeEntities = {
+            'domeWall': {
+                'trans': Materials().transparent,
+                'solid': Materials().dome1
+            },
+            'domeSphere': {
+                'trans': Materials().transparent,
+                'solid': Materials().dome1
+            },
+            'domeSlit1': {
+                'trans': Materials().transparent,
+                'solid': Materials().dome2
+            },
+            'domeSlit2': {
+                'trans': Materials().transparent,
+                'solid': Materials().dome2
+            },
+            'domeDoor1': {
+                'trans': Materials().transparent,
+                'solid': Materials().dome2
+            },
+            'domeDoor2': {
+                'trans': Materials().transparent,
+                'solid': Materials().dome2
+            },
+        }
+
         transparent = self.ui.checkDomeTransparent.isChecked()
 
-        for entity in self.domeEntities:
+        for entity in domeEntities:
             if transparent:
-                self.world[entity]['e'].addComponent(self.domeEntities[entity]['trans'])
+                self.world[entity]['e'].addComponent(domeEntities[entity]['trans'])
             else:
-                self.world[entity]['e'].addComponent(self.domeEntities[entity]['solid'])
+                self.world[entity]['e'].addComponent(domeEntities[entity]['solid'])
 
         return True
 

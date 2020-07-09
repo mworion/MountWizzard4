@@ -20,11 +20,11 @@
 # external packages
 import numpy as np
 from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QFont
 from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
 from PyQt5.Qt3DExtras import Qt3DWindow, QCuboidMesh, QSphereMesh
-from PyQt5.Qt3DExtras import QOrbitCameraController
+from PyQt5.Qt3DExtras import QOrbitCameraController, QExtrudedTextMesh
 from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
 from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
 from PyQt5.Qt3DRender import QMesh, QPointLight, QEnvironmentLight, QDirectionalLight
@@ -363,6 +363,12 @@ class SimulatorWindow(widget.MWidget):
                 mesh.setRadius(source[1])
                 mesh.setRings(source[2])
                 mesh.setSlices(source[3])
+            elif isinstance(source[0], QExtrudedTextMesh):
+                mesh = source[0]
+                mesh.setDepth(source[1])
+                mesh.setFont(QFont(source[2]))
+                mesh.setText(source[3])
+
             currMod['e'].addComponent(mesh)
             currMod['m'] = mesh
 
@@ -610,6 +616,12 @@ class SimulatorWindow(widget.MWidget):
             'domeDoor2': {
                 'parent': 'domeSphere',
                 'source': 'dome-door2.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().dome2,
+            },
+            'test': {
+                'parent': 'domeSphere',
+                'source': [QExtrudedTextMesh(), 50, 'Arial', 'Testtext'],
                 'scale': [1, 1, 1],
                 'mat': Materials().dome2,
             },

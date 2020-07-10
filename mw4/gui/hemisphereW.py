@@ -599,7 +599,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         """
 
         self.pointsBuild = None
-        self.app.data.clearBuildP()
         self.drawHemisphere()
 
     def staticHorizon(self, axes=None):

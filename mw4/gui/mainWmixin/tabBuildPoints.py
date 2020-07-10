@@ -554,6 +554,9 @@ class BuildPoints(object):
         :return: success
         """
 
+        self.app.data.clearBuildP()
+        self.app.sendBuildPoints.emit(self.app.data.buildP)
+
         if not self.app.uiWindows['showHemisphereW']['classObj']:
             return False
 

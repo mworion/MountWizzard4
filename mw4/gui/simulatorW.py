@@ -102,6 +102,13 @@ class Materials():
         self.transparent.setShininess(0.8)
         self.transparent.setAlpha(0.8)
 
+        self.points = QPhongAlphaMaterial()
+        self.points.setAmbient(QColor(128, 128, 16))
+        self.points.setDiffuse(QColor(128, 128, 16, 255))
+        self.points.setSpecular(QColor(128, 128, 16))
+        self.points.setShininess(0.8)
+        self.points.setAlpha(0.8)
+
 
 class SimulatorWindow(widget.MWidget):
 
@@ -156,6 +163,7 @@ class SimulatorWindow(widget.MWidget):
         self.model = None
         self.world = None
         self.points = []
+        self.pointRoot = None
 
         self.initConfig()
         self.showWindow()
@@ -366,8 +374,7 @@ class SimulatorWindow(widget.MWidget):
             elif isinstance(source[0], QExtrudedTextMesh):
                 mesh = source[0]
                 mesh.setDepth(source[1])
-                mesh.setFont(QFont('Arial', 38))
-                # mesh.setFont(QFont(source[2]))
+                mesh.setFont(QFont())
                 mesh.setText(source[3])
 
             currMod['e'].addComponent(mesh)
@@ -552,18 +559,10 @@ class SimulatorWindow(widget.MWidget):
                 'source': 'ota-focus-top.stl',
                 'mat': Materials().white,
             },
-            'test': {
-                'parent': 'ref',
-                'source': [QExtrudedTextMesh(), 100, 'Arial', 'Testtext'],
-                'scale': [1, 1, 1],
-                'mat': Materials().aluminiumB,
-            },
         }
 
         for name in self.model:
             self.linkModel(self.model, name, rootEntity)
-
-        self.model['test']['t'].setTranslation(QVector3D(200, 200, 500))
 
     def createWorld(self, rootEntity):
         """
@@ -579,6 +578,13 @@ class SimulatorWindow(widget.MWidget):
                 'trans': None,
                 'rot': [-90, 90, 0],
                 'scale': [0.001, 0.001, 0.001],
+                'mat': None,
+            },
+            'ref1000': {
+                'parent': None,
+                'source': None,
+                'trans': None,
+                'rot': [-90, 90, 0],
                 'mat': None,
             },
             'environ': {
@@ -628,45 +634,58 @@ class SimulatorWindow(widget.MWidget):
                 'scale': [1, 1, 1],
                 'mat': Materials().dome2,
             },
+            'test': {
+                'parent': 'ref1000',
+                'source': [QExtrudedTextMesh(), 0.1, 'Arial', 'Testtext'],
+                'scale': [.1, .1, .1],
+                'mat': Materials().aluminiumB,
+            },
         }
 
         for name in self.world:
             self.linkModel(self.world, name, rootEntity)
+
+        self.world['test']['t'].setTranslation(QVector3D(2, 2, 3))
 
     def createBuildPoints(self, points):
         """
 
         :return: success
         """
-        if not points:
-            return False
 
         if not self.world:
             return False
 
         if self.points:
-            for point in self.points:
-                point.setParent(None)
-                del point
+            self.pointRoot.setParent(None)
 
         self.points.clear()
-        radius = 5 * 1000
+
+        if not points:
+            return False
+
+        radius = 5
+        self.pointRoot = QEntity(self.world['ref1000']['e'])
 
         for point in points:
-            entity = QEntity(self.world['ref']['e'])
+            entity = QEntity(self.pointRoot)
             mesh = QSphereMesh()
-            mesh.setRadius(30)
+            mesh.setRadius(0.03)
             mesh.setRings(30)
             mesh.setSlices(30)
             trans = QTransform()
             alt = np.radians(point[0])
             az = np.radians(point[1])
             x, y, z = transform.sphericalToCartesian(alt, az, radius)
-            trans.setTranslation(QVector3D(x, y, 1000 + z))
+            trans.setTranslation(QVector3D(x, y, 1 + z))
             entity.addComponent(mesh)
             entity.addComponent(trans)
-            entity.addComponent(Materials().aluminiumR)
-            self.points.append(entity)
+            entity.addComponent(Materials().points)
+            element = {'e': entity,
+                       'x': x,
+                       'y': y,
+                       'z': z}
+            self.points.append(element)
 
         return True
 

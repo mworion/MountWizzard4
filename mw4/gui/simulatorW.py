@@ -647,8 +647,35 @@ class SimulatorWindow(widget.MWidget):
 
         self.world['test']['t'].setTranslation(QVector3D(2, 2, 3))
 
+    @staticmethod
+    def createPoint(rEntity, alt, az):
+        """
+
+        :param rEntity:
+        :param alt:
+        :param az:
+        :return: entity, x, y, z coordinates
+        """
+
+        radius = 5
+        entity = QEntity(rEntity)
+        mesh = QSphereMesh()
+        mesh.setRadius(0.03)
+        mesh.setRings(30)
+        mesh.setSlices(30)
+        trans = QTransform()
+        x, y, z = transform.sphericalToCartesian(alt, az, radius)
+        trans.setTranslation(QVector3D(x, y, 1 + z))
+        entity.addComponent(mesh)
+        entity.addComponent(trans)
+        entity.addComponent(Materials().points)
+
+        return entity, x, y, z
+
     def createBuildPoints(self, points):
         """
+        createBuildPoints show the point in the sky if checked, in addition if selected the
+        slew path between the points and in addition if checked the point numbers
 
         :return: success
         """
@@ -664,27 +691,14 @@ class SimulatorWindow(widget.MWidget):
         if not points:
             return False
 
-        radius = 5
         self.pointRoot = QEntity(self.world['ref1000']['e'])
 
         for point in points:
-            entity = QEntity(self.pointRoot)
-            mesh = QSphereMesh()
-            mesh.setRadius(0.03)
-            mesh.setRings(30)
-            mesh.setSlices(30)
-            trans = QTransform()
-            alt = np.radians(point[0])
-            az = np.radians(point[1])
-            x, y, z = transform.sphericalToCartesian(alt, az, radius)
-            trans.setTranslation(QVector3D(x, y, 1 + z))
-            entity.addComponent(mesh)
-            entity.addComponent(trans)
-            entity.addComponent(Materials().points)
-            element = {'e': entity,
-                       'x': x,
-                       'y': y,
-                       'z': z}
+            e, x, y, z = self.createPoint(self.pointRoot,
+                                          np.radians(point[0]),
+                                          np.radians(point[1]))
+
+            element = {'e': e, 'x': x, 'y': y, 'z': z}
             self.points.append(element)
 
         return True
@@ -697,6 +711,8 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.createWorld(rootEntity)
+        self.setDomeTransparency()
+        self.updateDome()
         self.createOTA(rootEntity)
 
     def setDomeTransparency(self):
@@ -853,9 +869,12 @@ class SimulatorWindow(widget.MWidget):
         domeEntities = ['domeWall', 'domeSphere', 'domeSlit1',
                         'domeSlit2', 'domeDoor1', 'domeDoor2']
 
-        devicePresent = self.app.mainW.deviceStat.get('dome', False)
-        if devicePresent is None:
+        if self.app.mainW is None:
             devicePresent = False
+        else:
+            devicePresent = self.app.mainW.deviceStat.get('dome', False)
+            if devicePresent is None:
+                devicePresent = False
 
         viewDisabled = self.ui.checkDomeDisable.isChecked()
 

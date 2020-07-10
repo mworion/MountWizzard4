@@ -366,7 +366,8 @@ class SimulatorWindow(widget.MWidget):
             elif isinstance(source[0], QExtrudedTextMesh):
                 mesh = source[0]
                 mesh.setDepth(source[1])
-                mesh.setFont(QFont(source[2]))
+                mesh.setFont(QFont('Helvetica', 100))
+                # mesh.setFont(QFont(source[2]))
                 mesh.setText(source[3])
 
             currMod['e'].addComponent(mesh)
@@ -551,10 +552,18 @@ class SimulatorWindow(widget.MWidget):
                 'source': 'ota-focus-top.stl',
                 'mat': Materials().white,
             },
+            'test': {
+                'parent': 'ref',
+                'source': [QExtrudedTextMesh(), 50, 'Arial', 'Testtext'],
+                'scale': [1000, 1000, 1000],
+                'mat': Materials().aluminiumR,
+            },
         }
 
         for name in self.model:
             self.linkModel(self.model, name, rootEntity)
+
+        self.model['test']['t'].setTranslation(QVector3D(2, 2, 5))
 
     def createWorld(self, rootEntity):
         """
@@ -619,13 +628,6 @@ class SimulatorWindow(widget.MWidget):
                 'scale': [1, 1, 1],
                 'mat': Materials().dome2,
             },
-            'test': {
-                'parent': 'domeSphere',
-                'source': [QExtrudedTextMesh(), 50, 'Arial', 'Testtext'],
-                'scale': [1, 1, 1],
-                'mat': Materials().dome2,
-            },
-
         }
 
         for name in self.world:

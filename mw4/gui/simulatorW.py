@@ -20,11 +20,11 @@
 # external packages
 import numpy as np
 from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QColor, QFont
+from PyQt5.QtGui import QColor, QFont, QQuaternion
 from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
 from PyQt5.Qt3DExtras import Qt3DWindow, QCuboidMesh, QSphereMesh
-from PyQt5.Qt3DExtras import QOrbitCameraController, QExtrudedTextMesh
+from PyQt5.Qt3DExtras import QOrbitCameraController, QExtrudedTextMesh, QCylinderMesh
 from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
 from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
 from PyQt5.Qt3DRender import QMesh, QPointLight, QEnvironmentLight, QDirectionalLight
@@ -103,11 +103,11 @@ class Materials():
         self.transparent.setAlpha(0.8)
 
         self.points = QPhongAlphaMaterial()
-        self.points.setAmbient(QColor(128, 128, 16))
-        self.points.setDiffuse(QColor(128, 128, 16, 255))
-        self.points.setSpecular(QColor(128, 128, 16))
-        self.points.setShininess(0.8)
-        self.points.setAlpha(0.8)
+        self.points.setAmbient(QColor(16, 128, 16))
+        self.points.setDiffuse(QColor(16, 128, 16, 255))
+        self.points.setSpecular(QColor(16, 128, 16))
+        self.points.setShininess(0.9)
+        self.points.setAlpha(0.9)
 
 
 class SimulatorWindow(widget.MWidget):
@@ -162,6 +162,7 @@ class SimulatorWindow(widget.MWidget):
 
         self.model = None
         self.world = None
+        self.buildPoints = None
         self.points = []
         self.pointRoot = None
 
@@ -170,6 +171,8 @@ class SimulatorWindow(widget.MWidget):
 
         # connect to gui
         self.ui.checkDomeTransparent.clicked.connect(self.updateSettings)
+        self.ui.checkShowBuildPoints.clicked.connect(self.createBuildPoints)
+        self.ui.checkShowNumbers.clicked.connect(self.createBuildPoints)
         self.ui.topView.clicked.connect(self.topView)
         self.ui.topEastView.clicked.connect(self.topEastView)
         self.ui.topWestView.clicked.connect(self.topWestView)
@@ -180,7 +183,7 @@ class SimulatorWindow(widget.MWidget):
         # connect functional signals
         self.app.update1s.connect(self.updateDome)
         self.app.redrawSimulator.connect(self.updateSettings)
-        self.app.sendBuildPoints.connect(self.createBuildPoints)
+        self.app.sendBuildPoints.connect(self.storeBuildPoints)
         self.app.mount.signals.pointDone.connect(self.updateMount)
 
     def initConfig(self):
@@ -216,6 +219,9 @@ class SimulatorWindow(widget.MWidget):
         self.ui.checkDomeTransparent.setChecked(config.get('checkDomeTransparent', False))
         self.ui.checkDomeDisable.setChecked(config.get('checkDomeDisable', False))
         self.ui.checkShowPointer.setChecked(config.get('checkShowPointer', False))
+        self.ui.checkShowBuildPoints.setChecked(config.get('checkShowBuildPoints', False))
+        self.ui.checkShowNumbers.setChecked(config.get('checkShowNumbers', False))
+        self.ui.checkShowHorizon.setChecked(config.get('checkShowHorizon', False))
 
         return True
 
@@ -243,6 +249,9 @@ class SimulatorWindow(widget.MWidget):
         config['checkDomeTransparent'] = self.ui.checkDomeTransparent.isChecked()
         config['checkDomeDisable'] = self.ui.checkDomeDisable.isChecked()
         config['checkShowPointer'] = self.ui.checkShowPointer.isChecked()
+        config['checkShowBuildPoints'] = self.ui.checkShowBuildPoints.isChecked()
+        config['checkShowNumbers'] = self.ui.checkShowNumbers.isChecked()
+        config['checkShowHorizon'] = self.ui.checkShowHorizon.isChecked()
 
         return True
 
@@ -271,6 +280,18 @@ class SimulatorWindow(widget.MWidget):
         self.setPL()
         self.setDomeTransparency()
         self.show()
+
+        return True
+
+    def storeBuildPoints(self, points):
+        """
+
+        :param points:
+        :return: True for test purpose
+        """
+
+        self.buildPoints = points
+        self.createBuildPoints()
 
         return True
 
@@ -645,8 +666,6 @@ class SimulatorWindow(widget.MWidget):
         for name in self.world:
             self.linkModel(self.world, name, rootEntity)
 
-        self.world['test']['t'].setTranslation(QVector3D(2, 2, 3))
-
     @staticmethod
     def createPoint(rEntity, alt, az):
         """
@@ -660,7 +679,7 @@ class SimulatorWindow(widget.MWidget):
         radius = 5
         entity = QEntity(rEntity)
         mesh = QSphereMesh()
-        mesh.setRadius(0.03)
+        mesh.setRadius(0.05)
         mesh.setRings(30)
         mesh.setSlices(30)
         trans = QTransform()
@@ -672,7 +691,32 @@ class SimulatorWindow(widget.MWidget):
 
         return entity, x, y, z
 
-    def createBuildPoints(self, points):
+    @staticmethod
+    def createAnnotation(rEntity, alt, az, text):
+        """
+
+        :param rEntity:
+        :param alt:
+        :param az:
+        :param text:
+        :return: entity
+        """
+
+        entity = QEntity(rEntity)
+        trans = QTransform()
+        mesh = QExtrudedTextMesh()
+        mesh.setText(text)
+        mesh.setDepth(0.1)
+        mesh.setFont(QFont('Arial', 36))
+        trans.setScale(0.2)
+        trans.setRotationZ(az - 90)
+        entity.addComponent(mesh)
+        entity.addComponent(trans)
+        entity.addComponent(Materials().points)
+
+        return entity
+
+    def createBuildPoints(self):
         """
         createBuildPoints show the point in the sky if checked, in addition if selected the
         slew path between the points and in addition if checked the point numbers
@@ -688,17 +732,23 @@ class SimulatorWindow(widget.MWidget):
 
         self.points.clear()
 
-        if not points:
+        if not self.ui.checkShowBuildPoints.isChecked():
             return False
 
         self.pointRoot = QEntity(self.world['ref1000']['e'])
 
-        for point in points:
+        for index, point in enumerate(self.buildPoints):
             e, x, y, z = self.createPoint(self.pointRoot,
                                           np.radians(point[0]),
                                           np.radians(point[1]))
 
-            element = {'e': e, 'x': x, 'y': y, 'z': z}
+            if self.ui.checkShowNumbers.isChecked():
+                a = self.createAnnotation(e, point[0], point[1], f'{index:02d}')
+            else:
+                a = None
+
+            element = {'e': e, 'a': a, 'x': x, 'y': y, 'z': z}
+
             self.points.append(element)
 
         return True

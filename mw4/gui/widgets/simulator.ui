@@ -81,7 +81,7 @@
       <property name="large" stdset="0">
        <bool>true</bool>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0">
        <property name="spacing">
         <number>4</number>
        </property>
@@ -182,6 +182,60 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="checkShowBuildPoints">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Build Points</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkShowNumbers">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Numbers</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkShowHorizon">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Horizon</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="Line" name="line">
          <property name="frameShadow">
           <enum>QFrame::Plain</enum>
@@ -276,7 +330,7 @@
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="simulator" stretch="">
+     <layout class="QHBoxLayout" name="simulator">
       <property name="spacing">
        <number>0</number>
       </property>

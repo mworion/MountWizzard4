@@ -366,7 +366,7 @@ class SimulatorWindow(widget.MWidget):
             elif isinstance(source[0], QExtrudedTextMesh):
                 mesh = source[0]
                 mesh.setDepth(source[1])
-                mesh.setFont(QFont('Helvetica', 100))
+                mesh.setFont(QFont('Arial', 38))
                 # mesh.setFont(QFont(source[2]))
                 mesh.setText(source[3])
 
@@ -554,16 +554,16 @@ class SimulatorWindow(widget.MWidget):
             },
             'test': {
                 'parent': 'ref',
-                'source': [QExtrudedTextMesh(), 50, 'Arial', 'Testtext'],
-                'scale': [1000, 1000, 1000],
-                'mat': Materials().aluminiumR,
+                'source': [QExtrudedTextMesh(), 100, 'Arial', 'Testtext'],
+                'scale': [1, 1, 1],
+                'mat': Materials().aluminiumB,
             },
         }
 
         for name in self.model:
             self.linkModel(self.model, name, rootEntity)
 
-        self.model['test']['t'].setTranslation(QVector3D(2, 2, 5))
+        self.model['test']['t'].setTranslation(QVector3D(200, 200, 500))
 
     def createWorld(self, rootEntity):
         """

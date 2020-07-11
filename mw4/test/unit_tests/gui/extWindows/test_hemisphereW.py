@@ -410,7 +410,8 @@ def test_updateAlignStar_5(qtbot):
 
 def test_clearHemisphere(qtbot):
     app.app.data.buildP = [(0, 0), (1, 0)]
-    app.clearHemisphere()
+    suc = app.clearHemisphere()
+    assert suc
     assert app.app.data.buildP == []
 
 

@@ -1009,19 +1009,20 @@ class SimulatorWindow(widget.MWidget):
         dec = self.app.mount.obsSite.decJNow
         pierside = self.app.mount.obsSite.pierside
 
+        geometry = self.app.mount.geometry
+        _, _, x, y, z = geometry.calcTransformationMatrices(ha=ha,
+                                                            dec=dec,
+                                                            lat=lat,
+                                                            pierside=pierside)
+        x = x * 1000
+        y = y * 1000
+        z = z * 1000 + 1000
+
         if not self.ui.checkShowPointer.isChecked():
             self.model['pointer']['e'].setEnabled(False)
 
         else:
             self.model['pointer']['e'].setEnabled(True)
-            geometry = self.app.mount.geometry
-            _, _, x, y, z = geometry.calcTransformationMatrices(ha=ha,
-                                                                dec=dec,
-                                                                lat=lat,
-                                                                pierside=pierside)
-            x = x * 1000
-            y = y * 1000
-            z = z * 1000 + 1000
             self.model['pointer']['t'].setTranslation(QVector3D(x, y, z))
 
         if self.ui.telescopeView.property('running'):

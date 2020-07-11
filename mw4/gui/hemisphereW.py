@@ -595,11 +595,14 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         clearHemisphere is called when after startup the location of the mount is changed
         to reconstruct correctly the hemisphere window
 
-        :return:
+        :return: True for test Purpose
         """
 
         self.pointsBuild = None
+        self.app.data.clearBuildP()
         self.drawHemisphere()
+
+        return True
 
     def staticHorizon(self, axes=None):
         """

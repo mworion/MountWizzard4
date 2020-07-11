@@ -1,5 +1,5 @@
-# test script on python 3.8 and Windows
-name: PyTest for Unittest Windows
+# test script on python 3.8 and Ubuntu
+name: UnitTest Ubuntu
 
 on:
   push:

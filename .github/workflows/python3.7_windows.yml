@@ -1,4 +1,4 @@
-name: Python3.7 Windows Package Build
+name: Py3.7 Windows Package
 
 on:
   push:

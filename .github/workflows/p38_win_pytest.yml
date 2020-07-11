@@ -1,5 +1,5 @@
 # test script on python 3.8 and Windows
-name: PyTest Units Win
+name: UnitTest Win
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: Python3.8 MacOS Package Build
+name: Py3.8 MacOS Package
 
 on:
   push:

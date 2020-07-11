@@ -1,4 +1,4 @@
-name: Python3.6 Windows Package Build
+name: Py3.6 Windows Package
 
 on:
   push:

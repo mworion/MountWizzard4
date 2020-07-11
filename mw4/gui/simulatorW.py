@@ -339,6 +339,7 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
+        self.createBuildPoints()
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(0.0, 10.0, 0.0))
 
@@ -351,6 +352,7 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
+        self.createBuildPoints()
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -364,6 +366,7 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
+        self.createBuildPoints()
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -377,6 +380,7 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
+        self.createBuildPoints()
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -390,6 +394,7 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
+        self.createBuildPoints()
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))

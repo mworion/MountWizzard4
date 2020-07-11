@@ -58,10 +58,17 @@ class Materials():
         self.aluminiumR.setDiffuse(QColor(128, 64, 64))
         # self.aluminiumR.setSpecular(QColor(255, 192, 192))
 
+        self.aluminiumG = QMetalRoughMaterial()
+        self.aluminiumG.setBaseColor(QColor(64, 192, 64))
+        self.aluminiumG.setMetalness(0.7)
+        self.aluminiumG.setRoughness(0.5)
+
+        """
         self.aluminiumG = QDiffuseSpecularMaterial()
         self.aluminiumG.setAmbient(QColor(64, 192, 64))
         self.aluminiumG.setDiffuse(QColor(64, 128, 64))
         # self.aluminiumG.setSpecular(QColor(192, 255, 192))
+        """
 
         self.aluminium = QDiffuseSpecularMaterial()
         self.aluminium.setAmbient(QColor(164, 164, 164))
@@ -102,12 +109,12 @@ class Materials():
         self.transparent.setShininess(0.8)
         self.transparent.setAlpha(0.8)
 
-        self.points = QPhongAlphaMaterial()
+        self.points = QPhongMaterial()
         self.points.setAmbient(QColor(16, 128, 16))
         self.points.setDiffuse(QColor(16, 128, 16, 255))
         self.points.setSpecular(QColor(16, 128, 16))
         self.points.setShininess(0.9)
-        self.points.setAlpha(0.9)
+        # self.points.setAlpha(0.9)
 
 
 class SimulatorWindow(widget.MWidget):
@@ -173,13 +180,13 @@ class SimulatorWindow(widget.MWidget):
         self.ui.checkDomeTransparent.clicked.connect(self.updateSettings)
         self.ui.checkShowBuildPoints.clicked.connect(self.createBuildPoints)
         self.ui.checkShowNumbers.clicked.connect(self.createBuildPoints)
-        self.ui.checkNumbersFaceIn.clicked.connect(self.createBuildPoints)
         self.ui.topView.clicked.connect(self.topView)
         self.ui.topEastView.clicked.connect(self.topEastView)
         self.ui.topWestView.clicked.connect(self.topWestView)
         self.ui.eastView.clicked.connect(self.eastView)
         self.ui.westView.clicked.connect(self.westView)
         self.ui.checkPL.clicked.connect(self.setPL)
+        self.ui.telescopeView.clicked.connect(self.setTelescopeView)
 
         # connect functional signals
         self.app.update1s.connect(self.updateDome)
@@ -222,7 +229,6 @@ class SimulatorWindow(widget.MWidget):
         self.ui.checkShowPointer.setChecked(config.get('checkShowPointer', False))
         self.ui.checkShowBuildPoints.setChecked(config.get('checkShowBuildPoints', False))
         self.ui.checkShowNumbers.setChecked(config.get('checkShowNumbers', False))
-        self.ui.checkNumbersFaceIn.setChecked(config.get('checkNumbersFaceIn', False))
         self.ui.checkShowHorizon.setChecked(config.get('checkShowHorizon', False))
 
         return True
@@ -253,7 +259,6 @@ class SimulatorWindow(widget.MWidget):
         config['checkShowPointer'] = self.ui.checkShowPointer.isChecked()
         config['checkShowBuildPoints'] = self.ui.checkShowBuildPoints.isChecked()
         config['checkShowNumbers'] = self.ui.checkShowNumbers.isChecked()
-        config['checkNumbersFaceIn'] = self.ui.checkNumbersFaceIn.isChecked()
         config['checkShowHorizon'] = self.ui.checkShowHorizon.isChecked()
 
         return True
@@ -298,10 +303,34 @@ class SimulatorWindow(widget.MWidget):
 
         return True
 
+    def setTelescopeView(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        if self.ui.telescopeView.property('running'):
+            self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
+        else:
+            self.changeStyleDynamic(self.ui.telescopeView, 'running', True)
+            self.camera.setViewCenter(QVector3D(0.0, 3.0, -3.0))
+            self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+            self.camera.setPosition(QVector3D(0, 2, 0))
+
+        self.createBuildPoints()
+        return True
+
     def setPL(self):
+        """
+        setPL enables point light and therefore changes the light conditions
+
+        :return: True for test purpose
+        """
 
         self.pL0E.setEnabled(self.ui.checkPL.isChecked())
         self.pL1E.setEnabled(not self.ui.checkPL.isChecked())
+
+        return True
 
     def topView(self):
         """
@@ -309,6 +338,7 @@ class SimulatorWindow(widget.MWidget):
         :return: True for test purpose
         """
 
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(0.0, 10.0, 0.0))
 
@@ -320,6 +350,7 @@ class SimulatorWindow(widget.MWidget):
         :return: True for test purpose
         """
 
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -332,6 +363,7 @@ class SimulatorWindow(widget.MWidget):
         :return: True for test purpose
         """
 
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -344,6 +376,7 @@ class SimulatorWindow(widget.MWidget):
         :return: True for test purpose
         """
 
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -356,6 +389,7 @@ class SimulatorWindow(widget.MWidget):
         :return: True for test purpose
         """
 
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -682,15 +716,15 @@ class SimulatorWindow(widget.MWidget):
         :return: entity, x, y, z coordinates
         """
 
-        radius = 5
+        radius = 4
         entity = QEntity(rEntity)
         mesh = QSphereMesh()
-        mesh.setRadius(0.05)
+        mesh.setRadius(0.03)
         mesh.setRings(30)
         mesh.setSlices(30)
         trans = QTransform()
         x, y, z = transform.sphericalToCartesian(alt, az, radius)
-        trans.setTranslation(QVector3D(x, y, 1 + z))
+        trans.setTranslation(QVector3D(x, y, z + 1.35))
         entity.addComponent(mesh)
         entity.addComponent(trans)
         entity.addComponent(Materials().points)
@@ -727,14 +761,14 @@ class SimulatorWindow(widget.MWidget):
         e2 = QEntity(e1)
         mesh = QExtrudedTextMesh()
         mesh.setText(text)
-        mesh.setDepth(0.1)
+        mesh.setDepth(0.05)
         mesh.setFont(QFont('Arial', 36))
         trans2 = QTransform()
         if faceIn:
             trans2.setRotationX(90 + alt)
         else:
             trans2.setRotationX(90 - alt)
-        trans2.setScale(0.2)
+        trans2.setScale(0.12)
         e2.addComponent(mesh)
         e2.addComponent(trans2)
         e2.addComponent(Materials().points)
@@ -745,6 +779,10 @@ class SimulatorWindow(widget.MWidget):
         """
         createBuildPoints show the point in the sky if checked, in addition if selected the
         slew path between the points and in addition if checked the point numbers
+        as the azimuth (second element in tuple) is turning clockwise, it's opposite to the
+        right turning coordinate system (z is upwards), which means angle around z
+        (which is azimuth) turns counterclockwise. so we have to set - azimuth for coordinate
+        calculation
 
         :return: success
         """
@@ -760,17 +798,20 @@ class SimulatorWindow(widget.MWidget):
         if not self.ui.checkShowBuildPoints.isChecked():
             return False
 
-        faceIn = self.ui.checkNumbersFaceIn.isChecked()
+        if not self.buildPoints:
+            return False
+
+        faceIn = self.ui.telescopeView.property('running')
 
         self.pointRoot = QEntity(self.world['ref1000']['e'])
 
         for index, point in enumerate(self.buildPoints):
             e, x, y, z = self.createPoint(self.pointRoot,
                                           np.radians(point[0]),
-                                          np.radians(point[1]))
+                                          np.radians(-point[1]))
 
             if self.ui.checkShowNumbers.isChecked():
-                a = self.createAnnotation(e, point[0], point[1], f'{index:02d}', faceIn)
+                a = self.createAnnotation(e, point[0], -point[1], f'{index:02d}', faceIn)
             else:
                 a = None
 
@@ -892,6 +933,8 @@ class SimulatorWindow(widget.MWidget):
     def updateMount(self):
         """
         updateMount moves ra and dec axis according to the values in the mount.
+        when telescope view is enable as well, the camera position and view target is
+        adjusted, too.
 
         :return:
         """
@@ -915,20 +958,22 @@ class SimulatorWindow(widget.MWidget):
 
         if not self.ui.checkShowPointer.isChecked():
             self.model['pointer']['e'].setEnabled(False)
-            return False
 
-        self.model['pointer']['e'].setEnabled(True)
-        geometry = self.app.mount.geometry
-        _, _, x, y, z = geometry.calcTransformationMatrices(ha=ha,
-                                                            dec=dec,
-                                                            lat=lat,
-                                                            pierside=pierside)
+        else:
+            self.model['pointer']['e'].setEnabled(True)
+            geometry = self.app.mount.geometry
+            _, _, x, y, z = geometry.calcTransformationMatrices(ha=ha,
+                                                                dec=dec,
+                                                                lat=lat,
+                                                                pierside=pierside)
+            x = x * 1000
+            y = y * 1000
+            z = z * 1000 + 1000
+            self.model['pointer']['t'].setTranslation(QVector3D(x, y, z))
 
-        x = x * 1000
-        y = y * 1000
-        z = z * 1000 + 1000
-
-        self.model['pointer']['t'].setTranslation(QVector3D(x, y, z))
+        if self.ui.telescopeView.property('running'):
+            self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+            self.camera.setViewCenter(QVector3D(- y / 500, z / 500, - x / 500))
 
         return True
 
@@ -940,8 +985,11 @@ class SimulatorWindow(widget.MWidget):
         for the shutter i would like to keep the width setting unscaled with increasing dome
         radius
 
-        :return:
+        :return: success
         """
+
+        if not self.app.mainW:
+            return False
 
         domeEntities = ['domeWall', 'domeSphere', 'domeSlit1',
                         'domeSlit2', 'domeDoor1', 'domeDoor2']

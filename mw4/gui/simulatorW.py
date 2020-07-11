@@ -700,12 +700,6 @@ class SimulatorWindow(widget.MWidget):
                 'scale': [1, 1, 1],
                 'mat': Materials().dome2,
             },
-            'test': {
-                'parent': 'ref1000',
-                'source': [QExtrudedTextMesh(), 0.1, 'Arial', 'Testtext'],
-                'scale': [.1, .1, .1],
-                'mat': Materials().aluminiumB,
-            },
         }
 
         for name in self.world:

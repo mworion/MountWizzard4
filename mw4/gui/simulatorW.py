@@ -702,19 +702,24 @@ class SimulatorWindow(widget.MWidget):
         :return: entity
         """
 
-        entity = QEntity(rEntity)
-        trans = QTransform()
+        e1 = QEntity(rEntity)
+        trans1 = QTransform()
+        trans1.setRotationZ(az - 90)
+        e1.addComponent(trans1)
+
+        e2 = QEntity(e1)
         mesh = QExtrudedTextMesh()
         mesh.setText(text)
         mesh.setDepth(0.1)
         mesh.setFont(QFont('Arial', 36))
-        trans.setScale(0.2)
-        trans.setRotationZ(az - 90)
-        entity.addComponent(mesh)
-        entity.addComponent(trans)
-        entity.addComponent(Materials().points)
+        trans2 = QTransform()
+        trans2.setRotationX(90 + alt)
+        trans2.setScale(0.2)
+        e2.addComponent(mesh)
+        e2.addComponent(trans2)
+        e2.addComponent(Materials().points)
 
-        return entity
+        return e2
 
     def createBuildPoints(self):
         """

@@ -81,7 +81,7 @@
       <property name="large" stdset="0">
        <bool>true</bool>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
        <property name="spacing">
         <number>4</number>
        </property>
@@ -214,6 +214,24 @@
          </property>
          <property name="text">
           <string>Numbers</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkNumbersFaceIn">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Numbers Face In</string>
          </property>
         </widget>
        </item>

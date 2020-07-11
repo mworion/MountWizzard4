@@ -173,6 +173,7 @@ class SimulatorWindow(widget.MWidget):
         self.ui.checkDomeTransparent.clicked.connect(self.updateSettings)
         self.ui.checkShowBuildPoints.clicked.connect(self.createBuildPoints)
         self.ui.checkShowNumbers.clicked.connect(self.createBuildPoints)
+        self.ui.checkNumbersFaceIn.clicked.connect(self.createBuildPoints)
         self.ui.topView.clicked.connect(self.topView)
         self.ui.topEastView.clicked.connect(self.topEastView)
         self.ui.topWestView.clicked.connect(self.topWestView)
@@ -221,6 +222,7 @@ class SimulatorWindow(widget.MWidget):
         self.ui.checkShowPointer.setChecked(config.get('checkShowPointer', False))
         self.ui.checkShowBuildPoints.setChecked(config.get('checkShowBuildPoints', False))
         self.ui.checkShowNumbers.setChecked(config.get('checkShowNumbers', False))
+        self.ui.checkNumbersFaceIn.setChecked(config.get('checkNumbersFaceIn', False))
         self.ui.checkShowHorizon.setChecked(config.get('checkShowHorizon', False))
 
         return True
@@ -251,6 +253,7 @@ class SimulatorWindow(widget.MWidget):
         config['checkShowPointer'] = self.ui.checkShowPointer.isChecked()
         config['checkShowBuildPoints'] = self.ui.checkShowBuildPoints.isChecked()
         config['checkShowNumbers'] = self.ui.checkShowNumbers.isChecked()
+        config['checkNumbersFaceIn'] = self.ui.checkNumbersFaceIn.isChecked()
         config['checkShowHorizon'] = self.ui.checkShowHorizon.isChecked()
 
         return True
@@ -669,6 +672,9 @@ class SimulatorWindow(widget.MWidget):
     @staticmethod
     def createPoint(rEntity, alt, az):
         """
+        the point is located in a distance of radius meters from the ota axis and
+        positioned in azimuth and altitude correctly. it's representation is a small
+        small ball mesh.
 
         :param rEntity:
         :param alt:
@@ -692,19 +698,30 @@ class SimulatorWindow(widget.MWidget):
         return entity, x, y, z
 
     @staticmethod
-    def createAnnotation(rEntity, alt, az, text):
+    def createAnnotation(rEntity, alt, az, text, faceIn):
         """
+        the annotation - basically the number of the point - is positioned relative to the
+        build point in its local coordinate system. to face the text to the viewer (azimuth),
+        the text is first rotated to be upright and secondly to turn is fac according to
+        the altitude of the viewer.
+        it is done in two entities to simplify the rotations as they are in this case
+        relative to each other.
+        faceIn changes the behaviour to have the text readable from inside or outside.
 
         :param rEntity:
         :param alt:
         :param az:
         :param text:
+        :param faceIn: direction of the text face (looking from inside or outside)
         :return: entity
         """
 
         e1 = QEntity(rEntity)
         trans1 = QTransform()
-        trans1.setRotationZ(az - 90)
+        if faceIn:
+            trans1.setRotationZ(az - 90)
+        else:
+            trans1.setRotationZ(az + 90)
         e1.addComponent(trans1)
 
         e2 = QEntity(e1)
@@ -713,7 +730,10 @@ class SimulatorWindow(widget.MWidget):
         mesh.setDepth(0.1)
         mesh.setFont(QFont('Arial', 36))
         trans2 = QTransform()
-        trans2.setRotationX(90 + alt)
+        if faceIn:
+            trans2.setRotationX(90 + alt)
+        else:
+            trans2.setRotationX(90 - alt)
         trans2.setScale(0.2)
         e2.addComponent(mesh)
         e2.addComponent(trans2)
@@ -740,6 +760,8 @@ class SimulatorWindow(widget.MWidget):
         if not self.ui.checkShowBuildPoints.isChecked():
             return False
 
+        faceIn = self.ui.checkNumbersFaceIn.isChecked()
+
         self.pointRoot = QEntity(self.world['ref1000']['e'])
 
         for index, point in enumerate(self.buildPoints):
@@ -748,7 +770,7 @@ class SimulatorWindow(widget.MWidget):
                                           np.radians(point[1]))
 
             if self.ui.checkShowNumbers.isChecked():
-                a = self.createAnnotation(e, point[0], point[1], f'{index:02d}')
+                a = self.createAnnotation(e, point[0], point[1], f'{index:02d}', faceIn)
             else:
                 a = None
 

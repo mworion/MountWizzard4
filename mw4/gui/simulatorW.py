@@ -20,14 +20,14 @@
 # external packages
 import numpy as np
 from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QColor, QFont, QQuaternion
+from PyQt5.QtGui import QColor, QFont
 from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
 from PyQt5.Qt3DExtras import Qt3DWindow, QCuboidMesh, QSphereMesh
 from PyQt5.Qt3DExtras import QOrbitCameraController, QExtrudedTextMesh, QCylinderMesh
 from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
 from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
-from PyQt5.Qt3DRender import QMesh, QPointLight, QEnvironmentLight, QDirectionalLight
+from PyQt5.Qt3DRender import QMesh, QPointLight
 from PyQt5.Qt3DCore import QEntity, QTransform
 
 # local import
@@ -180,6 +180,7 @@ class SimulatorWindow(widget.MWidget):
         self.ui.checkDomeTransparent.clicked.connect(self.updateSettings)
         self.ui.checkShowBuildPoints.clicked.connect(self.createBuildPoints)
         self.ui.checkShowNumbers.clicked.connect(self.createBuildPoints)
+        self.ui.checkShowSlewPath.clicked.connect(self.createBuildPoints)
         self.ui.topView.clicked.connect(self.topView)
         self.ui.topEastView.clicked.connect(self.topEastView)
         self.ui.topWestView.clicked.connect(self.topWestView)
@@ -229,6 +230,7 @@ class SimulatorWindow(widget.MWidget):
         self.ui.checkShowPointer.setChecked(config.get('checkShowPointer', False))
         self.ui.checkShowBuildPoints.setChecked(config.get('checkShowBuildPoints', False))
         self.ui.checkShowNumbers.setChecked(config.get('checkShowNumbers', False))
+        self.ui.checkShowSlewPath.setChecked(config.get('checkShowSlewPath', False))
         self.ui.checkShowHorizon.setChecked(config.get('checkShowHorizon', False))
 
         return True
@@ -259,6 +261,7 @@ class SimulatorWindow(widget.MWidget):
         config['checkShowPointer'] = self.ui.checkShowPointer.isChecked()
         config['checkShowBuildPoints'] = self.ui.checkShowBuildPoints.isChecked()
         config['checkShowNumbers'] = self.ui.checkShowNumbers.isChecked()
+        config['checkShowSlewPath'] = self.ui.checkShowSlewPath.isChecked()
         config['checkShowHorizon'] = self.ui.checkShowHorizon.isChecked()
 
         return True
@@ -709,6 +712,46 @@ class SimulatorWindow(widget.MWidget):
             self.linkModel(self.world, name, rootEntity)
 
     @staticmethod
+    def createLine(rEntity, dx, dy, dz):
+        """
+        create line draw a line between two point or better along dx, dy, dz. Therefore three
+        transformations are made and the resulting vector has to be translated half the
+        length, because is will be drawn symmetrically to the starting point.
+
+        :param rEntity:
+        :param dx:
+        :param dy:
+        :param dz:
+        :return:
+        """
+
+        alt, az, radius = transform.cartesianToSpherical(dx, dy, dz)
+        az = np.degrees(az)
+        alt = np.degrees(alt)
+
+        e1 = QEntity(rEntity)
+        trans1 = QTransform()
+        trans1.setRotationZ(az + 90)
+        e1.addComponent(trans1)
+
+        e2 = QEntity(e1)
+        trans2 = QTransform()
+        trans2.setRotationX(-alt)
+        e2.addComponent(trans2)
+
+        e3 = QEntity(e2)
+        mesh = QCylinderMesh()
+        mesh.setRadius(0.01)
+        mesh.setLength(radius)
+        trans3 = QTransform()
+        trans3.setTranslation(QVector3D(0, radius / 2, 0))
+        e3.addComponent(mesh)
+        e3.addComponent(trans3)
+        e3.addComponent(Materials().aluminiumR)
+
+        return e3
+
+    @staticmethod
     def createPoint(rEntity, alt, az):
         """
         the point is located in a distance of radius meters from the ota axis and
@@ -820,7 +863,18 @@ class SimulatorWindow(widget.MWidget):
             else:
                 a = None
 
-            element = {'e': e, 'a': a, 'x': x, 'y': y, 'z': z}
+            if index and self.ui.checkShowSlewPath.isChecked():
+                x0 = self.points[-1]['x']
+                y0 = self.points[-1]['y']
+                z0 = self.points[-1]['z']
+                dx = x - x0
+                dy = y - y0
+                dz = z - z0
+                li = self.createLine(e, dx, dy, dz)
+            else:
+                li = None
+
+            element = {'e': e, 'a': a, 'li': li, 'x': x, 'y': y, 'z': z}
 
             self.points.append(element)
 

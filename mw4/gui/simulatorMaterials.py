@@ -18,14 +18,17 @@
 # standard libraries
 
 # external packages
+from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QColor
-from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
-from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
+from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial, QTextureMaterial
+from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial, QNormalDiffuseSpecularMapMaterial
+from PyQt5.Qt3DRender import QTextureImage, QTextureLoader
 
 # local import
+from mw4.gui.widget import MWidget
 
 
-class Materials():
+class Materials(MWidget):
     def __init__(self):
         self.aluminiumS = QMetalRoughMaterial()
         self.aluminiumS.setBaseColor(QColor(127, 127, 127))
@@ -40,29 +43,19 @@ class Materials():
         self.aluminiumB = QDiffuseSpecularMaterial()
         self.aluminiumB.setAmbient(QColor(64, 64, 128))
         self.aluminiumB.setDiffuse(QColor(64, 64, 128))
-        # self.aluminiumB.setSpecular(QColor(192, 192, 255))
 
         self.aluminiumR = QDiffuseSpecularMaterial()
         self.aluminiumR.setAmbient(QColor(192, 64, 64))
-        self.aluminiumR.setDiffuse(QColor(128, 64, 64))
-        # self.aluminiumR.setSpecular(QColor(255, 192, 192))
+        self.aluminiumR.setDiffuse(QColor(192, 64, 64))
 
-        self.aluminiumG = QMetalRoughMaterial()
-        self.aluminiumG.setBaseColor(QColor(64, 192, 64))
-        self.aluminiumG.setMetalness(0.7)
-        self.aluminiumG.setRoughness(0.5)
-
-        """
-        self.aluminiumG = QDiffuseSpecularMaterial()
-        self.aluminiumG.setAmbient(QColor(64, 192, 64))
-        self.aluminiumG.setDiffuse(QColor(64, 128, 64))
-        # self.aluminiumG.setSpecular(QColor(192, 255, 192))
-        """
+        self.environ1 = QMetalRoughMaterial()
+        self.environ1.setBaseColor(QColor(192, 164, 64))
+        self.environ1.setMetalness(0.5)
+        self.environ1.setRoughness(1)
 
         self.aluminium = QDiffuseSpecularMaterial()
         self.aluminium.setAmbient(QColor(164, 164, 164))
         self.aluminium.setDiffuse(QColor(164, 164, 164))
-        # self.aluminiumG.setSpecular(QColor(192, 255, 192))
 
         self.white = QDiffuseSpecularMaterial()
         self.white.setAmbient(QColor(228, 228, 228))
@@ -80,27 +73,51 @@ class Materials():
         self.stainless.setShininess(0.9)
 
         self.dome1 = QPhongMaterial()
-        self.dome1.setAmbient(QColor(164, 164, 192))
-        self.dome1.setDiffuse(QColor(164, 164, 192))
-        self.dome1.setSpecular(QColor(164, 164, 192))
-        self.dome1.setShininess(0.5)
+        self.dome1.setAmbient(self.COLOR_ASTRO)
+        self.dome1.setDiffuse(self.COLOR_ASTRO)
+        self.dome1.setSpecular(self.COLOR_ASTRO)
+        self.dome1.setShininess(0.7)
 
         self.dome2 = QPhongMaterial()
-        self.dome2.setAmbient(QColor(128, 128, 192))
-        self.dome2.setDiffuse(QColor(128, 128, 192))
-        self.dome2.setSpecular(QColor(128, 128, 192))
-        self.dome2.setShininess(0.7)
+        self.dome2.setAmbient(QColor(16, 72, 96))
+        self.dome2.setDiffuse(QColor(16, 72, 96))
+        self.dome2.setSpecular(QColor(16, 72, 96))
+        self.dome2.setShininess(0.3)
 
-        self.transparent = QPhongAlphaMaterial()
-        self.transparent.setAmbient(QColor(16, 16, 16))
-        self.transparent.setDiffuse(QColor(16, 16, 16, 255))
-        self.transparent.setSpecular(QColor(16, 16, 16))
-        self.transparent.setShininess(0.8)
-        self.transparent.setAlpha(0.8)
+        self.dome1t = QPhongAlphaMaterial()
+        self.dome1t.setAmbient(QColor(16, 72, 96))
+        self.dome1t.setDiffuse(QColor(16, 72, 96))
+        self.dome1t.setSpecular(QColor(16, 72, 96))
+        self.dome1t.setShininess(0.5)
+        self.dome1t.setAlpha(0.8)
+
+        self.dome2t = QPhongAlphaMaterial()
+        self.dome2t.setAmbient(QColor(8, 36, 48))
+        self.dome2t.setDiffuse(QColor(8, 36, 48))
+        self.dome2t.setSpecular(QColor(8, 36, 48))
+        self.dome2t.setShininess(0.5)
+        self.dome2t.setAlpha(0.8)
 
         self.points = QPhongMaterial()
         self.points.setAmbient(QColor(16, 128, 16))
-        self.points.setDiffuse(QColor(16, 128, 16, 255))
+        self.points.setDiffuse(QColor(16, 128, 16))
         self.points.setSpecular(QColor(16, 128, 16))
-        self.points.setShininess(0.9)
-        # self.points.setAlpha(0.9)
+        self.points.setShininess(1)
+
+        self.lines = QPhongMaterial()
+        self.lines.setAmbient(QColor(96, 96, 0))
+        self.lines.setDiffuse(QColor(96, 96, 0))
+        self.lines.setSpecular(QColor(96, 96, 0))
+        self.lines.setShininess(1.0)
+
+        self.numbers = QPhongMaterial()
+        self.numbers.setAmbient(QColor(16, 192, 16))
+        self.numbers.setDiffuse(QColor(16, 192, 16))
+        self.numbers.setSpecular(QColor(16, 192, 16))
+        self.numbers.setShininess(1)
+
+        self.mw4 = QTextureMaterial()
+        self.texture = QTextureLoader()
+        self.texture.setMirrored(False)
+        self.texture.setSource(QUrl(':/icon/mw4.png'))
+        self.mw4.setTexture(self.texture)

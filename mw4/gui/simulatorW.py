@@ -355,6 +355,12 @@ class SimulatorWindow(widget.MWidget):
                 mesh.setRadius(source[1])
                 mesh.setRings(source[2])
                 mesh.setSlices(source[3])
+            elif isinstance(source[0], QCylinderMesh):
+                mesh = source[0]
+                mesh.setLength(source[1])
+                mesh.setRadius(source[2])
+                mesh.setRings(source[3])
+                mesh.setSlices(source[4])
             elif isinstance(source[0], QExtrudedTextMesh):
                 mesh = source[0]
                 mesh.setDepth(source[1])
@@ -574,7 +580,7 @@ class SimulatorWindow(widget.MWidget):
             'environ': {
                 'parent': 'ref',
                 'source': 'dome-environ.stl',
-                'mat': Materials().aluminiumG,
+                'mat': Materials().environ1,
             },
             'domeFloor': {
                 'parent': 'ref',
@@ -653,13 +659,13 @@ class SimulatorWindow(widget.MWidget):
 
         e3 = QEntity(e2)
         mesh = QCylinderMesh()
-        mesh.setRadius(0.01)
+        mesh.setRadius(0.008)
         mesh.setLength(radius)
         trans3 = QTransform()
         trans3.setTranslation(QVector3D(0, radius / 2, 0))
         e3.addComponent(mesh)
         e3.addComponent(trans3)
-        e3.addComponent(Materials().aluminiumR)
+        e3.addComponent(Materials().lines)
 
         return e3
 
@@ -679,7 +685,7 @@ class SimulatorWindow(widget.MWidget):
         radius = 4
         entity = QEntity(rEntity)
         mesh = QSphereMesh()
-        mesh.setRadius(0.03)
+        mesh.setRadius(0.035)
         mesh.setRings(30)
         mesh.setSlices(30)
         trans = QTransform()
@@ -731,7 +737,7 @@ class SimulatorWindow(widget.MWidget):
         trans2.setScale(0.12)
         e2.addComponent(mesh)
         e2.addComponent(trans2)
-        e2.addComponent(Materials().points)
+        e2.addComponent(Materials().numbers)
 
         return e2
 
@@ -812,27 +818,27 @@ class SimulatorWindow(widget.MWidget):
 
         domeEntities = {
             'domeWall': {
-                'trans': Materials().transparent,
+                'trans': Materials().dome1t,
                 'solid': Materials().dome1
             },
             'domeSphere': {
-                'trans': Materials().transparent,
+                'trans': Materials().dome1t,
                 'solid': Materials().dome1
             },
             'domeSlit1': {
-                'trans': Materials().transparent,
+                'trans': Materials().dome2t,
                 'solid': Materials().dome2
             },
             'domeSlit2': {
-                'trans': Materials().transparent,
+                'trans': Materials().dome2t,
                 'solid': Materials().dome2
             },
             'domeDoor1': {
-                'trans': Materials().transparent,
+                'trans': Materials().dome2t,
                 'solid': Materials().dome2
             },
             'domeDoor2': {
-                'trans': Materials().transparent,
+                'trans': Materials().dome2t,
                 'solid': Materials().dome2
             },
         }

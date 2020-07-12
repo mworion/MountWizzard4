@@ -129,6 +129,12 @@ class Materials(MWidget):
         self.numbers.setSpecular(QColor(16, 192, 16))
         self.numbers.setShininess(1)
 
+        self.pointer = QPhongMaterial()
+        self.pointer.setAmbient(self.COLOR_PINK)
+        self.pointer.setDiffuse(self.COLOR_PINK)
+        self.pointer.setSpecular(self.COLOR_PINK)
+        self.pointer.setShininess(1)
+
         self.walls = QPhongAlphaMaterial()
         self.walls.setAmbient(QColor(96, 82, 32))
         self.walls.setDiffuse(QColor(96, 82, 32))

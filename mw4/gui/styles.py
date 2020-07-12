@@ -41,6 +41,7 @@ class MWStyles(object):
     COLOR_3D = PyQt5.QtGui.QColor(60, 60, 60)
     COLOR_BACKGROUND = PyQt5.QtGui.QColor(32, 32, 32)
     COLOR_FRAME = PyQt5.QtGui.QColor(192, 192, 192)
+    COLOR_PINK = PyQt5.QtGui.QColor(192, 16, 192)
 
     TRAFFICLIGHTCOLORS = ['green', 'yellow', 'red', '']
     BACK_BG = 'background-color: transparent;'

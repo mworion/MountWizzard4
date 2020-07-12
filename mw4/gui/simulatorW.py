@@ -99,6 +99,7 @@ class SimulatorWindow(widget.MWidget):
 
         # connect to gui
         self.ui.checkDomeTransparent.clicked.connect(self.updateSettings)
+        self.ui.checkDomeEnable.clicked.connect(self.updateDome)
         self.ui.checkShowBuildPoints.clicked.connect(self.createBuildPoints)
         self.ui.checkShowHorizon.clicked.connect(self.createHorizon)
         self.ui.checkShowNumbers.clicked.connect(self.createBuildPoints)
@@ -149,7 +150,7 @@ class SimulatorWindow(widget.MWidget):
             self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
         self.ui.checkDomeTransparent.setChecked(config.get('checkDomeTransparent', False))
-        self.ui.checkDomeDisable.setChecked(config.get('checkDomeDisable', False))
+        self.ui.checkDomeEnable.setChecked(config.get('checkDomeEnable', False))
         self.ui.checkShowPointer.setChecked(config.get('checkShowPointer', False))
         self.ui.checkShowBuildPoints.setChecked(config.get('checkShowBuildPoints', False))
         self.ui.checkShowNumbers.setChecked(config.get('checkShowNumbers', False))
@@ -180,7 +181,7 @@ class SimulatorWindow(widget.MWidget):
         config['cameraPositionZ'] = pos.z()
 
         config['checkDomeTransparent'] = self.ui.checkDomeTransparent.isChecked()
-        config['checkDomeDisable'] = self.ui.checkDomeDisable.isChecked()
+        config['checkDomeEnable'] = self.ui.checkDomeEnable.isChecked()
         config['checkShowPointer'] = self.ui.checkShowPointer.isChecked()
         config['checkShowBuildPoints'] = self.ui.checkShowBuildPoints.isChecked()
         config['checkShowNumbers'] = self.ui.checkShowNumbers.isChecked()
@@ -357,6 +358,9 @@ class SimulatorWindow(widget.MWidget):
         else:
             currMod['e'] = QEntity(rootEntity)
 
+        visible = currMod.get('visible', True)
+        currMod['e'].setEnabled(visible)
+
         source = currMod.get('source', None)
         if source:
             if isinstance(source, str):
@@ -462,7 +466,7 @@ class SimulatorWindow(widget.MWidget):
                 'parent': 'ref',
                 'source': [QSphereMesh(), 50, 30, 30],
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumB,
+                'mat': Materials().pointer,
             },
             'mountKnobs': {
                 'parent': 'mountBase',
@@ -1072,9 +1076,9 @@ class SimulatorWindow(widget.MWidget):
             if devicePresent is None:
                 devicePresent = False
 
-        viewDisabled = self.ui.checkDomeDisable.isChecked()
+        viewEnabled = self.ui.checkDomeEnable.isChecked()
 
-        visible = devicePresent and not viewDisabled
+        visible = devicePresent and viewEnabled
 
         for entity in domeEntities:
             self.world[entity]['e'].setEnabled(visible)

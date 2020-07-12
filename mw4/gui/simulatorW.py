@@ -23,7 +23,7 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QColor, QFont
 from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
-from PyQt5.Qt3DExtras import Qt3DWindow, QCuboidMesh, QSphereMesh, QPlaneMesh
+from PyQt5.Qt3DExtras import Qt3DWindow, QCuboidMesh, QSphereMesh
 from PyQt5.Qt3DExtras import QOrbitCameraController, QExtrudedTextMesh, QCylinderMesh
 from PyQt5.Qt3DRender import QMesh, QPointLight
 from PyQt5.Qt3DCore import QEntity, QTransform
@@ -815,8 +815,43 @@ class SimulatorWindow(widget.MWidget):
 
         return True
 
+    @staticmethod
+    def createWall(rEntity, alt, az):
+        """
+
+        :param rEntity:
+        :param alt:
+        :param az:
+        :return: entity
+        """
+
+        radius = 5
+        e1 = QEntity(rEntity)
+        trans1 = QTransform()
+        trans1.setTranslation(QVector3D(0, radius, 0))
+        e1.addComponent(trans1)
+
+        e2 = QEntity(e1)
+        trans2 = QTransform()
+        trans2.setRotationZ(-az)
+        e2.addComponent(trans2)
+
+        e3 = QEntity(e2)
+        mesh = QCuboidMesh()
+        mesh.setXExtent(0.01)
+        mesh.setYExtent(radius * np.tan(np.radians(10)))
+        mesh.setZExtent(radius * np.tan(np.radians(alt)))
+        e3.addComponent(mesh)
+        e3.addComponent(Materials().points)
+
+        print(az, alt)
+
+        return e3
+
     def createHorizon(self):
         """
+        createHorizon draws a horizon "wall" by circling over the horizon points and putting
+        cuboid meshed around a circle with defined radius
 
         :return: success
         """
@@ -835,13 +870,16 @@ class SimulatorWindow(widget.MWidget):
         if not self.horizonPoints:
             return False
 
-        for index, point in enumerate(self.buildPoints):
-            e, x, y, z = self.createPoint(self.hPointRoot,
-                                          np.radians(point[0]),
-                                          np.radians(-point[1]))
+        self.hPointRoot = QEntity(self.world['ref1000']['e'])
 
+        horizonAz = np.linspace(0, 360, 36)
+        alt = [x[0] for x in self.horizonPoints]
+        az = [x[1] for x in self.horizonPoints]
+        horizonAlt = np.interp(horizonAz, az, alt)
+
+        for alt, az in zip(horizonAlt, horizonAz):
+            e = self.createWall(self.hPointRoot, alt, az)
             element = {'e': e}
-
             self.hPoints.append(element)
 
         return True

@@ -816,35 +816,38 @@ class SimulatorWindow(widget.MWidget):
         return True
 
     @staticmethod
-    def createWall(rEntity, alt, az):
+    def createWall(rEntity, alt, az, space):
         """
 
         :param rEntity:
         :param alt:
         :param az:
+        :param space:
         :return: entity
         """
 
-        radius = 5
+        radius = 4
         e1 = QEntity(rEntity)
         trans1 = QTransform()
-        trans1.setTranslation(QVector3D(0, radius, 0))
+        trans1.setRotationZ(-az)
         e1.addComponent(trans1)
 
         e2 = QEntity(e1)
         trans2 = QTransform()
-        trans2.setRotationZ(-az)
+        trans2.setTranslation(QVector3D(radius, 0, 0))
         e2.addComponent(trans2)
 
         e3 = QEntity(e2)
+        height = radius * np.tan(np.radians(alt)) + 1.35
         mesh = QCuboidMesh()
         mesh.setXExtent(0.01)
-        mesh.setYExtent(radius * np.tan(np.radians(10)))
-        mesh.setZExtent(radius * np.tan(np.radians(alt)))
+        mesh.setYExtent(radius * np.tan(np.radians(space)))
+        mesh.setZExtent(height)
+        trans3 = QTransform()
+        trans3.setTranslation(QVector3D(0, 0, height / 2))
         e3.addComponent(mesh)
-        e3.addComponent(Materials().points)
-
-        print(az, alt)
+        e3. addComponent(trans3)
+        e3.addComponent(Materials().walls)
 
         return e3
 
@@ -872,13 +875,14 @@ class SimulatorWindow(widget.MWidget):
 
         self.hPointRoot = QEntity(self.world['ref1000']['e'])
 
-        horizonAz = np.linspace(0, 360, 36)
+        space = 5
+        horizonAz = np.linspace(0, 360 - space, int(360 / space))
         alt = [x[0] for x in self.horizonPoints]
         az = [x[1] for x in self.horizonPoints]
         horizonAlt = np.interp(horizonAz, az, alt)
 
         for alt, az in zip(horizonAlt, horizonAz):
-            e = self.createWall(self.hPointRoot, alt, az)
+            e = self.createWall(self.hPointRoot, alt, az, space)
             element = {'e': e}
             self.hPoints.append(element)
 
@@ -895,6 +899,8 @@ class SimulatorWindow(widget.MWidget):
         self.setDomeTransparency()
         self.updateDome()
         self.createOTA(rootEntity)
+        self.createBuildPoints()
+        self.createHorizon()
 
     def setDomeTransparency(self):
         """

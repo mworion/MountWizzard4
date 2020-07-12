@@ -129,6 +129,13 @@ class Materials(MWidget):
         self.numbers.setSpecular(QColor(16, 192, 16))
         self.numbers.setShininess(1)
 
+        self.walls = QPhongAlphaMaterial()
+        self.walls.setAmbient(QColor(96, 82, 32))
+        self.walls.setDiffuse(QColor(96, 82, 32))
+        self.walls.setSpecular(QColor(96, 82, 32))
+        self.walls.setShininess(0.3)
+        self.walls.setAlpha(0.5)
+
         self.mw4 = QTextureMaterial()
         self.texture = QTextureLoader()
         self.texture.setMirrored(False)

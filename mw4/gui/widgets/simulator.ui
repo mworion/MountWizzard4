@@ -212,7 +212,7 @@
      <item row="1" column="0">
       <widget class="QGroupBox" name="groupBox_2">
        <property name="title">
-        <string>Settings View</string>
+        <string>Show Settings</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>

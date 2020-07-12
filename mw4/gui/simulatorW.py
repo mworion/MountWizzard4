@@ -818,8 +818,8 @@ class SimulatorWindow(widget.MWidget):
 
         domeEntities = {
             'domeWall': {
-                'trans': Materials().dome1t,
-                'solid': Materials().dome1
+                'trans': Materials().dome3t,
+                'solid': Materials().dome3
             },
             'domeSphere': {
                 'trans': Materials().dome1t,

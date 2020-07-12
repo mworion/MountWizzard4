@@ -23,7 +23,7 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QColor, QFont
 from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
-from PyQt5.Qt3DExtras import Qt3DWindow, QCuboidMesh, QSphereMesh
+from PyQt5.Qt3DExtras import Qt3DWindow, QCuboidMesh, QSphereMesh, QPlaneMesh
 from PyQt5.Qt3DExtras import QOrbitCameraController, QExtrudedTextMesh, QCylinderMesh
 from PyQt5.Qt3DRender import QMesh, QPointLight
 from PyQt5.Qt3DCore import QEntity, QTransform
@@ -88,8 +88,11 @@ class SimulatorWindow(widget.MWidget):
         self.model = None
         self.world = None
         self.buildPoints = None
+        self.horizonPoints = None
         self.points = []
+        self.hPoints = []
         self.pointRoot = None
+        self.hPointRoot = None
 
         self.initConfig()
         self.showWindow()
@@ -97,6 +100,7 @@ class SimulatorWindow(widget.MWidget):
         # connect to gui
         self.ui.checkDomeTransparent.clicked.connect(self.updateSettings)
         self.ui.checkShowBuildPoints.clicked.connect(self.createBuildPoints)
+        self.ui.checkShowHorizon.clicked.connect(self.createHorizon)
         self.ui.checkShowNumbers.clicked.connect(self.createBuildPoints)
         self.ui.checkShowSlewPath.clicked.connect(self.createBuildPoints)
         self.ui.topView.clicked.connect(self.topView)
@@ -111,6 +115,7 @@ class SimulatorWindow(widget.MWidget):
         self.app.update1s.connect(self.updateDome)
         self.app.redrawSimulator.connect(self.updateSettings)
         self.app.sendBuildPoints.connect(self.storeBuildPoints)
+        self.app.sendHorizonPoints.connect(self.storeHorizonPoints)
         self.app.mount.signals.pointDone.connect(self.updateMount)
 
     def initConfig(self):
@@ -221,6 +226,18 @@ class SimulatorWindow(widget.MWidget):
 
         self.buildPoints = points
         self.createBuildPoints()
+
+        return True
+
+    def storeHorizonPoints(self, points):
+        """
+
+        :param points:
+        :return: True for test purpose
+        """
+
+        self.horizonPoints = points
+        self.createHorizon()
 
         return True
 
@@ -795,6 +812,37 @@ class SimulatorWindow(widget.MWidget):
             element = {'e': e, 'a': a, 'li': li, 'x': x, 'y': y, 'z': z}
 
             self.points.append(element)
+
+        return True
+
+    def createHorizon(self):
+        """
+
+        :return: success
+        """
+
+        if not self.world:
+            return False
+
+        if self.hPoints:
+            self.hPointRoot.setParent(None)
+
+        self.hPoints.clear()
+
+        if not self.ui.checkShowHorizon.isChecked():
+            return False
+
+        if not self.horizonPoints:
+            return False
+
+        for index, point in enumerate(self.buildPoints):
+            e, x, y, z = self.createPoint(self.hPointRoot,
+                                          np.radians(point[0]),
+                                          np.radians(-point[1]))
+
+            element = {'e': e}
+
+            self.hPoints.append(element)
 
         return True
 

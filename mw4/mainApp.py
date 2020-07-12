@@ -71,6 +71,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     messageQueue = Queue()
     redrawHemisphere = PyQt5.QtCore.pyqtSignal()
     sendBuildPoints = PyQt5.QtCore.pyqtSignal(object)
+    sendHorizonPoints = PyQt5.QtCore.pyqtSignal(object)
     redrawSimulator = PyQt5.QtCore.pyqtSignal()
     showImage = PyQt5.QtCore.pyqtSignal(str)
     remoteCommand = PyQt5.QtCore.pyqtSignal(str)

@@ -88,6 +88,7 @@ class SettHorizon(object):
             self.ui.horizonFileName.setText(fileName)
             self.app.message.emit(f'Horizon mask [{fileName}] loaded', 0)
             self.app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
+            self.app.sendHorizonPoints.emit(self.app.data.horizonP)
         else:
             self.app.message.emit(f'Horizon mask [{fileName}] cannot no be loaded', 2)
 

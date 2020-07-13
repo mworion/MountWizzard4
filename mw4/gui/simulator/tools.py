@@ -28,25 +28,12 @@ from PyQt5.Qt3DCore import QEntity, QTransform
 # local import
 
 
-def linkModel(model, name, rootEntity):
+def linkSource(currMod):
     """
 
-    :param model:
-    :param name:
-    :param rootEntity:
-    :return:
+    :param currMod:
+    :return: mesh
     """
-
-    currMod = model[name]
-
-    parent = currMod.get('parent', None)
-    if parent and model.get(parent, None):
-        currMod['e'] = QEntity(model[parent]['e'])
-    else:
-        currMod['e'] = QEntity(rootEntity)
-
-    visible = currMod.get('visible', True)
-    currMod['e'].setEnabled(visible)
 
     source = currMod.get('source', None)
     if source:
@@ -74,13 +61,25 @@ def linkModel(model, name, rootEntity):
             mesh.setDepth(source[1])
             mesh.setFont(QFont())
             mesh.setText(source[3])
+        else:
+            mesh = None
+    else:
+        mesh = None
 
-        currMod['e'].addComponent(mesh)
-        currMod['m'] = mesh
+    return mesh
+
+
+def linkTransform(currMod):
+    """
+
+    :param currMod:
+    :return: transform
+    """
 
     trans = currMod.get('trans', None)
     rot = currMod.get('rot', None)
     scale = currMod.get('scale', None)
+
     if trans or rot or scale:
         transform = QTransform()
 
@@ -94,11 +93,56 @@ def linkModel(model, name, rootEntity):
 
         if scale and isinstance(scale, list) and len(scale) == 3:
             transform.setScale3D(QVector3D(*scale))
+    else:
+        transform = None
 
+    return transform
+
+
+def linkMaterial(currMod):
+    """
+
+    :param currMod:
+    :return: material
+    """
+
+    mat = currMod.get('mat', None)
+    return mat
+
+
+def linkModel(model, name, rootEntity):
+    """
+
+    :param model:
+    :param name:
+    :param rootEntity:
+    :return: true for test purpose
+    """
+
+    currMod = model[name]
+
+    parent = currMod.get('parent', None)
+    if parent and model.get(parent, None):
+        currMod['e'] = QEntity(model[parent]['e'])
+    else:
+        currMod['e'] = QEntity(rootEntity)
+
+    visible = currMod.get('visible', True)
+    currMod['e'].setEnabled(visible)
+
+    mesh = linkSource(currMod)
+    if mesh:
+        currMod['e'].addComponent(mesh)
+        currMod['m'] = mesh
+
+    transform = linkTransform(currMod)
+    if transform:
         currMod['e'].addComponent(transform)
         currMod['t'] = transform
 
-    mat = currMod.get('mat', None)
-    if mat:
-        currMod['mat'] = mat
-        currMod['e'].addComponent(mat)
+    material = linkMaterial(currMod)
+    if material:
+        currMod['mat'] = material
+        currMod['e'].addComponent(material)
+
+    return True

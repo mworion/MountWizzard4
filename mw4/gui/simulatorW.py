@@ -31,8 +31,8 @@ from PyQt5.Qt3DCore import QEntity, QTransform
 from mw4.base import transform
 from mw4.gui import widget
 from mw4.gui.widgets import simulator_ui
-from gui.simulator.materials import Materials
-from gui.simulator import tools
+from mw4.gui.simulator.materials import Materials
+from mw4.gui.simulator import tools
 
 
 class SimulatorWindow(widget.MWidget):

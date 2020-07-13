@@ -101,6 +101,8 @@ def function_setup_teardown(qtbot):
                   'showImageW': True}
         update1s = pyqtSignal()
         redrawSimulator = pyqtSignal()
+        sendHorizonPoints = pyqtSignal(object)
+        sendBuildPoints = pyqtSignal(object)
         showImage = pyqtSignal(str)
         update3s = pyqtSignal()
         update30m = pyqtSignal()

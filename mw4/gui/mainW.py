@@ -206,7 +206,6 @@ class MainWindow(MWidget,
 
         # show other extended windows
         self.showExtendedWindows()
-        self.app.sendHorizonPoints.emit(self.app.data.horizonP)
 
         # cyclic updates
         self.app.update1s.connect(self.updateTime)

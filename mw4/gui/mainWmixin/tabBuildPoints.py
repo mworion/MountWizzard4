@@ -618,6 +618,6 @@ class BuildPoints(object):
         self.autoDeletePoints()
         self.autoSortPoints()
         self.app.redrawHemisphere.emit()
-        self.app.sendBuildPoints.emit(self.app.data.buildP)
+        self.app.drawBuildPoints.emit()
 
         return True

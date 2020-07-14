@@ -87,8 +87,6 @@ class SimulatorWindow(widget.MWidget):
 
         self.model = None
         self.world = None
-        self.buildPoints = None
-        self.horizonPoints = None
         self.points = []
         self.hPoints = []
         self.pointRoot = None
@@ -115,8 +113,8 @@ class SimulatorWindow(widget.MWidget):
         # connect functional signals
         self.app.update1s.connect(self.updateDome)
         self.app.redrawSimulator.connect(self.updateSettings)
-        self.app.sendBuildPoints.connect(self.storeBuildPoints)
-        self.app.sendHorizonPoints.connect(self.storeHorizonPoints)
+        self.app.drawBuildPoints.connect(self.createBuildPoints)
+        self.app.drawHorizonPoints.connect(self.createHorizon)
         self.app.mount.signals.pointDone.connect(self.updateMount)
 
     def initConfig(self):
@@ -215,30 +213,6 @@ class SimulatorWindow(widget.MWidget):
         self.setPL()
         self.setDomeTransparency()
         self.show()
-
-        return True
-
-    def storeBuildPoints(self, points):
-        """
-
-        :param points:
-        :return: True for test purpose
-        """
-
-        self.buildPoints = points
-        self.createBuildPoints()
-
-        return True
-
-    def storeHorizonPoints(self, points):
-        """
-
-        :param points:
-        :return: True for test purpose
-        """
-
-        self.horizonPoints = points
-        self.createHorizon()
 
         return True
 
@@ -709,14 +683,14 @@ class SimulatorWindow(widget.MWidget):
         if not self.ui.checkShowBuildPoints.isChecked():
             return False
 
-        if not self.buildPoints:
+        if not self.app.data.buildP:
             return False
 
         faceIn = self.ui.telescopeView.property('running')
 
         self.pointRoot = QEntity(self.world['ref1000']['e'])
 
-        for index, point in enumerate(self.buildPoints):
+        for index, point in enumerate(self.app.data.buildP):
             e, x, y, z = self.createPoint(self.pointRoot,
                                           np.radians(point[0]),
                                           np.radians(-point[1]))
@@ -798,15 +772,15 @@ class SimulatorWindow(widget.MWidget):
         if not self.ui.checkShowHorizon.isChecked():
             return False
 
-        if not self.horizonPoints:
+        if not self.app.data.horizonP:
             return False
 
         self.hPointRoot = QEntity(self.world['ref1000']['e'])
 
         space = 5
         horizonAz = np.linspace(0, 360 - space, int(360 / space))
-        alt = [x[0] for x in self.horizonPoints]
-        az = [x[1] for x in self.horizonPoints]
+        alt = [x[0] for x in self.app.data.horizonP]
+        az = [x[1] for x in self.app.data.horizonP]
         horizonAlt = np.interp(horizonAz, az, alt)
 
         for alt, az in zip(horizonAlt, horizonAz):

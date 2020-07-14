@@ -97,54 +97,6 @@ class SimulatorWindow(widget.MWidget):
 
         # connect to gui
 
-        self.ui.checkDomeTransparent.clicked.connect(
-            lambda: self.dome.setTransparency(self.ui.checkDomeTransparent.isChecked()))
-        self.ui.checkDomeEnable.clicked.connect(
-            lambda: self.dome.create(self.world['ref']['e'],
-                                     self.ui.checkDomeEnable.isChecked()))
-        self.ui.checkShowBuildPoints.clicked.connect(
-            lambda: self.buildPoints.create(self.world['ref1000']['e'],
-                                            self.ui.checkShowBuildPoints.isChecked(),
-                                            self.ui.checkShowNumbers.isChecked(),
-                                            self.ui.checkShowSlewPath.isChecked()))
-        self.ui.checkShowNumbers.clicked.connect(
-            lambda: self.buildPoints.create(self.world['ref1000']['e'],
-                                            self.ui.checkShowBuildPoints.isChecked(),
-                                            self.ui.checkShowNumbers.isChecked(),
-                                            self.ui.checkShowSlewPath.isChecked()))
-        self.ui.checkShowSlewPath.clicked.connect(
-            lambda: self.buildPoints.create(self.world['ref1000']['e'],
-                                            self.ui.checkShowBuildPoints.isChecked(),
-                                            self.ui.checkShowNumbers.isChecked(),
-                                            self.ui.checkShowSlewPath.isChecked()))
-        self.ui.checkShowHorizon.clicked.connect(
-            lambda: self.horizon.create(self.world['ref1000']['e'],
-                                        self.ui.checkShowHorizon.isChecked()))
-
-        self.ui.topView.clicked.connect(self.topView)
-        self.ui.topEastView.clicked.connect(self.topEastView)
-        self.ui.topWestView.clicked.connect(self.topWestView)
-        self.ui.eastView.clicked.connect(self.eastView)
-        self.ui.westView.clicked.connect(self.westView)
-        self.ui.checkPL.clicked.connect(self.setPL)
-
-        # connect functional signals
-        self.app.update1s.connect(self.dome.updatePositions)
-        self.app.updateDomeSettings.connect(self.updateSettings)
-        self.app.updateDomeSettings.connect(self.telescope.updateSettings)
-        self.app.mount.signals.pointDone.connect(self.telescope.updatePositions)
-        self.app.updateDomeSettings.connect(
-            lambda: self.dome.create(self.world['ref']['e'],
-                                     self.ui.checkDomeEnable.isChecked()))
-        self.app.drawBuildPoints.connect(
-            lambda: self.buildPoints.create(self.world['ref1000']['e'],
-                                            self.ui.checkShowBuildPoints.isChecked(),
-                                            self.ui.checkShowNumbers.isChecked(),
-                                            self.ui.checkShowSlewPath.isChecked()))
-        self.app.drawHorizonPoints.connect(
-            lambda: self.horizon.create(self.world['ref1000']['e'],
-                                        self.ui.checkShowHorizon.isChecked()))
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -226,7 +178,31 @@ class SimulatorWindow(widget.MWidget):
         """
         self.storeConfig()
 
-        # gui signals
+        self.ui.checkDomeTransparent.clicked.disconnect(self.setDomeTransparency)
+        self.ui.checkDomeEnable.clicked.disconnect(self.domeCreate)
+        self.ui.checkShowBuildPoints.clicked.disconnect(self.buildPointsCreate)
+        self.ui.checkShowNumbers.clicked.disconnect(self.buildPointsCreate)
+        self.ui.checkShowSlewPath.clicked.disconnect(self.buildPointsCreate)
+        self.ui.checkShowHorizon.clicked.disconnect(self.horizonCreate)
+        self.ui.checkShowPointer.clicked.disconnect(self.pointerCreate)
+
+        self.ui.topView.clicked.disconnect(self.topView)
+        self.ui.topEastView.clicked.disconnect(self.topEastView)
+        self.ui.topWestView.clicked.disconnect(self.topWestView)
+        self.ui.eastView.clicked.disconnect(self.eastView)
+        self.ui.westView.clicked.disconnect(self.westView)
+        self.ui.checkPL.clicked.disconnect(self.setPL)
+
+        # connect functional signals
+        self.app.update1s.disconnect(self.dome.updatePositions)
+        self.app.updateDomeSettings.disconnect(self.updateSettings)
+        self.app.updateDomeSettings.disconnect(self.telescope.updateSettings)
+        self.app.mount.signals.pointDone.disconnect(self.telescope.updatePositions)
+        self.app.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
+        self.app.updateDomeSettings.disconnect(self.domeCreate)
+        self.app.drawBuildPoints.disconnect(self.buildPointsCreate)
+        self.app.drawHorizonPoints.disconnect(self.horizonCreate)
+
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -238,10 +214,57 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.createScene(self.rootEntity)
+
+        self.ui.checkDomeTransparent.clicked.connect(self.setDomeTransparency)
+        self.ui.checkDomeEnable.clicked.connect(self.domeCreate)
+        self.ui.checkShowBuildPoints.clicked.connect(self.buildPointsCreate)
+        self.ui.checkShowNumbers.clicked.connect(self.buildPointsCreate)
+        self.ui.checkShowSlewPath.clicked.connect(self.buildPointsCreate)
+        self.ui.checkShowHorizon.clicked.connect(self.horizonCreate)
+        self.ui.checkShowPointer.clicked.connect(self.pointerCreate)
+
+        self.ui.topView.clicked.connect(self.topView)
+        self.ui.topEastView.clicked.connect(self.topEastView)
+        self.ui.topWestView.clicked.connect(self.topWestView)
+        self.ui.eastView.clicked.connect(self.eastView)
+        self.ui.westView.clicked.connect(self.westView)
+        self.ui.checkPL.clicked.connect(self.setPL)
+
+        # connect functional signals
+        self.app.update1s.connect(self.dome.updatePositions)
+        self.app.updateDomeSettings.connect(self.updateSettings)
+        self.app.updateDomeSettings.connect(self.telescope.updateSettings)
+        self.app.mount.signals.pointDone.connect(self.telescope.updatePositions)
+        self.app.mount.signals.pointDone.connect(self.pointer.updatePositions)
+        self.app.updateDomeSettings.connect(self.domeCreate)
+        self.app.drawBuildPoints.connect(self.buildPointsCreate)
+        self.app.drawHorizonPoints.connect(self.horizonCreate)
+
         self.setPL()
         self.show()
 
         return True
+
+    def buildPointsCreate(self):
+        self.buildPoints.create(self.world['ref1000']['e'],
+                                self.ui.checkShowBuildPoints.isChecked(),
+                                self.ui.checkShowNumbers.isChecked(),
+                                self.ui.checkShowSlewPath.isChecked())
+
+    def domeCreate(self):
+        self.dome.create(self.world['ref']['e'],
+                         self.ui.checkDomeEnable.isChecked())
+
+    def horizonCreate(self):
+        self.horizon.create(self.world['ref1000']['e'],
+                            self.ui.checkShowHorizon.isChecked())
+
+    def pointerCreate(self):
+        self.pointer.create(self.world['ref']['e'],
+                            self.ui.checkShowPointer.isChecked())
+
+    def setDomeTransparency(self):
+        self.dome.setTransparency(self.ui.checkDomeTransparent.isChecked())
 
     def setPL(self):
         """

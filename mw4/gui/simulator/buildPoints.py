@@ -154,7 +154,7 @@ class SimulatorBuildPoints:
 
     def create(self, rEntity, show, numbers=False, path=False):
         """
-        createBuildPoints show the point in the sky if checked, in addition if selected the
+        buildPointsCreate show the point in the sky if checked, in addition if selected the
         slew path between the points and in addition if checked the point numbers
         as the azimuth (second element in tuple) is turning clockwise, it's opposite to the
         right turning coordinate system (z is upwards), which means angle around z

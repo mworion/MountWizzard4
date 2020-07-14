@@ -159,6 +159,9 @@ class SimulatorDome:
         if not self.model:
             return False
 
+        if not self.app.mainW:
+            return False
+
         radius = self.app.mainW.ui.domeRadius.value() * 1000
         scale = 1 + (radius - 1250) / 1250
         corrZ = - (scale - 1) * 800

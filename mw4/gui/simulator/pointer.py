@@ -87,6 +87,9 @@ class SimulatorPointer:
         if not self.model:
             return False
 
+        if not self.app.mount.obsSite.haJNow:
+            return False
+
         lat = self.app.mount.obsSite.location.latitude
         ha = self.app.mount.obsSite.haJNow
         dec = self.app.mount.obsSite.decJNow

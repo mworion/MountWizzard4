@@ -1002,13 +1002,13 @@ class ImageWindow(widget.MWidget):
             return False
 
         if result['success']:
-            text = f'Solved :             '
+            text = 'Solved :             '
             text += f'RA: {transform.convertToHMS(result["raJ2000S"])} '
             text += f'({result["raJ2000S"].hours:4.3f}), '
             text += f'DEC: {transform.convertToDMS(result["decJ2000S"])} '
             text += f'({result["decJ2000S"].degrees:4.3f}), '
             self.app.message.emit(text, 0)
-            text = f'                     '
+            text = '                     '
             text += f'Angle: {result["angleS"]:3.0f}, '
             text += f'Scale: {result["scaleS"]:4.3f}, '
             text += f'Error: {result["errorRMS_S"]:4.1f}'

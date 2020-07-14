@@ -308,7 +308,7 @@ class Model(object):
             text += f'Dec: {transform.convertToDMS(mPoint["decJ2000S"])} '
             text += f'({mPoint["decJ2000S"].degrees:4.3f}), '
             self.app.message.emit(text, 0)
-            text = f'                     '
+            text = '                     '
             text += f'Angle: {mPoint["angleS"]:3.0f}, '
             text += f'Scale: {mPoint["scaleS"]:4.3f}, '
             text += f'Error: {mPoint["errorRMS_S"]:4.1f}'
@@ -817,7 +817,7 @@ class Model(object):
 
         if len(self.model) < 3:
             self.app.message.emit(f'Modeling finished:    {self.modelName}', 2)
-            self.app.message.emit(f'Model not enough valid model point', 2)
+            self.app.message.emit('Model not enough valid model point', 2)
             return False
 
         # stopping other activities

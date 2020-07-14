@@ -123,7 +123,7 @@ class SettDome(object):
         self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
         self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
 
-        self.app.redrawSimulator.emit()
+        self.app.drawDome.emit()
 
         return True
 

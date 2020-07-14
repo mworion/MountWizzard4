@@ -1,0 +1,150 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+#
+# written in python3 , (c) 2019, 2020 by mworion
+#
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+
+# external packages
+import numpy as np
+from PyQt5.QtGui import QVector3D
+from PyQt5.Qt3DExtras import QCuboidMesh
+from PyQt5.Qt3DExtras import QCylinderMesh
+from PyQt5.Qt3DCore import QEntity, QTransform
+
+# local import
+from mw4.base import transform
+from mw4.gui.simulator.materials import Materials
+
+
+class SimulatorHorizon:
+
+    __all__ = ['SimulatorHorizon',
+               ]
+
+    def __init__(self, app):
+        self.app = app
+        self.horizon = []
+        self.horizonRoot = None
+
+    @staticmethod
+    def createLine(rEntity, dx, dy, dz):
+        """
+        create line draw a line between two point or better along dx, dy, dz. Therefore three
+        transformations are made and the resulting vector has to be translated half the
+        length, because is will be drawn symmetrically to the starting point.
+
+        :param rEntity:
+        :param dx:
+        :param dy:
+        :param dz:
+        :return:
+        """
+
+        alt, az, radius = transform.cartesianToSpherical(dx, dy, dz)
+        az = np.degrees(az)
+        alt = np.degrees(alt)
+
+        e1 = QEntity(rEntity)
+        trans1 = QTransform()
+        trans1.setRotationZ(az + 90)
+        e1.addComponent(trans1)
+
+        e2 = QEntity(e1)
+        trans2 = QTransform()
+        trans2.setRotationX(-alt)
+        e2.addComponent(trans2)
+
+        e3 = QEntity(e2)
+        mesh = QCylinderMesh()
+        mesh.setRadius(0.008)
+        mesh.setLength(radius)
+        trans3 = QTransform()
+        trans3.setTranslation(QVector3D(0, radius / 2, 0))
+        e3.addComponent(mesh)
+        e3.addComponent(trans3)
+        e3.addComponent(Materials().lines)
+
+        return e3
+
+    @staticmethod
+    def createWall(rEntity, alt, az, space):
+        """
+
+        :param rEntity:
+        :param alt:
+        :param az:
+        :param space:
+        :return: entity
+        """
+
+        radius = 4
+        e1 = QEntity(rEntity)
+        trans1 = QTransform()
+        trans1.setRotationZ(-az)
+        e1.addComponent(trans1)
+
+        e2 = QEntity(e1)
+        trans2 = QTransform()
+        trans2.setTranslation(QVector3D(radius, 0, 0))
+        e2.addComponent(trans2)
+
+        e3 = QEntity(e2)
+        height = radius * np.tan(np.radians(alt)) + 1.35
+        mesh = QCuboidMesh()
+        mesh.setXExtent(0.01)
+        mesh.setYExtent(radius * np.tan(np.radians(space)))
+        mesh.setZExtent(height)
+        trans3 = QTransform()
+        trans3.setTranslation(QVector3D(0, 0, height / 2))
+        e3.addComponent(mesh)
+        e3. addComponent(trans3)
+        e3.addComponent(Materials().walls)
+
+        return e3
+
+    def create(self, rEntity, show):
+        """
+        createHorizon draws a horizon "wall" by circling over the horizon points and putting
+        cuboid meshed around a circle with defined radius
+
+        :return: success
+        """
+
+        if self.horizon:
+            self.horizonRoot.setParent(None)
+
+        self.horizon.clear()
+
+        if not show:
+            return False
+
+        if not self.app.data.horizonP:
+            return False
+
+        self.horizonRoot = QEntity(rEntity)
+
+        space = 5
+        horizonAz = np.linspace(0, 360 - space, int(360 / space))
+        alt = [x[0] for x in self.app.data.horizonP]
+        az = [x[1] for x in self.app.data.horizonP]
+        horizonAlt = np.interp(horizonAz, az, alt)
+
+        for alt, az in zip(horizonAlt, horizonAz):
+            e = self.createWall(self.horizonRoot, alt, az, space)
+            element = {'e': e}
+            self.horizon.append(element)
+
+        return True

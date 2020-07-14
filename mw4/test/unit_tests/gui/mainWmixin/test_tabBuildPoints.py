@@ -49,6 +49,7 @@ def module_setup_teardown(qtbot):
     class Test(QObject):
         config = {'mainW': {}}
         redrawHemisphere = pyqtSignal()
+        drawBuildPoints = pyqtSignal()
         message = pyqtSignal(str, int)
         sendBuildPoints = pyqtSignal(object)
         mwGlob = {'configDir': 'mw4/test/config'}

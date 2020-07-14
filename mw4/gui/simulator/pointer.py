@@ -1,0 +1,106 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+#
+# written in python3 , (c) 2019, 2020 by mworion
+#
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+
+# external packages
+from PyQt5.QtGui import QVector3D
+from PyQt5.Qt3DCore import QEntity
+from PyQt5.Qt3DExtras import QSphereMesh
+
+# local import
+from mw4.gui.simulator.materials import Materials
+from mw4.gui.simulator import tools
+
+
+class SimulatorPointer:
+
+    __all__ = ['SimulatorPointer',
+               ]
+
+    def __init__(self, app):
+        super().__init__()
+
+        self.app = app
+        self.model = {}
+        self.modelRoot = None
+
+    def create(self, rEntity, show):
+        """
+        first transformation is from
+            fusion360 (x is north, y is west, z is up), scale in mm
+            Qt3D (-z is north, x is east, y is up) scale is m
+        and set as reference. from there on we are in the fusion coordinate system
+
+        dict {'name of model': {'parent': }}
+
+        :param rEntity: root of the 3D models
+        :param show: root of the 3D models
+        :return:
+        """
+
+        if self.model:
+            self.modelRoot.setParent(None)
+
+        self.model.clear()
+
+        if not show:
+            return False
+
+        self.modelRoot = QEntity(rEntity)
+
+        self.model = {
+            'pointer': {
+                'parent': None,
+                'source': [QSphereMesh(), 50, 30, 30],
+                'scale': [1, 1, 1],
+                'mat': Materials().pointer,
+            },
+        }
+
+        for name in self.model:
+            tools.linkModel(self.model, name, self.modelRoot)
+
+    def updatePositions(self):
+        """
+        updateMount moves ra and dec axis according to the values in the mount.
+        when telescope view is enable as well, the camera position and view target is
+        adjusted, too.
+
+        :return:
+        """
+
+        if not self.model:
+            return False
+
+        lat = self.app.mount.obsSite.location.latitude
+        ha = self.app.mount.obsSite.haJNow
+        dec = self.app.mount.obsSite.decJNow
+        pierside = self.app.mount.obsSite.pierside
+
+        geometry = self.app.mount.geometry
+        _, _, x, y, z = geometry.calcTransformationMatrices(ha=ha,
+                                                            dec=dec,
+                                                            lat=lat,
+                                                            pierside=pierside)
+        x = x * 1000
+        y = y * 1000
+        z = z * 1000 + 1000
+
+        self.model['pointer']['t'].setTranslation(QVector3D(x, y, z))
+
+        return True

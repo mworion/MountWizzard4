@@ -66,19 +66,13 @@ class SimulatorTelescope:
         self.model = {
             'mountBase': {
                 'parent': None,
-                'source': 'mont-base.stl',
+                'source': 'mount-base.stl',
                 'trans': [0, 0, 1000],
                 'mat': Materials().aluminiumS,
             },
-            'pointer': {
-                'parent': None,
-                'source': [QSphereMesh(), 50, 30, 30],
-                'scale': [1, 1, 1],
-                'mat': Materials().pointer,
-            },
             'mountKnobs': {
                 'parent': 'mountBase',
-                'source': 'mont-base-knobs.stl',
+                'source': 'mount-base-knobs.stl',
                 'mat': Materials().aluminium,
             },
             'lat': {
@@ -86,52 +80,52 @@ class SimulatorTelescope:
                 'trans': [0, 0, 70],
                 'rot': [0, -90 + 48, 0],
             },
-            'montRa': {
+            'mountRa': {
                 'parent': 'lat',
-                'source': 'mont-ra.stl',
+                'source': 'mount-ra.stl',
                 'trans': [0, 0, -70],
                 'mat': Materials().aluminiumS,
             },
             'ra': {
-                'parent': 'montRa',
+                'parent': 'mountRa',
                 'trans': [0, 0, 190],
             },
-            'montDec': {
+            'mountDec': {
                 'parent': 'ra',
-                'source': 'mont-dec.stl',
+                'source': 'mount-dec.stl',
                 'trans': [0, 0, -190],
                 'mat': Materials().aluminiumS,
             },
-            'montDecKnobs': {
+            'mountDecKnobs': {
                 'parent': 'ra',
-                'source': 'mont-dec-knobs.stl',
+                'source': 'mount-dec-knobs.stl',
                 'trans': [0, 0, -190],
                 'mat': Materials().aluminium,
             },
-            'montDecWeights': {
+            'mountDecWeights': {
                 'parent': 'ra',
-                'source': 'mont-dec-weights.stl',
+                'source': 'mount-dec-weights.stl',
                 'trans': [0, 0, -190],
                 'mat': Materials().stainless,
             },
             'dec': {
-                'parent': 'montDec',
+                'parent': 'mountDec',
                 'trans': [159, 0, 190],
             },
-            'montHead': {
+            'mountHead': {
                 'parent': 'dec',
-                'source': 'mont-head.stl',
+                'source': 'mount-head.stl',
                 'trans': [-159, 0, -190],
                 'mat': Materials().aluminiumS,
             },
-            'montHeadKnobs': {
+            'mountHeadKnobs': {
                 'parent': 'dec',
-                'source': 'mont-head-knobs.stl',
+                'source': 'mount-head-knobs.stl',
                 'trans': [-159, 0, -190],
                 'mat': Materials().aluminium,
             },
             'gem': {
-                'parent': 'montHead',
+                'parent': 'mountHead',
                 'source': [QCuboidMesh(), 100, 60, 10],
                 'trans': [159, 0, 338.5],
                 'mat': Materials().aluminiumB,
@@ -194,6 +188,14 @@ class SimulatorTelescope:
         if not self.model:
             return False
 
+        if not self.app.mainW:
+            return False
+
+        north = self.app.mainW.ui.domeNorthOffset.value() * 1000
+        east = self.app.mainW.ui.domeEastOffset.value() * 1000
+        vertical = self.app.mainW.ui.domeVerticalOffset.value() * 1000
+        self.model['mountBase']['t'].setTranslation(QVector3D(north, -east, 1000 + vertical))
+
         if self.app.mount.obsSite.location:
             latitude = self.app.mount.obsSite.location.latitude.degrees
             self.model['lat']['t'].setRotationY(- abs(latitude))
@@ -229,9 +231,6 @@ class SimulatorTelescope:
         if not self.model:
             return False
 
-        if ('t' not in self.model['ra'] and 't' not in self.model['dec']):
-            return False
-
         angRA = self.app.mount.obsSite.angularPosRA
         angDEC = self.app.mount.obsSite.angularPosDEC
 
@@ -240,26 +239,5 @@ class SimulatorTelescope:
 
         self.model['ra']['t'].setRotationX(- angRA.degrees + 90)
         self.model['dec']['t'].setRotationZ(- angDEC.degrees)
-
-        lat = self.app.mount.obsSite.location.latitude
-        ha = self.app.mount.obsSite.haJNow
-        dec = self.app.mount.obsSite.decJNow
-        pierside = self.app.mount.obsSite.pierside
-
-        geometry = self.app.mount.geometry
-        _, _, x, y, z = geometry.calcTransformationMatrices(ha=ha,
-                                                            dec=dec,
-                                                            lat=lat,
-                                                            pierside=pierside)
-        x = x * 1000
-        y = y * 1000
-        z = z * 1000 + 1000
-
-        if not self.ui.checkShowPointer.isChecked():
-            self.model['pointer']['e'].setEnabled(False)
-
-        else:
-            self.model['pointer']['e'].setEnabled(True)
-            self.model['pointer']['t'].setTranslation(QVector3D(x, y, z))
 
         return True

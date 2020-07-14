@@ -35,6 +35,7 @@ from mw4.gui.simulator.dome import SimulatorDome
 from mw4.gui.simulator.telescope import SimulatorTelescope
 from mw4.gui.simulator.horizon import SimulatorHorizon
 from mw4.gui.simulator.buildPoints import SimulatorBuildPoints
+from mw4.gui.simulator.pointer import SimulatorPointer
 
 
 class SimulatorWindow(widget.MWidget):
@@ -88,6 +89,7 @@ class SimulatorWindow(widget.MWidget):
         self.telescope = SimulatorTelescope(self.app)
         self.horizon = SimulatorHorizon(self.app)
         self.buildPoints = SimulatorBuildPoints(self.app)
+        self.pointer = SimulatorPointer(self.app)
         self.world = None
 
         self.initConfig()
@@ -128,8 +130,10 @@ class SimulatorWindow(widget.MWidget):
 
         # connect functional signals
         self.app.update1s.connect(self.dome.updatePositions)
+        self.app.updateDomeSettings.connect(self.updateSettings)
+        self.app.updateDomeSettings.connect(self.telescope.updateSettings)
         self.app.mount.signals.pointDone.connect(self.telescope.updatePositions)
-        self.app.drawDome.connect(
+        self.app.updateDomeSettings.connect(
             lambda: self.dome.create(self.world['ref']['e'],
                                      self.ui.checkDomeEnable.isChecked()))
         self.app.drawBuildPoints.connect(
@@ -258,7 +262,6 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
-        self.createBuildPoints()
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(0.0, 10.0, 0.0))
 
@@ -271,7 +274,6 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
-        self.createBuildPoints()
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -285,7 +287,6 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
-        self.createBuildPoints()
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -299,7 +300,6 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
-        self.createBuildPoints()
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -313,7 +313,6 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
-        self.createBuildPoints()
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -330,23 +329,35 @@ class SimulatorWindow(widget.MWidget):
         self.world = {
             'ref': {
                 'parent': None,
-                'source': None,
-                'trans': None,
                 'rot': [-90, 90, 0],
                 'scale': [0.001, 0.001, 0.001],
-                'mat': None,
             },
             'ref1000': {
                 'parent': None,
-                'source': None,
-                'trans': None,
                 'rot': [-90, 90, 0],
-                'mat': None,
             },
             'environ': {
                 'parent': 'ref',
                 'source': 'dome-environ.stl',
                 'mat': Materials().environ1,
+            },
+            'domeColumn': {
+                'parent': 'ref',
+                'source': 'dome-column.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().aluminiumS,
+            },
+            'domeCompassRose': {
+                'parent': 'ref',
+                'source': 'dome-rose.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().aluminiumR,
+            },
+            'domeCompassRoseChar': {
+                'parent': 'ref',
+                'source': 'dome-rose-char.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().white,
             },
         }
 
@@ -362,9 +373,45 @@ class SimulatorWindow(widget.MWidget):
 
         numbers = self.ui.checkShowNumbers.isChecked()
         path = self.ui.checkShowSlewPath.isChecked()
+        pointer = self.ui.checkShowPointer.isChecked()
+        dome = self.ui.checkDomeEnable.isChecked()
+        horizon = self.ui.checkShowHorizon.isChecked()
+        points = self.ui.checkShowBuildPoints.isChecked()
 
         self.createWorld(rEntity)
-        self.dome.create(self.world['ref']['e'], False)
         self.telescope.create(self.world['ref']['e'], True)
-        self.buildPoints.create(self.world['ref1000']['e'], False, numbers, path)
-        self.horizon.create(self.world['ref1000']['e'], False)
+        self.dome.create(self.world['ref']['e'], dome)
+        self.pointer.create(self.world['ref']['e'], pointer)
+        self.buildPoints.create(self.world['ref1000']['e'], points, numbers, path)
+        self.horizon.create(self.world['ref1000']['e'], horizon)
+
+        self.updateSettings()
+        self.dome.updateSettings()
+        self.dome.updatePositions()
+        self.telescope.updateSettings()
+        self.telescope.updatePositions()
+
+    def updateSettings(self):
+        """
+        updateSettings resize parts depending on the setting made in the dome tab. likewise
+        some transformations have to be reverted as they are propagated through entity linking.
+
+        :return:
+        """
+
+        if not self.world:
+            return False
+
+        if not self.app.mainW:
+            return False
+
+        north = self.app.mainW.ui.domeNorthOffset.value() * 1000
+        east = self.app.mainW.ui.domeEastOffset.value() * 1000
+        vertical = self.app.mainW.ui.domeVerticalOffset.value() * 1000
+        scale = (960 + vertical) / 960
+        self.world['domeColumn']['t'].setTranslation(QVector3D(north, -east, 0))
+        self.world['domeColumn']['t'].setScale3D(QVector3D(1, 1, scale))
+        self.world['domeCompassRose']['t'].setTranslation(QVector3D(north, -east, 0))
+        self.world['domeCompassRoseChar']['t'].setTranslation(QVector3D(north, -east, 0))
+
+        return True

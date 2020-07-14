@@ -110,12 +110,12 @@ def linkMaterial(currMod):
     return mat
 
 
-def linkModel(model, name, rootEntity):
+def linkModel(model, name, rEntity):
     """
 
     :param model:
     :param name:
-    :param rootEntity:
+    :param rEntity:
     :return: true for test purpose
     """
 
@@ -125,10 +125,7 @@ def linkModel(model, name, rootEntity):
     if parent and model.get(parent, None):
         currMod['e'] = QEntity(model[parent]['e'])
     else:
-        currMod['e'] = QEntity(rootEntity)
-
-    visible = currMod.get('visible', True)
-    currMod['e'].setEnabled(visible)
+        currMod['e'] = QEntity(rEntity)
 
     mesh = linkSource(currMod)
     if mesh:

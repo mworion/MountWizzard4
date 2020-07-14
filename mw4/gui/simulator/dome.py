@@ -159,15 +159,6 @@ class SimulatorDome:
         if not self.model:
             return False
 
-        north = self.app.mainW.ui.domeNorthOffset.value() * 1000
-        east = self.app.mainW.ui.domeEastOffset.value() * 1000
-        vertical = self.app.mainW.ui.domeVerticalOffset.value() * 1000
-        scale = (960 + vertical) / 960
-        self.model['domeColumn']['t'].setTranslation(QVector3D(north, -east, 0))
-        self.model['domeColumn']['t'].setScale3D(QVector3D(1, 1, scale))
-        self.model['domeCompassRose']['t'].setTranslation(QVector3D(north, -east, 0))
-        self.model['domeCompassRoseChar']['t'].setTranslation(QVector3D(north, -east, 0))
-
         radius = self.app.mainW.ui.domeRadius.value() * 1000
         scale = 1 + (radius - 1250) / 1250
         corrZ = - (scale - 1) * 800

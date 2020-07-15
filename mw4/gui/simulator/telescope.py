@@ -20,7 +20,7 @@
 # external packages
 from PyQt5.QtGui import QVector3D
 from PyQt5.Qt3DCore import QEntity
-from PyQt5.Qt3DExtras import QCuboidMesh, QSphereMesh
+from PyQt5.Qt3DExtras import QCuboidMesh
 
 # local import
 from mw4.gui.simulator.materials import Materials

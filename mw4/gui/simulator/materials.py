@@ -225,10 +225,10 @@ class Materials(MWidget):
         self.pointer.setShininess(1)
 
         self.walls = QPhongAlphaMaterial()
-        self.walls.setAmbient(QColor(96, 82, 32))
-        self.walls.setDiffuse(QColor(96, 82, 32))
-        self.walls.setSpecular(QColor(96, 82, 32))
-        self.walls.setShininess(0.3)
+        self.walls.setAmbient(QColor(64, 128, 64))
+        self.walls.setDiffuse(QColor(64, 64, 64))
+        self.walls.setSpecular(QColor(64, 64, 64))
+        self.walls.setShininess(0.1)
         self.walls.setAlpha(0.5)
 
         self.mw4 = QTextureMaterial()

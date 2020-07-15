@@ -255,6 +255,8 @@ class SimulatorWindow(widget.MWidget):
                                 self.ui.checkShowNumbers.isChecked(),
                                 self.ui.checkShowSlewPath.isChecked())
 
+        return True
+
     def domeCreate(self):
         """
         transfer function needed, because lambda function in signal connection cannot be used
@@ -262,6 +264,7 @@ class SimulatorWindow(widget.MWidget):
         """
         self.dome.create(self.world['ref']['e'],
                          self.ui.checkDomeEnable.isChecked())
+
         return True
 
     def horizonCreate(self):
@@ -271,6 +274,7 @@ class SimulatorWindow(widget.MWidget):
         """
         self.horizon.create(self.world['ref1000']['e'],
                             self.ui.checkShowHorizon.isChecked())
+
         return True
 
     def pointerCreate(self):
@@ -280,6 +284,7 @@ class SimulatorWindow(widget.MWidget):
         """
         self.pointer.create(self.world['ref']['e'],
                             self.ui.checkShowPointer.isChecked())
+
         return True
 
     def setDomeTransparency(self):
@@ -288,6 +293,7 @@ class SimulatorWindow(widget.MWidget):
         :return: True for test purpose
         """
         self.dome.setTransparency(self.ui.checkDomeTransparent.isChecked())
+
         return True
 
     def setPL(self):

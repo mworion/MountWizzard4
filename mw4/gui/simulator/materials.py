@@ -31,7 +31,6 @@ from PyQt5.Qt3DCore import QEntity, QTransform
 from mw4.gui.widget import MWidget
 
 
-@staticmethod
 def linkModel(model, name, rEntity):
     """
     linkModel builds an entity chain for the 3d model by scripting some basic features

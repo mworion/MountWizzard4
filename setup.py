@@ -32,7 +32,7 @@ setup(
         'mw4.environment',
         'mw4.gui',
         'mw4.gui.mainWmixin',
-        'mw4.gui.simulator'
+        'mw4.gui.simulator',
         'mw4.gui.widgets',
         'mw4.imaging',
         'mw4.measure',

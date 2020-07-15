@@ -70,6 +70,7 @@ jobs:
         pytest mw4/test/unit_tests/gui/extWindows
         pytest mw4/test/unit_tests/gui/mainWindow
         pytest mw4/test/unit_tests/gui/mainWmixin
+        pytest mw4/test/unit_tests/gui/simulator
         pytest mw4/test/unit_tests/gui/utilities
         pytest mw4/test/unit_tests/imaging
         pytest mw4/test/unit_tests/measure

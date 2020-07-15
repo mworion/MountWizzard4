@@ -71,6 +71,7 @@ jobs:
         pytest mw4/test/unit_tests/gui/extWindows --cov-append --cov=mw4/ --cov-report=xml
         pytest mw4/test/unit_tests/gui/mainWindow --cov-append --cov=mw4/ --cov-report=xml
         pytest mw4/test/unit_tests/gui/mainWmixin --cov-append --cov=mw4/ --cov-report=xml
+        pytest mw4/test/unit_tests/gui/simulator --cov-append --cov=mw4/ --cov-report=xml
         pytest mw4/test/unit_tests/gui/utilities --cov-append --cov=mw4/ --cov-report=xml
         pytest mw4/test/unit_tests/imaging --cov-append --cov=mw4/ --cov-report=xml
         pytest mw4/test/unit_tests/measure --cov-append --cov=mw4/ --cov-report=xml

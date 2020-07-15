@@ -117,7 +117,6 @@ class Materials(MWidget):
     """
     class Materials defines all used materials for the loaded stl models or the meshed build
     programmatically inside the simulator
-    
     """
 
     def __init__(self):

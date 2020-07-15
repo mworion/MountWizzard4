@@ -171,7 +171,7 @@ class SimulatorWindow(widget.MWidget):
     def closeEvent(self, closeEvent):
         """
         closeEvent is overloaded to be able to store the data before the windows is close
-        and all it's data is garbage collected
+        and all it's data is garbage collected. all signals are disconnected before closing.
 
         :param closeEvent:
         :return:
@@ -207,8 +207,8 @@ class SimulatorWindow(widget.MWidget):
 
     def showWindow(self):
         """
-        showWindow starts constructing the main window for satellite view and shows the
-        window content
+        showWindow starts constructing the main window for the simulator view and shows the
+        window content. all signals are connected there
 
         :return: True for test purpose
         """
@@ -246,25 +246,49 @@ class SimulatorWindow(widget.MWidget):
         return True
 
     def buildPointsCreate(self):
+        """
+        transfer function needed, because lambda function in signal connection cannot be used
+        :return: True for test purpose
+        """
         self.buildPoints.create(self.world['ref1000']['e'],
                                 self.ui.checkShowBuildPoints.isChecked(),
                                 self.ui.checkShowNumbers.isChecked(),
                                 self.ui.checkShowSlewPath.isChecked())
 
     def domeCreate(self):
+        """
+        transfer function needed, because lambda function in signal connection cannot be used
+        :return: True for test purpose
+        """
         self.dome.create(self.world['ref']['e'],
                          self.ui.checkDomeEnable.isChecked())
+        return True
 
     def horizonCreate(self):
+        """
+        transfer function needed, because lambda function in signal connection cannot be used
+        :return: True for test purpose
+        """
         self.horizon.create(self.world['ref1000']['e'],
                             self.ui.checkShowHorizon.isChecked())
+        return True
 
     def pointerCreate(self):
+        """
+        transfer function needed, because lambda function in signal connection cannot be used
+        :return: True for test purpose
+        """
         self.pointer.create(self.world['ref']['e'],
                             self.ui.checkShowPointer.isChecked())
+        return True
 
     def setDomeTransparency(self):
+        """
+        transfer function needed, because lambda function in signal connection cannot be used
+        :return: True for test purpose
+        """
         self.dome.setTransparency(self.ui.checkDomeTransparent.isChecked())
+        return True
 
     def setPL(self):
         """
@@ -280,6 +304,7 @@ class SimulatorWindow(widget.MWidget):
 
     def topView(self):
         """
+        move the camera to top view position
 
         :return: True for test purpose
         """
@@ -292,6 +317,7 @@ class SimulatorWindow(widget.MWidget):
 
     def topEastView(self):
         """
+        moves the camera to top east position
 
         :return: True for test purpose
         """
@@ -305,6 +331,7 @@ class SimulatorWindow(widget.MWidget):
 
     def topWestView(self):
         """
+        moves the camera to top west position
 
         :return: True for test purpose
         """
@@ -318,6 +345,7 @@ class SimulatorWindow(widget.MWidget):
 
     def eastView(self):
         """
+        moves the camera to east position
 
         :return: True for test purpose
         """
@@ -331,6 +359,7 @@ class SimulatorWindow(widget.MWidget):
 
     def westView(self):
         """
+        moves the camera to west position
 
         :return: True for test purpose
         """
@@ -342,10 +371,26 @@ class SimulatorWindow(widget.MWidget):
 
         return True
 
-    def createWorld(self, rootEntity):
+    def createWorld(self, rEntity):
         """
+        first transformation is from fusion360 to qt3d
+            fusion360 (x is north, y is west, z is up), scale in mm
+            Qt3D (-z is north, x is east, y is up) scale is m
+        and set as reference. from there on we are in the fusion coordinate system
 
-        :param rootEntity:
+            'ref' is the fusion360 coordinate system, please be aware that rotations around the
+            z axis for azimuth is clockwise and not counterclockwise as a right handed
+            coordinate system would propose.
+
+        for the sake of simplifying there is another reference, which only has the
+        corrections in coordinates and not for scaling, this is called
+
+            'ref1000'
+
+        beside defining the references, createWorld build the foundation for the positioning
+        of a raw telescope column and a compass rose.
+
+        :param rEntity:
         :return:
         """
 
@@ -385,10 +430,12 @@ class SimulatorWindow(widget.MWidget):
         }
 
         for name in self.world:
-            tools.linkModel(self.world, name, rootEntity)
+            tools.linkModel(self.world, name, rEntity)
 
     def createScene(self, rEntity):
         """
+        createScene initially builds all 3d models and collects them to a scene. please look
+        closely which references are used-
 
         :param rEntity:
         :return:

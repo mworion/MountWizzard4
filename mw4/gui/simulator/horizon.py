@@ -82,6 +82,8 @@ class SimulatorHorizon:
     @staticmethod
     def createWall(rEntity, alt, az, space):
         """
+        createWall draw a plane in radius distance to show the horizon. spacing is the
+        angular spacing between this planes
 
         :param rEntity:
         :param alt:
@@ -119,6 +121,8 @@ class SimulatorHorizon:
         """
         createHorizon draws a horizon "wall" by circling over the horizon points and putting
         cuboid meshed around a circle with defined radius
+
+        the space is the angle width of a plane in degrees
 
         :return: success
         """

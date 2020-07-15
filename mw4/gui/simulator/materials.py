@@ -32,12 +32,13 @@ from mw4.gui.widget import MWidget
 
 
 @staticmethod
-def linkModel(model, name, rootEntity):
+def linkModel(model, name, rEntity):
     """
+    linkModel builds an entity chain for the 3d model by scripting some basic features
 
     :param model:
     :param name:
-    :param rootEntity:
+    :param rEntity:
     :return:
     """
 
@@ -47,7 +48,7 @@ def linkModel(model, name, rootEntity):
     if parent and model.get(parent, None):
         currMod['e'] = QEntity(model[parent]['e'])
     else:
-        currMod['e'] = QEntity(rootEntity)
+        currMod['e'] = QEntity(rEntity)
 
     visible = currMod.get('visible', True)
     currMod['e'].setEnabled(visible)
@@ -109,6 +110,16 @@ def linkModel(model, name, rootEntity):
 
 
 class Materials(MWidget):
+
+    __all__ = ['Materials',
+               ]
+
+    """
+    class Materials defines all used materials for the loaded stl models or the meshed build
+    programmatically inside the simulator
+    
+    """
+
     def __init__(self):
         self.aluminiumS = QMetalRoughMaterial()
         self.aluminiumS.setBaseColor(QColor(127, 127, 127))

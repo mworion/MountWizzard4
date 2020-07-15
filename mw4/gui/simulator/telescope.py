@@ -41,10 +41,6 @@ class SimulatorTelescope:
 
     def create(self, rEntity, show):
         """
-        first transformation is from
-            fusion360 (x is north, y is west, z is up), scale in mm
-            Qt3D (-z is north, x is east, y is up) scale is m
-        and set as reference. from there on we are in the fusion coordinate system
 
         dict {'name of model': {'parent': }}
 
@@ -222,8 +218,6 @@ class SimulatorTelescope:
     def updatePositions(self):
         """
         updateMount moves ra and dec axis according to the values in the mount.
-        when telescope view is enable as well, the camera position and view target is
-        adjusted, too.
 
         :return:
         """

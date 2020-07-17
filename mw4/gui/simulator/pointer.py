@@ -45,7 +45,7 @@ class SimulatorPointer:
 
         :param rEntity: root of the 3D models
         :param show: root of the 3D models
-        :return:
+        :return: success
         """
 
         if self.model:
@@ -69,6 +69,8 @@ class SimulatorPointer:
 
         for name in self.model:
             tools.linkModel(self.model, name, self.modelRoot)
+
+        return True
 
     def updatePositions(self):
         """

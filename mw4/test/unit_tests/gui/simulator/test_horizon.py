@@ -34,7 +34,11 @@ from mw4.gui.simulator.horizon import SimulatorHorizon
 def module_setup_teardown():
     global app
 
+    class Test1:
+        horizonP = [(45, 45), (50, 50)]
+
     class Test(QObject):
+        data = Test1()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
                       pathToData='mw4/test/data')
         mount.obsSite.location = Topos(latitude_degrees=20,

@@ -17,11 +17,13 @@
 ###########################################################
 # standard libraries
 import pytest
+from unittest import mock
 import faulthandler
 faulthandler.enable()
 
 # external packages
 from PyQt5.Qt3DCore import QEntity
+from PyQt5.Qt3DExtras import QExtrudedTextMesh
 from PyQt5.QtCore import QObject
 from mountcontrol.mount import Mount
 from skyfield.api import Topos
@@ -34,7 +36,11 @@ from mw4.gui.simulator.buildPoints import SimulatorBuildPoints
 def module_setup_teardown():
     global app
 
+    class Test1:
+        buildP = [(45, 45), (50, 50)]
+
     class Test(QObject):
+        data = Test1()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
                       pathToData='mw4/test/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
@@ -48,6 +54,22 @@ def module_setup_teardown():
     yield
 
 
+def test_createAnnotation_1():
+    e = QEntity()
+    with mock.patch.object(QExtrudedTextMesh,
+                           'setText'):
+        val = app.createAnnotation(e, 45, 45, 'test')
+        assert isinstance(val, QEntity)
+
+
+def test_createAnnotation_2():
+    e = QEntity()
+    with mock.patch.object(QExtrudedTextMesh,
+                           'setText'):
+        val = app.createAnnotation(e, 45, 45, 'test', faceIn=True)
+        assert isinstance(val, QEntity)
+
+
 def test_create_1():
     e = QEntity()
     suc = app.create(e, False)
@@ -56,15 +78,35 @@ def test_create_1():
 
 def test_create_2():
     e = QEntity()
-    app.modelRoot = e
-    app.model = {'test': {'e': e}}
+    app.pointRoot = e
+    app.points = [{'e': e}]
     suc = app.create(e, False)
     assert not suc
 
 
 def test_create_3():
     e = QEntity()
-    app.modelRoot = e
-    app.model = {'test': {'e': e}}
+    app.pointRoot = e
+    app.points = [{'e': e}]
     suc = app.create(e, True)
     assert suc
+
+
+def test_create_4():
+    e = QEntity()
+    app.pointRoot = e
+    app.app.data.buildP = None
+    app.points = [{'e': e}]
+    suc = app.create(e, True)
+
+
+def test_create_5():
+    e = QEntity()
+    app.pointRoot = e
+    app.points = [{'e': e}]
+
+    with mock.patch.object(app,
+                           'createAnnotation',
+                           return_value=(QEntity(), 1, 1, 1)):
+        suc = app.create(e, True, numbers=True, path=True)
+        assert suc

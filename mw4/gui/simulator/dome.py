@@ -104,6 +104,8 @@ class SimulatorDome:
         for name in self.model:
             tools.linkModel(self.model, name, self.modelRoot)
 
+        return True
+
     def setTransparency(self, transparent):
         """
 

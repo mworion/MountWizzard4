@@ -173,6 +173,8 @@ class SimulatorTelescope:
         for name in self.model:
             tools.linkModel(self.model, name, self.modelRoot)
 
+        return True
+
     def updateSettings(self):
         """
         updateSettings resize parts depending on the setting made in the dome tab. likewise

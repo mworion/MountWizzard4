@@ -401,14 +401,13 @@ class SimulatorWindow(widget.MWidget):
         """
 
         self.world = {
-            'ref': {
-                'parent': None,
-                'rot': [-90, 90, 0],
-                'scale': [0.001, 0.001, 0.001],
-            },
             'ref1000': {
                 'parent': None,
                 'rot': [-90, 90, 0],
+            },
+            'ref': {
+                'parent': 'ref1000',
+                'scale': [0.001, 0.001, 0.001],
             },
             'environ': {
                 'parent': 'ref',

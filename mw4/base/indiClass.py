@@ -309,6 +309,20 @@ class IndiClass(object):
         """
         pass
 
+    def convertIndigoProperty(self, key):
+        """
+        convertIndigoProperty looks the corresponding INDi key in a dict, if the key is present
+        or keeps is otherwise
+
+        :param key:
+        :return:
+        """
+
+        if key in self.INDIGO:
+            key = self.INDIGO.get(key)
+
+        return key
+
     def updateNumber(self, deviceName, propertyName):
         """
         updateNumber is called whenever a new number is received in client. it runs
@@ -328,7 +342,7 @@ class IndiClass(object):
             key = propertyName + '.' + element
 
             # print(self.name, key, value)
-            key = self.INDIGO.get(key)
+            key = self.convertIndigoProperty(key)
 
             self.data[key] = value
 
@@ -353,7 +367,7 @@ class IndiClass(object):
             key = propertyName + '.' + element
 
             # print(self.name, key, value)
-            key = self.INDIGO.get(key)
+            key = self.convertIndigoProperty(key)
 
             self.data[key] = value
 
@@ -377,8 +391,8 @@ class IndiClass(object):
         for element, value in self.device.getText(propertyName).items():
             key = propertyName + '.' + element
 
-            # print(self.name, key, value)
-            key = self.INDIGO.get(key)
+            print(self.name, key, value)
+            key = self.convertIndigoProperty(key)
 
             self.data[key] = value
 
@@ -402,7 +416,7 @@ class IndiClass(object):
             key = propertyName + '.' + element
 
             # print(self.name, key, value)
-            key = self.INDIGO.get(key)
+            key = self.convertIndigoProperty(key)
 
             self.data[key] = value
 

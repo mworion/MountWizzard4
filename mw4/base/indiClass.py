@@ -89,8 +89,9 @@ class IndiClass(object):
         'X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_2': 'POWER_CONTROL_LABEL.POWER_LABEL_2',
         'X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_3': 'POWER_CONTROL_LABEL.POWER_LABEL_3',
         'X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_4': 'POWER_CONTROL_LABEL.POWER_LABEL_4',
-
     }
+
+    INDI = {y: x for x, y in INDIGO.items()}
 
     def __init__(self, app=None, data=None, threadPool=None):
         super().__init__()

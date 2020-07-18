@@ -49,15 +49,15 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         'filterwheel': (1 << 4),
         'dome': (1 << 5),
         'observingconditions': (1 << 7),
-        'skymeter': 0,
+        'skymeter': 557056 | (1 << 7),
         'cover': (1 << 9) | (1 << 10),
         'power': (1 << 7) | (1 << 3)
     }
 
     indiDefaults = {
         'telescope': 'LX200 10micron',
-        'skymeter': 'SQM',
-        'power': 'Pegasus UPB',
+        # 'skymeter': 'SQM',
+        # 'power': 'Pegasus UPB',
     }
 
     def __init__(self,
@@ -83,37 +83,6 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         x = geometry[0] + int((geometry[2] - self.width()) / 2)
         y = geometry[1] + int((geometry[3] - self.height()) / 2)
         self.move(x, y)
-
-        """
-        self.deviceFramework = {
-            'indi': {'host': self.ui.indiHost,
-                     'port': self.ui.indiPort,
-                     'device': self.ui.indiDeviceList,
-                     'messages': self.ui.indiMessages,
-                     'loadConfig': self.ui.indiLoadConfig,
-                     },
-            'alpaca': {'host': self.ui.alpacaHost,
-                       'port': self.ui.alpacaPort,
-                       'device': self.ui.alpacaDevice,
-                       'number': self.ui.alpacaNumber,
-                       'user': self.ui.alpacaUser,
-                       'password': self.ui.alpacaPassword,
-                       'protocol': self.ui.alpacaProtocol,
-                       },
-            'ascom': {'device': self.ui.ascomDevice,
-                      },
-            'astrometry': {'device': self.ui.astrometryDeviceList,
-                           'searchRadius': self.ui.astrometrySearchRadius,
-                           'timeout': self.ui.astrometryTimeout,
-                           'indexPath': self.ui.astrometryIndexPath,
-                           },
-            'astap': {'device': self.ui.astapDeviceList,
-                      'searchRadius': self.ui.astapSearchRadius,
-                      'timeout': self.ui.astapTimeout,
-                      'indexPath': self.ui.astapIndexPath,
-                      },
-        }
-        """
 
         self._indiClass = None
         self._indiSearchNameList = ()
@@ -330,6 +299,13 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         checks, if the device type fits to the search type desired. if they match, the
         device name is added to the list.
 
+        to add support for indigo server devices, which don't have interface type set, I
+        define interface:
+
+            interface = (1 << 7)
+
+        as their number. If this is selected, the list of indigo device will be shown.
+
         :param deviceName:
         :param propertyName:
         :return: success
@@ -342,7 +318,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         interface = device.getText(propertyName).get('DRIVER_INTERFACE', None)
 
         if interface is None:
-            return False
+            interface = (1 << 7)
 
         if self._indiSearchType is None:
             return False

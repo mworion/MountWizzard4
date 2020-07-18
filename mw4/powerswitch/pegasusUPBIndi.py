@@ -97,7 +97,6 @@ class PegasusUPBIndi(IndiClass):
             if self.data.get('VERSION.UPB', 1) != 2:
                 self.data['VERSION.UPB'] = 2
                 self.signals.version.emit(2)
-                print('version 2')
 
         return True
 

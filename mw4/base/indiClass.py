@@ -42,6 +42,56 @@ class IndiClass(object):
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
 
+    INDIGO = {
+        # numbers
+        # SQM device
+        'AUX_INFO.X_AUX_SKY_BRIGHTNESS': 'SKY_QUALITY.SKY_BRIGHTNESS',
+        'AUX_INFO.X_AUX_SKY_TEMPERATURE': 'SKY_QUALITY.SKY_TEMPERATURE',
+        # UPB device
+        'AUX_INFO.X_AUX_AVERAGE': 'POWER_CONSUMPTION.CONSUMPTION_AVG_AMPS',
+        'AUX_INFO.X_AUX_AMP_HOUR': 'POWER_CONSUMPTION.CONSUMPTION_AMP_HOURS',
+        'AUX_INFO.X_AUX_WATT_HOUR': 'POWER_CONSUMPTION.CONSUMPTION_WATT_HOURS',
+        'AUX_INFO.X_AUX_VOLTAGE': 'POWER_SENSORS.SENSOR_VOLTAGE',
+        'AUX_INFO.X_AUX_CURRENT': 'POWER_SENSORS.SENSOR_CURRENT',
+        'AUX_INFO.X_AUX_POWER_OUTLET': 'POWER_SENSORS.SENSOR_POWER',
+        'AUX_POWER_OUTLET_CURRENT.OUTLET_1': 'POWER_CURRENT.POWER_CURRENT_1',
+        'AUX_POWER_OUTLET_CURRENT.OUTLET_2': 'POWER_CURRENT.POWER_CURRENT_2',
+        'AUX_POWER_OUTLET_CURRENT.OUTLET_3': 'POWER_CURRENT.POWER_CURRENT_3',
+        'AUX_POWER_OUTLET_CURRENT.OUTLET_4': 'POWER_CURRENT.POWER_CURRENT_4',
+        'AUX_HEATER_OUTLET_CURRENT.OUTLET_1': 'DEW_CURRENT.DEW_CURRENT_A',
+        'AUX_HEATER_OUTLET_CURRENT.OUTLET_2': 'DEW_CURRENT.DEW_CURRENT_B',
+        'AUX_HEATER_OUTLET_CURRENT.OUTLET_3': 'DEW_CURRENT.DEW_CURRENT_C',
+        'AUX_HEATER_OUTLET.OUTLET_1': 'DEW_PWM.DEW_A',
+        'AUX_HEATER_OUTLET.OUTLET_2': 'DEW_PWM.DEW_B',
+        'AUX_HEATER_OUTLET.OUTLET_3': 'DEW_PWM.DEW_C',
+
+        # 'AUX_HEATER_OUTLET.OUTLET_3': 'ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE',
+
+        # switches
+        # UPB device
+        'AUX_POWER_OUTLET.OUTLET_1': 'POWER_CONTROL.POWER_CONTROL_1',
+        'AUX_POWER_OUTLET.OUTLET_2': 'POWER_CONTROL.POWER_CONTROL_2',
+        'AUX_POWER_OUTLET.OUTLET_3': 'POWER_CONTROL.POWER_CONTROL_3',
+        'AUX_POWER_OUTLET.OUTLET_4': 'POWER_CONTROL.POWER_CONTROL_4',
+        'AUX_USB_PORT.PORT_1': 'POWER_ON_BOOT.POWER_PORT_1',
+        'AUX_USB_PORT.PORT_2': 'POWER_ON_BOOT.POWER_PORT_2',
+        'AUX_USB_PORT.PORT_3': 'POWER_ON_BOOT.POWER_PORT_3',
+        'AUX_USB_PORT.PORT_4': 'POWER_ON_BOOT.POWER_PORT_4',
+        'AUX_USB_PORT.PORT_5': 'POWER_ON_BOOT.POWER_PORT_5',
+        'AUX_USB_PORT.PORT_6': 'POWER_ON_BOOT.POWER_PORT_6',
+
+        'AUX_DEW_CONTROL.MANUAL': 'AUTO_DEW.AUTO_DEW_DISABLED',
+        'AUX_DEW_CONTROL.AUTOMATIC': 'AUTO_DEW.AUTO_DEW_ENABLED',
+
+        # text
+        # UPB device
+        'X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_1': 'POWER_CONTROL_LABEL.POWER_LABEL_1',
+        'X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_2': 'POWER_CONTROL_LABEL.POWER_LABEL_2',
+        'X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_3': 'POWER_CONTROL_LABEL.POWER_LABEL_3',
+        'X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_4': 'POWER_CONTROL_LABEL.POWER_LABEL_4',
+
+    }
+
     def __init__(self, app=None, data=None, threadPool=None):
         super().__init__()
 
@@ -275,9 +325,11 @@ class IndiClass(object):
 
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
-            self.data[key] = value
 
-            print(self.name, key, value)
+            # print(self.name, key, value)
+            key = self.INDIGO.get(key)
+
+            self.data[key] = value
 
         return True
 
@@ -298,9 +350,11 @@ class IndiClass(object):
 
         for element, value in self.device.getSwitch(propertyName).items():
             key = propertyName + '.' + element
-            self.data[key] = value
 
             # print(self.name, key, value)
+            key = self.INDIGO.get(key)
+
+            self.data[key] = value
 
         return True
 
@@ -321,9 +375,11 @@ class IndiClass(object):
 
         for element, value in self.device.getText(propertyName).items():
             key = propertyName + '.' + element
-            self.data[key] = value
 
             # print(self.name, key, value)
+            key = self.INDIGO.get(key)
+
+            self.data[key] = value
 
         return True
 
@@ -343,9 +399,11 @@ class IndiClass(object):
 
         for element, value in self.device.getLight(propertyName).items():
             key = propertyName + '.' + element
-            self.data[key] = value
 
             # print(self.name, key, value)
+            key = self.INDIGO.get(key)
+
+            self.data[key] = value
 
         return True
 

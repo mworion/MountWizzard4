@@ -51,13 +51,11 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         'observingconditions': (1 << 7),
         'skymeter': (1 << 15) | (1 << 19),
         'cover': (1 << 9) | (1 << 10),
-        'power': (1 << 7) | (1 << 3)
+        'power': (1 << 15) | (1 << 18)
     }
 
     indiDefaults = {
         'telescope': 'LX200 10micron',
-        # 'skymeter': 'SQM',
-        # 'power': 'Pegasus UPB',
     }
 
     def __init__(self,
@@ -317,8 +315,6 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
         if interface == 0:
             interface = 0xffffffff
-
-        print(deviceName, interface, self._indiSearchType, interface & self._indiSearchType)
 
         if self._indiSearchType is None:
             return False

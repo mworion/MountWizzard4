@@ -49,7 +49,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         'filterwheel': (1 << 4),
         'dome': (1 << 5),
         'observingconditions': (1 << 7),
-        'skymeter': 557056 | (1 << 7),
+        'skymeter': (1 << 15) | (1 << 19),
         'cover': (1 << 9) | (1 << 10),
         'power': (1 << 7) | (1 << 3)
     }
@@ -111,7 +111,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         # populate data
         deviceData = self.data.get(self.driver, {})
         selectedFramework = deviceData.get('framework', '')
-        self._indiSearchType = self.indiTypes.get(self.deviceType, 0xff)
+        self._indiSearchType = self.indiTypes.get(self.deviceType, 0xffff)
 
         self.setWindowTitle(f'Setup for: {self.driver}')
 
@@ -299,13 +299,6 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         checks, if the device type fits to the search type desired. if they match, the
         device name is added to the list.
 
-        to add support for indigo server devices, which don't have interface type set, I
-        define interface:
-
-            interface = (1 << 7)
-
-        as their number. If this is selected, the list of indigo device will be shown.
-
         :param deviceName:
         :param propertyName:
         :return: success
@@ -318,12 +311,17 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         interface = device.getText(propertyName).get('DRIVER_INTERFACE', None)
 
         if interface is None:
-            interface = (1 << 7)
-
-        if self._indiSearchType is None:
             return False
 
         interface = int(interface)
+
+        if interface == 0:
+            interface = 0xffffffff
+
+        print(deviceName, interface, self._indiSearchType, interface & self._indiSearchType)
+
+        if self._indiSearchType is None:
+            return False
 
         if interface & self._indiSearchType:
             self._indiSearchNameList.append(deviceName)

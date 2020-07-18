@@ -96,7 +96,7 @@ class SettDevice(object):
                 'uiDropDown': self.ui.skymeterDevice,
                 'uiSetup': self.ui.skymeterSetup,
                 'class': self.app.skymeter,
-                'deviceType': 'observingconditions',
+                'deviceType': 'skymeter',
             },
             'telescope': {
                 'uiDropDown': self.ui.telescopeDevice,
@@ -108,7 +108,7 @@ class SettDevice(object):
                 'uiDropDown': self.ui.powerDevice,
                 'uiSetup': self.ui.powerSetup,
                 'class': self.app.power,
-                'deviceType': None,
+                'deviceType': 'power',
             },
             'relay': {
                 'uiDropDown': self.ui.relayDevice,

@@ -391,7 +391,7 @@ class IndiClass(object):
         for element, value in self.device.getText(propertyName).items():
             key = propertyName + '.' + element
 
-            print(self.name, key, value)
+            # print(self.name, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = value

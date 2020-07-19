@@ -305,7 +305,9 @@ class PegasusUPBIndi(IndiClass):
             return False
 
         if self.isINDIGO:
-            return False
+            propertyName = 'X_AUX_VARIABLE_POWER_OUTLET'
+            output = self.device.getNumber(propertyName)
+            portName = 'OUTLET_1'
         else:
             propertyName = 'ADJUSTABLE_VOLTAGE'
             output = self.device.getNumber(propertyName)

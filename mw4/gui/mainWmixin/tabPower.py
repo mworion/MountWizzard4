@@ -136,6 +136,7 @@ class Power(object):
             self.ui.groupAutoDew2.setVisible(False)
             self.ui.groupDewC.setVisible(False)
             self.ui.groupPortUSB.setVisible(False)
+            self.ui.groupHubUSB.setVisible(True)
             self.ui.groupAdjustableOutput.setVisible(False)
 
         elif version == 2:
@@ -143,6 +144,7 @@ class Power(object):
             self.ui.groupAutoDew2.setVisible(True)
             self.ui.groupDewC.setVisible(True)
             self.ui.groupPortUSB.setVisible(True)
+            self.ui.groupHubUSB.setVisible(False)
             self.ui.groupAdjustableOutput.setVisible(True)
 
     def updatePowerGui(self):
@@ -201,7 +203,7 @@ class Power(object):
         value = self.app.power.data.get('DEW_CURRENT.DEW_CURRENT_C', 0)
         self.ui.dewCurrentC.setText('{0:4.2f}'.format(value))
 
-        if self.app.power.data.get('VERSION.UPB', 1) == 1:
+        if self.app.power.data.get('DRIVER_INFO.DEVICE_MODEL', 'UPB') == 'UPB':
             value = self.app.power.data.get('AUTO_DEW.INDI_ENABLED', False)
             self.changeStyleDynamic(self.ui.autoDew, 'running', value)
         else:
@@ -332,7 +334,7 @@ class Power(object):
         :return: true fot test purpose
         """
 
-        actValue = valueToInt(self.ui.adjustableOutput.text())
+        actValue = float(self.ui.adjustableOutput.text())
 
         if actValue is None:
             return False
@@ -340,10 +342,10 @@ class Power(object):
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getDouble(self,
                                   'Set Voltage Output',
-                                  'Value (0-15):',
+                                  'Value (3-12):',
                                   actValue,
-                                  0,
-                                  15,
+                                  3,
+                                  12,
                                   1,
                                   PyQt5.QtCore.Qt.WindowFlags(),
                                   0.1,

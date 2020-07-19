@@ -44,7 +44,7 @@ class PegasusUPBIndi(IndiClass):
 
         self.signals = signals
         self.data = data
-        self.data['VERSION.UPB'] = 0
+        self.modelVersion = 0
 
     def setUpdateConfig(self, deviceName):
         """
@@ -79,9 +79,9 @@ class PegasusUPBIndi(IndiClass):
 
         return suc
 
-    def updateNumber(self, deviceName, propertyName):
+    def updateText(self, deviceName, propertyName):
         """
-        updateNumber is called whenever a new number is received in client. it runs
+        updateText is called whenever a new text is received in client. it runs
         through the device list and writes the number data to the according locations.
 
         :param deviceName:
@@ -89,35 +89,16 @@ class PegasusUPBIndi(IndiClass):
         :return:
         """
 
-        if not super().updateNumber(deviceName, propertyName):
+        if not super().updateText(deviceName, propertyName):
             return False
 
-        # only version 2 has 3 dew heaters
-        if 'AUTO_DEW.DEW_C' in self.data:
-            if self.data.get('VERSION.UPB', 1) != 2:
-                self.data['VERSION.UPB'] = 2
-                self.signals.version.emit(2)
-
-        return True
-
-    def updateSwitch(self, deviceName, propertyName):
-        """
-        updateSwitch is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        if not super().updateSwitch(deviceName, propertyName):
-            return False
-
-        # this combination only exists in version 1
-        if 'AUTO_DEW.INDI_ENABLED' in self.data:
-            if self.data.get('VERSION.UPB', 2) != 1:
-                self.data['VERSION.UPB'] = 1
-                self.signals.version.emit(1)
+        if 'DRIVER_INFO.DEVICE_MODEL' in self.data:
+            if self.data.get('DRIVER_INFO.DEVICE_MODEL', 'UPB') == 'UPB':
+                if self.modelVersion != 1:
+                    self.signals.version.emit(1)
+            else:
+                if self.modelVersion != 2:
+                    self.signals.version.emit(2)
 
         return True
 

@@ -373,7 +373,7 @@ class IndiClass(object):
             if propertyName == 'PROFILE':
                 self.isINDIGO = True
 
-            # print(self.name, key, value)
+            print(self.name, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = value

@@ -154,6 +154,7 @@ def test_mw(c):
     runMW(c, 'pytest mw4/test/unit_tests/gui/extWindows --cov-append --cov=mw4/')
     runMW(c, 'pytest mw4/test/unit_tests/gui/mainWindow --cov-append --cov=mw4/')
     runMW(c, 'pytest mw4/test/unit_tests/gui/mainWmixin --cov-append --cov=mw4/')
+    runMW(c, 'pytest mw4/test/unit_tests/gui/simulator --cov-append --cov=mw4/')
     runMW(c, 'pytest mw4/test/unit_tests/gui/utilities --cov-append --cov=mw4/')
     runMW(c, 'pytest mw4/test/unit_tests/imaging --cov-append --cov=mw4/')
     runMW(c, 'pytest mw4/test/unit_tests/measure --cov-append --cov=mw4/')
@@ -182,7 +183,7 @@ def build_ib(c):
         runMW(c, 'cp dist/indibase*.tar.gz ../MountWizzard4/dist/indibase.tar.gz')
 
 
-@task(pre=[build_resource, build_widgets, build_mc, build_ib, image_res, version_doc])
+@task(pre=[build_resource, build_widgets, build_mc, build_ib, version_doc])
 def build_mw(c):
     printMW('building dist mountwizzard4')
     with c.cd('.'):

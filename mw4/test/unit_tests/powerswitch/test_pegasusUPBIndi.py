@@ -265,8 +265,8 @@ def test_toggleAutoDew_3():
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',
-                           return_value={'AUTO_DEW_ENABLED': True,
-                                         'AUTO_DEW_DISABLED': True}):
+                           return_value={'INDI_ENABLED': True,
+                                         'INDI_DISABLED': True}):
         suc = app.toggleAutoDew()
         assert not suc
 
@@ -275,8 +275,8 @@ def test_toggleAutoDew_4():
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',
-                           return_value={'AUTO_DEW_ENABLED': True,
-                                         'AUTO_DEW_DISABLED': True}):
+                           return_value={'INDI_ENABLED': True,
+                                         'INDI_DISABLED': True}):
         suc = app.toggleAutoDew()
         assert not suc
 
@@ -296,7 +296,7 @@ def test_toggleAutoDewPort_3():
     with mock.patch.object(app.device,
                            'getSwitch',
                            return_value={'DEW_1': True}):
-        suc = app.toggleAutoDewPort(port=0)
+        suc = app.toggleAutoDewPort(port='A')
         assert not suc
 
 
@@ -305,7 +305,7 @@ def test_toggleAutoDewPort_4():
     with mock.patch.object(app.device,
                            'getSwitch',
                            return_value={'DEW_1': True}):
-        suc = app.toggleAutoDewPort(port=1)
+        suc = app.toggleAutoDewPort(port='B')
         assert not suc
 
 

@@ -299,6 +299,8 @@ class PegasusUPBIndi(IndiClass):
             propertyName = 'AUTO_DEW'
             autoDew = self.device.getSwitch(propertyName)
             portName = f'DEW_{port}'
+            if portName not in autoDew:
+                return False
             autoDew[portName] = not autoDew[portName]
 
         suc = self.client.sendNewSwitch(deviceName=self.name,

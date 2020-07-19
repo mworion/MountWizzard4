@@ -33,6 +33,8 @@ Documentation
 
 The online documentation for MW4: https://mountwizzard4.readthedocs.io.
 
+In PDF format: https://mountwizzard4.readthedocs.io/_/downloads/en/latest/pdf/
+
 Installing: https://mountwizzard4.readthedocs.io/en/latest/install/index.html
 
 Changelog: https://mountwizzard4.readthedocs.io/en/latest/changelog.html

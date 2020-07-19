@@ -114,7 +114,7 @@ class PegasusUPBIndi(IndiClass):
             return False
 
         # this combination only exists in version 1
-        if 'AUTO_DEW.AUTO_DEW_ENABLED' in self.data:
+        if 'AUTO_DEW.INDI_ENABLED' in self.data:
             if self.data.get('VERSION.UPB', 2) != 1:
                 self.data['VERSION.UPB'] = 1
                 self.signals.version.emit(1)
@@ -135,14 +135,22 @@ class PegasusUPBIndi(IndiClass):
         if self.device is None:
             return False
 
-        power = self.device.getSwitch('POWER_CONTROL')
-        portName = f'POWER_CONTROL_{port}'
+        if self.isINDIGO:
+            propertyName = 'AUX_POWER_OUTLET'
+            power = self.device.getSwitch(propertyName)
+            portName = f'OUTLET_{port}'
+        else:
+            propertyName = 'POWER_CONTROL'
+            power = self.device.getSwitch(propertyName)
+            portName = f'POWER_CONTROL_{port}'
+
         if portName not in power:
             return False
 
         power[portName] = not power[portName]
+
         suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='POWER_CONTROL',
+                                        propertyName=propertyName,
                                         elements=power,
                                         )
         return suc
@@ -161,14 +169,20 @@ class PegasusUPBIndi(IndiClass):
         if self.device is None:
             return False
 
-        power = self.device.getSwitch('POWER_ON_BOOT')
-        portName = f'POWER_PORT_{port}'
+        if self.isINDIGO:
+            return False
+        else:
+            propertyName = 'POWER_ON_BOOT'
+            power = self.device.getSwitch(propertyName)
+            portName = f'POWER_PORT_{port}'
+
         if portName not in power:
             return False
 
         power[portName] = not power[portName]
+
         suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='POWER_ON_BOOT',
+                                        propertyName=propertyName,
                                         elements=power,
                                         )
         return suc
@@ -183,16 +197,20 @@ class PegasusUPBIndi(IndiClass):
         if self.device is None:
             return False
 
-        usb = self.device.getSwitch('USB_HUB_CONTROL')
-        if 'ENABLED' not in usb:
+        if self.isINDIGO:
             return False
-        if 'DISABLED' not in usb:
-            return False
+        else:
+            propertyName = 'USB_HUB_CONTROL'
+            usb = self.device.getSwitch(propertyName)
+            if 'INDI_ENABLED' not in usb:
+                return False
+            if 'INDI_DISABLED' not in usb:
+                return False
+            usb['INDI_ENABLED'] = not usb['INDI_ENABLED']
+            usb['INDI_DISABLED'] = not usb['INDI_DISABLED']
 
-        usb['ENABLED'] = not usb['ENABLED']
-        usb['DISABLED'] = not usb['DISABLED']
         suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='USB_HUB_CONTROL',
+                                        propertyName=propertyName,
                                         elements=usb,
                                         )
         return suc
@@ -211,15 +229,22 @@ class PegasusUPBIndi(IndiClass):
         if self.device is None:
             return False
 
-        usb = self.device.getSwitch('USB_PORT_CONTROL')
+        if self.isINDIGO:
+            propertyName = 'AUX_USB_PORT'
+            usb = self.device.getSwitch(propertyName)
+            portName = f'PORT_{port}'
+        else:
+            propertyName = 'USB_PORT_CONTROL'
+            usb = self.device.getSwitch(propertyName)
+            portName = f'PORT_{port}'
 
-        portName = f'PORT_{port}'
         if portName not in usb:
             return False
 
         usb[portName] = not usb[portName]
+
         suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='USB_PORT_CONTROL',
+                                        propertyName=propertyName,
                                         elements=usb,
                                         )
         return suc
@@ -234,11 +259,19 @@ class PegasusUPBIndi(IndiClass):
         if self.device is None:
             return False
 
-        autoDew = self.device.getSwitch('AUTO_DEW')
-        autoDew['AUTO_DEW_ENABLED'] = not autoDew['AUTO_DEW_ENABLED']
-        autoDew['AUTO_DEW_DISABLED'] = not autoDew['AUTO_DEW_DISABLED']
+        if self.isINDIGO:
+            propertyName = 'AUX_DEW_CONTROL'
+            autoDew = self.device.getSwitch(propertyName)
+            autoDew['MANUAL'] = not autoDew['MANUAL']
+            autoDew['AUTOMATIC'] = not autoDew['AUTOMATIC']
+        else:
+            propertyName = 'AUTO_DEW'
+            autoDew = self.device.getSwitch(propertyName)
+            autoDew['INDI_ENABLED'] = not autoDew['INDI_ENABLED']
+            autoDew['INDI_DISABLED'] = not autoDew['INDI_DISABLED']
+
         suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='AUTO_DEW',
+                                        propertyName=propertyName,
                                         elements=autoDew,
                                         )
         return suc
@@ -257,15 +290,19 @@ class PegasusUPBIndi(IndiClass):
         if self.device is None:
             return False
 
-        autoDew = self.device.getSwitch('AUTO_DEW')
-        portName = f'DEW_{port}'
+        if self.isINDIGO:
+            propertyName = 'AUX_DEW_CONTROL'
+            autoDew = self.device.getSwitch(propertyName)
+            autoDew['MANUAL'] = not autoDew['MANUAL']
+            autoDew['AUTOMATIC'] = not autoDew['AUTOMATIC']
+        else:
+            propertyName = 'AUTO_DEW'
+            autoDew = self.device.getSwitch(propertyName)
+            portName = f'DEW_{port}'
+            autoDew[portName] = not autoDew[portName]
 
-        if portName not in autoDew:
-            return False
-
-        autoDew[portName] = not autoDew[portName]
         suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='AUTO_DEW',
+                                        propertyName=propertyName,
                                         elements=autoDew,
                                         )
         return suc
@@ -281,10 +318,23 @@ class PegasusUPBIndi(IndiClass):
         if self.device is None:
             return False
 
-        dew = self.device.getNumber('DEW_PWM')
-        dew[f'DEW_{port}'] = value
+        if self.isINDIGO:
+            conv = {'A': '1', 'B': '2', 'C': '3'}
+            propertyName = 'AUX_HEATER_OUTLET'
+            dew = self.device.getNumber(propertyName)
+            portName = f'OUTLET_{conv[port]}'
+        else:
+            propertyName = 'DEW_PWM'
+            dew = self.device.getNumber(propertyName)
+            portName = f'DEW_{port}'
+
+        if portName not in dew:
+            return False
+
+        dew[portName] = value
+
         suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='DEW_PWM',
+                                        propertyName=propertyName,
                                         elements=dew,
                                         )
         return suc
@@ -299,10 +349,17 @@ class PegasusUPBIndi(IndiClass):
         if self.device is None:
             return False
 
-        output = self.device.getNumber('ADJUSTABLE_VOLTAGE')
-        output['ADJUSTABLE_VOLTAGE_VALUE'] = value
+        if self.isINDIGO:
+            return False
+        else:
+            propertyName = 'ADJUSTABLE_VOLTAGE'
+            output = self.device.getNumber(propertyName)
+            portName = 'ADJUSTABLE_VOLTAGE_VALUE'
+
+        output[portName] = value
+
         suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='ADJUSTABLE_VOLTAGE',
+                                        propertyName=propertyName,
                                         elements=output,
                                         )
         return suc

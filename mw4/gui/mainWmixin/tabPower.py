@@ -202,7 +202,7 @@ class Power(object):
         self.ui.dewCurrentC.setText('{0:4.2f}'.format(value))
 
         if self.app.power.data.get('VERSION.UPB', 1) == 1:
-            value = self.app.power.data.get('AUTO_DEW.AUTO_DEW_ENABLED', False)
+            value = self.app.power.data.get('AUTO_DEW.INDI_ENABLED', False)
             self.changeStyleDynamic(self.ui.autoDew, 'running', value)
         else:
             value = self.app.power.data.get('AUTO_DEW.DEW_A', False)
@@ -219,7 +219,7 @@ class Power(object):
                 value = self.app.power.data.get(f'USB_PORT_CONTROL.PORT_{name}', False)
                 self.changeStyleDynamic(button, 'running', value)
 
-        value = self.app.power.data.get('USB_HUB_CONTROL.ENABLED', False)
+        value = self.app.power.data.get('USB_HUB_CONTROL.INDI_ENABLED', False)
         self.changeStyleDynamic(self.ui.hubUSB, 'running', value)
 
         return True

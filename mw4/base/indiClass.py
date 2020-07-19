@@ -73,15 +73,17 @@ class IndiClass(object):
         'AUX_POWER_OUTLET.OUTLET_2': 'POWER_CONTROL.POWER_CONTROL_2',
         'AUX_POWER_OUTLET.OUTLET_3': 'POWER_CONTROL.POWER_CONTROL_3',
         'AUX_POWER_OUTLET.OUTLET_4': 'POWER_CONTROL.POWER_CONTROL_4',
-        'AUX_USB_PORT.PORT_1': 'POWER_ON_BOOT.POWER_PORT_1',
-        'AUX_USB_PORT.PORT_2': 'POWER_ON_BOOT.POWER_PORT_2',
-        'AUX_USB_PORT.PORT_3': 'POWER_ON_BOOT.POWER_PORT_3',
-        'AUX_USB_PORT.PORT_4': 'POWER_ON_BOOT.POWER_PORT_4',
-        'AUX_USB_PORT.PORT_5': 'POWER_ON_BOOT.POWER_PORT_5',
-        'AUX_USB_PORT.PORT_6': 'POWER_ON_BOOT.POWER_PORT_6',
+        'AUX_USB_PORT.PORT_1': 'USB_PORT_CONTROL.PORT_1',
+        'AUX_USB_PORT.PORT_2': 'USB_PORT_CONTROL.PORT_2',
+        'AUX_USB_PORT.PORT_3': 'USB_PORT_CONTROL.PORT_3',
+        'AUX_USB_PORT.PORT_4': 'USB_PORT_CONTROL.PORT_4',
+        'AUX_USB_PORT.PORT_5': 'USB_PORT_CONTROL.PORT_5',
+        'AUX_USB_PORT.PORT_6': 'USB_PORT_CONTROL.PORT_6',
 
-        'AUX_DEW_CONTROL.MANUAL': 'AUTO_DEW.AUTO_DEW_DISABLED',
-        'AUX_DEW_CONTROL.AUTOMATIC': 'AUTO_DEW.AUTO_DEW_ENABLED',
+        'AUX_DEW_CONTROL.MANUAL': 'AUTO_DEW.INDI_DISABLED',
+        'AUX_DEW_CONTROL.AUTOMATIC': 'AUTO_DEW.INDI_ENABLED',
+
+        'X_AUX_REBOOT.REBOOT': '',
 
         # text
         # UPB device
@@ -103,6 +105,7 @@ class IndiClass(object):
         self._host = ('localhost', 7624)
         self.data = data
         self.loadIndiConfig = False
+        self.isINDIGO = False
 
         self.retryCounter = 0
         self.device = None
@@ -365,6 +368,10 @@ class IndiClass(object):
 
         for element, value in self.device.getSwitch(propertyName).items():
             key = propertyName + '.' + element
+
+            # is that the item which tells me it's an indigo server ?
+            if propertyName == 'PROFILE':
+                self.isINDIGO = True
 
             # print(self.name, key, value)
             key = self.convertIndigoProperty(key)

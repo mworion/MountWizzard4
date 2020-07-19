@@ -341,7 +341,7 @@ class IndiClass(object):
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
 
-            # print(self.name, key, value)
+            # print('number', self.name, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = value
@@ -370,7 +370,7 @@ class IndiClass(object):
             if propertyName == 'PROFILE':
                 self.isINDIGO = True
 
-            # print(self.name, key, value)
+            print('switch', self.name, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = value
@@ -395,7 +395,7 @@ class IndiClass(object):
         for element, value in self.device.getText(propertyName).items():
             key = propertyName + '.' + element
 
-            # print(self.name, key, value)
+            # print('text  ', self.name, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = value
@@ -419,7 +419,7 @@ class IndiClass(object):
         for element, value in self.device.getLight(propertyName).items():
             key = propertyName + '.' + element
 
-            # print(self.name, key, value)
+            # print('light ', self.name, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = value

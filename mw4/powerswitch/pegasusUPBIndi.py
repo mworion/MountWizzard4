@@ -92,14 +92,27 @@ class PegasusUPBIndi(IndiClass):
         if not super().updateText(deviceName, propertyName):
             return False
 
+        if propertyName != 'DRIVER_INFO' and propertyName != 'FIRMWARE_INFO':
+            return True
+
         if 'DRIVER_INFO.DEVICE_MODEL' in self.data:
             if self.data.get('DRIVER_INFO.DEVICE_MODEL', 'UPB') == 'UPB':
                 if self.modelVersion != 1:
                     self.signals.version.emit(1)
+                    self.modelVersion = 1
             else:
                 if self.modelVersion != 2:
                     self.signals.version.emit(2)
-
+                    self.modelVersion = 2
+        if 'FIRMWARE_INFO.VERSION' in self.data:
+            if self.data.get('FIRMWARE_INFO.VERSION', '1.4') < '1.5':
+                if self.modelVersion != 1:
+                    self.signals.version.emit(1)
+                    self.modelVersion = 1
+            else:
+                if self.modelVersion != 2:
+                    self.signals.version.emit(2)
+                    self.modelVersion = 2
         return True
 
     def togglePowerPort(self, port=None):
@@ -249,9 +262,13 @@ class PegasusUPBIndi(IndiClass):
             propertyName = 'AUTO_DEW'
             autoDew = self.device.getSwitch(propertyName)
             if self.modelVersion == 1:
+                if 'INDI_ENABLED' not in autoDew:
+                    return False
                 autoDew['INDI_ENABLED'] = not autoDew['INDI_ENABLED']
                 autoDew['INDI_DISABLED'] = not autoDew['INDI_DISABLED']
             else:
+                if 'DEW_A' not in autoDew:
+                    return False
                 autoDew['DEW_A'] = not autoDew['DEW_A']
                 autoDew['DEW_B'] = not autoDew['DEW_B']
                 autoDew['DEW_C'] = not autoDew['DEW_C']

@@ -64,6 +64,7 @@ class IndiClass(object):
         'AUX_HEATER_OUTLET.OUTLET_1': 'DEW_PWM.DEW_A',
         'AUX_HEATER_OUTLET.OUTLET_2': 'DEW_PWM.DEW_B',
         'AUX_HEATER_OUTLET.OUTLET_3': 'DEW_PWM.DEW_C',
+        'X_AUX_VARIABLE_POWER_OUTLET.OUTLET_1': 'ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE',
 
         # 'AUX_HEATER_OUTLET.OUTLET_3': 'ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE',
 
@@ -344,7 +345,7 @@ class IndiClass(object):
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
 
-            # print(self.name, key, value)
+            print(self.name, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = value
@@ -373,7 +374,7 @@ class IndiClass(object):
             if propertyName == 'PROFILE':
                 self.isINDIGO = True
 
-            print(self.name, key, value)
+            # print(self.name, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = value

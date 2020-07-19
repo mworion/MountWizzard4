@@ -248,41 +248,13 @@ class PegasusUPBIndi(IndiClass):
         else:
             propertyName = 'AUTO_DEW'
             autoDew = self.device.getSwitch(propertyName)
-            autoDew['INDI_ENABLED'] = not autoDew['INDI_ENABLED']
-            autoDew['INDI_DISABLED'] = not autoDew['INDI_DISABLED']
-
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName=propertyName,
-                                        elements=autoDew,
-                                        )
-        return suc
-
-    def toggleAutoDewPort(self, port=None):
-        """
-        toggleAutoDewPort
-
-        :param port:
-        :return: true for test purpose
-        """
-
-        if port is None:
-            return False
-
-        if self.device is None:
-            return False
-
-        if self.isINDIGO:
-            propertyName = 'AUX_DEW_CONTROL'
-            autoDew = self.device.getSwitch(propertyName)
-            autoDew['MANUAL'] = not autoDew['MANUAL']
-            autoDew['AUTOMATIC'] = not autoDew['AUTOMATIC']
-        else:
-            propertyName = 'AUTO_DEW'
-            autoDew = self.device.getSwitch(propertyName)
-            portName = f'DEW_{port}'
-            if portName not in autoDew:
-                return False
-            autoDew[portName] = not autoDew[portName]
+            if self.modelVersion == 1:
+                autoDew['INDI_ENABLED'] = not autoDew['INDI_ENABLED']
+                autoDew['INDI_DISABLED'] = not autoDew['INDI_DISABLED']
+            else:
+                autoDew['DEW_A'] = not autoDew['DEW_A']
+                autoDew['DEW_B'] = not autoDew['DEW_B']
+                autoDew['DEW_C'] = not autoDew['DEW_C']
 
         suc = self.client.sendNewSwitch(deviceName=self.name,
                                         propertyName=propertyName,

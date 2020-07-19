@@ -11810,7 +11810,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>130</y>
+       <y>190</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -11948,7 +11948,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>190</y>
+       <y>250</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -12082,75 +12082,11 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupAutoDew2">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>310</y>
-       <width>366</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Automatic dew</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QPushButton" name="autoDewA">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Toggles the auto dew setting.</string>
-      </property>
-      <property name="text">
-       <string>Auto Dew A</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="autoDewB">
-      <property name="geometry">
-       <rect>
-        <x>135</x>
-        <y>20</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Toggles the auto dew setting.</string>
-      </property>
-      <property name="text">
-       <string>Auto Dew B</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="autoDewC">
-      <property name="geometry">
-       <rect>
-        <x>255</x>
-        <y>20</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Toggles the auto dew setting.</string>
-      </property>
-      <property name="text">
-       <string>Auto Dew C</string>
-      </property>
-     </widget>
-    </widget>
     <widget class="QGroupBox" name="groupDewC">
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>250</y>
+       <y>310</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -12284,11 +12220,11 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupAutoDew1">
+    <widget class="QGroupBox" name="groupAutoDew">
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>250</y>
+       <y>130</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -23666,9 +23602,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>relayButton6</tabstop>
   <tabstop>relayButton7</tabstop>
   <tabstop>autoDew</tabstop>
-  <tabstop>autoDewA</tabstop>
-  <tabstop>autoDewB</tabstop>
-  <tabstop>autoDewC</tabstop>
   <tabstop>powerPort1</tabstop>
   <tabstop>powerBootPort1</tabstop>
   <tabstop>powerPort2</tabstop>

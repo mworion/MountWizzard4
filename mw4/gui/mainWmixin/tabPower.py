@@ -52,10 +52,6 @@ class Power(object):
                     'B': self.ui.dewB,
                     'C': self.ui.dewC,
                     }
-        self.autoDew = {'A': self.ui.autoDewA,
-                        'B': self.ui.autoDewB,
-                        'C': self.ui.autoDewC,
-                        }
         self.current = {'1': self.ui.powerCurrent1,
                         '2': self.ui.powerCurrent2,
                         '3': self.ui.powerCurrent3,
@@ -84,8 +80,6 @@ class Power(object):
             self.clickable(button).connect(self.setDew)
         for name, button in self.powerOnOFF.items():
             button.clicked.connect(self.togglePowerPort)
-        for name, button in self.autoDew.items():
-            button.clicked.connect(self.toggleAutoDewPort)
         for name, button in self.powerBoot.items():
             button.clicked.connect(self.togglePowerBootPort)
         for name, button in self.portUSB.items():
@@ -132,16 +126,12 @@ class Power(object):
         """
 
         if version == 1:
-            self.ui.groupAutoDew1.setVisible(True)
-            self.ui.groupAutoDew2.setVisible(False)
             self.ui.groupDewC.setVisible(False)
             self.ui.groupPortUSB.setVisible(False)
             self.ui.groupHubUSB.setVisible(True)
             self.ui.groupAdjustableOutput.setVisible(False)
 
         elif version == 2:
-            self.ui.groupAutoDew1.setVisible(False)
-            self.ui.groupAutoDew2.setVisible(True)
             self.ui.groupDewC.setVisible(True)
             self.ui.groupPortUSB.setVisible(True)
             self.ui.groupHubUSB.setVisible(False)
@@ -203,19 +193,16 @@ class Power(object):
         value = self.app.power.data.get('DEW_CURRENT.DEW_CURRENT_C', 0)
         self.ui.dewCurrentC.setText('{0:4.2f}'.format(value))
 
-        if self.app.power.data.get('DRIVER_INFO.DEVICE_MODEL', 'UPB') == 'UPB':
-            value = self.app.power.data.get('AUTO_DEW.INDI_ENABLED', False)
-            self.changeStyleDynamic(self.ui.autoDew, 'running', value)
-        else:
-            value = self.app.power.data.get('AUTO_DEW.DEW_A', False)
-            self.changeStyleDynamic(self.ui.autoDewA, 'running', value)
-            value = self.app.power.data.get('AUTO_DEW.DEW_B', False)
-            self.changeStyleDynamic(self.ui.autoDewB, 'running', value)
-            value = self.app.power.data.get('AUTO_DEW.DEW_C', False)
-            self.changeStyleDynamic(self.ui.autoDewC, 'running', value)
+        value1 = self.app.power.data.get('AUTO_DEW.INDI_ENABLED', False)
+        value2 = self.app.power.data.get('AUTO_DEW.DEW_A', False)
+        value3 = self.app.power.data.get('AUTO_DEW.DEW_B', False)
+        value4 = self.app.power.data.get('AUTO_DEW.DEW_C', False)
+        value = value1 or value2 or value3 or value4
+        self.changeStyleDynamic(self.ui.autoDew, 'running', value)
 
+        if self.app.power.data.get('DRIVER_INFO.DEVICE_MODEL', 'UPB') == 'UPBv2':
             value = self.app.power.data.get('ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE', 0)
-            self.ui.adjustableOutput.setText(f'{value:4.2f}')
+            self.ui.adjustableOutput.setText(f'{value:4.1f}')
 
             for name, button in self.portUSB.items():
                 value = self.app.power.data.get(f'USB_PORT_CONTROL.PORT_{name}', False)
@@ -314,18 +301,6 @@ class Power(object):
 
         suc = self.app.power.toggleAutoDew()
         return suc
-
-    def toggleAutoDewPort(self):
-        """
-        toggleAutoDewPort  toggles the state of the power switch
-        :return: success
-        """
-
-        for name, button in self.autoDew.items():
-            if button != self.sender():
-                continue
-            suc = self.app.power.toggleAutoDewPort(port=name)
-            return suc
 
     def setAdjustableOutput(self):
         """

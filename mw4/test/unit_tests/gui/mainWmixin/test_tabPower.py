@@ -101,7 +101,7 @@ def test_setDew_2(qtbot):
     class Sender:
         @staticmethod
         def parent():
-            return ui.autoDewA
+            return ui.dewA
 
     with mock.patch.object(QInputDialog,
                            'getInt',
@@ -192,30 +192,6 @@ def test_togglePortUSB_2(qtbot):
 
 def test_toggleAutoDew_1(qtbot):
     app.toggleAutoDew()
-
-
-def test_toggleAutoDewPort_1(qtbot):
-    def Sender():
-        return ui.autoDewA
-
-    app.sender = Sender
-    app.toggleAutoDewPort()
-
-
-def test_toggleAutoDewPort_2(qtbot):
-    def Sender():
-        return ui.dewA
-
-    app.sender = Sender
-    app.toggleAutoDewPort()
-
-
-def test_setAdjustableOutput_1(qtbot):
-    app.ui.adjustableOutput.setText('ad')
-    with mock.patch.object(QInputDialog,
-                           'getDouble',
-                           return_value=(0, False)):
-        app.setAdjustableOutput()
 
 
 def test_setAdjustableOutput_2(qtbot):

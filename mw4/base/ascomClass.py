@@ -268,7 +268,10 @@ class AscomClass(object):
 
         self.stopTimer()
         if self.client:
-            self.client.connected = False
+            try:
+                self.client.connected = False
+            except Exception as e:
+                self.log.info(f'Connection to {self.name} could not be closed')
         self.deviceConnected = False
         self.serverConnected = False
         self.client = None

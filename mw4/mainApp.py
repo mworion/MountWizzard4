@@ -130,7 +130,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         profile = self.config.get('profileName', '-')
         self.messageQueue.put(('MountWizzard4 started', 1))
         self.messageQueue.put((f'Workdir is: [{self.mwGlob["workDir"]}]', 1))
-        self.messageQueue.put((f'Profile [{profile}] loaded', 1))
+        self.messageQueue.put((f'Profile              [{profile}] loaded', 1))
 
         # initialize commands to mount
         pathToData = self.mwGlob['dataDir']

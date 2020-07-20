@@ -903,9 +903,9 @@ class MainWindow(MWidget,
         if suc:
             self.app.config['profileName'] = name
             self.ui.profile.setText(name)
-            self.app.message.emit('Profile: [{0}] loaded'.format(name), 0)
+            self.app.message.emit(f'Profile              [{name}] loaded', 0)
         else:
-            self.app.message.emit('Profile: [{0}] cannot no be loaded'.format(name), 2)
+            self.app.message.emit(f'Profile              [{name}] cannot no be loaded', 2)
 
         # configure mainApp
         topo = self.app.initConfig()
@@ -940,9 +940,9 @@ class MainWindow(MWidget,
         suc = self.app.saveConfig(name=name)
         if suc:
             self.ui.profile.setText(name)
-            self.app.message.emit('Profile: [{0}] saved'.format(name), 0)
+            self.app.message.emit(f'Profile              [{name}] saved', 0)
         else:
-            self.app.message.emit('Profile: [{0}] cannot no be saved'.format(name), 2)
+            self.app.message.emit(f'Profile              [{name}] cannot no be saved', 2)
         return True
 
     def saveProfile(self):

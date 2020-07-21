@@ -134,19 +134,7 @@ def test_toggleAutoDew_2():
     suc = app.toggleAutoDew()
     assert not suc
 
-
-def test_toggleAutoDewPort_1():
-    app.framework = ''
-    suc = app.toggleAutoDewPort()
-    assert not suc
-
-
-def test_toggleAutoDewPort_2():
-    app.framework = 'indi'
-    suc = app.toggleAutoDewPort()
-    assert not suc
-
-
+    
 def test_sendDew_1():
     app.framework = ''
     suc = app.sendDew()

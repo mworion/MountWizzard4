@@ -57,6 +57,8 @@ from mw4.measure.measure import MeasureData
 from mw4.telescope.telescope import Telescope
 from mw4.astrometry.astrometry import Astrometry
 
+from mw4.resource import resources
+
 
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
@@ -659,7 +661,7 @@ def test_loadProfile1(qtbot):
                         with qtbot.waitSignal(app.app.message) as blocker:
                             suc = app.loadProfile()
                             assert suc
-                        assert ['Profile: [test] loaded', 0] == blocker.args
+                        assert ['Profile              [test] loaded', 0] == blocker.args
 
 
 def test_loadProfile2(qtbot):
@@ -678,7 +680,7 @@ def test_loadProfile2(qtbot):
                         with qtbot.waitSignal(app.app.message) as blocker:
                             suc = app.loadProfile()
                             assert suc
-                        assert ['Profile: [test] cannot no be loaded', 2] == blocker.args
+                        assert ['Profile              [test] cannot no be loaded', 2] == blocker.args
 
 
 def test_loadProfile3(qtbot):
@@ -699,7 +701,7 @@ def test_saveProfileAs1(qtbot):
             with qtbot.waitSignal(app.app.message) as blocker:
                 suc = app.saveProfileAs()
                 assert suc
-            assert ['Profile: [test] saved', 0] == blocker.args
+            assert ['Profile              [test] saved', 0] == blocker.args
 
 
 def test_saveProfileAs2(qtbot):
@@ -712,7 +714,7 @@ def test_saveProfileAs2(qtbot):
             with qtbot.waitSignal(app.app.message) as blocker:
                 suc = app.saveProfileAs()
                 assert suc
-            assert ['Profile: [test] cannot no be saved', 2] == blocker.args
+            assert ['Profile              [test] cannot no be saved', 2] == blocker.args
 
 
 def test_saveProfileAs3(qtbot):

@@ -48,7 +48,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         'focuser': (1 << 3),
         'filterwheel': (1 << 4),
         'dome': (1 << 5),
-        'observingconditions': (1 << 7),
+        'observingconditions': (1 << 7) | (1 << 15),
         'skymeter': (1 << 15) | (1 << 19),
         'cover': (1 << 9) | (1 << 10),
         'power': (1 << 15) | (1 << 18)
@@ -318,6 +318,8 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
         if self._indiSearchType is None:
             return False
+
+        self.log.info(f'Search: [{deviceName}][{self._indiSearchType}][{interface}]')
 
         if interface & self._indiSearchType:
             self._indiSearchNameList.append(deviceName)

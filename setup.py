@@ -54,7 +54,7 @@ setup(
         'astropy==4.0.1',
         'photutils==0.7.2',
         'scipy==1.5.1',
-        'requests==2.24.0',
+        'requests==2.23.0',
         'requests_toolbelt==0.9.1',
         'skyfield==1.24',
         'qimage2ndarray==1.8.3',

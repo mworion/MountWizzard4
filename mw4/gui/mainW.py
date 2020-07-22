@@ -29,6 +29,7 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 from PyQt5.QtTest import QTest
+import psutil
 
 # local import
 from mw4.base.loggerMW import CustomLogger
@@ -696,7 +697,6 @@ class MainWindow(MWidget,
 
         :return: True for test purpose
         """
-        import psutil
 
         self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
         if self.ui.isOnline.isChecked():

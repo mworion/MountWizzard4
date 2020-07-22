@@ -52,13 +52,13 @@ def module_setup_teardown():
     yield
 
 
-def test_create_1():
+def test_create_1(qtbot):
     e = QEntity()
     suc = app.create(e, False)
     assert not suc
 
 
-def test_create_2():
+def test_create_2(qtbot):
     e = QEntity()
     app.modelRoot = e
     app.model = {'test': {'e': e}}
@@ -66,7 +66,7 @@ def test_create_2():
     assert not suc
 
 
-def test_create_3():
+def test_create_3(qtbot):
     e = QEntity()
     app.modelRoot = e
     app.model = {'test': {'e': e}}

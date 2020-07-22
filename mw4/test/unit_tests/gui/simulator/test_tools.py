@@ -41,7 +41,7 @@ def module_setup_teardown():
     yield
 
 
-def test_linkSource_1():
+def test_linkSource_1(qtbot):
     model = {'parent': None,
              'source': [QSphereMesh(), 50, 30, 30],
              }
@@ -50,7 +50,7 @@ def test_linkSource_1():
     assert isinstance(mesh, QSphereMesh)
 
 
-def test_linkTransform_1():
+def test_linkTransform_1(qtbot):
     model = {'parent': None,
              'scale': [1, 1, 1],
              }
@@ -59,7 +59,7 @@ def test_linkTransform_1():
     assert isinstance(trans, QTransform)
 
 
-def test_linkMaterial_1():
+def test_linkMaterial_1(qtbot):
     model = {'parent': None,
              'mat': Materials().pointer,
              }
@@ -68,7 +68,7 @@ def test_linkMaterial_1():
     assert isinstance(mat, QPhongMaterial)
 
 
-def test_linkModel_1():
+def test_linkModel_1(qtbot):
     e = QEntity()
     model = {
         'pointer':

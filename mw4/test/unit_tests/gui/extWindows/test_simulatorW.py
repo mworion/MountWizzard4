@@ -110,75 +110,75 @@ def test_closeEvent_1(qtbot):
     app.closeEvent(QCloseEvent())
 
 
-def test_buildPointsCreate_1():
+def test_buildPointsCreate_1(qtbot):
     suc = app.buildPointsCreate()
     assert suc
 
 
-def test_domeCreate_1():
+def test_domeCreate_1(qtbot):
     suc = app.domeCreate()
     assert suc
 
 
-def test_horizonCreate_1():
+def test_horizonCreate_1(qtbot):
     suc = app.horizonCreate()
     assert suc
 
 
-def test_pointerCreate_1():
+def test_pointerCreate_1(qtbot):
     suc = app.pointerCreate()
     assert suc
 
 
-def test_setDomeTransparency_1():
+def test_setDomeTransparency_1(qtbot):
     suc = app.setDomeTransparency()
     assert suc
 
 
-def test_setPL_1():
+def test_setPL_1(qtbot):
     suc = app.setPL()
     assert suc
 
 
-def test_topView_1():
+def test_topView_1(qtbot):
     suc = app.topView()
     assert suc
 
 
-def test_topEastView_1():
+def test_topEastView_1(qtbot):
     suc = app.topEastView()
     assert suc
 
 
-def test_topWestView_1():
+def test_topWestView_1(qtbot):
     suc = app.topWestView()
     assert suc
 
 
-def test_eastView_1():
+def test_eastView_1(qtbot):
     suc = app.eastView()
     assert suc
 
 
-def test_westView_1():
+def test_westView_1(qtbot):
     suc = app.westView()
     assert suc
 
 
-def test_updateSettings_1():
+def test_updateSettings_1(qtbot):
     app.world = None
     suc = app.updateSettings()
     assert not suc
 
 
-def test_updateSettings_2():
+def test_updateSettings_2(qtbot):
     app.world = {'test'}
     app.app.mainW = None
     suc = app.updateSettings()
     assert not suc
 
 
-def test_updateSettings_3():
+def test_updateSettings_3(qtbot):
     app.world = {
         'domeColumn': {'t': QTransform()},
         'domeCompassRose': {'t': QTransform()},

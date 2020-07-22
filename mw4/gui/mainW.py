@@ -707,8 +707,8 @@ class MainWindow(MWidget,
         self.ui.statusOnline.setTitle(text)
 
         for proc in psutil.process_iter():
-            pinfo = proc.as_dict(attrs=['pid', 'name'])
-            name = pinfo.get('name', '')
+            processInfo = proc.as_dict(attrs=['pid', 'name'])
+            name = processInfo.get('name', '')
             if not name:
                 continue
             if name.startswith('astap'):

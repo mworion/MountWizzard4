@@ -29,7 +29,6 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 from PyQt5.QtTest import QTest
-import psutil
 
 # local import
 from mw4.base.loggerMW import CustomLogger
@@ -705,17 +704,6 @@ class MainWindow(MWidget,
             text = 'Offline Mode'
         text = f'{self.threadPool.activeThreadCount():2d} - {text}'
         self.ui.statusOnline.setTitle(text)
-
-        for proc in psutil.process_iter():
-            processInfo = proc.as_dict(attrs=['pid', 'name'])
-            name = processInfo.get('name', '')
-            if not name:
-                continue
-            if name.startswith('astap'):
-                self.log.warning('ASTAP in background still running !')
-            else:
-                continue
-        return True
 
     def updateAstrometryStatus(self, text):
         """

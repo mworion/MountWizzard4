@@ -19,93 +19,13 @@
 
 # external packages
 from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QColor, QVector3D, QFont
+from PyQt5.QtGui import QColor
 from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial, QTextureMaterial
 from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
-from PyQt5.Qt3DExtras import QCuboidMesh, QSphereMesh
-from PyQt5.Qt3DExtras import QExtrudedTextMesh, QCylinderMesh
-from PyQt5.Qt3DRender import QTextureLoader, QMesh
-from PyQt5.Qt3DCore import QEntity, QTransform
+from PyQt5.Qt3DRender import QTextureLoader
 
 # local import
 from mw4.gui.widget import MWidget
-
-
-def linkModel(model, name, rEntity):
-    """
-    linkModel builds an entity chain for the 3d model by scripting some basic features
-
-    :param model:
-    :param name:
-    :param rEntity:
-    :return:
-    """
-
-    currMod = model[name]
-
-    parent = currMod.get('parent', None)
-    if parent and model.get(parent, None):
-        currMod['e'] = QEntity(model[parent]['e'])
-    else:
-        currMod['e'] = QEntity(rEntity)
-
-    visible = currMod.get('visible', True)
-    currMod['e'].setEnabled(visible)
-
-    source = currMod.get('source', None)
-    if source:
-        if isinstance(source, str):
-            mesh = QMesh()
-            mesh.setSource(QUrl(f'qrc:/model3D/{source}'))
-        elif isinstance(source[0], QCuboidMesh):
-            mesh = source[0]
-            mesh.setXExtent(source[1])
-            mesh.setYExtent(source[2])
-            mesh.setZExtent(source[3])
-        elif isinstance(source[0], QSphereMesh):
-            mesh = source[0]
-            mesh.setRadius(source[1])
-            mesh.setRings(source[2])
-            mesh.setSlices(source[3])
-        elif isinstance(source[0], QCylinderMesh):
-            mesh = source[0]
-            mesh.setLength(source[1])
-            mesh.setRadius(source[2])
-            mesh.setRings(source[3])
-            mesh.setSlices(source[4])
-        elif isinstance(source[0], QExtrudedTextMesh):
-            mesh = source[0]
-            mesh.setDepth(source[1])
-            mesh.setFont(QFont())
-            mesh.setText(source[3])
-
-        currMod['e'].addComponent(mesh)
-        currMod['m'] = mesh
-
-    trans = currMod.get('trans', None)
-    rot = currMod.get('rot', None)
-    scale = currMod.get('scale', None)
-    if trans or rot or scale:
-        transform = QTransform()
-
-        if trans and isinstance(trans, list) and len(trans) == 3:
-            transform.setTranslation(QVector3D(*trans))
-
-        if rot and isinstance(rot, list) and len(rot) == 3:
-            transform.setRotationX(rot[0])
-            transform.setRotationY(rot[1])
-            transform.setRotationZ(rot[2])
-
-        if scale and isinstance(scale, list) and len(scale) == 3:
-            transform.setScale3D(QVector3D(*scale))
-
-        currMod['e'].addComponent(transform)
-        currMod['t'] = transform
-
-    mat = currMod.get('mat', None)
-    if mat:
-        currMod['mat'] = mat
-        currMod['e'].addComponent(mat)
 
 
 class Materials(MWidget):
@@ -230,9 +150,3 @@ class Materials(MWidget):
         self.walls.setSpecular(QColor(64, 64, 64))
         self.walls.setShininess(0.1)
         self.walls.setAlpha(0.5)
-
-        self.mw4 = QTextureMaterial()
-        self.texture = QTextureLoader()
-        self.texture.setMirrored(False)
-        self.texture.setSource(QUrl(':/icon/mw4.png'))
-        self.mw4.setTexture(self.texture)

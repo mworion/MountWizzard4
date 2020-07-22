@@ -34,7 +34,7 @@ from mw4.gui.simulator import tools
 from mw4.gui.simulator.dome import SimulatorDome
 from mw4.gui.simulator.telescope import SimulatorTelescope
 from mw4.gui.simulator.horizon import SimulatorHorizon
-from mw4.gui.simulator.buildPoints import SimulatorBuildPoints
+from mw4.gui.simulator.points import SimulatorBuildPoints
 from mw4.gui.simulator.pointer import SimulatorPointer
 
 

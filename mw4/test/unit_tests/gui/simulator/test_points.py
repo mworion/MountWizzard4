@@ -29,7 +29,7 @@ from mountcontrol.mount import Mount
 from skyfield.api import Topos
 
 # local import
-from mw4.gui.simulator.buildPoints import SimulatorBuildPoints
+from mw4.gui.simulator.points import SimulatorBuildPoints
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -22,6 +22,7 @@ faulthandler.enable()
 
 # external packages
 from PyQt5.Qt3DCore import QEntity
+from PyQt5.Qt3DExtras import Qt3DWindow
 from PyQt5.QtCore import QObject
 from mountcontrol.mount import Mount
 from skyfield.api import Topos
@@ -49,23 +50,20 @@ def module_setup_teardown():
 
 
 def test_create_1():
-    e = QEntity()
-    suc = app.create(e, False)
+    app.modelRoot = QEntity()
+    suc = app.create(QEntity(), False)
     assert not suc
 
 
 def test_create_2():
-    e = QEntity()
-    app.modelRoot = e
-    app.model = {'test': {'e': e}}
-    suc = app.create(e, False)
+    app.modelRoot = QEntity()
+    app.model = {'test': {'e': QEntity()}}
+    suc = app.create(QEntity(), False)
     assert not suc
 
 
 def test_create_3():
-    e = QEntity()
-    app.modelRoot = e
-    app.model = {'test': {'e': e}}
-    suc = app.create(e, True)
+    app.modelRoot = QEntity()
+    app.model = {'test': {'e': QEntity()}}
+    suc = app.create(app.modelRoot, True)
     assert suc
-

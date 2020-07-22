@@ -696,6 +696,7 @@ class MainWindow(MWidget,
 
         :return: True for test purpose
         """
+        import psutil
 
         self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
         if self.ui.isOnline.isChecked():
@@ -705,6 +706,15 @@ class MainWindow(MWidget,
         text = f'{self.threadPool.activeThreadCount():2d} - {text}'
         self.ui.statusOnline.setTitle(text)
 
+        for proc in psutil.process_iter():
+            pinfo = proc.as_dict(attrs=['pid', 'name'])
+            name = pinfo.get('name', '')
+            if not name:
+                continue
+            if name.startswith('astap'):
+                print('astap still running')
+            else:
+                continue
         return True
 
     def updateAstrometryStatus(self, text):

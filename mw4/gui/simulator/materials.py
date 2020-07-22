@@ -18,17 +18,15 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QColor
-from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial, QTextureMaterial
+from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
 from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
-from PyQt5.Qt3DRender import QTextureLoader
 
 # local import
-from mw4.gui.widget import MWidget
+from mw4.gui import styles
 
 
-class Materials(MWidget):
+class Materials(styles.MWStyles):
 
     __all__ = ['Materials',
                ]
@@ -39,6 +37,8 @@ class Materials(MWidget):
     """
 
     def __init__(self):
+        super().__init__()
+
         self.aluminiumS = QMetalRoughMaterial()
         self.aluminiumS.setBaseColor(QColor(127, 127, 127))
         self.aluminiumS.setMetalness(0.7)

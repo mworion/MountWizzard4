@@ -712,7 +712,7 @@ class MainWindow(MWidget,
             if not name:
                 continue
             if name.startswith('astap'):
-                print('astap still running')
+                self.log.warning('ASTAP in background still running !')
             else:
                 continue
         return True

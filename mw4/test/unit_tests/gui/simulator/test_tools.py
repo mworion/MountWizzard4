@@ -24,7 +24,6 @@ faulthandler.enable()
 from PyQt5.Qt3DExtras import QSphereMesh
 from PyQt5.Qt3DCore import QEntity
 from PyQt5.Qt3DExtras import QPhongMaterial
-from PyQt5.Qt3DRender import QMesh
 from PyQt5.Qt3DCore import QTransform
 
 

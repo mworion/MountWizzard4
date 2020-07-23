@@ -17,11 +17,12 @@
 ###########################################################
 # standard libraries
 import pytest
+from unittest import mock
 import faulthandler
 faulthandler.enable()
 
 # external packages
-from PyQt5.Qt3DCore import QEntity
+from PyQt5.Qt3DCore import QEntity, QTransform
 from PyQt5.QtCore import QObject
 from mountcontrol.mount import Mount
 from skyfield.api import Topos
@@ -68,3 +69,38 @@ def test_create_3(qtbot):
     app.model = {'test': {'e': e}}
     suc = app.create(e, True)
     assert suc
+
+
+def test_updatePositions_1(qtbot):
+    suc = app.updatePositions()
+    assert not suc
+
+
+def test_updatePositions_2(qtbot):
+    app.model = {
+        'pointer': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+    }
+
+    suc = app.updatePositions()
+    assert not suc
+
+
+def test_updatePositions_3(qtbot):
+    app.model = {
+        'pointer': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+    }
+
+    app.app.mount.obsSite.raJNow = 10
+    app.app.mount.obsSite.timeSidereal = '10:10:10'
+
+    with mock.patch.object(app.app.mount.geometry,
+                           'calcTransformationMatrices',
+                           return_value=(0, 0, 1, 1, 1)):
+        suc = app.updatePositions()
+        assert suc

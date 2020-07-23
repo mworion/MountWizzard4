@@ -705,6 +705,8 @@ class MainWindow(MWidget,
         text = f'{self.threadPool.activeThreadCount():2d} - {text}'
         self.ui.statusOnline.setTitle(text)
 
+        return True
+
     def updateAstrometryStatus(self, text):
         """
 

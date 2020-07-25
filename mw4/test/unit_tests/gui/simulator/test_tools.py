@@ -21,10 +21,11 @@ import faulthandler
 faulthandler.enable()
 
 # external packages
-from PyQt5.Qt3DExtras import QSphereMesh
+from PyQt5.Qt3DExtras import QSphereMesh, QCuboidMesh
 from PyQt5.Qt3DCore import QEntity
-from PyQt5.Qt3DExtras import QPhongMaterial
+from PyQt5.Qt3DExtras import QPhongMaterial, QCylinderMesh, QExtrudedTextMesh
 from PyQt5.Qt3DCore import QTransform
+from PyQt5.Qt3DRender import QMesh
 
 
 # local import
@@ -33,6 +34,7 @@ from mw4.gui.simulator.tools import linkMaterial
 from mw4.gui.simulator.tools import linkSource
 from mw4.gui.simulator.tools import linkTransform
 from mw4.gui.simulator.materials import Materials
+from mw4.resource import resources
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -42,11 +44,57 @@ def module_setup_teardown():
 
 def test_linkSource_1(qtbot):
     model = {'parent': None,
+             'source': 'mount-ra.stl',
+             }
+    mesh = linkSource(model)
+    assert isinstance(mesh, QMesh)
+
+
+def test_linkSource_2(qtbot):
+    model = {'parent': None,
              'source': [QSphereMesh(), 50, 30, 30],
              }
     mesh = linkSource(model)
-
     assert isinstance(mesh, QSphereMesh)
+
+
+def test_linkSource_3(qtbot):
+    model = {'parent': None,
+             'source': [QCuboidMesh(), 50, 30, 30],
+             }
+    mesh = linkSource(model)
+    assert isinstance(mesh, QCuboidMesh)
+
+
+def test_linkSource_4(qtbot):
+    model = {'parent': None,
+             'source': [QCylinderMesh(), 50, 30, 30, 1],
+             }
+    mesh = linkSource(model)
+    assert isinstance(mesh, QCylinderMesh)
+
+
+def test_linkSource_5(qtbot):
+    model = {'parent': None,
+             'source': [QExtrudedTextMesh(), 30, 'Arial', 'test'],
+             }
+    mesh = linkSource(model)
+    assert isinstance(mesh, QExtrudedTextMesh)
+
+
+def test_linkSource_6(qtbot):
+    model = {'parent': None,
+             'source': [None, 30, 'Arial', 'test'],
+             }
+    mesh = linkSource(model)
+    assert mesh is None
+
+
+def test_linkSource_7(qtbot):
+    model = {'parent': None,
+             }
+    mesh = linkSource(model)
+    assert mesh is None
 
 
 def test_linkTransform_1(qtbot):
@@ -54,8 +102,30 @@ def test_linkTransform_1(qtbot):
              'scale': [1, 1, 1],
              }
     trans = linkTransform(model)
-
     assert isinstance(trans, QTransform)
+
+
+def test_linkTransform_2(qtbot):
+    model = {'parent': None,
+             'trans': [1, 1, 1],
+             }
+    trans = linkTransform(model)
+    assert isinstance(trans, QTransform)
+
+
+def test_linkTransform_3(qtbot):
+    model = {'parent': None,
+             'rot': [1, 1, 1],
+             }
+    trans = linkTransform(model)
+    assert isinstance(trans, QTransform)
+
+
+def test_linkTransform_4(qtbot):
+    model = {'parent': None,
+             }
+    trans = linkTransform(model)
+    assert trans is None
 
 
 def test_linkMaterial_1(qtbot):

@@ -52,6 +52,16 @@ def module_setup_teardown():
     yield
 
 
+def test_createLine_1():
+    val = app.createLine(QEntity(), 1, 1, 1)
+    assert isinstance(val, QEntity)
+
+
+def test_createWall_1():
+    val = app.createWall(QEntity(), 0, 0, 10)
+    assert isinstance(val, QEntity)
+
+
 def test_create_1(qtbot):
     e = QEntity()
     suc = app.create(e, False)
@@ -67,6 +77,19 @@ def test_create_2(qtbot):
 
 
 def test_create_3(qtbot):
+    e = QEntity()
+    app.app.data.horizonP = None
+    app.modelRoot = e
+    app.model = {'test': {'e': e}}
+    suc = app.create(e, True)
+    assert not suc
+
+
+def test_create_4(qtbot):
+    app.horizon = [
+        {'e': QEntity()},
+    ]
+    app.horizonRoot = QEntity()
     e = QEntity()
     app.modelRoot = e
     app.model = {'test': {'e': e}}

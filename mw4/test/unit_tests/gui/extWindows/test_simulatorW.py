@@ -86,9 +86,10 @@ def test_initConfig_3(qtbot):
 
 
 def test_initConfig_4(qtbot):
-    app.app.config['cameraPositionX'] = 1
-    app.app.config['cameraPositionY'] = 1
-    app.app.config['cameraPositionZ'] = 1
+    app.app.config['simulatorW'] = {'cameraPositionX': 1,
+                                    'cameraPositionY': 1,
+                                    'cameraPositionZ': 1,
+                                    }
     suc = app.initConfig()
     assert suc
 

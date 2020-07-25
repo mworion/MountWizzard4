@@ -67,7 +67,7 @@ setup(
     license='APL 2.0',
     author='mworion',
     author_email='michael@wuertenberger.org',
-    description='tooling for a 10micron mount',
+    description='tool for a 10micron mount',
     long_description=Path("README.rst").read_text(encoding="utf-8"),
     long_description_content_type="text/x-rst",
     project_urls={

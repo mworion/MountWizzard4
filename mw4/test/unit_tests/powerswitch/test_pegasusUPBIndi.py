@@ -108,6 +108,63 @@ def test_setUpdateConfig_6():
             assert suc
 
 
+def test_updateText_1():
+    suc = app.updateText('test', 'test')
+    assert not suc
+
+
+def test_updateText_2():
+    app.data = {'AUTO_DEW.DEW_C': 1,
+                'VERSION.UPB': 1}
+    with mock.patch.object(IndiClass,
+                           'updateText',
+                           return_value=True):
+        suc = app.updateText('test', 'test')
+        assert not suc
+
+
+def test_updateText_3():
+    app.data = {'DRIVER_INFO.DEVICE_MODEL': 'UPB',
+                'FIRMWARE_INFO.VERSION': '1.4'}
+
+    with mock.patch.object(IndiClass,
+                           'updateText',
+                           return_value=True):
+        suc = app.updateText('test', 'DRIVER_INFO')
+        assert suc
+
+
+def test_updateText_4():
+    app.data = {'DRIVER_INFO.DEVICE_MODEL': 'UPBv2',
+                'FIRMWARE_INFO.VERSION': '1.5'}
+
+    with mock.patch.object(IndiClass,
+                           'updateText',
+                           return_value=True):
+        suc = app.updateText('test', 'DRIVER_INFO')
+        assert suc
+
+
+def test_updateText_5():
+    app.data = {'DRIVER_INFO.DEVICE_MODEL': 'UPBv2',
+                'FIRMWARE_INFO.VERSION': '1.4'}
+    with mock.patch.object(IndiClass,
+                           'updateText',
+                           return_value=True):
+        suc = app.updateText('test', 'DRIVER_INFO')
+        assert suc
+
+
+def test_updateText_6():
+    app.data = {'DRIVER_INFO.DEVICE_MODEL': 'UPB',
+                'FIRMWARE_INFO.VERSION': '1.5'}
+    with mock.patch.object(IndiClass,
+                           'updateText',
+                           return_value=True):
+        suc = app.updateText('test', 'DRIVER_INFO')
+        assert suc
+
+
 def test_updateNumber_1():
     suc = app.updateNumber('test', 'test')
     assert not suc
@@ -166,6 +223,16 @@ def test_togglePowerPort_4():
         assert not suc
 
 
+def test_togglePowerPort_5():
+    app.device = Device()
+    app.isINDIGO = True
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'OUTLET_1': True}):
+        suc = app.togglePowerPort(port=1)
+        assert not suc
+
+
 def test_togglePowerPortBoot_1():
     suc = app.togglePowerPortBoot()
     assert not suc
@@ -187,6 +254,16 @@ def test_togglePowerPortBoot_3():
 
 def test_togglePowerPortBoot_4():
     app.device = Device()
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'POWER_PORT_1': True}):
+        suc = app.togglePowerPortBoot(port=1)
+        assert not suc
+
+
+def test_togglePowerPortBoot_5():
+    app.device = Device()
+    app.isINDIGO = True
     with mock.patch.object(app.device,
                            'getSwitch',
                            return_value={'POWER_PORT_1': True}):
@@ -223,6 +300,17 @@ def test_toggleHubUSB_4():
         assert not suc
 
 
+def test_toggleHubUSB_5():
+    app.device = Device()
+    app.isINDIGO = True
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'ENABLED': True,
+                                         'DISABLED': True}):
+        suc = app.toggleHubUSB()
+        assert not suc
+
+
 def test_togglePortUSB_1():
     suc = app.togglePortUSB()
     assert not suc
@@ -244,6 +332,16 @@ def test_togglePortUSB_3():
 
 def test_togglePortUSB_4():
     app.device = Device()
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'PORT_1': True}):
+        suc = app.togglePortUSB(port=0)
+        assert not suc
+
+
+def test_togglePortUSB_5():
+    app.device = Device()
+    app.isINDIGO = True
     with mock.patch.object(app.device,
                            'getSwitch',
                            return_value={'PORT_1': True}):
@@ -289,6 +387,36 @@ def test_toggleAutoDew_4():
         assert not suc
 
 
+def test_toggleAutoDew_5():
+    app.device = Device()
+    app.modelVersion = 1
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'INDI_ENABLED': True,
+                                         'INDI_DISABLED': True,
+                                         'DEW_A': True,
+                                         'DEW_B': True,
+                                         'DEW_C': True,
+                                         }):
+        suc = app.toggleAutoDew()
+        assert not suc
+
+
+def test_toggleAutoDew_6():
+    app.device = Device()
+    app.isINDIGO = True
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'MANUAL': True,
+                                         'AUTOMATIC': False,
+                                         'DEW_A': True,
+                                         'DEW_B': True,
+                                         'DEW_C': True,
+                                         }):
+        suc = app.toggleAutoDew()
+        assert not suc
+
+
 def test_sendDew_1():
     suc = app.sendDew()
     assert not suc
@@ -313,7 +441,17 @@ def test_sendDew_4():
     with mock.patch.object(app.device,
                            'getSwitch',
                            return_value={'DEW_1': True}):
-        suc = app.sendDew(port=1)
+        suc = app.sendDew(port='A')
+        assert not suc
+
+
+def test_sendDew_5():
+    app.device = Device()
+    app.isINDIGO = True
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'OUTLET_1': True}):
+        suc = app.sendDew(port='A')
         assert not suc
 
 
@@ -329,6 +467,15 @@ def test_sendAdjustableOutput_2():
 
 def test_sendAdjustableOutput_3():
     app.device = Device()
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'ADJUSTABLE_VOLTAGE': 12}):
+        suc = app.sendAdjustableOutput()
+
+
+def test_sendAdjustableOutput_4():
+    app.device = Device()
+    app.isINDIGO = True
     with mock.patch.object(app.device,
                            'getNumber',
                            return_value={'ADJUSTABLE_VOLTAGE': 12}):

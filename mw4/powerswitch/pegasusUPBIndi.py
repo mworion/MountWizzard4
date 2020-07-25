@@ -93,7 +93,7 @@ class PegasusUPBIndi(IndiClass):
             return False
 
         if propertyName != 'DRIVER_INFO' and propertyName != 'FIRMWARE_INFO':
-            return True
+            return False
 
         if 'DRIVER_INFO.DEVICE_MODEL' in self.data:
             if self.data.get('DRIVER_INFO.DEVICE_MODEL', 'UPB') == 'UPB':
@@ -293,11 +293,11 @@ class PegasusUPBIndi(IndiClass):
         if self.isINDIGO:
             conv = {'A': '1', 'B': '2', 'C': '3'}
             propertyName = 'AUX_HEATER_OUTLET'
-            dew = self.device.getNumber(propertyName)
+            dew = self.device.getSwitch(propertyName)
             portName = f'OUTLET_{conv[port]}'
         else:
             propertyName = 'DEW_PWM'
-            dew = self.device.getNumber(propertyName)
+            dew = self.device.getSwitch(propertyName)
             portName = f'DEW_{port}'
 
         if portName not in dew:

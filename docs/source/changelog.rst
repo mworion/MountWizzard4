@@ -7,7 +7,7 @@ changes list, please refer to the commit list on GitHub.
 
 - extension icon suppport
 - refactoring device manangement
-- adding INDIGO Support for UPB, SQM and basic drivers
+- adding INDIGO Support for UPB, SQM, MGBox and basic drivers
 
 0.150.28
 

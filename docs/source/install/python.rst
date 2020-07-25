@@ -13,13 +13,12 @@ downloaded from python.org.
 
 .. warning::
     Please do not use a newer version of python than 3.8.x! Some libraries bring precompiled
-    binaries with them and they might not be available for a newer python version. The actual
-    python3.8 version is python3.8.2! A good overview what could run is in the readme on
-    github.
+    binaries with them and they might not be available for a newer python version. A good
+    overview what could run is in the readme on github.
 
-If you already have python3.8.x installed, you can skip this section and go directly to the
-MW4 installation process. If you have to install python3.8.x this has to be done only once for
-as many MW4 installations you might want.
+If you already have python 3.6 / 3.7 / 3.8 installed, you can skip this section and go
+directly to the MW4 installation process. If you have to install python3.8.x this has to be
+done only once for as many MW4 installations you might want.
 
 There is a video on youtube with the install process python: https://youtu.be/xJxpx_SmrVc.
 
@@ -43,7 +42,7 @@ and follow the installation procedure.
 Depending on your preference you could install python 3.8 for a single user or for all
 users. MW4 does not need admin rights to run, so please choose the variant for a single
 users if you want wo use the installation scripts. They depend on access rights as a normal
-user and you might run into troubles using defferent modes!
+user and you might run into troubles using different modes!
 
 Mac OSx
 -------
@@ -51,19 +50,19 @@ Depending on your OSx version please download the installer for 3.8 from:
 
 https://www.python.org/downloads/mac-osx/
 
-and follow the installation procedure. Depending on your preference you could install python
-3.7.x for a single user or for all users. MW4 does not need admin rights to run, so please
+and follow the installation procedure. Depending on your preference you could install
+python3 for a single user or for all users. MW4 does not need admin rights to run, so please
 feel free to choose the variant you would like to use.
 
 Ubuntu
 ------
-Referring to Ubuntu 18.04 LTS as it comes only with python3.6, you could upgrade to
-python3.8.x. This could be done by adding an appropriate repo, which enables this version.
+Referring to Ubuntu 18.04 LTS as it comes with python3.6. This should work, but you could
+upgrade to python3.8.x. This could be done by adding an appropriate repo, which enables this
+version.
 
-.. warning::    Please update to python3.8.x if you want in a way, which fits best to your
-                environment. There are many descriptions out, so please search for it in
-                case you don't know exactly.
-
+.. hint::   If you update to a higher python version, please update to python3.8.x if you want
+            in a way, which fits best to your environment. There are many descriptions out,
+            so please search for it in case you don't know exactly.
 
 An example is from: https://linuxize.com/post/how-to-install-python-3-7-on-ubuntu-18-04/
 

@@ -136,9 +136,8 @@ pick a source.
 Almanac Tab
 -----------
 MW4 assists you in getting some context information what's going on during the night imaging
-conditions.
-
-.. note:: The almanac populated only when the mount is connected
+conditions. The almanac shows local time with DST settings. The current date is always in
+the center of the image
 
 .. image:: image/almanac_tab.png
     :align: center
@@ -149,9 +148,10 @@ Model Points Tab
 ----------------
 Before starting the model build, you need to choose which set of reference points you would
 like to use for your model. The model calculation is done by the mount computer itself. MW4
-only automates the procedure for you. Generally speaking you should set your references points in
-areas you might use for imaging later on. In a fixed setup, you should distribute points
-equally over the sky. MW4 allows multiple choices to automatically select the reference points.
+only automates the procedure for you. Generally speaking you should set your references
+points in areas you might use for imaging later on. In a fixed setup, you should distribute
+points equally over the sky. MW4 allows multiple choices to automatically select the
+reference points.
 
 .. note:: The mount computer only processes max 100 points.
 
@@ -188,6 +188,10 @@ obstacles in your sky view. When auto delete is checked, MW4 will remove automat
 not visible reference points from modeling list. In addition you could choose a sorting of
 your own, if you prefer or need different optimisations.
 
+Area 3: Point sorting
+^^^^^^^^^^^^^^^^^^^^^
+Depending on your preferences in which order you walk over the hemisphere for model
+building, MW4 supports different sortings.
 
 Model Build Tab
 ---------------
@@ -237,6 +241,9 @@ mount error, or use it as a backup if you tweaked the model. But you can also co
 different types of models to possibly improve your model for certain use cases. For example
 if you have a 50 point model for the overall sky, you could add a DSO track for you current
 object to improve accuracy by modeling more points in your area of interest during this night.
+
+A new feature: if you use Open analyse model build window, you could select any model build
+file and check conditions and model build results.
 
 Manage Model Tab
 ----------------

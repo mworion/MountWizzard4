@@ -3,9 +3,10 @@ Overview
 
 Welcome to MountWizzard4! MW4 is a utility for 10micron users for improving the workflow for
 astronomy work and imaging runs on Windows10, Mac OSX (beginning from 10.12) and Linux
-(Ubuntu from 16.04. tested).
-As a python application, it should run in all environments which support python3.7 including
-Qt as a Gui framework.
+(Ubuntu from 16.04.).
+As a python application, it should run in all environments which support python 3.6, 3.7 or
+3.8 including Qt as a Gui framework. Please notice that python 3.9 and older python version
+prior to 3.6 and python 2 is not supported.
 
 There are some video about modeling: https://youtu.be/8YWLLo3siUY
 
@@ -15,8 +16,63 @@ Some more video's are linked from the documentation.
 
 For full operation MW4 needs actually running INDI / INDIGO Server(s), connected to your
 devices. In addition an online connection is used for some services which are helpful, but
-not necessary. MW4 supports ASCOM Alpaca for all devices, but the framework seems to be
-still unstable. MW4 also support the basic ASCOM devices (camera, dome) on Windows environment.
+not necessary. MW4 supports ASCOM Alpaca for all devices, but the framework has some
+issues. MW4 also support ASCOM devices (camera, dome) in Windows environment.
+
+.. list-table:: Supported devices and frameworks in MW4
+    :widths: 20, 20, 20, 20, 20
+    :header-rows: 1
+
+    *   - Device
+        - ASCOM
+        - ALPACA
+        - INDI
+        - INDIGO
+    *   - Camera
+        - yes
+        - yes
+        - yes
+        - yes
+    *   - Filter
+        - yes
+        - yes
+        - yes
+        - yes
+    *   - Dome
+        - yes
+        - yes
+        - yes
+        - No tested
+    *   - Telescope
+        - yes
+        - yes
+        - yes
+        - yes
+    *   - Focuser
+        - yes
+        - yes
+        - yes
+        - No tested
+    *   - Skymeter
+        - yes
+        - yes
+        - yes
+        - Yes
+    *   - Environ Sensor
+        - yes
+        - yes
+        - yes
+        - No
+    *   - Pegasus UPB
+        - No
+        - No
+        - yes
+        - Yes
+    *   - Cover
+        - No
+        - No
+        - yes
+        - Not tested
 
 It is recommended to use mount firmware 2.16 or later as some of the functions don't work
 with older firmware versions.

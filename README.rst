@@ -1,16 +1,16 @@
 MountWizzard4
 =============
 
-Overview
---------
 Welcome to MountWizzard4 is a utility for 10micron users for improving the workflow for
 astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu tested). As a python
 application, it should run in all environments supporting python 3.6-3.8 and PyQt5 as a Gui
 framework.
 
-For being fully operational, MW4 needs:
+For being fully operational, MW4 needs either:
 
 INDI server(s) (see: https://indilib.org) where your devices are connected to.
+
+INDIGO server(s) (see: http://www.indigo-astronomy.org) where your devices are connected to.
 
 ASCOM Alpaca remote server (see: https://ascom-standards.org/Developer/Alpaca.htm)
 abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if you want to

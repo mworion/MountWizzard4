@@ -76,6 +76,10 @@ not using a location on the desktop as it might cause troubles with execution ri
 OSx installations. The directory can be renamed later on, it also can also be moved to any
 other location. Copy the scripts for your platform into this directory.
 
+.. hint:: Over time, there might be some improvements also made for these scripts. So if you
+          had installed MW4 some time ago and will install new setups, it might be helpful to
+          check if some new scripts are available for better handling.
+
 the directory should than for OSx look like:
 
 .. image:: image/mac_1.png

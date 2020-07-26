@@ -36,6 +36,12 @@ userWindows = 'mw@' + clientWindows
 workWindows = 'test'
 workWindowsSCP = userWindows + ':/Users/mw/test'
 
+# same for windows10 with cmd.exe as shell
+clientMac = 'astro-mac-catalina.fritz.box'
+userMac = 'mw@' + clientMac
+workMac = 'test'
+workMacSCP = userMac + ':/Users/mw/test'
+
 
 def runMWd(c, param):
     c.run(param)
@@ -253,19 +259,54 @@ def test_win(c):
 
 
 @task(pre=[])
-def check_win(c):
-    printMW('run windows install script from support')
+def test_ubuntu(c):
+    printMW('test ubuntu install')
     printMWp('...delete test dir')
-    runMW(c, f'ssh {userWindows} "if exist {workWindows} rd /s /q {workWindows}"')
-    printMWp('...make test dir')
-    runMW(c, f'ssh {userWindows} "if not exist {workWindows} mkdir {workWindows}"')
+    runMW(c, f'ssh {userUbuntu} "rm -rf {workUbuntu}"')
     time.sleep(1)
-    with c.cd('support/Windows'):
+    printMWp('...make test dir')
+    runMW(c, f'ssh {userUbuntu} "mkdir {workUbuntu}"')
+    time.sleep(1)
+
+    with c.cd('dist'):
+        printMWp('...copy *.tar.gz to test dir')
+        runMWd(c, f'scp -r mountwizzard4.tar.gz {workUbuntuSCP}')
+
+    with c.cd('support/Ubuntu'):
         printMWp('...copy install script to test dir')
-        runMWd(c, f'scp -r MW4_Install.bat {workWindowsSCP}')
+        runMWd(c, f'scp -r MW4_InstallTest.sh {workUbuntuSCP}')
         printMWp('...run install script in test dir')
-        runMWd(c, f'ssh {userWindows} "cd {workWindows} && MW4_Install.bat"')
-        printMWp('...copy run script to test dir')
-        runMWd(c, f'scp -r MW4_RunTest.bat {workWindowsSCP}')
+        runMWd(c, f'ssh {userUbuntu} "cd {workUbuntu} && ./MW4_InstallTest.sh"')
+        printMWp('...copy run script and environ to test dir')
+        runMWd(c, f'scp -r MW4_RunTest.sh {workUbuntuSCP}')
+        runMWd(c, f'scp -r MW4_Run.sh {workUbuntuSCP}')
+        runMWd(c, f'scp -r MountWizzard4.desktop {workUbuntuSCP}')
+        runMWd(c, f'scp -r mw4.png {workUbuntuSCP}')
         printMWp('...run MountWizzard4 for 3 seconds')
-        runMWd(c, f'ssh {userWindows} "cd {workWindows} && MW4_RunTest.bat"')
+        runMWd(c, f'ssh {userUbuntu} "cd {workUbuntu} && xvfb-run ./MW4_RunTest.sh"')
+
+
+@task(pre=[])
+def test_mac(c):
+    printMW('test catalina install')
+    printMWp('...delete test dir')
+    runMW(c, f'ssh {userMac} "rm -rf {workMac}"')
+    time.sleep(1)
+    printMWp('...make test dir')
+    runMW(c, f'ssh {userMac} "mkdir {workMac}"')
+    time.sleep(1)
+
+    with c.cd('dist'):
+        printMWp('...copy *.tar.gz to test dir')
+        runMWd(c, f'scp -r mountwizzard4.tar.gz {workMacSCP}')
+
+    with c.cd('support/MacOSx'):
+        printMWp('...copy install script to test dir')
+        runMWd(c, f'scp -r MW4_InstallTest.command {workMacSCP}')
+        printMWp('...run install script in test dir')
+        runMWd(c, f'ssh {userMac} "cd {workMac} && ./MW4_InstallTest.command"')
+        printMWp('...copy run script and environ to test dir')
+        runMWd(c, f'scp -r MW4_RunTest.command {workMacSCP}')
+        runMWd(c, f'scp -r MW4_Run.command {workMacSCP}')
+        printMWp('...run MountWizzard4 for 3 seconds')
+        runMWd(c, f'ssh {userMac} "cd {workMac} && ./MW4_RunTest.command"')

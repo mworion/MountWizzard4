@@ -249,6 +249,7 @@ def test_win(c):
     with c.cd('support/Windows'):
         printMWp('...copy install script to test dir')
         runMWd(c, f'scp -r MW4_InstallTest.bat {workWindowsSCP}')
+        runMWd(c, f'scp -r MW4_Install.bat {workWindowsSCP}')
         printMWp('...run install script in test dir')
         runMWd(c, f'ssh {userWindows} "cd {workWindows} && MW4_InstallTest.bat"')
         printMWp('...copy run script to test dir')
@@ -275,6 +276,7 @@ def test_ubuntu(c):
     with c.cd('support/Ubuntu'):
         printMWp('...copy install script to test dir')
         runMWd(c, f'scp -r MW4_InstallTest.sh {workUbuntuSCP}')
+        runMWd(c, f'scp -r MW4_Install.sh {workUbuntuSCP}')
         printMWp('...run install script in test dir')
         runMWd(c, f'ssh {userUbuntu} "cd {workUbuntu} && ./MW4_InstallTest.sh"')
         printMWp('...copy run script and environ to test dir')
@@ -303,6 +305,7 @@ def test_mac(c):
     with c.cd('support/MacOSx'):
         printMWp('...copy install script to test dir')
         runMWd(c, f'scp -r MW4_InstallTest.command {workMacSCP}')
+        runMWd(c, f'scp -r MW4_Install.command {workMacSCP}')
         printMWp('...run install script in test dir')
         runMWd(c, f'ssh {userMac} "cd {workMac} && ./MW4_InstallTest.command"')
         printMWp('...copy run script and environ to test dir')

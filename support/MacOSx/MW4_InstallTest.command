@@ -39,23 +39,15 @@ echo ""
 echo "----------------------------------------"
 echo "Updating pip installer"
 
-python3 -m pip install --upgrade pip >> install.log
+python3 -m pip install --upgrade pip --user >> install.log
 
 # now starting to install all things
 echo ""
 echo "----------------------------------------"
 echo "Installing $P_VER in virtual environ "
 
-# check if virtualenv needs to be installed
-if ! type "virtualenv" > /dev/null; then
-  echo "Need to install virtualenv first "
-
-  pip3 install virtualenv >> install.log
-
-fi
-
 # running the virtual environment installation
-COMMAND="virtualenv venv -p $P_VER >> install.log"
+COMMAND="python3 -m venv venv >> install.log"
 eval ${COMMAND}
 
 # check if virtualenv is available
@@ -76,7 +68,7 @@ source ./venv/bin/activate >> install.log
 #  install mountwizzard4
 echo "Installing mountwizzard4 - take a minute"
 
-pip install mountwizzard4.tar.gz >> install.log
+python3 -m pip install mountwizzard4.tar.gz >> install.log
 
 # closing virtual environment
 deactivate

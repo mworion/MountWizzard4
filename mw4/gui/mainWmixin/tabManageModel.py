@@ -170,50 +170,6 @@ class ManageModel(object):
                         # print(modelFile)
         return True
 
-    def generatePolar(self, widget=None, title=''):
-        """
-
-        :param widget:
-        :param title:
-        :return:
-        """
-
-        if widget is None:
-            return None, None
-        if not hasattr(widget, 'figure'):
-            return None, None
-
-        fig = widget.figure
-        fig.clf()
-        axe = fig.add_subplot(1,
-                              1,
-                              1,
-                              polar=True,
-                              facecolor=self.M_GREY_DARK)
-        axe.grid(True,
-                 color=self.M_GREY,
-                 )
-        axe.set_title(title,
-                      color=self.M_BLUE,
-                      fontweight='bold',
-                      pad=15,
-                      )
-        axe.tick_params(axis='x',
-                        colors=self.M_BLUE,
-                        labelsize=12,
-                        )
-        axe.tick_params(axis='y',
-                        colors=self.M_BLUE,
-                        labelsize=12,
-                        )
-        axe.set_theta_zero_location('N')
-        axe.set_rlabel_position(45)
-        axe.set_theta_direction(-1)
-        xLabel = ['0-N', '45-NE', '90-E', '135-SE', '180-S', '215-SW', '270-W', '315-NW']
-        axe.set_xticklabels(xLabel)
-
-        return axe, fig
-
     def showModelPosition(self, model):
         """
         showModelPosition draws a polar plot of the align model stars and their errors in

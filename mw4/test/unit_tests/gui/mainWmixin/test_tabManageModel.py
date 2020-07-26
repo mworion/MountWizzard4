@@ -629,27 +629,3 @@ def test_cancelOptimize_1():
     suc = app.cancelOptimize()
     assert suc
     assert not app.runningOptimize
-
-
-def test_generatePolar_1():
-    fig, axe = app.generatePolar()
-    assert fig is None
-    assert axe is None
-
-
-def test_generatePolar_2():
-    widget = 'test'
-
-    fig, axe = app.generatePolar(widget)
-    assert fig is None
-    assert axe is None
-
-
-def test_generatePolar_3():
-    ui = PyQt5.QtWidgets.QPushButton()
-    widget = app.embedMatplot(ui)
-
-    fig, axe = app.generatePolar(widget)
-    assert fig
-    assert axe
-

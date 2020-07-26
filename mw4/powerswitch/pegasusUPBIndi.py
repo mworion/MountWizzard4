@@ -104,6 +104,7 @@ class PegasusUPBIndi(IndiClass):
                 if self.modelVersion != 2:
                     self.signals.version.emit(2)
                     self.modelVersion = 2
+
         if 'FIRMWARE_INFO.VERSION' in self.data:
             if self.data.get('FIRMWARE_INFO.VERSION', '1.4') < '1.5':
                 if self.modelVersion != 1:
@@ -378,9 +379,9 @@ class PegasusUPBIndi(IndiClass):
             output = self.device.getSwitch(propertyName)
             portName = 'REBOOT'
         else:
-            propertyName = 'ADJUSTABLE_VOLTAGE'
+            propertyName = 'REBOOT_DEVICE'
             output = self.device.getSwitch(propertyName)
-            portName = 'ADJUSTABLE_VOLTAGE_VALUE'
+            portName = 'REBOOT'
 
         if portName not in output:
             return False

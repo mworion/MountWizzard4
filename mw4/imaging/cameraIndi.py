@@ -79,7 +79,8 @@ class CameraIndi(IndiClass):
 
         # setting WCS Control off
         wcs = self.device.getSwitch('WCS_CONTROL')
-        wcs['WCS_DISABLE'] = True
+        wcs['WCS_DISABLE'] = 'On'
+
         self.client.sendNewSwitch(deviceName=deviceName,
                                   propertyName='WCS_CONTROL',
                                   elements=wcs,
@@ -215,8 +216,14 @@ class CameraIndi(IndiClass):
         # setting fast mode:
         quality = self.device.getSwitch('READOUT_QUALITY')
         self.log.info(f'camera has readout quality entry: {quality}')
-        quality['QUALITY_LOW'] = fastReadout
-        quality['QUALITY_HIGH'] = not fastReadout
+
+        if fastReadout:
+            quality['QUALITY_LOW'] = 'On'
+            quality['QUALITY_HIGH'] = 'Off'
+        else:
+            quality['QUALITY_LOW'] = 'Off'
+            quality['QUALITY_HIGH'] = 'On'
+
         suc = self.client.sendNewSwitch(deviceName=self.name,
                                         propertyName='READOUT_QUALITY',
                                         elements=quality,
@@ -305,7 +312,8 @@ class CameraIndi(IndiClass):
         if 'ABORT' not in indiCmd:
             return False
 
-        indiCmd['ABORT'] = True
+        indiCmd['ABORT'] = 'On'
+
         suc = self.client.sendNewSwitch(deviceName=self.name,
                                         propertyName='CCD_ABORT_EXPOSURE',
                                         elements=indiCmd,
@@ -327,11 +335,13 @@ class CameraIndi(IndiClass):
         # setting fast mode:
         cooler = self.device.getSwitch('CCD_COOLER')
 
-        if 'COOLER_ON' not in cooler:
-            return False
+        if coolerOn:
+            cooler['COOLER_ON'] = 'On'
+            cooler['COOLER_OFF'] = 'Off'
+        else:
+            cooler['COOLER_ON'] = 'Off'
+            cooler['COOLER_OFF'] = 'On'
 
-        cooler['COOLER_ON'] = coolerOn
-        cooler['COOLER_OFF'] = not coolerOn
         suc = self.client.sendNewSwitch(deviceName=self.name,
                                         propertyName='CCD_COOLER',
                                         elements=cooler,

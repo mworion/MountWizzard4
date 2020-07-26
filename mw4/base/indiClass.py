@@ -83,7 +83,7 @@ class IndiClass(object):
         'AUX_USB_PORT.PORT_6': 'USB_PORT_CONTROL.PORT_6',
         'AUX_DEW_CONTROL.MANUAL': 'AUTO_DEW.INDI_DISABLED',
         'AUX_DEW_CONTROL.AUTOMATIC': 'AUTO_DEW.INDI_ENABLED',
-        'X_AUX_REBOOT.REBOOT': '',
+        'X_AUX_REBOOT.REBOOT': 'REBOOT_DEVICE.REBOOT',
 
         # text
         # UPB device

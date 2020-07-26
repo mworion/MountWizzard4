@@ -11818,7 +11818,7 @@ Hint if mount will need a flip when following satellite.</string>
        <string>Toggles the auto dew setting.</string>
       </property>
       <property name="text">
-       <string>Reboot Device</string>
+       <string>Reboot</string>
       </property>
      </widget>
     </widget>
@@ -22368,7 +22368,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QPushButton" name="domeConnected">
     <property name="enabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>

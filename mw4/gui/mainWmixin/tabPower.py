@@ -201,7 +201,7 @@ class Power(object):
         value = value1 or value2 or value3 or value4
         self.changeStyleDynamic(self.ui.autoDew, 'running', value)
 
-        if self.app.power.data.get('DRIVER_INFO.DEVICE_MODEL', 'UPB') == 'UPBv2':
+        if self.app.power.data.get('FIRMWARE_INFO.VERSION', '1.4') > '1.4':
             value = self.app.power.data.get('ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE', 0)
             self.ui.adjustableOutput.setText(f'{value:4.1f}')
 
@@ -209,8 +209,9 @@ class Power(object):
                 value = self.app.power.data.get(f'USB_PORT_CONTROL.PORT_{name}', False)
                 self.changeStyleDynamic(button, 'running', value)
 
-        value = self.app.power.data.get('USB_HUB_CONTROL.INDI_ENABLED', False)
-        self.changeStyleDynamic(self.ui.hubUSB, 'running', value)
+        else:
+            value = self.app.power.data.get('USB_HUB_CONTROL.INDI_ENABLED', False)
+            self.changeStyleDynamic(self.ui.hubUSB, 'running', value)
 
         return True
 

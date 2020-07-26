@@ -90,11 +90,14 @@ class FlipFlatIndi(IndiClass):
 
         if 'PARK' not in cover:
             return False
-        if 'UNPARK' not in cover:
-            return False
 
-        cover['UNPARK'] = not park
-        cover['PARK'] = park
+        if park:
+            cover['UNPARK'] = 'Off'
+            cover['PARK'] = 'On'
+        else:
+            cover['UNPARK'] = 'On'
+            cover['PARK'] = 'Off'
+
         suc = self.client.sendNewSwitch(deviceName=self.name,
                                         propertyName='CAP_PARK',
                                         elements=cover,

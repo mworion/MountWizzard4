@@ -130,16 +130,10 @@ class DomeIndi(IndiClass):
         :param propertyName:
         :return:
         """
-
-        if self.device is None:
-            return False
-        if deviceName != self.name:
+        if not super().updateNumber(deviceName, propertyName):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-            key = propertyName + '.' + element
-            self.data[key] = value
-            # print(propertyName, element, value)
 
             if element != 'DOME_ABSOLUTE_POSITION':
                 continue

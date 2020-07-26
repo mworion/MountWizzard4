@@ -75,35 +75,3 @@ class SensorWeatherIndi(IndiClass):
                                         propertyName='WEATHER_UPDATE',
                                         elements=update)
         return suc
-
-    def updateNumber(self, deviceName, propertyName):
-        """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-        for global weather data as there is no dew point value available, it calculates
-        it and stores it as value as well.
-
-        if no dew point is available in data, it will calculate this value from
-        temperature and humidity.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        if self.device is None:
-            return False
-        if deviceName != self.name:
-            return False
-
-        for element, value in self.device.getNumber(propertyName).items():
-            # consolidate to WEATHER_PRESSURE
-            if element == 'WEATHER_BAROMETER':
-                element = 'WEATHER_PRESSURE'
-
-            key = propertyName + '.' + element
-            self.data[key] = value
-
-            # print(self.name, key, value)
-
-        return True

@@ -44,6 +44,9 @@ class IndiClass(object):
 
     INDIGO = {
         # numbers
+        #
+        'WEATHER_PARAMETERS.WEATHER_BAROMETER': 'WEATHER_PARAMETERS.WEATHER_PRESSURE',
+
         # SQM device
         'AUX_INFO.X_AUX_SKY_BRIGHTNESS': 'SKY_QUALITY.SKY_BRIGHTNESS',
         'AUX_INFO.X_AUX_SKY_TEMPERATURE': 'SKY_QUALITY.SKY_TEMPERATURE',
@@ -344,7 +347,7 @@ class IndiClass(object):
             # print('number', self.name, key, value)
             key = self.convertIndigoProperty(key)
 
-            self.data[key] = value
+            self.data[key] = float(value)
 
         return True
 

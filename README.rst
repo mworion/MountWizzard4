@@ -35,14 +35,11 @@ Web based: https://mountwizzard4.readthedocs.io
 
 PDF format: https://mountwizzard4.readthedocs.io/_/downloads/en/latest/pdf/
 
-Installing procedures link in online documentation:
-https://mountwizzard4.readthedocs.io/en/latest/install/index.html
+Installing procedures: https://mountwizzard4.readthedocs.io/en/latest/install/index.html
 
 Changelog: https://mountwizzard4.readthedocs.io/en/latest/changelog.html
 
-There are some videos (more to come) on youtube in the channel:
-https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/, but they are also linked in the
-online documentation.
+Youtube in the channel: https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/
 
 
 Version, build and code coverage status

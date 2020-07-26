@@ -225,3 +225,15 @@ class PegasusUPB:
 
         suc = self.run[self.framework].sendAdjustableOutput(value=value)
         return suc
+
+    def reboot(self):
+        """
+
+        :return: success
+        """
+
+        if self.framework not in self.run.keys():
+            return False
+
+        suc = self.run[self.framework].reboot()
+        return suc

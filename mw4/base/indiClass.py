@@ -373,10 +373,10 @@ class IndiClass(object):
             if propertyName == 'PROFILE':
                 self.isINDIGO = True
 
-            # print('switch', self.name, key, value)
+            print('switch', self.name, key, value)
             key = self.convertIndigoProperty(key)
 
-            self.data[key] = value
+            self.data[key] = value == 'On'
 
         return True
 

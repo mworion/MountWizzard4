@@ -73,6 +73,7 @@ class Power(object):
         # gui tasks
         self.ui.hubUSB.clicked.connect(self.toggleHubUSB)
         self.ui.autoDew.clicked.connect(self.toggleAutoDew)
+        self.ui.rebootUPB.clicked.connect(self.rebootUPB)
         self.clickable(self.ui.adjustableOutput).connect(self.setAdjustableOutput)
 
         # setting gui elements
@@ -330,4 +331,13 @@ class Power(object):
             return False
 
         suc = self.app.power.sendAdjustableOutput(value=value)
+        return suc
+
+    def rebootUPB(self):
+        """
+
+        :return: true fot test purpose
+        """
+
+        suc = self.app.power.reboot()
         return suc

@@ -11064,7 +11064,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>250</y>
+       <y>245</y>
        <width>366</width>
        <height>71</height>
       </rect>
@@ -11170,7 +11170,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>175</y>
+       <y>170</y>
        <width>366</width>
        <height>71</height>
       </rect>
@@ -11276,7 +11276,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>100</y>
+       <y>95</y>
        <width>366</width>
        <height>71</height>
       </rect>
@@ -11382,7 +11382,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>25</y>
+       <y>20</y>
        <width>366</width>
        <height>71</height>
       </rect>
@@ -11510,7 +11510,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>325</y>
+       <y>320</y>
        <width>366</width>
        <height>41</height>
       </rect>
@@ -11544,7 +11544,7 @@ Hint if mount will need a flip when following satellite.</string>
        <x>15</x>
        <y>25</y>
        <width>366</width>
-       <height>96</height>
+       <height>146</height>
       </rect>
      </property>
      <property name="title">
@@ -11805,12 +11805,28 @@ Hint if mount will need a flip when following satellite.</string>
        <string>A</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="rebootUPB">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>115</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Toggles the auto dew setting.</string>
+      </property>
+      <property name="text">
+       <string>Reboot Device</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="groupDewA">
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>190</y>
+       <y>255</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -11948,7 +11964,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>250</y>
+       <y>315</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -12086,7 +12102,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>310</y>
+       <y>375</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -12224,7 +12240,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>130</y>
+       <y>195</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -12256,7 +12272,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>325</y>
+       <y>320</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -12367,8 +12383,8 @@ Hint if mount will need a flip when following satellite.</string>
     <widget class="QGroupBox" name="groupAdjustableOutput">
      <property name="geometry">
       <rect>
-       <x>15</x>
-       <y>370</y>
+       <x>410</x>
+       <y>375</y>
        <width>366</width>
        <height>51</height>
       </rect>

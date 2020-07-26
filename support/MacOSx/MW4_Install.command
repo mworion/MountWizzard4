@@ -68,7 +68,7 @@ source ./venv/bin/activate >> install.log
 #  install mountwizzard4
 echo "Installing mountwizzard4 - take a minute"
 
-python3 -m pip install mountwizzard4 --upgrade --no-cache-dir >> install.log
+pip install mountwizzard4 --upgrade --no-cache-dir >> install.log
 
 # closing virtual environment
 deactivate

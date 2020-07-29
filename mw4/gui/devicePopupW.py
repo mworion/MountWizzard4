@@ -19,8 +19,9 @@
 import platform
 
 # external packages
-import PyQt5.QtCore
-# import .NET / COM Handling
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QDialog, QWidget, QMessageBox, QListView, QComboBox, QLineEdit
+from PyQt5.QtWidgets import QCheckBox, QDoubleSpinBox
 
 if platform.system() == 'Windows':
     import win32com.client
@@ -31,7 +32,7 @@ from mw4.gui import widget
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 
 
-class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
+class DevicePopup(QDialog, widget.MWidget):
     """
     the DevicePopup window class handles
 
@@ -59,7 +60,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
     }
 
     framework2tabs = {
-        'indi': 'INDI',
+        'indi': 'INDI / INDIGO',
         'ascom': 'ASCOM',
         'alpaca': 'ALPACA',
         'astrometry': 'ASTROMETRY',
@@ -149,12 +150,12 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         frameworkTabText = self.framework2tabs[framework]
         frameworkTabList = [self.framework2tabs[x] for x in self.data['frameworks']]
 
-        tabWidget = self.ui.tab.findChild(PyQt5.QtWidgets.QWidget, frameworkTabText)
+        tabWidget = self.ui.tab.findChild(QWidget, frameworkTabText)
         tabIndex = self.ui.tab.indexOf(tabWidget)
         self.ui.tab.setCurrentIndex(tabIndex)
 
         for index in range(0, self.ui.tab.count()):
-            if self.ui.tab.tabText(index).lower() in self.availFramework:
+            if self.ui.tab.tabText(index) in frameworkTabList:
                 self.ui.tab.setTabEnabled(index, True)
             else:
                 self.ui.tab.setTabEnabled(index, False)
@@ -269,6 +270,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
         index = self.ui.tab.currentIndex()
         currentSelection = self.ui.tab.tabText(index)
+        fw = ''
         for fw in self.data['frameworks']:
             if currentSelection == self.framework2gui[fw]:
                 break
@@ -346,14 +348,14 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
             self._indiClass.client.signals.defText.connect(self.addDevicesWithType)
             self._indiClass.client.connectServer()
             self._indiClass.client.watchDevice()
-            msg = PyQt5.QtWidgets.QMessageBox
+            msg = QMessageBox
             msg.information(self,
                             'Searching Devices',
                             f'Search for [{self.driver}] could take some seconds!')
             self._indiClass.client.disconnectServer()
 
         self.ui.indiDeviceList.clear()
-        self.ui.indiDeviceList.setView(PyQt5.QtWidgets.QListView())
+        self.ui.indiDeviceList.setView(QListView())
 
         for name in self._indiSearchNameList:
             self.log.info(f'Indi search found: {name}')

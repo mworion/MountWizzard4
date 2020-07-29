@@ -220,10 +220,10 @@ class SettDevice(object):
 
         if not data or 'frameworks' not in data:
             data = {
-                'framework': '',
+                'framework': 'indi',
                 'deviceType': driver,
                 'defaultDevice': '',
-                'frameworks': {},
+                'frameworks': {'indi': {}, 'alpaca': {}, 'ascom': {}},
             }
 
         return data

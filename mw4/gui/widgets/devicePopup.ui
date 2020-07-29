@@ -63,11 +63,11 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="INDI">
     <attribute name="title">
-     <string>INDI</string>
+     <string>INDI / INDIGO</string>
     </attribute>
     <widget class="QLabel" name="label_mountIP_3">
      <property name="geometry">

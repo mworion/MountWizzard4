@@ -218,13 +218,19 @@ class SettDevice(object):
         :return: cleaned data
         """
 
-        if not data:
+        if not data or 'frameworks' not in data:
             data = {
                 'framework': '',
                 'deviceType': driver,
                 'defaultDevice': '',
                 'frameworks': {},
             }
+
+        return data
+
+        if 'frameworks' not in data:
+            data['frameworks'] = {}
+
         for fw in self.drivers[driver]['class'].run:
             self.dictMerge(data['frameworks'][fw], self.frameworks.get(fw, {}))
 

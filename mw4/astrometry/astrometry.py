@@ -59,7 +59,6 @@ class Astrometry:
         https://fits.gsfc.nasa.gov/fits_dictionary.html
 
         >>> astrometry = Astrometry(app=app,
-        >>>                         tempDir=tempDir,
         >>>                         )
 
     """
@@ -73,10 +72,10 @@ class Astrometry:
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
 
-    def __init__(self, app, tempDir=''):
+    def __init__(self, app):
 
         self.app = app
-        self.tempDir = tempDir
+        self.tempDir = app.mwGlob['tempDir']
         self.threadPool = app.threadPool
         self.signals = AstrometrySignals()
 

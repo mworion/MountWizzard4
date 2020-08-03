@@ -43,8 +43,10 @@ def module_setup_teardown():
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
+        mwGlob = {'configDir': 'mw4/test/config'}
 
     global app
+
     config = 'mw4/test/config'
     testdir = os.listdir(config)
     for item in testdir:
@@ -53,9 +55,7 @@ def module_setup_teardown():
         if item.endswith('.hpts'):
             os.remove(os.path.join(config, item))
 
-    app = DataPoint(app=Test(),
-                    configDir='mw4/test/config',
-                    )
+    app = DataPoint(app=Test())
     yield
 
 

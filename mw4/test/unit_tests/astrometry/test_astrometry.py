@@ -50,13 +50,13 @@ def app():
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(object, object)
+        mwGlob = {'tempDir': 'mw4/test/temp'}
 
     shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
     shutil.copy('mw4/test/testData/astrometry.cfg', 'mw4/test/temp/astrometry.cfg')
-    app = Astrometry(app=Test(), tempDir='mw4/test/temp')
+    app = Astrometry(app=Test())
 
     yield app
-
 
 
 def test_properties_1(app):

@@ -54,6 +54,10 @@ def module_setup_teardown(qtbot):
         update1s = pyqtSignal()
         update10s = pyqtSignal()
         threadPool = QThreadPool()
+        mwGlob = {'modelDir': 'mw4/test/model',
+                  'imageDir': 'mw4/test/image',
+                  'configDir': 'mw4/test/config',
+                  'tempDir': 'mw4/test/temp'}
 
     class Test(QObject):
         config = {'mainW': {}}

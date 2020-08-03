@@ -47,6 +47,10 @@ def module_setup_teardown(qtbot):
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='mw4/test/data')
+        mwGlob = {'modelDir': 'mw4/test/model',
+                  'imageDir': 'mw4/test/image',
+                  'configDir': 'mw4/test/config',
+                  'tempDir': 'mw4/test/temp'}
 
     class Test(QObject):
         config = {'mainW': {}}
@@ -58,8 +62,12 @@ def module_setup_teardown(qtbot):
         drawHorizonPoints = pyqtSignal()
         drawBuildPoints = pyqtSignal()
         message = pyqtSignal(str, int)
-        mwGlob = {'configDir': 'mw4/test/config'}
-        data = DataPoint(app=Test1(), configDir='mw4/test/config')
+        mwGlob = {'modelDir': 'mw4/test/model',
+                  'imageDir': 'mw4/test/image',
+                  'configDir': 'mw4/test/config',
+                  'tempDir': 'mw4/test/temp'}
+
+        data = DataPoint(app=Test1())
         uiWindows = {'showHemisphereW': {'classObj': Test2()}}
 
     widget = QWidget()

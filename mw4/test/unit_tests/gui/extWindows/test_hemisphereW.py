@@ -50,8 +50,10 @@ def module_setup_teardown(qtbot):
     class Test2(QObject):
         threadPool = QThreadPool()
         update1s = pyqtSignal()
+        mwGlob = {'configDir': 'mw4/test/config',
+                  'tempDir': 'mw4/test/temp'}
 
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='mw4/test/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
@@ -76,7 +78,7 @@ def module_setup_teardown(qtbot):
         redrawHemisphere = pyqtSignal()
         message = pyqtSignal(str, int)
 
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='mw4/test/data')
         mount.obsSite.Alt = Angle(degrees=45)
         mount.obsSite.Az = Angle(degrees=45)
@@ -84,7 +86,7 @@ def module_setup_teardown(qtbot):
         camera = Camera(app=Test2())
         dome = Dome(app=Test2())
         astrometry = Astrometry(app=Test2())
-        data = DataPoint(app=Test2(), configDir='mw4/test/config')
+        data = DataPoint(app=Test2())
         hipparcos = Hipparcos(app=Test2())
         deviceStat = {'dome': True}
         mainW = Test1()

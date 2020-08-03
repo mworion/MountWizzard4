@@ -58,7 +58,7 @@ def module_setup_teardown():
         drawHorizonPoints = pyqtSignal()
         messageQueue = Queue()
         deviceStat = {'dome': True}
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='mw4/test/data')
         mainW = Test1()
 

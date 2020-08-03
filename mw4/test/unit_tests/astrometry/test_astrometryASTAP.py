@@ -47,8 +47,9 @@ def module_setup_teardown():
 def app():
     class Test:
         threadPool = QThreadPool()
+        mwGlob = {'tempDir': 'mw4/test/temp'}
 
-    parent = Astrometry(app=Test(), tempDir='mw4/test/temp')
+    parent = Astrometry(app=Test())
     app = AstrometryASTAP(parent=parent)
 
     for file in os.listdir('mw4/test/temp'):

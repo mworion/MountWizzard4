@@ -52,6 +52,8 @@ def module_setup_teardown(qtbot):
 
     class Test2(QObject):
         threadPool = QThreadPool()
+        mwGlob = {'imageDir': 'mw4/test/image',
+                  'tempDir': 'mw4/test/temp'}
 
     class Test1a:
         expTime = QDoubleSpinBox()
@@ -74,7 +76,7 @@ def module_setup_teardown(qtbot):
         showImage = pyqtSignal(str)
         message = pyqtSignal(str, int)
         mainW = Test1()
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='mw4/test/data')
         camera = Camera(app=Test2())
         astrometry = Astrometry(app=Test2())

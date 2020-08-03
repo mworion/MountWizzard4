@@ -49,6 +49,7 @@ def module_setup_teardown(qtbot):
     class Test1(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(object, object)
+        mwGlob = {'tempDir': 'mw4/test/temp'}
 
     class Test:
         astrometry = Astrometry(app=Test1())

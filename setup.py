@@ -44,7 +44,7 @@ setup(
     ],
     python_requires='>=3.6.0, <3.9',
     install_requires=[
-        'mountcontrol==0.171',
+        'mountcontrol==0.172',
         'indibase==0.137',
         'numpy==1.19.0',
         'PyQt5==5.15.0; platform_machine != "armv7l"',
@@ -56,7 +56,7 @@ setup(
         'scipy==1.5.1',
         'requests==2.23.0',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.24',
+        'skyfield==1.26',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==1.7.0',
         'opencv-python-headless==4.3.0.36',

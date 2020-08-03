@@ -72,10 +72,15 @@ def function_setup_teardown(qtbot):
 
     class Test1(QObject):
         threadPool = QThreadPool()
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='mw4/test/data')
         update10s = pyqtSignal()
         update1s = pyqtSignal()
+        mwGlob = {'imageDir': 'mw4/test/image',
+                  'dataDir': 'mw4/test/data',
+                  'modelDir': 'mw4/test/model',
+                  'tempDir': 'mw4/test/temp',
+                  'configDir': 'mw4/test/config'}
 
     @staticmethod
     def testShowWindows():
@@ -112,7 +117,7 @@ def function_setup_teardown(qtbot):
         remoteCommand = pyqtSignal(str)
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='mw4/test/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
@@ -129,7 +134,7 @@ def function_setup_teardown(qtbot):
         telescope = Telescope(app=Test1())
         relay = KMRelay()
         remote = Remote()
-        data = DataPoint()
+        data = DataPoint(app=Test1())
         ephemeris = eph
         measure = MeasureData(app=Test1())
         power = PegasusUPB(app=Test1())

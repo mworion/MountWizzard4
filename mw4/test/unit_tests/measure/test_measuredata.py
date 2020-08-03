@@ -35,7 +35,7 @@ def module_setup_teardown():
         data = {}
 
     class Test:
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='mw4/test/data')
         sensorWeather = Test1()
         onlineWeather = Test1()

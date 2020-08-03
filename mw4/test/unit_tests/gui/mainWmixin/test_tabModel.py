@@ -53,7 +53,7 @@ def module_setup_teardown(qtbot):
     global ui, widget, Test, Test1, app
     
     class Test1(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='mw4/test/data')
         update1s = pyqtSignal()
         update10s = pyqtSignal()
@@ -66,7 +66,7 @@ def module_setup_teardown(qtbot):
         showImage = pyqtSignal(str)
         __version__ = 'test'
         message = pyqtSignal(str, int)
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='mw4/test/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,

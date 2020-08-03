@@ -138,7 +138,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    MAC='00.c0.08.87.35.db',
                                    threadPool=self.threadPool,
                                    pathToData=pathToData,
-                                   expire=False,
                                    verbose=False,
                                    )
 

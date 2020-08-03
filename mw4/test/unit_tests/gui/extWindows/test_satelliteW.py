@@ -52,7 +52,7 @@ def module_setup_teardown():
         update1s = pyqtSignal()
         messageQueue = Queue()
         threadPool = QThreadPool()
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='mw4/test/data')
         data = Test1()
         mount.obsSite.location = Topos(latitude_degrees=20,

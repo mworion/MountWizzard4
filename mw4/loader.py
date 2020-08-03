@@ -33,8 +33,8 @@ import PyQt5.QtCore
 import PyQt5.QtGui
 import PyQt5.QtWidgets
 import astropy
-from astropy.utils import iers
 astropy.log.setLevel('ERROR')
+from astropy.utils import iers
 iers.conf.auto_download = False
 from importlib_metadata import version
 
@@ -47,8 +47,6 @@ from mw4.resource import resources
 
 logger = logging.getLogger()
 log = CustomLogger(logger, {})
-
-featureFlags = {'analyse': True}
 
 
 class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):

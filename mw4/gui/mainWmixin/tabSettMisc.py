@@ -460,7 +460,7 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
-        if platform.machine() not in Config.excludedPlatforms:
+        if platform.machine() in Config.excludedPlatforms:
             return False
 
         self.audioSignalsSet['Beep'] = ':/sound/beep.wav'

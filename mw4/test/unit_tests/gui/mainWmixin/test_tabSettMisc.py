@@ -497,6 +497,11 @@ def test_playAudioModelFinished_1():
         assert not suc
 
 
+def test_setupAudioSignals_1():
+    suc = app.setupAudioSignals()
+    assert suc
+
+
 def test_playSound_1():
     suc = app.playSound()
     assert not suc

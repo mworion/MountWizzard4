@@ -447,7 +447,7 @@ class AnalyseWindow(widget.MWidget):
 
         axe.set_yticks(range(0, 90, 10))
         axe.set_ylim(0, 90)
-        yLabel = ['', '', '', '', '', '', '', '', '', '']
+        yLabel = ['', '', '', '', '', '', '', '', '']
         axe.set_yticklabels(yLabel)
 
         altitude = np.asarray(model['altitude'])

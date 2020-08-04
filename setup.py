@@ -49,7 +49,7 @@ setup(
         'PyQt5==5.15.0; platform_machine != "armv7l"',
         'PyQt3D==5.15.0; platform_machine != "armv7l"',
         'PyQtWebEngine==5.15.0; platform_machine != "armv7l"',
-        'matplotlib==3.2.2',
+        'matplotlib==3.3.0',
         'astropy==4.0.1',
         'photutils==0.7.2',
         'scipy==1.5.1',

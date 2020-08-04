@@ -302,7 +302,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                            colors=self.M_BLUE,
                            labelsize=12)
         axeTop.set_xticks(np.arange(0, 361, 45))
-        axeTop.grid(axis='both', visible=False)
+        axeTop.grid(False)
         axeTop.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'])
         axeTop.spines['bottom'].set_color(self.M_BLUE)
         axeTop.spines['top'].set_color(self.M_BLUE)

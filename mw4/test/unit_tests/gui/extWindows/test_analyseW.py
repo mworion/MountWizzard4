@@ -31,6 +31,7 @@ from PyQt5.QtCore import pyqtSignal
 # local import
 from mw4.gui.analyseW import AnalyseWindow
 from mw4.gui.widget import MWidget
+from mw4.resource import resources
 
 
 @pytest.fixture(autouse=True, scope='function')

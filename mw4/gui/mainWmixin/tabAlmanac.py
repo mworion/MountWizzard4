@@ -403,13 +403,11 @@ class Almanac(object):
 
         return True
 
-    def updateMoonPhase(self):
+    def getMoonPhase(self):
         """
         updateMoonPhase searches for moon events, moon phase and illumination percentage.
-        It will also write some description for the moon phase. In addition I will show an
-        image of the moon showing the moon phase as picture.
 
-        :return: true for test purpose
+        :return: fraction of illumination, degree phase and percent phase
         """
 
         sun = self.app.ephemeris['sun']
@@ -421,16 +419,28 @@ class Almanac(object):
         _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
         _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
 
-        moonPhaseIllumination = almanac.fraction_illuminated(self.app.ephemeris, 'moon', now)
-        moonPhaseDegree = (moonLon.degrees - sunLon.degrees) % 360.0
-        moonPhasePercent = moonPhaseDegree / 360
+        mpIllumination = almanac.fraction_illuminated(self.app.ephemeris, 'moon', now)
+        mpDegree = (moonLon.degrees - sunLon.degrees) % 360.0
+        mpPercent = mpDegree / 360
 
-        self.ui.moonPhaseIllumination.setText(f'{moonPhaseIllumination * 100:3.2f}')
-        self.ui.moonPhasePercent.setText(f'{100* moonPhasePercent:3.0f}')
-        self.ui.moonPhaseDegree.setText(f'{moonPhaseDegree:3.0f}')
+        return mpIllumination, mpDegree, mpPercent
+
+    def updateMoonPhase(self):
+        """
+        It will also write some description for the moon phase. In addition I will show an
+        image of the moon showing the moon phase as picture.
+
+        :return: true for test purpose
+        """
+
+        mpIllumination, mpDegree, mpPercent = self.getMoonPhase()
+
+        self.ui.moonPhaseIllumination.setText(f'{mpIllumination * 100:3.2f}')
+        self.ui.moonPhasePercent.setText(f'{100* mpPercent:3.0f}')
+        self.ui.moonPhaseDegree.setText(f'{mpDegree:3.0f}')
 
         for phase in self.phasesText:
-            if int(moonPhasePercent * 100) not in range(*self.phasesText[phase]['range']):
+            if int(mpPercent * 100) not in range(*self.phasesText[phase]['range']):
                 continue
             self.ui.moonPhaseText.setText(phase)
 
@@ -444,29 +454,29 @@ class Almanac(object):
         maskP.setPen(QPen(QColor(255, 255, 255)))
         maskP.drawRect(0, 0, width, height)
 
-        if moonPhaseDegree <= 90:
+        if mpDegree <= 90:
             maskP.setBrush(QColor(48, 48, 48))
             maskP.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 
-            r = np.cos(np.radians(moonPhaseDegree)) * width / 2
+            r = np.cos(np.radians(mpDegree)) * width / 2
             maskP.setBrush(QColor(48, 48, 48))
             maskP.setPen(QPen(QColor(48, 48, 48)))
             maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
 
-        elif 90 < moonPhaseDegree <= 180:
+        elif 90 < mpDegree <= 180:
             maskP.setBrush(QColor(48, 48, 48))
             maskP.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 
-            r = - np.cos(np.radians(moonPhaseDegree)) * width / 2
+            r = - np.cos(np.radians(mpDegree)) * width / 2
             maskP.setBrush(QColor(255, 255, 255))
             maskP.setPen(QPen(QColor(255, 255, 255)))
             maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
 
-        elif 180 < moonPhaseDegree <= 270:
+        elif 180 < mpDegree <= 270:
             maskP.setBrush(QColor(48, 48, 48))
             maskP.drawPie(0, 0, width, height, - 90 * 16, 180 * 16)
 
-            r = - np.cos(np.radians(moonPhaseDegree)) * width / 2
+            r = - np.cos(np.radians(mpDegree)) * width / 2
             maskP.setBrush(QColor(255, 255, 255))
             maskP.setPen(QPen(QColor(255, 255, 255)))
             maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
@@ -475,7 +485,7 @@ class Almanac(object):
             maskP.setBrush(QColor(48, 48, 48))
             maskP.drawPie(0, 0, width, height, -90 * 16, 180 * 16)
 
-            r = np.cos(np.radians(moonPhaseDegree)) * width / 2
+            r = np.cos(np.radians(mpDegree)) * width / 2
             maskP.setPen(QPen(QColor(48, 48, 48)))
             maskP.setBrush(QColor(48, 48, 48))
             maskP.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)

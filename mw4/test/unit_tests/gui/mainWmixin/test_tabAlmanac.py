@@ -95,9 +95,22 @@ def module_setup_teardown(qtbot):
     app.threadPool.waitForDone(1000)
 
 
+def test_initConfig_1():
+    suc = app.initConfig()
+    assert suc
+
+
 def test_storeConfig_1():
     suc = app.storeConfig()
     assert suc
+
+
+def test_storeConfig_2():
+    app.thread = threading.Thread()
+    with mock.patch.object(threading.Thread,
+                           'join'):
+        suc = app.storeConfig()
+        assert suc
 
 
 def test_drawTwilight_1():
@@ -140,6 +153,41 @@ def test_displayTwilightData_1():
     assert suc
 
 
+def test_getMoonPhase_1():
+    a, b, c = app.getMoonPhase()
+    assert a is not None
+    assert b is not None
+    assert c is not None
+
+
 def test_updateMoonPhase_1():
-    suc = app.updateMoonPhase()
-    assert suc
+    with mock.patch.object(app,
+                           'getMoonPhase',
+                           return_value=(20, 45, 20)):
+        suc = app.updateMoonPhase()
+        assert suc
+
+
+def test_updateMoonPhase_2():
+    with mock.patch.object(app,
+                           'getMoonPhase',
+                           return_value=(45, 135, 45)):
+        suc = app.updateMoonPhase()
+        assert suc
+
+
+def test_updateMoonPhase_3():
+    with mock.patch.object(app,
+                           'getMoonPhase',
+                           return_value=(70, 225, 70)):
+        suc = app.updateMoonPhase()
+        assert suc
+
+
+def test_updateMoonPhase_4():
+    with mock.patch.object(app,
+                           'getMoonPhase',
+                           return_value=(95, 315, 95)):
+        suc = app.updateMoonPhase()
+        assert suc
+

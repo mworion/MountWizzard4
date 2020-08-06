@@ -79,14 +79,3 @@ jobs:
         pytest mw4/test/unit_tests/remote
         pytest mw4/test/unit_tests/telescope
         pytest mw4/test/unit_tests/zStartup
-
-    - name: Upload coverage to codecov
-      if: always()
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        # yml: ./codecov.yml      # optional
-        # fail_ci_if_error: True  # optional default is false

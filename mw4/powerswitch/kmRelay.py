@@ -19,34 +19,39 @@
 import logging
 import re
 import time
+
 # external packages
-import PyQt5
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QMutex
+from PyQt5.QtCore import QTimer
 import requests
+
 # local imports
 from mw4.base.loggerMW import CustomLogger
 
 
-class RelaySignals(PyQt5.QtCore.QObject):
+class RelaySignals(QObject):
     """
-    The WeatherSignals class offers a list of signals to be used and instantiated by
-    the Mount class to get signals for triggers for finished tasks to
+    The RelaySignals class offers a list of signals to be used and instantiated by
+    the Relay class to get signals for triggers for finished tasks to
     enable a gui to update their values transferred to the caller back.
 
     This has to be done in a separate class as the signals have to be subclassed from
-    QObject and the Mount class itself is subclassed from object
+    QObject and the Relay class itself is subclassed from object
     """
 
     __all__ = ['RelaySignals']
 
-    statusReady = PyQt5.QtCore.pyqtSignal()
+    statusReady = pyqtSignal()
 
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
+    serverConnected = pyqtSignal()
+    serverDisconnected = pyqtSignal(object)
+    deviceConnected = pyqtSignal(str)
+    deviceDisconnected = pyqtSignal(str)
 
 
-class KMRelay(PyQt5.QtCore.QObject):
+class KMRelay(QObject):
     """
     The class KMRelay inherits all information and handling of KMtronic relay board
     attributes of the connected board and provides the abstracted interface.
@@ -87,12 +92,12 @@ class KMRelay(PyQt5.QtCore.QObject):
         self.name = ''
 
         self.host = host
-        self.mutexPoll = PyQt5.QtCore.QMutex()
+        self.mutexPoll = QMutex()
         self.user = user
         self.password = password
         self.status = [0] * 8
 
-        self.timerTask = PyQt5.QtCore.QTimer()
+        self.timerTask = QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.cyclePolling)
 
@@ -142,11 +147,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: success
         """
 
-        if self._host is None:
-            return False
-        if not self._host[0]:
-            return False
-        if not self._host[1]:
+        if not self.host:
             return False
 
         self.timerTask.start(self.CYCLE_POLLING)

@@ -985,9 +985,10 @@ class Model(object):
             self.app.message.emit('Actual model cannot be cleared', 2)
             return False
         else:
-            self.app.message.emit('Actual model clearing, waiting 1s', 0)
-            QTest.qWait(1000)
+            self.app.message.emit('Actual model clearing, waiting 3s', 0)
+            QTest.qWait(3000)
             self.app.message.emit('Actual model cleared', 0)
+            self.refreshModel()
 
         value = self.ui.settleTimeMount.value()
         if value < 2:

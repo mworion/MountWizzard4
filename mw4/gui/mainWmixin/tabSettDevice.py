@@ -344,12 +344,16 @@ class SettDevice(object):
         :return: returns status if we are finished
         """
 
+        if not driver:
+            return False
+
         if not self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
             if onlyASCOM:
                 return False
-        else:
+
+        if self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
             if not (autoASCOM or onlyASCOM):
-                return False
+                return True
 
         # if there is a change we first have to stop running drivers and reset gui
         # if it's the startup (which has no name set, we don't need to stop)

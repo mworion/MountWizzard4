@@ -21,7 +21,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.151.0',
+    version='0.151.1',
     packages=[
         'mw4',
         'mw4.astrometry',
@@ -60,7 +60,7 @@ setup(
         'importlib_metadata==1.7.0',
         'opencv-python-headless==4.3.0.36',
     ]
-    + (['pywin32==228'] if "Windows" == platform.system() else [])
+    + (['pypiwin32==223'] if "Windows" == platform.system() else [])
     + (['comtypes==1.1.7'] if "Windows" == platform.system() else []),
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

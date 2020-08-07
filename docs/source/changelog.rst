@@ -3,9 +3,13 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed
 changes list, please refer to the commit list on GitHub.
 
-0.151.1
+0.151.2
 
 - refactoring device management
+
+0.151.1
+
+- bugfix for QSI Ascom cameras
 
 0.151.0
 

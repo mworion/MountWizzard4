@@ -281,7 +281,7 @@ def test_stretchImage_2():
 def test_imagePlot_1():
     app.image = np.zeros([100, 100], dtype=np.uint8)
     app.axe = app.fig.add_subplot()
-    app.axeCB = app.fig.add_axes()
+    app.axeCB = app.fig.add_subplot()
     app.stretch = AsinhStretch()
     app.colorMap = 'rainbow'
     app.ui.view.setCurrentIndex(0)
@@ -293,7 +293,7 @@ def test_imagePlot_2():
     app.image = np.zeros([100, 100], dtype=np.uint8)
     app.header = fits.PrimaryHDU().header
     app.axe = app.fig.add_subplot()
-    app.axeCB = app.fig.add_axes()
+    app.axeCB = app.fig.add_subplot()
     app.stretch = AsinhStretch()
     app.colorMap = 'rainbow'
     app.sources = {'xcentroid': 50 * np.ones([1]),
@@ -313,7 +313,7 @@ def test_imagePlot_3():
     app.image = np.zeros([100, 100], dtype=np.uint8)
     app.header = fits.PrimaryHDU().header
     app.axe = app.fig.add_subplot()
-    app.axeCB = app.fig.add_axes()
+    app.axeCB = app.fig.add_subplot()
     app.stretch = AsinhStretch()
     app.colorMap = 'rainbow'
     app.sources = {'xcentroid': 50 * np.ones([1]),
@@ -333,7 +333,7 @@ def test_imagePlot_4():
     app.image = np.zeros([100, 100], dtype=np.uint8)
     app.header = fits.PrimaryHDU().header
     app.axe = app.fig.add_subplot()
-    app.axeCB = app.fig.add_axes()
+    app.axeCB = app.fig.add_subplot()
     app.stretch = AsinhStretch()
     app.colorMap = 'rainbow'
     app.sources = {'xcentroid': 50 * np.ones([1]),
@@ -353,7 +353,7 @@ def test_imagePlot_5():
     app.image = np.zeros([100, 100], dtype=np.uint8)
     app.header = fits.PrimaryHDU().header
     app.axe = app.fig.add_subplot()
-    app.axeCB = app.fig.add_axes()
+    app.axeCB = app.fig.add_subplot()
     app.stretch = AsinhStretch()
     app.colorMap = 'rainbow'
     app.sources = {'xcentroid': 50 * np.ones([1]),

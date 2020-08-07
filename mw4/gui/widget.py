@@ -530,8 +530,9 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         axe.set_theta_zero_location('N')
         axe.set_rlabel_position(45)
         axe.set_theta_direction(-1)
-        xLabel = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
-        axe.set_xticklabels(xLabel)
+        # ticks have to be set before labels to be sure to have them positioned correctly
+        axe.set_xticks([0, 45, 90, 135, 180, 225, 270, 315])
+        axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
 
         return axe, fig
 

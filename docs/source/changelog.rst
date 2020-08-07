@@ -3,10 +3,17 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed
 changes list, please refer to the commit list on GitHub.
 
-0.151.29
+0.151.1
 
-- extension icon suppport
-- refactoring device manangement
+- refactoring device management
+
+0.151.0
+
+- bugfix release qt framework osx
+
+0.150.29
+
+- extension icon support
 - adding INDIGO Support for UPB, SQM, MGBox and basic drivers
 
 0.150.28

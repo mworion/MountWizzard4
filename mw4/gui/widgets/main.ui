@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>9</number>
+    <number>11</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -13613,7 +13613,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -21260,7 +21260,7 @@ When clicking the button, you could change the value.</string>
          <string>Debug</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
        <widget class="QRadioButton" name="loglevelInfo">
@@ -21314,7 +21314,7 @@ When clicking the button, you could change the value.</string>
          <string>Deep Debug</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
       </widget>

@@ -21,7 +21,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.151.0b1',
+    version='0.151.0',
     packages=[
         'mw4',
         'mw4.astrometry',
@@ -46,9 +46,9 @@ setup(
         'mountcontrol==0.172',
         'indibase==0.137',
         'numpy==1.19.0',
-        'PyQt5==5.15.0; platform_machine != "armv7l"',
-        'PyQt3D==5.15.0; platform_machine != "armv7l"',
-        'PyQtWebEngine==5.15.0; platform_machine != "armv7l"',
+        'PyQt5==5.14.2; platform_machine != "armv7l"',
+        'PyQt3D==5.14.0; platform_machine != "armv7l"',
+        'PyQtWebEngine==5.14.0; platform_machine != "armv7l"',
         'matplotlib==3.3.0',
         'astropy==4.0.1',
         'photutils==0.7.2',

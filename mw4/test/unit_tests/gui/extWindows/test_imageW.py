@@ -280,8 +280,8 @@ def test_stretchImage_2():
 
 def test_imagePlot_1():
     app.image = np.random.rand(100, 100)
-    app.axe = app.fig.add_subplot()
-    app.axeCB = app.fig.add_subplot()
+    app.axe = app.fig.add_subplot(label=0)
+    app.axeCB = app.fig.add_subplot(label=1)
     app.stretch = AsinhStretch()
     app.colorMap = 'rainbow'
     app.ui.view.setCurrentIndex(0)
@@ -292,8 +292,8 @@ def test_imagePlot_1():
 def test_imagePlot_2():
     app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
-    app.axe = app.fig.add_subplot()
-    app.axeCB = app.fig.add_subplot()
+    app.axe = app.fig.add_subplot(label=0)
+    app.axeCB = app.fig.add_subplot(label=1)
     app.stretch = AsinhStretch()
     app.colorMap = 'rainbow'
     app.sources = {'xcentroid': 50 * np.ones([1]),
@@ -312,8 +312,8 @@ def test_imagePlot_2():
 def test_imagePlot_3():
     app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
-    app.axe = app.fig.add_subplot()
-    app.axeCB = app.fig.add_subplot()
+    app.axe = app.fig.add_subplot(label=0)
+    app.axeCB = app.fig.add_subplot(label=1)
     app.stretch = AsinhStretch()
     app.colorMap = 'rainbow'
     app.sources = {'xcentroid': 50 * np.ones([1]),
@@ -332,8 +332,8 @@ def test_imagePlot_3():
 def test_imagePlot_4():
     app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
-    app.axe = app.fig.add_subplot()
-    app.axeCB = app.fig.add_subplot()
+    app.axe = app.fig.add_subplot(label=0)
+    app.axeCB = app.fig.add_subplot(label=1)
     app.stretch = AsinhStretch()
     app.colorMap = 'rainbow'
     app.sources = {'xcentroid': 50 * np.ones([1]),
@@ -352,8 +352,8 @@ def test_imagePlot_4():
 def test_imagePlot_5():
     app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
-    app.axe = app.fig.add_subplot()
-    app.axeCB = app.fig.add_subplot()
+    app.axe = app.fig.add_subplot(label=0)
+    app.axeCB = app.fig.add_subplot(label=1)
     app.stretch = AsinhStretch()
     app.colorMap = 'rainbow'
     app.sources = {'xcentroid': 50 * np.ones([1]),

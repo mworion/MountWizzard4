@@ -279,7 +279,7 @@ def test_stretchImage_2():
 
 
 def test_imagePlot_1():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
     app.axe = app.fig.add_subplot()
     app.axeCB = app.fig.add_subplot()
     app.stretch = AsinhStretch()
@@ -290,7 +290,7 @@ def test_imagePlot_1():
 
 
 def test_imagePlot_2():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
     app.axe = app.fig.add_subplot()
     app.axeCB = app.fig.add_subplot()
@@ -303,14 +303,14 @@ def test_imagePlot_2():
                    'roundness2': 0.5 * np.ones([1]),
                    'flux': 5 * np.ones([1]),
                    }
-    app.mean = np.zeros([100, 100], dtype=np.uint8)
+    app.mean = np.zeros([100, 100])
     app.ui.view.setCurrentIndex(1)
     suc = app.imagePlot()
     assert suc
 
 
 def test_imagePlot_3():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
     app.axe = app.fig.add_subplot()
     app.axeCB = app.fig.add_subplot()
@@ -323,14 +323,14 @@ def test_imagePlot_3():
                    'roundness2': 0.5 * np.ones([1]),
                    'flux': 5 * np.ones([1]),
                    }
-    app.mean = np.zeros([100, 100], dtype=np.uint8)
+    app.mean = np.zeros([100, 100])
     app.ui.view.setCurrentIndex(2)
     suc = app.imagePlot()
     assert suc
 
 
 def test_imagePlot_4():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
     app.axe = app.fig.add_subplot()
     app.axeCB = app.fig.add_subplot()
@@ -343,14 +343,14 @@ def test_imagePlot_4():
                    'roundness2': 0.5 * np.ones([1]),
                    'flux': 5 * np.ones([1]),
                    }
-    app.mean = np.zeros([100, 100], dtype=np.uint8)
+    app.mean = np.zeros([100, 100])
     app.ui.view.setCurrentIndex(4)
     suc = app.imagePlot()
     assert suc
 
 
 def test_imagePlot_5():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
     app.axe = app.fig.add_subplot()
     app.axeCB = app.fig.add_subplot()
@@ -363,7 +363,7 @@ def test_imagePlot_5():
                    'roundness2': 0.5 * np.ones([1]),
                    'flux': 5 * np.ones([1]),
                    }
-    app.mean = np.zeros([100, 100], dtype=np.uint8)
+    app.mean = np.zeros([100, 100])
     app.ui.view.setCurrentIndex(5)
     suc = app.imagePlot()
     assert suc
@@ -390,21 +390,21 @@ def test_preparePlot_1():
 
 
 def test_preparePlot_2():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
     app.header = None
     suc = app.preparePlot()
     assert not suc
 
 
 def test_preparePlot_3():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
     suc = app.preparePlot()
     assert suc
 
 
 def test_preparePlot_4():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
     app.header['CTYPE1'] = '2'
     suc = app.preparePlot()
@@ -412,7 +412,7 @@ def test_preparePlot_4():
 
 
 def test_preparePlot_5():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
     app.header['CTYPE1'] = '2'
     app.ui.view.setCurrentIndex(1)
@@ -425,7 +425,7 @@ def test_preparePlot_5():
 
 
 def test_workerPhotometry_1():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
     suc = app.workerPhotometry()
     assert suc
     assert app.mean is not None
@@ -458,8 +458,8 @@ def test_stackImages_1():
 
 
 def test_stackImages_2():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
-    app.imageStack = np.random.rand(50, 50, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
+    app.imageStack = np.random.rand(50, 50)
     app.header = fits.PrimaryHDU().header
     app.ui.checkStackImages.setChecked(True)
 
@@ -471,8 +471,8 @@ def test_stackImages_2():
 
 def test_stackImages_3():
     app.numberStack = 5
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
-    app.imageStack = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
+    app.imageStack = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
     app.ui.checkStackImages.setChecked(True)
 
@@ -482,7 +482,7 @@ def test_stackImages_3():
 
 
 def test_zoomImage_1():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
     app.header['naxis'] = 2
     app.ui.zoom.setCurrentIndex(0)
@@ -492,7 +492,7 @@ def test_zoomImage_1():
 
 
 def test_zoomImage_2():
-    app.image = np.random.rand(100, 100, dtype=np.uint8)
+    app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
     app.header['naxis'] = 2
     app.ui.zoom.setCurrentIndex(1)

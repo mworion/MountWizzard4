@@ -492,7 +492,7 @@ class ManageModel(object):
         msg = PyQt5.QtWidgets.QMessageBox
         reply = msg.question(self,
                              'Delete model',
-                             'Delete model from database?',
+                             f'Delete model [{modelName}] from database?',
                              msg.Yes | msg.No,
                              msg.No,
                              )

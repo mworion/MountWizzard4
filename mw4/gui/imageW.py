@@ -470,14 +470,14 @@ class ImageWindow(widget.MWidget):
         valueX, _ = np.linspace(-midX, midX, num=number, retstep=True)
         textX = list((str(int(x)) for x in valueX))
         ticksX = list((x + midX for x in valueX))
-        self.axe.set_xticklabels(textX)
         self.axe.set_xticks(ticksX)
+        self.axe.set_xticklabels(textX)
 
         valueY, _ = np.linspace(-midY, midY, num=number, retstep=True)
         textY = list((str(int(x)) for x in valueY))
         ticksY = list((x + midY for x in valueY))
-        self.axe.set_yticklabels(textY)
         self.axe.set_yticks(ticksY)
+        self.axe.set_yticklabels(textY)
 
         self.axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         self.axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')

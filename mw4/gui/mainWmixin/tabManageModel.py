@@ -206,7 +206,6 @@ class ManageModel(object):
             axe.figure.canvas.draw()
             return False
 
-        # start with plotting
         lat = self.app.config.get('topoLat', 51.47)
 
         altitude = []
@@ -282,7 +281,6 @@ class ManageModel(object):
         :return:    True if ok for testing
         """
 
-        # check entry conditions for displaying a polar plot
         if model is None:
             hasNoStars = True
         elif not hasattr(model, 'starList'):
@@ -290,30 +288,13 @@ class ManageModel(object):
         else:
             hasNoStars = model.starList is None or not model.starList
 
-        figure = self.errorAscendingPlot.figure
-        figure.clf()
-        axe = figure.add_subplot(1, 1, 1, facecolor=self.M_GREY_DARK)
+        axe, _ = self.generatePolar(widget=self.errorAscendingPlot,
+                                    title='Model Point Errors in ascending order')
 
         if hasNoStars:
             axe.figure.canvas.draw()
             return False
 
-        axe.set_title('Model Point Errors in ascending order',
-                      color=self.M_BLUE,
-                      fontweight='bold',
-                      pad=15,
-                      )
-        axe.spines['bottom'].set_color(self.M_BLUE)
-        axe.spines['top'].set_color(self.M_BLUE)
-        axe.spines['left'].set_color(self.M_BLUE)
-        axe.spines['right'].set_color(self.M_BLUE)
-        axe.grid(True, color=self.M_GREY)
-        axe.tick_params(axis='x',
-                        colors=self.M_BLUE,
-                        labelsize=12)
-        axe.tick_params(axis='y',
-                        colors=self.M_BLUE,
-                        labelsize=12)
         axe.set_xlabel('Star',
                        color=self.M_BLUE,
                        fontweight='bold',
@@ -362,7 +343,7 @@ class ManageModel(object):
         else:
             hasNoStars = model.starList is None or not model.starList
 
-        axe, fig = self.generatePolar(widget=self.errorDistributionPlot,
+        axe, _ = self.generatePolar(widget=self.errorDistributionPlot,
                                       title='Error Distribution')
 
         if hasNoStars:
@@ -467,6 +448,7 @@ class ManageModel(object):
             return False
         if not ok:
             return False
+
         suc = self.app.mount.model.storeName(modelName)
         if not suc:
             self.app.message.emit('Model [{0}] cannot be saved'.format(modelName), 2)
@@ -488,6 +470,7 @@ class ManageModel(object):
         if self.ui.nameList.currentItem() is None:
             self.app.message.emit('No model name selected', 2)
             return False
+
         modelName = self.ui.nameList.currentItem().text()
         msg = PyQt5.QtWidgets.QMessageBox
         reply = msg.question(self,
@@ -498,6 +481,7 @@ class ManageModel(object):
                              )
         if reply != msg.Yes:
             return False
+
         suc = self.app.mount.model.deleteName(modelName)
         if not suc:
             self.app.message.emit('Model [{0}] cannot be deleted'.format(modelName), 2)
@@ -521,6 +505,7 @@ class ManageModel(object):
         self.ui.clearModel.setEnabled(True)
         self.app.mount.signals.alignDone.disconnect(self.clearRefreshModel)
         self.app.message.emit('Align model data refreshed', 0)
+
         foundModel = self.findFittingModel()
         if foundModel:
             self.app.message.emit(f'Stored model [{foundModel}] found', 0)
@@ -564,6 +549,7 @@ class ManageModel(object):
                              )
         if reply == msg.No:
             return False
+
         suc = self.app.mount.model.clearAlign()
         if not suc:
             self.app.message.emit('Actual model cannot be cleared', 2)
@@ -587,7 +573,6 @@ class ManageModel(object):
         wStar = model.starList[wIndex]
 
         suc = model.deletePoint(wStar.number)
-
         if not suc:
             self.app.message.emit('Worst point cannot be deleted', 2)
             return False
@@ -624,6 +609,7 @@ class ManageModel(object):
                 text = f'Star [{wStar.number:02d}]: RMS of [{wStar.errorRMS:04.1f}] deleted'
                 self.app.message.emit(text, 0)
             mount.getAlign()
+
         else:
             self.finishOptimize()
 
@@ -656,6 +642,7 @@ class ManageModel(object):
                 text = f'Star [{wStar.number:02d}]: RMS of [{wStar.errorRMS:04.1f}] deleted'
                 self.app.message.emit(text, 0)
             mount.getAlign()
+
         else:
             self.finishOptimize()
 

@@ -64,22 +64,13 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.devices = {}
 
         self.data = {}
+        self.defaultConfig = {'deviceName': '',
+                              'framework': ''}
         self.run = {
             'internal - display only': MeasureDataRaw(self.app, self, self.data),
             'internal - CSV store': MeasureDataCSV(self.app, self, self.data)
         }
         self.framework = None
-        self.name = ''
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].name = value
 
     def startCommunication(self, loadConfig=False):
         """

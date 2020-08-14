@@ -50,6 +50,8 @@ class DirectWeather:
         }
         self.name = ''
         self.data = {}
+        self.defaultConfig = {'deviceName': '',
+                              'framework': ''}
 
     @staticmethod
     def startCommunication(loadConfig=False):

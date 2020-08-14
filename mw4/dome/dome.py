@@ -67,6 +67,8 @@ class Dome:
         self.signals = DomeSignals()
 
         self.data = {}
+        self.defaultConfig = {'deviceName': '',
+                              'framework': ''}
         self.framework = None
         self.run = {
             'indi': DomeIndi(self.app, self.signals, self.data),
@@ -75,15 +77,15 @@ class Dome:
 
         if platform.system() == 'Windows':
             self.run['ascom'] = DomeAscom(self.app, self.signals, self.data)
-
             ascomSignals = self.run['ascom'].ascomSignals
             ascomSignals.serverConnected.connect(self.signals.serverConnected)
             ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
             ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
             ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
-        self.name = ''
-        self.host = ('localhost', 7624)
+        for fw in self.run:
+            self.defaultConfig.update(self.run[fw].defaultConfig)
+
         self.isGeometry = False
 
         # signalling from subclasses to main
@@ -98,38 +100,6 @@ class Dome:
         indiSignals.serverDisconnected.connect(self.signals.serverDisconnected)
         indiSignals.deviceConnected.connect(self.signals.deviceConnected)
         indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
-
-    @property
-    def host(self):
-        return self._host
-
-    @host.setter
-    def host(self, value):
-        self._host = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].host = value
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].name = value
-
-    @property
-    def settlingTime(self):
-        if self.framework in self.run.keys():
-            return self.run[self.framework].settlingTime
-        else:
-            return None
-
-    @settlingTime.setter
-    def settlingTime(self, value):
-        if self.framework in self.run.keys():
-            self.run[self.framework].settlingTime = value
 
     def startCommunication(self, loadConfig=False):
         """

@@ -35,45 +35,34 @@ class SettDevice(object):
     processing if needed.
 
     devices types in self.drivers are name related to ascom definitions
-    """
 
-    frameworks = {
-        'alpaca': {
-            'device': '',
-            'deviceList': [],
-            'host': 'localhost',
-            'port': 11111,
-            'protocol': '',
-            'protocolList': ['https', 'http'],
-            'user': '',
-            'password': '',
-            'copyConfig': False,
-        },
-        'ascom': {
-            'device': 'test',
-        },
-        'indi': {
-            'device': '',
-            'deviceList': [],
-            'host': 'localhost',
-            'port': 7624,
-            'loadConfig': False,
-            'messages': False,
-            'copyConfig': False,
-        },
-        'astrometry': {
-            'searchRadius': 10,
-            'timeout': 30,
-            'appPath': '',
-            'indexPath': '',
-        },
-        'astap': {
-            'searchRadius': 10,
-            'timeout': 30,
-            'appPath': '',
-            'indexPath': '',
-        },
-    }
+    architecture:
+    - all properties are stored in the config dict as main source.
+    - when starting, all gui elements will be populated based on the entries of config
+    - all drivers were initialised with the content of config dict
+    - if we setup a new device, data of device is gathered for the popup from config
+    - when closing the popup, result data will be stored in config
+    - if there is no default data for a driver in config dict, it will be retrived from the
+      driver
+
+    sequence standard:
+        loading config dict
+        load driver default setup from driver if not present in config
+        initialize gui
+        initialize driver
+        start drivers
+        stop drivers
+
+    sequence popup:
+        initialize popup data
+        call popup modal
+        popup close
+        if cancel -> finished
+        store data in config
+        stop changed driver
+        initialize changed driver
+        start new driver
+    """
 
     def __init__(self, app=None, ui=None, clickable=None):
         if app:
@@ -88,6 +77,12 @@ class SettDevice(object):
                 'uiSetup': self.ui.domeSetup,
                 'class': self.app.dome,
                 'deviceType': 'dome',
+            },
+            'cover': {
+                'uiDropDown': self.ui.coverDevice,
+                'uiSetup': self.ui.coverSetup,
+                'class': self.app.cover,
+                'deviceType': 'cover',
             },
             'camera': {
                 'uiDropDown': self.ui.cameraDevice,
@@ -124,12 +119,6 @@ class SettDevice(object):
                 'uiSetup': None,
                 'class': self.app.onlineWeather,
                 'deviceType': None,
-            },
-            'cover': {
-                'uiDropDown': self.ui.coverDevice,
-                'uiSetup': self.ui.coverSetup,
-                'class': self.app.cover,
-                'deviceType': 'cover',
             },
             'skymeter': {
                 'uiDropDown': self.ui.skymeterDevice,
@@ -194,69 +183,31 @@ class SettDevice(object):
             signals.deviceConnected.connect(self.deviceConnected)
             signals.deviceDisconnected.connect(self.deviceDisconnected)
 
-    def dictMerge(self, dct, merge_dct):
-        """ Recursive dict merge. Inspired by :meth:``dict.update()``, instead of
-        updating only top-level keys, dictMerge recurses down into dicts nested
-        to an arbitrary depth, updating keys. The ``merge_dct`` is merged into
-        ``dct``.
-        :param dct: dict onto which the merge is executed
-        :param merge_dct: dct merged into dct
-        :return: None
-        """
-        for k, v in merge_dct.items():
-            if (k in dct and isinstance(dct[k], dict)
-                    and isinstance(merge_dct[k], collections.Mapping)):
-                self.dictMerge(dct[k], merge_dct[k])
-            else:
-                dct[k] = merge_dct[k]
-
-    def cleanData(self, data, driver):
-        """
-
-        :param data:
-        :param driver:
-        :return: cleaned data
-        """
-
-        if not data or 'frameworks' not in data:
-            data = {
-                'framework': 'indi',
-                'deviceType': driver,
-                'defaultDevice': '',
-                'frameworks': {'indi': {}, 'alpaca': {}, 'ascom': {}},
-            }
-
-        return data
-
-        if 'frameworks' not in data:
-            data['frameworks'] = {}
-
-        for fw in self.drivers[driver]['class'].run:
-            self.dictMerge(data['frameworks'][fw], self.frameworks.get(fw, {}))
-
-        return data
-
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
+        initConfig read the key out of the configuration dict. if some drivers configuration
+        are missing, the default values are loaded from the drivers. after that we have a
+        fully cleaned config dict and we can proceed initializing the gui and the drivers
 
         :return: True for test purpose
         """
 
-        config = self.app.config.get('mainW', {})
-        driversData = self.app.config.get('driversData', {})
+        config = self.app.config['mainW']
+        if 'driversData' not in config:
+            config['driversData'] = {}
 
         for driver in self.drivers:
-            data = driversData.get(driver, {})
-            self.driversData[driver] = self.cleanData(data, driver)
+            if 'driver' not in config['driversData']:
+                config['driversData'][driver] = {}
+
+            defaultConfig = self.drivers[driver]['class'].defaultConfig
+            config['driversData'][driver].update(defaultConfig)
+
+        self.driversData.update(config.get('driversData', {}))
+        self.ui.checkASCOMAutoConnect.setChecked(config.get('checkASCOMAutoConnect', False))
 
         self.setupDeviceGui()
-        for driver in self.drivers:
-            self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
-        self.ui.checkASCOMAutoConnect.setChecked(config.get('checkASCOMAutoConnect', False))
-        self.dispatch(driver='all')
+        # self.startDrivers()
 
         return True
 
@@ -271,26 +222,15 @@ class SettDevice(object):
 
         config = self.app.config['mainW']
 
-        if 'driversData' not in self.app.config:
-            self.app.config['driversData'] = {}
-        driversData = self.app.config['driversData']
-
-        for driver in self.drivers:
-            config[driver] = self.drivers[driver]['uiDropDown'].currentIndex()
-
-        for driver in self.drivers:
-            if driver not in self.driversData:
-                continue
-            driversData[driver] = self.driversData[driver]
-
+        config['driversData'] = self.driversData
         config['checkASCOMAutoConnect'] = self.ui.checkASCOMAutoConnect.isChecked()
 
         return True
 
     def setupDeviceGui(self):
         """
-        setupRelayGui handles the dropdown lists for all devices possible in mountwizzard.
-        therefore we add the necessary entries to populate the list.
+        setupDeviceGui handles the dropdown lists for all devices possible. it reads the
+        information out of the config dict and populated the entries where necessary
 
         :return: success for test
         """
@@ -303,26 +243,16 @@ class SettDevice(object):
             dropDown.addItem('device disabled')
 
         # adding driver items with applicable framework
-        for driver in self.drivers:
-            if not hasattr(self.drivers[driver]['class'], 'run'):
+        for driver in self.driversData:
+            if driver not in self.drivers:
+                self.log.critical(f'Missing driver: [{driver}]')
                 continue
-            for framework in self.drivers[driver]['class'].run.keys():
-                if driver not in self.driversData:
-                    self.driversData[driver] = {}
-                if framework == 'indi':
-                    name = ' - ' + self.driversData[driver].get('indiName', '')
-                elif framework == 'alpaca':
-                    name = ' - ' + self.driversData[driver].get('alpacaName', '')
-                elif framework == 'ascom':
-                    name = ' - ' + self.driversData[driver].get('ascomName', '')
-                elif framework == 'astrometry':
-                    name = ' - ' + self.driversData[driver].get('astrometryName', '')
-                elif framework == 'astap':
-                    name = ' - ' + self.driversData[driver].get('astapName', '')
-                else:
-                    name = ''
-                itemText = f'{framework}{name}'
-                self.drivers[driver]['uiDropDown'].addItem(itemText)
+
+            name = self.driversData[driver]['deviceName']
+            print(name)
+            framework = self.driversData[driver]['framework']
+            itemText = f'{framework} - {name}'
+            self.drivers[driver]['uiDropDown'].addItem(itemText)
 
         return True
 
@@ -639,26 +569,26 @@ class SettDevice(object):
 
         return True
 
-    def scanValid(self, driver=None, device=''):
+    def scanValid(self, driver=None, deviceName=''):
         """
         scanValid checks if the calling device fits to the summary of all devices and gives
         back if it should be skipped
 
-        :param device:
+        :param deviceName:
         :param driver:
         :return:
         """
 
         if not driver:
             return False
-        if not device:
+        if not deviceName:
             return False
 
         if hasattr(self.drivers[driver]['class'], 'signals'):
             if self.sender() != self.drivers[driver]['class'].signals:
                 return False
         else:
-            if self.drivers[driver]['class'].name != device:
+            if self.drivers[driver]['class'].name != deviceName:
                 return False
         return True
 

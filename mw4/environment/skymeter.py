@@ -63,6 +63,8 @@ class Skymeter:
         self.signals = SkymeterSignals()
 
         self.data = {}
+        self.defaultConfig = {'deviceName': '',
+                              'framework': ''}
         self.framework = None
         self.run = {
             'indi': SkymeterIndi(self.app, self.signals, self.data),
@@ -71,15 +73,14 @@ class Skymeter:
 
         if platform.system() == 'Windows':
             self.run['ascom'] = SkymeterAscom(self.app, self.signals, self.data)
-
             ascomSignals = self.run['ascom'].ascomSignals
             ascomSignals.serverConnected.connect(self.signals.serverConnected)
             ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
             ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
             ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
-        self.name = ''
-        self.host = ('localhost', 7624)
+        for fw in self.run:
+            self.defaultConfig.update(self.run[fw].defaultConfig)
 
         # signalling from subclasses to main
         alpacaSignals = self.run['alpaca'].client.signals
@@ -93,26 +94,6 @@ class Skymeter:
         indiSignals.serverDisconnected.connect(self.signals.serverDisconnected)
         indiSignals.deviceConnected.connect(self.signals.deviceConnected)
         indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
-
-    @property
-    def host(self):
-        return self._host
-
-    @host.setter
-    def host(self, value):
-        self._host = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].host = value
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].name = value
 
     def startCommunication(self, loadConfig=False):
         """

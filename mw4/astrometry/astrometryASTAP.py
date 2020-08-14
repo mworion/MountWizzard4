@@ -42,8 +42,6 @@ class AstrometryASTAP(object):
     """
 
     __all__ = ['AstrometryASTAP',
-               'solve',
-               'abort',
                ]
 
     returnCodes = {0: 'No errors',
@@ -65,12 +63,21 @@ class AstrometryASTAP(object):
 
         self.result = {'success': False}
         self.process = None
+        self.name = 'ASTAP'
         self.apiKey = ''
         self.indexPath = ''
         self.appPath = ''
         self.timeout = 30
         self.searchRadius = 20
-        self.name = 'ASTAP'
+        self.defaultConfig = {
+            'astap': {
+                'searchRadius': 10,
+                'timeout': 30,
+                'appPath': '',
+                'indexPath': '',
+                'name': 'ASTAP',
+            }
+        }
         self.setDefaultPath()
 
     def setDefaultPath(self):

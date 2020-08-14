@@ -34,8 +34,6 @@ class Remote(QObject):
     """
 
     __all__ = ['Remote',
-               'startCommunication',
-               'stopCommunication',
                ]
 
     logger = logging.getLogger(__name__)
@@ -49,6 +47,9 @@ class Remote(QObject):
         self.app = app
 
         self.data = {}
+        self.defaultConfig = {'deviceName': '',
+                              'framework': ''}
+
         self.framework = None
         self.run = {
             'internal': self

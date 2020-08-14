@@ -146,7 +146,12 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: True for test purpose
         """
 
-        framework = self.data['framework']
+        firstFramework = next(iter(self.data['frameworks']))
+        framework = self.data.get('framework')
+
+        if not framework:
+            framework = firstFramework
+
         frameworkTabText = self.framework2tabs[framework]
         frameworkTabList = [self.framework2tabs[x] for x in self.data['frameworks']]
 
@@ -228,7 +233,7 @@ class DevicePopup(QDialog, widget.MWidget):
         frameworks = self.data['frameworks']
 
         for fw in frameworks:
-            for prop in frameworks[fw]:
+            for prop in list(frameworks[fw]):
                 if prop not in self.framework2gui[fw]:
                     continue
 

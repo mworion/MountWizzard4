@@ -401,7 +401,7 @@ class SettDevice(object):
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[driver] = True
 
-        driverClass.run[framework].name = data['frameworks'][framework]['deviceName']
+        self.configDriver(driver=driver)
 
         if autoStart:
             driverClass.startCommunication(loadConfig=loadConfig)
@@ -460,7 +460,6 @@ class SettDevice(object):
             else:
                 autoStart = True
 
-            self.configDriver(driver=driver)
             self.startDriver(driver=driver, autoStart=autoStart)
 
         return True

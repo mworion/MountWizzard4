@@ -234,37 +234,37 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: True for test purpose
         """
 
-        frameworks = self.data['frameworks']
+        framework = self.data['framework']
+        frameworkData = self.data['frameworks'][framework]
 
-        for fw in frameworks:
-            for prop in list(frameworks[fw]):
-                if prop not in self.framework2gui[fw]:
-                    continue
+        for prop in list(frameworkData):
+            if prop not in self.framework2gui[framework]:
+                continue
 
-                ui = self.framework2gui[fw][prop]
+            ui = self.framework2gui[framework][prop]
 
-                if isinstance(ui, QComboBox):
-                    frameworks[fw]['deviceName'] = ui.currentText()
-                    frameworks[fw][prop].clear()
-                    for index in range(ui.model().rowCount()):
-                        frameworks[fw][prop].append(ui.model().item(index).text())
+            if isinstance(ui, QComboBox):
+                frameworkData['deviceName'] = ui.currentText()
+                frameworkData[prop].clear()
+                for index in range(ui.model().rowCount()):
+                    frameworkData[prop].append(ui.model().item(index).text())
 
-                elif isinstance(ui, QLineEdit):
-                    if isinstance(frameworks[fw][prop], str):
-                        frameworks[fw][prop] = ui.text()
-                    elif isinstance(frameworks[fw][prop], int):
-                        frameworks[fw][prop] = int(ui.text())
-                    else:
-                        frameworks[fw][prop] = float(ui.text())
-
-                elif isinstance(ui, QCheckBox):
-                    frameworks[fw][prop] = ui.isChecked()
-
-                elif isinstance(ui, QDoubleSpinBox):
-                    frameworks[fw][prop] = ui.value()
-
+            elif isinstance(ui, QLineEdit):
+                if isinstance(frameworkData[prop], str):
+                    frameworkData[prop] = ui.text()
+                elif isinstance(frameworkData[prop], int):
+                    frameworkData[prop] = int(ui.text())
                 else:
-                    self.log.info(f'Property {prop} in gui for framework {fw} not found')
+                    frameworkData[prop] = float(ui.text())
+
+            elif isinstance(ui, QCheckBox):
+                frameworkData[prop] = ui.isChecked()
+
+            elif isinstance(ui, QDoubleSpinBox):
+                frameworkData[prop] = ui.value()
+
+            else:
+                self.log.info(f'Property {prop} in gui for framework {framework} not found')
 
         return True
 
@@ -272,18 +272,16 @@ class DevicePopup(QDialog, widget.MWidget):
         """
         readFramework determines, which tab was selected when leaving and writes the
         adequate selection into the property. as the headline might be different from the
-        keywords, a translation table (self.framework2gui) is used.
+        keywords, a translation table (self.framework2gui) in a reverse index is used.
 
         :return: True for test purpose
         """
 
         index = self.ui.tab.currentIndex()
         currentSelection = self.ui.tab.tabText(index)
-        fw = ''
-        for fw in self.data['frameworks']:
-            if currentSelection == self.framework2gui[fw]:
-                break
-        self.data['framework'] = fw
+
+        searchD = dict([(value, key) for key, value in self.framework2tabs.items()])
+        self.data['framework'] = searchD[currentSelection]
 
         return True
 
@@ -294,8 +292,8 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: true for test purpose
         """
 
-        self.readTabs()
         self.readFramework()
+        self.readTabs()
         self.returnValues['close'] = 'ok'
         self.close()
 

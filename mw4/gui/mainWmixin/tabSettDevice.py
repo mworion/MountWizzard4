@@ -251,7 +251,6 @@ class SettDevice(object):
                 continue
 
             for fw in config['frameworks']:
-                print(driver, fw)
                 name = config['frameworks'][fw]['deviceName']
                 itemText = f'{fw} - {name}'
                 self.drivers[driver]['uiDropDown'].addItem(itemText)
@@ -487,7 +486,9 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.sender()
+        sender = self.sender()
+        driver = self.returnDriver(sender, self.drivers, addKey='uiDropDown')
+        print(driver)
 
         return True
 

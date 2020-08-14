@@ -47,7 +47,7 @@ class DevicePopup(QDialog, widget.MWidget):
         'camera': (1 << 1),
         'guider': (1 << 2),
         'focuser': (1 << 3),
-        'filterwheel': (1 << 4),
+        'filter': (1 << 4),
         'dome': (1 << 5),
         'observingconditions': (1 << 7),
         'skymeter': 0,

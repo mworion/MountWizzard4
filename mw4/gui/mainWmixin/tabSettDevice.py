@@ -235,29 +235,27 @@ class SettDevice(object):
         :return: success for test
         """
 
-        # all dropdown have disabled as capability
         dropDowns = list(self.drivers[driver]['uiDropDown'] for driver in self.drivers)
         for dropDown in dropDowns:
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('device disabled')
 
-        # adding driver items with applicable framework
         for driver in self.driversData:
-            config = self.driversData[driver]
+            frameworks = self.driversData[driver]['frameworks']
 
             if driver not in self.drivers:
                 self.log.critical(f'Missing driver: [{driver}]')
                 continue
 
-            for fw in config['frameworks']:
-                name = config['frameworks'][fw]['deviceName']
+            for fw in frameworks:
+                name = frameworks[fw]['deviceName']
                 itemText = f'{fw} - {name}'
                 self.drivers[driver]['uiDropDown'].addItem(itemText)
 
         return True
 
-    def processPopupResults(self, driver=None):
+    def processPopupResults(self, driver=''):
         """
         processPopupResults takes sets the actual drop down in the device settings lists to
         the choice of the popup window. after that it reinitialises the selected driver with

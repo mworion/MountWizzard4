@@ -640,7 +640,7 @@ class SatelliteWindow(widget.MWidget):
                            colors='#2090C0',
                            labelsize=12)
         axeTop.set_xticks(np.arange(0, 361, 45))
-        axeTop.grid(axis='both', visible=False)
+        axeTop.grid(True)
         axeTop.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'])
         axeTop.spines['bottom'].set_color('#2090C0')
         axeTop.spines['top'].set_color('#2090C0')

@@ -80,11 +80,16 @@ class Astrometry:
         self.signals = AstrometrySignals()
 
         self.data = {}
+        self.defaultConfig = {'deviceName': '',
+                              'framework': ''}
         self.framework = None
         self.run = {
             'astrometry': AstrometryNET(self),
             'astap': AstrometryASTAP(self),
         }
+        for fw in self.run:
+            self.defaultConfig.update(self.run[fw].defaultConfig)
+
         self.name = ''
         self.apiKey = ''
         self.indexPath = ''
@@ -93,76 +98,6 @@ class Astrometry:
         self.timeout = 30
         self.host = ('localhost', 7624)
         self.mutexSolve = PyQt5.QtCore.QMutex()
-
-    @property
-    def apiKey(self):
-        return self._apiKey
-
-    @apiKey.setter
-    def apiKey(self, value):
-        self._apiKey = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].apiKey = value
-
-    @property
-    def indexPath(self):
-        return self._indexPath
-
-    @indexPath.setter
-    def indexPath(self, value):
-        self._indexPath = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].indexPath = value
-
-    @property
-    def appPath(self):
-        return self.appPath
-
-    @appPath.setter
-    def appPath(self, value):
-        self._appPath = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].appPath = value
-
-    @property
-    def host(self):
-        return self._host
-
-    @host.setter
-    def host(self, value):
-        self._host = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].host = value
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].name = value
-
-    @property
-    def timeout(self):
-        return self._timeout
-
-    @timeout.setter
-    def timeout(self, value):
-        self._timeout = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].timeout = value
-
-    @property
-    def searchRadius(self):
-        return self._searchRadius
-
-    @searchRadius.setter
-    def searchRadius(self, value):
-        self._searchRadius = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].searchRadius = value
 
     def readFitsData(self, fitsPath):
         """

@@ -75,7 +75,11 @@ class AscomClass(object):
         self.client = None
         self.data = data
         self.name = ''
-        self.host = None
+        self.defaultConfig = {
+            'ascom': {
+                'deviceName': 'test',
+            }
+        }
 
         self.deviceConnected = False
         self.serverConnected = False

@@ -327,7 +327,7 @@ class MainWindow(MWidget,
         self.app.timer0_1s.stop()
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.closeExtendedWindows()
-        self.stopAllDrivers()
+        # self.stopDrivers()
         super().closeEvent(closeEvent)
         self.app.quit()
 

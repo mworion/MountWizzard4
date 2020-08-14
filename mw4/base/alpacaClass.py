@@ -50,6 +50,19 @@ class AlpacaClass(object):
 
         self.client = AlpacaBase()
         self.data = data
+        self.defaultConfig = {
+            'alpaca': {
+                'deviceName': '',
+                'deviceList': [],
+                'host': 'localhost',
+                'port': 11111,
+                'protocol': '',
+                'protocolList': ['https', 'http'],
+                'user': '',
+                'password': '',
+                'copyConfig': False,
+            }
+        }
 
         self.deviceConnected = False
         self.serverConnected = False

@@ -106,10 +106,20 @@ class IndiClass(object):
         self.data = data
         self.loadIndiConfig = False
         self.isINDIGO = False
-
         self.retryCounter = 0
         self.device = None
         self.showMessages = False
+        self.defaultConfig = {
+            'indi': {
+                'deviceName': '',
+                'deviceList': [],
+                'host': 'localhost',
+                'port': 7624,
+                'loadConfig': False,
+                'messages': False,
+                'copyConfig': False,
+            }
+        }
 
         self.timerRetry = PyQt5.QtCore.QTimer()
         self.timerRetry.setSingleShot(True)

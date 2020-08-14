@@ -57,40 +57,21 @@ class FlipFlat:
         self.signals = FlipFlatSignals()
 
         self.data = {}
+        self.defaultConfig = {'deviceName': '',
+                              'framework': ''}
         self.framework = None
         self.run = {
             'indi': FlipFlatIndi(self.app, self.signals, self.data),
         }
+        for fw in self.run:
+            self.defaultConfig.update(self.run[fw].defaultConfig)
         self.name = ''
-
-        self.host = ('localhost', 7624)
-        self.isGeometry = False
 
         # signalling from subclasses to main
         self.run['indi'].client.signals.serverConnected.connect(self.signals.serverConnected)
         self.run['indi'].client.signals.serverDisconnected.connect(self.signals.serverDisconnected)
         self.run['indi'].client.signals.deviceConnected.connect(self.signals.deviceConnected)
         self.run['indi'].client.signals.deviceDisconnected.connect(self.signals.deviceDisconnected)
-
-    @property
-    def host(self):
-        return self._host
-
-    @host.setter
-    def host(self, value):
-        self._host = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].host = value
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].name = value
 
     def startCommunication(self, loadConfig=False):
         """

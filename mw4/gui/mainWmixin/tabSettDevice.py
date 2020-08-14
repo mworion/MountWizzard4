@@ -259,7 +259,7 @@ class SettDevice(object):
         """
         processPopupResults takes sets the actual drop down in the device settings lists to
         the choice of the popup window. after that it reinitialises the selected driver with
-        the new data.
+        the new data and starts it.
 
         :return: True for test purpose
         """
@@ -268,6 +268,13 @@ class SettDevice(object):
 
         index = self.findIndexValue(self.drivers[driver]['uiDropDown'], selectedFramework)
         self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
+
+        name = self.driversData[driver]['frameworks'][selectedFramework]['deviceName']
+        itemText = f'{selectedFramework} - {name}'
+        self.drivers[driver]['uiDropDown'].setCurrentText(itemText)
+        self.stopDriver(driver=driver)
+        self.configDriver(driver=driver)
+        self.startDriver(driver=driver)
 
         return True
 
@@ -330,13 +337,13 @@ class SettDevice(object):
         if not framework:
             return False
 
-        driverClass = self.drivers[driver]['class'].run[framework]
-        isRunning = driverClass.name != ''
+        driverClass = self.drivers[driver]['class']
+        isRunning = driverClass.run[framework].name != ''
 
         if isRunning:
             driverClass.stopCommunication()
             driverClass.data.clear()
-            driverClass.name = ''
+            driverClass.run[framework].name = ''
             self.app.message.emit(f'Disabled device:     [{driver}]', 0)
 
         self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
@@ -373,23 +380,26 @@ class SettDevice(object):
         if not driver:
             return False
 
-        framework = self.driversData[driver]['framework']
+        data = self.driversData[driver]
+        framework = data['framework']
+
         if not framework:
             return False
 
-        self.drivers[driver]['class'].framework = framework
+        loadConfig = data.get('indiLoadConfig', False)
+        driverClass = self.drivers[driver]['class']
 
+        driverClass.framework = framework
         isInternal = framework == 'internal'
 
         if isInternal:
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[driver] = True
 
-        driverData = self.driversData.get(driver, {})
-        loadConfig = driverData.get('indiLoadConfig', False)
+        driverClass.run[framework].name = data['frameworks'][framework]['deviceName']
 
         if autoStart:
-            self.drivers[driver]['class'].startCommunication(loadConfig=loadConfig)
+            driverClass.startCommunication(loadConfig=loadConfig)
 
         self.app.message.emit(f'Enabled device:      [{driver}]', 0)
 

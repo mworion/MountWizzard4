@@ -113,13 +113,15 @@ class DevicePopup(QDialog, widget.MWidget):
                 'deviceList': self.ui.astrometryDeviceList,
                 'searchRadius': self.ui.astrometrySearchRadius,
                 'timeout': self.ui.astrometryTimeout,
-                'indexPath': self.ui.astrometryIndexPath,
+                'appPath': self.ui.astrometryIndexPath,
+                'indexPath': self.ui.astrometryAppPath,
             },
             'astap': {
                 'deviceList': self.ui.astapDeviceList,
                 'searchRadius': self.ui.astapSearchRadius,
                 'timeout': self.ui.astapTimeout,
-                'indexPath': self.ui.astapIndexPath,
+                'appPath': self.ui.astapIndexPath,
+                'indexPath': self.ui.astapAppPath,
             },
         }
 
@@ -192,7 +194,9 @@ class DevicePopup(QDialog, widget.MWidget):
                     ui.setView(QListView())
                     for i, device in enumerate(frameworks[fw][prop]):
                         ui.addItem(device)
-                        if frameworks[fw][prop[:-4]] == device:
+                        if prop != 'deviceList':
+                            continue
+                        if frameworks[fw]['deviceName'] == device:
                             ui.setCurrentIndex(i)
 
                 elif isinstance(ui, QLineEdit):

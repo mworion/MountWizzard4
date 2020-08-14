@@ -69,16 +69,19 @@ class AstrometryASTAP(object):
         self.appPath = ''
         self.timeout = 30
         self.searchRadius = 20
+
+        self.setDefaultPath()
+
         self.defaultConfig = {
             'astap': {
+                'deviceName': 'ASTAP',
+                'deviceList': ['ASTAP'],
                 'searchRadius': 10,
                 'timeout': 30,
-                'appPath': '',
-                'indexPath': '',
-                'deviceName': '',
+                'appPath': self.appPath,
+                'indexPath': self.indexPath,
             }
         }
-        self.setDefaultPath()
 
     def setDefaultPath(self):
         """

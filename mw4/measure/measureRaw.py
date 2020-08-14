@@ -56,8 +56,14 @@ class MeasureDataRaw(PyQt5.QtCore.QObject):
         self.app = app
         self.parent = parent
         self.data = data
+        self.name = 'RAW'
+        self.defaultConfig = {
+            'raw': {
+                'deviceName': 'RAW',
+            }
+        }
 
-        # time for measurement
+    # time for measurement
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)

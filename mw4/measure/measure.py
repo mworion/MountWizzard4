@@ -38,8 +38,6 @@ class MeasureData(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['MeasureData',
-               'startCommunication',
-               'stopCommunication',
                ]
 
     logger = logging.getLogger(__name__)
@@ -70,6 +68,8 @@ class MeasureData(PyQt5.QtCore.QObject):
             'internal - display only': MeasureDataRaw(self.app, self, self.data),
             'internal - CSV store': MeasureDataCSV(self.app, self, self.data)
         }
+        for fw in self.run:
+            self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
         self.framework = ''
 
     def startCommunication(self, loadConfig=False):

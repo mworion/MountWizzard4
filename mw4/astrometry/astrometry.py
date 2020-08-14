@@ -87,13 +87,6 @@ class Astrometry:
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
-        self.name = ''
-        self.apiKey = ''
-        self.indexPath = ''
-        self.appPath = ''
-        self.searchRadius = 20
-        self.timeout = 30
-        self.host = ('localhost', 7624)
         self.mutexSolve = PyQt5.QtCore.QMutex()
 
     def readFitsData(self, fitsPath):
@@ -322,9 +315,10 @@ class Astrometry:
 
         self.signals.serverConnected.emit()
         sucApp, sucIndex = self.checkAvailability()
+        name = self.run[self.framework].name
         if sucApp and sucIndex:
-            self.signals.deviceConnected.emit(self.name)
-            self.app.message.emit(f'ASTROMETRY found:    [{self.name}]', 0)
+            self.signals.deviceConnected.emit(name)
+            self.app.message.emit(f'ASTROMETRY found:    [{name}]', 0)
 
         return True
 
@@ -335,8 +329,9 @@ class Astrometry:
         :return: true for test purpose
         """
 
-        self.signals.serverDisconnected.emit({self.name: 0})
-        self.signals.deviceDisconnected.emit(self.name)
-        self.app.message.emit(f'ASTROMETRY remove:   [{self.name}]', 0)
+        name = self.run[self.framework].name
+        self.signals.serverDisconnected.emit({name: 0})
+        self.signals.deviceDisconnected.emit(name)
+        self.app.message.emit(f'ASTROMETRY remove:   [{name}]', 0)
 
         return True

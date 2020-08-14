@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-import collections
 
 # external packages
 import PyQt5.QtCore
@@ -197,11 +196,10 @@ class SettDevice(object):
             config['driversData'] = {}
 
         for driver in self.drivers:
-            if 'driver' not in config['driversData']:
+            if driver not in config['driversData']:
                 config['driversData'][driver] = {}
-
-            defaultConfig = self.drivers[driver]['class'].defaultConfig
-            config['driversData'][driver].update(defaultConfig)
+                defaultConfig = self.drivers[driver]['class'].defaultConfig
+                config['driversData'][driver].update(defaultConfig)
 
         self.driversData.update(config.get('driversData', {}))
         self.ui.checkASCOMAutoConnect.setChecked(config.get('checkASCOMAutoConnect', False))
@@ -253,13 +251,16 @@ class SettDevice(object):
                 itemText = f'{fw} - {name}'
                 self.drivers[driver]['uiDropDown'].addItem(itemText)
 
+            framework = self.driversData[driver]['framework']
+            index = self.findIndexValue(self.drivers[driver]['uiDropDown'], framework)
+            self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
+
         return True
 
     def processPopupResults(self, driver=''):
         """
         processPopupResults takes sets the actual drop down in the device settings lists to
-        the choice of the popup window. after that it reinitialises the selected driver with
-        the new data and starts it.
+        the choice of the popup window. after that it starts the driver again.
 
         :return: True for test purpose
         """
@@ -273,7 +274,6 @@ class SettDevice(object):
         itemText = f'{selectedFramework} - {name}'
         self.drivers[driver]['uiDropDown'].setCurrentText(itemText)
         self.stopDriver(driver=driver)
-        self.configDriver(driver=driver)
         self.startDriver(driver=driver)
 
         return True
@@ -357,7 +357,7 @@ class SettDevice(object):
         :return: True for test purpose
         """
         for driver in self.drivers:
-            self.dispatchStopDriver(driver=driver)
+            self.stopDriver(driver=driver)
 
         return True
 
@@ -441,6 +441,11 @@ class SettDevice(object):
         isAscomAutoConnect = self.ui.checkASCOMAutoConnect.isChecked()
 
         for driver in self.drivers:
+            isValid = self.driversData[driver]['framework'] != ''
+
+            if not isValid:
+                continue
+
             isAscom = self.driversData[driver]['framework'] == 'ascom'
 
             if isAscom and isAscomAutoConnect:
@@ -464,7 +469,7 @@ class SettDevice(object):
             isAscom = self.driversData[driver]['framework'] == 'ascom'
 
             if isAscom:
-                self.dispatchStopDriver(driver=driver)
+                self.stopDriver(driver=driver)
 
         return True
 
@@ -477,7 +482,6 @@ class SettDevice(object):
             isAscom = self.driversData[driver]['framework'] == 'ascom'
 
             if isAscom:
-                self.configDriver(driver=driver)
                 self.startDriver(driver=driver, autoStart=True)
 
         return True
@@ -496,9 +500,15 @@ class SettDevice(object):
         driver = self.returnDriver(sender, self.drivers, addKey='uiDropDown')
 
         if driver:
+            if sender.currentText() == 'device disabled':
+                framework = ''
+            else:
+                framework = sender.currentText().split('-')[0].rstrip()
+
+            self.driversData[driver]['framework'] = framework
             self.stopDriver(driver=driver)
-            self.configDriver(driver=driver)
-            self.startDriver(driver=driver)
+            if framework:
+                self.startDriver(driver=driver)
 
         return True
 
@@ -521,7 +531,10 @@ class SettDevice(object):
             if self.sender() != self.drivers[driver]['class'].signals:
                 return False
         else:
-            if self.drivers[driver]['class'].name != deviceName:
+            driverClass = self.drivers[driver]['class']
+            if not driverClass.framework:
+                return False
+            if driverClass.run[driverClass.framework].name != deviceName:
                 return False
         return True
 

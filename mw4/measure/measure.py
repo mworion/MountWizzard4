@@ -70,7 +70,7 @@ class MeasureData(PyQt5.QtCore.QObject):
             'internal - display only': MeasureDataRaw(self.app, self, self.data),
             'internal - CSV store': MeasureDataCSV(self.app, self, self.data)
         }
-        self.framework = None
+        self.framework = ''
 
     def startCommunication(self, loadConfig=False):
         """

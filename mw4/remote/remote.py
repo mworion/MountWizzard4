@@ -50,7 +50,7 @@ class Remote(QObject):
         self.defaultConfig = {'framework': '',
                               'frameworks': {'internal': {'deviceName': 'TCP'}}}
 
-        self.framework = None
+        self.framework = ''
         self.run = {
             'internal': self
         }

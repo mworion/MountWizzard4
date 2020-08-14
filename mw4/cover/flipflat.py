@@ -59,7 +59,7 @@ class FlipFlat:
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
-        self.framework = None
+        self.framework = ''
         self.run = {
             'indi': FlipFlatIndi(self.app, self.signals, self.data),
         }

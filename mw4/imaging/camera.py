@@ -71,7 +71,7 @@ class Camera:
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
-        self.framework = None
+        self.framework = ''
         self.run = {
             'indi': CameraIndi(self.app, self.signals, self.data),
             'alpaca': CameraAlpaca(self.app, self.signals, self.data),

@@ -65,7 +65,7 @@ class Focuser:
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
-        self.framework = None
+        self.framework = ''
         self.run = {
             'indi': FocuserIndi(self.app, self.signals, self.data),
             'alpaca': FocuserAlpaca(self.app, self.signals, self.data),

@@ -63,7 +63,7 @@ class Telescope:
         self.signals = TelescopeSignals()
 
         self.data = {}
-        self.framework = None
+        self.framework = ''
         self.defaultConfig = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}

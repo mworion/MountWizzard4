@@ -71,7 +71,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         self.location = app.mount.obsSite.location
 
         # minimum set for driver package built in
-        self.framework = None
+        self.framework = ''
         self.run = {
             'internal': self
         }

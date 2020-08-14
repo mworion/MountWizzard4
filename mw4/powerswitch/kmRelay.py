@@ -84,7 +84,7 @@ class KMRelay(QObject):
 
         self.signals = RelaySignals()
         # minimum set for driver package built in
-        self.framework = None
+        self.framework = ''
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {'internal': {'deviceName': 'KMRelay'}}}

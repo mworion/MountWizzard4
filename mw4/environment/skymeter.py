@@ -65,7 +65,7 @@ class Skymeter:
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
-        self.framework = None
+        self.framework = ''
         self.run = {
             'indi': SkymeterIndi(self.app, self.signals, self.data),
             'alpaca': SkymeterAlpaca(self.app, self.signals, self.data),

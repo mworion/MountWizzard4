@@ -78,8 +78,8 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         self.name = ''
 
         self.data = {}
-        self.defaultConfig = {'deviceName': '',
-                              'framework': ''}
+        self.defaultConfig = {'framework': '',
+                              'frameworks': {'internal': {'deviceName': 'Online'}}}
 
         self.running = False
 

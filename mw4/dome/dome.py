@@ -67,8 +67,8 @@ class Dome:
         self.signals = DomeSignals()
 
         self.data = {}
-        self.defaultConfig = {'deviceName': '',
-                              'framework': ''}
+        self.defaultConfig = {'framework': '',
+                              'frameworks': {}}
         self.framework = None
         self.run = {
             'indi': DomeIndi(self.app, self.signals, self.data),
@@ -84,7 +84,7 @@ class Dome:
             ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
         for fw in self.run:
-            self.defaultConfig.update(self.run[fw].defaultConfig)
+            self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
         self.isGeometry = False
 

@@ -64,8 +64,8 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.devices = {}
 
         self.data = {}
-        self.defaultConfig = {'deviceName': '',
-                              'framework': ''}
+        self.defaultConfig = {'framework': '',
+                              'frameworks': {}}
         self.run = {
             'internal - display only': MeasureDataRaw(self.app, self, self.data),
             'internal - CSV store': MeasureDataCSV(self.app, self, self.data)

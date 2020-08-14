@@ -166,22 +166,22 @@ class SettDevice(object):
 
         self.driversData = {}
 
-        self.ui.ascomConnect.clicked.connect(self.manualStartAllAscomDrivers)
-        self.ui.ascomDisconnect.clicked.connect(self.manualStopAllAscomDrivers)
-
         for driver in self.drivers:
             self.drivers[driver]['uiDropDown'].activated.connect(self.dispatch)
             if self.drivers[driver]['uiSetup'] is not None:
                 ui = self.drivers[driver]['uiSetup']
                 ui.clicked.connect(self.setupPopup)
 
-            if not hasattr(self.drivers[driver]['class'], 'signals'):
-                continue
+            # adding functional signals
+            if hasattr(self.drivers[driver]['class'], 'signals'):
+                signals = self.drivers[driver]['class'].signals
+                signals.serverDisconnected.connect(self.serverDisconnected)
+                signals.deviceConnected.connect(self.deviceConnected)
+                signals.deviceDisconnected.connect(self.deviceDisconnected)
 
-            signals = self.drivers[driver]['class'].signals
-            signals.serverDisconnected.connect(self.serverDisconnected)
-            signals.deviceConnected.connect(self.deviceConnected)
-            signals.deviceDisconnected.connect(self.deviceDisconnected)
+        # adding gui signals
+        self.ui.ascomConnect.clicked.connect(self.manualStartAllAscomDrivers)
+        self.ui.ascomDisconnect.clicked.connect(self.manualStopAllAscomDrivers)
 
     def initConfig(self):
         """
@@ -244,15 +244,17 @@ class SettDevice(object):
 
         # adding driver items with applicable framework
         for driver in self.driversData:
+            config = self.driversData[driver]
+
             if driver not in self.drivers:
                 self.log.critical(f'Missing driver: [{driver}]')
                 continue
 
-            name = self.driversData[driver]['deviceName']
-            print(name)
-            framework = self.driversData[driver]['framework']
-            itemText = f'{framework} - {name}'
-            self.drivers[driver]['uiDropDown'].addItem(itemText)
+            for fw in config['frameworks']:
+                print(driver, fw)
+                name = config['frameworks'][fw]['deviceName']
+                itemText = f'{fw} - {name}'
+                self.drivers[driver]['uiDropDown'].addItem(itemText)
 
         return True
 

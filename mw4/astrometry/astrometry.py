@@ -64,9 +64,6 @@ class Astrometry:
     """
 
     __all__ = ['Astrometry',
-               'solveThreading',
-               'checkAvailability',
-               'abort',
                ]
 
     logger = logging.getLogger(__name__)
@@ -80,15 +77,15 @@ class Astrometry:
         self.signals = AstrometrySignals()
 
         self.data = {}
-        self.defaultConfig = {'deviceName': '',
-                              'framework': ''}
+        self.defaultConfig = {'framework': '',
+                              'frameworks': {}}
         self.framework = None
         self.run = {
             'astrometry': AstrometryNET(self),
             'astap': AstrometryASTAP(self),
         }
         for fw in self.run:
-            self.defaultConfig.update(self.run[fw].defaultConfig)
+            self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
         self.name = ''
         self.apiKey = ''

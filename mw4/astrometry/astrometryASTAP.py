@@ -75,7 +75,7 @@ class AstrometryASTAP(object):
                 'timeout': 30,
                 'appPath': '',
                 'indexPath': '',
-                'name': 'ASTAP',
+                'deviceName': '',
             }
         }
         self.setDefaultPath()

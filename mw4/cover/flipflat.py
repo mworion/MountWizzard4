@@ -57,15 +57,14 @@ class FlipFlat:
         self.signals = FlipFlatSignals()
 
         self.data = {}
-        self.defaultConfig = {'deviceName': '',
-                              'framework': ''}
+        self.defaultConfig = {'framework': '',
+                              'frameworks': {}}
         self.framework = None
         self.run = {
             'indi': FlipFlatIndi(self.app, self.signals, self.data),
         }
         for fw in self.run:
-            self.defaultConfig.update(self.run[fw].defaultConfig)
-        self.name = ''
+            self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
         # signalling from subclasses to main
         self.run['indi'].client.signals.serverConnected.connect(self.signals.serverConnected)

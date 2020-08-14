@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-import collections
 
 # external packages
 import PyQt5.QtCore
@@ -35,45 +34,39 @@ class SettDevice(object):
     processing if needed.
 
     devices types in self.drivers are name related to ascom definitions
-    """
 
-    frameworks = {
-        'alpaca': {
-            'device': '',
-            'deviceList': [],
-            'host': 'localhost',
-            'port': 11111,
-            'protocol': '',
-            'protocolList': ['https', 'http'],
-            'user': '',
-            'password': '',
-            'copyConfig': False,
-        },
-        'ascom': {
-            'device': 'test',
-        },
-        'indi': {
-            'device': '',
-            'deviceList': [],
-            'host': 'localhost',
-            'port': 7624,
-            'loadConfig': False,
-            'messages': False,
-            'copyConfig': False,
-        },
-        'astrometry': {
-            'searchRadius': 10,
-            'timeout': 30,
-            'appPath': '',
-            'indexPath': '',
-        },
-        'astap': {
-            'searchRadius': 10,
-            'timeout': 30,
-            'appPath': '',
-            'indexPath': '',
-        },
-    }
+    architecture:
+    - all properties are stored in the config dict as main source.
+    - when starting, all gui elements will be populated based on the entries of config
+    - all drivers were initialised with the content of config dict
+    - if we setup a new device, data of device is gathered for the popup from config
+    - when closing the popup, result data will be stored in config
+    - if there is no default data for a driver in config dict, it will be retrieved from the
+      driver
+
+    sequence standard:
+        loading config dict
+        load driver default setup from driver if not present in config
+        initialize gui
+        initialize driver
+        start drivers
+
+    sequence popup:
+        initialize popup data
+        call popup modal
+        popup close
+        if cancel -> finished
+        store data in config
+        stop changed driver
+        start new driver
+
+    sequence dropdown:
+        search driver
+        if no driver -> finished
+        stop changed driver
+        if driver = "device disabled" -> finished
+        start new driver
+    """
 
     def __init__(self, app=None, ui=None, clickable=None):
         if app:
@@ -88,6 +81,12 @@ class SettDevice(object):
                 'uiSetup': self.ui.domeSetup,
                 'class': self.app.dome,
                 'deviceType': 'dome',
+            },
+            'cover': {
+                'uiDropDown': self.ui.coverDevice,
+                'uiSetup': self.ui.coverSetup,
+                'class': self.app.cover,
+                'deviceType': 'cover',
             },
             'camera': {
                 'uiDropDown': self.ui.cameraDevice,
@@ -124,12 +123,6 @@ class SettDevice(object):
                 'uiSetup': None,
                 'class': self.app.onlineWeather,
                 'deviceType': None,
-            },
-            'cover': {
-                'uiDropDown': self.ui.coverDevice,
-                'uiSetup': self.ui.coverSetup,
-                'class': self.app.cover,
-                'deviceType': 'cover',
             },
             'skymeter': {
                 'uiDropDown': self.ui.skymeterDevice,
@@ -177,86 +170,47 @@ class SettDevice(object):
 
         self.driversData = {}
 
+        for driver in self.drivers:
+            self.drivers[driver]['uiDropDown'].activated.connect(self.dispatchDriverDropdown)
+            if self.drivers[driver]['uiSetup'] is not None:
+                ui = self.drivers[driver]['uiSetup']
+                ui.clicked.connect(self.dispatchPopup)
+
+            # adding functional signals
+            if hasattr(self.drivers[driver]['class'], 'signals'):
+                signals = self.drivers[driver]['class'].signals
+                signals.serverDisconnected.connect(self.serverDisconnected)
+                signals.deviceConnected.connect(self.deviceConnected)
+                signals.deviceDisconnected.connect(self.deviceDisconnected)
+
+        # adding gui signals
         self.ui.ascomConnect.clicked.connect(self.manualStartAllAscomDrivers)
         self.ui.ascomDisconnect.clicked.connect(self.manualStopAllAscomDrivers)
 
-        for driver in self.drivers:
-            self.drivers[driver]['uiDropDown'].activated.connect(self.dispatch)
-            if self.drivers[driver]['uiSetup'] is not None:
-                ui = self.drivers[driver]['uiSetup']
-                ui.clicked.connect(self.setupPopup)
-
-            if not hasattr(self.drivers[driver]['class'], 'signals'):
-                continue
-
-            signals = self.drivers[driver]['class'].signals
-            signals.serverDisconnected.connect(self.serverDisconnected)
-            signals.deviceConnected.connect(self.deviceConnected)
-            signals.deviceDisconnected.connect(self.deviceDisconnected)
-
-    def dictMerge(self, dct, merge_dct):
-        """ Recursive dict merge. Inspired by :meth:``dict.update()``, instead of
-        updating only top-level keys, dictMerge recurses down into dicts nested
-        to an arbitrary depth, updating keys. The ``merge_dct`` is merged into
-        ``dct``.
-        :param dct: dict onto which the merge is executed
-        :param merge_dct: dct merged into dct
-        :return: None
-        """
-        for k, v in merge_dct.items():
-            if (k in dct and isinstance(dct[k], dict)
-                    and isinstance(merge_dct[k], collections.Mapping)):
-                self.dictMerge(dct[k], merge_dct[k])
-            else:
-                dct[k] = merge_dct[k]
-
-    def cleanData(self, data, driver):
-        """
-
-        :param data:
-        :param driver:
-        :return: cleaned data
-        """
-
-        if not data or 'frameworks' not in data:
-            data = {
-                'framework': 'indi',
-                'deviceType': driver,
-                'defaultDevice': '',
-                'frameworks': {'indi': {}, 'alpaca': {}, 'ascom': {}},
-            }
-
-        return data
-
-        if 'frameworks' not in data:
-            data['frameworks'] = {}
-
-        for fw in self.drivers[driver]['class'].run:
-            self.dictMerge(data['frameworks'][fw], self.frameworks.get(fw, {}))
-
-        return data
-
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
+        initConfig read the key out of the configuration dict. if some drivers configuration
+        are missing, the default values are loaded from the drivers. after that we have a
+        fully cleaned config dict and we can proceed initializing the gui and the drivers
 
         :return: True for test purpose
         """
 
-        config = self.app.config.get('mainW', {})
-        driversData = self.app.config.get('driversData', {})
+        config = self.app.config['mainW']
+        if 'driversData' not in config:
+            config['driversData'] = {}
 
         for driver in self.drivers:
-            data = driversData.get(driver, {})
-            self.driversData[driver] = self.cleanData(data, driver)
+            if driver not in config['driversData']:
+                config['driversData'][driver] = {}
+                defaultConfig = self.drivers[driver]['class'].defaultConfig
+                config['driversData'][driver].update(defaultConfig)
+
+        self.driversData.update(config.get('driversData', {}))
+        self.ui.checkASCOMAutoConnect.setChecked(config.get('checkASCOMAutoConnect', False))
 
         self.setupDeviceGui()
-        for driver in self.drivers:
-            self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
-        self.ui.checkASCOMAutoConnect.setChecked(config.get('checkASCOMAutoConnect', False))
-        self.dispatch(driver='all')
+        self.startDrivers()
 
         return True
 
@@ -271,66 +225,47 @@ class SettDevice(object):
 
         config = self.app.config['mainW']
 
-        if 'driversData' not in self.app.config:
-            self.app.config['driversData'] = {}
-        driversData = self.app.config['driversData']
-
-        for driver in self.drivers:
-            config[driver] = self.drivers[driver]['uiDropDown'].currentIndex()
-
-        for driver in self.drivers:
-            if driver not in self.driversData:
-                continue
-            driversData[driver] = self.driversData[driver]
-
+        config['driversData'] = self.driversData
         config['checkASCOMAutoConnect'] = self.ui.checkASCOMAutoConnect.isChecked()
 
         return True
 
     def setupDeviceGui(self):
         """
-        setupRelayGui handles the dropdown lists for all devices possible in mountwizzard.
-        therefore we add the necessary entries to populate the list.
+        setupDeviceGui handles the dropdown lists for all devices possible. it reads the
+        information out of the config dict and populated the entries where necessary
 
         :return: success for test
         """
 
-        # all dropdown have disabled as capability
         dropDowns = list(self.drivers[driver]['uiDropDown'] for driver in self.drivers)
         for dropDown in dropDowns:
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('device disabled')
 
-        # adding driver items with applicable framework
-        for driver in self.drivers:
-            if not hasattr(self.drivers[driver]['class'], 'run'):
+        for driver in self.driversData:
+            frameworks = self.driversData[driver]['frameworks']
+
+            if driver not in self.drivers:
+                self.log.critical(f'Missing driver: [{driver}]')
                 continue
-            for framework in self.drivers[driver]['class'].run.keys():
-                if driver not in self.driversData:
-                    self.driversData[driver] = {}
-                if framework == 'indi':
-                    name = ' - ' + self.driversData[driver].get('indiName', '')
-                elif framework == 'alpaca':
-                    name = ' - ' + self.driversData[driver].get('alpacaName', '')
-                elif framework == 'ascom':
-                    name = ' - ' + self.driversData[driver].get('ascomName', '')
-                elif framework == 'astrometry':
-                    name = ' - ' + self.driversData[driver].get('astrometryName', '')
-                elif framework == 'astap':
-                    name = ' - ' + self.driversData[driver].get('astapName', '')
-                else:
-                    name = ''
-                itemText = f'{framework}{name}'
+
+            for fw in frameworks:
+                name = frameworks[fw]['deviceName']
+                itemText = f'{fw} - {name}'
                 self.drivers[driver]['uiDropDown'].addItem(itemText)
+
+            framework = self.driversData[driver]['framework']
+            index = self.findIndexValue(self.drivers[driver]['uiDropDown'], framework)
+            self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
 
         return True
 
-    def processPopupResults(self, driver=None):
+    def processPopupResults(self, driver=''):
         """
         processPopupResults takes sets the actual drop down in the device settings lists to
-        the choice of the popup window. after that it reinitialises the selected driver with
-        the new data.
+        the choice of the popup window. after that it starts the driver again.
 
         :return: True for test purpose
         """
@@ -340,11 +275,15 @@ class SettDevice(object):
         index = self.findIndexValue(self.drivers[driver]['uiDropDown'], selectedFramework)
         self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
 
-        self.dispatch(driver=driver)
+        name = self.driversData[driver]['frameworks'][selectedFramework]['deviceName']
+        itemText = f'{selectedFramework} - {name}'
+        self.drivers[driver]['uiDropDown'].setCurrentText(itemText)
+        self.stopDriver(driver=driver)
+        self.startDriver(driver=driver)
 
         return True
 
-    def callPopup(self, driver, geometry):
+    def callPopup(self, driver):
         """
         callPopup prepares the data and calls and processes the returned data.
 
@@ -353,90 +292,175 @@ class SettDevice(object):
         with an postfix 'List' like 'protocol' and 'protocolList'
 
         :param driver:
-        :param geometry:
-        :return: True if OK and false if cancel
+        :return: True for test purpose
         """
 
+        geometry = self.pos().x(), self.pos().y(), self.width(), self.height()
         data = self.driversData[driver]
         self.popupUi = DevicePopup(app=self.app,
                                    geometry=geometry,
                                    driver=driver,
                                    data=data)
         self.popupUi.exec_()
-        print(self.driversData)
+
         if self.popupUi.returnValues.get('close', 'cancel') == 'cancel':
             return False
-        else:
-            return True
 
-    def setupPopup(self):
+        self.processPopupResults(driver=driver)
+
+        return True
+
+    def dispatchPopup(self):
         """
-        setupPopup calculates the geometry data to place the popup centered on top of the
-        parent window and call it with all necessary data. The popup is modal and we connect
-        the signal of the destroyed window to update the dispatching value for all changes
-        drivers
 
         :return: True for test purpose
         """
 
-        geometry = self.pos().x(), self.pos().y(), self.width(), self.height()
-        suc = False
+        sender = self.sender()
+        driver = self.returnDriver(sender, self.drivers, addKey='uiSetup')
 
-        for driver in self.drivers:
-            if self.sender() != self.drivers[driver]['uiSetup']:
-                continue
-            suc = self.callPopup(driver, geometry)
-            break
-
-        if suc:
-            self.processPopupResults(driver=driver)
+        if driver:
+            self.callPopup(driver=driver)
 
         return True
 
-    def dispatchStopDriver(self, driver=None, autoASCOM=True, onlyASCOM=False):
+    def stopDriver(self, driver=None):
         """
-        dispatchStopDriver stops the named driver.
+        stopDriver stops the named driver.
 
         :param driver:
-        :param autoASCOM: flag if ascom driver should be started, too
-        :param onlyASCOM: flag if only ascom driver should be affected
         :return: returns status if we are finished
         """
 
-        if not self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
-            if onlyASCOM:
-                return False
-        else:
-            if not (autoASCOM or onlyASCOM):
-                return False
+        if not driver:
+            return False
 
-        # if there is a change we first have to stop running drivers and reset gui
-        # if it's the startup (which has no name set, we don't need to stop)
-        if self.drivers[driver]['class'].name:
-            self.drivers[driver]['class'].stopCommunication()
-            self.drivers[driver]['class'].data.clear()
-            self.app.message.emit(f'Disabled device:     [{driver}]', 0)
-
-        # stopped driver get gets neutral color
-        self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
-
-        # disabling the driver for the overall app
         self.deviceStat[driver] = None
 
-        # if new driver is disabled, we are finished
-        if self.drivers[driver]['uiDropDown'].currentText() == 'device disabled':
-            self.drivers[driver]['class'].name = ''
+        framework = self.drivers[driver]['class'].framework
+
+        if not framework:
             return False
+
+        driverClass = self.drivers[driver]['class']
+        isRunning = driverClass.run[framework].name != ''
+
+        if isRunning:
+            driverClass.stopCommunication()
+            driverClass.data.clear()
+            driverClass.run[framework].name = ''
+            self.app.message.emit(f'Disabled device:     [{driver}]', 0)
+
+        self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
 
         return True
 
-    def stopAllDrivers(self):
+    def stopDrivers(self):
         """
+        stopDrivers runs through all drivers and stops them
 
         :return: True for test purpose
         """
         for driver in self.drivers:
-            self.dispatchStopDriver(driver=driver)
+            self.stopDriver(driver=driver)
+
+        return True
+
+    def startDriver(self, driver=None, autoStart=True):
+        """
+        startDriver checks if a framework has been set and starts the driver with its
+        startCommunication method. Normally the driver would report it's connection,
+        but for internal driver this has to be done separately.
+
+        as the configuration is stored in the config, start also stores the selected
+        framework in the framework attribute of the driver's class. this is needed as when
+        stopping the driver the config dict already has the new framework set and we have to
+        remember it.
+
+        :param driver:
+        :param autoStart:
+        :return: success if a driver has ben started
+        """
+
+        if not driver:
+            return False
+
+        data = self.driversData[driver]
+        framework = data['framework']
+
+        if not framework:
+            return False
+
+        loadConfig = data.get('indiLoadConfig', False)
+        driverClass = self.drivers[driver]['class']
+
+        driverClass.framework = framework
+        isInternal = framework == 'internal'
+
+        if isInternal:
+            self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
+            self.deviceStat[driver] = True
+
+        self.configDriver(driver=driver)
+
+        if autoStart:
+            driverClass.startCommunication(loadConfig=loadConfig)
+
+        self.app.message.emit(f'Enabled device:      [{driver}]', 0)
+
+        return True
+
+    def configDriver(self, driver=None):
+        """
+        configDriver configures a driver if a framework has been set. otherwise does nothing
+
+        :param driver:
+        :return: success of config
+        """
+
+        if not driver:
+            return False
+
+        self.deviceStat[driver] = False
+
+        framework = self.driversData[driver]['framework']
+        if not framework:
+            return False
+
+        frameworkConfig = self.driversData[driver]['frameworks'][framework]
+        driverClass = self.drivers[driver]['class'].run[framework]
+
+        for attribute in frameworkConfig:
+            setattr(driverClass, attribute, frameworkConfig[attribute])
+
+        return True
+
+    def startDrivers(self):
+        """
+        startDrivers starts all drivers
+        and managing the boot / shutdown.
+
+        :return: true for test purpose
+        """
+
+        isAscomAutoConnect = self.ui.checkASCOMAutoConnect.isChecked()
+
+        for driver in self.drivers:
+            isValid = self.driversData[driver]['framework'] != ''
+
+            if not isValid:
+                continue
+
+            isAscom = self.driversData[driver]['framework'] == 'ascom'
+
+            if isAscom and isAscomAutoConnect:
+                autoStart = True
+            elif isAscom and not isAscomAutoConnect:
+                autoStart = False
+            else:
+                autoStart = True
+
+            self.startDriver(driver=driver, autoStart=autoStart)
 
         return True
 
@@ -446,108 +470,10 @@ class SettDevice(object):
         :return: True for test purpose
         """
         for driver in self.drivers:
-            self.dispatchStopDriver(driver=driver, onlyASCOM=True)
+            isAscom = self.driversData[driver]['framework'] == 'ascom'
 
-        return True
-
-    def dispatchConfigDriver(self, driver=None, onlyASCOM=False):
-        """
-        dispatchConfigDriver
-
-        :param driver:
-        :param onlyASCOM: flag if only ascom driver should be affected
-        :return: True for test purpose
-        """
-
-        if not driver:
-            return False
-
-        if not self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
-            if onlyASCOM:
-                return False
-
-        driverData = self.driversData.get(driver, {})
-        driverClass = self.drivers[driver]['class']
-
-        # without connection it is false, which leads to a red in gui
-        self.deviceStat[driver] = False
-
-        # now driver specific parameters will be set
-        if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
-            framework = 'indi'
-            driverClass.framework = framework
-            driverData['framework'] = framework
-            name = driverData.get('indiName', '')
-            driverClass.name = name
-
-            address = driverData.get('indiHost', 'localhost')
-            port = int(driverData.get('indiPort', 7624))
-            host = (address, port)
-            showMessages = driverData.get('indiMessages', False)
-            driverClass.run[framework].showMessages = showMessages
-            driverClass.host = host
-            index = self.drivers[driver]['uiDropDown'].currentIndex()
-            self.drivers[driver]['uiDropDown'].setItemText(index, f'indi - {name}')
-
-        elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
-            framework = 'alpaca'
-            driverClass.framework = framework
-            driverData['framework'] = framework
-            name = driverData.get('alpacaName', '')
-            driverClass.name = name
-
-            address = driverData.get('alpacaHost', 'localhost')
-            port = int(driverData.get('alpacaPort', 11111))
-            host = (address, port)
-            driverClass.host = host
-            index = self.drivers[driver]['uiDropDown'].currentIndex()
-            self.drivers[driver]['uiDropDown'].setItemText(index, f'alpaca - {name}')
-
-        elif self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
-            framework = 'ascom'
-            driverClass.framework = framework
-            driverData['framework'] = framework
-            name = driverData.get('ascomName', '')
-            driverClass.name = name
-            index = self.drivers[driver]['uiDropDown'].currentIndex()
-            self.drivers[driver]['uiDropDown'].setItemText(index, f'ascom - {name}')
-
-        elif self.drivers[driver]['uiDropDown'].currentText().startswith('astrometry'):
-            framework = 'astrometry'
-            driverClass.framework = framework
-            driverData['framework'] = framework
-            name = driverData.get('astrometryName', '')
-            driverClass.name = name
-
-            driverClass.timeout = driverData.get('astrometryTimeout', 30)
-            driverClass.searchRadius = driverData.get('astrometrySearchRadius', 20)
-            indexPath = driverData.get('astrometryIndexPath', '')
-            driverClass.indexPath = indexPath
-            appPath = driverData.get('astrometryAppPath', '')
-            driverClass.appPath = appPath
-            index = self.drivers[driver]['uiDropDown'].currentIndex()
-            self.drivers[driver]['uiDropDown'].setItemText(index, f'astrometry - {name}')
-
-        elif self.drivers[driver]['uiDropDown'].currentText().startswith('astap'):
-            framework = 'astap'
-            driverClass.framework = framework
-            driverData['framework'] = framework
-            name = driverData.get('astapName', '')
-            driverClass.name = name
-
-            driverClass.timeout = driverData.get('astapTimeout', 30)
-            driverClass.searchRadius = driverData.get('astapSearchRadius', 20)
-            indexPath = driverData.get('astapIndexPath', '')
-            driverClass.indexPath = indexPath
-            appPath = driverData.get('astapAppPath', '')
-            driverClass.appPath = appPath
-            index = self.drivers[driver]['uiDropDown'].currentIndex()
-            self.drivers[driver]['uiDropDown'].setItemText(index, f'astap - {name}')
-
-        elif self.drivers[driver]['uiDropDown'].currentText().startswith('internal'):
-            text = self.drivers[driver]['uiDropDown'].currentText()
-            driverClass.framework = text
-            driverClass.name = text
+            if isAscom:
+                self.stopDriver(driver=driver)
 
         return True
 
@@ -557,104 +483,64 @@ class SettDevice(object):
         :return: True for test purpose
         """
         for driver in self.drivers:
-            self.dispatchConfigDriver(driver=driver, onlyASCOM=True)
-            self.dispatchStartDriver(driver=driver, onlyASCOM=True)
+            isAscom = self.driversData[driver]['framework'] == 'ascom'
+
+            if isAscom:
+                self.startDriver(driver=driver, autoStart=True)
 
         return True
 
-    def dispatchStartDriver(self, driver=None, autoASCOM=True, onlyASCOM=False):
+    def dispatchDriverDropdown(self):
         """
-        dispatchStartDriver
+        dispatchDriverDropdown maps the gui event received from signals to the methods doing
+        the real stuff. this splits function and gui reaction into two separate tasks.
+        if a dropDown action is taken, this means and new driver has been selected,
+        so the old one has to be stopped, the new configured and started.
 
-        :param driver:
-        :param autoASCOM: flag if ascom driver should be started, too
-        :param onlyASCOM: flag if only ascom driver should be affected
-        :return success of start
-        """
-
-        if not driver:
-            return False
-
-        if not self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
-            if onlyASCOM:
-                return False
-
-        if self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
-            if not (autoASCOM or onlyASCOM):
-                return False
-
-        if self.drivers[driver]['uiDropDown'].currentText().startswith('internal'):
-            self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
-            self.deviceStat[driver] = True
-
-        # and finally start it
-        self.app.message.emit(f'Enabled device:      [{driver}]', 0)
-
-        driverData = self.driversData.get(driver, {})
-        loadConfig = driverData.get('indiLoadConfig', False)
-        suc = self.drivers[driver]['class'].startCommunication(loadConfig=loadConfig)
-
-        return suc
-
-    def dispatch(self, driver=None):
-        """
-        dispatch is the central method to start / stop the drivers, setting the parameters
-        and managing the boot / shutdown.
-
-        dispatch is called by signals if the user uses the dropdown to change a driver setting
-        or could be called directly with a driverName to manually change the setting. this
-        happens at the startup to initialize the drivers and after a popup is closed to update
-        the settings for a driver.
-
-        if driver=='all' is set, dispatch will handler all drivers in a row.
-
-        first dispatch will stop running drivers
-        then changing the settings
-        then starting the new ones
-
-        :param driver:
         :return: true for test purpose
         """
 
-        isGui = not isinstance(driver, str)
-        isAll = not isGui and driver == 'all'
-        autoASCOM = self.ui.checkASCOMAutoConnect.isChecked()
+        sender = self.sender()
+        isDisabled = sender.currentText() == 'device disabled'
+        driver = self.returnDriver(sender, self.drivers, addKey='uiDropDown')
 
-        for d in self.drivers:
-            if not isGui and (driver != d) and not isAll:
-                continue
+        if driver:
+            if isDisabled:
+                framework = ''
+            else:
+                framework = sender.currentText().split('-')[0].rstrip()
 
-            if isGui and (self.sender() != self.drivers[d]['uiDropDown']):
-                continue
+            self.driversData[driver]['framework'] = framework
+            self.stopDriver(driver=driver)
 
-            if not self.dispatchStopDriver(driver=d, autoASCOM=autoASCOM):
-                continue
-
-            self.dispatchConfigDriver(driver=d)
-            self.dispatchStartDriver(driver=d, autoASCOM=autoASCOM)
+            if framework:
+                self.startDriver(driver=driver)
 
         return True
 
-    def scanValid(self, driver=None, device=''):
+    def scanValid(self, driver=None, deviceName=''):
         """
         scanValid checks if the calling device fits to the summary of all devices and gives
         back if it should be skipped
 
-        :param device:
+        :param deviceName:
         :param driver:
         :return:
         """
 
         if not driver:
             return False
-        if not device:
+        if not deviceName:
             return False
 
         if hasattr(self.drivers[driver]['class'], 'signals'):
             if self.sender() != self.drivers[driver]['class'].signals:
                 return False
         else:
-            if self.drivers[driver]['class'].name != device:
+            driverClass = self.drivers[driver]['class']
+            if not driverClass.framework:
+                return False
+            if driverClass.run[driverClass.framework].name != deviceName:
                 return False
         return True
 

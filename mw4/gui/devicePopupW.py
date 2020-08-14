@@ -77,17 +77,19 @@ class DevicePopup(QDialog, widget.MWidget):
         self.app = app
         self.data = data
         self.driver = driver
-        self.returnValues = {'close': 'cancel'}
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self)
         self.initUI()
-
         self.setWindowModality(Qt.ApplicationModal)
         x = geometry[0] + int((geometry[2] - self.width()) / 2)
         y = geometry[1] + int((geometry[3] - self.height()) / 2)
         self.move(x, y)
 
+        self.indiClass = None
+        self.indiSearchType = self.indiTypes[driver]
+        self.indiSearchNameList = None
+        self.returnValues = {'close': 'cancel'}
         self.framework2gui = {
             'indi': {
                 'host': self.ui.indiHost,
@@ -113,13 +115,15 @@ class DevicePopup(QDialog, widget.MWidget):
                 'deviceList': self.ui.astrometryDeviceList,
                 'searchRadius': self.ui.astrometrySearchRadius,
                 'timeout': self.ui.astrometryTimeout,
-                'indexPath': self.ui.astrometryIndexPath,
+                'appPath': self.ui.astrometryIndexPath,
+                'indexPath': self.ui.astrometryAppPath,
             },
             'astap': {
                 'deviceList': self.ui.astapDeviceList,
                 'searchRadius': self.ui.astapSearchRadius,
                 'timeout': self.ui.astapTimeout,
-                'indexPath': self.ui.astapIndexPath,
+                'appPath': self.ui.astapIndexPath,
+                'indexPath': self.ui.astapAppPath,
             },
         }
 
@@ -146,7 +150,12 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: True for test purpose
         """
 
-        framework = self.data['framework']
+        firstFramework = next(iter(self.data['frameworks']))
+        framework = self.data.get('framework')
+
+        if not framework:
+            framework = firstFramework
+
         frameworkTabText = self.framework2tabs[framework]
         frameworkTabList = [self.framework2tabs[x] for x in self.data['frameworks']]
 
@@ -187,7 +196,7 @@ class DevicePopup(QDialog, widget.MWidget):
                     ui.setView(QListView())
                     for i, device in enumerate(frameworks[fw][prop]):
                         ui.addItem(device)
-                        if frameworks[fw][prop[:-4]] == device:
+                        if frameworks[fw]['deviceName'] == device:
                             ui.setCurrentIndex(i)
 
                 elif isinstance(ui, QLineEdit):
@@ -225,37 +234,37 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: True for test purpose
         """
 
-        frameworks = self.data['frameworks']
+        framework = self.data['framework']
+        frameworkData = self.data['frameworks'][framework]
 
-        for fw in frameworks:
-            for prop in frameworks[fw]:
-                if prop not in self.framework2gui[fw]:
-                    continue
+        for prop in list(frameworkData):
+            if prop not in self.framework2gui[framework]:
+                continue
 
-                ui = self.framework2gui[fw][prop]
+            ui = self.framework2gui[framework][prop]
 
-                if isinstance(ui, QComboBox):
-                    frameworks[fw][prop[:-4]] = ui.currentText()
-                    frameworks[fw][prop].clear()
-                    for index in range(ui.model().rowCount()):
-                        frameworks[fw][prop].append(ui.model().item(index).text())
+            if isinstance(ui, QComboBox):
+                frameworkData['deviceName'] = ui.currentText()
+                frameworkData[prop].clear()
+                for index in range(ui.model().rowCount()):
+                    frameworkData[prop].append(ui.model().item(index).text())
 
-                elif isinstance(ui, QLineEdit):
-                    if isinstance(frameworks[fw][prop], str):
-                        frameworks[fw][prop] = ui.text()
-                    elif isinstance(frameworks[fw][prop], int):
-                        frameworks[fw][prop] = int(ui.text())
-                    else:
-                        frameworks[fw][prop] = float(ui.text())
-
-                elif isinstance(ui, QCheckBox):
-                    frameworks[fw][prop] = ui.isChecked()
-
-                elif isinstance(ui, QDoubleSpinBox):
-                    frameworks[fw][prop] = ui.value()
-
+            elif isinstance(ui, QLineEdit):
+                if isinstance(frameworkData[prop], str):
+                    frameworkData[prop] = ui.text()
+                elif isinstance(frameworkData[prop], int):
+                    frameworkData[prop] = int(ui.text())
                 else:
-                    self.log.info(f'Property {prop} in gui for framework {fw} not found')
+                    frameworkData[prop] = float(ui.text())
+
+            elif isinstance(ui, QCheckBox):
+                frameworkData[prop] = ui.isChecked()
+
+            elif isinstance(ui, QDoubleSpinBox):
+                frameworkData[prop] = ui.value()
+
+            else:
+                self.log.info(f'Property {prop} in gui for framework {framework} not found')
 
         return True
 
@@ -263,18 +272,16 @@ class DevicePopup(QDialog, widget.MWidget):
         """
         readFramework determines, which tab was selected when leaving and writes the
         adequate selection into the property. as the headline might be different from the
-        keywords, a translation table (self.framework2gui) is used.
+        keywords, a translation table (self.framework2gui) in a reverse index is used.
 
         :return: True for test purpose
         """
 
         index = self.ui.tab.currentIndex()
         currentSelection = self.ui.tab.tabText(index)
-        fw = ''
-        for fw in self.data['frameworks']:
-            if currentSelection == self.framework2gui[fw]:
-                break
-        self.data['framework'] = fw
+
+        searchD = dict([(value, key) for key, value in self.framework2tabs.items()])
+        self.data['framework'] = searchD[currentSelection]
 
         return True
 
@@ -285,8 +292,8 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: true for test purpose
         """
 
-        self.readTabs()
         self.readFramework()
+        self.readTabs()
         self.returnValues['close'] = 'ok'
         self.close()
 
@@ -303,7 +310,7 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: success
         """
 
-        device = self._indiClass.client.devices.get(deviceName)
+        device = self.indiClass.client.devices.get(deviceName)
         if not device:
             return False
 
@@ -312,13 +319,13 @@ class DevicePopup(QDialog, widget.MWidget):
         if interface is None:
             return False
 
-        if self._indiSearchType is None:
+        if self.indiSearchType is None:
             return False
 
         interface = int(interface)
 
-        if interface & self._indiSearchType:
-            self._indiSearchNameList.append(deviceName)
+        if interface & self.indiSearchType:
+            self.indiSearchNameList.append(deviceName)
 
         return True
 
@@ -335,32 +342,32 @@ class DevicePopup(QDialog, widget.MWidget):
         :return:  success finding
         """
 
-        self._indiSearchNameList = list()
+        self.indiSearchNameList = list()
 
         if self.driver in self.indiDefaults:
-            self._indiSearchNameList.append(self.indiDefaults[self.driver])
+            self.indiSearchNameList.append(self.indiDefaults[self.driver])
 
         else:
             host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))
-            self._indiClass = IndiClass()
-            self._indiClass.host = host
+            self.indiClass = IndiClass()
+            self.indiClass.host = host
 
-            self._indiClass.client.signals.defText.connect(self.addDevicesWithType)
-            self._indiClass.client.connectServer()
-            self._indiClass.client.watchDevice()
+            self.indiClass.client.signals.defText.connect(self.addDevicesWithType)
+            self.indiClass.client.connectServer()
+            self.indiClass.client.watchDevice()
             msg = QMessageBox
             msg.information(self,
                             'Searching Devices',
                             f'Search for [{self.driver}] could take some seconds!')
-            self._indiClass.client.disconnectServer()
+            self.indiClass.client.disconnectServer()
 
         self.ui.indiDeviceList.clear()
         self.ui.indiDeviceList.setView(QListView())
 
-        for name in self._indiSearchNameList:
+        for name in self.indiSearchNameList:
             self.log.info(f'Indi search found: {name}')
 
-        for deviceName in self._indiSearchNameList:
+        for deviceName in self.indiSearchNameList:
             self.ui.indiDeviceList.addItem(deviceName)
 
         return True

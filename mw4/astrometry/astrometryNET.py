@@ -70,7 +70,7 @@ class AstrometryNET(object):
                 'timeout': 30,
                 'appPath': '',
                 'indexPath': '',
-                'name': 'ASTROMETRY.NET',
+                'deviceName': '',
             }
         }
 

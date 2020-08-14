@@ -58,15 +58,15 @@ class PegasusUPB:
         self.signals = PegasusUPBSignals()
 
         self.data = {}
-        self.defaultConfig = {'deviceName': '',
-                              'framework': ''}
+        self.defaultConfig = {'framework': '',
+                              'frameworks': {}}
         self.framework = None
         self.run = {
             'indi': PegasusUPBIndi(self.app, self.signals, self.data),
         }
 
         for fw in self.run:
-            self.defaultConfig.update(self.run[fw].defaultConfig)
+            self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
         # signalling from subclasses to main
         self.run['indi'].client.signals.serverConnected.connect(self.signals.serverConnected)

@@ -431,7 +431,10 @@ class SettDevice(object):
         driverClass = self.drivers[driver]['class'].run[framework]
 
         for attribute in frameworkConfig:
-            setattr(driverClass, attribute, frameworkConfig[attribute])
+            if attribute == 'deviceName':
+                setattr(driverClass, 'name', frameworkConfig['deviceName'])
+            else:
+                setattr(driverClass, attribute, frameworkConfig[attribute])
 
         return True
 

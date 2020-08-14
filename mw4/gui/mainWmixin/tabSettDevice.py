@@ -50,7 +50,6 @@ class SettDevice(object):
         initialize gui
         initialize driver
         start drivers
-        stop drivers
 
     sequence popup:
         initialize popup data
@@ -59,7 +58,13 @@ class SettDevice(object):
         if cancel -> finished
         store data in config
         stop changed driver
-        initialize changed driver
+        start new driver
+
+    sequence dropdown:
+        search driver
+        if no driver -> finished
+        stop changed driver
+        if driver = "device disabled" -> finished
         start new driver
     """
 
@@ -497,16 +502,18 @@ class SettDevice(object):
         """
 
         sender = self.sender()
+        isDisabled = sender.currentText() == 'device disabled'
         driver = self.returnDriver(sender, self.drivers, addKey='uiDropDown')
 
         if driver:
-            if sender.currentText() == 'device disabled':
+            if isDisabled:
                 framework = ''
             else:
                 framework = sender.currentText().split('-')[0].rstrip()
 
             self.driversData[driver]['framework'] = framework
             self.stopDriver(driver=driver)
+
             if framework:
                 self.startDriver(driver=driver)
 

@@ -77,17 +77,19 @@ class DevicePopup(QDialog, widget.MWidget):
         self.app = app
         self.data = data
         self.driver = driver
-        self.returnValues = {'close': 'cancel'}
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self)
         self.initUI()
-
         self.setWindowModality(Qt.ApplicationModal)
         x = geometry[0] + int((geometry[2] - self.width()) / 2)
         y = geometry[1] + int((geometry[3] - self.height()) / 2)
         self.move(x, y)
 
+        self.indiClass = None
+        self.indiSearchType = self.indiTypes[driver]
+        self.indiSearchNameList = None
+        self.returnValues = {'close': 'cancel'}
         self.framework2gui = {
             'indi': {
                 'host': self.ui.indiHost,
@@ -194,8 +196,6 @@ class DevicePopup(QDialog, widget.MWidget):
                     ui.setView(QListView())
                     for i, device in enumerate(frameworks[fw][prop]):
                         ui.addItem(device)
-                        if prop != 'deviceList':
-                            continue
                         if frameworks[fw]['deviceName'] == device:
                             ui.setCurrentIndex(i)
 
@@ -244,7 +244,7 @@ class DevicePopup(QDialog, widget.MWidget):
                 ui = self.framework2gui[fw][prop]
 
                 if isinstance(ui, QComboBox):
-                    frameworks[fw][prop[:-4]] = ui.currentText()
+                    frameworks[fw]['deviceName'] = ui.currentText()
                     frameworks[fw][prop].clear()
                     for index in range(ui.model().rowCount()):
                         frameworks[fw][prop].append(ui.model().item(index).text())
@@ -312,7 +312,7 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: success
         """
 
-        device = self._indiClass.client.devices.get(deviceName)
+        device = self.indiClass.client.devices.get(deviceName)
         if not device:
             return False
 
@@ -321,13 +321,13 @@ class DevicePopup(QDialog, widget.MWidget):
         if interface is None:
             return False
 
-        if self._indiSearchType is None:
+        if self.indiSearchType is None:
             return False
 
         interface = int(interface)
 
-        if interface & self._indiSearchType:
-            self._indiSearchNameList.append(deviceName)
+        if interface & self.indiSearchType:
+            self.indiSearchNameList.append(deviceName)
 
         return True
 
@@ -344,32 +344,32 @@ class DevicePopup(QDialog, widget.MWidget):
         :return:  success finding
         """
 
-        self._indiSearchNameList = list()
+        self.indiSearchNameList = list()
 
         if self.driver in self.indiDefaults:
-            self._indiSearchNameList.append(self.indiDefaults[self.driver])
+            self.indiSearchNameList.append(self.indiDefaults[self.driver])
 
         else:
             host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))
-            self._indiClass = IndiClass()
-            self._indiClass.host = host
+            self.indiClass = IndiClass()
+            self.indiClass.host = host
 
-            self._indiClass.client.signals.defText.connect(self.addDevicesWithType)
-            self._indiClass.client.connectServer()
-            self._indiClass.client.watchDevice()
+            self.indiClass.client.signals.defText.connect(self.addDevicesWithType)
+            self.indiClass.client.connectServer()
+            self.indiClass.client.watchDevice()
             msg = QMessageBox
             msg.information(self,
                             'Searching Devices',
                             f'Search for [{self.driver}] could take some seconds!')
-            self._indiClass.client.disconnectServer()
+            self.indiClass.client.disconnectServer()
 
         self.ui.indiDeviceList.clear()
         self.ui.indiDeviceList.setView(QListView())
 
-        for name in self._indiSearchNameList:
+        for name in self.indiSearchNameList:
             self.log.info(f'Indi search found: {name}')
 
-        for deviceName in self._indiSearchNameList:
+        for deviceName in self.indiSearchNameList:
             self.ui.indiDeviceList.addItem(deviceName)
 
         return True

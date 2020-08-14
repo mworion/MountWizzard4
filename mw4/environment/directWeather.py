@@ -48,7 +48,7 @@ class DirectWeather:
         self.run = {
             'internal': self
         }
-        self.name = ''
+        self.deviceName = ''
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {'internal': {'deviceName': 'Direct'}}}

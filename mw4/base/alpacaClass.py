@@ -84,12 +84,12 @@ class AlpacaClass(object):
         self.client.host = value
 
     @property
-    def name(self):
-        return self.client.name
+    def deviceName(self):
+        return self.client.deviceName
 
-    @name.setter
-    def name(self, value):
-        self.client.name = value
+    @deviceName.setter
+    def deviceName(self, value):
+        self.client.deviceName = value
 
     @property
     def apiVersion(self):
@@ -115,7 +115,7 @@ class AlpacaClass(object):
         self.client.connected(Connected=True)
         suc = self.client.connected()
         if not suc:
-            self.app.message.emit(f'ALPACA connect error:[{self.name}]', 2)
+            self.app.message.emit(f'ALPACA connect error:[{self.deviceName}]', 2)
             return False
 
         if not self.serverConnected:
@@ -124,8 +124,8 @@ class AlpacaClass(object):
 
         if not self.deviceConnected:
             self.deviceConnected = True
-            self.client.signals.deviceConnected.emit(f'{self.name}')
-            self.app.message.emit(f'ALPACA device found: [{self.name}]', 0)
+            self.client.signals.deviceConnected.emit(f'{self.deviceName}')
+            self.app.message.emit(f'ALPACA device found: [{self.deviceName}]', 0)
 
         self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.nameDevice()
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.driverVersion()
@@ -190,13 +190,13 @@ class AlpacaClass(object):
 
         if self.deviceConnected and not suc:
             self.deviceConnected = False
-            self.client.signals.deviceDisconnected.emit(f'{self.name}')
-            self.app.message.emit(f'ALPACA device remove:[{self.name}]', 0)
+            self.client.signals.deviceDisconnected.emit(f'{self.deviceName}')
+            self.app.message.emit(f'ALPACA device remove:[{self.deviceName}]', 0)
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
-            self.client.signals.deviceConnected.emit(f'{self.name}')
-            self.app.message.emit(f'ALPACA device found: [{self.name}]', 0)
+            self.client.signals.deviceConnected.emit(f'{self.deviceName}')
+            self.app.message.emit(f'ALPACA device found: [{self.deviceName}]', 0)
 
         else:
             pass
@@ -259,8 +259,8 @@ class AlpacaClass(object):
         self.client.connected(Connected=False)
         self.deviceConnected = False
         self.serverConnected = False
-        self.client.signals.deviceDisconnected.emit(f'{self.name}')
-        self.client.signals.serverDisconnected.emit({f'{self.name}': 0})
-        self.app.message.emit(f'ALPACA device remove:[{self.name}]', 0)
+        self.client.signals.deviceDisconnected.emit(f'{self.deviceName}')
+        self.client.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
+        self.app.message.emit(f'ALPACA device remove:[{self.deviceName}]', 0)
 
         return True

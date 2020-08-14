@@ -54,7 +54,7 @@ class Remote(QObject):
         self.run = {
             'internal': self
         }
-        self.name = ''
+        self.deviceName = ''
 
         self.clientConnection = None
         self.tcpServer = None

@@ -72,7 +72,7 @@ class AlpacaBase(object):
         self._protocol = 'http'
         self._host = ('localhost', 11111)
         self._apiVersion = 1
-        self._name = ''
+        self._deviceName = ''
 
     def generateBaseUrl(self):
         """
@@ -102,12 +102,12 @@ class AlpacaBase(object):
         return self.generateBaseUrl()
 
     @property
-    def name(self):
-        return self._name
+    def deviceName(self):
+        return self._deviceName
 
-    @name.setter
-    def name(self, value):
-        self._name = value
+    @deviceName.setter
+    def deviceName(self, value):
+        self._deviceName = value
         valueSplit = value.split(':')
         if len(valueSplit) != 2:
             self.log.info(f'malformed name: {value}')
@@ -139,7 +139,7 @@ class AlpacaBase(object):
             **data: Data to send with request.
 
         """
-        if not self.name:
+        if not self.deviceName:
             return None
 
         uid = uuid.uuid4().int % 2**32
@@ -181,7 +181,7 @@ class AlpacaBase(object):
             **data: Data to send with request.
 
         """
-        if not self.name:
+        if not self.deviceName:
             return None
 
         uid = uuid.uuid4().int % 2**32

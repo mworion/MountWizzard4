@@ -63,7 +63,7 @@ class AstrometryNET(object):
         self.appPath = ''
         self.timeout = 30
         self.searchRadius = 20
-        self.name = 'ASTROMETRY.NET'
+        self.deviceName = 'ASTROMETRY.NET'
 
         self.setDefaultPath()
 

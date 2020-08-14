@@ -54,7 +54,7 @@ class TelescopeIndi(IndiClass):
         :return: success
         """
 
-        if deviceName != self.name:
+        if deviceName != self.deviceName:
             return False
 
         if self.device is None:

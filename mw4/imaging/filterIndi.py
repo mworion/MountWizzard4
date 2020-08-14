@@ -54,7 +54,7 @@ class FilterIndi(IndiClass):
         :return: success
         """
 
-        if deviceName != self.name:
+        if deviceName != self.deviceName:
             return False
 
         if self.device is None:
@@ -88,7 +88,7 @@ class FilterIndi(IndiClass):
         # setting fast mode:
         filterNo = self.device.getNumber('FILTER_SLOT')
         filterNo['FILTER_SLOT_VALUE'] = filterNumber
-        suc = self.client.sendNewNumber(deviceName=self.name,
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='FILTER_SLOT',
                                         elements=filterNo,
                                         )

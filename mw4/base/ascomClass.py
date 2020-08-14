@@ -74,7 +74,7 @@ class AscomClass(object):
 
         self.client = None
         self.data = data
-        self.name = ''
+        self.deviceName = ''
         self.defaultConfig = {
             'ascom': {
                 'deviceName': 'test',
@@ -107,17 +107,17 @@ class AscomClass(object):
                 retry += 1
                 self.client.connected = True
             except Exception as e:
-                self.log.warning(f'Connection error [{self.name}]: [{e}]')
+                self.log.warning(f'Connection error [{self.deviceName}]: [{e}]')
             else:
                 suc = self.client.connected
-                self.log.info(f'[{self.name}] connected, [{retry}] retries needed')
+                self.log.info(f'[{self.deviceName}] connected, [{retry}] retries needed')
             finally:
                 if suc:
                     break
                 time.sleep(0.2)
 
         if not suc:
-            self.app.message.emit(f'ASCOM connect error: [{self.name}]', 2)
+            self.app.message.emit(f'ASCOM connect error: [{self.deviceName}]', 2)
             return False
 
         if not self.serverConnected:
@@ -126,8 +126,8 @@ class AscomClass(object):
 
         if not self.deviceConnected:
             self.deviceConnected = True
-            self.ascomSignals.deviceConnected.emit(f'{self.name}')
-            self.app.message.emit(f'ASCOM device found:  [{self.name}]', 0)
+            self.ascomSignals.deviceConnected.emit(f'{self.deviceName}')
+            self.app.message.emit(f'ASCOM device found:  [{self.deviceName}]', 0)
 
         self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.Name
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.DriverVersion
@@ -191,18 +191,18 @@ class AscomClass(object):
         try:
             suc = self.client.connected
         except Exception as e:
-            self.log.warning(f'Connection status error [{self.name}]: [{e}]')
+            self.log.warning(f'Connection status error [{self.deviceName}]: [{e}]')
             suc = False
 
         if self.deviceConnected and not suc:
             self.deviceConnected = False
-            self.ascomSignals.deviceDisconnected.emit(f'{self.name}')
-            self.app.message.emit(f'ASCOM device remove: [{self.name}]', 0)
+            self.ascomSignals.deviceDisconnected.emit(f'{self.deviceName}')
+            self.app.message.emit(f'ASCOM device remove: [{self.deviceName}]', 0)
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
-            self.ascomSignals.deviceConnected.emit(f'{self.name}')
-            self.app.message.emit(f'ASCOM device found:  [{self.name}]', 0)
+            self.ascomSignals.deviceConnected.emit(f'{self.deviceName}')
+            self.app.message.emit(f'ASCOM device found:  [{self.deviceName}]', 0)
 
         else:
             pass
@@ -250,7 +250,7 @@ class AscomClass(object):
 
         pythoncom.CoInitialize()
         try:
-            self.client = win32com.client.Dispatch(self.name)
+            self.client = win32com.client.Dispatch(self.deviceName)
         except Exception as e:
             self.log.critical(f'Error: [{e}]')
             return False
@@ -275,14 +275,14 @@ class AscomClass(object):
             try:
                 self.client.connected = False
             except Exception as e:
-                self.log.info(f'Connection to {self.name} could not be closed: {e}')
+                self.log.info(f'Connection to {self.deviceName} could not be closed: {e}')
         self.deviceConnected = False
         self.serverConnected = False
         self.client = None
         pythoncom.CoUninitialize()
 
-        self.ascomSignals.deviceDisconnected.emit(f'{self.name}')
-        self.ascomSignals.serverDisconnected.emit({f'{self.name}': 0})
-        self.app.message.emit(f'ASCOM device remove: [{self.name}]', 0)
+        self.ascomSignals.deviceDisconnected.emit(f'{self.deviceName}')
+        self.ascomSignals.serverDisconnected.emit({f'{self.deviceName}': 0})
+        self.app.message.emit(f'ASCOM device remove: [{self.deviceName}]', 0)
 
         return True

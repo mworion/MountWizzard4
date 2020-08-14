@@ -42,7 +42,7 @@ class SettDevice(object):
     - all drivers were initialised with the content of config dict
     - if we setup a new device, data of device is gathered for the popup from config
     - when closing the popup, result data will be stored in config
-    - if there is no default data for a driver in config dict, it will be retrived from the
+    - if there is no default data for a driver in config dict, it will be retrieved from the
       driver
 
     sequence standard:
@@ -167,10 +167,10 @@ class SettDevice(object):
         self.driversData = {}
 
         for driver in self.drivers:
-            self.drivers[driver]['uiDropDown'].activated.connect(self.dispatch)
+            self.drivers[driver]['uiDropDown'].activated.connect(self.dispatchDriverDropdown)
             if self.drivers[driver]['uiSetup'] is not None:
                 ui = self.drivers[driver]['uiSetup']
-                ui.clicked.connect(self.setupPopup)
+                ui.clicked.connect(self.dispatchPopup)
 
             # adding functional signals
             if hasattr(self.drivers[driver]['class'], 'signals'):
@@ -271,11 +271,9 @@ class SettDevice(object):
         index = self.findIndexValue(self.drivers[driver]['uiDropDown'], selectedFramework)
         self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
 
-        self.dispatch(driver=driver)
-
         return True
 
-    def callPopup(self, driver, geometry):
+    def callPopup(self, driver):
         """
         callPopup prepares the data and calls and processes the returned data.
 
@@ -284,43 +282,35 @@ class SettDevice(object):
         with an postfix 'List' like 'protocol' and 'protocolList'
 
         :param driver:
-        :param geometry:
-        :return: True if OK and false if cancel
+        :return: True for test purpose
         """
 
+        geometry = self.pos().x(), self.pos().y(), self.width(), self.height()
         data = self.driversData[driver]
         self.popupUi = DevicePopup(app=self.app,
                                    geometry=geometry,
                                    driver=driver,
                                    data=data)
         self.popupUi.exec_()
-        print(self.driversData)
+
         if self.popupUi.returnValues.get('close', 'cancel') == 'cancel':
             return False
-        else:
-            return True
 
-    def setupPopup(self):
+        self.processPopupResults(driver=driver)
+
+        return True
+
+    def dispatchPopup(self):
         """
-        setupPopup calculates the geometry data to place the popup centered on top of the
-        parent window and call it with all necessary data. The popup is modal and we connect
-        the signal of the destroyed window to update the dispatching value for all changes
-        drivers
 
         :return: True for test purpose
         """
 
-        geometry = self.pos().x(), self.pos().y(), self.width(), self.height()
-        suc = False
+        sender = self.sender()
+        driver = self.returnDriver(sender, self.drivers, addKey='uiSetup')
 
-        for driver in self.drivers:
-            if self.sender() != self.drivers[driver]['uiSetup']:
-                continue
-            suc = self.callPopup(driver, geometry)
-            break
-
-        if suc:
-            self.processPopupResults(driver=driver)
+        if driver:
+            self.callPopup(driver=driver)
 
         return True
 
@@ -337,7 +327,8 @@ class SettDevice(object):
 
         self.deviceStat[driver] = None
 
-        framework = self.driversData[driver]['framework']
+        framework = self.drivers[driver]['class'].framework
+
         if not framework:
             return False
 
@@ -347,14 +338,10 @@ class SettDevice(object):
         if isRunning:
             driverClass.stopCommunication()
             driverClass.data.clear()
+            driverClass.name = ''
             self.app.message.emit(f'Disabled device:     [{driver}]', 0)
 
         self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
-
-        # if new driver is disabled, we are finished
-        if framework == '':
-            driverClass.name = ''
-            return False
 
         return True
 
@@ -373,7 +360,12 @@ class SettDevice(object):
         """
         startDriver checks if a framework has been set and starts the driver with its
         startCommunication method. Normally the driver would report it's connection,
-        but for internal driver this has to be done separately
+        but for internal driver this has to be done separately.
+
+        as the configuration is stored in the config, start also stores the selected
+        framework in the framework attribute of the driver's class. this is needed as when
+        stopping the driver the config dict already has the new framework set and we have to
+        remember it.
 
         :param driver:
         :param autoStart:
@@ -386,6 +378,8 @@ class SettDevice(object):
         framework = self.driversData[driver]['framework']
         if not framework:
             return False
+
+        self.drivers[driver]['class'].framework = framework
 
         isInternal = framework == 'internal'
 
@@ -480,15 +474,23 @@ class SettDevice(object):
 
         return True
 
-    def dispatch(self):
+    def dispatchDriverDropdown(self):
         """
+        dispatchDriverDropdown maps the gui event received from signals to the methods doing
+        the real stuff. this splits function and gui reaction into two separate tasks.
+        if a dropDown action is taken, this means and new driver has been selected,
+        so the old one has to be stopped, the new configured and started.
 
         :return: true for test purpose
         """
 
         sender = self.sender()
         driver = self.returnDriver(sender, self.drivers, addKey='uiDropDown')
-        print(driver)
+
+        if driver:
+            self.stopDriver(driver=driver)
+            self.configDriver(driver=driver)
+            self.startDriver(driver=driver)
 
         return True
 

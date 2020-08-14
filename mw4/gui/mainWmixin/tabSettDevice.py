@@ -271,13 +271,14 @@ class SettDevice(object):
         """
 
         selectedFramework = self.driversData[driver]['framework']
-
         index = self.findIndexValue(self.drivers[driver]['uiDropDown'], selectedFramework)
-        self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
-
         name = self.driversData[driver]['frameworks'][selectedFramework]['deviceName']
         itemText = f'{selectedFramework} - {name}'
-        self.drivers[driver]['uiDropDown'].setCurrentText(itemText)
+
+        self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
+        self.drivers[driver]['uiDropDown'].setItemText(index, itemText)
+        self.drivers[driver]['uiDropDown'].update()
+
         self.stopDriver(driver=driver)
         self.startDriver(driver=driver)
 

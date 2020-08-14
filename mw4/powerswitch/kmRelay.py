@@ -91,7 +91,7 @@ class KMRelay(QObject):
         self.run = {
             'internal': self
         }
-        self.name = ''
+        self.deviceName = ''
 
         self.host = host
         self.mutexPoll = QMutex()

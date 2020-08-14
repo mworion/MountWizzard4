@@ -101,7 +101,7 @@ class IndiClass(object):
         self.app = app
 
         self.client = qtIndiBase.Client(host=None, threadPool=threadPool)
-        self.name = ''
+        self.deviceName = ''
         self._host = ('localhost', 7624)
         self.data = data
         self.loadIndiConfig = False
@@ -162,9 +162,9 @@ class IndiClass(object):
         :return: success
         """
 
-        if self.name:
-            suc = self.client.watchDevice(self.name)
-            self.log.info(f'INDI watch: {self.name}, watch: result:{suc}')
+        if self.deviceName:
+            suc = self.client.watchDevice(self.deviceName)
+            self.log.info(f'INDI watch: {self.deviceName}, watch: result:{suc}')
             return suc
         return False
 
@@ -187,7 +187,7 @@ class IndiClass(object):
         :return: true for test purpose
         """
 
-        if deviceName == self.name:
+        if deviceName == self.deviceName:
             self.device = self.client.getDevice(deviceName)
             self.app.message.emit(f'INDI device found:   [{deviceName}]', 0)
         else:
@@ -204,7 +204,7 @@ class IndiClass(object):
         :return: true for test purpose
         """
 
-        if deviceName == self.name:
+        if deviceName == self.deviceName:
             self.app.message.emit(f'INDI removed device: [{deviceName}]', 0)
             self.device = None
             self.data.clear()
@@ -220,7 +220,7 @@ class IndiClass(object):
         :return: True for test purpose
         """
 
-        if not self.name:
+        if not self.deviceName:
             return False
         if self.data:
             return True
@@ -231,7 +231,7 @@ class IndiClass(object):
         if suc:
             return True
 
-        self.log.info(f'Cannot start connection to: {self.name} retry: {self.retryCounter}')
+        self.log.info(f'Cannot start to: {self.deviceName} retry: {self.retryCounter}')
 
         if self.retryCounter < self.NUMBER_RETRY:
             self.timerRetry.start(self.RETRY_DELAY)
@@ -253,7 +253,7 @@ class IndiClass(object):
         suc = self.client.connectServer()
 
         if not suc:
-            self.log.info(f'Cannot start connection to: {self.name} retry: {self.retryCounter}')
+            self.log.info(f'Cannot start to: {self.deviceName} retry: {self.retryCounter}')
         else:
             self.timerRetry.start(self.RETRY_DELAY)
 
@@ -267,8 +267,8 @@ class IndiClass(object):
         """
 
         self.client.stopTimers()
-        suc = self.client.disconnectServer(self.name)
-        self.name = ''
+        suc = self.client.disconnectServer(self.deviceName)
+        self.deviceName = ''
         return suc
 
     def connectDevice(self, deviceName, propertyName):
@@ -286,7 +286,7 @@ class IndiClass(object):
             return False
 
         suc = False
-        if deviceName == self.name:
+        if deviceName == self.deviceName:
             suc = self.client.connectDevice(deviceName=deviceName)
         return suc
 
@@ -348,13 +348,13 @@ class IndiClass(object):
 
         if self.device is None:
             return False
-        if deviceName != self.name:
+        if deviceName != self.deviceName:
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
 
-            # print('number', self.name, key, value)
+            # print('number', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = float(value)
@@ -373,7 +373,7 @@ class IndiClass(object):
 
         if self.device is None:
             return False
-        if deviceName != self.name:
+        if deviceName != self.deviceName:
             return False
 
         for element, value in self.device.getSwitch(propertyName).items():
@@ -383,7 +383,7 @@ class IndiClass(object):
             if propertyName == 'PROFILE':
                 self.isINDIGO = True
 
-            # print('switch', self.name, key, value)
+            # print('switch', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = value == 'On'
@@ -402,13 +402,13 @@ class IndiClass(object):
 
         if self.device is None:
             return False
-        if deviceName != self.name:
+        if deviceName != self.deviceName:
             return False
 
         for element, value in self.device.getText(propertyName).items():
             key = propertyName + '.' + element
 
-            # print('text  ', self.name, key, value)
+            # print('text  ', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = value
@@ -426,13 +426,13 @@ class IndiClass(object):
         """
         if self.device is None:
             return False
-        if deviceName != self.name:
+        if deviceName != self.deviceName:
             return False
 
         for element, value in self.device.getLight(propertyName).items():
             key = propertyName + '.' + element
 
-            # print('light ', self.name, key, value)
+            # print('light ', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = value
@@ -451,7 +451,7 @@ class IndiClass(object):
 
         if self.device is None:
             return False
-        if deviceName != self.name:
+        if deviceName != self.deviceName:
             return False
 
         return True

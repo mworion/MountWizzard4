@@ -73,7 +73,7 @@ class DomeIndi(IndiClass):
         :return: success
         """
 
-        if deviceName != self.name:
+        if deviceName != self.deviceName:
             return False
 
         if self.device is None:
@@ -176,7 +176,7 @@ class DomeIndi(IndiClass):
         if self.device is None:
             return False
 
-        if self.name is None or not self.name:
+        if self.deviceName is None or not self.deviceName:
             return False
 
         position = self.device.getNumber('ABS_DOME_POSITION')
@@ -186,7 +186,7 @@ class DomeIndi(IndiClass):
 
         position['DOME_ABSOLUTE_POSITION'] = azimuth
 
-        suc = self.client.sendNewNumber(deviceName=self.name,
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='ABS_DOME_POSITION',
                                         elements=position,
                                         )

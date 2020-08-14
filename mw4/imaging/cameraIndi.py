@@ -59,7 +59,7 @@ class CameraIndi(IndiClass):
         :return: success
         """
 
-        if deviceName != self.name:
+        if deviceName != self.deviceName:
             return False
 
         if self.device is None:
@@ -224,7 +224,7 @@ class CameraIndi(IndiClass):
             quality['QUALITY_LOW'] = 'Off'
             quality['QUALITY_HIGH'] = 'On'
 
-        suc = self.client.sendNewSwitch(deviceName=self.name,
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='READOUT_QUALITY',
                                         elements=quality,
                                         )
@@ -269,7 +269,7 @@ class CameraIndi(IndiClass):
         indiCmd = self.device.getNumber('CCD_BINNING')
         indiCmd['HOR_BIN'] = binning
         indiCmd['VER_BIN'] = binning
-        suc = self.client.sendNewNumber(deviceName=self.name,
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='CCD_BINNING',
                                         elements=indiCmd,
                                         )
@@ -281,7 +281,7 @@ class CameraIndi(IndiClass):
         indiCmd['Y'] = posY
         indiCmd['WIDTH'] = width
         indiCmd['HEIGHT'] = height
-        suc = self.client.sendNewNumber(deviceName=self.name,
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='CCD_FRAME',
                                         elements=indiCmd,
                                         )
@@ -291,7 +291,7 @@ class CameraIndi(IndiClass):
         # setting and starting exposure
         indiCmd = self.device.getNumber('CCD_EXPOSURE')
         indiCmd['CCD_EXPOSURE_VALUE'] = expTime
-        suc = self.client.sendNewNumber(deviceName=self.name,
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='CCD_EXPOSURE',
                                         elements=indiCmd,
                                         )
@@ -314,7 +314,7 @@ class CameraIndi(IndiClass):
 
         indiCmd['ABORT'] = 'On'
 
-        suc = self.client.sendNewSwitch(deviceName=self.name,
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='CCD_ABORT_EXPOSURE',
                                         elements=indiCmd,
                                         )
@@ -342,7 +342,7 @@ class CameraIndi(IndiClass):
             cooler['COOLER_ON'] = 'Off'
             cooler['COOLER_OFF'] = 'On'
 
-        suc = self.client.sendNewSwitch(deviceName=self.name,
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='CCD_COOLER',
                                         elements=cooler,
                                         )
@@ -367,7 +367,7 @@ class CameraIndi(IndiClass):
             return False
 
         temp['CCD_TEMPERATURE_VALUE'] = temperature
-        suc = self.client.sendNewNumber(deviceName=self.name,
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='CCD_TEMPERATURE',
                                         elements=temp,
                                         )

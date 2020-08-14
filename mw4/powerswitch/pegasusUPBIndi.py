@@ -55,7 +55,7 @@ class PegasusUPBIndi(IndiClass):
         :return: success
         """
 
-        if deviceName != self.name:
+        if deviceName != self.deviceName:
             return False
 
         if self.device is None:
@@ -147,7 +147,7 @@ class PegasusUPBIndi(IndiClass):
         else:
             power[portName] = 'On'
 
-        suc = self.client.sendNewSwitch(deviceName=self.name,
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=power,
                                         )
@@ -182,7 +182,7 @@ class PegasusUPBIndi(IndiClass):
         else:
             power[portName] = 'On'
 
-        suc = self.client.sendNewSwitch(deviceName=self.name,
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=power,
                                         )
@@ -212,7 +212,7 @@ class PegasusUPBIndi(IndiClass):
                 usb['INDI_ENABLED'] = 'On'
                 usb['INDI_DISABLED'] = 'Off'
 
-        suc = self.client.sendNewSwitch(deviceName=self.name,
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=usb,
                                         )
@@ -249,7 +249,7 @@ class PegasusUPBIndi(IndiClass):
         else:
             usb[portName] = 'On'
 
-        suc = self.client.sendNewSwitch(deviceName=self.name,
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=usb,
                                         )
@@ -300,7 +300,7 @@ class PegasusUPBIndi(IndiClass):
                     autoDew['DEW_B'] = 'On'
                     autoDew['DEW_C'] = 'On'
 
-        suc = self.client.sendNewSwitch(deviceName=self.name,
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=autoDew,
                                         )
@@ -332,7 +332,7 @@ class PegasusUPBIndi(IndiClass):
 
         dew[portName] = value
 
-        suc = self.client.sendNewNumber(deviceName=self.name,
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=dew,
                                         )
@@ -359,7 +359,7 @@ class PegasusUPBIndi(IndiClass):
 
         output[portName] = value
 
-        suc = self.client.sendNewNumber(deviceName=self.name,
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=output,
                                         )
@@ -388,7 +388,7 @@ class PegasusUPBIndi(IndiClass):
 
         output[portName] = 'On'
 
-        suc = self.client.sendNewSwitch(deviceName=self.name,
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=output,
                                         )

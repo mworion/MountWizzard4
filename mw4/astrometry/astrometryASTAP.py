@@ -63,7 +63,7 @@ class AstrometryASTAP(object):
 
         self.result = {'success': False}
         self.process = None
-        self.name = 'ASTAP'
+        self.deviceName = 'ASTAP'
         self.indexPath = ''
         self.appPath = ''
         self.timeout = 30

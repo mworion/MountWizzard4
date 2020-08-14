@@ -60,6 +60,7 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.angularPosRaRef = None
         self.angularPosDecRef = None
         self.devices = {}
+        self.deviceName = ''
 
         self.data = {}
         self.defaultConfig = {'framework': '',

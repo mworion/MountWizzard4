@@ -56,7 +56,7 @@ class FlipFlatIndi(IndiClass):
         :return: success
         """
 
-        if deviceName != self.name:
+        if deviceName != self.deviceName:
             return False
 
         if self.device is None:
@@ -98,7 +98,7 @@ class FlipFlatIndi(IndiClass):
             cover['UNPARK'] = 'On'
             cover['PARK'] = 'Off'
 
-        suc = self.client.sendNewSwitch(deviceName=self.name,
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='CAP_PARK',
                                         elements=cover,
                                         )

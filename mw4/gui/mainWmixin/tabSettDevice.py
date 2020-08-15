@@ -590,7 +590,7 @@ class SettDevice(object):
             driverClass = self.drivers[driver]['class']
             if not driverClass.framework:
                 return False
-            if driverClass.run[driverClass.framework].name != deviceName:
+            if driverClass.run[driverClass.framework].deviceName != deviceName:
                 return False
         return True
 

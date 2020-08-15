@@ -61,7 +61,7 @@ def printMWp(param):
 
 
 @task
-def clean_mountwizzard(c):
+def clean_mw(c):
     printMW('clean mountwizzard')
     runMW(c, 'rm -rf .pytest_cache')
     runMW(c, 'rm -rf mw4.egg-info')

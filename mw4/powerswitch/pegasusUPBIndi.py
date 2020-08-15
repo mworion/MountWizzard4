@@ -300,6 +300,7 @@ class PegasusUPBIndi(IndiClass):
                     autoDew['DEW_B'] = 'On'
                     autoDew['DEW_C'] = 'On'
 
+        print(autoDew, self.modelVersion)
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=autoDew,

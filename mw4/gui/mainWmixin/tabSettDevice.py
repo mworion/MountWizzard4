@@ -466,7 +466,7 @@ class SettDevice(object):
         if not framework:
             return False
 
-        loadConfig = data.get('indiLoadConfig', False)
+        loadConfig = data.get('loadConfig', False)
         driverClass = self.drivers[driver]['class']
 
         driverClass.framework = framework

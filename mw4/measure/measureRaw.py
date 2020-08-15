@@ -38,8 +38,6 @@ class MeasureDataRaw(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['MeasureDataRaw',
-               'startCommunication',
-               'stopCommunication',
                ]
 
     logger = logging.getLogger(__name__)

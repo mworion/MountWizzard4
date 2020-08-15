@@ -106,8 +106,9 @@ class MeasureData(PyQt5.QtCore.QObject):
         if self.framework not in self.run.keys():
             return False
 
-        suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
         name = self.run[self.framework].deviceName
+        suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
+
         if suc:
             self.signals.deviceConnected.emit(name)
             self.app.message.emit(f'MEASURE found:       [{name}]', 0)
@@ -140,10 +141,10 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.data.clear()
 
         self.data['time'] = np.empty(shape=[0, 1], dtype='datetime64')
-        self.data['raJNow'] = np.empty(shape=[0, 1])
-        self.data['decJNow'] = np.empty(shape=[0, 1])
-        self.data['angularPosRA'] = np.empty(shape=[0, 1])
-        self.data['angularPosDEC'] = np.empty(shape=[0, 1])
+        self.data['deltaRaJNow'] = np.empty(shape=[0, 1])
+        self.data['deltaDecJNow'] = np.empty(shape=[0, 1])
+        self.data['deltaAngularPosRA'] = np.empty(shape=[0, 1])
+        self.data['deltaAngularPosDEC'] = np.empty(shape=[0, 1])
         self.data['status'] = np.empty(shape=[0, 1])
 
         self.data['sensorWeatherTemp'] = np.empty(shape=[0, 1])
@@ -322,13 +323,13 @@ class MeasureData(PyQt5.QtCore.QObject):
         dat = self.data
 
         # gathering all the necessary data
-        raJNow, decJNow, angularPosRA, angularPosDEC = self.calculateReference()
+        raJNowD, decJNowD, angularPosRAD, angularPosDECD = self.calculateReference()
         timeStamp = self.app.mount.obsSite.timeJD.utc_datetime().replace(tzinfo=None)
         dat['time'] = np.append(dat['time'], np.datetime64(timeStamp))
-        dat['raJNow'] = np.append(dat['raJNow'], raJNow)
-        dat['decJNow'] = np.append(dat['decJNow'], decJNow)
-        dat['angularPosRA'] = np.append(dat['angularPosRA'], angularPosRA)
-        dat['angularPosDEC'] = np.append(dat['angularPosDEC'], angularPosDEC)
+        dat['deltaRaJNow'] = np.append(dat['deltaRaJNow'], raJNowD)
+        dat['deltaDecJNow'] = np.append(dat['deltaDecJNow'], decJNowD)
+        dat['deltaAngularPosRA'] = np.append(dat['deltaAngularPosRA'], angularPosRAD)
+        dat['deltaAngularPosDEC'] = np.append(dat['deltaAngularPosDEC'], angularPosDECD)
         dat['status'] = np.append(dat['status'], self.app.mount.obsSite.status)
 
         sens = self.app.sensorWeather

@@ -28,6 +28,24 @@ from mw4.measure.measureRaw import MeasureDataRaw
 from mw4.measure.measureCSV import MeasureDataCSV
 
 
+class MeasureSignals(PyQt5.QtCore.QObject):
+    """
+    The DomeSignals class offers a list of signals to be used and instantiated by
+    the Mount class to get signals for triggers for finished tasks to
+    enable a gui to update their values transferred to the caller back.
+
+    This has to be done in a separate class as the signals have to be subclassed from
+    QObject and the Mount class itself is subclassed from object
+    """
+
+    __all__ = ['MeasureSignals']
+
+    serverConnected = PyQt5.QtCore.pyqtSignal()
+    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
+
+
 class MeasureData(PyQt5.QtCore.QObject):
     """
     the class MeasureData inherits all information and handling of data management and
@@ -51,6 +69,7 @@ class MeasureData(PyQt5.QtCore.QObject):
     def __init__(self, app):
         super().__init__()
         self.app = app
+        self.signals = MeasureSignals()
         self.mutexMeasure = PyQt5.QtCore.QMutex()
 
         # internal calculations
@@ -66,8 +85,8 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
         self.run = {
-            'internal - display only': MeasureDataRaw(self.app, self, self.data),
-            'internal - CSV store': MeasureDataCSV(self.app, self, self.data)
+            'raw': MeasureDataRaw(self.app, self, self.data),
+            'csv': MeasureDataCSV(self.app, self, self.data)
         }
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
@@ -88,6 +107,11 @@ class MeasureData(PyQt5.QtCore.QObject):
             return False
 
         suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
+        name = self.run[self.framework].deviceName
+        if suc:
+            self.signals.deviceConnected.emit(name)
+            self.app.message.emit(f'MEASURE found:       [{name}]', 0)
+
         return suc
 
     def stopCommunication(self):
@@ -101,6 +125,10 @@ class MeasureData(PyQt5.QtCore.QObject):
             return False
 
         suc = self.run[self.framework].stopCommunication()
+        name = self.run[self.framework].deviceName
+        self.signals.serverDisconnected.emit({name: 0})
+        self.signals.deviceDisconnected.emit(name)
+        self.app.message.emit(f'MEASURE remove:      [{name}]', 0)
         return suc
 
     def setEmptyData(self):

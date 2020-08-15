@@ -59,7 +59,7 @@ class MeasureDataRaw(PyQt5.QtCore.QObject):
         self.deviceName = 'RAW'
         self.defaultConfig = {
             'raw': {
-                'deviceName': 'RAW',
+                'deviceName': 'display only',
             }
         }
 

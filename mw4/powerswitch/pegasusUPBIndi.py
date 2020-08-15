@@ -99,21 +99,21 @@ class PegasusUPBIndi(IndiClass):
             if self.data.get('DRIVER_INFO.DEVICE_MODEL', 'UPB') == 'UPB':
                 if self.modelVersion != 1:
                     self.signals.version.emit(1)
-                    self.modelVersion = 1
+                self.modelVersion = 1
             else:
                 if self.modelVersion != 2:
                     self.signals.version.emit(2)
-                    self.modelVersion = 2
+                self.modelVersion = 2
 
         if 'FIRMWARE_INFO.VERSION' in self.data:
             if self.data.get('FIRMWARE_INFO.VERSION', '1.4') < '1.5':
                 if self.modelVersion != 1:
                     self.signals.version.emit(1)
-                    self.modelVersion = 1
+                self.modelVersion = 1
             else:
                 if self.modelVersion != 2:
                     self.signals.version.emit(2)
-                    self.modelVersion = 2
+                self.modelVersion = 2
         return True
 
     def togglePowerPort(self, port=None):
@@ -169,6 +169,7 @@ class PegasusUPBIndi(IndiClass):
 
         if self.isINDIGO:
             return False
+
         else:
             propertyName = 'POWER_ON_BOOT'
             power = self.device.getSwitch(propertyName)
@@ -200,9 +201,11 @@ class PegasusUPBIndi(IndiClass):
 
         if self.isINDIGO:
             return False
+
         else:
             propertyName = 'USB_HUB_CONTROL'
             usb = self.device.getSwitch(propertyName)
+
             if 'INDI_ENABLED' not in usb:
                 return False
             if usb['INDI_ENABLED'] == 'On':
@@ -236,6 +239,7 @@ class PegasusUPBIndi(IndiClass):
             propertyName = 'AUX_USB_PORT'
             usb = self.device.getSwitch(propertyName)
             portName = f'PORT_{port}'
+
         else:
             propertyName = 'USB_PORT_CONTROL'
             usb = self.device.getSwitch(propertyName)
@@ -268,6 +272,7 @@ class PegasusUPBIndi(IndiClass):
         if self.isINDIGO:
             propertyName = 'AUX_DEW_CONTROL'
             autoDew = self.device.getSwitch(propertyName)
+
             if autoDew['MANUAL'] == 'On':
                 autoDew['MANUAL'] = 'Off'
                 autoDew['AUTOMATIC'] = 'On'
@@ -278,6 +283,7 @@ class PegasusUPBIndi(IndiClass):
         else:
             propertyName = 'AUTO_DEW'
             autoDew = self.device.getSwitch(propertyName)
+
             if self.modelVersion == 1:
                 if 'INDI_ENABLED' not in autoDew:
                     return False

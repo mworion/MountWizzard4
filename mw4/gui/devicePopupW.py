@@ -306,6 +306,9 @@ class DevicePopup(QDialog, widget.MWidget):
         addDevicesWithType gety called whenever a new device send out text messages. than it
         checks, if the device type fits to the search type desired. if they match, the
         device name is added to the list.
+        unfortunately the indi definitions are not well defined. so for example SQM reports
+        only aux general. this is value '0'. So i have to treat all devices reporting device
+        type '0' as devices which could be used for everything.
 
         :param deviceName:
         :param propertyName:
@@ -384,6 +387,8 @@ class DevicePopup(QDialog, widget.MWidget):
 
     def checkAvailability(self, framework):
         """
+        checkAvailability looks the presence of the binaries and indexes up and reports the
+        result back to the gui.
 
         :return: success
         """

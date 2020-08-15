@@ -291,7 +291,7 @@ class MeasureWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
         axe.plot(data['time'][start:-1:cycle],
-                 data['raJNow'][start:-1:cycle],
+                 data['deltaRaJNow'][start:-1:cycle],
                  marker=None,
                  markersize=3,
                  color=self.M_WHITE,
@@ -331,7 +331,7 @@ class MeasureWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
         axe.plot(data['time'][start:-1:cycle],
-                 data['decJNow'][start:-1:cycle],
+                 data['deltaDecJNow'][start:-1:cycle],
                  marker=None,
                  markersize=3,
                  color=self.M_WHITE,
@@ -368,7 +368,7 @@ class MeasureWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
         axe.plot(data['time'][start:-1:cycle],
-                 data['angularPosRA'][start:-1:cycle],
+                 data['deltaAngularPosRA'][start:-1:cycle],
                  marker=None,
                  markersize=3,
                  color=self.M_WHITE,
@@ -408,7 +408,7 @@ class MeasureWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
         axe.plot(data['time'][start:-1:cycle],
-                 data['angularPosDEC'][start:-1:cycle],
+                 data['deltaAngularPosDEC'][start:-1:cycle],
                  marker=None,
                  markersize=3,
                  color=self.M_WHITE,

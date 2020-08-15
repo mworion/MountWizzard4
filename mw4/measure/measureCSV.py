@@ -39,8 +39,6 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['MeasureDataCSV',
-               'startCommunication',
-               'stopCommunication',
                ]
 
     logger = logging.getLogger(__name__)

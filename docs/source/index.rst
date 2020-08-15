@@ -16,6 +16,7 @@ Documentation for MW4
     config/index
     modeling/index
     imaging/index
+    mechanics/index
     changelog
 
 * :ref:`search`

@@ -60,7 +60,6 @@ class AlpacaClass(object):
                 'protocolList': ['https', 'http'],
                 'user': '',
                 'password': '',
-                'copyConfig': False,
             }
         }
 

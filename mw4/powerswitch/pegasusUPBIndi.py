@@ -306,7 +306,7 @@ class PegasusUPBIndi(IndiClass):
                     autoDew['DEW_B'] = 'On'
                     autoDew['DEW_C'] = 'On'
 
-        print(autoDew, self.modelVersion)
+        # print(autoDew, self.modelVersion)
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=autoDew,
@@ -327,11 +327,11 @@ class PegasusUPBIndi(IndiClass):
         if self.isINDIGO:
             conv = {'A': '1', 'B': '2', 'C': '3'}
             propertyName = 'AUX_HEATER_OUTLET'
-            dew = self.device.getSwitch(propertyName)
+            dew = self.device.getNumber(propertyName)
             portName = f'OUTLET_{conv[port]}'
         else:
             propertyName = 'DEW_PWM'
-            dew = self.device.getSwitch(propertyName)
+            dew = self.device.getNumber(propertyName)
             portName = f'DEW_{port}'
 
         if portName not in dew:

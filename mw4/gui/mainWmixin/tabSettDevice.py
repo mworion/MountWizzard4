@@ -284,13 +284,22 @@ class SettDevice(object):
 
         return True
 
+    def copyConfig(self, driver='', framework=''):
+        """
+
+        :param driver:
+        :param framework:
+        :return: True for test purpose
+        """
+
+        return True
+
     def callPopup(self, driver):
         """
-        callPopup prepares the data and calls and processes the returned data.
-
-        there is one definition when using selection lists for offering QComboBoxes:
-        the list name for a property to be set through this lists is the property name
-        with an postfix 'List' like 'protocol' and 'protocolList'
+        callPopup prepares the data and calls and processes the returned data for the given
+        driver.
+        if copy flags for some frameworks are given, the properties of the actual driver
+        will be copied to all other drivers with the same framework.
 
         :param driver:
         :return: True for test purpose
@@ -306,6 +315,12 @@ class SettDevice(object):
 
         if self.popupUi.returnValues.get('close', 'cancel') == 'cancel':
             return False
+
+        if self.popupUi.returnValues.get('indiCopyConfig', False):
+            self.copyConfig(driver=driver, framework='indi')
+
+        if self.popupUi.returnValues.get('alpacaCopyConfig', False):
+            self.copyConfig(driver=driver, framework='alpaca')
 
         self.processPopupResults(driver=driver)
 

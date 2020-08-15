@@ -49,10 +49,10 @@ class DevicePopup(QDialog, widget.MWidget):
         'focuser': (1 << 3),
         'filterwheel': (1 << 4),
         'dome': (1 << 5),
-        'observingconditions': (1 << 7),
-        'skymeter': 0,
+        'observingconditions': (1 << 7) | (1 << 15),
+        'skymeter': (1 << 15) | (1 << 19),
         'cover': (1 << 9) | (1 << 10),
-        'power': (1 << 7) | (1 << 3)
+        'power': (1 << 7) | (1 << 3) | (1 << 15) | (1 << 18),
     }
 
     indiDefaults = {
@@ -312,6 +312,9 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: success
         """
 
+        if propertyName != 'DRIVER_INFO':
+            return False
+
         device = self.indiClass.client.devices.get(deviceName)
         if not device:
             return False
@@ -321,8 +324,13 @@ class DevicePopup(QDialog, widget.MWidget):
         if interface is None:
             return False
 
+        if interface == '0':
+            interface = 0xffff
+
         if self.indiSearchType is None:
             return False
+
+        self.log.info(f'Found: [{deviceName}], interface: [{interface}]')
 
         interface = int(interface)
 

@@ -117,7 +117,6 @@ class IndiClass(object):
                 'port': 7624,
                 'loadConfig': False,
                 'messages': False,
-                'copyConfig': False,
             }
         }
 

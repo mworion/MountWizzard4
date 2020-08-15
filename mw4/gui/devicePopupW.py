@@ -97,7 +97,6 @@ class DevicePopup(QDialog, widget.MWidget):
                 'deviceList': self.ui.indiDeviceList,
                 'messages': self.ui.indiMessages,
                 'loadConfig': self.ui.indiLoadConfig,
-                'copyConfig': self.ui.indiCopyConfig,
             },
             'alpaca': {
                 'host': self.ui.alpacaHost,
@@ -106,7 +105,6 @@ class DevicePopup(QDialog, widget.MWidget):
                 'protocolList': self.ui.alpacaProtocolList,
                 'user': self.ui.alpacaUser,
                 'password': self.ui.alpacaPassword,
-                'copyConfig': self.ui.alpacaCopyConfig,
             },
             'ascom': {
                 'device': self.ui.ascomDevice,
@@ -294,6 +292,8 @@ class DevicePopup(QDialog, widget.MWidget):
 
         self.readFramework()
         self.readTabs()
+        self.returnValues['indiCopyConfig'] = self.ui.indiCopyConfig.isChecked()
+        self.returnValues['alpacaCopyConfig'] = self.ui.alpacaCopyConfig.isChecked()
         self.returnValues['close'] = 'ok'
         self.close()
 

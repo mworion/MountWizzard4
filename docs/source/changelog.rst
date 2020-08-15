@@ -3,9 +3,13 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed
 changes list, please refer to the commit list on GitHub.
 
-0.151.2
+0.151.3
 
 - refactoring device management
+
+0.151.2
+
+- bugfix for newly introduced matplotlib version
 
 0.151.1
 

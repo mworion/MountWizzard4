@@ -262,7 +262,16 @@ class MainWindow(MWidget,
             tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
             tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+
+        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
 
         self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')

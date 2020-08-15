@@ -47,7 +47,7 @@ class DevicePopup(QDialog, widget.MWidget):
         'camera': (1 << 1),
         'guider': (1 << 2),
         'focuser': (1 << 3),
-        'filter': (1 << 4),
+        'filterwheel': (1 << 4),
         'dome': (1 << 5),
         'observingconditions': (1 << 7),
         'skymeter': 0,
@@ -71,12 +71,14 @@ class DevicePopup(QDialog, widget.MWidget):
                  app=None,
                  geometry=None,
                  driver=None,
+                 deviceType=None,
                  data=None):
 
         super().__init__()
         self.app = app
         self.data = data
         self.driver = driver
+        self.deviceType = deviceType
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self)
@@ -87,7 +89,7 @@ class DevicePopup(QDialog, widget.MWidget):
         self.move(x, y)
 
         self.indiClass = None
-        self.indiSearchType = self.indiTypes[driver]
+        self.indiSearchType = self.indiTypes[self.deviceType]
         self.indiSearchNameList = None
         self.returnValues = {'close': 'cancel'}
         self.framework2gui = {

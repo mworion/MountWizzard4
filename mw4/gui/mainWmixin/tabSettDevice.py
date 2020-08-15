@@ -267,12 +267,16 @@ class SettDevice(object):
         processPopupResults takes sets the actual drop down in the device settings lists to
         the choice of the popup window. after that it starts the driver again.
 
-        :return: True for test purpose
+        :return: success if new device could be selected
         """
 
         selectedFramework = self.driversData[driver]['framework']
         index = self.findIndexValue(self.drivers[driver]['uiDropDown'], selectedFramework)
         name = self.driversData[driver]['frameworks'][selectedFramework]['deviceName']
+
+        if not name:
+            return False
+
         itemText = f'{selectedFramework} - {name}'
 
         self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
@@ -286,11 +290,38 @@ class SettDevice(object):
 
     def copyConfig(self, driver='', framework=''):
         """
+        copyConfig transfers all information of the actual driver to all other drivers of
+        the same framework. if done so, all other drivers running on the same framework have
+        to be stopped, copied parameters, initialized and started, too.
 
         :param driver:
         :param framework:
         :return: True for test purpose
         """
+
+        for driverLoop in self.drivers:
+            if driverLoop == driver:
+                # not copy on the same driver
+                continue
+
+            driverClass = self.drivers[driverLoop]['class']
+
+            if driverClass.framework == framework:
+                self.stopDriver(driver=driver)
+
+            if framework not in self.driversData[driverLoop]['frameworks']:
+                continue
+
+            for param in self.driversData[driverLoop]['frameworks'][framework]:
+                if param in ['deviceList', 'deviceName']:
+                    # should be not copied
+                    continue
+
+                source = self.driversData[driver]['frameworks'][framework][param]
+                self.driversData[driverLoop]['frameworks'][framework][param] = source
+
+            if driverClass.framework == framework:
+                self.startDriver(driver=driver)
 
         return True
 
@@ -307,9 +338,12 @@ class SettDevice(object):
 
         geometry = self.pos().x(), self.pos().y(), self.width(), self.height()
         data = self.driversData[driver]
+        deviceType = self.drivers[driver]['deviceType']
+
         self.popupUi = DevicePopup(app=self.app,
                                    geometry=geometry,
                                    driver=driver,
+                                   deviceType=deviceType,
                                    data=data)
         self.popupUi.exec_()
 

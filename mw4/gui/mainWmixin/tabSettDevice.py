@@ -416,6 +416,31 @@ class SettDevice(object):
 
         return True
 
+    def configDriver(self, driver=None):
+        """
+        configDriver configures a driver if a framework has been set. otherwise does nothing
+
+        :param driver:
+        :return: success of config
+        """
+
+        if not driver:
+            return False
+
+        self.deviceStat[driver] = False
+
+        framework = self.driversData[driver]['framework']
+        if not framework:
+            return False
+
+        frameworkConfig = self.driversData[driver]['frameworks'][framework]
+        driverClass = self.drivers[driver]['class'].run[framework]
+
+        for attribute in frameworkConfig:
+            setattr(driverClass, attribute, frameworkConfig[attribute])
+
+        return True
+
     def startDriver(self, driver=None, autoStart=True):
         """
         startDriver checks if a framework has been set and starts the driver with its
@@ -457,31 +482,6 @@ class SettDevice(object):
             driverClass.startCommunication(loadConfig=loadConfig)
 
         self.app.message.emit(f'Enabled device:      [{driver}]', 0)
-
-        return True
-
-    def configDriver(self, driver=None):
-        """
-        configDriver configures a driver if a framework has been set. otherwise does nothing
-
-        :param driver:
-        :return: success of config
-        """
-
-        if not driver:
-            return False
-
-        self.deviceStat[driver] = False
-
-        framework = self.driversData[driver]['framework']
-        if not framework:
-            return False
-
-        frameworkConfig = self.driversData[driver]['frameworks'][framework]
-        driverClass = self.drivers[driver]['class'].run[framework]
-
-        for attribute in frameworkConfig:
-            setattr(driverClass, attribute, frameworkConfig[attribute])
 
         return True
 

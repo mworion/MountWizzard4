@@ -315,7 +315,7 @@ class Astrometry:
 
         self.signals.serverConnected.emit()
         sucApp, sucIndex = self.checkAvailability()
-        name = self.run[self.framework].name
+        name = self.run[self.framework].deviceName
         if sucApp and sucIndex:
             self.signals.deviceConnected.emit(name)
             self.app.message.emit(f'ASTROMETRY found:    [{name}]', 0)
@@ -329,7 +329,7 @@ class Astrometry:
         :return: true for test purpose
         """
 
-        name = self.run[self.framework].name
+        name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
         self.app.message.emit(f'ASTROMETRY remove:   [{name}]', 0)

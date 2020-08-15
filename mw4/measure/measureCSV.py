@@ -60,7 +60,7 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
         self.deviceName = 'CSV'
         self.defaultConfig = {
             'csv': {
-                'deviceName': 'CSV',
+                'deviceName': 'save to file',
             }
         }
         self.csvFile = None

@@ -53,20 +53,24 @@ def module_setup_teardown(qtbot):
         astrometry = Astrometry(app=Test1())
 
     data = {
-        'telescope':
-            {
-                'indiDeviceList': ['test1', 'test2']
-                }
+        'framework': 'indi',
+        'frameworks':
+        {
+            'indi': {
+                'deviceName': 'test',
+                'deviceList': ['1', '2'],
+
             }
+        },
+    }
+
     geometry = [100, 100, 100, 100]
-    availFramework = ['indi', 'alpaca']
 
     with mock.patch.object(DevicePopup,
                            'show'):
         app = DevicePopup(app=Test(),
                           geometry=geometry,
                           data=data,
-                          availFramework=availFramework,
                           driver='telescope',
                           deviceType='telescope')
         qtbot.addWidget(app)
@@ -81,33 +85,16 @@ def test_initConfig_1():
 
 def test_initConfig_2():
     app.data = {
-        'telescope':
+        'framework': 'indi',
+        'frameworks':
             {
-                'indiName': 'telescope',
-                'indiDeviceList': ['telescope', 'test2']
+                'indi': {
+                    'deviceName': 'telescope',
+                    'deviceList': ['telescope', 'test2'],
+
                 }
-            }
-
-    suc = app.initConfig()
-    assert suc
-
-
-def test_initConfig_3():
-    app.data = {
-            }
-
-    suc = app.initConfig()
-    assert suc
-
-
-def test_initConfig_4():
-    app.data = {
-        'telescope':
-            {
-                'astrometryName': 'telescope',
-                'astrometryDeviceList': ['telescope', 'test2']
-                }
-            }
+            },
+    }
 
     suc = app.initConfig()
     assert suc
@@ -129,19 +116,9 @@ def test_closeEvent_1(qtbot):
     app.closeEvent(QCloseEvent())
 
 
-def test_copyAllIndiSettings_1(qtbot):
-    suc = app.copyAllIndiSettings()
-    assert suc
-
-
-def test_copyAllAlpacaSettings_1(qtbot):
-    suc = app.copyAllAlpacaSettings()
-    assert suc
-
-
 def test_AddDevicesWithType_1(qtbot):
     device = Device()
-    app._indiClass = IndiClass()
+    app.indiClass = IndiClass()
     with mock.patch.object(device,
                            'getText',
                            return_value={'DRIVER_INTERFACE': None}):
@@ -151,8 +128,8 @@ def test_AddDevicesWithType_1(qtbot):
 
 def test_AddDevicesWithType_2(qtbot):
     device = Device()
-    app._indiClass = IndiClass()
-    app._indiClass.client.devices['telescope'] = device
+    app.indiClass = IndiClass()
+    app.indiClass.client.devices['telescope'] = device
     with mock.patch.object(device,
                            'getText',
                            return_value={'DRIVER_INTERFACE': None}):
@@ -162,9 +139,9 @@ def test_AddDevicesWithType_2(qtbot):
 
 def test_AddDevicesWithType_3(qtbot):
     device = Device()
-    app._indiClass = IndiClass()
-    app._indiClass.client.devices['telescope'] = device
-    app._indiSearchType = None
+    app.indiClass = IndiClass()
+    app.indiClass.client.devices['telescope'] = device
+    app.indiSearchType = None
     with mock.patch.object(device,
                            'getText',
                            return_value={'DRIVER_INTERFACE': 0}):
@@ -174,14 +151,14 @@ def test_AddDevicesWithType_3(qtbot):
 
 def test_AddDevicesWithType_4(qtbot):
     device = Device()
-    app._indiClass = IndiClass()
-    app._indiClass.client.devices['telescope'] = device
-    app._indiSearchType = 1
-    app._indiSearchNameList = list()
+    app.indiClass = IndiClass()
+    app.indiClass.client.devices['telescope'] = device
+    app.indiSearchType = 1
+    app.indiSearchNameList = list()
     with mock.patch.object(device,
                            'getText',
                            return_value={'DRIVER_INTERFACE': 1}):
-        suc = app.addDevicesWithType('telescope', 'test')
+        suc = app.addDevicesWithType('telescope', 'DRIVER_INFO')
         assert suc
 
 

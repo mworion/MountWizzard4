@@ -292,42 +292,6 @@ def test_convertToHMS_5():
     assert value == '12:00:00'
 
 
-def test_polarToCartesian_1():
-    x, y = transform.polarToCartesian(np.radians(90), 1)
-    assert round(x, 6) == 0
-    assert round(y, 6) == 1
-
-
-def test_polarToCartesian_2():
-    x, y = transform.polarToCartesian(0, 1)
-    assert round(x, 6) == 1
-    assert round(y, 6) == 0
-
-
-def test_polarToCartesian_3():
-    x, y = transform.polarToCartesian(np.radians(45), 1)
-    assert round(x, 6) == 0.707107
-    assert round(y, 6) == 0.707107
-
-
-def test_cartesianToPolar_1():
-    theta, radius = transform.cartesianToPolar(0, 1)
-    assert round(theta, 6) == round(np.radians(90), 6)
-    assert round(radius, 6) == 1
-
-
-def test_cartesianToPolar_2():
-    theta, radius = transform.cartesianToPolar(1, 0)
-    assert round(theta, 6) == 0
-    assert round(radius, 6) == 1
-
-
-def test_cartesianToPolar_3():
-    theta, radius = transform.cartesianToPolar(0.707107, 0.707107)
-    assert round(theta, 6) == round(np.radians(45), 6)
-    assert round(radius, 6) == 1
-
-
 def test_stringToDegree_1():
     value = transform.stringToDegree(100)
     assert value is None

@@ -18,6 +18,7 @@
 # standard libraries
 import pytest
 from queue import Queue
+
 # external packages
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtCore import QObject

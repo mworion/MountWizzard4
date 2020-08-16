@@ -18,6 +18,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+
 # external packages
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QCloseEvent

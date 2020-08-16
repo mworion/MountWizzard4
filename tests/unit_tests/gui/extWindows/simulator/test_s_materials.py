@@ -17,10 +17,11 @@
 ###########################################################
 # standard libraries
 import pytest
+
 # external packages
 
 # local import
-from gui.extWindows.simulator import Materials
+from gui.extWindows.simulator.materials import Materials
 
 
 @pytest.fixture(autouse=True, scope='function')

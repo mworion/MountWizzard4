@@ -17,29 +17,36 @@
 ###########################################################
 # standard libraries
 import pytest
+
 # external packages
+from PyQt5.QtWidgets import QDoubleSpinBox
 from PyQt5.Qt3DCore import QEntity, QTransform
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QDoubleSpinBox
+from PyQt5.Qt3DExtras import QCuboidMesh
 from mountcontrol.mount import Mount
 from skyfield.api import Topos
 
 # local import
-from gui.extWindows.simulator.dome import SimulatorDome
+from gui.extWindows.simulator.telescope import SimulatorTelescope
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
 
-    class Test3:
-        data = None
-
     class Test2:
         domeRadius = QDoubleSpinBox()
         domeRadius.setValue(1)
         domeShutterWidth = QDoubleSpinBox()
         domeShutterWidth.setValue(40)
+        domeNorthOffset = QDoubleSpinBox()
+        domeNorthOffset.setValue(40)
+        domeEastOffset = QDoubleSpinBox()
+        domeEastOffset.setValue(40)
+        domeVerticalOffset = QDoubleSpinBox()
+        domeVerticalOffset.setValue(40)
+        offLAT = QDoubleSpinBox()
+        offLAT.setValue(40)
 
     class Test1:
         ui = Test2()
@@ -54,87 +61,31 @@ def module_setup_teardown():
                   'imageDir': 'tests/image'}
         uiWindows = {'showImageW': {'classObj': None}}
         mainW = Test1()
-        dome = Test3()
 
-    app = SimulatorDome(app=Test())
+    app = SimulatorTelescope(app=Test())
     yield
 
 
 def test_create_1(qtbot):
-    app.modelRoot = QEntity()
-    suc = app.create(QEntity(), False)
+    e = QEntity()
+    suc = app.create(e, False)
     assert not suc
 
 
 def test_create_2(qtbot):
-    app.modelRoot = QEntity()
-    app.model = {'test': {'e': QEntity()}}
-    suc = app.create(QEntity(), False)
+    e = QEntity()
+    app.modelRoot = e
+    app.model = {'test': {'e': e}}
+    suc = app.create(e, False)
     assert not suc
 
 
 def test_create_3(qtbot):
-    app.modelRoot = QEntity()
-    app.model = {'test': {'e': QEntity()}}
-    suc = app.create(app.modelRoot, True)
+    e = QEntity()
+    app.modelRoot = e
+    app.model = {'test': {'e': e}}
+    suc = app.create(e, True)
     assert suc
-
-
-def test_setTransparency_1(qtbot):
-    app.model = {
-        'domeWall': {
-            'e': QEntity()
-        },
-        'domeSphere': {
-            'e': QEntity()
-        },
-        'domeSlit1': {
-            'e': QEntity()
-        },
-        'domeSlit2': {
-            'e': QEntity()
-        },
-        'domeDoor1': {
-            'e': QEntity()
-        },
-        'domeDoor2': {
-            'e': QEntity()
-        },
-    }
-
-    suc = app.setTransparency(True)
-    assert suc
-
-
-def test_setTransparency_2(qtbot):
-    app.model = {
-        'domeWall': {
-            'e': QEntity()
-        },
-        'domeSphere': {
-            'e': QEntity()
-        },
-        'domeSlit1': {
-            'e': QEntity()
-        },
-        'domeSlit2': {
-            'e': QEntity()
-        },
-        'domeDoor1': {
-            'e': QEntity()
-        },
-        'domeDoor2': {
-            'e': QEntity()
-        },
-    }
-
-    suc = app.setTransparency(False)
-    assert suc
-
-
-def test_setTransparency_3(qtbot):
-    suc = app.setTransparency(False)
-    assert not suc
 
 
 def test_updateSettings_1(qtbot):
@@ -144,15 +95,31 @@ def test_updateSettings_1(qtbot):
 
 def test_updateSettings_2(qtbot):
     app.model = {
-        'domeWall': {
+        'mountBase': {
             'e': QEntity(),
             't': QTransform()
         },
-        'domeSphere': {
+        'lat': {
             'e': QEntity(),
             't': QTransform()
         },
-        'domeFloor': {
+        'gem': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'gemCorr': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'otaRing': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'otaTube': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'otaImagetrain': {
             'e': QEntity(),
             't': QTransform()
         },
@@ -166,20 +133,38 @@ def test_updateSettings_2(qtbot):
 
 def test_updateSettings_3(qtbot):
     app.model = {
-        'domeWall': {
+        'mountBase': {
             'e': QEntity(),
             't': QTransform()
         },
-        'domeSphere': {
+        'lat': {
             'e': QEntity(),
             't': QTransform()
         },
-        'domeFloor': {
+        'gem': {
+            'm': QCuboidMesh(),
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'gemCorr': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'otaRing': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'otaTube': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'otaImagetrain': {
             'e': QEntity(),
             't': QTransform()
         },
     }
 
+    app.app.mount.geometry.offGemPlate = 10
     suc = app.updateSettings()
     assert suc
 
@@ -191,21 +176,15 @@ def test_updatePositions_1(qtbot):
 
 def test_updatePositions_2(qtbot):
     app.model = {
-        'domeWall': {
+        'ra': {
             'e': QEntity(),
             't': QTransform()
         },
-        'domeSphere': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'domeFloor': {
+        'dec': {
             'e': QEntity(),
             't': QTransform()
         },
     }
-
-    app.app.mainW = None
 
     suc = app.updatePositions()
     assert not suc
@@ -213,45 +192,18 @@ def test_updatePositions_2(qtbot):
 
 def test_updatePositions_3(qtbot):
     app.model = {
-        'domeSphere': {
+        'ra': {
             'e': QEntity(),
             't': QTransform()
         },
-        'domeDoor1': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'domeDoor2': {
+        'dec': {
             'e': QEntity(),
             't': QTransform()
         },
     }
 
-    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
-                         'DOME_SHUTTER.SHUTTER_OPEN': True}
-
-    suc = app.updatePositions()
-    assert suc
-
-
-def test_updatePositions_4(qtbot):
-    app.model = {
-        'domeSphere': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'domeDoor1': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'domeDoor2': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-    }
-
-    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
-                         'DOME_SHUTTER.SHUTTER_OPEN': False}
+    app.app.mount.obsSite.angularPosRA = 10
+    app.app.mount.obsSite.angularPosDEC = 10
 
     suc = app.updatePositions()
     assert suc

@@ -18,6 +18,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+
 # external packages
 import PyQt5
 from PyQt5.QtCore import QObject
@@ -35,10 +36,10 @@ import matplotlib.pyplot as plt
 # local import
 from gui.extWindows.hemisphereW import HemisphereWindow
 from logic.imaging.camera import Camera
-from logic.dome import Dome
-from logic.modeldata import DataPoint
+from logic.dome.dome import Dome
+from logic.modeldata.buildpoints import DataPoint
 from logic.modeldata.hipparcos import Hipparcos
-from logic.astrometry import Astrometry
+from logic.astrometry.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -19,6 +19,7 @@
 import pytest
 import unittest.mock as mock
 from queue import Queue
+
 # external packages
 import matplotlib
 matplotlib.use('Qt5Agg')

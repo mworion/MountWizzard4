@@ -19,6 +19,7 @@
 import unittest.mock as mock
 import pytest
 import platform
+
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.QtTest
@@ -36,7 +37,7 @@ from gui.extWindows.devicePopupW import DevicePopup
 from base.indiClass import IndiClass
 from indibase.qtIndiBase import Client
 from gui.utilities.widget import MWidget
-from logic.astrometry import Astrometry
+from logic.astrometry.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='function')

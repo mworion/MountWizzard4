@@ -19,6 +19,7 @@
 import unittest.mock as mock
 import pytest
 from queue import Queue
+
 # external packages
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal

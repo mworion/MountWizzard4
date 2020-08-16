@@ -18,6 +18,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+
 # external packages
 from skyfield.toposlib import Topos
 from skyfield.api import Angle
@@ -34,10 +35,10 @@ import matplotlib.pyplot as plt
 from gui.utilities.widget import MWidget
 from gui.extWindows.hemisphereW import HemisphereWindow
 from logic.imaging.camera import Camera
-from logic.dome import Dome
-from logic.modeldata import DataPoint
+from logic.dome.dome import Dome
+from logic.modeldata.buildpoints import DataPoint
 from logic.modeldata.hipparcos import Hipparcos
-from logic.astrometry import Astrometry
+from logic.astrometry.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='function')

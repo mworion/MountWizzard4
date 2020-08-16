@@ -22,6 +22,7 @@ import pytest
 import os
 import glob
 import shutil
+
 # external packages
 import astropy.visualization
 from astropy.visualization import AsinhStretch
@@ -40,7 +41,7 @@ from mountcontrol.qtmount import Mount
 from gui.utilities.widget import MWidget
 from gui.extWindows.imageW import ImageWindow
 from logic.imaging.camera import Camera
-from logic.astrometry import Astrometry
+from logic.astrometry.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -34,6 +34,7 @@ from skyfield.api import EarthSatellite
 
 # local import
 from gui.extWindows.satelliteW import SatelliteWindow
+import resource.resources
 
 
 @pytest.fixture(autouse=True, scope='function')

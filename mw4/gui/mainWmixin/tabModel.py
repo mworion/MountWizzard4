@@ -23,10 +23,13 @@ import shutil
 import json
 import copy
 from datetime import datetime, timedelta
+
 # external packages
 import PyQt5.uic
 from PyQt5.QtTest import QTest
 from mountcontrol.alignStar import AlignStar
+from mountcontrol import convert
+
 # local import
 from base import transform
 
@@ -70,7 +73,7 @@ class QMultiWait(PyQt5.QtCore.QObject):
         self.waitready = set()
 
 
-class Model(object):
+class Model:
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -303,9 +306,9 @@ class Model(object):
                 self.app.message.emit(text, 2)
 
             text = f'Solved   image-{count:03d}:  '
-            text += f'Ra: {transform.convertToHMS(mPoint["raJ2000S"])} '
+            text += f'Ra: {convert.convertToHMS(mPoint["raJ2000S"])} '
             text += f'({mPoint["raJ2000S"].hours:4.3f}), '
-            text += f'Dec: {transform.convertToDMS(mPoint["decJ2000S"])} '
+            text += f'Dec: {convert.convertToDMS(mPoint["decJ2000S"])} '
             text += f'({mPoint["decJ2000S"].degrees:4.3f}), '
             self.app.message.emit(text, 0)
             text = '                     '

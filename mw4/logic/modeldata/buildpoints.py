@@ -21,9 +21,11 @@ import os
 import json
 import random
 import csv
+
 # external packages
 import numpy as np
 import skyfield.api
+
 # local imports
 from base.loggerMW import CustomLogger
 from base import transform
@@ -70,24 +72,7 @@ class DataPoint(object):
         >>>                  )
     """
 
-    __all__ = ['DataPoint',
-               'genGreaterCircle',
-               'genGrid',
-               'genInitial',
-               'loadBuildP',
-               'saveBuildP',
-               'clearPoints',
-               'deleteBelowHorizon',
-               'sort',
-               'loadHorizonP',
-               'saveHorizonP',
-               'clearHorizonP',
-               'generateCelestialEquator',
-               'generateDSOPath',
-               'generateGoldenSpiral',
-               'genAlign',
-               'hip',
-               ]
+    __all__ = ['DataPoint']
 
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})

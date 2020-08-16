@@ -25,12 +25,14 @@ from astropy.io import fits
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from mountcontrol.mount import Mount
 from skyfield.api import Angle
-if platform.system() == 'Windows':
-    from logic.imaging.cameraAscom import CameraAscom
 
 # local import
+from logic.imaging.cameraAscom import CameraAscom
 from logic.imaging.camera import CameraSignals
 from base.ascomClass import AscomClass
+
+if platform.system() == 'Windows':
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
 @pytest.fixture(autouse=True, scope='function')

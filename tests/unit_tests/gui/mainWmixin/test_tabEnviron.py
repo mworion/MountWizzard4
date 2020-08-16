@@ -19,9 +19,7 @@
 import pytest
 from unittest import mock
 import logging
-import faulthandler
 from pathlib import Path
-faulthandler.enable()
 
 # external packages
 from PyQt5.QtGui import QImage

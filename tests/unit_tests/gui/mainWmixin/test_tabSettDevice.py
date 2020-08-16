@@ -39,13 +39,13 @@ from logic.cover.flipflat import FlipFlat
 from logic.imaging.filter import Filter
 from logic.imaging.camera import Camera
 from logic.imaging.focuser import Focuser
-from logic.dome import Dome
-from logic.powerswitch import PegasusUPB
+from logic.dome.dome import Dome
+from logic.powerswitch.pegasusUPB import PegasusUPB
 from logic.telescope.telescope import Telescope
-from logic.astrometry import Astrometry
-from logic.powerswitch import KMRelay
+from logic.astrometry.astrometry import Astrometry
+from logic.powerswitch.kmRelay import KMRelay
 from logic.measure.measure import MeasureData
-from logic.remote import Remote
+from logic.remote.remote import Remote
 from base.loggerMW import CustomLogger
 from gui.extWindows.devicePopupW import DevicePopup
 

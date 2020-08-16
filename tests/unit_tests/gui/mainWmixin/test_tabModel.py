@@ -40,8 +40,8 @@ from gui.mainWmixin.tabModel import Model
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.widget import MWidget
 from logic.imaging.camera import Camera
-from logic.dome import Dome
-from logic.astrometry import Astrometry
+from logic.dome.dome import Dome
+from logic.astrometry.astrometry import Astrometry
 from base.loggerMW import CustomLogger
 
 

@@ -18,6 +18,7 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+import platform
 
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
@@ -26,6 +27,9 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from logic.imaging.focuserAscom import FocuserAscom
 from logic.imaging.focuser import FocuserSignals
 from base.ascomClass import AscomClass
+
+if platform.system() == 'Windows':
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
 @pytest.fixture(autouse=True, scope='function')

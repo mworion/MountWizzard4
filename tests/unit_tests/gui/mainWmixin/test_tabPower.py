@@ -30,7 +30,7 @@ from PyQt5.QtCore import pyqtSignal
 from gui.mainWmixin.tabPower import Power
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.widget import MWidget
-from logic.powerswitch import PegasusUPB
+from logic.powerswitch.pegasusUPB import PegasusUPB
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -22,10 +22,10 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
-from logic.powerswitch import KMRelay
-from gui.mainWmixin.tabSettRelay import SettRelay
 
 # local import
+from logic.powerswitch.kmRelay import KMRelay
+from gui.mainWmixin.tabSettRelay import SettRelay
 from gui.mainWmixin.tabRelay import Relay
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.widget import MWidget

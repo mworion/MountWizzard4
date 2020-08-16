@@ -21,6 +21,7 @@ import threading
 from unittest import mock
 import logging
 from pathlib import Path
+
 # external packages
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget

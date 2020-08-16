@@ -20,6 +20,7 @@ import pytest
 from unittest import mock
 import logging
 from pathlib import Path
+
 # external packages
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
@@ -32,7 +33,7 @@ from gui.mainWmixin.tabBuildPoints import BuildPoints
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.widget import MWidget
 from base.loggerMW import CustomLogger
-from logic.modeldata import DataPoint
+from logic.modeldata.buildpoints import DataPoint
 
 
 @pytest.fixture(autouse=True, scope='function')

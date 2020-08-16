@@ -28,7 +28,7 @@ from mountcontrol.qtmount import Mount
 # local import
 from gui.mainWmixin.tabSettHorizon import SettHorizon
 from gui.widgets.main_ui import Ui_MainWindow
-from logic.modeldata import DataPoint
+from logic.modeldata.buildpoints import DataPoint
 from gui.utilities.widget import MWidget
 
 

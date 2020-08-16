@@ -26,7 +26,7 @@ from PyQt5.QtCore import pyqtSignal
 from gui.mainWmixin.tabSettRelay import SettRelay
 
 # local import
-from logic.powerswitch import KMRelay
+from logic.powerswitch.kmRelay import KMRelay
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.widget import MWidget
 

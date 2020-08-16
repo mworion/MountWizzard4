@@ -916,8 +916,8 @@ class Model:
         binning = self.ui.binning.value()
         subFrame = self.ui.subFrame.value()
         fastReadout = self.ui.checkFastDownload.isChecked()
-        solveTimeout = self.app.astrometry.timeout
-        searchRadius = self.app.astrometry.searchRadius
+        solveTimeout = self.app.astrometry.run['astap'].timeout
+        searchRadius = self.app.astrometry.run['astap'].searchRadius
         focalLength = self.ui.focalLength.value()
         lenSequence = len(points)
 

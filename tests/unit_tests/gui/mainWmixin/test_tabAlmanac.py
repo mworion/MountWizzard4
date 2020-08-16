@@ -16,11 +16,13 @@
 #
 ###########################################################
 # standard libraries
+import os
 import pytest
 import threading
 from unittest import mock
 import logging
 from pathlib import Path
+import shutil
 
 # external packages
 from PyQt5.QtCore import QObject
@@ -36,6 +38,13 @@ from gui.mainWmixin.tabAlmanac import Almanac
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.widget import MWidget
 from base.loggerMW import CustomLogger
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module_setup_teardown_module():
+    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
+    yield
+    os.remove('tests/data/de421_23.bsp')
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -60,6 +69,7 @@ def module_setup_teardown(qtbot):
                                        longitude_degrees=10,
                                        elevation_m=500)
         ephemeris = mount.obsSite.loader('de421_23.bsp')
+
 
     widget = QWidget()
     ui = Ui_MainWindow()

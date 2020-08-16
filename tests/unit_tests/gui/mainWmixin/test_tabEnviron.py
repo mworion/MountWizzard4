@@ -16,10 +16,12 @@
 #
 ###########################################################
 # standard libraries
+import os
 import pytest
 from unittest import mock
 import logging
 from pathlib import Path
+import shutil
 
 # external packages
 from PyQt5.QtGui import QImage
@@ -41,6 +43,13 @@ from logic.environment.sensorWeather import SensorWeather
 from logic.environment.onlineWeather import OnlineWeather
 from logic.environment.skymeter import Skymeter
 from base.loggerMW import CustomLogger
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module_setup_teardown_module():
+    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
+    yield
+    os.remove('tests/data/de421_23.bsp')
 
 
 @pytest.fixture(autouse=True, scope='function')

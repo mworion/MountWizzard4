@@ -60,6 +60,7 @@ jobs:
         python -m pip install pytest-qt
         python -m pip install pytest-cov
         python -m pip install pytest-flake8
+        python -m pip install pytest-pythonpath
 
     - name: Running unit tests
       run: |

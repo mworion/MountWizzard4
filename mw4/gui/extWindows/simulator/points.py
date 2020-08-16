@@ -54,7 +54,7 @@ class SimulatorBuildPoints:
         :return:
         """
 
-        radius, alt, az = functions.to_spherical([dx, dy, dz])
+        radius, alt, az = functions.to_spherical(np.array((dx, dy, dz)))
         az = np.degrees(az)
         alt = np.degrees(alt)
 

@@ -21,8 +21,8 @@
 import PyQt5
 
 # local imports
-from mw4.base.alpacaClass import AlpacaClass
-from mw4.base.alpacaBase import Dome
+from base.alpacaClass import AlpacaClass
+from base.alpacaBase import Dome
 
 
 class DomeAlpaca(AlpacaClass):

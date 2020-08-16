@@ -30,7 +30,7 @@ from PyQt5.QtCore import pyqtSignal
 # local import
 from logic.telescope import TelescopeAlpaca
 from logic.telescope.telescope import TelescopeSignals
-from mw4.base.alpacaBase import AlpacaBase
+from base.alpacaBase import AlpacaBase
 
 
 @pytest.fixture(autouse=True, scope='function')

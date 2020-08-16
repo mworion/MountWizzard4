@@ -42,7 +42,7 @@ def test_icon(qtbot):
     app = SplashScreen(QWidget())
     qtbot.addWidget(app)
 
-    value = PyQt5.QtGui.QPixmap(':/icon/mw4.ico')
+    value = PyQt5.QtGui.QPixmap(':/icon/ico')
     assert not PyQt5.QtGui.QPixmap.isNull(value)
 
 

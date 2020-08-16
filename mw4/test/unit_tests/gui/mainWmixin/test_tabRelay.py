@@ -26,11 +26,11 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from logic.powerswitch import KMRelay
-from mw4.gui.mainWmixin.tabSettRelay import SettRelay
+from gui.mainWmixin.tabSettRelay import SettRelay
 
 # local import
-from mw4.gui.mainWmixin.tabRelay import Relay
-from mw4.gui.widgets.main_ui import Ui_MainWindow
+from gui.mainWmixin.tabRelay import Relay
+from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.widget import MWidget
 
 

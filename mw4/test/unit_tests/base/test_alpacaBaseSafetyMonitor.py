@@ -21,7 +21,7 @@
 import pytest
 
 # local import
-from mw4.base.alpacaBase import SafetyMonitor
+from base.alpacaBase import SafetyMonitor
 
 
 @pytest.fixture(autouse=True, scope='function')

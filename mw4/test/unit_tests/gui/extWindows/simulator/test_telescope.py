@@ -29,7 +29,7 @@ from mountcontrol.mount import Mount
 from skyfield.api import Topos
 
 # local import
-from mw4.gui.simulator.telescope import SimulatorTelescope
+from gui.extWindows.simulator import SimulatorTelescope
 
 
 @pytest.fixture(autouse=True, scope='function')

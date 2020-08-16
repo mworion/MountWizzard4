@@ -29,21 +29,21 @@ from mountcontrol import qtmount
 from importlib_metadata import version
 
 # local import
-from mw4.base.loggerMW import CustomLogger
-from mw4.base.loggerMW import setCustomLoggingLevel
+from base.loggerMW import CustomLogger
+from base.loggerMW import setCustomLoggingLevel
 from gui.mainWindow.mainW import MainWindow
-from mw4.logic.powerswitch.kmRelay import KMRelay
-from mw4.logic.modeldata.buildpoints import DataPoint
-from mw4.logic.modeldata.hipparcos import Hipparcos
-from mw4.logic.dome.dome import Dome
-from mw4.logic.imaging.camera import Camera
-from mw4.logic.imaging.filter import Filter
-from mw4.logic.imaging.focuser import Focuser
-from mw4.logic.environment.sensorWeather import SensorWeather
-from mw4.logic.environment.skymeter import Skymeter
-from mw4.logic.environment.onlineWeather import OnlineWeather
-from mw4.logic.environment.directWeather import DirectWeather
-from mw4.logic.cover.flipflat import FlipFlat
+from logic.powerswitch.kmRelay import KMRelay
+from logic.modeldata.buildpoints import DataPoint
+from logic.modeldata.hipparcos import Hipparcos
+from logic.dome.dome import Dome
+from logic.imaging.camera import Camera
+from logic.imaging.filter import Filter
+from logic.imaging.focuser import Focuser
+from logic.environment.sensorWeather import SensorWeather
+from logic.environment.skymeter import Skymeter
+from logic.environment.onlineWeather import OnlineWeather
+from logic.environment.directWeather import DirectWeather
+from logic.cover.flipflat import FlipFlat
 from mw4.logic.telescope.telescope import Telescope
 from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
 from mw4.logic.measure.measure import MeasureData

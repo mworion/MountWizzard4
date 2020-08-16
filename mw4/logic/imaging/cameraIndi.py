@@ -22,8 +22,8 @@ import os
 # external packages
 import astropy.io.fits as fits
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.base.indiClass import IndiClass
+from base.loggerMW import CustomLogger
+from base.indiClass import IndiClass
 
 
 class CameraIndi(IndiClass):

@@ -31,10 +31,10 @@ from PyQt5.QtCore import pyqtSignal
 from mountcontrol import qtmount
 
 # local import
-from mw4.gui.mainWmixin.tabMount import Mount
-from mw4.gui.widgets.main_ui import Ui_MainWindow
+from gui.mainWmixin.tabMount import Mount
+from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.widget import MWidget
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 
 
 @pytest.fixture(autouse=True, scope='function')

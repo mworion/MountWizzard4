@@ -21,7 +21,7 @@
 import pytest
 
 # local import
-from mw4.base.alpacaBase import FilterWheel
+from base.alpacaBase import FilterWheel
 
 
 @pytest.fixture(autouse=True, scope='function')

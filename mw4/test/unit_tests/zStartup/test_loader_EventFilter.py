@@ -27,7 +27,7 @@ from PyQt5.QtCore import QEvent
 from PyQt5.QtWidgets import QWidget
 
 # local import
-from mw4.loader import QAwesomeTooltipEventFilter
+from loader import QAwesomeTooltipEventFilter
 
 
 @pytest.fixture(autouse=True, scope='function')

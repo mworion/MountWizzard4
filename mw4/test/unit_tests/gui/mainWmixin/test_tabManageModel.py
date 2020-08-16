@@ -31,7 +31,7 @@ from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
 
 # local import
-from mw4.gui.mainWmixin.tabManageModel import ManageModel
+from gui.mainWmixin.tabManageModel import ManageModel
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.widget import MWidget
 

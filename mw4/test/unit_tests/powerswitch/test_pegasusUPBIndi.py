@@ -28,9 +28,9 @@ from PyQt5.QtCore import pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from mw4.logic.powerswitch import PegasusUPBIndi
-from mw4.logic.powerswitch import PegasusUPBSignals
-from mw4.base.indiClass import IndiClass
+from logic.powerswitch import PegasusUPBIndi
+from logic.powerswitch import PegasusUPBSignals
+from base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')

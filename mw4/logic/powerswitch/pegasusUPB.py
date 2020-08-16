@@ -22,7 +22,7 @@ import logging
 import PyQt5
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 
 

@@ -24,11 +24,11 @@ import PyQt5
 from PyQt5.QtTest import QTest
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.logic.imaging.cameraIndi import CameraIndi
-from mw4.logic.imaging.cameraAlpaca import CameraAlpaca
+from base.loggerMW import CustomLogger
+from logic.imaging.cameraIndi import CameraIndi
+from logic.imaging.cameraAlpaca import CameraAlpaca
 if platform.system() == 'Windows':
-    from mw4.logic.imaging import CameraAscom
+    from logic.imaging import CameraAscom
 
 
 class CameraSignals(PyQt5.QtCore.QObject):

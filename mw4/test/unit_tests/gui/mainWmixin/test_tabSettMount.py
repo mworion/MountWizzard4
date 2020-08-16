@@ -31,11 +31,11 @@ from mountcontrol.qtmount import Mount
 import wakeonlan
 
 # local import
-from mw4.gui.mainWmixin.tabSettMount import SettMount
-from mw4.gui.widgets.main_ui import Ui_MainWindow
+from gui.mainWmixin.tabSettMount import SettMount
+from gui.widgets.main_ui import Ui_MainWindow
 from logic.environment.onlineWeather import OnlineWeather
 from gui.utilities.widget import MWidget
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 
 
 @pytest.fixture(autouse=True, scope='function')

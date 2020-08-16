@@ -26,7 +26,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.logic.powerswitch import PegasusUPB
+from logic.powerswitch import PegasusUPB
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -23,7 +23,7 @@ faulthandler.enable()
 # external packages
 
 # local import
-from mw4.base import tpool
+from base import tpool
 
 
 @pytest.fixture(autouse=True, scope='function')

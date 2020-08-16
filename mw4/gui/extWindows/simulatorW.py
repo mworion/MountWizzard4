@@ -29,13 +29,13 @@ from PyQt5.Qt3DCore import QEntity, QTransform
 # local import
 from gui.utilities import widget
 from mw4.gui.widgets import simulator_ui
-from mw4.gui.simulator.materials import Materials
-from mw4.gui.simulator import tools
-from mw4.gui.simulator.dome import SimulatorDome
-from mw4.gui.simulator.telescope import SimulatorTelescope
-from mw4.gui.simulator.horizon import SimulatorHorizon
-from mw4.gui.simulator.points import SimulatorBuildPoints
-from mw4.gui.simulator.pointer import SimulatorPointer
+from gui.extWindows.simulator.materials import Materials
+from gui.extWindows.simulator import tools
+from gui.extWindows.simulator.dome import SimulatorDome
+from gui.extWindows.simulator.telescope import SimulatorTelescope
+from gui.extWindows.simulator.horizon import SimulatorHorizon
+from gui.extWindows.simulator.points import SimulatorBuildPoints
+from gui.extWindows.simulator.pointer import SimulatorPointer
 
 
 class SimulatorWindow(widget.MWidget):

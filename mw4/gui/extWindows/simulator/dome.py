@@ -22,8 +22,8 @@ from PyQt5.QtGui import QVector3D
 from PyQt5.Qt3DCore import QEntity
 
 # local import
-from mw4.gui.simulator.materials import Materials
-from mw4.gui.simulator import tools
+from gui.extWindows.simulator.materials import Materials
+from gui.extWindows.simulator import tools
 
 
 class SimulatorDome:

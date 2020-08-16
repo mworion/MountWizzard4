@@ -21,7 +21,7 @@
 import pytest
 
 # local import
-from mw4.base.alpacaBase import Switch
+from base.alpacaBase import Switch
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -30,8 +30,8 @@ from skyfield.toposlib import Topos
 from mountcontrol.mount import Mount
 
 # local import
-from mw4.logic.modeldata import DataPoint
-from mw4.logic.modeldata import HaDecToAltAz
+from logic.modeldata import DataPoint
+from logic.modeldata import HaDecToAltAz
 
 
 @pytest.fixture(autouse=True, scope='function')

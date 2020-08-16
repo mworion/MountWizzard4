@@ -20,8 +20,8 @@ import logging
 # external packages
 import PyQt5
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.base.indiClass import IndiClass
+from base.loggerMW import CustomLogger
+from base.indiClass import IndiClass
 
 
 class DomeIndi(IndiClass):

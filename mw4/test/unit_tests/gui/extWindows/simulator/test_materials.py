@@ -23,7 +23,7 @@ faulthandler.enable()
 # external packages
 
 # local import
-from mw4.gui.simulator.materials import Materials
+from gui.extWindows.simulator import Materials
 
 
 @pytest.fixture(autouse=True, scope='function')

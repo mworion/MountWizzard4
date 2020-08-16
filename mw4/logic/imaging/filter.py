@@ -23,7 +23,7 @@ import platform
 import PyQt5
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 from logic.imaging.filterIndi import FilterIndi
 from logic.imaging.filterAlpaca import FilterAlpaca
 if platform.system() == 'Windows':

@@ -23,7 +23,7 @@ import platform
 import PyQt5
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 from logic.imaging.focuserIndi import FocuserIndi
 from logic.imaging.focuserAlpaca import FocuserAlpaca
 if platform.system() == 'Windows':

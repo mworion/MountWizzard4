@@ -15,7 +15,7 @@
 # Licence APL2.0
 #
 ###########################################################
-import mw4.base.packageConfig as Config
+import base.packageConfig as Config
 # standard libraries
 import logging
 from datetime import datetime
@@ -31,7 +31,7 @@ import PyQt5.uic
 from PyQt5.QtTest import QTest
 
 # local import
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 from gui.utilities.widget import MWidget
 
 from gui.extWindows.messageW import MessageWindow
@@ -45,25 +45,25 @@ if platform.machine() not in Config.excludedPlatforms:
     # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
     from gui.extWindows.keypadW import KeypadWindow
 
-from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.mainWmixin.tabMount import Mount
-from mw4.gui.mainWmixin.tabEnviron import Environ
-from mw4.gui.mainWmixin.tabAlmanac import Almanac
-from mw4.gui.mainWmixin.tabModel import Model
-from mw4.gui.mainWmixin.tabBuildPoints import BuildPoints
-from mw4.gui.mainWmixin.tabManageModel import ManageModel
-from mw4.gui.mainWmixin.tabSatellite import Satellite
-from mw4.gui.mainWmixin.tabRelay import Relay
-from mw4.gui.mainWmixin.tabTools import Tools
-from mw4.gui.mainWmixin.tabPower import Power
-from mw4.gui.mainWmixin.tabSettDevice import SettDevice
-from mw4.gui.mainWmixin.tabSettMount import SettMount
-from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
-from mw4.gui.mainWmixin.tabSettImaging import SettImaging
-from mw4.gui.mainWmixin.tabSettDome import SettDome
-from mw4.gui.mainWmixin.tabSettParkPos import SettParkPos
-from mw4.gui.mainWmixin.tabSettRelay import SettRelay
-from mw4.gui.mainWmixin.tabSettMisc import SettMisc
+from gui.widgets.main_ui import Ui_MainWindow
+from gui.mainWmixin.tabMount import Mount
+from gui.mainWmixin.tabEnviron import Environ
+from gui.mainWmixin.tabAlmanac import Almanac
+from gui.mainWmixin.tabModel import Model
+from gui.mainWmixin.tabBuildPoints import BuildPoints
+from gui.mainWmixin.tabManageModel import ManageModel
+from gui.mainWmixin.tabSatellite import Satellite
+from gui.mainWmixin.tabRelay import Relay
+from gui.mainWmixin.tabTools import Tools
+from gui.mainWmixin.tabPower import Power
+from gui.mainWmixin.tabSettDevice import SettDevice
+from gui.mainWmixin.tabSettMount import SettMount
+from gui.mainWmixin.tabSettHorizon import SettHorizon
+from gui.mainWmixin.tabSettImaging import SettImaging
+from gui.mainWmixin.tabSettDome import SettDome
+from gui.mainWmixin.tabSettParkPos import SettParkPos
+from gui.mainWmixin.tabSettRelay import SettRelay
+from gui.mainWmixin.tabSettMisc import SettMisc
 
 
 class MainWindow(MWidget,

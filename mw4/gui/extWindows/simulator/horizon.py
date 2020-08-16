@@ -26,7 +26,7 @@ from PyQt5.Qt3DCore import QEntity, QTransform
 
 # local import
 from mw4.base import transform
-from mw4.gui.simulator.materials import Materials
+from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorHorizon:

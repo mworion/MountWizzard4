@@ -30,8 +30,8 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.gui.mainWmixin.tabPower import Power
-from mw4.gui.widgets.main_ui import Ui_MainWindow
+from gui.mainWmixin.tabPower import Power
+from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.widget import MWidget
 from logic.powerswitch import PegasusUPB
 

@@ -30,7 +30,7 @@ from PyQt5.QtCore import pyqtSignal
 # local import
 from logic.dome import DomeAlpaca
 from logic.dome import DomeSignals
-from mw4.base.alpacaBase import AlpacaBase
+from base.alpacaBase import AlpacaBase
 
 
 @pytest.fixture(autouse=True, scope='function')

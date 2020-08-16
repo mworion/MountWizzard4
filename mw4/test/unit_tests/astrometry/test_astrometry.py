@@ -32,7 +32,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
 
 # local import
-from mw4.logic.astrometry import Astrometry
+from logic.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='module')

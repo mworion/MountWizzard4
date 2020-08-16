@@ -21,7 +21,7 @@
 import pytest
 
 # local import
-from mw4.base.alpacaBase import Dome
+from base.alpacaBase import Dome
 
 
 @pytest.fixture(autouse=True, scope='function')

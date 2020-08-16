@@ -30,9 +30,9 @@ from PyQt5.QtCore import pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from mw4.logic.imaging.cameraIndi import CameraIndi
-from mw4.logic.imaging.camera import CameraSignals
-from mw4.base.indiClass import IndiClass
+from logic.imaging.cameraIndi import CameraIndi
+from logic.imaging.camera import CameraSignals
+from base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')

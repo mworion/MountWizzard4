@@ -27,7 +27,7 @@ from mountcontrol.mount import Mount
 from skyfield.api import Topos
 
 # local import
-from mw4.gui.simulator.horizon import SimulatorHorizon
+from gui.extWindows.simulator import SimulatorHorizon
 
 
 @pytest.fixture(autouse=True, scope='function')

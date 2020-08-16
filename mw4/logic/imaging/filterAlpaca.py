@@ -20,8 +20,8 @@
 # external packages
 
 # local imports
-from mw4.base.alpacaClass import AlpacaClass
-from mw4.base.alpacaBase import FilterWheel
+from base.alpacaClass import AlpacaClass
+from base.alpacaBase import FilterWheel
 
 
 class FilterAlpaca(AlpacaClass):

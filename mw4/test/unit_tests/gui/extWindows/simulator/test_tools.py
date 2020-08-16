@@ -29,12 +29,11 @@ from PyQt5.Qt3DRender import QMesh
 
 
 # local import
-from mw4.gui.simulator.tools import linkModel
-from mw4.gui.simulator.tools import linkMaterial
-from mw4.gui.simulator.tools import linkSource
-from mw4.gui.simulator.tools import linkTransform
-from mw4.gui.simulator.materials import Materials
-from mw4.resource import resources
+from gui.extWindows.simulator import linkModel
+from gui.extWindows.simulator import linkMaterial
+from gui.extWindows.simulator import linkSource
+from gui.extWindows.simulator import linkTransform
+from gui.extWindows.simulator import Materials
 
 
 @pytest.fixture(autouse=True, scope='function')

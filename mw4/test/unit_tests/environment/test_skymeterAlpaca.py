@@ -27,7 +27,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.logic.environment import SkymeterAlpaca
+from logic.environment import SkymeterAlpaca
 from mw4.logic.environment.skymeter import SkymeterSignals
 from mw4.base.alpacaBase import AlpacaBase
 

@@ -35,9 +35,9 @@ import matplotlib.pyplot as plt
 from skyfield.api import Angle
 import numpy as np
 import cv2
+from mountcontrol import convert
 
 # local import
-from base import transform
 from gui.utilities import widget
 from gui.widgets import image_ui
 from base.tpool import Worker
@@ -1003,9 +1003,9 @@ class ImageWindow(widget.MWidget):
 
         if result['success']:
             text = 'Solved :             '
-            text += f'RA: {transform.convertToHMS(result["raJ2000S"])} '
+            text += f'RA: {convert.convertToHMS(result["raJ2000S"])} '
             text += f'({result["raJ2000S"].hours:4.3f}), '
-            text += f'DEC: {transform.convertToDMS(result["decJ2000S"])} '
+            text += f'DEC: {convert.convertToDMS(result["decJ2000S"])} '
             text += f'({result["decJ2000S"].degrees:4.3f}), '
             self.app.message.emit(text, 0)
             text = '                     '

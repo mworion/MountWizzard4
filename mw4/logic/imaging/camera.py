@@ -28,7 +28,7 @@ from base.loggerMW import CustomLogger
 from logic.imaging.cameraIndi import CameraIndi
 from logic.imaging.cameraAlpaca import CameraAlpaca
 if platform.system() == 'Windows':
-    from logic.imaging import CameraAscom
+    from logic.imaging.cameraAscom import CameraAscom
 
 
 class CameraSignals(PyQt5.QtCore.QObject):

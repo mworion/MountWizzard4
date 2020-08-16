@@ -19,8 +19,10 @@
 import logging
 import zlib
 import os
+
 # external packages
 import astropy.io.fits as fits
+
 # local imports
 from base.loggerMW import CustomLogger
 from base.indiClass import IndiClass

@@ -21,7 +21,7 @@ import logging
 from PyQt5.QtCore import QObject
 from PyQt5 import QtNetwork
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 
 
 class Remote(QObject):

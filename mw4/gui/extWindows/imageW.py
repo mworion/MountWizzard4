@@ -15,7 +15,7 @@
 # Licence APL2.0
 #
 ###########################################################
-import mw4.base.packageConfig as Config
+import base.packageConfig as Config
 # standard libraries
 import os
 
@@ -37,10 +37,10 @@ import numpy as np
 import cv2
 
 # local import
-from mw4.base import transform
+from base import transform
 from gui.utilities import widget
-from mw4.gui.widgets import image_ui
-from mw4.base.tpool import Worker
+from gui.widgets import image_ui
+from base.tpool import Worker
 
 
 class ImageWindowSignals(PyQt5.QtCore.QObject):

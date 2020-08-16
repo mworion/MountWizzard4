@@ -28,7 +28,7 @@ import PyQt5.uic
 from PyQt5.QtTest import QTest
 from mountcontrol.alignStar import AlignStar
 # local import
-from mw4.base import transform
+from base import transform
 
 
 class QMultiWait(PyQt5.QtCore.QObject):

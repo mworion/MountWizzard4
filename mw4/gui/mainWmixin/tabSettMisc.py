@@ -15,7 +15,7 @@
 # Licence APL2.0
 #
 ###########################################################
-import mw4.base.packageConfig as Config
+import base.packageConfig as Config
 # standard libraries
 import time
 import subprocess
@@ -32,8 +32,8 @@ from importlib_metadata import version
 from astropy.utils import iers
 
 # local import
-from mw4.base.loggerMW import setCustomLoggingLevel
-from mw4.base import tpool
+from base.loggerMW import setCustomLoggingLevel
+from base import tpool
 
 
 class SettMisc(object):

@@ -21,7 +21,7 @@
 import PyQt5
 
 # local imports
-from mw4.base.ascomClass import AscomClass
+from base.ascomClass import AscomClass
 
 
 class DomeAscom(AscomClass):

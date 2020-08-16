@@ -28,7 +28,7 @@ from PyQt5.Qt3DCore import QEntity, QTransform
 
 # local import
 from gui.utilities import widget
-from mw4.gui.widgets import simulator_ui
+from gui.widgets import simulator_ui
 from gui.extWindows.simulator.materials import Materials
 from gui.extWindows.simulator import tools
 from gui.extWindows.simulator.dome import SimulatorDome

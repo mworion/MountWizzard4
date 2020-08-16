@@ -17,14 +17,16 @@
 ###########################################################
 # standard libraries
 import logging
+
 # external packages
-import PyQt5
+from PyQt5.QtCore import QObject, pyqtSignal
+
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.logic.cover.flipflatIndi import FlipFlatIndi
+from base.loggerMW import CustomLogger
+from logic.cover.flipflatIndi import FlipFlatIndi
 
 
-class FlipFlatSignals(PyQt5.QtCore.QObject):
+class FlipFlatSignals(QObject):
     """
     The FlipFlatSignals class offers a list of signals to be used and instantiated by
     the Mount class to get signals for triggers for finished tasks to
@@ -36,10 +38,10 @@ class FlipFlatSignals(PyQt5.QtCore.QObject):
 
     __all__ = ['FlipFlatSignals']
 
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
+    serverConnected = pyqtSignal()
+    serverDisconnected = pyqtSignal(object)
+    deviceConnected = pyqtSignal(str)
+    deviceDisconnected = pyqtSignal(str)
 
 
 class FlipFlat:

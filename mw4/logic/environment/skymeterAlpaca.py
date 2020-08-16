@@ -20,8 +20,8 @@
 # external packages
 
 # local imports
-from mw4.base.alpacaClass import AlpacaClass
-from mw4.base.alpacaBase import ObservingConditions
+from base.alpacaClass import AlpacaClass
+from base.alpacaBase import ObservingConditions
 
 
 class SkymeterAlpaca(AlpacaClass):

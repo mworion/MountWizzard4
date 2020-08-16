@@ -23,7 +23,7 @@ import platform
 import PyQt5
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 from logic.telescope.telescopeIndi import TelescopeIndi
 from logic.telescope.telescopeAlpaca import TelescopeAlpaca
 if platform.system() == 'Windows':

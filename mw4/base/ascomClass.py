@@ -28,8 +28,8 @@ from PyQt5.QtCore import QObject, pyqtSignal, QTimer
 from PyQt5.QtTest import QTest
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.base.tpool import Worker
+from base.loggerMW import CustomLogger
+from base.tpool import Worker
 
 
 class AscomSignals(QObject):

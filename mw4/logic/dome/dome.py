@@ -23,11 +23,11 @@ import platform
 import PyQt5
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.logic.dome.domeIndi import DomeIndi
-from mw4.logic.dome.domeAlpaca import DomeAlpaca
+from base.loggerMW import CustomLogger
+from logic.dome.domeIndi import DomeIndi
+from logic.dome.domeAlpaca import DomeAlpaca
 if platform.system() == 'Windows':
-    from mw4.logic.dome.domeAscom import DomeAscom
+    from logic.dome.domeAscom import DomeAscom
 
 
 class DomeSignals(PyQt5.QtCore.QObject):

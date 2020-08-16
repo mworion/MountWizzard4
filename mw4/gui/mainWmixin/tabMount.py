@@ -26,7 +26,7 @@ from mountcontrol.convert import stringToAngle
 from skyfield.toposlib import Topos
 
 # local import
-from mw4.base import transform
+from base import transform
 
 
 class Mount(object):

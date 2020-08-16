@@ -27,7 +27,7 @@ import numpy as np
 import qimage2ndarray
 
 # local import
-from mw4.base.tpool import Worker
+from base.tpool import Worker
 
 
 class Environ(object):

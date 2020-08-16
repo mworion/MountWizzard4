@@ -23,9 +23,9 @@ from astropy.io import fits
 from PyQt5.QtTest import QTest
 
 # local imports
-from mw4.base.ascomClass import AscomClass
-from mw4.base.tpool import Worker
-from mw4.base import transform
+from base.ascomClass import AscomClass
+from base.tpool import Worker
+from base import transform
 
 
 class CameraAscom(AscomClass):

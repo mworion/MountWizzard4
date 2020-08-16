@@ -24,7 +24,7 @@ import numpy as np
 from sgp4.exporter import export_tle
 
 # local import
-from mw4.base.tpool import Worker
+from base.tpool import Worker
 
 
 class Satellite(object):

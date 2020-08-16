@@ -62,20 +62,10 @@ jobs:
 
     - name: Running unit tests
       run: |
-        pytest mw4/test/unit_tests/astrometry
-        pytest mw4/test/unit_tests/base
-        pytest mw4/test/unit_tests/cover
-        pytest mw4/test/unit_tests/dome
-        pytest mw4/test/unit_tests/environment
-        pytest mw4/test/unit_tests/gui/extWindows
-        pytest mw4/test/unit_tests/gui/mainWindow
-        pytest mw4/test/unit_tests/gui/mainWmixin
-        pytest mw4/test/unit_tests/gui/simulator
-        pytest mw4/test/unit_tests/gui/utilities
-        pytest mw4/test/unit_tests/imaging
-        pytest mw4/test/unit_tests/measure
-        pytest mw4/test/unit_tests/modeldata
-        pytest mw4/test/unit_tests/powerswitch
-        pytest mw4/test/unit_tests/remote
-        pytest mw4/test/unit_tests/telescope
-        pytest mw4/test/unit_tests/zStartup
+        pytest tests/unit_tests/base
+        pytest tests/unit_tests/logic
+        pytest tests/unit_tests/gui/extWindows
+        pytest tests/unit_tests/gui/mainWindow
+        pytest tests/unit_tests/gui/mainWmixin
+        pytest tests/unit_tests/gui/utilities
+        pytest tests/unit_tests/zStartup

@@ -63,23 +63,13 @@ jobs:
 
     - name: Running unit tests
       run: |
-        pytest mw4/test/unit_tests/astrometry --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/base --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/cover --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/dome --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/environment --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/gui/extWindows --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/gui/mainWindow --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/gui/mainWmixin --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/gui/simulator --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/gui/utilities --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/imaging --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/measure --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/modeldata --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/powerswitch --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/remote --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/telescope --cov-append --cov=mw4/ --cov-report=xml
-        pytest mw4/test/unit_tests/zStartup --cov-append --cov=mw4/ --cov-report=xml
+        pytest tests/unit_tests/base --cov-append --cov=mw4/ --cov-report=xml
+        pytest tests/unit_tests/logic --cov-append --cov=mw4/ --cov-report=xml
+        pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/ --cov-report=xml
+        pytest tests/unit_tests/gui/mainWindow --cov-append --cov=mw4/ --cov-report=xml
+        pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/ --cov-report=xml
+        pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/ --cov-report=xml
+        pytest tests/unit_tests/zStartup --cov-append --cov=mw4/ --cov-report=xml
 
     - name: Upload coverage to codecov
       if: always()

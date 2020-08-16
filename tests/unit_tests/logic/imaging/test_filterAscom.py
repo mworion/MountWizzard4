@@ -28,7 +28,7 @@ from logic.imaging.filterAscom import FilterAscom
 from logic.imaging.filter import FilterSignals
 from base.ascomClass import AscomClass
 
-if platform.system() == 'Windows':
+if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 

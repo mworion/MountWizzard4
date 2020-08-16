@@ -21,12 +21,13 @@ import platform
 
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
-if platform.system() == 'Windows':
-    pass
 
 # local import
 from logic.environment.skymeterAscom import SkymeterAscom
 from logic.environment.skymeter import SkymeterSignals
+
+if not platform.system() == 'Windows':
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
 @pytest.fixture(autouse=True, scope='function')

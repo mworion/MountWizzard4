@@ -19,18 +19,20 @@
 import pytest
 import unittest.mock as mock
 import platform
+
 # external packages
 import PyQt5
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
-if platform.system() == 'Windows':
-    pass
 
 # local import
 from logic.telescope.telescopeAscom import TelescopeAscom
 from logic.telescope.telescope import TelescopeSignals
 from base.ascomClass import AscomClass
+
+if not platform.system() == 'Windows':
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
 @pytest.fixture(autouse=True, scope='function')

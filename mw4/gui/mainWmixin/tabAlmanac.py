@@ -514,6 +514,7 @@ class Almanac(object):
         t1 = ts.tt_jd(int(timeJD.tt) + 29)
         t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(self.app.ephemeris))
 
-        self.ui.lunarNodes.setText(f'{almanac.MOON_NODES[y[0]]}')
+        text = 'descending' if y[0] else 'ascending'
+        self.ui.lunarNodes.setText(f'{text}')
 
         return True

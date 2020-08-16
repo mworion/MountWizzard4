@@ -21,12 +21,13 @@ import platform
 
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
-if platform.system() == 'Windows':
-    pass
 
 # local import
 from logic.environment.sensorWeatherAscom import SensorWeatherAscom
 from logic.environment.sensorWeather import SensorWeatherSignals
+
+if not platform.system() == 'Windows':
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
 @pytest.fixture(autouse=True, scope='function')

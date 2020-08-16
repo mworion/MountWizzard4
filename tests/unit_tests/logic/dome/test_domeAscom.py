@@ -23,12 +23,13 @@ import platform
 # external packages
 import PyQt5
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
-if platform.system() == 'Windows':
-    pass
 
 # local import
 from logic.dome.domeAscom import DomeAscom
 from logic.dome.dome import DomeSignals
+
+if not platform.system() == 'Windows':
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
 @pytest.fixture(autouse=True, scope='function')

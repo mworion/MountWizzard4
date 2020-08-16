@@ -245,18 +245,19 @@ class Model:
         if not 0 <= count < number:
             return False
 
-        modelPercent = (count + 1) / number
+        fraction = 100 * (count + 1) / number
         timeElapsed = time.time() - self.startModeling
-        # base time (time needed per cycle) is updated and gets better each cycle
-        baseTime = timeElapsed / modelPercent
+        baseTime = timeElapsed / fraction
 
-        timeEstimation = baseTime * (1 - modelPercent)
+        timeEstimation = baseTime * (1 - fraction)
         finished = timedelta(seconds=timeEstimation) + datetime.now()
 
         self.ui.timeToFinish.setText(time.strftime('%M:%S', time.gmtime(timeEstimation)))
         self.ui.timeElapsed.setText(time.strftime('%M:%S', time.gmtime(timeElapsed)))
         self.ui.timeFinished.setText(finished.strftime('%H:%M:%S'))
-        self.ui.modelProgress.setValue(modelPercent * 100)
+
+        modelPercent = int(100 * fraction)
+        self.ui.modelProgress.setValue(modelPercent)
 
         return True
 

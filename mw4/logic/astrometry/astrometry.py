@@ -159,16 +159,16 @@ class Astrometry:
 
         self.log.info(f'wcs header: [{wcsHeader}]')
         raJ2000 = convert.convertToAngle(wcsHeader.get('CRVAL1'),
-                                           isHours=True)
+                                         isHours=True)
         decJ2000 = convert.convertToAngle(wcsHeader.get('CRVAL2'),
-                                            isHours=False)
+                                          isHours=False)
 
         angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
         raMount = convert.convertToAngle(fitsHeader.get('RA'),
-                                           isHours=True)
+                                         isHours=True)
         decMount = convert.convertToAngle(fitsHeader.get('DEC'),
-                                            isHours=False)
+                                          isHours=False)
 
         # todo: it would be nice, if adding, subtracting of angels are part of skyfield
         deltaRA = (raJ2000._degrees - raMount._degrees) * 3600

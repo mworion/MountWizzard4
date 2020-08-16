@@ -344,7 +344,7 @@ class ManageModel(object):
             hasNoStars = model.starList is None or not model.starList
 
         axe, _ = self.generatePolar(widget=self.errorDistributionPlot,
-                                      title='Error Distribution')
+                                    title='Error Distribution')
 
         if hasNoStars:
             axe.figure.canvas.draw()

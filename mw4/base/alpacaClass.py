@@ -19,15 +19,15 @@
 import logging
 
 # external packages
-import PyQt5.QtCore
+from PyQt5.QtCore import QTimer
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.base.tpool import Worker
-from mw4.base.alpacaBase import AlpacaBase
+from base.alpacaBase import AlpacaBase
+from base.loggerMW import CustomLogger
+from base.tpool import Worker
 
 
-class AlpacaClass(object):
+class AlpacaClass:
     """
     the class AlpacaClass inherits all information and handling of alpaca devices
     this class will be only referenced from other classes and not directly used
@@ -66,11 +66,11 @@ class AlpacaClass(object):
         self.deviceConnected = False
         self.serverConnected = False
 
-        self.cycleDevice = PyQt5.QtCore.QTimer()
+        self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
         self.cycleDevice.timeout.connect(self.startPollStatus)
 
-        self.cycleData = PyQt5.QtCore.QTimer()
+        self.cycleData = QTimer()
         self.cycleData.setSingleShot(False)
         self.cycleData.timeout.connect(self.pollData)
 

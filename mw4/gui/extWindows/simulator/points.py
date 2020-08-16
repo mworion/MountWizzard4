@@ -24,9 +24,9 @@ from PyQt5.QtGui import QVector3D
 from PyQt5.Qt3DExtras import QSphereMesh
 from PyQt5.Qt3DExtras import QExtrudedTextMesh, QCylinderMesh
 from PyQt5.Qt3DCore import QEntity, QTransform
+from skyfield import functions
 
 # local import
-from base import transform
 from gui.extWindows.simulator.materials import Materials
 
 
@@ -54,7 +54,7 @@ class SimulatorBuildPoints:
         :return:
         """
 
-        alt, az, radius = transform.cartesianToSpherical(dx, dy, dz)
+        radius, alt, az = functions.to_spherical([dx, dy, dz])
         az = np.degrees(az)
         alt = np.degrees(alt)
 
@@ -100,7 +100,7 @@ class SimulatorBuildPoints:
         mesh.setRings(30)
         mesh.setSlices(30)
         trans = QTransform()
-        x, y, z = transform.sphericalToCartesian(alt, az, radius)
+        x, y, z = functions.from_spherical(radius, alt, az)
         trans.setTranslation(QVector3D(x, y, z + 1.35))
         entity.addComponent(mesh)
         entity.addComponent(trans)

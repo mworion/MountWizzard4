@@ -19,14 +19,14 @@
 import logging
 
 # external packages
-import PyQt5
+from PyQt5.QtCore import QTimer
 from indibase import qtIndiBase
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 
 
-class IndiClass(object):
+class IndiClass:
     """
     the class indiClass inherits all information and handling of indi devices
     this class will be only referenced from other classes and not directly used
@@ -120,7 +120,7 @@ class IndiClass(object):
             }
         }
 
-        self.timerRetry = PyQt5.QtCore.QTimer()
+        self.timerRetry = QTimer()
         self.timerRetry.setSingleShot(True)
         self.timerRetry.timeout.connect(self.startRetry)
 

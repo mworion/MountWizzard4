@@ -18,10 +18,5 @@
 # standard libraries
 from collections import namedtuple
 
-# we are adding named tuples for the readability of the code
-# fist package is related to modeling procedure and defines the model points
-# and the necessary structures for storing the data, which is generated during
-# the model run
-
 # the model point itself
 Point = namedtuple('Point', 'altitude azimuth')

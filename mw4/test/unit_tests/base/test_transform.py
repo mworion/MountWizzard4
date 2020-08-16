@@ -23,10 +23,11 @@ faulthandler.enable()
 # external packages
 from skyfield.api import Angle
 from skyfield.api import Topos
+from skyfield import functions
 import numpy as np
 
 # local import
-from mw4.base import transform
+from base import transform
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -289,62 +290,6 @@ def test_convertToHMS_5():
     value = Angle(hours=-12.0)
     value = transform.convertToHMS(value)
     assert value == '12:00:00'
-
-
-def test_sphericalToCartesian_1():
-    x, y, z = transform.sphericalToCartesian(np.radians(90), 0, 1)
-    assert round(x, 6) == 0
-    assert round(y, 6) == 0
-    assert round(z, 6) == 1
-
-
-def test_sphericalToCartesian_2():
-    x, y, z = transform.sphericalToCartesian(0, 0, 1)
-    assert round(x, 6) == 1
-    assert round(y, 6) == 0
-    assert round(z, 6) == 0
-
-
-def test_sphericalToCartesian_3():
-    x, y, z = transform.sphericalToCartesian(0, np.radians(90), 1)
-    assert round(x, 6) == 0
-    assert round(y, 6) == 1
-    assert round(z, 6) == 0
-
-
-def test_sphericalToCartesian_4():
-    x, y, z = transform.sphericalToCartesian(0, np.radians(45), 1)
-    assert round(x, 6) == 0.707107
-    assert round(y, 6) == 0.707107
-    assert round(z, 6) == 0
-
-
-def test_cartesianToSpherical_1():
-    alt, az, ra = transform.cartesianToSpherical(0, 0, 1)
-    assert round(alt, 6) == round(np.radians(90), 6)
-    assert round(az, 6) == 0
-    assert round(ra, 6) == 1
-
-
-def test_cartesianToSpherical_2():
-    alt, az, ra = transform.cartesianToSpherical(1, 0, 0)
-    assert round(alt, 6) == 0
-    assert round(az, 6) == 0
-    assert round(ra, 6) == 1
-
-
-def test_cartesianToSpherical_3():
-    alt, az, ra = transform.cartesianToSpherical(0, 1, 0)
-    assert round(alt, 6) == 0
-    assert round(az, 6) == round(np.radians(90), 6)
-    assert round(ra, 6) == 1
-
-
-def test_cartesianToSpherical_4():
-    alt, az, ra = transform.cartesianToSpherical(0.707107, 0.707107, 0)
-    assert round(alt, 6) == 0
-    assert round(az, 6) == round(np.radians(45), 6)
-    assert round(ra, 6) == 1
 
 
 def test_polarToCartesian_1():

@@ -23,9 +23,9 @@ from PyQt5.QtGui import QVector3D
 from PyQt5.Qt3DExtras import QCuboidMesh
 from PyQt5.Qt3DExtras import QCylinderMesh
 from PyQt5.Qt3DCore import QEntity, QTransform
+from skyfield import functions
 
 # local import
-from mw4.base import transform
 from gui.extWindows.simulator.materials import Materials
 
 
@@ -53,7 +53,8 @@ class SimulatorHorizon:
         :return:
         """
 
-        alt, az, radius = transform.cartesianToSpherical(dx, dy, dz)
+        radius, alt, az = functions.to_spherical([dx, dy, dz])
+
         az = np.degrees(az)
         alt = np.degrees(alt)
 

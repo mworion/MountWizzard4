@@ -18,38 +18,38 @@
 # standard libraries
 import logging
 import sys
+
 # external packages
-import PyQt5
+from PyQt5.QtCore import QObject, pyqtSignal, QRunnable, pyqtSlot
+
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 
 
 __all__ = ['Worker',
            ]
 
 
-class WorkerSignals(PyQt5.QtCore.QObject):
+class WorkerSignals(QObject):
     """
     The WorkerSignals class offers a list of signals to be used and instantiated by the Worker
     class to get signals for error, finished and result to be transferred to the caller back
     """
 
     __all__ = ['WorkerSignals']
-    version = '1.0.0'
 
-    finished = PyQt5.QtCore.pyqtSignal()
-    error = PyQt5.QtCore.pyqtSignal(object)
-    result = PyQt5.QtCore.pyqtSignal(object)
+    finished = pyqtSignal()
+    error = pyqtSignal(object)
+    result = pyqtSignal(object)
 
 
-class Worker(PyQt5.QtCore.QRunnable):
+class Worker(QRunnable):
     """
     The Worker class offers a generic interface to allow any function to be executed as
     a thread in an threadpool
     """
 
-    __all__ = ['Worker',
-               'run']
+    __all__ = ['Worker']
 
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
@@ -66,7 +66,7 @@ class Worker(PyQt5.QtCore.QRunnable):
         # we get trouble when having multiple threads running
         self.signals = WorkerSignals()
 
-    @PyQt5.QtCore.pyqtSlot()
+    @pyqtSlot()
     def run(self):
         """
         runs an arbitrary methods with it's parameters and catches the result

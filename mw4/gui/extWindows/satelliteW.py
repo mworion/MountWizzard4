@@ -20,20 +20,18 @@ import pickle
 from io import BytesIO
 
 # external packages
-import PyQt5.QtCore
-import PyQt5.QtWidgets
-import PyQt5.uic
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-import matplotlib.path as mpath
+from PyQt5.QtCore import QObject, pyqtSignal, QFile
 import numpy as np
+import matplotlib.path as mpath
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+from skyfield import functions
 
 # local import
 from gui.utilities import widget
 from gui.widgets import satellite_ui
-from base import transform
 
 
-class SatelliteWindowSignals(PyQt5.QtCore.QObject):
+class SatelliteWindowSignals(QObject):
     """
     The SatelliteWindowSignals class offers a list of signals to be used and instantiated by
     the SatelliteWindow class to get signals for triggers for finished tasks to
@@ -45,8 +43,8 @@ class SatelliteWindowSignals(PyQt5.QtCore.QObject):
 
     __all__ = ['SatelliteWindowSignals']
 
-    show = PyQt5.QtCore.pyqtSignal(object, object)
-    update = PyQt5.QtCore.pyqtSignal(object, object, object)
+    show = pyqtSignal(object, object)
+    update = pyqtSignal(object, object, object)
 
 
 class SatelliteWindow(widget.MWidget):
@@ -55,10 +53,7 @@ class SatelliteWindow(widget.MWidget):
 
     """
 
-    __all__ = ['SatelliteWindow',
-               'receiveSatelliteAndShow',
-               'updatePositions',
-               ]
+    __all__ = ['SatelliteWindow']
 
     # length of forecast time in hours
     FORECAST_TIME = 3
@@ -95,8 +90,8 @@ class SatelliteWindow(widget.MWidget):
 
         # as we cannot access data from Qt resource system, we have to convert it to
         # ByteIO first
-        stream = PyQt5.QtCore.QFile(':/data/worldmap.dat')
-        stream.open(PyQt5.QtCore.QFile.ReadOnly)
+        stream = QFile(':/data/worldmap.dat')
+        stream.open(QFile.ReadOnly)
         pickleData = stream.readAll()
         stream.close()
         # loading the world image from nasa as PNG as matplotlib only loads png.
@@ -230,10 +225,9 @@ class SatelliteWindow(widget.MWidget):
         lat = subpoint.latitude.radians
         lon = subpoint.longitude.radians
         elev = subpoint.elevation.m / 1000 + self.EARTH_RADIUS
-        x, y, z = transform.sphericalToCartesian(azimuth=lon,
-                                                 altitude=lat,
-                                                 radius=elev)
-        self.plotSatPosSphere2.set_data_3d((x, y, z))
+
+        xyz = functions.from_spherical(elev, lat, lon)
+        self.plotSatPosSphere2.set_data_3d(xyz)
 
         # earth
         lat = subpoint.latitude.degrees
@@ -456,20 +450,18 @@ class SatelliteWindow(widget.MWidget):
         # plot world
         for key in self.world.keys():
             shape = self.world[key]
-            x, y, z = transform.sphericalToCartesian(azimuth=shape['xRad'],
-                                                     altitude=shape['yRad'],
-                                                     radius=self.EARTH_RADIUS)
-            verts = [list(zip(x, y, z))]
+            verts = functions.from_spherical(self.EARTH_RADIUS, shape['yRad'], shape['xRad'])
+            verts = np.transpose(verts)
             collect = Poly3DCollection(verts, facecolors=self.M_BLUE, alpha=0.5)
             axe.add_collection3d(collect)
 
         # drawing home position location on earth
         lat = self.app.mount.obsSite.location.latitude.radians
         lon = self.app.mount.obsSite.location.longitude.radians
-        x, y, z = transform.sphericalToCartesian(altitude=lat,
-                                                 azimuth=lon,
-                                                 radius=self.EARTH_RADIUS)
-        axe.plot([x], [y], [z],
+
+        x, y, z = functions.from_spherical(self.EARTH_RADIUS, lat, lon)
+
+        axe.plot(x, y, z,
                  marker='.',
                  markersize=12,
                  color=self.M_RED,
@@ -484,9 +476,9 @@ class SatelliteWindow(widget.MWidget):
         lat = subpoint.latitude.radians
         lon = subpoint.longitude.radians
         elev = subpoint.elevation.m / 1000 + self.EARTH_RADIUS
-        x, y, z = transform.sphericalToCartesian(azimuth=lon,
-                                                 altitude=lat,
-                                                 radius=elev)
+
+        x, y, z = functions.from_spherical(elev, lat, lon)
+
         axe.plot(x, y, z, color=self.M_WHITE)
 
         # draw satellite position

@@ -92,8 +92,7 @@ class CustomLogger(logging.LoggerAdapter):
 
     """
 
-    __all__ = ['MWLog',
-               'run']
+    __all__ = ['CustomLogger']
 
     def process(self, msg, kwargs):
         """

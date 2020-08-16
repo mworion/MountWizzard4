@@ -12,13 +12,15 @@
 # standard libraries
 import logging
 from threading import Lock
+
 # external packages
 import numpy as np
+
 # noinspection PyProtectedMember
 from astropy import _erfa as ERFA
 from skyfield.api import Angle
-# local import
 
+# local import
 
 __all__ = [
     'J2000ToJNow',
@@ -32,7 +34,7 @@ __all__ = [
     'cartesianToPolar',
     'polarToCartesian',
 ]
-version = '0.100.0'
+
 logger = logging.getLogger()
 
 _lock = Lock()

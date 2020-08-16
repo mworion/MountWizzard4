@@ -18,20 +18,21 @@
 # standard libraries
 import logging
 import platform
-import time
+
 if platform.system() == 'Windows':
     import win32com.client
     import pythoncom
 
 # external packages
-import PyQt5.QtCore
+from PyQt5.QtCore import QObject, pyqtSignal, QTimer
+from PyQt5.QtTest import QTest
 
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.base.tpool import Worker
 
 
-class AscomSignals(PyQt5.QtCore.QObject):
+class AscomSignals(QObject):
 
     """
     The AscomSignals class offers a list of signals to be used and instantiated by
@@ -44,10 +45,10 @@ class AscomSignals(PyQt5.QtCore.QObject):
 
     __all__ = ['AscomSignals']
 
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
+    serverConnected = pyqtSignal()
+    serverDisconnected = pyqtSignal(object)
+    deviceConnected = pyqtSignal(str)
+    deviceDisconnected = pyqtSignal(str)
 
 
 class AscomClass(object):
@@ -84,11 +85,11 @@ class AscomClass(object):
         self.deviceConnected = False
         self.serverConnected = False
 
-        self.cycleDevice = PyQt5.QtCore.QTimer()
+        self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
         self.cycleDevice.timeout.connect(self.startPollStatus)
 
-        self.cycleData = PyQt5.QtCore.QTimer()
+        self.cycleData = QTimer()
         self.cycleData.setSingleShot(False)
         self.cycleData.timeout.connect(self.pollData)
 
@@ -100,21 +101,21 @@ class AscomClass(object):
         :return: success of reconnecting to server
         """
 
-        retry = 0
-        while retry < 6:
+        for retry in range(0, 6):
             try:
-                suc = False
-                retry += 1
                 self.client.connected = True
             except Exception as e:
+                suc = False
                 self.log.warning(f'Connection error [{self.deviceName}]: [{e}]')
             else:
                 suc = self.client.connected
-                self.log.info(f'[{self.deviceName}] connected, [{retry}] retries needed')
-            finally:
                 if suc:
+                    self.log.info(f'[{self.deviceName}] connected, [{retry}] retries needed')
                     break
-                time.sleep(0.2)
+            finally:
+                QTest.qWait(200)
+        else:
+            suc = False
 
         if not suc:
             self.app.message.emit(f'ASCOM connect error: [{self.deviceName}]', 2)

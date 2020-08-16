@@ -17,19 +17,19 @@
 ###########################################################
 # standard libraries
 import logging
-from dateutil.parser import parser
 import datetime
 import uuid
+from dateutil.parser import parser
 
 # external packages
-import PyQt5.QtCore
+from PyQt5.QtCore import QObject, pyqtSignal
 import requests
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 
 
-class AlpacaSignals(PyQt5.QtCore.QObject):
+class AlpacaSignals(QObject):
 
     """
     The AlpacaSignals class offers a list of signals to be used and instantiated by
@@ -42,15 +42,15 @@ class AlpacaSignals(PyQt5.QtCore.QObject):
 
     __all__ = ['AlpacaSignals']
 
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
+    serverConnected = pyqtSignal()
+    serverDisconnected = pyqtSignal(object)
+    deviceConnected = pyqtSignal(str)
+    deviceDisconnected = pyqtSignal(str)
 
 
-class AlpacaBase(object):
+class AlpacaBase:
     """
-    the class AlpacaClass inherits all information and handling of alpaca devices
+    the class AlpacaBase inherits all information and handling of alpaca devices
     this class will be only referenced from other classes and not directly used
 
         >>> a = AlpacaBase()
@@ -67,12 +67,12 @@ class AlpacaBase(object):
         self.signals = AlpacaSignals()
 
         self._baseUrl = ''
-        self.number = 0
-        self.deviceType = ''
         self._protocol = 'http'
         self._host = ('localhost', 11111)
         self._apiVersion = 1
         self._deviceName = ''
+        self.number = 0
+        self.deviceType = ''
 
     def generateBaseUrl(self):
         """
@@ -987,7 +987,7 @@ class Camera(AlpacaBase):
         return self.get("pixelsizey")
 
     def readoutmode(self, ReadoutMode=None):
-        """Indicate the canera's readout mode as an index into the array ReadoutModes."""
+        """Indicate the camera's readout mode as an index into the array ReadoutModes."""
         if ReadoutMode is None:
             return self.get("readoutmode")
         self.put("readoutmode", ReadoutMode=ReadoutMode)

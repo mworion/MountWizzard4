@@ -43,10 +43,10 @@ def module_setup_teardown(qtbot):
         threadPool = QThreadPool()
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
-        mount = qtmount.Mount(verbose=False, pathToData='mw4/test/data')
-        mwGlob = {'modelDir': 'mw4/test/model',
-                  'imageDir': 'mw4/test/image',
-                  'tempDir': 'mw4/test/temp'}
+        mount = qtmount.Mount(verbose=False, pathToData='tests/data')
+        mwGlob = {'modelDir': 'tests/model',
+                  'imageDir': 'tests/image',
+                  'tempDir': 'tests/temp'}
 
         uiWindows = {'showImageW': {'classObj': None}}
 

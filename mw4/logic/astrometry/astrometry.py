@@ -23,11 +23,11 @@ import os
 import PyQt5
 from astropy.io import fits
 import numpy as np
+from mountcontrol import convert
 
 # local imports
 from base.loggerMW import CustomLogger
 from base import tpool
-from base import transform
 from logic.astrometry.astrometryNET import AstrometryNET
 from logic.astrometry.astrometryASTAP import AstrometryASTAP
 
@@ -107,8 +107,8 @@ class Astrometry:
             scaleHint = float(fitsHeader.get('SCALE', 0))
             ra = fitsHeader.get('RA', 0)
             dec = fitsHeader.get('DEC', 0)
-            raHint = transform.convertToAngle(ra, isHours=True)
-            decHint = transform.convertToAngle(dec, isHours=False)
+            raHint = convert.convertToAngle(ra, isHours=True)
+            decHint = convert.convertToAngle(dec, isHours=False)
 
         self.log.info(f'Header RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale:'
                       f' {scaleHint}')
@@ -158,16 +158,16 @@ class Astrometry:
         """
 
         self.log.info(f'wcs header: [{wcsHeader}]')
-        raJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL1'),
+        raJ2000 = convert.convertToAngle(wcsHeader.get('CRVAL1'),
                                            isHours=True)
-        decJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL2'),
+        decJ2000 = convert.convertToAngle(wcsHeader.get('CRVAL2'),
                                             isHours=False)
 
         angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
-        raMount = transform.convertToAngle(fitsHeader.get('RA'),
+        raMount = convert.convertToAngle(fitsHeader.get('RA'),
                                            isHours=True)
-        decMount = transform.convertToAngle(fitsHeader.get('DEC'),
+        decMount = convert.convertToAngle(fitsHeader.get('DEC'),
                                             isHours=False)
 
         # todo: it would be nice, if adding, subtracting of angels are part of skyfield
@@ -316,6 +316,7 @@ class Astrometry:
         self.signals.serverConnected.emit()
         sucApp, sucIndex = self.checkAvailability()
         name = self.run[self.framework].deviceName
+
         if sucApp and sucIndex:
             self.signals.deviceConnected.emit(name)
             self.app.message.emit(f'ASTROMETRY found:    [{name}]', 0)

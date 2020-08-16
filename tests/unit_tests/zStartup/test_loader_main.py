@@ -33,7 +33,7 @@ from mw4 import mainApp
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown(qtbot):
-    files = glob.glob('mw4/test/config/*.cfg')
+    files = glob.glob('tests/config/*.cfg')
     for f in files:
         os.remove(f)
 
@@ -57,11 +57,11 @@ def test_main_1(qtbot):
         def setWindowIcon(a):
             return 0
 
-    mwGlob = {'configDir': 'mw4/test/config',
-              'dataDir': 'mw4/test/data',
-              'tempDir': 'mw4/test/temp',
-              'imageDir': 'mw4/test/image',
-              'modelDir': 'mw4/test/model',
+    mwGlob = {'configDir': 'tests/config',
+              'dataDir': 'tests/data',
+              'tempDir': 'tests/temp',
+              'imageDir': 'tests/image',
+              'modelDir': 'tests/model',
               'workDir': 'mw4/test',
               'modeldata': '4.0',
               }

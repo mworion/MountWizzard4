@@ -41,11 +41,11 @@ def module_setup_teardown(qtbot):
         config = {'mainW': {}}
         threadPool = QThreadPool()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData=Path('mw4/test/data'))
+                      pathToData=Path('tests/data'))
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
-        mwGlob = {'imageDir': 'mw4/test/image',
-                  'modelDir': 'mw4/test/model'}
+        mwGlob = {'imageDir': 'tests/image',
+                  'modelDir': 'tests/model'}
 
     widget = QWidget()
     ui = Ui_MainWindow()

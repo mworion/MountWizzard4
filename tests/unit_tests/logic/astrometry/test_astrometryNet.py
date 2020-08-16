@@ -31,7 +31,8 @@ from PyQt5.QtCore import QThreadPool
 from astropy.io import fits
 
 # local import
-from logic.astrometry import AstrometryNET, Astrometry
+from logic.astrometry.astrometry import Astrometry
+from logic.astrometry.astrometryNET import AstrometryNET
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -39,7 +40,7 @@ def module_setup_teardown():
 
     yield
 
-    files = glob.glob('mw4/test/image/*.fit*')
+    files = glob.glob('tests/image/*.fit*')
     for f in files:
         os.remove(f)
 
@@ -48,17 +49,17 @@ def module_setup_teardown():
 def app():
     class Test:
         threadPool = QThreadPool()
-        mwGlob = {'tempDir': 'mw4/test/temp'}
+        mwGlob = {'tempDir': 'tests/temp'}
 
     parent = Astrometry(app=Test())
     app = AstrometryNET(parent=parent)
 
-    for file in os.listdir('mw4/test/temp'):
-        fileP = os.path.join('mw4/test/temp', file)
+    for file in os.listdir('tests/temp'):
+        fileP = os.path.join('tests/temp', file)
         if 'temp' not in file:
             continue
         os.remove(fileP)
-    shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
 
     yield app
 
@@ -162,68 +163,68 @@ def test_solveNet_1(app):
 
 
 def test_solveNet_2(app):
-    app.name = 'KStars'
+    app.deviceName = 'KStars'
     app.environment = {
         'KStars': {
             'programPath': '',
             'indexPath': '',
         }
     }
-    app.indexPath = 'mw4/test/temp'
+    app.indexPath = 'tests/temp'
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=False):
-        suc = app.solve(fitsPath='mw4/test/image/m51.fit')
+        suc = app.solve(fitsPath='tests/image/m51.fit')
         assert not suc
 
 
 def test_solveNet_3(app):
-    app.name = 'KStars'
+    app.deviceName = 'KStars'
     app.environment = {
         'KStars': {
             'programPath': '',
             'indexPath': '',
         }
     }
-    app.indexPath = 'mw4/test/temp'
+    app.indexPath = 'tests/temp'
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=True):
         with mock.patch.object(app,
                                'runSolveField',
                                return_value=False):
-            suc = app.solve(fitsPath='mw4/test/image/m51.fit')
+            suc = app.solve(fitsPath='tests/image/m51.fit')
             assert not suc
 
 
 def test_solveNet_4(app):
-    app.name = 'KStars'
+    app.deviceName = 'KStars'
     app.environment = {
         'KStars': {
             'programPath': '',
             'indexPath': '',
         }
     }
-    app.indexPath = 'mw4/test/temp'
+    app.indexPath = 'tests/temp'
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=True):
         with mock.patch.object(app,
                                'runSolveField',
                                return_value=True):
-            suc = app.solve(fitsPath='mw4/test/image/m51.fit')
+            suc = app.solve(fitsPath='tests/image/m51.fit')
             assert not suc
 
 
 def test_solveNet_5(app):
-    app.name = 'CloudMakers'
+    app.deviceName = 'CloudMakers'
     app.environment = {
         'CloudMakers': {
             'programPath': '',
             'indexPath': '',
         }
     }
-    app.indexPath = 'mw4/test/temp'
+    app.indexPath = 'tests/temp'
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=True):
@@ -233,20 +234,20 @@ def test_solveNet_5(app):
             with mock.patch.object(os,
                                    'remove',
                                    return_value=True):
-                shutil.copy('mw4/test/testData/tempNET.wcs', 'mw4/test/temp/temp.wcs')
-                suc = app.solve(fitsPath='mw4/test/image/m51.fit')
+                shutil.copy('tests/testData/tempNET.wcs', 'tests/temp/temp.wcs')
+                suc = app.solve(fitsPath='tests/image/m51.fit')
                 assert not suc
 
 
 def test_solveNet_6(app):
-    app.name = 'KStars'
+    app.deviceName = 'KStars'
     app.environment = {
         'KStars': {
             'programPath': '',
             'indexPath': '',
         }
     }
-    app.indexPath = 'mw4/test/temp'
+    app.indexPath = 'tests/temp'
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=True):
@@ -256,20 +257,20 @@ def test_solveNet_6(app):
             with mock.patch.object(os,
                                    'remove',
                                    return_value=True):
-                shutil.copy('mw4/test/testData/tempNET.solved', 'mw4/test/temp/temp.solved')
-                suc = app.solve(fitsPath='mw4/test/image/m51.fit')
+                shutil.copy('tests/testData/tempNET.solved', 'tests/temp/temp.solved')
+                suc = app.solve(fitsPath='tests/image/m51.fit')
                 assert not suc
 
 
 def test_solveNet_7(app):
-    app.name = 'KStars'
+    app.deviceName = 'KStars'
     app.environment = {
         'KStars': {
             'programPath': '',
             'indexPath': '',
         }
     }
-    app.indexPath = 'mw4/test/temp'
+    app.indexPath = 'tests/temp'
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=True):
@@ -279,9 +280,9 @@ def test_solveNet_7(app):
             with mock.patch.object(os,
                                    'remove',
                                    return_value=True):
-                shutil.copy('mw4/test/testData/tempNET.wcs', 'mw4/test/temp/temp.wcs')
-                shutil.copy('mw4/test/testData/tempNET.solved', 'mw4/test/temp/temp.solved')
-                suc = app.solve(fitsPath='mw4/test/image/m51.fit')
+                shutil.copy('tests/testData/tempNET.wcs', 'tests/temp/temp.wcs')
+                shutil.copy('tests/testData/tempNET.solved', 'tests/temp/temp.solved')
+                suc = app.solve(fitsPath='tests/image/m51.fit')
                 assert suc
 
 

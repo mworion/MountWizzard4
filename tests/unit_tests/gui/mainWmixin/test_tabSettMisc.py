@@ -47,14 +47,14 @@ def module_setup_teardown(qtbot):
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         update1s = pyqtSignal()
         update10s = pyqtSignal()
         threadPool = QThreadPool()
-        mwGlob = {'modelDir': 'mw4/test/model',
-                  'imageDir': 'mw4/test/image',
-                  'configDir': 'mw4/test/config',
-                  'tempDir': 'mw4/test/temp'}
+        mwGlob = {'modelDir': 'tests/model',
+                  'imageDir': 'tests/image',
+                  'configDir': 'tests/config',
+                  'tempDir': 'tests/temp'}
 
     class Test(QObject):
         config = {'mainW': {}}
@@ -62,7 +62,7 @@ def module_setup_teardown(qtbot):
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         dome = Dome(app=Test1())
         camera = Camera(app=Test1())
         astrometry = Astrometry(app=Test1())

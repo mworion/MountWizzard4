@@ -49,8 +49,8 @@ def module_setup_teardown(qtbot):
 
     class Test2(QObject):
         threadPool = QThreadPool()
-        mwGlob = {'imageDir': 'mw4/test/image',
-                  'tempDir': 'mw4/test/temp'}
+        mwGlob = {'imageDir': 'tests/image',
+                  'tempDir': 'tests/temp'}
 
     class Test1a:
         expTime = QDoubleSpinBox()
@@ -74,11 +74,11 @@ def module_setup_teardown(qtbot):
         message = pyqtSignal(str, int)
         mainW = Test1()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         camera = Camera(app=Test2())
         astrometry = Astrometry(app=Test2())
         uiWindows = {'showImageW': {}}
-        mwGlob = {'imageDir': 'mw4/test/image'}
+        mwGlob = {'imageDir': 'tests/image'}
         threadPool = QThreadPool()
         deviceStat = {'camera': True,
                       'astrometry': True}
@@ -89,7 +89,7 @@ def module_setup_teardown(qtbot):
         qtbot.addWidget(app)
         yield
 
-    files = glob.glob('mw4/test/image/*.fit*')
+    files = glob.glob('tests/image/*.fit*')
     for f in files:
         os.remove(f)
 
@@ -511,8 +511,8 @@ def test_showImage_2():
 
 
 def test_showImage_3():
-    shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
-    suc = app.showImage(imagePath='mw4/test/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    suc = app.showImage(imagePath='tests/image/m51.fit')
     assert suc
 
 
@@ -706,8 +706,8 @@ def test_solveImage_2(qtbot):
 
 
 def test_solveImage_3(qtbot):
-    shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
-    file = 'mw4/test/image/m51.fit'
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    file = 'tests/image/m51.fit'
     with mock.patch.object(app.app.astrometry,
                            'solveThreading'):
         suc = app.solveImage(imagePath=file)

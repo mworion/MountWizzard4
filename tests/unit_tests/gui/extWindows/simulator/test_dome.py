@@ -46,12 +46,12 @@ def module_setup_teardown():
 
     class Test(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
-        mwGlob = {'modelDir': 'mw4/test/model',
-                  'imageDir': 'mw4/test/image'}
+        mwGlob = {'modelDir': 'tests/model',
+                  'imageDir': 'tests/image'}
         uiWindows = {'showImageW': {'classObj': None}}
         mainW = Test1()
         dome = Test3()

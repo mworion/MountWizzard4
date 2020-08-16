@@ -56,7 +56,7 @@ def module_setup_teardown():
         messageQueue = Queue()
         deviceStat = {'dome': True}
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         mainW = Test1()
 
     with mock.patch.object(SimulatorWindow,

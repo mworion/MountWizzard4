@@ -18,11 +18,10 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+
 # external packages
 from astropy.io import fits
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from mountcontrol.mount import Mount
 from skyfield.api import Angle
 
@@ -38,7 +37,7 @@ def module_setup_teardown():
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         mount.obsSite.raJNow = Angle(hours=12)
         mount.obsSite.decJNow = Angle(degrees=45)
         deviceStat = {'mount': True}

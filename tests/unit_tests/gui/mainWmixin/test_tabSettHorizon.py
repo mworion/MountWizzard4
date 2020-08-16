@@ -43,26 +43,26 @@ def module_setup_teardown(qtbot):
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
-        mwGlob = {'modelDir': 'mw4/test/model',
-                  'imageDir': 'mw4/test/image',
-                  'configDir': 'mw4/test/config',
-                  'tempDir': 'mw4/test/temp'}
+                      pathToData='tests/data')
+        mwGlob = {'modelDir': 'tests/model',
+                  'imageDir': 'tests/image',
+                  'configDir': 'tests/config',
+                  'tempDir': 'tests/temp'}
 
     class Test(QObject):
         config = {'mainW': {}}
         threadPool = QThreadPool()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         update1s = pyqtSignal()
         redrawHemisphere = pyqtSignal()
         drawHorizonPoints = pyqtSignal()
         drawBuildPoints = pyqtSignal()
         message = pyqtSignal(str, int)
-        mwGlob = {'modelDir': 'mw4/test/model',
-                  'imageDir': 'mw4/test/image',
-                  'configDir': 'mw4/test/config',
-                  'tempDir': 'mw4/test/temp'}
+        mwGlob = {'modelDir': 'tests/model',
+                  'imageDir': 'tests/image',
+                  'configDir': 'tests/config',
+                  'tempDir': 'tests/temp'}
 
         data = DataPoint(app=Test1())
         uiWindows = {'showHemisphereW': {'classObj': Test2()}}

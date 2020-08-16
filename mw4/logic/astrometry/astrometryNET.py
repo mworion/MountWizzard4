@@ -25,10 +25,10 @@ import platform
 
 # external packages
 from astropy.io import fits
+from mountcontrol import convert
 
 # local imports
 from base.loggerMW import CustomLogger
-from base import transform
 
 
 class AstrometryNET(object):
@@ -297,8 +297,8 @@ class AstrometryNET(object):
             scaleHint = scaleFITS
 
         searchRatio = 1.1
-        ra = transform.convertToHMS(raHint)
-        dec = transform.convertToDMS(decHint)
+        ra = convert.convertToHMS(raHint)
+        dec = convert.convertToDMS(decHint)
         scaleLow = scaleHint / searchRatio
         scaleHigh = scaleHint * searchRatio
         options = ['--scale-low',

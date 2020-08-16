@@ -18,15 +18,14 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+
 # external packages
 import PyQt5
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
-from logic.dome import DomeAlpaca
-from logic.dome import DomeSignals
+from logic.dome.domeAlpaca import DomeAlpaca
+from logic.dome.dome import DomeSignals
 from base.alpacaBase import AlpacaBase
 
 

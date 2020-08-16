@@ -44,8 +44,8 @@ def test_properties():
     app.host = ('localhost', 7624)
     assert app.host == ('localhost', 7624)
 
-    app.name = 'test'
-    assert app.name == 'test'
+    app.deviceName = 'test'
+    assert app.deviceName == 'test'
 
 
 def test_startCommunication_1():

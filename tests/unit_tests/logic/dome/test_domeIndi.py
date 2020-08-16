@@ -18,15 +18,14 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+
 # external packages
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from logic.dome import DomeIndi
-from logic.dome import DomeSignals
+from logic.dome.domeIndi import DomeIndi
+from logic.dome.dome import DomeSignals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -42,20 +41,20 @@ def module_setup_teardown():
 
 
 def test_setUpdateConfig_1():
-    app.name = ''
+    app.deviceName = ''
     suc = app.setUpdateConfig('test')
     assert not suc
 
 
 def test_setUpdateConfig_2():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = None
     suc = app.setUpdateConfig('test')
     assert not suc
 
 
 def test_setUpdateConfig_3():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getNumber',
@@ -65,7 +64,7 @@ def test_setUpdateConfig_3():
 
 
 def test_setUpdateConfig_4():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.UPDATE_RATE = 1
     with mock.patch.object(app.device,
@@ -76,7 +75,7 @@ def test_setUpdateConfig_4():
 
 
 def test_setUpdateConfig_5():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
     app.UPDATE_RATE = 0
@@ -91,7 +90,7 @@ def test_setUpdateConfig_5():
 
 
 def test_setUpdateConfig_6():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
     app.UPDATE_RATE = 0
@@ -138,7 +137,7 @@ def test_updateNumber_1():
 
 def test_updateNumber_2():
     app.device = Device()
-    app.name = ''
+    app.deviceName = ''
     with mock.patch.object(app.settlingWait,
                            'start'):
         suc = app.updateNumber('test', 'test')
@@ -147,7 +146,7 @@ def test_updateNumber_2():
 
 def test_updateNumber_3():
     app.device = Device()
-    app.name = 'test'
+    app.deviceName = 'test'
     with mock.patch.object(app.settlingWait,
                            'start'):
         suc = app.updateNumber('test', 'test')
@@ -156,7 +155,7 @@ def test_updateNumber_3():
 
 def test_updateNumber_4():
     app.device = Device()
-    app.name = 'test'
+    app.deviceName = 'test'
     with mock.patch.object(app.device,
                            'getNumber',
                            return_value={'TEST': 1,
@@ -170,7 +169,7 @@ def test_updateNumber_4():
 def test_updateNumber_5():
     app.device = Device()
     app.device.ABS_DOME_POSITION = {'state': 'test'}
-    app.name = 'test'
+    app.deviceName = 'test'
     app.azimuth = 10
     with mock.patch.object(app.device,
                            'getNumber',
@@ -185,7 +184,7 @@ def test_updateNumber_5():
 def test_updateNumber_6():
     app.device = Device()
     app.device.ABS_DOME_POSITION = {'state': 'Busy'}
-    app.name = 'test'
+    app.deviceName = 'test'
     app.azimuth = 10
     with mock.patch.object(app.device,
                            'getNumber',
@@ -200,7 +199,7 @@ def test_updateNumber_6():
 def test_updateNumber_7():
     app.device = Device()
     app.device.ABS_DOME_POSITION = {'state': 'test'}
-    app.name = 'test'
+    app.deviceName = 'test'
     app.azimuth = 10
     app.slewing = True
     with mock.patch.object(app.device,
@@ -226,14 +225,14 @@ def test_slewToAltAz_2():
 
 def test_slewToAltAz_3():
     app.device = Device()
-    app.name = 'test'
+    app.deviceName = 'test'
     suc = app.slewToAltAz()
     assert not suc
 
 
 def test_slewToAltAz_4():
     app.device = Device()
-    app.name = 'test'
+    app.deviceName = 'test'
 
     with mock.patch.object(app.device,
                            'getNumber',
@@ -245,7 +244,7 @@ def test_slewToAltAz_4():
 def test_slewToAltAz_5():
     app.device = Device()
     app.client = Client()
-    app.name = 'test'
+    app.deviceName = 'test'
 
     with mock.patch.object(app.device,
                            'getNumber',
@@ -260,7 +259,7 @@ def test_slewToAltAz_5():
 def test_slewToAltAz_6():
     app.device = Device()
     app.client = Client()
-    app.name = 'test'
+    app.deviceName = 'test'
 
     with mock.patch.object(app.device,
                            'getNumber',

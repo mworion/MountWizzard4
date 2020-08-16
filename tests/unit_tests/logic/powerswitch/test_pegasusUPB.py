@@ -23,7 +23,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from logic.powerswitch import PegasusUPB
+from logic.powerswitch.pegasusUPB import PegasusUPB
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -44,8 +44,8 @@ def test_properties():
     app.host = ('localhost', 7624)
     assert app.host == ('localhost', 7624)
 
-    app.name = 'test'
-    assert app.name == 'test'
+    app.deviceName = 'test'
+    assert app.deviceName == 'test'
 
 
 def test_startCommunication_1():

@@ -19,17 +19,16 @@
 import pytest
 import unittest.mock as mock
 import platform
+
 # external packages
 import PyQt5
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 if platform.system() == 'Windows':
     pass
 
 # local import
-from logic.dome import DomeAscom
-from logic.dome import DomeSignals
+from logic.dome.domeAscom import DomeAscom
+from logic.dome.dome import DomeSignals
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -18,15 +18,14 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+
 # external packages
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from mountcontrol.mount import Mount
 from skyfield.api import Angle
 
 # local import
-from logic.dome import Dome
+from logic.dome.dome import Dome
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -36,7 +35,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
         update1s = pyqtSignal()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
     global app
     app = Dome(app=Test())
 
@@ -51,11 +50,8 @@ def test_properties_1():
     app.host = ('localhost', 7624)
     assert app.host == ('localhost', 7624)
 
-    app.name = 'test'
-    assert app.name == 'test'
-
-    app.settlingTime = 10
-    assert app.settlingTime == 10000
+    app.deviceName = 'test'
+    assert app.deviceName == 'test'
 
 
 def test_properties_2():
@@ -64,11 +60,8 @@ def test_properties_2():
     app.host = ('localhost', 7624)
     assert app.host == ('localhost', 7624)
 
-    app.name = 'test'
-    assert app.name == 'test'
-
-    app.settlingTime = 10
-    assert app.settlingTime is None
+    app.deviceName = 'test'
+    assert app.deviceName == 'test'
 
 
 def test_startCommunication_1():

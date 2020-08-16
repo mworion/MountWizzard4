@@ -18,15 +18,14 @@
 # standard libraries
 import pytest
 import platform
+
 # external packages
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 if platform.system() == 'Windows':
     pass
 
 # local import
-from logic.environment import SkymeterAscom
+from logic.environment.skymeterAscom import SkymeterAscom
 from logic.environment.skymeter import SkymeterSignals
 
 

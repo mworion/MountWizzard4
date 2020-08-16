@@ -32,7 +32,7 @@ def module_setup_teardown(qtbot):
     global app
 
     app = QAwesomeTooltipEventFilter()
-    files = glob.glob('mw4/test/config/*.cfg')
+    files = glob.glob('tests/config/*.cfg')
     for f in files:
         os.remove(f)
 

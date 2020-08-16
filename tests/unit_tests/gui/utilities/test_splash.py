@@ -16,10 +16,10 @@
 #
 ###########################################################
 # standard libraries
+
 # external packages
-import PyQt5.QtGui
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QPainter, QPixmap
 import pytest
 import unittest.mock as mock
 
@@ -30,8 +30,7 @@ from gui.utilities.splash import SplashScreen
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
 
-    with mock.patch.object(QWidget,
-                           'show'):
+    with mock.patch.object(QWidget, 'show'):
         yield
 
 
@@ -39,8 +38,8 @@ def test_icon(qtbot):
     app = SplashScreen(QWidget())
     qtbot.addWidget(app)
 
-    value = PyQt5.QtGui.QPixmap(':/icon/ico')
-    assert not PyQt5.QtGui.QPixmap.isNull(value)
+    value = QPixmap(':/icon/mw4.ico')
+    assert isinstance(value, QPixmap)
 
 
 def test_upcoming(qtbot):

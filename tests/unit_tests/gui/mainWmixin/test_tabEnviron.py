@@ -51,7 +51,7 @@ def module_setup_teardown(qtbot):
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData=Path('mw4/test/data'))
+                      pathToData=Path('tests/data'))
         update10s = pyqtSignal()
         threadPool = QThreadPool()
 
@@ -62,7 +62,7 @@ def module_setup_teardown(qtbot):
         update30m = pyqtSignal()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData=Path('mw4/test/data'))
+                      pathToData=Path('tests/data'))
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
@@ -476,7 +476,7 @@ def test_getWebDataRunner_4():
 
 
 def test_processClearOutsideImage_1():
-    image = QImage('mw4/test/testData/forecast.png')
+    image = QImage('tests/testData/forecast.png')
     suc = app.processClearOutsideImage(image=image)
     assert suc
 
@@ -495,10 +495,10 @@ def test_updateClearOutsideImage_2():
 
 
 def test_updateClearOutsideImage_3():
-    image = QImage('mw4/test/testData/forecast.png')
+    image = QImage('tests/testData/forecast.png')
     pixmapBase = QPixmap().fromImage(image)
 
-    with open(Path('mw4/test/testData/forecast.png'), 'rb') as image:
+    with open(Path('tests/testData/forecast.png'), 'rb') as image:
         f = image.read()
         b = bytes(f)
 

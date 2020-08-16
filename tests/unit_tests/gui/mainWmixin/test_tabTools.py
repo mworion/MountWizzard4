@@ -43,10 +43,10 @@ def module_setup_teardown(qtbot):
         config = {'mainW': {}}
         threadPool = QThreadPool()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
-        mwGlob = {'imageDir': 'mw4/test/image'}
+        mwGlob = {'imageDir': 'tests/image'}
 
     widget = QWidget()
     ui = Ui_MainWindow()
@@ -63,7 +63,7 @@ def module_setup_teardown(qtbot):
 
     yield
 
-    files = glob.glob('mw4/test/image/*.fit*')
+    files = glob.glob('tests/image/*.fit*')
     for f in files:
         os.remove(f)
 
@@ -107,12 +107,12 @@ def test_getNumberFiles_4():
 
 
 def test_getNumberFiles_5():
-    number = app.getNumberFiles(pathDir='mw4/test/testData', search='**/*.fit*')
+    number = app.getNumberFiles(pathDir='tests/testData', search='**/*.fit*')
     assert number == 2
 
 
 def test_getNumberFiles_6():
-    number = app.getNumberFiles(pathDir='mw4/test/testData', search='*.fit*')
+    number = app.getNumberFiles(pathDir='tests/testData', search='*.fit*')
     assert number == 2
 
 
@@ -214,21 +214,21 @@ def test_renameFile_1():
 
 
 def test_renameFile_2():
-    suc = app.renameFile('mw4/test/image/m51.fit')
+    suc = app.renameFile('tests/image/m51.fit')
     assert not suc
 
 
 def test_renameFile_3():
-    shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
 
     with mock.patch.object(os,
                            'rename'):
-        suc = app.renameFile('mw4/test/image/m51.fit')
+        suc = app.renameFile('tests/image/m51.fit')
         assert suc
 
 
 def test_renameRunGUI_1(qtbot):
-    shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
     app.ui.renameDir.setText('')
     with qtbot.waitSignal(app.app.message) as blocker:
         suc = app.renameRunGUI()
@@ -237,7 +237,7 @@ def test_renameRunGUI_1(qtbot):
 
 
 def test_renameRunGUI_2(qtbot):
-    app.ui.renameDir.setText('mw4/test/image')
+    app.ui.renameDir.setText('tests/image')
     with qtbot.waitSignal(app.app.message) as blocker:
         suc = app.renameRunGUI()
         assert not suc
@@ -246,7 +246,7 @@ def test_renameRunGUI_2(qtbot):
 
 def test_renameRunGUI_3(qtbot):
     app.ui.checkIncludeSubdirs.setChecked(True)
-    app.ui.renameDir.setText('mw4/test/image')
+    app.ui.renameDir.setText('tests/image')
     with qtbot.waitSignal(app.app.message) as blocker:
         suc = app.renameRunGUI()
         assert not suc
@@ -254,8 +254,8 @@ def test_renameRunGUI_3(qtbot):
 
 
 def test_renameRunGUI_4(qtbot):
-    shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
-    app.ui.renameDir.setText('mw4/test/image')
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    app.ui.renameDir.setText('tests/image')
     with mock.patch.object(app,
                            'renameFile',
                            return_value=True):

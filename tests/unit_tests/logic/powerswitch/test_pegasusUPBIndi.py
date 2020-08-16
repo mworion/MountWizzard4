@@ -25,8 +25,8 @@ from PyQt5.QtCore import pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from logic.powerswitch import PegasusUPBIndi
-from logic.powerswitch import PegasusUPBSignals
+from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
+from logic.powerswitch.pegasusUPB import PegasusUPBSignals
 from base.indiClass import IndiClass
 
 
@@ -42,20 +42,20 @@ def module_setup_teardown():
 
 
 def test_setUpdateConfig_1():
-    app.name = ''
+    app.deviceName = ''
     suc = app.setUpdateConfig('test')
     assert not suc
 
 
 def test_setUpdateConfig_2():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = None
     suc = app.setUpdateConfig('test')
     assert not suc
 
 
 def test_setUpdateConfig_3():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getNumber',
@@ -65,7 +65,7 @@ def test_setUpdateConfig_3():
 
 
 def test_setUpdateConfig_4():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.UPDATE_RATE = 1
     with mock.patch.object(app.device,
@@ -76,7 +76,7 @@ def test_setUpdateConfig_4():
 
 
 def test_setUpdateConfig_5():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
     app.UPDATE_RATE = 0
@@ -91,7 +91,7 @@ def test_setUpdateConfig_5():
 
 
 def test_setUpdateConfig_6():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
     app.UPDATE_RATE = 0

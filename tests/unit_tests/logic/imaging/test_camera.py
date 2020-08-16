@@ -18,6 +18,7 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+
 # external packages
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
@@ -45,8 +46,8 @@ def test_properties():
     app.host = ('localhost', 7624)
     assert app.host == ('localhost', 7624)
 
-    app.name = 'test'
-    assert app.name == 'test'
+    app.deviceName = 'test'
+    assert app.deviceName == 'test'
 
 
 def test_startCommunication_1():
@@ -175,7 +176,7 @@ def test_expose_2():
 
 def test_expose_3():
     app.framework = 'indi'
-    suc = app.expose(imagePath='mw4/test/image')
+    suc = app.expose(imagePath='tests/image')
     assert not suc
 
 
@@ -184,7 +185,7 @@ def test_expose_4():
     with mock.patch.object(app,
                            'canSubFrame',
                            return_value=True):
-        suc = app.expose(imagePath='mw4/test/image')
+        suc = app.expose(imagePath='tests/image')
         assert not suc
 
 
@@ -196,7 +197,7 @@ def test_expose_5():
         with mock.patch.object(app,
                                'canBinning',
                                return_value=True):
-            suc = app.expose(imagePath='mw4/test/image')
+            suc = app.expose(imagePath='tests/image')
             assert not suc
 
 
@@ -210,7 +211,7 @@ def test_expose_6():
         with mock.patch.object(app,
                                'canBinning',
                                return_value=True):
-            suc = app.expose(imagePath='mw4/test/image')
+            suc = app.expose(imagePath='tests/image')
             assert not suc
 
 

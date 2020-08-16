@@ -26,11 +26,11 @@ from mainApp import MountWizzard4
 
 
 def test_start_parameters(qapp):
-    mwGlob = {'configDir': 'mw4/test/config',
-              'dataDir': 'mw4/test/data',
-              'tempDir': 'mw4/test/temp',
-              'imageDir': 'mw4/test/image',
-              'modelDir': 'mw4/test/model',
+    mwGlob = {'configDir': 'tests/config',
+              'dataDir': 'tests/data',
+              'tempDir': 'tests/temp',
+              'imageDir': 'tests/image',
+              'modelDir': 'tests/model',
               'workDir': 'mw4/test',
               }
     with mock.patch.object(PyQt5.QtWidgets.QWidget,

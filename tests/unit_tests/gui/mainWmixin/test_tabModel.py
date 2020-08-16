@@ -51,13 +51,13 @@ def module_setup_teardown(qtbot):
     
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         update1s = pyqtSignal()
         update10s = pyqtSignal()
         threadPool = QThreadPool()
-        mwGlob = {'modelDir': 'mw4/test/model',
-                  'imageDir': 'mw4/test/image',
-                  'tempDir': 'mw4/test/temp'}
+        mwGlob = {'modelDir': 'tests/model',
+                  'imageDir': 'tests/image',
+                  'tempDir': 'tests/temp'}
         
     class Test(QObject):
         config = {'mainW': {}}
@@ -67,15 +67,15 @@ def module_setup_teardown(qtbot):
         __version__ = 'test'
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
         camera = Camera(app=Test1())
         astrometry = Astrometry(app=Test1())
         dome = Dome(app=Test1())
-        mwGlob = {'modelDir': 'mw4/test/model',
-                  'imageDir': 'mw4/test/image'}
+        mwGlob = {'modelDir': 'tests/model',
+                  'imageDir': 'tests/image'}
         uiWindows = {'showImageW': {'classObj': None}}
 
     def refreshModel():
@@ -105,10 +105,10 @@ def module_setup_teardown(qtbot):
     yield
 
     app.threadPool.waitForDone(1000)
-    files = glob.glob('mw4/test/model/m-*.model')
+    files = glob.glob('tests/model/m-*.model')
     for f in files:
         os.remove(f)
-    for path in glob.glob('mw4/test/image/m-*'):
+    for path in glob.glob('tests/image/m-*'):
         shutil.rmtree(path)
 
 
@@ -1058,10 +1058,10 @@ def test_loadProgramModel_1():
 
 
 def test_loadProgramModel_2():
-    shutil.copy('mw4/test/testData/m-test.model', 'mw4/test/model/m-test.model')
+    shutil.copy('tests/testData/m-test.model', 'tests/model/m-test.model')
 
     def openFile(a, b, c, d, multiple=False):
-        return ('mw4/test/model/m-test.model', 'm-test', '.model')
+        return ('tests/model/m-test.model', 'm-test', '.model')
     app.openFile = openFile
 
     def refreshModel():

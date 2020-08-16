@@ -322,7 +322,7 @@ def test_saveFile_6():
                            return_value=1):
         with mock.patch.object(PyQt5.QtWidgets.QFileDialog,
                                'selectedFiles',
-                               return_value=(['mw4/test/test.txt'])):
+                               return_value=(['tests/test.txt'])):
             full, short, ext = app.saveFile(window=window,
                                             title='title',
                                             folder='.',

@@ -17,10 +17,9 @@
 ###########################################################
 # standard libraries
 import pytest
+
 # external packages
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.environment.directWeather import DirectWeather

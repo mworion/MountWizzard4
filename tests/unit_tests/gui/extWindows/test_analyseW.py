@@ -34,13 +34,13 @@ from gui.utilities.widget import MWidget
 def app(qtbot):
     global Test
 
-    shutil.copy('mw4/test/testData/test.model', 'mw4/test/model/test.model')
+    shutil.copy('tests/testData/test.model', 'tests/model/test.model')
 
     class Test(QObject):
         config = {'mainW': {}}
         update1s = pyqtSignal()
         messageQueue = Queue()
-        mwGlob = {'modelDir': 'mw4/test/model'}
+        mwGlob = {'modelDir': 'tests/model'}
 
     with mock.patch.object(AnalyseWindow,
                            'show'):
@@ -96,7 +96,7 @@ def test_loadModel_1(app):
 def test_loadModel_2(app):
     with mock.patch.object(app,
                            'openFile',
-                           return_value=('mw4/test/model/test.model',
+                           return_value=('tests/model/test.model',
                                          'test.model', '.model')):
         suc = app.loadModel()
         assert suc

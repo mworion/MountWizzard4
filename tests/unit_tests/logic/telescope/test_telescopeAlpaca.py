@@ -25,7 +25,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from logic.telescope import TelescopeAlpaca
+from logic.telescope.telescopeAlpaca import TelescopeAlpaca
 from logic.telescope.telescope import TelescopeSignals
 from base.alpacaBase import AlpacaBase
 

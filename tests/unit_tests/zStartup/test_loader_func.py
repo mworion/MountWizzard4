@@ -32,7 +32,7 @@ from mw4 import loader
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown(qtbot):
-    files = glob.glob('mw4/test/config/*.cfg')
+    files = glob.glob('tests/config/*.cfg')
     for f in files:
         os.remove(f)
     yield
@@ -102,14 +102,14 @@ def test_extractDataFiles_1(qtbot):
 
 def test_extractDataFiles_2(qtbot):
     mwGlob = dict()
-    mwGlob['dataDir'] = 'mw4/test/data'
+    mwGlob['dataDir'] = 'tests/data'
     suc = loader.extractDataFiles(mwGlob=mwGlob)
     assert suc
 
 
 def test_extractDataFiles_3(qtbot):
     mwGlob = dict()
-    mwGlob['dataDir'] = 'mw4/test/data'
+    mwGlob['dataDir'] = 'tests/data'
     suc = loader.extractDataFiles(mwGlob=mwGlob)
     assert suc
 
@@ -118,15 +118,15 @@ def test_extractDataFiles_4(qtbot):
     if platform.system() == 'Windows':
         return
 
-    mwGlob = {'dataDir': 'mw4/test/data'}
+    mwGlob = {'dataDir': 'tests/data'}
 
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
         suc = loader.extractDataFiles(mwGlob=mwGlob)
         assert suc
-    assert os.path.isfile('mw4/test/data/Leap_Second.dat')
-    assert os.path.isfile('mw4/test/data/deltat.data')
-    assert os.path.isfile('mw4/test/data/deltat.preds')
-    assert os.path.isfile('mw4/test/data/de421_23.bsp')
-    assert os.path.isfile('mw4/test/data/active.txt')
+    assert os.path.isfile('tests/data/Leap_Second.dat')
+    assert os.path.isfile('tests/data/deltat.data')
+    assert os.path.isfile('tests/data/deltat.preds')
+    assert os.path.isfile('tests/data/de421_23.bsp')
+    assert os.path.isfile('tests/data/active.txt')

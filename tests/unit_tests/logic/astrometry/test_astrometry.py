@@ -22,14 +22,13 @@ import os
 import numpy as np
 import shutil
 import glob
+
 # external packages
 from astropy.io import fits
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
-from logic.astrometry import Astrometry
+from logic.astrometry.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -37,7 +36,7 @@ def module_setup_teardown():
 
     yield
 
-    files = glob.glob('mw4/test/image/*.fit*')
+    files = glob.glob('tests/image/*.fit*')
     for f in files:
         os.remove(f)
 
@@ -47,10 +46,10 @@ def app():
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(object, object)
-        mwGlob = {'tempDir': 'mw4/test/temp'}
+        mwGlob = {'tempDir': 'tests/temp'}
 
-    shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
-    shutil.copy('mw4/test/testData/astrometry.cfg', 'mw4/test/temp/astrometry.cfg')
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    shutil.copy('tests/testData/astrometry.cfg', 'tests/temp/astrometry.cfg')
     app = Astrometry(app=Test())
 
     yield app
@@ -62,13 +61,13 @@ def test_properties_1(app):
     app.host = ('localhost', 7624)
     app.apiKey = 'test'
     app.indexPath = 'test'
-    app.name = 'test'
+    app.deviceName = 'test'
     app.timeout = 30
     app.searchRadius = 20
     assert app.host == ('localhost', 7624)
     assert app.apiKey == 'test'
     assert app.indexPath == 'test'
-    assert app.name == 'test'
+    assert app.deviceName == 'test'
     assert app.timeout == 30
     assert app.searchRadius == 20
 
@@ -79,13 +78,13 @@ def test_properties_2(app):
     app.host = ('localhost', 7624)
     app.apiKey = 'test'
     app.indexPath = 'test'
-    app.name = 'test'
+    app.deviceName = 'test'
     app.timeout = 30
     app.searchRadius = 20
     assert app.host == ('localhost', 7624)
     assert app.apiKey == 'test'
     assert app.indexPath == 'test'
-    assert app.name == 'test'
+    assert app.deviceName == 'test'
     assert app.timeout == 30
     assert app.searchRadius == 20
 
@@ -96,8 +95,8 @@ def test_init_1(app):
 
 
 def test_readFitsData_1(app):
-    os.scandir('mw4/test/image')
-    file = 'mw4/test/image/m51.fit'
+    os.scandir('tests/image')
+    file = 'tests/image/m51.fit'
     ra, dec, sc, ra1, dec1 = app.readFitsData(file)
     assert ra
     assert dec
@@ -270,16 +269,16 @@ def test_solveThreading_2(app):
 
 
 def test_solveThreading_3(app):
-    os.scandir('mw4/test/image')
+    os.scandir('tests/image')
     app.framework = 'astap'
-    file = 'mw4/test/image/m51.fit'
+    file = 'tests/image/m51.fit'
     suc = app.solveThreading(fitsPath=file)
     assert suc
 
 
 def test_solveThreading_4(app):
     app.framework = 'astap'
-    file = 'mw4/test/image/m51.fit'
+    file = 'tests/image/m51.fit'
     with mock.patch.object(app.threadPool,
                            'start'):
         suc = app.solveThreading(fitsPath=file)
@@ -290,7 +289,7 @@ def test_solveThreading_4(app):
 def test_solveThreading_5(app):
     app.mutexSolve.lock()
     app.framework = 'astap'
-    file = 'mw4/test/image/m51.fit'
+    file = 'tests/image/m51.fit'
     with mock.patch.object(app.threadPool,
                            'start'):
         suc = app.solveThreading(fitsPath=file)
@@ -329,10 +328,12 @@ def test_checkAvailability_2(app):
 
 
 def test_startCommunication(app):
+    app.framework = 'astap'
     suc = app.startCommunication()
     assert suc
 
 
 def test_stopCommunication(app):
+    app.framework = 'astrometry'
     suc = app.stopCommunication()
     assert suc

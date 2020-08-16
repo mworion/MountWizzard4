@@ -47,11 +47,11 @@ def module_setup_teardown(qtbot):
     class Test2(QObject):
         threadPool = QThreadPool()
         update1s = pyqtSignal()
-        mwGlob = {'configDir': 'mw4/test/config',
-                  'tempDir': 'mw4/test/temp'}
+        mwGlob = {'configDir': 'tests/config',
+                  'tempDir': 'tests/temp'}
 
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
@@ -67,7 +67,7 @@ def module_setup_teardown(qtbot):
         config = {'mainW': {},
                   'showHemisphereW': True}
         uiWindows = {'showImageW': {}}
-        mwGlob = {'imageDir': 'mw4/test/image'}
+        mwGlob = {'imageDir': 'tests/image'}
 
         update1s = pyqtSignal()
         update10s = pyqtSignal()
@@ -76,7 +76,7 @@ def module_setup_teardown(qtbot):
         message = pyqtSignal(str, int)
 
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         mount.obsSite.Alt = Angle(degrees=45)
         mount.obsSite.Az = Angle(degrees=45)
 

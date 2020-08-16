@@ -24,7 +24,7 @@ from PyQt5 import QtNetwork
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from logic.remote import Remote
+from logic.remote.remote import Remote
 
 
 @pytest.fixture(autouse=True, scope='function')

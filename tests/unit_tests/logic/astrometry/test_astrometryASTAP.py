@@ -23,11 +23,13 @@ import subprocess
 import os
 import glob
 import platform
+
 # external packages
 from PyQt5.QtCore import QThreadPool
 
 # local import
-from logic.astrometry import AstrometryASTAP, Astrometry
+from logic.astrometry.astrometry import Astrometry
+from logic.astrometry.astrometryASTAP import AstrometryASTAP
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -35,7 +37,7 @@ def module_setup_teardown():
 
     yield
 
-    files = glob.glob('mw4/test/image/*.fit*')
+    files = glob.glob('tests/image/*.fit*')
     for f in files:
         os.remove(f)
 
@@ -44,17 +46,17 @@ def module_setup_teardown():
 def app():
     class Test:
         threadPool = QThreadPool()
-        mwGlob = {'tempDir': 'mw4/test/temp'}
+        mwGlob = {'tempDir': 'tests/temp'}
 
     parent = Astrometry(app=Test())
     app = AstrometryASTAP(parent=parent)
 
-    for file in os.listdir('mw4/test/temp'):
-        fileP = os.path.join('mw4/test/temp', file)
+    for file in os.listdir('tests/temp'):
+        fileP = os.path.join('tests/temp', file)
         if 'temp' not in file:
             continue
         os.remove(fileP)
-    shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
 
     yield app
 
@@ -135,8 +137,8 @@ def test_getWCSHeader_1(app):
 
 
 def test_getWCSHeader_2(app):
-    shutil.copy('mw4/test/testData/tempASTAP.wcs', 'mw4/test/temp/temp.wcs')
-    val = app.getWCSHeader(wcsTextFile='mw4/test/temp/temp.wcs')
+    shutil.copy('tests/testData/tempASTAP.wcs', 'tests/temp/temp.wcs')
+    val = app.getWCSHeader(wcsTextFile='tests/temp/temp.wcs')
     assert val
 
 
@@ -151,7 +153,7 @@ def test_solveASTAP_2(app):
 
 
 def test_solveASTAP_3(app):
-    app.name = 'ASTAP-Mac'
+    app.deviceName = 'ASTAP-Mac'
     app.environment = {
         'ASTAP-Mac': {
             'programPath': '',
@@ -161,12 +163,12 @@ def test_solveASTAP_3(app):
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=1):
-        suc = app.solve(fitsPath='mw4/test/image/m51.fit')
+        suc = app.solve(fitsPath='tests/image/m51.fit')
         assert not suc
 
 
 def test_solveASTAP_4(app):
-    app.name = 'ASTAP-Mac'
+    app.deviceName = 'ASTAP-Mac'
     app.environment = {
         'ASTAP-Mac': {
             'programPath': '',
@@ -176,12 +178,12 @@ def test_solveASTAP_4(app):
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=0):
-        suc = app.solve(fitsPath='mw4/test/image/m51.fit')
+        suc = app.solve(fitsPath='tests/image/m51.fit')
         assert not suc
 
 
 def test_solveASTAP_5(app):
-    app.name = 'ASTAP-Mac'
+    app.deviceName = 'ASTAP-Mac'
     app.environment = {
         'ASTAP-Mac': {
             'programPath': '',
@@ -194,8 +196,8 @@ def test_solveASTAP_5(app):
         with mock.patch.object(os,
                                'remove',
                                return_value=True):
-            shutil.copy('mw4/test/testData/tempASTAP.wcs', 'mw4/test/temp/temp.wcs')
-            suc = app.solve(fitsPath='mw4/test/image/m51.fit')
+            shutil.copy('tests/testData/tempASTAP.wcs', 'tests/temp/temp.wcs')
+            suc = app.solve(fitsPath='tests/image/m51.fit')
             assert suc
 
 

@@ -21,9 +21,7 @@ import unittest.mock as mock
 import zlib
 # external packages
 from astropy.io import fits
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
@@ -45,20 +43,20 @@ def module_setup_teardown():
 
 
 def test_setUpdateConfig_1():
-    app.name = ''
+    app.deviceName = ''
     suc = app.setUpdateConfig('test')
     assert not suc
 
 
 def test_setUpdateConfig_2():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = None
     suc = app.setUpdateConfig('test')
     assert not suc
 
 
 def test_setUpdateConfig_3():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getNumber',
@@ -68,7 +66,7 @@ def test_setUpdateConfig_3():
 
 
 def test_setUpdateConfig_4():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.UPDATE_RATE = 1
     with mock.patch.object(app.device,
@@ -79,7 +77,7 @@ def test_setUpdateConfig_4():
 
 
 def test_setUpdateConfig_5():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
     app.UPDATE_RATE = 0
@@ -94,7 +92,7 @@ def test_setUpdateConfig_5():
 
 
 def test_setUpdateConfig_6():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
     app.UPDATE_RATE = 0
@@ -135,14 +133,14 @@ def test_setExposureState_4():
 
 
 def test_sendDownloadMode_1():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = None
     suc = app.sendDownloadMode()
     assert not suc
 
 
 def test_sendDownloadMode_2():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',
@@ -208,7 +206,7 @@ def test_updateBLOB_4():
 def test_updateBLOB_5():
     app.device = Device()
     app.data = {'value': 1}
-    app.imagePath = 'mw4/test/image/test.fit'
+    app.imagePath = 'tests/image/test.fit'
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=True):
@@ -223,7 +221,7 @@ def test_updateBLOB_5():
 def test_updateBLOB_6():
     app.device = Device()
     app.data = {'value': 1}
-    app.imagePath = 'mw4/test/image/test.fit'
+    app.imagePath = 'tests/image/test.fit'
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=True):
@@ -238,7 +236,7 @@ def test_updateBLOB_6():
 
 def test_updateBLOB_7():
     app.device = Device()
-    app.imagePath = 'mw4/test/image/test.fit'
+    app.imagePath = 'tests/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     with mock.patch.object(IndiClass,
@@ -258,7 +256,7 @@ def test_updateBLOB_7():
 
 def test_updateBLOB_8():
     app.device = Device()
-    app.imagePath = 'mw4/test/image/test.fit'
+    app.imagePath = 'tests/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     with mock.patch.object(IndiClass,
@@ -278,7 +276,7 @@ def test_updateBLOB_8():
 
 def test_updateBLOB_9():
     app.device = Device()
-    app.imagePath = 'mw4/test/image/test.fit'
+    app.imagePath = 'tests/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     with mock.patch.object(IndiClass,
@@ -297,14 +295,14 @@ def test_updateBLOB_9():
 
 
 def test_expose_1():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = None
     suc = app.expose()
     assert not suc
 
 
 def test_expose_2():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app,
                            'sendDownloadMode',
@@ -314,7 +312,7 @@ def test_expose_2():
 
 
 def test_expose_3():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getNumber',
@@ -327,7 +325,7 @@ def test_expose_3():
 
 
 def test_expose_4():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getNumber',
@@ -340,14 +338,14 @@ def test_expose_4():
 
 
 def test_abort_1():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = None
     suc = app.abort()
     assert not suc
 
 
 def test_abort_2():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',
@@ -357,7 +355,7 @@ def test_abort_2():
 
 
 def test_abort_3():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',
@@ -370,14 +368,14 @@ def test_abort_3():
 
 
 def test_sendCoolerSwitch_1():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = None
     suc = app.sendCoolerSwitch()
     assert not suc
 
 
 def test_sendCoolerSwitch_2():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',
@@ -387,7 +385,7 @@ def test_sendCoolerSwitch_2():
 
 
 def test_sendCoolerSwitch_3():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',
@@ -400,14 +398,14 @@ def test_sendCoolerSwitch_3():
 
 
 def test_sendCoolerTemp_1():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = None
     suc = app.sendCoolerTemp()
     assert not suc
 
 
 def test_sendCoolerTemp_2():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getNumber',
@@ -417,7 +415,7 @@ def test_sendCoolerTemp_2():
 
 
 def test_sendCoolerTemp_3():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getNumber',

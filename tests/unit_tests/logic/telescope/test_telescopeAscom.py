@@ -28,7 +28,7 @@ if platform.system() == 'Windows':
     pass
 
 # local import
-from logic.telescope import TelescopeAscom
+from logic.telescope.telescopeAscom import TelescopeAscom
 from logic.telescope.telescope import TelescopeSignals
 from base.ascomClass import AscomClass
 

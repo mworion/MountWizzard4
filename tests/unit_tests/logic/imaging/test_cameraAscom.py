@@ -21,16 +21,14 @@ import unittest.mock as mock
 import platform
 # external packages
 from astropy.io import fits
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from mountcontrol.mount import Mount
 from skyfield.api import Angle
 if platform.system() == 'Windows':
     pass
 
 # local import
-from logic.imaging import CameraAscom
+from logic.imaging.cameraAscom import CameraAscom
 from logic.imaging.camera import CameraSignals
 from base.ascomClass import AscomClass
 
@@ -72,7 +70,7 @@ def module_setup_teardown():
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         mount.obsSite.raJNow = Angle(hours=12)
         mount.obsSite.decJNow = Angle(degrees=45)
         deviceStat = {'mount': True}

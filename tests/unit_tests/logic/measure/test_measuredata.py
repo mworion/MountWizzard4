@@ -18,9 +18,11 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+
 # external packages
 import numpy as np
 from mountcontrol.mount import Mount
+from PyQt5.QtCore import pyqtSignal, QObject
 
 # local import
 from logic.measure.measure import MeasureData
@@ -31,16 +33,16 @@ def module_setup_teardown():
     class Test1:
         data = {}
 
-    class Test:
+    class Test(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         sensorWeather = Test1()
         onlineWeather = Test1()
         skymeter = Test1()
         filter = Test1()
         focuser = Test1()
         power = Test1()
-        mwGlob = {'dataDir': 'mw4/test/data'}
+        mwGlob = {'dataDir': 'tests/data'}
         deviceStat = {
             'dome': None,
             'mount': None,
@@ -60,6 +62,7 @@ def module_setup_teardown():
             'relay': None,
             'measure': None,
         }
+        message = pyqtSignal(str, int)
 
     global app
     app = MeasureData(app=Test())
@@ -68,9 +71,9 @@ def module_setup_teardown():
 
 
 def test_property():
-    app.framework = 'internal - display only'
-    app.name = 'test'
-    assert app.name == 'test'
+    app.framework = 'raw'
+    app.deviceName = 'test'
+    assert app.deviceName == 'test'
 
 
 def test_startCommunication_1():
@@ -79,7 +82,7 @@ def test_startCommunication_1():
 
 
 def test_startCommunication_2():
-    app.framework = 'internal - display only'
+    app.framework = 'raw'
     with mock.patch.object(app.run[app.framework].timerTask,
                            'start'):
         suc = app.startCommunication()
@@ -92,7 +95,7 @@ def test_stopCommunication_1():
 
 
 def test_stopCommunication_2():
-    app.framework = 'internal - display only'
+    app.framework = 'raw'
     with mock.patch.object(app.run[app.framework].timerTask,
                            'stop'):
         suc = app.stopCommunication()

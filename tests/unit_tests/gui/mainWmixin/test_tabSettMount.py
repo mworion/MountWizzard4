@@ -41,7 +41,7 @@ def module_setup_teardown(qtbot):
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         update10s = pyqtSignal()
         threadPool = QThreadPool()
 
@@ -49,11 +49,11 @@ def module_setup_teardown(qtbot):
         config = {'mainW': {}}
         threadPool = QThreadPool()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         onlineWeather = OnlineWeather(app=Test1())
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
-        mwGlob = {'imageDir': 'mw4/test/image'}
+        mwGlob = {'imageDir': 'tests/image'}
 
     widget = QWidget()
     ui = Ui_MainWindow()

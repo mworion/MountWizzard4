@@ -18,13 +18,12 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+
 # external packages
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
-from logic.imaging import FocuserAlpaca
+from logic.imaging.focuserAlpaca import FocuserAlpaca
 from logic.imaging.focuser import FocuserSignals
 from base.alpacaBase import AlpacaBase
 

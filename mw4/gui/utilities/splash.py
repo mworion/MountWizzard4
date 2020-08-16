@@ -41,12 +41,7 @@ class SplashScreen(PyQt5.QtCore.QObject):
     Maurizio
     """
 
-    __all__ = ['SplashScreen',
-               'close',
-               'setValue',
-               'showMessage',
-               'finish',
-               ]
+    __all__ = ['SplashScreen']
 
     def __init__(self, application=None):
         super().__init__()

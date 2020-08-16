@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 import pytest
+
 # external packages
 from skyfield.toposlib import Topos
 from mountcontrol.mount import Mount
@@ -29,7 +30,7 @@ from logic.modeldata.hipparcos import Hipparcos
 def module_setup_teardown():
     class Test():
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)

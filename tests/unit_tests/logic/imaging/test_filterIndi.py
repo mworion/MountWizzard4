@@ -19,9 +19,7 @@
 import pytest
 import unittest.mock as mock
 # external packages
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
@@ -41,20 +39,20 @@ def module_setup_teardown():
 
 
 def test_setUpdateConfig_1():
-    app.name = ''
+    app.deviceName = ''
     suc = app.setUpdateConfig('test')
     assert not suc
 
 
 def test_setUpdateConfig_2():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = None
     suc = app.setUpdateConfig('test')
     assert not suc
 
 
 def test_setUpdateConfig_3():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getNumber',
@@ -64,7 +62,7 @@ def test_setUpdateConfig_3():
 
 
 def test_setUpdateConfig_4():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.UPDATE_RATE = 1
     with mock.patch.object(app.device,
@@ -75,7 +73,7 @@ def test_setUpdateConfig_4():
 
 
 def test_setUpdateConfig_5():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
     app.UPDATE_RATE = 0
@@ -90,7 +88,7 @@ def test_setUpdateConfig_5():
 
 
 def test_setUpdateConfig_6():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
     app.UPDATE_RATE = 0
@@ -105,14 +103,14 @@ def test_setUpdateConfig_6():
 
 
 def test_sendFilterNumber_1():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = None
     suc = app.sendFilterNumber()
     assert not suc
 
 
 def test_sendFilterNumber_2():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getNumber',
@@ -122,7 +120,7 @@ def test_sendFilterNumber_2():
 
 
 def test_sendFilterNumber_3():
-    app.name = 'test'
+    app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
     app.UPDATE_RATE = 0

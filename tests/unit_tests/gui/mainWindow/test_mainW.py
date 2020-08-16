@@ -22,6 +22,7 @@ import glob
 import os
 import gc
 import shutil
+
 # external packages
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QCloseEvent
@@ -40,24 +41,24 @@ from logic.environment.sensorWeather import SensorWeather
 from logic.environment.directWeather import DirectWeather
 from logic.environment.onlineWeather import OnlineWeather
 from logic.environment.skymeter import Skymeter
-from logic.powerswitch import KMRelay
-from logic.powerswitch import PegasusUPB
-from logic.dome import Dome
+from logic.powerswitch.kmRelay import KMRelay
+from logic.powerswitch.pegasusUPB import PegasusUPB
+from logic.dome.dome import Dome
 from logic.imaging.camera import Camera
 from logic.imaging.filter import Filter
 from logic.imaging.focuser import Focuser
 from logic.cover.flipflat import FlipFlat
-from logic.modeldata import DataPoint
-from logic.remote import Remote
+from logic.modeldata.buildpoints import DataPoint
+from logic.remote.remote import Remote
 from logic.measure.measure import MeasureData
 from logic.telescope.telescope import Telescope
-from logic.astrometry import Astrometry
+from logic.astrometry.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
     global eph
-    eph = load('mw4/test/testData/de421_23.bsp')
+    eph = load('tests/testData/de421_23.bsp')
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -67,14 +68,14 @@ def function_setup_teardown(qtbot):
     class Test1(QObject):
         threadPool = QThreadPool()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         update10s = pyqtSignal()
         update1s = pyqtSignal()
-        mwGlob = {'imageDir': 'mw4/test/image',
-                  'dataDir': 'mw4/test/data',
-                  'modelDir': 'mw4/test/model',
-                  'tempDir': 'mw4/test/temp',
-                  'configDir': 'mw4/test/config'}
+        mwGlob = {'imageDir': 'tests/image',
+                  'dataDir': 'tests/data',
+                  'modelDir': 'tests/model',
+                  'tempDir': 'tests/temp',
+                  'configDir': 'tests/config'}
 
     @staticmethod
     def testShowWindows():
@@ -112,7 +113,7 @@ def function_setup_teardown(qtbot):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
@@ -136,10 +137,10 @@ def function_setup_teardown(qtbot):
         timer0_1s = QTimer()
 
         uiWindows = {'showImageW': {'classObj': None}}
-        mwGlob = {'imageDir': 'mw4/test/image',
-                  'dataDir': 'mw4/test/data',
-                  'modelDir': 'mw4/test/model',
-                  'configDir': 'mw4/test/config'}
+        mwGlob = {'imageDir': 'tests/image',
+                  'dataDir': 'tests/data',
+                  'modelDir': 'tests/model',
+                  'configDir': 'tests/config'}
         deviceStat = {'camera': True,
                       'astrometry': True,
                       'mount': True}
@@ -151,7 +152,7 @@ def function_setup_teardown(qtbot):
         showWindows = testShowWindows
         initConfig = testInitConfig
 
-    shutil.copy2('mw4/test/testData/active.txt', 'mw4/test/data/active.txt')
+    shutil.copy2('tests/testData/active.txt', 'tests/data/active.txt')
 
     with mock.patch.object(MainWindow,
                            'show'):
@@ -160,7 +161,7 @@ def function_setup_teardown(qtbot):
             app = MainWindow(app=Test())
             yield
 
-    files = glob.glob('mw4/test/config/*.cfg')
+    files = glob.glob('tests/config/*.cfg')
     for f in files:
         os.remove(f)
 
@@ -596,13 +597,13 @@ def test_closeExtendedWindows_1():
 
 
 def test_checkExtension_1():
-    val = app.checkExtension('mw4/test/image/test.fit', 'fit')
-    assert val == 'mw4/test/image/test.fit'
+    val = app.checkExtension('tests/image/test.fit', 'fit')
+    assert val == 'tests/image/test.fit'
 
 
 def test_checkExtension_2():
-    val = app.checkExtension('mw4/test/image/test', '.fit')
-    assert val == 'mw4/test/image/test.fit'
+    val = app.checkExtension('tests/image/test', '.fit')
+    assert val == 'tests/image/test.fit'
 
 
 def test_mountBoot2(qtbot):

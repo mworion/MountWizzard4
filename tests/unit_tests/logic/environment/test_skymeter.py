@@ -17,10 +17,9 @@
 ###########################################################
 # standard libraries
 import pytest
+
 # external packages
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.environment.skymeter import Skymeter
@@ -44,8 +43,8 @@ def test_properties():
     app.host = ('localhost', 7624)
     assert app.host == ('localhost', 7624)
 
-    app.name = 'test'
-    assert app.name == 'test'
+    app.deviceName = 'test'
+    assert app.deviceName == 'test'
 
 
 def test_startCommunication_1():

@@ -23,7 +23,7 @@ import pytest
 import PyQt5
 
 # local import
-from logic.powerswitch import KMRelay
+from logic.powerswitch.kmRelay import KMRelay
 
 
 @pytest.fixture(autouse=True, scope='function')

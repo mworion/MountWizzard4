@@ -40,9 +40,9 @@ def module_setup_teardown(qtbot):
     global ui, widget, Test, app
 
     class Test1(QObject):
-        mwGlob = {'configDir': 'mw4/test/config'}
+        mwGlob = {'configDir': 'tests/config'}
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData=Path('mw4/test/data'))
+                      pathToData=Path('tests/data'))
 
     class Test(QObject):
         config = {'mainW': {}}
@@ -50,9 +50,9 @@ def module_setup_teardown(qtbot):
         drawBuildPoints = pyqtSignal()
         message = pyqtSignal(str, int)
         sendBuildPoints = pyqtSignal(object)
-        mwGlob = {'configDir': 'mw4/test/config'}
+        mwGlob = {'configDir': 'tests/config'}
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData=Path('mw4/test/data'))
+                      pathToData=Path('tests/data'))
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)

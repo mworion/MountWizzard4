@@ -56,13 +56,13 @@ def module_setup_teardown(qtbot):
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         update1s = pyqtSignal()
         update10s = pyqtSignal()
         threadPool = QThreadPool()
-        mwGlob = {'modelDir': 'mw4/test/model',
-                  'imageDir': 'mw4/test/image',
-                  'tempDir': 'mw4/test/temp'}
+        mwGlob = {'modelDir': 'tests/model',
+                  'imageDir': 'tests/image',
+                  'tempDir': 'tests/temp'}
 
 
     class Test(QObject):
@@ -71,7 +71,7 @@ def module_setup_teardown(qtbot):
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)

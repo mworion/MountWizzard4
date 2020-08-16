@@ -29,12 +29,12 @@ from base.tpool import Worker
 from resource import resources
 
 
-mwglob = {'dataDir': 'mw4/test/data',
-          'configDir': 'mw4/test/config',
+mwglob = {'dataDir': 'tests/data',
+          'configDir': 'tests/config',
           'workDir': 'mw4/test',
-          'imageDir': 'mw4/test/image',
-          'tempDir': 'mw4/test/temp',
-          'modelDir': 'mw4/test/model',
+          'imageDir': 'tests/image',
+          'tempDir': 'tests/temp',
+          'modelDir': 'tests/model',
           'modelData': '4.0'
           }
 
@@ -44,10 +44,10 @@ def module_setup_teardown():
     global tp
 
     tp = QThreadPool()
-    if os.path.isfile('mw4/test/config/config.cfg'):
-        os.remove('mw4/test/config/config.cfg')
-    if os.path.isfile('mw4/test/config/profile'):
-        os.remove('mw4/test/config/profile')
+    if os.path.isfile('tests/config/config.cfg'):
+        os.remove('tests/config/config.cfg')
+    if os.path.isfile('tests/config/profile'):
+        os.remove('tests/config/profile')
 
     yield
 

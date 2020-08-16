@@ -18,10 +18,9 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+
 # external packages
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 import requests
 from skyfield.toposlib import Topos
 from mountcontrol.mount import Mount
@@ -37,7 +36,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
         update10s = pyqtSignal()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='mw4/test/data')
+                      pathToData='tests/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)

@@ -28,8 +28,8 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.telescope.telescopeAlpaca import TelescopeAlpaca
-from mw4.telescope.telescope import TelescopeSignals
+from logic.telescope import TelescopeAlpaca
+from logic.telescope.telescope import TelescopeSignals
 from mw4.base.alpacaBase import AlpacaBase
 
 

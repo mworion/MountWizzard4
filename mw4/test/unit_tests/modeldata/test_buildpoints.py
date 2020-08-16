@@ -19,7 +19,6 @@
 import pytest
 import os
 import json
-import csv
 import binascii
 import unittest.mock as mock
 import faulthandler
@@ -31,8 +30,8 @@ from skyfield.toposlib import Topos
 from mountcontrol.mount import Mount
 
 # local import
-from mw4.modeldata.buildpoints import DataPoint
-from mw4.modeldata.buildpoints import HaDecToAltAz
+from mw4.logic.modeldata import DataPoint
+from mw4.logic.modeldata import HaDecToAltAz
 
 
 @pytest.fixture(autouse=True, scope='function')

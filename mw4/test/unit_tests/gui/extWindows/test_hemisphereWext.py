@@ -36,12 +36,12 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 # local import
-from mw4.gui.hemisphereW import HemisphereWindow
-from mw4.imaging.camera import Camera
-from mw4.dome.dome import Dome
-from mw4.modeldata.buildpoints import DataPoint
-from mw4.modeldata.hipparcos import Hipparcos
-from mw4.astrometry.astrometry import Astrometry
+from gui.extWindows.hemisphereW import HemisphereWindow
+from mw4.logic.imaging.camera import Camera
+from mw4.logic.dome import Dome
+from mw4.logic.modeldata import DataPoint
+from mw4.logic.modeldata.hipparcos import Hipparcos
+from mw4.logic.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='function')

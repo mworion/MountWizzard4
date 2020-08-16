@@ -27,8 +27,8 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.imaging.filterAlpaca import FilterAlpaca
-from mw4.imaging.filter import FilterSignals
+from logic.imaging.filterAlpaca import FilterAlpaca
+from logic.imaging.filter import FilterSignals
 from mw4.base.alpacaBase import AlpacaBase
 
 

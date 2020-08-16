@@ -41,10 +41,10 @@ from mountcontrol.modelStar import ModelStar
 # local import
 from mw4.gui.mainWmixin.tabModel import Model
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.widget import MWidget
-from mw4.imaging.camera import Camera
-from mw4.dome.dome import Dome
-from mw4.astrometry.astrometry import Astrometry
+from gui.utilities.widget import MWidget
+from logic.imaging.camera import Camera
+from logic.dome import Dome
+from logic.astrometry import Astrometry
 from mw4.base.loggerMW import CustomLogger
 
 

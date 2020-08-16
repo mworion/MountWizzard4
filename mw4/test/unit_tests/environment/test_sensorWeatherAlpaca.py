@@ -27,8 +27,8 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
-from mw4.environment.sensorWeather import SensorWeatherSignals
+from mw4.logic.environment import SensorWeatherAlpaca
+from mw4.logic.environment.sensorWeather import SensorWeatherSignals
 from mw4.base.alpacaBase import AlpacaBase
 
 

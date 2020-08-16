@@ -28,8 +28,8 @@ from PyQt5.QtCore import pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from mw4.environment.skymeter import SkymeterIndi
-from mw4.environment.skymeter import SkymeterSignals
+from mw4.logic.environment.skymeter import SkymeterIndi
+from mw4.logic.environment.skymeter import SkymeterSignals
 
 
 @pytest.fixture(autouse=True, scope='function')

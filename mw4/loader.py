@@ -42,8 +42,8 @@ from importlib_metadata import version
 from mw4.base.loggerMW import CustomLogger
 from mw4.base.loggerMW import setupLogging
 from mw4.mainApp import MountWizzard4
-from mw4.gui import splash
-from mw4.resource import resources
+from gui.utilities import splash
+from resource import resources
 
 logger = logging.getLogger()
 log = CustomLogger(logger, {})

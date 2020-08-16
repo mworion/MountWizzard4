@@ -28,8 +28,8 @@ from PyQt5.QtCore import pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from mw4.imaging.filterIndi import FilterIndi
-from mw4.imaging.filter import FilterSignals
+from mw4.logic.imaging.filterIndi import FilterIndi
+from mw4.logic.imaging.filter import FilterSignals
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -28,12 +28,11 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 if platform.system() == 'Windows':
-    import win32com.client
-    import pythoncom
+    pass
 
 # local import
-from mw4.dome.domeAscom import DomeAscom
-from mw4.dome.dome import DomeSignals
+from logic.dome import DomeAscom
+from logic.dome import DomeSignals
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -30,7 +30,7 @@ from skyfield.toposlib import Topos
 from mountcontrol.mount import Mount
 
 # local import
-from mw4.environment.onlineWeather import OnlineWeather
+from mw4.logic.environment.onlineWeather import OnlineWeather
 
 
 @pytest.fixture(autouse=True, scope='function')

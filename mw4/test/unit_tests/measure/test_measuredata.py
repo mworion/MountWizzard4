@@ -26,7 +26,7 @@ import numpy as np
 from mountcontrol.mount import Mount
 
 # local import
-from mw4.measure.measure import MeasureData
+from mw4.logic.measure.measure import MeasureData
 
 
 @pytest.fixture(autouse=True, scope='function')

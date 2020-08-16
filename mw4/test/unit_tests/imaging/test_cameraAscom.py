@@ -30,12 +30,11 @@ from PyQt5.QtCore import pyqtSignal
 from mountcontrol.mount import Mount
 from skyfield.api import Angle
 if platform.system() == 'Windows':
-    import win32com.client
-    import pythoncom
+    pass
 
 # local import
-from mw4.imaging.cameraAscom import CameraAscom
-from mw4.imaging.camera import CameraSignals
+from logic.imaging import CameraAscom
+from logic.imaging.camera import CameraSignals
 from mw4.base.ascomClass import AscomClass
 
 

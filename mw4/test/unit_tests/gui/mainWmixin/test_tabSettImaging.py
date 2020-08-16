@@ -34,12 +34,12 @@ from mountcontrol.qtmount import Mount
 # local import
 from mw4.gui.mainWmixin.tabSettImaging import SettImaging
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.widget import MWidget
-from mw4.imaging.camera import Camera
-from mw4.imaging.focuser import Focuser
-from mw4.imaging.filter import Filter
-from mw4.cover.flipflat import FlipFlat
-from mw4.telescope.telescope import Telescope
+from gui.utilities.widget import MWidget
+from logic.imaging.camera import Camera
+from logic.imaging.focuser import Focuser
+from logic.imaging.filter import Filter
+from logic.cover.flipflat import FlipFlat
+from logic.telescope.telescope import Telescope
 from mw4.base.loggerMW import CustomLogger
 
 

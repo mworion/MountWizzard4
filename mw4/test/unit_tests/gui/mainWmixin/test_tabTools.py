@@ -35,7 +35,7 @@ from mountcontrol.qtmount import Mount
 # local import
 from mw4.gui.mainWmixin.tabTools import Tools
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.widget import MWidget
+from gui.utilities.widget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')

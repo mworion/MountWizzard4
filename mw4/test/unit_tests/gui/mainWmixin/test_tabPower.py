@@ -32,8 +32,8 @@ from PyQt5.QtCore import pyqtSignal
 # local import
 from mw4.gui.mainWmixin.tabPower import Power
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.widget import MWidget
-from mw4.powerswitch.pegasusUPB import PegasusUPB
+from gui.utilities.widget import MWidget
+from logic.powerswitch import PegasusUPB
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -26,12 +26,11 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 if platform.system() == 'Windows':
-    import win32com.client
-    import pythoncom
+    pass
 
 # local import
-from mw4.environment.sensorWeatherAscom import SensorWeatherAscom
-from mw4.environment.sensorWeather import SensorWeatherSignals
+from logic.environment import SensorWeatherAscom
+from logic.environment.sensorWeather import SensorWeatherSignals
 
 
 @pytest.fixture(autouse=True, scope='function')

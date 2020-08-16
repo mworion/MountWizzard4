@@ -28,8 +28,8 @@ from PyQt5.QtCore import pyqtSignal
 import numpy as np
 
 # local import
-from mw4.gui.measureW import MeasureWindow
-from mw4.measure.measure import MeasureData
+from gui.extWindows.measureW import MeasureWindow
+from mw4.logic.measure.measure import MeasureData
 
 
 @pytest.fixture(autouse=True, scope='function')

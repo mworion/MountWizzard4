@@ -29,9 +29,9 @@ from PyQt5.QtCore import pyqtSignal
 from mw4.gui.mainWmixin.tabSettRelay import SettRelay
 
 # local import
-from mw4.powerswitch.kmRelay import KMRelay
+from mw4.logic.powerswitch import KMRelay
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.widget import MWidget
+from gui.utilities.widget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')

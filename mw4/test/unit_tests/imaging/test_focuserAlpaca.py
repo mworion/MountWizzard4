@@ -27,8 +27,8 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.imaging.focuserAlpaca import FocuserAlpaca
-from mw4.imaging.focuser import FocuserSignals
+from logic.imaging import FocuserAlpaca
+from logic.imaging.focuser import FocuserSignals
 from mw4.base.alpacaBase import AlpacaBase
 
 

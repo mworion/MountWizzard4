@@ -25,7 +25,7 @@ from skyfield.toposlib import Topos
 from mountcontrol.mount import Mount
 
 # local import
-from mw4.modeldata.hipparcos import Hipparcos
+from mw4.logic.modeldata.hipparcos import Hipparcos
 
 
 @pytest.fixture(autouse=True, scope='function')

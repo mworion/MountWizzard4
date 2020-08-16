@@ -29,9 +29,8 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.gui.analyseW import AnalyseWindow
-from mw4.gui.widget import MWidget
-from mw4.resource import resources
+from gui.extWindows.analyseW import AnalyseWindow
+from gui.utilities.widget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')

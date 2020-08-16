@@ -33,8 +33,8 @@ import wakeonlan
 # local import
 from mw4.gui.mainWmixin.tabSettMount import SettMount
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.environment.onlineWeather import OnlineWeather
-from mw4.gui.widget import MWidget
+from logic.environment.onlineWeather import OnlineWeather
+from gui.utilities.widget import MWidget
 from mw4.base.loggerMW import CustomLogger
 
 

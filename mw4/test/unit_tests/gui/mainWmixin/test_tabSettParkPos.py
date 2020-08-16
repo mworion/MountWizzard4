@@ -33,7 +33,7 @@ from skyfield.toposlib import Topos
 # local import
 from mw4.gui.mainWmixin.tabSettParkPos import SettParkPos
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.widget import MWidget
+from gui.utilities.widget import MWidget
 from mw4.base.loggerMW import CustomLogger
 
 

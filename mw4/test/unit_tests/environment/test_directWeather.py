@@ -26,7 +26,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.environment.directWeather import DirectWeather
+from mw4.logic.environment.directWeather import DirectWeather
 
 
 @pytest.fixture(autouse=True, scope='function')

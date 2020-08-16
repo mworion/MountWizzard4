@@ -30,7 +30,7 @@ import PyQt5.QtTest
 import PyQt5.QtCore
 
 # local import
-from mw4.gui.widget import MWidget
+from gui.utilities.widget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -28,8 +28,8 @@ from PyQt5.QtCore import pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from mw4.powerswitch.pegasusUPB import PegasusUPBIndi
-from mw4.powerswitch.pegasusUPB import PegasusUPBSignals
+from mw4.logic.powerswitch import PegasusUPBIndi
+from mw4.logic.powerswitch import PegasusUPBSignals
 from mw4.base.indiClass import IndiClass
 
 

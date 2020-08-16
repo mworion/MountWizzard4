@@ -36,12 +36,12 @@ import importlib_metadata
 # local import
 from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.widget import MWidget
+from gui.utilities.widget import MWidget
 from mw4.base.loggerMW import CustomLogger
-from mw4.dome.dome import Dome
-from mw4.imaging.camera import Camera
-from mw4.astrometry.astrometry import Astrometry
-from mw4.environment.onlineWeather import OnlineWeather
+from mw4.logic.dome import Dome
+from mw4.logic.imaging.camera import Camera
+from mw4.logic.astrometry import Astrometry
+from mw4.logic.environment.onlineWeather import OnlineWeather
 
 
 @pytest.fixture(autouse=True, scope='function')

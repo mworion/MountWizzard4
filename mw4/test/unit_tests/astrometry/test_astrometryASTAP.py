@@ -30,7 +30,7 @@ faulthandler.enable()
 from PyQt5.QtCore import QThreadPool
 
 # local import
-from mw4.astrometry.astrometry import AstrometryASTAP, Astrometry
+from mw4.logic.astrometry import AstrometryASTAP, Astrometry
 
 
 @pytest.fixture(autouse=True, scope='module')

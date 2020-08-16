@@ -33,7 +33,7 @@ from PyQt5.Qt3DCore import QTransform
 from mountcontrol.qtmount import Mount
 
 # local import
-from mw4.gui.simulatorW import SimulatorWindow
+from gui.extWindows.simulatorW import SimulatorWindow
 
 
 @pytest.fixture(autouse=True, scope='function')

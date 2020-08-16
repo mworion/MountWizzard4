@@ -23,7 +23,7 @@ from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
 from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
 
 # local import
-from mw4.gui import styles
+from gui.utilities import styles
 
 
 class Materials(styles.MWStyles):

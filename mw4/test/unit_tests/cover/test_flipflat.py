@@ -26,7 +26,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.cover.flipflat import FlipFlat
+from logic.cover.flipflat import FlipFlat
 
 
 @pytest.fixture(autouse=True, scope='function')

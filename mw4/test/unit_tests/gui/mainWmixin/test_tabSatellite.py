@@ -36,8 +36,8 @@ from sgp4.exporter import export_tle
 # local import
 from mw4.gui.mainWmixin.tabSatellite import Satellite
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.widget import MWidget
-from mw4.environment.skymeter import Skymeter
+from gui.utilities.widget import MWidget
+from mw4.logic.environment.skymeter import Skymeter
 from mw4.base.loggerMW import CustomLogger
 
 

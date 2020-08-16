@@ -38,10 +38,10 @@ import numpy as np
 # local import
 from mw4.gui.mainWmixin.tabEnviron import Environ
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.widget import MWidget
-from mw4.environment.sensorWeather import SensorWeather
-from mw4.environment.onlineWeather import OnlineWeather
-from mw4.environment.skymeter import Skymeter
+from gui.utilities.widget import MWidget
+from mw4.logic.environment.sensorWeather import SensorWeather
+from mw4.logic.environment.onlineWeather import OnlineWeather
+from mw4.logic.environment.skymeter import Skymeter
 from mw4.base.loggerMW import CustomLogger
 
 

@@ -26,11 +26,10 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 from mountcontrol.mount import Mount
-import numpy as np
 from skyfield.api import Angle
 
 # local import
-from mw4.dome.dome import Dome
+from logic.dome import Dome
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -27,7 +27,7 @@ from PyQt5 import QtNetwork
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.remote.remote import Remote
+from logic.remote import Remote
 
 
 @pytest.fixture(autouse=True, scope='function')

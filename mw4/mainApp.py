@@ -31,24 +31,24 @@ from importlib_metadata import version
 # local import
 from mw4.base.loggerMW import CustomLogger
 from mw4.base.loggerMW import setCustomLoggingLevel
-from mw4.gui.mainW import MainWindow
-from mw4.powerswitch.kmRelay import KMRelay
-from mw4.modeldata.buildpoints import DataPoint
-from mw4.modeldata.hipparcos import Hipparcos
-from mw4.dome.dome import Dome
-from mw4.imaging.camera import Camera
-from mw4.imaging.filter import Filter
-from mw4.imaging.focuser import Focuser
-from mw4.environment.sensorWeather import SensorWeather
-from mw4.environment.skymeter import Skymeter
-from mw4.environment.onlineWeather import OnlineWeather
-from mw4.environment.directWeather import DirectWeather
-from mw4.cover.flipflat import FlipFlat
-from mw4.telescope.telescope import Telescope
-from mw4.powerswitch.pegasusUPB import PegasusUPB
-from mw4.measure.measure import MeasureData
-from mw4.remote.remote import Remote
-from mw4.astrometry.astrometry import Astrometry
+from gui.mainWindow.mainW import MainWindow
+from mw4.logic.powerswitch.kmRelay import KMRelay
+from mw4.logic.modeldata.buildpoints import DataPoint
+from mw4.logic.modeldata.hipparcos import Hipparcos
+from mw4.logic.dome.dome import Dome
+from mw4.logic.imaging.camera import Camera
+from mw4.logic.imaging.filter import Filter
+from mw4.logic.imaging.focuser import Focuser
+from mw4.logic.environment.sensorWeather import SensorWeather
+from mw4.logic.environment.skymeter import Skymeter
+from mw4.logic.environment.onlineWeather import OnlineWeather
+from mw4.logic.environment.directWeather import DirectWeather
+from mw4.logic.cover.flipflat import FlipFlat
+from mw4.logic.telescope.telescope import Telescope
+from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
+from mw4.logic.measure.measure import MeasureData
+from mw4.logic.remote.remote import Remote
+from mw4.logic.astrometry.astrometry import Astrometry
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):

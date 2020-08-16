@@ -28,8 +28,8 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.dome.domeAlpaca import DomeAlpaca
-from mw4.dome.dome import DomeSignals
+from logic.dome import DomeAlpaca
+from logic.dome import DomeSignals
 from mw4.base.alpacaBase import AlpacaBase
 
 

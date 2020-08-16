@@ -35,11 +35,11 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
 
 # local import
-from mw4.gui.devicePopupW import DevicePopup
+from gui.extWindows.devicePopupW import DevicePopup
 from mw4.base.indiClass import IndiClass
 from indibase.qtIndiBase import Client
-from mw4.gui.widget import MWidget
-from mw4.astrometry.astrometry import Astrometry
+from gui.utilities.widget import MWidget
+from logic.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='function')

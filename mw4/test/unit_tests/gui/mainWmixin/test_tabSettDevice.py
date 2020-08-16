@@ -33,24 +33,24 @@ from skyfield.toposlib import Topos
 # local import
 from mw4.gui.mainWmixin.tabSettDevice import SettDevice
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.widget import MWidget
-from mw4.environment.sensorWeather import SensorWeather
-from mw4.environment.onlineWeather import OnlineWeather
-from mw4.environment.directWeather import DirectWeather
-from mw4.environment.skymeter import Skymeter
-from mw4.cover.flipflat import FlipFlat
-from mw4.imaging.filter import Filter
-from mw4.imaging.camera import Camera
-from mw4.imaging.focuser import Focuser
-from mw4.dome.dome import Dome
-from mw4.powerswitch.pegasusUPB import PegasusUPB
-from mw4.telescope.telescope import Telescope
-from mw4.astrometry.astrometry import Astrometry
-from mw4.powerswitch.kmRelay import KMRelay
-from mw4.measure.measure import MeasureData
-from mw4.remote.remote import Remote
+from gui.utilities.widget import MWidget
+from logic.environment.sensorWeather import SensorWeather
+from logic.environment.onlineWeather import OnlineWeather
+from logic.environment.directWeather import DirectWeather
+from logic.environment.skymeter import Skymeter
+from logic.cover.flipflat import FlipFlat
+from logic.imaging.filter import Filter
+from logic.imaging.camera import Camera
+from logic.imaging.focuser import Focuser
+from logic.dome import Dome
+from logic.powerswitch import PegasusUPB
+from logic.telescope.telescope import Telescope
+from logic.astrometry import Astrometry
+from logic.powerswitch import KMRelay
+from logic.measure.measure import MeasureData
+from logic.remote import Remote
 from mw4.base.loggerMW import CustomLogger
-from mw4.gui.devicePopupW import DevicePopup
+from gui.extWindows.devicePopupW import DevicePopup
 
 
 @pytest.fixture(autouse=True, scope='function')

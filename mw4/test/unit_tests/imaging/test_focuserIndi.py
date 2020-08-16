@@ -28,8 +28,8 @@ from PyQt5.QtCore import pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from mw4.imaging.focuserIndi import FocuserIndi
-from mw4.imaging.focuser import FocuserSignals
+from mw4.logic.imaging.focuserIndi import FocuserIndi
+from mw4.logic.imaging.focuser import FocuserSignals
 
 
 @pytest.fixture(autouse=True, scope='function')

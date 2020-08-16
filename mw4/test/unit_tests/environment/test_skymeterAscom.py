@@ -26,12 +26,11 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 if platform.system() == 'Windows':
-    import win32com.client
-    import pythoncom
+    pass
 
 # local import
-from mw4.environment.skymeterAscom import SkymeterAscom
-from mw4.environment.skymeter import SkymeterSignals
+from logic.environment import SkymeterAscom
+from logic.environment.skymeter import SkymeterSignals
 
 
 @pytest.fixture(autouse=True, scope='function')

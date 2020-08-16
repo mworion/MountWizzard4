@@ -27,7 +27,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.gui.messageW import MessageWindow
+from gui.extWindows.messageW import MessageWindow
 
 
 @pytest.fixture(autouse=True, scope='function')

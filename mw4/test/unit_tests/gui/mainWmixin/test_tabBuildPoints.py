@@ -33,9 +33,9 @@ from skyfield.toposlib import Topos
 # local import
 from mw4.gui.mainWmixin.tabBuildPoints import BuildPoints
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.widget import MWidget
+from gui.utilities.widget import MWidget
 from mw4.base.loggerMW import CustomLogger
-from mw4.modeldata.buildpoints import DataPoint
+from logic.modeldata import DataPoint
 
 
 @pytest.fixture(autouse=True, scope='function')

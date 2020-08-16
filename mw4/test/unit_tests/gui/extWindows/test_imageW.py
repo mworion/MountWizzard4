@@ -40,10 +40,10 @@ import numpy as np
 from mountcontrol.qtmount import Mount
 
 # local import
-from mw4.gui.widget import MWidget
-from mw4.gui.imageW import ImageWindow
-from mw4.imaging.camera import Camera
-from mw4.astrometry.astrometry import Astrometry
+from gui.utilities.widget import MWidget
+from gui.extWindows.imageW import ImageWindow
+from logic.imaging.camera import Camera
+from logic.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='function')

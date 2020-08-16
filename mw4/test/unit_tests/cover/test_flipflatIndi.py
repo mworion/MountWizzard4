@@ -28,8 +28,8 @@ from PyQt5.QtCore import pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from mw4.cover.flipflatIndi import FlipFlatIndi
-from mw4.cover.flipflat import FlipFlatSignals
+from logic.cover.flipflatIndi import FlipFlatIndi
+from logic.cover.flipflat import FlipFlatSignals
 
 
 @pytest.fixture(autouse=True, scope='function')

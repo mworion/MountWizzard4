@@ -21,7 +21,6 @@ import pytest
 import os
 import glob
 import platform
-import subprocess
 import shutil
 import faulthandler
 import subprocess
@@ -32,7 +31,7 @@ from PyQt5.QtCore import QThreadPool
 from astropy.io import fits
 
 # local import
-from mw4.astrometry.astrometry import AstrometryNET, Astrometry
+from logic.astrometry import AstrometryNET, Astrometry
 
 
 @pytest.fixture(autouse=True, scope='module')

@@ -35,9 +35,7 @@ from skyfield.toposlib import Topos
 from skyfield.api import EarthSatellite
 
 # local import
-from mw4.gui.satelliteW import SatelliteWindow
-
-from mw4.resource import resources
+from gui.extWindows.satelliteW import SatelliteWindow
 
 
 @pytest.fixture(autouse=True, scope='function')

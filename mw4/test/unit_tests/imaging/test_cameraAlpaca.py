@@ -30,8 +30,8 @@ from mountcontrol.mount import Mount
 from skyfield.api import Angle
 
 # local import
-from mw4.imaging.cameraAlpaca import CameraAlpaca
-from mw4.imaging.camera import CameraSignals
+from mw4.logic.imaging.cameraAlpaca import CameraAlpaca
+from mw4.logic.imaging.camera import CameraSignals
 from mw4.base.alpacaBase import AlpacaBase
 
 

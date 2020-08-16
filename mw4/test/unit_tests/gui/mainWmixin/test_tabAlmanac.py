@@ -36,7 +36,7 @@ import matplotlib
 # local import
 from mw4.gui.mainWmixin.tabAlmanac import Almanac
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.gui.widget import MWidget
+from gui.utilities.widget import MWidget
 from mw4.base.loggerMW import CustomLogger
 
 

@@ -26,7 +26,7 @@ faulthandler.enable()
 import PyQt5
 
 # local import
-from mw4.powerswitch.kmRelay import KMRelay
+from logic.powerswitch import KMRelay
 
 
 @pytest.fixture(autouse=True, scope='function')

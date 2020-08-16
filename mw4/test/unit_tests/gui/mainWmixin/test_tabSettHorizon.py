@@ -31,8 +31,8 @@ from mountcontrol.qtmount import Mount
 # local import
 from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.modeldata.buildpoints import DataPoint
-from mw4.gui.widget import MWidget
+from logic.modeldata import DataPoint
+from gui.utilities.widget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')

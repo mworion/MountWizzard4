@@ -23,7 +23,7 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 
 # local import
-from mw4.gui.devicePopupW import DevicePopup
+from gui.extWindows.devicePopupW import DevicePopup
 
 
 class SettDevice(object):

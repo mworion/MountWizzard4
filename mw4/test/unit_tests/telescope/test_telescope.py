@@ -26,7 +26,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.telescope.telescope import Telescope
+from logic.telescope.telescope import Telescope
 
 
 @pytest.fixture(autouse=True, scope='function')

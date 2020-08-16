@@ -28,8 +28,8 @@ from PyQt5.QtCore import pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from mw4.environment.sensorWeather import SensorWeatherIndi
-from mw4.environment.sensorWeather import SensorWeatherSignals
+from mw4.logic.environment.sensorWeather import SensorWeatherIndi
+from mw4.logic.environment.sensorWeather import SensorWeatherSignals
 
 
 @pytest.fixture(autouse=True, scope='function')

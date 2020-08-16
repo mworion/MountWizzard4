@@ -1,0 +1,993 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+#
+# written in python3 , (c) 2019, 2020 by mworion
+#
+# Licence APL2.0
+#
+###########################################################
+import mw4.base.packageConfig as Config
+# standard libraries
+import logging
+from datetime import datetime
+import gc
+import platform
+
+# external packages
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QPixmap
+import PyQt5.QtCore
+import PyQt5.QtWidgets
+import PyQt5.uic
+from PyQt5.QtTest import QTest
+
+# local import
+from mw4.base.loggerMW import CustomLogger
+from gui.utilities.widget import MWidget
+
+from gui.extWindows.messageW import MessageWindow
+from gui.extWindows.hemisphereW import HemisphereWindow
+from gui.extWindows.measureW import MeasureWindow
+from gui.extWindows.imageW import ImageWindow
+from gui.extWindows.satelliteW import SatelliteWindow
+from gui.extWindows.analyseW import AnalyseWindow
+from gui.extWindows.simulatorW import SimulatorWindow
+if platform.machine() not in Config.excludedPlatforms:
+    # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
+    from gui.extWindows.keypadW import KeypadWindow
+
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWmixin.tabMount import Mount
+from mw4.gui.mainWmixin.tabEnviron import Environ
+from mw4.gui.mainWmixin.tabAlmanac import Almanac
+from mw4.gui.mainWmixin.tabModel import Model
+from mw4.gui.mainWmixin.tabBuildPoints import BuildPoints
+from mw4.gui.mainWmixin.tabManageModel import ManageModel
+from mw4.gui.mainWmixin.tabSatellite import Satellite
+from mw4.gui.mainWmixin.tabRelay import Relay
+from mw4.gui.mainWmixin.tabTools import Tools
+from mw4.gui.mainWmixin.tabPower import Power
+from mw4.gui.mainWmixin.tabSettDevice import SettDevice
+from mw4.gui.mainWmixin.tabSettMount import SettMount
+from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
+from mw4.gui.mainWmixin.tabSettImaging import SettImaging
+from mw4.gui.mainWmixin.tabSettDome import SettDome
+from mw4.gui.mainWmixin.tabSettParkPos import SettParkPos
+from mw4.gui.mainWmixin.tabSettRelay import SettRelay
+from mw4.gui.mainWmixin.tabSettMisc import SettMisc
+
+
+class MainWindow(MWidget,
+                 SettMisc,
+                 Mount,
+                 Environ,
+                 Almanac,
+                 Model,
+                 BuildPoints,
+                 ManageModel,
+                 Satellite,
+                 Relay,
+                 Power,
+                 Tools,
+                 SettDevice,
+                 SettMount,
+                 SettHorizon,
+                 SettImaging,
+                 SettDome,
+                 SettParkPos,
+                 SettRelay,
+                 ):
+    """
+    the main window class handles the main menu as well as the show and no show part of
+    any other window. all necessary processing for functions of that gui will be linked
+    to this class. therefore window classes will have a threadpool for managing async
+    processing if needed.
+    """
+
+    __all__ = ['MainWindow',
+               ]
+
+    logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
+
+    def __init__(self, app):
+        super().__init__()
+
+        self.app = app
+        self.threadPool = app.threadPool
+        self.deviceStat = app.deviceStat
+        self.uiWindows = app.uiWindows
+        self.setAttribute(PyQt5.QtCore.Qt.WA_DeleteOnClose)
+
+        # load and init the gui
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+        self.initUI()
+        self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
+
+        # link cross widget gui signals as all ui widgets have to be present
+        self.uiWindows['showMessageW'] = {
+            'button': self.ui.openMessageW,
+            'classObj': None,
+            'name': 'MessageDialog',
+            'class': MessageWindow,
+        }
+        self.uiWindows['showHemisphereW'] = {
+            'button': self.ui.openHemisphereW,
+            'classObj': None,
+            'name': 'HemisphereDialog',
+            'class': HemisphereWindow,
+        }
+        self.uiWindows['showImageW'] = {
+            'button': self.ui.openImageW,
+            'classObj': None,
+            'name': 'ImageDialog',
+            'class': ImageWindow,
+        }
+        self.uiWindows['showMeasureW'] = {
+            'button': self.ui.openMeasureW,
+            'classObj': None,
+            'name': 'MeasureDialog',
+            'class': MeasureWindow,
+        }
+        self.uiWindows['showSatelliteW'] = {
+            'button': self.ui.openSatelliteW,
+            'classObj': None,
+            'name': 'SatelliteDialog',
+            'class': SatelliteWindow,
+        }
+        self.uiWindows['showAnalyseW'] = {
+            'button': self.ui.openAnalyseW,
+            'classObj': None,
+            'name': 'AnalyseDialog',
+            'class': AnalyseWindow,
+        }
+        if Config.featureFlags['simulator']:
+            self.uiWindows['showSimulatorW'] = {
+                'button': self.ui.mountConnected,
+                'classObj': None,
+                'name': 'SimulatorDialog',
+                'class': SimulatorWindow,
+            }
+        # todo: we can only add keypad on arm when we have compiled version
+        if platform.machine() not in Config.excludedPlatforms:
+            self.uiWindows['showKeypadW'] = {
+                'button': self.ui.openKeypadW,
+                'classObj': None,
+                'name': 'KeypadDialog',
+                'class': KeypadWindow,
+            }
+
+        self.deviceStatGui = {'dome': self.ui.domeConnected,
+                              'camera': self.ui.cameraConnected,
+                              'environOverall': self.ui.environConnected,
+                              'astrometry': self.ui.astrometryConnected,
+                              'mount': self.ui.mountConnected}
+
+        self.mwSuper('__init__')
+
+        # polarPlot ui instance has to be defined central, not in the mixins
+        self.modelPositionPlot = self.embedMatplot(self.ui.modelPosition)
+        self.errorAscendingPlot = self.embedMatplot(self.ui.errorAscending)
+        self.errorDistributionPlot = self.embedMatplot(self.ui.errorDistribution)
+        self.twilight = self.embedMatplot(self.ui.twilight, constrainedLayout=True)
+
+        # connect signals for refreshing the gui
+        self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
+        self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
+        self.app.mount.signals.settingDone.connect(self.updateMountWeatherStat)
+        self.app.remoteCommand.connect(self.remoteCommand)
+        self.app.astrometry.signals.message.connect(self.updateAstrometryStatus)
+        self.app.dome.signals.message.connect(self.updateDomeStatus)
+        self.app.camera.signals.message.connect(self.updateCameraStatus)
+        self.app.onlineWeather.signals.connected.connect(self.updateOnlineWeatherStat)
+
+        # connect gui signals
+        self.ui.saveConfigQuit.clicked.connect(self.quitSave)
+        self.ui.loadFrom.clicked.connect(self.loadProfile)
+        self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
+        self.ui.saveConfig.clicked.connect(self.saveProfile)
+
+        # connect switching of other windows
+        for window in self.uiWindows:
+            self.uiWindows[window]['button'].clicked.connect(self.toggleWindow)
+
+        # initial call for writing the gui
+        self.initConfig()
+
+        # show other extended windows
+        self.showExtendedWindows()
+
+        # cyclic updates
+        self.app.update1s.connect(self.updateTime)
+        self.app.update1s.connect(self.updateWindowsStats)
+        self.app.update1s.connect(self.smartFunctionGui)
+        self.app.update1s.connect(self.smartTabGui)
+        self.app.update1s.connect(self.smartEnvironGui)
+        self.app.update1s.connect(self.updateWindowsStats)
+        self.app.update1s.connect(self.updateDeviceStats)
+
+    def mwSuper(self, func):
+        """
+        mwSuper is a replacement for super() to manage the mixin style of implementation
+        it's not an ideal way to do it, but mwSuper() call the method of every ! parent
+        class if they exist.
+
+        :param func:
+        :return: true for test purpose
+        """
+
+        for base in self.__class__.__bases__:
+            if base.__name__ == 'MWidget':
+                continue
+            if hasattr(base, func):
+                funcAttrib = getattr(base, func)
+                funcAttrib(self)
+        return True
+
+    def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
+
+        config = self.app.config
+        self.ui.profile.setText(config.get('profileName'))
+        if 'mainW' not in config:
+            config['mainW'] = {}
+        config = config['mainW']
+        x = config.get('winPosX', 100)
+        y = config.get('winPosY', 100)
+        if x > self.screenSizeX:
+            x = 0
+        if y > self.screenSizeY:
+            y = 0
+        self.move(x, y)
+        self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
+        self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
+
+        if not Config.featureFlags['analyse']:
+            tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
+            tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+
+        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+
+        self.mwSuper('initConfig')
+        self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
+        self.setupIcons()
+        self.show()
+
+        return True
+
+    def storeConfigExtendedWindows(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        config = self.app.config
+
+        # storing extended windows data
+        for window in self.uiWindows:
+
+            # check if the window state and store it is open
+            config[window] = bool(self.uiWindows[window]['classObj'])
+
+            if config[window]:
+                self.uiWindows[window]['classObj'].storeConfig()
+
+        return True
+
+    def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
+
+        config = self.app.config
+        config['profileName'] = self.ui.profile.text()
+        if 'mainW' not in config:
+            config['mainW'] = {}
+        config = config['mainW']
+        config['winPosX'] = self.pos().x()
+        config['winPosY'] = self.pos().y()
+        config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
+        config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
+
+        # store the config of the mixins
+        self.mwSuper('storeConfig')
+        self.storeConfigExtendedWindows()
+
+        return True
+
+    def closeEvent(self, closeEvent):
+        """
+        we overwrite the close event of the window just for the main window to close the
+        application as well. because it does not make sense to have child windows open if
+        main is already closed.
+
+        :return:    nothing
+        """
+
+        self.app.timer0_1s.stop()
+        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
+        self.closeExtendedWindows()
+        # self.stopDrivers()
+        super().closeEvent(closeEvent)
+        self.app.quit()
+
+    def quitSave(self):
+        """
+        quitSave finished up and calls the quit save function in main for saving the parameters
+
+
+        :return:    true for test purpose
+        """
+
+        self.saveProfile()
+        self.app.saveConfig()
+        self.close()
+
+        return True
+
+    def setupIcons(self):
+        """
+        setupIcons add icon from standard library to certain buttons for improving the
+        gui of the app.
+
+        :return:    True if success for test
+        """
+
+        # main window
+        self.wIcon(self.ui.saveConfigAs, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.loadFrom, QIcon(':/icon/load.svg'))
+        self.wIcon(self.ui.saveConfig, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.saveConfigQuit, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.mountOn, QIcon(':/icon/power-on.svg'))
+        self.wIcon(self.ui.mountOff, QIcon(':/icon/power-off.svg'))
+        self.wIcon(self.ui.stop, QIcon(':/icon/bolt-alt.svg'))
+        self.wIcon(self.ui.tracking, QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.flipMount, QIcon(':/icon/flip.svg'))
+        self.wIcon(self.ui.setSiderealTracking, QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.setLunarTracking, QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.setSolarTracking, QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.park, QIcon(':/icon/park.svg'))
+
+        # model points
+        self.wIcon(self.ui.loadBuildPoints, QIcon(':/icon/load.svg'))
+        self.wIcon(self.ui.saveBuildPoints, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.saveBuildPointsAs, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.loadHorizonMask, QIcon(':/icon/load.svg'))
+        self.wIcon(self.ui.saveHorizonMask, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.saveHorizonMaskAs, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.clearBuildP, QIcon(':/icon/trash.svg'))
+        self.wIcon(self.ui.genBuildGrid, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildMax, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildMed, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildNorm, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildMin, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildFile, QIcon(':/icon/show.svg'))
+        self.wIcon(self.ui.genBuildAlign3, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildAlign6, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildAlign9, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildGrid, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildSpiralMax, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildSpiralMed, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildSpiralNorm, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildSpiralMin, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.genBuildDSO, QIcon(':/icon/run.svg'))
+
+        # model
+        self.wIcon(self.ui.plateSolveSync, QIcon(':/icon/start.svg'))
+        pixmap = QPixmap(':/pics/azimuth.png')
+        self.ui.picAZ.setPixmap(pixmap)
+        pixmap = QPixmap(':/pics/altitude.png')
+        self.ui.picALT.setPixmap(pixmap)
+
+        self.wIcon(self.ui.cancelModel, QIcon(':/icon/cross-circle.svg'))
+        self.wIcon(self.ui.runModel, QIcon(':/icon/start.svg'))
+        self.wIcon(self.ui.pauseModel, QIcon(':/icon/pause.svg'))
+        self.wIcon(self.ui.batchModel, QIcon(':/icon/choose.svg'))
+        self.wIcon(self.ui.openAnalyseW, QIcon(':/icon/bar-chart.svg'))
+
+        # manage model
+        self.wIcon(self.ui.runOptimize, QIcon(':/icon/start.svg'))
+        self.wIcon(self.ui.cancelOptimize, QIcon(':/icon/cross-circle.svg'))
+        self.wIcon(self.ui.deleteWorstPoint, QIcon(':/icon/circle-minus.svg'))
+        self.wIcon(self.ui.clearModel, QIcon(':/icon/trash.svg'))
+
+        self.wIcon(self.ui.loadName, QIcon(':/icon/load.svg'))
+        self.wIcon(self.ui.saveName, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.deleteName, QIcon(':/icon/trash.svg'))
+        self.wIcon(self.ui.refreshName, QIcon(':/icon/reload.svg'))
+        self.wIcon(self.ui.refreshModel, QIcon(':/icon/reload.svg'))
+
+        # satellite
+        self.wIcon(self.ui.stopSatelliteTracking, QIcon(':/icon/cross-circle.svg'))
+        self.wIcon(self.ui.startSatelliteTracking, QIcon(':/icon/start.svg'))
+
+        # analyse
+        self.wIcon(self.ui.runFlexure, QIcon(':/icon/start.svg'))
+        self.wIcon(self.ui.runHysteresis, QIcon(':/icon/check-circle.svg'))
+        self.wIcon(self.ui.cancelAnalyse, QIcon(':/icon/cross-circle.svg'))
+
+        # tools
+        self.wIcon(self.ui.renameStart, QIcon(':/icon/start.svg'))
+        self.wIcon(self.ui.renameInputSelect, QIcon(':/icon/folder.svg'))
+        self.wIcon(self.ui.posButton0, QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton1, QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton2, QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton3, QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton4, QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton5, QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton6, QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton7, QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton8, QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.posButton9, QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.slewSpeedLow, QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.slewSpeedMed, QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.slewSpeedHigh, QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.slewSpeedMax, QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.moveNorth, QIcon(':/icon/north.svg'))
+        self.wIcon(self.ui.moveEast, QIcon(':/icon/east.svg'))
+        self.wIcon(self.ui.moveSouth, QIcon(':/icon/south.svg'))
+        self.wIcon(self.ui.moveWest, QIcon(':/icon/west.svg'))
+        self.wIcon(self.ui.moveNorthEast, QIcon(':/icon/northEast.svg'))
+        self.wIcon(self.ui.moveNorthWest, QIcon(':/icon/northWest.svg'))
+        self.wIcon(self.ui.moveSouthEast, QIcon(':/icon/southEast.svg'))
+        self.wIcon(self.ui.moveSouthWest, QIcon(':/icon/southWest.svg'))
+        self.wIcon(self.ui.stopMoveAll, QIcon(':/icon/stop_m.svg'))
+
+        # driver setting
+        for driver in self.drivers:
+            if self.drivers[driver]['uiSetup'] is not None:
+                ui = self.drivers[driver]['uiSetup']
+                self.wIcon(ui, QIcon(':/icon/cogs.svg'))
+        self.wIcon(self.ui.ascomConnect, QIcon(':/icon/link.svg'))
+        self.wIcon(self.ui.ascomDisconnect, QIcon(':/icon/unlink.svg'))
+
+        # imaging
+        self.wIcon(self.ui.copyFromTelescopeDriver, QIcon(':/icon/copy.svg'))
+
+        # dome setting
+        pixmap = QPixmap(':/pics/offset.png').scaled(301, 301)
+        self.ui.picDome1.setPixmap(pixmap)
+        self.wIcon(self.ui.copyFromDomeDriver, QIcon(':/icon/copy.svg'))
+        self.wIcon(self.ui.coverPark, QIcon(':/icon/exit-down.svg'))
+        self.wIcon(self.ui.coverUnpark, QIcon(':/icon/exit-up.svg'))
+
+        # park positions
+        self.wIcon(self.ui.posSave0, QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave1, QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave2, QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave3, QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave4, QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave5, QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave6, QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave7, QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave8, QIcon(':/icon/download.svg'))
+        self.wIcon(self.ui.posSave9, QIcon(':/icon/download.svg'))
+
+        # misc setting
+        self.wIcon(self.ui.installVersion, QIcon(':/icon/world.svg'))
+
+        return True
+
+    def updateMountConnStat(self, status):
+        """
+        updateMountConnStat show the connection status of the mount. if status is None,
+        which means there is no valid host entry for connection, the status is grey
+
+        :param status:
+        :return: true for test purpose
+        """
+
+        self.deviceStat['mount'] = status
+        return True
+
+    def updateMountWeatherStat(self, setting):
+        """
+        updateMountWeatherStat show the connection status of the mount weather station
+        connected. if the data values are None there is no station attached to the
+        GPS port,
+
+        :return: true for test purpose
+        """
+
+        if setting.weatherTemperature is None and setting.weatherPressure is None:
+            self.deviceStat['directWeather'] = None
+        else:
+            if setting.weatherStatus is None:
+                self.deviceStat['directWeather'] = False
+            else:
+                self.deviceStat['directWeather'] = True
+        return True
+
+    def smartFunctionGui(self):
+        """
+        smartFunctionGui enables and disables gui actions depending on the actual state of the
+        different devices. this should be the core of avoiding user misused during running
+        operations. smartGui is run every 1 second synchronously, because it can't be
+        simpler done with dynamic approach. all different situations in a running
+        environment is done locally.
+
+        :return: true for test purpose
+        """
+
+        # check if modeling would work (mount + solve + image)
+        isReady = all(self.deviceStat[x] for x in ['mount', 'camera', 'astrometry'])
+        if isReady and self.app.data.buildP:
+            self.ui.runModel.setEnabled(True)
+            self.ui.plateSolveSync.setEnabled(True)
+            self.ui.runFlexure.setEnabled(True)
+            self.ui.runHysteresis.setEnabled(True)
+        else:
+            self.ui.runModel.setEnabled(False)
+            self.ui.plateSolveSync.setEnabled(False)
+            self.ui.runFlexure.setEnabled(False)
+            self.ui.runHysteresis.setEnabled(False)
+
+        # if mount is not up, you cannot program a model
+        if self.deviceStat.get('mount', False):
+            self.ui.batchModel.setEnabled(True)
+        else:
+            self.ui.batchModel.setEnabled(False)
+
+        stat = self.deviceStat.get('environOverall', None)
+        if stat is None:
+            self.ui.refractionGroup.setEnabled(False)
+            self.ui.setRefractionManual.setEnabled(False)
+        elif stat and self.deviceStat.get('mount', None):
+            self.ui.refractionGroup.setEnabled(True)
+            self.ui.setRefractionManual.setEnabled(True)
+        else:
+            self.ui.refractionGroup.setEnabled(False)
+            self.ui.setRefractionManual.setEnabled(False)
+
+        return True
+
+    def smartTabGui(self):
+        """
+        smartTabGui enables and disables tab visibility depending on the actual state of the
+        different devices.
+        :return: true for test purpose
+        """
+
+        smartTabs = {
+            'Power': {'statID': 'power',
+                      'tab': self.ui.mainTabWidget,
+                      },
+            'Relay': {'statID': 'relay',
+                      'tab': self.ui.mainTabWidget,
+                      },
+            'KMTronic': {'statID': 'relay',
+                         'tab': self.ui.settingsTabWidget,
+                         },
+        }
+
+        tabChanged = False
+
+        for key, tab in smartTabs.items():
+            # finding the right tab and get the status
+            tabWidget = smartTabs[key]['tab'].findChild(PyQt5.QtWidgets.QWidget, key)
+            tabIndex = smartTabs[key]['tab'].indexOf(tabWidget)
+            tabStatus = smartTabs[key]['tab'].isTabEnabled(tabIndex)
+
+            # determine the new stat, set it and check if changed
+            stat = bool(self.deviceStat.get(smartTabs[key]['statID']))
+            smartTabs[key]['tab'].setTabEnabled(tabIndex, stat)
+            tabChanged = tabChanged or (tabStatus != stat)
+
+        # redraw tabs only when a change occurred. this is necessary, because
+        # enable and disable does not remove tabs
+        if tabChanged:
+            # todo: the only better change is to remove the tab and insert the tab back.
+            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+            self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
+
+        return True
+
+    def smartEnvironGui(self):
+        """
+        smartEnvironGui enables and disables gui actions depending on the actual state
+        of the different environment devices. it is run every 1 second synchronously,
+        because it can't be simpler done with dynamic approach. all different situations
+        in a running environment is done locally.
+
+        :return: true for test purpose
+        """
+
+        environ = {
+            'directWeather': self.ui.directWeatherGroup,
+            'sensorWeather': self.ui.sensorWeatherGroup,
+            'onlineWeather': self.ui.onlineWeatherGroup,
+            'skymeter': self.ui.skymeterGroup,
+            'power': self.ui.powerGroup,
+        }
+
+        for key, group in environ.items():
+            stat = self.deviceStat.get(key, None)
+            if stat is None:
+                group.setFixedWidth(0)
+                group.setEnabled(False)
+            elif stat:
+                group.setMinimumSize(75, 0)
+                group.setEnabled(True)
+            else:
+                group.setMinimumSize(75, 0)
+                group.setEnabled(False)
+
+        return True
+
+    def updateWindowsStats(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        for win in self.app.uiWindows:
+            winObj = self.app.uiWindows[win]
+            if winObj['classObj']:
+                self.changeStyleDynamic(winObj['button'], 'running', True)
+            else:
+                self.changeStyleDynamic(winObj['button'], 'running', False)
+
+        return True
+
+    def updateDeviceStats(self):
+        """
+        updateDeviceStats sets the colors in main window upper bar for getting
+        important overview, which functions are available.
+
+        the refraction sources etc are defined in tabEnviron, but it is optimal
+        setting the selected source right at this point as it is synchronous if
+        state is switching
+
+        :return: True for test purpose
+        """
+
+        if self.refractionSource in self.deviceStat:
+            self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
+        else:
+            self.deviceStat['environOverall'] = None
+
+        for device, ui in self.deviceStatGui.items():
+            if self.deviceStat.get(device, None) is None:
+                self.changeStyleDynamic(ui, 'color', 'gray')
+            elif self.deviceStat[device]:
+                self.changeStyleDynamic(ui, 'color', 'green')
+            else:
+                self.changeStyleDynamic(ui, 'color', 'red')
+
+        return True
+
+    def updateOnlineWeatherStat(self, stat):
+        """
+        updateOnlineWeatherStat receives a signal when online weather changes the status
+        and stores it
+
+        :param stat:
+        :return: True for test purpose
+        """
+
+        self.deviceStat['onlineWeather'] = stat
+
+        return True
+
+    def updateTime(self):
+        """
+        updateTime updates the time display in gui, show the actual thread count an the
+        online status set
+
+        :return: True for test purpose
+        """
+
+        self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
+        if self.ui.isOnline.isChecked():
+            text = 'Internet Online Mode'
+        else:
+            text = 'Offline Mode'
+        text = f'{self.threadPool.activeThreadCount():2d} - {text}'
+        self.ui.statusOnline.setTitle(text)
+
+        return True
+
+    def updateAstrometryStatus(self, text):
+        """
+
+        :param text:
+        :return: true for test purpose
+        """
+
+        self.ui.astrometryText.setText(text)
+        return True
+
+    def updateDomeStatus(self, text):
+        """
+
+        :param text:
+        :return: true for test purpose
+        """
+
+        self.ui.domeText.setText(text)
+        return True
+
+    def updateCameraStatus(self, text):
+        """
+
+        :param text:
+        :return: true for test purpose
+        """
+
+        self.ui.cameraText.setText(text)
+        return True
+
+    def updateStatusGUI(self, obs):
+        """
+        updateStatusGUI update the gui upon events triggered be the reception of new data
+        from the mount. the mount data is polled, so we use this signal as well for the
+        update process.
+
+        :return:    True if ok for testing
+        """
+
+        if obs.statusText() is not None:
+            self.ui.statusText.setText(obs.statusText())
+        else:
+            self.ui.statusText.setText('-')
+
+        if self.app.mount.obsSite.status == 0:
+            self.changeStyleDynamic(self.ui.tracking, 'running', 'true')
+        else:
+            self.changeStyleDynamic(self.ui.tracking, 'running', 'false')
+
+        if self.app.mount.obsSite.status == 5:
+            self.changeStyleDynamic(self.ui.park, 'running', 'true')
+        else:
+            self.changeStyleDynamic(self.ui.park, 'running', 'false')
+
+        if self.app.mount.obsSite.status == 1:
+            self.changeStyleDynamic(self.ui.stop, 'running', 'true')
+        else:
+            self.changeStyleDynamic(self.ui.stop, 'running', 'false')
+
+        return True
+
+    def deleteWindowResource(self, widget=None):
+        """
+
+        :return: success
+        """
+
+        if not widget:
+            return False
+
+        for window in self.uiWindows:
+            if self.uiWindows[window]['name'] != widget.objectName():
+                continue
+
+            self.uiWindows[window]['classObj'] = None
+        gc.collect()
+
+        return True
+
+    def buildWindow(self, window):
+        """
+        buildWindow makes new object instance from window class. both are stored in the
+        uiWindows dict for usage.
+
+        :return: true for test purpose
+        """
+
+        self.uiWindows[window]['classObj'] = self.uiWindows[window]['class'](self.app)
+        self.uiWindows[window]['classObj'].destroyed.connect(self.deleteWindowResource)
+
+        return True
+
+    def toggleWindow(self):
+        """
+        toggleWindow constructs or destruct an extended window when called.
+
+
+        :return: true for test purpose
+        """
+
+        for window in self.uiWindows:
+            if self.uiWindows[window]['button'] != self.sender():
+                continue
+
+            if not self.uiWindows[window]['classObj']:
+                self.buildWindow(window)
+            else:
+                self.uiWindows[window]['classObj'].close()
+
+        return True
+
+    def showExtendedWindows(self):
+        """
+        showExtendedWindows opens all extended windows depending on their opening status
+        stored in the configuration dict.
+
+        :return: true for test purpose
+        """
+
+        for window in self.uiWindows:
+            if not self.app.config.get(window, False):
+                continue
+
+            self.buildWindow(window)
+
+        return True
+
+    def closeExtendedWindows(self):
+        """
+        closeExtendedWindows closes all open extended windows by calling close and
+        waits until the window class is deleted.
+
+        :return: true for test purpose
+        """
+
+        for window in self.uiWindows:
+            if not self.uiWindows[window]['classObj']:
+                continue
+
+            self.uiWindows[window]['classObj'].close()
+
+        waitDeleted = True
+        while waitDeleted:
+            for window in self.uiWindows:
+                if self.uiWindows[window]['classObj']:
+                    continue
+                waitDeleted = False
+
+            QTest.qWait(100)
+
+        return True
+
+    @staticmethod
+    def checkExtension(filePath, ext):
+        """
+        checkExtension ensures to have an extension attached for a filename.
+
+        :param filePath:
+        :param ext:
+        :return:
+        """
+
+        if not filePath.endswith(ext):
+            filePath += ext
+        return filePath
+
+    def loadProfile(self):
+        """
+        loadProfile interacts to get a new profile name. if a valid is received, it closes
+        all extended windows to be sure to have all setup saved, than load the new profile
+        and initializes all classes and opens the necessary extended windows with their
+        setups stored.
+
+        loadProfile does not save the actual configuration before loading another one.
+
+        :return:
+        """
+
+        folder = self.app.mwGlob['configDir']
+        loadFilePath, name, ext = self.openFile(self,
+                                                'Open config file',
+                                                folder,
+                                                'Config files (*.cfg)',
+                                                enableDir=False,
+                                                )
+        if not name:
+            return False
+
+        # closing all windows to be base lined
+        self.closeExtendedWindows()
+
+        suc = self.app.loadConfig(name=name)
+
+        if suc:
+            self.app.config['profileName'] = name
+            self.ui.profile.setText(name)
+            self.app.message.emit(f'Profile              [{name}] loaded', 0)
+        else:
+            self.app.message.emit(f'Profile              [{name}] cannot no be loaded', 2)
+
+        # configure mainApp
+        topo = self.app.initConfig()
+        self.app.mount.obsSite.location = topo
+
+        # initialize the mainW configurations
+        self.initConfig()
+
+        # instantiate the extended windows where needed
+        self.showExtendedWindows()
+
+        return True
+
+    def saveProfileAs(self):
+        """
+
+        :return:
+        """
+
+        folder = self.app.mwGlob['configDir']
+        saveFilePath, name, ext = self.saveFile(self,
+                                                'Save config file',
+                                                folder,
+                                                'Config files (*.cfg)',
+                                                enableDir=False,
+                                                )
+        if not name:
+            return False
+
+        self.storeConfig()
+        self.app.storeConfig()
+        suc = self.app.saveConfig(name=name)
+        if suc:
+            self.ui.profile.setText(name)
+            self.app.message.emit(f'Profile              [{name}] saved', 0)
+        else:
+            self.app.message.emit(f'Profile              [{name}] cannot no be saved', 2)
+        return True
+
+    def saveProfile(self):
+        """
+        saveProfile calls save profile in main and sends a message to the user about
+        success.
+
+        :return: nothing
+        """
+
+        self.app.config = {}
+        self.storeConfig()
+        self.app.storeConfig()
+        suc = self.app.saveConfig(name=self.ui.profile.text())
+        if suc:
+            self.app.message.emit('Actual profile saved', 0)
+        else:
+            self.app.message.emit('Actual profile cannot not be saved', 2)
+        return suc
+
+    def remoteCommand(self, command):
+        """
+        remoteCommand received signals from remote class and executes them.
+
+        :param command:
+        :return: True for test purpose
+        """
+
+        if command == 'shutdown':
+            self.quitSave()
+            self.app.message.emit('Shutdown MW remotely', 2)
+        elif command == 'shutdown mount':
+            self.mountShutdown()
+            self.app.message.emit('Shutdown mount remotely', 2)
+        elif command == 'boot mount':
+            self.mountBoot()
+            self.app.message.emit('Boot mount remotely', 2)
+
+        return True

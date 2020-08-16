@@ -27,12 +27,11 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 if platform.system() == 'Windows':
-    import win32com.client
-    import pythoncom
+    pass
 
 # local import
-from mw4.imaging.filterAscom import FilterAscom
-from mw4.imaging.filter import FilterSignals
+from logic.imaging.filterAscom import FilterAscom
+from logic.imaging.filter import FilterSignals
 from mw4.base.ascomClass import AscomClass
 
 

@@ -25,7 +25,7 @@ faulthandler.enable()
 import PyQt5
 
 # local import
-from mw4.measure.measureRaw import MeasureDataRaw
+from mw4.logic.measure.measureRaw import MeasureDataRaw
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -26,8 +26,8 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QCloseEvent
 
 # local import
-from mw4.gui.keypadW import KeypadWindow
-from mw4.gui.widget import MWidget
+from gui.extWindows.keypadW import KeypadWindow
+from gui.utilities.widget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')

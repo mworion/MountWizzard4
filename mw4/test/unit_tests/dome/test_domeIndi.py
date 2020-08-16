@@ -28,8 +28,8 @@ from PyQt5.QtCore import pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from mw4.dome.domeIndi import DomeIndi
-from mw4.dome.dome import DomeSignals
+from logic.dome import DomeIndi
+from logic.dome import DomeSignals
 
 
 @pytest.fixture(autouse=True, scope='function')

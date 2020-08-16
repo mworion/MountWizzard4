@@ -1,0 +1,492 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+#
+# written in python3 , (c) 2019, 2020 by mworion
+#
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+
+# external packages
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QVector3D
+from PyQt5.QtWidgets import QWidget
+from PyQt5.Qt3DExtras import Qt3DWindow
+from PyQt5.Qt3DExtras import QOrbitCameraController
+from PyQt5.Qt3DRender import QPointLight
+from PyQt5.Qt3DCore import QEntity, QTransform
+
+# local import
+from gui.utilities import widget
+from mw4.gui.widgets import simulator_ui
+from mw4.gui.simulator.materials import Materials
+from mw4.gui.simulator import tools
+from mw4.gui.simulator.dome import SimulatorDome
+from mw4.gui.simulator.telescope import SimulatorTelescope
+from mw4.gui.simulator.horizon import SimulatorHorizon
+from mw4.gui.simulator.points import SimulatorBuildPoints
+from mw4.gui.simulator.pointer import SimulatorPointer
+
+
+class SimulatorWindow(widget.MWidget):
+
+    __all__ = ['SimulatorWindow',
+               ]
+
+    def __init__(self, app):
+        super().__init__()
+
+        self.app = app
+
+        self.ui = simulator_ui.Ui_SimulatorDialog()
+        self.ui.setupUi(self)
+        self.initUI()
+
+        self.view = Qt3DWindow()
+        self.container = QWidget.createWindowContainer(self.view)
+        self.ui.simulator.addWidget(self.container)
+
+        self.rootEntity = QEntity()
+        self.camera = self.view.camera()
+        self.camera.lens().setPerspectiveProjection(45.0, 16.0 / 9.0, 0.1, 1000.0)
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setPosition(QVector3D(5.0, 15.0, 3.0))
+        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+        self.camController = QOrbitCameraController(self.rootEntity)
+        self.camController.setCamera(self.camera)
+        self.camController.setLinearSpeed(5.0)
+        self.camController.setLookSpeed(90)
+        self.view.setRootEntity(self.rootEntity)
+        self.view.defaultFrameGraph().setClearColor(QColor(40, 40, 40))
+
+        self.pL0E = QEntity(self.rootEntity)
+        self.pL0 = QPointLight(self.pL0E)
+        self.pL0.setIntensity(0.8)
+        self.pL0ETransform = QTransform()
+        self.pL0ETransform.setTranslation(QVector3D(3, 20, 3))
+        self.pL0E.addComponent(self.pL0)
+        self.pL0E.addComponent(self.pL0ETransform)
+
+        self.pL1E = QEntity(self.rootEntity)
+        self.pL1 = QPointLight(self.pL1E)
+        self.pL1.setIntensity(0.5)
+        self.pL1ETransform = QTransform()
+        self.pL1ETransform.setTranslation(QVector3D(-5, 20, -5))
+        self.pL1E.addComponent(self.pL1)
+        self.pL1E.addComponent(self.pL1ETransform)
+
+        self.dome = SimulatorDome(self.app)
+        self.telescope = SimulatorTelescope(self.app)
+        self.horizon = SimulatorHorizon(self.app)
+        self.buildPoints = SimulatorBuildPoints(self.app)
+        self.pointer = SimulatorPointer(self.app)
+        self.world = None
+
+        self.initConfig()
+        self.showWindow()
+
+        # connect to gui
+
+    def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
+
+        if 'simulatorW' not in self.app.config:
+            self.app.config['simulatorW'] = {}
+        config = self.app.config['simulatorW']
+        x = config.get('winPosX', 100)
+        y = config.get('winPosY', 100)
+        if x > self.screenSizeX:
+            x = 0
+        if y > self.screenSizeY:
+            y = 0
+        self.move(x, y)
+        height = config.get('height', 600)
+        width = config.get('width', 800)
+        self.resize(width, height)
+
+        if 'cameraPositionX' in config:
+            x = config['cameraPositionX']
+            y = config['cameraPositionY']
+            z = config['cameraPositionZ']
+            self.camera.setPosition(QVector3D(x, y, z))
+            self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+
+        self.ui.checkDomeTransparent.setChecked(config.get('checkDomeTransparent', False))
+        self.ui.checkDomeEnable.setChecked(config.get('checkDomeEnable', False))
+        self.ui.checkShowPointer.setChecked(config.get('checkShowPointer', False))
+        self.ui.checkShowBuildPoints.setChecked(config.get('checkShowBuildPoints', False))
+        self.ui.checkShowNumbers.setChecked(config.get('checkShowNumbers', False))
+        self.ui.checkShowSlewPath.setChecked(config.get('checkShowSlewPath', False))
+        self.ui.checkShowHorizon.setChecked(config.get('checkShowHorizon', False))
+
+        return True
+
+    def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
+        if 'simulatorW' not in self.app.config:
+            self.app.config['simulatorW'] = {}
+        config = self.app.config['simulatorW']
+        config['winPosX'] = self.pos().x()
+        config['winPosY'] = self.pos().y()
+        config['height'] = self.height()
+        config['width'] = self.width()
+
+        pos = self.camera.position()
+        config['cameraPositionX'] = pos.x()
+        config['cameraPositionY'] = pos.y()
+        config['cameraPositionZ'] = pos.z()
+
+        config['checkDomeTransparent'] = self.ui.checkDomeTransparent.isChecked()
+        config['checkDomeEnable'] = self.ui.checkDomeEnable.isChecked()
+        config['checkShowPointer'] = self.ui.checkShowPointer.isChecked()
+        config['checkShowBuildPoints'] = self.ui.checkShowBuildPoints.isChecked()
+        config['checkShowNumbers'] = self.ui.checkShowNumbers.isChecked()
+        config['checkShowSlewPath'] = self.ui.checkShowSlewPath.isChecked()
+        config['checkShowHorizon'] = self.ui.checkShowHorizon.isChecked()
+
+        return True
+
+    def closeEvent(self, closeEvent):
+        """
+        closeEvent is overloaded to be able to store the data before the windows is close
+        and all it's data is garbage collected. all signals are disconnected before closing.
+
+        :param closeEvent:
+        :return:
+        """
+        self.storeConfig()
+
+        self.ui.checkDomeTransparent.clicked.disconnect(self.setDomeTransparency)
+        self.ui.checkDomeEnable.clicked.disconnect(self.domeCreate)
+        self.ui.checkShowBuildPoints.clicked.disconnect(self.buildPointsCreate)
+        self.ui.checkShowNumbers.clicked.disconnect(self.buildPointsCreate)
+        self.ui.checkShowSlewPath.clicked.disconnect(self.buildPointsCreate)
+        self.ui.checkShowHorizon.clicked.disconnect(self.horizonCreate)
+        self.ui.checkShowPointer.clicked.disconnect(self.pointerCreate)
+
+        self.ui.topView.clicked.disconnect(self.topView)
+        self.ui.topEastView.clicked.disconnect(self.topEastView)
+        self.ui.topWestView.clicked.disconnect(self.topWestView)
+        self.ui.eastView.clicked.disconnect(self.eastView)
+        self.ui.westView.clicked.disconnect(self.westView)
+        self.ui.checkPL.clicked.disconnect(self.setPL)
+
+        # connect functional signals
+        self.app.update1s.disconnect(self.dome.updatePositions)
+        self.app.updateDomeSettings.disconnect(self.updateSettings)
+        self.app.updateDomeSettings.disconnect(self.telescope.updateSettings)
+        self.app.mount.signals.pointDone.disconnect(self.telescope.updatePositions)
+        self.app.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
+        self.app.updateDomeSettings.disconnect(self.domeCreate)
+        self.app.drawBuildPoints.disconnect(self.buildPointsCreate)
+        self.app.drawHorizonPoints.disconnect(self.horizonCreate)
+
+        super().closeEvent(closeEvent)
+
+    def showWindow(self):
+        """
+        showWindow starts constructing the main window for the simulator view and shows the
+        window content. all signals are connected there
+
+        :return: True for test purpose
+        """
+
+        self.createScene(self.rootEntity)
+
+        self.ui.checkDomeTransparent.clicked.connect(self.setDomeTransparency)
+        self.ui.checkDomeEnable.clicked.connect(self.domeCreate)
+        self.ui.checkShowBuildPoints.clicked.connect(self.buildPointsCreate)
+        self.ui.checkShowNumbers.clicked.connect(self.buildPointsCreate)
+        self.ui.checkShowSlewPath.clicked.connect(self.buildPointsCreate)
+        self.ui.checkShowHorizon.clicked.connect(self.horizonCreate)
+        self.ui.checkShowPointer.clicked.connect(self.pointerCreate)
+
+        self.ui.topView.clicked.connect(self.topView)
+        self.ui.topEastView.clicked.connect(self.topEastView)
+        self.ui.topWestView.clicked.connect(self.topWestView)
+        self.ui.eastView.clicked.connect(self.eastView)
+        self.ui.westView.clicked.connect(self.westView)
+        self.ui.checkPL.clicked.connect(self.setPL)
+
+        # connect functional signals
+        self.app.update1s.connect(self.dome.updatePositions)
+        self.app.updateDomeSettings.connect(self.updateSettings)
+        self.app.updateDomeSettings.connect(self.telescope.updateSettings)
+        self.app.mount.signals.pointDone.connect(self.telescope.updatePositions)
+        self.app.mount.signals.pointDone.connect(self.pointer.updatePositions)
+        self.app.updateDomeSettings.connect(self.domeCreate)
+        self.app.drawBuildPoints.connect(self.buildPointsCreate)
+        self.app.drawHorizonPoints.connect(self.horizonCreate)
+
+        self.setPL()
+        self.show()
+
+        return True
+
+    def buildPointsCreate(self):
+        """
+        transfer function needed, because lambda function in signal connection cannot be used
+        :return: True for test purpose
+        """
+        self.buildPoints.create(self.world['ref1000']['e'],
+                                self.ui.checkShowBuildPoints.isChecked(),
+                                self.ui.checkShowNumbers.isChecked(),
+                                self.ui.checkShowSlewPath.isChecked())
+
+        return True
+
+    def domeCreate(self):
+        """
+        transfer function needed, because lambda function in signal connection cannot be used
+        :return: True for test purpose
+        """
+        self.dome.create(self.world['ref']['e'],
+                         self.ui.checkDomeEnable.isChecked())
+
+        return True
+
+    def horizonCreate(self):
+        """
+        transfer function needed, because lambda function in signal connection cannot be used
+        :return: True for test purpose
+        """
+        self.horizon.create(self.world['ref1000']['e'],
+                            self.ui.checkShowHorizon.isChecked())
+
+        return True
+
+    def pointerCreate(self):
+        """
+        transfer function needed, because lambda function in signal connection cannot be used
+        :return: True for test purpose
+        """
+        self.pointer.create(self.world['ref']['e'],
+                            self.ui.checkShowPointer.isChecked())
+
+        return True
+
+    def setDomeTransparency(self):
+        """
+        transfer function needed, because lambda function in signal connection cannot be used
+        :return: True for test purpose
+        """
+        self.dome.setTransparency(self.ui.checkDomeTransparent.isChecked())
+
+        return True
+
+    def setPL(self):
+        """
+        setPL enables point light and therefore changes the light conditions
+
+        :return: True for test purpose
+        """
+
+        self.pL0E.setEnabled(self.ui.checkPL.isChecked())
+        self.pL1E.setEnabled(not self.ui.checkPL.isChecked())
+
+        return True
+
+    def topView(self):
+        """
+        move the camera to top view position
+
+        :return: True for test purpose
+        """
+
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setPosition(QVector3D(0.0, 10.0, 0.0))
+
+        return True
+
+    def topEastView(self):
+        """
+        moves the camera to top east position
+
+        :return: True for test purpose
+        """
+
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
+        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+
+        return True
+
+    def topWestView(self):
+        """
+        moves the camera to top west position
+
+        :return: True for test purpose
+        """
+
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
+        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+
+        return True
+
+    def eastView(self):
+        """
+        moves the camera to east position
+
+        :return: True for test purpose
+        """
+
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
+        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+
+        return True
+
+    def westView(self):
+        """
+        moves the camera to west position
+
+        :return: True for test purpose
+        """
+
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
+        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+
+        return True
+
+    def createWorld(self, rEntity):
+        """
+        first transformation is from fusion360 to qt3d
+            fusion360 (x is north, y is west, z is up), scale in mm
+            Qt3D (-z is north, x is east, y is up) scale is m
+        and set as reference. from there on we are in the fusion coordinate system
+
+            'ref' is the fusion360 coordinate system, please be aware that rotations around the
+            z axis for azimuth is clockwise and not counterclockwise as a right handed
+            coordinate system would propose.
+
+        for the sake of simplifying there is another reference, which only has the
+        corrections in coordinates and not for scaling, this is called
+
+            'ref1000'
+
+        beside defining the references, createWorld build the foundation for the positioning
+        of a raw telescope column and a compass rose.
+
+        :param rEntity:
+        :return:
+        """
+
+        self.world = {
+            'ref1000': {
+                'parent': None,
+                'rot': [-90, 90, 0],
+            },
+            'ref': {
+                'parent': 'ref1000',
+                'scale': [0.001, 0.001, 0.001],
+            },
+            'environ': {
+                'parent': 'ref',
+                'source': 'dome-environ.stl',
+                'mat': Materials().environ1,
+            },
+            'domeColumn': {
+                'parent': 'ref',
+                'source': 'dome-column.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().aluminiumS,
+            },
+            'domeCompassRose': {
+                'parent': 'ref',
+                'source': 'dome-rose.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().aluminiumR,
+            },
+            'domeCompassRoseChar': {
+                'parent': 'ref',
+                'source': 'dome-rose-char.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().white,
+            },
+        }
+
+        for name in self.world:
+            tools.linkModel(self.world, name, rEntity)
+
+    def createScene(self, rEntity):
+        """
+        createScene initially builds all 3d models and collects them to a scene. please look
+        closely which references are used-
+
+        :param rEntity:
+        :return:
+        """
+
+        numbers = self.ui.checkShowNumbers.isChecked()
+        path = self.ui.checkShowSlewPath.isChecked()
+        pointer = self.ui.checkShowPointer.isChecked()
+        dome = self.ui.checkDomeEnable.isChecked()
+        horizon = self.ui.checkShowHorizon.isChecked()
+        points = self.ui.checkShowBuildPoints.isChecked()
+
+        self.createWorld(rEntity)
+        self.telescope.create(self.world['ref']['e'], True)
+        self.dome.create(self.world['ref']['e'], dome)
+        self.pointer.create(self.world['ref']['e'], pointer)
+        self.buildPoints.create(self.world['ref1000']['e'], points, numbers, path)
+        self.horizon.create(self.world['ref1000']['e'], horizon)
+
+        self.updateSettings()
+        self.dome.updateSettings()
+        self.dome.updatePositions()
+        self.telescope.updateSettings()
+        self.telescope.updatePositions()
+
+    def updateSettings(self):
+        """
+        updateSettings resize parts depending on the setting made in the dome tab. likewise
+        some transformations have to be reverted as they are propagated through entity linking.
+
+        :return:
+        """
+
+        if not self.world:
+            return False
+
+        if not self.app.mainW:
+            return False
+
+        north = self.app.mainW.ui.domeNorthOffset.value() * 1000
+        east = self.app.mainW.ui.domeEastOffset.value() * 1000
+        vertical = self.app.mainW.ui.domeVerticalOffset.value() * 1000
+        scale = (960 + vertical) / 960
+        self.world['domeColumn']['t'].setTranslation(QVector3D(north, -east, 0))
+        self.world['domeColumn']['t'].setScale3D(QVector3D(1, 1, scale))
+        self.world['domeCompassRose']['t'].setTranslation(QVector3D(north, -east, 0))
+        self.world['domeCompassRoseChar']['t'].setTranslation(QVector3D(north, -east, 0))
+
+        return True

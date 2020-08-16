@@ -18,7 +18,6 @@
 # standard libraries
 import logging
 import os
-os.environ['no_proxy'] = '*'
 import sys
 import platform
 import socket
@@ -27,24 +26,26 @@ import locale
 import html
 
 # external packages
-import matplotlib
-matplotlib.use('Qt5Agg')
 import PyQt5.QtCore
 import PyQt5.QtGui
 import PyQt5.QtWidgets
 import astropy
-astropy.log.setLevel('ERROR')
-from astropy.utils import iers
-iers.conf.auto_download = False
+import matplotlib
 from importlib_metadata import version
 
 # local import
-from base.loggerMW import CustomLogger
-from base.loggerMW import setupLogging
 from mainApp import MountWizzard4
+from base.loggerMW import CustomLogger, setupLogging
 from gui.utilities import splash
-from resource import resources
+# noinspection PyUnresolvedReferences
+import resource.resources
 
+# package settings
+matplotlib.use('Qt5Agg')
+astropy.log.setLevel('ERROR')
+astropy.utils.iers.conf.auto_download = False
+
+# now starting with implementation
 logger = logging.getLogger()
 log = CustomLogger(logger, {})
 

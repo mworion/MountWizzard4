@@ -23,8 +23,8 @@ import json
 from queue import Queue
 
 # external packages
-import PyQt5.QtCore
-import skyfield
+from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
+from skyfield.api import Topos
 from mountcontrol import qtmount
 from importlib_metadata import version
 
@@ -44,14 +44,14 @@ from logic.environment.skymeter import Skymeter
 from logic.environment.onlineWeather import OnlineWeather
 from logic.environment.directWeather import DirectWeather
 from logic.cover.flipflat import FlipFlat
-from mw4.logic.telescope.telescope import Telescope
-from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
-from mw4.logic.measure.measure import MeasureData
-from mw4.logic.remote.remote import Remote
-from mw4.logic.astrometry.astrometry import Astrometry
+from logic.telescope.telescope import Telescope
+from logic.powerswitch.pegasusUPB import PegasusUPB
+from logic.measure.measure import MeasureData
+from logic.remote.remote import Remote
+from logic.astrometry.astrometry import Astrometry
 
 
-class MountWizzard4(PyQt5.QtCore.QObject):
+class MountWizzard4(QObject):
     """
     MountWizzard4 class is the main class for the application. it loads all windows and
     classes needed to fulfil the work of mountwizzard. any gui work should be handled
@@ -59,33 +59,32 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     shutdown the application.
     """
 
-    __all__ = ['MountWizzard4',
-               ]
+    __all__ = ['MountWizzard4']
     __version__ = version('mountwizzard4')
 
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
 
     # central message and logging dispatching
-    message = PyQt5.QtCore.pyqtSignal(str, int)
+    message = pyqtSignal(str, int)
     messageQueue = Queue()
-    redrawHemisphere = PyQt5.QtCore.pyqtSignal()
-    drawBuildPoints = PyQt5.QtCore.pyqtSignal()
-    drawHorizonPoints = PyQt5.QtCore.pyqtSignal()
-    updateDomeSettings = PyQt5.QtCore.pyqtSignal()
-    showImage = PyQt5.QtCore.pyqtSignal(str)
-    remoteCommand = PyQt5.QtCore.pyqtSignal(str)
+    redrawHemisphere = pyqtSignal()
+    drawBuildPoints = pyqtSignal()
+    drawHorizonPoints = pyqtSignal()
+    updateDomeSettings = pyqtSignal()
+    showImage = pyqtSignal(str)
+    remoteCommand = pyqtSignal(str)
 
     # all cyclic tasks
-    update0_1s = PyQt5.QtCore.pyqtSignal()
-    update1s = PyQt5.QtCore.pyqtSignal()
-    update3s = PyQt5.QtCore.pyqtSignal()
-    update10s = PyQt5.QtCore.pyqtSignal()
-    update60s = PyQt5.QtCore.pyqtSignal()
-    update3m = PyQt5.QtCore.pyqtSignal()
-    update10m = PyQt5.QtCore.pyqtSignal()
-    update30m = PyQt5.QtCore.pyqtSignal()
-    update1h = PyQt5.QtCore.pyqtSignal()
+    update0_1s = pyqtSignal()
+    update1s = pyqtSignal()
+    update3s = pyqtSignal()
+    update10s = pyqtSignal()
+    update60s = pyqtSignal()
+    update3m = pyqtSignal()
+    update10m = pyqtSignal()
+    update30m = pyqtSignal()
+    update1h = pyqtSignal()
 
     def __init__(self,
                  mwGlob=None,
@@ -100,7 +99,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mwGlob = mwGlob
         self.timerCounter = 0
         self.mainW = None
-        self.threadPool = PyQt5.QtCore.QThreadPool()
+        self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(20)
         self.message.connect(self.writeMessageQueue)
 
@@ -152,8 +151,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         except Exception as e:
             self.log.critical(f'Failed loading planets: {e}')
             self.ephemeris = None
-        finally:
-            pass
 
         self.relay = KMRelay(host='localhost')
         self.sensorWeather = SensorWeather(self)
@@ -178,15 +175,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # get the window widgets up
         self.mainW = MainWindow(self)
 
-        # starting mount communication
+        # starting mount communication and timers
         self.mount.startTimers()
-
-        self.application.aboutToQuit.connect(self.aboutToQuit)
-
-        self.timer0_1s = PyQt5.QtCore.QTimer()
+        self.timer0_1s = QTimer()
         self.timer0_1s.setSingleShot(False)
         self.timer0_1s.timeout.connect(self.sendUpdate)
         self.timer0_1s.start(100)
+
+        # link for shutdown
+        self.application.aboutToQuit.connect(self.aboutToQuit)
 
         # finishing for test: MW4 runs with keyword 'test' for 10 seconds an terminates
         if not hasattr(sys, 'argv'):
@@ -209,9 +206,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         lat = self.config.get('topoLat', 51.47)
         lon = self.config.get('topoLon', 0)
         elev = self.config.get('topoElev', 46)
-        topo = skyfield.api.Topos(longitude_degrees=lon,
-                                  latitude_degrees=lat,
-                                  elevation_m=elev)
+        topo = Topos(longitude_degrees=lon,
+                     latitude_degrees=lat,
+                     elevation_m=elev)
 
         config = self.config.get('mainW', {})
         if config.get('loglevelDeepDebug', False):

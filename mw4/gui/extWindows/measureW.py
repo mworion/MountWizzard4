@@ -27,7 +27,7 @@ import matplotlib.pyplot as plt
 
 # local import
 from gui.utilities import widget
-from mw4.gui.widgets import measure_ui
+from gui.widgets import measure_ui
 
 
 class MeasureWindow(widget.MWidget):

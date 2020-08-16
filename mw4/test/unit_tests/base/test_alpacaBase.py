@@ -25,7 +25,7 @@ import pytest
 import requests
 
 # local import
-from mw4.base.alpacaBase import AlpacaBase
+from base.alpacaBase import AlpacaBase
 
 
 @pytest.fixture(autouse=True, scope='function')

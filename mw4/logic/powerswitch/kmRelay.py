@@ -28,7 +28,7 @@ from PyQt5.QtCore import QTimer
 import requests
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 
 
 class RelaySignals(QObject):

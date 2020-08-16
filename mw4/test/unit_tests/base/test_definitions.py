@@ -23,7 +23,7 @@
 
 
 def test_definitions():
-    from mw4.base.definitions import Point
+    from base.definitions import Point
 
     p = Point(altitude=0, azimuth=0)
 

@@ -26,7 +26,7 @@ from PyQt5 import sip
 
 # local import
 from gui.utilities import widget
-from mw4.gui.widgets import keypad_ui
+from gui.widgets import keypad_ui
 
 
 class KeypadWindow(widget.MWidget):

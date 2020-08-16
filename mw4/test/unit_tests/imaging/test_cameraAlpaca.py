@@ -30,9 +30,9 @@ from mountcontrol.mount import Mount
 from skyfield.api import Angle
 
 # local import
-from mw4.logic.imaging.cameraAlpaca import CameraAlpaca
-from mw4.logic.imaging.camera import CameraSignals
-from mw4.base.alpacaBase import AlpacaBase
+from logic.imaging.cameraAlpaca import CameraAlpaca
+from logic.imaging.camera import CameraSignals
+from base.alpacaBase import AlpacaBase
 
 
 @pytest.fixture(autouse=True, scope='function')

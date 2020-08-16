@@ -31,9 +31,9 @@ if platform.system() == 'Windows':
     pass
 
 # local import
-from mw4.logic.telescope import TelescopeAscom
-from mw4.logic.telescope.telescope import TelescopeSignals
-from mw4.base.ascomClass import AscomClass
+from logic.telescope import TelescopeAscom
+from logic.telescope.telescope import TelescopeSignals
+from base.ascomClass import AscomClass
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -23,8 +23,8 @@ import numpy as np
 import astropy._erfa as erfa
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.logic.modeldata.alignstars import generateAlignStars
+from base.loggerMW import CustomLogger
+from logic.modeldata.alignstars import generateAlignStars
 
 
 class Hipparcos(object):

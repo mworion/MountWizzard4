@@ -22,8 +22,8 @@ import PyQt5.QtCore
 import numpy as np
 import requests
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.base.tpool import Worker
+from base.loggerMW import CustomLogger
+from base.tpool import Worker
 
 
 class WeatherSignals(PyQt5.QtCore.QObject):

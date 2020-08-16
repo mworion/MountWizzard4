@@ -27,8 +27,8 @@ import platform
 from astropy.io import fits
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.base import transform
+from base.loggerMW import CustomLogger
+from base import transform
 
 
 class AstrometryNET(object):

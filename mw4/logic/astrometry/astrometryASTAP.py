@@ -27,7 +27,7 @@ import platform
 from astropy.io import fits
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 
 
 class AstrometryASTAP(object):

@@ -28,8 +28,8 @@ from PyQt5.QtCore import pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from mw4.logic.telescope.telescope import TelescopeIndi
-from mw4.logic.telescope.telescope import TelescopeSignals
+from logic.telescope.telescope import TelescopeIndi
+from logic.telescope.telescope import TelescopeSignals
 
 
 @pytest.fixture(autouse=True, scope='function')

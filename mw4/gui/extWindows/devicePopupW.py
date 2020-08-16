@@ -27,9 +27,9 @@ if platform.system() == 'Windows':
     import win32com.client
 
 # local import
-from mw4.base.indiClass import IndiClass
+from base.indiClass import IndiClass
 from gui.utilities import widget
-from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
+from gui.widgets.devicePopup_ui import Ui_DevicePopup
 
 
 class DevicePopup(QDialog, widget.MWidget):

@@ -25,8 +25,8 @@ import csv
 import numpy as np
 import skyfield.api
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.base import transform
+from base.loggerMW import CustomLogger
+from base import transform
 
 __all__ = ['HaDecToAltAz',
            'DataPoint',

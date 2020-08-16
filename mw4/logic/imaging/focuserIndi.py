@@ -21,7 +21,7 @@ import logging
 # external packages
 
 # local imports
-from mw4.base.indiClass import IndiClass
+from base.indiClass import IndiClass
 
 
 class FocuserIndi(IndiClass):

@@ -22,7 +22,7 @@ import logging
 import PyQt5
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 
 
 class MeasureDataRaw(PyQt5.QtCore.QObject):

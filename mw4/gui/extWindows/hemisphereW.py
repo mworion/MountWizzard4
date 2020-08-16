@@ -26,7 +26,7 @@ import matplotlib.pyplot as plt
 
 # local import
 from gui.utilities import widget
-from mw4.gui.widgets import hemisphere_ui
+from gui.widgets import hemisphere_ui
 from gui.extWindows.hemisphereWext import HemisphereWindowExt
 
 

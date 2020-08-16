@@ -29,7 +29,7 @@ from PyQt5.QtCore import pyqtSignal
 # local import
 from logic.imaging import FocuserAlpaca
 from logic.imaging.focuser import FocuserSignals
-from mw4.base.alpacaBase import AlpacaBase
+from base.alpacaBase import AlpacaBase
 
 
 @pytest.fixture(autouse=True, scope='function')

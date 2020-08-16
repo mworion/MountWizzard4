@@ -23,7 +23,7 @@ import platform
 import PyQt5
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 from logic.environment.skymeterIndi import SkymeterIndi
 from logic.environment.skymeterAlpaca import SkymeterAlpaca
 if platform.system() == 'Windows':

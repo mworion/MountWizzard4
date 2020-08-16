@@ -28,8 +28,8 @@ from PyQt5.QtCore import pyqtSignal
 
 # local import
 from logic.environment import SkymeterAlpaca
-from mw4.logic.environment.skymeter import SkymeterSignals
-from mw4.base.alpacaBase import AlpacaBase
+from logic.environment.skymeter import SkymeterSignals
+from base.alpacaBase import AlpacaBase
 
 
 @pytest.fixture(autouse=True, scope='function')

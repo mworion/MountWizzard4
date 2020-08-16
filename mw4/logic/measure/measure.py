@@ -23,9 +23,9 @@ import PyQt5
 import numpy as np
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.logic.measure.measureRaw import MeasureDataRaw
-from mw4.logic.measure.measureCSV import MeasureDataCSV
+from base.loggerMW import CustomLogger
+from logic.measure.measureRaw import MeasureDataRaw
+from logic.measure.measureCSV import MeasureDataCSV
 
 
 class MeasureSignals(PyQt5.QtCore.QObject):

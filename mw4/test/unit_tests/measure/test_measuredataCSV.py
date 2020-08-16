@@ -27,7 +27,7 @@ from mountcontrol.mount import Mount
 import PyQt5
 
 # local import
-from mw4.logic.measure.measureCSV import MeasureDataCSV
+from logic.measure.measureCSV import MeasureDataCSV
 
 
 @pytest.fixture(autouse=True, scope='function')

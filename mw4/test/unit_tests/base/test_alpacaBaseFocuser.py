@@ -21,7 +21,7 @@
 import pytest
 
 # local import
-from mw4.base.alpacaBase import Focuser
+from base.alpacaBase import Focuser
 
 
 @pytest.fixture(autouse=True, scope='function')

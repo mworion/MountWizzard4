@@ -28,7 +28,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
 
 # local import
-from mw4.base.alpacaClass import AlpacaClass
+from base.alpacaClass import AlpacaClass
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -29,7 +29,7 @@ from PyQt5.QtCore import QEvent
 from PyQt5 import QtWidgets
 
 # local import
-from mw4.loader import MyApp
+from loader import MyApp
 
 
 @pytest.fixture(scope="session")

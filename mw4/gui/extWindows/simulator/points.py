@@ -26,7 +26,7 @@ from PyQt5.Qt3DExtras import QExtrudedTextMesh, QCylinderMesh
 from PyQt5.Qt3DCore import QEntity, QTransform
 
 # local import
-from mw4.base import transform
+from base import transform
 from gui.extWindows.simulator.materials import Materials
 
 

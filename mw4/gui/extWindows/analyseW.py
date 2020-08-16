@@ -30,7 +30,7 @@ from scipy.stats.mstats import winsorize
 
 # local import
 from gui.utilities import widget
-from mw4.gui.widgets import analyse_ui
+from gui.widgets import analyse_ui
 
 
 class AnalyseWindow(widget.MWidget):

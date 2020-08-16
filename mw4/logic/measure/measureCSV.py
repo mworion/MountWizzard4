@@ -23,7 +23,7 @@ import csv
 import PyQt5
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
+from base.loggerMW import CustomLogger
 
 
 class MeasureDataCSV(PyQt5.QtCore.QObject):

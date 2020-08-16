@@ -28,7 +28,7 @@ import pytest
 import PyQt5
 
 # local import
-from mw4.mainApp import MountWizzard4
+from mainApp import MountWizzard4
 
 
 @pytest.fixture(autouse=True, scope='module')

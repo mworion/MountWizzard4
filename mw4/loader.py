@@ -39,9 +39,9 @@ iers.conf.auto_download = False
 from importlib_metadata import version
 
 # local import
-from mw4.base.loggerMW import CustomLogger
-from mw4.base.loggerMW import setupLogging
-from mw4.mainApp import MountWizzard4
+from base.loggerMW import CustomLogger
+from base.loggerMW import setupLogging
+from mainApp import MountWizzard4
 from gui.utilities import splash
 from resource import resources
 

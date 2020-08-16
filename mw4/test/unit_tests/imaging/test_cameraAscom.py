@@ -35,7 +35,7 @@ if platform.system() == 'Windows':
 # local import
 from logic.imaging import CameraAscom
 from logic.imaging.camera import CameraSignals
-from mw4.base.ascomClass import AscomClass
+from base.ascomClass import AscomClass
 
 
 @pytest.fixture(autouse=True, scope='function')

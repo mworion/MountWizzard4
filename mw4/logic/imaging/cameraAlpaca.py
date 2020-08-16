@@ -23,10 +23,10 @@ from astropy.io import fits
 from PyQt5.QtTest import QTest
 
 # local imports
-from mw4.base.alpacaClass import AlpacaClass
-from mw4.base.alpacaBase import Camera
-from mw4.base.tpool import Worker
-from mw4.base import transform
+from base.alpacaClass import AlpacaClass
+from base.alpacaBase import Camera
+from base.tpool import Worker
+from base import transform
 
 
 class CameraAlpaca(AlpacaClass):

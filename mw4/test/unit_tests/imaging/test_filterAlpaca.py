@@ -29,7 +29,7 @@ from PyQt5.QtCore import pyqtSignal
 # local import
 from logic.imaging.filterAlpaca import FilterAlpaca
 from logic.imaging.filter import FilterSignals
-from mw4.base.alpacaBase import AlpacaBase
+from base.alpacaBase import AlpacaBase
 
 
 @pytest.fixture(autouse=True, scope='function')

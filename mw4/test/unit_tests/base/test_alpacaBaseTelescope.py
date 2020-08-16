@@ -21,7 +21,7 @@
 import pytest
 
 # local import
-from mw4.base.alpacaBase import Telescope
+from base.alpacaBase import Telescope
 
 
 @pytest.fixture(autouse=True, scope='function')

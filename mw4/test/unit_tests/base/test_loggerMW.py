@@ -24,7 +24,7 @@ faulthandler.enable()
 # external packages
 
 # local import
-from mw4.base import loggerMW
+from base import loggerMW
 
 
 @pytest.fixture(autouse=True, scope='function')

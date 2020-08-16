@@ -26,7 +26,7 @@ import PyQt5
 from indibase.indiBase import Device
 
 # local import
-from mw4.base import indiClass
+from base import indiClass
 
 host_ip = 'astro-mount.fritz.box'
 

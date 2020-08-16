@@ -36,13 +36,13 @@ from skyfield.toposlib import Topos
 import numpy as np
 
 # local import
-from mw4.gui.mainWmixin.tabEnviron import Environ
-from mw4.gui.widgets.main_ui import Ui_MainWindow
+from gui.mainWmixin.tabEnviron import Environ
+from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.widget import MWidget
-from mw4.logic.environment.sensorWeather import SensorWeather
-from mw4.logic.environment.onlineWeather import OnlineWeather
-from mw4.logic.environment.skymeter import Skymeter
-from mw4.base.loggerMW import CustomLogger
+from logic.environment.sensorWeather import SensorWeather
+from logic.environment.onlineWeather import OnlineWeather
+from logic.environment.skymeter import Skymeter
+from base.loggerMW import CustomLogger
 
 
 @pytest.fixture(autouse=True, scope='function')

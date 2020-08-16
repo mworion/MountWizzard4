@@ -29,8 +29,8 @@ import numpy as np
 
 # local import
 from gui.utilities import widget
-from mw4.gui.widgets import satellite_ui
-from mw4.base import transform
+from gui.widgets import satellite_ui
+from base import transform
 
 
 class SatelliteWindowSignals(PyQt5.QtCore.QObject):

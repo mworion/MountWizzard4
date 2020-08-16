@@ -27,9 +27,9 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from mw4.logic.imaging.focuserAscom import FocuserAscom
-from mw4.logic.imaging.focuser import FocuserSignals
-from mw4.base.ascomClass import AscomClass
+from logic.imaging.focuserAscom import FocuserAscom
+from logic.imaging.focuser import FocuserSignals
+from base.ascomClass import AscomClass
 
 
 @pytest.fixture(autouse=True, scope='function')

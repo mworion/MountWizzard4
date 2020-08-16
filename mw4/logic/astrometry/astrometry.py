@@ -25,9 +25,9 @@ from astropy.io import fits
 import numpy as np
 
 # local imports
-from mw4.base.loggerMW import CustomLogger
-from mw4.base import tpool
-from mw4.base import transform
+from base.loggerMW import CustomLogger
+from base import tpool
+from base import transform
 from logic.astrometry.astrometryNET import AstrometryNET
 from logic.astrometry.astrometryASTAP import AstrometryASTAP
 

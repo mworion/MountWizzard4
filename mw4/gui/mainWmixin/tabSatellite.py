@@ -84,7 +84,8 @@ class Satellite(object):
         """
 
         self.setupSatelliteSourceURLsDropDown()
-        self.loadTLEDataFromSourceURLs()
+        # self.loadTLEDataFromSourceURLs()
+
         return True
 
     def setupSatelliteSourceURLsDropDown(self):
@@ -194,11 +195,6 @@ class Satellite(object):
                         isOnline=isOnline)
         worker.signals.finished.connect(self.setupSatelliteNameList)
         self.threadPool.start(worker)
-
-        """
-        self.loadTLEDataFromSourceURLsWorker(source=source, reload=reload)
-        self.setupSatelliteNameList()
-        """
 
         return True
 
@@ -466,7 +462,7 @@ class Satellite(object):
 
     def getSatelliteDataFromDatabase(self, tleParams=None):
         """
-        getSatelliteDataFromDatabase get's called, when the TLE setup is read from the mount.
+        getSatelliteDataFromDatabase gets called, when the TLE setup is read from the mount.
         we use the name to retrieve the data from the "active.txt" database to be able to
         work with external database. it calls extraction method for getting the specific
         satellite data read and stored.

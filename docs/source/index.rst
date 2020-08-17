@@ -14,8 +14,8 @@ Documentation for MW4
     install/index
     explain/index
     config/index
-    modeling/index
     imaging/index
+    modeling/index
     mechanics/index
     changelog
 

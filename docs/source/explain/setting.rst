@@ -221,7 +221,7 @@ check the according box.
 
 Area 3: Firmware Data
 ^^^^^^^^^^^^^^^^^^^^^
-Actual firmware data is collected and shown in this are.
+Actual firmware data is collected and shown in this area.
 
 Area 4: Logging Levels
 ^^^^^^^^^^^^^^^^^^^^^^

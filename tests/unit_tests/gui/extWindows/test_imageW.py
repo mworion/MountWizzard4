@@ -405,6 +405,7 @@ def test_preparePlot_4():
     app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
     app.header['CTYPE1'] = '2'
+    app.header['NAXIS'] = 2
     suc = app.preparePlot()
     assert suc
 
@@ -413,6 +414,7 @@ def test_preparePlot_5():
     app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
     app.header['CTYPE1'] = '2'
+    app.header['NAXIS'] = 2
     app.ui.view.setCurrentIndex(1)
     with mock.patch.object(wcs.WCS,
                            'has_distortion',
@@ -424,12 +426,17 @@ def test_preparePlot_5():
 
 def test_workerPhotometry_1():
     app.image = np.random.rand(100, 100)
+    app.image[50][50] = 100
+    app.image[51][50] = 50
+    app.image[50][51] = 50
+    app.image[50][49] = 50
+    app.image[49][50] = 50
     suc = app.workerPhotometry()
     assert suc
     assert app.mean is not None
     assert app.std is not None
     assert app.median is not None
-    assert app.sources is None
+    assert app.sources
 
 
 def test_prepareImage_1():
@@ -482,7 +489,7 @@ def test_stackImages_3():
 def test_zoomImage_1():
     app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
-    app.header['naxis'] = 2
+    app.header['NAXIS'] = 2
     app.ui.zoom.setCurrentIndex(0)
     suc = app.zoomImage()
     assert not suc
@@ -492,7 +499,7 @@ def test_zoomImage_1():
 def test_zoomImage_2():
     app.image = np.random.rand(100, 100)
     app.header = fits.PrimaryHDU().header
-    app.header['naxis'] = 2
+    app.header['NAXIS'] = 2
     app.ui.zoom.setCurrentIndex(1)
     suc = app.zoomImage()
     assert suc

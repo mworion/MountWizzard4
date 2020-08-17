@@ -306,7 +306,18 @@ def test_drawSatellite_2(qtbot):
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
-    satOrbits = {}
+    tt = Test().mount.obsSite.ts.now().tt
+
+    t0 = Test().mount.obsSite.ts.tt_jd(tt + 0)
+    t1 = Test().mount.obsSite.ts.tt_jd(tt + 0.1)
+    t2 = Test().mount.obsSite.ts.tt_jd(tt + 0.2)
+    t3 = Test().mount.obsSite.ts.tt_jd(tt + 0.3)
+
+    satOrbits = {0: {'rise': t0,
+                     'settle': t1},
+                 1: {'rise': t2,
+                     'settle': t3}
+                 }
 
     suc = app.drawSatellite(satellite=satellite, satOrbits=satOrbits)
     assert suc

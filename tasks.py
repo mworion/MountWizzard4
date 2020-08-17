@@ -149,7 +149,7 @@ def test_ib(c):
 
 
 @task()
-def test_mw(c):
+def test_mw_cov(c):
     printMW('testing mountwizzard')
     runMW(c, 'flake8')
     runMW(c, 'pytest tests/unit_tests/base --cov=mw4/')
@@ -168,6 +168,28 @@ def test_mw(c):
     runMW(c, 'pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/zStartup --cov-append --cov=mw4/')
+
+
+@task()
+def test_mw(c):
+    printMW('testing mountwizzard')
+    runMW(c, 'flake8')
+    runMW(c, 'pytest tests/unit_tests/base')
+    runMW(c, 'pytest tests/unit_tests/logic/astrometry')
+    runMW(c, 'pytest tests/unit_tests/logic/cover')
+    runMW(c, 'pytest tests/unit_tests/logic/dome')
+    runMW(c, 'pytest tests/unit_tests/logic/environment')
+    runMW(c, 'pytest tests/unit_tests/logic/imaging')
+    runMW(c, 'pytest tests/unit_tests/logic/measure')
+    runMW(c, 'pytest tests/unit_tests/logic/modeldata')
+    runMW(c, 'pytest tests/unit_tests/logic/powerswitch')
+    runMW(c, 'pytest tests/unit_tests/logic/remote')
+    runMW(c, 'pytest tests/unit_tests/logic/telescope')
+    runMW(c, 'pytest tests/unit_tests/gui/extWindows')
+    runMW(c, 'pytest tests/unit_tests/gui/mainWindow')
+    runMW(c, 'pytest tests/unit_tests/gui/mainWmixin')
+    runMW(c, 'pytest tests/unit_tests/gui/utilities')
+    runMW(c, 'pytest tests/unit_tests/zStartup')
 
 
 @task(pre=[])

@@ -22,9 +22,7 @@ import os
 import glob
 import platform
 import shutil
-import faulthandler
 import subprocess
-faulthandler.enable()
 
 # external packages
 from PyQt5.QtCore import QThreadPool
@@ -59,7 +57,6 @@ def app():
         if 'temp' not in file:
             continue
         os.remove(fileP)
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
 
     yield app
 
@@ -174,6 +171,7 @@ def test_solveNet_2(app):
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=False):
+        shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
         suc = app.solve(fitsPath='tests/image/m51.fit')
         assert not suc
 
@@ -193,6 +191,7 @@ def test_solveNet_3(app):
         with mock.patch.object(app,
                                'runSolveField',
                                return_value=False):
+            shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
             suc = app.solve(fitsPath='tests/image/m51.fit')
             assert not suc
 
@@ -212,6 +211,7 @@ def test_solveNet_4(app):
         with mock.patch.object(app,
                                'runSolveField',
                                return_value=True):
+            shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
             suc = app.solve(fitsPath='tests/image/m51.fit')
             assert not suc
 
@@ -235,6 +235,7 @@ def test_solveNet_5(app):
                                    'remove',
                                    return_value=True):
                 shutil.copy('tests/testData/tempNET.wcs', 'tests/temp/temp.wcs')
+                shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
                 suc = app.solve(fitsPath='tests/image/m51.fit')
                 assert not suc
 
@@ -258,6 +259,7 @@ def test_solveNet_6(app):
                                    'remove',
                                    return_value=True):
                 shutil.copy('tests/testData/tempNET.solved', 'tests/temp/temp.solved')
+                shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
                 suc = app.solve(fitsPath='tests/image/m51.fit')
                 assert not suc
 
@@ -282,6 +284,7 @@ def test_solveNet_7(app):
                                    return_value=True):
                 shutil.copy('tests/testData/tempNET.wcs', 'tests/temp/temp.wcs')
                 shutil.copy('tests/testData/tempNET.solved', 'tests/temp/temp.solved')
+                shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
                 suc = app.solve(fitsPath='tests/image/m51.fit')
                 assert suc
 

@@ -66,6 +66,7 @@ class SettMisc(object):
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
         self.ui.isOnline.clicked.connect(self.setupIERS)
+        self.ui.isOnline.clicked.connect(self.updateDeltaT)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
         self.ui.versionRelease.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.showUpdates)
@@ -92,6 +93,7 @@ class SettMisc(object):
         self.setWeatherOnline()
         self.setupAudioGui()
         self.setupIERS()
+        self.updateDeltaT()
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
         self.ui.soundMountAlert.setCurrentIndex(config.get('soundMountAlert', 0))
@@ -155,6 +157,20 @@ class SettMisc(object):
         else:
             iers.conf.auto_download = False
             iers.conf.auto_max_age = 99999
+
+        return True
+
+    def updateDeltaT(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        isOnline = self.ui.isOnline.isChecked()
+        if isOnline:
+            self.app.mount.obsSite.loader('deltat.data', reload=True)
+            self.app.mount.obsSite.loader('deltat.preds', reload=True)
+            self.app.mount.obsSite.loader('Leap_Second.dat', reload=True)
 
         return True
 

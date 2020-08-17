@@ -18,15 +18,16 @@
 # standard libraries
 
 # external packages
-import PyQt5.QtCore
-from PyQt5.QtCore import Qt
-import PyQt5.QtWidgets
+from PyQt5.QtCore import QObject, Qt, QRectF
+from PyQt5.QtGui import QPixmap, QColor, QLinearGradient
+from PyQt5.QtWidgets import QApplication, QSplashScreen
 import numpy as np
 
 # local import
+from resource import resources
 
 
-class SplashScreen(PyQt5.QtCore.QObject):
+class SplashScreen(QObject):
     """
     Splash screen show an icon with a progress bar and could send messages to the text
     set in the progress bar. Need the app and the icon as parameter
@@ -47,10 +48,10 @@ class SplashScreen(PyQt5.QtCore.QObject):
         super().__init__()
 
         self._qapp = application
-        self._pxm = PyQt5.QtGui.QPixmap(':/icon/ico')
+        self._pxm = QPixmap(':/icon/mw4.ico')
 
         flags = (Qt.WindowStaysOnTopHint | Qt.X11BypassWindowManagerHint)
-        self._qss = PyQt5.QtWidgets.QSplashScreen(self._pxm, flags)
+        self._qss = QSplashScreen(self._pxm, flags)
         self._msg = ''
         self._maxv = 100.0
         self._minv = 0.0
@@ -59,7 +60,7 @@ class SplashScreen(PyQt5.QtCore.QObject):
         self._qss.drawContents = self._drawContents
         self._qss.show()
         self._qss.raise_()
-        PyQt5.QtWidgets.QApplication.processEvents()
+        QApplication.processEvents()
 
     def close(self):
         self.update()
@@ -76,32 +77,32 @@ class SplashScreen(PyQt5.QtCore.QObject):
 
     def update(self):
         self._qss.update()
-        PyQt5.QtWidgets.QApplication.processEvents()
+        QApplication.processEvents()
 
     def _drawContents(self, painter):
         view_port = painter.viewport()
         w = view_port.right()
         h = view_port.bottom()
 
-        painter.setPen(PyQt5.QtGui.QColor(55, 55, 55, 255))
-        painter.setBrush(PyQt5.QtGui.QColor(0, 0, 0, 255))
+        painter.setPen(QColor(55, 55, 55, 255))
+        painter.setBrush(QColor(0, 0, 0, 255))
         painter.drawRect(10, h - 64, w - 20, 19)
 
-        redlg = PyQt5.QtGui.QLinearGradient(0, h - 63, 0, h)
-        redlg.setColorAt(0.3, PyQt5.QtGui.QColor(8, 36, 48))
-        redlg.setColorAt(0, PyQt5.QtGui.QColor(32, 144, 192))
+        redlg = QLinearGradient(0, h - 63, 0, h)
+        redlg.setColorAt(0.3, QColor(8, 36, 48))
+        redlg.setColorAt(0, QColor(32, 144, 192))
 
-        painter.setPen(PyQt5.QtCore.Qt.NoPen)
+        painter.setPen(Qt.NoPen)
         painter.setBrush(redlg)
         painter.drawRect(13,
                          h - 61,
                          int((w - 24) * self._cval / self._maxv),
                          14)
 
-        painter.setPen(PyQt5.QtCore.Qt.white)
+        painter.setPen(Qt.white)
 
-        rect = PyQt5.QtCore.QRectF(10, h - 61, w - 20, 15)
-        painter.drawText(rect, PyQt5.QtCore.Qt.AlignCenter, str(self._msg))
+        rect = QRectF(10, h - 61, w - 20, 15)
+        painter.drawText(rect, Qt.AlignCenter, str(self._msg))
 
     def finish(self, qwid):
         self._qss.finish(qwid)

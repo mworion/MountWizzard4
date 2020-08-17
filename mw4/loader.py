@@ -26,9 +26,10 @@ import locale
 import html
 
 # external packages
-import PyQt5.QtCore
-import PyQt5.QtGui
-import PyQt5.QtWidgets
+from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
+from PyQt5.QtGui import QMouseEvent, QIcon
+from PyQt5.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButton
+from PyQt5.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
 import astropy
 import matplotlib
 from importlib_metadata import version
@@ -42,7 +43,6 @@ import resource.resources
 
 # package settings
 matplotlib.use('Qt5Agg')
-astropy.log.setLevel('ERROR')
 astropy.utils.iers.conf.auto_download = False
 
 # now starting with implementation
@@ -50,7 +50,7 @@ logger = logging.getLogger()
 log = CustomLogger(logger, {})
 
 
-class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
+class QAwesomeTooltipEventFilter(QObject):
     """
     Tooltip-specific event filter dramatically improving the tooltips of all
     widgets for which this filter is installed.
@@ -102,11 +102,11 @@ class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
         """
 
         # If this is a tooltip event...
-        if event.type() == PyQt5.QtCore.QEvent.ToolTipChange:
+        if event.type() == QEvent.ToolTipChange:
             # If the target Qt object containing this tooltip is *NOT* a widget,
             # raise a human-readable exception. While this should *NEVER* be the
             # case, edge cases are edge cases because they sometimes happen.
-            if not isinstance(widget, PyQt5.QtWidgets.QWidget):
+            if not isinstance(widget, QWidget):
                 self.log.error('QObject "{}" not a widget.'.format(widget))
                 return False
 
@@ -118,7 +118,7 @@ class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
                 widget.setToolTip(None)
                 return True
 
-            elif tooltip and not PyQt5.QtCore.Qt.mightBeRichText(tooltip):
+            elif tooltip and not Qt.mightBeRichText(tooltip):
                 # Convert this plaintext tooltip into a rich text tooltip by:
                 #
                 # * Escaping all HTML syntax in this tooltip.
@@ -132,8 +132,8 @@ class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
                 # Notify the parent event handler this event has been handled.
                 return True
 
-        elif event.type() == PyQt5.QtCore.QEvent.ToolTip:
-            if not isinstance(widget, PyQt5.QtWidgets.QWidget):
+        elif event.type() == QEvent.ToolTip:
+            if not isinstance(widget, QWidget):
                 self.log.error('QObject "{}" not a widget.'.format(widget))
                 return False
 
@@ -148,7 +148,7 @@ class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
         return super().eventFilter(widget, event)
 
 
-class MyApp(PyQt5.QtWidgets.QApplication):
+class MyApp(QApplication):
     """
     MyApp implements a custom notify handler to log errors, when C++ classes and python
     wrapper in PyQt5 environment mismatch. mostly this relates to the situation when a
@@ -182,19 +182,19 @@ class MyApp(PyQt5.QtWidgets.QApplication):
         else:
             self.last = obj
 
-        if isinstance(obj, PyQt5.QtWidgets.QTabBar):
+        if isinstance(obj, QTabBar):
             self.log.warning(f'Click Tab     : [{obj.tabText(obj.currentIndex())}]')
-        elif isinstance(obj, PyQt5.QtWidgets.QComboBox):
+        elif isinstance(obj, QComboBox):
             self.log.warning(f'Click DropDown: [{obj.objectName()}]')
-        elif isinstance(obj, PyQt5.QtWidgets.QPushButton):
+        elif isinstance(obj, QPushButton):
             self.log.warning(f'Click Button  : [{obj.objectName()}]')
-        elif isinstance(obj, PyQt5.QtWidgets.QRadioButton):
+        elif isinstance(obj, QRadioButton):
             self.log.warning(f'Click Radio   : [{obj.objectName()}]:{obj.isChecked()}')
-        elif isinstance(obj, PyQt5.QtWidgets.QGroupBox):
+        elif isinstance(obj, QGroupBox):
             self.log.warning(f'Click Group   : [{obj.objectName()}]:{obj.isChecked()}')
-        elif isinstance(obj, PyQt5.QtWidgets.QCheckBox):
+        elif isinstance(obj, QCheckBox):
             self.log.warning(f'Click Checkbox: [{obj.objectName()}]:{obj.isChecked()}')
-        elif isinstance(obj, PyQt5.QtWidgets.QLineEdit):
+        elif isinstance(obj, QLineEdit):
             self.log.warning(f'Click EditLine: [{obj.objectName()}]:{obj.text()}')
         else:
             self.log.warning(f'Click Object  : [{obj.objectName()}]')
@@ -203,6 +203,9 @@ class MyApp(PyQt5.QtWidgets.QApplication):
 
     def notify(self, obj, event):
         """
+        notify is the replacement for the original notify method. This is done to catch all
+        undefined exception (object already deleted in C++) before the app crashes and stores
+        it to the app log file.
 
         :param obj:
         :param event:
@@ -210,7 +213,7 @@ class MyApp(PyQt5.QtWidgets.QApplication):
         """
 
         try:
-            returnValue = PyQt5.QtWidgets.QApplication.notify(self, obj, event)
+            returnValue = QApplication.notify(self, obj, event)
         except Exception as e:
             self.log.critical('----------------------------------------------------')
             self.log.critical('Event: {0}'.format(event))
@@ -219,7 +222,7 @@ class MyApp(PyQt5.QtWidgets.QApplication):
             self.log.critical('----------------------------------------------------')
             returnValue = False
 
-        if not isinstance(event, PyQt5.QtGui.QMouseEvent):
+        if not isinstance(event, QMouseEvent):
             return returnValue
 
         if not event.button():
@@ -287,23 +290,23 @@ def writeSystemInfo(mwGlob=None):
 
     log.critical('----------------------------------------------------')
     log.critical('')
-    log.critical(f' MountWizzard {mwGlob["modeldata"]} started !')
+    log.critical(' MountWizzard4 started !')
     log.critical('')
     log.critical('----------------------------------------------------')
-    log.critical(f' Platform         : {platform.system()}')
-    log.critical(f' Release          : {platform.release()}')
-    log.critical(f' Machine          : {platform.machine()}')
-    log.critical(f' Python runtime   : {platform.architecture()[0]}')
-    log.critical(f' CPU              : {platform.processor()}')
-    log.critical(f' Python           : {platform.python_version()}')
-    log.critical(f' PyQt5            : {PyQt5.QtCore.PYQT_VERSION_STR}')
-    log.critical(f' Qt               : {PyQt5.QtCore.QT_VERSION_STR}')
-    log.critical(f' Node             : {platform.node()}')
-    log.critical(f' IP addr.         : {socket.gethostname()}')
-    log.critical(f' Actual workdir   : {mwGlob["workDir"]}')
     log.critical(f' mountwizzard4    : {version("mountwizzard4")}')
     log.critical(f' indibase         : {version("indibase")}')
     log.critical(f' mountcontrol     : {version("mountcontrol")}')
+    log.critical(f' Actual workdir   : {mwGlob["workDir"]}')
+    log.critical(f' Python           : {platform.python_version()}')
+    log.critical(f' Python runtime   : {platform.architecture()[0]}')
+    log.critical(f' Platform         : {platform.system()}')
+    log.critical(f' PyQt5            : {PYQT_VERSION_STR}')
+    log.critical(f' Qt               : {QT_VERSION_STR}')
+    log.critical(f' Release          : {platform.release()}')
+    log.critical(f' Machine          : {platform.machine()}')
+    log.critical(f' CPU              : {platform.processor()}')
+    log.critical(f' Node             : {platform.node()}')
+    log.critical(f' IP addr.         : {socket.gethostname()}')
     log.critical(f' sys.executable   : {sys.executable}')
     log.critical('----------------------------------------------------')
     log.critical('')
@@ -329,24 +332,17 @@ def extractDataFiles(mwGlob=None, splashW=None):
         'de421_23.bsp',
         'active.txt',
     ]
+
     for file in files:
         if splashW is not None:
             splashW.showMessage('Loading {0}'.format(file))
 
         filePath = mwGlob['dataDir'] + '/' + file
+        if QFile.copy(f':/data/{file}', filePath):
+            log.info(f'Writing missing file:  [{file}]')
+        else:
+            log.info(f'Already existing file: [{file}]')
 
-        if os.path.isfile(filePath):
-            continue
-
-        # as we cannot access data from Qt resource system directly for copy,
-        # we have to convert it to ByteIO first and run
-        stream = PyQt5.QtCore.QFile(f':/data/{file}')
-        stream.open(PyQt5.QtCore.QFile.ReadOnly)
-
-        with open(filePath, 'wb+') as outFile:
-            outFile.write(stream.readAll())
-
-        stream.close()
     return True
 
 
@@ -365,7 +361,7 @@ def main():
 
     # initiating the main app
     app = MyApp(sys.argv)
-    # app = PyQt5.QtWidgets.QApplication(sys.argv)
+    # app = QApplication(sys.argv)
 
     # generating splash screen
     splashW = splash.SplashScreen(application=app)
@@ -401,7 +397,7 @@ def main():
     sys.excepthook = except_hook
 
     # adding a icon
-    app.setWindowIcon(PyQt5.QtGui.QIcon(':/icon/mw4.ico'))
+    app.setWindowIcon(QIcon(':/icon/mw4.ico'))
 
     # adding event filter for formatting the tooltips nicely
     app.installEventFilter(QAwesomeTooltipEventFilter(app))

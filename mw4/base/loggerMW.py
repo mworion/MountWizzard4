@@ -50,19 +50,20 @@ def setupLogging():
                         handlers=[logging.FileHandler(name)],
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
-    #
+
     # setting different log level for the internal libraries we shift one step up
     # standard ERROR    will be CRITICAL    logging hard error statements without solution
     # standard WARNING  will be ERROR       classical warnings which still enables work
     # standard INFO     will be WARNING     all GUI interaction stuff with user
     # standard DEBUG    will be INFO        all functional interface parameters
     # missing TRACE     will be debug       all low level communications (IP, SPI, etc)
-    #
+
     logging.getLogger('mountcontrol').setLevel(logging.INFO)
     logging.getLogger('indibase').setLevel(logging.INFO)
 
     # setting different log level for imported packages to avoid unnecessary data
     # urllib3 is used by requests, so we have to add this as well
+
     logging.getLogger('PyQt5').setLevel(logging.ERROR)
     logging.getLogger('requests').setLevel(logging.ERROR)
     logging.getLogger('urllib3').setLevel(logging.ERROR)

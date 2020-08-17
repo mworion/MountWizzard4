@@ -40,7 +40,7 @@ def module_setup_teardown():
             return True
 
     class Test:
-        mwGlob = {'dataDir': 'tests/data'}
+        mwGlob = {'measureDir': 'tests/measure'}
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
 

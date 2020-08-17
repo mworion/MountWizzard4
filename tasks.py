@@ -111,11 +111,18 @@ def version_doc(c):
 
 
 @task
-def build_resource(c):
+def update_resource(c):
     printMW('building resources')
+    runMW(c, 'cp ./data/de421_23.bsp ./mw4/resource/data/de421_23.bsp')
+    runMW(c, 'cp ./data/active.txt ./mw4/resource/data/active.txt')
     runMW(c, 'cp ./data/deltat.data ./mw4/resource/data/deltat.data')
     runMW(c, 'cp ./data/deltat.preds ./mw4/resource/data/deltat.preds')
     runMW(c, 'cp ./data/Leap_Second.dat ./mw4/resource/data/Leap_Second.dat')
+
+
+@task
+def build_resource(c):
+    printMW('building resources')
     resourceDir = './mw4/resource/'
     runMW(c, f'pyrcc5 -o {resourceDir}resources.py {resourceDir}resources.qrc')
 

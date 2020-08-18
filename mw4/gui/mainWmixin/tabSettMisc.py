@@ -348,6 +348,7 @@ class SettMisc(object):
                           )
 
         success = (self.process.returncode == 0)
+        
         return success, versionPackage
 
     def installFinished(self, result):
@@ -381,9 +382,13 @@ class SettMisc(object):
         actually only tested and ok for running in a virtual environment. updates have to run
         only once at a time, so a mutex ensures this. If everything is ok, a thread it
         started doing the install work and a callback is defined when finished.
+        
+        as observation, installation on windows side takes for some reasons longer than 
+        in linux or osx environment. therefore an extended timeout is chosen.
 
         :return: True for test purpose
         """
+        
         if platform.system() == 'Windows':
             timeout = 180
         else:
@@ -484,6 +489,7 @@ class SettMisc(object):
             self.guiAudioList[itemKey].addItem('Horn')
             self.guiAudioList[itemKey].addItem('Alarm')
             self.guiAudioList[itemKey].addItem('Alert')
+            
         return True
 
     def setupAudioSignals(self):
@@ -492,6 +498,7 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
+        
         if platform.machine() in Config.excludedPlatforms:
             return False
 

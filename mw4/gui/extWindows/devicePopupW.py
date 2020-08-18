@@ -89,7 +89,7 @@ class DevicePopup(QDialog, widget.MWidget):
         self.move(x, y)
 
         self.indiClass = None
-        self.indiSearchType = self.indiTypes[self.deviceType]
+        self.indiSearchType = self.indiTypes.get(self.deviceType, 0)
         self.indiSearchNameList = None
         self.returnValues = {'close': 'cancel'}
         self.framework2gui = {

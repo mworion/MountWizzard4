@@ -73,8 +73,6 @@ def module_setup_teardown(qtbot):
                           data=data,
                           driver='telescope',
                           deviceType='telescope')
-        qtbot.addWidget(app)
-
         yield
 
 
@@ -100,6 +98,142 @@ def test_initConfig_2():
     assert suc
 
 
+def test_closeEvent_1(qtbot):
+    app.close = MWidget().close
+    app.deleteLater = MWidget().deleteLater
+    qtbot.addWidget(app)
+    app.closeEvent(QCloseEvent())
+
+
+def test_selectTabs_1(qtbot):
+    app.data = {
+        'framework': '',
+        'frameworks': {
+            'astap': {
+                'test': 1,
+            }
+        }
+    }
+    suc = app.selectTabs()
+    assert suc
+
+
+def test_selectTabs_2(qtbot):
+    app.data = {
+        'framework': 'astap',
+        'frameworks': {
+            'astap': {
+                'test': 1,
+            }
+        }
+    }
+    suc = app.selectTabs()
+    assert suc
+
+
+def test_populateTabs_1(qtbot):
+    app.data = {
+        'framework': 'astap',
+        'frameworks': {
+            'astap': {
+                'deviceName': 'astap',
+                'deviceList': ['test', 'test1'],
+                'searchRadius': 30,
+                'appPath': 'test',
+            },
+        }
+    }
+    suc = app.populateTabs()
+    assert suc
+
+
+def test_populateTabs_2(qtbot):
+    app.data = {
+        'framework': 'indi',
+        'frameworks': {
+            'indi': {
+                'deviceName': 'astap',
+                'deviceList': ['test', 'test1'],
+                'host': 'test',
+                'messages': True,
+            }
+        }
+    }
+    suc = app.populateTabs()
+    assert suc
+
+
+def test_readTabs_1(qtbot):
+    app.data = {
+        'framework': 'astap',
+        'frameworks': {
+            'astap': {
+                'deviceName': 'astap',
+                'deviceList': ['test', 'test1'],
+                'searchRadius': 30,
+                'appPath': 'test',
+            },
+        }
+    }
+    suc = app.readTabs()
+    assert suc
+
+
+def test_readTabs_2(qtbot):
+    app.framework2gui['astap']['appPath'].setText('100')
+    app.data = {
+        'framework': 'astap',
+        'frameworks': {
+            'astap': {
+                'deviceName': 'astap',
+                'deviceList': ['test', 'test1'],
+                'searchRadius': 30,
+                'appPath': 100,
+            },
+        }
+    }
+    suc = app.readTabs()
+    assert suc
+
+
+def test_readTabs_3(qtbot):
+    app.framework2gui['astap']['appPath'].setText('100')
+    app.data = {
+        'framework': 'astap',
+        'frameworks': {
+            'astap': {
+                'deviceName': 'astap',
+                'deviceList': ['test', 'test1'],
+                'searchRadius': 30,
+                'appPath': 100.0,
+            },
+        }
+    }
+    suc = app.readTabs()
+    assert suc
+
+
+def test_readTabs_4(qtbot):
+    app.data = {
+        'framework': 'indi',
+        'frameworks': {
+            'indi': {
+                'deviceName': 'astap',
+                'deviceList': ['test', 'test1'],
+                'host': 'test',
+                'messages': True,
+            }
+        }
+    }
+    suc = app.readTabs()
+    assert suc
+
+
+def test_readFramework_1(qtbot):
+    suc = app.readFramework()
+    assert suc
+
+
 def test_storeConfig_1(qtbot):
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
@@ -107,13 +241,6 @@ def test_storeConfig_1(qtbot):
 
     suc = app.storeConfig()
     assert suc
-
-
-def test_closeEvent_1(qtbot):
-    app.close = MWidget().close
-    app.deleteLater = MWidget().deleteLater
-    qtbot.addWidget(app)
-    app.closeEvent(QCloseEvent())
 
 
 def test_AddDevicesWithType_1(qtbot):
@@ -127,14 +254,10 @@ def test_AddDevicesWithType_1(qtbot):
 
 
 def test_AddDevicesWithType_2(qtbot):
-    device = Device()
     app.indiClass = IndiClass()
-    app.indiClass.client.devices['telescope'] = device
-    with mock.patch.object(device,
-                           'getText',
-                           return_value={'DRIVER_INTERFACE': None}):
-        suc = app.addDevicesWithType('telescope', 'test')
-        assert not suc
+    app.indiClass.client.devices['telescope'] = {}
+    suc = app.addDevicesWithType('telescope', 'DRIVER_INFO')
+    assert not suc
 
 
 def test_AddDevicesWithType_3(qtbot):
@@ -144,12 +267,25 @@ def test_AddDevicesWithType_3(qtbot):
     app.indiSearchType = None
     with mock.patch.object(device,
                            'getText',
-                           return_value={'DRIVER_INTERFACE': 0}):
-        suc = app.addDevicesWithType('telescope', 'test')
+                           return_value={}):
+        suc = app.addDevicesWithType('telescope', 'DRIVER_INFO')
         assert not suc
 
 
 def test_AddDevicesWithType_4(qtbot):
+    device = Device()
+    app.indiClass = IndiClass()
+    app.indiClass.client.devices['telescope'] = device
+    app.indiSearchType = None
+    app.indiSearchNameList = list()
+    with mock.patch.object(device,
+                           'getText',
+                           return_value={'DRIVER_INTERFACE': '0'}):
+        suc = app.addDevicesWithType('telescope', 'DRIVER_INFO')
+        assert not suc
+
+
+def test_AddDevicesWithType_5(qtbot):
     device = Device()
     app.indiClass = IndiClass()
     app.indiClass.client.devices['telescope'] = device
@@ -214,6 +350,28 @@ def test_selectAstrometryAppPath_2(qtbot):
         assert suc
 
 
+def test_selectAstrometryAppPath_3(qtbot):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('test', 'test', '.app')):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value=('Darwin')):
+            suc = app.selectAstrometryAppPath()
+            assert suc
+
+
+def test_selectAstrometryAppPath_4(qtbot):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('Astrometry.app', 'test', '.app')):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value=('Darwin')):
+            suc = app.selectAstrometryAppPath()
+            assert suc
+
+
 def test_selectAstapIndexPath_1(qtbot):
     with mock.patch.object(MWidget,
                            'openDir',
@@ -244,6 +402,17 @@ def test_selectAstapAppPath_2(qtbot):
                            return_value=('test', 'test', 'test')):
         suc = app.selectAstapAppPath()
         assert suc
+
+
+def test_selectAstapAppPath_3(qtbot):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('test', 'test', '.app')):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value=('Darwin')):
+            suc = app.selectAstapAppPath()
+            assert suc
 
 
 def test_setupAscomDriver_1():

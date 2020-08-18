@@ -85,21 +85,23 @@ class SettMisc(object):
         """
 
         config = self.app.config['mainW']
+        
         self.ui.loglevelDeepDebug.setChecked(config.get('loglevelDeepDebug', True))
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
-        self.setLoggingLevel()
         self.ui.isOnline.setChecked(config.get('isOnline', False))
-        self.setWeatherOnline()
-        self.setupAudioGui()
-        self.setupIERS()
-        self.updateDeltaT()
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
         self.ui.soundMountAlert.setCurrentIndex(config.get('soundMountAlert', 0))
         self.ui.soundModelingFinished.setCurrentIndex(config.get('soundModelingFinished', 0))
         self.ui.soundImageSaved.setCurrentIndex(config.get('soundImageSaved', 0))
         self.ui.soundImageSolved.setCurrentIndex(config.get('soundImageSolved', 0))
+
+        self.setLoggingLevel()
+        self.setWeatherOnline()
+        self.setupAudioGui()
+        self.setupIERS()
+        self.updateDeltaT()
 
         self.showUpdates()
 
@@ -115,6 +117,7 @@ class SettMisc(object):
         """
 
         config = self.app.config['mainW']
+        
         config['loglevelDeepDebug'] = self.ui.loglevelDeepDebug.isChecked()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
@@ -146,11 +149,14 @@ class SettMisc(object):
 
     def setupIERS(self):
         """
+        setupIERS enables or disables the update of astropy necessary files
+        depending on online status .
 
         :return: True for test purpose
         """
 
         isOnline = self.ui.isOnline.isChecked()
+        
         if isOnline:
             iers.conf.auto_download = True
             iers.conf.auto_max_age = 30
@@ -162,11 +168,16 @@ class SettMisc(object):
 
     def updateDeltaT(self):
         """
+        updateDeltaT download the necessary time files for skyfield timescale object
+        if online status is set. if download does not succeed, we keep working with the old 
+        files. as we don't create a new timescale object the new file versions will be used
+        when mw4 starts the next time.
 
         :return: True for test purpose
         """
 
         isOnline = self.ui.isOnline.isChecked()
+        
         if isOnline:
             self.app.mount.obsSite.loader('deltat.data', reload=True)
             self.app.mount.obsSite.loader('deltat.preds', reload=True)
@@ -177,37 +188,38 @@ class SettMisc(object):
     def versionPackage(self, packageName):
         """
         versionPackage will look the package up in pypi.org website and parses the
-        resulting versions. if you have an alpa or beta release found it returns the correct
-        version for download an install.
+        resulting versions. if you have an alpa or beta release found it returns the newest
+        version for download and install.
 
         :param packageName:
-        :return:
+        :return: None or the newest possible package
         """
 
         url = f'https://pypi.python.org/pypi/{packageName}/json'
+        
         try:
             response = requests.get(url).json()
         except Exception as e:
             self.log.critical(f'Cannot determine package version: {e}')
             return None
+       
+        vPackage = list(response['releases'].keys())
+        vPackage.sort(key=StrictVersion, reverse=True)
+
+        verAlpha = [x for x in vPackage if 'a' in x]
+        verBeta = [x for x in vPackage if 'b' in x]
+        verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
+
+        self.log.info(f'Package Alpha  : {verAlpha[:10]}')
+        self.log.info(f'Package Beta   : {verBeta[:10]}')
+        self.log.info(f'Package Release: {verRelease[:10]}')
+
+        if self.ui.versionBeta.isChecked():
+            vPackage = verBeta
         else:
-            vPackage = list(response['releases'].keys())
-            vPackage.sort(key=StrictVersion, reverse=True)
+            vPackage = verRelease
 
-            verAlpha = [x for x in vPackage if 'a' in x]
-            verBeta = [x for x in vPackage if 'b' in x]
-            verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
-
-            self.log.info(f'Package Alpha  : {verAlpha[:10]}')
-            self.log.info(f'Package Beta   : {verBeta[:10]}')
-            self.log.info(f'Package Release: {verRelease[:10]}')
-
-            if self.ui.versionBeta.isChecked():
-                vPackage = verBeta
-            else:
-                vPackage = verRelease
-
-            return vPackage[0]
+        return vPackage[0]
 
     def showUpdates(self):
         """
@@ -242,7 +254,8 @@ class SettMisc(object):
 
     def isVenv(self):
         """
-        detects if the actual package is running in a virtual environment
+        detects if the actual package is running in a virtual environment. this should be the
+        case in any situation as mw4 should be installed in a venv.
 
         :return: status
         """
@@ -252,6 +265,7 @@ class SettMisc(object):
 
         status = hasReal or hasBase and sys.base_prefix != sys.prefix
         self.log.info(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
+        
         return status
 
     @staticmethod
@@ -303,6 +317,7 @@ class SettMisc(object):
                     ]
 
         timeStart = time.time()
+        
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
@@ -333,6 +348,7 @@ class SettMisc(object):
                           )
 
         success = (self.process.returncode == 0)
+        
         return success, versionPackage
 
     def installFinished(self, result):
@@ -354,6 +370,7 @@ class SettMisc(object):
             self.app.message.emit('Please restart to enable new version', 1)
         else:
             self.app.message.emit('Could not install update installation ', 2)
+            
         self.mutexInstall.unlock()
         self.changeStyleDynamic(self.ui.installVersion, 'running', False)
 
@@ -365,16 +382,20 @@ class SettMisc(object):
         actually only tested and ok for running in a virtual environment. updates have to run
         only once at a time, so a mutex ensures this. If everything is ok, a thread it
         started doing the install work and a callback is defined when finished.
+        
+        as observation, installation on windows side takes for some reasons longer than 
+        in linux or osx environment. therefore an extended timeout is chosen.
 
         :return: True for test purpose
         """
+        
         if platform.system() == 'Windows':
             timeout = 180
         else:
-            timeout = 60
+            timeout = 90
 
         if not self.isVenv():
-            self.app.message.emit('Not running in Virtual Environment', 2)
+            self.app.message.emit('MW4 not running in an virtual environment', 2)
             return False
 
         if not self.mutexInstall.tryLock():
@@ -468,6 +489,7 @@ class SettMisc(object):
             self.guiAudioList[itemKey].addItem('Horn')
             self.guiAudioList[itemKey].addItem('Alarm')
             self.guiAudioList[itemKey].addItem('Alert')
+            
         return True
 
     def setupAudioSignals(self):
@@ -476,6 +498,7 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
+        
         if platform.machine() in Config.excludedPlatforms:
             return False
 

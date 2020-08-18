@@ -196,6 +196,7 @@ class SettMisc(object):
         """
 
         url = f'https://pypi.python.org/pypi/{packageName}/json'
+        
         try:
             response = requests.get(url).json()
         except Exception as e:

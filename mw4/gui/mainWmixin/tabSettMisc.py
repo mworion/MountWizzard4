@@ -146,11 +146,14 @@ class SettMisc(object):
 
     def setupIERS(self):
         """
+        setupIERS enables or disables the update of astropy necessary files
+        depending on online status .
 
         :return: True for test purpose
         """
 
         isOnline = self.ui.isOnline.isChecked()
+        
         if isOnline:
             iers.conf.auto_download = True
             iers.conf.auto_max_age = 30
@@ -162,11 +165,16 @@ class SettMisc(object):
 
     def updateDeltaT(self):
         """
+        updateDeltaT download the necessary time files for skyfield timescale object
+        if online status is set. if download does not succeed, we keep working with the old 
+        files. as we don't create a new timescale object the new file versions will be used
+        when mw4 starts the next time.
 
         :return: True for test purpose
         """
 
         isOnline = self.ui.isOnline.isChecked()
+        
         if isOnline:
             self.app.mount.obsSite.loader('deltat.data', reload=True)
             self.app.mount.obsSite.loader('deltat.preds', reload=True)
@@ -177,11 +185,11 @@ class SettMisc(object):
     def versionPackage(self, packageName):
         """
         versionPackage will look the package up in pypi.org website and parses the
-        resulting versions. if you have an alpa or beta release found it returns the correct
-        version for download an install.
+        resulting versions. if you have an alpa or beta release found it returns the newest
+        version for download and install.
 
         :param packageName:
-        :return:
+        :return: None or the newest possible package
         """
 
         url = f'https://pypi.python.org/pypi/{packageName}/json'
@@ -190,24 +198,24 @@ class SettMisc(object):
         except Exception as e:
             self.log.critical(f'Cannot determine package version: {e}')
             return None
+       
+        vPackage = list(response['releases'].keys())
+        vPackage.sort(key=StrictVersion, reverse=True)
+
+        verAlpha = [x for x in vPackage if 'a' in x]
+        verBeta = [x for x in vPackage if 'b' in x]
+        verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
+
+        self.log.info(f'Package Alpha  : {verAlpha[:10]}')
+        self.log.info(f'Package Beta   : {verBeta[:10]}')
+        self.log.info(f'Package Release: {verRelease[:10]}')
+
+        if self.ui.versionBeta.isChecked():
+            vPackage = verBeta
         else:
-            vPackage = list(response['releases'].keys())
-            vPackage.sort(key=StrictVersion, reverse=True)
+            vPackage = verRelease
 
-            verAlpha = [x for x in vPackage if 'a' in x]
-            verBeta = [x for x in vPackage if 'b' in x]
-            verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
-
-            self.log.info(f'Package Alpha  : {verAlpha[:10]}')
-            self.log.info(f'Package Beta   : {verBeta[:10]}')
-            self.log.info(f'Package Release: {verRelease[:10]}')
-
-            if self.ui.versionBeta.isChecked():
-                vPackage = verBeta
-            else:
-                vPackage = verRelease
-
-            return vPackage[0]
+        return vPackage[0]
 
     def showUpdates(self):
         """
@@ -242,7 +250,8 @@ class SettMisc(object):
 
     def isVenv(self):
         """
-        detects if the actual package is running in a virtual environment
+        detects if the actual package is running in a virtual environment. this should be the
+        case in any situation as mw4 should be installed in a venv.
 
         :return: status
         """
@@ -252,6 +261,7 @@ class SettMisc(object):
 
         status = hasReal or hasBase and sys.base_prefix != sys.prefix
         self.log.info(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
+        
         return status
 
     @staticmethod
@@ -303,6 +313,7 @@ class SettMisc(object):
                     ]
 
         timeStart = time.time()
+        
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
@@ -354,6 +365,7 @@ class SettMisc(object):
             self.app.message.emit('Please restart to enable new version', 1)
         else:
             self.app.message.emit('Could not install update installation ', 2)
+            
         self.mutexInstall.unlock()
         self.changeStyleDynamic(self.ui.installVersion, 'running', False)
 
@@ -371,10 +383,10 @@ class SettMisc(object):
         if platform.system() == 'Windows':
             timeout = 180
         else:
-            timeout = 60
+            timeout = 90
 
         if not self.isVenv():
-            self.app.message.emit('Not running in Virtual Environment', 2)
+            self.app.message.emit('MW4 not running in an virtual environment', 2)
             return False
 
         if not self.mutexInstall.tryLock():

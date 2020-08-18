@@ -85,21 +85,23 @@ class SettMisc(object):
         """
 
         config = self.app.config['mainW']
+        
         self.ui.loglevelDeepDebug.setChecked(config.get('loglevelDeepDebug', True))
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
-        self.setLoggingLevel()
         self.ui.isOnline.setChecked(config.get('isOnline', False))
-        self.setWeatherOnline()
-        self.setupAudioGui()
-        self.setupIERS()
-        self.updateDeltaT()
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
         self.ui.soundMountAlert.setCurrentIndex(config.get('soundMountAlert', 0))
         self.ui.soundModelingFinished.setCurrentIndex(config.get('soundModelingFinished', 0))
         self.ui.soundImageSaved.setCurrentIndex(config.get('soundImageSaved', 0))
         self.ui.soundImageSolved.setCurrentIndex(config.get('soundImageSolved', 0))
+
+        self.setLoggingLevel()
+        self.setWeatherOnline()
+        self.setupAudioGui()
+        self.setupIERS()
+        self.updateDeltaT()
 
         self.showUpdates()
 
@@ -115,6 +117,7 @@ class SettMisc(object):
         """
 
         config = self.app.config['mainW']
+        
         config['loglevelDeepDebug'] = self.ui.loglevelDeepDebug.isChecked()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()

@@ -288,8 +288,8 @@ class ManageModel(object):
         else:
             hasNoStars = model.starList is None or not model.starList
 
-        axe, _ = self.generatePolar(widget=self.errorAscendingPlot,
-                                    title='Model Point Errors in ascending order')
+        axe, _ = self.generateFlat(widget=self.errorAscendingPlot,
+                                   title='Model Point Errors in ascending order')
 
         if hasNoStars:
             axe.figure.canvas.draw()

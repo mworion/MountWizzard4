@@ -26,7 +26,7 @@ import PyQt5.uic
 from gui.extWindows.devicePopupW import DevicePopup
 
 
-class SettDevice(object):
+class SettDevice:
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -309,6 +309,9 @@ class SettDevice(object):
             if driverClass.framework == framework:
                 self.stopDriver(driver=driver)
 
+            if driverLoop not in self.driversData:
+                continue
+
             if framework not in self.driversData[driverLoop]['frameworks']:
                 continue
 
@@ -398,7 +401,7 @@ class SettDevice(object):
         if isRunning:
             driverClass.stopCommunication()
             driverClass.data.clear()
-            driverClass.run[framework].name = ''
+            driverClass.run[framework].deviceName = ''
             self.app.message.emit(f'Disabled device:     [{driver}]', 0)
 
         self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
@@ -496,6 +499,10 @@ class SettDevice(object):
         isAscomAutoConnect = self.ui.checkASCOMAutoConnect.isChecked()
 
         for driver in self.drivers:
+
+            if driver not in self.driversData:
+                continue
+
             isValid = self.driversData[driver]['framework'] != ''
 
             if not isValid:
@@ -520,6 +527,10 @@ class SettDevice(object):
         :return: True for test purpose
         """
         for driver in self.drivers:
+
+            if driver not in self.driversData:
+                continue
+
             isAscom = self.driversData[driver]['framework'] == 'ascom'
 
             if isAscom:
@@ -532,7 +543,12 @@ class SettDevice(object):
 
         :return: True for test purpose
         """
+
         for driver in self.drivers:
+
+            if driver not in self.driversData:
+                continue
+
             isAscom = self.driversData[driver]['framework'] == 'ascom'
 
             if isAscom:

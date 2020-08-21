@@ -6,6 +6,7 @@ changes list, please refer to the commit list on GitHub.
 0.152.0
 
 - refactoring device management
+- bugfix polar / flat diagram in manage model
 
 0.151.2
 

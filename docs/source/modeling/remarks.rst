@@ -125,3 +125,69 @@ Another difference you might discover: I do not build the model step by step ove
 stars, I just make all the slewing work, images and solve in parallel and than process them
 to the mount. As you have all the data for a model collected, you could redo any model
 making session just with the data already saved on your computer.
+
+
+Summary of comments to model build:
+
+Per:
+Don't overdo this now. First of all, model point deletion should only be carried out if very
+few points have large errors. If the map looks lke it does above after deletion then
+something  is wrong in the rig, as the mount clearly gets high errors in specific regions.
+The model point selection above is also kind of funny. Why so many near zenith? That is the
+place that is most difficult to measure. Mathematically, it still does not matter which
+order you run the points in. It all comes out the same way whever order you do it in. There
+is, however, one important factor that may produce different results depending on the order,
+and that is random flexure. Running your models smoothly in ever increasing alt without
+large  scope movements will give better results. Jumping back and forth an flipping all the
+time will give worse results - or better if the random flex is neutralized by the violent
+moves. You see? There is no easy answer, no simple "42". If you get better or worse results
+depending on the order of the points, then you should go with the one that produces the
+best results. OK, back to point deletion. Don't over-do that! Check if here is a single or
+just a very few points that stick out. They can be deleted. If there are many or you lose a
+lot of them in an iterative removal, then you need to check everything and rerun the model.
+
+
+Needless to say, the jump from almost 450" in Dec to 3.65" is a drastic one. After the run
+is complete, the first three points report single digit errors (low single digits), which
+is expected behavior. What the extra align procedure for the first three points does is
+performed anyway by the mount at a later stage in the model process, and is compensated for
+(nullified) as the actual base points are added to the, as of yet, non-existent model, in
+effect adding nothing.
+
+I know that TPoint reports the exact model terms that it finds and agree that it would be
+useful information. In order for that procedure to be meaningful, the encoder offsets need
+to be discovered and effectively compensated for, and accomplishing that would involve
+having a basic model in place in the mount and running it in single axis tracking with
+refraction off. I actually think that the basic model in the mount would disturb the  TPoint
+calculations, but I am also quite confident that the information obtained from the process
+would be quite useful in finding flex issues. Sadly, I do not have the time for that
+experiment right now as I am choked with other projects as well as "real" work.
+
+The difference between TPoint and the 10Micron implementation is, as per my current
+understanding, that the latter sports a much more advanced rotational matrix   which yields
+higher precision. The downside is that there is no reporting of the term results,  something
+that would put it on par with TPoint in terms of reporting. I will correspond with the
+"firmware department" and ventilate my views on that ;)
+
+
+
+I can confirm this. There are 11 terms, and all the normal geometric ones are the same as
+TPoint (IH, ID, CH, NP, ME and MA) but they are implemented with a more full-featured and
+more accurate rotational model. The rotational matrix used allows for higher precision even
+with large polar misalignment.
+The number of model terms used is NOT an indication of model quality, but the expected RMS
+surely is.
+
+When I run my GM2000HPS II with the TEC-140, I usually get an RMS of around 5-6" without
+point deletion. The TEC and its imaging train is usable as crowbar as well - very, very
+sturdy! I often get 22 model terms, most likely with very small factors because of the rig
+stability, but there still has to be measurable errors that need to be addressed. Again, a
+perfect rig with perfect polar alignment would likely get a very small number of terms.
+
+One factor that may very well affect the net result of a model run is the order of the
+points.  From a purely mathematical standpoint, the order makes absolutely no difference,
+but the rig may well behave differently if there is a pier flip between each point
+triggering  some flex movements that would not happen if the points were done, say, in Az
+order along the same altitude as much as possible.
+
+I'll test the clock sync thing...

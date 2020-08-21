@@ -100,7 +100,11 @@ def module_setup_teardown(qtbot):
     app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
-    app.findIndexValue = MWidget.findIndexValue
+    app.findIndexValue = MWidget().findIndexValue
+    app.pos = MWidget().pos
+    app.height = MWidget().height
+    app.width = MWidget().width
+    app.returnDriver = MWidget().returnDriver
     app.deviceStat = dict()
     app.log = CustomLogger(logging.getLogger(__name__), {})
     app.threadPool = QThreadPool()
@@ -136,6 +140,522 @@ def test_storeConfig_2():
     app.driversData['dome'] = {}
     suc = app.storeConfig()
     assert suc
+
+
+def test_setupDeviceGui_1():
+    app.driversData = {
+        'telescope': {
+            'framework': 'astap',
+            'frameworks': {
+                'astap': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                    'searchRadius': 30,
+                    'appPath': 'test',
+                },
+            }
+        }
+    }
+    suc = app.setupDeviceGui()
+    assert suc
+
+
+def test_setupDeviceGui_2():
+    app.driversData = {
+        'test': {
+            'framework': 'astap',
+            'frameworks': {
+                'astap': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                    'searchRadius': 30,
+                    'appPath': 'test',
+                },
+            }
+        }
+    }
+    suc = app.setupDeviceGui()
+    assert suc
+
+
+def test_processPopupResults_1():
+    app.driversData = {
+        'telescope': {
+            'framework': 'astap',
+            'frameworks': {
+                'astap': {
+                    'deviceName': '',
+                    'deviceList': ['test', 'test1'],
+                    'searchRadius': 30,
+                    'appPath': 'test',
+                },
+            }
+        }
+    }
+
+    suc = app.processPopupResults('telescope')
+    assert not suc
+
+
+def test_processPopupResults_2():
+    app.driversData = {
+        'telescope': {
+            'framework': 'astap',
+            'frameworks': {
+                'astap': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                    'searchRadius': 30,
+                    'appPath': 'test',
+                },
+            }
+        }
+    }
+    with mock.patch.object(app,
+                           'stopDriver'):
+        with mock.patch.object(app,
+                               'startDriver'):
+            suc = app.processPopupResults('telescope')
+            assert suc
+
+
+def test_copyConfig_1():
+    app.driversData = {
+        'telescope': {
+            'framework': 'astap',
+            'frameworks': {
+                'astap': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                    'searchRadius': 30,
+                    'appPath': 'test',
+                },
+            }
+        }
+    }
+    with mock.patch.object(app,
+                           'stopDriver'):
+        with mock.patch.object(app,
+                               'startDriver'):
+            suc = app.copyConfig('telescope', 'telescope')
+            assert suc
+
+
+def test_copyConfig_2():
+    app.drivers['telescope']['class'].framework = 'indi'
+    app.drivers['cover']['class'].framework = 'indi'
+    app.driversData = {
+        'telescope': {
+            'framework': 'indi',
+            'frameworks': {
+                'indi': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                },
+            }
+        },
+        'cover': {
+            'framework': 'indi',
+            'frameworks': {
+                'indi': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                },
+            }
+        }
+
+    }
+    with mock.patch.object(app,
+                           'stopDriver'):
+        with mock.patch.object(app,
+                               'startDriver'):
+            suc = app.copyConfig('telescope', 'indi')
+            assert suc
+
+
+def test_copyConfig_3():
+    app.drivers['telescope']['class'].framework = 'indi'
+    app.drivers['cover']['class'].framework = 'indi'
+    app.driversData = {
+        'telescope': {
+            'framework': 'indi',
+            'frameworks': {
+                'indi': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                },
+            }
+        },
+        'cover': {
+            'framework': 'indi',
+            'frameworks': {
+                'indi': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                },
+            }
+        }
+
+    }
+    with mock.patch.object(app,
+                           'stopDriver'):
+        with mock.patch.object(app,
+                               'startDriver'):
+            suc = app.copyConfig('telescope', 'test')
+            assert suc
+
+
+def test_copyConfig_4():
+    app.drivers['telescope']['class'].framework = 'indi'
+    app.drivers['cover']['class'].framework = 'indi'
+    app.driversData = {
+        'telescope': {
+            'framework': 'indi',
+            'frameworks': {
+                'indi': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                    'test': 1,
+                },
+            }
+        },
+        'cover': {
+            'framework': 'indi',
+            'frameworks': {
+                'indi': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                    'test': 2,
+                },
+            }
+        }
+
+    }
+    with mock.patch.object(app,
+                           'stopDriver'):
+        with mock.patch.object(app,
+                               'startDriver'):
+            suc = app.copyConfig('telescope', 'indi')
+            assert suc
+            assert app.driversData['cover']['frameworks']['indi']['test'] == 1
+
+
+def test_callPopup_1():
+    app.driversData = {
+        'telescope': {
+            'framework': 'astap',
+            'frameworks': {
+                'astap': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                    'searchRadius': 30,
+                    'appPath': 'test',
+                },
+            }
+        }
+    }
+
+    with mock.patch.object(DevicePopup,
+                           'exec_'):
+        with mock.patch.object(DevicePopup,
+                               'show'):
+            suc = app.callPopup('telescope')
+            assert not suc
+
+
+def test_dispatchPopup():
+    def sender():
+        return 'test'
+
+    app.sender = sender
+
+    with mock.patch.object(app,
+                           'callPopup'):
+        with mock.patch.object(app,
+                               'returnDriver',
+                               return_values='test'):
+            suc = app.dispatchPopup()
+            assert suc
+
+
+def test_stopDriver_1():
+    suc = app.stopDriver('')
+    assert not suc
+
+
+def test_stopDriver_2():
+    suc = app.stopDriver('telescope')
+    assert not suc
+
+
+def test_stopDriver_3():
+    app.drivers['telescope']['class'].framework = 'indi'
+    app.drivers['telescope']['class'].run['indi'].deviceName = 'indi'
+    suc = app.stopDriver('telescope')
+    assert suc
+
+
+def test_stopDrivers():
+    with mock.patch.object(app,
+                           'stopDriver'):
+        suc = app.stopDrivers()
+        assert suc
+
+
+def test_configDriver_1():
+    suc = app.configDriver('')
+    assert not suc
+
+
+def test_configDriver_2():
+    app.driversData = {
+        'telescope': {
+            'framework': '',
+            'frameworks': {
+                'indi': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                },
+            }
+        }
+    }
+    suc = app.configDriver('telescope')
+    assert not suc
+
+
+def test_configDriver_3():
+    app.driversData = {
+        'telescope': {
+            'framework': 'indi',
+            'frameworks': {
+                'indi': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                },
+            }
+        }
+    }
+    suc = app.configDriver('telescope')
+    assert suc
+
+
+def test_startDriver_1():
+    suc = app.startDriver()
+    assert not suc
+
+
+def test_startDriver_2():
+    app.driversData = {
+        'telescope': {
+            'framework': '',
+            'frameworks': {
+                'indi': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                },
+            }
+        }
+    }
+    suc = app.startDriver('telescope')
+    assert not suc
+
+
+def test_startDriver_3():
+    app.driversData = {
+        'telescope': {
+            'framework': 'indi',
+            'frameworks': {
+                'indi': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                },
+            }
+        }
+    }
+    with mock.patch.object(app,
+                           'configDriver'):
+        suc = app.startDriver('telescope', False)
+        assert suc
+
+
+def test_startDriver_3():
+    app.driversData = {
+        'telescope': {
+            'framework': 'internal',
+            }
+    }
+    with mock.patch.object(app,
+                           'configDriver'):
+        suc = app.startDriver('telescope')
+        assert suc
+
+
+def test_startDrivers_1():
+    app.driversData = {
+        'telescope': {
+            'framework': '',
+            'frameworks': {
+                'indi': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                },
+            }
+        }
+    }
+    suc = app.startDrivers()
+    assert suc
+
+
+def test_startDrivers_2():
+    app.ui.checkASCOMAutoConnect.setChecked(False)
+    app.driversData = {
+        'telescope': {
+            'framework': 'ascom',
+        }
+    }
+    with mock.patch.object(app,
+                           'startDriver') as testMock:
+        suc = app.startDrivers()
+        assert suc
+        assert testMock.call_args.kwargs.get('driver') == 'telescope'
+        assert not testMock.call_args.kwargs.get('autoStart')
+
+
+def test_startDrivers_3():
+    app.ui.checkASCOMAutoConnect.setChecked(True)
+    app.driversData = {
+        'telescope': {
+            'framework': 'ascom',
+        }
+    }
+    with mock.patch.object(app,
+                           'startDriver') as testMock:
+        suc = app.startDrivers()
+        assert suc
+        assert testMock.call_args.kwargs.get('driver') == 'telescope'
+        assert testMock.call_args.kwargs.get('autoStart')
+
+
+def test_startDrivers_4():
+    app.ui.checkASCOMAutoConnect.setChecked(False)
+    app.driversData = {
+        'telescope': {
+            'framework': 'indi',
+        }
+    }
+    with mock.patch.object(app,
+                           'startDriver') as testMock:
+        suc = app.startDrivers()
+        assert suc
+        assert testMock.call_args.kwargs.get('driver') == 'telescope'
+        assert testMock.call_args.kwargs.get('autoStart')
+
+
+def test_manualStopAllAscomDrivers_1():
+    app.driversData = {
+        'telescope': {
+            'framework': 'ascom',
+        }
+    }
+    with mock.patch.object(app,
+                           'stopDriver'):
+        suc = app.manualStopAllAscomDrivers()
+        assert suc
+
+
+def test_manualStartAllAscomDrivers_1():
+    app.driversData = {
+        'telescope': {
+            'framework': 'ascom',
+        }
+    }
+    with mock.patch.object(app,
+                           'startDriver'):
+        suc = app.manualStartAllAscomDrivers()
+        assert suc
+
+
+def test_dispatchDriverDropdown_1():
+    class Sender:
+        @staticmethod
+        def currentText():
+            return 'device disabled'
+
+    app.sender = Sender
+    app.driversData = {
+        'telescope': {
+            'framework': 'indi',
+        }
+    }
+
+    with mock.patch.object(app,
+                           'returnDriver',
+                           return_value='telescope'):
+        with mock.patch.object(app,
+                               'stopDriver'):
+            with mock.patch.object(app,
+                                   'startDriver'):
+                suc = app.dispatchDriverDropdown()
+                assert suc
+
+
+def test_dispatchDriverDropdown_2():
+    class Sender:
+        @staticmethod
+        def currentText():
+            return 'astap - astap'
+
+    app.sender = Sender
+    app.driversData = {
+        'telescope': {
+            'framework': 'indi',
+        }
+    }
+
+    with mock.patch.object(app,
+                           'returnDriver',
+                           return_value='telescope'):
+        with mock.patch.object(app,
+                               'stopDriver'):
+            with mock.patch.object(app,
+                                   'startDriver'):
+                suc = app.dispatchDriverDropdown()
+                assert suc
+
+
+def test_scanValid_1():
+    suc = app.scanValid()
+    assert not suc
+
+
+def test_scanValid_2():
+    suc = app.scanValid('telescope')
+    assert not suc
+
+
+def test_scanValid_3():
+    def sender():
+        return app.drivers['telescope']['class'].signals
+
+    app.sender = sender
+    suc = app.scanValid('telescope', 'test')
+    assert suc
+
+
+def test_scanValid_4():
+    def sender():
+        return app.drivers['telescope']['class'].signals
+
+    app.sender = sender
+    suc = app.scanValid('onlineWeather', 'test')
+    assert not suc
+
+
+def test_scanValid_5():
+    delattr(app.drivers['onlineWeather']['class'], 'signals')
+    app.drivers['onlineWeather']['class'].framework = 'internal'
+    suc = app.scanValid('onlineWeather', 'test')
+    assert not suc
 
 
 def test_serverDisconnected_1():

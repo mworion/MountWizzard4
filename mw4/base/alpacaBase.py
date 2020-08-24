@@ -37,7 +37,7 @@ class AlpacaSignals(QObject):
     enable a gui to update their values transferred to the caller back.
 
     This has to be done in a separate class as the signals have to be subclassed from
-    QObject and the Mount class itself is subclassed from object
+    QObject.
     """
 
     __all__ = ['AlpacaSignals']
@@ -51,7 +51,8 @@ class AlpacaSignals(QObject):
 class AlpacaBase:
     """
     the class AlpacaBase inherits all information and handling of alpaca devices
-    this class will be only referenced from other classes and not directly used
+    this class will be only referenced from other classes and will be not used 
+    directly
 
         >>> a = AlpacaBase()
     """
@@ -66,13 +67,12 @@ class AlpacaBase:
 
         self.signals = AlpacaSignals()
 
-        self._baseUrl = ''
-        self._protocol = 'http'
-        self._host = ('localhost', 11111)
-        self._apiVersion = 1
-        self._deviceName = ''
-        self.number = 0
+        self.protocol = 'http'
+        self.host = ('localhost', 11111)
+        self.apiVersion = 1
+        self.deviceName = ''
         self.deviceType = ''
+        self.number = 0
 
     def generateBaseUrl(self):
         """
@@ -90,14 +90,6 @@ class AlpacaBase:
         return val
 
     @property
-    def host(self):
-        return self._host
-
-    @host.setter
-    def host(self, value):
-        self._host = value
-
-    @property
     def baseUrl(self):
         return self.generateBaseUrl()
 
@@ -110,35 +102,24 @@ class AlpacaBase:
         self._deviceName = value
         valueSplit = value.split(':')
         if len(valueSplit) != 2:
-            self.log.info(f'malformed name: {value}')
+            self.log.info(f'malformed deviceName: {value}')
             return
         self.deviceType, self.number = valueSplit
         self.number = int(self.number)
 
-    @property
-    def apiVersion(self):
-        return self._apiVersion
-
-    @apiVersion.setter
-    def apiVersion(self, value):
-        self._apiVersion = value
-
-    @property
-    def protocol(self):
-        return self._protocol
-
-    @protocol.setter
-    def protocol(self, value):
-        self._protocol = value
 
     def get(self, attr: str, **data):
         """
         Send an HTTP GET request to an Alpaca server and check response for errors.
+        In addition a unique Transaction ID is generated, to verify which send / 
+        response pair belongs together.
+        
         :param
             attr (str): attr to get from server.
             **data: Data to send with request.
 
         """
+
         if not self.deviceName:
             return None
 
@@ -152,9 +133,11 @@ class AlpacaBase:
         except requests.exceptions.Timeout:
             self.log.warning(f'[{uid:10d}] timeout')
             return None
+            
         except requests.exceptions.ConnectionError:
             self.log.info(f'[{uid:10d}] connection error')
             return None
+            
         except Exception as e:
             self.log.critical(f'[{uid:10d}] error in request: {e}')
             return None
@@ -176,6 +159,9 @@ class AlpacaBase:
     def put(self, attr: str, **data):
         """
         Send an HTTP PUT request to an Alpaca server and check response for errors.
+        In addition a unique Transaction ID is generated, to verify which send / 
+        response pair belongs together.
+        
         :param
             attr (str): attr to put to server.
             **data: Data to send with request.
@@ -191,12 +177,15 @@ class AlpacaBase:
 
         try:
             response = requests.put(f'{self.baseUrl}/{attr}', data=data, timeout=5)
+            
         except requests.exceptions.Timeout:
             self.log.warning(f'[{uid:10d}] timeout')
             return None
+            
         except requests.exceptions.ConnectionError:
             self.log.info(f'[{uid:10d}] connection error')
             return None
+            
         except Exception as e:
             self.log.critical(f'[{uid:10d}] Error in request: {e}')
             return None
@@ -223,6 +212,7 @@ class AlpacaBase:
             Action (str): A well known name that represents the action to be carried out.
             *Parameters: List of required parameters or empty if none are required.
         """
+        
         return self.put('action', Action=Action, Parameters=Parameters)
 
     def commandblind(self, Command, Raw):
@@ -234,6 +224,7 @@ class AlpacaBase:
                 If false, then protocol framing characters may be added prior to
                 transmission.
         """
+        
         self.put('commandblind', Command=Command, Raw=Raw)
 
     def commandbool(self, Command, Raw):
@@ -246,6 +237,7 @@ class AlpacaBase:
                 If false, then protocol framing characters may be added prior to
                 transmission.
         """
+        
         return self.put('commandbool', Command=Command, Raw=Raw)
 
     def commandstring(self, Command, Raw):
@@ -257,6 +249,7 @@ class AlpacaBase:
                 If false, then protocol framing characters may be added prior to
                 transmission.
         """
+        
         return self.put('commandstring', Command=Command, Raw=Raw)
 
     def connected(self, Connected=None):
@@ -268,14 +261,17 @@ class AlpacaBase:
                 Set None to get connected state (default).
 
         """
+        
         if Connected is None:
             return self.get('connected')
+        
         self.put('connected', Connected=Connected)
 
     def description(self):
         """
         Get description of the device.
         """
+        
         return self.get('name')
 
     def driverInfo(self):
@@ -293,12 +289,14 @@ class AlpacaBase:
         """
         Get string containing only the major and minor version of the driver.
         """
+        
         return self.get('driverversion')
 
     def interfaceVersion(self):
         """
         ASCOM Device interface version number that this device supports.
         """
+        
         return self.get('interfaceversion')
 
     def nameDevice(self):
@@ -311,27 +309,32 @@ class AlpacaBase:
         """
         Get list of action names supported by this driver.
         """
+        
         return self.get('supportedactions')
 
 
 class Switch(AlpacaBase):
-    """Switch specific methods."""
+    """
+    Switch specific methods.
+    """
 
-    __all__ = []
+    __all__ = ['Switch']
 
     logger = logging.getLogger(__name__)
 
     def maxswitch(self):
-        """Count of switch devices managed by this driver.
+        """
+        Count of switch devices managed by this driver.
         :return:
             Number of switch devices managed by this driver. Devices are numbered from 0
             to MaxSwitch - 1.
-
         """
+        
         return self.get("maxswitch")
 
     def canwrite(self, Id=0):
-        """Indicate whether the specified switch device can be written to.
+        """
+        Indicate whether the specified switch device can be written to.
         Notes:
             Devices are numbered from 0 to MaxSwitch - 1.
         :param
@@ -340,24 +343,26 @@ class Switch(AlpacaBase):
             Whether the specified switch device can be written to, default true. This is
             false if the device cannot be written to, for example a limit switch or a
             sensor.
-
         """
+        
         return self.get("canwrite", Id=Id)
 
     def getswitch(self, Id=0):
-        """Return the state of switch device id as a boolean.
+        """
+        Return the state of switch device id as a boolean.
         Notes:
             Devices are numbered from 0 to MaxSwitch - 1.
         :param: Id (int: The device number.
 
         :return:
             State of switch device id as a boolean.
-
         """
+        
         return self.get("getswitch", Id=Id)
 
     def getswitchdescription(self, Id=0):
-        """Get the description of the specified switch device.
+        """
+        Get the description of the specified switch device.
         Notes:
             Devices are numbered from 0 to MaxSwitch - 1.
         :param
@@ -365,12 +370,13 @@ class Switch(AlpacaBase):
 
         :return:
             Description of the specified switch device.
-
         """
+        
         return self.get("getswitchdescription", Id=Id)
 
     def getswitchname(self, Id=0):
-        """Get the name of the specified switch device.
+        """
+        Get the name of the specified switch device.
         Notes:
             Devices are numbered from 0 to MaxSwitch - 1.
         :param
@@ -378,12 +384,13 @@ class Switch(AlpacaBase):
 
         :return:
             Name of the specified switch device.
-
         """
+        
         return self.get("getswitchname", Id=Id)
 
     def getswitchvalue(self, Id=0):
-        """Get the value of the specified switch device as a double.
+        """
+        Get the value of the specified switch device as a double.
         Notes:
             Devices are numbered from 0 to MaxSwitch - 1.
         :param
@@ -391,12 +398,13 @@ class Switch(AlpacaBase):
 
         :return:
             Value of the specified switch device.
-
         """
+        
         return self.get("getswitchvalue", Id=Id)
 
     def minswitchvalue(self, Id=0):
-        """Get the minimum value of the specified switch device as a double.
+        """
+        Get the minimum value of the specified switch device as a double.
         Notes:
             Devices are numbered from 0 to MaxSwitch - 1.
         :param
@@ -404,42 +412,49 @@ class Switch(AlpacaBase):
 
         :return:
             Minimum value of the specified switch device as a double.
-
         """
+        
         return self.get("minswitchvalue", Id=Id)
 
     def setswitch(self, Id: int, State: bool):
-        """Set a switch controller device to the specified state, True or False.
+        """
+        Set a switch controller device to the specified state, True or False.
         Notes:
             Devices are numbered from 0 to MaxSwitch - 1.
         :param
             Id (int): The device number.
             State (bool): The required control state (True or False).
         """
+        
         self.put("setswitch", Id=Id, State=State)
 
     def setswitchname(self, Id: int, Name: str):
-        """Set a switch device name to the specified value.
+        """
+        Set a switch device name to the specified value.
         Notes:
             Devices are numbered from 0 to MaxSwitch - 1.
         :param
             Id (int): The device number.
             Name (str): The name of the device.
         """
+        
         self.put("setswitchname", Id=Id, Name=Name)
 
     def setswitchvalue(self, Id: int, Value):
-        """Set a switch device value to the specified value.
+        """
+        Set a switch device value to the specified value.
         Notes:
             Devices are numbered from 0 to MaxSwitch - 1.
         :param
             Id (int): The device number.
             Value (float): Value to be set, between MinSwitchValue and MaxSwitchValue.
         """
+        
         self.put("setswitchvalue", Id=Id, Value=Value)
 
     def switchstep(self, Id=0):
-        """Return the step size that this device supports.
+        """
+        Return the step size that this device supports.
         Return the step size that this device supports (the difference between
         successive values of the device).
         Notes:
@@ -449,42 +464,51 @@ class Switch(AlpacaBase):
 
         :return:
             Maximum value of the specified switch device as a double.
-
         """
+        
         return self.get("switchstep", Id=Id)
 
 
 class SafetyMonitor(AlpacaBase):
-    """Safety monitor specific methods."""
-    __all__ = []
+    """
+    Safety monitor specific methods.
+    """
+    
+    __all__ = ['SafetyMonitor']
 
     logger = logging.getLogger(__name__)
 
     def issafe(self):
-        """Indicate whether the monitored state is safe for use.
+        """
+        Indicate whether the monitored state is safe for use.
         :return:
             True if the state is safe, False if it is unsafe.
-
         """
+        
         return self.get("issafe")
 
 
 class Dome(AlpacaBase):
-    """Dome specific methods."""
-    __all__ = []
+    """
+    Dome specific methods.
+    """
+    
+    __all__ = ['Dome']
 
     logger = logging.getLogger(__name__)
 
     def altitude(self):
-        """Dome altitude.
+        """
+        Dome altitude.
         :return:
             Dome altitude (degrees, horizon zero and increasing positive to 90 zenith).
-
         """
+        
         return self.get("altitude")
 
     def athome(self):
-        """Indicate whether the dome is in the home position.
+        """
+        Indicate whether the dome is in the home position.
         Notes:
             This is normally used following a findhome() operation. The value is reset
             with any azimuth slew operation that moves the dome away from the home
@@ -494,350 +518,458 @@ class Dome(AlpacaBase):
             comes to rest at the home position.
         :return:
             True if dome is in the home position.
-
         """
+        
         return self.get("athome")
 
     def atpark(self):
-        """Indicate whether the telescope is at the park position.
+        """
+        Indicate whether the telescope is at the park position.
         Notes:
             Set only following a park() operation and reset with any slew operation.
         :return:
             True if the dome is in the programmed park position.
         """
+        
         return self.get("atpark")
 
     def azimuth(self):
-        """Dome azimuth.
+        """
+        Dome azimuth.
         :return:
             Dome azimuth (degrees, North zero and increasing clockwise, i.e., 90 East,
             180 South, 270 West).
         """
+        
         return self.get("azimuth")
 
     def canfindhome(self):
-        """Indicate whether the dome can find the home position.
+        """
+        Indicate whether the dome can find the home position.
         :return:
             True if the dome can move to the home position.
-
         """
+        
         return self.get("canfindhome")
 
     def canpark(self):
-        """Indicate whether the dome can be parked.
+        """
+        Indicate whether the dome can be parked.
         :return:
             True if the dome is capable of programmed parking (park() method).
-
         """
+        
         return self.get("canpark")
 
     def cansetaltitude(self):
-        """Indicate whether the dome altitude can be set.
+        """
+        Indicate whether the dome altitude can be set.
         :return:
             True if driver is capable of setting the dome altitude.
-
         """
+        
         return self.get("cansetaltitude")
 
     def cansetazimuth(self):
-        """Indicate whether the dome azimuth can be set.
+        """
+        Indicate whether the dome azimuth can be set.
         :return:
             True if driver is capable of setting the dome azimuth.
-
         """
+        
         return self.get("cansetazimuth")
 
     def cansetpark(self):
-        """Indicate whether the dome park position can be set.
+        """
+        Indicate whether the dome park position can be set.
         :return:
             True if driver is capable of setting the dome park position.
-
         """
+        
         return self.get("cansetpark")
 
     def cansetshutter(self):
-        """Indicate whether the dome shutter can be opened.
+        """
+        Indicate whether the dome shutter can be opened.
         :return:
             True if driver is capable of automatically operating shutter.
         """
+        
         return self.get("cansetshutter")
 
     def canslave(self):
-        """Indicate whether the dome supports slaving to a telescope.
+        """
+        Indicate whether the dome supports slaving to a telescope.
         :return:
             True if driver is capable of slaving to a telescope.
-
         """
+        
         return self.get("canslave")
 
     def cansyncazimuth(self):
-        """Indicate whether the dome azimuth position can be synched.
+        """
+        Indicate whether the dome azimuth position can be synched.
         Notes:
             True if driver is capable of synchronizing the dome azimuth position using
             the synctoazimuth(float) method.
 
         :return:
             True or False value.
-
         """
+        
         return self.get("cansyncazimuth")
 
     def shutterstatus(self):
-        """Status of the dome shutter or roll-off roof.
+        """
+        Status of the dome shutter or roll-off roof.
         Notes:
             0 = Open, 1 = Closed, 2 = Opening, 3 = Closing, 4 = Shutter status error.
 
         :return:
             Status of the dome shutter or roll-off roof.
         """
+        
         return self.get("shutterstatus")
 
     def slaved(self, Slaved=None):
-        """Set or indicate whether the dome is slaved to the telescope.
+        """
+        Set or indicate whether the dome is slaved to the telescope.
 
         :return:
             True or False value in not set.
-
         """
+        
         if Slaved is None:
             return self.get("slaved")
+        
         self.put("slaved", Slaved=Slaved)
 
     def slewing(self):
-        """Indicate whether the any part of the dome is moving.
+        """
+        Indicate whether the any part of the dome is moving.
         Notes:
             True if any part of the dome is currently moving, False if all dome
             components are steady.
 
         Return:
             True or False value.
-
         """
+        
         return self.get("slewing")
 
     def abortslew(self):
-        """Immediately cancel current dome operation.
+        """
+        Immediately cancel current dome operation.
         Notes:
             Calling this method will immediately disable hardware slewing (Slaved will
             become False).
         """
+        
         self.put("abortslew")
 
     def closeshutter(self):
-        """Close the shutter or otherwise shield telescope from the sky."""
+        """
+        Close the shutter or otherwise shield telescope from the sky.
+        """
+
         self.put("closeshutter")
 
+
     def findhome(self):
-        """Start operation to search for the dome home position.
+        """
+        Start operation to search for the dome home position.
         Notes:
             After home position is established initializes azimuth to the default value
             and sets the athome flag.
-
         """
+        
         self.put("findhome")
 
     def openshutter(self):
-        """Open shutter or otherwise expose telescope to the sky."""
+        """
+        Open shutter or otherwise expose telescope to the sky.
+        """
+        
         self.put("openshutter")
 
     def park(self):
-        """Rotate dome in azimuth to park position.
+        """
+        Rotate dome in azimuth to park position.
         Notes:
             After assuming programmed park position, sets atpark flag.
-
         """
+        
         self.put("park")
 
     def setpark(self):
-        """Set current azimuth, altitude position of dome to be the park position."""
+        """
+        Set current azimuth, altitude position of dome to be the park position.
+        """
+        
         self.put("setpark")
 
     def slewtoaltitude(self, Altitude):
-        """Slew the dome to the given altitude position."""
+        """
+        Slew the dome to the given altitude position.
+        """
+        
         self.put("slewtoaltitude", Altitude=Altitude)
 
     def slewtoazimuth(self, Azimuth):
-        """Slew the dome to the given azimuth position.
+        """
+        Slew the dome to the given azimuth position.
 
         :param
             Azimuth (float): Target dome azimuth (degrees, North zero and increasing
                 clockwise. i.e., 90 East, 180 South, 270 West).
         """
+        
         self.put("slewtoazimuth", Azimuth=Azimuth)
 
     def synctoazimuth(self, Azimuth):
-        """Synchronize the current position of the dome to the given azimuth.
+        """
+        Synchronize the current position of the dome to the given azimuth.
         :param
             Azimuth (float): Target dome azimuth (degrees, North zero and increasing
                 clockwise. i.e., 90 East, 180 South, 270 West).
-
         """
+        
         self.put("synctoazimuth", Azimuth=Azimuth)
 
 
 class Camera(AlpacaBase):
-    """Camera specific methods."""
-    __all__ = []
+    """
+    Camera specific methods.
+    """
+    
+    __all__ = ['Camera']
 
     logger = logging.getLogger(__name__)
 
     def bayeroffsetx(self):
-        """Return the X offset of the Bayer matrix, as defined in SensorType."""
+        """
+        Return the X offset of the Bayer matrix, as defined in SensorType.
+        """
+        
         return self.get("bayeroffsetx")
 
     def bayeroffsety(self):
-        """Return the Y offset of the Bayer matrix, as defined in SensorType."""
+        """
+        Return the Y offset of the Bayer matrix, as defined in SensorType.
+        """
+        
         return self.get("bayeroffsety")
 
     def binx(self, BinX=None):
-        """Set or return the binning factor for the X axis.
+        """
+        Set or return the binning factor for the X axis.
         :param
             BinX (int): The X binning value.
 
         :return:
             Binning factor for the X axis.
-
         """
+        
         if BinX is None:
             return self.get("binx")
+        
         self.put("binx", BinX=BinX)
 
     def biny(self, BinY=None):
-        """Set or return the binning factor for the Y axis.
+        """
+        Set or return the binning factor for the Y axis.
         :param
             BinY (int): The Y binning value.
 
         :return:
             Binning factor for the Y axis.
-
         """
+        
         if BinY is None:
             return self.get("biny")
+        
         self.put("biny", BinY=BinY)
 
     def camerastate(self):
-        """Return the camera operational state.
+        """
+        Return the camera operational state.
         Notes:
             0 = CameraIdle, 1 = CameraWaiting, 2 = CameraExposing,
             3 = CameraReading, 4 = CameraDownload, 5 = CameraError.
 
         :return:
             Current camera operational state as an integer.
-
         """
+        
         return self.get("camerastate")
 
     def cameraxsize(self):
-        """Return the width of the CCD camera chip."""
+        """
+        Return the width of the CCD camera chip.
+        """
+        
         return self.get("cameraxsize")
 
     def cameraysize(self):
-        """Return the height of the CCD camera chip."""
+        """
+        Return the height of the CCD camera chip.
+        """
+        
         return self.get("cameraysize")
 
     def canabortexposure(self):
-        """Indicate whether the camera can abort exposures."""
+        """
+        Indicate whether the camera can abort exposures.
+        """
+        
         return self.get("canabortexposure")
 
     def canasymmetricbin(self):
-        """Indicate whether the camera supports asymmetric binning."""
+        """
+        Indicate whether the camera supports asymmetric binning.
+        """
+        
         return self.get("canasymmetricbin")
 
     def canfastreadout(self):
-        """Indicate whether the camera has a fast readout mode."""
+        """
+        Indicate whether the camera has a fast readout mode.
+        """
+        
         return self.get("canfastreadout")
 
     def cangetcoolerpower(self):
-        """Indicate whether the camera's cooler power setting can be read."""
+        """
+        Indicate whether the camera's cooler power setting can be read.
+        """
+        
         return self.get("cangetcoolerpower")
 
     def canpulseguide(self):
-        """Indicate whether this camera supports pulse guiding."""
+        """
+        Indicate whether this camera supports pulse guiding.
+        """
+        
         return self.get("canpulseguide")
 
     def cansetccdtemperature(self):
-        """Indicate whether this camera supports setting the CCD temperature."""
+        """
+        Indicate whether this camera supports setting the CCD temperature.
+        """
+        
         return self.get("cansetccdtemperature")
 
     def canstopexposure(self):
-        """Indicate whether this camera can stop an exposure that is in progress."""
+        """
+        Indicate whether this camera can stop an exposure that is in progress.
+        """
+        
         return self.get("canstopexposure")
 
     def ccdtemperature(self):
-        """Return the current CCD temperature in degrees Celsius."""
+        """
+        Return the current CCD temperature in degrees Celsius.
+        """
+        
         return self.get("ccdtemperature")
 
     def cooleron(self, CoolerOn=None):
-        """Turn the camera cooler on and off or return the current cooler on/off state.
+        """
+        Turn the camera cooler on and off or return the current cooler on/off state.
         Notes:
             True = cooler on, False = cooler off.
         :param
             CoolerOn (bool): Cooler state.
-
         :return:
             Current cooler on/off state.
-
         """
+        
         if CoolerOn is None:
             return self.get("cooleron")
+        
         self.put("cooleron", CoolerOn=CoolerOn)
 
     def coolerpower(self):
-        """Return the present cooler power level, in percent."""
+        """
+        Return the present cooler power level, in percent.
+        """
+        
         return self.get("coolerpower")
 
     def electronsperadu(self):
-        """Return the gain of the camera in photoelectrons per A/D unit."""
+        """
+        Return the gain of the camera in photoelectrons per A/D unit.
+        """
+        
         return self.get("electronsperadu")
 
     def exposuremax(self):
-        """Return the maximum exposure time supported by StartExposure."""
+        """
+        Return the maximum exposure time supported by StartExposure.
+        """
+        
         return self.get("exposuremax")
 
     def exposuremin(self):
-        """Return the minimum exposure time supported by StartExposure."""
+        """
+        Return the minimum exposure time supported by StartExposure.
+        """
+        
         return self.get("exposuremin")
 
     def exposureresolution(self):
-        """Return the smallest increment in exposure time supported by StartExposure."""
+        """
+        Return the smallest increment in exposure time supported by StartExposure.
+        """
+        
         return self.get("exposureresolution")
 
     def fastreadout(self, FastReadout=None):
-        """Set or return whether Fast Readout Mode is enabled.
+        """
+        Set or return whether Fast Readout Mode is enabled.
         :param
             FastReadout (bool): True to enable fast readout mode.
 
         :return:
             Whether Fast Readout Mode is enabled.
         """
+        
         if FastReadout is None:
             return self.get("fastreadout")
+        
         self.put("fastreadout", FastReadout=FastReadout)
 
     def fullwellcapacity(self):
-        """Report the full well capacity of the camera.
+        """
+        Report the full well capacity of the camera.
         Report the full well capacity of the camera in electrons, at the current
         camera settings (binning, SetupDialog settings, etc.).
         :return:
             Full well capacity of the camera.
         """
+        
         return self.get("fullwellcapacity")
 
     def gain(self, Gain=None):
-        """Set or return an index into the Gains array.
+        """
+        Set or return an index into the Gains array.
         :param
             Gain (int): Index of the current camera gain in the Gains string array.
 
         :return:
             Index into the Gains array for the selected camera gain.
-
         """
+        
         if Gain is None:
             return self.get("gain")
+        
         self.put("gain", Gain=Gain)
 
     def gainmax(self):
-        """Maximum value of Gain."""
+        """
+        Maximum value of Gain.
+        """
+
         return self.get("gainmax")
 
     def gainmin(self):

@@ -335,6 +335,7 @@ class ImageWindow(widget.MWidget):
 
         if self.deviceStat['solve']:
             self.ui.abortSolve.setEnabled(True)
+            
         else:
             self.ui.abortSolve.setEnabled(False)
 
@@ -357,6 +358,7 @@ class ImageWindow(widget.MWidget):
 
         if self.deviceStat['solve']:
             self.changeStyleDynamic(self.ui.solve, 'running', 'true')
+            
         else:
             self.changeStyleDynamic(self.ui.solve, 'running', 'false')
 
@@ -377,6 +379,8 @@ class ImageWindow(widget.MWidget):
                                                 'FITS files (*.fit*)',
                                                 enableDir=True,
                                                 )
+                                                
+                                                
         if not name:
             return False
 
@@ -510,7 +514,6 @@ class ImageWindow(widget.MWidget):
 
         fallback = list(self.stretchValues.keys())[0]
         value = self.stretchValues.get(self.ui.stretch.currentText(), fallback)
-
         self.stretch = AsinhStretch(a=value)
 
         return True
@@ -534,6 +537,7 @@ class ImageWindow(widget.MWidget):
             x = self.sources['xcentroid']
             y = self.sources['ycentroid']
             imageDisp = self.image - self.mean
+            
         else:
             positions = None
             imageDisp = self.image
@@ -661,6 +665,7 @@ class ImageWindow(widget.MWidget):
 
         if self.image is None:
             return False
+            
         if self.header is None:
             return False
 
@@ -671,6 +676,7 @@ class ImageWindow(widget.MWidget):
             wcsObject = wcs.WCS(self.header, relax=True)
             hasCelestial = wcsObject.has_celestial
             hasDistortion = wcsObject.has_distortion
+            
         else:
             hasCelestial = False
             hasDistortion = False
@@ -680,6 +686,7 @@ class ImageWindow(widget.MWidget):
 
         if hasDistortion:
             self.ui.view.view().setRowHidden(1, False)
+            
         else:
             self.ui.view.view().setRowHidden(1, True)
 
@@ -687,6 +694,7 @@ class ImageWindow(widget.MWidget):
 
         if hasDistortion and useWCS:
             self.setupDistorted()
+            
         else:
             self.setupNormal()
 
@@ -716,7 +724,7 @@ class ImageWindow(widget.MWidget):
         :return:
         """
 
-        if Config.featureFlags['imageAdv'] and not self.sources:
+        if not self.sources:
             worker = Worker(self.workerPhotometry)
             worker.signals.finished.connect(self.preparePlot)
             self.threadPool.start(worker)
@@ -744,6 +752,7 @@ class ImageWindow(widget.MWidget):
         if self.imageStack is None:
             self.imageStack = self.image
             self.numberStack = 1
+            
         else:
             self.imageStack = np.add(self.imageStack, self.image)
             self.numberStack += 1
@@ -800,6 +809,7 @@ class ImageWindow(widget.MWidget):
 
         if not imagePath:
             return False
+            
         if not os.path.isfile(imagePath):
             return False
 
@@ -813,6 +823,7 @@ class ImageWindow(widget.MWidget):
 
         if self.image is None:
             return False
+            
         if self.header is None:
             return False
 
@@ -824,6 +835,7 @@ class ImageWindow(widget.MWidget):
         # interpret the Keywords in the right manner (SGPro)
         if self.header.get('CTYPE1', '').endswith('DEF'):
             self.header['CTYPE1'] = self.header['CTYPE1'].replace('DEF', 'TAN')
+            
         if self.header.get('CTYPE2', '').endswith('DEF'):
             self.header['CTYPE2'] = self.header['CTYPE2'].replace('DEF', 'TAN')
 
@@ -891,6 +903,7 @@ class ImageWindow(widget.MWidget):
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
+            
         else:
             self.app.showImage.emit(imagePath)
 
@@ -931,6 +944,7 @@ class ImageWindow(widget.MWidget):
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
+            
         else:
             self.app.showImage.emit(imagePath)
 
@@ -972,6 +986,7 @@ class ImageWindow(widget.MWidget):
         # right ones
         if self.deviceStat['expose']:
             self.app.camera.signals.saved.disconnect(self.exposeImageDone)
+            
         if self.deviceStat['exposeN']:
             self.app.camera.signals.saved.disconnect(self.exposeImageNDone)
 
@@ -1013,6 +1028,7 @@ class ImageWindow(widget.MWidget):
             text += f'Scale: {result["scaleS"]:4.3f}, '
             text += f'Error: {result["errorRMS_S"]:4.1f}'
             self.app.message.emit(text, 0)
+            
         else:
             text = f'Solving error:       {result.get("message")}'
             self.app.message.emit(text, 2)
@@ -1020,6 +1036,7 @@ class ImageWindow(widget.MWidget):
 
         isStack = self.ui.checkStackImages.isChecked()
         isAutoSolve = self.ui.checkAutoSolve.isChecked()
+        
         if not isStack or isAutoSolve:
             self.app.showImage.emit(result['solvedPath'])
 
@@ -1043,6 +1060,7 @@ class ImageWindow(widget.MWidget):
 
         if not imagePath:
             return False
+            
         if not os.path.isfile(imagePath):
             return False
 
@@ -1063,6 +1081,7 @@ class ImageWindow(widget.MWidget):
         """
 
         self.signals.solveImage.emit(self.imageFileName)
+        
         return True
 
     def abortSolve(self):
@@ -1072,6 +1091,7 @@ class ImageWindow(widget.MWidget):
 
         :return: success
         """
+        
         suc = self.app.astrometry.abort()
 
         return suc

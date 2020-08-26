@@ -18,36 +18,38 @@
 # standard libraries
 
 # external packages
-import PyQt5.QtGui
+from PyQt5.QtGui import QColor
 
 # local imports
 
 
 class MWStyles:
 
-    COLOR_ASTRO = PyQt5.QtGui.QColor(32, 144, 192)
-    COLOR_BLUE = PyQt5.QtGui.QColor(0, 0, 255)
-    COLOR_BLUE1 = PyQt5.QtGui.QColor(96, 176, 224)
-    COLOR_BLUE2 = PyQt5.QtGui.QColor(80, 140, 176)
-    COLOR_BLUE3 = PyQt5.QtGui.QColor(48, 104, 128)
-    COLOR_BLUE4 = PyQt5.QtGui.QColor(44, 80, 112)
-    COLOR_YELLOW = PyQt5.QtGui.QColor(192, 192, 0)
-    COLOR_GREEN = PyQt5.QtGui.QColor(0, 255, 0)
-    COLOR_WHITE = PyQt5.QtGui.QColor(255, 255, 255)
-    COLOR_WHITE1 = PyQt5.QtGui.QColor(224, 224, 224)
-    COLOR_RED = PyQt5.QtGui.QColor(255, 0, 0)
-    COLOR_ORANGE = PyQt5.QtGui.QColor(192, 96, 96)
-    COLOR_BLACK = PyQt5.QtGui.QColor(0, 0, 0)
-    COLOR_3D = PyQt5.QtGui.QColor(60, 60, 60)
-    COLOR_BACKGROUND = PyQt5.QtGui.QColor(32, 32, 32)
-    COLOR_FRAME = PyQt5.QtGui.QColor(192, 192, 192)
-    COLOR_PINK = PyQt5.QtGui.QColor(192, 16, 192)
+    COLOR_ASTRO = QColor(32, 144, 192)
+    COLOR_BLUE = QColor(0, 0, 255)
+    COLOR_BLUE1 = QColor(96, 176, 224)
+    COLOR_BLUE2 = QColor(80, 140, 176)
+    COLOR_BLUE3 = QColor(48, 104, 128)
+    COLOR_BLUE4 = QColor(44, 80, 112)
+    COLOR_YELLOW = QColor(192, 192, 0)
+    COLOR_GREEN = QColor(0, 255, 0)
+    COLOR_WHITE = QColor(255, 255, 255)
+    COLOR_WHITE1 = QColor(224, 224, 224)
+    COLOR_RED = QColor(255, 0, 0)
+    COLOR_ORANGE = QColor(192, 96, 96)
+    COLOR_BLACK = QColor(0, 0, 0)
+    COLOR_3D = QColor(60, 60, 60)
+    COLOR_BACKGROUND = QColor(32, 32, 32)
+    COLOR_FRAME = QColor(192, 192, 192)
+    COLOR_PINK = QColor(192, 16, 192)
 
     TRAFFICLIGHTCOLORS = ['green', 'yellow', 'red', '']
+    
     BACK_BG = 'background-color: transparent;'
     BACK_RED = 'background-color: red;'
     BACK_GREEN = 'background-color: green;'
     BACK_NORM = 'background-color: #202020;'
+    
     M_BLUE = '#2090C0'
     M_BLUE1 = '#104860'
     M_BLUE2 = '#0C3648'

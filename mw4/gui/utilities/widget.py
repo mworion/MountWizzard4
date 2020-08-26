@@ -87,6 +87,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         if not gui:
             return False
+            
         if not icon:
             return False
 
@@ -107,6 +108,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         :return:    actual stylesheet string
         """
+        
         if platform.system() == 'Darwin':
             return self.MAC_STYLE + self.BASIC_STYLE
         else:
@@ -144,8 +146,10 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         if not widget:
             return False
+            
         if not item:
             return False
+            
         if value is None:
             return False
 
@@ -201,6 +205,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         if not names:
             return '', '', ''
+            
         if not isinstance(names, list):
             return '', '', ''
 
@@ -211,15 +216,18 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
             if name:
                 short, ext = os.path.splitext(name)
                 short = os.path.basename(short)
+                
             else:
                 short = ''
                 ext = ''
+                
             nameList.append(os.path.abspath(name))
             shortList.append(short)
             extList.append(ext)
 
         if len(names) == 1:
             return nameList[0], shortList[0], extList[0]
+            
         else:
             return nameList, shortList, extList
 
@@ -245,6 +253,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         if enableDir:
             dlg.setFilter(PyQt5.QtCore.QDir.Files | PyQt5.QtCore.QDir.AllDirs)
+            
         else:
             dlg.setFilter(PyQt5.QtCore.QDir.Files)
 
@@ -262,13 +271,16 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         # position the window to parent in the center
         width = 500
         height = 400
+        
         ph = window.geometry().height()
         pw = window.geometry().width()
         px = window.geometry().x()
         py = window.geometry().y()
+        
         dlg.setGeometry(px + int(0.5 * (pw - width)),
                         py + int(0.5 * (ph - height)),
-                        width, height)
+                        width, 
+                        height)
         return dlg
 
     @staticmethod
@@ -305,10 +317,13 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         if not window:
             return '', '', ''
+            
         if not title:
             return '', '', ''
+            
         if not folder:
             return '', '', ''
+            
         if not filterSet:
             return '', '', ''
 
@@ -318,17 +333,21 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
         dlg.setDirectory(folder)
+        
         if multiple:
             dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFiles)
+            
         else:
             dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFile)
 
         result = self.runDialog(dlg)
+        
         if not result:
             return '', '', ''
 
         filePath = dlg.selectedFiles()
         full, short, ext = self.extractNames(names=filePath)
+        
         return full, short, ext
 
     def saveFile(self,
@@ -352,10 +371,13 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         if not window:
             return '', '', ''
+            
         if not title:
             return '', '', ''
+            
         if not folder:
             return '', '', ''
+            
         if not filterSet:
             return '', '', ''
 
@@ -367,11 +389,13 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.setDirectory(folder)
 
         result = self.runDialog(dlg)
+        
         if not result:
             return '', '', ''
 
         filePath = dlg.selectedFiles()
         full, short, ext = self.extractNames(names=filePath)
+        
         return full, short, ext
 
     def openDir(self,
@@ -391,8 +415,10 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         if not window:
             return '', '', ''
+            
         if not title:
             return '', '', ''
+            
         if not folder:
             return '', '', ''
 
@@ -404,11 +430,13 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.DirectoryOnly)
 
         result = self.runDialog(dlg)
+        
         if not result:
             return '', '', ''
 
         filePath = dlg.selectedFiles()
         full, short, ext = self.extractNames(names=filePath)
+        
         return full, short, ext
 
     @staticmethod
@@ -430,15 +458,21 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
             clicked = PyQt5.QtCore.pyqtSignal(object)
 
             def eventFilter(self, obj, event):
-                if obj == widget:
-                    if event.type() == PyQt5.QtCore.QEvent.MouseButtonRelease:
-                        if obj.rect().contains(event.pos()):
-                            self.clicked.emit(widget)
-                            return True
+                if obj != widget:
+                    return False
+                    
+                if event.type() != PyQt5.QtCore.QEvent.MouseButtonRelease:
+                    return False
+                    
+                if obj.rect().contains(event.pos()):
+                    self.clicked.emit(widget)
+                    return True
+    
                 return False
 
         _filter = Filter(widget)
         widget.installEventFilter(_filter)
+        
         return _filter.clicked
 
     @staticmethod
@@ -453,14 +487,17 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         if not ui:
             return False
+            
         if not formatElement:
             return False
 
         if value is None:
             text = '-'
+            
         else:
             formatStr = '{0:' + formatElement + '}'
             text = formatStr.format(value)
+            
         ui.setText(text)
 
         return True
@@ -478,11 +515,14 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         for index in range(ui.model().rowCount()):
             modelIndex = ui.model().index(index, 0)
             indexValue = ui.model().data(modelIndex)
+            
             if indexValue is None:
                 continue
+                
             if relaxed:
                 if searchString in indexValue:
                     return index
+                    
             else:
                 if indexValue.startswith(searchString):
                     return index
@@ -499,6 +539,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         if widget is None:
             return None, None
+            
         if not hasattr(widget, 'figure'):
             return None, None
 
@@ -547,6 +588,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         if widget is None:
             return None, None
+            
         if not hasattr(widget, 'figure'):
             return None, None
 
@@ -594,6 +636,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         if addKey:
             searchD = dict([(key, value[addKey]) for key, value in searchDict.items()])
+            
         else:
             searchD = searchDict
 

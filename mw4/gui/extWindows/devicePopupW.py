@@ -41,26 +41,6 @@ class DevicePopup(QDialog, widget.MWidget):
     __all__ = ['DevicePopup',
                ]
 
-    # INDI device types
-    # todo: should be transferred to indi class
-    indiTypes = {
-        'telescope': (1 << 0),
-        'camera': (1 << 1),
-        'guider': (1 << 2),
-        'focuser': (1 << 3),
-        'filterwheel': (1 << 4),
-        'dome': (1 << 5),
-        'observingconditions': (1 << 7) | (1 << 15),
-        'skymeter': (1 << 15) | (1 << 19),
-        'cover': (1 << 9) | (1 << 10),
-        'power': (1 << 7) | (1 << 3) | (1 << 15) | (1 << 18),
-    }
-
-    # todo: should be removed and telescope should be selectable
-    indiDefaults = {
-        'telescope': 'LX200 10micron',
-    }
-
     framework2tabs = {
         'indi': 'INDI / INDIGO',
         'ascom': 'ASCOM',
@@ -90,12 +70,6 @@ class DevicePopup(QDialog, widget.MWidget):
         x = geometry[0] + int((geometry[2] - self.width()) / 2)
         y = geometry[1] + int((geometry[3] - self.height()) / 2)
         self.move(x, y)
-
-        # todo: move it to indi class start
-        self.indiClass = None
-        self.indiSearchType = self.indiTypes.get(self.deviceType, 0)
-        self.indiSearchNameList = None
-        # todo: move it to indi class end
         
         self.returnValues = {'close': 'cancel'}
         self.framework2gui = {
@@ -137,7 +111,7 @@ class DevicePopup(QDialog, widget.MWidget):
         self.ui.ok.clicked.connect(self.storeConfig)
         
         # todo: naming equally to indiSelector, astapIndexPathSelector etc.
-        self.ui.indiSearch.clicked.connect(self.searchDevices)
+        self.ui.indiSearch.clicked.connect(self.discoverIndiDevices)
         self.ui.selectAstrometryIndexPath.clicked.connect(self.selectAstrometryIndexPath)
         self.ui.selectAstrometryAppPath.clicked.connect(self.selectAstrometryAppPath)
         self.ui.selectAstapIndexPath.clicked.connect(self.selectAstapIndexPath)
@@ -327,9 +301,9 @@ class DevicePopup(QDialog, widget.MWidget):
     
         return True
 
-    def searchIndiDevices(self):
+    def discoverIndiDevices(self):
         """
-        searchIndiDevices looks all possible indi devices up from the actual server and the selected
+        discoverIndiDevices looks all possible indi devices up from the actual server and the selected
         device type. The search time is defined in indi class and shoiuld be about 2-3 seconds.
         if the search was successful, the gui and the device list will be updated
         
@@ -337,8 +311,10 @@ class DevicePopup(QDialog, widget.MWidget):
         """
         
         host = (self.ui.indiHost.text(), int(self.ui.indiPort.text())
+        indi = IndiClass()
+        indi.host = host
         
-        deviceNames = IndiClass().searchDevices(host=host, deviceType=self.deviceType)
+        deviceNames = indi.discoverDevices(deviceType=self.deviceType)
         
         if not deviceNames:
             self.message('Indi search found no devices',2)

@@ -95,20 +95,37 @@ class IndiClass:
 
     INDI = {y: x for x, y in INDIGO.items()}
 
+    INDI_TYPES = {
+        'telescope': (1 << 0),
+        'camera': (1 << 1),
+        'guider': (1 << 2),
+        'focuser': (1 << 3),
+        'filterwheel': (1 << 4),
+        'dome': (1 << 5),
+        'observingconditions': (1 << 7) | (1 << 15),
+        'skymeter': (1 << 15) | (1 << 19),
+        'cover': (1 << 9) | (1 << 10),
+        'power': (1 << 7) | (1 << 3) | (1 << 15) | (1 << 18),
+    }
+
     def __init__(self, app=None, data=None, threadPool=None):
         super().__init__()
 
         self.app = app
 
         self.client = qtIndiBase.Client(host=None, threadPool=threadPool)
+        self._host = ('', 0)
         self.deviceName = ''
-        self._host = ('localhost', 7624)
+        self.device = None
         self.data = data
+        self.retryCounter = 0
+        self.discoverType = None
+        self.discoverList = None
+        
         self.loadIndiConfig = False
         self.isINDIGO = False
-        self.retryCounter = 0
-        self.device = None
         self.showMessages = False
+        
         self.defaultConfig = {
             'indi': {
                 'deviceName': '',
@@ -490,12 +507,12 @@ class IndiClass:
             return True
         return False
     
-    # todo: this will be part of indi device discovery an moved to inmdi class
-    def addDevicesWithType(self, deviceName, propertyName):
+    def addDiscoveredDevice(self, deviceName, propertyName):
         """
         addDevicesWithType gety called whenever a new device send out text messages. than it
         checks, if the device type fits to the search type desired. if they match, the
         device name is added to the list.
+        
         unfortunately the indi definitions are not well defined. so for example SQM reports
         only aux general. this is value '0'. So i have to treat all devices reporting device
         type '0' as devices which could be used for everything.
@@ -508,7 +525,7 @@ class IndiClass:
         if propertyName != 'DRIVER_INFO':
             return False
 
-        device = self.indiClass.client.devices.get(deviceName)
+        device = self.client.devices.get(deviceName)
         if not device:
             return False
 
@@ -527,67 +544,38 @@ class IndiClass:
 
         interface = int(interface)
 
-        if interface & self.indiSearchType:
-            self.indiSearchNameList.append(deviceName)
+        if interface & self.discoverType:
+            self.discoverList.append(deviceName)
 
         return True
-
-
-     # todo: this is part of indi device discovery and has to be moved to indi class
-    def searchDevices(self):
+    
+    def discoverIndiDevices(self, deviceType=''):
         """
-        searchDevices implements a search for devices of a certain device type. it is called
+        discoverIndiDevices implements a discover for devices of a certain device type. it is called
         from a button press and checks which button it was. after that for the right device
         it collects all necessary data for host value, instantiates an INDI client and
         watches for all devices connected to this server. Than it connects a subroutine for
-        collecting the right device names and opens a model dialog. the data collection
+        collecting the right device names and waits a certain amouitn of time. the data collection
         takes place as long as the model dialog is open. when the user closes this dialog, the
         collected data is written to the drop down list.
-
-        :return:  success finding
-        """
-
-        self.indiSearchNameList = list()
-
-        if self.driver in self.indiDefaults:
-            self.indiSearchNameList.append(self.indiDefaults[self.driver])
-
-        else:
-            host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))
-            self.indiClass = IndiClass()
-            self.indiClass.host = host
-
-            self.indiClass.client.signals.defText.connect(self.addDevicesWithType)
-            self.indiClass.client.connectServer()
-            self.indiClass.client.watchDevice()
-            msg = QMessageBox
-            msg.information(self,
-                            'Searching Devices',
-                            f'Search for [{self.driver}] could take some seconds!')
-            self.indiClass.client.disconnectServer()
-
-        self.ui.indiDeviceList.clear()
-        self.ui.indiDeviceList.setView(QListView())
-
-        for name in self.indiSearchNameList:
-            self.log.info(f'Indi search found: {name}')
-
-        for deviceName in self.indiSearchNameList:
-            self.ui.indiDeviceList.addItem(deviceName)
-
-        return True
- 
         
-    def searchIndiDevices(self, host=None, deviceType=''):
-        """
-        searchIndiDevices
-        
-        :param device: device name
-        :param text: message received
+        :param deviceType: device type of descovered indi devices
         :return: success
         """
         
-        # todo: refactor the elements from devicePopup to indi class.
-        
-        
-        return deviceNames
+        self.indiSearchType = 
+
+                
+        self.discoverList = list()
+        self.discoverType = self.INDI_TYPES.get(deviceType, 0)
+
+        self.client.signals.defText.connect(self.addDicoveredDevice)
+        self.client.connectServer()
+        self.client.watchDevice()
+
+        QTest.qWait(2000)
+
+        self.client.signals.defText.disconnect(self.addDicoveredDevice)
+        self.client.disconnectServer()
+
+        return self.discoverList

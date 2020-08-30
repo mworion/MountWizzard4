@@ -19,6 +19,7 @@
 import logging
 
 # external packages
+from PyQt5.QtTest import QTest
 from PyQt5.QtCore import QTimer
 from indibase import qtIndiBase
 
@@ -537,7 +538,7 @@ class IndiClass:
         if interface == '0':
             interface = 0xffff
 
-        if self.indiSearchType is None:
+        if self.discoverType is None:
             return False
 
         self.log.info(f'Found: [{deviceName}], interface: [{interface}]')
@@ -551,31 +552,28 @@ class IndiClass:
     
     def discoverIndiDevices(self, deviceType=''):
         """
-        discoverIndiDevices implements a discover for devices of a certain device type. it is called
-        from a button press and checks which button it was. after that for the right device
-        it collects all necessary data for host value, instantiates an INDI client and
+        discoverIndiDevices implements a discover for devices of a certain device type. it is
+        called from a button press and checks which button it was. after that for the right
+        device it collects all necessary data for host value, instantiates an INDI client and
         watches for all devices connected to this server. Than it connects a subroutine for
-        collecting the right device names and waits a certain amouitn of time. the data collection
-        takes place as long as the model dialog is open. when the user closes this dialog, the
-        collected data is written to the drop down list.
+        collecting the right device names and waits a certain amount of time. the data
+        collection takes place as long as the model dialog is open. when the user closes
+        this dialog, the collected data is written to the drop down list.
         
-        :param deviceType: device type of descovered indi devices
+        :param deviceType: device type of discovered indi devices
         :return: success
         """
-        
-        self.indiSearchType = 
 
-                
         self.discoverList = list()
         self.discoverType = self.INDI_TYPES.get(deviceType, 0)
 
-        self.client.signals.defText.connect(self.addDicoveredDevice)
+        self.client.signals.defText.connect(self.addDiscoveredDevice)
         self.client.connectServer()
         self.client.watchDevice()
 
         QTest.qWait(2000)
 
-        self.client.signals.defText.disconnect(self.addDicoveredDevice)
+        self.client.signals.defText.disconnect(self.addDiscoveredDevice)
         self.client.disconnectServer()
 
         return self.discoverList

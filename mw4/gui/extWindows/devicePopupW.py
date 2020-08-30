@@ -310,7 +310,7 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: success
         """
         
-        host = (self.ui.indiHost.text(), int(self.ui.indiPort.text())
+        host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))
         indi = IndiClass()
         indi.host = host
         
@@ -321,7 +321,7 @@ class DevicePopup(QDialog, widget.MWidget):
             return False
         
         for deviceName in deviceNames:
-            self.message(f'Indi search found device: [{name}]', 0)
+            self.message(f'Indi search found device: [{deviceName}]', 0)
         
         self.updateIndiDeviceNameList(deviceNames=deviceNames)
         

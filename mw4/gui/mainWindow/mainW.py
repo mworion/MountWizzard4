@@ -605,7 +605,6 @@ class MainWindow(MWidget,
         # redraw tabs only when a change occurred. this is necessary, because
         # enable and disable does not remove tabs
         if tabChanged:
-            # todo: the only better change is to remove the tab and insert the tab back.
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
 

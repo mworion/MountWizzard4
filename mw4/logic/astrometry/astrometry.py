@@ -93,6 +93,8 @@ class Astrometry:
         """
         readFitsData reads the fits file with the image and tries to get some key
         fields out of the header for preparing the solver.
+        if there is the need for understanding more FITS header data, it should be integrated
+        in this method.
 
         :param fitsPath: fits file with image data
         :return: raHint, decHint, scaleHint
@@ -100,10 +102,6 @@ class Astrometry:
 
         with fits.open(fitsPath) as fitsHDU:
             fitsHeader = fitsHDU[0].header
-
-            # todo: there might be the necessity to read more alternative header info
-            # todo: the actual definition is OK for EKOS
-
             scaleHint = float(fitsHeader.get('SCALE', 0))
             ra = fitsHeader.get('RA', 0)
             dec = fitsHeader.get('DEC', 0)
@@ -170,7 +168,6 @@ class Astrometry:
         decMount = convert.convertToAngle(fitsHeader.get('DEC'),
                                           isHours=False)
 
-        # todo: it would be nice, if adding, subtracting of angels are part of skyfield
         deltaRA = (raJ2000._degrees - raMount._degrees) * 3600
         deltaDEC = (decJ2000.degrees - decMount.degrees) * 3600
         error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))

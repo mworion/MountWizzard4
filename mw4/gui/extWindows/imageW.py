@@ -15,7 +15,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import base.packageConfig as Config
 # standard libraries
 import os
 
@@ -379,8 +378,7 @@ class ImageWindow(widget.MWidget):
                                                 'FITS files (*.fit*)',
                                                 enableDir=True,
                                                 )
-                                                
-                                                
+
         if not name:
             return False
 

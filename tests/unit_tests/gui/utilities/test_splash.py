@@ -57,7 +57,7 @@ def test_drawContents(qtbot):
     app = SplashScreen(QWidget())
     qtbot.addWidget(app)
 
-    app._drawContents(QPainter())
+    app.drawContents(QPainter())
 
 
 def test_finish(qtbot):

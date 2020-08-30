@@ -102,11 +102,9 @@ class AlpacaBase:
         self._deviceName = value
         valueSplit = value.split(':')
         if len(valueSplit) != 2:
-            self.log.info(f'malformed deviceName: {value}')
             return
         self.deviceType, self.number = valueSplit
         self.number = int(self.number)
-
 
     def get(self, attr: str, **data):
         """
@@ -320,8 +318,6 @@ class Switch(AlpacaBase):
 
     __all__ = ['Switch']
 
-    logger = logging.getLogger(__name__)
-
     def maxswitch(self):
         """
         Count of switch devices managed by this driver.
@@ -476,8 +472,6 @@ class SafetyMonitor(AlpacaBase):
     
     __all__ = ['SafetyMonitor']
 
-    logger = logging.getLogger(__name__)
-
     def issafe(self):
         """
         Indicate whether the monitored state is safe for use.
@@ -494,8 +488,6 @@ class Dome(AlpacaBase):
     """
     
     __all__ = ['Dome']
-
-    logger = logging.getLogger(__name__)
 
     def altitude(self):
         """
@@ -674,7 +666,6 @@ class Dome(AlpacaBase):
 
         self.put("closeshutter")
 
-
     def findhome(self):
         """
         Start operation to search for the dome home position.
@@ -743,8 +734,6 @@ class Camera(AlpacaBase):
     """
     
     __all__ = ['Camera']
-
-    logger = logging.getLogger(__name__)
 
     def bayeroffsetx(self):
         """
@@ -973,27 +962,39 @@ class Camera(AlpacaBase):
         return self.get("gainmax")
 
     def gainmin(self):
-        """Minimum value of Gain."""
+        """
+        Minimum value of Gain.
+        """
+
         return self.get("gainmin")
 
     def gains(self):
-        """Gains supported by the camera."""
+        """
+        Gains supported by the camera.
+        """
+
         return self.get("gains")
 
     def hasshutter(self):
-        """Indicate whether the camera has a mechanical shutter."""
+        """
+        Indicate whether the camera has a mechanical shutter.
+        """
+
         return self.get("hasshutter")
 
     def heatsinktemperature(self):
-        """Return the current heat sink temperature.
+        """
+        Return the current heat sink temperature.
         :return:
             Current heat sink temperature (called "ambient temperature" by some
             manufacturers) in degrees Celsius.
         """
+
         return self.get("heatsinktemperature")
 
     def imagearray(self):
-        r"""Return an array of integers containing the exposure pixel values.
+        """
+        Return an array of integers containing the exposure pixel values.
         Return an array of 32bit integers containing the pixel values from the last
         exposure. This call can return either a 2 dimension (monochrome images) or 3
         dimension (colour or multi-plane images) array of size NumX * NumY or NumX *
@@ -1005,17 +1006,16 @@ class Camera(AlpacaBase):
         know the array Rank beforehand so that the correct data class can be used. This
         can be achieved through a regular expression or by direct parsing of the
         returned JSON string to extract the Type and Rank values before de-serialising.
-        This regular expression accomplishes the extraction into two named groups Type
-        and Rank ^*"Type":(?<Type>\d*),"Rank":(?<Rank>\d*) which can then be used to
-        select the correct de-serialisation data class.
         :return:
             Array of integers containing the exposure pixel values.
 
         """
+
         return self.get("imagearray")
 
     def imagearrayvariant(self):
-        r"""Return an array of integers containing the exposure pixel values.
+        """
+        Return an array of integers containing the exposure pixel values.
         Return an array of 32bit integers containing the pixel values from the last
         exposure. This call can return either a 2 dimension (monochrome images) or 3
         dimension (colour or multi-plane images) array of size NumX * NumY or NumX *
@@ -1027,113 +1027,152 @@ class Camera(AlpacaBase):
         know the array Rank beforehand so that the correct data class can be used. This
         can be achieved through a regular expression or by direct parsing of the
         returned JSON string to extract the Type and Rank values before de-serialising.
-        This regular expression accomplishes the extraction into two named groups Type
-        and Rank ^*"Type":(?<Type>\d*),"Rank":(?<Rank>\d*) which can then be used to
-        select the correct de-serialisation data class.
         :return:
             Array of integers containing the exposure pixel values.
 
         """
+
         return self.get("imagearrayvariant")
 
     def imageready(self):
-        """Indicate that an image is ready to be downloaded."""
+        """
+        Indicate that an image is ready to be downloaded.
+        """
+
         return self.get("imageready")
 
     def ispulseguiding(self):
-        """Indicatee that the camera is pulse guideing."""
+        """
+        Indicatee that the camera is pulse guideing.
+        """
+
         return self.get("ispulseguiding")
 
     def lastexposureduration(self):
-        """Report the actual exposure duration in seconds (i.e. shutter open time)."""
+        """
+        Report the actual exposure duration in seconds (i.e. shutter open time).
+        """
+
         return self.get("lastexposureduration")
 
     def lastexposurestarttime(self):
-        """Start time of the last exposure in FITS standard format.
+        """
+        Start time of the last exposure in FITS standard format.
 
         Reports the actual exposure start in the FITS-standard
         CCYY-MM-DDThh:mm:ss[.sss...] format.
         :return:
             Start time of the last exposure in FITS standard format.
         """
+
         return self.get("lastexposurestarttime")
 
     def maxadu(self):
-        """Camera's maximum ADU value."""
+        """
+        Camera's maximum ADU value.
+        """
+
         return self.get("maxadu")
 
     def maxbinx(self):
-        """Maximum binning for the camera X axis."""
+        """
+        Maximum binning for the camera X axis.
+        """
+
         return self.get("maxbinx")
 
     def maxbiny(self):
-        """Maximum binning for the camera Y axis."""
+        """
+        Maximum binning for the camera Y axis.
+        """
+
         return self.get("maxbiny")
 
     def numx(self, NumX=None):
-        """Set or return the current subframe width.
+        """
+        Set or return the current subframe width.
 
         :param
             NumX (int): Subframe width, if binning is active, value is in binned
                 pixels.
-
         :return:
             Current subframe width.
-
         """
+
         if NumX is None:
             return self.get("numx")
+
         self.put("numx", NumX=NumX)
 
     def numy(self, NumY=None):
-        """Set or return the current subframe height.
+        """
+        Set or return the current subframe height.
 
         :param
             NumY (int): Subframe height, if binning is active, value is in binned
                 pixels.
-
         :return:
             Current subframe height.
-
         """
+
         if NumY is None:
             return self.get("numy")
+
         self.put("numy", NumY=NumY)
 
     def percentcompleted(self):
-        """Indicate percentage completeness of the current operation.
+        """
+        Indicate percentage completeness of the current operation.
         :return:
             If valid, returns an integer between 0 and 100, where 0 indicates 0%
             progress (function just started) and 100 indicates 100% progress (i.e.
             completion).
 
         """
+
         return self.get("percentcompleted")
 
     def pixelsizex(self):
-        """Width of CCD chip pixels (microns)."""
+        """
+        Width of CCD chip pixels (microns).
+        """
+
         return self.get("pixelsizex")
 
     def pixelsizey(self):
-        """Height of CCD chip pixels (microns)."""
+        """
+        Height of CCD chip pixels (microns).
+        """
+
         return self.get("pixelsizey")
 
     def readoutmode(self, ReadoutMode=None):
-        """Indicate the camera's readout mode as an index into the array ReadoutModes."""
+        """
+        Indicate the camera's readout mode as an index into the array ReadoutModes.
+        """
+
         if ReadoutMode is None:
             return self.get("readoutmode")
+
         self.put("readoutmode", ReadoutMode=ReadoutMode)
 
     def readoutmodes(self):
-        """List of available readout modes."""
+        """
+        List of available readout modes.
+        """
+
         return self.get("readoutmodes")
 
     def sensorname(self):
-        """Name of the sensor used within the camera."""
+        """
+        Name of the sensor used within the camera.
+        """
+
         return self.get("sensorname")
 
     def sensortype(self):
-        """Type of information returned by the the camera sensor (monochrome or colour).
+        """
+        Type of information returned by the the camera sensor (monochrome or colour).
 
         Notes:
             0 = Monochrome, 1 = Colour not requiring Bayer decoding, 2 = RGGB Bayer
@@ -1143,68 +1182,79 @@ class Camera(AlpacaBase):
         :return:
             Value indicating whether the sensor is monochrome, or what Bayer matrix it
             encodes.
-
         """
+
         return self.get("sensortype")
 
     def setccdtemperature(self, SetCCDTemperature=None):
-        """Set or return the camera's cooler setpoint (degrees Celsius).
+        """
+        Set or return the camera's cooler setpoint (degrees Celsius).
         :param
             SetCCDTemperature (float): 	Temperature set point (degrees Celsius).
 
         :return:
             Camera's cooler setpoint (degrees Celsius).
-
         """
+
         if SetCCDTemperature is None:
             return self.get("setccdtemperature")
+
         self.put("setccdtemperature", SetCCDTemperature=SetCCDTemperature)
 
     def startx(self, StartX=None):
-        """Set or return the current subframe X axis start position.
+        """
+        Set or return the current subframe X axis start position.
         :param
             StartX (int): The subframe X axis start position in binned pixels.
 
         :return:
             Sets the subframe start position for the X axis (0 based) and returns the
             current value. If binning is active, value is in binned pixels.
-
         """
+
         if StartX is None:
             return self.get("startx")
+
         self.put("startx", StartX=StartX)
 
     def starty(self, StartY=None):
-        """Set or return the current subframe Y axis start position.
+        """
+        Set or return the current subframe Y axis start position.
         :param
             StartY (int): The subframe Y axis start position in binned pixels.
 
         :return:
             Sets the subframe start position for the Y axis (0 based) and returns the
             current value. If binning is active, value is in binned pixels.
-
         """
+
         if StartY is None:
             return self.get("starty")
+
         self.put("starty", StartY=StartY)
 
     def abortexposure(self):
-        """Abort the current exposure, if any, and returns the camera to Idle state."""
+        """
+        Abort the current exposure, if any, and returns the camera to Idle state.
+        """
+
         self.put("abortexposure")
 
     def pulseguide(self, Direction: int, Duration: int):
-        """Pulse guide in the specified direction for the specified time.
+        """
+        Pulse guide in the specified direction for the specified time.
 
         :param
             Direction (int): Direction of movement (0 = North, 1 = South, 2 = East,
                 3 = West).
             Duration (int): Duration of movement in milli-seconds.
-
         """
+
         self.put("pulseguide", Direction=Direction, Duration=Duration)
 
     def startexposure(self, Duration=0, Light=True):
-        """Start an exposure.
+        """
+        Start an exposure.
 
         Notes:
             Use ImageReady to check when the exposure is complete.
@@ -1213,26 +1263,29 @@ class Camera(AlpacaBase):
             Duration (float): Duration of exposure in seconds.
             Light (bool): True if light frame, false if dark frame.
         """
+
         self.put("startexposure", Duration=Duration, Light=Light)
 
     def stopexposure(self):
-        """Stop the current exposure, if any.
+        """
+        Stop the current exposure, if any.
 
         Notes:
             If an exposure is in progress, the readout process is initiated. Ignored if
             readout is already in process.
-
         """
+
         self.put("stopexposure")
 
 
 class FilterWheel(AlpacaBase):
-    """Filter wheel specific methods."""
-
-    logger = logging.getLogger(__name__)
+    """
+    Filter wheel specific methods.
+    """
 
     def focusoffsets(self):
-        """Filter focus offsets.
+        """
+        Filter focus offsets.
         :return:
             An integer array of filter focus offsets.
 
@@ -1240,238 +1293,278 @@ class FilterWheel(AlpacaBase):
         return self.get("focusoffsets")
 
     def names(self):
-        """Filter wheel filter names.
+        """
+        Filter wheel filter names.
         :return:
             Names of the filters.
         """
+
         return self.get("names")
 
     def position(self, Position=None):
-        """Set or return the filter wheel position.
+        """
+        Set or return the filter wheel position.
         :param
             Position (int): Number of the filter wheel position to select.
         :return:
             Returns the current filter wheel position.
-
         """
+
         if Position is None:
             return self.get("position")
+
         self.put("position", Position=Position)
 
 
 class Telescope(AlpacaBase):
-    """Telescope specific methods."""
-    __all__ = []
-
-    logger = logging.getLogger(__name__)
+    """
+    Telescope specific methods.
+    """
 
     def alignmentmode(self):
-        """Return the current mount alignment mode.
+        """
+        Return the current mount alignment mode.
         :return:
             Alignment mode of the mount (Alt/Az, Polar, German Polar).
 
         """
+
         return self.get("alignmentmode")
 
     def altitude(self):
-        """Return the mount's Altitude above the horizon.
+        """
+        Return the mount's Altitude above the horizon.
         :return:
             Altitude of the telescope's current position (degrees, positive up).
         """
+
         return self.get("altitude")
 
     def aperturearea(self):
-        """Return the telescope's aperture.
+        """
+        Return the telescope's aperture.
         :return:
             Area of the telescope's aperture (square meters).
         """
+
         return self.get("aperturearea")
 
     def aperturediameter(self):
-        """Return the telescope's effective aperture.
+        """
+        Return the telescope's effective aperture.
         :return:
             Telescope's effective aperture diameter (meters).
         """
+
         value = self.get("aperturediameter")
         if value:
             return value * 1000
+
         else:
             return None
 
     def athome(self):
-        """Indicate whether the mount is at the home position.
+        """
+        Indicate whether the mount is at the home position.
         :return:
             True if the mount is stopped in the Home position. Must be False if the
             telescope does not support homing.
 
         """
+
         return self.get("athome")
 
     def atpark(self):
-        """Indicate whether the telescope is at the park position.
+        """
+        Indicate whether the telescope is at the park position.
         :return:
             True if the telescope has been put into the parked state by the set park()
             method. Set False by calling the unpark() method.
-
         """
+
         return self.get("atpark")
 
     def azimuth(self):
-        """Return the telescope's aperture.
+        """
+        Return the telescope's aperture.
 
         Return:
             Azimuth of the telescope's current position (degrees, North-referenced,
             positive East/clockwise).
         """
+
         return self.get("azimuth")
 
     def canfindhome(self):
-        """Indicate whether the mount can find the home position.
+        """
+        Indicate whether the mount can find the home position.
 
         :return:
             True if this telescope is capable of programmed finding its home position.
-
         """
+
         return self.get("canfindhome")
 
     def canpark(self):
-        """Indicate whether the telescope can be parked.
+        """
+        Indicate whether the telescope can be parked.
         :return:
             True if this telescope is capable of programmed parking.
-
         """
+
         return self.get("canpark")
 
     def canpulseguide(self):
-        """Indicate whether the telescope can be pulse guided.
+        """
+        Indicate whether the telescope can be pulse guided.
         :return:
             True if this telescope is capable of software-pulsed guiding (via the
             pulseguide(int, int) method).
-
         """
+
         return self.get("canpulseguide")
 
     def cansetdeclinationrate(self):
-        """Indicate whether the DeclinationRate property can be changed.
+        """
+        Indicate whether the DeclinationRate property can be changed.
         :return:
             True if the DeclinationRate property can be changed to provide offset
             tracking in the declination axis.
         """
+
         return self.get("cansetdeclinationrate")
 
     def cansetguiderates(self):
-        """Indicate whether the DeclinationRate property can be changed.
+        """
+        Indicate whether the DeclinationRate property can be changed.
         :return:
             True if the guide rate properties used for pulseguide(int, int) can ba
             adjusted.
         """
+
         return self.get("cansetguiderates")
 
     def cansetpark(self):
-        """Indicate whether the telescope park position can be set.
+        """
+        Indicate whether the telescope park position can be set.
         :return:
             True if this telescope is capable of programmed setting of its park position
             (setpark() method).
         """
+
         return self.get("cansetpark")
 
     def cansetpierside(self):
-        """Indicate whether the telescope SideOfPier can be set.
+        """
+        Indicate whether the telescope SideOfPier can be set.
         :return:
             True if the SideOfPier property can be set, meaning that the mount can be
             forced to flip.
-
         """
+
         return self.get("cansetpierside")
 
     def cansetrightascensionrate(self):
-        """Indicate whether the RightAscensionRate property can be changed.
+        """
+        Indicate whether the RightAscensionRate property can be changed.
         :return:
             True if the RightAscensionRate property can be changed to provide offset
             tracking in the right ascension axis.
-
         """
+
         return self.get("cansetrightascensionrate")
 
     def cansettracking(self):
-        """Indicate whether the Tracking property can be changed.
+        """
+        Indicate whether the Tracking property can be changed.
         :return:
             True if the Tracking property can be changed, turning telescope sidereal
             tracking on and off.
-
         """
+
         return self.get("cansettracking")
 
     def canslew(self):
-        """Indicate whether the telescope can slew synchronously.
+        """
+        Indicate whether the telescope can slew synchronously.
         :return:
             True if this telescope is capable of programmed slewing (synchronous or
             asynchronous) to equatorial coordinates.
-
         """
+
         return self.get("canslew")
 
     def canslewaltaz(self):
-        """Indicate whether the telescope can slew synchronously to AltAz coordinates.
+        """
+        Indicate whether the telescope can slew synchronously to AltAz coordinates.
         :return:
             True if this telescope is capable of programmed slewing (synchronous or
             asynchronous) to local horizontal coordinates.
         """
+
         return self.get("canslewaltaz")
 
     def canslewaltazasync(self):
-        """Indicate whether the telescope can slew asynchronusly to AltAz coordinates.
+        """
+        Indicate whether the telescope can slew asynchronusly to AltAz coordinates.
         :return:
             True if this telescope is capable of programmed asynchronus slewing
             (synchronous or asynchronous) to local horizontal coordinates.
         """
+
         return self.get("canslewaltazasync")
 
     def cansync(self):
-        """Indicate whether the telescope can sync to equatorial coordinates.
+        """
+        Indicate whether the telescope can sync to equatorial coordinates.
         :return:
             True if this telescope is capable of programmed synching to equatorial
             coordinates.
-
         """
+
         return self.get("cansync")
 
     def cansyncaltaz(self):
-        """Indicate whether the telescope can sync to local horizontal coordinates.
+        """
+        Indicate whether the telescope can sync to local horizontal coordinates.
         :return:
             True if this telescope is capable of programmed synching to local horizontal
             coordinates.
-
         """
+
         return self.get("cansyncaltaz")
 
     def declination(self):
-        """Return the telescope's declination.
+        """
+        Return the telescope's declination.
         Notes:
             Reading the property will raise an error if the value is unavailable.
         :return:
             The declination (degrees) of the telescope's current equatorial coordinates,
             in the coordinate system given by the EquatorialSystem property.
-
         """
+
         return self.get("declination")
 
     def declinationrate(self, DeclinationRate=None):
-        """Set or return the telescope's declination tracking rate.
+        """
+        Set or return the telescope's declination tracking rate.
         :param
             DeclinationRate (float): Declination tracking rate (arcseconds per second).
 
         :return:
             The declination tracking rate (arcseconds per second) if DeclinationRate is
             not set.
-
         """
+
         if DeclinationRate is None:
             return self.get("declinationrate")
+
         self.put("declinationrate", DeclinationRate=DeclinationRate)
 
     def doesrefraction(self, DoesRefraction=None):
-        """Indicate or determine if atmospheric refraction is applied to coordinates.
+        """
+        Indicate or determine if atmospheric refraction is applied to coordinates.
         :param
             DoesRefraction (bool): Set True to make the telescope or driver apply
                 atmospheric refraction to coordinates.
@@ -1480,107 +1573,130 @@ class Telescope(AlpacaBase):
             True if the telescope or driver applies atmospheric refraction to
             coordinates.
         """
+
         if DoesRefraction is None:
             return self.get("doesrefraction")
+
         self.put("doesrefraction", DoesRefraction=DoesRefraction)
 
     def equatorialsystem(self):
-        """Return the current equatorial coordinate system used by this telescope.
+        """
+        Return the current equatorial coordinate system used by this telescope.
         :return:
             Current equatorial coordinate system used by this telescope
             (e.g. Topocentric or J2000).
         """
+
         return self.get("equatorialsystem")
 
     def focallength(self):
-        """Return the telescope's focal length in meters.
+        """
+        Return the telescope's focal length in meters.
         :return:
             The telescope's focal length in meters.
         """
+
         value = self.get("focallength")
         if value:
             return value * 1000
+
         else:
             return None
 
     def guideratedeclination(self, GuideRateDeclination=None):
-        """Set or return the current Declination rate offset for telescope guiding.
+        """
+        Set or return the current Declination rate offset for telescope guiding.
         :param
             GuideRateDeclination (float): Declination movement rate offset
                 (degrees/sec).
         :return:
             Current declination rate offset for telescope guiding if not set.
         """
+
         if GuideRateDeclination is None:
             return self.get("guideratedeclination")
+
         self.put("guideratedeclination", GuideRateDeclination=GuideRateDeclination)
 
     def guideraterightascension(self, GuideRateRightAscension=None):
-        """Set or return the current RightAscension rate offset for telescope guiding.
+        """
+        Set or return the current RightAscension rate offset for telescope guiding.
         :param
             GuideRateRightAscension (float): RightAscension movement rate offset
                 (degrees/sec).
         :return:
             Current right ascension rate offset for telescope guiding if not set.
         """
+
         if GuideRateRightAscension is None:
             return self.get("guideraterightascension")
-        self.put(
-            "guideraterightascension", GuideRateRightAscension=GuideRateRightAscension
-        )
+
+        self.put("guideraterightascension", GuideRateRightAscension=GuideRateRightAscension)
 
     def ispulseguiding(self):
-        """Indicate whether the telescope is currently executing a PulseGuide command.
+        """
+        Indicate whether the telescope is currently executing a PulseGuide command.
         :return:
             True if a pulseguide(int, int) command is in progress, False otherwise.
 
         """
+
         return self.get("ispulseguiding")
 
     def rightascension(self):
-        """Return the telescope's right ascension coordinate.
+        """
+        Return the telescope's right ascension coordinate.
         :return:
             The right ascension (hours) of the telescope's current equatorial
             coordinates, in the coordinate system given by the EquatorialSystem
             property.
         """
+
         return self.get("rightascension")
 
     def rightascensionrate(self, RightAscensionRate=None):
-        """Set or return the telescope's right ascension tracking rate.
+        """
+        Set or return the telescope's right ascension tracking rate.
         :param
             RightAscensionRate (float): Right ascension tracking rate (arcseconds per
                 second).
         :return:
             Telescope's right ascension tracking rate if not set.
         """
+
         if RightAscensionRate is None:
             return self.get("rightascensionrate")
+
         self.put("rightascensionrate", RightAscensionRate=RightAscensionRate)
 
     def sideofpier(self, SideOfPier=None):
-        """Set or return the mount's pointing state.
+        """
+        Set or return the mount's pointing state.
         :param
             SideOfPier (int): New pointing state. 0 = pierEast, 1 = pierWest
 
         :return:
             Side of pier if not set.
-
         """
+
         if SideOfPier is None:
             return self.get("sideofpier")
+
         self.put("sideofpier", SideOfPier=SideOfPier)
 
     def siderealtime(self):
-        """Return the local apparent sidereal time.
+        """
+        Return the local apparent sidereal time.
         :return:
             The local apparent sidereal time from the telescope's internal clock (hours,
             sidereal).
         """
+
         return self.get("siderealtime")
 
     def siteelevation(self, SiteElevation=None):
-        """Set or return the observing site's elevation above mean sea level.
+        """
+        Set or return the observing site's elevation above mean sea level.
         :param
             SiteElevation (float): Elevation above mean sea level (metres).
 
@@ -1588,73 +1704,87 @@ class Telescope(AlpacaBase):
             Elevation above mean sea level (metres) of the site at which the telescope
             is located if not set.
         """
+
         if SiteElevation is None:
             return self.get("siteelevation")
+
         self.put("siteelevation", SiteElevation=SiteElevation)
 
     def sitelatitude(self, SiteLatitude=None):
-        """Set or return the observing site's latitude.
+        """
+        Set or return the observing site's latitude.
         :param
             SiteLatitude (float): Site latitude (degrees).
 
         :return:
             Geodetic(map) latitude (degrees, positive North, WGS84) of the site at which
             the telescope is located if not set.
-
         """
+
         if SiteLatitude is None:
             return self.get("sitelatitude")
+
         self.put("sitelatitude", SiteLatitude=SiteLatitude)
 
     def sitelongitude(self, SiteLongitude=None):
-        """Set or return the observing site's longitude.
+        """
+        Set or return the observing site's longitude.
         :param
             SiteLongitude (float): Site longitude (degrees, positive East, WGS84)
 
         :return:
             Longitude (degrees, positive East, WGS84) of the site at which the telescope
             is located.
-
         """
+
         if SiteLongitude is None:
             return self.get("sitelongitude")
+
         self.put("sitelongitude", SiteLongitude=SiteLongitude)
 
     def slewing(self):
-        """Indicate whether the telescope is currently slewing.
+        """
+        Indicate whether the telescope is currently slewing.
         :return:
             True if telescope is currently moving in response to one of the Slew methods
             or the moveaxis(int, float) method, False at all other times.
         """
+
         return self.get("slewing")
 
     def slewsettletime(self, SlewSettleTime=None):
-        """Set or return the post-slew settling time.
+        """
+        Set or return the post-slew settling time.
         :param
             SlewSettleTime (int): Settling time (integer sec.).
         :return:
             Returns the post-slew settling time (sec.) if not set.
         """
+
         if SlewSettleTime is None:
             return self.get("slewsettletime")
+
         self.put("slewsettletime", SlewSettleTime=SlewSettleTime)
 
     def targetdeclination(self, TargetDeclination=None):
-        """Set or return the target declination of a slew or sync.
+        """
+        Set or return the target declination of a slew or sync.
         :param
             TargetDeclination (float): Target declination(degrees)
 
         :return:
             Declination (degrees, positive North) for the target of an equatorial slew
             or sync operation.
-
         """
+
         if TargetDeclination is None:
             return self.get("targetdeclination")
+
         self.put("targetdeclination", TargetDeclination=TargetDeclination)
 
     def targetrightascension(self, TargetRightAscension=None):
-        """Set or return the current target right ascension.
+        """
+        Set or return the current target right ascension.
         :param
             TargetRightAscension (float): Target right ascension (hours).
 
@@ -1662,61 +1792,72 @@ class Telescope(AlpacaBase):
             Right ascension (hours) for the target of an equatorial slew or sync
             operation.
         """
+
         if TargetRightAscension is None:
             return self.get("targetrightascension")
+
         self.put("targetrightascension", TargetRightAscension=TargetRightAscension)
 
     def tracking(self, Tracking=None):
-        """Enable, disable, or indicate whether the telescope is tracking.
+        """
+        Enable, disable, or indicate whether the telescope is tracking.
         :param
             Tracking (bool): Tracking enabled / disabled.
 
         :return:
             State of the telescope's sidereal tracking drive.
-
         """
+
         if Tracking is None:
             return self.get("tracking")
+
         self.put("tracking", Tracking=Tracking)
 
     def trackingrate(self, TrackingRate=None):
-        """Set or return the current tracking rate.
+        """
+        Set or return the current tracking rate.
         :param
             TrackingRate (int): New tracking rate. 0 = driveSidereal, 1 = driveLunar,
                 2 = driveSolar, 3 = driveKing.
 
         :return:
             Current tracking rate of the telescope's sidereal drive if not set.
-
         """
+
         if TrackingRate is None:
             return self.get("trackingrate")
+
         self.put("trackingrate", TrackingRate=TrackingRate)
 
     def trackingrates(self):
-        """Return a collection of supported DriveRates values.
+        """
+        Return a collection of supported DriveRates values.
         :return:
             List of supported DriveRates values that describe the permissible values of
             the TrackingRate property for this telescope type.
         """
+
         return self.get("trackingrates")
 
     def utcdate(self, UTCDate=None):
-        """Set or return the UTC date/time of the telescope's internal clock.
+        """
+        Set or return the UTC date/time of the telescope's internal clock.
         :param
             UTCDate: UTC date/time as an str or datetime.
 
         :return:
             datetime of the UTC date/time if not set.
-
         """
+
         if UTCDate is None:
             return parser.parse(self.get("utcdate"), fuzzy=True)
 
         if type(UTCDate) is str:
             data = UTCDate
+
         elif type(UTCDate) is datetime:
             data = UTCDate.isoformat()
+
         else:
             self.log.error(f'type error in: [{UTCDate}]')
             return None
@@ -1724,27 +1865,34 @@ class Telescope(AlpacaBase):
         self.put("utcdate", UTCDate=data)
 
     def abortslew(self):
-        """Immediately stops a slew in progress."""
+        """
+        Immediately stops a slew in progress.
+        """
+
         self.put("abortslew")
 
     def axisrates(self, Axis):
-        """Return rates at which the telescope may be moved about the specified axis.
+        """
+        Return rates at which the telescope may be moved about the specified axis.
         :return:
             The rates at which the telescope may be moved about the specified axis by
             the moveaxis(int, float) method.
-
         """
+
         return self.get("axisrates", Axis=Axis)
 
     def canmoveaxis(self, Axis):
-        """Indicate whether the telescope can move the requested axis.
+        """
+        Indicate whether the telescope can move the requested axis.
         :return:
             True if this telescope can move the requested axis.
         """
+
         return self.get("canmoveaxis", Axis=Axis)
 
     def destinationsideofpier(self, RightAscension, Declination):
-        """Predict the pointing state after a German equatorial mount slews to given coordinates.
+        """
+        Predict the pointing state after a German equatorial mount slews to given coordinates.
         :param
             RightAscension (float): Right Ascension coordinate (0.0 to 23.99999999
                 hours).
@@ -1754,6 +1902,7 @@ class Telescope(AlpacaBase):
             given coordinates. The return value will be one of - 0 = pierEast,
             1 = pierWest, -1 = pierUnknown.
         """
+
         return self.get(
             "destinationsideofpier",
             RightAscension=RightAscension,
@@ -1761,72 +1910,89 @@ class Telescope(AlpacaBase):
         )
 
     def findhome(self):
-        """Move the mount to the "home" position."""
+        """
+        Move the mount to the "home" position.
+        """
+
         self.put("findhome")
 
     def moveaxis(self, Axis, Rate):
-        """Move a telescope axis at the given rate.
+        """
+        Move a telescope axis at the given rate.
         :param
             Axis (int): The axis about which rate information is desired.
                 0 = axisPrimary, 1 = axisSecondary, 2 = axisTertiary.
             Rate (float): The rate of motion (deg/sec) about the specified axis
         """
+
         self.put("moveaxis", Axis=Axis, Rate=Rate)
 
     def park(self):
-        """Park the mount."""
+        """
+        Park the mount.
+        """
+
         self.put("park")
 
     def pulseguide(self, Direction, Duration):
-        """Move the scope in the given direction for the given time.
+        """
+        Move the scope in the given direction for the given time.
         Notes:
             0 = guideNorth, 1 = guideSouth, 2 = guideEast, 3 = guideWest.
         :param
             Direction (int): Direction in which the guide-rate motion is to be made.
             Duration (int): Duration of the guide-rate motion (milliseconds).
-
         """
+
         self.put("pulseguide", Direction=Direction, Duration=Duration)
 
     def setpark(self):
-        """Set the telescope's park position."""
+        """
+        Set the telescope's park position.
+        """
+
         self.put("setpark")
 
     def slewtoaltaz(self, Azimuth, Altitude):
-        """Slew synchronously to the given local horizontal coordinates.
+        """
+        Slew synchronously to the given local horizontal coordinates.
         :param
             Azimuth (float): Azimuth coordinate (degrees, North-referenced, positive
                 East/clockwise).
             Altitude (float): Altitude coordinate (degrees, positive up).
         """
+
         self.put("slewtoaltaz", Azimuth=Azimuth, Altitude=Altitude)
 
     def slewtoaltazasync(self, Azimuth, Altitude):
-        """Slew asynchronously to the given local horizontal coordinates.
+        """
+        Slew asynchronously to the given local horizontal coordinates.
         :param
             Azimuth (float): Azimuth coordinate (degrees, North-referenced, positive
                 East/clockwise).
             Altitude (float): Altitude coordinate (degrees, positive up).
         """
+
         self.put("slewtoaltazasync", Azimuth=Azimuth, Altitude=Altitude)
 
     def slewtocoordinates(self, RightAscension, Declination):
-        """Slew synchronously to the given equatorial coordinates.
+        """
+        Slew synchronously to the given equatorial coordinates.
         :param
             RightAscension (float): Right Ascension coordinate (hours).
             Declination (float): Declination coordinate (degrees).
         """
-        self.put(
-            "slewtocoordinates", RightAscension=RightAscension, Declination=Declination
-        )
+
+        self.put("slewtocoordinates", RightAscension=RightAscension, Declination=Declination)
 
     def slewtocoordinatesasync(self, RightAscension, Declination):
-        """Slew asynchronously to the given equatorial coordinates.
+        """
+        Slew asynchronously to the given equatorial coordinates.
         :param
             RightAscension (float): Right Ascension coordinate (hours).
             Declination (float): Declination coordinate (degrees).
-
         """
+
         self.put(
             "slewtocoordinatesasync",
             RightAscension=RightAscension,
@@ -1834,49 +2000,66 @@ class Telescope(AlpacaBase):
         )
 
     def slewtotarget(self):
-        """Slew synchronously to the TargetRightAscension and TargetDeclination coordinates."""
+        """
+        Slew synchronously to the TargetRightAscension and TargetDeclination coordinates.
+        """
+
         self.put("slewtotarget")
 
     def slewtotargetasync(self):
-        """Asynchronously slew to the TargetRightAscension and TargetDeclination coordinates."""
+        """
+        Asynchronously slew to the TargetRightAscension and TargetDeclination coordinates.
+        """
+
         self.put("slewtotargetasync")
 
     def synctoaltaz(self, Azimuth, Altitude):
-        """Sync to the given local horizontal coordinates.
+        """
+        Sync to the given local horizontal coordinates.
         :param
             Azimuth (float): Azimuth coordinate (degrees, North-referenced, positive
                 East/clockwise).
             Altitude (float): Altitude coordinate (degrees, positive up).
         """
+
         self.put("synctoaltaz", Azimuth=Azimuth, Altitude=Altitude)
 
     def synctocoordinates(self, RightAscension, Declination):
-        """Sync to the given equatorial coordinates.
+        """
+        Sync to the given equatorial coordinates.
         :param
             RightAscension (float): Right Ascension coordinate (hours).
             Declination (float): Declination coordinate (degrees).
         """
+
         self.put(
             "synctocoordinates", RightAscension=RightAscension, Declination=Declination
         )
 
     def synctotarget(self):
-        """Sync to the TargetRightAscension and TargetDeclination coordinates."""
+        """
+        Sync to the TargetRightAscension and TargetDeclination coordinates.
+        """
+
         self.put("synctotarget")
 
     def unpark(self):
-        """Unpark the mount."""
+        """
+        Unpark the mount.
+        """
+
         self.put("unpark")
 
 
 class ObservingConditions(AlpacaBase):
-    """ObservingConditions  specific methods."""
-
-    logger = logging.getLogger(__name__)
+    """
+    ObservingConditions  specific methods.
+    """
 
     def averageperiod(self, AveragePeriod=None):
         if AveragePeriod is None:
             return self.get("position")
+
         self.put("position", AveragePeriod=AveragePeriod)
 
     def cloudcover(self):
@@ -1929,13 +2112,14 @@ class ObservingConditions(AlpacaBase):
 
 
 class Focuser(AlpacaBase):
-    """Focuser  specific methods."""
-
-    logger = logging.getLogger(__name__)
+    """
+    Focuser  specific methods.
+    """
 
     def averageperiod(self, AveragePeriod=None):
         if AveragePeriod is None:
             return self.get("position")
+
         self.put("position", AveragePeriod=AveragePeriod)
 
     def absolut(self):
@@ -1959,6 +2143,7 @@ class Focuser(AlpacaBase):
     def tempcomp(self, TempComp=None):
         if TempComp is None:
             return self.get("tempcomp")
+
         self.put("tempcomp", TempComp=TempComp)
 
     def tempcompavailable(self):
@@ -1973,4 +2158,5 @@ class Focuser(AlpacaBase):
     def move(self, Position=None):
         if Position is None:
             return self.get("move")
+
         self.put("move", Position=Position)

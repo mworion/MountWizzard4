@@ -51,42 +51,45 @@ class SplashScreen(QObject):
         self._pxm = QPixmap(':/icon/mw4.ico')
 
         flags = (Qt.WindowStaysOnTopHint | Qt.X11BypassWindowManagerHint)
-        self._qss = QSplashScreen(self._pxm, flags)
-        self._msg = ''
-        self._maxv = 100.0
-        self._minv = 0.0
-        self._cval = 0.0
-        self._qss.__drawContents__ = self._qss.drawContents
-        self._qss.drawContents = self._drawContents
-        self._qss.show()
-        self._qss.raise_()
+        self.qss = QSplashScreen(self._pxm, flags)
+        self.msg = ''
+        self.maxv = 100.0
+        self.minv = 0.0
+        self.cval = 0.0
+        self.qss.__drawContents__ = self.qss.drawContents
+        self.qss.drawContents = self.drawContents
+        self.qss.show()
+        self.qss.raise_()
         QApplication.processEvents()
 
     def close(self):
         self.update()
-        self._qss.close()
+        self.qss.close()
 
     def setValue(self, val):
-        for i in np.arange(self._cval, val, self._maxv / 5.0):
-            self._cval = i
+        for i in np.arange(self.cval, val, self.maxv / 5.0):
+            self.cval = i
             self.update()
 
     def showMessage(self, msg):
-        self._msg = msg
+        self.msg = msg
         self.update()
 
     def update(self):
-        self._qss.update()
+        self.qss.update()
         QApplication.processEvents()
 
-    def _drawContents(self, painter):
+    def drawContents(self, painter):
         view_port = painter.viewport()
         w = view_port.right()
         h = view_port.bottom()
 
         painter.setPen(QColor(55, 55, 55, 255))
         painter.setBrush(QColor(0, 0, 0, 255))
-        painter.drawRect(10, h - 64, w - 20, 19)
+        painter.drawRect(10, 
+                         h - 64, 
+                         w - 20, 
+                         19)
 
         redlg = QLinearGradient(0, h - 63, 0, h)
         redlg.setColorAt(0.3, QColor(8, 36, 48))
@@ -96,13 +99,17 @@ class SplashScreen(QObject):
         painter.setBrush(redlg)
         painter.drawRect(13,
                          h - 61,
-                         int((w - 24) * self._cval / self._maxv),
+                         int((w - 24) * self.cval / self.maxv),
                          14)
 
         painter.setPen(Qt.white)
 
-        rect = QRectF(10, h - 61, w - 20, 15)
-        painter.drawText(rect, Qt.AlignCenter, str(self._msg))
+        rect = QRectF(10, 
+                      h - 61, 
+                      w - 20, 
+                      15)
+                      
+        painter.drawText(rect, Qt.AlignCenter, str(self.msg))
 
     def finish(self, qwid):
-        self._qss.finish(qwid)
+        self.qss.finish(qwid)

@@ -41,24 +41,6 @@ class DevicePopup(QDialog, widget.MWidget):
     __all__ = ['DevicePopup',
                ]
 
-    # INDI device types
-    indiTypes = {
-        'telescope': (1 << 0),
-        'camera': (1 << 1),
-        'guider': (1 << 2),
-        'focuser': (1 << 3),
-        'filterwheel': (1 << 4),
-        'dome': (1 << 5),
-        'observingconditions': (1 << 7) | (1 << 15),
-        'skymeter': (1 << 15) | (1 << 19),
-        'cover': (1 << 9) | (1 << 10),
-        'power': (1 << 7) | (1 << 3) | (1 << 15) | (1 << 18),
-    }
-
-    indiDefaults = {
-        'telescope': 'LX200 10micron',
-    }
-
     framework2tabs = {
         'indi': 'INDI / INDIGO',
         'ascom': 'ASCOM',
@@ -79,6 +61,7 @@ class DevicePopup(QDialog, widget.MWidget):
         self.data = data
         self.driver = driver
         self.deviceType = deviceType
+        self.message = app.message
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self)
@@ -87,10 +70,7 @@ class DevicePopup(QDialog, widget.MWidget):
         x = geometry[0] + int((geometry[2] - self.width()) / 2)
         y = geometry[1] + int((geometry[3] - self.height()) / 2)
         self.move(x, y)
-
-        self.indiClass = None
-        self.indiSearchType = self.indiTypes.get(self.deviceType, 0)
-        self.indiSearchNameList = None
+        
         self.returnValues = {'close': 'cancel'}
         self.framework2gui = {
             'indi': {
@@ -129,12 +109,14 @@ class DevicePopup(QDialog, widget.MWidget):
 
         self.ui.cancel.clicked.connect(self.close)
         self.ui.ok.clicked.connect(self.storeConfig)
-        self.ui.indiSearch.clicked.connect(self.searchDevices)
+        
+        # todo: naming equally to indiSelector, astapIndexPathSelector etc.
+        self.ui.indiSearch.clicked.connect(self.discoverIndiDevices)
         self.ui.selectAstrometryIndexPath.clicked.connect(self.selectAstrometryIndexPath)
         self.ui.selectAstrometryAppPath.clicked.connect(self.selectAstrometryAppPath)
         self.ui.selectAstapIndexPath.clicked.connect(self.selectAstapIndexPath)
         self.ui.selectAstapAppPath.clicked.connect(self.selectAstapAppPath)
-        self.ui.ascomSelector.clicked.connect(self.setupAscomDriver)
+        self.ui.ascomSelector.clicked.connect(self.selectAscomDriver)
 
         self.initConfig()
         self.show()
@@ -252,8 +234,10 @@ class DevicePopup(QDialog, widget.MWidget):
             elif isinstance(ui, QLineEdit):
                 if isinstance(frameworkData[prop], str):
                     frameworkData[prop] = ui.text()
+                    
                 elif isinstance(frameworkData[prop], int):
                     frameworkData[prop] = int(ui.text())
+                    
                 else:
                     frameworkData[prop] = float(ui.text())
 
@@ -300,92 +284,50 @@ class DevicePopup(QDialog, widget.MWidget):
         self.close()
 
         return True
-
-    def addDevicesWithType(self, deviceName, propertyName):
+          
+    def updateIndiDeviceNameList(self, deviceNames=[]):
         """
-        addDevicesWithType gety called whenever a new device send out text messages. than it
-        checks, if the device type fits to the search type desired. if they match, the
-        device name is added to the list.
-        unfortunately the indi definitions are not well defined. so for example SQM reports
-        only aux general. this is value '0'. So i have to treat all devices reporting device
-        type '0' as devices which could be used for everything.
-
-        :param deviceName:
-        :param propertyName:
-        :return: success
+        updateIndiDeviceNameList updates the indi device name selectors combobox with the discovered
+        entries. therefore it delets the old list and rebuild it new.
+        
+        :return: True for test purpose
         """
-
-        if propertyName != 'DRIVER_INFO':
-            return False
-
-        device = self.indiClass.client.devices.get(deviceName)
-        if not device:
-            return False
-
-        interface = device.getText(propertyName).get('DRIVER_INTERFACE', None)
-
-        if interface is None:
-            return False
-
-        if interface == '0':
-            interface = 0xffff
-
-        if self.indiSearchType is None:
-            return False
-
-        self.log.info(f'Found: [{deviceName}], interface: [{interface}]')
-
-        interface = int(interface)
-
-        if interface & self.indiSearchType:
-            self.indiSearchNameList.append(deviceName)
-
-        return True
-
-    def searchDevices(self):
-        """
-        searchDevices implements a search for devices of a certain device type. it is called
-        from a button press and checks which button it was. after that for the right device
-        it collects all necessary data for host value, instantiates an INDI client and
-        watches for all devices connected to this server. Than it connects a subroutine for
-        collecting the right device names and opens a model dialog. the data collection
-        takes place as long as the model dialog is open. when the user closes this dialog, the
-        collected data is written to the drop down list.
-
-        :return:  success finding
-        """
-
-        self.indiSearchNameList = list()
-
-        if self.driver in self.indiDefaults:
-            self.indiSearchNameList.append(self.indiDefaults[self.driver])
-
-        else:
-            host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))
-            self.indiClass = IndiClass()
-            self.indiClass.host = host
-
-            self.indiClass.client.signals.defText.connect(self.addDevicesWithType)
-            self.indiClass.client.connectServer()
-            self.indiClass.client.watchDevice()
-            msg = QMessageBox
-            msg.information(self,
-                            'Searching Devices',
-                            f'Search for [{self.driver}] could take some seconds!')
-            self.indiClass.client.disconnectServer()
-
+        
         self.ui.indiDeviceList.clear()
         self.ui.indiDeviceList.setView(QListView())
-
-        for name in self.indiSearchNameList:
-            self.log.info(f'Indi search found: {name}')
-
-        for deviceName in self.indiSearchNameList:
+        
+        for deviceName in deviceNames:
             self.ui.indiDeviceList.addItem(deviceName)
-
+    
         return True
 
-    def checkAvailability(self, framework):
+    def discoverIndiDevices(self):
+        """
+        discoverIndiDevices looks all possible indi devices up from the actual server and the selected
+        device type. The search time is defined in indi class and shoiuld be about 2-3 seconds.
+        if the search was successful, the gui and the device list will be updated
+        
+        :return: success
+        """
+        
+        host = (self.ui.indiHost.text(), int(self.ui.indiPort.text())
+        indi = IndiClass()
+        indi.host = host
+        
+        deviceNames = indi.discoverDevices(deviceType=self.deviceType)
+        
+        if not deviceNames:
+            self.message('Indi search found no devices',2)
+            return False
+        
+        for deviceName in deviceNames:
+            self.message(f'Indi search found device: [{name}]', 0)
+        
+        self.updateIndiDeviceNameList(deviceNames=deviceNames)
+        
+        return True
+
+    def checkAstrometryAvailability(self, framework):
         """
         checkAvailability looks the presence of the binaries and indexes up and reports the
         result back to the gui.
@@ -394,11 +336,13 @@ class DevicePopup(QDialog, widget.MWidget):
         """
 
         sucApp, sucIndex = self.app.astrometry.run[framework].checkAvailability()
+        
         if framework == 'astap':
             color = 'green' if sucApp else 'red'
             self.changeStyleDynamic(self.ui.astapAppPath, 'color', color)
             color = 'green' if sucIndex else 'red'
             self.changeStyleDynamic(self.ui.astapIndexPath, 'color', color)
+            
         else:
             color = 'green' if sucApp else 'red'
             self.changeStyleDynamic(self.ui.astrometryAppPath, 'color', color)
@@ -424,10 +368,11 @@ class DevicePopup(QDialog, widget.MWidget):
         if platform.system() == 'Darwin' and ext == '.app':
             if 'Astrometry.app' in saveFilePath:
                 saveFilePath += '/Contents/MacOS/'
+                
             else:
                 saveFilePath += '/Contents/MacOS/astrometry/bin'
 
-        if self.checkAvailability('astrometry'):
+        if self.checkAstrometryAvailability('astrometry'):
             self.ui.astrometryAppPath.setText(saveFilePath)
 
         return True
@@ -446,7 +391,7 @@ class DevicePopup(QDialog, widget.MWidget):
         if not name:
             return False
 
-        if self.checkAvailability('astrometry'):
+        if self.checkAstrometryAvailability('astrometry'):
             self.ui.astrometryIndexPath.setText(saveFilePath)
 
         return True
@@ -468,7 +413,7 @@ class DevicePopup(QDialog, widget.MWidget):
         if platform.system() == 'Darwin' and ext == '.app':
             saveFilePath += '/Contents/MacOS'
 
-        if self.checkAvailability('astap'):
+        if self.checkAstrometryAvailability('astap'):
             self.ui.astapAppPath.setText(saveFilePath)
 
         return True
@@ -487,12 +432,12 @@ class DevicePopup(QDialog, widget.MWidget):
         if not name:
             return False
 
-        if self.checkAvailability('astap'):
+        if self.checkAstrometryAvailability('astap'):
             self.ui.astapIndexPath.setText(saveFilePath)
 
         return True
 
-    def setupAscomDriver(self):
+    def selectAscomDriver(self):
         """
 
         :return: success

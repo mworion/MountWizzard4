@@ -30,12 +30,15 @@ __all__ = [
 
 logger = logging.getLogger()
 
-_lock = Lock()
+lock = Lock()
 
 
 def JNowToJ2000(ra, dec, timeJD):
     """
-
+    JNowToJ2000 uses the ERFA library which actually is included in the astropy package for
+    doing the transform. If future releases of astropy this might be a separate package and 
+    will be imported and used adequately.
+    
     :param ra:
     :param dec:
     :param timeJD:
@@ -44,10 +47,11 @@ def JNowToJ2000(ra, dec, timeJD):
 
     if not isinstance(ra, Angle):
         return Angle(hours=0), Angle(degrees=0)
+        
     if not isinstance(dec, Angle):
         return Angle(hours=0), Angle(degrees=0)
-
-    with _lock:
+        
+    with lock:
         ra = ra.radians
         dec = dec.radians
 
@@ -62,7 +66,10 @@ def JNowToJ2000(ra, dec, timeJD):
 
 def J2000ToJNow(ra, dec, timeJD):
     """
-
+    J2000ToJNow uses the ERFA library which actually is included in the astropy package for
+    doing the transform. If future releases of astropy this might be a separate package and 
+    will be imported and used adequately.
+    
     :param ra:
     :param dec:
     :param timeJD:
@@ -71,10 +78,11 @@ def J2000ToJNow(ra, dec, timeJD):
 
     if not isinstance(ra, Angle):
         return Angle(hours=0), Angle(degrees=0)
+        
     if not isinstance(dec, Angle):
         return Angle(hours=0), Angle(degrees=0)
 
-    with _lock:
+    with lock:
         ra = ra.radians
         dec = dec.radians
 
@@ -88,7 +96,13 @@ def J2000ToJNow(ra, dec, timeJD):
 
 def J2000ToAltAz(ra, dec, timeJD, location):
     """
-
+    J2000ToAltAz uses the ERFA library which actually is included in the astropy package for
+    doing the transform. If future releases of astropy this might be a separate package and 
+    will be imported and used adequately.
+    
+    Please be aware, that all refraction corrections are made in the mount itself, so all 
+    parameters which are related to RC are set to zero.
+    
     :param ra:
     :param dec:
     :param timeJD:
@@ -98,10 +112,11 @@ def J2000ToAltAz(ra, dec, timeJD, location):
 
     if not isinstance(ra, Angle):
         return Angle(degrees=0), Angle(degrees=0)
+        
     if not isinstance(dec, Angle):
         return Angle(degrees=0), Angle(degrees=0)
 
-    with _lock:
+    with lock:
         ra = ra.radians
         dec = dec.radians
         lat = location.latitude.radians
@@ -130,4 +145,5 @@ def J2000ToAltAz(ra, dec, timeJD, location):
 
         ra = Angle(radians=aob, preference='degrees')
         dec = Angle(radians=decConv, preference='degrees')
+        
         return ra, dec

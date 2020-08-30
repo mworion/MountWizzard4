@@ -317,11 +317,11 @@ class DevicePopup(QDialog, widget.MWidget):
         deviceNames = indi.discoverDevices(deviceType=self.deviceType)
         
         if not deviceNames:
-            self.message('Indi search found no devices',2)
+            self.message.emit('Indi search found no devices', 2)
             return False
         
         for deviceName in deviceNames:
-            self.message(f'Indi search found device: [{deviceName}]', 0)
+            self.message.emit(f'Indi search found device: [{deviceName}]', 0)
         
         self.updateIndiDeviceNameList(deviceNames=deviceNames)
         

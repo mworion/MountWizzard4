@@ -17,10 +17,12 @@
 ###########################################################
 # standard libraries
 from unittest import mock
+
 # external packages
 import pytest
 import PyQt5
 from indibase.indiBase import Device
+from base.indiClass import IndiClass
 
 # local import
 from base import indiClass
@@ -390,3 +392,58 @@ def test_updateMessage_5():
     app.showMessages = True
     suc = app.updateMessage('test', 'NOT should not be shown')
     assert suc
+
+
+def test_addDiscoveredDevice_1(qtbot):
+    device = Device()
+    app.indiClass = IndiClass()
+    with mock.patch.object(device,
+                           'getText',
+                           return_value={'DRIVER_INTERFACE': None}):
+        suc = app.addDiscoveredDevice('telescope', 'test')
+        assert not suc
+
+
+def test_addDiscoveredDevice_2(qtbot):
+    app.indiClass = IndiClass()
+    app.indiClass.client.devices['telescope'] = {}
+    suc = app.addDiscoveredDevice('telescope', 'DRIVER_INFO')
+    assert not suc
+
+
+def test_addDiscoveredDevice_3(qtbot):
+    device = Device()
+    app.indiClass = IndiClass()
+    app.indiClass.client.devices['telescope'] = device
+    app.indiSearchType = None
+    with mock.patch.object(device,
+                           'getText',
+                           return_value={}):
+        suc = app.addDiscoveredDevice('telescope', 'DRIVER_INFO')
+        assert not suc
+
+
+def test_addDiscoveredDevice_4(qtbot):
+    device = Device()
+    app.indiClass = IndiClass()
+    app.indiClass.client.devices['telescope'] = device
+    app.indiSearchType = None
+    app.indiSearchNameList = list()
+    with mock.patch.object(device,
+                           'getText',
+                           return_value={'DRIVER_INTERFACE': '0'}):
+        suc = app.addDiscoveredDevice('telescope', 'DRIVER_INFO')
+        assert not suc
+
+
+def test_addDiscoveredDevice_5(qtbot):
+    device = Device()
+    app.indiClass = IndiClass()
+    app.indiClass.client.devices['telescope'] = device
+    app.indiSearchType = 1
+    app.indiSearchNameList = list()
+    with mock.patch.object(device,
+                           'getText',
+                           return_value={'DRIVER_INTERFACE': 1}):
+        suc = app.addDiscoveredDevice('telescope', 'DRIVER_INFO')
+        assert not suc

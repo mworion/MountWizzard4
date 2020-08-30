@@ -550,9 +550,9 @@ class IndiClass:
 
         return True
     
-    def discoverIndiDevices(self, deviceType=''):
+    def discoverDevices(self, deviceType=''):
         """
-        discoverIndiDevices implements a discover for devices of a certain device type. it is
+        discoverDevices implements a discover for devices of a certain device type. it is
         called from a button press and checks which button it was. after that for the right
         device it collects all necessary data for host value, instantiates an INDI client and
         watches for all devices connected to this server. Than it connects a subroutine for

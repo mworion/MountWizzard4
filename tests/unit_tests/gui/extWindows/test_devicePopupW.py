@@ -49,7 +49,8 @@ def module_setup_teardown(qtbot):
         message = pyqtSignal(object, object)
         mwGlob = {'tempDir': 'tests/temp'}
 
-    class Test:
+    class Test(QObject):
+        message = pyqtSignal(object, object)
         astrometry = Astrometry(app=Test1())
 
     data = {
@@ -243,79 +244,9 @@ def test_storeConfig_1(qtbot):
     assert suc
 
 
-def test_AddDevicesWithType_1(qtbot):
-    device = Device()
-    app.indiClass = IndiClass()
-    with mock.patch.object(device,
-                           'getText',
-                           return_value={'DRIVER_INTERFACE': None}):
-        suc = app.addDevicesWithType('telescope', 'test')
-        assert not suc
-
-
-def test_AddDevicesWithType_2(qtbot):
-    app.indiClass = IndiClass()
-    app.indiClass.client.devices['telescope'] = {}
-    suc = app.addDevicesWithType('telescope', 'DRIVER_INFO')
+def test_discoverIndiDevices_1(qtbot):
+    suc = app.discoverIndiDevices()
     assert not suc
-
-
-def test_AddDevicesWithType_3(qtbot):
-    device = Device()
-    app.indiClass = IndiClass()
-    app.indiClass.client.devices['telescope'] = device
-    app.indiSearchType = None
-    with mock.patch.object(device,
-                           'getText',
-                           return_value={}):
-        suc = app.addDevicesWithType('telescope', 'DRIVER_INFO')
-        assert not suc
-
-
-def test_AddDevicesWithType_4(qtbot):
-    device = Device()
-    app.indiClass = IndiClass()
-    app.indiClass.client.devices['telescope'] = device
-    app.indiSearchType = None
-    app.indiSearchNameList = list()
-    with mock.patch.object(device,
-                           'getText',
-                           return_value={'DRIVER_INTERFACE': '0'}):
-        suc = app.addDevicesWithType('telescope', 'DRIVER_INFO')
-        assert not suc
-
-
-def test_AddDevicesWithType_5(qtbot):
-    device = Device()
-    app.indiClass = IndiClass()
-    app.indiClass.client.devices['telescope'] = device
-    app.indiSearchType = 1
-    app.indiSearchNameList = list()
-    with mock.patch.object(device,
-                           'getText',
-                           return_value={'DRIVER_INTERFACE': 1}):
-        suc = app.addDevicesWithType('telescope', 'DRIVER_INFO')
-        assert suc
-
-
-def test_searchDevices_1(qtbot):
-    suc = app.searchDevices()
-    assert suc
-
-
-def test_searchDevices_2(qtbot):
-    app.driver = 'test'
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'information',
-                           return_value=True):
-        with mock.patch.object(Client,
-                               'connectServer'):
-            with mock.patch.object(Client,
-                                   'watchDevice'):
-                with mock.patch.object(Client,
-                                       'disconnectServer'):
-                    suc = app.searchDevices()
-                    assert suc
 
 
 def test_selectAstrometryIndexPath_1(qtbot):

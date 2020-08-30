@@ -21,6 +21,7 @@ import time
 import subprocess
 import sys
 import platform
+from pkg_resources import working_set
 from distutils.version import StrictVersion
 
 # external packages
@@ -368,6 +369,9 @@ class SettMisc(object):
         if success:
             self.app.message.emit(f'MountWizzard4 {versionPackage} installed', 1)
             self.app.message.emit('Please restart to enable new version', 1)
+            packages = sorted(["%s==%s" % (i.key, i.version) for i in working_set])
+            self.log.info(f'After update:   {packages}')
+
         else:
             self.app.message.emit('Could not install update installation ', 2)
             
@@ -401,6 +405,9 @@ class SettMisc(object):
         if not self.mutexInstall.tryLock():
             self.app.message.emit('Install already running', 2)
             return False
+
+        packages = sorted(["%s==%s" % (i.key, i.version) for i in working_set])
+        self.log.info(f'Before update:  {packages}')
 
         versionPackage = self.ui.versionAvailable.text()
         self.changeStyleDynamic(self.ui.installVersion, 'running', True)

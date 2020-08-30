@@ -59,6 +59,7 @@ setup(
         'requests==2.23.0',
         'requests_toolbelt==0.9.1',
         'skyfield==1.26',
+        'sgp4>=2.14',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==1.7.0',
         'opencv-python-headless==4.3.0.36',

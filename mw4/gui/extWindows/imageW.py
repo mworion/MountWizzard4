@@ -34,7 +34,7 @@ import matplotlib.pyplot as plt
 from skyfield.api import Angle
 import numpy as np
 import cv2
-from mountcontrol import convert
+from mountcontrol.convert import convertToDMS, convertToHMS
 
 # local import
 from gui.utilities import widget
@@ -1016,9 +1016,9 @@ class ImageWindow(widget.MWidget):
 
         if result['success']:
             text = 'Solved :             '
-            text += f'RA: {convert.convertToHMS(result["raJ2000S"])} '
+            text += f'RA: {convertToHMS(result["raJ2000S"])} '
             text += f'({result["raJ2000S"].hours:4.3f}), '
-            text += f'DEC: {convert.convertToDMS(result["decJ2000S"])} '
+            text += f'DEC: {convertToDMS(result["decJ2000S"])} '
             text += f'({result["decJ2000S"].degrees:4.3f}), '
             self.app.message.emit(text, 0)
             text = '                     '

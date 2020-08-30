@@ -62,6 +62,7 @@ def module_setup_teardown(qtbot):
 
     matplot = MWidget().embedMatplot(widget, False)
     app.generatePolar = MWidget().generatePolar
+    app.generateFlat = MWidget().generateFlat
     app.modelPositionPlot = matplot
     app.errorAscendingPlot = matplot
     app.errorDistributionPlot = matplot

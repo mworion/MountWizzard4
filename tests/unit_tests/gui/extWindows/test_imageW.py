@@ -15,7 +15,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import base.packageConfig as Config
 # standard libraries
 import unittest.mock as mock
 import pytest
@@ -440,13 +439,11 @@ def test_workerPhotometry_1():
 
 
 def test_prepareImage_1():
-    Config.featureFlags['imageAdv'] = False
     suc = app.prepareImage()
     assert suc
 
 
 def test_prepareImage_2():
-    Config.featureFlags['imageAdv'] = True
     app.sources = None
     with mock.patch.object(app,
                            'workerPhotometry'):

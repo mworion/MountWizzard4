@@ -288,22 +288,22 @@ def writeSystemInfo(mwGlob=None):
     :return: true for test purpose
     """
 
-    log.critical(f' MountWizzard4 started !')
-    log.critical(f' mountwizzard4    : {version("mountwizzard4")}')
-    log.critical(f' indibase         : {version("indibase")}')
-    log.critical(f' mountcontrol     : {version("mountcontrol")}')
-    log.critical(f' Actual workdir   : {mwGlob["workDir"]}')
-    log.critical(f' Python           : {platform.python_version()}')
-    log.critical(f' Python runtime   : {platform.architecture()[0]}')
-    log.critical(f' Platform         : {platform.system()}')
-    log.critical(f' PyQt5            : {PYQT_VERSION_STR}')
-    log.critical(f' Qt               : {QT_VERSION_STR}')
-    log.critical(f' Release          : {platform.release()}')
-    log.critical(f' Machine          : {platform.machine()}')
-    log.critical(f' CPU              : {platform.processor()}')
-    log.critical(f' Node             : {platform.node()}')
-    log.critical(f' IP addr.         : {socket.gethostname()}')
-    log.critical(f' sys.executable   : {sys.executable}')
+    log.critical(f'MountWizzard4 started !')
+    log.critical(f'mountwizzard4    : {version("mountwizzard4")}')
+    log.critical(f'indibase         : {version("indibase")}')
+    log.critical(f'mountcontrol     : {version("mountcontrol")}')
+    log.critical(f'actual workdir   : {mwGlob["workDir"]}')
+    log.critical(f'python           : {platform.python_version()}')
+    log.critical(f'python runtime   : {platform.architecture()[0]}')
+    log.critical(f'platform         : {platform.system()}')
+    log.critical(f'PyQt5            : {PYQT_VERSION_STR}')
+    log.critical(f'Qt               : {QT_VERSION_STR}')
+    log.critical(f'release          : {platform.release()}')
+    log.critical(f'machine          : {platform.machine()}')
+    log.critical(f'CPU              : {platform.processor()}')
+    log.critical(f'node             : {platform.node()}')
+    log.critical(f'IP addr.         : {socket.gethostname()}')
+    log.critical(f'sys.executable   : {sys.executable}')
 
     return True
 

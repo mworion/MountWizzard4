@@ -245,12 +245,12 @@ def except_hook(typeException, valueException, tbackException):
     """
 
     result = traceback.format_exception(typeException, valueException, tbackException)
-    log.critical('----------------------------------------------------')
+    log.critical('')
     log.critical('Logging an uncatched Exception')
-    log.critical('----------------------------------------------------')
+    log.critical('')
     for i in range(0, len(result)):
         log.critical(result[i].replace('\n', ''))
-    log.critical('----------------------------------------------------')
+    log.critical('')
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
@@ -288,11 +288,9 @@ def writeSystemInfo(mwGlob=None):
     :return: true for test purpose
     """
 
-    log.critical('----------------------------------------------------')
     log.critical('')
     log.critical(' MountWizzard4 started !')
     log.critical('')
-    log.critical('----------------------------------------------------')
     log.critical(f' mountwizzard4    : {version("mountwizzard4")}')
     log.critical(f' indibase         : {version("indibase")}')
     log.critical(f' mountcontrol     : {version("mountcontrol")}')
@@ -308,7 +306,6 @@ def writeSystemInfo(mwGlob=None):
     log.critical(f' Node             : {platform.node()}')
     log.critical(f' IP addr.         : {socket.gethostname()}')
     log.critical(f' sys.executable   : {sys.executable}')
-    log.critical('----------------------------------------------------')
     log.critical('')
     return True
 

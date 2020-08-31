@@ -440,6 +440,11 @@ class AnalyseWindow(widget.MWidget):
         DEC  and not in RA and DEC. using skyfield is a little bit misleading, because you
         address the hour angle as .ra.hours
 
+        the vectors displayed are derived from the spec of 10micron:
+            ppp is the polar angle of the measured star with respect to the modeled star
+            in the equatorial system in degrees from 0 to 359 (0 towards the north pole,
+            90 towards east)
+
         :param model:
         :return:    True if ok for testing
         """
@@ -486,6 +491,14 @@ class AnalyseWindow(widget.MWidget):
         plt.setp(yTicks,
                  color=self.M_BLUE,
                  fontweight='bold')
+
+        angle = np.asarray(model['errorAngle'])
+        for alt, az, ang in zip(altitude, azimuth, angle):
+            x = az / 180.0 * np.pi
+            y = 90 - alt
+            u = 20 * np.sin(np.radians(ang - az))
+            v = 20 * np.cos(np.radians(ang - az))
+            axe.quiver(x, y, u, v, color='red', angles="uv", scale_units='dots', scale=1.)
 
         axe.figure.canvas.draw()
         return True

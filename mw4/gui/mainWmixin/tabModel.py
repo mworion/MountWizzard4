@@ -177,13 +177,13 @@ class Model:
         self.ui.positionAngle.setText(text)
 
         if model.polarError is not None:
-            text = f'{model.polarError.degrees * 60:5.2f}'
+            text = f'{model.polarError.degrees * 3600:5.0f}'
         else:
             text = '-'
         self.ui.polarError.setText(text)
 
         if model.orthoError is not None:
-            text = f'{model.orthoError.degrees * 60:5.2f}'
+            text = f'{model.orthoError.degrees * 3600:5.0f}'
         else:
             text = '-'
         self.ui.orthoError.setText(text)

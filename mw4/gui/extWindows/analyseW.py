@@ -189,7 +189,7 @@ class AnalyseWindow(widget.MWidget):
         self.ui.eposure.setText(f'{modelJSON[0]["exposureTime"]}')
         self.ui.solver.setText(modelJSON[0]['astrometryApp'])
         self.ui.binning.setText(f'{modelJSON[0]["binning"]:1.0f}')
-        self.ui.time.setText(modelJSON[0]['julianDate'])
+        self.ui.time.setText(modelJSON[0]['julianDate'].replace('T', '  ').replace('Z', ''))
         self.ui.subframe.setText(f'{modelJSON[0]["subFrame"]:3.0f}')
         if 'mirroredS' in modelJSON[0]:
             self.ui.mirrored.setText(str(modelJSON[0]['mirroredS']))
@@ -198,16 +198,14 @@ class AnalyseWindow(widget.MWidget):
 
         self.convertModelData()
 
-        if 'polarError' in modelJSON[0]:
-            self.ui.polarError.setText(f'{modelJSON[0]["polarError"]:5.1f}')
         if 'modelTerms' in modelJSON[0]:
             self.ui.modelTerms.setText(f'{modelJSON[0]["modelTerms"]:02.0f}')
         if 'modelErrorRMS' in modelJSON[0]:
             self.ui.modelErrorRMS.setText(f'{modelJSON[0]["modelErrorRMS"]:5.1f}')
         if 'modelOrthoError' in modelJSON[0]:
-            self.ui.modelOrthoError.setText(f'{modelJSON[0]["modelOrthoError"]:5.1f}')
+            self.ui.modelOrthoError.setText(f'{modelJSON[0]["modelOrthoError"]:5.0f}')
         if 'modelPolarError' in modelJSON[0]:
-            self.ui.modelPolarError.setText(f'{modelJSON[0]["modelPolarError"]:5.1f}')
+            self.ui.modelPolarError.setText(f'{modelJSON[0]["modelPolarError"]:5.0f}')
         if 'version' in modelJSON[0]:
             version = modelJSON[0]["version"].lstrip('MountWizzard4 - v')
             self.ui.version.setText(f'{version}')

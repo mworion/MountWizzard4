@@ -484,6 +484,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -712,6 +713,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -732,6 +734,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -752,6 +755,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -772,13 +776,14 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
       <property name="text">
-       <string>Time</string>
+       <string>Time [UTC]</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_5">
@@ -792,6 +797,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -812,6 +818,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -819,7 +826,7 @@
        <string>Winzorized Sigma</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="flipped">
+     <widget class="QLineEdit" name="mirrored">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -872,13 +879,14 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
       <property name="text">
-       <string>Flipped</string>
+       <string>Mirrored</string>
       </property>
      </widget>
      <widget class="QDoubleSpinBox" name="limit">
@@ -892,6 +900,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -919,6 +928,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -939,6 +949,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -959,6 +970,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1105,6 +1117,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1167,6 +1180,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1187,6 +1201,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1207,6 +1222,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1227,6 +1243,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1247,6 +1264,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1306,6 +1324,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1326,6 +1345,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1385,6 +1405,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1405,6 +1426,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1467,6 +1489,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1526,6 +1549,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1546,6 +1570,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -1569,6 +1594,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>

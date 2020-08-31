@@ -87,6 +87,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Arial</family>
      <pointsize>10</pointsize>
      <weight>50</weight>
      <bold>false</bold>
@@ -105,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>11</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -149,7 +150,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -170,7 +174,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -191,7 +198,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -212,7 +222,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -233,7 +246,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -270,7 +286,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -291,7 +310,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -346,7 +368,10 @@
        </property>
        <property name="font">
         <font>
+         <family>Arial</family>
          <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
         </font>
        </property>
        <property name="toolTip">
@@ -379,7 +404,10 @@
        </property>
        <property name="font">
         <font>
+         <family>Arial</family>
          <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
         </font>
        </property>
        <property name="toolTip">
@@ -966,7 +994,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -984,7 +1015,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1002,7 +1036,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1068,7 +1105,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1137,7 +1177,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1155,7 +1198,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1374,7 +1420,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1392,7 +1441,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1416,7 +1468,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1575,7 +1630,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1644,7 +1702,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1668,7 +1729,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1686,7 +1750,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1755,7 +1822,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>9</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1773,7 +1843,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1893,7 +1966,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1917,7 +1993,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -1989,7 +2068,10 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2059,7 +2141,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2128,7 +2213,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2146,7 +2234,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2170,7 +2261,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2242,7 +2336,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2260,7 +2357,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2278,7 +2378,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2302,7 +2405,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2320,7 +2426,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2338,7 +2447,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2356,7 +2468,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2380,7 +2495,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2404,7 +2522,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2422,7 +2543,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>9</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2440,7 +2564,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2461,7 +2588,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2641,7 +2771,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -2754,6 +2887,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="layoutDirection">
@@ -2773,6 +2908,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="layoutDirection">
@@ -2792,6 +2929,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -2811,6 +2950,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="layoutDirection">
@@ -2942,6 +3083,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="layoutDirection">
@@ -3121,6 +3264,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -3140,6 +3285,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -3159,6 +3306,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="layoutDirection">
@@ -3178,6 +3327,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -3197,6 +3348,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="layoutDirection">
@@ -3222,6 +3375,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="layoutDirection">
@@ -3241,6 +3396,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -3260,6 +3417,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -3285,6 +3444,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -3323,7 +3484,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="toolTip">
@@ -3350,7 +3514,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="toolTip">
@@ -3377,7 +3544,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="toolTip">
@@ -3401,6 +3571,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -4051,6 +4223,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -4064,6 +4239,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="layoutDirection">
@@ -4083,6 +4260,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="layoutDirection">
@@ -4102,6 +4281,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -4244,7 +4425,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <widget class="QPushButton" name="setRefractionManual">
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="toolTip">
@@ -4769,6 +4953,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -4858,6 +5044,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -4931,6 +5119,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -5112,7 +5302,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -5139,7 +5332,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -5163,7 +5359,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -5187,7 +5386,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -5227,7 +5429,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -5246,6 +5451,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="font">
        <font>
         <family>Arial</family>
+        <pointsize>10</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -5283,7 +5489,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -5301,7 +5510,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -5319,7 +5531,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -5344,6 +5559,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="font">
        <font>
         <family>Arial</family>
+        <pointsize>10</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -5381,7 +5597,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -5406,6 +5625,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="font">
        <font>
         <family>Arial</family>
+        <pointsize>10</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -5443,7 +5663,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -5478,6 +5701,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="font">
        <font>
         <family>Arial</family>
+        <pointsize>10</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -5612,7 +5836,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -5631,6 +5858,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="font">
        <font>
         <family>Arial</family>
+        <pointsize>10</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -5669,6 +5897,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="font">
        <font>
         <family>Arial</family>
+        <pointsize>10</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -5707,6 +5936,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="font">
        <font>
         <family>Arial</family>
+        <pointsize>10</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -5744,7 +5974,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -5762,7 +5995,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -5780,7 +6016,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -5798,7 +6037,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -5928,7 +6170,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -5949,7 +6194,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -5970,7 +6218,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -5991,7 +6242,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -6031,7 +6285,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -6058,7 +6315,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -6082,7 +6342,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -6148,7 +6411,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -6169,7 +6435,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -6203,7 +6472,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </property>
      <property name="font">
       <font>
+       <family>Arial</family>
        <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="toolTip">
@@ -6330,11 +6602,14 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
-       <string>arcmin</string>
+       <string>arcsec</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -6354,7 +6629,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -6378,7 +6656,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -6396,7 +6677,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -6459,7 +6743,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -6567,7 +6854,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -6585,7 +6875,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -6654,7 +6947,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -6675,7 +6971,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -6693,7 +6992,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -6711,7 +7013,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -6819,11 +7124,14 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
-       <string>arcmin</string>
+       <string>arcsec</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -6933,7 +7241,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -7612,7 +7923,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -7636,7 +7950,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -7676,7 +7993,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -7764,7 +8084,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -7889,7 +8212,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -7956,6 +8282,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="font">
        <font>
         <family>Arial</family>
+        <pointsize>10</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -8032,7 +8359,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8268,7 +8598,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -8287,7 +8620,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </property>
        <property name="font">
         <font>
+         <family>Arial</family>
          <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
         </font>
        </property>
        <property name="toolTip">
@@ -8397,7 +8733,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8415,7 +8754,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8517,7 +8859,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8535,7 +8880,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8595,7 +8943,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8613,7 +8964,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8673,7 +9027,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8691,7 +9048,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8757,7 +9117,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8781,7 +9144,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8799,7 +9165,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8817,7 +9186,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8877,7 +9249,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -8901,7 +9276,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9051,7 +9429,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9117,7 +9498,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9141,7 +9525,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9435,7 +9822,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9453,7 +9843,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9471,7 +9864,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9489,7 +9885,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9507,7 +9906,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9585,7 +9987,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9732,7 +10137,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9750,7 +10158,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9839,7 +10250,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -9987,7 +10401,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -10027,7 +10444,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10081,7 +10501,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10105,7 +10528,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10123,7 +10549,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10219,7 +10648,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10270,7 +10702,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10294,7 +10729,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10347,7 +10785,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10365,7 +10806,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10455,7 +10899,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10515,7 +10962,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10539,7 +10989,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10593,7 +11046,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10611,7 +11067,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10662,7 +11121,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10686,7 +11148,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10710,7 +11175,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10761,7 +11229,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -10835,6 +11306,7 @@ Hint if mount will need a flip when following satellite.</string>
          <widget class="QLabel" name="label_96">
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
             <weight>75</weight>
             <bold>true</bold>
@@ -12538,7 +13010,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -12565,7 +13040,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -12592,7 +13070,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -12619,7 +13100,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -12646,7 +13130,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -12673,7 +13160,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -12700,7 +13190,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -12727,7 +13220,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -12754,7 +13250,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -12781,7 +13280,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13231,7 +13733,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13258,7 +13763,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13285,7 +13793,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13312,7 +13823,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13339,7 +13853,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13366,7 +13883,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13393,7 +13913,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13420,7 +13943,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13447,7 +13973,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13474,7 +14003,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13501,7 +14033,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13528,7 +14063,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -13555,7 +14093,10 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
@@ -21346,7 +21887,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial','Arial','Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial','Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial';&quot;&gt;pyqt5, matplotlib, wakeonlan, numpy, requests, astropy, skyfield, qimage2ndarray, importlib_metadata, opencv, scipy, photutils&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
@@ -22298,6 +22839,7 @@ p, li { white-space: pre-wrap; }
     <property name="font">
      <font>
       <family>Arial</family>
+      <pointsize>8</pointsize>
       <weight>50</weight>
       <bold>false</bold>
      </font>
@@ -22356,7 +22898,10 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -22398,7 +22943,10 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -22437,7 +22985,10 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -22482,7 +23033,10 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -22521,7 +23075,10 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -22565,6 +23122,8 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -22609,7 +23168,10 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -22711,7 +23273,10 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -22758,6 +23323,8 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -22799,7 +23366,10 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -22901,7 +23471,10 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -22960,7 +23533,10 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="text">
@@ -23207,7 +23783,10 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -23246,7 +23825,10 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -23288,7 +23870,10 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -23330,7 +23915,10 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -23372,7 +23960,10 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">
@@ -23414,7 +24005,10 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="font">
      <font>
+      <family>Arial</family>
       <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="toolTip">

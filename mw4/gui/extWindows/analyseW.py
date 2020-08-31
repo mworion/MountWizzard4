@@ -80,7 +80,6 @@ class AnalyseWindow(widget.MWidget):
 
         self.ui.load.clicked.connect(self.loadModel)
         self.ui.winsorizedLimit.clicked.connect(self.drawAll)
-        self.ui.limit.valueChanged.connect(self.drawAll)
 
         self.initConfig()
 
@@ -107,7 +106,6 @@ class AnalyseWindow(widget.MWidget):
         width = config.get('width', 800)
         self.resize(width, height)
         self.ui.winsorizedLimit.setChecked(config.get('winsorizedLimit', False))
-        self.ui.limit.setValue(config.get('limit', 3))
 
         self.showWindow()
 
@@ -129,7 +127,6 @@ class AnalyseWindow(widget.MWidget):
         config['height'] = self.height()
         config['width'] = self.width()
         config['winsorizedLimit'] = self.ui.winsorizedLimit.isChecked()
-        config['limit'] = self.ui.limit.value()
 
         return True
 
@@ -244,7 +241,7 @@ class AnalyseWindow(widget.MWidget):
         errors = model['errorRA_S']
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=self.ui.limit.value() / 100)
+            errors = winsorize(errors, limits=0.05)
 
         index = range(0, len(errors))
 
@@ -286,7 +283,7 @@ class AnalyseWindow(widget.MWidget):
         errors = model['errorDEC_S']
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=self.ui.limit.value() / 100)
+            errors = winsorize(errors, limits=0.05)
 
         errors = [x if p == 'W' else -x for x, p in zip(errors, model['pierside'])]
 
@@ -330,7 +327,7 @@ class AnalyseWindow(widget.MWidget):
         errors = model['errorRA']
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=self.ui.limit.value() / 100)
+            errors = winsorize(errors, limits=0.05)
 
         index = range(0, len(errors))
 
@@ -372,7 +369,7 @@ class AnalyseWindow(widget.MWidget):
         errors = model['errorDEC']
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=self.ui.limit.value() / 100)
+            errors = winsorize(errors, limits=0.05)
 
         index = range(0, len(errors))
 
@@ -415,7 +412,7 @@ class AnalyseWindow(widget.MWidget):
         errors = model['scaleS']
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=self.ui.limit.value() / 100)
+            errors = winsorize(errors, limits=0.05)
 
         index = range(0, len(errors))
 
@@ -518,7 +515,7 @@ class AnalyseWindow(widget.MWidget):
         errors, pierside = zip(*sorted(zip(errors, model['pierside'])))
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=self.ui.limit.value() / 100)
+            errors = winsorize(errors, limits=0.05)
 
         index = range(0, len(errors))
 
@@ -584,7 +581,6 @@ class AnalyseWindow(widget.MWidget):
         if not self.modelJSON:
             return False
 
-        self.ui.limit.setEnabled(False)
         model = dict()
 
         for key in self.modelJSON[0].keys():
@@ -600,6 +596,5 @@ class AnalyseWindow(widget.MWidget):
         self.draw_modelPositions(model)
         self.draw_errorAscending(model)
         self.draw_errorDistribution(model)
-        self.ui.limit.setEnabled(True)
 
         return True

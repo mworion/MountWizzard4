@@ -191,7 +191,10 @@ class AnalyseWindow(widget.MWidget):
         self.ui.binning.setText(f'{modelJSON[0]["binning"]:1.0f}')
         self.ui.time.setText(modelJSON[0]['julianDate'])
         self.ui.subframe.setText(f'{modelJSON[0]["subFrame"]:3.0f}')
-        self.ui.flipped.setText(str(modelJSON[0]['flippedS']))
+        if 'mirroredS' in modelJSON[0]:
+            self.ui.mirrored.setText(str(modelJSON[0]['mirroredS']))
+        else:
+            self.ui.mirrored.setText(str(modelJSON[0]['flippedS']))
 
         self.convertModelData()
 
@@ -285,6 +288,8 @@ class AnalyseWindow(widget.MWidget):
 
         if self.ui.winsorizedLimit.isChecked():
             errors = winsorize(errors, limits=self.ui.limit.value() / 100)
+
+        errors = [x if p == 'W' else -x for x, p in zip(errors, model['pierside'])]
 
         index = range(0, len(errors))
 

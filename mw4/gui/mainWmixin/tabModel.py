@@ -28,7 +28,7 @@ from datetime import datetime, timedelta
 import PyQt5.uic
 from PyQt5.QtTest import QTest
 from mountcontrol.alignStar import AlignStar
-from mountcontrol import convert
+from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base import transform
@@ -302,21 +302,24 @@ class Model:
             if mPoint['errorRMS_S'] < self.MAX_ERROR_MODEL_POINT:
                 self.log.info(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
                 self.modelQueue.put(mPoint)
+
             else:
                 text = f'Solving failed for image-{count:03d}'
                 self.app.message.emit(text, 2)
 
             text = f'Solved   image-{count:03d}:  '
-            text += f'Ra: {convert.convertToHMS(mPoint["raJ2000S"])} '
+            text += f'Ra: {convertToHMS(mPoint["raJ2000S"])} '
             text += f'({mPoint["raJ2000S"].hours:4.3f}), '
-            text += f'Dec: {convert.convertToDMS(mPoint["decJ2000S"])} '
+            text += f'Dec: {convertToDMS(mPoint["decJ2000S"])} '
             text += f'({mPoint["decJ2000S"].degrees:4.3f}), '
             self.app.message.emit(text, 0)
+
             text = '                     '
             text += f'Angle: {mPoint["angleS"]:3.0f}, '
             text += f'Scale: {mPoint["scaleS"]:4.3f}, '
             text += f'Error: {mPoint["errorRMS_S"]:4.1f}'
             self.app.message.emit(text, 0)
+
         else:
             text = f'Solving  image-{count:03d}:  {mPoint.get("message")}'
             self.app.message.emit(text, 2)
@@ -471,6 +474,7 @@ class Model:
                                                haT=haT,
                                                decT=decT,
                                                lat=lat)
+
             else:
                 delta = self.app.dome.slewDome(altitude=alt,
                                                azimuth=az)

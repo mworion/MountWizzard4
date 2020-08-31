@@ -23,7 +23,7 @@ import os
 import PyQt5
 from astropy.io import fits
 import numpy as np
-from mountcontrol import convert
+from mountcontrol.convert import convertToAngle
 
 # local imports
 from base.loggerMW import CustomLogger
@@ -105,8 +105,8 @@ class Astrometry:
             scaleHint = float(fitsHeader.get('SCALE', 0))
             ra = fitsHeader.get('RA', 0)
             dec = fitsHeader.get('DEC', 0)
-            raHint = convert.convertToAngle(ra, isHours=True)
-            decHint = convert.convertToAngle(dec, isHours=False)
+            raHint = convertToAngle(ra, isHours=True)
+            decHint = convertToAngle(dec, isHours=False)
 
         self.log.info(f'Header RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale:'
                       f' {scaleHint}')
@@ -121,7 +121,7 @@ class Astrometry:
         to the full range from -pi to pi
 
         :return: angle in degrees and scale in arc second per pixel (app) and status if
-                 image is flipped
+                 image is mirrored (not rotated for 180 degrees because of the mount flip)
         """
 
         CD11 = wcsHeader.get('CD1_1', 0)
@@ -129,13 +129,13 @@ class Astrometry:
         CD21 = wcsHeader.get('CD2_1', 0)
         CD22 = wcsHeader.get('CD2_2', 0)
 
-        flipped = (CD11 * CD22 - CD12 * CD21) < 0
+        mirrored = (CD11 * CD22 - CD12 * CD21) < 0
 
         angleRad = np.arctan2(CD12, CD11)
         angle = np.degrees(angleRad)
         scale = CD11 / np.cos(angleRad) * 3600
 
-        return angle, scale, flipped
+        return angle, scale, mirrored
 
     def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None, updateFits=False):
         """
@@ -148,6 +148,13 @@ class Astrometry:
         CRVAL1 and CRVAL2 give the center coordinate as right ascension and declination or
         longitude and latitude in decimal degrees.
 
+        the difference is calculated as real coordinate (= plate solved coordinate) and mount
+        reported coordinate (= including the errors) and set positive in this case.
+
+        we have to take into account if the mount is on the other pierside, the image taken
+        will be upside down and the angle will reference a 180 degrees turned image. this
+        will lead to the negative error value (sign will change)
+
         :param fitsHeader:
         :param wcsHeader:
         :param updateFits:
@@ -156,17 +163,13 @@ class Astrometry:
         """
 
         self.log.info(f'wcs header: [{wcsHeader}]')
-        raJ2000 = convert.convertToAngle(wcsHeader.get('CRVAL1'),
-                                         isHours=True)
-        decJ2000 = convert.convertToAngle(wcsHeader.get('CRVAL2'),
-                                          isHours=False)
+        raJ2000 = convertToAngle(wcsHeader.get('CRVAL1'), isHours=True)
+        decJ2000 = convertToAngle(wcsHeader.get('CRVAL2'), isHours=False)
 
-        angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
+        angle, scale, mirrored = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
-        raMount = convert.convertToAngle(fitsHeader.get('RA'),
-                                         isHours=True)
-        decMount = convert.convertToAngle(fitsHeader.get('DEC'),
-                                          isHours=False)
+        raMount = convertToAngle(fitsHeader.get('RA'), isHours=True)
+        decMount = convertToAngle(fitsHeader.get('DEC'), isHours=False)
 
         deltaRA = (raJ2000._degrees - raMount._degrees) * 3600
         deltaDEC = (decJ2000.degrees - decMount.degrees) * 3600
@@ -180,7 +183,7 @@ class Astrometry:
             'angleS': angle,
             'scaleS': scale,
             'errorRMS_S': error,
-            'flippedS': flipped
+            'mirroredS': mirrored,
         }
 
         if not updateFits:

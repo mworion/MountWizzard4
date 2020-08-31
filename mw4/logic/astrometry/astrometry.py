@@ -192,7 +192,7 @@ class Astrometry:
         fitsHeader.append(('SCALE', solve['scaleS'], 'MountWizzard4'))
         fitsHeader.append(('PIXSCALE', solve['scaleS'], 'MountWizzard4'))
         fitsHeader.append(('ANGLE', solve['angleS'], 'MountWizzard4'))
-        fitsHeader.append(('FLIPPED', solve['flippedS'], 'MountWizzard4'))
+        fitsHeader.append(('MIRRORED', solve['mirroredS'], 'MountWizzard4'))
 
         fitsHeader.extend(wcsHeader,
                           unique=True,

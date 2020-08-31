@@ -48,14 +48,7 @@ def module_setup_teardown_module():
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global ui, widget, Test, Test1, app
-
-    class Test1(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData=Path('tests/data'))
-        update10s = pyqtSignal()
-        threadPool = QThreadPool()
+def app(qtbot):
 
     class Test(QObject):
         config = {'mainW': {}}
@@ -69,7 +62,6 @@ def module_setup_teardown(qtbot):
                                        longitude_degrees=10,
                                        elevation_m=500)
         ephemeris = mount.obsSite.loader('de421_23.bsp')
-
 
     widget = QWidget()
     ui = Ui_MainWindow()
@@ -98,22 +90,22 @@ def module_setup_teardown(qtbot):
     app.log = CustomLogger(logging.getLogger(__name__), {})
     app.threadPool = QThreadPool()
 
-    yield
+    yield app
 
     app.threadPool.waitForDone(1000)
 
 
-def test_initConfig_1():
+def test_initConfig_1(app):
     suc = app.initConfig()
     assert suc
 
 
-def test_storeConfig_1():
+def test_storeConfig_1(app):
     suc = app.storeConfig()
     assert suc
 
 
-def test_storeConfig_2():
+def test_storeConfig_2(app):
     app.thread = threading.Thread()
     with mock.patch.object(threading.Thread,
                            'join'):
@@ -121,7 +113,7 @@ def test_storeConfig_2():
         assert suc
 
 
-def test_drawTwilight_1():
+def test_drawTwilight_1(app):
     ts = app.app.mount.obsSite.ts
     timeJD = app.app.mount.obsSite.timeJD
     t0 = ts.tt_jd(int(timeJD.tt) - 182)
@@ -142,33 +134,33 @@ def test_drawTwilight_1():
         assert suc
 
 
-def test_searchTwilightWorker_1():
+def test_searchTwilightWorker_1(app):
     with mock.patch.object(app,
                            'drawTwilight'):
         suc = app.searchTwilightWorker()
         assert suc
 
 
-def test_searchTwilight_1():
+def test_searchTwilight_1(app):
     with mock.patch.object(threading.Thread,
                            'start'):
         suc = app.searchTwilight()
         assert suc
 
 
-def test_displayTwilightData_1():
+def test_displayTwilightData_1(app):
     suc = app.displayTwilightData()
     assert suc
 
 
-def test_getMoonPhase_1():
+def test_getMoonPhase_1(app):
     a, b, c = app.getMoonPhase()
     assert a is not None
     assert b is not None
     assert c is not None
 
 
-def test_updateMoonPhase_1():
+def test_updateMoonPhase_1(app):
     with mock.patch.object(app,
                            'getMoonPhase',
                            return_value=(20, 45, 20)):
@@ -176,7 +168,7 @@ def test_updateMoonPhase_1():
         assert suc
 
 
-def test_updateMoonPhase_2():
+def test_updateMoonPhase_2(app):
     with mock.patch.object(app,
                            'getMoonPhase',
                            return_value=(45, 135, 45)):
@@ -184,7 +176,7 @@ def test_updateMoonPhase_2():
         assert suc
 
 
-def test_updateMoonPhase_3():
+def test_updateMoonPhase_3(app):
     with mock.patch.object(app,
                            'getMoonPhase',
                            return_value=(70, 225, 70)):
@@ -192,10 +184,9 @@ def test_updateMoonPhase_3():
         assert suc
 
 
-def test_updateMoonPhase_4():
+def test_updateMoonPhase_4(app):
     with mock.patch.object(app,
                            'getMoonPhase',
                            return_value=(95, 315, 95)):
         suc = app.updateMoonPhase()
         assert suc
-

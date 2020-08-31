@@ -47,8 +47,7 @@ from base.loggerMW import CustomLogger
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global ui, widget, Test, Test1, app
+def app(qtbot):
     
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
@@ -103,7 +102,7 @@ def module_setup_teardown(qtbot):
 
     qtbot.addWidget(app)
 
-    yield
+    yield app
 
     app.threadPool.waitForDone(1000)
     files = glob.glob('tests/model/m-*.model')
@@ -113,66 +112,66 @@ def module_setup_teardown(qtbot):
         shutil.rmtree(path)
 
 
-def test_initConfig_1():
+def test_initConfig_1(app):
     app.app.config['mainW'] = {}
     suc = app.initConfig()
     assert suc
 
 
-def test_storeConfig_1():
+def test_storeConfig_1(app):
     suc = app.storeConfig()
     assert suc
 
 
-def test_updateProgress_1():
+def test_updateProgress_1(app):
     app.startModeling = time.time()
     suc = app.updateProgress()
     assert not suc
 
 
-def test_updateProgress_2():
+def test_updateProgress_2(app):
     app.startModeling = time.time()
     suc = app.updateProgress(number=3, count=2)
     assert suc
 
 
-def test_updateProgress_3():
+def test_updateProgress_3(app):
     app.startModeling = time.time()
     suc = app.updateProgress(number=2, count=3)
     assert not suc
 
 
-def test_updateProgress_4():
+def test_updateProgress_4(app):
     suc = app.updateProgress(number=0, count=2)
     app.startModeling = time.time()
     assert not suc
 
 
-def test_updateProgress_5():
+def test_updateProgress_5(app):
     app.startModeling = time.time()
     suc = app.updateProgress(number=3, count=0)
     assert suc
 
 
-def test_updateProgress_6():
+def test_updateProgress_6(app):
     app.startModeling = time.time()
     suc = app.updateProgress(number=3, count=-1)
     assert not suc
 
 
-def test_updateProgress_7():
+def test_updateProgress_7(app):
     app.startModeling = time.time()
     suc = app.updateProgress(number=3, count=2)
     assert suc
 
 
-def test_updateProgress_8():
+def test_updateProgress_8(app):
     app.startModeling = time.time()
     suc = app.updateProgress(count=-1)
     assert not suc
 
 
-def test_modelSolveDone_0(qtbot):
+def test_modelSolveDone_0(qtbot, app):
     result = {'raJ2000S': 0,
               'decJ2000S': 0,
               'angleS': 0,
@@ -187,7 +186,7 @@ def test_modelSolveDone_0(qtbot):
     assert not suc
 
 
-def test_modelSolveDone_1(qtbot):
+def test_modelSolveDone_1(qtbot, app):
     mPoint = {'lenSequence': 3,
               'countSequence': 3}
 
@@ -209,7 +208,7 @@ def test_modelSolveDone_1(qtbot):
     assert ['Solving  image-003:  test', 2] == blocker.args
 
 
-def test_modelSolveDone_2():
+def test_modelSolveDone_2(app):
     mPoint = {'lenSequence': 3,
               'countSequence': 3}
 
@@ -219,7 +218,7 @@ def test_modelSolveDone_2():
     assert not suc
 
 
-def test_modelSolveDone_3():
+def test_modelSolveDone_3(app):
     mPoint = {'lenSequence': 3,
               'countSequence': 3}
 
@@ -253,7 +252,7 @@ def test_modelSolveDone_3():
     assert suc
 
 
-def test_modelSolveDone_4():
+def test_modelSolveDone_4(app):
     mPoint = {'lenSequence': 3,
               'countSequence': 3}
 
@@ -274,7 +273,7 @@ def test_modelSolveDone_4():
     assert suc
 
 
-def test_modelSolveDone_5():
+def test_modelSolveDone_5(app):
     mPoint = {'lenSequence': 3,
               'countSequence': 2}
 
@@ -298,12 +297,12 @@ def test_modelSolveDone_5():
         assert suc
 
 
-def test_modelSolve_1():
+def test_modelSolve_1(app):
     suc = app.modelSolve()
     assert not suc
 
 
-def test_modelSolve_2():
+def test_modelSolve_2(app):
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': '',
@@ -319,12 +318,12 @@ def test_modelSolve_2():
         assert suc
 
 
-def test_modelImage_1():
+def test_modelImage_1(app):
     suc = app.modelImage()
     assert not suc
 
 
-def test_modelImage_2():
+def test_modelImage_2(app):
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': '',
@@ -342,12 +341,12 @@ def test_modelImage_2():
         assert suc
 
 
-def test_modelSlew_1():
+def test_modelSlew_1(app):
     suc = app.modelSlew()
     assert not suc
 
 
-def test_modelSlew_2():
+def test_modelSlew_2(app):
     app.deviceStat['dome'] = False
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
@@ -367,7 +366,7 @@ def test_modelSlew_2():
         assert not suc
 
 
-def test_modelSlew_3():
+def test_modelSlew_3(app):
     app.deviceStat['dome'] = True
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
@@ -392,7 +391,7 @@ def test_modelSlew_3():
                 assert suc
 
 
-def test_modelSlew_4():
+def test_modelSlew_4(app):
     app.deviceStat['dome'] = True
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
@@ -418,7 +417,7 @@ def test_modelSlew_4():
                 assert suc
 
 
-def test_changeStatusDAT_1():
+def test_changeStatusDAT_1(app):
     app.ui.checkDisableDAT.setChecked(True)
     app.app.mount.setting.statusDualAxisTracking = True
     with mock.patch.object(app.app.mount.setting,
@@ -428,7 +427,7 @@ def test_changeStatusDAT_1():
         assert app.statusDAT
 
 
-def test_changeStatusDAT_2():
+def test_changeStatusDAT_2(app):
     app.ui.checkDisableDAT.setChecked(True)
     app.app.mount.setting.statusDualAxisTracking = False
     with mock.patch.object(app.app.mount.setting,
@@ -438,7 +437,7 @@ def test_changeStatusDAT_2():
         assert not app.statusDAT
 
 
-def test_changeStatusDAT_3():
+def test_changeStatusDAT_3(app):
     app.ui.checkDisableDAT.setChecked(True)
     app.statusDAT = True
     app.app.mount.setting.statusDualAxisTracking = True
@@ -449,7 +448,7 @@ def test_changeStatusDAT_3():
         assert app.statusDAT
 
 
-def test_changeStatusDAT_4():
+def test_changeStatusDAT_4(app):
     app.ui.checkDisableDAT.setChecked(False)
     app.statusDAT = True
     app.app.mount.setting.statusDualAxisTracking = True
@@ -460,14 +459,14 @@ def test_changeStatusDAT_4():
         assert app.statusDAT
 
 
-def test_restoreStatusDAT_1():
+def test_restoreStatusDAT_1(app):
     app.ui.checkDisableDAT.setChecked(True)
     app.statusDAT = None
     suc = app.restoreStatusDAT()
     assert not suc
 
 
-def test_restoreStatusDAT_2():
+def test_restoreStatusDAT_2(app):
     app.ui.checkDisableDAT.setChecked(True)
     app.statusDAT = True
     with mock.patch.object(app.app.mount.setting,
@@ -476,33 +475,33 @@ def test_restoreStatusDAT_2():
         assert suc
 
 
-def test_restoreStatusDAT_3():
+def test_restoreStatusDAT_3(app):
     app.ui.checkDisableDAT.setChecked(False)
     suc = app.restoreStatusDAT()
     assert not suc
 
 
-def test_clearQueues():
+def test_clearQueues(app):
     suc = app.clearQueues()
     assert suc
 
 
-def test_prepareGUI():
+def test_prepareGUI(app):
     suc = app.prepareGUI()
     assert suc
 
 
-def test_defaultGUI():
+def test_defaultGUI(app):
     suc = app.defaultGUI()
     assert suc
 
 
-def test_prepareSignals_1():
+def test_prepareSignals_1(app):
     suc = app.prepareSignals()
     assert suc
 
 
-def test_prepareSignals_2():
+def test_prepareSignals_2(app):
     app.deviceStat['dome'] = True
     app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 1}
 
@@ -510,14 +509,14 @@ def test_prepareSignals_2():
     assert suc
 
 
-def test_prepareSignals_3():
+def test_prepareSignals_3(app):
     app.deviceStat['dome'] = True
 
     suc = app.prepareSignals()
     assert suc
 
 
-def test_defaultSignals():
+def test_defaultSignals(app):
     app.app.camera.signals.saved.connect(app.modelSolve)
     app.app.camera.signals.integrated.connect(app.modelSlew)
     app.app.astrometry.signals.done.connect(app.modelSolveDone)
@@ -527,21 +526,21 @@ def test_defaultSignals():
     assert suc
 
 
-def test_pauseBuild_1():
+def test_pauseBuild_1(app):
     app.ui.pauseModel.setProperty('pause', True)
     suc = app.pauseBuild()
     assert suc
     assert not app.ui.pauseModel.property('pause')
 
 
-def test_pauseBuild_2():
+def test_pauseBuild_2(app):
     app.ui.pauseModel.setProperty('pause', False)
     suc = app.pauseBuild()
     assert suc
     assert app.ui.pauseModel.property('pause')
 
 
-def test_cancelFull(qtbot):
+def test_cancelFull(qtbot, app):
     suc = app.prepareSignals()
     assert suc
     with mock.patch.object(app.app.camera,
@@ -552,7 +551,7 @@ def test_cancelFull(qtbot):
         assert blocker.args == ['Modeling cancelled', 2]
 
 
-def test_retrofitModel_1():
+def test_retrofitModel_1(app):
     app.app.mount.model.starList = list()
 
     point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
@@ -575,7 +574,7 @@ def test_retrofitModel_1():
     assert app.model == []
 
 
-def test_retrofitModel_2():
+def test_retrofitModel_2(app):
     app.app.mount.model.starList = list()
     point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
@@ -597,7 +596,7 @@ def test_retrofitModel_2():
     assert suc
 
 
-def test_generateSaveModel_1():
+def test_generateSaveModel_1(app):
     mPoint = {'raJNowM': Angle(hours=0),
               'decJNowM': Angle(degrees=0),
               'raJNowS': Angle(hours=0),
@@ -618,19 +617,19 @@ def test_generateSaveModel_1():
     assert len(val) == 3
 
 
-def test_saveModelFinish_1():
+def test_saveModelFinish_1(app):
     app.modelName = 'test'
     app.app.mount.signals.alignDone.connect(app.saveModelFinish)
     suc = app.saveModelFinish()
     assert suc
 
 
-def test_saveModel_1():
+def test_saveModel_1(app):
     suc = app.saveModelPrepare()
     assert not suc
 
 
-def test_saveModel_2():
+def test_saveModel_2(app):
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': 'testPath',
@@ -651,12 +650,13 @@ def test_saveModel_2():
     assert not suc
 
 
-def test_saveModel_3():
+def test_saveModel_3(app):
     class Julian:
         ut1 = 2458635.168
 
     def refreshModel():
-            return
+        return
+
     app.refreshModel = refreshModel
 
     mPoint = {'lenSequence': 3,
@@ -691,7 +691,7 @@ def test_saveModel_3():
     assert suc
 
 
-def test_saveModel_4():
+def test_saveModel_4(app):
     class Julian:
         @staticmethod
         def utc_iso():
@@ -733,7 +733,7 @@ def test_saveModel_4():
     assert suc
 
 
-def test_generateBuildData_1():
+def test_generateBuildData_1(app):
     inputData = [
         {
             "altitude": 44.556745182012854,
@@ -764,7 +764,7 @@ def test_generateBuildData_1():
     assert build[0].sCoord.dec.degrees == 64.3246
 
 
-def test_modelFinished_1(qtbot):
+def test_modelFinished_1(qtbot, app):
     class Julian:
         ut1 = 2458635.168
 
@@ -807,7 +807,7 @@ def test_modelFinished_1(qtbot):
         assert not suc
 
 
-def test_modelFinished_2(qtbot):
+def test_modelFinished_2(qtbot, app):
     class Julian:
         ut1 = 2458635.168
 
@@ -852,7 +852,7 @@ def test_modelFinished_2(qtbot):
         assert suc
 
 
-def test_modelFinished_3(qtbot):
+def test_modelFinished_3(qtbot, app):
     class Julian:
         ut1 = 2458635.168
 
@@ -898,7 +898,7 @@ def test_modelFinished_3(qtbot):
         assert suc
 
 
-def test_modelCore_1():
+def test_modelCore_1(app):
     app.ui.astrometryDevice.setCurrentIndex(0)
     with mock.patch.object(app,
                            'modelSlew'):
@@ -906,7 +906,7 @@ def test_modelCore_1():
         assert not suc
 
 
-def test_modelCore_2():
+def test_modelCore_2(app):
     app.ui.astrometryDevice.setCurrentIndex(1)
     with mock.patch.object(app,
                            'modelSlew'):
@@ -914,7 +914,7 @@ def test_modelCore_2():
         assert not suc
 
 
-def test_modelCore_3():
+def test_modelCore_3(app):
     app.ui.astrometryDevice.setCurrentIndex(1)
     with mock.patch.object(app,
                            'modelSlew'):
@@ -922,7 +922,7 @@ def test_modelCore_3():
         assert not suc
 
 
-def test_modelCore_4():
+def test_modelCore_4(app):
     app.ui.astrometryDevice.setCurrentIndex(1)
     with mock.patch.object(app,
                            'modelSlew'):
@@ -930,7 +930,7 @@ def test_modelCore_4():
         assert suc
 
 
-def test_modelBuild_1():
+def test_modelBuild_1(app):
     class Test:
         buildP = {}
 
@@ -943,7 +943,7 @@ def test_modelBuild_1():
         assert not suc
 
 
-def test_modelBuild_2():
+def test_modelBuild_2(app):
     class Test:
         buildP = [(90, 90), (90, 90), (90, 90)]
 
@@ -956,7 +956,7 @@ def test_modelBuild_2():
         assert not suc
 
 
-def test_modelBuild_2a():
+def test_modelBuild_2a(app):
     class Test:
         buildP = [(90, 90), (90, 90), (90, 90)]
 
@@ -975,7 +975,7 @@ def test_modelBuild_2a():
                 assert suc
 
 
-def test_modelBuild_3():
+def test_modelBuild_3(app):
     class Test:
         buildP = [(1, 1)] * 100
 
@@ -991,7 +991,7 @@ def test_modelBuild_3():
             assert not suc
 
 
-def test_modelBuild_4():
+def test_modelBuild_4(app):
     class Test:
         buildP = [(1, 1)] * 10
 
@@ -1007,7 +1007,7 @@ def test_modelBuild_4():
             assert not suc
 
 
-def test_modelBuild_5():
+def test_modelBuild_5(app):
     class Test:
         buildP = [(1, 1)] * 10
 
@@ -1026,7 +1026,7 @@ def test_modelBuild_5():
                 assert not suc
 
 
-def test_modelBuild_6():
+def test_modelBuild_6(app):
     class Test:
         buildP = [(1, 1)] * 10
 
@@ -1045,7 +1045,7 @@ def test_modelBuild_6():
                 assert suc
 
 
-def test_loadProgramModel_1():
+def test_loadProgramModel_1(app):
     def openFile(a, b, c, d, multiple=False):
         return ('', '', '')
 
@@ -1058,7 +1058,7 @@ def test_loadProgramModel_1():
         assert not suc
 
 
-def test_loadProgramModel_2():
+def test_loadProgramModel_2(app):
     shutil.copy('tests/testData/m-test.model', 'tests/model/m-test.model')
 
     def openFile(a, b, c, d, multiple=False):
@@ -1079,7 +1079,7 @@ def test_loadProgramModel_2():
             assert suc
 
 
-def test_updateAlignGui_numberStars():
+def test_updateAlignGui_numberStars(app):
     value = '50'
     app.app.mount.model.numberStars = value
     app.updateAlignGUI(app.app.mount.model)
@@ -1092,7 +1092,7 @@ def test_updateAlignGui_numberStars():
     assert '-' == app.ui.numberStars1.text()
 
 
-def test_updateAlignGui_altitudeError():
+def test_updateAlignGui_altitudeError(app):
     value = '50'
     app.app.mount.model.altitudeError = value
     app.updateAlignGUI(app.app.mount.model)
@@ -1103,7 +1103,7 @@ def test_updateAlignGui_altitudeError():
     assert '-' == app.ui.altitudeError.text()
 
 
-def test_updateAlignGui_errorRMS():
+def test_updateAlignGui_errorRMS(app):
     value = '50'
     app.app.mount.model.errorRMS = value
     app.updateAlignGUI(app.app.mount.model)
@@ -1116,7 +1116,7 @@ def test_updateAlignGui_errorRMS():
     assert '-' == app.ui.errorRMS1.text()
 
 
-def test_updateAlignGui_azimuthError():
+def test_updateAlignGui_azimuthError(app):
     value = '50'
     app.app.mount.model.azimuthError = value
     app.updateAlignGUI(app.app.mount.model)
@@ -1127,7 +1127,7 @@ def test_updateAlignGui_azimuthError():
     assert '-' == app.ui.azimuthError.text()
 
 
-def test_updateAlignGui_terms():
+def test_updateAlignGui_terms(app):
     value = '50'
     app.app.mount.model.terms = value
     app.updateAlignGUI(app.app.mount.model)
@@ -1138,18 +1138,18 @@ def test_updateAlignGui_terms():
     assert '-' == app.ui.terms.text()
 
 
-def test_updateAlignGui_orthoError():
+def test_updateAlignGui_orthoError(app):
     value = '50'
     app.app.mount.model.orthoError = value
     app.updateAlignGUI(app.app.mount.model)
-    assert '3000.00' == app.ui.orthoError.text()
+    assert '180000' == app.ui.orthoError.text()
     value = None
     app.app.mount.model.orthoError = value
     app.updateAlignGUI(app.app.mount.model)
     assert '-' == app.ui.orthoError.text()
 
 
-def test_updateAlignGui_positionAngle():
+def test_updateAlignGui_positionAngle(app):
     value = '50'
     app.app.mount.model.positionAngle = value
     app.updateAlignGUI(app.app.mount.model)
@@ -1160,18 +1160,18 @@ def test_updateAlignGui_positionAngle():
     assert '-' == app.ui.positionAngle.text()
 
 
-def test_updateAlignGui_polarError():
+def test_updateAlignGui_polarError(app):
     value = '50'
     app.app.mount.model.polarError = value
     app.updateAlignGUI(app.app.mount.model)
-    assert '3000.00' == app.ui.polarError.text()
+    assert '180000' == app.ui.polarError.text()
     value = None
     app.app.mount.model.polarError = value
     app.updateAlignGUI(app.app.mount.model)
     assert '-' == app.ui.polarError.text()
 
 
-def test_updateTurnKnobsGUI_altitudeTurns_1():
+def test_updateTurnKnobsGUI_altitudeTurns_1(app):
     value = 1.5
     app.app.mount.model.altitudeTurns = value
     app.updateTurnKnobsGUI(app.app.mount.model)
@@ -1182,7 +1182,7 @@ def test_updateTurnKnobsGUI_altitudeTurns_1():
     assert '-' == app.ui.altitudeTurns.text()
 
 
-def test_updateTurnKnobsGUI_altitudeTurns_2():
+def test_updateTurnKnobsGUI_altitudeTurns_2(app):
     value = -1.5
     app.app.mount.model.altitudeTurns = value
     app.updateTurnKnobsGUI(app.app.mount.model)
@@ -1193,7 +1193,7 @@ def test_updateTurnKnobsGUI_altitudeTurns_2():
     assert '-' == app.ui.altitudeTurns.text()
 
 
-def test_updateTurnKnobsGUI_azimuthTurns_1():
+def test_updateTurnKnobsGUI_azimuthTurns_1(app):
     value = 1.5
     app.app.mount.model.azimuthTurns = value
     app.updateTurnKnobsGUI(app.app.mount.model)
@@ -1204,7 +1204,7 @@ def test_updateTurnKnobsGUI_azimuthTurns_1():
     assert '-' == app.ui.azimuthTurns.text()
 
 
-def test_updateTurnKnobsGUI_azimuthTurns_2():
+def test_updateTurnKnobsGUI_azimuthTurns_2(app):
     value = -1.5
     app.app.mount.model.azimuthTurns = value
     app.updateTurnKnobsGUI(app.app.mount.model)

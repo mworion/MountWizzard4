@@ -144,7 +144,7 @@ def test_getSolutionFromWCS_1(app):
     assert solve['decJ2000S'].degrees == 60
     assert solve['angleS'] == 0
     assert solve['scaleS'] == 0
-    assert not solve['flippedS']
+    assert not solve['mirroredS']
 
     assert header['RA'] == header['CRVAL1']
     assert header['DEC'] == header['CRVAL2']
@@ -165,7 +165,7 @@ def test_getSolutionFromWCS_2(app):
     assert solve['decJ2000S'].degrees == 60
     assert solve['angleS'] == 0
     assert solve['scaleS'] == 0
-    assert not solve['flippedS']
+    assert not solve['mirroredS']
 
     assert header['RA'] == header['CRVAL1']
     assert header['DEC'] == header['CRVAL2']
@@ -188,7 +188,7 @@ def test_getSolutionFromWCS_3(app):
     assert solve['decJ2000S'].degrees == 60
     assert solve['angleS'] == 0
     assert solve['scaleS'] == 0
-    assert not solve['flippedS']
+    assert not solve['mirroredS']
 
     assert header['RA'] == header['CRVAL1']
     assert header['DEC'] == header['CRVAL2']
@@ -211,7 +211,7 @@ def test_getSolutionFromWCS_4(app):
     assert solve['decJ2000S'].degrees == 60
     assert solve['angleS'] == 0
     assert solve['scaleS'] == 0
-    assert not solve['flippedS']
+    assert not solve['mirroredS']
 
     assert header['RA'] == header['CRVAL1']
     assert header['DEC'] == header['CRVAL2']
@@ -238,7 +238,7 @@ def test_getSolutionFromWCS_5(app):
     assert solve['decJ2000S'].degrees == 60
     assert solve['angleS'] == 0
     assert solve['scaleS'] == 0
-    assert not solve['flippedS']
+    assert not solve['mirroredS']
 
     assert header['RA'] == header['CRVAL1']
 

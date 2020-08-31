@@ -3,10 +3,25 @@ Changelog
 The changelog contains the user related function or environment updates. For a detailed
 changes list, please refer to the commit list on GitHub.
 
-0.152.0
+Unreleased Betas
+----------------
+
+(0.153.0)
+
+- adding alpaca device discovery
+- adding cover device ascom and alpaca (from ASCOM 6.5 onwards)
+
+
+(0.152.0)
 
 - refactoring device management
 - bugfix polar / flat diagram in manage model
+- bugfix dec error view depending on pierside
+- refactoring tests
+- refactoring analyse window, adding vectors view
+
+Released betas
+--------------
 
 0.151.2
 

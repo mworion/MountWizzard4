@@ -276,8 +276,6 @@ def setupWorkDirs(mwGlob):
         if not os.path.isdir(mwGlob[dirPath]):
             os.makedirs(mwGlob[dirPath])
 
-        os.chmod(mwGlob[dirPath], 0o666)
-
         if not os.access(mwGlob[dirPath], os.W_OK):
             log.error('no write access to {0}'.format(dirPath))
 
@@ -336,8 +334,10 @@ def extractDataFiles(mwGlob=None, splashW=None):
             splashW.showMessage('Loading {0}'.format(file))
 
         filePath = mwGlob['dataDir'] + '/' + file
+
         if QFile.copy(f':/data/{file}', filePath):
             log.info(f'Writing missing file:  [{file}]')
+
         else:
             log.info(f'Already existing file: [{file}]')
 

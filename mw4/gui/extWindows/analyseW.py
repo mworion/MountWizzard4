@@ -459,6 +459,7 @@ class AnalyseWindow(widget.MWidget):
         altitude = np.asarray(model['altitude'])
         azimuth = np.asarray(model['azimuth'])
         error = np.asarray(model['errorRMS'])
+        errorAngle = np.asarray(model['errorAngle'])
 
         # and plot it
         cm = plt.cm.get_cmap('RdYlGn_r')
@@ -468,6 +469,7 @@ class AnalyseWindow(widget.MWidget):
         area = [100 if x >= max(colors) else 30 for x in error]
         theta = azimuth / 180.0 * np.pi
         r = 90 - altitude
+
         scatter = axe.scatter(theta,
                               r,
                               c=colors,
@@ -492,13 +494,35 @@ class AnalyseWindow(widget.MWidget):
                  color=self.M_BLUE,
                  fontweight='bold')
 
-        angle = np.asarray(model['errorAngle'])
-        for alt, az, ang in zip(altitude, azimuth, angle):
+        lat = self.app.mount.obsSite.location.latitude.degrees
+        npX = (90 - lat) * np.cos(np.radians(0 + 90))
+        npY = (90 - lat) * np.sin(np.radians(0 + 90))
+
+        axe.plot(0, 90 - lat, marker='o', markersize=10, color=self.M_BLUE, alpha=0.8,
+                 zorder=-10)
+        axe.plot(0, 90 - lat, marker='o', markersize=30, color=self.M_BLUE, alpha=0.8,
+                 lw=10, fillstyle='none', zorder=-10)
+        axe.plot(0, 90 - lat, marker='o', markersize=50, color=self.M_BLUE, alpha=0.8,
+                 lw=10, fillstyle='none', zorder=-10)
+
+        for alt, az, ang in zip(altitude, azimuth, errorAngle):
+            pX = (90 - alt) * np.cos(np.radians(az + 90))
+            pY = (90 - alt) * np.sin(np.radians(az + 90))
+
+            vec = np.arctan2(pY - npY, pX - npX) + np.radians(90) + np.radians(ang)
+
             x = az / 180.0 * np.pi
             y = 90 - alt
-            u = 20 * np.sin(np.radians(ang - az))
-            v = 20 * np.cos(np.radians(ang - az))
-            axe.quiver(x, y, u, v, color='red', angles="uv", scale_units='dots', scale=1.)
+            u = np.sin(vec)
+            v = np.cos(vec)
+
+            axe.quiver(x, y, u, v,
+                       color=self.M_BLUE,
+                       angles="uv",
+                       scale=15 ,
+                       alpha=0.5,
+                       zorder=-10,
+                       )
 
         axe.figure.canvas.draw()
         return True

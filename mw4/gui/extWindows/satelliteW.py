@@ -587,23 +587,10 @@ class SatelliteWindow(widget.MWidget):
         :return: success
         """
 
-        axe, fig = self.generateFlat(widget=self.satHorizonMat)
+        axe, fig = self.generateFlat(widget=self.satHorizonMat, horizon=True)
 
         # add horizon limit if selected
         self.staticHorizon(axes=axe)
-
-        axe.set_xlim(0, 360)
-        axe.set_ylim(0, 90)
-        axe.set_xticks(np.arange(0, 361, 45))
-
-        axe.set_xlabel('Azimuth in degrees',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.set_ylabel('Altitude in degrees',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
 
         # empty chart if no satellite is chosen
         if difference is None:

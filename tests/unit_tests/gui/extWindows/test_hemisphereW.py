@@ -143,18 +143,6 @@ def test_resizeTimer_2():
         assert suc
 
 
-def test_setupAxes1(qtbot):
-    app.drawHemisphere()
-    val = app.setupAxes()
-    assert val is None
-
-
-def test_setupAxes2(qtbot):
-    app.drawHemisphere()
-    val = app.setupAxes(app.hemisphereMat)
-    assert val
-
-
 def test_drawBlit_1():
     suc = app.drawBlit()
     assert suc

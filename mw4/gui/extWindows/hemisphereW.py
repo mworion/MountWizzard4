@@ -265,67 +265,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.drawHemisphere()
         return True
 
-    def setupAxes(self, widget=None):
-        """
-        setupAxes cleans up the axes object in figure an setup a new plotting. it draws
-        grid, ticks etc.
-
-        :param widget: object of embedded canvas
-        :return:
-        """
-
-        if widget is None:
-            return None
-
-        for axe in widget.figure.axes:
-            axe.cla()
-            gc.collect()
-
-        widget.figure.clf()
-        # used constrained_layout = True instead
-        # figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
-        axe = widget.figure.add_subplot(1, 1, 1, facecolor=None)
-
-        axe.set_facecolor((0, 0, 0, 0))
-        axe.set_xlim(0, 360)
-        axe.set_ylim(0, 90)
-        axe.grid(True, color=self.M_GREY)
-        axe.tick_params(axis='x',
-                        bottom=True,
-                        colors=self.M_BLUE,
-                        labelsize=12)
-        axeTop = axe.twiny()
-        axeTop.set_facecolor((0, 0, 0, 0))
-        axeTop.set_xlim(0, 360)
-        axeTop.tick_params(axis='x',
-                           top=True,
-                           colors=self.M_BLUE,
-                           labelsize=12)
-        axeTop.set_xticks(np.arange(0, 361, 45))
-        axeTop.grid(False)
-        axeTop.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'])
-        axeTop.spines['bottom'].set_color(self.M_BLUE)
-        axeTop.spines['top'].set_color(self.M_BLUE)
-        axeTop.spines['left'].set_color(self.M_BLUE)
-        axeTop.spines['right'].set_color(self.M_BLUE)
-        axe.set_xticks(np.arange(0, 361, 45))
-        axe.set_xticklabels(['0', '45', '90', '135', '180', '225', '270', '315', '360'])
-        axe.tick_params(axis='y',
-                        colors=self.M_BLUE,
-                        which='both',
-                        labelleft=True,
-                        labelright=True,
-                        labelsize=12)
-        axe.set_xlabel('Azimuth in degrees',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.set_ylabel('Altitude in degrees',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        return axe
-
     def drawBlit(self):
         """
         There were some optimizations in with regard to drawing speed derived from:
@@ -886,8 +825,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         # clearing axes before drawing, only static visible, dynamic only when content
         # is available. visibility is handled with their update method
         self.hemisphereMat.figure.canvas.draw()
-        axes = self.setupAxes(widget=self.hemisphereMat)
+        axe, _ = self.generateFlat(widget=self.hemisphereMat, horizon=True)
+
         # calling renderer
-        self.drawHemisphereStatic(axes=axes)
-        self.drawHemisphereMoving(axes=axes)
-        self.drawAlignmentStars(axes=axes)
+        self.drawHemisphereStatic(axes=axe)
+        self.drawHemisphereMoving(axes=axe)
+        self.drawAlignmentStars(axes=axe)

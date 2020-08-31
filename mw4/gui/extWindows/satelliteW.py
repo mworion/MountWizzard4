@@ -80,9 +80,9 @@ class SatelliteWindow(widget.MWidget):
         self.satSphereMat1.parentWidget().setStyleSheet(self.BACK_BG)
         self.satSphereMat2 = self.embedMatplot(self.ui.satSphere2, constrainedLayout=False)
         self.satSphereMat2.parentWidget().setStyleSheet(self.BACK_BG)
-        self.satHorizonMat = self.embedMatplot(self.ui.satHorizon, constrainedLayout=False)
+        self.satHorizonMat = self.embedMatplot(self.ui.satHorizon, constrainedLayout=True)
         self.satHorizonMat.parentWidget().setStyleSheet(self.BACK_BG)
-        self.satEarthMat = self.embedMatplot(self.ui.satEarth, constrainedLayout=False)
+        self.satEarthMat = self.embedMatplot(self.ui.satEarth, constrainedLayout=True)
         self.satEarthMat.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.signals.show.connect(self.drawSatellite)
@@ -163,6 +163,8 @@ class SatelliteWindow(widget.MWidget):
 
         :return: True for test purpose
         """
+
+        self.drawSatellite()
         self.show()
 
         return True
@@ -504,29 +506,9 @@ class SatelliteWindow(widget.MWidget):
         :return: success
         """
 
-        figure = self.satEarthMat.figure
-        figure.clf()
-        figure.subplots_adjust(left=0.2, right=0.85, bottom=0.2, top=0.9)
-        axe = self.satEarthMat.figure.add_subplot(1, 1, 1, facecolor=None)
+        axe, fig = self.generateFlat(widget=self.satEarthMat)
 
-        axe.set_facecolor((0, 0, 0, 0))
-        axe.set_xlim(-180, 180)
-        axe.set_ylim(-90, 90)
-        axe.spines['bottom'].set_color(self.M_BLUE)
-        axe.spines['top'].set_color(self.M_BLUE)
-        axe.spines['left'].set_color(self.M_BLUE)
-        axe.spines['right'].set_color(self.M_BLUE)
-        axe.grid(True, color=self.M_GREY)
-        axe.tick_params(axis='x',
-                        colors=self.M_BLUE,
-                        labelsize=12)
         axe.set_xticks(np.arange(-180, 181, 45))
-        axe.tick_params(axis='y',
-                        colors=self.M_BLUE,
-                        which='both',
-                        labelleft=True,
-                        labelright=True,
-                        labelsize=12)
         axe.set_xlabel('Longitude in degrees',
                        color=self.M_BLUE,
                        fontweight='bold',
@@ -605,47 +587,15 @@ class SatelliteWindow(widget.MWidget):
         :return: success
         """
 
-        figure = self.satHorizonMat.figure
-        figure.clf()
-        figure.subplots_adjust(left=0.2, right=0.85, bottom=0.2, top=0.9)
-        axe = self.satHorizonMat.figure.add_subplot(1, 1, 1, facecolor=None)
+        axe, fig = self.generateFlat(widget=self.satHorizonMat)
 
         # add horizon limit if selected
         self.staticHorizon(axes=axe)
 
-        axe.set_facecolor((0, 0, 0, 0))
         axe.set_xlim(0, 360)
         axe.set_ylim(0, 90)
-        axe.spines['bottom'].set_color(self.M_BLUE)
-        axe.spines['top'].set_color(self.M_BLUE)
-        axe.spines['left'].set_color(self.M_BLUE)
-        axe.spines['right'].set_color(self.M_BLUE)
-        axe.grid(True, color=self.M_GREY)
-        axe.tick_params(axis='x',
-                        colors=self.M_BLUE,
-                        labelsize=12)
-        axeTop = axe.twiny()
-        axeTop.set_facecolor((0, 0, 0, 0))
-        axeTop.set_xlim(0, 360)
-        axeTop.tick_params(axis='x',
-                           top=True,
-                           colors='#2090C0',
-                           labelsize=12)
-        axeTop.set_xticks(np.arange(0, 361, 45))
-        axeTop.grid(True)
-        axeTop.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'])
-        axeTop.spines['bottom'].set_color('#2090C0')
-        axeTop.spines['top'].set_color('#2090C0')
-        axeTop.spines['left'].set_color('#2090C0')
-        axeTop.spines['right'].set_color('#2090C0')
-
         axe.set_xticks(np.arange(0, 361, 45))
-        axe.tick_params(axis='y',
-                        colors=self.M_BLUE,
-                        which='both',
-                        labelleft=True,
-                        labelright=True,
-                        labelsize=12)
+
         axe.set_xlabel('Azimuth in degrees',
                        color=self.M_BLUE,
                        fontweight='bold',
@@ -687,6 +637,7 @@ class SatelliteWindow(widget.MWidget):
                                            color=self.M_PINK)
 
         axe.figure.canvas.draw()
+
         return True
 
     def drawSatellite(self, satellite=None, satOrbits=None):

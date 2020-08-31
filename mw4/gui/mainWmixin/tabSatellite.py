@@ -260,6 +260,7 @@ class Satellite(object):
             return True
 
         winObj['classObj'].signals.update.emit(observe, subpoint, altaz)
+
         return True
 
     def programTLEDataToMount(self):

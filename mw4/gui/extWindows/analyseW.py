@@ -22,7 +22,7 @@ import json
 import os
 
 # external packages
-import PyQt5
+from PyQt5.QtGui import QIcon
 import matplotlib.pyplot as plt
 from matplotlib import ticker
 import numpy as np
@@ -51,7 +51,7 @@ class AnalyseWindow(widget.MWidget):
         self.initUI()
 
         self.modelJSON = None
-        self.wIcon(self.ui.load, PyQt5.QtGui.QIcon(':/icon/load.svg'))
+        self.wIcon(self.ui.load, QIcon(':/icon/load.svg'))
 
         self.raPointErrors = self.embedMatplot(self.ui.raPointErrors,
                                                constrainedLayout=True)
@@ -157,7 +157,8 @@ class AnalyseWindow(widget.MWidget):
 
         return True
 
-    def convertModelData(self):
+    @staticmethod
+    def convertModelData():
         """
 
         :return: True for test purpose

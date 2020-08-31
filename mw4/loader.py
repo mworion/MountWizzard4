@@ -275,6 +275,9 @@ def setupWorkDirs(mwGlob):
                     'measureDir']:
         if not os.path.isdir(mwGlob[dirPath]):
             os.makedirs(mwGlob[dirPath])
+
+        os.chmod(mwGlob[dirPath], 0o666)
+
         if not os.access(mwGlob[dirPath], os.W_OK):
             log.error('no write access to {0}'.format(dirPath))
 

@@ -341,6 +341,8 @@ def extractDataFiles(mwGlob=None, splashW=None):
         else:
             log.info(f'Already existing file: [{file}]')
 
+        os.chmod(filePath, 0o666)
+
     return True
 
 

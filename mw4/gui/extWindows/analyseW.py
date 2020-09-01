@@ -436,8 +436,12 @@ class AnalyseWindow(widget.MWidget):
                  color=self.M_BLUE,
                  fontweight='bold')
 
-        lat = self.app.mount.obsSite.location.latitude.degrees
-        lat = self.modelJSON[0].get('latitude', lat)
+        lat = self.modelJSON[0].get('latitude')
+
+        if lat is None:
+            axe.figure.canvas.draw()
+            return True
+
         npX = (90 - lat) * np.cos(np.radians(0 + 90))
         npY = (90 - lat) * np.sin(np.radians(0 + 90))
 

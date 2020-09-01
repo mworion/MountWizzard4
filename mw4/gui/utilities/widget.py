@@ -19,6 +19,7 @@
 import logging
 import platform
 import os
+from threading import Lock
 
 # external packages
 import numpy as np
@@ -557,27 +558,29 @@ class MWidget(QWidget, styles.MWStyles):
         if not hasattr(widget, 'figure'):
             return None, None
 
-        fig = widget.figure
-        fig.clf()
-        axe = fig.add_subplot(1, 1, 1, polar=True, facecolor=self.M_GREY_DARK)
-        axe.grid(True, color=self.M_GREY)
+        lock = Lock()
+        with lock:
+            fig = widget.figure
+            fig.clf()
+            axe = fig.add_subplot(1, 1, 1, polar=True, facecolor=self.M_GREY_DARK)
+            axe.grid(True, color=self.M_GREY)
 
-        if title:
-            axe.set_title(title, color=self.M_BLUE, fontweight='bold', pad=15)
+            if title:
+                axe.set_title(title, color=self.M_BLUE, fontweight='bold', pad=15)
 
-        axe.set_xlabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
-        axe.set_ylabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
-        axe.tick_params(axis='x', colors=self.M_BLUE, labelsize=12)
-        axe.tick_params(axis='y', colors=self.M_BLUE, labelsize=12)
-        axe.set_theta_zero_location('N')
-        axe.set_rlabel_position(45)
-        axe.set_theta_direction(-1)
+            axe.set_xlabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
+            axe.set_ylabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
+            axe.tick_params(axis='x', colors=self.M_BLUE, labelsize=12)
+            axe.tick_params(axis='y', colors=self.M_BLUE, labelsize=12)
+            axe.set_theta_zero_location('N')
+            axe.set_rlabel_position(45)
+            axe.set_theta_direction(-1)
 
-        # ticks have to be set before labels to be sure to have them positioned correctly
-        axe.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))
-        axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
+            # ticks have to be set before labels to be sure to have them positioned correctly
+            axe.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))
+            axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
 
-        return axe, fig
+            return axe, fig
 
     def generateFlat(self, widget=None, title='', horizon=False):
         """
@@ -594,48 +597,51 @@ class MWidget(QWidget, styles.MWStyles):
         if not hasattr(widget, 'figure'):
             return None, None
 
-        figure = widget.figure
-        figure.clf()
-        axe = figure.add_subplot(1, 1, 1, facecolor=self.M_GREY_DARK)
+        lock = Lock()
+        with lock:
+            figure = widget.figure
+            figure.clf()
+            axe = figure.add_subplot(1, 1, 1, facecolor=self.M_GREY_DARK)
 
-        axe.spines['bottom'].set_color(self.M_BLUE)
-        axe.spines['top'].set_color(self.M_BLUE)
-        axe.spines['left'].set_color(self.M_BLUE)
-        axe.spines['right'].set_color(self.M_BLUE)
-        axe.grid(True, color=self.M_GREY)
+            axe.spines['bottom'].set_color(self.M_BLUE)
+            axe.spines['top'].set_color(self.M_BLUE)
+            axe.spines['left'].set_color(self.M_BLUE)
+            axe.spines['right'].set_color(self.M_BLUE)
+            axe.grid(True, color=self.M_GREY)
 
-        if title:
-            axe.set_title(title, color=self.M_BLUE, fontweight='bold', pad=15)
+            if title:
+                axe.set_title(title, color=self.M_BLUE, fontweight='bold', pad=15)
 
-        axe.set_xlabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
-        axe.set_ylabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
-        axe.tick_params(axis='x', colors=self.M_BLUE, labelsize=12)
-        axe.tick_params(axis='y', colors=self.M_BLUE, labelsize=12)
+            axe.set_xlabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
+            axe.set_ylabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
+            axe.tick_params(axis='x', colors=self.M_BLUE, labelsize=12)
+            axe.tick_params(axis='y', colors=self.M_BLUE, labelsize=12)
 
-        if not horizon:
+            if not horizon:
+                return axe, figure
+
+            axe.set_xlim(0, 360)
+            axe.set_ylim(0, 90)
+            axe.set_xticks(np.arange(0, 361, 45))
+            axe.set_xticklabels(['0', '45', '90', '135', '180', '225', '270', '315', '360'])
+            axe.set_xlabel('Azimuth [degrees]', color=self.M_BLUE, fontweight='bold',
+                           fontsize=12)
+            axe.set_ylabel('Altitude [degrees]', color=self.M_BLUE, fontweight='bold',
+                           fontsize=12)
+
+            axeTop = axe.twiny()
+            axeTop.set_facecolor((0, 0, 0, 0))
+            axeTop.set_xlim(0, 360)
+            axeTop.tick_params(axis='x', top=True, colors=self.M_BLUE, labelsize=12)
+            axeTop.set_xticks(np.arange(0, 361, 45))
+            axeTop.grid(False)
+            axeTop.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'])
+            axeTop.spines['bottom'].set_color(self.M_BLUE)
+            axeTop.spines['top'].set_color(self.M_BLUE)
+            axeTop.spines['left'].set_color(self.M_BLUE)
+            axeTop.spines['right'].set_color(self.M_BLUE)
+
             return axe, figure
-
-        axe.set_xlim(0, 360)
-        axe.set_ylim(0, 90)
-        axe.set_xticks(np.arange(0, 361, 45))
-        axe.set_xticklabels(['0', '45', '90', '135', '180', '225', '270', '315', '360'])
-        axe.set_xlabel('Azimuth [degrees]', color=self.M_BLUE, fontweight='bold', fontsize=12)
-        axe.set_ylabel('Altitude [degrees]', color=self.M_BLUE, fontweight='bold',
-                       fontsize=12)
-
-        axeTop = axe.twiny()
-        axeTop.set_facecolor((0, 0, 0, 0))
-        axeTop.set_xlim(0, 360)
-        axeTop.tick_params(axis='x', top=True, colors=self.M_BLUE, labelsize=12)
-        axeTop.set_xticks(np.arange(0, 361, 45))
-        axeTop.grid(False)
-        axeTop.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'])
-        axeTop.spines['bottom'].set_color(self.M_BLUE)
-        axeTop.spines['top'].set_color(self.M_BLUE)
-        axeTop.spines['left'].set_color(self.M_BLUE)
-        axeTop.spines['right'].set_color(self.M_BLUE)
-
-        return axe, figure
 
     @staticmethod
     def returnDriver(sender, searchDict, addKey=''):

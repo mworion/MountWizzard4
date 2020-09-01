@@ -31,6 +31,7 @@ from scipy.stats.mstats import winsorize
 # local import
 from gui.utilities import widget
 from gui.widgets import analyse_ui
+from base.tpool import Worker
 
 
 class AnalyseWindow(widget.MWidget):
@@ -45,6 +46,8 @@ class AnalyseWindow(widget.MWidget):
     def __init__(self, app):
         super().__init__()
         self.app = app
+        self.threadPool = app.threadPool
+        self.workers = None
 
         self.ui = analyse_ui.Ui_AnalyseDialog()
         self.ui.setupUi(self)
@@ -230,11 +233,24 @@ class AnalyseWindow(widget.MWidget):
         axe.set_ylabel('Error per Star [RMS]')
 
         errors = model['errorRA_S']
+        pierside = np.asarray(model['pierside'])
+        index = np.asarray(model['countSequence'])
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.05)
+            errors = winsorize(errors, limits=0.03)
 
-        for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
+        indexW = [i for i, x, p in zip(index, errors, pierside) if p == 'W']
+        errorW = [x for i, x, p in zip(index, errors, pierside) if p == 'W']
+        indexE = [i for i, x, p in zip(index, errors, pierside) if p == 'E']
+        errorE = [x for i, x, p in zip(index, errors, pierside) if p == 'E']
+
+        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
+        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
+
+        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
+        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
+
+        for x, (y, pierside) in enumerate(zip(errors, pierside)):
             if pierside == 'W':
                 color = self.M_GREEN
 
@@ -249,7 +265,8 @@ class AnalyseWindow(widget.MWidget):
 
     def draw_decPointErrors(self, model):
         """
-        draw_raPointErrors draws a plot of
+        draw_raPointErrors draws a plot of raw errors in dec. Please watch the inverse sign
+        for pierside east.
 
         :param model:
         :return:    True if ok for testing
@@ -260,12 +277,25 @@ class AnalyseWindow(widget.MWidget):
         axe.set_xlabel('Star Number')
         axe.set_ylabel('Error per Star [RMS]')
 
-        errors = model['errorDEC_S']
+        errors = np.asarray(model['errorDEC_S'])
+        pierside = np.asarray(model['pierside'])
+        index = np.asarray(model['countSequence'])
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.05)
+            errors = winsorize(errors, limits=0.03)
 
-        errors = [x if p == 'W' else -x for x, p in zip(errors, model['pierside'])]
+        errors = [x if p == 'W' else -x for x, p in zip(errors, pierside)]
+
+        indexW = [i for i, x, p in zip(index, errors, pierside) if p == 'W']
+        errorW = [x for i, x, p in zip(index, errors, pierside) if p == 'W']
+        indexE = [i for i, x, p in zip(index, errors, pierside) if p == 'E']
+        errorE = [x for i, x, p in zip(index, errors, pierside) if p == 'E']
+
+        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
+        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
+
+        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
+        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
 
         for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
             if pierside == 'W':
@@ -294,11 +324,24 @@ class AnalyseWindow(widget.MWidget):
         axe.set_ylabel('Error per Star [RMS]')
 
         errors = model['errorRA']
+        pierside = np.asarray(model['pierside'])
+        index = np.asarray(model['countSequence'])
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.05)
+            errors = winsorize(errors, limits=0.03)
 
-        for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
+        indexW = [i for i, x, p in zip(index, errors, pierside) if p == 'W']
+        errorW = [x for i, x, p in zip(index, errors, pierside) if p == 'W']
+        indexE = [i for i, x, p in zip(index, errors, pierside) if p == 'E']
+        errorE = [x for i, x, p in zip(index, errors, pierside) if p == 'E']
+
+        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
+        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
+
+        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
+        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
+
+        for x, (y, pierside) in enumerate(zip(errors, pierside)):
             if pierside == 'W':
                 color = self.M_GREEN
 
@@ -325,11 +368,24 @@ class AnalyseWindow(widget.MWidget):
         axe.set_ylabel('Error per Star [RMS]')
 
         errors = model['errorDEC']
+        pierside = np.asarray(model['pierside'])
+        index = np.asarray(model['countSequence'])
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.05)
+            errors = winsorize(errors, limits=0.03)
 
-        for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
+        indexW = [i for i, x, p in zip(index, errors, pierside) if p == 'W']
+        errorW = [x for i, x, p in zip(index, errors, pierside) if p == 'W']
+        indexE = [i for i, x, p in zip(index, errors, pierside) if p == 'E']
+        errorE = [x for i, x, p in zip(index, errors, pierside) if p == 'E']
+
+        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
+        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
+
+        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
+        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
+
+        for x, (y, pierside) in enumerate(zip(errors, pierside)):
             if pierside == 'W':
                 color = self.M_GREEN
 
@@ -357,11 +413,24 @@ class AnalyseWindow(widget.MWidget):
         axe.set_ylabel('Image Scale [arcsec/pix]')
 
         errors = model['scaleS']
+        pierside = np.asarray(model['pierside'])
+        index = np.asarray(model['countSequence'])
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.05)
+            errors = winsorize(errors, limits=0.03)
 
-        for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
+        indexW = [i for i, x, p in zip(index, errors, pierside) if p == 'W']
+        errorW = [x for i, x, p in zip(index, errors, pierside) if p == 'W']
+        indexE = [i for i, x, p in zip(index, errors, pierside) if p == 'E']
+        errorE = [x for i, x, p in zip(index, errors, pierside) if p == 'E']
+
+        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
+        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
+
+        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
+        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
+
+        for x, (y, pierside) in enumerate(zip(errors, pierside)):
             if pierside == 'W':
                 color = self.M_GREEN
 
@@ -492,11 +561,17 @@ class AnalyseWindow(widget.MWidget):
         axe.set_ylabel('Error per Star [RMS]')
 
         errors = model['errorRMS']
+        pierside = np.asarray(model['pierside'])
+        index = np.asarray(model['countSequence'])
 
-        errors, pierside = zip(*sorted(zip(errors, model['pierside'])))
+        errors, pierside = zip(*sorted(zip(errors, pierside)))
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.05)
+            errors = winsorize(errors, limits=0.03)
+
+        meanG = np.poly1d(np.polyfit(index, errors, 3))(index)
+
+        axe.plot(index, meanG, color=self.M_WHITE_L, alpha=0.4, lw=5)
 
         for x, (y, pierside) in enumerate(zip(errors, pierside)):
             if pierside == 'W':
@@ -560,13 +635,21 @@ class AnalyseWindow(widget.MWidget):
             for index in range(0, len(self.modelJSON)):
                 model[key].append(self.modelJSON[index][key])
 
-        self.draw_raPointErrors(model)
-        self.draw_decPointErrors(model)
-        self.draw_raModelErrors(model)
-        self.draw_decModelErrors(model)
-        self.draw_scaleImage(model)
-        self.draw_modelPositions(model)
-        self.draw_errorAscending(model)
-        self.draw_errorDistribution(model)
+        charts = [self.draw_raPointErrors,
+                  self.draw_decPointErrors,
+                  self.draw_raModelErrors,
+                  self.draw_decModelErrors,
+                  self.draw_scaleImage,
+                  self.draw_modelPositions,
+                  self.draw_errorAscending,
+                  self.draw_errorDistribution,
+                  ]
+
+        self.workers = list()
+
+        for chart in charts:
+            worker = Worker(chart, model)
+            self.workers.append(worker)
+            self.threadPool.start(worker)
 
         return True

@@ -24,15 +24,15 @@ from threading import Thread
 
 # external packages
 from PyQt5.QtGui import QIcon
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 from matplotlib import ticker
+from matplotlib.colors import Normalize
 import numpy as np
 from scipy.stats.mstats import winsorize
 
 # local import
 from gui.utilities import widget
 from gui.widgets import analyse_ui
-from base.tpool import Worker
 
 
 class AnalyseWindow(widget.MWidget):
@@ -492,50 +492,35 @@ class AnalyseWindow(widget.MWidget):
         :return:    True if ok for testing
         """
 
-        axe, fig = self.generatePolar(widget=self.modelPositions)
+        axe, _ = self.generatePolar(widget=self.modelPositions)
 
-        axe.set_yticks(range(0, 90, 10))
         axe.set_ylim(0, 90)
-        yLabel = ['', '', '', '', '', '', '', '', '']
-        axe.set_yticklabels(yLabel)
+        axe.set_yticklabels('')
 
         altitude = self.altitude
         azimuth = self.azimuth
         error = self.errorRMS
-        errorAngle = self.errorAngle
+        ang = self.errorAngle
 
         # and plot it
         cm = plt.cm.get_cmap('RdYlGn_r')
-        colors = np.asarray(error)
-        scaleErrorMax = max(colors)
-        scaleErrorMin = min(colors)
-        area = [100 if x >= max(colors) else 30 for x in error]
-        theta = azimuth / 180.0 * np.pi
-        r = 90 - altitude
+        sMax = max(error)
+        sMin = min(error)
+        az = azimuth / 180.0 * np.pi
+        alt = 90 - altitude
 
-        scatter = axe.scatter(theta,
-                              r,
-                              c=colors,
-                              vmin=scaleErrorMin,
-                              vmax=scaleErrorMax,
-                              s=area,
-                              cmap=cm,
-                              zorder=0,
-                              )
+        for az, alt, err in zip(az, alt, error):
+            axe.plot(az, alt, marker='o', markersize=7, color=cm((err - sMin) / sMax))
 
-        formatString = ticker.FormatStrFormatter('%1.0f')
-        colorbar = fig.colorbar(scatter,
-                                pad=0.1,
-                                fraction=0.12,
-                                aspect=25,
-                                shrink=0.9,
-                                format=formatString,
-                                )
-        colorbar.set_label('Error [arcsec]', color=self.M_BLUE)
-        yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-        plt.setp(yTicks,
-                 color=self.M_BLUE,
-                 fontweight='bold')
+        norm = Normalize(vmin=sMin, vmax=sMax)
+        sm = plt.cm.ScalarMappable(cmap=cm, norm=norm)
+        sm.set_array([])
+
+        fm = ticker.FormatStrFormatter('%1.0f')
+        cb = plt.colorbar(sm, pad=0.1, fraction=0.12, aspect=25, shrink=0.9, format=fm)
+        cb.set_label('Error [arcsec]', color=self.M_BLUE)
+        yTicks = plt.getp(cb.ax.axes, 'yticklabels')
+        plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
         lat = self.latitude
 
@@ -553,7 +538,7 @@ class AnalyseWindow(widget.MWidget):
         axe.plot(0, 90 - lat, marker='o', markersize=35, color=self.M_BLUE, alpha=0.8,
                  lw=10, fillstyle='none', zorder=-10)
 
-        for alt, az, ang, col in zip(altitude, azimuth, errorAngle, colors):
+        for alt, az, ang, err in zip(altitude, azimuth, ang, error):
             pX = (90 - alt) * np.cos(np.radians(az + 90))
             pY = (90 - alt) * np.sin(np.radians(az + 90))
 
@@ -564,7 +549,7 @@ class AnalyseWindow(widget.MWidget):
             u = np.sin(vec)
             v = np.cos(vec)
 
-            col = cm((col - scaleErrorMin) / scaleErrorMax)
+            col = cm((err - sMin) / sMax)
 
             axe.quiver(x, y, u, v,
                        color=col,

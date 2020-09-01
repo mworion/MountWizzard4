@@ -346,18 +346,18 @@ def test_selectAstapAppPath_3(qtbot):
             assert suc
 
 
-def test_setupAscomDriver_1():
+def test_selectAscomDriver_1():
     if platform.system() != 'Windows':
         return
 
     with mock.patch.object(win32com.client,
                            'Dispatch',
                            side_effect=Exception()):
-        suc = app.setupAscomDriver()
+        suc = app.selectAscomDriver()
         assert not suc
 
 
-def test_setupAscomDriver_2():
+def test_selectAscomDriver_2():
     if platform.system() != 'Windows':
         return
 
@@ -373,6 +373,6 @@ def test_setupAscomDriver_2():
     with mock.patch.object(win32com.client,
                            'Dispatch',
                            return_value=Test()):
-        suc = app.setupAscomDriver()
+        suc = app.selectAscomDriver()
         assert suc
         assert app.ui.ascomDevice.text() == 'test'

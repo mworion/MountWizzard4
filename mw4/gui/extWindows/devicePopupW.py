@@ -287,8 +287,8 @@ class DevicePopup(QDialog, widget.MWidget):
 
     def updateIndiDeviceNameList(self, deviceNames=[]):
         """
-        updateIndiDeviceNameList updates the indi device name selectors combobox with the discovered
-        entries. therefore it delets the old list and rebuild it new.
+        updateIndiDeviceNameList updates the indi device name selectors combobox with the
+        discovered entries. therefore it deletes the old list and rebuild it new.
 
         :return: True for test purpose
         """
@@ -303,9 +303,10 @@ class DevicePopup(QDialog, widget.MWidget):
 
     def discoverIndiDevices(self):
         """
-        discoverIndiDevices looks all possible indi devices up from the actual server and the selected
-        device type. The search time is defined in indi class and shoiuld be about 2-3 seconds.
-        if the search was successful, the gui and the device list will be updated
+        discoverIndiDevices looks all possible indi devices up from the actual server and
+        the selected device type. The search time is defined in indi class and should be
+        about 2-3 seconds. if the search was successful, the gui and the device list will
+         be updated
 
         :return: success
         """

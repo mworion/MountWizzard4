@@ -241,7 +241,7 @@ class AnalyseWindow(widget.MWidget):
             else:
                 color = self.M_YELLOW
 
-            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
+            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 
@@ -274,7 +274,7 @@ class AnalyseWindow(widget.MWidget):
             else:
                 color = self.M_YELLOW
 
-            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
+            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 
@@ -305,7 +305,7 @@ class AnalyseWindow(widget.MWidget):
             else:
                 color = self.M_YELLOW
 
-            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
+            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 
@@ -336,7 +336,7 @@ class AnalyseWindow(widget.MWidget):
             else:
                 color = self.M_YELLOW
 
-            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
+            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 
@@ -368,7 +368,7 @@ class AnalyseWindow(widget.MWidget):
             else:
                 color = self.M_YELLOW
 
-            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
+            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 
@@ -498,14 +498,14 @@ class AnalyseWindow(widget.MWidget):
         if self.ui.winsorizedLimit.isChecked():
             errors = winsorize(errors, limits=0.05)
 
-        for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
+        for x, (y, pierside) in enumerate(zip(errors, pierside)):
             if pierside == 'W':
                 color = self.M_GREEN
 
             else:
                 color = self.M_YELLOW
 
-            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
+            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 
@@ -538,7 +538,7 @@ class AnalyseWindow(widget.MWidget):
             else:
                 color = self.M_YELLOW
 
-            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
+            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 

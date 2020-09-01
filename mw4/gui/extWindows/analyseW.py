@@ -53,7 +53,21 @@ class AnalyseWindow(widget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
 
-        self.modelJSON = None
+        self.latitude = None
+        self.pierside = None
+        self.countSequence = None
+        self.scaleS = None
+        self.altitude = None
+        self.azimuth = None
+        self.errorAngle = None
+        self.errorRMS = None
+        self.errorRA_S = None
+        self.errorDEC_S = None
+        self.errorRA = None
+        self.errorDEC = None
+        self.angularPosRA = None
+        self.angularPosDEC = None
+
         self.wIcon(self.ui.load, QIcon(':/icon/load.svg'))
 
         self.raPointErrorsRaw = self.embedMatplot(self.ui.raPointErrorsRaw)
@@ -226,422 +240,243 @@ class AnalyseWindow(widget.MWidget):
         if 'firmware' in modelJSON[0]:
             self.ui.firmware.setText(f'{modelJSON[0]["firmware"]}')
 
-        self.modelJSON = modelJSON
+        model = dict()
+
+        for key in modelJSON[0].keys():
+            model[key] = list()
+            for index in range(0, len(modelJSON)):
+                model[key].append(modelJSON[index][key])
+
+        self.latitude = modelJSON[0].get('latitude')
+        self.pierside = np.asarray(model['pierside'])
+        self.countSequence = np.asarray(model['countSequence'])
+        self.scaleS = np.asarray(model['scaleS'])
+        self.altitude = np.asarray(model['altitude'])
+        self.azimuth = np.asarray(model['azimuth'])
+        self.errorAngle = np.asarray(model['errorAngle'])
+        self.errorRMS = np.asarray(model['errorRMS'])
+        self.errorRA_S = np.asarray(model['errorRA_S'])
+        self.errorDEC_S = np.asarray(model['errorDEC_S'])
+        self.errorRA = np.asarray(model['errorRA'])
+        self.errorDEC = np.asarray(model['errorDEC'])
+        self.angularPosRA = np.asarray(model['angularPosRA'])
+        self.angularPosDEC = np.asarray(model['angularPosDEC'])
+
         self.drawAll()
 
         return True
 
-    def draw_raPointErrorsRaw(self, model):
-        """
-        draw_raPointErrorsRaw draws a plot of
-
-        :param model:
-        :return:    True if ok for testing
+    def plotFigureFlat(self, axe, x, y, xLabel, yLabel, sort=False, poly=0):
         """
 
-        axe, fig = self.generateFlat(widget=self.raPointErrorsRaw)
+        :param axe:
+        :param x:
+        :param y:
+        :param xLabel:
+        :param yLabel:
+        :param sort:
+        :param poly:
+        :return: True for test purpose
+        """
 
-        axe.set_xlabel('Star Number')
-        axe.set_ylabel('Error per Star [RMS]')
+        axe.set_xlabel(xLabel)
+        axe.set_ylabel(yLabel)
 
-        errors = np.asarray(model['errorRA_S'])
-        pierside = np.asarray(model['pierside'])
-        index = np.asarray(model['countSequence'])
+        if sort:
+            x, y, pierside = zip(*sorted(zip(x, y, self.pierside)))
+        else:
+            pierside = self.pierside
 
         if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.03)
+            y = winsorize(y, limits=0.03)
 
-        indexW = [i for i, x, p in zip(index, errors, pierside) if p == 'W']
-        errorW = [x for i, x, p in zip(index, errors, pierside) if p == 'W']
-        indexE = [i for i, x, p in zip(index, errors, pierside) if p == 'E']
-        errorE = [x for i, x, p in zip(index, errors, pierside) if p == 'E']
+        xW = [x for x, y, p in zip(x, y, pierside) if p == 'W']
+        yW = [y for x, y, p in zip(x, y, pierside) if p == 'W']
+        xE = [x for x, y, p in zip(x, y, pierside) if p == 'E']
+        yE = [y for x, y, p in zip(x, y, pierside) if p == 'E']
 
-        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
-        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
+        if poly:
+            meanW = np.poly1d(np.polyfit(xW, yW, poly))(xW)
+            meanE = np.poly1d(np.polyfit(xE, yE, poly))(xE)
 
-        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
-        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
+            axe.plot(xW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
+            axe.plot(xE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
 
-        for x, (y, pierside) in enumerate(zip(errors, pierside)):
-            if pierside == 'W':
-                color = self.M_GREEN
-
-            else:
-                color = self.M_YELLOW
-
-            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
+        axe.plot(xW, yW, marker='.', markersize=7, linestyle='none', color=self.M_GREEN)
+        axe.plot(xE, yE, marker='.', markersize=7, linestyle='none', color=self.M_YELLOW)
 
         axe.figure.canvas.draw()
 
         return True
 
-    def draw_decPointErrorsRaw(self, model):
+    def draw_raPointErrorsRaw(self):
+        """
+        draw_raPointErrorsRaw draws a plot of
+
+        :return:    True if ok for testing
+        """
+
+        axe, _ = self.generateFlat(widget=self.raPointErrorsRaw)
+
+        x = self.countSequence
+        y = self.errorRA_S
+        xLabel = 'Star Number'
+        yLabel = 'Error per Star [RMS]'
+
+        self.plotFigureFlat(axe, x, y, xLabel, yLabel, False, 3)
+
+        return True
+
+    def draw_decPointErrorsRaw(self):
         """
         draw_decPointErrorsRaw draws a plot of raw errors in dec. Please watch the inverse sign
         for pierside east.
 
-        :param model:
         :return:    True if ok for testing
         """
 
-        axe, fig = self.generateFlat(widget=self.decPointErrorsRaw)
+        axe, _ = self.generateFlat(widget=self.decPointErrorsRaw)
 
-        axe.set_xlabel('Star Number')
-        axe.set_ylabel('Error per Star [RMS]')
+        x = self.countSequence
+        y = self.errorDEC_S
+        y = [y if p == 'W' else -y for y, p in zip(y, self.pierside)]
+        xLabel = 'Star Number'
+        yLabel = 'Error per Star [RMS]'
 
-        errors = np.asarray(model['errorDEC_S'])
-        pierside = np.asarray(model['pierside'])
-        index = np.asarray(model['countSequence'])
-
-        if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.03)
-
-        errors = [x if p == 'W' else -x for x, p in zip(errors, pierside)]
-
-        indexW = [i for i, x, p in zip(index, errors, pierside) if p == 'W']
-        errorW = [x for i, x, p in zip(index, errors, pierside) if p == 'W']
-        indexE = [i for i, x, p in zip(index, errors, pierside) if p == 'E']
-        errorE = [x for i, x, p in zip(index, errors, pierside) if p == 'E']
-
-        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
-        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
-
-        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
-        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
-
-        for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
-            if pierside == 'W':
-                color = self.M_GREEN
-
-            else:
-                color = self.M_YELLOW
-
-            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
-
-        axe.figure.canvas.draw()
+        self.plotFigureFlat(axe, x, y, xLabel, yLabel, False, 3)
 
         return True
 
-    def draw_raModelErrors(self, model):
+    def draw_raModelErrors(self):
         """
         draw_raModelErrors draws a plot of
 
-        :param model:
         :return:    True if ok for testing
         """
 
-        axe, fig = self.generateFlat(widget=self.raModelErrors)
+        axe, _ = self.generateFlat(widget=self.raModelErrors)
 
-        axe.set_xlabel('Star Number')
-        axe.set_ylabel('Error per Star [RMS]')
+        x = self.countSequence
+        y = self.errorRA
+        xLabel = 'Star Number'
+        yLabel = 'Error per Star [RMS]'
 
-        errors = np.asarray(model['errorRA'])
-        pierside = np.asarray(model['pierside'])
-        index = np.asarray(model['countSequence'])
-
-        if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.03)
-
-        indexW = [i for i, x, p in zip(index, errors, pierside) if p == 'W']
-        errorW = [x for i, x, p in zip(index, errors, pierside) if p == 'W']
-        indexE = [i for i, x, p in zip(index, errors, pierside) if p == 'E']
-        errorE = [x for i, x, p in zip(index, errors, pierside) if p == 'E']
-
-        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
-        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
-
-        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
-        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
-
-        for x, (y, pierside) in enumerate(zip(errors, pierside)):
-            if pierside == 'W':
-                color = self.M_GREEN
-
-            else:
-                color = self.M_YELLOW
-
-            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
-
-        axe.figure.canvas.draw()
+        self.plotFigureFlat(axe, x, y, xLabel, yLabel, False, 3)
 
         return True
 
-    def draw_decModelErrors(self, model):
+    def draw_decModelErrors(self):
         """
         draw_decModelErrors draws a plot of
 
-        :param model:
         :return:    True if ok for testing
         """
 
-        axe, fig = self.generateFlat(widget=self.decModelErrors)
+        axe, _ = self.generateFlat(widget=self.decModelErrors)
 
-        axe.set_xlabel('Star Number')
-        axe.set_ylabel('Error per Star [RMS]')
+        x = self.countSequence
+        y = self.errorDEC
+        xLabel = 'Star Number'
+        yLabel = 'Error per Star [RMS]'
 
-        errors = np.asarray(model['errorDEC'])
-        pierside = np.asarray(model['pierside'])
-        index = np.asarray(model['countSequence'])
-
-        if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.03)
-
-        indexW = [i for i, x, p in zip(index, errors, pierside) if p == 'W']
-        errorW = [x for i, x, p in zip(index, errors, pierside) if p == 'W']
-        indexE = [i for i, x, p in zip(index, errors, pierside) if p == 'E']
-        errorE = [x for i, x, p in zip(index, errors, pierside) if p == 'E']
-
-        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
-        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
-
-        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
-        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
-
-        for x, (y, pierside) in enumerate(zip(errors, pierside)):
-            if pierside == 'W':
-                color = self.M_GREEN
-
-            else:
-                color = self.M_YELLOW
-
-            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
-
-        axe.figure.canvas.draw()
+        self.plotFigureFlat(axe, x, y, xLabel, yLabel, False, 3)
 
         return True
 
-    def draw_raModelErrorsRef(self, model):
+    def draw_raModelErrorsRef(self):
         """
         draw_raModelErrorsRef draws a plot of
 
-        :param model:
         :return:    True if ok for testing
         """
 
-        axe, fig = self.generateFlat(widget=self.raModelErrorsRef)
+        axe, _ = self.generateFlat(widget=self.raModelErrorsRef)
 
-        axe.set_xlabel('RA Encoder Abs [deg]')
-        axe.set_ylabel('Error per Star [RMS]')
+        x = self.angularPosRA
+        y = self.errorRA
+        xLabel = 'RA Encoder Abs [deg]'
+        yLabel = 'Error per Star [RMS]'
 
-        errors = np.asarray(model['errorRA'])
-        pierside = np.asarray(model['pierside'])
-        encoder = np.asarray(model['angularPosRA'])
-
-        encoder, errors, pierside = zip(*sorted(zip(encoder, errors, pierside)))
-
-        if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.03)
-
-        indexW = [i for i, x, p in zip(encoder, errors, pierside) if p == 'W']
-        errorW = [x for i, x, p in zip(encoder, errors, pierside) if p == 'W']
-        indexE = [i for i, x, p in zip(encoder, errors, pierside) if p == 'E']
-        errorE = [x for i, x, p in zip(encoder, errors, pierside) if p == 'E']
-
-        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
-        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
-
-        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
-        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
-
-        for x, y, pierside in zip(encoder, errors, pierside):
-            if pierside == 'W':
-                color = self.M_GREEN
-
-            else:
-                color = self.M_YELLOW
-
-            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
-
-        axe.figure.canvas.draw()
+        self.plotFigureFlat(axe, x, y, xLabel, yLabel, True, 3)
 
         return True
 
-    def draw_decModelErrorsRef(self, model):
+    def draw_decModelErrorsRef(self):
         """
         draw_decModelErrorsRef draws a plot of
 
-        :param model:
         :return:    True if ok for testing
         """
 
-        axe, fig = self.generateFlat(widget=self.decModelErrorsRef)
+        axe, _ = self.generateFlat(widget=self.decModelErrorsRef)
 
-        axe.set_xlabel('DEC Encoder Abs [deg]')
-        axe.set_ylabel('Error per Star [RMS]')
+        x = self.angularPosDEC
+        y = self.errorDEC
+        y = [x if p == 'W' else -x for x, p in zip(y, self.pierside)]
+        xLabel = 'DEC Encoder Abs [deg]'
+        yLabel = 'Error per Star [RMS]'
 
-        errors = np.asarray(model['errorDEC'])
-        pierside = np.asarray(model['pierside'])
-        encoder = np.asarray(model['angularPosDEC'])
-
-        errors = [x if p == 'W' else -x for x, p in zip(errors, pierside)]
-
-        if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.03)
-
-        indexW = [i for i, x, p in zip(encoder, errors, pierside) if p == 'W']
-        errorW = [x for i, x, p in zip(encoder, errors, pierside) if p == 'W']
-        indexE = [i for i, x, p in zip(encoder, errors, pierside) if p == 'E']
-        errorE = [x for i, x, p in zip(encoder, errors, pierside) if p == 'E']
-
-        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
-        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
-
-        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
-        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
-
-        for x, y, pierside in zip(encoder, errors, pierside):
-            if pierside == 'W':
-                color = self.M_GREEN
-
-            else:
-                color = self.M_YELLOW
-
-            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
-
-        axe.figure.canvas.draw()
+        self.plotFigureFlat(axe, x, y, xLabel, yLabel, True, 3)
 
         return True
 
-    def draw_raPointErrorsRawRef(self, model):
+    def draw_raPointErrorsRawRef(self):
         """
         draw_raPointErrorsRawRef draws a plot of
 
-        :param model:
         :return:    True if ok for testing
         """
 
-        axe, fig = self.generateFlat(widget=self.raPointErrorsRawRef)
+        axe, _ = self.generateFlat(widget=self.raPointErrorsRawRef)
 
-        axe.set_xlabel('RA Encoder Abs [deg]')
-        axe.set_ylabel('Error per Star [RMS]')
+        x = self.angularPosRA
+        y = self.errorRA_S
+        xLabel = 'RA Encoder Abs [deg]'
+        yLabel = 'Error per Star [RMS]'
 
-        errors = np.asarray(model['errorRA_S'])
-        pierside = np.asarray(model['pierside'])
-        encoder = np.asarray(model['angularPosRA'])
-
-        encoder, errors, pierside = zip(*sorted(zip(encoder, errors, pierside)))
-
-        if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.03)
-
-        indexW = [i for i, x, p in zip(encoder, errors, pierside) if p == 'W']
-        errorW = [x for i, x, p in zip(encoder, errors, pierside) if p == 'W']
-        indexE = [i for i, x, p in zip(encoder, errors, pierside) if p == 'E']
-        errorE = [x for i, x, p in zip(encoder, errors, pierside) if p == 'E']
-
-        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
-        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
-
-        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
-        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
-
-        for x, y, pierside in zip(encoder, errors, pierside):
-            if pierside == 'W':
-                color = self.M_GREEN
-
-            else:
-                color = self.M_YELLOW
-
-            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
-
-        axe.figure.canvas.draw()
+        self.plotFigureFlat(axe, x, y, xLabel, yLabel, True, 3)
 
         return True
 
-    def draw_decPointErrorsRawRef(self, model):
+    def draw_decPointErrorsRawRef(self):
         """
         draw_decPointErrorsRawRef draws a plot of
 
-        :param model:
         :return:    True if ok for testing
         """
 
-        axe, fig = self.generateFlat(widget=self.decPointErrorsRawRef)
+        axe, _ = self.generateFlat(widget=self.decPointErrorsRawRef)
 
-        axe.set_xlabel('DEC Encoder Abs [deg]')
-        axe.set_ylabel('Error per Star [RMS]')
+        x = self.angularPosDEC
+        y = self.errorDEC_S
+        y = [y if p == 'W' else -y for y, p in zip(y, self.pierside)]
+        xLabel = 'DEC Encoder Abs [deg]'
+        yLabel = 'Error per Star [RMS]'
 
-        errors = np.asarray(model['errorDEC_S'])
-        pierside = np.asarray(model['pierside'])
-        encoder = np.asarray(model['angularPosDEC'])
-
-        errors = [x if p == 'W' else -x for x, p in zip(errors, pierside)]
-
-        encoder, errors, pierside = zip(*sorted(zip(encoder, errors, pierside)))
-
-        if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.03)
-
-        indexW = [i for i, x, p in zip(encoder, errors, pierside) if p == 'W']
-        errorW = [x for i, x, p in zip(encoder, errors, pierside) if p == 'W']
-        indexE = [i for i, x, p in zip(encoder, errors, pierside) if p == 'E']
-        errorE = [x for i, x, p in zip(encoder, errors, pierside) if p == 'E']
-
-        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
-        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
-
-        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
-        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
-
-        for x, y, pierside in zip(encoder, errors, pierside):
-            if pierside == 'W':
-                color = self.M_GREEN
-
-            else:
-                color = self.M_YELLOW
-
-            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
-
-        axe.figure.canvas.draw()
+        self.plotFigureFlat(axe, x, y, xLabel, yLabel, True, 3)
 
         return True
 
-    def draw_scaleImage(self, model):
+    def draw_scaleImage(self):
         """
         draw_raPointErrorsRaw draws a plot of
 
-        :param model:
         :return:    True if ok for testing
         """
 
-        axe, fig = self.generateFlat(widget=self.scaleImage)
+        axe, _ = self.generateFlat(widget=self.scaleImage)
         axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.3f',))
 
-        axe.set_xlabel('Star Number')
-        axe.set_ylabel('Image Scale [arcsec/pix]')
+        x = self.countSequence
+        y = self.scaleS
+        xLabel = 'RA Encoder Abs [deg]'
+        yLabel = 'Image Scale [arcsec/pix]'
 
-        errors = np.asarray(model['scaleS'])
-        pierside = np.asarray(model['pierside'])
-        index = np.asarray(model['countSequence'])
-
-        if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.03)
-
-        indexW = [i for i, x, p in zip(index, errors, pierside) if p == 'W']
-        errorW = [x for i, x, p in zip(index, errors, pierside) if p == 'W']
-        indexE = [i for i, x, p in zip(index, errors, pierside) if p == 'E']
-        errorE = [x for i, x, p in zip(index, errors, pierside) if p == 'E']
-
-        meanW = np.poly1d(np.polyfit(indexW, errorW, 3))(indexW)
-        meanE = np.poly1d(np.polyfit(indexE, errorE, 3))(indexE)
-
-        axe.plot(indexW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
-        axe.plot(indexE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
-
-        for x, (y, pierside) in enumerate(zip(errors, pierside)):
-            if pierside == 'W':
-                color = self.M_GREEN
-
-            else:
-                color = self.M_YELLOW
-
-            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
-
-        axe.figure.canvas.draw()
+        self.plotFigureFlat(axe, x, y, xLabel, yLabel, False, 3)
 
         return True
 
-    def draw_modelPositions(self, model):
+    def draw_modelPositions(self):
         """
         showModelPosition draws a polar plot of the align model stars and their errors in
         color. the basic setup of the plot is taking place in the central widget class.
@@ -654,7 +489,6 @@ class AnalyseWindow(widget.MWidget):
             in the equatorial system in degrees from 0 to 359 (0 towards the north pole,
             90 towards east)
 
-        :param model:
         :return:    True if ok for testing
         """
 
@@ -665,10 +499,10 @@ class AnalyseWindow(widget.MWidget):
         yLabel = ['', '', '', '', '', '', '', '', '']
         axe.set_yticklabels(yLabel)
 
-        altitude = np.asarray(model['altitude'])
-        azimuth = np.asarray(model['azimuth'])
-        error = np.asarray(model['errorRMS'])
-        errorAngle = np.asarray(model['errorAngle'])
+        altitude = self.altitude
+        azimuth = self.azimuth
+        error = self.errorRMS
+        errorAngle = self.errorAngle
 
         # and plot it
         cm = plt.cm.get_cmap('RdYlGn_r')
@@ -703,7 +537,7 @@ class AnalyseWindow(widget.MWidget):
                  color=self.M_BLUE,
                  fontweight='bold')
 
-        lat = self.modelJSON[0].get('latitude')
+        lat = self.latitude
 
         if lat is None:
             axe.figure.canvas.draw()
@@ -744,12 +578,11 @@ class AnalyseWindow(widget.MWidget):
         axe.figure.canvas.draw()
         return True
 
-    def draw_errorAscending(self, model):
+    def draw_errorAscending(self):
         """
         showErrorAscending draws a plot of the align model stars and their errors in ascending
         order.
 
-        :param model:
         :return:    True if ok for testing
         """
 
@@ -758,9 +591,9 @@ class AnalyseWindow(widget.MWidget):
         axe.set_xlabel('Star Number')
         axe.set_ylabel('Error per Star [RMS]')
 
-        errors = model['errorRMS']
-        pierside = np.asarray(model['pierside'])
-        index = np.asarray(model['countSequence'])
+        errors = self.errorRMS
+        pierside = self.pierside
+        index = self.countSequence
 
         errors, pierside = zip(*sorted(zip(errors, pierside)))
 
@@ -784,7 +617,7 @@ class AnalyseWindow(widget.MWidget):
 
         return True
 
-    def draw_errorDistribution(self, model):
+    def draw_errorDistribution(self):
         """
         showErrorDistribution draws a polar plot of the align model stars and their errors in
         color. the basic setup of the plot is taking place in the central widget class.
@@ -792,19 +625,15 @@ class AnalyseWindow(widget.MWidget):
         DEC  and not in RA and DEC. using skyfield is a little bit misleading, because you
         address the hour angle as .ra.hours
 
-        :param model:
         :return:    True if ok for testing
         """
 
-        if 'errorAngle' not in model:
-            return False
-
         axe, fig = self.generatePolar(widget=self.errorDistribution)
 
-        angles = [val / 180.0 * np.pi for val in model['errorAngle']]
-        errors = model['errorRMS']
+        x = [val / 180.0 * np.pi for val in self.errorAngle]
+        y = self.errorRMS
 
-        for x, y, pierside in zip(angles, errors, model['pierside']):
+        for x, y, pierside in zip(x, y, self.pierside):
             if pierside == 'W':
                 color = self.M_GREEN
 
@@ -823,15 +652,8 @@ class AnalyseWindow(widget.MWidget):
         :return: true for test purpose
         """
 
-        if not self.modelJSON:
+        if self.countSequence is None:
             return False
-
-        model = dict()
-
-        for key in self.modelJSON[0].keys():
-            model[key] = list()
-            for index in range(0, len(self.modelJSON)):
-                model[key].append(self.modelJSON[index][key])
 
         charts = [self.draw_raPointErrorsRaw,
                   self.draw_decPointErrorsRaw,
@@ -850,7 +672,7 @@ class AnalyseWindow(widget.MWidget):
         self.workers = list()
 
         for chart in charts:
-            worker = Thread(target=chart, args=[model])
+            worker = Thread(target=chart)
             self.workers.append(worker)
             worker.start()
 

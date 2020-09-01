@@ -53,29 +53,28 @@ class AnalyseWindow(widget.MWidget):
         self.modelJSON = None
         self.wIcon(self.ui.load, QIcon(':/icon/load.svg'))
 
-        self.raPointErrors = self.embedMatplot(self.ui.raPointErrors,
-                                               constrainedLayout=True)
+        self.raPointErrors = self.embedMatplot(self.ui.raPointErrors)
         self.raPointErrors.parentWidget().setStyleSheet(self.BACK_BG)
-        self.decPointErrors = self.embedMatplot(self.ui.decPointErrors,
-                                                constrainedLayout=True)
+
+        self.decPointErrors = self.embedMatplot(self.ui.decPointErrors)
         self.decPointErrors.parentWidget().setStyleSheet(self.BACK_BG)
-        self.raModelErrors = self.embedMatplot(self.ui.raModelErrors,
-                                               constrainedLayout=True)
+
+        self.raModelErrors = self.embedMatplot(self.ui.raModelErrors)
         self.raModelErrors.parentWidget().setStyleSheet(self.BACK_BG)
-        self.decModelErrors = self.embedMatplot(self.ui.decModelErrors,
-                                                constrainedLayout=True)
+
+        self.decModelErrors = self.embedMatplot(self.ui.decModelErrors)
         self.decModelErrors.parentWidget().setStyleSheet(self.BACK_BG)
-        self.scaleImage = self.embedMatplot(self.ui.scaleImage,
-                                            constrainedLayout=True)
+
+        self.scaleImage = self.embedMatplot(self.ui.scaleImage)
         self.scaleImage.parentWidget().setStyleSheet(self.BACK_BG)
-        self.modelPositions = self.embedMatplot(self.ui.modelPositions,
-                                                constrainedLayout=True)
+
+        self.modelPositions = self.embedMatplot(self.ui.modelPositions)
         self.modelPositions.parentWidget().setStyleSheet(self.BACK_BG)
-        self.errorAscending = self.embedMatplot(self.ui.errorAscending,
-                                                constrainedLayout=True)
+
+        self.errorAscending = self.embedMatplot(self.ui.errorAscending)
         self.errorAscending.parentWidget().setStyleSheet(self.BACK_BG)
-        self.errorDistribution = self.embedMatplot(self.ui.errorDistribution,
-                                                   constrainedLayout=True)
+
+        self.errorDistribution = self.embedMatplot(self.ui.errorDistribution)
         self.errorDistribution.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.ui.load.clicked.connect(self.loadModel)
@@ -171,12 +170,10 @@ class AnalyseWindow(widget.MWidget):
         """
 
         folder = self.app.mwGlob['modelDir']
-        loadFilePath, fileName, ext = self.openFile(self,
-                                                    'Open model file',
-                                                    folder,
-                                                    'Model files (*.model)',
-                                                    multiple=False,
-                                                    )
+        val = self.openFile(self, 'Open model file', folder, 'Model files (*.model)',
+                            multiple=False)
+        loadFilePath, fileName, ext = val
+
         if not loadFilePath:
             return False
 
@@ -229,33 +226,22 @@ class AnalyseWindow(widget.MWidget):
 
         axe, fig = self.generateFlat(widget=self.raPointErrors)
 
-        axe.set_xlabel('Star',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.set_ylabel('Error per Star [RMS]',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
+        axe.set_xlabel('Star Number')
+        axe.set_ylabel('Error per Star [RMS]')
 
         errors = model['errorRA_S']
 
         if self.ui.winsorizedLimit.isChecked():
             errors = winsorize(errors, limits=0.05)
 
-        index = range(0, len(errors))
-
-        for x, y, pierside in zip(index, errors, model['pierside']):
+        for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
             if pierside == 'W':
                 color = self.M_GREEN
+
             else:
                 color = self.M_YELLOW
-            axe.plot(x,
-                     y,
-                     marker='.',
-                     markersize=5,
-                     linestyle='none',
-                     color=color)
+
+            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 
@@ -271,14 +257,8 @@ class AnalyseWindow(widget.MWidget):
 
         axe, fig = self.generateFlat(widget=self.decPointErrors)
 
-        axe.set_xlabel('Star',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.set_ylabel('Error per Star [RMS]',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
+        axe.set_xlabel('Star Number')
+        axe.set_ylabel('Error per Star [RMS]')
 
         errors = model['errorDEC_S']
 
@@ -287,19 +267,14 @@ class AnalyseWindow(widget.MWidget):
 
         errors = [x if p == 'W' else -x for x, p in zip(errors, model['pierside'])]
 
-        index = range(0, len(errors))
-
-        for x, y, pierside in zip(index, errors, model['pierside']):
+        for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
             if pierside == 'W':
                 color = self.M_GREEN
+
             else:
                 color = self.M_YELLOW
-            axe.plot(x,
-                     y,
-                     marker='.',
-                     markersize=5,
-                     linestyle='none',
-                     color=color)
+
+            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 
@@ -315,33 +290,22 @@ class AnalyseWindow(widget.MWidget):
 
         axe, fig = self.generateFlat(widget=self.raModelErrors)
 
-        axe.set_xlabel('Star',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.set_ylabel('Error per Star [RMS]',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
+        axe.set_xlabel('Star Number')
+        axe.set_ylabel('Error per Star [RMS]')
 
         errors = model['errorRA']
 
         if self.ui.winsorizedLimit.isChecked():
             errors = winsorize(errors, limits=0.05)
 
-        index = range(0, len(errors))
-
-        for x, y, pierside in zip(index, errors, model['pierside']):
+        for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
             if pierside == 'W':
                 color = self.M_GREEN
+
             else:
                 color = self.M_YELLOW
-            axe.plot(x,
-                     y,
-                     marker='.',
-                     markersize=5,
-                     linestyle='none',
-                     color=color)
+
+            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 
@@ -357,33 +321,22 @@ class AnalyseWindow(widget.MWidget):
 
         axe, fig = self.generateFlat(widget=self.decModelErrors)
 
-        axe.set_xlabel('Star',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.set_ylabel('Error per Star [RMS]',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
+        axe.set_xlabel('Star Number')
+        axe.set_ylabel('Error per Star [RMS]')
 
         errors = model['errorDEC']
 
         if self.ui.winsorizedLimit.isChecked():
             errors = winsorize(errors, limits=0.05)
 
-        index = range(0, len(errors))
-
-        for x, y, pierside in zip(index, errors, model['pierside']):
+        for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
             if pierside == 'W':
                 color = self.M_GREEN
+
             else:
                 color = self.M_YELLOW
-            axe.plot(x,
-                     y,
-                     marker='.',
-                     markersize=5,
-                     linestyle='none',
-                     color=color)
+
+            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 
@@ -400,33 +353,22 @@ class AnalyseWindow(widget.MWidget):
         axe, fig = self.generateFlat(widget=self.scaleImage)
         axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.3f',))
 
-        axe.set_xlabel('Star',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.set_ylabel('Image Scale [arcsec/pix]',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
+        axe.set_xlabel('Star Number')
+        axe.set_ylabel('Image Scale [arcsec/pix]')
 
         errors = model['scaleS']
 
         if self.ui.winsorizedLimit.isChecked():
             errors = winsorize(errors, limits=0.05)
 
-        index = range(0, len(errors))
-
-        for x, y, pierside in zip(index, errors, model['pierside']):
+        for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
             if pierside == 'W':
                 color = self.M_GREEN
+
             else:
                 color = self.M_YELLOW
-            axe.plot(x,
-                     y,
-                     marker='.',
-                     markersize=5,
-                     linestyle='none',
-                     color=color)
+
+            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 
@@ -495,17 +437,18 @@ class AnalyseWindow(widget.MWidget):
                  fontweight='bold')
 
         lat = self.app.mount.obsSite.location.latitude.degrees
+        lat = self.modelJSON[0].get('latitude', lat)
         npX = (90 - lat) * np.cos(np.radians(0 + 90))
         npY = (90 - lat) * np.sin(np.radians(0 + 90))
 
         axe.plot(0, 90 - lat, marker='o', markersize=10, color=self.M_BLUE, alpha=0.8,
                  zorder=-10)
-        axe.plot(0, 90 - lat, marker='o', markersize=30, color=self.M_BLUE, alpha=0.8,
+        axe.plot(0, 90 - lat, marker='o', markersize=20, color=self.M_BLUE, alpha=0.8,
                  lw=10, fillstyle='none', zorder=-10)
-        axe.plot(0, 90 - lat, marker='o', markersize=50, color=self.M_BLUE, alpha=0.8,
+        axe.plot(0, 90 - lat, marker='o', markersize=35, color=self.M_BLUE, alpha=0.8,
                  lw=10, fillstyle='none', zorder=-10)
 
-        for alt, az, ang in zip(altitude, azimuth, errorAngle):
+        for alt, az, ang, col in zip(altitude, azimuth, errorAngle, colors):
             pX = (90 - alt) * np.cos(np.radians(az + 90))
             pY = (90 - alt) * np.sin(np.radians(az + 90))
 
@@ -516,11 +459,14 @@ class AnalyseWindow(widget.MWidget):
             u = np.sin(vec)
             v = np.cos(vec)
 
+            col = cm((col - scaleErrorMin) / scaleErrorMax)
+
             axe.quiver(x, y, u, v,
-                       color=self.M_BLUE,
-                       angles="uv",
-                       scale=15 ,
-                       alpha=0.5,
+                       color=col,
+                       scale=25,
+                       headlength=0,
+                       headwidth=1,
+                       alpha=0.8,
                        zorder=-10,
                        )
 
@@ -538,14 +484,8 @@ class AnalyseWindow(widget.MWidget):
 
         axe, fig = self.generateFlat(widget=self.errorAscending)
 
-        axe.set_xlabel('Star',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.set_ylabel('Error per Star [RMS]',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
+        axe.set_xlabel('Star Number')
+        axe.set_ylabel('Error per Star [RMS]')
 
         errors = model['errorRMS']
 
@@ -554,19 +494,14 @@ class AnalyseWindow(widget.MWidget):
         if self.ui.winsorizedLimit.isChecked():
             errors = winsorize(errors, limits=0.05)
 
-        index = range(0, len(errors))
-
-        for x, y, pier in zip(index, errors, pierside):
-            if pier == 'W':
+        for x, (y, pierside) in enumerate(zip(errors, model['pierside'])):
+            if pierside == 'W':
                 color = self.M_GREEN
+
             else:
                 color = self.M_YELLOW
-            axe.plot(x,
-                     y,
-                     marker='.',
-                     markersize=5,
-                     linestyle='none',
-                     color=color)
+
+            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 
@@ -590,20 +525,16 @@ class AnalyseWindow(widget.MWidget):
         axe, fig = self.generatePolar(widget=self.errorDistribution)
 
         angles = [val / 180.0 * np.pi for val in model['errorAngle']]
-
         errors = model['errorRMS']
 
         for x, y, pierside in zip(angles, errors, model['pierside']):
             if pierside == 'W':
                 color = self.M_GREEN
+
             else:
                 color = self.M_YELLOW
-            axe.plot(x,
-                     y,
-                     marker='.',
-                     markersize=5,
-                     linestyle='none',
-                     color=color)
+
+            axe.plot(x, y, marker='.', markersize=9, linestyle='none', color=color)
 
         axe.figure.canvas.draw()
 

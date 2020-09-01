@@ -559,33 +559,20 @@ class MWidget(QWidget, styles.MWStyles):
 
         fig = widget.figure
         fig.clf()
-        axe = fig.add_subplot(1,
-                              1,
-                              1,
-                              polar=True,
-                              facecolor=self.M_GREY_DARK)
-        axe.grid(True,
-                 color=self.M_GREY,
-                 )
+        axe = fig.add_subplot(1, 1, 1, polar=True, facecolor=self.M_GREY_DARK)
+        axe.grid(True, color=self.M_GREY)
 
         if title:
-            axe.set_title(title,
-                          color=self.M_BLUE,
-                          fontweight='bold',
-                          pad=15,
-                          )
+            axe.set_title(title, color=self.M_BLUE, fontweight='bold', pad=15)
 
-        axe.tick_params(axis='x',
-                        colors=self.M_BLUE,
-                        labelsize=12,
-                        )
-        axe.tick_params(axis='y',
-                        colors=self.M_BLUE,
-                        labelsize=12,
-                        )
+        axe.set_xlabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
+        axe.set_ylabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
+        axe.tick_params(axis='x', colors=self.M_BLUE, labelsize=12)
+        axe.tick_params(axis='y', colors=self.M_BLUE, labelsize=12)
         axe.set_theta_zero_location('N')
         axe.set_rlabel_position(45)
         axe.set_theta_direction(-1)
+
         # ticks have to be set before labels to be sure to have them positioned correctly
         axe.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))
         axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
@@ -597,6 +584,7 @@ class MWidget(QWidget, styles.MWStyles):
 
         :param widget:
         :param title:
+        :param horizon:
         :return:
         """
 
@@ -617,18 +605,12 @@ class MWidget(QWidget, styles.MWStyles):
         axe.grid(True, color=self.M_GREY)
 
         if title:
-            axe.set_title(title,
-                          color=self.M_BLUE,
-                          fontweight='bold',
-                          pad=15,
-                          )
+            axe.set_title(title, color=self.M_BLUE, fontweight='bold', pad=15)
 
-        axe.tick_params(axis='x',
-                        colors=self.M_BLUE,
-                        labelsize=12)
-        axe.tick_params(axis='y',
-                        colors=self.M_BLUE,
-                        labelsize=12)
+        axe.set_xlabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
+        axe.set_ylabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
+        axe.tick_params(axis='x', colors=self.M_BLUE, labelsize=12)
+        axe.tick_params(axis='y', colors=self.M_BLUE, labelsize=12)
 
         if not horizon:
             return axe, figure
@@ -637,22 +619,14 @@ class MWidget(QWidget, styles.MWStyles):
         axe.set_ylim(0, 90)
         axe.set_xticks(np.arange(0, 361, 45))
         axe.set_xticklabels(['0', '45', '90', '135', '180', '225', '270', '315', '360'])
-        axe.set_xlabel('Azimuth in degrees',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.set_ylabel('Altitude in degrees',
-                       color=self.M_BLUE,
-                       fontweight='bold',
+        axe.set_xlabel('Azimuth [degrees]', color=self.M_BLUE, fontweight='bold', fontsize=12)
+        axe.set_ylabel('Altitude [degrees]', color=self.M_BLUE, fontweight='bold',
                        fontsize=12)
 
         axeTop = axe.twiny()
         axeTop.set_facecolor((0, 0, 0, 0))
         axeTop.set_xlim(0, 360)
-        axeTop.tick_params(axis='x',
-                           top=True,
-                           colors=self.M_BLUE,
-                           labelsize=12)
+        axeTop.tick_params(axis='x', top=True, colors=self.M_BLUE, labelsize=12)
         axeTop.set_xticks(np.arange(0, 361, 45))
         axeTop.grid(False)
         axeTop.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'])

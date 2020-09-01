@@ -724,7 +724,7 @@ class Model:
             sPoint['version'] = f'{self.app.__version__}'
             sPoint['profile'] = self.ui.profile.text()
             sPoint['firmware'] = self.ui.vString.text()
-            sPoint['lat'] = self.app.mount.obsSite.location.latitude.degrees
+            sPoint['latitude'] = self.app.mount.obsSite.location.latitude.degrees
 
             modelDataForSave.append(sPoint)
         return modelDataForSave

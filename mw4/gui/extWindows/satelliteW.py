@@ -452,8 +452,8 @@ class SatelliteWindow(widget.MWidget):
         # plot world
         for key in self.world.keys():
             shape = self.world[key]
-            verts = functions.from_spherical(self.EARTH_RADIUS, shape['yRad'], shape['xRad'])
-            verts = np.transpose(verts)
+            x, y, z = functions.from_spherical(self.EARTH_RADIUS, shape['yRad'], shape['xRad'])
+            verts = [list(zip(x, y, z))]
             collect = Poly3DCollection(verts, facecolors=self.M_BLUE, alpha=0.5)
             axe.add_collection3d(collect)
 

@@ -248,8 +248,8 @@ class MainWindow(MWidget,
         if 'mainW' not in config:
             config['mainW'] = {}
         config = config['mainW']
-        x = config.get('winPosX', 100)
-        y = config.get('winPosY', 100)
+        x = config.get('winPosX', 20)
+        y = config.get('winPosY', 20)
         if x > self.screenSizeX:
             x = 0
         if y > self.screenSizeY:

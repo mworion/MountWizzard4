@@ -157,8 +157,8 @@ class ImageWindow(widget.MWidget):
         if 'imageW' not in self.app.config:
             self.app.config['imageW'] = {}
         config = self.app.config['imageW']
-        x = config.get('winPosX', 100)
-        y = config.get('winPosY', 100)
+        x = config.get('winPosX', 80)
+        y = config.get('winPosY', 80)
         if x > self.screenSizeX:
             x = 0
         if y > self.screenSizeY:

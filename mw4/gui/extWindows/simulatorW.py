@@ -109,8 +109,8 @@ class SimulatorWindow(widget.MWidget):
         if 'simulatorW' not in self.app.config:
             self.app.config['simulatorW'] = {}
         config = self.app.config['simulatorW']
-        x = config.get('winPosX', 100)
-        y = config.get('winPosY', 100)
+        x = config.get('winPosX', 180)
+        y = config.get('winPosY', 180)
         if x > self.screenSizeX:
             x = 0
         if y > self.screenSizeY:

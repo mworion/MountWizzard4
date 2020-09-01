@@ -94,8 +94,8 @@ class AnalyseWindow(widget.MWidget):
         if 'analyseW' not in self.app.config:
             self.app.config['analyseW'] = {}
         config = self.app.config['analyseW']
-        x = config.get('winPosX', 100)
-        y = config.get('winPosY', 100)
+        x = config.get('winPosX', 40)
+        y = config.get('winPosY', 40)
         if x > self.screenSizeX:
             x = 0
         if y > self.screenSizeY:

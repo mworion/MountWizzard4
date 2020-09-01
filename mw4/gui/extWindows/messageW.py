@@ -71,8 +71,8 @@ class MessageWindow(widget.MWidget):
         if 'messageW' not in self.app.config:
             self.app.config['messageW'] = {}
         config = self.app.config['messageW']
-        x = config.get('winPosX', 100)
-        y = config.get('winPosY', 100)
+        x = config.get('winPosX', 140)
+        y = config.get('winPosY', 140)
         if x > self.screenSizeX:
             x = 0
         if y > self.screenSizeY:

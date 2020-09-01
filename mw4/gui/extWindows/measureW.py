@@ -102,8 +102,8 @@ class MeasureWindow(widget.MWidget):
         if 'measureW' not in self.app.config:
             self.app.config['measureW'] = {}
         config = self.app.config['measureW']
-        x = config.get('winPosX', 100)
-        y = config.get('winPosY', 100)
+        x = config.get('winPosX', 120)
+        y = config.get('winPosY', 120)
         if x > self.screenSizeX:
             x = 0
         if y > self.screenSizeY:

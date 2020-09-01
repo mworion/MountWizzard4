@@ -112,8 +112,8 @@ class SatelliteWindow(widget.MWidget):
         if 'satelliteW' not in self.app.config:
             self.app.config['satelliteW'] = {}
         config = self.app.config['satelliteW']
-        x = config.get('winPosX', 100)
-        y = config.get('winPosY', 100)
+        x = config.get('winPosX', 160)
+        y = config.get('winPosY', 160)
         if x > self.screenSizeX:
             x = 0
         if y > self.screenSizeY:

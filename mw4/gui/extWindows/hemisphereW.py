@@ -118,8 +118,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         if 'hemisphereW' not in self.app.config:
             self.app.config['hemisphereW'] = {}
         config = self.app.config['hemisphereW']
-        x = config.get('winPosX', 100)
-        y = config.get('winPosY', 100)
+        x = config.get('winPosX', 60)
+        y = config.get('winPosY', 60)
         if x > self.screenSizeX:
             x = 0
         if y > self.screenSizeY:

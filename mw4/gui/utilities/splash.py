@@ -86,9 +86,9 @@ class SplashScreen(QObject):
 
         painter.setPen(QColor(55, 55, 55, 255))
         painter.setBrush(QColor(0, 0, 0, 255))
-        painter.drawRect(10, 
-                         h - 64, 
-                         w - 20, 
+        painter.drawRect(10,
+                         h - 64,
+                         w - 20,
                          19)
 
         redlg = QLinearGradient(0, h - 63, 0, h)
@@ -104,11 +104,11 @@ class SplashScreen(QObject):
 
         painter.setPen(Qt.white)
 
-        rect = QRectF(10, 
-                      h - 61, 
-                      w - 20, 
+        rect = QRectF(10,
+                      h - 61,
+                      w - 20,
                       15)
-                      
+
         painter.drawText(rect, Qt.AlignCenter, str(self.msg))
 
     def finish(self, qwid):

@@ -289,7 +289,7 @@ def writeSystemInfo(mwGlob=None):
     :return: true for test purpose
     """
 
-    log.critical(f'MountWizzard4 started !')
+    log.critical('MountWizzard4 started !')
     log.critical(f'mountwizzard4    : {version("mountwizzard4")}')
     log.critical(f'indibase         : {version("indibase")}')
     log.critical(f'mountcontrol     : {version("mountcontrol")}')

@@ -51,7 +51,7 @@ class AlpacaSignals(QObject):
 class AlpacaBase:
     """
     the class AlpacaBase inherits all information and handling of alpaca devices
-    this class will be only referenced from other classes and will be not used 
+    this class will be only referenced from other classes and will be not used
     directly
 
         >>> a = AlpacaBase()
@@ -109,9 +109,9 @@ class AlpacaBase:
     def get(self, attr: str, **data):
         """
         Send an HTTP GET request to an Alpaca server and check response for errors.
-        In addition a unique Transaction ID is generated, to verify which send / 
+        In addition a unique Transaction ID is generated, to verify which send /
         response pair belongs together.
-        
+
         :param
             attr (str): attr to get from server.
             **data: Data to send with request.
@@ -131,11 +131,11 @@ class AlpacaBase:
         except requests.exceptions.Timeout:
             self.log.warning(f'[{uid:10d}] timeout')
             return None
-            
+
         except requests.exceptions.ConnectionError:
             self.log.info(f'[{uid:10d}] connection error')
             return None
-            
+
         except Exception as e:
             self.log.critical(f'[{uid:10d}] error in request: {e}')
             return None
@@ -157,9 +157,9 @@ class AlpacaBase:
     def put(self, attr: str, **data):
         """
         Send an HTTP PUT request to an Alpaca server and check response for errors.
-        In addition a unique Transaction ID is generated, to verify which send / 
+        In addition a unique Transaction ID is generated, to verify which send /
         response pair belongs together.
-        
+
         :param
             attr (str): attr to put to server.
             **data: Data to send with request.
@@ -175,15 +175,15 @@ class AlpacaBase:
 
         try:
             response = requests.put(f'{self.baseUrl}/{attr}', data=data, timeout=5)
-            
+
         except requests.exceptions.Timeout:
             self.log.warning(f'[{uid:10d}] timeout')
             return None
-            
+
         except requests.exceptions.ConnectionError:
             self.log.info(f'[{uid:10d}] connection error')
             return None
-            
+
         except Exception as e:
             self.log.critical(f'[{uid:10d}] Error in request: {e}')
             return None
@@ -210,7 +210,7 @@ class AlpacaBase:
             Action (str): A well known name that represents the action to be carried out.
             *Parameters: List of required parameters or empty if none are required.
         """
-        
+
         return self.put('action', Action=Action, Parameters=Parameters)
 
     def commandblind(self, Command, Raw):
@@ -222,7 +222,7 @@ class AlpacaBase:
                 If false, then protocol framing characters may be added prior to
                 transmission.
         """
-        
+
         self.put('commandblind', Command=Command, Raw=Raw)
 
     def commandbool(self, Command, Raw):
@@ -235,7 +235,7 @@ class AlpacaBase:
                 If false, then protocol framing characters may be added prior to
                 transmission.
         """
-        
+
         return self.put('commandbool', Command=Command, Raw=Raw)
 
     def commandstring(self, Command, Raw):
@@ -247,7 +247,7 @@ class AlpacaBase:
                 If false, then protocol framing characters may be added prior to
                 transmission.
         """
-        
+
         return self.put('commandstring', Command=Command, Raw=Raw)
 
     def connected(self, Connected=None):
@@ -259,17 +259,17 @@ class AlpacaBase:
                 Set None to get connected state (default).
 
         """
-        
+
         if Connected is None:
             return self.get('connected')
-        
+
         self.put('connected', Connected=Connected)
 
     def description(self):
         """
         Get description of the device.
         """
-        
+
         return self.get('name')
 
     def driverInfo(self):
@@ -287,14 +287,14 @@ class AlpacaBase:
         """
         Get string containing only the major and minor version of the driver.
         """
-        
+
         return self.get('driverversion')
 
     def interfaceVersion(self):
         """
         ASCOM Device interface version number that this device supports.
         """
-        
+
         return self.get('interfaceversion')
 
     def nameDevice(self):
@@ -307,7 +307,7 @@ class AlpacaBase:
         """
         Get list of action names supported by this driver.
         """
-        
+
         return self.get('supportedactions')
 
 
@@ -325,7 +325,7 @@ class Switch(AlpacaBase):
             Number of switch devices managed by this driver. Devices are numbered from 0
             to MaxSwitch - 1.
         """
-        
+
         return self.get("maxswitch")
 
     def canwrite(self, Id=0):
@@ -340,7 +340,7 @@ class Switch(AlpacaBase):
             false if the device cannot be written to, for example a limit switch or a
             sensor.
         """
-        
+
         return self.get("canwrite", Id=Id)
 
     def getswitch(self, Id=0):
@@ -353,7 +353,7 @@ class Switch(AlpacaBase):
         :return:
             State of switch device id as a boolean.
         """
-        
+
         return self.get("getswitch", Id=Id)
 
     def getswitchdescription(self, Id=0):
@@ -367,7 +367,7 @@ class Switch(AlpacaBase):
         :return:
             Description of the specified switch device.
         """
-        
+
         return self.get("getswitchdescription", Id=Id)
 
     def getswitchname(self, Id=0):
@@ -381,7 +381,7 @@ class Switch(AlpacaBase):
         :return:
             Name of the specified switch device.
         """
-        
+
         return self.get("getswitchname", Id=Id)
 
     def getswitchvalue(self, Id=0):
@@ -395,7 +395,7 @@ class Switch(AlpacaBase):
         :return:
             Value of the specified switch device.
         """
-        
+
         return self.get("getswitchvalue", Id=Id)
 
     def minswitchvalue(self, Id=0):
@@ -409,7 +409,7 @@ class Switch(AlpacaBase):
         :return:
             Minimum value of the specified switch device as a double.
         """
-        
+
         return self.get("minswitchvalue", Id=Id)
 
     def setswitch(self, Id: int, State: bool):
@@ -421,7 +421,7 @@ class Switch(AlpacaBase):
             Id (int): The device number.
             State (bool): The required control state (True or False).
         """
-        
+
         self.put("setswitch", Id=Id, State=State)
 
     def setswitchname(self, Id: int, Name: str):
@@ -433,7 +433,7 @@ class Switch(AlpacaBase):
             Id (int): The device number.
             Name (str): The name of the device.
         """
-        
+
         self.put("setswitchname", Id=Id, Name=Name)
 
     def setswitchvalue(self, Id: int, Value):
@@ -445,7 +445,7 @@ class Switch(AlpacaBase):
             Id (int): The device number.
             Value (float): Value to be set, between MinSwitchValue and MaxSwitchValue.
         """
-        
+
         self.put("setswitchvalue", Id=Id, Value=Value)
 
     def switchstep(self, Id=0):
@@ -461,7 +461,7 @@ class Switch(AlpacaBase):
         :return:
             Maximum value of the specified switch device as a double.
         """
-        
+
         return self.get("switchstep", Id=Id)
 
 
@@ -469,7 +469,7 @@ class SafetyMonitor(AlpacaBase):
     """
     Safety monitor specific methods.
     """
-    
+
     __all__ = ['SafetyMonitor']
 
     def issafe(self):
@@ -478,7 +478,7 @@ class SafetyMonitor(AlpacaBase):
         :return:
             True if the state is safe, False if it is unsafe.
         """
-        
+
         return self.get("issafe")
 
 
@@ -486,7 +486,7 @@ class Dome(AlpacaBase):
     """
     Dome specific methods.
     """
-    
+
     __all__ = ['Dome']
 
     def altitude(self):
@@ -495,7 +495,7 @@ class Dome(AlpacaBase):
         :return:
             Dome altitude (degrees, horizon zero and increasing positive to 90 zenith).
         """
-        
+
         return self.get("altitude")
 
     def athome(self):
@@ -511,7 +511,7 @@ class Dome(AlpacaBase):
         :return:
             True if dome is in the home position.
         """
-        
+
         return self.get("athome")
 
     def atpark(self):
@@ -522,7 +522,7 @@ class Dome(AlpacaBase):
         :return:
             True if the dome is in the programmed park position.
         """
-        
+
         return self.get("atpark")
 
     def azimuth(self):
@@ -532,7 +532,7 @@ class Dome(AlpacaBase):
             Dome azimuth (degrees, North zero and increasing clockwise, i.e., 90 East,
             180 South, 270 West).
         """
-        
+
         return self.get("azimuth")
 
     def canfindhome(self):
@@ -541,7 +541,7 @@ class Dome(AlpacaBase):
         :return:
             True if the dome can move to the home position.
         """
-        
+
         return self.get("canfindhome")
 
     def canpark(self):
@@ -550,7 +550,7 @@ class Dome(AlpacaBase):
         :return:
             True if the dome is capable of programmed parking (park() method).
         """
-        
+
         return self.get("canpark")
 
     def cansetaltitude(self):
@@ -559,7 +559,7 @@ class Dome(AlpacaBase):
         :return:
             True if driver is capable of setting the dome altitude.
         """
-        
+
         return self.get("cansetaltitude")
 
     def cansetazimuth(self):
@@ -568,7 +568,7 @@ class Dome(AlpacaBase):
         :return:
             True if driver is capable of setting the dome azimuth.
         """
-        
+
         return self.get("cansetazimuth")
 
     def cansetpark(self):
@@ -577,7 +577,7 @@ class Dome(AlpacaBase):
         :return:
             True if driver is capable of setting the dome park position.
         """
-        
+
         return self.get("cansetpark")
 
     def cansetshutter(self):
@@ -586,7 +586,7 @@ class Dome(AlpacaBase):
         :return:
             True if driver is capable of automatically operating shutter.
         """
-        
+
         return self.get("cansetshutter")
 
     def canslave(self):
@@ -595,7 +595,7 @@ class Dome(AlpacaBase):
         :return:
             True if driver is capable of slaving to a telescope.
         """
-        
+
         return self.get("canslave")
 
     def cansyncazimuth(self):
@@ -608,7 +608,7 @@ class Dome(AlpacaBase):
         :return:
             True or False value.
         """
-        
+
         return self.get("cansyncazimuth")
 
     def shutterstatus(self):
@@ -620,7 +620,7 @@ class Dome(AlpacaBase):
         :return:
             Status of the dome shutter or roll-off roof.
         """
-        
+
         return self.get("shutterstatus")
 
     def slaved(self, Slaved=None):
@@ -630,10 +630,10 @@ class Dome(AlpacaBase):
         :return:
             True or False value in not set.
         """
-        
+
         if Slaved is None:
             return self.get("slaved")
-        
+
         self.put("slaved", Slaved=Slaved)
 
     def slewing(self):
@@ -646,7 +646,7 @@ class Dome(AlpacaBase):
         Return:
             True or False value.
         """
-        
+
         return self.get("slewing")
 
     def abortslew(self):
@@ -656,7 +656,7 @@ class Dome(AlpacaBase):
             Calling this method will immediately disable hardware slewing (Slaved will
             become False).
         """
-        
+
         self.put("abortslew")
 
     def closeshutter(self):
@@ -673,14 +673,14 @@ class Dome(AlpacaBase):
             After home position is established initializes azimuth to the default value
             and sets the athome flag.
         """
-        
+
         self.put("findhome")
 
     def openshutter(self):
         """
         Open shutter or otherwise expose telescope to the sky.
         """
-        
+
         self.put("openshutter")
 
     def park(self):
@@ -689,21 +689,21 @@ class Dome(AlpacaBase):
         Notes:
             After assuming programmed park position, sets atpark flag.
         """
-        
+
         self.put("park")
 
     def setpark(self):
         """
         Set current azimuth, altitude position of dome to be the park position.
         """
-        
+
         self.put("setpark")
 
     def slewtoaltitude(self, Altitude):
         """
         Slew the dome to the given altitude position.
         """
-        
+
         self.put("slewtoaltitude", Altitude=Altitude)
 
     def slewtoazimuth(self, Azimuth):
@@ -714,7 +714,7 @@ class Dome(AlpacaBase):
             Azimuth (float): Target dome azimuth (degrees, North zero and increasing
                 clockwise. i.e., 90 East, 180 South, 270 West).
         """
-        
+
         self.put("slewtoazimuth", Azimuth=Azimuth)
 
     def synctoazimuth(self, Azimuth):
@@ -724,7 +724,7 @@ class Dome(AlpacaBase):
             Azimuth (float): Target dome azimuth (degrees, North zero and increasing
                 clockwise. i.e., 90 East, 180 South, 270 West).
         """
-        
+
         self.put("synctoazimuth", Azimuth=Azimuth)
 
 
@@ -732,21 +732,21 @@ class Camera(AlpacaBase):
     """
     Camera specific methods.
     """
-    
+
     __all__ = ['Camera']
 
     def bayeroffsetx(self):
         """
         Return the X offset of the Bayer matrix, as defined in SensorType.
         """
-        
+
         return self.get("bayeroffsetx")
 
     def bayeroffsety(self):
         """
         Return the Y offset of the Bayer matrix, as defined in SensorType.
         """
-        
+
         return self.get("bayeroffsety")
 
     def binx(self, BinX=None):
@@ -758,10 +758,10 @@ class Camera(AlpacaBase):
         :return:
             Binning factor for the X axis.
         """
-        
+
         if BinX is None:
             return self.get("binx")
-        
+
         self.put("binx", BinX=BinX)
 
     def biny(self, BinY=None):
@@ -773,10 +773,10 @@ class Camera(AlpacaBase):
         :return:
             Binning factor for the Y axis.
         """
-        
+
         if BinY is None:
             return self.get("biny")
-        
+
         self.put("biny", BinY=BinY)
 
     def camerastate(self):
@@ -789,77 +789,77 @@ class Camera(AlpacaBase):
         :return:
             Current camera operational state as an integer.
         """
-        
+
         return self.get("camerastate")
 
     def cameraxsize(self):
         """
         Return the width of the CCD camera chip.
         """
-        
+
         return self.get("cameraxsize")
 
     def cameraysize(self):
         """
         Return the height of the CCD camera chip.
         """
-        
+
         return self.get("cameraysize")
 
     def canabortexposure(self):
         """
         Indicate whether the camera can abort exposures.
         """
-        
+
         return self.get("canabortexposure")
 
     def canasymmetricbin(self):
         """
         Indicate whether the camera supports asymmetric binning.
         """
-        
+
         return self.get("canasymmetricbin")
 
     def canfastreadout(self):
         """
         Indicate whether the camera has a fast readout mode.
         """
-        
+
         return self.get("canfastreadout")
 
     def cangetcoolerpower(self):
         """
         Indicate whether the camera's cooler power setting can be read.
         """
-        
+
         return self.get("cangetcoolerpower")
 
     def canpulseguide(self):
         """
         Indicate whether this camera supports pulse guiding.
         """
-        
+
         return self.get("canpulseguide")
 
     def cansetccdtemperature(self):
         """
         Indicate whether this camera supports setting the CCD temperature.
         """
-        
+
         return self.get("cansetccdtemperature")
 
     def canstopexposure(self):
         """
         Indicate whether this camera can stop an exposure that is in progress.
         """
-        
+
         return self.get("canstopexposure")
 
     def ccdtemperature(self):
         """
         Return the current CCD temperature in degrees Celsius.
         """
-        
+
         return self.get("ccdtemperature")
 
     def cooleron(self, CoolerOn=None):
@@ -872,45 +872,45 @@ class Camera(AlpacaBase):
         :return:
             Current cooler on/off state.
         """
-        
+
         if CoolerOn is None:
             return self.get("cooleron")
-        
+
         self.put("cooleron", CoolerOn=CoolerOn)
 
     def coolerpower(self):
         """
         Return the present cooler power level, in percent.
         """
-        
+
         return self.get("coolerpower")
 
     def electronsperadu(self):
         """
         Return the gain of the camera in photoelectrons per A/D unit.
         """
-        
+
         return self.get("electronsperadu")
 
     def exposuremax(self):
         """
         Return the maximum exposure time supported by StartExposure.
         """
-        
+
         return self.get("exposuremax")
 
     def exposuremin(self):
         """
         Return the minimum exposure time supported by StartExposure.
         """
-        
+
         return self.get("exposuremin")
 
     def exposureresolution(self):
         """
         Return the smallest increment in exposure time supported by StartExposure.
         """
-        
+
         return self.get("exposureresolution")
 
     def fastreadout(self, FastReadout=None):
@@ -922,10 +922,10 @@ class Camera(AlpacaBase):
         :return:
             Whether Fast Readout Mode is enabled.
         """
-        
+
         if FastReadout is None:
             return self.get("fastreadout")
-        
+
         self.put("fastreadout", FastReadout=FastReadout)
 
     def fullwellcapacity(self):
@@ -936,7 +936,7 @@ class Camera(AlpacaBase):
         :return:
             Full well capacity of the camera.
         """
-        
+
         return self.get("fullwellcapacity")
 
     def gain(self, Gain=None):
@@ -948,10 +948,10 @@ class Camera(AlpacaBase):
         :return:
             Index into the Gains array for the selected camera gain.
         """
-        
+
         if Gain is None:
             return self.get("gain")
-        
+
         self.put("gain", Gain=Gain)
 
     def gainmax(self):

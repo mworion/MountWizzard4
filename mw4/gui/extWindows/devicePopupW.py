@@ -70,7 +70,7 @@ class DevicePopup(QDialog, widget.MWidget):
         x = geometry[0] + int((geometry[2] - self.width()) / 2)
         y = geometry[1] + int((geometry[3] - self.height()) / 2)
         self.move(x, y)
-        
+
         self.returnValues = {'close': 'cancel'}
         self.framework2gui = {
             'indi': {
@@ -109,7 +109,7 @@ class DevicePopup(QDialog, widget.MWidget):
 
         self.ui.cancel.clicked.connect(self.close)
         self.ui.ok.clicked.connect(self.storeConfig)
-        
+
         # todo: naming equally to indiSelector, astapIndexPathSelector etc.
         self.ui.indiSearch.clicked.connect(self.discoverIndiDevices)
         self.ui.selectAstrometryIndexPath.clicked.connect(self.selectAstrometryIndexPath)
@@ -234,10 +234,10 @@ class DevicePopup(QDialog, widget.MWidget):
             elif isinstance(ui, QLineEdit):
                 if isinstance(frameworkData[prop], str):
                     frameworkData[prop] = ui.text()
-                    
+
                 elif isinstance(frameworkData[prop], int):
                     frameworkData[prop] = int(ui.text())
-                    
+
                 else:
                     frameworkData[prop] = float(ui.text())
 
@@ -284,21 +284,21 @@ class DevicePopup(QDialog, widget.MWidget):
         self.close()
 
         return True
-          
+
     def updateIndiDeviceNameList(self, deviceNames=[]):
         """
         updateIndiDeviceNameList updates the indi device name selectors combobox with the discovered
         entries. therefore it delets the old list and rebuild it new.
-        
+
         :return: True for test purpose
         """
-        
+
         self.ui.indiDeviceList.clear()
         self.ui.indiDeviceList.setView(QListView())
-        
+
         for deviceName in deviceNames:
             self.ui.indiDeviceList.addItem(deviceName)
-    
+
         return True
 
     def discoverIndiDevices(self):
@@ -306,25 +306,25 @@ class DevicePopup(QDialog, widget.MWidget):
         discoverIndiDevices looks all possible indi devices up from the actual server and the selected
         device type. The search time is defined in indi class and shoiuld be about 2-3 seconds.
         if the search was successful, the gui and the device list will be updated
-        
+
         :return: success
         """
-        
+
         host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))
         indi = IndiClass()
         indi.host = host
-        
+
         deviceNames = indi.discoverDevices(deviceType=self.deviceType)
-        
+
         if not deviceNames:
             self.message.emit('Indi search found no devices', 2)
             return False
-        
+
         for deviceName in deviceNames:
             self.message.emit(f'Indi search found device: [{deviceName}]', 0)
-        
+
         self.updateIndiDeviceNameList(deviceNames=deviceNames)
-        
+
         return True
 
     def checkAstrometryAvailability(self, framework):
@@ -336,13 +336,13 @@ class DevicePopup(QDialog, widget.MWidget):
         """
 
         sucApp, sucIndex = self.app.astrometry.run[framework].checkAvailability()
-        
+
         if framework == 'astap':
             color = 'green' if sucApp else 'red'
             self.changeStyleDynamic(self.ui.astapAppPath, 'color', color)
             color = 'green' if sucIndex else 'red'
             self.changeStyleDynamic(self.ui.astapIndexPath, 'color', color)
-            
+
         else:
             color = 'green' if sucApp else 'red'
             self.changeStyleDynamic(self.ui.astrometryAppPath, 'color', color)
@@ -368,7 +368,7 @@ class DevicePopup(QDialog, widget.MWidget):
         if platform.system() == 'Darwin' and ext == '.app':
             if 'Astrometry.app' in saveFilePath:
                 saveFilePath += '/Contents/MacOS/'
-                
+
             else:
                 saveFilePath += '/Contents/MacOS/astrometry/bin'
 

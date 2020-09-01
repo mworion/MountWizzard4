@@ -86,7 +86,7 @@ class SettMisc(object):
         """
 
         config = self.app.config['mainW']
-        
+
         self.ui.loglevelDeepDebug.setChecked(config.get('loglevelDeepDebug', True))
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
@@ -118,7 +118,7 @@ class SettMisc(object):
         """
 
         config = self.app.config['mainW']
-        
+
         config['loglevelDeepDebug'] = self.ui.loglevelDeepDebug.isChecked()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
@@ -157,7 +157,7 @@ class SettMisc(object):
         """
 
         isOnline = self.ui.isOnline.isChecked()
-        
+
         if isOnline:
             iers.conf.auto_download = True
             iers.conf.auto_max_age = 30
@@ -170,7 +170,7 @@ class SettMisc(object):
     def updateDeltaT(self):
         """
         updateDeltaT download the necessary time files for skyfield timescale object
-        if online status is set. if download does not succeed, we keep working with the old 
+        if online status is set. if download does not succeed, we keep working with the old
         files. as we don't create a new timescale object the new file versions will be used
         when mw4 starts the next time.
 
@@ -178,7 +178,7 @@ class SettMisc(object):
         """
 
         isOnline = self.ui.isOnline.isChecked()
-        
+
         if isOnline:
             self.app.mount.obsSite.loader('deltat.data', reload=True)
             self.app.mount.obsSite.loader('deltat.preds', reload=True)
@@ -197,13 +197,13 @@ class SettMisc(object):
         """
 
         url = f'https://pypi.python.org/pypi/{packageName}/json'
-        
+
         try:
             response = requests.get(url).json()
         except Exception as e:
             self.log.critical(f'Cannot determine package version: {e}')
             return None
-       
+
         vPackage = list(response['releases'].keys())
         vPackage.sort(key=StrictVersion, reverse=True)
 
@@ -266,7 +266,7 @@ class SettMisc(object):
 
         status = hasReal or hasBase and sys.base_prefix != sys.prefix
         self.log.info(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
-        
+
         return status
 
     @staticmethod
@@ -318,7 +318,7 @@ class SettMisc(object):
                     ]
 
         timeStart = time.time()
-        
+
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
@@ -349,7 +349,7 @@ class SettMisc(object):
                           )
 
         success = (self.process.returncode == 0)
-        
+
         return success, versionPackage
 
     def installFinished(self, result):
@@ -374,7 +374,7 @@ class SettMisc(object):
 
         else:
             self.app.message.emit('Could not install update installation ', 2)
-            
+
         self.mutexInstall.unlock()
         self.changeStyleDynamic(self.ui.installVersion, 'running', False)
 
@@ -386,13 +386,13 @@ class SettMisc(object):
         actually only tested and ok for running in a virtual environment. updates have to run
         only once at a time, so a mutex ensures this. If everything is ok, a thread it
         started doing the install work and a callback is defined when finished.
-        
-        as observation, installation on windows side takes for some reasons longer than 
+
+        as observation, installation on windows side takes for some reasons longer than
         in linux or osx environment. therefore an extended timeout is chosen.
 
         :return: True for test purpose
         """
-        
+
         if platform.system() == 'Windows':
             timeout = 180
         else:
@@ -496,7 +496,7 @@ class SettMisc(object):
             self.guiAudioList[itemKey].addItem('Horn')
             self.guiAudioList[itemKey].addItem('Alarm')
             self.guiAudioList[itemKey].addItem('Alert')
-            
+
         return True
 
     def setupAudioSignals(self):
@@ -505,7 +505,7 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
-        
+
         if platform.machine() in Config.excludedPlatforms:
             return False
 

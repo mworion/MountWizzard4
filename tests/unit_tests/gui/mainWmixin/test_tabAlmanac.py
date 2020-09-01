@@ -92,8 +92,6 @@ def app(qtbot):
 
     yield app
 
-    app.threadPool.waitForDone(1000)
-
 
 def test_initConfig_1(app):
     suc = app.initConfig()

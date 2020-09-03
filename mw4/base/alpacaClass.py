@@ -264,3 +264,27 @@ class AlpacaClass:
         self.app.message.emit(f'ALPACA device remove:[{self.deviceName}]', 0)
 
         return True
+
+    def discoverDevices(self, deviceType=''):
+        """
+        discoverDevices implements a discover for devices of a certain device type. it is
+        called from a button press and checks which button it was. after that for the right
+        device it collects all necessary data for host value, instantiates an INDI client and
+        watches for all devices connected to this server. Than it connects a subroutine for
+        collecting the right device names and waits a certain amount of time. the data
+        collection takes place as long as the model dialog is open. when the user closes
+        this dialog, the collected data is written to the drop down list.
+
+        :param deviceType: device type of discovered indi devices
+        :return: success
+        """
+
+        devices = self.client.discoverDevices()
+
+        if not devices:
+            return []
+
+        temp = [x for x in devices if x['DeviceType'].lower() == deviceType]
+        discoverList = [f'{deviceType}:{x["DeviceNumber"]}:{x["DeviceName"]}' for x in temp]
+
+        return discoverList

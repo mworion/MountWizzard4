@@ -101,9 +101,10 @@ class AlpacaBase:
     def deviceName(self, value):
         self._deviceName = value
         valueSplit = value.split(':')
-        if len(valueSplit) != 2:
+        if len(valueSplit) < 2:
             return
-        self.deviceType, self.number = valueSplit
+        self.deviceType = valueSplit[0].strip()
+        self.number = valueSplit[1].strip()
         self.number = int(self.number)
 
     def discoverAPIVersion(self):
@@ -166,6 +167,7 @@ class AlpacaBase:
 
         try:
             response = requests.get(url, timeout=3)
+
         except requests.exceptions.Timeout:
             self.log.warning('timeout')
             return None
@@ -215,6 +217,7 @@ class AlpacaBase:
 
         try:
             response = requests.get(f'{self.baseUrl}/{attr}', data=data, timeout=5)
+
         except requests.exceptions.Timeout:
             self.log.warning(f'[{uid:10d}] timeout')
             return None

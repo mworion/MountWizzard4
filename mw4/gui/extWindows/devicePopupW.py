@@ -28,6 +28,7 @@ if platform.system() == 'Windows':
 
 # local import
 from base.indiClass import IndiClass
+from base.alpacaClass import AlpacaClass
 from gui.utilities import widget
 from gui.widgets.devicePopup_ui import Ui_DevicePopup
 
@@ -111,7 +112,8 @@ class DevicePopup(QDialog, widget.MWidget):
         self.ui.ok.clicked.connect(self.storeConfig)
 
         # todo: naming equally to indiSelector, astapIndexPathSelector etc.
-        self.ui.indiSearch.clicked.connect(self.discoverIndiDevices)
+        self.ui.indiDiscover.clicked.connect(self.discoverIndiDevices)
+        self.ui.alpacaDiscover.clicked.connect(self.discoverAlpacaDevices)
         self.ui.selectAstrometryIndexPath.clicked.connect(self.selectAstrometryIndexPath)
         self.ui.selectAstrometryAppPath.clicked.connect(self.selectAstrometryAppPath)
         self.ui.selectAstapIndexPath.clicked.connect(self.selectAstapIndexPath)
@@ -173,12 +175,20 @@ class DevicePopup(QDialog, widget.MWidget):
 
                 ui = self.framework2gui[fw][prop]
 
-                if isinstance(ui, QComboBox):
+                if isinstance(ui, QComboBox) and prop != 'protocolList':
                     ui.clear()
                     ui.setView(QListView())
                     for i, device in enumerate(frameworks[fw][prop]):
                         ui.addItem(device)
                         if frameworks[fw]['deviceName'] == device:
+                            ui.setCurrentIndex(i)
+
+                elif isinstance(ui, QComboBox) and prop == 'protocolList':
+                    ui.clear()
+                    ui.setView(QListView())
+                    for i, protocol in enumerate(frameworks[fw][prop]):
+                        ui.addItem(protocol)
+                        if frameworks[fw]['protocolList'] == protocol:
                             ui.setCurrentIndex(i)
 
                 elif isinstance(ui, QLineEdit):
@@ -225,8 +235,13 @@ class DevicePopup(QDialog, widget.MWidget):
 
             ui = self.framework2gui[framework][prop]
 
-            if isinstance(ui, QComboBox):
+            if isinstance(ui, QComboBox) and prop != 'protocolList':
                 frameworkData['deviceName'] = ui.currentText()
+                frameworkData[prop].clear()
+                for index in range(ui.model().rowCount()):
+                    frameworkData[prop].append(ui.model().item(index).text())
+
+            elif isinstance(ui, QComboBox) and prop == 'protocolList':
                 frameworkData[prop].clear()
                 for index in range(ui.model().rowCount()):
                     frameworkData[prop].append(ui.model().item(index).text())
@@ -325,6 +340,49 @@ class DevicePopup(QDialog, widget.MWidget):
             self.message.emit(f'Indi search found device: [{deviceName}]', 0)
 
         self.updateIndiDeviceNameList(deviceNames=deviceNames)
+
+        return True
+
+    def updateAlpacaDeviceNameList(self, deviceNames=[]):
+        """
+        updateAlpacaDeviceNameList updates the indi device name selectors combobox with the
+        discovered entries. therefore it deletes the old list and rebuild it new.
+
+        :return: True for test purpose
+        """
+
+        self.ui.alpacaDeviceList.clear()
+        self.ui.alpacaDeviceList.setView(QListView())
+
+        for deviceName in deviceNames:
+            self.ui.alpacaDeviceList.addItem(deviceName)
+
+        return True
+
+    def discoverAlpacaDevices(self):
+        """
+        discoverAlpacaDevices looks all possible alpaca devices up from the actual server and
+        the selected device type.
+
+        :return: success
+        """
+
+        host = (self.ui.alpacaHost.text(), int(self.ui.alpacaPort.text()))
+        alpaca = AlpacaClass()
+        alpaca.host = host
+        alpaca.protocol = 'http'
+        alpaca.apiVersion = 1
+
+        deviceNames = alpaca.discoverDevices(deviceType=self.deviceType)
+
+        if not deviceNames:
+            self.message.emit('Alpaca search found no devices', 2)
+            return False
+
+        for deviceName in deviceNames:
+            self.message.emit(f'Alpaca search found device: [{deviceName}]', 0)
+
+        self.updateAlpacaDeviceNameList(deviceNames=deviceNames)
 
         return True
 

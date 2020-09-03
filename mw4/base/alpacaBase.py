@@ -106,6 +106,93 @@ class AlpacaBase:
         self.deviceType, self.number = valueSplit
         self.number = int(self.number)
 
+    def discoverAPIVersion(self):
+        """
+
+        :return:
+        """
+
+        self.log.debug('get api version')
+
+        url = '{0}://{1}:{2}/management/apiversions'.format(
+            self.protocol,
+            self.host[0],
+            self.host[1],
+        )
+
+        try:
+            response = requests.get(url, timeout=3)
+        except requests.exceptions.Timeout:
+            self.log.warning('timeout')
+            return None
+
+        except requests.exceptions.ConnectionError:
+            self.log.info('[connection error')
+            return None
+
+        except Exception as e:
+            self.log.critical(f'[error in request: {e}')
+            return None
+
+        if response.status_code == 400 or response.status_code == 500:
+            self.log.info(f'{response.text}')
+            return None
+
+        response = response.json()
+
+        if response['ErrorNumber'] != 0:
+            self.log.error(f'{response} err:{response["ErrorNumber"]}'
+                           f',{response["ErrorMessage"]}')
+            return None
+
+        self.log.debug(f'[response:{response}')
+
+        return response['Value']
+
+    def discoverDevices(self):
+        """
+
+        :return:
+        """
+
+        self.log.debug('discover devices')
+
+        url = '{0}://{1}:{2}/management/v{3}/configureddevices'.format(
+            self.protocol,
+            self.host[0],
+            self.host[1],
+            self.apiVersion,
+        )
+
+        try:
+            response = requests.get(url, timeout=3)
+        except requests.exceptions.Timeout:
+            self.log.warning('timeout')
+            return None
+
+        except requests.exceptions.ConnectionError:
+            self.log.info('[connection error')
+            return None
+
+        except Exception as e:
+            self.log.critical(f'[error in request: {e}')
+            return None
+
+        if response.status_code == 400 or response.status_code == 500:
+            self.log.info(f'{response.text}')
+            return None
+
+        response = response.json()
+
+        if response['ErrorNumber'] != 0:
+            self.log.error(f'{response} err:{response["ErrorNumber"]}'
+                           f',{response["ErrorMessage"]}')
+            return None
+
+        self.log.debug(f'[response:{response}')
+
+        return response['Value']
+
     def get(self, attr: str, **data):
         """
         Send an HTTP GET request to an Alpaca server and check response for errors.

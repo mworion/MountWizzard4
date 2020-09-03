@@ -56,6 +56,7 @@ class AlpacaClass:
                 'deviceList': [],
                 'host': 'localhost',
                 'port': 11111,
+                'apiVersion': 1,
                 'protocol': '',
                 'protocolList': ['https', 'http'],
                 'user': '',

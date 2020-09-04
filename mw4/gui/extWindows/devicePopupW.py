@@ -135,23 +135,22 @@ class DevicePopup(QDialog, widget.MWidget):
         """
 
         firstFramework = next(iter(self.data['frameworks']))
-        framework = self.data.get('framework')
-
-        if not framework:
-            framework = firstFramework
+        framework = self.data.get('framework', firstFramework)
 
         frameworkTabText = self.framework2tabs[framework]
-        frameworkTabList = [self.framework2tabs[x] for x in self.data['frameworks']]
+        frameworkTabTextList = [self.framework2tabs[x] for x in self.data['frameworks']]
 
         tabWidget = self.ui.tab.findChild(QWidget, frameworkTabText)
         tabIndex = self.ui.tab.indexOf(tabWidget)
         self.ui.tab.setCurrentIndex(tabIndex)
 
         for index in range(0, self.ui.tab.count()):
-            if self.ui.tab.tabText(index) in frameworkTabList:
+            if self.ui.tab.tabText(index) in frameworkTabTextList:
                 self.ui.tab.setTabEnabled(index, True)
+                
             else:
                 self.ui.tab.setTabEnabled(index, False)
+                
             self.ui.tab.setStyleSheet(self.getStyle())
 
         return True
@@ -169,18 +168,19 @@ class DevicePopup(QDialog, widget.MWidget):
         frameworks = self.data['frameworks']
 
         for fw in frameworks:
-            for prop in frameworks[fw]:
-                if prop not in self.framework2gui[fw]:
+            frameworkElements = frameworks[fw]
+            for element in frameworkElements:
+                if element not in self.framework2gui[fw]:
                     continue
 
-                ui = self.framework2gui[fw][prop]
+                ui = self.framework2gui[fw][element]
 
                 if isinstance(ui, QComboBox) and prop != 'protocolList':
                     ui.clear()
                     ui.setView(QListView())
-                    for i, device in enumerate(frameworks[fw][prop]):
-                        ui.addItem(device)
-                        if frameworks[fw]['deviceName'] == device:
+                    for i, element in enumerate(frameworks[fw][element]):
+                        ui.addItem(element)
+                        if frameworks[fw]['deviceName'] == element:
                             ui.setCurrentIndex(i)
 
                 elif isinstance(ui, QComboBox) and prop == 'protocolList':
@@ -192,16 +192,16 @@ class DevicePopup(QDialog, widget.MWidget):
                             ui.setCurrentIndex(i)
 
                 elif isinstance(ui, QLineEdit):
-                    ui.setText(f'{frameworks[fw][prop]}')
+                    ui.setText(f'{frameworks[fw][element]}')
 
                 elif isinstance(ui, QCheckBox):
-                    ui.setChecked(frameworks[fw][prop])
+                    ui.setChecked(frameworks[fw][element])
 
                 elif isinstance(ui, QDoubleSpinBox):
-                    ui.setValue(frameworks[fw][prop])
+                    ui.setValue(frameworks[fw][element])
 
                 else:
-                    self.log.info(f'Property {prop} in gui for framework {fw} not found')
+                    self.log.info(f'Element {element} in gui for framework {fw} not found')
 
         return True
 
@@ -211,7 +211,7 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: True for test purpose
         """
 
-        self.setWindowTitle(f'Setup for: {self.driver}')
+        self.setWindowTitle(f'Setup for: {self.driverType}')
         self.selectTabs()
         self.populateTabs()
 
@@ -229,17 +229,15 @@ class DevicePopup(QDialog, widget.MWidget):
         framework = self.data['framework']
         frameworkData = self.data['frameworks'][framework]
 
-        for prop in list(frameworkData):
-            if prop not in self.framework2gui[framework]:
-                continue
+        for element in list(frameworkData):
 
-            ui = self.framework2gui[framework][prop]
+            ui = self.framework2gui[framework].get(element)
 
             if isinstance(ui, QComboBox) and prop != 'protocolList':
                 frameworkData['deviceName'] = ui.currentText()
-                frameworkData[prop].clear()
+                frameworkData[element].clear()
                 for index in range(ui.model().rowCount()):
-                    frameworkData[prop].append(ui.model().item(index).text())
+                    frameworkData[element].append(ui.model().item(index).text())
 
             elif isinstance(ui, QComboBox) and prop == 'protocolList':
                 frameworkData[prop].clear()
@@ -247,40 +245,41 @@ class DevicePopup(QDialog, widget.MWidget):
                     frameworkData[prop].append(ui.model().item(index).text())
 
             elif isinstance(ui, QLineEdit):
-                if isinstance(frameworkData[prop], str):
-                    frameworkData[prop] = ui.text()
+                if isinstance(frameworkData[element], str):
+                    frameworkData[element] = ui.text()
 
-                elif isinstance(frameworkData[prop], int):
-                    frameworkData[prop] = int(ui.text())
+                elif isinstance(frameworkData[element], int):
+                    frameworkData[element] = int(ui.text())
 
                 else:
-                    frameworkData[prop] = float(ui.text())
+                    frameworkData[element] = float(ui.text())
 
             elif isinstance(ui, QCheckBox):
-                frameworkData[prop] = ui.isChecked()
+                frameworkData[element] = ui.isChecked()
 
             elif isinstance(ui, QDoubleSpinBox):
-                frameworkData[prop] = ui.value()
+                frameworkData[element] = ui.value()
 
             else:
-                self.log.info(f'Property {prop} in gui for framework {framework} not found')
+                self.log.info(f'Element {element} in gui for framework {framework} not found')
 
         return True
 
     def readFramework(self):
         """
         readFramework determines, which tab was selected when leaving and writes the
-        adequate selection into the property. as the headline might be different from the
+        adequate selection into the dict. as the headline might be different from the
         keywords, a translation table (self.framework2gui) in a reverse index is used.
 
         :return: True for test purpose
         """
 
-        index = self.ui.tab.currentIndex()
-        currentSelection = self.ui.tab.tabText(index)
+        reversedDict = dict([(value, key) for key, value in self.framework2tabs.items()])
 
-        searchD = dict([(value, key) for key, value in self.framework2tabs.items()])
-        self.data['framework'] = searchD[currentSelection]
+        index = self.ui.tab.currentIndex()
+        currentSelectionText = self.ui.tab.tabText(index)
+
+        self.data['framework'] = reversedDict[currentSelectionText]
 
         return True
 

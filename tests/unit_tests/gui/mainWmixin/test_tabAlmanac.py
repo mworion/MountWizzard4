@@ -126,10 +126,15 @@ def test_drawTwilight_1(app):
     app.astronomical[0] = [[t0, 10], [t0, 10]]
     app.dark[0] = [[t0, 10], [t0, 10]]
 
-    with mock.patch.object(matplotlib.backends.backend_qt5agg.FigureCanvasQTAgg,
-                           'draw'):
-        suc = app.drawTwilight(t0, t1)
-        assert suc
+    axe, fig = app.generateFlat(widget=app.twilight)
+
+    with mock.patch.object(app,
+                           'generateFlat',
+                           return_value=(axe, fig)):
+        with mock.patch.object(axe.figure.canvas,
+                               'draw'):
+            suc = app.drawTwilight(t0, t1)
+            assert suc
 
 
 def test_searchTwilightWorker_1(app):

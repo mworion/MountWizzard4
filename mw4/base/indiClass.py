@@ -113,12 +113,14 @@ class IndiClass:
         super().__init__()
 
         self.app = app
+        self.data = data
 
         self.client = qtIndiBase.Client(host=None, threadPool=threadPool)
-        self._host = ('', 0)
+
         self.deviceName = ''
         self.device = None
-        self.data = data
+        self._hostaddress = None
+        self._port = None
         self.retryCounter = 0
         self.discoverType = None
         self.discoverList = None
@@ -131,7 +133,7 @@ class IndiClass:
             'indi': {
                 'deviceName': '',
                 'deviceList': [],
-                'host': 'localhost',
+                'hostaddress': 'localhost',
                 'port': 7624,
                 'loadConfig': False,
                 'messages': False,
@@ -170,6 +172,24 @@ class IndiClass:
     def host(self, value):
         self._host = value
         self.client.host = value
+
+    @property
+    def hostaddress(self):
+        return self._host
+
+    @hostaddress.setter
+    def hostaddress(self, value):
+        self._hostaddress = value
+        self.client.host = (self._hostaddress, self._port)
+
+    @property
+    def port(self):
+        return self._port
+
+    @port.setter
+    def port(self, value):
+        self._port = int(value)
+        self.client.host = (self._hostaddress, self._port)
 
     def serverConnected(self):
         """

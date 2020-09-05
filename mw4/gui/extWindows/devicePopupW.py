@@ -75,17 +75,16 @@ class DevicePopup(QDialog, widget.MWidget):
         self.returnValues = {'close': 'cancel'}
         self.framework2gui = {
             'indi': {
-                'host': self.ui.indiHost,
+                'hostaddress': self.ui.indiHostAddress,
                 'port': self.ui.indiPort,
                 'deviceList': self.ui.indiDeviceList,
                 'messages': self.ui.indiMessages,
                 'loadConfig': self.ui.indiLoadConfig,
             },
             'alpaca': {
-                'host': self.ui.alpacaHost,
+                'hostaddress': self.ui.alpacaHostAddress,
                 'port': self.ui.alpacaPort,
                 'deviceList': self.ui.alpacaDeviceList,
-                'protocolList': self.ui.alpacaProtocolList,
                 'user': self.ui.alpacaUser,
                 'password': self.ui.alpacaPassword,
             },
@@ -135,7 +134,10 @@ class DevicePopup(QDialog, widget.MWidget):
         """
 
         firstFramework = next(iter(self.data['frameworks']))
-        framework = self.data.get('framework', firstFramework)
+        framework = self.data.get('framework')
+
+        if not framework:
+            framework = firstFramework
 
         frameworkTabText = self.framework2tabs[framework]
         frameworkTabTextList = [self.framework2tabs[x] for x in self.data['frameworks']]
@@ -147,10 +149,10 @@ class DevicePopup(QDialog, widget.MWidget):
         for index in range(0, self.ui.tab.count()):
             if self.ui.tab.tabText(index) in frameworkTabTextList:
                 self.ui.tab.setTabEnabled(index, True)
-                
+
             else:
                 self.ui.tab.setTabEnabled(index, False)
-                
+
             self.ui.tab.setStyleSheet(self.getStyle())
 
         return True
@@ -175,20 +177,12 @@ class DevicePopup(QDialog, widget.MWidget):
 
                 ui = self.framework2gui[fw][element]
 
-                if isinstance(ui, QComboBox) and prop != 'protocolList':
+                if isinstance(ui, QComboBox):
                     ui.clear()
                     ui.setView(QListView())
-                    for i, element in enumerate(frameworks[fw][element]):
-                        ui.addItem(element)
-                        if frameworks[fw]['deviceName'] == element:
-                            ui.setCurrentIndex(i)
-
-                elif isinstance(ui, QComboBox) and prop == 'protocolList':
-                    ui.clear()
-                    ui.setView(QListView())
-                    for i, protocol in enumerate(frameworks[fw][prop]):
-                        ui.addItem(protocol)
-                        if frameworks[fw]['protocolList'] == protocol:
+                    for i, deviceName in enumerate(frameworks[fw][element]):
+                        ui.addItem(deviceName)
+                        if frameworks[fw]['deviceName'] == deviceName:
                             ui.setCurrentIndex(i)
 
                 elif isinstance(ui, QLineEdit):
@@ -211,7 +205,7 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: True for test purpose
         """
 
-        self.setWindowTitle(f'Setup for: {self.driverType}')
+        self.setWindowTitle(f'Setup for: {self.deviceType}')
         self.selectTabs()
         self.populateTabs()
 
@@ -233,16 +227,11 @@ class DevicePopup(QDialog, widget.MWidget):
 
             ui = self.framework2gui[framework].get(element)
 
-            if isinstance(ui, QComboBox) and prop != 'protocolList':
+            if isinstance(ui, QComboBox):
                 frameworkData['deviceName'] = ui.currentText()
                 frameworkData[element].clear()
                 for index in range(ui.model().rowCount()):
                     frameworkData[element].append(ui.model().item(index).text())
-
-            elif isinstance(ui, QComboBox) and prop == 'protocolList':
-                frameworkData[prop].clear()
-                for index in range(ui.model().rowCount()):
-                    frameworkData[prop].append(ui.model().item(index).text())
 
             elif isinstance(ui, QLineEdit):
                 if isinstance(frameworkData[element], str):
@@ -325,9 +314,9 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: success
         """
 
-        host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))
         indi = IndiClass()
-        indi.host = host
+        indi.hostaddress = self.ui.indiHostAddress.text()
+        indi.hostaddress = self.ui.indiPort.text()
 
         deviceNames = indi.discoverDevices(deviceType=self.deviceType)
 
@@ -366,10 +355,9 @@ class DevicePopup(QDialog, widget.MWidget):
         :return: success
         """
 
-        host = (self.ui.alpacaHost.text(), int(self.ui.alpacaPort.text()))
         alpaca = AlpacaClass()
-        alpaca.host = host
-        alpaca.protocol = 'http'
+        alpaca.hostaddress = self.ui.alpacaHostAddress.text()
+        alpaca.port = self.ui.alpacaPort.text()
         alpaca.apiVersion = 1
 
         deviceNames = alpaca.discoverDevices(deviceType=self.deviceType)

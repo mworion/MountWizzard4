@@ -101,10 +101,10 @@ class AlpacaBase:
     def deviceName(self, value):
         self._deviceName = value
         valueSplit = value.split(':')
-        if len(valueSplit) < 2:
+        if len(valueSplit) != 3:
             return
-        self.deviceType = valueSplit[0].strip()
-        self.number = valueSplit[1].strip()
+        self.deviceType = valueSplit[1].strip()
+        self.number = valueSplit[2].strip()
         self.number = int(self.number)
 
     def discoverAPIVersion(self):

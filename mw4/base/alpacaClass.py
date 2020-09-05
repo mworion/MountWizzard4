@@ -47,18 +47,20 @@ class AlpacaClass:
 
         self.app = app
         self.threadPool = threadPool
+        self.data = data
 
         self.client = AlpacaBase()
-        self.data = data
+
+        self._hostaddress = None
+        self._port = None
+
         self.defaultConfig = {
             'alpaca': {
                 'deviceName': '',
                 'deviceList': [],
-                'host': 'localhost',
+                'hostaddress': 'localhost',
                 'port': 11111,
                 'apiVersion': 1,
-                'protocol': '',
-                'protocolList': ['https', 'http'],
                 'user': '',
                 'password': '',
             }
@@ -82,6 +84,24 @@ class AlpacaClass:
     @host.setter
     def host(self, value):
         self.client.host = value
+
+    @property
+    def hostaddress(self):
+        return self._host
+
+    @hostaddress.setter
+    def hostaddress(self, value):
+        self._hostaddress = value
+        self.client.host = (self._hostaddress, self._port)
+
+    @property
+    def port(self):
+        return self._port
+
+    @port.setter
+    def port(self, value):
+        self._port = int(value)
+        self.client.host = (self._hostaddress, self._port)
 
     @property
     def deviceName(self):
@@ -285,6 +305,6 @@ class AlpacaClass:
             return []
 
         temp = [x for x in devices if x['DeviceType'].lower() == deviceType]
-        discoverList = [f'{deviceType}:{x["DeviceNumber"]}:{x["DeviceName"]}' for x in temp]
+        discoverList = [f'{x["DeviceName"]}:{deviceType}:{x["DeviceNumber"]}' for x in temp]
 
         return discoverList

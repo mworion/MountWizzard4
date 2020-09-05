@@ -18,6 +18,7 @@
 # standard libraries
 import os
 import glob
+from tr import tr
 
 # external packages
 import pytest
@@ -74,7 +75,7 @@ def module_setup_teardown():
     tp.waitForDone(3000)
 
 
-def test_1(qtbot, qapp):
+def test_configAlpaca(qtbot, qapp):
     # open all windows and close them
     def run():
         qapp.exec_()
@@ -88,6 +89,11 @@ def test_1(qtbot, qapp):
     qtbot.mouseClick(app.mainW.ui.cameraSetup, Qt.LeftButton)
     popup = app.mainW.popupUi
     qtbot.waitExposed(popup, 1000)
+
+    popup.ui.tab.setCurrentIndex(1)
+    popup.ui.alpacaHostAddress.setText('192.168.2.211')
+    popup.ui.alpacaPort.setText('11111')
+    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
 
     QTest.qWait(1000)
     qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)

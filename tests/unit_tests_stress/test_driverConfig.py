@@ -18,11 +18,10 @@
 # standard libraries
 import os
 import glob
-from tr import tr
 
 # external packages
 import pytest
-from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtTest import QTest
 
@@ -30,7 +29,6 @@ from PyQt5.QtTest import QTest
 from mainApp import MountWizzard4
 from base.tpool import Worker
 from loader import extractDataFiles
-from resource import resources
 
 
 mwglob = {'dataDir': 'tests/data',
@@ -43,12 +41,12 @@ mwglob = {'dataDir': 'tests/data',
           'modelData': '4.0'
           }
 
+tp = QThreadPool()
+
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global tp
-
-    tp = QThreadPool()
 
     for d in mwglob:
         files = glob.glob(f'{mwglob[d]}/*')
@@ -76,7 +74,6 @@ def module_setup_teardown():
 
 
 def test_configAlpaca(qtbot, qapp):
-    # open all windows and close them
     def run():
         qapp.exec_()
 
@@ -89,14 +86,50 @@ def test_configAlpaca(qtbot, qapp):
     qtbot.mouseClick(app.mainW.ui.cameraSetup, Qt.LeftButton)
     popup = app.mainW.popupUi
     qtbot.waitExposed(popup, 1000)
-
     popup.ui.tab.setCurrentIndex(1)
+
     popup.ui.alpacaHostAddress.setText('192.168.2.211')
     popup.ui.alpacaPort.setText('11111')
+    popup.ui.alpacaCopyConfig.setChecked(True)
     qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
-
-    QTest.qWait(1000)
     qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
 
-    QTest.qWait(1000)
+    qtbot.mouseClick(app.mainW.ui.filterSetup, Qt.LeftButton)
+    popup = app.mainW.popupUi
+    qtbot.waitExposed(popup, 1000)
+    popup.ui.tab.setCurrentIndex(1)
+    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
+    qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
+
+    qtbot.mouseClick(app.mainW.ui.domeSetup, Qt.LeftButton)
+    popup = app.mainW.popupUi
+    qtbot.waitExposed(popup, 1000)
+    popup.ui.tab.setCurrentIndex(1)
+    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
+    qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
+
+    qtbot.mouseClick(app.mainW.ui.telescopeSetup, Qt.LeftButton)
+    popup = app.mainW.popupUi
+    qtbot.waitExposed(popup, 1000)
+    popup.ui.tab.setCurrentIndex(1)
+    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
+    qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
+
+    qtbot.mouseClick(app.mainW.ui.focuserSetup, Qt.LeftButton)
+    popup = app.mainW.popupUi
+    qtbot.waitExposed(popup, 1000)
+    popup.ui.tab.setCurrentIndex(1)
+    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
+
+    qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
+    qtbot.mouseClick(app.mainW.ui.sensorWeatherSetup, Qt.LeftButton)
+    popup = app.mainW.popupUi
+    qtbot.waitExposed(popup, 1000)
+    popup.ui.tab.setCurrentIndex(1)
+    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
+    qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
+
+    app.mainW.ui.mainTabWidget.setCurrentIndex(11)
+    app.mainW.ui.settingsTabWidget.setCurrentIndex(0)
+    QTest.qWait(5000)
     qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)

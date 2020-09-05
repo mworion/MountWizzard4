@@ -212,7 +212,7 @@ class IndiClass:
         :return: true for test purpose
         """
 
-        self.log.info(f'INDI server disconnected, devices: {devices}')
+        self.log.info(f'INDI server disconnected, devices: {devices.keys()}')
         return True
 
     def newDevice(self, deviceName):

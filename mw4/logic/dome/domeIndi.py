@@ -118,7 +118,9 @@ class DomeIndi(IndiClass):
 
         :return: true for test purpose
         """
+
         self.signals.slewFinished.emit()
+
         return True
 
     def updateNumber(self, deviceName, propertyName):
@@ -148,8 +150,10 @@ class DomeIndi(IndiClass):
 
             # calculate the stop slewing condition
             isSlewing = (self.device.ABS_DOME_POSITION['state'] == 'Busy')
+
             if isSlewing:
                 self.signals.message.emit('slewing')
+
             else:
                 self.signals.message.emit('')
 

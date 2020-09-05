@@ -36,6 +36,8 @@ from PyQt5.QtCore import QObject
 from gui.extWindows.devicePopupW import DevicePopup
 from gui.utilities.widget import MWidget
 from logic.astrometry.astrometry import Astrometry
+from base.indiClass import IndiClass
+from base.alpacaClass import AlpacaClass
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -242,9 +244,40 @@ def test_storeConfig_1(qtbot):
     assert suc
 
 
+def test_updateIndiDeviceNameList_1(qtbot):
+    suc = app.updateIndiDeviceNameList(['test1', 'test2'])
+    assert suc
+
+
 def test_discoverIndiDevices_1(qtbot):
     suc = app.discoverIndiDevices()
     assert not suc
+
+
+def test_discoverIndiDevices_2(qtbot):
+    with mock.patch.object(IndiClass,
+                           'discoverDevices',
+                           return_value=('Test1', 'Test2')):
+        suc = app.discoverIndiDevices()
+        assert suc
+
+
+def test_updateAlpacaDeviceNameList_1(qtbot):
+    suc = app.updateAlpacaDeviceNameList(['test1', 'test2'])
+    assert suc
+
+
+def test_discoverAlpacaDevices_1(qtbot):
+    suc = app.discoverAlpacaDevices()
+    assert not suc
+
+
+def test_discoverAlpacaDevices_2(qtbot):
+    with mock.patch.object(AlpacaClass,
+                           'discoverDevices',
+                           return_value=('Test1', 'Test2')):
+        suc = app.discoverAlpacaDevices()
+        assert suc
 
 
 def test_selectAstrometryIndexPath_1(qtbot):

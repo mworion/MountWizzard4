@@ -172,10 +172,8 @@ class DevicePopup(QDialog, widget.MWidget):
         for fw in frameworks:
             frameworkElements = frameworks[fw]
             for element in frameworkElements:
-                if element not in self.framework2gui[fw]:
-                    continue
 
-                ui = self.framework2gui[fw][element]
+                ui = self.framework2gui[fw].get(element)
 
                 if isinstance(ui, QComboBox):
                     ui.clear()

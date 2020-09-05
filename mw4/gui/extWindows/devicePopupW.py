@@ -316,16 +316,18 @@ class DevicePopup(QDialog, widget.MWidget):
 
         indi = IndiClass()
         indi.hostaddress = self.ui.indiHostAddress.text()
-        indi.hostaddress = self.ui.indiPort.text()
+        indi.port = self.ui.indiPort.text()
 
+        self.changeStyleDynamic(self.ui.indiDiscover, 'running', True)
         deviceNames = indi.discoverDevices(deviceType=self.deviceType)
+        self.changeStyleDynamic(self.ui.indiDiscover, 'running', False)
 
         if not deviceNames:
-            self.message.emit('Indi search found no devices', 2)
+            self.message.emit('Indi no devices found', 2)
             return False
 
         for deviceName in deviceNames:
-            self.message.emit(f'Indi search found device: [{deviceName}]', 0)
+            self.message.emit(f'Indi discovered:     [{deviceName}]', 0)
 
         self.updateIndiDeviceNameList(deviceNames=deviceNames)
 
@@ -360,14 +362,16 @@ class DevicePopup(QDialog, widget.MWidget):
         alpaca.port = self.ui.alpacaPort.text()
         alpaca.apiVersion = 1
 
+        self.changeStyleDynamic(self.ui.alpacaDiscover, 'running', True)
         deviceNames = alpaca.discoverDevices(deviceType=self.deviceType)
+        self.changeStyleDynamic(self.ui.alpacaDiscover, 'running', False)
 
         if not deviceNames:
-            self.message.emit('Alpaca search found no devices', 2)
+            self.message.emit('Alpaca no devices found', 2)
             return False
 
         for deviceName in deviceNames:
-            self.message.emit(f'Alpaca search found device: [{deviceName}]', 0)
+            self.message.emit(f'Alpaca discovered:   [{deviceName}]', 0)
 
         self.updateAlpacaDeviceNameList(deviceNames=deviceNames)
 

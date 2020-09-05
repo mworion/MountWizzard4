@@ -40,7 +40,7 @@ jobs:
         python -m PyQt5.uic.pyuic mw4/gui/widgets/satellite.ui -o mw4/gui/widgets/satellite_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/analyse.ui -o mw4/gui/widgets/analyse_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/mount3D.ui -o mw4/gui/widgets/mount3D_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/simulator.ui -o mw4/gui/widgets/simulator_ui.py        
+        python -m PyQt5.uic.pyuic mw4/gui/widgets/simulator.ui -o mw4/gui/widgets/simulator_ui.py
         python -m PyQt5.pyrcc_main mw4/resource/resources.qrc -o mw4/resource/resources.py
 
     - name: Build package
@@ -64,12 +64,12 @@ jobs:
 
     - name: Running unit tests
       run: |
-        pytest tests/unit_tests/base --cov-append --cov=mw4/ --cov-report=xml
-        pytest tests/unit_tests/logic --cov-append --cov=mw4/ --cov-report=xml
+        pytest tests/unit_tests/base --cov=mw4/ --cov-report=xml
         pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/ --cov-report=xml
         pytest tests/unit_tests/gui/mainWindow --cov-append --cov=mw4/ --cov-report=xml
         pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/ --cov-report=xml
         pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/ --cov-report=xml
+        pytest tests/unit_tests/logic --cov-append --cov=mw4/ --cov-report=xml
         pytest tests/unit_tests/zStartup --cov-append --cov=mw4/ --cov-report=xml
 
     - name: Upload coverage to codecov

@@ -34,8 +34,6 @@ from PyQt5.QtCore import QObject
 
 # local import
 from gui.extWindows.devicePopupW import DevicePopup
-from base.indiClass import IndiClass
-from indibase.qtIndiBase import Client
 from gui.utilities.widget import MWidget
 from logic.astrometry.astrometry import Astrometry
 

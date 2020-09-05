@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -13702,9 +13702,9 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>270</y>
+       <y>225</y>
        <width>366</width>
-       <height>146</height>
+       <height>191</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -13986,125 +13986,229 @@ Hint if mount will need a flip when following satellite.</string>
        <string>SE</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="slewSpeedLow">
+     <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>110</y>
-        <width>86</width>
-        <height>25</height>
+        <x>10</x>
+        <y>140</y>
+        <width>346</width>
+        <height>41</height>
        </rect>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
+      <property name="title">
+       <string>Duration</string>
       </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>Slew low</string>
-      </property>
+      <widget class="QRadioButton" name="moveDurationCont">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>15</y>
+         <width>86</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>If checked, the renaming process will run through all subdirectories.</string>
+       </property>
+       <property name="text">
+        <string>continous</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="moveDuration2">
+       <property name="geometry">
+        <rect>
+         <x>235</x>
+         <y>15</y>
+         <width>41</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>If checked, the renaming process will run through all subdirectories.</string>
+       </property>
+       <property name="text">
+        <string>2s</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="moveDuration1">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>15</y>
+         <width>41</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>If checked, the renaming process will run through all subdirectories.</string>
+       </property>
+       <property name="text">
+        <string>1s</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="moveDuration5">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>15</y>
+         <width>41</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>If checked, the renaming process will run through all subdirectories.</string>
+       </property>
+       <property name="text">
+        <string>5s</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="moveDuration10">
+       <property name="geometry">
+        <rect>
+         <x>105</x>
+         <y>15</y>
+         <width>41</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>If checked, the renaming process will run through all subdirectories.</string>
+       </property>
+       <property name="text">
+        <string>10s</string>
+       </property>
+      </widget>
      </widget>
-     <widget class="QPushButton" name="slewSpeedMed">
+     <widget class="QGroupBox" name="groupBox_20">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>80</y>
-        <width>86</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>Slew med</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="slewSpeedHigh">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>50</y>
-        <width>86</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>Slew high</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="slewSpeedMax">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
+        <x>260</x>
         <y>20</y>
-        <width>86</width>
-        <height>25</height>
+        <width>96</width>
+        <height>116</height>
        </rect>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
+      <property name="title">
+       <string>Speed</string>
       </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>Slew max</string>
-      </property>
+      <widget class="QRadioButton" name="slewSpeedMax">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>15</y>
+         <width>56</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>If checked, the renaming process will run through all subdirectories.</string>
+       </property>
+       <property name="text">
+        <string>Max</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="slewSpeedMed">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>65</y>
+         <width>61</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>If checked, the renaming process will run through all subdirectories.</string>
+       </property>
+       <property name="text">
+        <string>Med</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="slewSpeedLow">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>61</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>If checked, the renaming process will run through all subdirectories.</string>
+       </property>
+       <property name="text">
+        <string>Low</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="slewSpeedHigh">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>61</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>If checked, the renaming process will run through all subdirectories.</string>
+       </property>
+       <property name="text">
+        <string>High</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </widget>
@@ -14154,7 +14258,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -21887,7 +21991,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial','Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial','Arial','Arial','Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial';&quot;&gt;pyqt5, matplotlib, wakeonlan, numpy, requests, astropy, skyfield, qimage2ndarray, importlib_metadata, opencv, scipy, photutils&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
@@ -24257,10 +24361,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>moveSouthWest</tabstop>
   <tabstop>moveWest</tabstop>
   <tabstop>stopMoveAll</tabstop>
-  <tabstop>slewSpeedMax</tabstop>
-  <tabstop>slewSpeedHigh</tabstop>
-  <tabstop>slewSpeedMed</tabstop>
-  <tabstop>slewSpeedLow</tabstop>
   <tabstop>openMessageW</tabstop>
   <tabstop>openMeasureW</tabstop>
   <tabstop>openHemisphereW</tabstop>

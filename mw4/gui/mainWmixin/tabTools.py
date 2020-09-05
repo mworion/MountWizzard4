@@ -18,9 +18,12 @@
 # standard libraries
 import os
 from pathlib import Path
+
 # external packages
 import PyQt5
+from PyQt5.QtTest import QTest
 from astropy.io import fits
+
 # local import
 
 
@@ -52,16 +55,12 @@ class Tools(object):
                                    'Exp Time': ['EXPTIME'],
                                    'CCD Temp': ['CCD-TEMP'],
                                    }
-        self.slewSpeeds = {'max': self.ui.slewSpeedMax,
-                           'high': self.ui.slewSpeedHigh,
-                           'med': self.ui.slewSpeedMed,
-                           'low': self.ui.slewSpeedLow,
+        self.slewSpeeds = {self.ui.slewSpeedMax: self.app.mount.setting.setSlewSpeedMax,
+                           self.ui.slewSpeedHigh: self.app.mount.setting.setSlewSpeedHigh,
+                           self.ui.slewSpeedMed: self.app.mount.setting.setSlewSpeedMed,
+                           self.ui.slewSpeedLow: self.app.mount.setting.setSlewSpeedLow,
                            }
-        self.slewSpeedFuncs = {'max': self.app.mount.setting.setSlewSpeedMax,
-                               'high': self.app.mount.setting.setSlewSpeedHigh,
-                               'med': self.app.mount.setting.setSlewSpeedMed,
-                               'low': self.app.mount.setting.setSlewSpeedLow,
-                               }
+
         self.slewSpeedSelected = None
 
         self.setupSelectorGui()
@@ -101,10 +100,15 @@ class Tools(object):
             ui.setCurrentIndex(config.get(name, 0))
 
         self.ui.renameProgress.setValue(0)
-
-        key = config.get('slewSpeed', 'high')
-        self.slewSpeedSelected = key
-        self.changeStyleDynamic(self.slewSpeeds[key], 'running', True)
+        self.ui.slewSpeedMax.setChecked(config.get('slewSpeedMax', True))
+        self.ui.slewSpeedHigh.setChecked(config.get('slewSpeedHigh', False))
+        self.ui.slewSpeedMed.setChecked(config.get('slewSpeedMed', False))
+        self.ui.slewSpeedLow.setChecked(config.get('slewSpeedLow', False))
+        self.ui.moveDurationCont.setChecked(config.get('moveDurationCont', True))
+        self.ui.moveDuration10.setChecked(config.get('moveDuration10', False))
+        self.ui.moveDuration5.setChecked(config.get('moveDuration5', False))
+        self.ui.moveDuration2.setChecked(config.get('moveDuration2', False))
+        self.ui.moveDuration1.setChecked(config.get('moveDuration1', False))
 
         return True
 
@@ -123,7 +127,17 @@ class Tools(object):
         config['checkIncludeSubdirs'] = self.ui.checkIncludeSubdirs.isChecked()
         for name, ui in self.selectorsDropDowns.items():
             config[name] = ui.currentIndex()
-        config['slewSpeed'] = self.slewSpeedSelected
+
+        config['slewSpeedMax'] = self.ui.slewSpeedMax.isChecked()
+        config['slewSpeedHigh'] = self.ui.slewSpeedHigh.isChecked()
+        config['slewSpeedMed'] = self.ui.slewSpeedMed.isChecked()
+        config['slewSpeedLow'] = self.ui.slewSpeedLow.isChecked()
+        config['moveDurationCont'] = self.ui.moveDurationCont.isChecked()
+        config['moveDuration10'] = self.ui.moveDuration10.isChecked()
+        config['moveDuration5'] = self.ui.moveDuration5.isChecked()
+        config['moveDuration2'] = self.ui.moveDuration2.isChecked()
+        config['moveDuration1'] = self.ui.moveDuration1.isChecked()
+
         return True
 
     def setupSelectorGui(self):
@@ -319,6 +333,31 @@ class Tools(object):
             self.ui.renameProgress.setValue(0)
         return True
 
+    def moveDuration(self):
+        """
+
+        :return:
+        """
+
+        if self.ui.moveDuration10.isChecked():
+            QTest.qWait(10000)
+
+        elif self.ui.moveDuration5.isChecked():
+            QTest.qWait(5000)
+
+        elif self.ui.moveDuration2.isChecked():
+            QTest.qWait(2000)
+
+        elif self.ui.moveDuration1.isChecked():
+            QTest.qWait(1000)
+
+        else:
+            return True
+
+        self.stopMoveAll()
+
+        return True
+
     def moveNorth(self):
         """
         moveNorth slews the mount at speed.
@@ -328,6 +367,8 @@ class Tools(object):
 
         self.app.mount.obsSite.moveNorth()
         self.changeStyleDynamic(self.ui.moveNorth, 'running', True)
+        self.moveDuration()
+
         return True
 
     def moveEast(self):
@@ -339,6 +380,8 @@ class Tools(object):
 
         self.app.mount.obsSite.moveEast()
         self.changeStyleDynamic(self.ui.moveEast, 'running', True)
+        self.moveDuration()
+
         return True
 
     def moveSouth(self):
@@ -350,6 +393,8 @@ class Tools(object):
 
         self.app.mount.obsSite.moveSouth()
         self.changeStyleDynamic(self.ui.moveSouth, 'running', True)
+        self.moveDuration()
+
         return True
 
     def moveWest(self):
@@ -361,6 +406,8 @@ class Tools(object):
 
         self.app.mount.obsSite.moveWest()
         self.changeStyleDynamic(self.ui.moveWest, 'running', True)
+        self.moveDuration()
+
         return True
 
     def moveNorthWest(self):
@@ -373,6 +420,8 @@ class Tools(object):
         self.app.mount.obsSite.moveWest()
         self.app.mount.obsSite.moveNorth()
         self.changeStyleDynamic(self.ui.moveNorthWest, 'running', True)
+        self.moveDuration()
+
         return True
 
     def moveNorthEast(self):
@@ -385,6 +434,8 @@ class Tools(object):
         self.app.mount.obsSite.moveEast()
         self.app.mount.obsSite.moveNorth()
         self.changeStyleDynamic(self.ui.moveNorthEast, 'running', True)
+        self.moveDuration()
+
         return True
 
     def moveSouthEast(self):
@@ -397,6 +448,8 @@ class Tools(object):
         self.app.mount.obsSite.moveEast()
         self.app.mount.obsSite.moveSouth()
         self.changeStyleDynamic(self.ui.moveSouthEast, 'running', True)
+        self.moveDuration()
+
         return True
 
     def moveSouthWest(self):
@@ -409,6 +462,8 @@ class Tools(object):
         self.app.mount.obsSite.moveWest()
         self.app.mount.obsSite.moveSouth()
         self.changeStyleDynamic(self.ui.moveSouthWest, 'running', True)
+        self.moveDuration()
+
         return True
 
     def stopMoveAll(self):
@@ -427,6 +482,7 @@ class Tools(object):
         self.changeStyleDynamic(self.ui.moveSouthWest, 'running', False)
         self.changeStyleDynamic(self.ui.moveWest, 'running', False)
         self.changeStyleDynamic(self.ui.moveNorthWest, 'running', False)
+
         return True
 
     def setSlewSpeed(self):
@@ -437,14 +493,9 @@ class Tools(object):
         :return: success
         """
 
-        for key, ui, func in zip(self.slewSpeeds.keys(),
-                                 self.slewSpeeds.values(),
-                                 self.slewSpeedFuncs.values()):
-            if ui != self.sender():
-                self.changeStyleDynamic(ui, 'running', False)
-                continue
-            self.changeStyleDynamic(ui, 'running', True)
-            self.slewSpeedSelected = key
-            func()
+        if self.sender() not in self.slewSpeeds:
+            return False
+
+        self.slewSpeeds[self.sender()]()
 
         return True

@@ -45,13 +45,6 @@ from logic.environment.skymeter import Skymeter
 from base.loggerMW import CustomLogger
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module_setup_teardown_module():
-    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
-    yield
-    os.remove('tests/data/de421_23.bsp')
-
-
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown(qtbot):
     global ui, widget, Test, Test1, app
@@ -78,6 +71,8 @@ def module_setup_teardown(qtbot):
         onlineWeather = OnlineWeather(app=Test1())
         skymeter = Skymeter(app=Test1())
 
+    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
+
     widget = QWidget()
     ui = Ui_MainWindow()
     ui.setupUi(widget)
@@ -96,6 +91,7 @@ def module_setup_teardown(qtbot):
 
     yield
 
+    os.remove('tests/data/de421_23.bsp')
     app.threadPool.waitForDone(1000)
 
 

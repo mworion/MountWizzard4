@@ -31,7 +31,6 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
 from skyfield.api import Topos
-import matplotlib
 
 # local import
 from gui.mainWmixin.tabAlmanac import Almanac

@@ -48,8 +48,8 @@ class DomeAscom(AscomClass):
         self.settlingTime = 0
         self.azimuth = 0
         self.slewing = False
-        self.targetAzimuth = -999
-        self.targetAltitude = -999
+        self.targetAzimuth = None
+        self.targetAltitude = None
 
         self.settlingWait = PyQt5.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
@@ -93,7 +93,12 @@ class DomeAscom(AscomClass):
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', -1)
         statusIsSlewing = self.data.get('slewing', False)
 
-        hasReachedTarget = abs(azimuth - self.targetAzimuth) < 0.1
+        if self.targetAzimuth is not None:
+            hasReachedTarget = (azimuth - self.targetAzimuth) < 0.1
+
+        else:
+            hasReachedTarget = True
+
         hasStopped = self.slewing and (not statusIsSlewing or hasReachedTarget)
 
         if not self.slewing:

@@ -262,13 +262,25 @@ class SettDevice:
 
         return True
 
-    def processPopupResults(self, driver=''):
+    def processPopupResults(self):
         """
         processPopupResults takes sets the actual drop down in the device settings lists to
         the choice of the popup window. after that it starts the driver again.
 
         :return: success if new device could be selected
         """
+
+        self.popupUi.ui.ok.clicked.disconnect(self.processPopupResults)
+        driver = self.popupUi.returnValues.get('driver')
+
+        if not driver:
+            return False
+
+        if self.popupUi.returnValues.get('indiCopyConfig', False):
+            self.copyConfig(driver=driver, framework='indi')
+
+        if self.popupUi.returnValues.get('alpacaCopyConfig', False):
+            self.copyConfig(driver=driver, framework='alpaca')
 
         selectedFramework = self.driversData[driver]['framework']
         index = self.findIndexValue(self.drivers[driver]['uiDropDown'], selectedFramework)
@@ -348,18 +360,8 @@ class SettDevice:
                                    driver=driver,
                                    deviceType=deviceType,
                                    data=data)
-        self.popupUi.exec_()
 
-        if self.popupUi.returnValues.get('close', 'cancel') == 'cancel':
-            return False
-
-        if self.popupUi.returnValues.get('indiCopyConfig', False):
-            self.copyConfig(driver=driver, framework='indi')
-
-        if self.popupUi.returnValues.get('alpacaCopyConfig', False):
-            self.copyConfig(driver=driver, framework='alpaca')
-
-        self.processPopupResults(driver=driver)
+        self.popupUi.ui.ok.clicked.connect(self.processPopupResults)
 
         return True
 

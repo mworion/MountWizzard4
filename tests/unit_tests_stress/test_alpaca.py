@@ -21,7 +21,7 @@ import glob
 
 # external packages
 import pytest
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtTest import QTest
 
@@ -85,43 +85,12 @@ def test_1(qtbot, qapp):
     tp.start(worker)
     qtbot.waitExposed(app.mainW, 1000)
 
-    qtbot.mouseClick(app.mainW.ui.openAnalyseW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showAnalyseW']['classObj'], 1000)
+    qtbot.mouseClick(app.mainW.ui.cameraSetup, Qt.LeftButton)
+    popup = app.mainW.popupUi
+    qtbot.waitExposed(popup, 1000)
 
-    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showHemisphereW']['classObj'], 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showImageW']['classObj'], 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openKeypadW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showKeypadW']['classObj'], 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMeasureW']['classObj'], 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showMessageW']['classObj'], 1000)
-
-    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
-    qtbot.waitExposed(app.uiWindows['showSatelliteW']['classObj'], 1000)
+    QTest.qWait(1000)
+    qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
 
     QTest.qWait(1000)
     qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
-
-
-def test_2(qtbot, qapp):
-    # Profile load / save
-    # Open hemisphere and select all stars
-    # open hemisphere and add horizon point / model point
-    # get online and check if environment is present
-    # select satellite open sat window
-    # select indi camera simulator and open image window expose one image
-    # select astap and solve on image
-    # Rename images from tool
-    # choosing simulation drivers
-    # changing simulation drivers
-    # Setting drivers
-    # connect / disconnect ascom
-    # updating mw
-    pass

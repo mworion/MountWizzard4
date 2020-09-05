@@ -33,7 +33,7 @@ from gui.utilities import widget
 from gui.widgets.devicePopup_ui import Ui_DevicePopup
 
 
-class DevicePopup(QDialog, widget.MWidget):
+class DevicePopup(widget.MWidget):
     """
     the DevicePopup window class handles
 
@@ -282,6 +282,7 @@ class DevicePopup(QDialog, widget.MWidget):
         self.returnValues['indiCopyConfig'] = self.ui.indiCopyConfig.isChecked()
         self.returnValues['alpacaCopyConfig'] = self.ui.alpacaCopyConfig.isChecked()
         self.returnValues['close'] = 'ok'
+        self.returnValues['driver'] = self.driver
         self.close()
 
         return True

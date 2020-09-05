@@ -22,7 +22,7 @@ import logging
 
 # external packages
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QPushButton
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
@@ -179,6 +179,13 @@ def test_setupDeviceGui_2():
 
 
 def test_processPopupResults_1():
+    class UI:
+        ok = QPushButton()
+
+    class Test:
+        returnValues = {'driver': 'telescope'}
+        ui = UI()
+
     app.driversData = {
         'telescope': {
             'framework': 'astap',
@@ -192,12 +199,20 @@ def test_processPopupResults_1():
             }
         }
     }
-
-    suc = app.processPopupResults('telescope')
+    app.popupUi = Test()
+    app.popupUi.ui.ok.clicked.connect(app.processPopupResults)
+    suc = app.processPopupResults()
     assert not suc
 
 
 def test_processPopupResults_2():
+    class UI:
+        ok = QPushButton()
+
+    class Test:
+        returnValues = {'driver': 'telescope'}
+        ui = UI()
+
     app.driversData = {
         'telescope': {
             'framework': 'astap',
@@ -211,11 +226,13 @@ def test_processPopupResults_2():
             }
         }
     }
+    app.popupUi = Test()
+    app.popupUi.ui.ok.clicked.connect(app.processPopupResults)
     with mock.patch.object(app,
                            'stopDriver'):
         with mock.patch.object(app,
                                'startDriver'):
-            suc = app.processPopupResults('telescope')
+            suc = app.processPopupResults()
             assert suc
 
 
@@ -354,13 +371,10 @@ def test_callPopup_1():
             }
         }
     }
-
     with mock.patch.object(DevicePopup,
-                           'exec_'):
-        with mock.patch.object(DevicePopup,
-                               'show'):
-            suc = app.callPopup('telescope')
-            assert not suc
+                           'show'):
+        suc = app.callPopup('telescope')
+        assert suc
 
 
 def test_dispatchPopup():

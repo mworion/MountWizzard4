@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-import gc
 
 # external packages
 import PyQt5

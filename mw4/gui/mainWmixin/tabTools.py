@@ -313,10 +313,7 @@ class Tools(object):
         :return: True for test purpose
         """
         folder = self.ui.renameDir.text()
-        pathDir, _, _ = self.openDir(self,
-                                     'Choose Input Dir',
-                                     folder,
-                                     )
+        pathDir, _, _ = self.openDir(self, 'Choose Input Dir', folder,)
         if pathDir:
             self.ui.renameDir.setText(pathDir)
             self.ui.renameProgress.setValue(0)

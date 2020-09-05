@@ -8,7 +8,6 @@ Unreleased Betas
 
 (0.153.0)
 
-- adding alpaca device discovery
 - adding cover device ascom and alpaca (from ASCOM 6.5 onwards)
 
 
@@ -19,6 +18,9 @@ Unreleased Betas
 - bugfix dec error view depending on pierside
 - refactoring tests
 - refactoring analyse window, adding vectors view
+- alpaca device discovery for alpaca servers
+- tools: mount movement with duration
+- improved views for analyse
 
 Released betas
 --------------

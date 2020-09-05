@@ -56,6 +56,7 @@ class AnalyseWindow(widget.MWidget):
         self.latitude = None
         self.pierside = None
         self.countSequence = None
+        self.index = None
         self.scaleS = None
         self.altitude = None
         self.azimuth = None
@@ -250,6 +251,7 @@ class AnalyseWindow(widget.MWidget):
         self.latitude = modelJSON[0].get('latitude')
         self.pierside = np.asarray(model['pierside'])
         self.countSequence = np.asarray(model['countSequence'])
+        self.index = np.asarray(range(0, len(model['countSequence'])))
         self.scaleS = np.asarray(model['scaleS'])
         self.altitude = np.asarray(model['altitude'])
         self.azimuth = np.asarray(model['azimuth'])
@@ -318,7 +320,7 @@ class AnalyseWindow(widget.MWidget):
 
         axe, _ = self.generateFlat(widget=self.raPointErrorsRaw)
 
-        x = self.countSequence
+        x = self.index
         y = self.errorRA_S
         xLabel = 'Star Number'
         yLabel = 'Error per Star [RMS]'
@@ -337,7 +339,7 @@ class AnalyseWindow(widget.MWidget):
 
         axe, _ = self.generateFlat(widget=self.decPointErrorsRaw)
 
-        x = self.countSequence
+        x = self.index
         y = self.errorDEC_S
         y = [y if p == 'W' else -y for y, p in zip(y, self.pierside)]
         xLabel = 'Star Number'
@@ -356,7 +358,7 @@ class AnalyseWindow(widget.MWidget):
 
         axe, _ = self.generateFlat(widget=self.raModelErrors)
 
-        x = self.countSequence
+        x = self.index
         y = self.errorRA
         xLabel = 'Star Number'
         yLabel = 'Error per Star [RMS]'
@@ -374,7 +376,7 @@ class AnalyseWindow(widget.MWidget):
 
         axe, _ = self.generateFlat(widget=self.decModelErrors)
 
-        x = self.countSequence
+        x = self.index
         y = self.errorDEC
         xLabel = 'Star Number'
         yLabel = 'Error per Star [RMS]'
@@ -467,9 +469,9 @@ class AnalyseWindow(widget.MWidget):
         axe, _ = self.generateFlat(widget=self.scaleImage)
         axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.3f',))
 
-        x = self.countSequence
+        x = self.index
         y = self.scaleS
-        xLabel = 'RA Encoder Abs [deg]'
+        xLabel = 'Star Number'
         yLabel = 'Image Scale [arcsec/pix]'
 
         self.plotFigureFlat(axe, x, y, xLabel, yLabel, False, 3)
@@ -510,7 +512,7 @@ class AnalyseWindow(widget.MWidget):
         alt = 90 - altitude
 
         for az, alt, err in zip(az, alt, error):
-            axe.plot(az, alt, marker='o', markersize=7, color=cm((err - sMin) / sMax))
+            axe.plot(az, alt, marker='o', markersize=5, color=cm((err - sMin) / sMax))
 
         norm = Normalize(vmin=sMin, vmax=sMax)
         sm = plt.cm.ScalarMappable(cmap=cm, norm=norm)
@@ -553,7 +555,7 @@ class AnalyseWindow(widget.MWidget):
 
             axe.quiver(x, y, u, v,
                        color=col,
-                       scale=25,
+                       scale=20,
                        headlength=0,
                        headwidth=1,
                        alpha=0.8,
@@ -578,7 +580,7 @@ class AnalyseWindow(widget.MWidget):
 
         errors = self.errorRMS
         pierside = self.pierside
-        index = self.countSequence
+        index = self.index
 
         errors, pierside = zip(*sorted(zip(errors, pierside)))
 

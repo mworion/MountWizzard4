@@ -189,8 +189,10 @@ class ManageModel(object):
         # check entry conditions for displaying a polar plot
         if model is None:
             hasNoStars = True
+
         elif not hasattr(model, 'starList'):
             hasNoStars = True
+
         else:
             hasNoStars = model.starList is None or not model.starList
 
@@ -283,8 +285,10 @@ class ManageModel(object):
 
         if model is None:
             hasNoStars = True
+
         elif not hasattr(model, 'starList'):
             hasNoStars = True
+
         else:
             hasNoStars = model.starList is None or not model.starList
 
@@ -338,8 +342,10 @@ class ManageModel(object):
         # check entry conditions for displaying a polar plot
         if model is None:
             hasNoStars = True
+
         elif not hasattr(model, 'starList'):
             hasNoStars = True
+
         else:
             hasNoStars = model.starList is None or not model.starList
 
@@ -508,7 +514,7 @@ class ManageModel(object):
 
         foundModel = self.findFittingModel()
         if foundModel:
-            self.app.message.emit(f'Stored model [{foundModel}] found', 0)
+            self.app.message.emit(f'Found stored model:  [{foundModel}]', 0)
 
         return True
 

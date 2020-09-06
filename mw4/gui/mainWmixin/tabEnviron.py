@@ -59,7 +59,11 @@ class Environ(object):
 
         # skymeter functions
         signals = self.app.skymeter.signals
-        signals.deviceDisconnected.connect(self.clearSkymeterGUI)
+        signals.deviceDisconnected.connect(self.clearSkymeterGui)
+
+        # power weather functions
+        signals = self.app.powerWeather.signals
+        signals.deviceDisconnected.connect(self.clearPowerWeatherGui)
 
         # weather functions
         self.app.onlineWeather.signals.dataReceived.connect(self.updateOnlineWeatherGui)
@@ -81,7 +85,8 @@ class Environ(object):
         # cyclic functions
         self.app.update1s.connect(self.updateFilterRefractionParameters)
         self.app.update1s.connect(self.updateRefractionParameters)
-        self.app.update1s.connect(self.updateSkymeterGUI)
+        self.app.update1s.connect(self.updateSkymeterGui)
+        self.app.update1s.connect(self.updatePowerWeatherGui)
         self.app.update1s.connect(self.updateSensorWeatherGui)
         self.app.update30m.connect(self.updateClearOutside)
 
@@ -219,11 +224,13 @@ class Environ(object):
                 return False
             temp = self.app.onlineWeather.data['temperature']
             press = self.app.onlineWeather.data['pressure']
+
         elif self.refractionSource == 'sensorWeather':
             key = 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE'
             temp = self.app.sensorWeather.data.get(key, None)
             key = 'WEATHER_PARAMETERS.WEATHER_PRESSURE'
             press = self.app.sensorWeather.data.get(key, None)
+
         else:
             temp = None
             press = None
@@ -235,11 +242,14 @@ class Environ(object):
 
         if self.filteredTemperature is None:
             self.filteredTemperature = np.full(100, temp)
+
         else:
             self.filteredTemperature = np.roll(self.filteredTemperature, 1)
             self.filteredTemperature[0] = temp
+
         if self.filteredPressure is None:
             self.filteredPressure = np.full(100, press)
+
         else:
             self.filteredPressure = np.roll(self.filteredPressure, 1)
             self.filteredPressure[0] = press
@@ -258,6 +268,7 @@ class Environ(object):
             temp = np.mean(self.filteredTemperature)
             press = np.mean(self.filteredPressure)
             return temp, press
+
         else:
             return None, None
 
@@ -283,6 +294,7 @@ class Environ(object):
         if self.sender() != self.ui.setRefractionManual:
             if self.ui.checkRefracNone.isChecked():
                 return False
+
             if self.ui.checkRefracNoTrack.isChecked():
                 if self.app.mount.obsSite.status == 0:
                     return False
@@ -332,7 +344,7 @@ class Environ(object):
 
         return True
 
-    def clearSkymeterGUI(self, deviceName=''):
+    def clearSkymeterGui(self, deviceName=''):
         """
         clearSensorWeatherGui clears the gui data
 
@@ -345,9 +357,9 @@ class Environ(object):
 
         return True
 
-    def updateSkymeterGUI(self):
+    def updateSkymeterGui(self):
         """
-        updateSkymeterGUI shows the data which is received through client
+        updateSkymeterGui shows the data which is received through client
 
         :return:    True if ok for testing
         """
@@ -357,6 +369,35 @@ class Environ(object):
 
         value = self.app.skymeter.data.get('SKY_QUALITY.SKY_TEMPERATURE', 0)
         self.guiSetText(self.ui.skymeterTemp, '4.1f', value)
+
+        return True
+
+    def clearPowerWeatherGui(self):
+        """
+        clearPowerWeatherGui changes the state of the Pegasus values to '-'
+
+        :return: success for test
+        """
+
+        self.ui.powerTemp.setText('-')
+        self.ui.powerHumidity.setText('-')
+        self.ui.powerDewPoint.setText('-')
+
+        return True
+
+    def updatePowerWeatherGui(self):
+        """
+        updatePowerGui changes the style of the button related to the state of the Pegasus
+
+        :return: success for test
+        """
+
+        value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
+        self.ui.powerTemp.setText('{0:4.1f}'.format(value))
+        value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
+        self.ui.powerHumidity.setText('{0:3.0f}'.format(value))
+        value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
+        self.ui.powerDewPoint.setText('{0:4.1f}'.format(value))
 
         return True
 
@@ -431,22 +472,6 @@ class Environ(object):
             elif not m[i][:].all():
                 line = maxRow
         imgArr = np.delete(imgArr, toDelete, axis=0)
-
-        """
-        # removing some columns
-        m = np.isin(imgArr, [[32, 32, 32]])
-        toDelete = []
-        maxCol = 1
-        col = maxCol
-        for i in range(0, len(m[1, :])):
-            if not col and m[:, i].all() and i > 15:
-                toDelete.append(i)
-            elif col:
-                col -= 1
-            elif not m[:, i].all():
-                col = maxCol
-        imgArr = np.delete(imgArr, toDelete, axis=1)
-        """
 
         # re transfer to QImage from numpy array
         imageBase = qimage2ndarray.array2qimage(dim * imgArr)

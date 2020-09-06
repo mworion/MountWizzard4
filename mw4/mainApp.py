@@ -43,6 +43,7 @@ from logic.environment.sensorWeather import SensorWeather
 from logic.environment.skymeter import Skymeter
 from logic.environment.onlineWeather import OnlineWeather
 from logic.environment.directWeather import DirectWeather
+from logic.environment.weatherUPB import WeatherUPB
 from logic.cover.flipflat import FlipFlat
 from logic.telescope.telescope import Telescope
 from logic.powerswitch.pegasusUPB import PegasusUPB
@@ -116,6 +117,7 @@ class MountWizzard4(QObject):
             'sensorWeather': None,
             'directWeather': None,
             'onlineWeather': None,
+            'powerWeather': None,
             'skymeter': None,
             'cover': None,
             'telescope': None,
@@ -156,6 +158,7 @@ class MountWizzard4(QObject):
         self.sensorWeather = SensorWeather(self)
         self.onlineWeather = OnlineWeather(self)
         self.directWeather = DirectWeather(self)
+        self.powerWeather = WeatherUPB(self)
         self.cover = FlipFlat(self)
         self.dome = Dome(self)
         self.camera = Camera(self)

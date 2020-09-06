@@ -15146,7 +15146,7 @@ Hint if mount will need a flip when following satellite.</string>
        </widget>
        <widget class="QLabel" name="sky_2">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -15176,7 +15176,7 @@ Hint if mount will need a flip when following satellite.</string>
        </widget>
        <widget class="QComboBox" name="powerWeatherDevice">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -15195,7 +15195,7 @@ Hint if mount will need a flip when following satellite.</string>
        </widget>
        <widget class="QPushButton" name="powerWeatherSetup">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>

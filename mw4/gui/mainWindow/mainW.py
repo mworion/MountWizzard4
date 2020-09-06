@@ -621,7 +621,7 @@ class MainWindow(MWidget,
             'sensorWeather': self.ui.sensorWeatherGroup,
             'onlineWeather': self.ui.onlineWeatherGroup,
             'skymeter': self.ui.skymeterGroup,
-            'power': self.ui.powerGroup,
+            'powerWeather': self.ui.powerGroup,
         }
 
         for key, group in environ.items():

@@ -130,6 +130,12 @@ class SettDevice:
                 'class': self.app.skymeter,
                 'deviceType': 'observingconditions',
             },
+            'powerWeather': {
+                'uiDropDown': self.ui.powerWeatherDevice,
+                'uiSetup': self.ui.powerWeatherSetup,
+                'class': self.app.powerWeather,
+                'deviceType': 'power',
+            },
             'telescope': {
                 'uiDropDown': self.ui.telescopeDevice,
                 'uiSetup': self.ui.telescopeSetup,

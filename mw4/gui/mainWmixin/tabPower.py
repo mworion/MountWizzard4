@@ -99,9 +99,6 @@ class Power(object):
         :return: success for test
         """
 
-        self.ui.powerTemp.setText('-')
-        self.ui.powerHumidity.setText('-')
-        self.ui.powerDewPoint.setText('-')
         self.ui.powerCurrent1.setText('-')
         self.ui.powerCurrent2.setText('-')
         self.ui.powerCurrent3.setText('-')
@@ -144,13 +141,6 @@ class Power(object):
 
         :return: success for test
         """
-
-        value = self.app.power.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
-        self.ui.powerTemp.setText('{0:4.1f}'.format(value))
-        value = self.app.power.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
-        self.ui.powerHumidity.setText('{0:3.0f}'.format(value))
-        value = self.app.power.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
-        self.ui.powerDewPoint.setText('{0:4.1f}'.format(value))
 
         for name, button in self.powerOnOFF.items():
             value = self.app.power.data.get(f'POWER_CONTROL.POWER_CONTROL_{name}', False)

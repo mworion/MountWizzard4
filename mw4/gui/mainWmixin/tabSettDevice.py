@@ -86,7 +86,7 @@ class SettDevice:
                 'uiDropDown': self.ui.coverDevice,
                 'uiSetup': self.ui.coverSetup,
                 'class': self.app.cover,
-                'deviceType': 'cover',
+                'deviceType': 'covercalibrator',
             },
             'camera': {
                 'uiDropDown': self.ui.cameraDevice,
@@ -134,7 +134,7 @@ class SettDevice:
                 'uiDropDown': self.ui.powerWeatherDevice,
                 'uiSetup': self.ui.powerWeatherSetup,
                 'class': self.app.powerWeather,
-                'deviceType': 'power',
+                'deviceType': 'observingconditions',
             },
             'telescope': {
                 'uiDropDown': self.ui.telescopeDevice,

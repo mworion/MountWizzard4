@@ -105,7 +105,7 @@ class IndiClass:
         'dome': (1 << 5),
         'observingconditions': (1 << 7) | (1 << 15),
         'skymeter': (1 << 15) | (1 << 19),
-        'cover': (1 << 9) | (1 << 10),
+        'covercalibrator': (1 << 9) | (1 << 10),
         'power': (1 << 7) | (1 << 3) | (1 << 15) | (1 << 18),
     }
 

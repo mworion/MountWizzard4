@@ -2148,9 +2148,9 @@ class ObservingConditions(AlpacaBase):
 
     def averageperiod(self, AveragePeriod=None):
         if AveragePeriod is None:
-            return self.get("position")
+            return self.get("averageperiod")
 
-        self.put("position", AveragePeriod=AveragePeriod)
+        self.put("averageperiod", AveragePeriod=AveragePeriod)
 
     def cloudcover(self):
         return self.get("cloudcover")
@@ -2206,12 +2206,6 @@ class Focuser(AlpacaBase):
     Focuser  specific methods.
     """
 
-    def averageperiod(self, AveragePeriod=None):
-        if AveragePeriod is None:
-            return self.get("position")
-
-        self.put("position", AveragePeriod=AveragePeriod)
-
     def absolut(self):
         return self.get("absolut")
 
@@ -2250,3 +2244,37 @@ class Focuser(AlpacaBase):
             return self.get("move")
 
         self.put("move", Position=Position)
+
+
+class Covercalibrator(AlpacaBase):
+    """
+    Covercalibrator  specific methods.
+    """
+
+    def brightness(self):
+        return self.get("brightness")
+
+    def calibratoroff(self):
+        self.put("calibratoroff")
+
+    def calibratoron(self, Brightness=None):
+        if Brightness:
+            self.put("calibratoron", Brightness=Brightness)
+
+    def calibratorstate(self):
+        return self.get("calibratorstate")
+
+    def closecover(self):
+        self.put("closecover")
+
+    def opencover(self):
+        self.put("opencover")
+
+    def haltcover(self):
+        self.put("haltcover")
+
+    def coverstate(self):
+        return self.get("coverstate")
+
+    def maxbrightness(self):
+        return self.get("maxbrightness")

@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>11</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -14296,9 +14296,9 @@ Hint if mount will need a flip when following satellite.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>15</y>
+         <y>10</y>
          <width>366</width>
-         <height>176</height>
+         <height>171</height>
         </rect>
        </property>
        <property name="title">
@@ -14311,7 +14311,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>85</x>
-          <y>80</y>
+          <y>110</y>
           <width>221</width>
           <height>21</height>
          </rect>
@@ -14327,8 +14327,8 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>12</x>
-          <y>80</y>
-          <width>91</width>
+          <y>110</y>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -14347,15 +14347,15 @@ Hint if mount will need a flip when following satellite.</string>
          </font>
         </property>
         <property name="text">
-         <string>PowerBox</string>
+         <string>Power</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_46">
         <property name="geometry">
          <rect>
           <x>12</x>
-          <y>110</y>
-          <width>91</width>
+          <y>80</y>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -14398,7 +14398,7 @@ Hint if mount will need a flip when following satellite.</string>
          <rect>
           <x>12</x>
           <y>20</y>
-          <width>96</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -14441,7 +14441,7 @@ Hint if mount will need a flip when following satellite.</string>
          <rect>
           <x>12</x>
           <y>50</y>
-          <width>91</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -14467,7 +14467,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>85</x>
-          <y>110</y>
+          <y>80</y>
           <width>221</width>
           <height>21</height>
          </rect>
@@ -14484,7 +14484,7 @@ Hint if mount will need a flip when following satellite.</string>
          <rect>
           <x>12</x>
           <y>140</y>
-          <width>91</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -14526,7 +14526,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>80</y>
+          <y>110</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -14559,9 +14559,9 @@ Hint if mount will need a flip when following satellite.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>15</y>
+         <y>10</y>
          <width>366</width>
-         <height>206</height>
+         <height>201</height>
         </rect>
        </property>
        <property name="title">
@@ -14574,7 +14574,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>11</x>
-          <y>110</y>
+          <y>170</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14628,7 +14628,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>85</x>
-          <y>110</y>
+          <y>170</y>
           <width>221</width>
           <height>21</height>
          </rect>
@@ -14703,7 +14703,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>11</x>
-          <y>80</y>
+          <y>110</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14730,7 +14730,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>85</x>
-          <y>80</y>
+          <y>110</y>
           <width>221</width>
           <height>21</height>
          </rect>
@@ -14789,7 +14789,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>11</x>
-          <y>170</y>
+          <y>80</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14816,7 +14816,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>85</x>
-          <y>170</y>
+          <y>80</y>
           <width>221</width>
           <height>21</height>
          </rect>
@@ -14832,7 +14832,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>110</y>
+          <y>170</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -14864,7 +14864,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>170</y>
+          <y>80</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -14912,7 +14912,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>80</y>
+          <y>110</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -14929,9 +14929,9 @@ Hint if mount will need a flip when following satellite.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>240</y>
+         <y>215</y>
          <width>366</width>
-         <height>146</height>
+         <height>171</height>
         </rect>
        </property>
        <property name="title">
@@ -14944,8 +14944,8 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>11</x>
-          <y>20</y>
-          <width>96</width>
+          <y>50</y>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -14971,7 +14971,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>86</x>
-          <y>50</y>
+          <y>20</y>
           <width>221</width>
           <height>21</height>
          </rect>
@@ -14987,8 +14987,8 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
-          <width>101</width>
+          <y>20</y>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -15014,7 +15014,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>86</x>
-          <y>20</y>
+          <y>50</y>
           <width>221</width>
           <height>21</height>
          </rect>
@@ -15030,8 +15030,8 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>80</y>
-          <width>96</width>
+          <y>110</y>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -15057,7 +15057,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>86</x>
-          <y>80</y>
+          <y>110</y>
           <width>221</width>
           <height>21</height>
          </rect>
@@ -15073,8 +15073,8 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>110</y>
-          <width>101</width>
+          <y>140</y>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -15100,7 +15100,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>86</x>
-          <y>110</y>
+          <y>140</y>
           <width>221</width>
           <height>21</height>
          </rect>
@@ -15116,7 +15116,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>20</y>
+          <y>50</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -15132,13 +15132,81 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>50</y>
+          <y>20</y>
           <width>51</width>
           <height>21</height>
          </rect>
         </property>
         <property name="toolTip">
          <string>Configure the external sensor device. A popup will open and ask for the parameters.</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="sky_2">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Power</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="powerWeatherDevice">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>85</x>
+          <y>80</y>
+          <width>221</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="powerWeatherSetup">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>80</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Configure the skymeter device. A popup will open and ask for the parameters.</string>
         </property>
         <property name="text">
          <string>Set</string>

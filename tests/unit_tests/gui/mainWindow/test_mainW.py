@@ -47,7 +47,7 @@ from logic.dome.dome import Dome
 from logic.imaging.camera import Camera
 from logic.imaging.filter import Filter
 from logic.imaging.focuser import Focuser
-from logic.cover.flipflat import FlipFlat
+from logic.cover.cover import Cover
 from logic.modeldata.buildpoints import DataPoint
 from logic.remote.remote import Remote
 from logic.measure.measure import MeasureData
@@ -125,7 +125,7 @@ def function_setup_teardown(qtbot):
         directWeather = DirectWeather(app=Test1())
         skymeter = Skymeter(app=Test1())
         dome = Dome(app=Test1())
-        cover = FlipFlat(app=Test1())
+        cover = Cover(app=Test1())
         telescope = Telescope(app=Test1())
         relay = KMRelay()
         remote = Remote()

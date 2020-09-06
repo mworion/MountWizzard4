@@ -35,6 +35,7 @@ from gui.utilities.widget import MWidget
 from logic.environment.sensorWeather import SensorWeather
 from logic.environment.onlineWeather import OnlineWeather
 from logic.environment.directWeather import DirectWeather
+from logic.environment.weatherUPB import WeatherUPB
 from logic.environment.skymeter import Skymeter
 from logic.cover.cover import Cover
 from logic.imaging.filter import Filter
@@ -78,6 +79,7 @@ def module_setup_teardown(qtbot):
         sensorWeather = SensorWeather(app=Test1())
         onlineWeather = OnlineWeather(app=Test1())
         directWeather = DirectWeather(app=Test1())
+        powerWeather = WeatherUPB(app=Test1())
         skymeter = Skymeter(app=Test1())
         cover = Cover(app=Test1())
         filter = Filter(app=Test1())

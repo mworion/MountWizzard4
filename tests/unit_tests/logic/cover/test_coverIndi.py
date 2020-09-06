@@ -24,8 +24,8 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
-from logic.cover.flipflatIndi import FlipFlatIndi
-from logic.cover.flipflat import FlipFlatSignals
+from logic.cover.coverIndi import CoverIndi
+from logic.cover.cover import CoverSignals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -34,7 +34,7 @@ def module_setup_teardown():
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
     global app
-    app = FlipFlatIndi(app=Test(), signals=FlipFlatSignals(), data={})
+    app = CoverIndi(app=Test(), signals=CoverSignals(), data={})
 
     yield
 

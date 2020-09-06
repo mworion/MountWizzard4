@@ -22,7 +22,7 @@ import pytest
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
-from logic.cover.flipflat import FlipFlat
+from logic.cover.cover import Cover
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -31,7 +31,7 @@ def module_setup_teardown():
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
     global app
-    app = FlipFlat(app=Test())
+    app = Cover(app=Test())
 
     yield
 

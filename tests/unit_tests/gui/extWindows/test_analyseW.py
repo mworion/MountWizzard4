@@ -39,6 +39,7 @@ def app(qtbot):
     class Test(QObject):
         config = {'mainW': {}}
         update1s = pyqtSignal()
+        showAnalyse = pyqtSignal()
         messageQueue = Queue()
         mwGlob = {'modelDir': 'tests/model'}
 
@@ -82,6 +83,7 @@ def test_storeConfig_2(qtbot, app):
 
 
 def test_closeEvent_1(qtbot, app):
+    app.app.showAnalyse.connect(app.showAnalyse)
     app.closeEvent(QCloseEvent())
 
 
@@ -89,14 +91,24 @@ def test_loadModel_1(app):
     with mock.patch.object(app,
                            'openFile',
                            return_value=('', '', '')):
-        suc = app.loadModel()
-        assert not suc
+        with mock.patch.object(app,
+                               'processModel'):
+            suc = app.loadModel()
+            assert suc
 
 
 def test_loadModel_2(app):
     with mock.patch.object(app,
                            'openFile',
-                           return_value=('tests/model/test.model',
-                                         'test.model', '.model')):
-        suc = app.loadModel()
+                           return_value=('test', 'test', 'test')):
+        with mock.patch.object(app,
+                               'processModel'):
+            suc = app.loadModel()
+            assert suc
+
+
+def test_showAnalyse_1(app):
+    with mock.patch.object(app,
+                           'processModel'):
+        suc = app.showAnalyse('test')
         assert suc

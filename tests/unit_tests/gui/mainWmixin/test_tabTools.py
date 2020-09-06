@@ -367,7 +367,7 @@ def test_stopMoveAll():
 
 def test_setSlewSpeed_1():
     def Sender():
-        return ui.powerPort1
+        return ui.slewSpeedHigh
 
     app.sender = Sender
 
@@ -378,13 +378,13 @@ def test_setSlewSpeed_1():
 def test_setSlewSpeed_2():
     def Sender():
         return ui.slewSpeedMax
+
     app.sender = Sender
 
     def test():
         return
 
-    app.slewSpeeds = {'max': app.ui.slewSpeedMax}
-    app.slewSpeedFuncs = {'max': test}
+    app.slewSpeeds = {app.ui.slewSpeedMax: test}
 
     suc = app.setSlewSpeed()
     assert suc

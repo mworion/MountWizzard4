@@ -36,7 +36,7 @@ from logic.environment.sensorWeather import SensorWeather
 from logic.environment.onlineWeather import OnlineWeather
 from logic.environment.directWeather import DirectWeather
 from logic.environment.skymeter import Skymeter
-from logic.cover.flipflat import FlipFlat
+from logic.cover.cover import Cover
 from logic.imaging.filter import Filter
 from logic.imaging.camera import Camera
 from logic.imaging.focuser import Focuser
@@ -79,7 +79,7 @@ def module_setup_teardown(qtbot):
         onlineWeather = OnlineWeather(app=Test1())
         directWeather = DirectWeather(app=Test1())
         skymeter = Skymeter(app=Test1())
-        cover = FlipFlat(app=Test1())
+        cover = Cover(app=Test1())
         filter = Filter(app=Test1())
         camera = Camera(app=Test1())
         focuser = Focuser(app=Test1())

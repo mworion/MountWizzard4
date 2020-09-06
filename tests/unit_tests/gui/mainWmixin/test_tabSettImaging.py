@@ -35,7 +35,7 @@ from gui.utilities.widget import MWidget
 from logic.imaging.camera import Camera
 from logic.imaging.focuser import Focuser
 from logic.imaging.filter import Filter
-from logic.cover.flipflat import FlipFlat
+from logic.cover.cover import Cover
 from logic.telescope.telescope import Telescope
 from base.loggerMW import CustomLogger
 
@@ -59,7 +59,7 @@ def module_setup_teardown(qtbot):
         focuser = Focuser(app=Test1())
         filter = Filter(app=Test1())
         telescope = Telescope(app=Test1())
-        cover = FlipFlat(app=Test1())
+        cover = Cover(app=Test1())
 
     widget = QWidget()
     ui = Ui_MainWindow()

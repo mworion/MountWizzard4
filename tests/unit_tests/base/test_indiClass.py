@@ -67,7 +67,7 @@ def test_serverConnected_2():
 
 
 def test_serverDisconnected():
-    suc = app.serverDisconnected(None)
+    suc = app.serverDisconnected({'test': 'test'})
     assert suc
 
 

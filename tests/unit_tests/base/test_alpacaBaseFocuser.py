@@ -32,16 +32,6 @@ def module_setup_teardown():
     yield
 
 
-def test_averageperiod_1():
-    val = app.averageperiod()
-    assert val is None
-
-
-def test_averageperiod_2():
-    val = app.averageperiod(AveragePeriod=1)
-    assert val is None
-
-
 def test_absolut():
     val = app.absolut()
     assert val is None

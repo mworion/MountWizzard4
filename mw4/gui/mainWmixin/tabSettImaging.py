@@ -381,8 +381,10 @@ class SettImaging(object):
         value = self.app.cover.data.get('Status.Cover', '-').strip().upper()
         if value == 'OPEN':
             self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
+            self.changeStyleDynamic(self.ui.coverPark, 'running', False)
         elif value == 'CLOSED':
             self.changeStyleDynamic(self.ui.coverPark, 'running', True)
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
         else:
             self.changeStyleDynamic(self.ui.coverPark, 'running', False)
             self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)

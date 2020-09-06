@@ -17,16 +17,20 @@
 ###########################################################
 # standard libraries
 import logging
+import platform
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal
 
 # local imports
 from base.loggerMW import CustomLogger
-from logic.cover.flipflatIndi import FlipFlatIndi
+from logic.cover.coverIndi import CoverIndi
+from logic.cover.coverAlpaca import CoverAlpaca
+if platform.system() == 'Windows':
+    from logic.cover.coverAscom import CoverAscom
 
 
-class FlipFlatSignals(QObject):
+class CoverSignals(QObject):
     """
     The FlipFlatSignals class offers a list of signals to be used and instantiated by
     the Mount class to get signals for triggers for finished tasks to
@@ -36,7 +40,7 @@ class FlipFlatSignals(QObject):
     QObject and the Mount class itself is subclassed from object
     """
 
-    __all__ = ['FlipFlatSignals']
+    __all__ = ['CoverSignals']
 
     serverConnected = pyqtSignal()
     serverDisconnected = pyqtSignal(object)
@@ -44,9 +48,9 @@ class FlipFlatSignals(QObject):
     deviceDisconnected = pyqtSignal(str)
 
 
-class FlipFlat:
+class Cover:
 
-    __all__ = ['FlipFlat',
+    __all__ = ['Cover',
                ]
 
     logger = logging.getLogger(__name__)
@@ -56,23 +60,41 @@ class FlipFlat:
 
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = FlipFlatSignals()
+        self.signals = CoverSignals()
 
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
         self.framework = ''
         self.run = {
-            'indi': FlipFlatIndi(self.app, self.signals, self.data),
+            'indi': CoverIndi(self.app, self.signals, self.data),
+            'alpaca': CoverAlpaca(self.app, self.signals, self.data),
         }
+
+        if platform.system() == 'Windows':
+            self.run['ascom'] = CoverAscom(self.app, self.signals, self.data)
+            ascomSignals = self.run['ascom'].ascomSignals
+            ascomSignals.serverConnected.connect(self.signals.serverConnected)
+            ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+            ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
+            ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
         # signalling from subclasses to main
-        self.run['indi'].client.signals.serverConnected.connect(self.signals.serverConnected)
-        self.run['indi'].client.signals.serverDisconnected.connect(self.signals.serverDisconnected)
-        self.run['indi'].client.signals.deviceConnected.connect(self.signals.deviceConnected)
-        self.run['indi'].client.signals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+        alpacaSignals = self.run['alpaca'].client.signals
+        alpacaSignals.serverConnected.connect(self.signals.serverConnected)
+        alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+        alpacaSignals.deviceConnected.connect(self.signals.deviceConnected)
+        alpacaSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
+        # signalling from subclasses to main
+        indiSignals = self.run['indi'].client.signals
+        indiSignals.serverConnected.connect(self.signals.serverConnected)
+        indiSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+        indiSignals.deviceConnected.connect(self.signals.deviceConnected)
+        indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
     def startCommunication(self, loadConfig=False):
         """

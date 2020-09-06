@@ -104,14 +104,17 @@ class AscomClass(object):
         for retry in range(0, 6):
             try:
                 self.client.connected = True
+
             except Exception as e:
                 suc = False
                 self.log.warning(f'Connection error [{self.deviceName}]: [{e}]')
+
             else:
                 suc = self.client.connected
                 if suc:
                     self.log.info(f'[{self.deviceName}] connected, [{retry}] retries needed')
                     break
+
             finally:
                 QTest.qWait(200)
         else:
@@ -144,6 +147,7 @@ class AscomClass(object):
         """
         self.cycleData.start(self.CYCLE_DATA)
         self.cycleDevice.start(self.CYCLE_DEVICE)
+
         return True
 
     def stopTimer(self):
@@ -154,6 +158,7 @@ class AscomClass(object):
         """
         self.cycleData.stop()
         self.cycleDevice.stop()
+
         return True
 
     def dataEntry(self, value, element, elementInv=None):
@@ -168,6 +173,7 @@ class AscomClass(object):
         resetValue = value is None and element in self.data
         if resetValue:
             del self.data[element]
+
         else:
             self.data[element] = value
 
@@ -177,6 +183,7 @@ class AscomClass(object):
         resetValue = value is None and elementInv in self.data
         if resetValue:
             del self.data[elementInv]
+
         else:
             self.data[elementInv] = value
 
@@ -191,6 +198,7 @@ class AscomClass(object):
 
         try:
             suc = self.client.connected
+
         except Exception as e:
             self.log.warning(f'Connection status error [{self.deviceName}]: [{e}]')
             suc = False
@@ -228,6 +236,7 @@ class AscomClass(object):
         worker = Worker(self.workerPollData)
         worker.signals.result.connect(self.emitData)
         self.threadPool.start(worker)
+
         return True
 
     def startPollStatus(self):
@@ -252,15 +261,15 @@ class AscomClass(object):
         pythoncom.CoInitialize()
         try:
             self.client = win32com.client.Dispatch(self.deviceName)
+
         except Exception as e:
             self.log.critical(f'Error: [{e}]')
             return False
+
         else:
             worker = Worker(self.getInitialConfig)
             worker.signals.finished.connect(self.startTimer)
             self.threadPool.start(worker)
-        finally:
-            pass
 
         return True
 
@@ -275,8 +284,10 @@ class AscomClass(object):
         if self.client:
             try:
                 self.client.connected = False
+
             except Exception as e:
                 self.log.info(f'Connection to {self.deviceName} could not be closed: {e}')
+
         self.deviceConnected = False
         self.serverConnected = False
         self.client = None

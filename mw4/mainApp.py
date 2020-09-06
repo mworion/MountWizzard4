@@ -44,7 +44,7 @@ from logic.environment.skymeter import Skymeter
 from logic.environment.onlineWeather import OnlineWeather
 from logic.environment.directWeather import DirectWeather
 from logic.environment.weatherUPB import WeatherUPB
-from logic.cover.flipflat import FlipFlat
+from logic.cover.cover import Cover
 from logic.telescope.telescope import Telescope
 from logic.powerswitch.pegasusUPB import PegasusUPB
 from logic.measure.measure import MeasureData
@@ -159,7 +159,7 @@ class MountWizzard4(QObject):
         self.onlineWeather = OnlineWeather(self)
         self.directWeather = DirectWeather(self)
         self.powerWeather = WeatherUPB(self)
-        self.cover = FlipFlat(self)
+        self.cover = Cover(self)
         self.dome = Dome(self)
         self.camera = Camera(self)
         self.filter = Filter(self)

@@ -25,14 +25,14 @@ from base.loggerMW import CustomLogger
 from base.indiClass import IndiClass
 
 
-class FlipFlatIndi(IndiClass):
+class CoverIndi(IndiClass):
     """
     the class FlipFlatIndi inherits all information and handling of the FlipFlat device
 
-        >>> f = FlipFlatIndi(app=None)
+        >>> f = CoverIndi(app=None)
     """
 
-    __all__ = ['FlipFlatIndi',
+    __all__ = ['CoverIndi',
                ]
 
     logger = logging.getLogger(__name__)

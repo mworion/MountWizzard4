@@ -40,6 +40,7 @@ from gui.extWindows.imageW import ImageWindow
 from logic.environment.sensorWeather import SensorWeather
 from logic.environment.directWeather import DirectWeather
 from logic.environment.onlineWeather import OnlineWeather
+from logic.environment.weatherUPB import WeatherUPB
 from logic.environment.skymeter import Skymeter
 from logic.powerswitch.kmRelay import KMRelay
 from logic.powerswitch.pegasusUPB import PegasusUPB
@@ -123,6 +124,7 @@ def function_setup_teardown(qtbot):
         sensorWeather = SensorWeather(app=Test1())
         onlineWeather = OnlineWeather(app=Test1())
         directWeather = DirectWeather(app=Test1())
+        powerWeather = WeatherUPB(app=Test1())
         skymeter = Skymeter(app=Test1())
         dome = Dome(app=Test1())
         cover = Cover(app=Test1())

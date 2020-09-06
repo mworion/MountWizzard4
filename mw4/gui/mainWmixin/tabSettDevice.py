@@ -128,7 +128,7 @@ class SettDevice:
                 'uiDropDown': self.ui.skymeterDevice,
                 'uiSetup': self.ui.skymeterSetup,
                 'class': self.app.skymeter,
-                'deviceType': 'skymeter',
+                'deviceType': 'observingconditions',
             },
             'telescope': {
                 'uiDropDown': self.ui.telescopeDevice,

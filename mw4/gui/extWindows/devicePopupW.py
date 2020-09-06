@@ -89,7 +89,7 @@ class DevicePopup(widget.MWidget):
                 'password': self.ui.alpacaPassword,
             },
             'ascom': {
-                'device': self.ui.ascomDevice,
+                'deviceName': self.ui.ascomDevice,
             },
             'astrometry': {
                 'deviceList': self.ui.astrometryDeviceList,

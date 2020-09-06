@@ -78,7 +78,7 @@ class AscomClass(object):
         self.deviceName = ''
         self.defaultConfig = {
             'ascom': {
-                'deviceName': 'test',
+                'deviceName': '',
             }
         }
 

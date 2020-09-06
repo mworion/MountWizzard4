@@ -85,4 +85,3 @@ class CoverAlpaca(AlpacaClass):
             self.client.closecover()
 
         return True
-

@@ -74,6 +74,7 @@ class MountWizzard4(QObject):
     drawHorizonPoints = pyqtSignal()
     updateDomeSettings = pyqtSignal()
     showImage = pyqtSignal(str)
+    showAnalyse = pyqtSignal(str)
     remoteCommand = pyqtSignal(str)
 
     # all cyclic tasks

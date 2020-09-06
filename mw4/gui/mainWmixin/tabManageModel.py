@@ -47,6 +47,7 @@ class ManageModel(object):
 
         self.runningOptimize = False
         self.fittedModelFound = False
+        self.fittedModelPath = None
 
         ms = self.app.mount.signals
         ms.alignDone.connect(self.showModelPosition)
@@ -64,7 +65,7 @@ class ManageModel(object):
         self.ui.runOptimize.clicked.connect(self.runOptimize)
         self.ui.cancelOptimize.clicked.connect(self.cancelOptimize)
         self.ui.deleteWorstPoint.clicked.connect(self.deleteWorstPoint)
-        # self.ui.test.clicked.connect(self.findFittingModel)
+        self.ui.callActualModelAnalyse.clicked.connect(self.showAnalyse)
 
         model = self.app.mount.model
         self.ui.targetRMS.valueChanged.connect(lambda: self.showModelPosition(model))
@@ -144,7 +145,6 @@ class ManageModel(object):
             if abs(val1 - val2) > 0.0001:
                 continue
 
-            # print(val1, val2, abs(val1 - val2))
             return True
 
         return False
@@ -153,6 +153,7 @@ class ManageModel(object):
         """
         findFittingModel takes the actual loaded model from the mount and tries to find
         the fitting model run data. therefore it compares up to 5 points to find out.
+        all optimized model files (containing opt in filename) are ignored.
 
         :return: success
         """
@@ -161,6 +162,9 @@ class ManageModel(object):
         modelFileList = glob.glob(self.app.mwGlob['modelDir'] + '/*.model')
 
         for modelFile in modelFileList:
+            if 'opt' in modelFile:
+                continue
+
             found = 0
             with open(modelFile, 'r') as inFile:
                 buildModelData = json.load(inFile)
@@ -168,10 +172,12 @@ class ManageModel(object):
                     suc = self.findValue(buildStar, mountModel)
                     if suc:
                         found += 1
+
                     if found > 2:
-                        return os.path.basename(modelFile)
-            # if found > 0:
-            # print(found, modelFile)
+                        self.fittedModelPath = modelFile
+                        return os.path.splitext(os.path.basename(modelFile))[0]
+
+        self.fittedModelPath = None
 
         return ''
 
@@ -513,8 +519,13 @@ class ManageModel(object):
         self.app.message.emit('Align model data refreshed', 0)
 
         foundModel = self.findFittingModel()
+
         if foundModel:
             self.app.message.emit(f'Found stored model:  [{foundModel}]', 0)
+            self.ui.originalModel.setText(foundModel)
+
+        else:
+            self.ui.originalModel.setText('No fitting model file found')
 
         return True
 
@@ -708,5 +719,16 @@ class ManageModel(object):
         """
 
         self.runningOptimize = False
+
+        return True
+
+    def showAnalyse(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        if self.fittedModelPath:
+            self.app.showAnalyse.emit(self.fittedModelPath)
 
         return True

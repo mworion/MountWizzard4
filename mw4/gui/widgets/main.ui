@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -7327,25 +7327,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Choose model from file and program</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="openAnalyseW">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>55</y>
-        <width>356</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Opens an analyse window showing multiple informations about the model context.</string>
-      </property>
-      <property name="text">
-       <string>Open analyse model build window</string>
-      </property>
-     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_8">
      <property name="geometry">
@@ -8173,10 +8154,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
     <widget class="QGroupBox" name="groupBox_55">
      <property name="geometry">
       <rect>
-       <x>510</x>
-       <y>25</y>
-       <width>271</width>
-       <height>161</height>
+       <x>500</x>
+       <y>10</y>
+       <width>281</width>
+       <height>221</height>
       </rect>
      </property>
      <property name="title">
@@ -8188,7 +8169,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="clearModel">
       <property name="geometry">
        <rect>
-        <x>95</x>
+        <x>100</x>
         <y>20</y>
         <width>86</width>
         <height>26</height>
@@ -8204,7 +8185,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_75">
       <property name="geometry">
        <rect>
-        <x>100</x>
+        <x>105</x>
         <y>50</y>
         <width>71</width>
         <height>26</height>
@@ -8225,7 +8206,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="cancelOptimize">
       <property name="geometry">
        <rect>
-        <x>5</x>
+        <x>10</x>
         <y>80</y>
         <width>86</width>
         <height>26</height>
@@ -8241,7 +8222,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="runOptimize">
       <property name="geometry">
        <rect>
-        <x>5</x>
+        <x>10</x>
         <y>50</y>
         <width>86</width>
         <height>26</height>
@@ -8257,7 +8238,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="refreshModel">
       <property name="geometry">
        <rect>
-        <x>185</x>
+        <x>190</x>
         <y>20</y>
         <width>81</width>
         <height>26</height>
@@ -8273,7 +8254,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QDoubleSpinBox" name="targetRMS">
       <property name="geometry">
        <rect>
-        <x>185</x>
+        <x>190</x>
         <y>80</y>
         <width>81</width>
         <height>26</height>
@@ -8309,7 +8290,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>185</x>
+        <x>190</x>
         <y>50</y>
         <width>61</width>
         <height>26</height>
@@ -8351,7 +8332,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_37">
       <property name="geometry">
        <rect>
-        <x>100</x>
+        <x>105</x>
         <y>80</y>
         <width>86</width>
         <height>26</height>
@@ -8372,7 +8353,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="deleteWorstPoint">
       <property name="geometry">
        <rect>
-        <x>5</x>
+        <x>10</x>
         <y>20</y>
         <width>86</width>
         <height>26</height>
@@ -8388,9 +8369,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QRadioButton" name="optimizeOverall">
       <property name="geometry">
        <rect>
-        <x>5</x>
-        <y>115</y>
-        <width>201</width>
+        <x>10</x>
+        <y>110</y>
+        <width>191</width>
         <height>18</height>
        </rect>
       </property>
@@ -8407,9 +8388,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QRadioButton" name="optimizeSingle">
       <property name="geometry">
        <rect>
-        <x>5</x>
-        <y>135</y>
-        <width>211</width>
+        <x>10</x>
+        <y>130</y>
+        <width>196</width>
         <height>18</height>
        </rect>
       </property>
@@ -8417,17 +8398,116 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Delete model points where the value of the single point is above a certain value.</string>
       </property>
       <property name="text">
-       <string>Delete points above Target RMS</string>
+       <string>Delete points &gt;Target RMS</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="originalModel">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>160</y>
+        <width>231</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Shows the actual lunar node for your site.</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="maxLength">
+       <number>50</number>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="storeOptModelFile">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>190</y>
+        <width>126</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Cancels the optimise run.</string>
+      </property>
+      <property name="text">
+       <string>Store modelfile</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="openAnalyseW">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>145</x>
+        <y>190</y>
+        <width>126</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Opens an analyse window showing multiple informations about the model context.</string>
+      </property>
+      <property name="text">
+       <string>Analyse window</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="callActualModelAnalyse">
+      <property name="geometry">
+       <rect>
+        <x>245</x>
+        <y>160</y>
+        <width>26</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Configure the telescope device. A popup will open and ask for the parameters.</string>
+      </property>
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_56">
      <property name="geometry">
       <rect>
-       <x>510</x>
-       <y>190</y>
-       <width>271</width>
-       <height>236</height>
+       <x>500</x>
+       <y>240</y>
+       <width>281</width>
+       <height>186</height>
       </rect>
      </property>
      <property name="title">
@@ -8439,7 +8519,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="loadName">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>195</x>
         <y>20</y>
         <width>76</width>
         <height>26</height>
@@ -8455,17 +8535,17 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QListWidget" name="nameList">
       <property name="geometry">
        <rect>
-        <x>5</x>
+        <x>10</x>
         <y>20</y>
         <width>181</width>
-        <height>211</height>
+        <height>156</height>
        </rect>
       </property>
      </widget>
      <widget class="QPushButton" name="refreshName">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>195</x>
         <y>110</y>
         <width>76</width>
         <height>26</height>
@@ -8481,7 +8561,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="deleteName">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>195</x>
         <y>80</y>
         <width>76</width>
         <height>26</height>
@@ -8497,7 +8577,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="saveName">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>195</x>
         <y>50</y>
         <width>76</width>
         <height>26</height>
@@ -8516,12 +8596,12 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <rect>
        <x>5</x>
        <y>5</y>
-       <width>496</width>
+       <width>486</width>
        <height>421</height>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -8637,11 +8717,11 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </property>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="tab_3">
       <attribute name="title">
-       <string>Error Ascending</string>
+       <string>Error Distribution</string>
       </attribute>
-      <widget class="QWidget" name="errorAscending" native="true">
+      <widget class="QWidget" name="errorDistribution" native="true">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -8658,11 +8738,11 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </property>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_3">
+     <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>Error Distribution</string>
+       <string>Error Ascending</string>
       </attribute>
-      <widget class="QWidget" name="errorDistribution" native="true">
+      <widget class="QWidget" name="errorAscending" native="true">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -8670,7 +8750,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <rect>
          <x>5</x>
          <y>5</y>
-         <width>481</width>
+         <width>471</width>
          <height>381</height>
         </rect>
        </property>

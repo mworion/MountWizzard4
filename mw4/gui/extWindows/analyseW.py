@@ -168,6 +168,7 @@ class AnalyseWindow(widget.MWidget):
         :return:
         """
         self.storeConfig()
+        self.app.showAnalyse.disconnect(self.showAnalyse)
 
         # gui signals
         super().closeEvent(closeEvent)
@@ -179,7 +180,9 @@ class AnalyseWindow(widget.MWidget):
 
         :return: True for test purpose
         """
+
         self.show()
+        self.app.showAnalyse.connect(self.showAnalyse)
 
         return True
 
@@ -192,20 +195,12 @@ class AnalyseWindow(widget.MWidget):
 
         return True
 
-    def loadModel(self):
+    def processModel(self, loadFilePath):
         """
-        loadModel selects one or more models from the files system
+        processModel selects one or more models from the files system
 
         :return: success
         """
-
-        folder = self.app.mwGlob['modelDir']
-        val = self.openFile(self, 'Open model file', folder, 'Model files (*.model)',
-                            multiple=False)
-        loadFilePath, fileName, ext = val
-
-        if not loadFilePath:
-            return False
 
         with open(loadFilePath, 'r') as infile:
             modelJSON = json.load(infile)
@@ -265,6 +260,35 @@ class AnalyseWindow(widget.MWidget):
         self.angularPosDEC = np.asarray(model['angularPosDEC'])
 
         self.drawAll()
+
+        return True
+
+    def loadModel(self):
+        """
+        loadModel selects one or more models from the files system
+
+        :return: success
+        """
+
+        folder = self.app.mwGlob['modelDir']
+        val = self.openFile(self, 'Open model file', folder, 'Model files (*.model)',
+                            multiple=False)
+        loadFilePath, fileName, ext = val
+
+        if loadFilePath:
+            self.processModel(loadFilePath)
+
+        return True
+
+    def showAnalyse(self, path):
+        """
+
+        :param path:
+        :return: True for test purpose
+        """
+
+        if path:
+            self.processModel(path)
 
         return True
 

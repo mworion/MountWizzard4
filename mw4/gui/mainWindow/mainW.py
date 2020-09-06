@@ -412,13 +412,15 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.runModel, QIcon(':/icon/start.svg'))
         self.wIcon(self.ui.pauseModel, QIcon(':/icon/pause.svg'))
         self.wIcon(self.ui.batchModel, QIcon(':/icon/choose.svg'))
-        self.wIcon(self.ui.openAnalyseW, QIcon(':/icon/bar-chart.svg'))
 
         # manage model
         self.wIcon(self.ui.runOptimize, QIcon(':/icon/start.svg'))
         self.wIcon(self.ui.cancelOptimize, QIcon(':/icon/cross-circle.svg'))
         self.wIcon(self.ui.deleteWorstPoint, QIcon(':/icon/circle-minus.svg'))
         self.wIcon(self.ui.clearModel, QIcon(':/icon/trash.svg'))
+        self.wIcon(self.ui.openAnalyseW, QIcon(':/icon/bar-chart.svg'))
+        self.wIcon(self.ui.storeOptModelFile, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.callActualModelAnalyse, QIcon(':/icon/cogs.svg'))
 
         self.wIcon(self.ui.loadName, QIcon(':/icon/load.svg'))
         self.wIcon(self.ui.saveName, QIcon(':/icon/save.svg'))

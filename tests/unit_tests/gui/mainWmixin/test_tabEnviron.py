@@ -41,6 +41,7 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.widget import MWidget
 from logic.environment.sensorWeather import SensorWeather
 from logic.environment.onlineWeather import OnlineWeather
+from logic.environment.weatherUPB import WeatherUPB
 from logic.environment.skymeter import Skymeter
 from base.loggerMW import CustomLogger
 
@@ -48,6 +49,8 @@ from base.loggerMW import CustomLogger
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown(qtbot):
     global ui, widget, Test, Test1, app
+
+    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
@@ -69,9 +72,8 @@ def module_setup_teardown(qtbot):
         planets = mount.obsSite.loader('de421_23.bsp')
         sensorWeather = SensorWeather(app=Test1())
         onlineWeather = OnlineWeather(app=Test1())
+        powerWeather = WeatherUPB(app=Test1())
         skymeter = Skymeter(app=Test1())
-
-    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
 
     widget = QWidget()
     ui = Ui_MainWindow()
@@ -392,7 +394,7 @@ def test_updateRefractionParameters_7(qtbot):
             assert suc
 
 
-def test_clearEnvironGUI_1():
+def test_clearEnvironGui_1():
     app.clearSensorWeatherGui('test')
     assert app.ui.sensorWeatherTemp.text() == '-'
     assert app.ui.sensorWeatherPress.text() == '-'
@@ -400,52 +402,80 @@ def test_clearEnvironGUI_1():
     assert app.ui.sensorWeatherHumidity.text() == '-'
 
 
-def test_updateEnvironGUI_1():
+def test_updateEnvironGui_1():
     app.app.sensorWeather.name = 'test'
     app.app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10.5
     app.updateSensorWeatherGui()
     assert app.ui.sensorWeatherTemp.text() == '10.5'
 
 
-def test_updateEnvironGUI_2():
+def test_updateEnvironGui_2():
     app.app.sensorWeather.name = 'test'
     app.app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 10.5
     app.updateSensorWeatherGui()
     assert app.ui.sensorWeatherPress.text() == '10.5'
 
 
-def test_updateEnvironGUI_3():
+def test_updateEnvironGui_3():
     app.app.sensorWeather.name = 'test'
     app.app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = 10.5
     app.updateSensorWeatherGui()
     assert app.ui.sensorWeatherDewPoint.text() == '10.5'
 
 
-def test_updateEnvironGUI_4():
+def test_updateEnvironGui_4():
     app.app.sensorWeather.name = 'test'
     app.app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = 10
     app.updateSensorWeatherGui()
     assert app.ui.sensorWeatherHumidity.text() == ' 10'
 
 
-def test_clearSkymeterGUI_1():
-    app.clearSkymeterGUI()
+def test_clearSkymeterGui_1():
+    app.clearSkymeterGui()
     assert app.ui.skymeterSQR.text() == '-'
     assert app.ui.skymeterTemp.text() == '-'
 
 
-def test_updateSkymeterGUI_1():
+def test_updateSkymeterGui_1():
     app.app.skymeter.name = 'test'
     app.app.skymeter.data['SKY_QUALITY.SKY_BRIGHTNESS'] = 10.5
-    app.updateSkymeterGUI()
+    app.updateSkymeterGui()
     assert app.ui.skymeterSQR.text() == '10.50'
 
 
-def test_updateSkymeterGUI_2():
+def test_updateSkymeterGui_2():
     app.app.skymeter.name = 'test'
     app.app.skymeter.data['SKY_QUALITY.SKY_TEMPERATURE'] = 10.5
-    app.updateSkymeterGUI()
+    app.updateSkymeterGui()
     assert app.ui.skymeterTemp.text() == '10.5'
+
+
+def test_clearPowerWeatherGui_1():
+    app.clearPowerWeatherGui()
+    assert app.ui.powerHumidity.text() == '-'
+    assert app.ui.powerTemp.text() == '-'
+    assert app.ui.powerDewPoint.text() == '-'
+
+
+def test_updatePowerWeatherGui_1():
+    app.app.powerWeather.name = 'test'
+    app.app.powerWeather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10.5
+    app.updatePowerWeatherGui()
+    assert app.ui.powerTemp.text() == '10.5'
+
+
+def test_updatePowerWeatherGui_2():
+    app.app.powerWeather.name = 'test'
+    app.app.powerWeather.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = 10
+    app.updatePowerWeatherGui()
+    assert app.ui.powerHumidity.text() == ' 10'
+
+
+def test_updatePowerWeatherGui_3():
+    app.app.powerWeather.name = 'test'
+    app.app.powerWeather.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = 10.5
+    app.updatePowerWeatherGui()
+    assert app.ui.powerDewPoint.text() == '10.5'
 
 
 def test_getWebDataRunner_1():

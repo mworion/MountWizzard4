@@ -9,8 +9,13 @@ Unreleased Betas
 (0.153.0)
 
 
+Released betas
+--------------
+0.152.0b0
 
-(0.152.0)
+..note::
+    Please be aware that with new device management the setting might be invalid or don't
+    work anymore. Ideally you start with an empty configuration.
 
 - refactoring device management
 - bugfix polar / flat diagram in manage model
@@ -22,9 +27,6 @@ Unreleased Betas
 - improved views for analyse window
 - adding cover device ascom and alpaca (from ASCOM 6.5 onwards)
 - split PegasusUPB single device into Observing Conditions and Power
-
-Released betas
---------------
 
 0.151.2
 

@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -7297,9 +7297,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>330</y>
+       <y>370</y>
        <width>366</width>
-       <height>91</height>
+       <height>51</height>
       </rect>
      </property>
      <property name="title">
@@ -8450,6 +8450,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
      </widget>
      <widget class="QPushButton" name="storeOptModelFile">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>

@@ -145,6 +145,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
 
         if tempAir < -40 or tempAir > 80:
             return 0
+
         if relativeHumidity < 0 or relativeHumidity > 100:
             return 0
 
@@ -152,6 +153,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         B = 237.7
         alpha = ((A * tempAir) / (B + tempAir)) + np.log(relativeHumidity / 100.0)
         dewPoint = (B * alpha) / (A - alpha)
+
         return dewPoint
 
     def updateOpenWeatherMapDataWorker(self, data=None):
@@ -190,14 +192,17 @@ class OnlineWeather(PyQt5.QtCore.QObject):
                                                      self.data['humidity'])
         if 'clouds' in val:
             self.data['cloudCover'] = val['clouds']['all']
+
         if 'wind' in val:
             self.data['windSpeed'] = val['wind']['speed']
             self.data['windDir'] = val['wind']['deg']
+
         if 'rain' in val:
             self.data['rain'] = val['rain']['3h']
 
         self.signals.dataReceived.emit(self.data)
         self.signals.connected.emit(True)
+
         return True
 
     def getOpenWeatherMapDataWorker(self, url=''):
@@ -213,9 +218,11 @@ class OnlineWeather(PyQt5.QtCore.QObject):
 
         try:
             data = requests.get(url, timeout=30)
+
         except TimeoutError:
             self.log.error(f'{url} not reachable')
             return None
+
         except Exception as e:
             self.log.critical(f'{url} general exception: {e}')
             return None
@@ -259,6 +266,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
             return False
 
         if not self.running:
+            self.signals.connected.emit(False)
             return False
 
         # prepare coordinates for website

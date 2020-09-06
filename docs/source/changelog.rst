@@ -8,7 +8,6 @@ Unreleased Betas
 
 (0.153.0)
 
-- adding cover device ascom and alpaca (from ASCOM 6.5 onwards)
 
 
 (0.152.0)
@@ -20,7 +19,9 @@ Unreleased Betas
 - refactoring analyse window, adding vectors view
 - alpaca device discovery for alpaca servers
 - tools: mount movement with duration
-- improved views for analyse
+- improved views for analyse window
+- adding cover device ascom and alpaca (from ASCOM 6.5 onwards)
+- split PegasusUPB single device into Observing Conditions and Power
 
 Released betas
 --------------

@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>11</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -3812,7 +3812,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <string>Select weather device as source for refraction updates.</string>
         </property>
         <property name="title">
-         <string>Weather</string>
+         <string>Online</string>
         </property>
         <property name="checkable">
          <bool>true</bool>

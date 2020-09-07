@@ -361,7 +361,7 @@ def test_smartEnvironGui_1():
     app.deviceStat['sensorWeather'] = False
     app.deviceStat['onlineWeather'] = False
     app.deviceStat['skymeter'] = False
-    app.deviceStat['power'] = False
+    app.deviceStat['powerWeather'] = False
     suc = app.smartEnvironGui()
     assert suc
     assert not app.ui.directWeatherGroup.isEnabled()
@@ -376,7 +376,7 @@ def test_smartEnvironGui_2():
     app.deviceStat['sensorWeather'] = True
     app.deviceStat['onlineWeather'] = True
     app.deviceStat['skymeter'] = True
-    app.deviceStat['power'] = True
+    app.deviceStat['powerWeather'] = False
     suc = app.smartEnvironGui()
     assert suc
     assert app.ui.directWeatherGroup.isEnabled()
@@ -391,7 +391,7 @@ def test_smartEnvironGui_3():
     app.deviceStat['sensorWeather'] = None
     app.deviceStat['onlineWeather'] = None
     app.deviceStat['skymeter'] = None
-    app.deviceStat['power'] = None
+    app.deviceStat['powerWeather'] = False
     suc = app.smartEnvironGui()
     assert suc
     assert not app.ui.directWeatherGroup.isEnabled()

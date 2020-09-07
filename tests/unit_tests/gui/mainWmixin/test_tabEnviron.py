@@ -93,7 +93,6 @@ def module_setup_teardown(qtbot):
 
     yield
 
-    os.remove('tests/data/de421_23.bsp')
     app.threadPool.waitForDone(1000)
 
 

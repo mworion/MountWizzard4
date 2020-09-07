@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - 'mw4/**'
+      - 'tests/unittests/**'
       - 'setup.py'
       - '.github/workflows/p38_win_pytest.yml'
 

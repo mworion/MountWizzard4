@@ -36,6 +36,11 @@ if not platform.system() == 'Windows':
 def module_setup_teardown():
     class Test1:
         Name = 'test'
+        DriverVersion = '1'
+        DriverInfo = 'test1'
+        coverstate = 1
+        opencover = 0
+        closecover = 0
 
         @staticmethod
         def sendCoverPark():

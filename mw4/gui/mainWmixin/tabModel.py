@@ -687,10 +687,12 @@ class Model:
             self.model = []
 
         for i, mPoint in enumerate(self.model):
+            mPoint['modelHA'] = model.starList[i].coord.ha.hours
+            mPoint['modelDEC'] = model.starList[i].coord.dec.degrees
             mPoint['errorRMS'] = model.starList[i].errorRMS
+            mPoint['errorAngle'] = model.starList[i].errorAngle.degrees
             mPoint['errorRA'] = model.starList[i].errorRA()
             mPoint['errorDEC'] = model.starList[i].errorDEC()
-            mPoint['errorAngle'] = model.starList[i].errorAngle.degrees
             mPoint['errorIndex'] = model.starList[i].number
             mPoint['modelTerms'] = model.terms
             mPoint['modelErrorRMS'] = model.errorRMS

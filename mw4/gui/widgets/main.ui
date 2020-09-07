@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -6550,6 +6550,623 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
     </widget>
    </widget>
+   <widget class="QWidget" name="ManageModel">
+    <attribute name="title">
+     <string>Manage Model</string>
+    </attribute>
+    <widget class="QGroupBox" name="groupBox_55">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>10</y>
+       <width>281</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Optimize actual model</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QPushButton" name="clearModel">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>20</y>
+        <width>86</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Clear the alignment model in mount. Can't be revised.</string>
+      </property>
+      <property name="text">
+       <string>Clear</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_75">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>50</y>
+        <width>71</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Model RMS</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="cancelOptimize">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>80</y>
+        <width>86</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Cancels the optimise run.</string>
+      </property>
+      <property name="text">
+       <string>Cancel</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="runOptimize">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>86</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Run the model optimization. Please take care about the chosen method.</string>
+      </property>
+      <property name="text">
+       <string>Run</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="refreshModel">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>20</y>
+        <width>81</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Reloads the model from mount. Needed if you change things manually with handcontroller or other software.</string>
+      </property>
+      <property name="text">
+       <string>Refresh</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="targetRMS">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>80</y>
+        <width>81</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="decimals">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <double>100.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.500000000000000</double>
+      </property>
+      <property name="value">
+       <double>99.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="errorRMS1">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>50</y>
+        <width>61</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual RMS Error in arc sec&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>0.0</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_37">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>80</y>
+        <width>86</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Target (RMS)</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="deleteWorstPoint">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>86</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Deletes worst point of actual alignment model in the mount. It could happen, that the overall RMS rises.</string>
+      </property>
+      <property name="text">
+       <string>Delete</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="optimizeOverall">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>191</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Delete as many point until an overall target RMS of the model is reached.</string>
+      </property>
+      <property name="text">
+       <string>Optimize overall Target RMS</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="optimizeSingle">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>130</y>
+        <width>196</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Delete model points where the value of the single point is above a certain value.</string>
+      </property>
+      <property name="text">
+       <string>Delete points &gt;Target RMS</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="originalModel">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>160</y>
+        <width>231</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Shows the actual lunar node for your site.</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="maxLength">
+       <number>50</number>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="storeOptModelFile">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>190</y>
+        <width>126</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Cancels the optimise run.</string>
+      </property>
+      <property name="text">
+       <string>Store modelfile</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="openAnalyseW">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>145</x>
+        <y>190</y>
+        <width>126</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Opens an analyse window showing multiple informations about the model context.</string>
+      </property>
+      <property name="text">
+       <string>Analyse window</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="callActualModelAnalyse">
+      <property name="geometry">
+       <rect>
+        <x>245</x>
+        <y>160</y>
+        <width>26</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Configure the telescope device. A popup will open and ask for the parameters.</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_56">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>240</y>
+       <width>281</width>
+       <height>186</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Models stored in mount computer</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QPushButton" name="loadName">
+      <property name="geometry">
+       <rect>
+        <x>195</x>
+        <y>20</y>
+        <width>76</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Loads the actual selected alignment model.</string>
+      </property>
+      <property name="text">
+       <string>Load</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="nameList">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>181</width>
+        <height>156</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="refreshName">
+      <property name="geometry">
+       <rect>
+        <x>195</x>
+        <y>110</y>
+        <width>76</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Refreshes the list of in the mount stored models </string>
+      </property>
+      <property name="text">
+       <string>Refresh</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="deleteName">
+      <property name="geometry">
+       <rect>
+        <x>195</x>
+        <y>80</y>
+        <width>76</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Deletes the actual selected alignment model.</string>
+      </property>
+      <property name="text">
+       <string>Delete</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="saveName">
+      <property name="geometry">
+       <rect>
+        <x>195</x>
+        <y>50</y>
+        <width>76</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Saves actual alignment model under selected name or edited name.</string>
+      </property>
+      <property name="text">
+       <string>Save</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>5</y>
+       <width>486</width>
+       <height>421</height>
+      </rect>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Model Positions</string>
+      </attribute>
+      <widget class="QWidget" name="modelPosition" native="true">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>5</y>
+         <width>481</width>
+         <height>381</height>
+        </rect>
+       </property>
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+       <widget class="QLineEdit" name="numberStars1">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>455</x>
+          <y>5</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Number of alignment stars in actual used pointing model</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_76">
+        <property name="geometry">
+         <rect>
+          <x>395</x>
+          <y>5</y>
+          <width>61</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string># of Stars</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QCheckBox" name="checkShowErrorValues">
+       <property name="geometry">
+        <rect>
+         <x>350</x>
+         <y>360</y>
+         <width>131</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Show error values close to point in polar diagram.</string>
+       </property>
+       <property name="text">
+        <string>Show error values</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Error Distribution</string>
+      </attribute>
+      <widget class="QWidget" name="errorDistribution" native="true">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>5</y>
+         <width>481</width>
+         <height>381</height>
+        </rect>
+       </property>
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Error Ascending</string>
+      </attribute>
+      <widget class="QWidget" name="errorAscending" native="true">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>5</y>
+         <width>471</width>
+         <height>381</height>
+        </rect>
+       </property>
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
    <widget class="QWidget" name="Modelbuild">
     <attribute name="title">
      <string>Model Build</string>
@@ -8144,623 +8761,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="iconpicture" stdset="0">
        <bool>true</bool>
       </property>
-     </widget>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="ManageModel">
-    <attribute name="title">
-     <string>Manage Model</string>
-    </attribute>
-    <widget class="QGroupBox" name="groupBox_55">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>10</y>
-       <width>281</width>
-       <height>221</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Optimize actual model</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QPushButton" name="clearModel">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>20</y>
-        <width>86</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Clear the alignment model in mount. Can't be revised.</string>
-      </property>
-      <property name="text">
-       <string>Clear</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_75">
-      <property name="geometry">
-       <rect>
-        <x>105</x>
-        <y>50</y>
-        <width>71</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Model RMS</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="cancelOptimize">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>80</y>
-        <width>86</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Cancels the optimise run.</string>
-      </property>
-      <property name="text">
-       <string>Cancel</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="runOptimize">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>86</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Run the model optimization. Please take care about the chosen method.</string>
-      </property>
-      <property name="text">
-       <string>Run</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="refreshModel">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>20</y>
-        <width>81</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Reloads the model from mount. Needed if you change things manually with handcontroller or other software.</string>
-      </property>
-      <property name="text">
-       <string>Refresh</string>
-      </property>
-     </widget>
-     <widget class="QDoubleSpinBox" name="targetRMS">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>80</y>
-        <width>81</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="decimals">
-       <number>1</number>
-      </property>
-      <property name="maximum">
-       <double>100.000000000000000</double>
-      </property>
-      <property name="singleStep">
-       <double>0.500000000000000</double>
-      </property>
-      <property name="value">
-       <double>99.000000000000000</double>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="errorRMS1">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>50</y>
-        <width>61</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual RMS Error in arc sec&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>0.0</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_37">
-      <property name="geometry">
-       <rect>
-        <x>105</x>
-        <y>80</y>
-        <width>86</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Target (RMS)</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="deleteWorstPoint">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>86</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Deletes worst point of actual alignment model in the mount. It could happen, that the overall RMS rises.</string>
-      </property>
-      <property name="text">
-       <string>Delete</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="optimizeOverall">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>110</y>
-        <width>191</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Delete as many point until an overall target RMS of the model is reached.</string>
-      </property>
-      <property name="text">
-       <string>Optimize overall Target RMS</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="optimizeSingle">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>130</y>
-        <width>196</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Delete model points where the value of the single point is above a certain value.</string>
-      </property>
-      <property name="text">
-       <string>Delete points &gt;Target RMS</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="originalModel">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>160</y>
-        <width>231</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Shows the actual lunar node for your site.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="maxLength">
-       <number>50</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="storeOptModelFile">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>190</y>
-        <width>126</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Cancels the optimise run.</string>
-      </property>
-      <property name="text">
-       <string>Store modelfile</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="openAnalyseW">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>145</x>
-        <y>190</y>
-        <width>126</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Opens an analyse window showing multiple informations about the model context.</string>
-      </property>
-      <property name="text">
-       <string>Analyse window</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="callActualModelAnalyse">
-      <property name="geometry">
-       <rect>
-        <x>245</x>
-        <y>160</y>
-        <width>26</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Configure the telescope device. A popup will open and ask for the parameters.</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_56">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>240</y>
-       <width>281</width>
-       <height>186</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Models stored in mount computer</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QPushButton" name="loadName">
-      <property name="geometry">
-       <rect>
-        <x>195</x>
-        <y>20</y>
-        <width>76</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Loads the actual selected alignment model.</string>
-      </property>
-      <property name="text">
-       <string>Load</string>
-      </property>
-     </widget>
-     <widget class="QListWidget" name="nameList">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>181</width>
-        <height>156</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="refreshName">
-      <property name="geometry">
-       <rect>
-        <x>195</x>
-        <y>110</y>
-        <width>76</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Refreshes the list of in the mount stored models </string>
-      </property>
-      <property name="text">
-       <string>Refresh</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="deleteName">
-      <property name="geometry">
-       <rect>
-        <x>195</x>
-        <y>80</y>
-        <width>76</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Deletes the actual selected alignment model.</string>
-      </property>
-      <property name="text">
-       <string>Delete</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="saveName">
-      <property name="geometry">
-       <rect>
-        <x>195</x>
-        <y>50</y>
-        <width>76</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Saves actual alignment model under selected name or edited name.</string>
-      </property>
-      <property name="text">
-       <string>Save</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QTabWidget" name="tabWidget">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>5</y>
-       <width>486</width>
-       <height>421</height>
-      </rect>
-     </property>
-     <property name="currentIndex">
-      <number>2</number>
-     </property>
-     <widget class="QWidget" name="tab">
-      <attribute name="title">
-       <string>Model Positions</string>
-      </attribute>
-      <widget class="QWidget" name="modelPosition" native="true">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>5</y>
-         <width>481</width>
-         <height>381</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>true</bool>
-       </property>
-       <widget class="QLineEdit" name="numberStars1">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>455</x>
-          <y>5</y>
-          <width>21</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Number of alignment stars in actual used pointing model</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>00</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_76">
-        <property name="geometry">
-         <rect>
-          <x>395</x>
-          <y>5</y>
-          <width>61</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string># of Stars</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QCheckBox" name="checkShowErrorValues">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>360</y>
-         <width>131</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Show error values close to point in polar diagram.</string>
-       </property>
-       <property name="text">
-        <string>Show error values</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="tab_3">
-      <attribute name="title">
-       <string>Error Distribution</string>
-      </attribute>
-      <widget class="QWidget" name="errorDistribution" native="true">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>5</y>
-         <width>481</width>
-         <height>381</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="tab_2">
-      <attribute name="title">
-       <string>Error Ascending</string>
-      </attribute>
-      <widget class="QWidget" name="errorAscending" native="true">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>5</y>
-         <width>471</width>
-         <height>381</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>true</bool>
-       </property>
-      </widget>
      </widget>
     </widget>
    </widget>

@@ -39,15 +39,10 @@ from gui.utilities.widget import MWidget
 from base.loggerMW import CustomLogger
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module_setup_teardown_module():
-    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
-    yield
-    os.remove('tests/data/de421_23.bsp')
-
-
 @pytest.fixture(autouse=True, scope='function')
 def app(qtbot):
+
+    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
 
     class Test(QObject):
         config = {'mainW': {}}

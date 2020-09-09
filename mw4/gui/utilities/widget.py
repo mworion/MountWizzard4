@@ -246,13 +246,14 @@ class MWidget(QWidget, styles.MWStyles):
         else:
             return nameList, shortList, extList
 
-    def prepareFileDialog(self, window=None, enableDir=False):
+    def prepareFileDialog(self, window=None, enableDir=False, reverseOrder=False):
         """
         prepareFileDialog does some tweaking of the standard file dialogue widget for geometry
-        and general settings. it also removes some parts ans makes the dialoge modal.
+        and general settings. it also removes some parts ans makes the dialog modal.
 
         :param window:  parent class
         :param enableDir:   allows dir selection in file box
+        :param reverseOrder:   file selection z->a
         :return:        dlg, the dialog widget
         """
 
@@ -265,7 +266,8 @@ class MWidget(QWidget, styles.MWStyles):
         dlg.setStyleSheet(self.getStyle())
         dlg.setViewMode(QFileDialog.List)
         dlg.setModal(True)
-        # dlg.setProxyModel(FileSortProxyModel(self))
+        if reverseOrder:
+            dlg.setProxyModel(FileSortProxyModel(self))
 
         if enableDir:
             dlg.setFilter(QDir.Files | QDir.AllDirs)
@@ -275,17 +277,17 @@ class MWidget(QWidget, styles.MWStyles):
 
         # remove unnecessary widgets from the file selector box
         # dlg.findChildren(PyQt5.QtWidgets.QListView, 'sidebar')[0].setVisible(False)
-        dlg.findChildren(QComboBox, 'lookInCombo')[0].setVisible(False)
-        dlg.findChildren(QLabel, 'lookInLabel')[0].setVisible(False)
-        dlg.findChildren(QWidget, 'backButton')[0].setVisible(False)
-        dlg.findChildren(QWidget, 'forwardButton')[0].setVisible(False)
-        dlg.findChildren(QWidget, 'toParentButton')[0].setVisible(False)
-        dlg.findChildren(QWidget, 'newFolderButton')[0].setVisible(False)
-        dlg.findChildren(QWidget, 'listModeButton')[0].setVisible(False)
-        dlg.findChildren(QWidget, 'detailModeButton')[0].setVisible(False)
+        # dlg.findChildren(QComboBox, 'lookInCombo')[0].setVisible(False)
+        # dlg.findChildren(QLabel, 'lookInLabel')[0].setVisible(False)
+        # dlg.findChildren(QWidget, 'backButton')[0].setVisible(False)
+        # dlg.findChildren(QWidget, 'forwardButton')[0].setVisible(False)
+        # dlg.findChildren(QWidget, 'toParentButton')[0].setVisible(False)
+        # dlg.findChildren(QWidget, 'newFolderButton')[0].setVisible(False)
+        # dlg.findChildren(QWidget, 'listModeButton')[0].setVisible(False)
+        # dlg.findChildren(QWidget, 'detailModeButton')[0].setVisible(False)
 
         # position the window to parent in the center
-        width = 500
+        width = 600
         height = 400
 
         ph = window.geometry().height()
@@ -317,7 +319,8 @@ class MWidget(QWidget, styles.MWStyles):
                  folder='',
                  filterSet=None,
                  enableDir=False,
-                 multiple=False):
+                 multiple=False,
+                 reverseOrder=False):
         """
         openFile handles a single file select with filter in a non native format.
 
@@ -327,6 +330,7 @@ class MWidget(QWidget, styles.MWStyles):
         :param filterSet:   file extension filter
         :param enableDir:   allows dir selection in file box
         :param multiple :   allows multiple selection in file box
+        :param reverseOrder :   file selection z->a
         :return:            name: full path for file else empty
                             short: just file name without extension
                             ext: extension of the file
@@ -344,7 +348,9 @@ class MWidget(QWidget, styles.MWStyles):
         if not filterSet:
             return '', '', ''
 
-        dlg = self.prepareFileDialog(window=window, enableDir=enableDir)
+        dlg = self.prepareFileDialog(window=window,
+                                     enableDir=enableDir,
+                                     reverseOrder=reverseOrder)
         dlg.setAcceptMode(QFileDialog.AcceptOpen)
 
         dlg.setWindowTitle(title)

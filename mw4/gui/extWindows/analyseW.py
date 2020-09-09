@@ -23,6 +23,7 @@ import os
 from threading import Thread
 
 # external packages
+from PyQt5.QtTest import QTest
 from PyQt5.QtGui import QIcon
 from matplotlib import pyplot as plt
 from matplotlib import ticker
@@ -173,6 +174,19 @@ class AnalyseWindow(widget.MWidget):
         # gui signals
         super().closeEvent(closeEvent)
 
+    def resizeEvent(self, event):
+        """
+        we are using the resize event to reset the timer, which means waiting for
+        RESIZE_FINISHED_TIMEOUT in total before redrawing the complete hemisphere.
+        as we are using a 0.1s cyclic timer.
+
+        :param event:
+        :return:
+        """
+
+        QTest.qWait(3000)
+        super().resizeEvent(event)
+
     def showWindow(self):
         """
         showWindow starts constructing the main window for satellite view and shows the
@@ -272,7 +286,8 @@ class AnalyseWindow(widget.MWidget):
 
         folder = self.app.mwGlob['modelDir']
         val = self.openFile(self, 'Open model file', folder, 'Model files (*.model)',
-                            multiple=False)
+                            multiple=False,
+                            reverseOrder=True)
         loadFilePath, fileName, ext = val
 
         if loadFilePath:

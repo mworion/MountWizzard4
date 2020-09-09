@@ -584,7 +584,7 @@ class Model:
         self.ui.plateSolveSync.setEnabled(True)
         self.ui.runFlexure.setEnabled(True)
         self.ui.runHysteresis.setEnabled(True)
-        self.ui.timeEstimeted.setText('00:00:00')
+        self.ui.timeEstimated.setText('00:00:00')
         self.ui.timeElapsed.setText('00:00:00')
         self.ui.timeFinished.setText('00:00:00')
         self.ui.mPoints.setText('0')

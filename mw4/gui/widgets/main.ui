@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>11</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -7681,7 +7681,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <enum>Qt::RightToLeft</enum>
       </property>
       <property name="text">
-       <string>00:00</string>
+       <string>00:00:00</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7844,7 +7844,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <enum>Qt::RightToLeft</enum>
       </property>
       <property name="text">
-       <string>00:00</string>
+       <string>00:00:00</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -8431,7 +8431,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Shows the actual lunar node for your site.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual discovered model file which was used for building the model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8462,7 +8462,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>Cancels the optimise run.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If a model optimization happened, you can store an additional model file with the resulting build points and updated model point errors to get the best analyse for the actual used model (and not for the original used overall model points)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>Store modelfile</string>
@@ -8497,7 +8497,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>Configure the telescope device. A popup will open and ask for the parameters.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pushed the discovered model file name to the analyse window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string/>
@@ -14341,7 +14341,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -15289,7 +15289,7 @@ Hint if mount will need a flip when following satellite.</string>
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the skymeter device. A popup will open and ask for the parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the observing conditions part of the power device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>

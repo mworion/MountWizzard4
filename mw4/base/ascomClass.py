@@ -263,7 +263,7 @@ class AscomClass(object):
             self.client = win32com.client.Dispatch(self.deviceName)
 
         except Exception as e:
-            self.log.critical(f'Error: [{e}]')
+            self.log.critical(f'Dispatch for [{self.deviceName}] error: {e}')
             return False
 
         else:
@@ -286,7 +286,7 @@ class AscomClass(object):
                 self.client.connected = False
 
             except Exception as e:
-                self.log.info(f'Connection to {self.deviceName} could not be closed: {e}')
+                self.log.info(f'Connection to [{self.deviceName}] could not be closed: {e}')
 
         self.deviceConnected = False
         self.serverConnected = False

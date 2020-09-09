@@ -22,7 +22,7 @@ import time
 import shutil
 import json
 import copy
-from datetime import datetime, timedelta
+from datetime import datetime
 
 # external packages
 import PyQt5.uic
@@ -245,16 +245,19 @@ class Model:
         if not 0 <= count < number:
             return False
 
-        fraction = 100 * (count + 1) / number
-        timeElapsed = time.time() - self.startModeling
-        baseTime = timeElapsed / fraction
+        fraction = (count + 1) / number
 
-        timeEstimation = baseTime * (1 - fraction)
-        finished = timedelta(seconds=timeEstimation) + datetime.now()
+        secondsElapsed = time.time() - self.startModeling
+        secondsBase = secondsElapsed / fraction
+        secondsEstimated = secondsBase * (1 - fraction)
 
-        self.ui.timeToFinish.setText(time.strftime('%M:%S', time.gmtime(timeEstimation)))
-        self.ui.timeElapsed.setText(time.strftime('%M:%S', time.gmtime(timeElapsed)))
-        self.ui.timeFinished.setText(finished.strftime('%H:%M:%S'))
+        timeElapsed = time.gmtime(secondsElapsed)
+        timeEstimated = time.gmtime(secondsEstimated)
+        timeFinished = time.localtime(time.time() + secondsEstimated)
+
+        self.ui.timeElapsed.setText(datetime(*timeElapsed[:6]).strftime('%H:%M:%S'))
+        self.ui.timeEstimated.setText(datetime(*timeEstimated[:6]).strftime('%H:%M:%S'))
+        self.ui.timeFinished.setText(datetime(*timeFinished[:6]).strftime('%H:%M:%S'))
 
         modelPercent = int(100 * fraction)
         self.ui.modelProgress.setValue(modelPercent)
@@ -581,8 +584,8 @@ class Model:
         self.ui.plateSolveSync.setEnabled(True)
         self.ui.runFlexure.setEnabled(True)
         self.ui.runHysteresis.setEnabled(True)
-        self.ui.timeToFinish.setText('00:00')
-        self.ui.timeElapsed.setText('00:00')
+        self.ui.timeEstimeted.setText('00:00:00')
+        self.ui.timeElapsed.setText('00:00:00')
         self.ui.timeFinished.setText('00:00:00')
         self.ui.mPoints.setText('0')
         self.ui.mSlew.setText('0')
@@ -687,8 +690,6 @@ class Model:
             self.model = []
 
         for i, mPoint in enumerate(self.model):
-            mPoint['modelHA'] = model.starList[i].coord.ha.hours
-            mPoint['modelDEC'] = model.starList[i].coord.dec.degrees
             mPoint['errorRMS'] = model.starList[i].errorRMS
             mPoint['errorAngle'] = model.starList[i].errorAngle.degrees
             mPoint['errorRA'] = model.starList[i].errorRA()

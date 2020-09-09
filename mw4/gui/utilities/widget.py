@@ -265,7 +265,7 @@ class MWidget(QWidget, styles.MWStyles):
         dlg.setStyleSheet(self.getStyle())
         dlg.setViewMode(QFileDialog.List)
         dlg.setModal(True)
-        dlg.setProxyModel(FileSortProxyModel(self))
+        # dlg.setProxyModel(FileSortProxyModel(self))
 
         if enableDir:
             dlg.setFilter(QDir.Files | QDir.AllDirs)

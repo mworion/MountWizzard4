@@ -23,7 +23,7 @@ from threading import Lock
 
 # external packages
 import numpy as np
-from PyQt5.QtWidgets import QWidget, QDesktopWidget, qApp, QFileDialog, QComboBox, QLabel
+from PyQt5.QtWidgets import QWidget, QDesktopWidget, qApp, QFileDialog
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtGui import QPalette, QIcon
 from PyQt5.QtCore import Qt, QSortFilterProxyModel, QSize, QDir, QObject, pyqtSignal, QEvent
@@ -80,6 +80,10 @@ class MWidget(QWidget, styles.MWStyles):
         self.screenSizeX = QDesktopWidget().screenGeometry().width()
         self.screenSizeY = QDesktopWidget().screenGeometry().height()
         self.setAttribute(Qt.WA_DeleteOnClose, True)
+        self.setWindowFlags(self.windowFlags() |
+                            Qt.WindowSystemMenuHint |
+                            Qt.WindowMaximizeButtonHint |
+                            Qt.WindowMinMaxButtonsHint)
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)

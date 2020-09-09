@@ -579,7 +579,7 @@ class AnalyseWindow(widget.MWidget):
 
             axe.quiver(x, y, u, v,
                        color=col,
-                       scale=20,
+                       scale=17,
                        headlength=0,
                        headwidth=1,
                        alpha=0.8,

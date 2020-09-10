@@ -692,6 +692,8 @@ class Model:
         for i, mPoint in enumerate(self.model):
             mPoint['errorRMS'] = model.starList[i].errorRMS
             mPoint['errorAngle'] = model.starList[i].errorAngle.degrees
+            mPoint['haMountModel'] = model.starList[i].coord.ra.hours
+            mPoint['decMountModel'] = model.starList[i].coord.dec.degrees
             mPoint['errorRA'] = model.starList[i].errorRA()
             mPoint['errorDEC'] = model.starList[i].errorDEC()
             mPoint['errorIndex'] = model.starList[i].number
@@ -843,18 +845,18 @@ class Model:
         if self.ui.checkEnableBackup.isChecked():
             self.app.message.emit('Backing up models', 0)
             self.app.mount.model.storeName('temp')
-            self.app.mount.model.loadName('back-2')
-            self.app.mount.model.deleteName('back-3')
-            self.app.mount.model.storeName('back-3')
-            self.app.mount.model.loadName('back-1')
-            self.app.mount.model.deleteName('back-2')
-            self.app.mount.model.storeName('back-2')
-            self.app.mount.model.loadName('back')
-            self.app.mount.model.deleteName('back-1')
-            self.app.mount.model.storeName('back-1')
+            self.app.mount.model.loadName('back2')
+            self.app.mount.model.deleteName('back3')
+            self.app.mount.model.storeName('back3')
+            self.app.mount.model.loadName('back1')
+            self.app.mount.model.deleteName('back2')
+            self.app.mount.model.storeName('back2')
+            self.app.mount.model.loadName('back0')
+            self.app.mount.model.deleteName('back1')
+            self.app.mount.model.storeName('back1')
             self.app.mount.model.loadName('temp')
-            self.app.mount.model.deleteName('back')
-            self.app.mount.model.storeName('back')
+            self.app.mount.model.deleteName('back0')
+            self.app.mount.model.storeName('back0')
             self.app.mount.model.deleteName('temp')
 
         # finally do it

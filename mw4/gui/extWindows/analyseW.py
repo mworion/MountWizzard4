@@ -232,23 +232,15 @@ class AnalyseWindow(widget.MWidget):
 
         self.convertModelData()
 
-        if 'modelTerms' in modelJSON[0]:
-            self.ui.modelTerms.setText(f'{modelJSON[0]["modelTerms"]:02.0f}')
-        if 'modelErrorRMS' in modelJSON[0]:
-            self.ui.modelErrorRMS.setText(f'{modelJSON[0]["modelErrorRMS"]:5.1f}')
-        if 'modelOrthoError' in modelJSON[0]:
-            self.ui.modelOrthoError.setText(f'{modelJSON[0]["modelOrthoError"]:5.0f}')
-        if 'modelPolarError' in modelJSON[0]:
-            self.ui.modelPolarError.setText(f'{modelJSON[0]["modelPolarError"]:5.0f}')
-        if 'version' in modelJSON[0]:
-            version = modelJSON[0]["version"].lstrip('MountWizzard4 - v')
-            self.ui.version.setText(f'{version}')
-        if 'focalLength' in modelJSON[0]:
-            self.ui.focalLength.setText(f'{modelJSON[0]["focalLength"]:4.0f}')
-        if 'profile' in modelJSON[0]:
-            self.ui.profile.setText(f'{modelJSON[0]["profile"]}')
-        if 'firmware' in modelJSON[0]:
-            self.ui.firmware.setText(f'{modelJSON[0]["firmware"]}')
+        self.ui.modelTerms.setText(f'{modelJSON[0].get("modelTerms", 0):02.0f}')
+        self.ui.modelErrorRMS.setText(f'{modelJSON[0].get("modelErrorRMS", 0):5.1f}')
+        self.ui.modelOrthoError.setText(f'{modelJSON[0].get("modelOrthoError", 0):5.0f}')
+        self.ui.modelPolarError.setText(f'{modelJSON[0].get("modelPolarError", 0):5.0f}')
+        version = modelJSON[0].get("version", "").lstrip('MountWizzard4 - v')
+        self.ui.version.setText(f'{version}')
+        self.ui.focalLength.setText(f'{modelJSON[0].get("focalLength", 0):4.0f}')
+        self.ui.profile.setText(f'{modelJSON[0].get("profile", "")}')
+        self.ui.firmware.setText(f'{modelJSON[0].get("firmware", "")}')
 
         model = dict()
 

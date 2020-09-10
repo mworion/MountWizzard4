@@ -46,8 +46,8 @@ class ManageModel(object):
             self.clickable = clickable
 
         self.runningOptimize = False
-        self.fittedModelFound = False
-        self.fittedModelPath = None
+        self.fittedModelPoints = []
+        self.fittedModelPath = ''
 
         ms = self.app.mount.signals
         ms.alignDone.connect(self.showModelPosition)
@@ -122,32 +122,45 @@ class ManageModel(object):
         return True
 
     @staticmethod
-    def findValue(buildStar, mountModel):
+    def compareData(buildModel, mountModel):
         """
 
-        :param buildStar:
+        :param buildModel:
         :param mountModel:
         :return: success
         """
 
-        for mountStar in mountModel.starList:
-            val1 = buildStar['errorDEC']
-            val2 = mountStar.errorDEC()
-            if not val1 or not val2:
-                continue
-            if abs(val1 - val2) > 0.0001:
-                continue
+        pointsIn = []
+        pointsOut = []
 
-            val1 = buildStar['errorRA']
-            val2 = mountStar.errorRA()
-            if not val1 or not val2:
-                continue
-            if abs(val1 - val2) > 0.0001:
-                continue
+        for buildPoint in buildModel:
+            for mountPoint in mountModel:
+                if mountModel[mountPoint] == buildModel[buildPoint]:
+                    pointsIn.append(buildPoint)
+                    break
 
-            return True
+            else:
+                pointsOut.append(buildPoint)
 
-        return False
+        return pointsIn, pointsOut
+
+    def compareModel(self, buildModelData, mountModel):
+        """
+
+        :param buildModelData:
+        :param mountModel:
+        :return:
+        """
+
+        buildModel = {}
+
+        for star in buildModelData:
+            buildModel[star['errorIndex']] = {'ha': star.get('haMountModel', 0),
+                                              'dec': star.get('decMountModel', 0)}
+
+        pointsIn, pointsOut = self.compareData(buildModel, mountModel)
+
+        return pointsIn, pointsOut
 
     def findFittingModel(self):
         """
@@ -158,28 +171,33 @@ class ManageModel(object):
         :return: success
         """
 
-        mountModel = self.app.mount.model
+        mountModel = {}
+        for star in self.app.mount.model.starList:
+            mountModel[star.number] = {'ha': star.coord.ra.hours,
+                                       'dec': star.coord.dec.degrees}
+
         modelFileList = glob.glob(self.app.mwGlob['modelDir'] + '/*.model')
 
-        for modelFile in modelFileList:
-            if 'opt' in modelFile:
+        for modelFilePath in modelFileList:
+            if 'opt' in modelFilePath:
                 continue
 
-            found = 0
-            with open(modelFile, 'r') as inFile:
+            with open(modelFilePath, 'r') as inFile:
                 buildModelData = json.load(inFile)
-                for buildStar in buildModelData:
-                    suc = self.findValue(buildStar, mountModel)
-                    if suc:
-                        found += 1
 
-                    if found > 2:
-                        self.fittedModelPath = modelFile
-                        return os.path.splitext(os.path.basename(modelFile))[0]
+            pointsIn, pointsOut = self.compareModel(buildModelData, mountModel)
 
-        self.fittedModelPath = None
+            if pointsIn:
+                self.fittedModelPoints = pointsIn
+                self.fittedModelPath = modelFilePath
+                break
+        else:
+            self.fittedModelPoints = []
+            self.fittedModelPath = ''
 
-        return ''
+        name = os.path.splitext(os.path.basename(self.fittedModelPath))[0]
+
+        return name
 
     def showModelPosition(self, model):
         """

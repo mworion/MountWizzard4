@@ -18,7 +18,6 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtCore import QTimer
 
 # local imports
 from base.ascomClass import AscomClass

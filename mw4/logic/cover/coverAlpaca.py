@@ -18,7 +18,6 @@
 # standard libraries
 
 # external packages
-import PyQt5
 
 # local imports
 from base.alpacaClass import AlpacaClass

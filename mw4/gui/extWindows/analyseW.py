@@ -329,11 +329,21 @@ class AnalyseWindow(widget.MWidget):
         yE = [y for x, y, p in zip(x, y, pierside) if p == 'E']
 
         if poly:
-            meanW = np.poly1d(np.polyfit(xW, yW, poly))(xW)
-            meanE = np.poly1d(np.polyfit(xE, yE, poly))(xE)
+            try:
+                polynomW = np.polyfit(xW, yW, poly)
+                meanW = np.poly1d(polynomW)(xW)
+            except Exception as e:
+                self.log.warn('Interpolation failed')
+            else:
+                axe.plot(xW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
 
-            axe.plot(xW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
-            axe.plot(xE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
+            try:
+                polynomE = np.polyfit(xE, yE, poly)
+                meanE = np.poly1d(polynomE)(xE)
+            except Exception as e:
+                self.log.warn('Interpolation failed')
+            else:
+                axe.plot(xE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
 
         axe.plot(xW, yW, marker='.', markersize=7, linestyle='none', color=self.M_GREEN)
         axe.plot(xE, yE, marker='.', markersize=7, linestyle='none', color=self.M_YELLOW)

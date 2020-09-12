@@ -299,9 +299,9 @@ class MWStyles:
         background-color: rgb(32, 144, 192);
         image: url(:/icon/checkmark.ico);
     }
-    #QCheckBox:disabled {
-    #    color: rgb(32, 144, 192);
-    #}
+    QCheckBox:disabled {
+        color: #404040;
+    }
     QRadioButton {
         color: #C0C0C0;
         background-color: transparent;

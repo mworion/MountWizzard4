@@ -110,6 +110,7 @@ class Model:
         # ui signals
         self.ui.runModel.clicked.connect(self.modelBuild)
         self.ui.cancelModel.clicked.connect(self.cancelBuild)
+        self.ui.endModel.clicked.connect(self.modelFinished)
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
         self.ui.batchModel.clicked.connect(self.loadProgramModel)
 
@@ -578,9 +579,11 @@ class Model:
 
         self.changeStyleDynamic(self.ui.runModel, 'running', False)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', False)
+        self.changeStyleDynamic(self.ui.endModel, 'cancel', False)
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.ui.runModel.setEnabled(True)
         self.ui.cancelModel.setEnabled(False)
+        self.ui.endModel.setEnabled(False)
         self.ui.pauseModel.setEnabled(False)
         self.ui.batchModel.setEnabled(True)
         self.ui.plateSolveSync.setEnabled(True)
@@ -1025,14 +1028,15 @@ class Model:
                 winImage.abortImage()
 
         self.changeStyleDynamic(self.ui.runModel, 'running', True)
+        self.changeStyleDynamic(self.ui.endModel, 'cancel', True)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', True)
         self.changeStyleDynamic(self.ui.cancelModel, 'pause', False)
         self.ui.cancelModel.setEnabled(True)
+        self.ui.endModel.setEnabled(True)
         self.ui.pauseModel.setEnabled(True)
         self.ui.plateSolveSync.setEnabled(False)
         self.ui.runFlexure.setEnabled(False)
         self.ui.runHysteresis.setEnabled(False)
-        self.ui.cancelModel.setEnabled(True)
 
         suc = self.modelCore(points=self.app.data.buildP)
 

@@ -419,6 +419,7 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.cancelModel, QIcon(':/icon/cross-circle.svg'))
         self.wIcon(self.ui.runModel, QIcon(':/icon/start.svg'))
         self.wIcon(self.ui.pauseModel, QIcon(':/icon/pause.svg'))
+        self.wIcon(self.ui.endModel, QIcon(':/icon/stop_m.svg'))
         self.wIcon(self.ui.batchModel, QIcon(':/icon/choose.svg'))
 
         # manage model

@@ -23,7 +23,6 @@ import os
 from threading import Thread
 
 # external packages
-from PyQt5.QtTest import QTest
 from PyQt5.QtGui import QIcon
 from matplotlib import pyplot as plt
 from matplotlib import ticker
@@ -127,10 +126,13 @@ class AnalyseWindow(widget.MWidget):
         config = self.app.config['analyseW']
         x = config.get('winPosX', 40)
         y = config.get('winPosY', 40)
+
         if x > self.screenSizeX:
             x = 0
+
         if y > self.screenSizeY:
             y = 0
+
         self.move(x, y)
         height = config.get('height', 600)
         width = config.get('width', 800)
@@ -151,6 +153,7 @@ class AnalyseWindow(widget.MWidget):
         """
         if 'analyseW' not in self.app.config:
             self.app.config['analyseW'] = {}
+
         config = self.app.config['analyseW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
@@ -184,7 +187,6 @@ class AnalyseWindow(widget.MWidget):
         :return:
         """
 
-        QTest.qWait(3000)
         super().resizeEvent(event)
 
     def showWindow(self):
@@ -200,12 +202,65 @@ class AnalyseWindow(widget.MWidget):
 
         return True
 
-    @staticmethod
-    def convertModelData():
+    def writeGui(self, data, loadFilePath):
         """
 
+        :param data:
+        :param loadFilePath:
         :return: True for test purpose
         """
+
+        data = data[0]
+
+        self.ui.filename.setText(os.path.basename(loadFilePath))
+        self.ui.eposure.setText(f'{data.get("exposureTime", "")}')
+        self.ui.solver.setText(data.get('astrometryApp', ""))
+        self.ui.binning.setText(f'{data.get("binning", 0):1.0f}')
+        self.ui.time.setText(data.get('julianDate', '').replace('T', '  ').replace('Z', ''))
+        self.ui.subframe.setText(f'{data.get("subFrame", 0):3.0f}')
+        self.ui.modelTerms.setText(f'{data.get("modelTerms", 0):02.0f}')
+        self.ui.modelErrorRMS.setText(f'{data.get("modelErrorRMS", 0):5.1f}')
+        self.ui.modelOrthoError.setText(f'{data.get("modelOrthoError", 0):5.0f}')
+        self.ui.modelPolarError.setText(f'{data.get("modelPolarError", 0):5.0f}')
+        self.ui.focalLength.setText(f'{data.get("focalLength", 0):4.0f}')
+        self.ui.profile.setText(f'{data.get("profile", "")}')
+        self.ui.firmware.setText(f'{data.get("firmware", "")}')
+
+        text = f'{data.get("mirroredS", "")}' + f'{data.get("flippedS", "")}'
+        self.ui.mirrored.setText(text)
+        version = data.get("version", "").lstrip('MountWizzard4 - v')
+        self.ui.version.setText(f'{version}')
+
+        return True
+
+    def generateDataSets(self, modelJSON):
+        """
+
+        :param modelJSON:
+        :return:
+        """
+        model = dict()
+
+        for key in modelJSON[0].keys():
+            model[key] = list()
+            for index in range(0, len(modelJSON)):
+                model[key].append(modelJSON[index][key])
+
+        self.latitude = modelJSON[0].get('latitude')
+        self.pierside = np.asarray(model['pierside'])
+        self.countSequence = np.asarray(model['countSequence'])
+        self.index = np.asarray(model['errorIndex']) - 1
+        self.scaleS = np.asarray(model['scaleS'])
+        self.altitude = np.asarray(model['altitude'])
+        self.azimuth = np.asarray(model['azimuth'])
+        self.errorAngle = np.asarray(model['errorAngle'])
+        self.errorRMS = np.asarray(model['errorRMS'])
+        self.errorRA_S = np.asarray(model['errorRA_S'])
+        self.errorDEC_S = np.asarray(model['errorDEC_S'])
+        self.errorRA = np.asarray(model['errorRA'])
+        self.errorDEC = np.asarray(model['errorDEC'])
+        self.angularPosRA = np.asarray(model['angularPosRA'])
+        self.angularPosDEC = np.asarray(model['angularPosDEC'])
 
         return True
 
@@ -219,52 +274,8 @@ class AnalyseWindow(widget.MWidget):
         with open(loadFilePath, 'r') as infile:
             modelJSON = json.load(infile)
 
-        self.ui.filename.setText(os.path.basename(loadFilePath))
-        self.ui.eposure.setText(f'{modelJSON[0]["exposureTime"]}')
-        self.ui.solver.setText(modelJSON[0]['astrometryApp'])
-        self.ui.binning.setText(f'{modelJSON[0]["binning"]:1.0f}')
-        self.ui.time.setText(modelJSON[0]['julianDate'].replace('T', '  ').replace('Z', ''))
-        self.ui.subframe.setText(f'{modelJSON[0]["subFrame"]:3.0f}')
-        if 'mirroredS' in modelJSON[0]:
-            self.ui.mirrored.setText(str(modelJSON[0]['mirroredS']))
-        else:
-            self.ui.mirrored.setText(str(modelJSON[0]['flippedS']))
-
-        self.convertModelData()
-
-        self.ui.modelTerms.setText(f'{modelJSON[0].get("modelTerms", 0):02.0f}')
-        self.ui.modelErrorRMS.setText(f'{modelJSON[0].get("modelErrorRMS", 0):5.1f}')
-        self.ui.modelOrthoError.setText(f'{modelJSON[0].get("modelOrthoError", 0):5.0f}')
-        self.ui.modelPolarError.setText(f'{modelJSON[0].get("modelPolarError", 0):5.0f}')
-        version = modelJSON[0].get("version", "").lstrip('MountWizzard4 - v')
-        self.ui.version.setText(f'{version}')
-        self.ui.focalLength.setText(f'{modelJSON[0].get("focalLength", 0):4.0f}')
-        self.ui.profile.setText(f'{modelJSON[0].get("profile", "")}')
-        self.ui.firmware.setText(f'{modelJSON[0].get("firmware", "")}')
-
-        model = dict()
-
-        for key in modelJSON[0].keys():
-            model[key] = list()
-            for index in range(0, len(modelJSON)):
-                model[key].append(modelJSON[index][key])
-
-        self.latitude = modelJSON[0].get('latitude')
-        self.pierside = np.asarray(model['pierside'])
-        self.countSequence = np.asarray(model['countSequence'])
-        self.index = np.asarray(range(0, len(model['countSequence'])))
-        self.scaleS = np.asarray(model['scaleS'])
-        self.altitude = np.asarray(model['altitude'])
-        self.azimuth = np.asarray(model['azimuth'])
-        self.errorAngle = np.asarray(model['errorAngle'])
-        self.errorRMS = np.asarray(model['errorRMS'])
-        self.errorRA_S = np.asarray(model['errorRA_S'])
-        self.errorDEC_S = np.asarray(model['errorDEC_S'])
-        self.errorRA = np.asarray(model['errorRA'])
-        self.errorDEC = np.asarray(model['errorDEC'])
-        self.angularPosRA = np.asarray(model['angularPosRA'])
-        self.angularPosDEC = np.asarray(model['angularPosDEC'])
-
+        self.writeGui(modelJSON, loadFilePath)
+        self.generateDataSets(modelJSON)
         self.drawAll()
 
         return True

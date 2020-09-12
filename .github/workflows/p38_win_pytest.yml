@@ -65,7 +65,7 @@ jobs:
 
     - name: Running unit tests
       run: |
-        pytest tests/unit_tests/zStartup--cov=mw4/ --cov-report=xml
+        pytest tests/unit_tests/zStartup --cov=mw4/ --cov-report=xml
         pytest tests/unit_tests/base --cov-append --cov=mw4/ --cov-report=xml
         pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/ --cov-report=xml
         pytest tests/unit_tests/gui/mainWindow --cov-append --cov=mw4/ --cov-report=xml

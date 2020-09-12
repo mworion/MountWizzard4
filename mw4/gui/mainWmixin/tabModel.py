@@ -796,7 +796,7 @@ class Model:
         return True
 
     @staticmethod
-    def generateBuildData(model=[]):
+    def generateBuildData(model=None):
         """
         generateBuildData takes the model data and generates from it a data structure
         needed for programming the model into the mount computer.
@@ -805,7 +805,11 @@ class Model:
         :return: build
         """
 
+        if model is None:
+            model = []
+
         build = list()
+
         for mPoint in model:
             programmingPoint = AlignStar(mCoord=(mPoint['raJNowM'], mPoint['decJNowM']),
                                          sCoord=(mPoint['raJNowS'], mPoint['decJNowS']),
@@ -813,6 +817,7 @@ class Model:
                                          pierside=mPoint['pierside'],
                                          )
             build.append(programmingPoint)
+
         return build
 
     def modelFinished(self):
@@ -873,6 +878,7 @@ class Model:
             self.saveModelPrepare()
             self.app.mount.model.storeName('actual')
             self.app.message.emit('Model programmed with success', 0)
+
         else:
             self.app.message.emit('Model programming error', 2)
 
@@ -888,8 +894,10 @@ class Model:
         if self.ui.parkMountAfterModel.isChecked():
             self.app.message.emit('Parking mount after model run', 0)
             suc = self.app.mount.obsSite.park()
+
             if not suc:
                 self.app.message.emit('Cannot park mount', 2)
+
             else:
                 self.app.message.emit('Mount parked', 0)
 
@@ -928,6 +936,7 @@ class Model:
 
         if not os.path.isdir(self.imageDir):
             os.mkdir(self.imageDir)
+
         if not os.path.isdir(self.imageDir):
             return False
 
@@ -1011,6 +1020,7 @@ class Model:
         if not suc:
             self.app.message.emit('Actual model cannot be cleared', 2)
             return False
+
         else:
             self.app.message.emit('Actual model clearing, waiting 3s', 0)
             QTest.qWait(3000)
@@ -1076,6 +1086,7 @@ class Model:
         if not suc:
             self.app.message.emit('Actual model cannot be cleared', 2)
             return False
+
         else:
             self.app.message.emit('Actual model clearing, waiting 1s', 0)
             QTest.qWait(1000)
@@ -1091,6 +1102,7 @@ class Model:
         # preparing the text
         if index:
             postFix = 's'
+
         else:
             postFix = ''
 
@@ -1107,6 +1119,7 @@ class Model:
         if suc:
             self.app.message.emit(f'Model{postFix} programmed with success', 1)
             self.refreshModel()
+
         else:
             self.app.message.emit('Programming error', 2)
 

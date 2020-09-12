@@ -579,7 +579,6 @@ class Model:
 
         self.changeStyleDynamic(self.ui.runModel, 'running', False)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', False)
-        self.changeStyleDynamic(self.ui.endModel, 'cancel', False)
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.ui.runModel.setEnabled(True)
         self.ui.cancelModel.setEnabled(False)
@@ -1038,7 +1037,6 @@ class Model:
                 winImage.abortImage()
 
         self.changeStyleDynamic(self.ui.runModel, 'running', True)
-        self.changeStyleDynamic(self.ui.endModel, 'cancel', True)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', True)
         self.changeStyleDynamic(self.ui.cancelModel, 'pause', False)
         self.ui.cancelModel.setEnabled(True)

@@ -65,7 +65,8 @@ class ManageModel(object):
         self.ui.runOptimize.clicked.connect(self.runOptimize)
         self.ui.cancelOptimize.clicked.connect(self.cancelOptimize)
         self.ui.deleteWorstPoint.clicked.connect(self.deleteWorstPoint)
-        self.ui.callActualModelAnalyse.clicked.connect(self.showAnalyse)
+        self.ui.showActualModelAnalyse.clicked.connect(self.showOriginalModelAnalyse)
+        self.ui.showOptimizedModelAnalyse.clicked.connect(self.showOptimizedModelAnalyse)
 
         model = self.app.mount.model
         self.ui.targetRMS.valueChanged.connect(lambda: self.showModelPosition(model))
@@ -194,10 +195,12 @@ class ManageModel(object):
         else:
             self.fittedModelPoints = []
             self.fittedModelPath = ''
+            pointsIn = []
+            pointsOut = []
 
         name = os.path.splitext(os.path.basename(self.fittedModelPath))[0]
 
-        return name
+        return name, pointsIn, pointsOut
 
     def showModelPosition(self, model):
         """
@@ -521,6 +524,33 @@ class ManageModel(object):
             self.refreshName()
             return True
 
+    def writeBuildModelOptimized(self, foundModel, pointsIn, pointsOut):
+        """
+
+        :param foundModel:
+        :param pointsIn:
+        :param pointsOut:
+        :return:
+        """
+
+        actPath = self.app.mwGlob['modelDir'] + '/' + foundModel + '.model'
+        newPath = self.app.mwGlob['modelDir'] + '/' + foundModel + '-opt.model'
+
+        with open(actPath) as actFile:
+            actModel = json.load(actFile)
+
+        newModel = []
+
+        for element in actModel:
+            if element['errorIndex'] in pointsOut:
+                continue
+            newModel.append(element)
+
+        newModel = self.writeRetrofitData(self.app.mount.model, newModel)
+
+        with open(newPath, 'w+') as newFile:
+            json.dump(newModel, newFile, sort_keys=True, indent=4)
+
     def clearRefreshModel(self):
         """
         clearRefreshModel is the buddy function for refreshModel
@@ -536,11 +566,12 @@ class ManageModel(object):
         self.app.mount.signals.alignDone.disconnect(self.clearRefreshModel)
         self.app.message.emit('Align model data refreshed', 0)
 
-        foundModel = self.findFittingModel()
+        foundModel, pointsIn, pointsOut = self.findFittingModel()
 
         if foundModel:
             self.app.message.emit(f'Found stored model:  [{foundModel}]', 0)
             self.ui.originalModel.setText(foundModel)
+            self.writeBuildModelOptimized(foundModel, pointsIn, pointsOut)
 
         else:
             self.ui.originalModel.setText('No fitting model file found')
@@ -589,6 +620,7 @@ class ManageModel(object):
         if not suc:
             self.app.message.emit('Actual model cannot be cleared', 2)
             return False
+
         else:
             self.app.message.emit('Actual model cleared', 0)
             self.refreshModel()
@@ -611,6 +643,7 @@ class ManageModel(object):
         if not suc:
             self.app.message.emit('Worst point cannot be deleted', 2)
             return False
+
         else:
             self.app.message.emit('Worst point deleted', 0)
             self.refreshModel()
@@ -629,6 +662,7 @@ class ManageModel(object):
 
         if mount.model.numberStars is None:
             numberStars = 0
+
         else:
             numberStars = mount.model.numberStars
 
@@ -640,6 +674,7 @@ class ManageModel(object):
             if not suc:
                 self.runningOptimize = False
                 self.app.message.emit(f'Star [{wStar.number}] cannot be deleted', 2)
+
             else:
                 text = f'Star [{wStar.number:02d}]: RMS of [{wStar.errorRMS:04.1f}] deleted'
                 self.app.message.emit(text, 0)
@@ -662,6 +697,7 @@ class ManageModel(object):
 
         if mount.model.numberStars is None:
             numberStars = 0
+
         else:
             numberStars = mount.model.numberStars
 
@@ -673,6 +709,7 @@ class ManageModel(object):
             if not suc:
                 self.runningOptimize = False
                 self.app.message.emit(f'Star [{wStar.number}] cannot be deleted', 2)
+
             else:
                 text = f'Star [{wStar.number:02d}]: RMS of [{wStar.errorRMS:04.1f}] deleted'
                 self.app.message.emit(text, 0)
@@ -740,13 +777,37 @@ class ManageModel(object):
 
         return True
 
-    def showAnalyse(self):
+    def showOriginalModelAnalyse(self):
         """
 
         :return: True for test purpose
         """
 
-        if self.fittedModelPath:
-            self.app.showAnalyse.emit(self.fittedModelPath)
+        if not self.fittedModelPath:
+            return False
+
+        if not os.path.isfile(self.fittedModelPath):
+            return False
+
+        self.app.showAnalyse.emit(self.fittedModelPath)
+
+        return True
+
+    def showOptimizedModelAnalyse(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        if not self.fittedModelPath:
+            return False
+
+        temp = os.path.splitext(self.fittedModelPath)
+        optPath = temp[0] + '-opt' + temp[1]
+
+        if not os.path.isfile(optPath):
+            return False
+
+        self.app.showAnalyse.emit(optPath)
 
         return True

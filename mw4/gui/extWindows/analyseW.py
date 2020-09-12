@@ -47,7 +47,6 @@ class AnalyseWindow(widget.MWidget):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.workers = None
 
         self.ui = analyse_ui.Ui_AnalyseDialog()
         self.ui.setupUi(self)
@@ -172,7 +171,7 @@ class AnalyseWindow(widget.MWidget):
         :return:
         """
         self.storeConfig()
-        self.app.showAnalyse.disconnect(self.showAnalyse)
+        self.app.showOriginalAnalyseData.disconnect(self.showAnalyse)
 
         # gui signals
         super().closeEvent(closeEvent)
@@ -708,11 +707,8 @@ class AnalyseWindow(widget.MWidget):
                   self.draw_errorDistribution,
                   ]
 
-        self.workers = list()
-
         for chart in charts:
             worker = Thread(target=chart)
-            self.workers.append(worker)
             worker.start()
 
         return True

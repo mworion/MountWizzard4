@@ -675,6 +675,30 @@ class Model:
 
         return True
 
+    @staticmethod
+    def writeRetrofitData(mountModel, buildModel):
+        """
+
+        :param mountModel:
+        :param buildModel:
+        :return:
+        """
+
+        for i, mPoint in enumerate(buildModel):
+            mPoint['errorRMS'] = mountModel.starList[i].errorRMS
+            mPoint['errorAngle'] = mountModel.starList[i].errorAngle.degrees
+            mPoint['haMountModel'] = mountModel.starList[i].coord.ra.hours
+            mPoint['decMountModel'] = mountModel.starList[i].coord.dec.degrees
+            mPoint['errorRA'] = mountModel.starList[i].errorRA()
+            mPoint['errorDEC'] = mountModel.starList[i].errorDEC()
+            mPoint['errorIndex'] = mountModel.starList[i].number
+            mPoint['modelTerms'] = mountModel.terms
+            mPoint['modelErrorRMS'] = mountModel.errorRMS
+            mPoint['modelOrthoError'] = mountModel.orthoError.degrees * 3600
+            mPoint['modelPolarError'] = mountModel.polarError.degrees * 3600
+
+        return buildModel
+
     def retrofitModel(self):
         """
         retrofitModel reads the actual model points and results out of the mount computer
@@ -686,26 +710,15 @@ class Model:
         :return: True for test purpose
         """
 
-        model = self.app.mount.model
+        mountModel = self.app.mount.model
 
-        if len(model.starList) != len(self.model):
-            text = f'length starList [{len(model.starList)}] and length '
+        if len(mountModel.starList) != len(self.model):
+            text = f'length starList [{len(mountModel.starList)}] and length '
             text += f'model [{len(self.model)}] is different'
             self.log.info(text)
             self.model = []
 
-        for i, mPoint in enumerate(self.model):
-            mPoint['errorRMS'] = model.starList[i].errorRMS
-            mPoint['errorAngle'] = model.starList[i].errorAngle.degrees
-            mPoint['haMountModel'] = model.starList[i].coord.ra.hours
-            mPoint['decMountModel'] = model.starList[i].coord.dec.degrees
-            mPoint['errorRA'] = model.starList[i].errorRA()
-            mPoint['errorDEC'] = model.starList[i].errorDEC()
-            mPoint['errorIndex'] = model.starList[i].number
-            mPoint['modelTerms'] = model.terms
-            mPoint['modelErrorRMS'] = model.errorRMS
-            mPoint['modelOrthoError'] = model.orthoError.degrees * 3600
-            mPoint['modelPolarError'] = model.polarError.degrees * 3600
+        self.model = self.writeRetrofitDate(mountModel, self.model)
 
         return True
 
@@ -763,10 +776,7 @@ class Model:
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
 
         with open(modelPath, 'w') as outfile:
-            json.dump(saveData,
-                      outfile,
-                      sort_keys=True,
-                      indent=4)
+            json.dump(saveData, outfile, sort_keys=True, indent=4)
 
         return True
 
@@ -868,7 +878,6 @@ class Model:
         else:
             self.app.message.emit('Model programming error', 2)
 
-        # cleaning up the disk space
         if not self.ui.checkKeepImages.isChecked():
             self.app.message.emit('Deleting model images', 0)
             shutil.rmtree(self.imageDir, ignore_errors=True)

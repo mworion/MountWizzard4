@@ -85,7 +85,7 @@ def test_storeConfig_2(qtbot, app):
 
 
 def test_closeEvent_1(qtbot, app):
-    app.app.showAnalyse.connect(app.showAnalyse)
+    app.app.showOriginalAnalyseData.connect(app.showOriginalAnalyseData)
     app.closeEvent(QCloseEvent())
 
 
@@ -138,5 +138,5 @@ def test_loadModel_2(app):
 def test_showAnalyse_1(app):
     with mock.patch.object(app,
                            'processModel'):
-        suc = app.showAnalyse('test')
+        suc = app.showOriginalAnalyseData('test')
         assert suc

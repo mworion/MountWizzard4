@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -8525,34 +8525,15 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QPushButton" name="storeOptModelFile">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>190</y>
-        <width>126</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If a model optimization happened, you can store an additional model file with the resulting build points and updated model point errors to get the best analyse for the actual used model (and not for the original used overall model points)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>Store modelfile</string>
-      </property>
-     </widget>
      <widget class="QPushButton" name="openAnalyseW">
       <property name="enabled">
        <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>145</x>
+        <x>10</x>
         <y>190</y>
-        <width>126</width>
+        <width>231</width>
         <height>26</height>
        </rect>
       </property>
@@ -8563,11 +8544,27 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Analyse window</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="callActualModelAnalyse">
+     <widget class="QPushButton" name="showActualModelAnalyse">
       <property name="geometry">
        <rect>
         <x>245</x>
         <y>160</y>
+        <width>26</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pushed the discovered model file name to the analyse window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="showOptimizedModelAnalyse">
+      <property name="geometry">
+       <rect>
+        <x>245</x>
+        <y>190</y>
         <width>26</width>
         <height>26</height>
        </rect>

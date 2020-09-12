@@ -22,7 +22,6 @@ import threading
 from unittest import mock
 import logging
 from pathlib import Path
-import shutil
 
 # external packages
 from PyQt5.QtCore import QObject
@@ -41,9 +40,6 @@ from base.loggerMW import CustomLogger
 
 @pytest.fixture(autouse=True, scope='function')
 def app(qtbot):
-
-    shutil.copy2('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp',
-                 follow_symlinks=True)
 
     class Test(QObject):
         config = {'mainW': {}}

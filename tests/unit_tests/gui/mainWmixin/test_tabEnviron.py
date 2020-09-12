@@ -16,12 +16,10 @@
 #
 ###########################################################
 # standard libraries
-import os
 import pytest
 from unittest import mock
 import logging
 from pathlib import Path
-import shutil
 
 # external packages
 from PyQt5.QtGui import QImage
@@ -49,9 +47,6 @@ from base.loggerMW import CustomLogger
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown(qtbot):
     global ui, widget, Test, Test1, app
-
-    shutil.copy2('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp',
-                 follow_symlinks=True)
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,

@@ -333,7 +333,7 @@ class AnalyseWindow(widget.MWidget):
                 polynomW = np.polyfit(xW, yW, poly)
                 meanW = np.poly1d(polynomW)(xW)
             except Exception as e:
-                self.log.warn('Interpolation failed')
+                self.log.info('Interpolation failed')
             else:
                 axe.plot(xW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
 
@@ -341,7 +341,7 @@ class AnalyseWindow(widget.MWidget):
                 polynomE = np.polyfit(xE, yE, poly)
                 meanE = np.poly1d(polynomE)(xE)
             except Exception as e:
-                self.log.warn('Interpolation failed')
+                self.log.info('Interpolation failed')
             else:
                 axe.plot(xE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
 

@@ -64,10 +64,10 @@ jobs:
 
     - name: Running unit tests
       run: |
+        pytest tests/unit_tests/zStartup
         pytest tests/unit_tests/base
         pytest tests/unit_tests/gui/extWindows
         pytest tests/unit_tests/gui/mainWindow
         pytest tests/unit_tests/gui/mainWmixin
         pytest tests/unit_tests/gui/utilities
         pytest tests/unit_tests/logic
-        pytest tests/unit_tests/zStartup

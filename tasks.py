@@ -159,7 +159,8 @@ def test_ib(c):
 def test_mw_cov(c):
     printMW('testing mountwizzard')
     runMW(c, 'flake8')
-    runMW(c, 'pytest tests/unit_tests/base --cov=mw4/')
+    runMW(c, 'pytest tests/unit_tests/zStartup --cov=mw4/')
+    runMW(c, 'pytest tests/unit_tests/base --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/logic/astrometry --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/logic/cover --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/logic/dome --cov-append --cov=mw4/')
@@ -174,13 +175,13 @@ def test_mw_cov(c):
     runMW(c, 'pytest tests/unit_tests/gui/mainWindow --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/zStartup --cov-append --cov=mw4/')
 
 
 @task()
 def test_mw(c):
     printMW('testing mountwizzard')
     runMW(c, 'flake8')
+    runMW(c, 'pytest tests/unit_tests/zStartup')
     runMW(c, 'pytest tests/unit_tests/base')
     runMW(c, 'pytest tests/unit_tests/logic/astrometry')
     runMW(c, 'pytest tests/unit_tests/logic/cover')
@@ -196,7 +197,6 @@ def test_mw(c):
     runMW(c, 'pytest tests/unit_tests/gui/mainWindow')
     runMW(c, 'pytest tests/unit_tests/gui/mainWmixin')
     runMW(c, 'pytest tests/unit_tests/gui/utilities')
-    runMW(c, 'pytest tests/unit_tests/zStartup')
 
 
 @task(pre=[])

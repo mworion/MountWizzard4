@@ -994,7 +994,7 @@ class MainWindow(MWidget,
         :return: nothing
         """
 
-        self.app.config = {}
+        # self.app.config = {}
         self.storeConfig()
         self.app.storeConfig()
 

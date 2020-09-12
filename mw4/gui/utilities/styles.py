@@ -44,12 +44,12 @@ class MWStyles:
     COLOR_PINK = QColor(192, 16, 192)
 
     TRAFFICLIGHTCOLORS = ['green', 'yellow', 'red', '']
-    
+
     BACK_BG = 'background-color: transparent;'
     BACK_RED = 'background-color: red;'
     BACK_GREEN = 'background-color: green;'
     BACK_NORM = 'background-color: #202020;'
-    
+
     M_BLUE = '#2090C0'
     M_BLUE1 = '#104860'
     M_BLUE2 = '#0C3648'
@@ -299,9 +299,9 @@ class MWStyles:
         background-color: rgb(32, 144, 192);
         image: url(:/icon/checkmark.ico);
     }
-    QCheckBox:disabled {
-        color: rgb(32, 144, 192);
-    }
+    #QCheckBox:disabled {
+    #    color: rgb(32, 144, 192);
+    #}
     QRadioButton {
         color: #C0C0C0;
         background-color: transparent;

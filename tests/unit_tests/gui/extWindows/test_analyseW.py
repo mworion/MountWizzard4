@@ -90,10 +90,8 @@ def test_closeEvent_1(qtbot, app):
 
 
 def test_showWindow_1(qtbot, app):
-    with mock.patch.object(app,
-                           'show'):
-        suc = app.showWindow()
-        assert suc
+    suc = app.showWindow()
+    assert suc
 
 
 def test_writeGui_1(qtbot, app):

@@ -619,6 +619,7 @@ class Model:
 
         if hasDome and hasAzimuth:
             self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
+
         elif hasDome and not hasAzimuth:
             self.app.message.emit('Dome without azimuth value used', 2)
 
@@ -717,6 +718,7 @@ class Model:
         """
 
         modelDataForSave = list()
+
         for mPoint in self.model:
             sPoint = dict()
             sPoint.update(mPoint)
@@ -736,6 +738,7 @@ class Model:
             sPoint['latitude'] = self.app.mount.obsSite.location.latitude.degrees
 
             modelDataForSave.append(sPoint)
+
         return modelDataForSave
 
     def saveModelFinish(self):
@@ -752,17 +755,13 @@ class Model:
         :return: True for test purpose
         """
 
-        # remove signal connection
         self.app.mount.signals.alignDone.disconnect(self.saveModelFinish)
-
-        # write model data back from m9utn to model to be saved
         self.retrofitModel()
-
-        # now saving the model
         self.app.message.emit(f'Writing model:       [{self.modelName}]', 0)
 
         saveData = self.generateSaveModel()
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
+
         with open(modelPath, 'w') as outfile:
             json.dump(saveData,
                       outfile,
@@ -786,10 +785,7 @@ class Model:
             self.log.info(f'Only {len(self.model)} points available')
             return False
 
-        # setting signal for callback when the model in memory is refreshed
         self.app.mount.signals.alignDone.connect(self.saveModelFinish)
-
-        # starting refreshment thread
         self.refreshModel()
 
         return True
@@ -831,7 +827,6 @@ class Model:
         :return: true for test purpose
         """
 
-        # getting models before deleting queues
         self.model = list()
 
         while not self.modelQueue.empty():
@@ -843,32 +838,24 @@ class Model:
             self.app.message.emit('Model not enough valid model point', 2)
             return False
 
-        # stopping other activities
         self.defaultSignals()
         self.clearQueues()
         self.defaultGUI()
         self.restoreStatusDAT()
 
-        # doing backups
-        # actual > back >>> back-3
         if self.ui.checkEnableBackup.isChecked():
             self.app.message.emit('Backing up models', 0)
             self.app.mount.model.storeName('temp')
             self.app.mount.model.loadName('back2')
-            self.app.mount.model.deleteName('back3')
             self.app.mount.model.storeName('back3')
             self.app.mount.model.loadName('back1')
-            self.app.mount.model.deleteName('back2')
             self.app.mount.model.storeName('back2')
             self.app.mount.model.loadName('back0')
-            self.app.mount.model.deleteName('back1')
             self.app.mount.model.storeName('back1')
             self.app.mount.model.loadName('temp')
-            self.app.mount.model.deleteName('back0')
             self.app.mount.model.storeName('back0')
             self.app.mount.model.deleteName('temp')
 
-        # finally do it
         self.app.message.emit('Programming model to mount', 0)
         build = self.generateBuildData(model=self.model)
         suc = self.app.mount.model.programAlign(build)
@@ -919,16 +906,13 @@ class Model:
         if len(points) < 3:
             return False
 
-        # looking for solving application
         astrometryApp = self.ui.astrometryDevice.currentText()
 
         if astrometryApp.startswith('No device'):
             return False
 
-        # while modeling set dual axis tracking off
         self.changeStatusDAT()
 
-        # collection locations for files and generate directories if necessary
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         self.modelName = f'm-{nameTime}-{self.lastGenerator}'
         self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
@@ -939,11 +923,9 @@ class Model:
         if not os.path.isdir(self.imageDir):
             return False
 
-        # now everything is prepared and we could start modeling
         self.clearQueues()
         self.app.message.emit(f'Modeling start:      {self.modelName}', 1)
 
-        # collection all necessary information
         exposureTime = self.ui.expTime.value()
         binning = self.ui.binning.value()
         subFrame = self.ui.subFrame.value()
@@ -953,20 +935,14 @@ class Model:
         focalLength = self.ui.focalLength.value()
         lenSequence = len(points)
 
-        # preparation of signals and gui
         self.prepareGUI()
         self.prepareSignals()
         self.startModeling = time.time()
 
-        # queuing modeling points
         for countSequence, point in enumerate(points):
 
             modelSet = dict()
-
-            # define the path to the image file
             imagePath = f'{self.imageDir}/image-{countSequence:03d}.fits'
-
-            # populating the parameters
             modelSet['imagePath'] = imagePath
             modelSet['exposureTime'] = exposureTime
             modelSet['binning'] = binning
@@ -982,11 +958,8 @@ class Model:
             modelSet['focalLength'] = focalLength
             modelSet['altitude'] = point[0]
             modelSet['azimuth'] = point[1]
-
-            # putting to queue
             self.slewQueue.put(copy.copy(modelSet))
 
-        # kick off modeling
         self.modelSlew()
 
         return True
@@ -1030,7 +1003,6 @@ class Model:
         if value < 2:
             self.app.message.emit(f'Mount settling time short [{value}]s', 2)
 
-        # check if imaging in window is running and abort it if necessary
         if self.app.uiWindows['showImageW']['classObj']:
             winImage = self.app.uiWindows['showImageW']['classObj']
             if winImage.deviceStat['expose'] or winImage.deviceStat['exposeN']:
@@ -1097,7 +1069,6 @@ class Model:
                 model = json.load(infile)
                 modelJSON += model
 
-        # preparing the text
         if index:
             postFix = 's'
 
@@ -1108,7 +1079,6 @@ class Model:
             self.app.message.emit(f'Model{postFix} has more than 99 points', 2)
             return False
 
-        # finally do it
         self.app.message.emit(f'Programming {index + 1} model{postFix} to mount', 0)
 
         build = self.generateBuildData(modelJSON)

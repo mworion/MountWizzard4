@@ -295,6 +295,27 @@ def test_win(c):
 
 
 @task(pre=[])
+def unittest_win(c):
+    printMW('unittest windows install')
+    printMWp('...delete test dir')
+    runMW(c, f'ssh {userWindows} "if exist {workWindows} rd /s /q {workWindows}"')
+    time.sleep(1)
+    printMWp('...make test dir')
+    runMW(c, f'ssh {userWindows} "if not exist {workWindows} mkdir {workWindows}"')
+    time.sleep(1)
+
+    with c.cd('dist'):
+        printMWp('...copy *.tar.gz to test dir')
+        runMWd(c, f'scp -r mountwizzard4.tar.gz {workWindowsSCP}')
+
+    with c.cd('support/Windows'):
+        printMWp('...copy install script to test dir')
+        runMWd(c, f'scp -r MW4_InstallUnitTests.bat {workWindowsSCP}')
+        printMWp('...run install script in test dir')
+        runMWd(c, f'ssh {userWindows} "cd {workWindows} && MW4_InstallUnitTests.bat"')
+
+
+@task(pre=[])
 def test_ubuntu(c):
     printMW('test ubuntu install')
     printMWp('...delete test dir')

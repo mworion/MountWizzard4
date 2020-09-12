@@ -229,11 +229,11 @@ class MainWindow(MWidget,
         for base in self.__class__.__bases__:
             if base.__name__ == 'MWidget':
                 continue
-                
+
             if hasattr(base, func):
                 funcAttrib = getattr(base, func)
                 funcAttrib(self)
-                
+
         return True
 
     def initConfig(self):
@@ -249,17 +249,17 @@ class MainWindow(MWidget,
         self.ui.profile.setText(config.get('profileName'))
         if 'mainW' not in config:
             config['mainW'] = {}
-            
+
         config = config['mainW']
         x = config.get('winPosX', 20)
         y = config.get('winPosY', 20)
-        
+
         if x > self.screenSizeX:
             x = 0
-            
+
         if y > self.screenSizeY:
             y = 0
-            
+
         self.move(x, y)
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
@@ -316,10 +316,10 @@ class MainWindow(MWidget,
 
         config = self.app.config
         config['profileName'] = self.ui.profile.text()
-        
+
         if 'mainW' not in config:
             config['mainW'] = {}
-            
+
         config = config['mainW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
@@ -473,7 +473,7 @@ class MainWindow(MWidget,
             if self.drivers[driver]['uiSetup'] is not None:
                 ui = self.drivers[driver]['uiSetup']
                 self.wIcon(ui, QIcon(':/icon/cogs.svg'))
-                
+
         self.wIcon(self.ui.ascomConnect, QIcon(':/icon/link.svg'))
         self.wIcon(self.ui.ascomDisconnect, QIcon(':/icon/unlink.svg'))
 
@@ -527,14 +527,14 @@ class MainWindow(MWidget,
 
         if setting.weatherTemperature is None and setting.weatherPressure is None:
             self.deviceStat['directWeather'] = None
-            
+
         else:
             if setting.weatherStatus is None:
                 self.deviceStat['directWeather'] = False
-                
+
             else:
                 self.deviceStat['directWeather'] = True
-                
+
         return True
 
     def smartFunctionGui(self):
@@ -549,13 +549,13 @@ class MainWindow(MWidget,
         """
 
         isModelingReady = all(self.deviceStat[x] for x in ['mount', 'camera', 'astrometry'])
-        
+
         if isModelingReady and self.app.data.buildP:
             self.ui.runModel.setEnabled(True)
             self.ui.plateSolveSync.setEnabled(True)
             self.ui.runFlexure.setEnabled(True)
             self.ui.runHysteresis.setEnabled(True)
-            
+
         else:
             self.ui.runModel.setEnabled(False)
             self.ui.plateSolveSync.setEnabled(False)
@@ -565,20 +565,20 @@ class MainWindow(MWidget,
         # if mount is not up, you cannot program a model
         if self.deviceStat.get('mount', False):
             self.ui.batchModel.setEnabled(True)
-            
+
         else:
             self.ui.batchModel.setEnabled(False)
 
         stat = self.deviceStat.get('environOverall', None)
-        
+
         if stat is None:
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
-            
+
         elif stat and self.deviceStat.get('mount', None):
             self.ui.refractionGroup.setEnabled(True)
             self.ui.setRefractionManual.setEnabled(True)
-            
+
         else:
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
@@ -645,15 +645,15 @@ class MainWindow(MWidget,
 
         for key, group in environ.items():
             stat = self.deviceStat.get(key, None)
-            
+
             if stat is None:
                 group.setFixedWidth(0)
                 group.setEnabled(False)
-                
+
             elif stat:
                 group.setMinimumSize(75, 0)
                 group.setEnabled(True)
-                
+
             else:
                 group.setMinimumSize(75, 0)
                 group.setEnabled(False)
@@ -668,10 +668,10 @@ class MainWindow(MWidget,
 
         for win in self.app.uiWindows:
             winObj = self.app.uiWindows[win]
-            
+
             if winObj['classObj']:
                 self.changeStyleDynamic(winObj['button'], 'running', True)
-                
+
             else:
                 self.changeStyleDynamic(winObj['button'], 'running', False)
 
@@ -691,17 +691,17 @@ class MainWindow(MWidget,
 
         if self.refractionSource in self.deviceStat:
             self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
-            
+
         else:
             self.deviceStat['environOverall'] = None
 
         for device, ui in self.deviceStatGui.items():
             if self.deviceStat.get(device, None) is None:
                 self.changeStyleDynamic(ui, 'color', 'gray')
-                
+
             elif self.deviceStat[device]:
                 self.changeStyleDynamic(ui, 'color', 'green')
-                
+
             else:
                 self.changeStyleDynamic(ui, 'color', 'red')
 
@@ -731,10 +731,10 @@ class MainWindow(MWidget,
         self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
         if self.ui.isOnline.isChecked():
             text = 'Internet Online Mode'
-            
+
         else:
             text = 'Offline Mode'
-            
+
         text = f'{self.threadPool.activeThreadCount():2d} - {text}'
         self.ui.statusOnline.setTitle(text)
 
@@ -781,7 +781,7 @@ class MainWindow(MWidget,
 
         if obs.statusText() is not None:
             self.ui.statusText.setText(obs.statusText())
-            
+
         else:
             self.ui.statusText.setText('-')
 
@@ -847,7 +847,7 @@ class MainWindow(MWidget,
 
             if not self.uiWindows[window]['classObj']:
                 self.buildWindow(window)
-                
+
             else:
                 self.uiWindows[window]['classObj'].close()
 
@@ -888,7 +888,7 @@ class MainWindow(MWidget,
             for window in self.uiWindows:
                 if self.uiWindows[window]['classObj']:
                     continue
-                    
+
                 waitDeleted = False
 
             QTest.qWait(100)
@@ -907,7 +907,7 @@ class MainWindow(MWidget,
 
         if not filePath.endswith(ext):
             filePath += ext
-            
+
         return filePath
 
     def loadProfile(self):
@@ -941,7 +941,7 @@ class MainWindow(MWidget,
             self.app.config['profileName'] = name
             self.ui.profile.setText(name)
             self.app.message.emit(f'Profile              [{name}] loaded', 0)
-            
+
         else:
             self.app.message.emit(f'Profile              [{name}] cannot no be loaded', 2)
 
@@ -979,10 +979,10 @@ class MainWindow(MWidget,
         if suc:
             self.ui.profile.setText(name)
             self.app.message.emit(f'Profile              [{name}] saved', 0)
-            
+
         else:
             self.app.message.emit(f'Profile              [{name}] cannot no be saved', 2)
-            
+
         return True
 
     def saveProfile(self):
@@ -996,14 +996,14 @@ class MainWindow(MWidget,
         self.app.config = {}
         self.storeConfig()
         self.app.storeConfig()
-        
+
         suc = self.app.saveConfig(name=self.ui.profile.text())
         if suc:
             self.app.message.emit('Actual profile saved', 0)
-            
+
         else:
             self.app.message.emit('Actual profile cannot not be saved', 2)
-            
+
         return suc
 
     def remoteCommand(self, command):
@@ -1017,11 +1017,11 @@ class MainWindow(MWidget,
         if command == 'shutdown':
             self.quitSave()
             self.app.message.emit('Shutdown MW remotely', 2)
-            
+
         elif command == 'shutdown mount':
             self.mountShutdown()
             self.app.message.emit('Shutdown mount remotely', 2)
-            
+
         elif command == 'boot mount':
             self.mountBoot()
             self.app.message.emit('Boot mount remotely', 2)

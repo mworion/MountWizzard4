@@ -124,6 +124,7 @@ class Model:
         config = self.app.config['mainW']
         self.ui.checkDisableDAT.setChecked(config.get('checkDisableDAT', False))
         self.ui.checkEnableBackup.setChecked(config.get('checkEnableBackup', False))
+        self.ui.parkMountAfterModel.setChecked(config.get('parkMountAfterModel', False))
 
         return True
 
@@ -138,6 +139,7 @@ class Model:
         config = self.app.config['mainW']
         config['checkDisableDAT'] = self.ui.checkDisableDAT.isChecked()
         config['checkEnableBackup'] = self.ui.checkEnableBackup.isChecked()
+        config['parkMountAfterModel'] = self.ui.parkMountAfterModel.isChecked()
 
         return True
 
@@ -879,6 +881,14 @@ class Model:
         self.app.message.emit(f'Modeling finished:    {self.modelName}', 1)
         self.playSound('ModelingFinished')
         self.refreshName()
+
+        if self.ui.parkMountAfterModel.isChecked():
+            self.app.message.emit('Parking mount after model run', 0)
+            suc = self.app.mount.obsSite.park()
+            if not suc:
+                self.app.message.emit('Cannot park mount', 2)
+            else:
+                self.app.message.emit('Mount parked', 0)
 
         return True
 

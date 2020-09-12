@@ -42,7 +42,8 @@ from base.loggerMW import CustomLogger
 @pytest.fixture(autouse=True, scope='function')
 def app(qtbot):
 
-    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
+    shutil.copy2('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp',
+                 follow_symlinks=True)
 
     class Test(QObject):
         config = {'mainW': {}}

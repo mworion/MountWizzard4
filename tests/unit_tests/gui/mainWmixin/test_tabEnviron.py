@@ -50,7 +50,8 @@ from base.loggerMW import CustomLogger
 def module_setup_teardown(qtbot):
     global ui, widget, Test, Test1, app
 
-    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
+    shutil.copy2('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp',
+                 follow_symlinks=True)
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,

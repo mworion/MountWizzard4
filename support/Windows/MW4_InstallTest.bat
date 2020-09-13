@@ -77,21 +77,6 @@ echo . >> install.log
 echo installing wheel >> install.log
 python -m pip install wheel --disable-pip-version-check >> install.log
 
-rem check if virtualenv needs to be installed
-echo . >> install.log
-echo Checking if virtualenv is present >> install.log
-python -m virtualenv --version >> install.log
-if not errorlevel 1 goto :proceedSetupVirtualenv
-
-echo.
-echo ---------------------------------------------
-echo Need to install virtualenv first
-echo ---------------------------------------------
-echo.
-echo . >> install.log
-echo Need to install virtualenv first >> install.log
-python -m pip install virtualenv --no-cache-dir --disable-pip-version-check >> install.log
-
 :proceedSetupVirtualenv
 rem installing virtual environment
 echo.
@@ -102,7 +87,7 @@ echo.
 
 echo . >> install.log
 echo Installing %P_VER% in virtual environ >> install.log
-python -m virtualenv venv >> install.log
+python -m venv venv >> install.log
 if not errorlevel 1 goto :proceedInstallMW4
 
 echo.

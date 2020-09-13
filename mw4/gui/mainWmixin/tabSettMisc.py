@@ -161,6 +161,7 @@ class SettMisc(object):
         if isOnline:
             iers.conf.auto_download = True
             iers.conf.auto_max_age = 30
+
         else:
             iers.conf.auto_download = False
             iers.conf.auto_max_age = 99999
@@ -200,6 +201,7 @@ class SettMisc(object):
 
         try:
             response = requests.get(url).json()
+
         except Exception as e:
             self.log.critical(f'Cannot determine package version: {e}')
             return None
@@ -217,6 +219,7 @@ class SettMisc(object):
 
         if self.ui.versionBeta.isChecked():
             vPackage = verBeta
+
         else:
             vPackage = verRelease
 
@@ -314,7 +317,7 @@ class SettMisc(object):
         runnable = ['pip',
                     'install',
                     f'mountwizzard4=={versionPackage}',
-                    '--disable-pip-version-check',
+                    '--disable-pip-version-check --user',
                     ]
 
         timeStart = time.time()

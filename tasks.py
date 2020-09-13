@@ -19,6 +19,8 @@ from invoke import task
 from PIL import Image
 import glob
 import time
+from importlib_metadata import version
+from git import Repo
 
 #
 # defining all necessary virtual client login for building over all platforms
@@ -248,6 +250,24 @@ def upload_ib(c):
 
 
 @task(pre=[])
+def tag_mw(c):
+    printMW('tagging mw in git')
+    print('version tag is: ', version('mountwizzard4'))
+    obj = Repo('.')
+    obj.create_tag(version('mountwizzard4'))
+    obj.commit()
+    obj.remote.origin.push(version('mountwizzard4'))
+
+
+@task(pre=[build_resource, build_widgets, build_mc, build_ib])
+def install_all(c):
+    printMW('installing in work dir')
+    with c.cd('./dist'):
+        runMW(c, 'pip install indibase.tar.gz')
+        runMW(c, 'pip install mountcontrol.tar.gz')
+
+
+@task(pre=[build_mw, install_all])
 def upload_mw(c):
     printMW('uploading dist mountwizzard4')
     with c.cd('./dist'):
@@ -257,14 +277,6 @@ def upload_mw(c):
 @task(pre=[upload_mc, upload_ib, upload_mw])
 def upload_all(c):
     printMW('uploading dist complete')
-
-
-@task(pre=[build_resource, build_widgets, build_mc, build_ib])
-def install_all(c):
-    printMW('installing in work dir')
-    with c.cd('./dist'):
-        runMW(c, 'pip install indibase.tar.gz')
-        runMW(c, 'pip install mountcontrol.tar.gz')
 
 
 @task(pre=[])

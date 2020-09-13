@@ -84,6 +84,12 @@ class DomeAscom(AscomClass):
 
         return True
 
+    @staticmethod
+    def diffModulus(x, y, m):
+        diff = abs(x - y)
+        diff = abs(diff % m)
+        return min(diff, abs(diff - m))
+
     def emitData(self):
         """
 
@@ -94,7 +100,7 @@ class DomeAscom(AscomClass):
         statusIsSlewing = self.data.get('slewing', False)
 
         if self.targetAzimuth is not None:
-            hasReachedTarget = (azimuth - self.targetAzimuth) < 0.1
+            hasReachedTarget = self.diffModulus(azimuth, self.targetAzimuth, 360) < 0.1
 
         else:
             hasReachedTarget = True

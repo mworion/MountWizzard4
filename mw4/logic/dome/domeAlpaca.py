@@ -116,6 +116,7 @@ class DomeAlpaca(AlpacaClass):
 
         if self.slewing:
             self.signals.message.emit('slewing')
+
         else:
             self.signals.message.emit('')
 
@@ -127,15 +128,20 @@ class DomeAlpaca(AlpacaClass):
         :return: true for test purpose
         """
         self.dataEntry(self.client.azimuth(), 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
+        self.dataEntry(self.client.slewing(), 'slewing')
+
         val = self.client.shutterstatus()
+
         if val == 0:
             val = True
+
         else:
             val = False
+
         self.dataEntry(val,
                        'DOME_SHUTTER.SHUTTER_OPEN',
                        elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
-        self.dataEntry(self.client.slewing(), 'slewing')
+
         return True
 
     def slewToAltAz(self, altitude=0, azimuth=0):

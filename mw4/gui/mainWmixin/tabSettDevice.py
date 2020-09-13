@@ -413,6 +413,7 @@ class SettDevice:
             self.app.message.emit(f'Disabled device:     [{driver}]', 0)
 
         self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
+        self.deviceStat[driver] = None
 
         return True
 
@@ -610,12 +611,16 @@ class SettDevice:
         if hasattr(self.drivers[driver]['class'], 'signals'):
             if self.sender() != self.drivers[driver]['class'].signals:
                 return False
+
         else:
             driverClass = self.drivers[driver]['class']
+
             if not driverClass.framework:
                 return False
+
             if driverClass.run[driverClass.framework].deviceName != deviceName:
                 return False
+
         return True
 
     def serverDisconnected(self, deviceList):

@@ -131,17 +131,23 @@ class DomeAscom(AscomClass):
         self.dataEntry(self.client.Azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.dataEntry(self.client.Slewing, 'slewing')
 
-        val = self.client.shutterstatus
+        try:
+            val = self.client.shutterstatus
 
-        if val == 0:
-            val = True
+        except Exception:
+            val = None
 
         else:
-            val = False
+            if val == 0:
+                val = True
 
-        self.dataEntry(val,
-                       'DOME_SHUTTER.SHUTTER_OPEN',
-                       elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
+            else:
+                val = False
+
+        if val is not None:
+            self.dataEntry(val,
+                           'DOME_SHUTTER.SHUTTER_OPEN',
+                           elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
 
         return True
 

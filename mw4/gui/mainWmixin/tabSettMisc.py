@@ -317,7 +317,7 @@ class SettMisc(object):
         runnable = ['pip',
                     'install',
                     f'mountwizzard4=={versionPackage}',
-                    '--disable-pip-version-check --user',
+                    '--disable-pip-version-check',
                     ]
 
         timeStart = time.time()

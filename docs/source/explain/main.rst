@@ -262,14 +262,23 @@ absolute numbers.
 Area 2: Optimizing Model
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Once you have the model downloaded (which MW4 does automatically when starting up),
-optimizations can then be done. There might be some really bad points in the model that you would like
-to remove. You can also do it automatically until you reach a certain target RMS.
+optimizations can then be done. There might be some really bad points in the model that you
+would like to remove. You can also do it automatically until you reach a certain target RMS.
 
 .. note::   It is not recommended to overshoot the optimization and only go for lowest
             numbers. As the model should reflect all deviations from reproducible errors to
             ground truth, the model errors are real.
 
-Area 3: Models in Mount
+Area 3: Analyse Models
+^^^^^^^^^^^^^^^^^^^^^^
+MW4 stores all data which was used for building the model in a separate model file
+(extension .model, located in the model subdirectory). If it load the actual model from the
+mount, it searches in the model subdirectory for the corresponding model file if present and
+displays it's name. As model optimizations will change the read model data, mw4 will
+automatically store an updated file (adding a postfix -opt to the filename). You can display
+this optimised data automatically (check auto act.)
+
+Area 4: Models in Mount
 ^^^^^^^^^^^^^^^^^^^^^^^
 The 10micron mount can store a recent number of models internally. The actual active model
 has no name. So loading or saving means loading a stored model to the actual space or saving

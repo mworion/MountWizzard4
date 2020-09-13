@@ -218,4 +218,13 @@ newer firmware version (starting with firmware 2.16.11).
     :align: center
     :scale: 71%
 
+Analyse Window
+--------------
+The analyse window a collection of charts which show the actual model and how it performs.
+This should help in finding problems in your setup.
+
+.. image:: image/window_analyse.png
+    :align: center
+    :scale: 71%
+
 There is a video on youtube with some explanations: https://youtu.be/6jiCOqKgzZY

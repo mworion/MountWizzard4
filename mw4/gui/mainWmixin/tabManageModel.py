@@ -65,8 +65,8 @@ class ManageModel(object):
         self.ui.runOptimize.clicked.connect(self.runOptimize)
         self.ui.cancelOptimize.clicked.connect(self.cancelOptimize)
         self.ui.deleteWorstPoint.clicked.connect(self.deleteWorstPoint)
-        self.ui.showActualModelAnalyse.clicked.connect(self.showOriginalModelAnalyse)
-        self.ui.showOptimizedModelAnalyse.clicked.connect(self.showOptimizedModelAnalyse)
+        self.ui.showActualModelAnalyse.clicked.connect(self.showActualModelAnalyse)
+        self.ui.showOriginalModelAnalyse.clicked.connect(self.showOriginalModelAnalyse)
 
         model = self.app.mount.model
         self.ui.targetRMS.valueChanged.connect(lambda: self.showModelPosition(model))
@@ -86,6 +86,7 @@ class ManageModel(object):
         self.ui.targetRMS.setValue(config.get('targetRMS', 99))
         self.ui.optimizeOverall.setChecked(config.get('optimizeOverall', True))
         self.ui.optimizeSingle.setChecked(config.get('optimizeSingle', True))
+        self.ui.autoUpdateActualAnalyse.setChecked(config.get('autoUpdateActualAnalyse', False))
         self.showModelPosition(None)
         self.showErrorAscending(None)
         self.showErrorDistribution(None)
@@ -105,6 +106,8 @@ class ManageModel(object):
         config['targetRMS'] = self.ui.targetRMS.value()
         config['optimizeOverall'] = self.ui.optimizeOverall.isChecked()
         config['optimizeSingle'] = self.ui.optimizeSingle.isChecked()
+        config['autoUpdateActualAnalyse'] = self.ui.autoUpdateActualAnalyse.isChecked()
+
         return True
 
     def setNameList(self, model):
@@ -576,6 +579,9 @@ class ManageModel(object):
         else:
             self.ui.originalModel.setText('No fitting model file found')
 
+        if self.ui.autoUpdateActualAnalyse.isChecked():
+            self.showActualModelAnalyse()
+
         return True
 
     def refreshModel(self):
@@ -793,7 +799,7 @@ class ManageModel(object):
 
         return True
 
-    def showOptimizedModelAnalyse(self):
+    def showActualModelAnalyse(self):
         """
 
         :return: True for test purpose
@@ -803,11 +809,11 @@ class ManageModel(object):
             return False
 
         temp = os.path.splitext(self.fittedModelPath)
-        optPath = temp[0] + '-opt' + temp[1]
+        actualPath = temp[0] + '-opt' + temp[1]
 
-        if not os.path.isfile(optPath):
+        if not os.path.isfile(actualPath):
             return False
 
-        self.app.showAnalyse.emit(optPath)
+        self.app.showAnalyse.emit(actualPath)
 
         return True

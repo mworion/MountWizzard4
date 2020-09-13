@@ -171,7 +171,7 @@ class AnalyseWindow(widget.MWidget):
         :return:
         """
         self.storeConfig()
-        self.app.showOriginalAnalyseData.disconnect(self.showAnalyse)
+        self.app.showOriginalModelAnalyse.disconnect(self.showAnalyse)
 
         # gui signals
         super().closeEvent(closeEvent)

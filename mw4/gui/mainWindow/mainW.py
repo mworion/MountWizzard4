@@ -428,8 +428,8 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.deleteWorstPoint, QIcon(':/icon/circle-minus.svg'))
         self.wIcon(self.ui.clearModel, QIcon(':/icon/trash.svg'))
         self.wIcon(self.ui.openAnalyseW, QIcon(':/icon/bar-chart.svg'))
-        self.wIcon(self.ui.showActualModelAnalyse, QIcon(':/icon/cogs.svg'))
-        self.wIcon(self.ui.showOptimizedModelAnalyse, QIcon(':/icon/cogs.svg'))
+        self.wIcon(self.ui.showActualModelAnalyse, QIcon(':/icon/copy.svg'))
+        self.wIcon(self.ui.showOriginalModelAnalyse, QIcon(':/icon/copy.svg'))
 
         self.wIcon(self.ui.loadName, QIcon(':/icon/load.svg'))
         self.wIcon(self.ui.saveName, QIcon(':/icon/save.svg'))

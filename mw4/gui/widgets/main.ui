@@ -4729,7 +4729,7 @@ to mount</string>
       <rect>
        <x>5</x>
        <y>10</y>
-       <width>501</width>
+       <width>496</width>
        <height>421</height>
       </rect>
      </property>
@@ -4785,9 +4785,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
     <widget class="QGroupBox" name="refractionGroup_5">
      <property name="geometry">
       <rect>
-       <x>515</x>
+       <x>510</x>
        <y>10</y>
-       <width>266</width>
+       <width>271</width>
        <height>156</height>
       </rect>
      </property>
@@ -4811,7 +4811,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>5</x>
         <y>25</y>
-        <width>256</width>
+        <width>261</width>
         <height>121</height>
        </rect>
       </property>
@@ -4823,9 +4823,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
     <widget class="QGroupBox" name="refractionGroup_3">
      <property name="geometry">
       <rect>
-       <x>515</x>
+       <x>510</x>
        <y>230</y>
-       <width>266</width>
+       <width>271</width>
        <height>201</height>
       </rect>
      </property>
@@ -4898,7 +4898,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>140</x>
+        <x>145</x>
         <y>15</y>
         <width>116</width>
         <height>21</height>
@@ -5137,9 +5137,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
     <widget class="QGroupBox" name="refractionGroup_6">
      <property name="geometry">
       <rect>
-       <x>515</x>
+       <x>510</x>
        <y>175</y>
-       <width>266</width>
+       <width>271</width>
        <height>46</height>
       </rect>
      </property>
@@ -7334,7 +7334,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>410</x>
        <y>25</y>
        <width>366</width>
-       <height>256</height>
+       <height>236</height>
       </rect>
      </property>
      <property name="title">
@@ -7920,38 +7920,11 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkEnableBackup">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>190</y>
-        <width>356</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When enabled, stores the actual model under back0 and shifts older backups from back0 to back1 to back2 to back3.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>Enable model backups before program</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-     </widget>
      <widget class="QCheckBox" name="parkMountAfterModel">
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>210</y>
+        <y>190</y>
         <width>356</width>
         <height>20</height>
        </rect>
@@ -7981,7 +7954,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>230</y>
+        <y>210</y>
         <width>356</width>
         <height>20</height>
        </rect>
@@ -8485,7 +8458,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>10</x>
         <y>160</y>
-        <width>231</width>
+        <width>181</width>
         <height>26</height>
        </rect>
       </property>
@@ -8533,7 +8506,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>10</x>
         <y>190</y>
-        <width>231</width>
+        <width>126</width>
         <height>26</height>
        </rect>
       </property>
@@ -8547,9 +8520,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="showActualModelAnalyse">
       <property name="geometry">
        <rect>
-        <x>245</x>
-        <y>160</y>
-        <width>26</width>
+        <x>210</x>
+        <y>190</y>
+        <width>66</width>
         <height>26</height>
        </rect>
       </property>
@@ -8557,15 +8530,15 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pushed the discovered model file name to the analyse window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string/>
+       <string>Actual</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="showOptimizedModelAnalyse">
+     <widget class="QPushButton" name="showOriginalModelAnalyse">
       <property name="geometry">
        <rect>
-        <x>245</x>
+        <x>140</x>
         <y>190</y>
-        <width>26</width>
+        <width>66</width>
         <height>26</height>
        </rect>
       </property>
@@ -8573,7 +8546,23 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pushed the discovered model file name to the analyse window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string/>
+       <string>Orig.</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="autoUpdateActualAnalyse">
+      <property name="geometry">
+       <rect>
+        <x>195</x>
+        <y>165</y>
+        <width>81</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Delete model points where the value of the single point is above a certain value.</string>
+      </property>
+      <property name="text">
+       <string>Auto Act.</string>
       </property>
      </widget>
     </widget>

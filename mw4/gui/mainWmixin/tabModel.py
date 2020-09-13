@@ -124,7 +124,6 @@ class Model:
         """
         config = self.app.config['mainW']
         self.ui.checkDisableDAT.setChecked(config.get('checkDisableDAT', False))
-        self.ui.checkEnableBackup.setChecked(config.get('checkEnableBackup', False))
         self.ui.parkMountAfterModel.setChecked(config.get('parkMountAfterModel', False))
 
         return True
@@ -139,7 +138,6 @@ class Model:
         """
         config = self.app.config['mainW']
         config['checkDisableDAT'] = self.ui.checkDisableDAT.isChecked()
-        config['checkEnableBackup'] = self.ui.checkEnableBackup.isChecked()
         config['parkMountAfterModel'] = self.ui.parkMountAfterModel.isChecked()
 
         return True
@@ -852,19 +850,6 @@ class Model:
         self.clearQueues()
         self.defaultGUI()
         self.restoreStatusDAT()
-
-        if self.ui.checkEnableBackup.isChecked():
-            self.app.message.emit('Backing up models', 0)
-            self.app.mount.model.storeName('temp')
-            self.app.mount.model.loadName('back2')
-            self.app.mount.model.storeName('back3')
-            self.app.mount.model.loadName('back1')
-            self.app.mount.model.storeName('back2')
-            self.app.mount.model.loadName('back0')
-            self.app.mount.model.storeName('back1')
-            self.app.mount.model.loadName('temp')
-            self.app.mount.model.storeName('back0')
-            self.app.mount.model.deleteName('temp')
 
         self.app.message.emit('Programming model to mount', 0)
         build = self.generateBuildData(model=self.model)

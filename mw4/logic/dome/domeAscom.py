@@ -131,6 +131,7 @@ class DomeAscom(AscomClass):
         self.dataEntry(self.client.Azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.dataEntry(self.client.Slewing, 'slewing')
 
+        # unfortunately we cannot simply know, which properties are implemented, so we need to test
         try:
             val = self.client.shutterstatus
 

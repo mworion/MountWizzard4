@@ -8204,9 +8204,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>500</x>
-       <y>10</y>
+       <y>5</y>
        <width>281</width>
-       <height>221</height>
+       <height>156</height>
       </rect>
      </property>
      <property name="title">
@@ -8220,7 +8220,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>100</x>
         <y>20</y>
-        <width>86</width>
+        <width>91</width>
         <height>26</height>
        </rect>
       </property>
@@ -8287,7 +8287,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="refreshModel">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>195</x>
         <y>20</y>
         <width>81</width>
         <height>26</height>
@@ -8303,7 +8303,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QDoubleSpinBox" name="targetRMS">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>195</x>
         <y>80</y>
         <width>81</width>
         <height>26</height>
@@ -8339,7 +8339,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>195</x>
         <y>50</y>
         <width>61</width>
         <height>26</height>
@@ -8450,129 +8450,14 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Delete points &gt;Target RMS</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="originalModel">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>160</y>
-        <width>181</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual discovered model file which was used for building the model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="maxLength">
-       <number>50</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="openAnalyseW">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>190</y>
-        <width>126</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Opens an analyse window showing multiple informations about the model context.</string>
-      </property>
-      <property name="text">
-       <string>Analyse window</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="showActualModelAnalyse">
-      <property name="geometry">
-       <rect>
-        <x>210</x>
-        <y>190</y>
-        <width>66</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pushed the discovered model file name to the analyse window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>Actual</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="showOriginalModelAnalyse">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>190</y>
-        <width>66</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pushed the discovered model file name to the analyse window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>Orig.</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="autoUpdateActualAnalyse">
-      <property name="geometry">
-       <rect>
-        <x>195</x>
-        <y>165</y>
-        <width>81</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Delete model points where the value of the single point is above a certain value.</string>
-      </property>
-      <property name="text">
-       <string>Auto Act.</string>
-      </property>
-     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_56">
      <property name="geometry">
       <rect>
        <x>500</x>
-       <y>240</y>
+       <y>250</y>
        <width>281</width>
-       <height>186</height>
+       <height>176</height>
       </rect>
      </property>
      <property name="title">
@@ -8584,7 +8469,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="loadName">
       <property name="geometry">
        <rect>
-        <x>195</x>
+        <x>200</x>
         <y>20</y>
         <width>76</width>
         <height>26</height>
@@ -8600,17 +8485,17 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QListWidget" name="nameList">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>5</x>
         <y>20</y>
-        <width>181</width>
-        <height>156</height>
+        <width>186</width>
+        <height>146</height>
        </rect>
       </property>
      </widget>
      <widget class="QPushButton" name="refreshName">
       <property name="geometry">
        <rect>
-        <x>195</x>
+        <x>200</x>
         <y>110</y>
         <width>76</width>
         <height>26</height>
@@ -8626,7 +8511,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="deleteName">
       <property name="geometry">
        <rect>
-        <x>195</x>
+        <x>200</x>
         <y>80</y>
         <width>76</width>
         <height>26</height>
@@ -8642,7 +8527,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="saveName">
       <property name="geometry">
        <rect>
-        <x>195</x>
+        <x>200</x>
         <y>50</y>
         <width>76</width>
         <height>26</height>
@@ -8823,6 +8708,137 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <bool>true</bool>
        </property>
       </widget>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_22">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>165</y>
+       <width>281</width>
+       <height>76</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Analyse</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QLineEdit" name="originalModel">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>20</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual discovered model file which was used for building the model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="maxLength">
+       <number>50</number>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="openAnalyseW">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>45</y>
+        <width>106</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Opens an analyse window showing multiple informations about the model context.</string>
+      </property>
+      <property name="text">
+       <string>Analyse</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="showOriginalModelAnalyse">
+      <property name="geometry">
+       <rect>
+        <x>115</x>
+        <y>45</y>
+        <width>81</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pushed the discovered model file name to the analyse window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Original</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="autoUpdateActualAnalyse">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>22</y>
+        <width>76</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Delete model points where the value of the single point is above a certain value.</string>
+      </property>
+      <property name="text">
+       <string>Auto Act.</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="showActualModelAnalyse">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>45</y>
+        <width>76</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pushed the discovered model file name to the analyse window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Actual</string>
+      </property>
      </widget>
     </widget>
    </widget>

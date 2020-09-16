@@ -53,6 +53,22 @@ class HemisphereWindowExt(object):
         return marker
 
     @staticmethod
+    def markerPointPassive():
+        """
+        markerPoint constructs a custom marker for presentation of modeldata points by
+        concatenating the circle with an internal cutout of the star
+
+        :return: marker
+        """
+
+        circleB = mpath.Path.unit_circle()
+        verts = np.concatenate([circleB.vertices])
+        codes = np.concatenate([circleB.codes])
+        marker = mpath.Path(verts, codes)
+
+        return marker
+
+    @staticmethod
     def markerAltAz():
         """
         markerAltAz constructs a custom marker for AltAz pointer by

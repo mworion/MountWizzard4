@@ -116,13 +116,17 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         if 'hemisphereW' not in self.app.config:
             self.app.config['hemisphereW'] = {}
+
         config = self.app.config['hemisphereW']
         x = config.get('winPosX', 60)
         y = config.get('winPosY', 60)
+
         if x > self.screenSizeX:
             x = 0
+
         if y > self.screenSizeY:
             y = 0
+
         self.move(x, y)
         height = config.get('height', 600)
         width = config.get('width', 800)
@@ -147,6 +151,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         """
         if 'hemisphereW' not in self.app.config:
             self.app.config['hemisphereW'] = {}
+
         config = self.app.config['hemisphereW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
@@ -348,10 +353,13 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         slew = sett.meridianLimitSlew
         track = sett.meridianLimitTrack
+
         if slew is None or track is None:
             return False
+
         if self.meridianTrack is None:
             return False
+
         if self.meridianSlew is None:
             return False
 
@@ -388,10 +396,13 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         high = sett.horizonLimitHigh
         low = sett.horizonLimitLow
+
         if high is None or low is None:
             return False
+
         if self.horizonLimitLow is None:
             return False
+
         if self.horizonLimitHigh is None:
             return False
 
@@ -425,6 +436,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         if suc:
             self.drawHemisphere()
+
         return suc
 
     def updatePointerAltAz(self):
@@ -443,12 +455,16 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         """
 
         obsSite = self.app.mount.obsSite
+
         if obsSite.Alt is None:
             return False
+
         if obsSite.Az is None:
             return False
+
         if self.pointerAltAz is None:
             return False
+
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
@@ -470,6 +486,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         if self.pointerDome is None:
             return False
+
         if not isinstance(azimuth, (int, float)):
             self.pointerDome.set_visible(False)
             return False
@@ -495,8 +512,10 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         if not self.ui.checkShowAlignStar.isChecked():
             return False
+
         if self.starsAlign is None:
             return False
+
         if self.starsAlignAnnotate is None:
             return False
 
@@ -589,10 +608,10 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         alt = np.array(alt)
         az = np.array(az)
 
-        # show line path pf slewing
         if self.ui.checkShowSlewPath.isChecked():
             ls = ':'
             lw = 1
+
         else:
             ls = ''
             lw = 0
@@ -606,9 +625,18 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                       color=self.MODE[self.operationMode]['buildPColor'],
                                       zorder=20,
                                       )
+
         self.pointsBuildAnnotate = list()
-        for i, AltAz in enumerate(zip(az, alt)):
-            annotation = axes.annotate('{0:2d}'.format(i),
+
+        for i, iterator in enumerate(zip(zip(az, alt), status)):
+            AltAz, status = iterator
+            if status:
+                annotationText = '{0:2d}'.format(i)
+
+            else:
+                annotationText = 'success'
+
+            annotation = axes.annotate(annotationText,
                                        xy=AltAz,
                                        xytext=(2, -10),
                                        textcoords='offset points',
@@ -616,6 +644,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        zorder=10,
                                        )
             self.pointsBuildAnnotate.append(annotation)
+
         return True
 
     def staticCelestialEquator(self, axes=None):
@@ -646,11 +675,12 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :param axes: matplotlib axes object
         :return: success
         """
-        # draw meridian limits
         if self.app.mount.setting.meridianLimitSlew is not None:
             slew = self.app.mount.setting.meridianLimitSlew
+
         else:
             slew = 0
+
         visible = self.ui.checkShowMeridian.isChecked()
         self.meridianSlew = mpatches.Rectangle((180 - slew, 0),
                                                2 * slew,
@@ -659,10 +689,13 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                                color=self.M_BLUE_ALPHA,
                                                visible=visible)
         axes.add_patch(self.meridianSlew)
+
         if self.app.mount.setting.meridianLimitTrack is not None:
             track = self.app.mount.setting.meridianLimitTrack
+
         else:
             track = 0
+
         self.meridianTrack = mpatches.Rectangle((180 - track, 0),
                                                 2 * track,
                                                 90,
@@ -670,6 +703,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                                 color=self.M_YELLOW_L_ALPHA,
                                                 visible=visible)
         axes.add_patch(self.meridianTrack)
+
         return True
 
     def staticHorizonLimits(self, axes=None):
@@ -681,12 +715,16 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
+
         else:
             high = 90
+
         if self.app.mount.setting.horizonLimitLow is not None:
             low = self.app.mount.setting.horizonLimitLow
+
         else:
             low = 0
+
         self.horizonLimitHigh = mpatches.Rectangle((0, high),
                                                    360,
                                                    90 - high,
@@ -701,6 +739,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                                   visible=True)
         axes.add_patch(self.horizonLimitHigh)
         axes.add_patch(self.horizonLimitLow)
+
         return True
 
     def drawHemisphereStatic(self, axes=None):

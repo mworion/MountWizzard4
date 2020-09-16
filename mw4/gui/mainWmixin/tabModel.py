@@ -310,7 +310,7 @@ class Model:
                 alt, az, status = self.app.data.buildP[count]
                 status = False
                 self.app.data.buildP[count] = (alt, az, status)
-                self.app.drawBuildPoints.emit()
+                self.app.redrawHemisphere.emit()
 
             else:
                 text = f'Solving failed for image-{count:03d}'
@@ -941,7 +941,7 @@ class Model:
 
         for countSequence, point in enumerate(points):
 
-            if not point[2]:
+            if not point[2] and self.ui.excludeSuccessfulPoints.isChecked():
                 continue
 
             modelSet = dict()

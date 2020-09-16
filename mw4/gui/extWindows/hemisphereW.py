@@ -604,9 +604,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         if not self.app.data.buildP:
             return False
 
-        alt, az, status = zip(*self.app.data.buildP)
-        alt = np.array(alt)
-        az = np.array(az)
+        points = self.app.data.buildP
+        alt = [x[0] for x in points]
+        az = [x[1] for x in points]
 
         if self.ui.checkShowSlewPath.isChecked():
             ls = ':'
@@ -626,21 +626,32 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                       zorder=20,
                                       )
 
+        for point in points:
+            if point[2]:
+                continue
+
+            axes.plot(point[1], point[0],
+                      marker='x',
+                      color=self.MODE[self.operationMode]['buildPColor'],
+                      zorder=25,
+                      markersize=9,
+                      )
+
         self.pointsBuildAnnotate = list()
 
-        for i, iterator in enumerate(zip(zip(az, alt), status)):
-            AltAz, status = iterator
-            if status:
+        for i, point in enumerate(points):
+            if point[2]:
                 annotationText = '{0:2d}'.format(i)
-
+                color = self.M_WHITE
             else:
-                annotationText = 'success'
+                annotationText = '{0:2d}'.format(i)
+                color = self.M_GREEN
 
             annotation = axes.annotate(annotationText,
-                                       xy=AltAz,
+                                       xy=(point[1], point[0]),
                                        xytext=(2, -10),
                                        textcoords='offset points',
-                                       color=self.M_WHITE,
+                                       color=color,
                                        zorder=10,
                                        )
             self.pointsBuildAnnotate.append(annotation)

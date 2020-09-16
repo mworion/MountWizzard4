@@ -307,6 +307,11 @@ class Model:
                 self.log.info(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
                 self.modelQueue.put(mPoint)
 
+                alt, az, status = self.app.data.buildP[count]
+                status = False
+                self.app.data.buildP[count] = (alt, az, status)
+                self.app.drawBuildPoints.emit()
+
             else:
                 text = f'Solving failed for image-{count:03d}'
                 self.app.message.emit(text, 2)
@@ -716,7 +721,7 @@ class Model:
             self.log.info(text)
             self.model = []
 
-        self.model = self.writeRetrofitDate(mountModel, self.model)
+        self.model = self.writeRetrofitData(mountModel, self.model)
 
         return True
 
@@ -936,6 +941,9 @@ class Model:
 
         for countSequence, point in enumerate(points):
 
+            if not point[2]:
+                continue
+
             modelSet = dict()
             imagePath = f'{self.imageDir}/image-{countSequence:03d}.fits'
             modelSet['imagePath'] = imagePath
@@ -1015,13 +1023,7 @@ class Model:
         self.ui.runFlexure.setEnabled(False)
         self.ui.runHysteresis.setEnabled(False)
 
-        if self.ui.excludeSuccessfulPoints.isChecked():
-            points = [x for x in self.app.data.buildP if x[2]]
-
-        else:
-            points = self.app.data.buildP
-
-        suc = self.modelCore(points=points)
+        suc = self.modelCore(points=self.app.data.buildP)
 
         if not suc:
             self.defaultGUI()

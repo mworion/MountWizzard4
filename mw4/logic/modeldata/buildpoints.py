@@ -150,10 +150,12 @@ class DataPoint(object):
         if not isinstance(value, list):
             self._horizonP.clear()
             return
+
         if not all([isinstance(x, tuple) for x in value]):
             self.log.warning('Malformed value: {0}'.format(value))
             self._horizonP.clear()
             return
+
         self._horizonP.clear()
         self._horizonP += value
         return
@@ -167,10 +169,12 @@ class DataPoint(object):
         if not isinstance(value, list):
             self._buildP = list()
             return
+
         if not all([isinstance(x, tuple) for x in value]):
             self.log.warning('Malformed value: {0}'.format(value))
             self._buildP = list()
             return
+
         self._buildP = value
 
     def addBuildP(self, value=None, position=None):
@@ -185,33 +189,45 @@ class DataPoint(object):
 
         if value is None:
             return False
+
         if not isinstance(value, tuple):
             self.log.warning('malformed value: {0}'.format(value))
             return False
-        if len(value) != 2:
+
+        if len(value) != 3:
             self.log.warning('malformed value: {0}'.format(value))
             return False
+
         if position is None:
             position = len(self._buildP)
+
         if not isinstance(position, (int, float)):
             self.log.warning('malformed position: {0}'.format(position))
             return False
+
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
+
         else:
             high = 90
+
         if self.app.mount.setting.horizonLimitLow is not None:
             low = self.app.mount.setting.horizonLimitLow
+
         else:
             low = 0
+
         if value[0] > high:
             return False
+
         if value[0] < low:
             return False
+
         position = int(position)
         position = min(len(self._buildP), position)
         position = max(0, position)
         self._buildP.insert(position, value)
+
         return True
 
     def delBuildP(self, position):
@@ -225,11 +241,15 @@ class DataPoint(object):
         if not isinstance(position, (int, float)):
             self.log.warning('malformed position: {0}'.format(position))
             return False
+
         position = int(position)
+
         if position < 0 or position > len(self._buildP) - 1:
             self.log.warning('invalid position: {0}'.format(position))
             return False
+
         self._buildP.pop(position)
+
         return True
 
     def clearBuildP(self):
@@ -247,21 +267,27 @@ class DataPoint(object):
 
         if value is None:
             return False
+
         if not isinstance(value, tuple):
             self.log.warning('malformed value: {0}'.format(value))
             return False
+
         if len(value) != 2:
             self.log.warning('malformed value: {0}'.format(value))
             return False
+
         if position is None:
             position = len(self.horizonP)
+
         if not isinstance(position, (int, float)):
             self.log.warning('malformed position: {0}'.format(position))
             return False
+
         position = int(position)
         position = min(len(self._horizonP), position)
         position = max(0, position)
         self._horizonP.insert(position, value)
+
         return True
 
     def delHorizonP(self, position):
@@ -275,11 +301,15 @@ class DataPoint(object):
         if not isinstance(position, (int, float)):
             self.log.warning('malformed position: {0}'.format(position))
             return False
+
         position = int(position)
+
         if position < 0 or position > len(self._horizonP) - 1:
             self.log.warning('invalid position: {0}'.format(position))
             return False
+
         self._horizonP.pop(position)
+
         return True
 
     def clearHorizonP(self):
@@ -297,15 +327,19 @@ class DataPoint(object):
 
         if point[1] > 360:
             point = (point[0], 360)
+
         if point[1] < 0:
             point = (point[0], 0)
+
         x = range(0, 361)
         y = np.interp(x,
                       [i[1] for i in self.horizonP],
                       [i[0] for i in self.horizonP],
                       )
+
         if point[0] > y[int(point[1])]:
             return True
+
         else:
             return False
 
@@ -327,8 +361,10 @@ class DataPoint(object):
 
         lower = 180 - value
         upper = 180 + value
+
         if lower < point[1] < upper:
             return False
+
         else:
             return True
 
@@ -339,6 +375,7 @@ class DataPoint(object):
         :return: true for test purpose
         """
         self._buildP = [x for x in self._buildP if self.isAboveHorizon(x)]
+
         return True
 
     def deleteCloseMeridian(self):
@@ -349,6 +386,7 @@ class DataPoint(object):
         :return: true for test purpose
         """
         self._buildP = [x for x in self._buildP if self.isCloseMeridian(x)]
+
         return True
 
     def sort(self, eastwest=False, highlow=False, pierside=None):
@@ -362,6 +400,7 @@ class DataPoint(object):
 
         if eastwest and highlow:
             return False
+
         if not eastwest and not highlow and pierside is None:
             return False
 
@@ -378,6 +417,7 @@ class DataPoint(object):
 
         if pierside == 'E':
             self._buildP = west + east
+
         else:
             self._buildP = east + west
 
@@ -391,17 +431,21 @@ class DataPoint(object):
         :return: value: loaded data
         """
         fileName = self.configDir + '/' + fileName + ext
+
         if not os.path.isfile(fileName):
             return None
 
         try:
             with open(fileName, 'r') as handle:
                 value = json.load(handle)
+
         except Exception as e:
             self.log.warning('Cannot BPTS load: {0}, error: {1}'.format(fileName, e))
             value = None
+
         else:
             value = [tuple(x) for x in value]
+
         return value
 
     def loadCSV(self, fileName, ext, delimiter=','):
@@ -438,10 +482,13 @@ class DataPoint(object):
     def checkFormat(value):
         if not isinstance(value, list):
             return False
+
         if not all([isinstance(x, tuple) for x in value]):
             return False
+
         if not all([len(x) == 2 for x in value]):
             return False
+
         return True
 
     def loadBuildP(self, fileName=None, ext='.bpts'):
@@ -460,8 +507,10 @@ class DataPoint(object):
         value = None
         if ext == '.csv':
             value = self.loadCSV(fileName, ext)
+
         elif ext == '.bpts':
             value = self.loadJSON(fileName, ext)
+
         elif ext == '.txt':
             value = self.loadCSV(fileName, ext, delimiter=':')
 
@@ -473,11 +522,13 @@ class DataPoint(object):
         if not suc:
             self.clearBuildP()
             return False
+
         self._buildP = value
 
         # backup solution
         if csv:
             self.saveBuildP(fileName=fileName)
+
         return True
 
     def saveBuildP(self, fileName=None):
@@ -515,8 +566,10 @@ class DataPoint(object):
         value = None
         if ext == '.csv':
             value = self.loadCSV(fileName, ext)
+
         elif ext == '.hpts':
             value = self.loadJSON(fileName, ext)
+
         elif ext == '.txt':
             value = self.loadCSV(fileName, ext, delimiter=':')
 
@@ -531,6 +584,7 @@ class DataPoint(object):
         # backup solution
         if csv:
             self.saveHorizonP(fileName=fileName)
+
         return True
 
     @staticmethod
@@ -544,8 +598,10 @@ class DataPoint(object):
 
         if points[0] == (0, 0):
             del points[0]
+
         if points[len(points) - 1] == (0, 360):
             del points[-1]
+
         return points
 
     def saveHorizonP(self, fileName=None):
@@ -558,12 +614,15 @@ class DataPoint(object):
 
         if fileName is None:
             return False
+
         fileName = self.configDir + '/' + fileName + '.hpts'
         points = self.checkBoundaries(self.horizonP)
+
         with open(fileName, 'w') as handle:
             json.dump(points,
                       handle,
                       indent=4)
+
         return True
 
     def genHaDecParams(self, selection):
@@ -579,6 +638,7 @@ class DataPoint(object):
 
         if selection not in self.DEC or selection not in self.STEP:
             return
+
         eastDec = self.DEC[selection]
         westDec = list(reversed(eastDec))
         decL = eastDec + westDec
@@ -614,7 +674,8 @@ class DataPoint(object):
 
                 if 5 <= alt <= 85 and 2 < az < 358:
                     alt += random.uniform(-2, 2)
-                    self.addBuildP((alt, az))
+                    self.addBuildP((alt, az, True))
+
         return True
 
     @staticmethod
@@ -634,17 +695,18 @@ class DataPoint(object):
         for i, alt in enumerate(eastAlt):
             if i % 2:
                 for az in range(minAz, 180, stepAz):
-                    yield(alt, az)
+                    yield(alt, az, True)
             else:
                 for az in range(180 - minAz, 0, -stepAz):
-                    yield(alt, az)
+                    yield(alt, az, True)
+
         for i, alt in enumerate(westAlt):
             if i % 2:
                 for az in range(180 + minAz, 360, stepAz):
-                    yield(alt, az)
+                    yield(alt, az, True)
             else:
                 for az in range(maxAz, 180, -stepAz):
-                    yield(alt, az)
+                    yield(alt, az, True)
 
     def genGrid(self, minAlt=5, maxAlt=85, numbRows=5, numbCols=6):
         """
@@ -667,14 +729,19 @@ class DataPoint(object):
 
         if not 5 <= minAlt <= 85:
             return False
+
         if not 5 <= maxAlt <= 85:
             return False
+
         if not maxAlt > minAlt:
             return False
+
         if not 1 < numbRows < 9:
             return False
+
         if not 1 < numbCols < 16:
             return False
+
         if numbCols % 2:
             return False
 
@@ -694,6 +761,7 @@ class DataPoint(object):
         self.clearBuildP()
         for point in self.genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
             self.addBuildP(point)
+
         return True
 
     def genAlign(self, altBase=30, azBase=10, numberBase=3):
@@ -710,8 +778,10 @@ class DataPoint(object):
 
         if not 5 <= altBase <= 85:
             return False
+
         if not 2 < numberBase < 11:
             return False
+
         if not 0 <= azBase < 360:
             return False
 
@@ -721,9 +791,11 @@ class DataPoint(object):
         numberBase = int(numberBase)
 
         self.clearBuildP()
+
         for i in range(0, numberBase):
             az = azBase + i * stepAz
-            self.addBuildP((altBase, az % 360))
+            self.addBuildP((altBase, az % 360, True))
+
         return True
 
     def generateCelestialEquator(self):
@@ -735,20 +807,24 @@ class DataPoint(object):
         """
 
         celestialEquator = list()
+
         if not self.app.mount.obsSite.location:
             return celestialEquator
 
         lat = self.app.mount.obsSite.location.latitude.degrees
+
         for dec in range(-15, 90, 15):
             for ha in range(- 119, 120, 2):
                 az, alt = HaDecToAltAz(ha / 10, dec, lat)
                 if alt > 0:
                     celestialEquator.append((az, alt))
+
         for ha in range(-115, 120, 10):
             for dec in range(- 90, 90, 2):
                 az, alt = HaDecToAltAz(ha / 10, dec, lat)
                 if alt > 0:
                     celestialEquator.append((az, alt))
+
         return celestialEquator
 
     def generateDSOPath(self, ra=0, dec=0, timeJD=0, location=None,
@@ -771,8 +847,10 @@ class DataPoint(object):
 
         if numberPoints < 1:
             return False
+
         if duration == 0:
             return False
+
         if location is None:
             return False
 
@@ -784,7 +862,7 @@ class DataPoint(object):
             raCalc = skyfield.api.Angle(hours=startPoint)
             az, alt = transform.J2000ToAltAz(raCalc, dec, timeJD, location)
             if alt.degrees > 0:
-                self.addBuildP((alt.degrees, az.degrees % 360))
+                self.addBuildP((alt.degrees, az.degrees % 360, True))
 
         return True
 
@@ -812,7 +890,7 @@ class DataPoint(object):
         azimuth = np.degrees(theta) % 360
 
         for alt, az in zip(altitude, azimuth):
-            # only adding above horizon
             if alt > 0:
-                self.addBuildP((alt, az))
+                self.addBuildP((alt, az, True))
+
         return True

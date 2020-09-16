@@ -101,6 +101,7 @@ class HemisphereWindowExt(object):
 
         if self.ui.checkShowAlignStar.isChecked():
             self.ui.checkPolarAlignment.setEnabled(True)
+
         else:
             self.ui.checkPolarAlignment.setEnabled(False)
             if self.ui.checkPolarAlignment.isChecked():
@@ -116,10 +117,13 @@ class HemisphereWindowExt(object):
 
         if self.ui.checkEditNone.isChecked():
             self.operationMode = 'normal'
+
         elif self.ui.checkEditBuildPoints.isChecked():
             self.operationMode = 'build'
+
         elif self.ui.checkEditHorizonMask.isChecked():
             self.operationMode = 'horizon'
+
         elif self.ui.checkPolarAlignment.isChecked():
             self.operationMode = 'star'
 
@@ -142,8 +146,10 @@ class HemisphereWindowExt(object):
 
         if event is None:
             return None
+
         if plane is None:
             return None
+
         if len(plane) == 0:
             return None
 
@@ -151,10 +157,12 @@ class HemisphereWindowExt(object):
         yt = np.asarray([i[0] for i in plane])
         d = np.sqrt((xt - event.xdata)**2 / 16 + (yt - event.ydata)**2)
         index = d.argsort()[:1][0]
-        # position to far away
+
         if d[index] >= epsilon:
             return None
+
         index = int(index)
+
         return index
 
     @staticmethod
@@ -170,13 +178,16 @@ class HemisphereWindowExt(object):
 
         if event is None:
             return None
+
         if plane is None:
             return None
+
         if len(plane) < 2:
             return None
 
         xt = [i[1] for i in plane]
         index = int(bisect.bisect_left(xt, event.xdata) - 1)
+
         return index
 
     def showMouseCoordinates(self, event):
@@ -188,11 +199,13 @@ class HemisphereWindowExt(object):
 
         if event.xdata is None:
             return False
+
         if event.ydata is None:
             return False
 
         self.ui.altitude.setText(f'{event.ydata:3.1f}')
         self.ui.azimuth.setText(f'{event.xdata:3.1f}')
+
         return True
 
     def onMouseNormal(self, event):
@@ -207,6 +220,7 @@ class HemisphereWindowExt(object):
 
         if not event.inaxes:
             return False
+
         if event.button != 1 or not event.dblclick:
             return False
 
@@ -224,6 +238,7 @@ class HemisphereWindowExt(object):
                              )
         if reply != msg.Yes:
             return False
+
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
                                                     az_degrees=azimuth)
 
@@ -313,7 +328,9 @@ class HemisphereWindowExt(object):
         if event.button == 1:
             suc = self.addHorizonPoint(data=data, event=event)
         elif event.button == 3:
+
             suc = self.deleteHorizonPoint(data=data, event=event)
+
         else:
             return False
 
@@ -338,31 +355,35 @@ class HemisphereWindowExt(object):
 
         if data is None:
             return False
+
         if event is None:
             return False
 
         index = self.getIndexPoint(event=event, plane=data.buildP, epsilon=360)
-        # if no point found, add at the end
+
         if index is None:
             index = len(data.buildP)
-        # take the found point closer to the end of the list
+
         index += 1
-        suc = data.addBuildP(value=(event.ydata, event.xdata),
+
+        suc = data.addBuildP(value=(event.ydata, event.xdata, True),
                              position=index)
         if not suc:
             return False
 
-        # if succeeded, than add the data to the matplotlib hemisphere widget
-        # first the point
         x = event.xdata
         y = event.ydata
+
         if self.ui.checkShowSlewPath.isChecked():
             ls = ':'
             lw = 1
+
         else:
             ls = ''
             lw = 0
+
         color = self.M_PINK_H
+
         if self.pointsBuild is None:
             newBuildP, = axes.plot(x,
                                    y,
@@ -376,7 +397,6 @@ class HemisphereWindowExt(object):
                                    )
             self.pointsBuild = newBuildP
 
-        # and than the annotation (number)
         xy = (x, y)
         newAnnotation = axes.annotate('4',
                                       xy=xy,
@@ -385,9 +405,12 @@ class HemisphereWindowExt(object):
                                       color=self.M_WHITE,
                                       zorder=10,
                                       )
+
         if self.pointsBuildAnnotate is None:
             self.pointsBuildAnnotate = list()
+
         self.pointsBuildAnnotate.insert(index, newAnnotation)
+
         return True
 
     def deleteBuildPoint(self, data=None, event=None):
@@ -420,20 +443,27 @@ class HemisphereWindowExt(object):
 
         if event.button == 1:
             suc = self.addBuildPoint(data=data, event=event, axes=axes)
+
         elif event.button == 3:
             suc = self.deleteBuildPoint(data=data, event=event)
+
         else:
             return False
 
         # redraw the corrected canvas (new positions ans new numbers)
         if len(data.buildP):
-            y, x = zip(*data.buildP)
+            y, x, status = zip(*data.buildP)
+
         else:
             y = x = []
+
         self.pointsBuild.set_data(x, y)
+
         for i, _ in enumerate(data.buildP):
             self.pointsBuildAnnotate[i].set_text('{0:2d}'.format(i))
+
         self.drawHemisphere()
+
         return suc
 
     def onMouseEdit(self, event):
@@ -451,15 +481,19 @@ class HemisphereWindowExt(object):
 
         if not event.inaxes:
             return False
+
         if event.dblclick:
             return False
 
         if self.ui.checkEditHorizonMask.isChecked():
             suc = self.editHorizonMask(event=event, data=data)
+
         elif self.ui.checkEditBuildPoints.isChecked():
             suc = self.editBuildPoints(event=event, data=data, axes=axes)
+
         else:
             return False
+
         return suc
 
     def onMouseStar(self, event):
@@ -474,12 +508,16 @@ class HemisphereWindowExt(object):
 
         if not event.inaxes:
             return False
+
         if event.button == 1:
             alignType = 'polar'
+
         elif event.button == 3:
             alignType = 'ortho'
+
         else:
             return False
+
         if event.dblclick:
             return False
 
@@ -527,6 +565,7 @@ class HemisphereWindowExt(object):
                                            haT=haT,
                                            decT=decT,
                                            lat=lat)
+
         else:
             delta = self.app.dome.slewDome(altitude=altitude,
                                            azimuth=azimuth)
@@ -539,8 +578,10 @@ class HemisphereWindowExt(object):
 
         if not suc:
             self.app.message.emit(f'Cannot slew to: {name}', 2)
+
         else:
             self.app.message.emit('Starting slew', 0)
+
         return suc
 
     def onMouseDispatcher(self, event):
@@ -554,9 +595,12 @@ class HemisphereWindowExt(object):
 
         if self.ui.checkEditNone.isChecked():
             self.onMouseNormal(event)
+
         elif self.ui.checkEditBuildPoints.isChecked():
             self.onMouseEdit(event)
+
         elif self.ui.checkEditHorizonMask.isChecked():
             self.onMouseEdit(event)
+
         elif self.ui.checkPolarAlignment.isChecked():
             self.onMouseStar(event)

@@ -585,7 +585,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         if not self.app.data.buildP:
             return False
 
-        alt, az = zip(*self.app.data.buildP)
+        alt, az, status = zip(*self.app.data.buildP)
         alt = np.array(alt)
         az = np.array(az)
 

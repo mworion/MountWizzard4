@@ -41,28 +41,6 @@ __all__ = [
 ]
 
 
-class MyFigureCanvas(FigureCanvas):
-    """ Subclass canvas to catch the resize event """
-    def __init__(self, figure):
-        self.lastEvent = False # store the last resize event's size here
-        FigureCanvas.__init__(self, figure)
-
-    def resizeEvent(self, event):
-        if not self.lastEvent:
-            # at the start of the app, allow resizing to happen.
-            super(MyFigureCanvas, self).resizeEvent(event)
-        # store the event size for later use
-        self.lastEvent = (event.size().width(), event.size().height())
-
-    def do_resize_now(self):
-        # recall last resize event's size
-        newSize = QSize(self.lastEvent[0], self.lastEvent[1] )
-        # create new event from the stored size
-        event = QResizeEvent(newSize, QSize(1, 1))
-        # and propagate the event to let the canvas resize.
-        super(MyFigureCanvas, self).resizeEvent(event)
-
-
 class FileSortProxyModel(QSortFilterProxyModel):
     """
     FileSortProxyModel enables a proxy solution for reversing the order of all file dialogues.
@@ -199,38 +177,6 @@ class MWidget(QWidget, styles.MWStyles):
         widget.style().polish(widget)
 
         return True
-
-    @staticmethod
-    def embedMatplot(widget=None, constrainedLayout=True):
-        """
-        Embedmatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5
-        application gui. you call it with the parent widget, which is linked to matplotlib
-        canvas of the same size. the background is set to transparent, so you could layer
-        multiple figures on top.
-
-        :param      widget:         parent ui element, which is the reference for embedding
-        :param      constrainedLayout:
-        :return:    staticCanvas:   matplotlib reference as parent for figures
-        """
-
-        if not widget:
-            return None
-
-        # to avoid a white flash before drawing on top.
-        widget.setStyleSheet("background:transparent;")
-        layout = QVBoxLayout(widget)
-        layout.setContentsMargins(0, 0, 0, 0)
-        staticCanvas = FigureCanvas(Figure(dpi=75,
-                                           facecolor='none',
-                                           frameon=False,
-                                           constrained_layout=constrainedLayout,
-                                           )
-                                    )
-        FigureCanvasQTAgg.updateGeometry(staticCanvas)
-        layout.addWidget(staticCanvas)
-        staticCanvas.setParent(widget)
-
-        return staticCanvas
 
     @staticmethod
     def extractNames(names=''):
@@ -579,6 +525,38 @@ class MWidget(QWidget, styles.MWStyles):
                     return index
 
         return 0
+
+    @staticmethod
+    def embedMatplot(widget=None, constrainedLayout=True):
+        """
+        Embedmatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5
+        application gui. you call it with the parent widget, which is linked to matplotlib
+        canvas of the same size. the background is set to transparent, so you could layer
+        multiple figures on top.
+
+        :param      widget:         parent ui element, which is the reference for embedding
+        :param      constrainedLayout:
+        :return:    staticCanvas:   matplotlib reference as parent for figures
+        """
+
+        if not widget:
+            return None
+
+        # to avoid a white flash before drawing on top.
+        widget.setStyleSheet("background:transparent;")
+        layout = QVBoxLayout(widget)
+        layout.setContentsMargins(0, 0, 0, 0)
+        staticCanvas = FigureCanvas(Figure(dpi=75,
+                                           facecolor='none',
+                                           frameon=False,
+                                           constrained_layout=constrainedLayout,
+                                           )
+                                    )
+        FigureCanvasQTAgg.updateGeometry(staticCanvas)
+        layout.addWidget(staticCanvas)
+        staticCanvas.setParent(widget)
+
+        return staticCanvas
 
     def generatePolar(self, widget=None, title=''):
         """

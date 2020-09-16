@@ -19,4 +19,4 @@
 from collections import namedtuple
 
 # the model point itself
-Point = namedtuple('Point', 'altitude azimuth')
+Point = namedtuple('Point', 'altitude azimuth status')

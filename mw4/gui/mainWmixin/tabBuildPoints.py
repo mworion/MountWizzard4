@@ -555,7 +555,7 @@ class BuildPoints(object):
         """
 
         self.app.data.clearBuildP()
-        self.app.sendBuildPoints.emit(self.app.data.buildP)
+        self.app.drawBuildPoints.emit()
 
         if not self.app.uiWindows['showHemisphereW']['classObj']:
             return False

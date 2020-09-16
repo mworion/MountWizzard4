@@ -25,8 +25,9 @@ from threading import Lock
 import numpy as np
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, qApp, QFileDialog
 from PyQt5.QtWidgets import QVBoxLayout
-from PyQt5.QtGui import QPalette, QIcon
+from PyQt5.QtGui import QPalette, QIcon, QResizeEvent
 from PyQt5.QtCore import Qt, QSortFilterProxyModel, QSize, QDir, QObject, pyqtSignal, QEvent
+from PyQt5.QtCore import QSize
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
@@ -38,6 +39,28 @@ from gui.utilities import styles
 __all__ = [
     'MWidget',
 ]
+
+
+class MyFigureCanvas(FigureCanvas):
+    """ Subclass canvas to catch the resize event """
+    def __init__(self, figure):
+        self.lastEvent = False # store the last resize event's size here
+        FigureCanvas.__init__(self, figure)
+
+    def resizeEvent(self, event):
+        if not self.lastEvent:
+            # at the start of the app, allow resizing to happen.
+            super(MyFigureCanvas, self).resizeEvent(event)
+        # store the event size for later use
+        self.lastEvent = (event.size().width(), event.size().height())
+
+    def do_resize_now(self):
+        # recall last resize event's size
+        newSize = QSize(self.lastEvent[0], self.lastEvent[1] )
+        # create new event from the stored size
+        event = QResizeEvent(newSize, QSize(1, 1))
+        # and propagate the event to let the canvas resize.
+        super(MyFigureCanvas, self).resizeEvent(event)
 
 
 class FileSortProxyModel(QSortFilterProxyModel):

@@ -55,6 +55,7 @@ class AnalyseWindow(widget.MWidget):
         self.threadPool = app.threadPool
         self.threadCounter = 0
         self.threadingLock = Lock()
+        self.workers = []
 
         self.latitude = None
         self.pierside = None
@@ -112,6 +113,20 @@ class AnalyseWindow(widget.MWidget):
 
         self.ui.load.clicked.connect(self.loadModel)
         self.ui.winsorizedLimit.clicked.connect(self.drawAll)
+
+        self.charts = [self.draw_raPointErrorsRaw,
+                       self.draw_decPointErrorsRaw,
+                       self.draw_raModelErrors,
+                       self.draw_decModelErrors,
+                       self.draw_raModelErrorsRef,
+                       self.draw_decModelErrorsRef,
+                       self.draw_raPointErrorsRawRef,
+                       self.draw_decPointErrorsRawRef,
+                       self.draw_scaleImage,
+                       self.draw_modelPositions,
+                       self.draw_errorAscending,
+                       self.draw_errorDistribution,
+                       ]
 
         self.initConfig()
 
@@ -708,28 +723,20 @@ class AnalyseWindow(widget.MWidget):
         if self.countSequence is None:
             return False
 
-        if self.threadCounter:
-            return False
+        with self.threadingLock:
+            if self.threadCounter:
+                return False
+            else:
+                self.threadCounter = len(self.charts)
 
-        charts = [self.draw_raPointErrorsRaw,
-                  self.draw_decPointErrorsRaw,
-                  self.draw_raModelErrors,
-                  self.draw_decModelErrors,
-                  self.draw_raModelErrorsRef,
-                  self.draw_decModelErrorsRef,
-                  self.draw_raPointErrorsRawRef,
-                  self.draw_decPointErrorsRawRef,
-                  self.draw_scaleImage,
-                  self.draw_modelPositions,
-                  self.draw_errorAscending,
-                  self.draw_errorDistribution,
-                  ]
+        self.workers = []
 
-        self.threadCounter = len(charts)
-
-        for chart in charts:
+        for chart in self.charts:
             worker = Worker(chart)
+            self.workers.append(worker)
             worker.signals.finished.connect(self.decreaseThreadCounter)
+
+        for worker in self.workers:
             self.threadPool.start(worker)
 
         return True

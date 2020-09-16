@@ -632,9 +632,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
             axes.plot(point[1], point[0],
                       marker='x',
-                      color=self.MODE[self.operationMode]['buildPColor'],
+                      color=self.M_RED,
                       zorder=25,
-                      markersize=9,
+                      markersize=11,
                       )
 
         self.pointsBuildAnnotate = list()

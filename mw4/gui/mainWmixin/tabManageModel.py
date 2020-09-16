@@ -642,6 +642,10 @@ class ManageModel(object):
         """
 
         model = self.app.mount.model
+
+        if not model.numberStars:
+            return False
+
         wIndex = model.starList.index(max(model.starList))
         wStar = model.starList[wIndex]
 

@@ -897,6 +897,7 @@ class Model:
 
         if not points:
             return False
+
         if len(points) < 3:
             return False
 
@@ -983,6 +984,7 @@ class Model:
         self.app.mount.model.storeName('backup')
 
         suc = self.app.mount.model.clearAlign()
+
         if not suc:
             self.app.message.emit('Actual model cannot be cleared', 2)
             return False
@@ -994,6 +996,7 @@ class Model:
             self.refreshModel()
 
         value = self.ui.settleTimeMount.value()
+
         if value < 2:
             self.app.message.emit(f'Mount settling time short [{value}]s', 2)
 
@@ -1012,7 +1015,13 @@ class Model:
         self.ui.runFlexure.setEnabled(False)
         self.ui.runHysteresis.setEnabled(False)
 
-        suc = self.modelCore(points=self.app.data.buildP)
+        if self.ui.excludeSuccessfulPoints.isChecked():
+            points = [x for x in self.app.data.buildP if x[2]]
+
+        else:
+            points = self.app.data.buildP
+
+        suc = self.modelCore(points=points)
 
         if not suc:
             self.defaultGUI()

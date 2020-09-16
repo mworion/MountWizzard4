@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -7334,7 +7334,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>410</x>
        <y>25</y>
        <width>366</width>
-       <height>236</height>
+       <height>256</height>
       </rect>
      </property>
      <property name="title">
@@ -7947,9 +7947,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QCheckBox" name="retryFailedBuildPoints">
+     <widget class="QCheckBox" name="excludeSuccessfulPoints">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -7971,7 +7971,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If there are some build points which failed during model rund, there will be a retry for them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string>Retry failed build points</string>
+       <string>Exclude successful points</string>
       </property>
       <property name="checked">
        <bool>false</bool>
@@ -7994,6 +7994,36 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="text">
        <string>End</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="automaticRetryFailedPoints">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>230</y>
+        <width>356</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If there are some build points which failed during model rund, there will be a retry for them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Automatic retry failed of failed build points</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
       </property>
      </widget>
     </widget>

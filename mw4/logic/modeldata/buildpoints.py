@@ -505,6 +505,7 @@ class DataPoint(object):
             return False
 
         value = None
+
         if ext == '.csv':
             value = self.loadCSV(fileName, ext)
 
@@ -523,7 +524,7 @@ class DataPoint(object):
             self.clearBuildP()
             return False
 
-        self._buildP = value
+        self._buildP = [(x[0], x[1], True) for x in value]
 
         # backup solution
         if csv:
@@ -544,8 +545,10 @@ class DataPoint(object):
 
         fileName = self.configDir + '/' + fileName + '.bpts'
 
+        points = [(x[0], x[1]) for x in self.buildP]
+
         with open(fileName, 'w') as handle:
-            json.dump(self.buildP,
+            json.dump(points,
                       handle,
                       indent=4)
         return True

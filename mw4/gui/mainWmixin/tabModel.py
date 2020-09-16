@@ -906,6 +906,11 @@ class Model:
         if len(points) < 3:
             return False
 
+        excludePoints = self.ui.excludeSuccessfulPoints.isChecked()
+
+        if len([x for x in points if x[2]]) < 3 and excludePoints:
+            return False
+
         astrometryApp = self.ui.astrometryDevice.currentText()
 
         if astrometryApp.startswith('No device'):
@@ -941,7 +946,7 @@ class Model:
 
         for countSequence, point in enumerate(points):
 
-            if not point[2] and self.ui.excludeSuccessfulPoints.isChecked():
+            if not point[2] and excludePoints:
                 continue
 
             modelSet = dict()

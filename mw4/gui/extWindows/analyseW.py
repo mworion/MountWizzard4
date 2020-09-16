@@ -20,7 +20,7 @@
 # standard libraries
 import json
 import os
-from threading import Thread
+from threading import Lock
 
 # external packages
 from PyQt5.QtGui import QIcon
@@ -33,6 +33,7 @@ from scipy.stats.mstats import winsorize
 # local import
 from gui.utilities import widget
 from gui.widgets import analyse_ui
+from base.tpool import Worker
 
 
 class AnalyseWindow(widget.MWidget):
@@ -51,6 +52,9 @@ class AnalyseWindow(widget.MWidget):
         self.ui = analyse_ui.Ui_AnalyseDialog()
         self.ui.setupUi(self)
         self.initUI()
+        self.threadPool = app.threadPool
+        self.threadCounter = 0
+        self.threadingLock = Lock()
 
         self.latitude = None
         self.pierside = None
@@ -684,6 +688,17 @@ class AnalyseWindow(widget.MWidget):
 
         return True
 
+    def decreaseThreadCounter(self):
+        """
+
+        :return:
+        """
+
+        with self.threadingLock:
+            self.threadCounter -= 1
+
+        return True
+
     def drawAll(self):
         """
 
@@ -691,6 +706,9 @@ class AnalyseWindow(widget.MWidget):
         """
 
         if self.countSequence is None:
+            return False
+
+        if self.threadCounter:
             return False
 
         charts = [self.draw_raPointErrorsRaw,
@@ -707,8 +725,11 @@ class AnalyseWindow(widget.MWidget):
                   self.draw_errorDistribution,
                   ]
 
+        self.threadCounter = len(charts)
+
         for chart in charts:
-            worker = Thread(target=chart)
-            worker.start()
+            worker = Worker(chart)
+            worker.signals.finished.connect(self.decreaseThreadCounter)
+            self.threadPool.start(worker)
 
         return True

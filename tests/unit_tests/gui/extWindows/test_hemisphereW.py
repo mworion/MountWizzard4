@@ -97,52 +97,6 @@ def module_setup_teardown(qtbot):
     yield
 
 
-def test_initConfig_1():
-    suc = app.initConfig()
-    assert suc
-
-
-def test_initConfig_3():
-    app.app.config['hemisphereW']['winPosX'] = 10000
-    app.app.config['hemisphereW']['winPosY'] = 10000
-    suc = app.initConfig()
-    assert suc
-
-
-def test_storeConfig_1():
-    app.storeConfig()
-
-
-def test_resizeEvent_1():
-    app.startup = False
-    with mock.patch.object(MWidget,
-                           'resizeEvent'):
-        app.resizeEvent(QEvent)
-
-
-def test_resizeEvent_2():
-    app.startup = True
-    with mock.patch.object(MWidget,
-                           'resizeEvent'):
-        app.resizeEvent(QEvent)
-
-
-def test_resizeTimer_1():
-    app.resizeTimerValue = 3
-    with mock.patch.object(app,
-                           'drawHemisphere'):
-        suc = app.resizeTimer()
-        assert suc
-
-
-def test_resizeTimer_2():
-    app.resizeTimerValue = 1
-    with mock.patch.object(app,
-                           'drawHemisphere'):
-        suc = app.resizeTimer()
-        assert suc
-
-
 def test_drawBlit_1():
     suc = app.drawBlit()
     assert suc

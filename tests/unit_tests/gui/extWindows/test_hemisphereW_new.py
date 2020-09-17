@@ -21,6 +21,7 @@ import pytest
 
 # external packages
 from PyQt5.QtCore import QEvent
+import matplotlib
 
 # local import
 from tests.baseTestSetup import App
@@ -52,7 +53,9 @@ def test_initConfig_3(function):
 
 
 def test_storeConfig_1(function):
-    function.storeConfig()
+    function.app.config = {}
+    suc = function.storeConfig()
+    assert suc
 
 
 def test_resizeEvent_1(function):
@@ -93,6 +96,12 @@ def test_drawBlit_1(function):
 
 
 def test_drawBlit_2(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    axe.figure.canvas.blit(axe.bbox)
+    function.hemisphereBackStars = axe.figure.canvas.copy_from_bbox(axe.bbox)
+    function.pointerAltAz, = axe.plot(0, 0)
+    function.pointerDome, = axe.plot(0, 0)
+    axe.figure.canvas.draw()
     suc = function.drawBlit()
     assert suc
 
@@ -104,15 +113,21 @@ def test_drawBlit_3(function):
 
 
 def test_drawBlitStars_1(function):
-    suc = function.drawBlitStars()
-    assert suc
-
-
-def test_drawBlitStars_2(function):
     function.mutexDraw.lock()
     suc = function.drawBlitStars()
     assert not suc
     function.mutexDraw.unlock()
+
+
+def test_drawBlitStars_2(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    axe.figure.canvas.blit(axe.bbox)
+    function.hemisphereBack = axe.figure.canvas.copy_from_bbox(axe.bbox)
+    function.starsAlignAnnotate = []
+    function.starsAlign, = axe.plot(0, 0)
+    axe.figure.canvas.draw()
+    suc = function.drawBlitStars()
+    assert suc
 
 
 def test_drawBlitStars_3(function):

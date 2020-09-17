@@ -161,6 +161,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()
         config['showPolar'] = self.ui.showPolar.isChecked()
 
+        return True
+
     def closeEvent(self, closeEvent):
         """
 

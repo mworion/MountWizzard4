@@ -342,6 +342,7 @@ class AnalyseWindow(widget.MWidget):
 
         if sort:
             x, y, pierside = zip(*sorted(zip(x, y, self.pierside)))
+                                 
         else:
             pierside = self.pierside
 
@@ -356,19 +357,31 @@ class AnalyseWindow(widget.MWidget):
         if poly:
             try:
                 polynomW = np.polyfit(xW, yW, poly)
-                meanW = np.poly1d(polynomW)(xW)
+                                 
             except Exception as e:
                 self.log.info(f'Interpolation failed: {e}')
+                                 
             else:
-                axe.plot(xW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
+                hasNoNan = np.isnan(polynomW).any()
+                hasNoInf = np.isinf(polynomW).any()
+                
+                if hasNoNan and hasNoInf:
+                    meanW = np.poly1d(polynomW)(xW)
+                    axe.plot(xW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
 
             try:
                 polynomE = np.polyfit(xE, yE, poly)
-                meanE = np.poly1d(polynomE)(xE)
+                                 
             except Exception as e:
                 self.log.info(f'Interpolation failed: {e}')
+                                 
             else:
-                axe.plot(xE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
+                hasNoNan = np.isnan(polynomE).any()
+                hasNoInf = np.isinf(polynomE).any()
+
+                if hasNoNan and hasNoInf:
+                    meanE = np.poly1d(polynomE)(xE)
+                    axe.plot(xE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
 
         axe.plot(xW, yW, marker='.', markersize=7, linestyle='none', color=self.M_GREEN)
         axe.plot(xE, yE, marker='.', markersize=7, linestyle='none', color=self.M_YELLOW)

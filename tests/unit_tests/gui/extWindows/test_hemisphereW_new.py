@@ -89,6 +89,7 @@ def test_drawBlit_1(function):
     function.mutexDraw.lock()
     suc = function.drawBlit()
     assert not suc
+    function.mutexDraw.unlock()
 
 
 def test_drawBlit_2(function):
@@ -111,6 +112,7 @@ def test_drawBlitStars_2(function):
     function.mutexDraw.lock()
     suc = function.drawBlitStars()
     assert not suc
+    function.mutexDraw.unlock()
 
 
 def test_drawBlitStars_3(function):

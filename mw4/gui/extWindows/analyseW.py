@@ -12,7 +12,7 @@
 # Python  v3.7.5
 #
 # Michael Würtenberger
-# (c) 2019
+# (c) 2019, 2020
 #
 # Licence APL2.0
 #

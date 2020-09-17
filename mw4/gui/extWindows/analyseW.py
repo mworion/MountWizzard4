@@ -114,7 +114,8 @@ class AnalyseWindow(widget.MWidget):
         self.ui.load.clicked.connect(self.loadModel)
         self.ui.winsorizedLimit.clicked.connect(self.drawAll)
 
-        self.charts = [self.draw_raPointErrorsRaw,
+        self.charts = [
+                       self.draw_raPointErrorsRaw,
                        self.draw_decPointErrorsRaw,
                        self.draw_raModelErrors,
                        self.draw_decModelErrors,
@@ -343,9 +344,9 @@ class AnalyseWindow(widget.MWidget):
 
         if sort:
             x, y, pierside = zip(*sorted(zip(x, y, p)))
-                                 
+
         else:
-            pierside = p‚
+            pierside = p
 
         if self.ui.winsorizedLimit.isChecked():
             y = winsorize(y, limits=0.03)
@@ -358,31 +359,31 @@ class AnalyseWindow(widget.MWidget):
         if poly:
             try:
                 polynomW = np.polyfit(xW, yW, poly)
-                                 
+
             except Exception as e:
                 self.log.info(f'Interpolation failed: {e}')
-                                 
+
             else:
-                hasNoNan = np.isnan(polynomW).any()
-                hasNoInf = np.isinf(polynomW).any()
-                
+                hasNoNan = not np.isnan(polynomW).any()
+                hasNoInf = not np.isinf(polynomW).any()
+
                 if hasNoNan and hasNoInf:
                     meanW = np.poly1d(polynomW)(xW)
-                    axe.plot(xW, meanW, color=self.M_GREEN, alpha=0.4, lw=5)
+                    axe.plot(xW, meanW, color=self.M_GREEN, alpha=0.4, lw=4)
 
             try:
                 polynomE = np.polyfit(xE, yE, poly)
-                                 
+
             except Exception as e:
                 self.log.info(f'Interpolation failed: {e}')
-                                 
+
             else:
-                hasNoNan = np.isnan(polynomE).any()
-                hasNoInf = np.isinf(polynomE).any()
+                hasNoNan = not np.isnan(polynomE).any()
+                hasNoInf = not np.isinf(polynomE).any()
 
                 if hasNoNan and hasNoInf:
                     meanE = np.poly1d(polynomE)(xE)
-                    axe.plot(xE, meanE, color=self.M_YELLOW, alpha=0.4, lw=5)
+                    axe.plot(xE, meanE, color=self.M_YELLOW, alpha=0.4, lw=4)
 
         axe.plot(xW, yW, marker='.', markersize=7, linestyle='none', color=self.M_GREEN)
         axe.plot(xE, yE, marker='.', markersize=7, linestyle='none', color=self.M_YELLOW)
@@ -404,7 +405,7 @@ class AnalyseWindow(widget.MWidget):
         y = self.errorRA_S
         p = self.pierside
         xLabel = 'Star Number'
-        yLabel = 'Error per Star [RMS]'
+        yLabel = 'Error per Star [arcsec]'
 
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
 
@@ -425,7 +426,7 @@ class AnalyseWindow(widget.MWidget):
         p = self.pierside
         y = [y if p == 'W' else -y for y, p in zip(y, p)]
         xLabel = 'Star Number'
-        yLabel = 'Error per Star [RMS]'
+        yLabel = 'Error per Star [arcsec]'
 
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
 
@@ -444,7 +445,7 @@ class AnalyseWindow(widget.MWidget):
         y = self.errorRA
         p = self.pierside
         xLabel = 'Star Number'
-        yLabel = 'Error per Star [RMS]'
+        yLabel = 'Error per Star [arcsec]'
 
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
 
@@ -463,7 +464,7 @@ class AnalyseWindow(widget.MWidget):
         y = self.errorDEC
         p = self.pierside
         xLabel = 'Star Number'
-        yLabel = 'Error per Star [RMS]'
+        yLabel = 'Error per Star [arcsec]'
 
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
 
@@ -482,7 +483,7 @@ class AnalyseWindow(widget.MWidget):
         y = self.errorRA
         p = self.pierside
         xLabel = 'RA Encoder Abs [deg]'
-        yLabel = 'Error per Star [RMS]'
+        yLabel = 'Error per Star [arcsec]'
 
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
 
@@ -502,7 +503,7 @@ class AnalyseWindow(widget.MWidget):
         p = self.pierside
         y = [x if p == 'W' else -x for x, p in zip(y, p)]
         xLabel = 'DEC Encoder Abs [deg]'
-        yLabel = 'Error per Star [RMS]'
+        yLabel = 'Error per Star [arcsec]'
 
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
 
@@ -521,7 +522,7 @@ class AnalyseWindow(widget.MWidget):
         y = self.errorRA_S
         p = self.pierside
         xLabel = 'RA Encoder Abs [deg]'
-        yLabel = 'Error per Star [RMS]'
+        yLabel = 'Error per Star [arcsec]'
 
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
 
@@ -541,7 +542,7 @@ class AnalyseWindow(widget.MWidget):
         p = self.pierside
         y = [y if p == 'W' else -y for y, p in zip(y, p)]
         xLabel = 'DEC Encoder Abs [deg]'
-        yLabel = 'Error per Star [RMS]'
+        yLabel = 'Error per Star [arcsec]'
 
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
 
@@ -577,8 +578,8 @@ class AnalyseWindow(widget.MWidget):
 
         axe, fig = self.generateFlat(widget=self.errorAscending)
 
-        axe.set_xlabel('Star Number')
-        axe.set_ylabel('Error per Star [RMS]')
+        xLabel = 'Star Number'
+        yLabel = 'Error per Star [arcsec]'
 
         y = self.errorRMS
         pierside = self.pierside
@@ -589,7 +590,7 @@ class AnalyseWindow(widget.MWidget):
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
 
         return True
-                                 
+
     def draw_modelPositions(self):
         """
         showModelPosition draws a polar plot of the align model stars and their errors in

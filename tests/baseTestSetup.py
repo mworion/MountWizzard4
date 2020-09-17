@@ -26,6 +26,20 @@ from PyQt5.QtCore import QObject, pyqtSignal
 class Data:
 
     horizonP = []
+    buildP = []
+
+    @staticmethod
+    def generateCelestialEquator():
+        return [(0, 0)]
+
+
+class Hipparcos:
+    @staticmethod
+    def calculateAlignStarPositionsAltAz():
+        return
+    az = []
+    alt = []
+    name = []
 
 
 class Dome(QObject):
@@ -39,11 +53,18 @@ class Dome(QObject):
 
 
 class Mount(QObject):
+    class MountSetting:
+        meridianLimitSlew = 0
+        meridianLimitTrack = 0
+        horizonLimitHigh = 0
+        horizonLimitLow = 0
+
     class MountSignals(QObject):
         settingDone = pyqtSignal()
         pointDone = pyqtSignal()
 
     signals = MountSignals()
+    setting = MountSetting()
 
 
 class App(QObject):
@@ -54,3 +75,5 @@ class App(QObject):
     mount = Mount()
     dome = Dome()
     data = Data()
+    hipparcos = Hipparcos()
+

@@ -289,6 +289,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             axe.figure.canvas.blit(axe.bbox)
 
         self.mutexDraw.unlock()
+
         return True
 
     def drawBlitStars(self):

@@ -87,9 +87,6 @@ class MeasureWindow(widget.MWidget):
         self.measureMat = self.embedMatplot(self.ui.measure, constrainedLayout=False)
         self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
 
-        self.initConfig()
-        self.showWindow()
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui

@@ -92,11 +92,6 @@ class SimulatorWindow(widget.MWidget):
         self.pointer = SimulatorPointer(self.app)
         self.world = None
 
-        self.initConfig()
-        self.showWindow()
-
-        # connect to gui
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui

@@ -128,8 +128,6 @@ class AnalyseWindow(widget.MWidget):
                        self.draw_errorDistribution,
                        ]
 
-        self.initConfig()
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -156,8 +154,6 @@ class AnalyseWindow(widget.MWidget):
         width = config.get('width', 800)
         self.resize(width, height)
         self.ui.winsorizedLimit.setChecked(config.get('winsorizedLimit', False))
-
-        self.showWindow()
 
         return True
 

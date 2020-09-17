@@ -97,9 +97,6 @@ class SatelliteWindow(widget.MWidget):
         # loading the world image from nasa as PNG as matplotlib only loads png.
         self.world = pickle.load(BytesIO(pickleData))
 
-        self.initConfig()
-        self.showWindow()
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui

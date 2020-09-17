@@ -102,9 +102,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.hemisphereBack = None
         self.hemisphereBackStars = None
 
-        self.initConfig()
-        self.showWindow()
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -240,33 +237,34 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         :return:
         """
-        # signals for gui
-        self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
-        self.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
-        self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
+
+        self.app.update10s.connect(self.updateAlignStar)
+        self.app.update0_1s.connect(self.resizeTimer)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
-        self.ui.checkShowMeridian.clicked.connect(self.updateSettings)
-        self.ui.checkShowCelestial.clicked.connect(self.updateSettings)
         self.app.mount.signals.settingDone.connect(self.updateSettings)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.dome.signals.azimuth.connect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.connect(self.updateDome)
         self.app.dome.signals.serverDisconnected.connect(self.updateDome)
+
+        self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
+        self.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
+        self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
+        self.ui.checkShowMeridian.clicked.connect(self.updateSettings)
+        self.ui.checkShowCelestial.clicked.connect(self.updateSettings)
         self.ui.checkEditNone.clicked.connect(self.setOperationMode)
         self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.connect(self.configOperationMode)
-        self.app.update10s.connect(self.updateAlignStar)
-        self.app.update0_1s.connect(self.resizeTimer)
 
-        # finally setting the mouse handler
         self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
                                                      self.onMouseDispatcher)
         self.hemisphereMat.figure.canvas.mpl_connect('motion_notify_event',
                                                      self.showMouseCoordinates)
         self.show()
         self.drawHemisphere()
+
         return True
 
     def drawBlit(self):

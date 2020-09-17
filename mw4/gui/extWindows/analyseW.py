@@ -324,12 +324,13 @@ class AnalyseWindow(widget.MWidget):
 
         return True
 
-    def plotFigureFlat(self, axe, x, y, xLabel, yLabel, sort=False, poly=0):
+    def plotFigureFlat(self, axe, x, y, p, xLabel, yLabel, sort=False, poly=0):
         """
 
         :param axe:
         :param x:
         :param y:
+        :param p: pierside
         :param xLabel:
         :param yLabel:
         :param sort:
@@ -341,10 +342,10 @@ class AnalyseWindow(widget.MWidget):
         axe.set_ylabel(yLabel)
 
         if sort:
-            x, y, pierside = zip(*sorted(zip(x, y, self.pierside)))
+            x, y, pierside = zip(*sorted(zip(x, y, p)))
                                  
         else:
-            pierside = self.pierside
+            pierside = p‚
 
         if self.ui.winsorizedLimit.isChecked():
             y = winsorize(y, limits=0.03)
@@ -401,10 +402,11 @@ class AnalyseWindow(widget.MWidget):
 
         x = self.index
         y = self.errorRA_S
+        p = self.pierside
         xLabel = 'Star Number'
         yLabel = 'Error per Star [RMS]'
 
-        self.plotFigureFlat(axe, x, y, xLabel, yLabel, False, 3)
+        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
 
         return True
 
@@ -420,11 +422,12 @@ class AnalyseWindow(widget.MWidget):
 
         x = self.index
         y = self.errorDEC_S
-        y = [y if p == 'W' else -y for y, p in zip(y, self.pierside)]
+        p = self.pierside
+        y = [y if p == 'W' else -y for y, p in zip(y, p)]
         xLabel = 'Star Number'
         yLabel = 'Error per Star [RMS]'
 
-        self.plotFigureFlat(axe, x, y, xLabel, yLabel, False, 3)
+        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
 
         return True
 
@@ -439,10 +442,11 @@ class AnalyseWindow(widget.MWidget):
 
         x = self.index
         y = self.errorRA
+        p = self.pierside
         xLabel = 'Star Number'
         yLabel = 'Error per Star [RMS]'
 
-        self.plotFigureFlat(axe, x, y, xLabel, yLabel, False, 3)
+        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
 
         return True
 
@@ -457,10 +461,11 @@ class AnalyseWindow(widget.MWidget):
 
         x = self.index
         y = self.errorDEC
+        p = self.pierside
         xLabel = 'Star Number'
         yLabel = 'Error per Star [RMS]'
 
-        self.plotFigureFlat(axe, x, y, xLabel, yLabel, False, 3)
+        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
 
         return True
 
@@ -475,10 +480,11 @@ class AnalyseWindow(widget.MWidget):
 
         x = self.angularPosRA
         y = self.errorRA
+        p = self.pierside
         xLabel = 'RA Encoder Abs [deg]'
         yLabel = 'Error per Star [RMS]'
 
-        self.plotFigureFlat(axe, x, y, xLabel, yLabel, True, 3)
+        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
 
         return True
 
@@ -493,11 +499,12 @@ class AnalyseWindow(widget.MWidget):
 
         x = self.angularPosDEC
         y = self.errorDEC
-        y = [x if p == 'W' else -x for x, p in zip(y, self.pierside)]
+        p = self.pierside
+        y = [x if p == 'W' else -x for x, p in zip(y, p)]
         xLabel = 'DEC Encoder Abs [deg]'
         yLabel = 'Error per Star [RMS]'
 
-        self.plotFigureFlat(axe, x, y, xLabel, yLabel, True, 3)
+        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
 
         return True
 
@@ -512,10 +519,11 @@ class AnalyseWindow(widget.MWidget):
 
         x = self.angularPosRA
         y = self.errorRA_S
+        p = self.pierside
         xLabel = 'RA Encoder Abs [deg]'
         yLabel = 'Error per Star [RMS]'
 
-        self.plotFigureFlat(axe, x, y, xLabel, yLabel, True, 3)
+        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
 
         return True
 
@@ -530,11 +538,12 @@ class AnalyseWindow(widget.MWidget):
 
         x = self.angularPosDEC
         y = self.errorDEC_S
-        y = [y if p == 'W' else -y for y, p in zip(y, self.pierside)]
+        p = self.pierside
+        y = [y if p == 'W' else -y for y, p in zip(y, p)]
         xLabel = 'DEC Encoder Abs [deg]'
         yLabel = 'Error per Star [RMS]'
 
-        self.plotFigureFlat(axe, x, y, xLabel, yLabel, True, 3)
+        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
 
         return True
 
@@ -550,13 +559,37 @@ class AnalyseWindow(widget.MWidget):
 
         x = self.index
         y = self.scaleS
+        p = self.pierside
         xLabel = 'Star Number'
         yLabel = 'Image Scale [arcsec/pix]'
 
-        self.plotFigureFlat(axe, x, y, xLabel, yLabel, False, 3)
+        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
 
         return True
 
+    def draw_errorAscending(self):
+        """
+        showErrorAscending draws a plot of the align model stars and their errors in ascending
+        order.
+
+        :return:    True if ok for testing
+        """
+
+        axe, fig = self.generateFlat(widget=self.errorAscending)
+
+        axe.set_xlabel('Star Number')
+        axe.set_ylabel('Error per Star [RMS]')
+
+        y = self.errorRMS
+        pierside = self.pierside
+        x = self.index
+
+        y, p = zip(*sorted(zip(y, pierside)))
+
+        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
+
+        return True
+                                 
     def draw_modelPositions(self):
         """
         showModelPosition draws a polar plot of the align model stars and their errors in
@@ -642,45 +675,6 @@ class AnalyseWindow(widget.MWidget):
                        )
 
         axe.figure.canvas.draw()
-        return True
-
-    def draw_errorAscending(self):
-        """
-        showErrorAscending draws a plot of the align model stars and their errors in ascending
-        order.
-
-        :return:    True if ok for testing
-        """
-
-        axe, fig = self.generateFlat(widget=self.errorAscending)
-
-        axe.set_xlabel('Star Number')
-        axe.set_ylabel('Error per Star [RMS]')
-
-        errors = self.errorRMS
-        pierside = self.pierside
-        index = self.index
-
-        errors, pierside = zip(*sorted(zip(errors, pierside)))
-
-        if self.ui.winsorizedLimit.isChecked():
-            errors = winsorize(errors, limits=0.03)
-
-        meanG = np.poly1d(np.polyfit(index, errors, 3))(index)
-
-        axe.plot(index, meanG, color=self.M_WHITE_L, alpha=0.4, lw=5)
-
-        for x, (y, pierside) in enumerate(zip(errors, pierside)):
-            if pierside == 'W':
-                color = self.M_GREEN
-
-            else:
-                color = self.M_YELLOW
-
-            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
-
-        axe.figure.canvas.draw()
-
         return True
 
     def draw_errorDistribution(self):

@@ -25,7 +25,7 @@ from threading import Lock
 import numpy as np
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, qApp, QFileDialog
 from PyQt5.QtWidgets import QVBoxLayout
-from PyQt5.QtGui import QPalette, QIcon, QResizeEvent
+from PyQt5.QtGui import QPalette, QIcon
 from PyQt5.QtCore import Qt, QSortFilterProxyModel, QSize, QDir, QObject, pyqtSignal, QEvent
 from PyQt5.QtCore import QSize
 from matplotlib.figure import Figure

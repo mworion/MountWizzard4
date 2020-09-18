@@ -181,9 +181,20 @@ class SettMisc(object):
         isOnline = self.ui.isOnline.isChecked()
 
         if isOnline:
-            self.app.mount.obsSite.loader('deltat.data', reload=True)
-            self.app.mount.obsSite.loader('deltat.preds', reload=True)
-            self.app.mount.obsSite.loader('Leap_Second.dat', reload=True)
+            try:
+                self.app.mount.obsSite.loader('deltat.data', reload=True)
+            except Exception as e:
+                self.log.error(f'{e}')
+
+            try:
+                self.app.mount.obsSite.loader('deltat.preds', reload=True)
+            except Exception as e:
+                self.log.error(f'{e}')
+
+            try:
+                self.app.mount.obsSite.loader('Leap_Second.dat', reload=True)
+            except Exception as e:
+                self.log.error(f'{e}')
 
         return True
 

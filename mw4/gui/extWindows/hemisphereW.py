@@ -817,7 +817,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                               clip_on=True,
                                               fill=True,
                                               visible=False)
+
         axes.add_patch(self.pointerDome)
+
         return True
 
     def drawAlignmentStars(self, axes=None):

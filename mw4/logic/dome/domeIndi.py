@@ -142,7 +142,7 @@ class DomeIndi(IndiClass):
 
             # starting condition: don't do anything
             if self.azimuth == -1:
-                self.azimuth = value
+                self.azimuth = float(value)
                 continue
 
             # send trigger for new data
@@ -162,7 +162,7 @@ class DomeIndi(IndiClass):
                 self.settlingWait.start(self.settlingTime)
 
             # store for the next cycle
-            self.azimuth = value
+            self.azimuth = float(value)
             self.slewing = isSlewing
 
         return True

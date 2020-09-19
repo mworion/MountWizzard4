@@ -102,7 +102,7 @@ class DomeAlpaca(AlpacaClass):
         statusIsSlewing = self.data.get('slewing', False)
 
         if self.targetAzimuth is not None:
-            hasReachedTarget = self.diffModulus(azimuth, self.targetAzimuth, 360) < 0.1
+            hasReachedTarget = self.diffModulus(azimuth, self.targetAzimuth, 360) < 0.5
 
         else:
             hasReachedTarget = True

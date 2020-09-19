@@ -37,6 +37,8 @@ Released betas
 - recognise older models and show context data
 - improved analyse windows features
 - stability
+- adding exclude done build points
+- adding automatic retry for model build
 
 
 0.151.2

@@ -911,11 +911,6 @@ class Model:
         if len([x for x in points if x[2]]) < 3 and excludePoints:
             return False
 
-        astrometryApp = self.ui.astrometryDevice.currentText()
-
-        if astrometryApp.startswith('No device'):
-            return False
-
         self.changeStatusDAT()
 
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
@@ -931,6 +926,7 @@ class Model:
         self.clearQueues()
         self.app.message.emit(f'Modeling start:      {self.modelName}', 1)
 
+        astrometryApp = self.ui.astrometryDevice.currentText()
         exposureTime = self.ui.expTime.value()
         binning = self.ui.binning.value()
         subFrame = self.ui.subFrame.value()
@@ -988,13 +984,14 @@ class Model:
             self.app.message.emit('No modeling start because more than 99 points', 2)
             return False
 
+        if self.ui.astrometryDevice.currentText().startswith('No device'):
+            self.app.message.emit('No plate solver selected', 2)
+            return False
+
         sucApp, sucIndex = self.app.astrometry.checkAvailability()
         if not (sucApp and sucIndex):
             self.app.message.emit('No valid configuration for plate solver', 2)
             return False
-
-        self.app.mount.model.deleteName('backup')
-        self.app.mount.model.storeName('backup')
 
         suc = self.app.mount.model.clearAlign()
 
@@ -1004,9 +1001,16 @@ class Model:
 
         else:
             self.app.message.emit('Actual model clearing, waiting 3s', 0)
-            QTest.qWait(3000)
+            QTest.qWait(1000)
+            self.app.message.emit('Actual model clearing, waiting 2s', 0)
+            QTest.qWait(1000)
+            self.app.message.emit('Actual model clearing, waiting 1s', 0)
+            QTest.qWait(1000)
             self.app.message.emit('Actual model cleared', 0)
             self.refreshModel()
+
+        self.app.mount.model.deleteName('backup')
+        self.app.mount.model.storeName('backup')
 
         value = self.ui.settleTimeMount.value()
 

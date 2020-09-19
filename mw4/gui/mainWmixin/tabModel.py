@@ -507,7 +507,7 @@ class Model:
 
         return True
 
-    def changeStatusDAT(self):
+    def disableDAT(self):
         """
 
         :return: True for test purpose
@@ -557,25 +557,44 @@ class Model:
 
         return True
 
-    def prepareGUI(self):
-        """
-        prepareGUI sets GUI elements to state, whereas there will be no influence for
-        running actions. this is valid for imaging window if present as well.
-
-        :return: true for test purpose
+    def prepareModelRunContextAndGui(self):
         """
 
+        :return:
+        """
+        self.changeStyleDynamic(self.ui.runModel, 'running', True)
+        self.changeStyleDynamic(self.ui.cancelModel, 'cancel', True)
+        self.changeStyleDynamic(self.ui.cancelModel, 'pause', False)
+        self.ui.cancelModel.setEnabled(True)
+        self.ui.endModel.setEnabled(True)
+        self.ui.pauseModel.setEnabled(True)
+        self.ui.plateSolveSync.setEnabled(False)
+        self.ui.runFlexure.setEnabled(False)
+        self.ui.runHysteresis.setEnabled(False)
         self.ui.batchModel.setEnabled(False)
-        # disable stacking and auto solve when modeling if imageWindow is present
-        if self.app.uiWindows['showImageW']['classObj']:
-            self.app.uiWindows['showImageW']['classObj'].ui.checkAutoSolve.setChecked(False)
-            self.app.uiWindows['showImageW']['classObj'].ui.checkStackImages.setChecked(False)
+
+        winImage = self.app.uiWindows['showImageW']['classObj']
+
+        if not winImage:
+            return False
+
+        winImage.ui.checkAutoSolve.setChecked(False)
+        winImage.ui.checkStackImages.setChecked(False)
+
+        if not winImage.deviceStat['expose']:
+            return False
+
+        if not winImage.deviceStat['exposeN']:
+            return False
+
+        winImage.abortImage()
+
         return True
 
-    def defaultGUI(self):
+    def restoreModelDefaultContextAndGui(self):
         """
-        defaultGUI will reset all gui elements to the idle or default state and new actions
-        could be started again
+        restoreModelDefaultContextAndGui will reset all gui elements to the idle or default
+        state and new actions could be started again
 
         :return: true for test purpose
         """
@@ -602,9 +621,9 @@ class Model:
 
         return True
 
-    def prepareSignals(self):
+    def prepareSignalsForModelRun(self):
         """
-        prepareSignals establishes the signals chain. as we have multiple actions running
+        prepareSignalsForModelRun establishes the signals chain. as we have multiple actions running
         at the same time, the synchronisation by the right link of the signals.
 
         first we link the two slew finished signals to modelImage. that means as soon as
@@ -633,9 +652,9 @@ class Model:
 
         return True
 
-    def defaultSignals(self):
+    def restoreSignalsForModelDefault(self):
         """
-        defaultSignals clears the signal queue and removes the signal connections
+        restoreSignalsForModelDefault clears the signal queue and removes the signal connections
 
         :return: true for test purpose
         """
@@ -671,9 +690,9 @@ class Model:
         self.restoreStatusDAT()
         self.app.camera.abort()
         self.app.astrometry.abort()
-        self.defaultSignals()
+        self.restoreSignalsForModelDefault()
         self.clearQueues()
-        self.defaultGUI()
+        self.restoreModelDefaultContextAndGui()
         self.app.message.emit('Modeling cancelled', 2)
 
         return True
@@ -851,9 +870,9 @@ class Model:
             self.app.message.emit('Model not enough valid model point', 2)
             return False
 
-        self.defaultSignals()
+        self.restoreSignalsForModelDefault()
         self.clearQueues()
-        self.defaultGUI()
+        self.restoreModelDefaultContextAndGui()
         self.restoreStatusDAT()
 
         self.app.message.emit('Programming model to mount', 0)
@@ -888,7 +907,7 @@ class Model:
 
         return True
 
-    def modelCore(self, points=None):
+    def modelCore(self, modelPoints=None):
         """
         modelCore is the main method for preparing a model run. in addition it checks
         necessary components and prepares all the parameters.
@@ -896,84 +915,25 @@ class Model:
         modeling process consists of a set of queues which are handled by events running
         in the gui event queue.
 
-        :param points:
+        :param modelPoints:
         :return: true for test purpose
         """
 
-        if not points:
-            return False
-
-        if len(points) < 3:
-            return False
-
-        excludePoints = self.ui.excludeSuccessfulPoints.isChecked()
-
-        if len([x for x in points if x[2]]) < 3 and excludePoints:
-            return False
-
-        self.changeStatusDAT()
-
-        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        self.modelName = f'm-{nameTime}-{self.lastGenerator}'
-        self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
-
-        if not os.path.isdir(self.imageDir):
-            os.mkdir(self.imageDir)
-
-        if not os.path.isdir(self.imageDir):
-            return False
-
         self.clearQueues()
-        self.app.message.emit(f'Modeling start:      {self.modelName}', 1)
-
-        astrometryApp = self.ui.astrometryDevice.currentText()
-        exposureTime = self.ui.expTime.value()
-        binning = self.ui.binning.value()
-        subFrame = self.ui.subFrame.value()
-        fastReadout = self.ui.checkFastDownload.isChecked()
-        solveTimeout = self.app.astrometry.run['astap'].timeout
-        searchRadius = self.app.astrometry.run['astap'].searchRadius
-        focalLength = self.ui.focalLength.value()
-        lenSequence = len(points)
-
-        self.prepareGUI()
-        self.prepareSignals()
+        self.prepareSignalsForModelRun()
         self.startModeling = time.time()
 
-        for countSequence, point in enumerate(points):
-
-            if not point[2] and excludePoints:
-                continue
-
-            modelSet = dict()
-            imagePath = f'{self.imageDir}/image-{countSequence:03d}.fits'
-            modelSet['imagePath'] = imagePath
-            modelSet['exposureTime'] = exposureTime
-            modelSet['binning'] = binning
-            modelSet['subFrame'] = subFrame
-            modelSet['fastReadout'] = fastReadout
-            modelSet['lenSequence'] = lenSequence
-            modelSet['countSequence'] = countSequence
-            modelSet['modelName'] = self.modelName
-            modelSet['imagePath'] = imagePath
-            modelSet['astrometryApp'] = astrometryApp
-            modelSet['solveTimeout'] = solveTimeout
-            modelSet['searchRadius'] = searchRadius
-            modelSet['focalLength'] = focalLength
-            modelSet['altitude'] = point[0]
-            modelSet['azimuth'] = point[1]
-            self.slewQueue.put(copy.copy(modelSet))
+        for point in modelPoints:
+            self.slewQueue.put(point)
 
         self.modelSlew()
 
         return True
 
-    def modelBuild(self):
+    def checkModelRunConditions(self):
         """
-        modelBuild sets the adequate gui elements, selects the model points and calls the
-        core modeling method.
 
-        :return: true for test purpose
+        :return:
         """
 
         if len(self.app.data.buildP) < 2:
@@ -982,6 +942,12 @@ class Model:
 
         if len(self.app.data.buildP) > 99:
             self.app.message.emit('No modeling start because more than 99 points', 2)
+            return False
+
+        excludePoints = self.ui.excludeSuccessfulPoints.isChecked()
+
+        if len([x for x in self.app.data.buildP if x[2]]) < 3 and excludePoints:
+            self.app.message.emit('No modeling start because less than 3 points left over', 2)
             return False
 
         if self.ui.astrometryDevice.currentText().startswith('No device'):
@@ -993,6 +959,13 @@ class Model:
             self.app.message.emit('No valid configuration for plate solver', 2)
             return False
 
+        return True
+
+    def prepareModelRun(self):
+        """
+
+        :return:
+        """
         suc = self.app.mount.model.clearAlign()
 
         if not suc:
@@ -1011,32 +984,80 @@ class Model:
 
         self.app.mount.model.deleteName('backup')
         self.app.mount.model.storeName('backup')
+        self.disableDAT()
+        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        self.modelName = f'm-{nameTime}-{self.lastGenerator}'
+        self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
 
-        value = self.ui.settleTimeMount.value()
+        if not os.path.isdir(self.imageDir):
+            os.mkdir(self.imageDir)
 
-        if value < 2:
-            self.app.message.emit(f'Mount settling time short [{value}]s', 2)
+        return True
 
-        if self.app.uiWindows['showImageW']['classObj']:
-            winImage = self.app.uiWindows['showImageW']['classObj']
-            if winImage.deviceStat['expose'] or winImage.deviceStat['exposeN']:
-                winImage.abortImage()
+    def prepareModelPoints(self):
+        """
 
-        self.changeStyleDynamic(self.ui.runModel, 'running', True)
-        self.changeStyleDynamic(self.ui.cancelModel, 'cancel', True)
-        self.changeStyleDynamic(self.ui.cancelModel, 'pause', False)
-        self.ui.cancelModel.setEnabled(True)
-        self.ui.endModel.setEnabled(True)
-        self.ui.pauseModel.setEnabled(True)
-        self.ui.plateSolveSync.setEnabled(False)
-        self.ui.runFlexure.setEnabled(False)
-        self.ui.runHysteresis.setEnabled(False)
+        :return:
+        """
 
-        suc = self.modelCore(points=self.app.data.buildP)
+        astrometryApp = self.ui.astrometryDevice.currentText()
+        exposureTime = self.ui.expTime.value()
+        binning = self.ui.binning.value()
+        subFrame = self.ui.subFrame.value()
+        fastReadout = self.ui.checkFastDownload.isChecked()
+        solveTimeout = self.app.astrometry.run['astap'].timeout
+        searchRadius = self.app.astrometry.run['astap'].searchRadius
+        focalLength = self.ui.focalLength.value()
+        lenSequence = len(self.app.data.buildP)
 
-        if not suc:
-            self.defaultGUI()
+        modelPoints = list()
+        for countSequence, point in enumerate(self.app.data.buildP):
+            if self.ui.excludeSuccessfulPoints.isChecked() and not point[2]:
+                continue
+
+            m = dict()
+            imagePath = f'{self.imageDir}/image-{countSequence:03d}.fits'
+            m['imagePath'] = imagePath
+            m['exposureTime'] = exposureTime
+            m['binning'] = binning
+            m['subFrame'] = subFrame
+            m['fastReadout'] = fastReadout
+            m['lenSequence'] = lenSequence
+            m['countSequence'] = countSequence
+            m['modelName'] = self.modelName
+            m['imagePath'] = imagePath
+            m['astrometryApp'] = astrometryApp
+            m['solveTimeout'] = solveTimeout
+            m['searchRadius'] = searchRadius
+            m['focalLength'] = focalLength
+            m['altitude'] = point[0]
+            m['azimuth'] = point[1]
+
+            modelPoints.append(m)
+
+        return modelPoints
+
+    def modelBuild(self):
+        """
+        modelBuild sets the adequate gui elements, selects the model points and calls the
+        core modeling method.
+
+        :return: true for test purpose
+        """
+
+        if not self.checkModelRunConditions():
             return False
+
+        modelPoints = self.prepareModelPoints()
+        if not modelPoints:
+            return False
+
+        if not self.prepareModelRun():
+            return False
+
+        self.prepareModelRunContextAndGui()
+        self.app.message.emit(f'Modeling start:      {self.modelName}', 1)
+        self.modelCore(modelPoints=modelPoints)
 
         return True
 

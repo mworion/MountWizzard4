@@ -48,7 +48,7 @@ from base.loggerMW import CustomLogger
 
 @pytest.fixture(autouse=True, scope='function')
 def app(qtbot):
-    
+
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
@@ -58,7 +58,7 @@ def app(qtbot):
         mwGlob = {'modelDir': 'tests/model',
                   'imageDir': 'tests/image',
                   'tempDir': 'tests/temp'}
-        
+
     class Test(QObject):
         config = {'mainW': {}}
         threadPool = QThreadPool()
@@ -422,7 +422,7 @@ def test_changeStatusDAT_1(app):
     app.app.mount.setting.statusDualAxisTracking = True
     with mock.patch.object(app.app.mount.setting,
                            'setDualAxisTracking'):
-        suc = app.changeStatusDAT()
+        suc = app.disableDAT()
         assert suc
         assert app.statusDAT
 
@@ -432,7 +432,7 @@ def test_changeStatusDAT_2(app):
     app.app.mount.setting.statusDualAxisTracking = False
     with mock.patch.object(app.app.mount.setting,
                            'setDualAxisTracking'):
-        suc = app.changeStatusDAT()
+        suc = app.disableDAT()
         assert suc
         assert not app.statusDAT
 
@@ -443,7 +443,7 @@ def test_changeStatusDAT_3(app):
     app.app.mount.setting.statusDualAxisTracking = True
     with mock.patch.object(app.app.mount.setting,
                            'setDualAxisTracking'):
-        suc = app.changeStatusDAT()
+        suc = app.disableDAT()
         assert suc
         assert app.statusDAT
 
@@ -454,7 +454,7 @@ def test_changeStatusDAT_4(app):
     app.app.mount.setting.statusDualAxisTracking = True
     with mock.patch.object(app.app.mount.setting,
                            'setDualAxisTracking'):
-        suc = app.changeStatusDAT()
+        suc = app.disableDAT()
         assert not suc
         assert app.statusDAT
 
@@ -492,12 +492,12 @@ def test_prepareGUI(app):
 
 
 def test_defaultGUI(app):
-    suc = app.defaultGUI()
+    suc = app.restoreModelDefaultContextAndGui()
     assert suc
 
 
 def test_prepareSignals_1(app):
-    suc = app.prepareSignals()
+    suc = app.prepareSignalsForModelRun()
     assert suc
 
 
@@ -505,14 +505,14 @@ def test_prepareSignals_2(app):
     app.deviceStat['dome'] = True
     app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 1}
 
-    suc = app.prepareSignals()
+    suc = app.prepareSignalsForModelRun()
     assert suc
 
 
 def test_prepareSignals_3(app):
     app.deviceStat['dome'] = True
 
-    suc = app.prepareSignals()
+    suc = app.prepareSignalsForModelRun()
     assert suc
 
 
@@ -522,7 +522,7 @@ def test_defaultSignals(app):
     app.app.astrometry.signals.done.connect(app.modelSolveDone)
     app.collector.ready.connect(app.modelImage)
 
-    suc = app.defaultSignals()
+    suc = app.restoreSignalsForModelDefault()
     assert suc
 
 
@@ -541,7 +541,7 @@ def test_pauseBuild_2(app):
 
 
 def test_cancelFull(qtbot, app):
-    suc = app.prepareSignals()
+    suc = app.prepareSignalsForModelRun()
     assert suc
     with mock.patch.object(app.app.camera,
                            'abort'):

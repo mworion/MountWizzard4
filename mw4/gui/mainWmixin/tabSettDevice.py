@@ -194,6 +194,7 @@ class SettDevice:
 
     def checkStructureDriversData(self, driver, config):
         """
+        checkStructureDriversData
         :param driver:
         :param config:
         :return:
@@ -205,8 +206,9 @@ class SettDevice:
         if 'dictionary_item_added' in res or 'dictionary_item_removed' in res:
             config['driversData'][driver] = defaultConfig
             self.log.warn(f'Config for {[driver]} updated to default')
+            return False
 
-        return config
+        return True
 
     def setDefaultData(self, driver, config):
         """
@@ -220,7 +222,7 @@ class SettDevice:
         defaultConfig = self.drivers[driver]['class'].defaultConfig
         config['driversData'][driver].update(defaultConfig)
 
-        return defaultConfig
+        return True
 
     def initConfig(self):
         """
@@ -238,9 +240,9 @@ class SettDevice:
 
         for driver in self.drivers:
             if driver in config['driversData']:
-                config = self.checkStructureDriversData(driver, config)
+                self.checkStructureDriversData(driver, config)
             else:
-                config = self.setDefaultData(driver, config)
+                self.setDefaultData(driver, config)
 
         self.driversData.update(config.get('driversData', {}))
         self.ui.checkASCOMAutoConnect.setChecked(config.get('checkASCOMAutoConnect', False))

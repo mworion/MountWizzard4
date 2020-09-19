@@ -6,12 +6,17 @@ changes list, please refer to the commit list on GitHub.
 Unreleased Betas
 ----------------
 
-(0.153.0)
+(0.200.0)
 
+- 3d Simulator (mount, dome, build points etc)
+
+(0.190.0)
+
+- full integration testing
 
 Released betas
 --------------
-0.152.0b0
+0.152.0b7
 
 ..note::
     Please be aware that with new device management the setting might be invalid or don't
@@ -27,6 +32,12 @@ Released betas
 - improved views for analyse window
 - adding cover device ascom and alpaca (from ASCOM 6.5 onwards)
 - split PegasusUPB single device into Observing Conditions and Power
+- adding goto park after model run option
+- adding keep point selection, so to be able to superpose multiple ones
+- recognise older models and show context data
+- improved analyse windows features
+- stability
+
 
 0.151.2
 

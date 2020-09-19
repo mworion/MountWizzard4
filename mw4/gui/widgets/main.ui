@@ -7973,7 +7973,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QCheckBox" name="excludeDonePoints">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -8026,7 +8026,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>155</x>
         <y>230</y>
         <width>41</width>
         <height>21</height>
@@ -8062,9 +8062,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_36">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>200</x>
         <y>230</y>
-        <width>41</width>
+        <width>126</width>
         <height>21</height>
        </rect>
       </property>
@@ -8077,15 +8077,15 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </font>
       </property>
       <property name="text">
-       <string>retries</string>
+       <string>retry runs to recover</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_59">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>5</x>
         <y>230</y>
-        <width>141</width>
+        <width>151</width>
         <height>21</height>
        </rect>
       </property>
@@ -8098,7 +8098,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </font>
       </property>
       <property name="text">
-       <string>If model point fails use</string>
+       <string>If model point(s) fails use</string>
       </property>
      </widget>
     </widget>

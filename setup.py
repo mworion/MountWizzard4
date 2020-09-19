@@ -63,6 +63,7 @@ setup(
         'qimage2ndarray==1.8.3',
         'importlib_metadata==1.7.0',
         'opencv-python-headless==4.4.0.42',
+        'deepdiff==5.0.2',
     ]
     + (['pywin32==228'] if "Windows" == platform.system() else []),
     url='https://github.com/mworion/MountWizzard4',

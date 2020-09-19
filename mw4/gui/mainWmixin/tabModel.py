@@ -21,6 +21,7 @@ import os
 import time
 import shutil
 import json
+import random
 from datetime import datetime
 
 # external packages
@@ -111,7 +112,7 @@ class Model:
         # ui signals
         self.ui.runModel.clicked.connect(self.modelBuild)
         self.ui.cancelModel.clicked.connect(self.cancelBuild)
-        self.ui.endModel.clicked.connect(self.modelCycleThroughBuildPointsFinished)
+        self.ui.endModel.clicked.connect(self.processModelData)
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
         self.ui.batchModel.clicked.connect(self.loadProgramModel)
 
@@ -126,6 +127,7 @@ class Model:
         config = self.app.config['mainW']
         self.ui.checkDisableDAT.setChecked(config.get('checkDisableDAT', False))
         self.ui.parkMountAfterModel.setChecked(config.get('parkMountAfterModel', False))
+        self.ui.numberBuildRetries.setValue(config.get('numberBuildRetries', 0))
 
         return True
 
@@ -140,6 +142,7 @@ class Model:
         config = self.app.config['mainW']
         config['checkDisableDAT'] = self.ui.checkDisableDAT.isChecked()
         config['parkMountAfterModel'] = self.ui.parkMountAfterModel.isChecked()
+        config['numberBuildRetries'] = self.ui.numberBuildRetries.value()
 
         return True
 
@@ -297,12 +300,17 @@ class Model:
         mPoint.update(result)
 
         if mPoint['success']:
-            # processing only the model points which are OK
             raJNowS, decJNowS = transform.J2000ToJNow(mPoint['raJ2000S'],
                                                       mPoint['decJ2000S'],
                                                       mPoint['julianDate'])
             mPoint['raJNowS'] = raJNowS
             mPoint['decJNowS'] = decJNowS
+
+            fail = random.randint(0, 10) > 6
+            if fail:
+                self.MAX_ERROR_MODEL_POINT = 0
+            else:
+                self.MAX_ERROR_MODEL_POINT = 9999
 
             if mPoint['errorRMS_S'] < self.MAX_ERROR_MODEL_POINT:
                 self.log.info(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
@@ -335,8 +343,7 @@ class Model:
             text = f'Solving  image-{count:03d}:  {mPoint.get("message")}'
             self.app.message.emit(text, 2)
 
-        self.updateProgress(number=number,
-                            count=count)
+        self.updateProgress(number=number, count=count)
 
         if number == count + 1:
             self.modelCycleThroughBuildPointsFinished()
@@ -855,11 +862,11 @@ class Model:
 
         :return:
         """
+
         self.model = list()
 
-        for point in iter(self.modelQueue.get, None):
-            if not point:
-                break
+        while not self.modelQueue.empty():
+            point = self.modelQueue.get()
             self.model.append(point)
 
         if len(self.model) < 3:
@@ -916,16 +923,28 @@ class Model:
         :return: true for test purpose
         """
 
-        if self.modelBuildRetryCounter and self.retryQueue.qsize():
-            for point in iter(self.retryQueue.get, None):
-                if not point:
-                    break
-                self.slewQueue.put(point)
-            self.modelSlew()
-            self.modelBuildRetryCounter -= 1
-
-        else:
+        if self.retryQueue.qsize() == 0:
             self.processModelData()
+            return True
+
+        if self.modelBuildRetryCounter == 0:
+            self.processModelData()
+            return True
+
+        self.app.message.emit('Starting retry failed points', 1)
+
+        numberPointsRetry = self.retryQueue.qsize()
+        countPointsRetry = 0
+
+        while not self.retryQueue.empty():
+            point = self.retryQueue.get()
+            point['lenSequence'] = numberPointsRetry
+            point['countSequence'] = countPointsRetry
+            self.slewQueue.put(point)
+            countPointsRetry += 1
+
+        self.modelBuildRetryCounter -= 1
+        self.modelSlew()
 
         return True
 

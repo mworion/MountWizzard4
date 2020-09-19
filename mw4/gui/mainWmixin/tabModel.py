@@ -1048,11 +1048,11 @@ class Model:
         if not self.checkModelRunConditions():
             return False
 
-        modelPoints = self.prepareModelPoints()
-        if not modelPoints:
+        if not self.prepareModelRun():
             return False
 
-        if not self.prepareModelRun():
+        modelPoints = self.prepareModelPoints()
+        if not modelPoints:
             return False
 
         self.prepareModelRunContextAndGui()

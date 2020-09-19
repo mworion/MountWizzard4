@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -6148,7 +6148,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>200</y>
+       <y>195</y>
        <width>361</width>
        <height>71</height>
       </rect>
@@ -6548,6 +6548,30 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>9 points</string>
       </property>
      </widget>
+    </widget>
+    <widget class="QCheckBox" name="keepGeneratedPoints">
+     <property name="geometry">
+      <rect>
+       <x>25</x>
+       <y>370</y>
+       <width>336</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 tries to start build model point from the pierside where the mount is actually.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Keep points from existing generation</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Modelbuild">

@@ -110,6 +110,7 @@ class BuildPoints(object):
         self.ui.checkSortNothing.setChecked(config.get('checkSortNothing', True))
         self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
         self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
+        self.ui.keepGeneratedPoints.setChecked(config.get('keepGeneratedPoints', False))
 
         # initialising the signal slot connections after the value are set, because
         # otherwise we get a first value changed signal just when populating
@@ -148,6 +149,7 @@ class BuildPoints(object):
         config['checkSortNothing'] = self.ui.checkSortNothing.isChecked()
         config['checkSortEW'] = self.ui.checkSortEW.isChecked()
         config['checkSortHL'] = self.ui.checkSortHL.isChecked()
+        config['keepGeneratedPoints'] = self.ui.keepGeneratedPoints.isChecked()
 
         return True
 
@@ -174,10 +176,14 @@ class BuildPoints(object):
         self.ui.numberGridPointsCol.setValue(col)
         minAlt = self.ui.altitudeMin.value()
         maxAlt = self.ui.altitudeMax.value()
+        keep = self.ui.keepGeneratedPoints.isChecked()
+
         suc = self.app.data.genGrid(minAlt=minAlt,
                                     maxAlt=maxAlt,
                                     numbRows=row,
-                                    numbCols=col)
+                                    numbCols=col,
+                                    keep=keep)
+
         if not suc:
             self.ui.numberGridPointsRow.setEnabled(True)
             self.ui.numberGridPointsCol.setEnabled(True)
@@ -203,9 +209,12 @@ class BuildPoints(object):
         """
 
         self.lastGenerator = 'align3'
+        keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genAlign(altBase=55,
                                      azBase=10,
-                                     numberBase=3)
+                                     numberBase=3,
+                                     keep=keep)
+
         if not suc:
             self.app.message.emit('Could not generate 3 align stars', 2)
             return False
@@ -222,9 +231,12 @@ class BuildPoints(object):
         """
 
         self.lastGenerator = 'align6'
+        keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genAlign(altBase=55,
                                      azBase=10,
-                                     numberBase=6)
+                                     numberBase=6,
+                                     keep=keep)
+
         if not suc:
             self.app.message.emit('Could not generate 6 align stars', 2)
             return False
@@ -241,9 +253,12 @@ class BuildPoints(object):
         """
 
         self.lastGenerator = 'align9'
+        keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genAlign(altBase=55,
                                      azBase=10,
-                                     numberBase=9)
+                                     numberBase=9,
+                                     keep=keep)
+
         if not suc:
             self.app.message.emit('Could not generate 9 align stars', 2)
             return False
@@ -262,7 +277,9 @@ class BuildPoints(object):
         """
 
         self.lastGenerator = 'max'
-        suc = self.app.data.genGreaterCircle(selection='max')
+        keep = self.ui.keepGeneratedPoints.isChecked()
+        suc = self.app.data.genGreaterCircle(selection='max', keep=keep)
+
         if not suc:
             self.app.message.emit('Build points [max] cannot be generated', 2)
             return False
@@ -281,7 +298,9 @@ class BuildPoints(object):
         """
 
         self.lastGenerator = 'med'
-        suc = self.app.data.genGreaterCircle(selection='med')
+        keep = self.ui.keepGeneratedPoints.isChecked()
+        suc = self.app.data.genGreaterCircle(selection='med', keep=keep)
+
         if not suc:
             self.app.message.emit('Build points [med] cannot be generated', 2)
             return False
@@ -300,7 +319,9 @@ class BuildPoints(object):
         """
 
         self.lastGenerator = 'norm'
-        suc = self.app.data.genGreaterCircle(selection='norm')
+        keep = self.ui.keepGeneratedPoints.isChecked()
+        suc = self.app.data.genGreaterCircle(selection='norm', keep=keep)
+
         if not suc:
             self.app.message.emit('Build points [norm] cannot be generated', 2)
             return False
@@ -319,7 +340,9 @@ class BuildPoints(object):
         """
 
         self.lastGenerator = 'min'
-        suc = self.app.data.genGreaterCircle(selection='min')
+        keep = self.ui.keepGeneratedPoints.isChecked()
+        suc = self.app.data.genGreaterCircle(selection='min', keep=keep)
+
         if not suc:
             self.app.message.emit('Build points [min] cannot be generated', 2)
             return False
@@ -353,6 +376,7 @@ class BuildPoints(object):
         duration = self.ui.durationDSO.value()
         timeShift = self.ui.timeShiftDSO.value()
 
+        keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.generateDSOPath(ra=ra,
                                             dec=dec,
                                             timeJD=timeJD,
@@ -360,6 +384,7 @@ class BuildPoints(object):
                                             numberPoints=numberPoints,
                                             duration=duration,
                                             timeShift=timeShift,
+                                            keep=keep,
                                             )
 
         if not suc:
@@ -389,8 +414,9 @@ class BuildPoints(object):
         """
 
         self.lastGenerator = 'spiralMax'
+        keep = self.ui.keepGeneratedPoints.isChecked()
+        suc = self.app.data.generateGoldenSpiral(numberPoints=350, keep=keep)
 
-        suc = self.app.data.generateGoldenSpiral(numberPoints=350)
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
@@ -406,8 +432,9 @@ class BuildPoints(object):
         """
 
         self.lastGenerator = 'spiralMed'
+        keep = self.ui.keepGeneratedPoints.isChecked()
+        suc = self.app.data.generateGoldenSpiral(numberPoints=250, keep=keep)
 
-        suc = self.app.data.generateGoldenSpiral(numberPoints=250)
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
@@ -423,8 +450,9 @@ class BuildPoints(object):
         """
 
         self.lastGenerator = 'spiralNorm'
+        keep = self.ui.keepGeneratedPoints.isChecked()
+        suc = self.app.data.generateGoldenSpiral(numberPoints=150, keep=keep)
 
-        suc = self.app.data.generateGoldenSpiral(numberPoints=150)
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
@@ -440,10 +468,36 @@ class BuildPoints(object):
         """
 
         self.lastGenerator = 'spiralMin'
+        keep = self.ui.keepGeneratedPoints.isChecked()
+        suc = self.app.data.generateGoldenSpiral(numberPoints=75, keep=keep)
 
-        suc = self.app.data.generateGoldenSpiral(numberPoints=75)
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
+            return False
+
+        self.processPoints()
+
+        return True
+
+    def genBuildFile(self):
+        """
+        genBuildFile tries to load a give build point file and displays it for usage.
+
+        :return: success
+        """
+
+        self.lastGenerator = 'file'
+        fileName = self.ui.buildPFileName.text()
+        if not fileName:
+            self.app.message.emit('Build points file name not given', 2)
+            return False
+
+        keep = self.ui.keepGeneratedPoints.isChecked()
+        suc = self.app.data.loadBuildP(fileName=fileName, keep=keep)
+
+        if not suc:
+            text = 'Build points file [{0}] could not be loaded'.format(fileName)
+            self.app.message.emit(text, 2)
             return False
 
         self.processPoints()
@@ -466,7 +520,8 @@ class BuildPoints(object):
         if not loadFilePath:
             return False
 
-        suc = self.app.data.loadBuildP(fileName=fileName, ext=ext)
+        keep = self.ui.keepGeneratedPoints.isChecked()
+        suc = self.app.data.loadBuildP(fileName=fileName, ext=ext, keep=keep)
 
         if suc:
             self.ui.buildPFileName.setText(fileName)
@@ -522,29 +577,6 @@ class BuildPoints(object):
             self.app.message.emit(f'Build file [{fileName}] saved', 0)
         else:
             self.app.message.emit(f'Build file [{fileName}] cannot no be saved', 2)
-
-        return True
-
-    def genBuildFile(self):
-        """
-        genBuildFile tries to load a give build point file and displays it for usage.
-
-        :return: success
-        """
-
-        self.lastGenerator = 'file'
-        fileName = self.ui.buildPFileName.text()
-        if not fileName:
-            self.app.message.emit('Build points file name not given', 2)
-            return False
-
-        suc = self.app.data.loadBuildP(fileName=fileName)
-        if not suc:
-            text = 'Build points file [{0}] could not be loaded'.format(fileName)
-            self.app.message.emit(text, 2)
-            return False
-
-        self.processPoints()
 
         return True
 

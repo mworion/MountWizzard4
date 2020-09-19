@@ -491,13 +491,14 @@ class DataPoint(object):
 
         return True
 
-    def loadBuildP(self, fileName=None, ext='.bpts'):
+    def loadBuildP(self, fileName=None, ext='.bpts', keep=False):
         """
         loadBuildP loads a modeldata pints file and stores the data in the buildP list.
         necessary conversion are made.
 
         :param fileName: name of file to be handled
         :param ext: load extension type
+        :param keep:
         :return: success
         """
 
@@ -524,7 +525,12 @@ class DataPoint(object):
             self.clearBuildP()
             return False
 
-        self._buildP = [(x[0], x[1], True) for x in value]
+        points = [(x[0], x[1], True) for x in value]
+
+        if keep:
+            self._buildP += points
+        else:
+            self._buildP = points
 
         # backup solution
         if csv:
@@ -655,20 +661,23 @@ class DataPoint(object):
         for dec, step, start, stop in zip(decL, stepL, startL, stopL):
             yield dec, step, start, stop
 
-    def genGreaterCircle(self, selection='norm'):
+    def genGreaterCircle(self, selection='norm', keep=False):
         """
         genGreaterCircle takes the generated boundaries for the rang routine and
         transforms ha, dec to alt az. reasonable values for the alt az values
         are 5 to 85 degrees.
 
         :param selection:
+        :param keep:
         :return: yields alt, az tuples which are above horizon
         """
 
         if not self.app.mount.obsSite.location:
             return False
 
-        self.clearBuildP()
+        if not keep:
+            self.clearBuildP()
+
         lat = self.app.mount.obsSite.location.latitude.degrees
         for dec, step, start, stop in self.genHaDecParams(selection):
             for ha in range(start, stop, step):
@@ -711,7 +720,7 @@ class DataPoint(object):
                 for az in range(maxAz, 180, -stepAz):
                     yield(alt, az, True)
 
-    def genGrid(self, minAlt=5, maxAlt=85, numbRows=5, numbCols=6):
+    def genGrid(self, minAlt=5, maxAlt=85, numbRows=5, numbCols=6, keep=False):
         """
         genGrid generates a grid of points and transforms ha, dec to alt az. with given
         limits in alt, the min and max will be used as a hard condition. on az there is
@@ -727,6 +736,7 @@ class DataPoint(object):
         :param maxAlt: altitude max
         :param numbRows: numbRows
         :param numbCols: numbCols
+        :param keep:
         :return: yields alt, az tuples which are above horizon
         """
 
@@ -761,13 +771,15 @@ class DataPoint(object):
         minAz = int(180 / numbCols)
         maxAz = 360 - minAz
 
-        self.clearBuildP()
+        if not keep:
+            self.clearBuildP()
+
         for point in self.genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
             self.addBuildP(point)
 
         return True
 
-    def genAlign(self, altBase=30, azBase=10, numberBase=3):
+    def genAlign(self, altBase=30, azBase=10, numberBase=3, keep=False):
         """
         genAlign generates a number of initial points for the first step of modeling. it
         adjusts the first align point in a matter, that the starting point is the closest
@@ -776,6 +788,7 @@ class DataPoint(object):
         :param altBase:
         :param azBase:
         :param numberBase:
+        :param keep:
         :return: yields alt, az tuples which are above horizon
         """
 
@@ -793,7 +806,8 @@ class DataPoint(object):
         azBase = int(azBase) % stepAz
         numberBase = int(numberBase)
 
-        self.clearBuildP()
+        if not keep:
+            self.clearBuildP()
 
         for i in range(0, numberBase):
             az = azBase + i * stepAz
@@ -831,7 +845,7 @@ class DataPoint(object):
         return celestialEquator
 
     def generateDSOPath(self, ra=0, dec=0, timeJD=0, location=None,
-                        numberPoints=0, duration=0, timeShift=0):
+                        numberPoints=0, duration=0, timeShift=0, keep=False):
         """
         generateDSOPath calculates a list of model points along the desired path beginning
         at ra, dec coordinates, which is in time duration hours long and consists of
@@ -845,6 +859,7 @@ class DataPoint(object):
         :param numberPoints:
         :param duration:
         :param timeShift:
+        :param keep:
         :return: True for test purpose
         """
 
@@ -859,7 +874,9 @@ class DataPoint(object):
 
         numberPoints = int(numberPoints)
 
-        self.clearBuildP()
+        if not keep:
+            self.clearBuildP()
+
         for i in range(0, numberPoints):
             startPoint = ra.hours - i * duration / numberPoints - timeShift
             raCalc = skyfield.api.Angle(hours=startPoint)
@@ -869,7 +886,7 @@ class DataPoint(object):
 
         return True
 
-    def generateGoldenSpiral(self, numberPoints):
+    def generateGoldenSpiral(self, numberPoints, keep=False):
         """
         based on the evaluations and implementation of CR Drost from 17-05-24 found at:
         https://stackoverflow.com/questions/9600801/evenly-distributing-n-points-on-a-sphere
@@ -877,13 +894,15 @@ class DataPoint(object):
         hemisphere.
 
         :param numberPoints:
+        :param keep:
         :return: true for test purpose
         """
 
         if numberPoints < 50:
             return False
 
-        self.clearBuildP()
+        if not keep:
+            self.clearBuildP()
 
         indices = np.arange(0, numberPoints, dtype=float) + 0.5
         phi = np.arccos(1 - 2 * indices / numberPoints)

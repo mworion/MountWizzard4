@@ -187,7 +187,11 @@ class ManageModel(object):
                 continue
 
             with open(modelFilePath, 'r') as inFile:
-                buildModelData = json.load(inFile)
+                try:
+                    buildModelData = json.load(inFile)
+
+                except Exception as e:
+                    self.log.error(f'Cannot load model file: {[inFile]}, error: {e}')
 
             pointsIn, pointsOut = self.compareModel(buildModelData, mountModel)
 

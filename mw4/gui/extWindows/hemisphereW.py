@@ -632,10 +632,11 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                 continue
 
             axes.plot(point[1], point[0],
-                      marker='x',
-                      color=self.M_RED,
+                      marker='$\u2714$',
+                      color=self.M_YELLOW,
                       zorder=25,
-                      markersize=11,
+                      markersize=15,
+                      alpha=0.6,
                       )
 
         self.pointsBuildAnnotate = list()
@@ -646,7 +647,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                 color = self.M_WHITE
             else:
                 annotationText = '{0:2d}'.format(i)
-                color = self.M_GREEN
+                color = self.M_YELLOW
 
             annotation = axes.annotate(annotationText,
                                        xy=(point[1], point[0]),
@@ -667,7 +668,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return: success
         """
 
-        # draw celestial equator
         visible = self.ui.checkShowCelestial.isChecked()
         celestial = self.app.data.generateCelestialEquator()
         alt, az = zip(*celestial)

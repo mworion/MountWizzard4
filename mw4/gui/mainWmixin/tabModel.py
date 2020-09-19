@@ -21,7 +21,6 @@ import os
 import time
 import shutil
 import json
-import copy
 from datetime import datetime
 
 # external packages
@@ -95,6 +94,7 @@ class Model:
         self.solveQueue = queue.Queue()
         self.resultQueue = queue.Queue()
         self.modelQueue = queue.Queue()
+        self.retryQueue = queue.Queue()
         self.collector = QMultiWait()
         self.startModeling = None
         self.modelName = ''
@@ -315,6 +315,7 @@ class Model:
             else:
                 text = f'Solving failed for image-{count:03d}'
                 self.app.message.emit(text, 2)
+                self.retryQueue.put(mPoint)
 
             text = f'Solved   image-{count:03d}:  '
             text += f'Ra: {convertToHMS(mPoint["raJ2000S"])} '
@@ -554,6 +555,7 @@ class Model:
         self.solveQueue.queue.clear()
         self.resultQueue.queue.clear()
         self.modelQueue.queue.clear()
+        self.retryQueue.queue.clear()
 
         return True
 

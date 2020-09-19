@@ -7979,7 +7979,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>5</x>
         <y>210</y>
-        <width>266</width>
+        <width>296</width>
         <height>20</height>
        </rect>
       </property>
@@ -7995,7 +7995,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;During the model run leave out already successful used build points&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string>Exclude done points for model build</string>
+       <string>Exclude successful points for model build run</string>
       </property>
       <property name="checked">
        <bool>false</bool>
@@ -8077,7 +8077,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </font>
       </property>
       <property name="text">
-       <string>retry runs to recover</string>
+       <string>retry run(s) to recover</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_59">

@@ -21,7 +21,6 @@ import os
 import time
 import shutil
 import json
-import random
 from datetime import datetime
 
 # external packages
@@ -305,12 +304,6 @@ class Model:
                                                       mPoint['julianDate'])
             mPoint['raJNowS'] = raJNowS
             mPoint['decJNowS'] = decJNowS
-
-            fail = random.randint(0, 10) > 6
-            if fail:
-                self.MAX_ERROR_MODEL_POINT = 0
-            else:
-                self.MAX_ERROR_MODEL_POINT = 9999
 
             if mPoint['errorRMS_S'] < self.MAX_ERROR_MODEL_POINT:
                 self.log.info(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
@@ -869,15 +862,15 @@ class Model:
             point = self.modelQueue.get()
             self.model.append(point)
 
-        if len(self.model) < 3:
-            self.app.message.emit(f'Modeling finished:    {self.modelName}', 2)
-            self.app.message.emit('Model not enough valid model point', 2)
-            return False
-
         self.restoreSignalsModelDefault()
         self.clearQueues()
         self.restoreModelDefaultContextAndGuiStatus()
         self.restoreStatusDAT()
+
+        if len(self.model) < 3:
+            self.app.message.emit(f'Modeling finished:    {self.modelName}', 2)
+            self.app.message.emit('Model not enough valid model points available', 2)
+            return False
 
         self.app.message.emit('Programming model to mount', 0)
         build = self.generateBuildData(model=self.model)

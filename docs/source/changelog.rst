@@ -16,7 +16,7 @@ Unreleased Betas
 
 Released betas
 --------------
-0.152.0b7
+0.160.0
 
 ..note::
     Please be aware that with new device management the setting might be invalid or don't

@@ -101,6 +101,7 @@ class Model:
         self.model = []
         self.imageDir = ''
         self.statusDAT = None
+        self.modelBuildRetryCounter = 0
 
         # func signals
         ms = self.app.mount.signals
@@ -110,7 +111,7 @@ class Model:
         # ui signals
         self.ui.runModel.clicked.connect(self.modelBuild)
         self.ui.cancelModel.clicked.connect(self.cancelBuild)
-        self.ui.endModel.clicked.connect(self.modelFinished)
+        self.ui.endModel.clicked.connect(self.modelCycleThroughBuildPointsFinished)
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
         self.ui.batchModel.clicked.connect(self.loadProgramModel)
 
@@ -338,7 +339,7 @@ class Model:
                             count=count)
 
         if number == count + 1:
-            self.modelFinished()
+            self.modelCycleThroughBuildPointsFinished()
 
         return True
 
@@ -849,23 +850,17 @@ class Model:
 
         return build
 
-    def modelFinished(self):
-        """
-        modelFinished is called when tha last point was processed. it empties the solution
-        queue restores the default gui elements an signals. after that it programs the
-        resulting model to the mount and saves it to disk.
-
-        is the flag delete images after modeling is set, the entire directory will be
-        deleted
-
-        :return: true for test purpose
+    def processModelData(self):
         """
 
+        :return:
+        """
         self.model = list()
 
-        while not self.modelQueue.empty():
-            mPoint = self.modelQueue.get()
-            self.model.append(mPoint)
+        for point in iter(self.modelQueue.get, None):
+            if not point:
+                break
+            self.model.append(point)
 
         if len(self.model) < 3:
             self.app.message.emit(f'Modeling finished:    {self.modelName}', 2)
@@ -906,6 +901,31 @@ class Model:
 
             else:
                 self.app.message.emit('Mount parked', 0)
+
+        return True
+
+    def modelCycleThroughBuildPointsFinished(self):
+        """
+        modelCycleThroughBuildPointsFinished is called when tha last point was processed. it empties the solution
+        queue restores the default gui elements an signals. after that it programs the
+        resulting model to the mount and saves it to disk.
+
+        is the flag delete images after modeling is set, the entire directory will be
+        deleted
+
+        :return: true for test purpose
+        """
+
+        if self.modelBuildRetryCounter and self.retryQueue.qsize():
+            for point in iter(self.retryQueue.get, None):
+                if not point:
+                    break
+                self.slewQueue.put(point)
+            self.modelSlew()
+            self.modelBuildRetryCounter -= 1
+
+        else:
+            self.processModelData()
 
         return True
 
@@ -961,8 +981,13 @@ class Model:
             self.app.message.emit('Actual model cleared', 0)
             self.refreshModel()
 
-        self.app.mount.model.deleteName('backup')
-        self.app.mount.model.storeName('backup')
+        suc = self.app.mount.model.deleteName('backup')
+        if not suc:
+            return False
+
+        suc = self.app.mount.model.storeName('backup')
+        if not suc:
+            return False
 
         return True
 
@@ -1071,6 +1096,9 @@ class Model:
         self.disableDAT()
 
         self.app.message.emit(f'Modeling start:      {self.modelName}', 1)
+
+        self.modelBuildRetryCounter = self.ui.numberBuildRetries.value()
+
         self.modelCycleThroughBuildPoints(modelPoints=modelPoints)
 
         return True

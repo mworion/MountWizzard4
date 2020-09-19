@@ -292,7 +292,7 @@ def test_modelSolveDone_5(app):
     app.resultQueue.put(mPoint)
 
     with mock.patch.object(app,
-                           'modelFinished'):
+                           'modelCycleThroughBuildPointsFinished'):
         suc = app.modelSolveDone(result)
         assert suc
 
@@ -803,7 +803,7 @@ def test_modelFinished_1(qtbot, app):
     with mock.patch.object(app.app.mount.model,
                            'programAlign',
                            return_value=False):
-        suc = app.modelFinished()
+        suc = app.modelCycleThroughBuildPointsFinished()
         assert not suc
 
 
@@ -848,7 +848,7 @@ def test_modelFinished_2(qtbot, app):
     with mock.patch.object(app.app.mount.model,
                            'programAlign',
                            return_value=True):
-        suc = app.modelFinished()
+        suc = app.modelCycleThroughBuildPointsFinished()
         assert suc
 
 
@@ -894,7 +894,7 @@ def test_modelFinished_3(qtbot, app):
     with mock.patch.object(app.app.mount.model,
                            'programAlign',
                            return_value=True):
-        suc = app.modelFinished()
+        suc = app.modelCycleThroughBuildPointsFinished()
         assert suc
 
 

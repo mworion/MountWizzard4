@@ -222,6 +222,7 @@ class CameraIndi(IndiClass):
         if fastReadout:
             quality['QUALITY_LOW'] = 'On'
             quality['QUALITY_HIGH'] = 'Off'
+
         else:
             quality['QUALITY_LOW'] = 'Off'
             quality['QUALITY_HIGH'] = 'On'

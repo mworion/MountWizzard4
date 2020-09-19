@@ -585,7 +585,10 @@ class AnalyseWindow(widget.MWidget):
         pierside = self.pierside
         x = self.index
 
-        y, p = zip(*sorted(zip(y, pierside)))
+        temp = sorted(zip(y, pierside))
+
+        y = [x[0] for x in temp]
+        p = [x[1] for x in temp]
 
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
 
@@ -676,6 +679,7 @@ class AnalyseWindow(widget.MWidget):
                        )
 
         axe.figure.canvas.draw()
+
         return True
 
     def draw_errorDistribution(self):
@@ -707,14 +711,13 @@ class AnalyseWindow(widget.MWidget):
 
         return True
 
-    def decreaseThreadCounter(self):
+    def workerDrawAll(self):
         """
 
         :return:
         """
-
-        with self.threadingLock:
-            self.threadCounter -= 1
+        for chart in self.charts:
+            chart()
 
         return True
 
@@ -727,20 +730,7 @@ class AnalyseWindow(widget.MWidget):
         if self.countSequence is None:
             return False
 
-        with self.threadingLock:
-            if self.threadCounter:
-                return False
-            else:
-                self.threadCounter = len(self.charts)
-
-        self.workers = []
-
-        for chart in self.charts:
-            worker = Worker(chart)
-            self.workers.append(worker)
-            worker.signals.finished.connect(self.decreaseThreadCounter)
-
-        for worker in self.workers:
-            self.threadPool.start(worker)
+        worker = Worker(self.workerDrawAll)
+        self.threadPool.start(worker)
 
         return True

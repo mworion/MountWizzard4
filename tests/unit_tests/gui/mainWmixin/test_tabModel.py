@@ -492,12 +492,12 @@ def test_prepareGUI(app):
 
 
 def test_defaultGUI(app):
-    suc = app.restoreModelDefaultContextAndGui()
+    suc = app.restoreModelDefaultContextAndGuiStatus()
     assert suc
 
 
 def test_prepareSignals_1(app):
-    suc = app.prepareSignalsForModelRun()
+    suc = app.setupSignalsForModelRun()
     assert suc
 
 
@@ -505,14 +505,14 @@ def test_prepareSignals_2(app):
     app.deviceStat['dome'] = True
     app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 1}
 
-    suc = app.prepareSignalsForModelRun()
+    suc = app.setupSignalsForModelRun()
     assert suc
 
 
 def test_prepareSignals_3(app):
     app.deviceStat['dome'] = True
 
-    suc = app.prepareSignalsForModelRun()
+    suc = app.setupSignalsForModelRun()
     assert suc
 
 
@@ -522,7 +522,7 @@ def test_defaultSignals(app):
     app.app.astrometry.signals.done.connect(app.modelSolveDone)
     app.collector.ready.connect(app.modelImage)
 
-    suc = app.restoreSignalsForModelDefault()
+    suc = app.restoreSignalsModelDefault()
     assert suc
 
 
@@ -541,7 +541,7 @@ def test_pauseBuild_2(app):
 
 
 def test_cancelFull(qtbot, app):
-    suc = app.prepareSignalsForModelRun()
+    suc = app.setupSignalsForModelRun()
     assert suc
     with mock.patch.object(app.app.camera,
                            'abort'):
@@ -902,7 +902,7 @@ def test_modelCore_1(app):
     app.ui.astrometryDevice.setCurrentIndex(0)
     with mock.patch.object(app,
                            'modelSlew'):
-        suc = app.modelCore(points=[(0, 0)])
+        suc = app.modelCycleThroughBuildPoints(points=[(0, 0)])
         assert not suc
 
 
@@ -910,7 +910,7 @@ def test_modelCore_2(app):
     app.ui.astrometryDevice.setCurrentIndex(1)
     with mock.patch.object(app,
                            'modelSlew'):
-        suc = app.modelCore()
+        suc = app.modelCycleThroughBuildPoints()
         assert not suc
 
 
@@ -918,7 +918,7 @@ def test_modelCore_3(app):
     app.ui.astrometryDevice.setCurrentIndex(1)
     with mock.patch.object(app,
                            'modelSlew'):
-        suc = app.modelCore(points=[(0, 0)])
+        suc = app.modelCycleThroughBuildPoints(points=[(0, 0)])
         assert not suc
 
 
@@ -926,7 +926,7 @@ def test_modelCore_4(app):
     app.ui.astrometryDevice.setCurrentIndex(1)
     with mock.patch.object(app,
                            'modelSlew'):
-        suc = app.modelCore(points=[(0, 0), (0, 0), (0, 0)])
+        suc = app.modelCycleThroughBuildPoints(points=[(0, 0), (0, 0), (0, 0)])
         assert suc
 
 
@@ -937,7 +937,7 @@ def test_modelBuild_1(app):
     app.app.data = Test()
 
     with mock.patch.object(app,
-                           'modelCore',
+                           'modelCycleThroughBuildPoints',
                            return_value=True):
         suc = app.modelBuild()
         assert not suc
@@ -950,7 +950,7 @@ def test_modelBuild_2(app):
     app.app.data = Test()
 
     with mock.patch.object(app,
-                           'modelCore',
+                           'modelCycleThroughBuildPoints',
                            return_value=True):
         suc = app.modelBuild()
         assert not suc
@@ -963,7 +963,7 @@ def test_modelBuild_2a(app):
     app.app.data = Test()
 
     with mock.patch.object(app,
-                           'modelCore',
+                           'modelCycleThroughBuildPoints',
                            return_value=True):
         with mock.patch.object(app.app.mount.model,
                                'clearAlign',
@@ -982,7 +982,7 @@ def test_modelBuild_3(app):
     app.app.data = Test()
 
     with mock.patch.object(app,
-                           'modelCore',
+                           'modelCycleThroughBuildPoints',
                            return_value=True):
         with mock.patch.object(app.app.astrometry,
                                'checkAvailability',
@@ -998,7 +998,7 @@ def test_modelBuild_4(app):
     app.app.data = Test()
 
     with mock.patch.object(app,
-                           'modelCore',
+                           'modelCycleThroughBuildPoints',
                            return_value=False):
         with mock.patch.object(app.app.astrometry,
                                'checkAvailability',
@@ -1014,7 +1014,7 @@ def test_modelBuild_5(app):
     app.app.data = Test()
 
     with mock.patch.object(app,
-                           'modelCore',
+                           'modelCycleThroughBuildPoints',
                            return_value=False):
         with mock.patch.object(app.app.mount.model,
                                'clearAlign',
@@ -1033,7 +1033,7 @@ def test_modelBuild_6(app):
     app.app.data = Test()
 
     with mock.patch.object(app,
-                           'modelCore',
+                           'modelCycleThroughBuildPoints',
                            return_value=True):
         with mock.patch.object(app.app.mount.model,
                                'clearAlign',

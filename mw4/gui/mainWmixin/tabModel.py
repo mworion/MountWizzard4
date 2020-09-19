@@ -557,7 +557,7 @@ class Model:
 
         return True
 
-    def prepareModelRunContextAndGui(self):
+    def setupModelRunContextAndGuiStatus(self):
         """
 
         :return:
@@ -591,9 +591,9 @@ class Model:
 
         return True
 
-    def restoreModelDefaultContextAndGui(self):
+    def restoreModelDefaultContextAndGuiStatus(self):
         """
-        restoreModelDefaultContextAndGui will reset all gui elements to the idle or default
+        restoreModelDefaultContextAndGuiStatus will reset all gui elements to the idle or default
         state and new actions could be started again
 
         :return: true for test purpose
@@ -621,9 +621,9 @@ class Model:
 
         return True
 
-    def prepareSignalsForModelRun(self):
+    def setupSignalsForModelRun(self):
         """
-        prepareSignalsForModelRun establishes the signals chain. as we have multiple actions running
+        setupSignalsForModelRun establishes the signals chain. as we have multiple actions running
         at the same time, the synchronisation by the right link of the signals.
 
         first we link the two slew finished signals to modelImage. that means as soon as
@@ -652,9 +652,9 @@ class Model:
 
         return True
 
-    def restoreSignalsForModelDefault(self):
+    def restoreSignalsModelDefault(self):
         """
-        restoreSignalsForModelDefault clears the signal queue and removes the signal connections
+        restoreSignalsModelDefault clears the signal queue and removes the signal connections
 
         :return: true for test purpose
         """
@@ -690,9 +690,9 @@ class Model:
         self.restoreStatusDAT()
         self.app.camera.abort()
         self.app.astrometry.abort()
-        self.restoreSignalsForModelDefault()
+        self.restoreSignalsModelDefault()
         self.clearQueues()
-        self.restoreModelDefaultContextAndGui()
+        self.restoreModelDefaultContextAndGuiStatus()
         self.app.message.emit('Modeling cancelled', 2)
 
         return True
@@ -870,9 +870,9 @@ class Model:
             self.app.message.emit('Model not enough valid model point', 2)
             return False
 
-        self.restoreSignalsForModelDefault()
+        self.restoreSignalsModelDefault()
         self.clearQueues()
-        self.restoreModelDefaultContextAndGui()
+        self.restoreModelDefaultContextAndGuiStatus()
         self.restoreStatusDAT()
 
         self.app.message.emit('Programming model to mount', 0)
@@ -907,29 +907,6 @@ class Model:
 
         return True
 
-    def modelCore(self, modelPoints=None):
-        """
-        modelCore is the main method for preparing a model run. in addition it checks
-        necessary components and prepares all the parameters.
-        the modeling queue will be filled with point and the queue is started. the overall
-        modeling process consists of a set of queues which are handled by events running
-        in the gui event queue.
-
-        :param modelPoints:
-        :return: true for test purpose
-        """
-
-        self.clearQueues()
-        self.prepareSignalsForModelRun()
-        self.startModeling = time.time()
-
-        for point in modelPoints:
-            self.slewQueue.put(point)
-
-        self.modelSlew()
-
-        return True
-
     def checkModelRunConditions(self):
         """
 
@@ -944,9 +921,9 @@ class Model:
             self.app.message.emit('No modeling start because more than 99 points', 2)
             return False
 
-        excludePoints = self.ui.excludeSuccessfulPoints.isChecked()
+        excludeDonePoints = self.ui.excludeDonePoints.isChecked()
 
-        if len([x for x in self.app.data.buildP if x[2]]) < 3 and excludePoints:
+        if len([x for x in self.app.data.buildP if x[2]]) < 3 and excludeDonePoints:
             self.app.message.emit('No modeling start because less than 3 points left over', 2)
             return False
 
@@ -961,7 +938,7 @@ class Model:
 
         return True
 
-    def prepareModelRun(self):
+    def clearAlignAndBackup(self):
         """
 
         :return:
@@ -984,17 +961,10 @@ class Model:
 
         self.app.mount.model.deleteName('backup')
         self.app.mount.model.storeName('backup')
-        self.disableDAT()
-        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        self.modelName = f'm-{nameTime}-{self.lastGenerator}'
-        self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
-
-        if not os.path.isdir(self.imageDir):
-            os.mkdir(self.imageDir)
 
         return True
 
-    def prepareModelPoints(self):
+    def setupModelPointsAndContextData(self):
         """
 
         :return:
@@ -1012,7 +982,7 @@ class Model:
 
         modelPoints = list()
         for countSequence, point in enumerate(self.app.data.buildP):
-            if self.ui.excludeSuccessfulPoints.isChecked() and not point[2]:
+            if self.ui.excludeDonePoints.isChecked() and not point[2]:
                 continue
 
             m = dict()
@@ -1037,6 +1007,44 @@ class Model:
 
         return modelPoints
 
+    def modelCycleThroughBuildPoints(self, modelPoints=None):
+        """
+        modelCycleThroughBuildPoints is the main method for preparing a model run. in addition it checks
+        necessary components and prepares all the parameters.
+        the modeling queue will be filled with point and the queue is started. the overall
+        modeling process consists of a set of queues which are handled by events running
+        in the gui event queue.
+
+        :param modelPoints:
+        :return: true for test purpose
+        """
+
+        self.clearQueues()
+        self.setupSignalsForModelRun()
+        self.startModeling = time.time()
+
+        for point in modelPoints:
+            self.slewQueue.put(point)
+
+        self.modelSlew()
+
+        return True
+
+    def setupModelFilenamesAndDirectories(self):
+        """
+
+        :return:
+        """
+
+        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        self.modelName = f'm-{nameTime}-{self.lastGenerator}'
+        self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
+
+        if not os.path.isdir(self.imageDir):
+            os.mkdir(self.imageDir)
+
+        return True
+
     def modelBuild(self):
         """
         modelBuild sets the adequate gui elements, selects the model points and calls the
@@ -1048,16 +1056,20 @@ class Model:
         if not self.checkModelRunConditions():
             return False
 
-        if not self.prepareModelRun():
+        if not self.clearAlignAndBackup():
             return False
 
-        modelPoints = self.prepareModelPoints()
+        self.setupModelFilenamesAndDirectories()
+        modelPoints = self.setupModelPointsAndContextData()
+
         if not modelPoints:
             return False
 
-        self.prepareModelRunContextAndGui()
+        self.setupModelRunContextAndGuiStatus()
+        self.disableDAT()
+
         self.app.message.emit(f'Modeling start:      {self.modelName}', 1)
-        self.modelCore(modelPoints=modelPoints)
+        self.modelCycleThroughBuildPoints(modelPoints=modelPoints)
 
         return True
 
@@ -1082,20 +1094,10 @@ class Model:
         if isinstance(loadFilePath, str):
             loadFilePath = [loadFilePath]
 
-        self.app.message.emit('Programing models', 1)
-
-        self.app.mount.model.deleteName('backup')
-        self.app.mount.model.storeName('backup')
-
-        suc = self.app.mount.model.clearAlign()
-        if not suc:
-            self.app.message.emit('Actual model cannot be cleared', 2)
+        if not self.clearAlignAndBackup():
             return False
 
-        else:
-            self.app.message.emit('Actual model clearing, waiting 1s', 0)
-            QTest.qWait(1000)
-            self.app.message.emit('Actual model cleared', 0)
+        self.app.message.emit('Programing models', 1)
 
         modelJSON = list()
         for index, file in enumerate(loadFilePath):

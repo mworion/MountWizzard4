@@ -709,7 +709,7 @@ class MWidget(QWidget, styles.MWStyles):
 
         xt = np.asarray([i[1] for i in plane])
         yt = np.asarray([i[0] for i in plane])
-        d = np.sqrt((xt - event.xdata)**2 / 16 + (yt - event.ydata)**2)
+        d = np.sqrt((xt - event.xdata)**2 / 4 + (yt - event.ydata)**2)
         index = d.argsort()[:1][0]
 
         if d[index] >= epsilon:

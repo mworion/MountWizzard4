@@ -987,10 +987,6 @@ class Model:
             return False
 
         else:
-            self.app.message.emit('Actual model clearing, waiting 3s', 0)
-            QTest.qWait(1000)
-            self.app.message.emit('Actual model clearing, waiting 2s', 0)
-            QTest.qWait(1000)
             self.app.message.emit('Actual model clearing, waiting 1s', 0)
             QTest.qWait(1000)
             self.app.message.emit('Actual model cleared', 0)

@@ -48,6 +48,7 @@ class ManageModel(object):
         self.runningOptimize = False
         self.fittedModelPoints = []
         self.fittedModelPath = ''
+        self.plane = None
 
         ms = self.app.mount.signals
         ms.alignDone.connect(self.showModelPosition)
@@ -55,7 +56,8 @@ class ManageModel(object):
         ms.alignDone.connect(self.showErrorDistribution)
         ms.namesDone.connect(self.setNameList)
 
-        self.ui.checkShowErrorValues.stateChanged.connect(self.refreshModel)
+        self.ui.showErrorValues.clicked.connect(self.showModelPosition)
+        self.ui.showNumbers.clicked.connect(self.showModelPosition)
         self.ui.refreshName.clicked.connect(self.refreshName)
         self.ui.refreshModel.clicked.connect(self.refreshModel)
         self.ui.clearModel.clicked.connect(self.clearModel)
@@ -68,10 +70,9 @@ class ManageModel(object):
         self.ui.showActualModelAnalyse.clicked.connect(self.showActualModelAnalyse)
         self.ui.showOriginalModelAnalyse.clicked.connect(self.showOriginalModelAnalyse)
 
-        model = self.app.mount.model
-        self.ui.targetRMS.valueChanged.connect(lambda: self.showModelPosition(model))
-        self.ui.targetRMS.valueChanged.connect(lambda: self.showErrorAscending(model))
-        self.ui.targetRMS.valueChanged.connect(lambda: self.showErrorDistribution(model))
+        self.ui.targetRMS.valueChanged.connect(self.showModelPosition)
+        self.ui.targetRMS.valueChanged.connect(self.showErrorAscending)
+        self.ui.targetRMS.valueChanged.connect(self.showErrorDistribution)
 
     def initConfig(self):
         """
@@ -82,14 +83,17 @@ class ManageModel(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.checkShowErrorValues.setChecked(config.get('checkShowErrorValues', False))
+
+        self.ui.showErrorValues.setChecked(config.get('showErrorValues', False))
+        self.ui.showNumbers.setChecked(config.get('showNumbers', False))
+        self.ui.showNoAnnotation.setChecked(config.get('showNoAnnotation', True))
         self.ui.targetRMS.setValue(config.get('targetRMS', 99))
         self.ui.optimizeOverall.setChecked(config.get('optimizeOverall', True))
         self.ui.optimizeSingle.setChecked(config.get('optimizeSingle', True))
         self.ui.autoUpdateActualAnalyse.setChecked(config.get('autoUpdateActualAnalyse', False))
-        self.showModelPosition(None)
-        self.showErrorAscending(None)
-        self.showErrorDistribution(None)
+        self.showModelPosition()
+        self.showErrorAscending()
+        self.showErrorDistribution()
 
         return True
 
@@ -102,7 +106,10 @@ class ManageModel(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['checkShowErrorValues'] = self.ui.checkShowErrorValues.isChecked()
+
+        config['showErrorValues'] = self.ui.showErrorValues.isChecked()
+        config['showNumbers'] = self.ui.showNumbers.isChecked()
+        config['showNoAnnotation'] = self.ui.showNoAnnotation.isChecked()
         config['targetRMS'] = self.ui.targetRMS.value()
         config['optimizeOverall'] = self.ui.optimizeOverall.isChecked()
         config['optimizeSingle'] = self.ui.optimizeSingle.isChecked()
@@ -209,7 +216,7 @@ class ManageModel(object):
 
         return name, pointsIn, pointsOut
 
-    def showModelPosition(self, model):
+    def showModelPosition(self):
         """
         showModelPosition draws a polar plot of the align model stars and their errors in
         color. the basic setup of the plot is taking place in the central widget class.
@@ -220,7 +227,7 @@ class ManageModel(object):
         :return:    True if ok for testing
         """
 
-        # check entry conditions for displaying a polar plot
+        model = self.app.mount.model
         if model is None:
             hasNoStars = True
 
@@ -230,8 +237,7 @@ class ManageModel(object):
         else:
             hasNoStars = model.starList is None or not model.starList
 
-        axe, fig = self.generatePolar(widget=self.modelPositionPlot,
-                                      title='Actual Mount Model')
+        axe, fig = self.generatePolar(widget=self.modelPositionPlot)
 
         axe.set_yticks(range(0, 90, 10))
         axe.set_ylim(0, 90)
@@ -242,21 +248,10 @@ class ManageModel(object):
             axe.figure.canvas.draw()
             return False
 
-        lat = self.app.config.get('topoLat', 51.47)
-
-        altitude = []
-        azimuth = []
-        error = []
-        for star in model.starList:
-            alt, az = convert.topoToAltAz(star.coord.ra.hours,
-                                          star.coord.dec.degrees,
-                                          lat)
-            altitude.append(alt)
-            azimuth.append(az)
-            error.append(star.errorRMS)
-        altitude = np.asarray(altitude)
-        azimuth = np.asarray(azimuth)
-        error = np.asarray(error)
+        altitude = np.asarray([x.alt.degrees for x in model.starList])
+        azimuth = np.asarray([x.az.degrees for x in model.starList])
+        error = np.asarray([x.errorRMS for x in model.starList])
+        self.plane = [(alt, az) for alt, az in zip(altitude, azimuth)]
 
         # and plot it
         cm = matplotlib.pyplot.cm.get_cmap('RdYlGn_r')
@@ -275,9 +270,10 @@ class ManageModel(object):
                               cmap=cm,
                               zorder=0,
                               )
-        if self.ui.checkShowErrorValues.isChecked():
+
+        if self.ui.showErrorValues.isChecked():
             for star in model.starList:
-                text = '{0:3.1f}'.format(star.errorRMS)
+                text = f'{star.errorRMS:3.1f}'
                 axe.annotate(text,
                              xy=(theta[star.number - 1],
                                  r[star.number - 1]),
@@ -286,6 +282,19 @@ class ManageModel(object):
                              fontweight='bold',
                              zorder=1,
                              )
+
+        elif self.ui.showNumbers.isChecked():
+            for star in model.starList:
+                text = f'{star.number:3.0f}'
+                axe.annotate(text,
+                             xy=(theta[star.number - 1],
+                                 r[star.number - 1]),
+                             color=self.M_BLUE,
+                             fontsize=9,
+                             fontweight='bold',
+                             zorder=1,
+                             )
+
         formatString = matplotlib.ticker.FormatStrFormatter('%1.0f')
         colorbar = fig.colorbar(scatter,
                                 pad=0.1,
@@ -309,14 +318,14 @@ class ManageModel(object):
         axe.figure.canvas.draw()
         return True
 
-    def showErrorAscending(self, model):
+    def showErrorAscending(self):
         """
         showErrorAscending draws a plot of the align model stars and their errors in ascending
         order.
 
         :return:    True if ok for testing
         """
-
+        model = self.app.mount.model
         if model is None:
             hasNoStars = True
 
@@ -362,7 +371,7 @@ class ManageModel(object):
 
         return True
 
-    def showErrorDistribution(self, model):
+    def showErrorDistribution(self):
         """
         showErrorDistribution draws a polar plot of the align model stars and their errors in
         color. the basic setup of the plot is taking place in the central widget class.
@@ -373,7 +382,7 @@ class ManageModel(object):
         :return:    True if ok for testing
         """
 
-        # check entry conditions for displaying a polar plot
+        model = self.app.mount.model
         if model is None:
             hasNoStars = True
 
@@ -652,6 +661,7 @@ class ManageModel(object):
 
         wIndex = model.starList.index(max(model.starList))
         wStar = model.starList[wIndex]
+        error = wStar.errorRMS
 
         suc = model.deletePoint(wStar.number)
         if not suc:
@@ -659,9 +669,12 @@ class ManageModel(object):
             return False
 
         else:
-            self.app.message.emit('Worst point deleted', 0)
+            text = f'Point: {wIndex + 1:3.0f}, RMS of {error:5.1f}'
+            text += ' arcsec deleted.'
+            self.app.message.emit(text, 0)
             self.refreshModel()
-            return True
+
+        return True
 
     def runTargetRMS(self):
         """
@@ -687,11 +700,13 @@ class ManageModel(object):
 
             if not suc:
                 self.runningOptimize = False
-                self.app.message.emit(f'Star [{wStar.number}] cannot be deleted', 2)
+                self.app.message.emit(f'Star [{wStar.number + 1:3.0f}] cannot be deleted', 2)
 
             else:
-                text = f'Star [{wStar.number:02d}]: RMS of [{wStar.errorRMS:04.1f}] deleted'
+                text = f'Point: {wStar.number + 1:3.0f}: '
+                text += f'RMS of {wStar.errorRMS:5.1f} arcsec deleted.'
                 self.app.message.emit(text, 0)
+
             mount.getAlign()
 
         else:
@@ -722,11 +737,13 @@ class ManageModel(object):
 
             if not suc:
                 self.runningOptimize = False
-                self.app.message.emit(f'Star [{wStar.number}] cannot be deleted', 2)
+                self.app.message.emit(f'Point {wStar.number + 1:3.0f} cannot be deleted', 2)
 
             else:
-                text = f'Star [{wStar.number:02d}]: RMS of [{wStar.errorRMS:04.1f}] deleted'
+                text = f'Point: {wStar.number + 1:3.0f}, RMS of {wStar.errorRMS:5.1f}'
+                text += f' arcsec deleted.'
                 self.app.message.emit(text, 0)
+
             mount.getAlign()
 
         else:
@@ -742,7 +759,7 @@ class ManageModel(object):
         :return: true for test purpose
         """
 
-        self.app.message.emit('Start optimizing model', 0)
+        self.app.message.emit('Start optimizing model', 2)
         self.runningOptimize = True
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.clearModel.setEnabled(False)
@@ -753,6 +770,7 @@ class ManageModel(object):
         if self.ui.optimizeOverall.isChecked():
             self.app.mount.signals.alignDone.connect(self.runTargetRMS)
             self.runTargetRMS()
+
         else:
             self.app.mount.signals.alignDone.connect(self.runSingleRMS)
             self.runSingleRMS()
@@ -767,6 +785,7 @@ class ManageModel(object):
 
         if self.ui.optimizeOverall.isChecked():
             self.app.mount.signals.alignDone.disconnect(self.runTargetRMS)
+
         else:
             self.app.mount.signals.alignDone.disconnect(self.runSingleRMS)
 
@@ -775,7 +794,7 @@ class ManageModel(object):
         self.ui.clearModel.setEnabled(True)
         self.ui.refreshModel.setEnabled(True)
         self.changeStyleDynamic(self.ui.cancelOptimize, 'cancel', 'false')
-        self.app.message.emit('Optimizing done', 0)
+        self.app.message.emit('Optimizing done', 2)
 
         return True
 
@@ -823,5 +842,52 @@ class ManageModel(object):
             return False
 
         self.app.showAnalyse.emit(actualPath)
+
+        return True
+
+    def onMouseEdit(self, event):
+        """
+        onMouseEdit handles the mouse event in normal mode. this means depending on the
+        edit mode (horizon or model points) a left click adds a new point and right click
+        deletes the selected point.
+
+        :param event: mouse events
+        :return: success
+        """
+
+        if not event.inaxes:
+            return False
+
+        if not self.plane:
+            return False
+
+        if event.dblclick:
+            event.xdata = (np.degrees(event.xdata) + 360) % 360
+            event.ydata = 90 - event.ydata
+            index = self.getIndexPoint(event=event, plane=self.plane, epsilon=5)
+
+        else:
+            return False
+
+        error = self.app.mount.model.starList[index].errorRMS
+
+        text = f'Do you want to delete \npoint {index + 1:3.0f}'
+        text += f'\nRMS of {error:5.1f} arcsec'
+
+        msg = PyQt5.QtWidgets.QMessageBox
+        reply = msg.question(self, 'Delete model point', text, msg.Yes | msg.No, msg.No)
+
+        if reply != msg.Yes:
+            return False
+
+        suc = self.app.mount.model.deletePoint(index)
+        if not suc:
+            self.app.message.emit(f'Point {index + 1:3.0f} cannot be deleted', 2)
+            return False
+        else:
+            text = f'Point: {index + 1:3.0f}, RMS of {error:5.1f}'
+            text += f' arcsec deleted.'
+            self.app.message.emit(text, 0)
+            self.refreshModel()
 
         return True

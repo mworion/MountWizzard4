@@ -46,7 +46,7 @@ setup(
     ],
     python_requires='>=3.6.0, <3.9',
     install_requires=[
-        'mountcontrol==0.174.2',
+        'mountcontrol==0.175',
         'indibase==0.138',
         'numpy==1.19.2',
         'PyQt5==5.14.2; platform_machine != "armv7l"',
@@ -58,7 +58,7 @@ setup(
         'scipy==1.5.2',
         'requests==2.24.0',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.26',
+        'skyfield==1.27',
         'sgp4>=2.2',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==1.7.0',

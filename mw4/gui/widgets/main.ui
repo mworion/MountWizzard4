@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -8435,7 +8435,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <double>0.500000000000000</double>
       </property>
       <property name="value">
-       <double>99.000000000000000</double>
+       <double>10.000000000000000</double>
       </property>
      </widget>
      <widget class="QLineEdit" name="errorRMS1">
@@ -8671,87 +8671,27 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <x>5</x>
          <y>5</y>
          <width>481</width>
-         <height>381</height>
+         <height>361</height>
         </rect>
        </property>
        <property name="autoFillBackground">
         <bool>true</bool>
        </property>
-       <widget class="QLineEdit" name="numberStars1">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>455</x>
-          <y>5</y>
-          <width>21</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Number of alignment stars in actual used pointing model</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>00</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_76">
-        <property name="geometry">
-         <rect>
-          <x>395</x>
-          <y>5</y>
-          <width>61</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string># of Stars</string>
-        </property>
-       </widget>
       </widget>
-      <widget class="QCheckBox" name="checkShowErrorValues">
+      <widget class="QRadioButton" name="showErrorValues">
        <property name="geometry">
         <rect>
-         <x>350</x>
-         <y>360</y>
-         <width>131</width>
+         <x>235</x>
+         <y>365</y>
+         <width>91</width>
          <height>20</height>
         </rect>
+       </property>
+       <property name="sizeIncrement">
+        <size>
+         <width>0</width>
+         <height>18</height>
+        </size>
        </property>
        <property name="font">
         <font>
@@ -8762,13 +8702,154 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </font>
        </property>
        <property name="toolTip">
-        <string>Show error values close to point in polar diagram.</string>
+        <string>Sets the epoch for showing the pointing coordinates to JNow</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>Show error values</string>
+        <string>Error values</string>
        </property>
        <property name="checked">
         <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="showNumbers">
+       <property name="geometry">
+        <rect>
+         <x>135</x>
+         <y>365</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="sizeIncrement">
+        <size>
+         <width>0</width>
+         <height>18</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Sets the epoch for showing the pointing coordinates to J2000</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Numbers</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="showNoAnnotation">
+       <property name="geometry">
+        <rect>
+         <x>35</x>
+         <y>365</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="sizeIncrement">
+        <size>
+         <width>0</width>
+         <height>18</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Sets the epoch for showing the pointing coordinates to J2000</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Nothing</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="numberStars1">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>440</x>
+         <y>365</y>
+         <width>21</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Number of alignment stars in actual used pointing model</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string>00</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_76">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>365</y>
+         <width>61</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string># of Stars</string>
        </property>
       </widget>
      </widget>

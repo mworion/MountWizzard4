@@ -39,6 +39,12 @@ Released betas
 - stability
 - adding exclude done build points
 - adding automatic retry for model build
+- adding feature for selecting point for deletion out of model overview
+- changed numbers from 0 to number from 1 (human like)
+- clear checkmarks after successful model run
+- update skyfield to 0.127
+- update PyQt5 to 5.15.1
+- update matplotlib to 3.3.2
 
 
 0.151.2

@@ -643,10 +643,10 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         for i, point in enumerate(points):
             if point[2]:
-                annotationText = '{0:2d}'.format(i)
+                annotationText = f'{i + 1:2d}'
                 color = self.M_WHITE
             else:
-                annotationText = '{0:2d}'.format(i)
+                annotationText = f'{i + 1:2d}'
                 color = self.M_YELLOW
 
             annotation = axes.annotate(annotationText,

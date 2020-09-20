@@ -249,7 +249,7 @@ class Model:
         if not 0 <= count < number:
             return False
 
-        fraction = (count + 1) / number
+        fraction = count / number
 
         secondsElapsed = time.time() - self.startModeling
         secondsBase = secondsElapsed / fraction
@@ -338,7 +338,7 @@ class Model:
 
         self.updateProgress(number=number, count=count)
 
-        if number == count + 1:
+        if number == count:
             self.modelCycleThroughBuildPointsFinished()
 
         return True
@@ -1020,19 +1020,19 @@ class Model:
         lenSequence = len(self.app.data.buildP)
 
         modelPoints = list()
-        for countSequence, point in enumerate(self.app.data.buildP):
+        for index, point in enumerate(self.app.data.buildP):
             if self.ui.excludeDonePoints.isChecked() and not point[2]:
                 continue
 
             m = dict()
-            imagePath = f'{self.imageDir}/image-{countSequence:03d}.fits'
+            imagePath = f'{self.imageDir}/image-{index + 1:03d}.fits'
             m['imagePath'] = imagePath
             m['exposureTime'] = exposureTime
             m['binning'] = binning
             m['subFrame'] = subFrame
             m['fastReadout'] = fastReadout
             m['lenSequence'] = lenSequence
-            m['countSequence'] = countSequence
+            m['countSequence'] = index + 1
             m['modelName'] = self.modelName
             m['imagePath'] = imagePath
             m['astrometryApp'] = astrometryApp

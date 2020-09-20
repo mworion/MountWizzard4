@@ -20,6 +20,7 @@ import logging
 import platform
 import os
 from threading import Lock
+import bisect
 
 # external packages
 import numpy as np
@@ -683,3 +684,62 @@ class MWidget(QWidget, styles.MWStyles):
         driver = searchD.get(sender, '')
 
         return driver
+
+    @staticmethod
+    def getIndexPoint(event=None, plane=None, epsilon=2):
+        """
+        getIndexPoint returns the index of the point which is nearest to the coordinate
+        of the mouse click when the click is in distance epsilon of the points. otherwise
+        no index will be returned.
+
+        :param event: data of the mouse clicked event
+        :param plane: coordinates as tuples (alt, az)
+        :param epsilon:
+        :return: index or none
+        """
+
+        if event is None:
+            return None
+
+        if plane is None:
+            return None
+
+        if len(plane) == 0:
+            return None
+
+        xt = np.asarray([i[1] for i in plane])
+        yt = np.asarray([i[0] for i in plane])
+        d = np.sqrt((xt - event.xdata)**2 / 16 + (yt - event.ydata)**2)
+        index = d.argsort()[:1][0]
+
+        if d[index] >= epsilon:
+            return None
+
+        index = int(index)
+
+        return index
+
+    @staticmethod
+    def getIndexPointX(event=None, plane=None):
+        """
+        getIndexPointX returns the index of the point which has a x coordinate closest to
+        the left of the x coordinate of the mouse click regardless which y coordinate it has
+
+        :param event: data of the mouse clicked event
+        :param plane: coordinates as tuples (x, y)
+        :return: index or none
+        """
+
+        if event is None:
+            return None
+
+        if plane is None:
+            return None
+
+        if len(plane) < 2:
+            return None
+
+        xt = [i[1] for i in plane]
+        index = int(bisect.bisect_left(xt, event.xdata) - 1)
+
+        return index

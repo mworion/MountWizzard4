@@ -255,6 +255,24 @@ class DataPoint(object):
     def clearBuildP(self):
         self._buildP.clear()
 
+    def setStatusBuildP(self, number, status):
+        """
+
+        :param number:
+        :param status:
+        :return: True for test purpose
+        """
+        if number < 0:
+            return False
+
+        if number > len(self._buildP) - 1:
+            return False
+
+        alt, az, _ = self._buildP[number]
+        self._buildP[number] = (alt, az, status)
+
+        return True
+
     def addHorizonP(self, value=None, position=None):
         """
         addHorizonP extends the list of modeldata points. the new point could be added at the

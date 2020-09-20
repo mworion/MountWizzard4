@@ -309,9 +309,7 @@ class Model:
                 self.log.info(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
                 self.modelQueue.put(mPoint)
 
-                alt, az, status = self.app.data.buildP[count]
-                status = False
-                self.app.data.buildP[count] = (alt, az, status)
+                self.app.data.setStatusBuildP(count - 1, False)
                 self.app.redrawHemisphere.emit()
 
             else:
@@ -891,6 +889,11 @@ class Model:
         self.app.message.emit(f'Modeling finished:    {self.modelName}', 1)
         self.playSound('ModelingFinished')
         self.refreshName()
+
+        for i in range(0, len(self.app.data.buildP)):
+            self.app.data.setStatusBuildP(i, True)
+
+        self.app.redrawHemisphere.emit()
 
         if self.ui.parkMountAfterModel.isChecked():
             self.app.message.emit('Parking mount after model run', 0)

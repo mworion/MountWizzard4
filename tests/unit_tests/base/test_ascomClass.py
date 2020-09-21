@@ -47,6 +47,30 @@ def module_setup_teardown():
     app.threadPool.waitForDone(1000)
 
 
+def test_connectClient():
+    class Test:
+        connected = False
+
+    app.client = Test()
+    app.connectClient()
+
+
+def test_disconnectClient():
+    class Test:
+        connected = False
+
+    app.client = Test()
+    app.disconnectClient()
+
+
+def test_isClientConnected():
+    class Test:
+        connected = False
+
+    app.client = Test()
+    app.isClientConnected()
+
+
 def test_getInitialConfig_1():
     class Test:
         connected = False
@@ -64,6 +88,23 @@ def test_getInitialConfig_1():
     assert app.data['DRIVER_INFO.DRIVER_NAME'] == 'test'
     assert app.data['DRIVER_INFO.DRIVER_VERSION'] == '1'
     assert app.data['DRIVER_INFO.DRIVER_EXEC'] == 'test1'
+
+
+def test_getInitialConfig_2():
+    class Test:
+        connected = False
+        Name = 'test'
+        DriverVersion = '1'
+        DriverInfo = 'test1'
+
+    app.serverConnected = False
+    app.deviceConnected = False
+    app.client = Test()
+    with mock.patch.object(app,
+                           'connectClient',
+                           side_effect=Exception()):
+        suc = app.getInitialConfig()
+        assert not suc
 
 
 def test_startTimer():
@@ -154,6 +195,23 @@ def test_pollStatus_3():
     assert app.deviceConnected
 
 
+def test_pollStatus_4():
+    class Test:
+        connected = True
+        Name = 'test'
+        DriverVersion = '1'
+        DriverInfo = 'test1'
+
+    app.serverConnected = False
+    app.deviceConnected = False
+    app.client = Test()
+    with mock.patch.object(app,
+                           'isClientConnected',
+                           side_effect=Exception()):
+        suc = app.pollStatus()
+        assert not suc
+
+
 def test_emitData():
     app.emitData()
 
@@ -208,7 +266,7 @@ def test_startCommunication_2():
                 assert not suc
 
 
-def test_stopCommunication():
+def test_stopCommunication_4():
     if platform.system() != 'Windows':
         return
 
@@ -222,3 +280,23 @@ def test_stopCommunication():
             assert suc
             assert not app.serverConnected
             assert not app.deviceConnected
+
+
+def test_stopCommunication_5():
+    if platform.system() != 'Windows':
+        return
+
+    app.deviceConnected = True
+    app.serverConnected = True
+    app.client = 'test'
+    with mock.patch.object(app,
+                           'disconnectClient',
+                           side_effect=Exception()):
+        with mock.patch.object(app,
+                               'stopTimer'):
+            with mock.patch.object(pythoncom,
+                               'CoUninitialize'):
+                suc = app.stopCommunication()
+                assert suc
+                assert not app.serverConnected
+                assert not app.deviceConnected

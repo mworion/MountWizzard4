@@ -93,6 +93,15 @@ class AscomClass(object):
         self.cycleData.setSingleShot(False)
         self.cycleData.timeout.connect(self.pollData)
 
+    def connectClient(self):
+        self.client.connected = True
+
+    def disconnectClient(self):
+        self.client.connected = False
+
+    def isClientConnected(self):
+        return self.client.connected
+
     def getInitialConfig(self):
         """
         getInitialConfig starts connecting the ascom device with retry and send the
@@ -103,20 +112,21 @@ class AscomClass(object):
 
         for retry in range(0, 6):
             try:
-                self.client.connected = True
+                self.connectClient()
 
             except Exception as e:
                 suc = False
                 self.log.warning(f'Connection error [{self.deviceName}]: [{e}]')
 
             else:
-                suc = self.client.connected
+                suc = self.isClientConnected()
                 if suc:
                     self.log.info(f'[{self.deviceName}] connected, [{retry}] retries needed')
                     break
 
             finally:
                 QTest.qWait(200)
+
         else:
             suc = False
 
@@ -197,7 +207,7 @@ class AscomClass(object):
         """
 
         try:
-            suc = self.client.connected
+            suc = self.isClientConnected()
 
         except Exception as e:
             self.log.warning(f'Connection status error [{self.deviceName}]: [{e}]')
@@ -283,7 +293,7 @@ class AscomClass(object):
         self.stopTimer()
         if self.client:
             try:
-                self.client.connected = False
+                self.disconnectClient()
 
             except Exception as e:
                 self.log.info(f'Connection to [{self.deviceName}] could not be closed: {e}')

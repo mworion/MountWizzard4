@@ -33,6 +33,11 @@ def module_setup_teardown():
     yield
 
 
+def test_timeTz():
+    suc = loggerMW.timeTz()
+    assert suc
+
+
 def test_setupLogging():
     suc = loggerMW.setupLogging()
     assert suc

@@ -26,14 +26,16 @@ from dateutil.tz import tzutc
 # local imports
 
 
+def timeTz(*args):
+    return datetime.datetime.now(tzutc()).timetuple()
+
+
 def setupLogging():
     """
     setupLogging defines the logger and formats and disables unnecessary library logging
 
     :return: true for test purpose
     """
-    def timeTz(*args):
-        return datetime.datetime.now(tzutc()).timetuple()
 
     logging.Formatter.converter = timeTz
 
@@ -42,8 +44,6 @@ def setupLogging():
     logging.basicConfig(level=logging.DEBUG,
                         format='[%(asctime)s.%(msecs)03d]'
                                '[%(levelname)1.1s]'
-                               # '[%(threadName)-.2s]'
-                               # '[%(funcName)4.4s]'
                                '[%(filename)15.15s]'
                                '[%(lineno)4s]'
                                ' %(message)s',

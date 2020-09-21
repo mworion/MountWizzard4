@@ -79,3 +79,8 @@ def test_setswitchname():
 def test_setswitchvalue():
     val = app.setswitchvalue(Id=0, Value='test')
     assert val is None
+
+
+def test_switchstep():
+    val = app.switchstep(Id=0)
+    assert val is None

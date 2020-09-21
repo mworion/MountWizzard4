@@ -16,6 +16,9 @@
 #
 ###########################################################
 # standard libraries
+from unittest import mock
+from datetime import datetime
+from dateutil.parser import parser
 
 # external packages
 import pytest
@@ -47,7 +50,15 @@ def test_aperturearea():
     assert val is None
 
 
-def test_aperturediameter():
+def test_aperturediameter_1():
+    with mock.patch.object(app,
+                           'get',
+                           return_value=100):
+        val = app.aperturediameter()
+        assert val == 100000
+
+
+def test_aperturediameter_2():
     val = app.aperturediameter()
     assert val is None
 
@@ -167,9 +178,17 @@ def test_equatorialsystem():
     assert val is None
 
 
-def test_focallength():
+def test_focallength_1():
     val = app.focallength()
     assert val is None
+
+
+def test_focallength_2():
+    with mock.patch.object(app,
+                           'get',
+                           return_value=100):
+        val = app.focallength()
+        assert val == 100000
 
 
 def test_guideratedeclination_1():
@@ -317,9 +336,33 @@ def test_trackingrates():
     assert val is None
 
 
+def test_utcdate_1():
+    with mock.patch.object(parser,
+                           'parse',
+                           return_value=1):
+        val = app.utcdate()
+        assert val == 1
+
+
 def test_utcdate_2():
-    val = app.utcdate(UTCDate=0)
-    assert val is None
+    with mock.patch.object(app,
+                           'put'):
+        val = app.utcdate(UTCDate='0')
+        assert val is None
+
+
+def test_utcdate_3():
+    with mock.patch.object(app,
+                           'put'):
+        val = app.utcdate(UTCDate=datetime.now())
+        assert val is None
+
+
+def test_utcdate_4():
+    with mock.patch.object(app,
+                           'put'):
+        val = app.utcdate(UTCDate=0)
+        assert val is None
 
 
 def test_abortslew():

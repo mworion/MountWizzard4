@@ -45,6 +45,8 @@ def module_setup_teardown():
 
 def test_properties_1():
     app.host = ('localhost', 11111)
+    app.hostaddress = 'localhost'
+    app.port = 11111
     app.deviceName = 'test'
     app.deviceName = 'test:2'
     app.apiVersion = 1
@@ -54,6 +56,8 @@ def test_properties_1():
 def test_properties_2():
     host = app.host
     assert host == ('localhost', 11111)
+    assert app.hostaddress == 'localhost'
+    assert app.port == 11111
     assert app.deviceName == ''
     assert app.apiVersion == 1
     assert app.protocol == 'http'
@@ -203,3 +207,27 @@ def test_stopCommunication():
         assert suc
         assert not app.serverConnected
         assert not app.deviceConnected
+
+
+def test_discoverDevices_1():
+    with mock.patch.object(app.client,
+                           'discoverDevices',
+                           return_value=[{'DeviceName': 'test',
+                                          'DeviceNumber': 1,
+                                          'DeviceType': 'Dome',
+                                          },
+                                         {'DeviceName': 'test1',
+                                          'DeviceNumber': 3,
+                                          'DeviceType': 'Dome',
+                                          },
+                                         ]):
+        val = app.discoverDevices('dome')
+        assert val == ['test:dome:1', 'test1:dome:3']
+
+
+def test_discoverDevices_2():
+    with mock.patch.object(app.client,
+                           'discoverDevices',
+                           return_value=[]):
+        val = app.discoverDevices('dome')
+        assert val == []

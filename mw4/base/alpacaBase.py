@@ -123,6 +123,7 @@ class AlpacaBase:
 
         try:
             response = requests.get(url, timeout=3)
+
         except requests.exceptions.Timeout:
             self.log.warning('timeout')
             return None
@@ -1945,7 +1946,7 @@ class Telescope(AlpacaBase):
         if type(UTCDate) is str:
             data = UTCDate
 
-        elif type(UTCDate) is datetime:
+        elif type(UTCDate) is datetime.datetime:
             data = UTCDate.isoformat()
 
         else:

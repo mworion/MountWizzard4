@@ -51,8 +51,8 @@ class AlpacaClass:
 
         self.client = AlpacaBase()
 
-        self._hostaddress = None
-        self._port = None
+        self._hostaddress = 'localhost'
+        self._port = 11111
 
         self.defaultConfig = {
             'alpaca': {
@@ -87,7 +87,7 @@ class AlpacaClass:
 
     @property
     def hostaddress(self):
-        return self._host
+        return self._hostaddress
 
     @hostaddress.setter
     def hostaddress(self, value):

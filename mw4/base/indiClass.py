@@ -120,6 +120,7 @@ class IndiClass:
         self.deviceName = ''
         self.device = None
         self._hostaddress = None
+        self._host = None
         self._port = None
         self.retryCounter = 0
         self.discoverType = None
@@ -175,7 +176,7 @@ class IndiClass:
 
     @property
     def hostaddress(self):
-        return self._host
+        return self._hostaddress
 
     @hostaddress.setter
     def hostaddress(self, value):
@@ -246,6 +247,7 @@ class IndiClass:
             self.device = None
             self.data.clear()
             return True
+
         else:
             return False
 
@@ -259,6 +261,7 @@ class IndiClass:
 
         if not self.deviceName:
             return False
+
         if self.data:
             return True
 
@@ -488,6 +491,7 @@ class IndiClass:
 
         if self.device is None:
             return False
+
         if deviceName != self.deviceName:
             return False
 
@@ -547,6 +551,7 @@ class IndiClass:
             return False
 
         device = self.client.devices.get(deviceName)
+
         if not device:
             return False
 

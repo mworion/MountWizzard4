@@ -21,6 +21,7 @@ from unittest import mock
 # external packages
 import pytest
 import PyQt5
+from PyQt5.QtTest import QTest
 from indibase.indiBase import Device
 from base.indiClass import IndiClass
 
@@ -45,9 +46,15 @@ def module_setup_teardown():
     yield
 
 
-def test_name():
+def test_properties():
     app.deviceName = 'test'
     assert app.deviceName == 'test'
+    app.host = ('localhost', 7624)
+    assert app.host == ('localhost', 7624)
+    app.hostaddress = 'localhost'
+    assert app.hostaddress == 'localhost'
+    app.port = 7624
+    assert app.port == 7624
 
 
 def test_serverConnected_1():
@@ -129,6 +136,17 @@ def test_startRetry_3():
     app.data = {'test': 1}
     suc = app.startRetry()
     assert suc
+
+
+def test_startRetry_4():
+    app.deviceName = 'test'
+    app.device = Device()
+    app.data = None
+    with mock.patch.object(app.client,
+                           'connectServer',
+                           return_value=True):
+        suc = app.startRetry()
+        assert suc
 
 
 def test_startCommunication_1():
@@ -255,6 +273,12 @@ def test_setUpdateConfig():
     app.setUpdateConfig('test')
 
 
+def test_convertIndigoProperty_1():
+    app.INDIGO = {'test': 'test1'}
+    val = app.convertIndigoProperty('test')
+    assert val == 'test1'
+
+
 def test_updateNumber_1():
     suc = app.updateNumber('telescope', 'test')
     assert not suc
@@ -321,6 +345,17 @@ def test_updateSwitch_3():
         assert suc
 
 
+def test_updateSwitch_4():
+    app.data = {}
+    app.device = Device()
+    app.deviceName = 'telescope'
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'test': 1}):
+        suc = app.updateSwitch('telescope', 'PROFILE')
+        assert suc
+
+
 def test_updateLight_1():
     suc = app.updateLight('telescope', 'test')
     assert not suc
@@ -352,6 +387,13 @@ def test_updateBLOB_2():
     app.device = Device()
     suc = app.updateBLOB('telescope', 'test')
     assert not suc
+
+
+def test_updateBLOB_3():
+    app.device = Device()
+    app.deviceName = 'telescope'
+    suc = app.updateBLOB('telescope', 'test')
+    assert suc
 
 
 def test_removePrefix_1():
@@ -414,8 +456,8 @@ def test_addDiscoveredDevice_2(qtbot):
 def test_addDiscoveredDevice_3(qtbot):
     device = Device()
     app.indiClass = IndiClass()
-    app.indiClass.client.devices['telescope'] = device
-    app.indiSearchType = None
+    app.client.devices['telescope'] = device
+    app.discoverType = None
     with mock.patch.object(device,
                            'getText',
                            return_value={}):
@@ -426,9 +468,9 @@ def test_addDiscoveredDevice_3(qtbot):
 def test_addDiscoveredDevice_4(qtbot):
     device = Device()
     app.indiClass = IndiClass()
-    app.indiClass.client.devices['telescope'] = device
-    app.indiSearchType = None
-    app.indiSearchNameList = list()
+    app.client.devices['telescope'] = device
+    app.discoverType = None
+    app.discoverList = list()
     with mock.patch.object(device,
                            'getText',
                            return_value={'DRIVER_INTERFACE': '0'}):
@@ -439,11 +481,18 @@ def test_addDiscoveredDevice_4(qtbot):
 def test_addDiscoveredDevice_5(qtbot):
     device = Device()
     app.indiClass = IndiClass()
-    app.indiClass.client.devices['telescope'] = device
-    app.indiSearchType = 1
-    app.indiSearchNameList = list()
+    app.client.devices['telescope'] = device
+    app.discoverType = 1
+    app.discoverList = list()
     with mock.patch.object(device,
                            'getText',
                            return_value={'DRIVER_INTERFACE': 1}):
         suc = app.addDiscoveredDevice('telescope', 'DRIVER_INFO')
-        assert not suc
+        assert suc
+
+
+def test_discoverDevices_1():
+    with mock.patch.object(QTest,
+                           'qWait'):
+        val = app.discoverDevices('dome')
+        assert val == []

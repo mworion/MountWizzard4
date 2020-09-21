@@ -26,7 +26,6 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 import numpy as np
 import matplotlib.pyplot
-from mountcontrol import convert
 
 # local import
 

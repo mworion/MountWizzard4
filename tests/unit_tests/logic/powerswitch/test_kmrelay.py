@@ -19,8 +19,10 @@
 from unittest import mock
 import time
 import pytest
+
 # external packages
 import PyQt5
+import requests
 
 # local import
 from logic.powerswitch.kmRelay import KMRelay
@@ -108,24 +110,47 @@ def test_debugOutput_2():
     assert suc
 
 
-def getRelay_1():
+def test_getRelay_1():
     app.host = None
     suc = app.getRelay()
     assert suc is None
 
 
-def getRelay_2():
-    app.host = host
+def test_getRelay_2():
+    app.host = ('localhost', 8080)
     app.mutexPoll.lock()
-    suc = app.relay.getRelay()
+    suc = app.getRelay()
     assert suc is None
 
 
-def getRelay_3():
-    app.host = host
-    app.mutexPoll.unlock()
-    suc = app.relay.getRelay()
-    assert not suc
+def test_getRelay_3():
+    app.host = ('localhost', 8080)
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=None,
+                           side_effect=requests.exceptions.Timeout):
+        suc = app.getRelay()
+        assert suc is None
+
+
+def test_getRelay_4():
+    app.host = ('localhost', 8080)
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=None,
+                           side_effect=requests.exceptions.ConnectionError):
+        suc = app.getRelay()
+        assert suc is None
+
+
+def test_getRelay_5():
+    app.host = ('localhost', 8080)
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=None,
+                           side_effect=Exception()):
+        suc = app.getRelay(debug=True)
+        assert suc is None
 
 
 def test_cyclePolling_1():

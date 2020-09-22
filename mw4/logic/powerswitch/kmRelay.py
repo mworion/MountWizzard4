@@ -203,18 +203,19 @@ class KMRelay(QObject):
         if not self.mutexPoll.tryLock():
             return None
 
-        auth = requests.auth.HTTPBasicAuth(self.user,
-                                           self.password,
-                                           )
+        auth = requests.auth.HTTPBasicAuth(self.user, self.password)
         url = f'http://{self._host[0]}:{self._host[1]}{url}'
         result = None
 
         try:
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
+
         except requests.exceptions.Timeout:
             self.log.info(f'Connection timeout: [{url}]')
+
         except requests.exceptions.ConnectionError:
             self.log.info(f'Connection error: [{url}]')
+
         except Exception as e:
             self.log.critical(f'Error in request: {e}')
 

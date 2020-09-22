@@ -154,19 +154,29 @@ def test_getRelay_5():
 
 
 def test_cyclePolling_1():
-    app.host = None
     app.user = 'test'
     app.password = 'test'
-    suc = app.cyclePolling()
-    assert not suc
+    app.host = ('localhost', 80)
+    with mock.patch.object(app,
+                           'getRelay',
+                           return_value=None):
+        suc = app.cyclePolling()
+        assert not suc
 
 
 def test_cyclePolling_2():
-    app.host = ('localhost', 80)
+    class Test:
+        reason = 'NotOk'
+        text = 'test'
+
     app.user = 'test'
     app.password = 'test'
-    suc = app.cyclePolling()
-    assert not suc
+    app.host = ('localhost', 80)
+    with mock.patch.object(app,
+                           'getRelay',
+                           return_value=Test()):
+        suc = app.cyclePolling()
+        assert not suc
 
 
 def test_cyclePolling_3():
@@ -182,20 +192,6 @@ def test_cyclePolling_3():
                            return_value=Test()):
         suc = app.cyclePolling()
         assert suc
-
-
-def test_cyclePolling_4():
-    class Test:
-        pass
-    ret = Test()
-    ret.reason = 'False'
-    ret.status_code = 200
-
-    with mock.patch.object(app,
-                           'getRelay',
-                           return_value=ret):
-        suc = app.cyclePolling()
-        assert not suc
 
 
 def test_status1(qtbot):

@@ -237,10 +237,12 @@ class KMRelay(QObject):
 
         if value is None:
             return False
+
         if value.reason != 'OK':
             return False
 
         lines = value.text.splitlines()
+
         for line in lines:
             value = re.findall(r'\d', line)
             if not value:
@@ -249,6 +251,7 @@ class KMRelay(QObject):
             self.status[value[0] - 1] = value[1]
 
         self.signals.statusReady.emit()
+
         return True
 
     def getByte(self, relayNumber=0, state=False):

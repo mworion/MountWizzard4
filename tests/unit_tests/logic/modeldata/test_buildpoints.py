@@ -239,11 +239,12 @@ def test_genGreaterCircle1():
     selection = 'min'
     app.genGreaterCircle(selection)
     i = 0
-    for i, (alt, az) in enumerate(app.buildP):
+    for i, (alt, az, status) in enumerate(app.buildP):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
         assert az >= 0
+        assert status
     assert i == 50
 
 
@@ -252,11 +253,12 @@ def test_genGreaterCircle2():
     selection = 'norm'
     app.genGreaterCircle(selection)
     i = 0
-    for i, (alt, az) in enumerate(app.buildP):
+    for i, (alt, az, status) in enumerate(app.buildP):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
         assert az >= 0
+        assert status
     assert i == 75
 
 
@@ -265,11 +267,12 @@ def test_genGreaterCircle3():
     selection = 'med'
     app.genGreaterCircle(selection)
     i = 0
-    for i, (alt, az) in enumerate(app.buildP):
+    for i, (alt, az, status) in enumerate(app.buildP):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
         assert az >= 0
+        assert status
     assert i == 94
 
 
@@ -278,11 +281,12 @@ def test_genGreaterCircle4():
     selection = 'max'
     app.genGreaterCircle(selection)
     i = 0
-    for i, (alt, az) in enumerate(app.buildP):
+    for i, (alt, az, status) in enumerate(app.buildP):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
         assert az >= 0
+        assert status
     assert i == 124
 
 
@@ -326,13 +330,13 @@ def test_clearBuildP():
 
 def test_addBuildP1():
     app.buildP = ()
-    suc = app.addBuildP((10, 10))
+    suc = app.addBuildP((10, 10, True))
     assert suc
     assert 1 == len(app.buildP)
-    suc = app.addBuildP((10, 10))
+    suc = app.addBuildP((10, 10, True))
     assert suc
     assert 2 == len(app.buildP)
-    suc = app.addBuildP((10, 10))
+    suc = app.addBuildP((10, 10, True))
     assert suc
     assert 3 == len(app.buildP)
 
@@ -346,40 +350,40 @@ def test_addBuildP2():
 
 def test_addBuildP3():
     app.buildP = ()
-    suc = app.addBuildP((10, 10, 10))
+    suc = app.addBuildP((10, 10, 10, True))
     assert not suc
     assert 0 == len(app.buildP)
 
 
 def test_addBuildP4():
     app.buildP = [(10, 10), (10, 10)]
-    suc = app.addBuildP((10, 10), position=1)
+    suc = app.addBuildP((10, 10, True), position=1)
     assert suc
     assert len(app.buildP) == 3
 
 
 def test_addBuildP5():
     app.buildP = [(10, 10), (10, 10)]
-    suc = app.addBuildP((10, 10), position=20)
+    suc = app.addBuildP((10, 10, True), position=20)
     assert suc
     assert len(app.buildP) == 3
 
 
 def test_addBuildP6():
-    app.buildP = [(10, 10), (10, 10)]
-    suc = app.addBuildP((10, 10), position=-5)
+    app.buildP = [(10, 10, True), (10, 10, True)]
+    suc = app.addBuildP((10, 10, True), position=-5)
     assert suc
     assert len(app.buildP) == 3
 
 
 def test_addBuildP7():
-    app.buildP = [(10, 10), (10, 10)]
+    app.buildP = [(10, 10, True), (10, 10, True)]
     suc = app.addBuildP(position=-5)
     assert not suc
 
 
 def test_addBuildP8():
-    app.buildP = [(10, 10), (10, 10)]
+    app.buildP = [(10, 10, True), (10, 10, True)]
     app.app.mount.setting.horizonLimitHigh = 80
     app.app.mount.setting.horizonLimitLow = 5
     suc = app.addBuildP((10, 10), position='a')
@@ -387,7 +391,7 @@ def test_addBuildP8():
 
 
 def test_addBuildP9():
-    app.buildP = [(10, 10), (10, 10)]
+    app.buildP = [(10, 10, True), (10, 10, True)]
     app.app.mount.setting.horizonLimitHigh = 80
     app.app.mount.setting.horizonLimitLow = 5
     suc = app.addBuildP((90, 10), position=20)
@@ -395,7 +399,7 @@ def test_addBuildP9():
 
 
 def test_addBuildP10():
-    app.buildP = [(10, 10), (10, 10)]
+    app.buildP = [(10, 10, True), (10, 10, True)]
     app.app.mount.setting.horizonLimitHigh = 80
     app.app.mount.setting.horizonLimitLow = 5
     suc = app.addBuildP((0, 10), position=20)
@@ -665,7 +669,7 @@ def test_loadBuildP_3():
                   indent=4)
     suc = app.loadBuildP('test', '.bpts')
     assert suc
-    assert app.buildP == values
+    assert app.buildP == [(1, 1, True), (2, 2, True)]
 
 
 def test_loadBuildP_4():
@@ -693,14 +697,14 @@ def test_loadBuildP_5():
         outfile.write('1,1\n2,2\n')
     suc = app.loadBuildP('test', '.csv')
     assert suc
-    assert app.buildP == values
+    assert app.buildP == [(1, 1, True), (2, 2, True)]
 
 
 def test_loadBuildP_6():
     # load file with path
     app.buildPFile = ''
     fileName = 'tests/config/test.txt'
-    values = [(1, 1), (2, 2)]
+    values = [(1, 1, True), (2, 2, True)]
     with open(fileName, 'w') as outfile:
         outfile.write('1:1\n2:2\n')
     suc = app.loadBuildP('test', '.txt')

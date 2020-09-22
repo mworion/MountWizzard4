@@ -24,12 +24,14 @@ import unittest.mock as mock
 
 # external packages
 import skyfield.api
+from skyfield.api import Angle
 from skyfield.toposlib import Topos
 from mountcontrol.mount import Mount
 
 # local import
 from logic.modeldata.buildpoints import DataPoint
 from logic.modeldata.buildpoints import HaDecToAltAz
+from base import transform
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -229,6 +231,13 @@ def test_isCloseMeridian_2():
     assert suc
 
 
+def test_isCloseMeridian_3():
+    app.app.mount.setting.meridianLimitSlew = 5
+    app.app.mount.setting.meridianLimitTrack = 5
+    suc = app.isCloseMeridian((45, 180))
+    assert not suc
+
+
 def test_deleteCloseMeridian_1():
     suc = app.deleteCloseMeridian()
     assert suc
@@ -290,6 +299,14 @@ def test_genGreaterCircle4():
     assert i == 124
 
 
+def test_genGreaterCircle5():
+    app.lat = 48
+    app.app.mount.obsSite.location = None
+    selection = 'max'
+    suc = app.genGreaterCircle(selection)
+    assert not suc
+
+
 def test_checkFormat_1():
     a = [[1, 1], [1, 1]]
     suc = app.checkFormat(a)
@@ -320,12 +337,56 @@ def test_checkFormat_5():
     assert suc
 
 
+def test_checkFormat_6():
+    a = [(1, 1), (1, 1, 1)]
+    suc = app.checkFormat(a)
+    assert not suc
+
+
 def test_clearBuildP():
     app.buildP = ()
     app.genGreaterCircle('max')
     assert len(app.buildP) == 125
     app.clearBuildP()
     assert len(app.buildP) == 0
+
+
+def test_setStatusBuildP_1():
+    app.buildP = ()
+    app.addBuildP((10, 10, True))
+    app.addBuildP((10, 10, True))
+    app.addBuildP((10, 10, True))
+    suc = app.setStatusBuildP(-1, True)
+    assert not suc
+
+
+def test_setStatusBuildP_2():
+    app.buildP = ()
+    app.addBuildP((10, 10, True))
+    app.addBuildP((10, 10, True))
+    app.addBuildP((10, 10, True))
+    suc = app.setStatusBuildP(3, True)
+    assert not suc
+
+
+def test_setStatusBuildP_3():
+    app.buildP = ()
+    app.addBuildP((10, 10, True))
+    app.addBuildP((10, 10, True))
+    app.addBuildP((10, 10, True))
+    suc = app.setStatusBuildP(1, True)
+    assert suc
+    assert app.buildP[1][2]
+
+
+def test_setStatusBuildP_4():
+    app.buildP = ()
+    app.addBuildP((10, 10, True))
+    app.addBuildP((10, 10, True))
+    app.addBuildP((10, 10, True))
+    suc = app.setStatusBuildP(1, False)
+    assert suc
+    assert not app.buildP[1][2]
 
 
 def test_addBuildP1():
@@ -356,14 +417,14 @@ def test_addBuildP3():
 
 
 def test_addBuildP4():
-    app.buildP = [(10, 10), (10, 10)]
+    app.buildP = [(10, 10, True), (10, 10, True)]
     suc = app.addBuildP((10, 10, True), position=1)
     assert suc
     assert len(app.buildP) == 3
 
 
 def test_addBuildP5():
-    app.buildP = [(10, 10), (10, 10)]
+    app.buildP = [(10, 10, True), (10, 10, True)]
     suc = app.addBuildP((10, 10, True), position=20)
     assert suc
     assert len(app.buildP) == 3
@@ -386,7 +447,7 @@ def test_addBuildP8():
     app.buildP = [(10, 10, True), (10, 10, True)]
     app.app.mount.setting.horizonLimitHigh = 80
     app.app.mount.setting.horizonLimitLow = 5
-    suc = app.addBuildP((10, 10), position='a')
+    suc = app.addBuildP((10, 10, True), position='a')
     assert not suc
 
 
@@ -394,7 +455,7 @@ def test_addBuildP9():
     app.buildP = [(10, 10, True), (10, 10, True)]
     app.app.mount.setting.horizonLimitHigh = 80
     app.app.mount.setting.horizonLimitLow = 5
-    suc = app.addBuildP((90, 10), position=20)
+    suc = app.addBuildP((90, 10, True), position=20)
     assert not suc
 
 
@@ -402,7 +463,7 @@ def test_addBuildP10():
     app.buildP = [(10, 10, True), (10, 10, True)]
     app.app.mount.setting.horizonLimitHigh = 80
     app.app.mount.setting.horizonLimitLow = 5
-    suc = app.addBuildP((0, 10), position=20)
+    suc = app.addBuildP((0, 10, True), position=20)
     assert not suc
 
 
@@ -512,6 +573,12 @@ def test_addHorizonP6():
 def test_addHorizonP7():
     app.horizonP = [(10, 10), (10, 10)]
     suc = app.addHorizonP(position=-5)
+    assert not suc
+
+
+def test_addHorizonP8():
+    app.horizonP = [(10, 10), (10, 10)]
+    suc = app.addHorizonP((10, 10), position='a')
     assert not suc
 
 
@@ -708,6 +775,18 @@ def test_loadBuildP_6():
     with open(fileName, 'w') as outfile:
         outfile.write('1:1\n2:2\n')
     suc = app.loadBuildP('test', '.txt')
+    assert suc
+    assert app.buildP == values
+
+
+def test_loadBuildP_7():
+    # load file with path
+    app.buildPFile = ''
+    fileName = 'tests/config/test.txt'
+    values = [(1, 1, True), (2, 2, True)]
+    with open(fileName, 'w') as outfile:
+        outfile.write('1:1\n2:2\n')
+    suc = app.loadBuildP('test', '.txt', keep=True)
     assert suc
     assert app.buildP == values
 
@@ -1021,34 +1100,34 @@ def test_isAboveHorizon():
 
 def test_deleteBelowHorizon1():
     app.clearHorizonP()
-    app.buildP = [(10, 10), (-5, 40), (40, 60)]
+    app.buildP = [(10, 10, True), (-5, 40, True), (40, 60, True)]
     app.deleteBelowHorizon()
     assert len(app.buildP) == 2
 
 
 def test_deleteBelowHorizon2():
     app.clearHorizonP()
-    app.buildP = [(10, 10), (5, 40), (-40, 60)]
+    app.buildP = [(10, 10, True), (5, 40, True), (-40, 60, True)]
     app.deleteBelowHorizon()
     assert len(app.buildP) == 2
 
 
 def test_deleteBelowHorizon3():
     app.clearHorizonP()
-    app.buildP = [(-10, 10), (5, 40), (40, 60)]
+    app.buildP = [(-10, 10, True), (5, 40, True), (40, 60, True)]
     app.deleteBelowHorizon()
     assert len(app.buildP) == 2
 
 
 def test_deleteBelowHorizon4():
     app.clearHorizonP()
-    app.buildP = [(-10, 10), (-5, 40), (-40, 60)]
+    app.buildP = [(-10, 10, True), (-5, 40, True), (-40, 60, True)]
     app.deleteBelowHorizon()
     assert len(app.buildP) == 0
 
 
 def test_sort_1():
-    values = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
+    values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
     app._buildP = values
     suc = app.sort()
     assert not suc
@@ -1056,7 +1135,7 @@ def test_sort_1():
 
 
 def test_sort_2():
-    values = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
+    values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
     app._buildP = values
     suc = app.sort(eastwest=True, highlow=True)
     assert not suc
@@ -1064,8 +1143,8 @@ def test_sort_2():
 
 
 def test_sort_3():
-    values = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
-    result = [(30, 90), (20, 20), (10, 10), (50, 290), (40, 190)]
+    values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
+    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
     app._buildP = values
     suc = app.sort(eastwest=True, highlow=False)
     assert suc
@@ -1073,8 +1152,8 @@ def test_sort_3():
 
 
 def test_sort_4():
-    values = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
-    result = [(30, 90), (20, 20), (10, 10), (50, 290), (40, 190)]
+    values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
+    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
     app._buildP = values
     suc = app.sort(eastwest=False, highlow=True)
     assert suc
@@ -1082,8 +1161,8 @@ def test_sort_4():
 
 
 def test_sort_5():
-    values = [(30, 90), (50, 290), (20, 20), (10, 10), (40, 190)]
-    result = [(30, 90), (20, 20), (10, 10), (50, 290), (40, 190)]
+    values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
+    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
     app._buildP = values
     suc = app.sort(eastwest=True, highlow=False)
     assert suc
@@ -1091,8 +1170,8 @@ def test_sort_5():
 
 
 def test_sort_6():
-    values = [(30, 90), (50, 290), (20, 20), (10, 10), (40, 190)]
-    result = [(30, 90), (20, 20), (10, 10), (50, 290), (40, 190)]
+    values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
+    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
     app._buildP = values
     suc = app.sort(eastwest=False, highlow=True)
     assert suc
@@ -1100,8 +1179,8 @@ def test_sort_6():
 
 
 def test_sort_7():
-    values = [(30, 90), (50, 290), (20, 20), (10, 10), (40, 190)]
-    result = [(50, 290), (40, 190), (30, 90), (20, 20), (10, 10)]
+    values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
+    result = [(50, 290, True), (40, 190, True), (30, 90, True), (20, 20, True), (10, 10, True)]
     app._buildP = values
     suc = app.sort(eastwest=False, highlow=True, pierside='E')
     assert suc
@@ -1109,17 +1188,23 @@ def test_sort_7():
 
 
 def test_sort_8():
-    values = [(30, 90), (50, 290), (20, 20), (10, 10), (40, 190)]
-    result = [(30, 90), (20, 20), (10, 10), (50, 290), (40, 190)]
+    values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
+    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
     app._buildP = values
     suc = app.sort(eastwest=False, highlow=True, pierside='W')
     assert suc
     assert app.buildP == result
 
 
-def test_generateCelestialEquator():
+def test_generateCelestialEquator_1():
     value = app.generateCelestialEquator()
     assert len(value) == 3000
+
+
+def test_generateCelestialEquator_2():
+    app.app.mount.obsSite.location = None
+    value = app.generateCelestialEquator()
+    assert value == []
 
 
 def test_generateDSOPath_1():
@@ -1154,10 +1239,25 @@ def test_generateDSOPath_3():
                               numberPoints=1,
                               duration=1,
                               timeShift=0,
-                              timeJD=app.app.mount.obsSite.timeJD,
-                              location=app.app.mount.obsSite.location,
                               )
-    assert suc
+    assert not suc
+
+
+def test_generateDSOPath_4():
+    ra = skyfield.api.Angle(hours=0)
+    dec = skyfield.api.Angle(degrees=0)
+    with mock.patch.object(transform,
+                           'J2000ToAltAz',
+                           return_value=(Angle(degrees=10), Angle(degrees=10))):
+        suc = app.generateDSOPath(ra=ra,
+                                  dec=dec,
+                                  numberPoints=1,
+                                  duration=1,
+                                  timeShift=0,
+                                  timeJD=app.app.mount.obsSite.timeJD,
+                                  location=app.app.mount.obsSite.location,
+                                  )
+        assert suc
 
 
 def test_generateGoldenSpiral_1():

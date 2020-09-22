@@ -71,8 +71,10 @@ class Hipparcos(object):
         """
 
         location = self.app.mount.obsSite.location
+
         if location is None:
             return False
+
         t = self.app.mount.obsSite.timeJD
         star = list(self.alignStars.values())
         self.name = list(self.alignStars.keys())

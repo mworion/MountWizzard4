@@ -547,6 +547,7 @@ class DataPoint(object):
 
         if keep:
             self._buildP += points
+
         else:
             self._buildP = points
 

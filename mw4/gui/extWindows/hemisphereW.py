@@ -508,6 +508,10 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         show status.
         If the object is not created, the routing returns false.
 
+        due to the fact that all annotation are only shown if in axes when coordinate
+        are in data, after some time, no annotation will be shown, because just moved.
+        therefore we add each time the annotation again.
+
         :return: success
         """
 
@@ -524,13 +528,10 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()
         self.starsAlign.set_data(hip.az, hip.alt)
+
         for i, starAnnotation in enumerate(self.starsAlignAnnotate):
             starAnnotation.remove()
         self.starsAlignAnnotate = list()
-
-        # due to the fact that all annotation are only shown if in axes when coordinate
-        # are in data, after some time, no annotation will be shown, because just moved.
-        # therefore we add each time the annotation again.
 
         visible = self.ui.checkShowAlignStar.isChecked()
         for alt, az, name in zip(hip.alt, hip.az, hip.name):
@@ -645,6 +646,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             if point[2]:
                 annotationText = f'{i + 1:2d}'
                 color = self.M_WHITE
+
             else:
                 annotationText = f'{i + 1:2d}'
                 color = self.M_YELLOW
@@ -871,7 +873,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         the user interaction on the hemisphere windows is done by the event handler of
         matplotlib itself implementing an on Mouse handler, which takes care of functions.
 
-        :return: nothing
+        :return: True for test purpose
         """
 
         # clearing axes before drawing, only static visible, dynamic only when content
@@ -883,3 +885,5 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.drawHemisphereStatic(axes=axe)
         self.drawHemisphereMoving(axes=axe)
         self.drawAlignmentStars(axes=axe)
+
+        return True

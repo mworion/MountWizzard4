@@ -32,6 +32,10 @@ class Data:
     def generateCelestialEquator():
         return [(0, 0)]
 
+    @staticmethod
+    def clearBuildP():
+        return
+
 
 class Hipparcos:
     @staticmethod
@@ -63,8 +67,13 @@ class Mount(QObject):
         settingDone = pyqtSignal()
         pointDone = pyqtSignal()
 
+    class MountObsSite:
+        Alt = None
+        Az = None
+
     signals = MountSignals()
     setting = MountSetting()
+    obsSite = MountObsSite()
 
 
 class App(QObject):
@@ -76,4 +85,5 @@ class App(QObject):
     dome = Dome()
     data = Data()
     hipparcos = Hipparcos()
+    deviceStat = {}
 

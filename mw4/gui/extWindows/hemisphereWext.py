@@ -18,7 +18,7 @@
 # standard libraries
 
 # external packages
-import PyQt5
+from PyQt5.QtWidgets import QMessageBox
 import numpy as np
 import matplotlib.path as mpath
 
@@ -95,7 +95,7 @@ class HemisphereWindowExt(object):
         to the status of Show align stars. without showing align stars it does not make
         sense to enable this function.
 
-        :return: nothing
+        :return: True for test purpose
         """
 
         if self.ui.checkShowAlignStar.isChecked():
@@ -105,6 +105,8 @@ class HemisphereWindowExt(object):
             self.ui.checkPolarAlignment.setEnabled(False)
             if self.ui.checkPolarAlignment.isChecked():
                 self.ui.checkEditNone.setChecked(True)
+
+        return True
 
     def setOperationMode(self):
         """
@@ -148,6 +150,71 @@ class HemisphereWindowExt(object):
 
         return True
 
+    def slewDialog(self, altitude, azimuth):
+        """
+
+        :param altitude:
+        :param azimuth:
+        :return: OK
+        """
+
+        textFormat = 'Do you want to slew the mount to:\n\nAzimuth:\t{0}°\nAltitude:\t{1}°'
+
+        question = textFormat.format(azimuth, altitude)
+        msg = QMessageBox
+        reply = msg.question(self,
+                             'Hemisphere direct slew',
+                             question,
+                             msg.Yes | msg.No,
+                             msg.No,
+                             )
+
+        if reply != msg.Yes:
+            return False
+
+        else:
+            return True
+
+    def slewSelectedTarget(self, altitude, azimuth):
+        """
+
+        :param altitude:
+        :param azimuth:
+        :return: success
+        """
+
+        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
+                                                    az_degrees=azimuth)
+
+        if not suc:
+            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
+            return False
+
+        haT = self.app.mount.obsSite.haJNowTarget
+        decT = self.app.mount.obsSite.decJNowTarget
+        piersideT = self.app.mount.obsSite.piersideTarget
+        lat = self.app.mount.obsSite.location.latitude
+        delta = self.app.dome.slewDome(altitude=altitude,
+                                       azimuth=azimuth,
+                                       piersideT=piersideT,
+                                       haT=haT,
+                                       decT=decT,
+                                       lat=lat)
+
+        geoStat = 'Geometry corrected' if delta else 'Equal mount'
+        text = f'Slewing dome:        {geoStat}, az: {azimuth:3.1f} delta: {delta:3.1f}'
+        self.app.message.emit(text, 0)
+
+        suc = self.app.mount.obsSite.startSlewing()
+
+        if suc:
+            self.app.message.emit('Slewing mount', 0)
+
+        else:
+            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
+
+        return suc
+
     def onMouseNormal(self, event):
         """
         onMouseNormal handles the mouse event in normal mode. this means only a double
@@ -166,53 +233,14 @@ class HemisphereWindowExt(object):
 
         azimuth = int(event.xdata + 0.5)
         altitude = int(event.ydata + 0.5)
-        textFormat = 'Do you want to slew the mount to:\n\nAzimuth:\t{0}°\nAltitude:\t{1}°'
 
-        question = textFormat.format(azimuth, altitude)
-        msg = PyQt5.QtWidgets.QMessageBox
-        reply = msg.question(self,
-                             'Hemisphere direct slew',
-                             question,
-                             msg.Yes | msg.No,
-                             msg.No,
-                             )
-        if reply != msg.Yes:
-            return False
-
-        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
-                                                    az_degrees=azimuth)
+        suc = self.slewDialog(altitude, azimuth)
 
         if not suc:
-            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
             return False
 
-        useGeometry = self.app.mainW.ui.checkDomeGeometry.isChecked()
+        suc = self.slewSelectedTarget(altitude, azimuth)
 
-        if useGeometry:
-            haT = self.app.mount.obsSite.haJNowTarget
-            decT = self.app.mount.obsSite.decJNowTarget
-            piersideT = self.app.mount.obsSite.piersideTarget
-            lat = self.app.mount.obsSite.location.latitude
-            delta = self.app.dome.slewDome(altitude=altitude,
-                                           azimuth=azimuth,
-                                           piersideT=piersideT,
-                                           haT=haT,
-                                           decT=decT,
-                                           lat=lat)
-        else:
-            delta = self.app.dome.slewDome(altitude=altitude,
-                                           azimuth=azimuth)
-
-        geoStat = 'Geometry corrected' if useGeometry else 'Equal mount'
-        text = f'Slewing dome:        {geoStat}, az: {azimuth:3.1f} delta: {delta:3.1f}'
-        self.app.message.emit(text, 0)
-
-        suc = self.app.mount.obsSite.startSlewing()
-
-        if suc:
-            self.app.message.emit('Slewing mount', 0)
-        else:
-            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
         return suc
 
     def addHorizonPoint(self, data=None, event=None):
@@ -472,7 +500,7 @@ class HemisphereWindowExt(object):
 
         textFormat = 'Align: {0}\nDo you want to slew the mount to:\n\n{1}'
         question = textFormat.format(alignType, name)
-        msg = PyQt5.QtWidgets.QMessageBox
+        msg = QMessageBox
         reply = msg.question(self,
                              f'Hemisphere [{alignType.capitalize()}] align',
                              question,

@@ -53,6 +53,15 @@ class Dome(QObject):
         deviceConnected = pyqtSignal()
         serverDisconnected = pyqtSignal()
 
+    @staticmethod
+    def slewDome(altitude=None,
+                 azimuth=None,
+                 piersideT=None,
+                 haT=None,
+                 decT=None,
+                 lat=None):
+        return
+
     signals = DomeSignals()
 
 
@@ -68,8 +77,25 @@ class Mount(QObject):
         pointDone = pyqtSignal()
 
     class MountObsSite:
+        class Location:
+            latitude = None
+            longitude = None
+            elevation = None
+
         Alt = None
         Az = None
+        haJNowTarget = None
+        decJNowTarget = None
+        piersideTarget = None
+        location = Location()
+
+        @staticmethod
+        def setTargetAltAz(alt_degrees=None, az_degrees=None):
+            return
+
+        @staticmethod
+        def startSlewing():
+            return
 
     signals = MountSignals()
     setting = MountSetting()
@@ -80,6 +106,7 @@ class App(QObject):
     config = {}
     update10s = pyqtSignal()
     update0_1s = pyqtSignal()
+    message = pyqtSignal(str, int)
     redrawHemisphere = pyqtSignal()
     mount = Mount()
     dome = Dome()

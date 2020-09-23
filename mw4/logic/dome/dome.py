@@ -141,7 +141,7 @@ class Dome:
 
         geometry = self.app.mount.geometry
 
-        if piersideT:
+        if piersideT and self.isGeometry:
             alt, az, _, _, _ = geometry.calcTransformationMatrices(ha=haT,
                                                                    dec=decT,
                                                                    lat=lat,

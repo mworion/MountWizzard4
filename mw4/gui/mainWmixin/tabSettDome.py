@@ -50,6 +50,7 @@ class SettDome(object):
         self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
+        self.ui.checkDomeGeometry.clicked.connect(self.setUseGEMOffsetCalculations)
 
         # signals from functions
         self.app.mount.signals.firmwareDone.connect(self.setUseGeometryInMount)
@@ -75,6 +76,7 @@ class SettDome(object):
         self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
         self.ui.checkAutomaticDome.setChecked(config.get('checkAutomaticDome', False))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
+        self.setUseGEMOffsetCalculations()
 
         return True
 
@@ -124,6 +126,17 @@ class SettDome(object):
         self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
 
         self.app.updateDomeSettings.emit()
+
+        return True
+
+    def setUseGEMOffsetCalculations(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        isGeometry = self.ui.checkDomeGeometry.isChecked()
+        self.app.dome.useGeometry = isGeometry
 
         return True
 

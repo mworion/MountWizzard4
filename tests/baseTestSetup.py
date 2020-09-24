@@ -36,11 +36,32 @@ class Data:
     def clearBuildP():
         return
 
+    @staticmethod
+    def addHorizonP(a, b):
+        return
+
+    @staticmethod
+    def delHorizonP(a):
+        return
+
+    @staticmethod
+    def addBuildP(value=None, position=None):
+        return
+
+    @staticmethod
+    def delBuildP(a):
+        return
+
 
 class Hipparcos:
     @staticmethod
     def calculateAlignStarPositionsAltAz():
         return
+
+    @staticmethod
+    def getAlignStarRaDecFromName():
+        return
+
     az = []
     alt = []
     name = []
@@ -87,6 +108,8 @@ class Mount(QObject):
         haJNowTarget = None
         decJNowTarget = None
         piersideTarget = None
+        AzTarget = None
+        AltTarget = None
         location = Location()
 
         @staticmethod
@@ -94,7 +117,11 @@ class Mount(QObject):
             return
 
         @staticmethod
-        def startSlewing():
+        def setTargetRaDec(ra_hours=None, dec_degrees=None):
+            return
+
+        @staticmethod
+        def startSlewing(slewType=None):
             return
 
     signals = MountSignals()

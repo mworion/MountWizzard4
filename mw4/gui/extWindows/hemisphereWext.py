@@ -25,7 +25,7 @@ import matplotlib.path as mpath
 # local import
 
 
-class HemisphereWindowExt(object):
+class HemisphereWindowExt:
     """
     the HemisphereWindowExt window class handles
 
@@ -150,7 +150,7 @@ class HemisphereWindowExt(object):
 
         return True
 
-    def slewDialog(self, altitude, azimuth):
+    def slewDialog(self, question):
         """
 
         :param altitude:
@@ -158,12 +158,9 @@ class HemisphereWindowExt(object):
         :return: OK
         """
 
-        textFormat = 'Do you want to slew the mount to:\n\nAzimuth:\t{0}°\nAltitude:\t{1}°'
-
-        question = textFormat.format(azimuth, altitude)
         msg = QMessageBox
         reply = msg.question(self,
-                             'Hemisphere direct slew',
+                             'Slewing mount',
                              question,
                              msg.Yes | msg.No,
                              msg.No,
@@ -175,43 +172,37 @@ class HemisphereWindowExt(object):
         else:
             return True
 
-    def slewSelectedTarget(self, altitude, azimuth):
+    def slewSelectedTarget(self, alignType='normal'):
         """
 
-        :param altitude:
-        :param azimuth:
+        :param alignType:
         :return: success
         """
-
-        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
-                                                    az_degrees=azimuth)
-
-        if not suc:
-            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
-            return False
 
         haT = self.app.mount.obsSite.haJNowTarget
         decT = self.app.mount.obsSite.decJNowTarget
         piersideT = self.app.mount.obsSite.piersideTarget
         lat = self.app.mount.obsSite.location.latitude
-        delta = self.app.dome.slewDome(altitude=altitude,
-                                       azimuth=azimuth,
+        azimuthT = self.app.mount.obsSite.AzTarget
+        altitudeT = self.app.mount.obsSite.AltTarget
+        delta = self.app.dome.slewDome(altitude=altitudeT,
+                                       azimuth=azimuthT,
                                        piersideT=piersideT,
                                        haT=haT,
                                        decT=decT,
                                        lat=lat)
 
         geoStat = 'Geometry corrected' if delta else 'Equal mount'
-        text = f'Slewing dome:        {geoStat}, az: {azimuth:3.1f} delta: {delta:3.1f}'
+        text = f'Slewing dome:        {geoStat}, az: {azimuthT:3.1f} delta: {delta:3.1f}'
         self.app.message.emit(text, 0)
 
-        suc = self.app.mount.obsSite.startSlewing()
+        suc = self.app.mount.obsSite.startSlewing(slewType=alignType)
 
         if suc:
             self.app.message.emit('Slewing mount', 0)
 
         else:
-            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
+            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuthT, altitudeT), 2)
 
         return suc
 
@@ -234,12 +225,22 @@ class HemisphereWindowExt(object):
         azimuth = int(event.xdata + 0.5)
         altitude = int(event.ydata + 0.5)
 
-        suc = self.slewDialog(altitude, azimuth)
+        textFormat = 'Do you want to slew the mount to:\n\nAzimuth:\t{0}°\nAltitude:\t{1}°'
+        question = textFormat.format(azimuth, altitude)
+
+        suc = self.slewDialog(question)
 
         if not suc:
             return False
 
-        suc = self.slewSelectedTarget(altitude, azimuth)
+        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
+                                                    az_degrees=azimuth)
+
+        if not suc:
+            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
+            return False
+
+        suc = self.slewSelectedTarget(alignType='normal')
 
         return suc
 
@@ -281,6 +282,7 @@ class HemisphereWindowExt(object):
         suc = False
         if len(data.horizonP) > 2:
             suc = data.delHorizonP(position=index - 1)
+
         return suc
 
     def editHorizonMask(self, data=None, event=None):
@@ -295,8 +297,8 @@ class HemisphereWindowExt(object):
 
         if event.button == 1:
             suc = self.addHorizonPoint(data=data, event=event)
-        elif event.button == 3:
 
+        elif event.button == 3:
             suc = self.deleteHorizonPoint(data=data, event=event)
 
         else:
@@ -305,8 +307,8 @@ class HemisphereWindowExt(object):
         y, x = zip(*data.horizonP)
         self.horizonMarker.set_data(x, y)
         self.horizonFill.set_xy(np.column_stack((x, y)))
-
         self.drawHemisphere()
+
         return suc
 
     def addBuildPoint(self, data=None, event=None, axes=None):
@@ -320,12 +322,6 @@ class HemisphereWindowExt(object):
         :param axes: link to drawing axes in matplotlib
         :return:
         """
-
-        if data is None:
-            return False
-
-        if event is None:
-            return False
 
         index = self.getIndexPoint(event=event, plane=data.buildP, epsilon=360)
 
@@ -393,9 +389,11 @@ class HemisphereWindowExt(object):
 
         index = self.getIndexPoint(event=event, plane=data.buildP)
         suc = data.delBuildP(position=index)
+
         if suc:
             self.pointsBuildAnnotate[index].remove()
             del self.pointsBuildAnnotate[index]
+
         return suc
 
     def editBuildPoints(self, data=None, event=None, axes=None):
@@ -477,16 +475,13 @@ class HemisphereWindowExt(object):
         if not event.inaxes:
             return False
 
-        if event.button == 1:
+        if event.button == 1 and not event.dblclick:
             alignType = 'polar'
 
-        elif event.button == 3:
+        elif event.button == 3 and not event.dblclick:
             alignType = 'ortho'
 
         else:
-            return False
-
-        if event.dblclick:
             return False
 
         hip = self.app.hipparcos
@@ -500,55 +495,20 @@ class HemisphereWindowExt(object):
 
         textFormat = 'Align: {0}\nDo you want to slew the mount to:\n\n{1}'
         question = textFormat.format(alignType, name)
-        msg = QMessageBox
-        reply = msg.question(self,
-                             f'Hemisphere [{alignType.capitalize()}] align',
-                             question,
-                             msg.Yes | msg.No,
-                             msg.No,
-                             )
-        if reply != msg.Yes:
+
+        suc = self.slewDialog(question)
+
+        if not suc:
             return False
 
         suc = self.app.mount.obsSite.setTargetRaDec(ra_hours=ra,
-                                                    dec_degrees=dec,
-                                                    )
+                                                    dec_degrees=dec)
+
         if not suc:
             self.app.message.emit(f'Cannot slew to: {name}', 2)
             return False
 
-        altitude = self.app.mount.obsSite.Alt.degrees
-        azimuth = self.app.mount.obsSite.Az.degrees
-
-        useGeometry = self.app.mainW.ui.checkDomeGeometry.isChecked()
-
-        if useGeometry:
-            haT = self.app.mount.obsSite.haJNowTarget
-            decT = self.app.mount.obsSite.decJNowTarget
-            piersideT = self.app.mount.obsSite.piersideTarget
-            lat = self.app.mount.obsSite.location.latitude
-            delta = self.app.dome.slewDome(altitude=altitude,
-                                           azimuth=azimuth,
-                                           piersideT=piersideT,
-                                           haT=haT,
-                                           decT=decT,
-                                           lat=lat)
-
-        else:
-            delta = self.app.dome.slewDome(altitude=altitude,
-                                           azimuth=azimuth)
-
-        geoStat = 'Geometry corrected' if useGeometry else 'Equal mount'
-        text = f'Slewing dome:        {geoStat}, az: {azimuth:3.1f} delta: {delta:3.1f}'
-        self.app.message.emit(text, 0)
-
-        suc = self.app.mount.obsSite.startSlewing(slewType=f'{alignType}')
-
-        if not suc:
-            self.app.message.emit(f'Cannot slew to: {name}', 2)
-
-        else:
-            self.app.message.emit('Starting slew', 0)
+        suc = self.slewSelectedTarget(alignType=alignType)
 
         return suc
 
@@ -558,7 +518,7 @@ class HemisphereWindowExt(object):
         mode.
 
         :param event: button event for parsing
-        :return:
+        :return: True for test purpose
         """
 
         if self.ui.checkEditNone.isChecked():
@@ -572,3 +532,5 @@ class HemisphereWindowExt(object):
 
         elif self.ui.checkPolarAlignment.isChecked():
             self.onMouseStar(event)
+
+        return True

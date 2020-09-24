@@ -425,7 +425,7 @@ class HemisphereWindowExt:
 
         self.pointsBuild.set_data(x, y)
 
-        for i, _ in enumerate(data.buildP):
+        for i in range(0, len(data.buildP)):
             self.pointsBuildAnnotate[i].set_text('{0:2d}'.format(i))
 
         self.drawHemisphere()

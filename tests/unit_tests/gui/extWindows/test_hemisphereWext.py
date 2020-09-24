@@ -552,6 +552,9 @@ def test_editBuildPoints_1(function):
 
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.pointsBuild, = axe.plot(0, 0)
+    function.app.data.buildP = [(0, 0, True), (1, 1, True)]
+    function.pointsBuildAnnotate = [axe.annotate('test', (0, 0)),
+                                    axe.annotate('test', (0, 0))]
     with mock.patch.object(function,
                            'addBuildPoint',
                            return_value=False):
@@ -566,9 +569,10 @@ def test_editBuildPoints_2(function):
         button = 3
 
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.pointsBuild, = axe.plot(0, 0)
+    function.pointsBuild, = axe.plot([0, 1], [0, 1])
     function.app.data.buildP = [(0, 0, True), (1, 1, True)]
-    function.pointsBuildAnnotate = [axe.annotate('test', (0, 0)), axe.annotate('test', (0, 0))]
+    function.pointsBuildAnnotate = [axe.annotate('test', (0, 0)),
+                                    axe.annotate('test', (0, 0))]
     with mock.patch.object(function,
                            'deleteBuildPoint',
                            return_value=False):

@@ -20,1045 +20,832 @@ import unittest.mock as mock
 import pytest
 
 # external packages
-import PyQt5
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtWidgets import QCheckBox
-from PyQt5.QtWidgets import QLineEdit
-from skyfield.toposlib import Topos
+from PyQt5.QtWidgets import QMessageBox
 from skyfield.api import Angle
-import mountcontrol
-from mountcontrol.qtmount import Mount
-import matplotlib
-import matplotlib.pyplot as plt
 
 # local import
+from tests.baseTestSetup import App
 from gui.extWindows.hemisphereW import HemisphereWindow
-from logic.imaging.camera import Camera
-from logic.dome.dome import Dome
-from logic.modeldata.buildpoints import DataPoint
-from logic.modeldata.hipparcos import Hipparcos
-from logic.astrometry.astrometry import Astrometry
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
+    yield
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global app
+def function(module):
 
-    class Test2(QObject):
-        threadPool = QThreadPool()
-        update1s = pyqtSignal()
-        mwGlob = {'configDir': 'tests/config',
-                  'tempDir': 'tests/temp'}
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        mount.obsSite.location = Topos(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
-
-    class Test1a:
-        checkDomeGeometry = QCheckBox()
-        statusDualAxisTracking = QLineEdit()
-
-    class Test1:
-        deviceStat = {'dome': True}
-        ui = Test1a()
-
-    class Test(QObject):
-        config = {'mainW': {},
-                  'showHemisphereW': True}
-        uiWindows = {'showImageW': {}}
-        mwGlob = {'imageDir': 'tests/image'}
-
-        update1s = pyqtSignal()
-        update10s = pyqtSignal()
-        update0_1s = pyqtSignal()
-        redrawHemisphere = pyqtSignal()
-        message = pyqtSignal(str, int)
-
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        mount.obsSite.Alt = Angle(degrees=45)
-        mount.obsSite.Az = Angle(degrees=45)
-        mount.obsSite.location = Topos(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
-
-        camera = Camera(app=Test2())
-        dome = Dome(app=Test2())
-        astrometry = Astrometry(app=Test2())
-        data = DataPoint(app=Test2())
-        hipparcos = Hipparcos(app=Test2())
-        mainW = Test1()
-
-    with mock.patch.object(HemisphereWindow,
-                           'show'):
-        app = HemisphereWindow(app=Test())
-        qtbot.addWidget(app)
-        yield
+    window = HemisphereWindow(app=App())
+    yield window
 
 
-def test_markerPoint():
-    val = app.markerPoint()
-    assert isinstance(val, matplotlib.path.Path)
+def test_markerPoint(function):
+    function.markerPoint()
 
 
-def test_markerAltAz():
-    val = app.markerAltAz()
-    assert isinstance(val, matplotlib.path.Path)
+def test_markerAltAz(function):
+    function.markerAltAz()
 
 
-def test_markerStar():
-    val = app.markerStar()
-    assert isinstance(val, matplotlib.path.Path)
+def test_markerStar(function):
+    function.markerStar()
 
 
-def test_configOperationMode_1():
-    app.ui.checkShowAlignStar.setChecked(True)
-    app.configOperationMode()
-    assert app.ui.checkPolarAlignment.isEnabled()
-
-
-def test_configOperationMode_2():
-    app.ui.checkShowAlignStar.setChecked(False)
-    app.ui.checkPolarAlignment.setChecked(False)
-    app.configOperationMode()
-    assert not app.ui.checkPolarAlignment.isEnabled()
-
-
-def test_configOperationMode_3():
-    app.ui.checkShowAlignStar.setChecked(False)
-    app.ui.checkPolarAlignment.setChecked(True)
-    app.configOperationMode()
-    assert not app.ui.checkPolarAlignment.isEnabled()
-    assert app.ui.checkEditNone.isChecked()
-
-
-def test_setOperationMode_1():
-    assert app.MODE is not None
-    assert 'normal' in app.MODE
-    assert 'build' in app.MODE
-    assert 'horizon' in app.MODE
-    assert 'star' in app.MODE
-
-
-def test_setOperationMode_2():
-    class Test:
-        def set_marker(self, test):
-            pass
-
-        def set_color(self, test):
-            pass
-
-    app.ui.checkEditNone.setChecked(True)
-    app.horizonMarker = Test()
-    app.pointsBuild = Test()
-    suc = app.setOperationMode()
+def test_configOperationMode_1(function):
+    function.ui.checkShowAlignStar.setChecked(True)
+    suc = function.configOperationMode()
     assert suc
+    assert function.ui.checkPolarAlignment.isEnabled()
 
 
-def test_setOperationMode_3():
-    class Test:
-        def set_marker(self, test):
-            pass
-
-        def set_color(self, test):
-            pass
-
-    app.ui.checkEditHorizonMask.setChecked(True)
-    app.horizonMarker = Test()
-    app.pointsBuild = Test()
-    suc = app.setOperationMode()
-    app.ui.checkEditNone.setChecked(True)
+def test_configOperationMode_2(function):
+    function.ui.checkShowAlignStar.setChecked(False)
+    function.ui.checkPolarAlignment.setChecked(True)
+    suc = function.configOperationMode()
     assert suc
+    assert not function.ui.checkPolarAlignment.isEnabled()
+    assert function.ui.checkEditNone.isChecked()
 
 
-def test_showMouseCoordinates_1():
-    class Test:
+def test_setOperationMode_1(function):
+    function.ui.checkEditNone.setChecked(True)
+    with mock.patch.object(function,
+                           'drawHemisphere'):
+        suc = function.setOperationMode()
+        assert suc
+        assert function.operationMode == 'normal'
+
+
+def test_setOperationMode_2(function):
+    function.ui.checkEditBuildPoints.setChecked(True)
+    with mock.patch.object(function,
+                           'drawHemisphere'):
+        suc = function.setOperationMode()
+        assert suc
+        assert function.operationMode == 'build'
+
+
+def test_setOperationMode_3(function):
+    function.ui.checkEditHorizonMask.setChecked(True)
+    with mock.patch.object(function,
+                           'drawHemisphere'):
+        suc = function.setOperationMode()
+        assert suc
+        assert function.operationMode == 'horizon'
+
+
+def test_setOperationMode_4(function):
+    function.ui.checkPolarAlignment.setChecked(True)
+    with mock.patch.object(function,
+                           'drawHemisphere'):
+        suc = function.setOperationMode()
+        assert suc
+        assert function.operationMode == 'star'
+
+
+def test_showMouseCoordinates_1(function):
+    class Event:
+        xdata = 1
+        ydata = None
+
+    suc = function.showMouseCoordinates(Event())
+    assert not suc
+
+
+def test_showMouseCoordinates_2(function):
+    class Event:
         xdata = None
-        ydata = None
-
-    suc = app.showMouseCoordinates(Test())
-    assert not suc
-
-
-def test_showMouseCoordinates_2():
-    class Test:
-        xdata = 1
-        ydata = None
-
-    suc = app.showMouseCoordinates(Test())
-    assert not suc
-
-
-def test_showMouseCoordinates_3():
-    class Test:
-        xdata = 1
         ydata = 1
 
-    suc = app.showMouseCoordinates(Test())
-    assert suc
-
-
-def test_onMouseNormal_1():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = False
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        suc = app.onMouseNormal(event=event)
-        assert not suc
-
-
-def test_onMouseNormal_2():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 0
-    event.dblclick = False
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.No):
-        suc = app.onMouseNormal(event=event)
-        assert not suc
-
-
-def test_onMouseNormal_3():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = False
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.No):
-        suc = app.onMouseNormal(event=event)
-        assert not suc
-
-
-def test_onMouseNormal_4():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 0
-    event.dblclick = True
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.No):
-        suc = app.onMouseNormal(event=event)
-        assert not suc
-
-
-def test_onMouseNormal_5():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = True
-    event.xdata = 180
-    event.ydata = 45
-    app.app.dome.framework = 'indi'
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.No):
-        suc = app.onMouseNormal(event=event)
-        assert not suc
-
-
-def test_onMouseNormal_6():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = True
-    event.xdata = 180
-    event.ydata = 45
-    app.app.dome.framework = 'indi'
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetAltAz',
-                                   return_value=True):
-                suc = app.onMouseNormal(event=event)
-                assert not suc
-
-
-def test_onMouseNormal_7():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = True
-    event.xdata = 180
-    event.ydata = 45
-    app.app.dome.framework = 'indi'
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetAltAz',
-                                   return_value=True):
-                with mock.patch.object(app.app.mount.obsSite,
-                                       'startSlewing',
-                                       return_value=True):
-                    suc = app.onMouseNormal(event=event)
-                    assert suc
-
-
-def test_onMouseNormal_8():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = True
-    event.xdata = 180
-    event.ydata = 45
-    app.app.dome.framework = 'indi'
-    app.app.mainW.ui.checkDomeGeometry.setChecked(True)
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetAltAz',
-                                   return_value=True):
-                with mock.patch.object(app.app.mount.obsSite,
-                                       'startSlewing',
-                                       return_value=True):
-                    suc = app.onMouseNormal(event=event)
-                    assert suc
-
-
-def test_onMouseNormal_9():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = True
-    event.xdata = 180
-    event.ydata = 45
-    app.app.dome.framework = 'indi'
-    app.app.mainW.ui.checkDomeGeometry.setChecked(False)
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetAltAz',
-                                   return_value=True):
-                with mock.patch.object(app.app.mount.obsSite,
-                                       'startSlewing',
-                                       return_value=True):
-                    suc = app.onMouseNormal(event=event)
-                    assert suc
-
-
-def test_addHorizonPoint_1():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    app.app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.addHorizonPoint(data=app.app.data, event=event)
-    assert suc
-
-
-def test_addHorizonPoint_2():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    app.app.data.horizonP = [(0, 0)]
-    suc = app.addHorizonPoint(data=app.app.data, event=event)
-    assert suc
-
-
-def test_addHorizonPoint_3():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    suc = app.addHorizonPoint(data=app.app.data, event=event)
-    assert suc
-
-
-def test_deleteHorizonPoint_1():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 10
-    event.ydata = 10
-    app.app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.deleteHorizonPoint(data=app.app.data, event=event)
-    assert suc
-
-
-def test_deleteHorizonPoint_2():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    app.app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.deleteHorizonPoint(data=app.app.data, event=event)
+    suc = function.showMouseCoordinates(Event())
     assert not suc
 
 
-def test_deleteHorizonPoint_3():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    app.app.data.horizonP = [(0, 0)]
-    suc = app.deleteHorizonPoint(data=app.app.data, event=event)
-    assert not suc
-
-
-def test_editHorizonMask_1():
-    class Test:
-        def set_data(self, test, test1):
-            pass
-
-        def set_xy(self, test):
-            pass
-
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    event.button = 1
-    app.horizonMarker = Test()
-    app.horizonFill = Test()
-    suc = app.editHorizonMask(data=app.app.data, event=event)
-    assert suc
-
-
-def test_editHorizonMask_2():
-    class Test:
-        def set_data(self, test, test1):
-            pass
-
-        def set_xy(self, test):
-            pass
-
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    event.button = 3
-    app.horizonMarker = Test()
-    app.horizonFill = Test()
-    app.app.data.horizonP = [(0, 0), (45, 180), (0, 360)]
-
-    suc = app.editHorizonMask(data=app.app.data, event=event)
-    assert suc
-
-
-def test_editHorizonMask_3():
-    class Test:
-        def set_data(self, test, test1):
-            pass
-
-        def set_xy(self, test):
-            pass
-
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    event.button = 2
-    app.horizonMarker = Test()
-    app.horizonFill = Test()
-    suc = app.editHorizonMask(data=app.app.data, event=event)
-    assert not suc
-
-
-def test_addBuildPoint_1():
-    suc = app.addBuildPoint()
-    assert not suc
-
-
-def test_addBuildPoint_2():
-    app.app.data.buildP = []
-
-    suc = app.addBuildPoint(data=app.app.data)
-    assert not suc
-
-
-def test_addBuildPoint_3():
-    class Test:
+def test_showMouseCoordinates_3(function):
+    class Event:
         xdata = 10
         ydata = 10
 
-    axes = plt.axes(label=1)
-    app.app.data.buildP = []
-    app.ui.checkShowSlewPath.setChecked(True)
-
-    suc = app.addBuildPoint(data=app.app.data, event=Test(), axes=axes)
+    suc = function.showMouseCoordinates(Event())
     assert suc
+    assert function.ui.azimuth.text() == '10.0'
+    assert function.ui.altitude.text() == '10.0'
 
 
-def test_addBuildPoint_4():
-    class Test:
-        xdata = 10
-        ydata = 10
-
-    axes = plt.axes(label=2)
-    app.app.data.buildP = []
-    app.ui.checkShowSlewPath.setChecked(False)
-
-    suc = app.addBuildPoint(data=app.app.data, event=Test(), axes=axes)
-    assert suc
+def test_slewDialog_1(function):
+    with mock.patch.object(QMessageBox,
+                           'question',
+                           return_value=QMessageBox.No):
+        suc = function.slewDialog('test')
+        assert not suc
 
 
-def test_addBuildPoint_5():
-    class Test:
-        xdata = 10
-        ydata = 10
+def test_slewDialog_2(function):
+    with mock.patch.object(QMessageBox,
+                           'question',
+                           return_value=QMessageBox.Yes):
+        suc = function.slewDialog('test')
+        assert suc
 
-    axes = plt.axes(label=3)
-    app.app.data.buildP = []
-    app.ui.checkShowSlewPath.setChecked(False)
 
-    with mock.patch.object(app.app.data,
-                           'addBuildP',
+def test_slewSelectedTarget_1(function):
+    function.app.mount.obsSite.AltTarget = 0
+    function.app.mount.obsSite.AzTarget = 0
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetAltAz',
                            return_value=False):
-        suc = app.addBuildPoint(data=app.app.data, event=Test(), axes=axes)
-        assert not suc
-
-
-def test_deleteBuildPointPoint_1():
-    axes = app.hemisphereMat.figure.axes[0]
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 10
-    event.ydata = 10
-    app.app.data.buildP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.deleteBuildPoint(data=app.app.data, event=event)
-    assert suc
-
-
-def test_deleteBuildPointPoint_2():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    app.app.data.buildP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.deleteBuildPoint(data=app.app.data, event=event)
-    assert not suc
-
-
-def test_editBuildPoints_1():
-    app.app.data.buildP = [(0, 0), (10, 10), (0, 360)]
-    axes = app.hemisphereMat.figure.axes[0]
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-
-    class Test:
-        def set_data(self, test, test1):
-            pass
-
-        def set_xy(self, test):
-            pass
-
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    event.button = 1
-    app.pointsBuild = Test()
-    suc = app.editBuildPoints(data=app.app.data, event=event, axes=axes)
-    assert suc
-
-
-def test_editBuildPoints_2():
-    app.app.data.buildP = [(0, 0), (10, 10), (45, 180)]
-    axes = app.hemisphereMat.figure.axes[0]
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(180, 45)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(45, 180)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-
-    class Test:
-        def set_data(self, test, test1):
-            pass
-
-        def set_xy(self, test):
-            pass
-
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    event.button = 3
-    app.pointsBuild = Test()
-    suc = app.editBuildPoints(data=app.app.data, event=event, axes=axes)
-    assert suc
-
-
-def test_editBuildPoints_3():
-    app.app.data.buildP = [(0, 0), (10, 10), (0, 360)]
-    axes = app.hemisphereMat.figure.axes[0]
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-
-    class Test:
-        def set_data(self, test, test1):
-            pass
-
-        def set_xy(self, test):
-            pass
-
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    event.button = 2
-    app.pointsBuild = Test()
-    suc = app.editBuildPoints(data=app.app.data, event=event, axes=axes)
-    assert not suc
-
-
-def test_onMouseEdit_1():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = False
-    suc = app.onMouseEdit(event=event)
-    assert not suc
-
-
-def test_onMouseEdit_2():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = False
-    suc = app.onMouseEdit(event=event)
-    assert not suc
-
-
-def test_onMouseEdit_2b():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = True
-    suc = app.onMouseEdit(event=event)
-    assert not suc
-
-
-def test_onMouseEdit_3():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = False
-    app.ui.checkEditHorizonMask.setChecked(False)
-    app.ui.checkEditBuildPoints.setChecked(False)
-    with mock.patch.object(app,
-                           'editHorizonMask',
-                           return_value=True):
-        with mock.patch.object(app,
-                               'editBuildPoints',
-                               return_value=True):
-            suc = app.onMouseEdit(event=event)
+        with mock.patch.object(function.app.dome,
+                               'slewDome',
+                               return_value=0):
+            suc = function.slewSelectedTarget('test')
             assert not suc
 
 
-def test_onMouseEdit_4():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = False
-    app.ui.checkEditHorizonMask.setChecked(True)
-    app.ui.checkEditBuildPoints.setChecked(False)
-    with mock.patch.object(app,
-                           'editHorizonMask',
+def test_slewSelectedTarget_2(function):
+    function.app.mount.obsSite.haJNowTarget = 0
+    function.app.mount.obsSite.decJNowTarget = 0
+    function.app.mount.obsSite.AltTarget = 0
+    function.app.mount.obsSite.AzTarget = 0
+    function.app.mount.obsSite.piersideTarget = 'E'
+    function.app.mount.obsSite.location.latitude = Angle(degrees=0)
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetAltAz',
                            return_value=True):
-        with mock.patch.object(app,
-                               'editBuildPoints',
-                               return_value=True):
-            suc = app.onMouseEdit(event=event)
-            assert suc
-
-
-def test_onMouseEdit_5():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = False
-    app.ui.checkEditHorizonMask.setChecked(False)
-    app.ui.checkEditBuildPoints.setChecked(True)
-    with mock.patch.object(app,
-                           'editHorizonMask',
-                           return_value=True):
-        with mock.patch.object(app,
-                               'editBuildPoints',
-                               return_value=True):
-            suc = app.onMouseEdit(event=event)
-            assert suc
-
-
-def test_onMouseEdit_6():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = False
-    app.ui.checkEditHorizonMask.setChecked(True)
-    app.ui.checkEditBuildPoints.setChecked(False)
-    with mock.patch.object(app,
-                           'editHorizonMask',
-                           return_value=False):
-        with mock.patch.object(app,
-                               'editBuildPoints',
-                               return_value=True):
-            suc = app.onMouseEdit(event=event)
+        with mock.patch.object(function.app.dome,
+                               'slewDome',
+                               return_value=5):
+            suc = function.slewSelectedTarget('test')
             assert not suc
 
 
-def test_onMouseEdit_7():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = False
-    app.ui.checkEditHorizonMask.setChecked(False)
-    app.ui.checkEditBuildPoints.setChecked(True)
-    with mock.patch.object(app,
-                           'editHorizonMask',
+def test_slewSelectedTarget_3(function):
+    function.app.mount.obsSite.haJNowTarget = 0
+    function.app.mount.obsSite.decJNowTarget = 0
+    function.app.mount.obsSite.AltTarget = 0
+    function.app.mount.obsSite.AzTarget = 0
+    function.app.mount.obsSite.piersideTarget = 'E'
+    function.app.mount.obsSite.location.latitude = Angle(degrees=0)
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetAltAz',
                            return_value=True):
-        with mock.patch.object(app,
-                               'editBuildPoints',
+        with mock.patch.object(function.app.dome,
+                               'slewDome',
+                               return_value=5):
+            with mock.patch.object(function.app.mount.obsSite,
+                                   'startSlewing',
+                                   return_value=True):
+                suc = function.slewSelectedTarget('test')
+                assert suc
+
+
+def test_onMouseNormal_1(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = False
+        dblclick = False
+        button = 0
+
+    suc = function.onMouseNormal(Event())
+    assert not suc
+
+
+def test_onMouseNormal_2(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = True
+        button = 0
+
+    suc = function.onMouseNormal(Event())
+    assert not suc
+
+
+def test_onMouseNormal_3(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = False
+        button = 1
+
+    suc = function.onMouseNormal(Event())
+    assert not suc
+
+
+def test_onMouseNormal_4(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = True
+        button = 1
+
+    with mock.patch.object(function,
+                           'slewDialog',
+                           return_value=False):
+        suc = function.onMouseNormal(Event())
+        assert not suc
+
+
+def test_onMouseNormal_5(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = True
+        button = 1
+
+    with mock.patch.object(function,
+                           'slewDialog',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'slewSelectedTarget',
                                return_value=False):
-            suc = app.onMouseEdit(event=event)
+            suc = function.onMouseNormal(Event())
             assert not suc
 
 
-def test_onMouseStar_1():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = False
-    event.dblclick = False
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        suc = app.onMouseStar(event=event)
-        assert not suc
+def test_onMouseNormal_6(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = True
+        button = 1
+
+    with mock.patch.object(function,
+                           'slewDialog',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'slewSelectedTarget',
+                               return_value=True):
+            with mock.patch.object(function.app.mount.obsSite,
+                                   'setTargetAltAz',
+                                   return_value=True):
+                suc = function.onMouseNormal(Event())
+                assert suc
 
 
-def test_onMouseStar_2():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 2
-    event.dblclick = False
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.No):
-        suc = app.onMouseStar(event=event)
-        assert not suc
-
-
-def test_onMouseStar_3():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = True
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.No):
-        suc = app.onMouseStar(event=event)
-        assert not suc
-
-
-def test_onMouseStar_4():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.hipparcos.az = [180]
-    app.app.hipparcos.alt = [45]
-    app.app.hipparcos.name = ['test']
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.No):
-        suc = app.onMouseStar(event=event)
-        assert not suc
-
-
-def test_onMouseStar_5():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.hipparcos.az = [180]
-    app.app.hipparcos.alt = [45]
-    app.app.hipparcos.name = ['test']
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            suc = app.onMouseStar(event=event)
+def test_addHorizonPoint_1(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+    with mock.patch.object(function,
+                           'getIndexPointX',
+                           return_value=None):
+        with mock.patch.object(function.app.data,
+                               'addHorizonP',
+                               return_value=False):
+            suc = function.addHorizonPoint(data=function.app.data, event=Event())
             assert not suc
 
 
-def test_onMouseStar_6():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.hipparcos.az = [180]
-    app.app.hipparcos.alt = [45]
-    app.app.hipparcos.name = ['test']
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetRaDec',
-                                   return_value=True):
-                suc = app.onMouseStar(event=event)
-                assert not suc
+def test_addHorizonPoint_2(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+    with mock.patch.object(function,
+                           'getIndexPointX',
+                           return_value=1):
+        with mock.patch.object(function.app.data,
+                               'addHorizonP',
+                               return_value=False):
+            suc = function.addHorizonPoint(data=function.app.data, event=Event())
+            assert not suc
 
 
-def test_onMouseStar_7():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.hipparcos.az = []
-    app.app.hipparcos.alt = []
-    app.app.hipparcos.name = []
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.No):
-        suc = app.onMouseStar(event=event)
+def test_addHorizonPoint_3(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+    with mock.patch.object(function,
+                           'getIndexPointX',
+                           return_value=1):
+        with mock.patch.object(function.app.data,
+                               'addHorizonP',
+                               return_value=True):
+            suc = function.addHorizonPoint(data=function.app.data, event=Event())
+            assert suc
+
+
+def test_deleteHorizonPoint_1(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+    function.app.data.horizonP = [(0, 0), (0, 360)]
+    with mock.patch.object(function,
+                           'getIndexPointX',
+                           return_value=None):
+        with mock.patch.object(function.app.data,
+                               'delHorizonP',
+                               return_value=False):
+            suc = function.deleteHorizonPoint(data=function.app.data, event=Event())
+            assert not suc
+
+
+def test_deleteHorizonPoint_2(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+    function.app.data.horizonP = [(0, 0), (0, 360)]
+    with mock.patch.object(function,
+                           'getIndexPointX',
+                           return_value=1):
+        with mock.patch.object(function.app.data,
+                               'delHorizonP',
+                               return_value=False):
+            suc = function.deleteHorizonPoint(data=function.app.data, event=Event())
+            assert not suc
+
+
+def test_deleteHorizonPoint_3(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+    function.app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
+    with mock.patch.object(function,
+                           'getIndexPointX',
+                           return_value=1):
+        with mock.patch.object(function.app.data,
+                               'delHorizonP',
+                               return_value=False):
+            suc = function.deleteHorizonPoint(data=function.app.data, event=Event())
+            assert not suc
+
+
+def test_deleteHorizonPoint_4(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+    function.app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
+    with mock.patch.object(function,
+                           'getIndexPointX',
+                           return_value=1):
+        with mock.patch.object(function.app.data,
+                               'delHorizonP',
+                               return_value=True):
+            suc = function.deleteHorizonPoint(data=function.app.data, event=Event())
+            assert suc
+
+
+def test_editHorizonMask_1(function):
+    class Event:
+        button = 1
+
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.horizonMarker, = axe.plot(0, 0)
+    function.horizonFill, = axe.fill([0, 1, 2], [0, 1, 2])
+    with mock.patch.object(function,
+                           'addHorizonPoint',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'drawHemisphere'):
+            suc = function.editHorizonMask(data=function.app.data, event=Event())
+            assert not suc
+
+
+def test_editHorizonMask_2(function):
+    class Event:
+        button = 3
+
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.horizonMarker, = axe.plot(0, 0)
+    function.horizonFill, = axe.fill([0, 1, 2], [0, 1, 2])
+    with mock.patch.object(function,
+                           'deleteHorizonPoint',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'drawHemisphere'):
+            suc = function.editHorizonMask(data=function.app.data, event=Event())
+            assert not suc
+
+
+def test_editHorizonMask_3(function):
+    class Event:
+        button = 0
+
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.horizonMarker, = axe.plot(0, 0)
+    function.horizonFill, = axe.fill([0, 1, 2], [0, 1, 2])
+    with mock.patch.object(function,
+                           'drawHemisphere'):
+        suc = function.editHorizonMask(data=function.app.data, event=Event())
         assert not suc
 
 
-def test_onMouseStar_8():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.hipparcos.az = [180]
-    app.app.hipparcos.alt = [45]
-    app.app.hipparcos.name = ['test']
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetRaDec',
-                                   return_value=False):
-                suc = app.onMouseStar(event=event)
+def test_addBuildPoint_1(function):
+    class Event:
+        button = 0
+        xdata = 10
+        ydata = 10
+
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    data = function.app.data
+
+    with mock.patch.object(function,
+                           'getIndexPoint',
+                           return_value=None):
+        suc = function.addBuildPoint(data=data, event=Event(), axes=axe)
+        assert not suc
+
+
+def test_addBuildPoint_2(function):
+    class Event:
+        button = 0
+        xdata = 10
+        ydata = 10
+
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    data = function.app.data
+
+    with mock.patch.object(function,
+                           'getIndexPoint',
+                           return_value=1):
+        with mock.patch.object(function.app.data,
+                               'addBuildP',
+                               return_value=False):
+            suc = function.addBuildPoint(data=data, event=Event(), axes=axe)
+            assert not suc
+
+
+def test_addBuildPoint_3(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        button = 0
+
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    data = function.app.data
+
+    with mock.patch.object(function,
+                           'getIndexPoint',
+                           return_value=1):
+        with mock.patch.object(function.app.data,
+                               'addBuildP',
+                               return_value=True):
+            suc = function.addBuildPoint(data=data, event=Event(), axes=axe)
+            assert suc
+
+
+def test_addBuildPoint_4(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        button = 0
+
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    data = function.app.data
+    function.ui.checkShowSlewPath.setChecked(True)
+    function.pointsBuildAnnotate = None
+
+    with mock.patch.object(function,
+                           'getIndexPoint',
+                           return_value=1):
+        with mock.patch.object(function.app.data,
+                               'addBuildP',
+                               return_value=True):
+            suc = function.addBuildPoint(data=data, event=Event(), axes=axe)
+            assert suc
+
+
+def test_deleteBuildPoint_1(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        button = 0
+    data = function.app.data
+    with mock.patch.object(function,
+                           'getIndexPoint',
+                           return_value=1):
+        with mock.patch.object(function.app.data,
+                               'delBuildP',
+                               return_value=False):
+            suc = function.deleteBuildPoint(data=data, event=Event())
+            assert not suc
+
+
+def test_deleteBuildPoint_2(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        button = 0
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.pointsBuildAnnotate = [axe.annotate('test', (0, 0))]
+    function.app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
+    data = function.app.data
+    with mock.patch.object(function,
+                           'getIndexPoint',
+                           return_value=0):
+        with mock.patch.object(function.app.data,
+                               'delBuildP',
+                               return_value=True):
+            suc = function.deleteBuildPoint(data=data, event=Event())
+            assert suc
+
+
+def test_editBuildPoints_1(function):
+    class Event:
+        button = 1
+
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.pointsBuild, = axe.plot(0, 0)
+    with mock.patch.object(function,
+                           'addBuildPoint',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'drawHemisphere'):
+            suc = function.editBuildPoints(data=function.app.data, event=Event(), axes=axe)
+            assert not suc
+
+
+def test_editBuildPoints_2(function):
+    class Event:
+        button = 3
+
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.pointsBuild, = axe.plot(0, 0)
+    function.app.data.buildP = [(0, 0, True), (1, 1, True)]
+    function.pointsBuildAnnotate = [axe.annotate('test', (0, 0)), axe.annotate('test', (0, 0))]
+    with mock.patch.object(function,
+                           'deleteBuildPoint',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'drawHemisphere'):
+            suc = function.editBuildPoints(data=function.app.data, event=Event(), axes=axe)
+            assert not suc
+
+
+def test_editBuildPoints_3(function):
+    class Event:
+        button = 0
+
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.pointsBuild, = axe.plot(0, 0)
+    with mock.patch.object(function,
+                           'drawHemisphere'):
+        suc = function.editBuildPoints(data=function.app.data, event=Event(), axes=axe)
+        assert not suc
+
+
+def test_onMouseEdit_1(function):
+    function.generateFlat(widget=function.hemisphereMat, horizon=False)
+
+    class Event:
+        inaxes = False
+        dblclick = False
+
+    suc = function.onMouseEdit(Event())
+    assert not suc
+
+
+def test_onMouseEdit_2(function):
+    function.generateFlat(widget=function.hemisphereMat, horizon=False)
+
+    class Event:
+        inaxes = True
+        dblclick = True
+
+    suc = function.onMouseEdit(Event())
+    assert not suc
+
+
+def test_onMouseEdit_3(function):
+    function.ui.checkEditHorizonMask.setChecked(True)
+    function.ui.checkEditBuildPoints.setChecked(False)
+    function.generateFlat(widget=function.hemisphereMat, horizon=False)
+
+    class Event:
+        inaxes = True
+        dblclick = False
+
+    with mock.patch.object(function,
+                           'editHorizonMask',
+                           return_value=True):
+        suc = function.onMouseEdit(Event())
+        assert suc
+
+
+def test_onMouseEdit_4(function):
+    function.ui.checkEditHorizonMask.setChecked(False)
+    function.ui.checkEditBuildPoints.setChecked(True)
+    function.generateFlat(widget=function.hemisphereMat, horizon=False)
+
+    class Event:
+        inaxes = True
+        dblclick = False
+
+    with mock.patch.object(function,
+                           'editBuildPoints',
+                           return_value=True):
+        suc = function.onMouseEdit(Event())
+        assert suc
+
+
+def test_onMouseEdit_5(function):
+    function.ui.checkEditHorizonMask.setChecked(False)
+    function.ui.checkEditBuildPoints.setChecked(False)
+    function.generateFlat(widget=function.hemisphereMat, horizon=False)
+
+    class Event:
+        inaxes = True
+        dblclick = False
+
+    suc = function.onMouseEdit(Event())
+    assert not suc
+
+
+def test_onMouseStar_1(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = False
+        dblclick = False
+        button = 0
+
+    suc = function.onMouseStar(Event())
+    assert not suc
+
+
+def test_onMouseStar_2(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = True
+        button = 1
+
+    suc = function.onMouseStar(Event())
+    assert not suc
+
+
+def test_onMouseStar_3(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = True
+        button = 3
+
+    suc = function.onMouseStar(Event())
+    assert not suc
+
+
+def test_onMouseStar_4(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = False
+        button = 1
+
+    with mock.patch.object(function,
+                           'slewDialog',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'getIndexPoint',
+                               return_value=None):
+            suc = function.onMouseStar(Event())
+            assert not suc
+
+
+def test_onMouseStar_5(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = False
+        button = 3
+
+    with mock.patch.object(function,
+                           'slewDialog',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'getIndexPoint',
+                               return_value=None):
+            suc = function.onMouseStar(Event())
+            assert not suc
+
+
+def test_onMouseStar_6(function):
+    function.app.hipparcos.name = ['test']
+
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = False
+        button = 1
+
+    with mock.patch.object(function,
+                           'slewDialog',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'getIndexPoint',
+                               return_value=0):
+            with mock.patch.object(function.app.hipparcos,
+                                   'getAlignStarRaDecFromName',
+                                   return_value=(0, 0)):
+                suc = function.onMouseStar(Event())
                 assert not suc
 
 
-def test_onMouseStar_9():
-    class Test:
+def test_onMouseStar_7(function):
+    function.app.hipparcos.name = ['test']
+
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = False
+        button = 1
+
+    with mock.patch.object(function,
+                           'slewDialog',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'getIndexPoint',
+                               return_value=0):
+            with mock.patch.object(function.app.hipparcos,
+                                   'getAlignStarRaDecFromName',
+                                   return_value=(0, 0)):
+                with mock.patch.object(function,
+                                       'slewSelectedTarget',
+                                       return_value=False):
+                    suc = function.onMouseStar(Event())
+                    assert not suc
+
+
+def test_onMouseStar_8(function):
+    function.app.hipparcos.name = ['test']
+
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = False
+        button = 1
+
+    with mock.patch.object(function,
+                           'slewDialog',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'getIndexPoint',
+                               return_value=0):
+            with mock.patch.object(function.app.hipparcos,
+                                   'getAlignStarRaDecFromName',
+                                   return_value=(0, 0)):
+                with mock.patch.object(function,
+                                       'slewSelectedTarget',
+                                       return_value=True):
+                    with mock.patch.object(function.app.mount.obsSite,
+                                           'setTargetRaDec',
+                                           return_value=True):
+                        suc = function.onMouseStar(Event())
+                        assert suc
+
+
+def test_onMouseDispatcher_1(function):
+    class Event:
         pass
-    event = Test()
-    event.inaxes = True
-    event.button = 3
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.dome.framework = 'indi'
-    app.app.hipparcos.az = [180]
-    app.app.hipparcos.alt = [45]
-    app.app.hipparcos.name = ['test']
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetRaDec',
-                                   return_value=True):
-                suc = app.onMouseStar(event=event)
-                assert not suc
+    function.ui.checkEditNone.setChecked(True)
+
+    with mock.patch.object(function,
+                           'onMouseNormal'):
+        suc = function.onMouseDispatcher(Event())
+        assert suc
 
 
-def test_onMouseStar_10():
-    class Test:
+def test_onMouseDispatcher_2(function):
+    class Event:
         pass
-    event = Test()
-    event.inaxes = True
-    event.button = 3
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.dome.framework = 'indi'
-    app.app.hipparcos.az = [180]
-    app.app.hipparcos.alt = [45]
-    app.app.hipparcos.name = ['test']
-    app.app.mainW.ui.checkDomeGeometry.setChecked(True)
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetRaDec',
-                                   return_value=True):
-                suc = app.onMouseStar(event=event)
-                assert not suc
+    function.ui.checkEditBuildPoints.setChecked(True)
+
+    with mock.patch.object(function,
+                           'onMouseEdit'):
+        suc = function.onMouseDispatcher(Event())
+        assert suc
 
 
-def test_onMouseStar_11():
-    class Test:
+def test_onMouseDispatcher_3(function):
+    class Event:
         pass
-    event = Test()
-    event.inaxes = True
-    event.button = 3
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.dome.framework = 'indi'
-    app.app.hipparcos.az = [180]
-    app.app.hipparcos.alt = [45]
-    app.app.hipparcos.name = ['test']
-    app.app.mainW.ui.checkDomeGeometry.setChecked(False)
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetRaDec',
-                                   return_value=True):
-                suc = app.onMouseStar(event=event)
-                assert not suc
+    function.ui.checkEditHorizonMask.setChecked(True)
+
+    with mock.patch.object(function,
+                           'onMouseEdit'):
+        suc = function.onMouseDispatcher(Event())
+        assert suc
 
 
-def test_onMouseDispatcher_1():
-    class Test:
-        inaxes = True
-        button = 1
-        dblclick = False
-        xdata = 180
-        ydata = 45
+def test_onMouseDispatcher_4(function):
+    class Event:
+        pass
+    function.ui.checkPolarAlignment.setChecked(True)
 
-    event = Test()
-    app.ui.checkEditNone.setChecked(True)
-    app.ui.checkEditBuildPoints.setChecked(True)
-    app.ui.checkEditHorizonMask.setChecked(True)
-    app.ui.checkPolarAlignment.setChecked(True)
-
-    app.onMouseDispatcher(event=event)
-
-
-def test_onMouseDispatcher_2():
-    class Test:
-        inaxes = True
-        button = 1
-        dblclick = False
-        xdata = 180
-        ydata = 45
-
-    event = Test()
-    app.ui.checkEditNone.setChecked(False)
-    app.ui.checkEditBuildPoints.setChecked(True)
-    app.ui.checkEditHorizonMask.setChecked(True)
-    app.ui.checkPolarAlignment.setChecked(True)
-
-    app.onMouseDispatcher(event=event)
-
-
-def test_onMouseDispatcher_3():
-    class Test:
-        inaxes = True
-        button = 1
-        dblclick = False
-        xdata = 180
-        ydata = 45
-
-    event = Test()
-    app.ui.checkEditNone.setChecked(False)
-    app.ui.checkEditBuildPoints.setChecked(False)
-    app.ui.checkEditHorizonMask.setChecked(True)
-    app.ui.checkPolarAlignment.setChecked(True)
-
-    app.onMouseDispatcher(event=event)
-
-
-def test_onMouseDispatcher_4():
-    class Test:
-        inaxes = True
-        button = 1
-        dblclick = False
-        xdata = 180
-        ydata = 45
-
-    event = Test()
-    app.ui.checkEditNone.setChecked(False)
-    app.ui.checkEditBuildPoints.setChecked(False)
-    app.ui.checkEditHorizonMask.setChecked(False)
-    app.ui.checkPolarAlignment.setChecked(True)
-
-    app.onMouseDispatcher(event=event)
+    with mock.patch.object(function,
+                           'onMouseStar'):
+        suc = function.onMouseDispatcher(Event())
+        assert suc

@@ -225,25 +225,27 @@ class AnalyseWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        data = data[0]
+        d = data[0]
+        de = data[-1]
 
         self.ui.filename.setText(os.path.basename(loadFilePath))
-        self.ui.eposure.setText(f'{data.get("exposureTime", "")}')
-        self.ui.solver.setText(data.get('astrometryApp', ""))
-        self.ui.binning.setText(f'{data.get("binning", 0):1.0f}')
-        self.ui.time.setText(data.get('julianDate', '').replace('T', '  ').replace('Z', ''))
-        self.ui.subframe.setText(f'{data.get("subFrame", 0):3.0f}')
-        self.ui.modelTerms.setText(f'{data.get("modelTerms", 0):02.0f}')
-        self.ui.modelErrorRMS.setText(f'{data.get("modelErrorRMS", 0):5.1f}')
-        self.ui.modelOrthoError.setText(f'{data.get("modelOrthoError", 0):5.0f}')
-        self.ui.modelPolarError.setText(f'{data.get("modelPolarError", 0):5.0f}')
-        self.ui.focalLength.setText(f'{data.get("focalLength", 0):4.0f}')
-        self.ui.profile.setText(f'{data.get("profile", "")}')
-        self.ui.firmware.setText(f'{data.get("firmware", "")}')
-
-        text = f'{data.get("mirroredS", "")}' + f'{data.get("flippedS", "")}'
+        self.ui.eposure.setText(f'{d.get("exposureTime", "")}')
+        self.ui.solver.setText(d.get('astrometryApp', ""))
+        self.ui.binning.setText(f'{d.get("binning", 0):1.0f}')
+        self.ui.time.setText(d.get('julianDate', '').replace('T', '  ').replace('Z', ''))
+        self.ui.subframe.setText(f'{d.get("subFrame", 0):3.0f}')
+        self.ui.modelTerms.setText(f'{d.get("modelTerms", 0):02.0f}')
+        self.ui.modelErrorRMS.setText(f'{d.get("modelErrorRMS", 0):5.1f}')
+        self.ui.modelOrthoError.setText(f'{d.get("modelOrthoError", 0):5.0f}')
+        self.ui.modelPolarError.setText(f'{d.get("modelPolarError", 0):5.0f}')
+        self.ui.focalLength.setText(f'{d.get("focalLength", 0):4.0f}')
+        self.ui.profile.setText(f'{d.get("profile", "")}')
+        self.ui.firmware.setText(f'{d.get("firmware", "")}')
+        self.ui.totalPoints.setText(f'{d.get("lenSequence", 0)}')
+        self.ui.goodPoints.setText(f'{de.get("errorIndex", 0)}')
+        text = f'{d.get("mirroredS", "")}' + f'{d.get("flippedS", "")}'
         self.ui.mirrored.setText(text)
-        version = data.get("version", "").lstrip('MountWizzard4 - v')
+        version = d.get("version", "").lstrip('MountWizzard4 - v')
         self.ui.version.setText(f'{version}')
 
         return True

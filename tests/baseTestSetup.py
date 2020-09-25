@@ -24,6 +24,11 @@ from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
 # local import
 
 
+class Measure:
+    data = {}
+    devices = {}
+
+
 class Data:
 
     horizonP = []
@@ -156,6 +161,7 @@ class App(QObject):
     mount = Mount()
     dome = Dome()
     data = Data()
+    measure = Measure()
     hipparcos = Hipparcos()
     deviceStat = {}
     threadPool = QThreadPool()

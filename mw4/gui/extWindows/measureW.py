@@ -239,8 +239,10 @@ class MeasureWindow(widget.MWidget):
 
         if figure is None:
             return None
+
         if numberPlots > 3:
             return None
+
         if numberPlots < 0:
             return None
 
@@ -250,6 +252,7 @@ class MeasureWindow(widget.MWidget):
 
         figure.clf()
         figure.subplots_adjust(left=0.1, right=0.95, bottom=0.05, top=0.95)
+
         for i in range(numberPlots):
             self.measureMat.figure.add_subplot(numberPlots, 1, i + 1, facecolor=None)
 
@@ -961,6 +964,7 @@ class MeasureWindow(widget.MWidget):
 
         if axes is None:
             return False
+
         if not numberPlots:
             self.measureMat.figure.canvas.draw()
             return False
@@ -979,13 +983,16 @@ class MeasureWindow(widget.MWidget):
             axe.set_xlim(time_ticks[0], time_ticks[-1])
             if i == len(axes) - 1:
                 axe.set_xticklabels(time_labels)
+
             else:
                 axe.set_xticklabels([])
 
         for axe, mSet in zip(axes, self.mSetUI):
             key = mSet.currentText()
+
             if self.plotFunc[key] is None:
                 continue
+
             self.plotFunc[key](axe=axe,
                                title=mSet.currentText(),
                                data=data,

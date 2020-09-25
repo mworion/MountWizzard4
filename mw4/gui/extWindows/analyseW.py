@@ -612,7 +612,7 @@ class AnalyseWindow(widget.MWidget):
         :return:    True if ok for testing
         """
 
-        axe, _ = self.generatePolar(widget=self.modelPositions)
+        axe, fig = self.generatePolar(widget=self.modelPositions)
 
         axe.set_ylim(0, 90)
         axe.set_yticklabels('')
@@ -629,8 +629,7 @@ class AnalyseWindow(widget.MWidget):
         az = azimuth / 180.0 * np.pi
         alt = 90 - altitude
 
-        for az, alt, err in zip(az, alt, error):
-            axe.plot(az, alt, marker='o', markersize=5, color=cm((err - sMin) / sMax))
+        scatter = axe.scatter(az, alt, c=error, vmin=sMin, vmax=sMax, cmap=cm)
 
         norm = Normalize(vmin=sMin, vmax=sMax)
         sm = plt.cm.ScalarMappable(cmap=cm, norm=norm)
@@ -679,6 +678,19 @@ class AnalyseWindow(widget.MWidget):
                        alpha=0.8,
                        zorder=-10,
                        )
+
+        formatString = ticker.FormatStrFormatter('%1.0f')
+        colorbar = fig.colorbar(scatter,
+                                pad=0.1,
+                                fraction=0.12,
+                                aspect=25,
+                                shrink=0.9,
+                                format=formatString,
+                                )
+
+        colorbar.set_label('Error [arcsec]', color=self.M_BLUE)
+        yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+        plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
         axe.figure.canvas.draw()
 

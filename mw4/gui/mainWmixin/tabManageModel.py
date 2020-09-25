@@ -307,6 +307,7 @@ class ManageModel(object):
         matplotlib.pyplot.setp(yTicks,
                                color=self.M_BLUE,
                                fontweight='bold')
+
         yValues = self.ui.targetRMS.value()
         xMin = colorbar.ax.get_xlim()[0]
         xMax = colorbar.ax.get_xlim()[1]

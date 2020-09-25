@@ -45,6 +45,7 @@ Released betas
 - update skyfield to 0.127
 - update PyQt5 to 5.15.1
 - update matplotlib to 3.3.2
+- adding good / total points to analyse window
 
 
 0.151.2

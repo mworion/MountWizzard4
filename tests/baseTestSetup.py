@@ -16,6 +16,7 @@
 #
 ###########################################################
 # standard libraries
+from queue import Queue
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal
@@ -84,9 +85,17 @@ class Dome(QObject):
         return
 
     signals = DomeSignals()
+    data = {}
 
 
 class Mount(QObject):
+    class MountGeometry:
+        offNorth = 0
+        offEast = 0
+        offVert = 0
+        domeRadius = 0
+        offGemPlate = 0
+
     class MountSetting:
         meridianLimitSlew = 0
         meridianLimitTrack = 0
@@ -108,6 +117,8 @@ class Mount(QObject):
         haJNowTarget = None
         decJNowTarget = None
         piersideTarget = None
+        angularPosRA = None
+        angularPosDEC = None
         AzTarget = None
         AltTarget = None
         location = Location()
@@ -127,14 +138,20 @@ class Mount(QObject):
     signals = MountSignals()
     setting = MountSetting()
     obsSite = MountObsSite()
+    geometry = MountGeometry()
 
 
 class App(QObject):
     config = {}
     update10s = pyqtSignal()
     update0_1s = pyqtSignal()
+    update1s = pyqtSignal()
     message = pyqtSignal(str, int)
     redrawHemisphere = pyqtSignal()
+    updateDomeSettings = pyqtSignal()
+    drawBuildPoints = pyqtSignal()
+    drawHorizonPoints = pyqtSignal()
+    messageQueue = Queue()
     mount = Mount()
     dome = Dome()
     data = Data()

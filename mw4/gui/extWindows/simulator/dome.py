@@ -161,10 +161,7 @@ class SimulatorDome:
         if not self.model:
             return False
 
-        if not self.app.mainW:
-            return False
-
-        radius = self.app.mainW.ui.domeRadius.value() * 1000
+        radius = self.app.mount.geometry.domeRadius * 1000
         scale = 1 + (radius - 1250) / 1250
         corrZ = - (scale - 1) * 800
         self.model['domeFloor']['t'].setScale3D(QVector3D(scale, scale, 1))
@@ -188,22 +185,21 @@ class SimulatorDome:
         if not self.model:
             return False
 
-        if not self.app.mainW:
-            return False
-
         if 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION' in self.app.dome.data:
             az = self.app.dome.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION']
             self.model['domeSphere']['t'].setRotationZ(-az)
 
         if 'DOME_SHUTTER.SHUTTER_OPEN' in self.app.dome.data:
-            radius = self.app.mainW.ui.domeRadius.value() * 1000
+            radius = self.app.mount.geometry.domeRadius * 1000
             scale = 1 + (radius - 1250) / 1250
 
             self.model['domeDoor1']['t'].setScale3D(QVector3D(1, scale, 1))
             self.model['domeDoor2']['t'].setScale3D(QVector3D(1, scale, 1))
 
             stat = self.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN']
-            width = self.app.mainW.ui.domeShutterWidth.value() * 1000 / 2 / scale
+            # width = self.app.mainW.ui.domeShutterWidth.value() * 1000 / 2 / scale
+            # todo: calculate correct without other window
+            width = 50
             if stat:
                 self.model['domeDoor1']['t'].setTranslation(QVector3D(0, width, 0))
                 self.model['domeDoor2']['t'].setTranslation(QVector3D(0, -width, 0))

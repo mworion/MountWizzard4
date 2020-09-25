@@ -18,170 +18,224 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
-from queue import Queue
 
 # external packages
 from PyQt5.QtGui import QCloseEvent
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QCheckBox
-from PyQt5.QtWidgets import QDoubleSpinBox
-from PyQt5.QtWidgets import QHBoxLayout
-from PyQt5.Qt3DCore import QTransform
-from mountcontrol.qtmount import Mount
+from PyQt5.Qt3DCore import QTransform, QEntity
+from skyfield.api import Angle
 
 # local import
+from tests.baseTestSetup import App
+from gui.utilities.widget import MWidget
 from gui.extWindows.simulatorW import SimulatorWindow
+from gui.extWindows.simulator import tools
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global Test, app
-
-    class Test1a:
-        checkDomeGeometry = QCheckBox()
-        domeNorthOffset = QDoubleSpinBox()
-        domeEastOffset = QDoubleSpinBox()
-        domeVerticalOffset = QDoubleSpinBox()
-        simulator = QHBoxLayout()
-
-    class Test1:
-        ui = Test1a()
-
-    class Test(QObject):
-        config = {'mainW': {}}
-        update1s = pyqtSignal()
-        updateDomeSettings = pyqtSignal()
-        drawBuildPoints = pyqtSignal()
-        drawHorizonPoints = pyqtSignal()
-        messageQueue = Queue()
-        deviceStat = {'dome': True}
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        mainW = Test1()
-
-    with mock.patch.object(SimulatorWindow,
-                           'show'):
-        app = SimulatorWindow(app=Test())
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
     yield
 
 
-def test_initConfig_1(qtbot):
-    suc = app.initConfig()
+@pytest.fixture(autouse=True, scope='function')
+def function(module):
+
+    window = SimulatorWindow(app=App())
+    yield window
+
+
+def test_initConfig_1(function):
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_2(qtbot):
-    app.app.config['simulatorW'] = {'winPosX': 10000}
-    suc = app.initConfig()
+def test_initConfig_2(function):
+    suc = function.initConfig()
+    assert suc
+
+    function.app.config['simulatorW'] = {'winPosX': 10000}
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_3(qtbot):
-    app.app.config['simulatorW'] = {'winPosY': 10000}
-    suc = app.initConfig()
+def test_initConfig_3(function):
+    suc = function.initConfig()
+    assert suc
+
+    function.app.config['simulatorW'] = {'winPosY': 10000}
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_4(qtbot):
-    app.app.config['simulatorW'] = {'cameraPositionX': 1,
-                                    'cameraPositionY': 1,
-                                    'cameraPositionZ': 1,
-                                    }
-    suc = app.initConfig()
+def test_initConfig_4(function):
+    suc = function.initConfig()
+    assert suc
+
+    function.app.config['simulatorW'] = {'cameraPositionX': 1,
+                                         'cameraPositionY': 1,
+                                         'cameraPositionZ': 1,
+                                         }
+    suc = function.initConfig()
     assert suc
 
 
-def test_storeConfig_1(qtbot):
-    if 'simulatorW' in app.app.config:
-        del app.app.config['simulatorW']
-    suc = app.storeConfig()
+def test_storeConfig_1(function):
+    if 'simulatorW' in function.app.config:
+        del function.app.config['simulatorW']
+
+    suc = function.storeConfig()
     assert suc
 
 
-def test_storeConfig_2(qtbot):
-    app.app.config['simulatorW'] = {}
-    suc = app.storeConfig()
+def test_storeConfig_2(function):
+    function.app.config['simulatorW'] = {}
+    suc = function.storeConfig()
     assert suc
 
 
-def test_closeEvent_1(qtbot):
-    app.closeEvent(QCloseEvent())
+def test_closeEvent_1(function):
+    with mock.patch.object(function,
+                           'show'):
+        with mock.patch.object(function,
+                               'createScene'):
+            with mock.patch.object(MWidget,
+                                   'closeEvent'):
+                function.showWindow()
+                function.closeEvent(QCloseEvent)
 
 
-def test_buildPointsCreate_1(qtbot):
-    suc = app.buildPointsCreate()
+def test_buildPointsCreate_1(function):
+    function.world = {
+        'ref1000': {
+            'parent': None,
+            'rot': [-90, 90, 0],
+            'e': QEntity(),
+        },
+        'ref': {
+            'parent': 'ref1000',
+            'scale': [0.001, 0.001, 0.001],
+            'e': QEntity(),
+        }
+    }
+    suc = function.buildPointsCreate()
     assert suc
 
 
-def test_domeCreate_1(qtbot):
-    suc = app.domeCreate()
+def test_domeCreate_1(function):
+    function.world = {
+        'ref1000': {
+            'parent': None,
+            'rot': [-90, 90, 0],
+            'e': QEntity(),
+        },
+        'ref': {
+            'parent': 'ref1000',
+            'scale': [0.001, 0.001, 0.001],
+            'e': QEntity(),
+        }
+    }
+    suc = function.domeCreate()
     assert suc
 
 
-def test_horizonCreate_1(qtbot):
-    suc = app.horizonCreate()
+def test_horizonCreate_1(function):
+    function.world = {
+        'ref1000': {
+            'parent': None,
+            'rot': [-90, 90, 0],
+            'e': QEntity(),
+        },
+        'ref': {
+            'parent': 'ref1000',
+            'scale': [0.001, 0.001, 0.001],
+            'e': QEntity(),
+        }
+    }
+    suc = function.horizonCreate()
     assert suc
 
 
-def test_pointerCreate_1(qtbot):
-    suc = app.pointerCreate()
+def test_pointerCreate_1(function):
+    function.world = {
+        'ref1000': {
+            'parent': None,
+            'rot': [-90, 90, 0],
+            'e': QEntity(),
+        },
+        'ref': {
+            'parent': 'ref1000',
+            'scale': [0.001, 0.001, 0.001],
+            'e': QEntity(),
+        }
+    }
+    suc = function.pointerCreate()
     assert suc
 
 
-def test_setDomeTransparency_1(qtbot):
-    suc = app.setDomeTransparency()
+def test_setDomeTransparency_1(function):
+    suc = function.setDomeTransparency()
     assert suc
 
 
-def test_setPL_1(qtbot):
-    suc = app.setPL()
+def test_setPL_1(function):
+    suc = function.setPL()
     assert suc
 
 
-def test_topView_1(qtbot):
-    suc = app.topView()
+def test_topView_1(function):
+    suc = function.topView()
     assert suc
 
 
-def test_topEastView_1(qtbot):
-    suc = app.topEastView()
+def test_topEastView_1(function):
+    suc = function.topEastView()
     assert suc
 
 
-def test_topWestView_1(qtbot):
-    suc = app.topWestView()
+def test_topWestView_1(function):
+    suc = function.topWestView()
     assert suc
 
 
-def test_eastView_1(qtbot):
-    suc = app.eastView()
+def test_eastView_1(function):
+    suc = function.eastView()
     assert suc
 
 
-def test_westView_1(qtbot):
-    suc = app.westView()
+def test_westView_1(function):
+    suc = function.westView()
     assert suc
 
 
-def test_updateSettings_1(qtbot):
-    app.world = None
-    suc = app.updateSettings()
+def test_createWorld_1(function):
+    with mock.patch.object(tools,
+                           'linkModel'):
+        function.createWorld(QEntity())
+        assert 'environ' in function.world
+
+
+def test_createScene_1(function):
+    function.app.mount.obsSite.location.latitude = Angle(degrees=10)
+    function.ui.checkShowNumbers.setChecked(True)
+    function.ui.checkShowSlewPath.setChecked(True)
+    function.ui.checkShowPointer.setChecked(True)
+    function.ui.checkDomeEnable.setChecked(True)
+    function.ui.checkShowHorizon.setChecked(True)
+    function.ui.checkShowBuildPoints.setChecked(True)
+
+    function.createScene(QEntity())
+
+
+def test_updateSettings_1(function):
+    function.world = None
+    suc = function.updateSettings()
     assert not suc
 
 
-def test_updateSettings_2(qtbot):
-    app.world = {'test'}
-    app.app.mainW = None
-    suc = app.updateSettings()
-    assert not suc
-
-
-def test_updateSettings_3(qtbot):
-    app.world = {
+def test_updateSettings_2(function):
+    function.world = {
         'domeColumn': {'t': QTransform()},
         'domeCompassRose': {'t': QTransform()},
         'domeCompassRoseChar': {'t': QTransform()},
     }
-    suc = app.updateSettings()
+    suc = function.updateSettings()
     assert suc

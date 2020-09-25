@@ -142,6 +142,7 @@ class SimulatorWindow(widget.MWidget):
         """
         if 'simulatorW' not in self.app.config:
             self.app.config['simulatorW'] = {}
+
         config = self.app.config['simulatorW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
@@ -472,13 +473,11 @@ class SimulatorWindow(widget.MWidget):
         if not self.world:
             return False
 
-        if not self.app.mainW:
-            return False
-
-        north = self.app.mainW.ui.domeNorthOffset.value() * 1000
-        east = self.app.mainW.ui.domeEastOffset.value() * 1000
-        vertical = self.app.mainW.ui.domeVerticalOffset.value() * 1000
+        north = self.app.mount.geometry.offNorth * 1000
+        east = self.app.mount.geometry.offEast * 1000
+        vertical = self.app.mount.geometry.offVert * 1000
         scale = (960 + vertical) / 960
+
         self.world['domeColumn']['t'].setTranslation(QVector3D(north, -east, 0))
         self.world['domeColumn']['t'].setScale3D(QVector3D(1, 1, scale))
         self.world['domeCompassRose']['t'].setTranslation(QVector3D(north, -east, 0))

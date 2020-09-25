@@ -159,28 +159,6 @@ def test_updateSettings_2(qtbot):
         },
     }
 
-    app.app.mainW = None
-
-    suc = app.updateSettings()
-    assert not suc
-
-
-def test_updateSettings_3(qtbot):
-    app.model = {
-        'domeWall': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'domeSphere': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'domeFloor': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-    }
-
     suc = app.updateSettings()
     assert suc
 
@@ -191,28 +169,6 @@ def test_updatePositions_1(qtbot):
 
 
 def test_updatePositions_2(qtbot):
-    app.model = {
-        'domeWall': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'domeSphere': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'domeFloor': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-    }
-
-    app.app.mainW = None
-
-    suc = app.updatePositions()
-    assert not suc
-
-
-def test_updatePositions_3(qtbot):
     app.model = {
         'domeSphere': {
             'e': QEntity(),

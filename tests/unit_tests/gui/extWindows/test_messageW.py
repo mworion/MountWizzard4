@@ -17,119 +17,99 @@
 ###########################################################
 # standard libraries
 import pytest
-from queue import Queue
+import unittest.mock as mock
 
 # external packages
 from PyQt5.QtGui import QCloseEvent
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
 
 # local import
+from tests.baseTestSetup import App
+from gui.utilities.widget import MWidget
 from gui.extWindows.messageW import MessageWindow
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global Test
-
-    class Test(QObject):
-        config = {'mainW': {}}
-        update1s = pyqtSignal()
-        messageQueue = Queue()
-
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
     yield
 
 
-def test_initConfig_1(qtbot):
-    app = MessageWindow(app=Test())
-    qtbot.addWidget(app)
+@pytest.fixture(autouse=True, scope='function')
+def function(module):
 
-    suc = app.initConfig()
+    window = MessageWindow(app=App())
+    yield window
+
+
+def test_initConfig_1(function):
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_2(qtbot):
-    app = MessageWindow(app=Test())
-    qtbot.addWidget(app)
+def test_initConfig_2(function):
+    suc = function.initConfig()
+    assert suc
 
-    app.app.config['messageW'] = {'winPosX': 10000}
-    suc = app.initConfig()
+    function.app.config['messageW'] = {'winPosX': 10000}
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_3(qtbot):
-    app = MessageWindow(app=Test())
-    qtbot.addWidget(app)
+def test_initConfig_3(function):
+    suc = function.initConfig()
+    assert suc
 
-    app.app.config['messageW'] = {'winPosY': 10000}
-    suc = app.initConfig()
+    function.app.config['messageW'] = {'winPosY': 10000}
+    suc = function.initConfig()
     assert suc
 
 
-def test_storeConfig_1(qtbot):
-    app = MessageWindow(app=Test())
-    qtbot.addWidget(app)
+def test_storeConfig_1(function):
+    if 'messageW' in function.app.config:
+        del function.app.config['messageW']
 
-    if 'messageW' in app.app.config:
-        del app.app.config['messageW']
-    suc = app.storeConfig()
+    suc = function.storeConfig()
     assert suc
 
 
-def test_storeConfig_2(qtbot):
-    app = MessageWindow(app=Test())
-    qtbot.addWidget(app)
+def test_storeConfig_2(function):
+    function.app.config['messageW'] = {}
 
-    app.app.config['messageW'] = {}
-    suc = app.storeConfig()
+    suc = function.storeConfig()
     assert suc
 
 
-def test_closeEvent_1(qtbot):
-    app = MessageWindow(app=Test())
-    qtbot.addWidget(app)
+def test_closeEvent_1(function):
+    with mock.patch.object(function,
+                           'show'):
+        with mock.patch.object(MWidget,
+                               'closeEvent'):
+            function.showWindow()
+            function.closeEvent(QCloseEvent)
 
-    app.closeEvent(QCloseEvent())
 
-
-def test_clearWindow_1(qtbot):
-    app = MessageWindow(app=Test())
-    qtbot.addWidget(app)
-
-    suc = app.clearWindow()
+def test_clearWindow_1(function):
+    suc = function.clearWindow()
     assert suc
 
 
-def test_writeMessage_1(qtbot):
-    app = MessageWindow(app=Test())
-    qtbot.addWidget(app)
-
-    suc = app.writeMessage()
+def test_writeMessage_1(function):
+    suc = function.writeMessage()
     assert suc
 
 
-def test_writeMessage_2(qtbot):
-    app = MessageWindow(app=Test())
-    qtbot.addWidget(app)
-
-    app.app.messageQueue.put(('test', 0))
-    suc = app.writeMessage()
+def test_writeMessage_2(function):
+    function.app.messageQueue.put(('test', 0))
+    suc = function.writeMessage()
     assert suc
 
 
-def test_writeMessage_3(qtbot):
-    app = MessageWindow(app=Test())
-    qtbot.addWidget(app)
-
-    app.app.messageQueue.put(('test', -1))
-    suc = app.writeMessage()
+def test_writeMessage_3(function):
+    function.app.messageQueue.put(('test', -1))
+    suc = function.writeMessage()
     assert suc
 
 
-def test_writeMessage_4(qtbot):
-    app = MessageWindow(app=Test())
-    qtbot.addWidget(app)
-
-    app.app.messageQueue.put(('test', 10))
-    suc = app.writeMessage()
+def test_writeMessage_4(function):
+    function.app.messageQueue.put(('test', 10))
+    suc = function.writeMessage()
     assert suc

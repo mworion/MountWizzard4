@@ -186,12 +186,9 @@ class SimulatorTelescope:
         if not self.model:
             return False
 
-        if not self.app.mainW:
-            return False
-
-        north = self.app.mainW.ui.domeNorthOffset.value() * 1000
-        east = self.app.mainW.ui.domeEastOffset.value() * 1000
-        vertical = self.app.mainW.ui.domeVerticalOffset.value() * 1000
+        north = self.app.mount.geometry.offNorth * 1000
+        east = self.app.mount.geometry.offEast * 1000
+        vertical = self.app.mount.geometry.offVert * 1000
         self.model['mountBase']['t'].setTranslation(QVector3D(north, -east, 1000 + vertical))
 
         if self.app.mount.obsSite.location:

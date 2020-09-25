@@ -104,44 +104,6 @@ def test_updateSettings_2(qtbot):
             't': QTransform()
         },
         'gem': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'gemCorr': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'otaRing': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'otaTube': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'otaImagetrain': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-    }
-
-    app.app.mainW = None
-
-    suc = app.updateSettings()
-    assert not suc
-
-
-def test_updateSettings_3(qtbot):
-    app.model = {
-        'mountBase': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'lat': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'gem': {
             'm': QCuboidMesh(),
             'e': QEntity(),
             't': QTransform()

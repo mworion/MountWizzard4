@@ -197,9 +197,7 @@ class SimulatorDome:
             self.model['domeDoor2']['t'].setScale3D(QVector3D(1, scale, 1))
 
             stat = self.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN']
-            # width = self.app.mainW.ui.domeShutterWidth.value() * 1000 / 2 / scale
-            # todo: calculate correct without other window
-            width = 50
+            width = self.app.dome.domeShutterWidth * 1000 / 2 / scale
             if stat:
                 self.model['domeDoor1']['t'].setTranslation(QVector3D(0, width, 0))
                 self.model['domeDoor2']['t'].setTranslation(QVector3D(0, -width, 0))

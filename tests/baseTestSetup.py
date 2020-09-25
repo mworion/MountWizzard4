@@ -24,6 +24,14 @@ from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
 # local import
 
 
+class Camera:
+    expTime = 0
+    expTimeN = 0
+    binning = 1
+    binningN = 1
+    subFrame = 100
+
+
 class Measure:
     data = {}
     devices = {}
@@ -91,6 +99,7 @@ class Dome(QObject):
 
     signals = DomeSignals()
     data = {}
+    domeShutterWidth = 0
 
 
 class Mount(QObject):
@@ -157,10 +166,12 @@ class App(QObject):
     drawBuildPoints = pyqtSignal()
     drawHorizonPoints = pyqtSignal()
     showAnalyse = pyqtSignal(object)
+    showImage = pyqtSignal(object)
     messageQueue = Queue()
     mount = Mount()
     dome = Dome()
     data = Data()
+    camera = Camera()
     measure = Measure()
     hipparcos = Hipparcos()
     deviceStat = {}

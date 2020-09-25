@@ -40,7 +40,6 @@ class SettDome(object):
             self.ui = ui
             self.clickable = clickable
 
-        # signals on gui
         self.ui.checkDomeGeometry.clicked.connect(self.setUseGeometryInMount)
         self.ui.domeRadius.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.offGEM.valueChanged.connect(self.setUseGeometryInMount)
@@ -48,11 +47,10 @@ class SettDome(object):
         self.ui.domeEastOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeShutterWidth.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
         self.ui.checkDomeGeometry.clicked.connect(self.setUseGEMOffsetCalculations)
-
-        # signals from functions
         self.app.mount.signals.firmwareDone.connect(self.setUseGeometryInMount)
 
     def initConfig(self):
@@ -124,6 +122,7 @@ class SettDome(object):
         self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
         self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
         self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
+        self.app.dome.domeShutterWidth = self.ui.domeShutterWidth.value()
 
         self.app.updateDomeSettings.emit()
 

@@ -34,7 +34,6 @@ class SettImaging(object):
             self.ui = ui
             self.clickable = clickable
 
-        # gui actions
         self.ui.downloadFast.clicked.connect(self.setDownloadModeFast)
         self.ui.downloadSlow.clicked.connect(self.setDownloadModeSlow)
         self.ui.coolerOn.clicked.connect(self.setCoolerOn)
@@ -44,13 +43,16 @@ class SettImaging(object):
         self.clickable(self.ui.filterName).connect(self.setFilterName)
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
-
-        # cyclic actions
-        self.app.update1s.connect(self.updateCoverStatGui)
-        self.app.update1s.connect(self.updateParameters)
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
         self.ui.aperture.valueChanged.connect(self.updateParameters)
         self.ui.focalLength.valueChanged.connect(self.updateParameters)
+        self.ui.expTime.valueChanged.connect(self.updateParameters)
+        self.ui.binning.valueChanged.connect(self.updateParameters)
+        self.ui.expTimeN.valueChanged.connect(self.updateParameters)
+        self.ui.binningN.valueChanged.connect(self.updateParameters)
+        self.ui.subFrame.valueChanged.connect(self.updateParameters)
+        self.app.update1s.connect(self.updateCoverStatGui)
+        self.app.update1s.connect(self.updateParameters)
 
     def initConfig(self):
         """
@@ -116,8 +118,19 @@ class SettImaging(object):
         downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW', False)
         focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         filterNumber = self.app.filter.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
+
+        self.app.camera.expTime = self.ui.expTime.value()
+        self.app.camera.expTimeN = self.ui.expTimeN.value()
+        self.app.camera.binning = self.ui.binning.value()
+        self.app.camera.binningN = self.ui.binningN.value()
+        self.app.camera.subFrame = self.ui.subFrame.value()
+        self.app.camera.checkFastDownload = self.ui.checkFastDownload.isChecked()
+        self.app.telescope.focalLength = focalLength
+        self.app.telescope.aperture = aperture
+
         if filterNumber is not None:
             key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
+
         else:
             key = ''
         text = self.app.filter.data.get(key, 'not found')
@@ -125,12 +138,14 @@ class SettImaging(object):
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
             resolutionY = pixelSizeY / focalLength * 206.265
+
         else:
             resolutionX = None
             resolutionY = None
 
         if aperture:
             speed = focalLength / aperture
+
         else:
             speed = None
 
@@ -138,6 +153,7 @@ class SettImaging(object):
             dawes = 116 / aperture
             rayleigh = 138 / aperture
             magLimit = 7.7 + (5 * np.log10(aperture / 10))
+
         else:
             dawes = None
             rayleigh = None
@@ -146,6 +162,7 @@ class SettImaging(object):
         if focalLength and pixelSizeY and pixelSizeY and pixelX and pixelY:
             FOVX = pixelSizeX / focalLength * 206.265 * pixelX / 3600
             FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
+
         else:
             FOVX = None
             FOVY = None
@@ -172,6 +189,7 @@ class SettImaging(object):
         if coolerOn:
             self.changeStyleDynamic(self.ui.coolerOn, 'running', True)
             self.changeStyleDynamic(self.ui.coolerOff, 'running', False)
+
         else:
             self.changeStyleDynamic(self.ui.coolerOn, 'running', False)
             self.changeStyleDynamic(self.ui.coolerOff, 'running', True)
@@ -179,6 +197,7 @@ class SettImaging(object):
         if downloadFast:
             self.changeStyleDynamic(self.ui.downloadFast, 'running', True)
             self.changeStyleDynamic(self.ui.downloadSlow, 'running', False)
+
         else:
             self.changeStyleDynamic(self.ui.downloadFast, 'running', False)
             self.changeStyleDynamic(self.ui.downloadSlow, 'running', True)

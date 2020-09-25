@@ -857,13 +857,13 @@ class ImageWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        subFrame = self.app.mainW.ui.subFrame.value()
-        fastReadout = self.app.mainW.ui.checkFastDownload.isChecked()
+        subFrame = self.app.camera.subFrame
+        fastReadout = self.app.camera.checkFastDownload
 
         time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         fileName = time + '-exposure.fits'
         imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
-        focalLength = self.app.mainW.ui.focalLength.value()
+        focalLength = self.app.telescope.focalLength
 
         self.imageFileNameOld = self.imageFileName
 
@@ -912,8 +912,8 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
-        self.expTime = self.app.mainW.ui.expTime.value()
-        self.binning = self.app.mainW.ui.binning.value()
+        self.expTime = self.app.camera.expTime
+        self.binning = self.app.camera.binning
 
         self.imageStack = None
         self.deviceStat['expose'] = True
@@ -955,8 +955,8 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
-        self.expTime = self.app.mainW.ui.expTimeN.value()
-        self.binning = self.app.mainW.ui.binningN.value()
+        self.expTime = self.app.camera.expTimeN
+        self.binning = self.app.camera.binningN
 
         self.imageStack = None
         self.deviceStat['exposeN'] = True

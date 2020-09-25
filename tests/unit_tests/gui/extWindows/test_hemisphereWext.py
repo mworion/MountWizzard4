@@ -594,6 +594,24 @@ def test_editBuildPoints_3(function):
         assert not suc
 
 
+def test_editBuildPoints_4(function):
+    class Event:
+        button = 3
+
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.pointsBuild, = axe.plot([0, 1], [0, 1])
+    function.app.data.buildP = []
+    function.pointsBuildAnnotate = [axe.annotate('test', (0, 0)),
+                                    axe.annotate('test', (0, 0))]
+    with mock.patch.object(function,
+                           'deleteBuildPoint',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'drawHemisphere'):
+            suc = function.editBuildPoints(data=function.app.data, event=Event(), axes=axe)
+            assert not suc
+
+
 def test_onMouseEdit_1(function):
     function.generateFlat(widget=function.hemisphereMat, horizon=False)
 

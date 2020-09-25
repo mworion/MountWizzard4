@@ -19,7 +19,7 @@
 from queue import Queue
 
 # external packages
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
 
 # local import
 
@@ -151,10 +151,13 @@ class App(QObject):
     updateDomeSettings = pyqtSignal()
     drawBuildPoints = pyqtSignal()
     drawHorizonPoints = pyqtSignal()
+    showAnalyse = pyqtSignal(object)
     messageQueue = Queue()
     mount = Mount()
     dome = Dome()
     data = Data()
     hipparcos = Hipparcos()
     deviceStat = {}
+    threadPool = QThreadPool()
+    mwGlob = {'modelDir': 'tests/model'}
 

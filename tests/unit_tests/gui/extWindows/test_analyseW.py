@@ -18,125 +18,373 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
-import shutil
-from queue import Queue
 import json
 
 # external packages
-from PyQt5.QtGui import QCloseEvent
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QCloseEvent, QResizeEvent
+import numpy as np
 
 # local import
-from gui.extWindows.analyseW import AnalyseWindow
+from tests.baseTestSetup import App
 from gui.utilities.widget import MWidget
+from gui.extWindows.analyseW import AnalyseWindow
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
+    yield
 
 
 @pytest.fixture(autouse=True, scope='function')
-def app(qtbot):
-    global Test
+def function(module):
 
-    shutil.copy('tests/testData/test.model', 'tests/model/test.model')
+    window = AnalyseWindow(app=App())
+    yield window
 
-    class Test(QObject):
-        config = {'mainW': {}}
-        update1s = pyqtSignal()
-        showAnalyse = pyqtSignal()
-        messageQueue = Queue()
-        mwGlob = {'modelDir': 'tests/model'}
 
-    with mock.patch.object(AnalyseWindow,
+def test_initConfig_1(function):
+    suc = function.initConfig()
+    assert suc
+
+
+def test_initConfig_2(function):
+    suc = function.initConfig()
+    assert suc
+
+    function.app.config['analyseW'] = {'winPosX': 10000}
+    suc = function.initConfig()
+    assert suc
+
+
+def test_initConfig_3(function):
+    suc = function.initConfig()
+    assert suc
+
+    function.app.config['analyseW'] = {'winPosY': 10000}
+    suc = function.initConfig()
+    assert suc
+
+
+def test_storeConfig_1(function):
+    if 'analyseW' in function.app.config:
+        del function.app.config['analyseW']
+
+    suc = function.storeConfig()
+    assert suc
+
+
+def test_storeConfig_2(function):
+    function.app.config['analyseW'] = {}
+
+    suc = function.storeConfig()
+    assert suc
+
+
+def test_closeEvent_1(function):
+    with mock.patch.object(function,
                            'show'):
-        app = AnalyseWindow(app=Test())
-        app.generateFlat = MWidget().generateFlat
-        app.generatePolar = MWidget().generatePolar
-        qtbot.addWidget(app)
-        yield app
+        with mock.patch.object(MWidget,
+                               'closeEvent'):
+            function.showWindow()
+            function.closeEvent(QCloseEvent)
 
 
-def test_initConfig_1(qtbot, app):
-    suc = app.initConfig()
+def test_resizeEvent(function):
+    with mock.patch.object(MWidget,
+                           'resizeEvent'):
+        function.resizeEvent(QResizeEvent)
+
+
+def test_writeGui_1(function):
+    suc = function.writeGui([{'a': 1}], 'test')
     assert suc
+    assert function.ui.filename.text() == 'test'
+    assert function.ui.mirrored.text() == ''
 
 
-def test_initConfig_2(qtbot, app):
-    app.app.config['messageW'] = {'winPosX': 10000}
-    suc = app.initConfig()
-    assert suc
-
-
-def test_initConfig_3(qtbot, app):
-    app.app.config['messageW'] = {'winPosY': 10000}
-    suc = app.initConfig()
-    assert suc
-
-
-def test_storeConfig_1(qtbot, app):
-    if 'messageW' in app.app.config:
-        del app.app.config['messageW']
-    suc = app.storeConfig()
-    assert suc
-
-
-def test_storeConfig_2(qtbot, app):
-    app.app.config['messageW'] = {}
-    suc = app.storeConfig()
-    assert suc
-
-
-def test_closeEvent_1(qtbot, app):
-    app.app.showOriginalAnalyseData.connect(app.showOriginalAnalyseData)
-    app.closeEvent(QCloseEvent())
-
-
-def test_showWindow_1(qtbot, app):
-    suc = app.showWindow()
-    assert suc
-
-
-def test_writeGui_1(qtbot, app):
-    suc = app.writeGui([{'a': 1}], 'test')
-    assert suc
-    assert app.ui.filename.text() == 'test'
-    assert app.ui.mirrored.text() == ''
-
-
-def test_generateDataSets(qtbot, app):
+def test_generateDataSets(function):
     with open('tests/testData/test.model', 'r') as infile:
         modelJSON = json.load(infile)
 
-    suc = app.generateDataSets(modelJSON)
+    suc = function.generateDataSets(modelJSON)
     assert suc
-    assert app.latitude == 48.1
+    assert function.latitude == 48.1
 
 
-def test_processModel_1(qtbot, app):
-    suc = app.processModel('tests/testData/test.model')
+def test_processModel_1(function):
+    suc = function.processModel('tests/testData/test.model')
     assert suc
 
 
-def test_loadModel_1(app):
-    with mock.patch.object(app,
+def test_loadModel_1(function):
+    with mock.patch.object(function,
                            'openFile',
                            return_value=('', '', '')):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'processModel'):
-            suc = app.loadModel()
+            suc = function.loadModel()
             assert suc
 
 
-def test_loadModel_2(app):
-    with mock.patch.object(app,
+def test_loadModel_2(function):
+    with mock.patch.object(function,
                            'openFile',
                            return_value=('test', 'test', 'test')):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'processModel'):
-            suc = app.loadModel()
+            suc = function.loadModel()
             assert suc
 
 
-def test_showAnalyse_1(app):
-    with mock.patch.object(app,
+def test_showAnalyse_1(function):
+    with mock.patch.object(function,
                            'processModel'):
-        suc = app.showOriginalAnalyseData('test')
+        suc = function.showAnalyse('test')
+        assert suc
+
+
+def test_plotFigureFlat_1(function):
+    axe, _ = function.generateFlat(widget=function.raPointErrorsRaw)
+
+    with mock.patch.object(axe.figure.canvas,
+                           'draw'):
+        suc = function.plotFigureFlat(axe, [0], [1], ['E'], 'X', 'Y')
+        assert suc
+
+
+def test_plotFigureFlat_2(function):
+    axe, _ = function.generateFlat(widget=function.raPointErrorsRaw)
+
+    function.ui.winsorizedLimit.setChecked(True)
+    with mock.patch.object(axe.figure.canvas,
+                           'draw'):
+        suc = function.plotFigureFlat(axe, [0], [1], ['E'], 'X', 'Y', sort=True)
+        assert suc
+
+
+def test_plotFigureFlat_3(function):
+    axe, _ = function.generateFlat(widget=function.raPointErrorsRaw)
+
+    function.ui.winsorizedLimit.setChecked(True)
+    with mock.patch.object(axe.figure.canvas,
+                           'draw'):
+        suc = function.plotFigureFlat(axe, [0], [0], ['W'], 'X', 'Y',
+                                      poly=1)
+        assert suc
+
+
+def test_plotFigureFlat_4(function):
+    axe, _ = function.generateFlat(widget=function.raPointErrorsRaw)
+
+    function.ui.winsorizedLimit.setChecked(True)
+    with mock.patch.object(axe.figure.canvas,
+                           'draw'):
+        suc = function.plotFigureFlat(axe, [0], [0], ['E'], 'X', 'Y',
+                                      poly=1)
+        assert suc
+
+
+def test_plotFigureFlat_5(function):
+    axe, _ = function.generateFlat(widget=function.raPointErrorsRaw)
+
+    function.ui.winsorizedLimit.setChecked(True)
+    with mock.patch.object(axe.figure.canvas,
+                           'draw'):
+        suc = function.plotFigureFlat(axe, [0, 1, 2], [0, 1, 2], ['W', 'W', 'W'], 'X', 'Y',
+                                      poly=1)
+        assert suc
+
+
+def test_plotFigureFlat_6(function):
+    axe, _ = function.generateFlat(widget=function.raPointErrorsRaw)
+
+    function.ui.winsorizedLimit.setChecked(True)
+    with mock.patch.object(axe.figure.canvas,
+                           'draw'):
+        suc = function.plotFigureFlat(axe, [0, 1, 2], [0, 1, 2], ['E', 'E', 'E'], 'X', 'Y',
+                                      poly=1)
+        assert suc
+
+
+def test_draw_raPointErrorsRaw(function):
+    function.index = [0, 1, 2]
+    function.errorRA_S = [0, 0, 0]
+    function.pierside = ['E', 'W', 'E']
+
+    with mock.patch.object(function,
+                           'plotFigureFlat'):
+        suc = function.draw_raPointErrorsRaw()
+        assert suc
+
+
+def test_draw_decPointErrorsRaw(function):
+    function.index = [0, 1, 2]
+    function.errorDEC_S = [0, 0, 0]
+    function.pierside = ['E', 'W', 'E']
+
+    with mock.patch.object(function,
+                           'plotFigureFlat'):
+        suc = function.draw_decPointErrorsRaw()
+        assert suc
+
+
+def test_draw_raModelErrors(function):
+    function.index = [0, 1, 2]
+    function.errorRA = [0, 0, 0]
+    function.pierside = ['E', 'W', 'E']
+
+    with mock.patch.object(function,
+                           'plotFigureFlat'):
+        suc = function.draw_raModelErrors()
+        assert suc
+
+
+def test_draw_decModelErrors(function):
+    function.index = [0, 1, 2]
+    function.errorDEC = [0, 0, 0]
+    function.pierside = ['E', 'W', 'E']
+
+    with mock.patch.object(function,
+                           'plotFigureFlat'):
+        suc = function.draw_decModelErrors()
+        assert suc
+
+
+def test_draw_raModelErrorsRef(function):
+    function.errorRA = [0, 1, 2]
+    function.angularPosRA = [0, 0, 0]
+    function.pierside = ['E', 'W', 'E']
+
+    with mock.patch.object(function,
+                           'plotFigureFlat'):
+        suc = function.draw_raModelErrorsRef()
+        assert suc
+
+
+def test_draw_decModelErrorsRef(function):
+    function.errorDEC = [0, 1, 2]
+    function.angularPosDEC = [0, 0, 0]
+    function.pierside = ['E', 'W', 'E']
+
+    with mock.patch.object(function,
+                           'plotFigureFlat'):
+        suc = function.draw_decModelErrorsRef()
+        assert suc
+
+
+def test_draw_raPointErrorsRawRef(function):
+    function.angularPosRA = [0, 1, 2]
+    function.errorRA_S = [0, 0, 0]
+    function.pierside = ['E', 'W', 'E']
+
+    with mock.patch.object(function,
+                           'plotFigureFlat'):
+        suc = function.draw_raPointErrorsRawRef()
+        assert suc
+
+
+def test_draw_decPointErrorsRawRef(function):
+    function.angularPosDEC = [0, 1, 2]
+    function.errorDEC_S = [0, 0, 0]
+    function.pierside = ['E', 'W', 'E']
+
+    with mock.patch.object(function,
+                           'plotFigureFlat'):
+        suc = function.draw_decPointErrorsRawRef()
+        assert suc
+
+
+def test_draw_scaleImage(function):
+    function.index = [0, 1, 2]
+    function.scaleS = [0, 0, 0]
+    function.pierside = ['E', 'W', 'E']
+
+    with mock.patch.object(function,
+                           'plotFigureFlat'):
+        suc = function.draw_scaleImage()
+        assert suc
+
+
+def test_draw_errorAscending(function):
+    function.errorRMS = [0, 1, 2]
+    function.index = [0, 0, 0]
+    function.pierside = ['E', 'W', 'E']
+
+    with mock.patch.object(function,
+                           'plotFigureFlat'):
+        suc = function.draw_errorAscending()
+        assert suc
+
+
+def test_draw_modelPositions_1(function):
+    function.altitude = np.array([0, 1, 2])
+    function.azimuth = np.array([0, 1, 2])
+    function.errorRMS = np.array([0, 2, 4])
+    function.errorAngle = np.array([0, 0, 0])
+    function.latitude = None
+
+    axe, fig = function.generatePolar(widget=function.modelPositions)
+    with mock.patch.object(MWidget,
+                           'generatePolar',
+                           return_value=(axe, fig)):
+        with mock.patch.object(axe.figure.canvas,
+                               'draw'):
+            suc = function.draw_modelPositions()
+            assert suc
+
+
+def test_draw_modelPositions_2(function):
+    function.altitude = np.array([0, 1, 2])
+    function.azimuth = np.array([0, 1, 2])
+    function.errorRMS = np.array([0, 2, 4])
+    function.errorAngle = np.array([0, 0, 0])
+    function.latitude = 48
+
+    axe, fig = function.generatePolar(widget=function.modelPositions)
+    with mock.patch.object(MWidget,
+                           'generatePolar',
+                           return_value=(axe, fig)):
+        with mock.patch.object(axe.figure.canvas,
+                               'draw'):
+            suc = function.draw_modelPositions()
+            assert suc
+
+
+def test_draw_errorDistribution_1(function):
+    function.errorRMS = np.array([0, 2, 4])
+    function.errorAngle = np.array([0, 0, 0])
+    function.pierside = ['E', 'W', 'E']
+
+    axe, fig = function.generatePolar(widget=function.errorDistribution)
+    with mock.patch.object(MWidget,
+                           'generatePolar',
+                           return_value=(axe, fig)):
+        with mock.patch.object(axe.figure.canvas,
+                               'draw'):
+            suc = function.draw_errorDistribution()
+            assert suc
+
+
+def test_workerDrawAll(function):
+    def test():
+        pass
+
+    function.charts = [test]
+    suc = function.workerDrawAll()
+    assert suc
+
+
+def test_drawAll_1(function):
+    function.countSequence = None
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        suc = function.drawAll()
+        assert not suc
+
+
+def test_drawAll_2(function):
+    function.countSequence = 1
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        suc = function.drawAll()
         assert suc

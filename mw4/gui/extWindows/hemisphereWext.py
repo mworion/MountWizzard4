@@ -416,7 +416,6 @@ class HemisphereWindowExt:
         else:
             return False
 
-        # redraw the corrected canvas (new positions ans new numbers)
         if len(data.buildP):
             y, x, status = zip(*data.buildP)
 

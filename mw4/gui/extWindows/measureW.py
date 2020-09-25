@@ -981,6 +981,7 @@ class MeasureWindow(widget.MWidget):
         for i, axe in enumerate(axes):
             axe.set_xticks(time_ticks)
             axe.set_xlim(time_ticks[0], time_ticks[-1])
+
             if i == len(axes) - 1:
                 axe.set_xticklabels(time_labels)
 

@@ -416,9 +416,8 @@ def test_drawMeasure_5(function):
 
 def test_drawMeasure_6(function):
     function.ui.measureSet1.addItem('Pressure')
-    function.ui.measureSet2.addItem('Pressure')
+    function.ui.measureSet2.addItem('None')
     function.ui.measureSet3.addItem('Pressure')
-    function.ui.measureSet3.addItem('None')
 
     suc = function.drawMeasure()
     assert suc

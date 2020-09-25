@@ -35,6 +35,7 @@ def module_setup_teardown():
 
     class Test3:
         data = None
+        domeShutterWidth = 0
 
     class Test2:
         domeRadius = QDoubleSpinBox()

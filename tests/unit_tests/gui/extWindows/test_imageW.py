@@ -18,625 +18,604 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import os
-import glob
 import shutil
 
 # external packages
+from PyQt5.QtGui import QCloseEvent
 import astropy.visualization
 from astropy.visualization import AsinhStretch
 from astropy.io import fits
 from astropy import wcs
 from skyfield.api import Angle
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtWidgets import QDoubleSpinBox
-from PyQt5.QtWidgets import QCheckBox
 import numpy as np
-from mountcontrol.qtmount import Mount
 
 # local import
+from tests.baseTestSetup import App
 from gui.utilities.widget import MWidget
 from gui.extWindows.imageW import ImageWindow
-from logic.imaging.camera import Camera
-from logic.astrometry.astrometry import Astrometry
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
+    yield
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global app
+def function(module):
 
-    class Test2(QObject):
-        threadPool = QThreadPool()
-        mwGlob = {'imageDir': 'tests/image',
-                  'tempDir': 'tests/temp'}
-
-    class Test1a:
-        expTime = QDoubleSpinBox()
-        binning = QDoubleSpinBox()
-        expTimeN = QDoubleSpinBox()
-        binningN = QDoubleSpinBox()
-        subFrame = QDoubleSpinBox()
-        focalLength = QDoubleSpinBox()
-        checkFastDownload = QCheckBox()
-        solveTimeout = QDoubleSpinBox()
-        searchRadius = QDoubleSpinBox()
-
-    class Test1:
-        ui = Test1a()
-
-    class Test(QObject):
-        config = {'mainW': {},
-                  'showImageW': True}
-        update1s = pyqtSignal()
-        showImage = pyqtSignal(str)
-        message = pyqtSignal(str, int)
-        mainW = Test1()
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        camera = Camera(app=Test2())
-        astrometry = Astrometry(app=Test2())
-        uiWindows = {'showImageW': {}}
-        mwGlob = {'imageDir': 'tests/image'}
-        threadPool = QThreadPool()
-        deviceStat = {'camera': True,
-                      'astrometry': True}
-
-    with mock.patch.object(ImageWindow,
-                           'show'):
-        app = ImageWindow(app=Test())
-        qtbot.addWidget(app)
-        yield
-
-    files = glob.glob('tests/image/*.fit*')
-    for f in files:
-        os.remove(f)
+    window = ImageWindow(app=App())
+    yield window
 
 
-def test_storeConfig_1():
-    app.storeConfig()
-
-
-def test_initConfig_1():
-    app.app.config['imageW'] = {}
-    suc = app.initConfig()
+def test_initConfig_1(function):
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_3():
-    app.app.config['imageW'] = {}
-    app.app.config['imageW']['winPosX'] = 10000
-    app.app.config['imageW']['winPosY'] = 10000
-    suc = app.initConfig()
+def test_initConfig_2(function):
+    suc = function.initConfig()
+    assert suc
+
+    function.app.config['imageW'] = {'winPosX': 10000}
+    suc = function.initConfig()
     assert suc
 
 
-def test_showWindow_1(qtbot):
-    with mock.patch.object(app,
-                           'show'):
-        suc = app.showWindow()
-        assert suc
+def test_initConfig_3(function):
+    suc = function.initConfig()
+    assert suc
+
+    function.app.config['imageW'] = {'winPosY': 10000}
+    suc = function.initConfig()
+    assert suc
 
 
-def test_closeEvent_1(qtbot):
-    with mock.patch.object(app,
+def test_storeConfig_1(function):
+    if 'imageW' in function.app.config:
+        del function.app.config['imageW']
+
+    suc = function.storeConfig()
+    assert suc
+
+
+def test_storeConfig_2(function):
+    function.app.config['imageW'] = {}
+
+    suc = function.storeConfig()
+    assert suc
+
+
+def test_closeEvent_1(function):
+    with mock.patch.object(function,
                            'show'):
-        app.showWindow()
         with mock.patch.object(MWidget,
-                               'closeEvent',
-                               return_value=None):
-            app.closeEvent(None)
+                               'closeEvent'):
+            function.showWindow()
+            function.closeEvent(QCloseEvent)
 
 
-def test_setupDropDownGui():
-    app.setupDropDownGui()
-    assert app.ui.color.count() == 4
-    assert app.ui.zoom.count() == 5
-    assert app.ui.stretch.count() == 6
+def test_setupDropDownGui(function):
+    function.setupDropDownGui()
+    assert function.ui.color.count() == 4
+    assert function.ui.zoom.count() == 5
+    assert function.ui.stretch.count() == 6
 
 
-def test_updateWindowsStats_1():
-    app.deviceStat['expose'] = True
-    app.deviceStat['exposeN'] = False
-    app.deviceStat['solve'] = True
-    app.app.deviceStat['camera'] = False
-    app.app.deviceStat['astrometry'] = True
-    app.deviceStat['imaging'] = True
-    app.deviceStat['astrometry'] = True
+def test_updateWindowsStats_1(function):
+    function.deviceStat['expose'] = True
+    function.deviceStat['exposeN'] = False
+    function.deviceStat['solve'] = True
+    function.app.deviceStat['camera'] = False
+    function.app.deviceStat['astrometry'] = True
+    function.deviceStat['imaging'] = True
+    function.deviceStat['astrometry'] = True
 
-    suc = app.updateWindowsStats()
+    suc = function.updateWindowsStats()
     assert suc
 
 
-def test_updateWindowsStats_2():
-    app.deviceStat['expose'] = False
-    app.deviceStat['exposeN'] = True
-    app.deviceStat['solve'] = False
-    app.app.deviceStat['camera'] = True
-    app.app.deviceStat['astrometry'] = False
-    app.deviceStat['imaging'] = False
-    app.deviceStat['astrometry'] = False
+def test_updateWindowsStats_2(function):
+    function.deviceStat['expose'] = False
+    function.deviceStat['exposeN'] = True
+    function.deviceStat['solve'] = False
+    function.app.deviceStat['camera'] = True
+    function.app.deviceStat['astrometry'] = False
+    function.deviceStat['imaging'] = False
+    function.deviceStat['astrometry'] = False
 
-    suc = app.updateWindowsStats()
+    suc = function.updateWindowsStats()
     assert suc
 
 
-def test_selectImage_1():
+def test_selectImage_1(function):
     with mock.patch.object(MWidget,
                            'openFile',
                            return_value=('test', '', '.fits')):
-        suc = app.selectImage()
+        suc = function.selectImage()
         assert not suc
 
 
-def test_selectImage_2(qtbot):
+def test_selectImage_2(function, qtbot):
     with mock.patch.object(MWidget,
                            'openFile',
                            return_value=('c:/test/test.fits', 'test', '.fits')):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            with qtbot.waitSignal(app.app.showImage):
-                suc = app.selectImage()
+        with qtbot.waitSignal(function.app.message) as blocker:
+            with qtbot.waitSignal(function.app.showImage):
+                suc = function.selectImage()
                 assert suc
         assert ['Image [test] selected', 0] == blocker.args
-        assert app.folder == 'c:/test'
+        assert function.folder == 'c:/test'
 
 
-def test_setupDistorted_1():
+def test_setupDistorted_1(function):
     header = fits.PrimaryHDU().header
     header['naxis'] = 2
 
-    suc = app.setupDistorted()
+    suc = function.setupDistorted()
     assert suc
-    assert app.axe is not None
-    assert app.axeCB is None
+    assert function.axe is not None
+    assert function.axeCB is None
 
 
-def test_setupDistorted_3():
-    app.header = fits.PrimaryHDU().header
-    app.header['naxis'] = 2
+def test_setupDistorted_3(function):
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
 
-    suc = app.setupDistorted()
+    suc = function.setupDistorted()
     assert suc
-    assert app.axe is not None
-    assert app.axeCB is None
+    assert function.axe is not None
+    assert function.axeCB is None
 
 
-def test_setupNormal_1():
-    app.ui.checkShowGrid.setChecked(True)
-    app.ui.checkShowCrosshair.setChecked(True)
-    app.header = fits.PrimaryHDU().header
-    app.header['naxis'] = 2
+def test_setupNormal_1(function):
+    function.ui.zoom.addItem(' 1x Zoom')
+    function.ui.checkShowGrid.setChecked(True)
+    function.ui.checkShowCrosshair.setChecked(True)
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
 
-    suc = app.setupNormal()
+    suc = function.setupNormal()
     assert suc
-    assert app.axe is not None
-    assert app.axeCB is not None
+    assert function.axe is not None
+    assert function.axeCB is not None
 
 
-def test_setupNormal_2():
-    app.ui.checkShowGrid.setChecked(True)
-    app.ui.checkShowCrosshair.setChecked(True)
-    app.header = fits.PrimaryHDU().header
-    app.header['naxis'] = 2
+def test_setupNormal_2(function):
+    function.ui.zoom.addItem(' 1x Zoom')
+    function.ui.checkShowGrid.setChecked(True)
+    function.ui.checkShowCrosshair.setChecked(True)
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
 
-    suc = app.setupNormal()
+    suc = function.setupNormal()
     assert suc
-    assert app.axe is not None
-    assert app.axeCB is not None
+    assert function.axe is not None
+    assert function.axeCB is not None
 
 
-def test_setupNormal_3():
-    app.ui.checkShowGrid.setChecked(True)
-    app.ui.checkShowCrosshair.setChecked(True)
-    app.header = fits.PrimaryHDU().header
-    app.header['naxis'] = 2
+def test_setupNormal_3(function):
+    function.ui.zoom.addItem(' 1x Zoom')
+    function.ui.checkShowGrid.setChecked(True)
+    function.ui.checkShowCrosshair.setChecked(True)
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
 
-    suc = app.setupNormal()
+    suc = function.setupNormal()
     assert suc
-    assert app.axe is not None
-    assert app.axeCB is not None
+    assert function.axe is not None
+    assert function.axeCB is not None
 
 
-def test_setupNormal_4():
-    app.ui.checkShowGrid.setChecked(False)
-    app.ui.checkShowCrosshair.setChecked(False)
-    app.header = fits.PrimaryHDU().header
-    app.header['naxis'] = 2
+def test_setupNormal_4(function):
+    function.ui.zoom.addItem(' 1x Zoom')
+    function.ui.checkShowGrid.setChecked(False)
+    function.ui.checkShowCrosshair.setChecked(False)
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
 
-    suc = app.setupNormal()
+    suc = function.setupNormal()
     assert suc
-    assert app.axe is not None
-    assert app.axeCB is not None
+    assert function.axe is not None
+    assert function.axeCB is not None
 
 
-def test_colorImage_1():
-    app.ui.color.setCurrentIndex(0)
-    suc = app.colorImage()
+def test_colorImage_1(function):
+    function.ui.color.addItem('Grey')
+    function.ui.color.setCurrentIndex(0)
+    suc = function.colorImage()
     assert suc
-    assert app.colorMap == 'gray'
+    assert function.colorMap == 'gray'
 
 
-def test_colorImage_2():
-    app.ui.color.setCurrentIndex(1)
-    suc = app.colorImage()
+def test_colorImage_2(function):
+    function.ui.color.addItem('Grey')
+    function.ui.color.addItem('Cool')
+    function.ui.color.setCurrentIndex(1)
+    suc = function.colorImage()
     assert suc
-    assert app.colorMap == 'plasma'
+    assert function.colorMap == 'plasma'
 
 
-def test_stretchImage_1():
-    suc = app.stretchImage()
-    assert suc
-
-
-def test_stretchImage_2():
-    suc = app.stretchImage()
-    assert suc
-    assert isinstance(app.stretch, astropy.visualization.AsinhStretch)
-
-
-def test_imagePlot_1():
-    app.image = np.random.rand(100, 100)
-    app.axe = app.fig.add_subplot(label=0)
-    app.axeCB = app.fig.add_subplot(label=1)
-    app.stretch = AsinhStretch()
-    app.colorMap = 'rainbow'
-    app.ui.view.setCurrentIndex(0)
-    suc = app.imagePlot()
+def test_stretchImage_1(function):
+    suc = function.stretchImage()
     assert suc
 
 
-def test_imagePlot_2():
-    app.image = np.random.rand(100, 100)
-    app.header = fits.PrimaryHDU().header
-    app.axe = app.fig.add_subplot(label=0)
-    app.axeCB = app.fig.add_subplot(label=1)
-    app.stretch = AsinhStretch()
-    app.colorMap = 'rainbow'
-    app.sources = {'xcentroid': 50 * np.ones([1]),
+def test_stretchImage_2(function):
+    suc = function.stretchImage()
+    assert suc
+    assert isinstance(function.stretch, astropy.visualization.AsinhStretch)
+
+
+def test_imagePlot_1(function):
+    function.image = np.random.rand(100, 100)
+    function.axe = function.fig.add_subplot(label=0)
+    function.axeCB = function.fig.add_subplot(label=1)
+    function.stretch = AsinhStretch()
+    function.colorMap = 'rainbow'
+    function.ui.view.setCurrentIndex(0)
+    suc = function.imagePlot()
+    assert suc
+
+
+def test_imagePlot_2(function):
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.axe = function.fig.add_subplot(label=0)
+    function.axeCB = function.fig.add_subplot(label=1)
+    function.stretch = AsinhStretch()
+    function.colorMap = 'rainbow'
+    function.sources = {'xcentroid': 50 * np.ones([1]),
                    'ycentroid': 50 * np.ones([1]),
                    'sharpness': 0.5 * np.ones([1]),
                    'roundness1': 0.5 * np.ones([1]),
                    'roundness2': 0.5 * np.ones([1]),
                    'flux': 5 * np.ones([1]),
                    }
-    app.mean = np.zeros([100, 100])
-    app.ui.view.setCurrentIndex(1)
-    suc = app.imagePlot()
+    function.mean = np.zeros([100, 100])
+    function.ui.view.setCurrentIndex(1)
+    suc = function.imagePlot()
     assert suc
 
 
-def test_imagePlot_3():
-    app.image = np.random.rand(100, 100)
-    app.header = fits.PrimaryHDU().header
-    app.axe = app.fig.add_subplot(label=0)
-    app.axeCB = app.fig.add_subplot(label=1)
-    app.stretch = AsinhStretch()
-    app.colorMap = 'rainbow'
-    app.sources = {'xcentroid': 50 * np.ones([1]),
+def test_imagePlot_3(function):
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.axe = function.fig.add_subplot(label=0)
+    function.axeCB = function.fig.add_subplot(label=1)
+    function.stretch = AsinhStretch()
+    function.colorMap = 'rainbow'
+    function.sources = {'xcentroid': 50 * np.ones([1]),
                    'ycentroid': 50 * np.ones([1]),
                    'sharpness': 0.5 * np.ones([1]),
                    'roundness1': 0.5 * np.ones([1]),
                    'roundness2': 0.5 * np.ones([1]),
                    'flux': 5 * np.ones([1]),
                    }
-    app.mean = np.zeros([100, 100])
-    app.ui.view.setCurrentIndex(2)
-    suc = app.imagePlot()
+    function.mean = np.zeros([100, 100])
+    function.ui.view.setCurrentIndex(2)
+    suc = function.imagePlot()
     assert suc
 
 
-def test_imagePlot_4():
-    app.image = np.random.rand(100, 100)
-    app.header = fits.PrimaryHDU().header
-    app.axe = app.fig.add_subplot(label=0)
-    app.axeCB = app.fig.add_subplot(label=1)
-    app.stretch = AsinhStretch()
-    app.colorMap = 'rainbow'
-    app.sources = {'xcentroid': 50 * np.ones([1]),
+def test_imagePlot_4(function):
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.axe = function.fig.add_subplot(label=0)
+    function.axeCB = function.fig.add_subplot(label=1)
+    function.stretch = AsinhStretch()
+    function.colorMap = 'rainbow'
+    function.sources = {'xcentroid': 50 * np.ones([1]),
                    'ycentroid': 50 * np.ones([1]),
                    'sharpness': 0.5 * np.ones([1]),
                    'roundness1': 0.5 * np.ones([1]),
                    'roundness2': 0.5 * np.ones([1]),
                    'flux': 5 * np.ones([1]),
                    }
-    app.mean = np.zeros([100, 100])
-    app.ui.view.setCurrentIndex(4)
-    suc = app.imagePlot()
+    function.mean = np.zeros([100, 100])
+    function.ui.view.setCurrentIndex(4)
+    suc = function.imagePlot()
     assert suc
 
 
-def test_imagePlot_5():
-    app.image = np.random.rand(100, 100)
-    app.header = fits.PrimaryHDU().header
-    app.axe = app.fig.add_subplot(label=0)
-    app.axeCB = app.fig.add_subplot(label=1)
-    app.stretch = AsinhStretch()
-    app.colorMap = 'rainbow'
-    app.sources = {'xcentroid': 50 * np.ones([1]),
+def test_imagePlot_5(function):
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.axe = function.fig.add_subplot(label=0)
+    function.axeCB = function.fig.add_subplot(label=1)
+    function.stretch = AsinhStretch()
+    function.colorMap = 'rainbow'
+    function.sources = {'xcentroid': 50 * np.ones([1]),
                    'ycentroid': 50 * np.ones([1]),
                    'sharpness': 0.5 * np.ones([1]),
                    'roundness1': 0.5 * np.ones([1]),
                    'roundness2': 0.5 * np.ones([1]),
                    'flux': 5 * np.ones([1]),
                    }
-    app.mean = np.zeros([100, 100])
-    app.ui.view.setCurrentIndex(5)
-    suc = app.imagePlot()
+    function.mean = np.zeros([100, 100])
+    function.ui.view.setCurrentIndex(5)
+    suc = function.imagePlot()
     assert suc
 
 
-def test_writeHeaderDataToGUI_1():
-    app.header = fits.PrimaryHDU().header
-    suc = app.writeHeaderDataToGUI()
+def test_writeHeaderDataToGUI_1(function):
+    function.header = fits.PrimaryHDU().header
+    suc = function.writeHeaderDataToGUI()
     assert suc
 
 
-def test_writeHeaderDataToGUI_2():
-    app.header = fits.PrimaryHDU().header
-    app.header['naxis'] = 2
-    suc = app.writeHeaderDataToGUI()
+def test_writeHeaderDataToGUI_2(function):
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
+    suc = function.writeHeaderDataToGUI()
     assert suc
 
 
-def test_preparePlot_1():
-    app.image = None
-    app.header = None
-    suc = app.preparePlot()
+def test_preparePlot_1(function):
+    function.image = None
+    function.header = None
+    suc = function.preparePlot()
     assert not suc
 
 
-def test_preparePlot_2():
-    app.image = np.random.rand(100, 100)
-    app.header = None
-    suc = app.preparePlot()
+def test_preparePlot_2(function):
+    function.image = np.random.rand(100, 100)
+    function.header = None
+    suc = function.preparePlot()
     assert not suc
 
 
-def test_preparePlot_3():
-    app.image = np.random.rand(100, 100)
-    app.header = fits.PrimaryHDU().header
-    suc = app.preparePlot()
+def test_preparePlot_3(function):
+    function.ui.zoom.addItem(' 1x Zoom')
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    suc = function.preparePlot()
     assert suc
 
 
-def test_preparePlot_4():
-    app.image = np.random.rand(100, 100)
-    app.header = fits.PrimaryHDU().header
-    app.header['CTYPE1'] = '2'
-    app.header['NAXIS'] = 2
-    suc = app.preparePlot()
+def test_preparePlot_4(function):
+    function.ui.zoom.addItem(' 1x Zoom')
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.header['CTYPE1'] = '2'
+    function.header['NAXIS'] = 2
+    suc = function.preparePlot()
     assert suc
 
 
-def test_preparePlot_5():
-    app.image = np.random.rand(100, 100)
-    app.header = fits.PrimaryHDU().header
-    app.header['CTYPE1'] = '2'
-    app.header['NAXIS'] = 2
-    app.ui.view.setCurrentIndex(1)
+def test_preparePlot_5(function):
+    function.ui.zoom.addItem(' 1x Zoom')
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.header['CTYPE1'] = '2'
+    function.header['NAXIS'] = 2
+    function.ui.view.setCurrentIndex(1)
     with mock.patch.object(wcs.WCS,
                            'has_distortion',
                            return_value=True):
-        app.setupDistorted = app.setupNormal
-        suc = app.preparePlot()
+        function.setupDistorted = function.setupNormal
+        suc = function.preparePlot()
         assert suc
 
 
-def test_workerPhotometry_1():
-    app.image = np.random.rand(100, 100)
-    app.image[50][50] = 100
-    app.image[51][50] = 50
-    app.image[50][51] = 50
-    app.image[50][49] = 50
-    app.image[49][50] = 50
-    suc = app.workerPhotometry()
+def test_workerPhotometry_1(function):
+    function.image = np.random.rand(100, 100)
+    function.image[50][50] = 100
+    function.image[51][50] = 50
+    function.image[50][51] = 50
+    function.image[50][49] = 50
+    function.image[49][50] = 50
+    suc = function.workerPhotometry()
     assert suc
-    assert app.mean is not None
-    assert app.std is not None
-    assert app.median is not None
-    assert app.sources
+    assert function.mean is not None
+    assert function.std is not None
+    assert function.median is not None
+    assert function.sources
 
 
-def test_prepareImage_1():
-    suc = app.prepareImage()
+def test_prepareImage_1(function):
+    suc = function.prepareImage()
     assert suc
 
 
-def test_prepareImage_2():
-    app.sources = None
-    with mock.patch.object(app,
+def test_prepareImage_2(function):
+    function.sources = None
+    with mock.patch.object(function,
                            'workerPhotometry'):
-        suc = app.prepareImage()
+        suc = function.prepareImage()
         assert suc
 
 
-def test_stackImages_1():
-    app.ui.checkStackImages.setChecked(False)
-    suc = app.stackImages()
+def test_stackImages_1(function):
+    function.ui.checkStackImages.setChecked(False)
+    suc = function.stackImages()
     assert not suc
-    assert app.imageStack is None
-    assert app.ui.numberStacks.text() == 'single'
+    assert function.imageStack is None
+    assert function.ui.numberStacks.text() == 'single'
 
 
-def test_stackImages_2():
-    app.image = np.random.rand(100, 100)
-    app.imageStack = np.random.rand(50, 50)
-    app.header = fits.PrimaryHDU().header
-    app.ui.checkStackImages.setChecked(True)
+def test_stackImages_2(function):
+    function.image = np.random.rand(100, 100)
+    function.imageStack = np.random.rand(50, 50)
+    function.header = fits.PrimaryHDU().header
+    function.ui.checkStackImages.setChecked(True)
 
-    suc = app.stackImages()
+    suc = function.stackImages()
     assert suc
-    assert app.imageStack.shape == app.image.shape
-    assert app.numberStack == 1
+    assert function.imageStack.shape == function.image.shape
+    assert function.numberStack == 1
 
 
-def test_stackImages_3():
-    app.numberStack = 5
-    app.image = np.random.rand(100, 100)
-    app.imageStack = np.random.rand(100, 100)
-    app.header = fits.PrimaryHDU().header
-    app.ui.checkStackImages.setChecked(True)
+def test_stackImages_3(function):
+    function.numberStack = 5
+    function.image = np.random.rand(100, 100)
+    function.imageStack = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.ui.checkStackImages.setChecked(True)
 
-    suc = app.stackImages()
+    suc = function.stackImages()
     assert suc
-    assert app.numberStack == 6
+    assert function.numberStack == 6
 
 
-def test_zoomImage_1():
-    app.image = np.random.rand(100, 100)
-    app.header = fits.PrimaryHDU().header
-    app.header['NAXIS'] = 2
-    app.ui.zoom.setCurrentIndex(0)
-    suc = app.zoomImage()
+def test_zoomImage_1(function):
+    function.ui.zoom.addItem(' 1x Zoom')
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.header['NAXIS'] = 2
+    function.ui.zoom.setCurrentIndex(0)
+    suc = function.zoomImage()
     assert not suc
-    assert app.image.shape == (100, 100)
+    assert function.image.shape == (100, 100)
 
 
-def test_zoomImage_2():
-    app.image = np.random.rand(100, 100)
-    app.header = fits.PrimaryHDU().header
-    app.header['NAXIS'] = 2
-    app.ui.zoom.setCurrentIndex(1)
-    suc = app.zoomImage()
+def test_zoomImage_2(function):
+    function.ui.zoom.addItem(' 1x Zoom')
+    function.ui.zoom.addItem(' 2x Zoom')
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.header['NAXIS'] = 2
+    function.ui.zoom.setCurrentIndex(1)
+    suc = function.zoomImage()
     assert suc
-    assert app.image.shape == (50, 50)
+    assert function.image.shape == (50, 50)
 
 
-def test_showImage_1():
-    app.imageFileName = ''
-    suc = app.showImage()
+def test_showImage_1(function):
+    function.imageFileName = ''
+    suc = function.showImage()
     assert not suc
 
 
-def test_showImage_2():
-    app.imageFileName = 'test'
-    suc = app.showImage()
+def test_showImage_2(function):
+    function.imageFileName = 'test'
+    suc = function.showImage()
     assert not suc
 
 
-def test_showImage_3():
+def test_showImage_3(function):
+    function.ui.zoom.addItem(' 1x Zoom')
     shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-    suc = app.showImage(imagePath='tests/image/m51.fit')
+    suc = function.showImage(imagePath='tests/image/m51.fit')
     assert suc
 
 
-def test_showCurrent_1():
-    suc = app.showCurrent()
+def test_showCurrent_1(function):
+    suc = function.showCurrent()
     assert suc
 
 
-def test_exposeRaw_1(qtbot):
-    app.app.mainW.ui.expTime.setValue(3)
-    app.app.mainW.ui.binning.setValue(2)
-    app.app.mainW.ui.subFrame.setValue(100)
-    with mock.patch.object(app.app.camera,
+def test_exposeRaw_1(function, qtbot):
+    function.app.camera.expTime = 3
+    function.app.camera.binning = 3
+    function.app.camera.subFrame = 100
+    with mock.patch.object(function.app.camera,
                            'expose',
                            ):
-        with qtbot.waitSignal(app.app.message):
-            suc = app.exposeRaw()
+        with qtbot.waitSignal(function.app.message):
+            suc = function.exposeRaw()
             assert suc
 
 
-def test_exposeImageDone_1(qtbot):
-    app.ui.checkAutoSolve.setChecked(False)
-    app.app.camera.signals.saved.connect(app.exposeImageDone)
-    with qtbot.waitSignal(app.app.message) as blocker:
-        with qtbot.waitSignal(app.app.showImage):
-            suc = app.exposeImageDone()
-            assert suc
-    assert ['Exposed:             []', 0] == blocker.args
-
-
-def test_exposeImageDone_2(qtbot):
-    app.ui.checkAutoSolve.setChecked(True)
-    app.app.camera.signals.saved.connect(app.exposeImageDone)
-    with qtbot.waitSignal(app.app.message) as blocker:
-        with qtbot.waitSignal(app.signals.solveImage):
-            suc = app.exposeImageDone()
+def test_exposeImageDone_1(function, qtbot):
+    function.ui.checkAutoSolve.setChecked(False)
+    function.app.camera.signals.saved.connect(function.exposeImageDone)
+    with qtbot.waitSignal(function.app.message) as blocker:
+        with qtbot.waitSignal(function.app.showImage):
+            suc = function.exposeImageDone()
             assert suc
     assert ['Exposed:             []', 0] == blocker.args
 
 
-def test_exposeImage_1():
-    app.app.camera.data = {}
-    suc = app.exposeImage()
+def test_exposeImageDone_2(function, qtbot):
+    function.ui.checkAutoSolve.setChecked(True)
+    function.app.camera.signals.saved.connect(function.exposeImageDone)
+    with qtbot.waitSignal(function.app.message) as blocker:
+        with qtbot.waitSignal(function.signals.solveImage):
+            suc = function.exposeImageDone()
+            assert suc
+    assert ['Exposed:             []', 0] == blocker.args
+
+
+def test_exposeImage_1(function):
+    function.app.camera.data = {}
+    suc = function.exposeImage()
     assert suc
 
 
-def test_exposeImageNDone_1(qtbot):
-    app.ui.checkAutoSolve.setChecked(False)
-    app.app.camera.signals.saved.connect(app.exposeImageDone)
-    with qtbot.waitSignal(app.app.message) as blocker:
-        with qtbot.waitSignal(app.app.showImage):
-            suc = app.exposeImageNDone()
+def test_exposeImageNDone_1(function, qtbot):
+    function.ui.checkAutoSolve.setChecked(False)
+    function.app.camera.signals.saved.connect(function.exposeImageDone)
+    with qtbot.waitSignal(function.app.message) as blocker:
+        with qtbot.waitSignal(function.app.showImage):
+            suc = function.exposeImageNDone()
             assert suc
     assert ['Exposed:            []', 0] == blocker.args
 
 
-def test_exposeImageNDone_2(qtbot):
-    app.ui.checkAutoSolve.setChecked(True)
-    app.app.camera.signals.saved.connect(app.exposeImageDone)
-    with qtbot.waitSignal(app.app.message) as blocker:
-        with qtbot.waitSignal(app.signals.solveImage):
-            suc = app.exposeImageNDone()
+def test_exposeImageNDone_2(function, qtbot):
+    function.ui.checkAutoSolve.setChecked(True)
+    function.app.camera.signals.saved.connect(function.exposeImageDone)
+    with qtbot.waitSignal(function.app.message) as blocker:
+        with qtbot.waitSignal(function.signals.solveImage):
+            suc = function.exposeImageNDone()
             assert suc
     assert ['Exposed:            []', 0] == blocker.args
 
 
-def test_exposeImageN_1():
-    app.app.camera.data = {}
-    suc = app.exposeImageN()
+def test_exposeImageN_1(function):
+    function.app.camera.data = {}
+    suc = function.exposeImageN()
     assert suc
 
 
-def test_abortImage_1(qtbot):
-    with mock.patch.object(app.app.camera,
+def test_abortImage_1(function, qtbot):
+    with mock.patch.object(function.app.camera,
                            'abort',
                            ):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            suc = app.abortImage()
+        with qtbot.waitSignal(function.app.message) as blocker:
+            suc = function.abortImage()
             assert suc
         assert ['Exposing aborted', 2] == blocker.args
 
 
-def test_abortImage_2(qtbot):
-    app.app.camera.signals.saved.connect(app.showImage)
-    app.ui.exposeN.setEnabled(True)
-    app.ui.expose.setEnabled(False)
-    app.app.camera.signals.saved.connect(app.exposeRaw)
-    with mock.patch.object(app.app.camera,
+def test_abortImage_2(function, qtbot):
+    function.app.camera.signals.saved.connect(function.showImage)
+    function.ui.exposeN.setEnabled(True)
+    function.ui.expose.setEnabled(False)
+    function.app.camera.signals.saved.connect(function.exposeRaw)
+    with mock.patch.object(function.app.camera,
                            'abort',
                            ):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            suc = app.abortImage()
+        with qtbot.waitSignal(function.app.message) as blocker:
+            suc = function.abortImage()
             assert suc
         assert ['Exposing aborted', 2] == blocker.args
 
 
-def test_abortImage_3(qtbot):
-    app.app.camera.signals.saved.connect(app.showImage)
-    app.ui.exposeN.setEnabled(False)
-    app.ui.expose.setEnabled(True)
-    app.app.camera.signals.saved.connect(app.exposeImageDone)
-    with mock.patch.object(app.app.camera,
+def test_abortImage_3(function, qtbot):
+    function.app.camera.signals.saved.connect(function.showImage)
+    function.ui.exposeN.setEnabled(False)
+    function.ui.expose.setEnabled(True)
+    function.app.camera.signals.saved.connect(function.exposeImageDone)
+    with mock.patch.object(function.app.camera,
                            'abort',
                            ):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            suc = app.abortImage()
+        with qtbot.waitSignal(function.app.message) as blocker:
+            suc = function.abortImage()
             assert suc
         assert ['Exposing aborted', 2] == blocker.args
 
 
-def test_solveDone_1(qtbot):
-    app.app.astrometry.signals.done.connect(app.solveDone)
-    with qtbot.waitSignal(app.app.message) as blocker:
-        suc = app.solveDone()
+def test_solveDone_1(function, qtbot):
+    function.app.astrometry.signals.done.connect(function.solveDone)
+    with qtbot.waitSignal(function.app.message) as blocker:
+        suc = function.solveDone()
         assert not suc
     assert ['Solving error, result missing', 2] == blocker.args
 
 
-def test_solveDone_2(qtbot):
+def test_solveDone_2(function, qtbot):
     result = {
         'success': False,
         'raJ2000S': Angle(hours=10),
@@ -649,16 +628,16 @@ def test_solveDone_2(qtbot):
         'message': 'test',
     }
 
-    app.app.astrometry.signals.done.connect(app.solveDone)
-    with qtbot.waitSignal(app.app.message) as blocker:
-        suc = app.solveDone(result=result)
+    function.app.astrometry.signals.done.connect(function.solveDone)
+    with qtbot.waitSignal(function.app.message) as blocker:
+        suc = function.solveDone(result=result)
         assert not suc
     assert ['Solving error:       test', 2] == blocker.args
 
 
-def test_solveDone_3(qtbot):
-    app.ui.checkAutoSolve.setChecked(False)
-    app.ui.checkStackImages.setChecked(True)
+def test_solveDone_3(function, qtbot):
+    function.ui.checkAutoSolve.setChecked(False)
+    function.ui.checkStackImages.setChecked(True)
     result = {
         'success': True,
         'raJ2000S': Angle(hours=10),
@@ -671,16 +650,16 @@ def test_solveDone_3(qtbot):
         'message': 'test',
     }
 
-    app.app.astrometry.signals.done.connect(app.solveDone)
-    with qtbot.waitSignal(app.app.message) as blocker:
-        suc = app.solveDone(result=result)
+    function.app.astrometry.signals.done.connect(function.solveDone)
+    with qtbot.waitSignal(function.app.message) as blocker:
+        suc = function.solveDone(result=result)
         assert suc
     assert ['Solved :             RA: 10:00:00 (10.000), DEC: +20:00:00 (20.000), ', 0] == blocker.args
 
 
-def test_solveDone_4(qtbot):
-    app.ui.checkAutoSolve.setChecked(True)
-    app.ui.checkStackImages.setChecked(False)
+def test_solveDone_4(function, qtbot):
+    function.ui.checkAutoSolve.setChecked(True)
+    function.ui.checkStackImages.setChecked(False)
     result = {
         'success': True,
         'raJ2000S': Angle(hours=10),
@@ -694,37 +673,37 @@ def test_solveDone_4(qtbot):
         'message': 'test',
     }
 
-    app.app.astrometry.signals.done.connect(app.solveDone)
-    with qtbot.waitSignal(app.app.showImage):
-        suc = app.solveDone(result=result)
+    function.app.astrometry.signals.done.connect(function.solveDone)
+    with qtbot.waitSignal(function.app.showImage):
+        suc = function.solveDone(result=result)
         assert suc
 
 
-def test_solveImage_1(qtbot):
-    suc = app.solveImage()
+def test_solveImage_1(function, qtbot):
+    suc = function.solveImage()
     assert not suc
 
 
-def test_solveImage_2(qtbot):
-    suc = app.solveImage(imagePath='testFile')
+def test_solveImage_2(function, qtbot):
+    suc = function.solveImage(imagePath='testFile')
     assert not suc
 
 
-def test_solveImage_3(qtbot):
+def test_solveImage_3(function, qtbot):
     shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
     file = 'tests/image/m51.fit'
-    with mock.patch.object(app.app.astrometry,
+    with mock.patch.object(function.app.astrometry,
                            'solveThreading'):
-        suc = app.solveImage(imagePath=file)
+        suc = function.solveImage(imagePath=file)
         assert suc
 
 
-def test_solveCurrent(qtbot):
-    with qtbot.waitSignal(app.signals.solveImage):
-        suc = app.solveCurrent()
+def test_solveCurrent(function, qtbot):
+    with qtbot.waitSignal(function.signals.solveImage):
+        suc = function.solveCurrent()
         assert suc
 
 
-def test_abortSolve_1():
-    suc = app.abortSolve()
+def test_abortSolve_1(function):
+    suc = function.abortSolve()
     assert not suc

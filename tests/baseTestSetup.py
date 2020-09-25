@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 from queue import Queue
+from time import time
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
@@ -24,12 +25,62 @@ from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
 # local import
 
 
+class Astrometry:
+    class AstrometrySignals(QObject):
+        done = pyqtSignal(object)
+        result = pyqtSignal(object)
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    @staticmethod
+    def solve():
+        return
+
+    @staticmethod
+    def abort():
+        return
+
+    signals = AstrometrySignals()
+    solveThreading = None
+
+
+class Telescope:
+    focalLength = 0
+    aperture = 0
+
+
 class Camera:
+    class CameraSignals(QObject):
+        deviceDisconnected = pyqtSignal()
+        deviceConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal()
+        integrated = pyqtSignal()
+        saved = pyqtSignal(object)
+        message = pyqtSignal(object)
+
+    @staticmethod
+    def expose(imagePath=None,
+               expTime=None,
+               binning=None,
+               subFrame=None,
+               fastReadout=None,
+               focalLength=None):
+        return
+
+    @staticmethod
+    def abort():
+        return
+
+    signals = CameraSignals()
     expTime = 0
     expTimeN = 0
     binning = 1
     binningN = 1
     subFrame = 100
+    checkFastDownload = False
 
 
 class Measure:
@@ -126,6 +177,11 @@ class Mount(QObject):
             longitude = None
             elevation = None
 
+        class TimeJD:
+            @staticmethod
+            def utc_strftime(a):
+                return ''
+
         Alt = None
         Az = None
         haJNowTarget = None
@@ -136,6 +192,7 @@ class Mount(QObject):
         AzTarget = None
         AltTarget = None
         location = Location()
+        timeJD = TimeJD()
 
         @staticmethod
         def setTargetAltAz(alt_degrees=None, az_degrees=None):
@@ -174,7 +231,10 @@ class App(QObject):
     camera = Camera()
     measure = Measure()
     hipparcos = Hipparcos()
+    telescope = Telescope()
+    astrometry = Astrometry()
     deviceStat = {}
     threadPool = QThreadPool()
-    mwGlob = {'modelDir': 'tests/model'}
+    mwGlob = {'modelDir': 'tests/model',
+              'imageDir': 'tests/image',}
 

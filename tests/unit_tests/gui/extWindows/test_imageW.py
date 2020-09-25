@@ -28,6 +28,7 @@ from astropy.io import fits
 from astropy import wcs
 from skyfield.api import Angle
 import numpy as np
+import cv2
 
 # local import
 from tests.baseTestSetup import App
@@ -157,6 +158,16 @@ def test_setupDistorted_1(function):
     assert function.axeCB is None
 
 
+def test_setupDistorted_2(function):
+    function.ui.checkShowGrid.setChecked(True)
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
+
+    suc = function.setupDistorted()
+    assert suc
+    assert function.axe is not None
+
+
 def test_setupDistorted_3(function):
     function.header = fits.PrimaryHDU().header
     function.header['naxis'] = 2
@@ -248,6 +259,7 @@ def test_stretchImage_2(function):
 
 
 def test_imagePlot_1(function):
+    function.ui.view.addItem('test')
     function.image = np.random.rand(100, 100)
     function.axe = function.fig.add_subplot(label=0)
     function.axeCB = function.fig.add_subplot(label=1)
@@ -259,6 +271,8 @@ def test_imagePlot_1(function):
 
 
 def test_imagePlot_2(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
     function.axe = function.fig.add_subplot(label=0)
@@ -266,12 +280,12 @@ def test_imagePlot_2(function):
     function.stretch = AsinhStretch()
     function.colorMap = 'rainbow'
     function.sources = {'xcentroid': 50 * np.ones([1]),
-                   'ycentroid': 50 * np.ones([1]),
-                   'sharpness': 0.5 * np.ones([1]),
-                   'roundness1': 0.5 * np.ones([1]),
-                   'roundness2': 0.5 * np.ones([1]),
-                   'flux': 5 * np.ones([1]),
-                   }
+                        'ycentroid': 50 * np.ones([1]),
+                        'sharpness': 0.5 * np.ones([1]),
+                        'roundness1': 0.5 * np.ones([1]),
+                        'roundness2': 0.5 * np.ones([1]),
+                        'flux': 5 * np.ones([1]),
+                        }
     function.mean = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(1)
     suc = function.imagePlot()
@@ -279,6 +293,9 @@ def test_imagePlot_2(function):
 
 
 def test_imagePlot_3(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
     function.axe = function.fig.add_subplot(label=0)
@@ -286,19 +303,23 @@ def test_imagePlot_3(function):
     function.stretch = AsinhStretch()
     function.colorMap = 'rainbow'
     function.sources = {'xcentroid': 50 * np.ones([1]),
-                   'ycentroid': 50 * np.ones([1]),
-                   'sharpness': 0.5 * np.ones([1]),
-                   'roundness1': 0.5 * np.ones([1]),
-                   'roundness2': 0.5 * np.ones([1]),
-                   'flux': 5 * np.ones([1]),
-                   }
+                        'ycentroid': 50 * np.ones([1]),
+                        'sharpness': 0.5 * np.ones([1]),
+                        'roundness1': 0.5 * np.ones([1]),
+                        'roundness2': 0.5 * np.ones([1]),
+                        'flux': 5 * np.ones([1]),
+                        }
     function.mean = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(2)
     suc = function.imagePlot()
     assert suc
 
 
-def test_imagePlot_4(function):
+def test_imagePlot_3a(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
     function.axe = function.fig.add_subplot(label=0)
@@ -306,12 +327,37 @@ def test_imagePlot_4(function):
     function.stretch = AsinhStretch()
     function.colorMap = 'rainbow'
     function.sources = {'xcentroid': 50 * np.ones([1]),
-                   'ycentroid': 50 * np.ones([1]),
-                   'sharpness': 0.5 * np.ones([1]),
-                   'roundness1': 0.5 * np.ones([1]),
-                   'roundness2': 0.5 * np.ones([1]),
-                   'flux': 5 * np.ones([1]),
-                   }
+                        'ycentroid': 50 * np.ones([1]),
+                        'sharpness': 0.5 * np.ones([1]),
+                        'roundness1': 0.5 * np.ones([1]),
+                        'roundness2': 0.5 * np.ones([1]),
+                        'flux': 5 * np.ones([1]),
+                        }
+    function.mean = np.zeros([100, 100])
+    function.ui.view.setCurrentIndex(3)
+    suc = function.imagePlot()
+    assert suc
+
+
+def test_imagePlot_4(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.axe = function.fig.add_subplot(label=0)
+    function.axeCB = function.fig.add_subplot(label=1)
+    function.stretch = AsinhStretch()
+    function.colorMap = 'rainbow'
+    function.sources = {'xcentroid': 50 * np.ones([1]),
+                        'ycentroid': 50 * np.ones([1]),
+                        'sharpness': 0.5 * np.ones([1]),
+                        'roundness1': 0.5 * np.ones([1]),
+                        'roundness2': 0.5 * np.ones([1]),
+                        'flux': 5 * np.ones([1]),
+                        }
     function.mean = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(4)
     suc = function.imagePlot()
@@ -319,6 +365,12 @@ def test_imagePlot_4(function):
 
 
 def test_imagePlot_5(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
     function.axe = function.fig.add_subplot(label=0)
@@ -326,12 +378,12 @@ def test_imagePlot_5(function):
     function.stretch = AsinhStretch()
     function.colorMap = 'rainbow'
     function.sources = {'xcentroid': 50 * np.ones([1]),
-                   'ycentroid': 50 * np.ones([1]),
-                   'sharpness': 0.5 * np.ones([1]),
-                   'roundness1': 0.5 * np.ones([1]),
-                   'roundness2': 0.5 * np.ones([1]),
-                   'flux': 5 * np.ones([1]),
-                   }
+                        'ycentroid': 50 * np.ones([1]),
+                        'sharpness': 0.5 * np.ones([1]),
+                        'roundness1': 0.5 * np.ones([1]),
+                        'roundness2': 0.5 * np.ones([1]),
+                        'flux': 5 * np.ones([1]),
+                        }
     function.mean = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(5)
     suc = function.imagePlot()
@@ -379,11 +431,17 @@ def test_preparePlot_4(function):
     function.header = fits.PrimaryHDU().header
     function.header['CTYPE1'] = '2'
     function.header['NAXIS'] = 2
-    suc = function.preparePlot()
-    assert suc
+    with mock.patch.object(function,
+                           'setupNormal'):
+        with mock.patch.object(function,
+                               'imagePlot'):
+            suc = function.preparePlot()
+            assert suc
 
 
 def test_preparePlot_5(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
     function.ui.zoom.addItem(' 1x Zoom')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
@@ -394,8 +452,12 @@ def test_preparePlot_5(function):
                            'has_distortion',
                            return_value=True):
         function.setupDistorted = function.setupNormal
-        suc = function.preparePlot()
-        assert suc
+        with mock.patch.object(function,
+                               'setupDistorted'):
+            with mock.patch.object(function,
+                                   'imagePlot'):
+                suc = function.preparePlot()
+                assert suc
 
 
 def test_workerPhotometry_1(function):
@@ -482,22 +544,99 @@ def test_zoomImage_2(function):
 
 
 def test_showImage_1(function):
-    function.imageFileName = ''
     suc = function.showImage()
     assert not suc
 
 
 def test_showImage_2(function):
-    function.imageFileName = 'test'
-    suc = function.showImage()
+    suc = function.showImage('test')
     assert not suc
 
 
 def test_showImage_3(function):
+    class Data:
+        data = np.random.rand(100, 100)
+        header = None
+
+    class FitsHandle:
+        @staticmethod
+        def __enter__():
+            return [Data(), Data()]
+
+        @staticmethod
+        def __exit__(a, b, c):
+            return
+
+    function.ui.zoom.addItem(' 1x Zoom')
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    with mock.patch.object(fits,
+                           'open',
+                           return_value=FitsHandle()):
+        suc = function.showImage(imagePath='tests/image/m51.fit')
+        assert not suc
+
+
+def test_showImage_4(function):
+    class Data:
+        data = None
+        header = 2
+
+    class FitsHandle:
+        @staticmethod
+        def __enter__():
+            return [Data(), Data()]
+
+        @staticmethod
+        def __exit__(a, b, c):
+            return
+
+    function.ui.zoom.addItem(' 1x Zoom')
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    with mock.patch.object(fits,
+                           'open',
+                           return_value=FitsHandle()):
+        suc = function.showImage(imagePath='tests/image/m51.fit')
+        assert not suc
+
+
+def test_showImage_5(function):
     function.ui.zoom.addItem(' 1x Zoom')
     shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
     suc = function.showImage(imagePath='tests/image/m51.fit')
     assert suc
+
+
+def test_showImage_6(function):
+    class Data:
+        data = np.random.rand(100, 100, 3)
+        header = {'BAYERPAT': 1,
+                  'CTYPE1': 'DEF',
+                  'CTYPE2': 'DEF',}
+
+    class FitsHandle:
+        @staticmethod
+        def __enter__():
+            return [Data(), Data()]
+
+        @staticmethod
+        def __exit__(a, b, c):
+            return
+
+    function.ui.zoom.addItem(' 1x Zoom')
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    with mock.patch.object(fits,
+                           'open',
+                           return_value=FitsHandle()):
+        with mock.patch.object(cv2,
+                               'cvtColor'):
+            with mock.patch.object(function,
+                                   'zoomImage'):
+                with mock.patch.object(function,
+                                       'stackImages'):
+                    with mock.patch.object(function,
+                                           'prepareImage'):
+                        suc = function.showImage(imagePath='tests/image/m51.fit')
+                        assert suc
 
 
 def test_showCurrent_1(function):
@@ -594,10 +733,28 @@ def test_abortImage_2(function, qtbot):
 
 
 def test_abortImage_3(function, qtbot):
+    function.deviceStat['expose'] = True
+    function.deviceStat['exposeN'] = False
     function.app.camera.signals.saved.connect(function.showImage)
     function.ui.exposeN.setEnabled(False)
     function.ui.expose.setEnabled(True)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
+    with mock.patch.object(function.app.camera,
+                           'abort',
+                           ):
+        with qtbot.waitSignal(function.app.message) as blocker:
+            suc = function.abortImage()
+            assert suc
+        assert ['Exposing aborted', 2] == blocker.args
+
+
+def test_abortImage_4(function, qtbot):
+    function.deviceStat['expose'] = False
+    function.deviceStat['exposeN'] = True
+    function.app.camera.signals.saved.connect(function.showImage)
+    function.ui.exposeN.setEnabled(False)
+    function.ui.expose.setEnabled(True)
+    function.app.camera.signals.saved.connect(function.exposeImageNDone)
     with mock.patch.object(function.app.camera,
                            'abort',
                            ):

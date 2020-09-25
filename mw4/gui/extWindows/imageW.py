@@ -827,6 +827,7 @@ class ImageWindow(widget.MWidget):
 
         # correct faulty headers, because some imaging programs did not
         # interpret the Keywords in the right manner (SGPro)
+
         if self.header.get('CTYPE1', '').endswith('DEF'):
             self.header['CTYPE1'] = self.header['CTYPE1'].replace('DEF', 'TAN')
 

@@ -20,7 +20,7 @@ import unittest.mock as mock
 import pytest
 
 # external packages
-from PyQt5.QtCore import QObject
+from PyQt5 import sip
 from PyQt5.QtGui import QCloseEvent
 
 # local import
@@ -80,8 +80,8 @@ def test_storeConfig_2(function):
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function,
-                           'show'):
+    with mock.patch.object(sip,
+                           'delete'):
         with mock.patch.object(MWidget,
                                'closeEvent'):
             function.showWindow()

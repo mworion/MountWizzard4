@@ -110,6 +110,7 @@ def test_slewDome_2():
 def test_slewDome_3():
     app.data = {'AZ': 1}
     app.framework = 'indi'
+    app.isGeometry = True
 
     with mock.patch.object(app.app.mount.geometry,
                            'calcTransformationMatrices',

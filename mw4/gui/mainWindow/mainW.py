@@ -835,6 +835,7 @@ class MainWindow(MWidget,
         self.uiWindows[window]['classObj'].destroyed.connect(self.deleteWindowResource)
         self.uiWindows[window]['classObj'].initConfig()
         self.uiWindows[window]['classObj'].showWindow()
+
         return True
 
     def toggleWindow(self):

@@ -24,92 +24,78 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QCloseEvent
 
 # local import
-from gui.extWindows.keypadW import KeypadWindow
+from tests.baseTestSetup import App
 from gui.utilities.widget import MWidget
+from gui.extWindows.keypadW import KeypadWindow
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global Test
-
-    class Test(QObject):
-        config = {'mainW': {}}
-
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
     yield
 
 
-def test_initConfig_1(qtbot):
-    app = KeypadWindow(app=Test())
-    qtbot.addWidget(app)
+@pytest.fixture(autouse=True, scope='function')
+def function(module):
 
-    suc = app.initConfig()
+    window = KeypadWindow(app=App())
+    yield window
+
+
+def test_initConfig_1(function):
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_2(qtbot):
-    app = KeypadWindow(app=Test())
-    qtbot.addWidget(app)
+def test_initConfig_2(function):
+    suc = function.initConfig()
+    assert suc
 
-    app.app.config['keypadW'] = {'winPosX': 10000}
-    suc = app.initConfig()
+    function.app.config['keypadW'] = {'winPosX': 10000}
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_3(qtbot):
-    app = KeypadWindow(app=Test())
-    qtbot.addWidget(app)
+def test_initConfig_3(function):
+    suc = function.initConfig()
+    assert suc
 
-    app.app.config['keypadW'] = {'winPosY': 10000}
-    suc = app.initConfig()
+    function.app.config['keypadW'] = {'winPosY': 10000}
+    suc = function.initConfig()
     assert suc
 
 
-def test_storeConfig_1(qtbot):
-    app = KeypadWindow(app=Test())
-    qtbot.addWidget(app)
+def test_storeConfig_1(function):
+    if 'keypadW' in function.app.config:
+        del function.app.config['keypadW']
 
-    if 'keypadW' in app.app.config:
-        del app.app.config['keypadW']
-    suc = app.storeConfig()
+    suc = function.storeConfig()
     assert suc
 
 
-def test_storeConfig_2(qtbot):
-    app = KeypadWindow(app=Test())
-    qtbot.addWidget(app)
+def test_storeConfig_2(function):
+    function.app.config['keypadW'] = {}
 
-    app.app.config['keypadW'] = {}
-    suc = app.storeConfig()
+    suc = function.storeConfig()
     assert suc
 
 
-def test_closeEvent_1(qtbot):
-    app = KeypadWindow(app=Test())
-    qtbot.addWidget(app)
-
-    with mock.patch.object(MWidget,
-                           'closeEvent',
-                           return_value=True):
-        app.closeEvent(QCloseEvent())
-
-
-def test_loadFinished_1(qtbot):
-    app = KeypadWindow(app=Test())
-    qtbot.addWidget(app)
-
-    app.loadFinished()
+def test_closeEvent_1(function):
+    with mock.patch.object(function,
+                           'show'):
+        with mock.patch.object(MWidget,
+                               'closeEvent'):
+            function.showWindow()
+            function.closeEvent(QCloseEvent)
 
 
-def test_showUrl_1(qtbot):
-    app = KeypadWindow(app=Test())
-    qtbot.addWidget(app)
-
-    app.showUrl()
+def test_loadFinished_1(function):
+    function.loadFinished()
 
 
-def test_showUrl_2(qtbot):
-    app = KeypadWindow(app=Test())
-    qtbot.addWidget(app)
+def test_showUrl_1(function):
+    function.showUrl()
 
-    app.host = 'localhost'
-    app.showUrl()
+
+def test_showUrl_2(function):
+    function.app.mount.host = ('localhost', 3492)
+    function.showUrl()

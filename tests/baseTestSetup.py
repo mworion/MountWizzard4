@@ -17,7 +17,6 @@
 ###########################################################
 # standard libraries
 from queue import Queue
-from time import time
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
@@ -211,6 +210,7 @@ class Mount(QObject):
     setting = MountSetting()
     obsSite = MountObsSite()
     geometry = MountGeometry()
+    host = None
 
 
 class App(QObject):

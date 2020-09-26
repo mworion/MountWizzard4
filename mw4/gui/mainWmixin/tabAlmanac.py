@@ -20,8 +20,7 @@ import threading
 from dateutil.tz import tzlocal
 
 # external packages
-import PyQt5.QtCore
-from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
+from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor, QFont
 from PyQt5.QtCore import Qt, QPointF
 from skyfield import almanac
 import numpy as np
@@ -29,7 +28,7 @@ import numpy as np
 # local import
 
 
-class Almanac(object):
+class Almanac:
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -67,22 +66,16 @@ class Almanac(object):
         },
     }
 
-    def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
+    def __init__(self):
 
         self.civil = None
         self.nautical = None
         self.astronomical = None
         self.dark = None
-
         self.thread = None
 
         self.app.mount.signals.locationDone.connect(self.searchTwilight)
         self.app.mount.signals.locationDone.connect(self.displayTwilightData)
-
         self.app.update30m.connect(self.updateMoonPhase)
 
     def initConfig(self):
@@ -93,8 +86,6 @@ class Almanac(object):
 
         :return: True for test purpose
         """
-
-        # config = self.app.config['mainW']
 
         self.updateMoonPhase()
         self.searchTwilight()
@@ -111,9 +102,6 @@ class Almanac(object):
 
         :return: True for test purpose
         """
-
-        # config = self.app.config['mainW']
-
         if self.thread:
             self.thread.join()
 
@@ -244,7 +232,7 @@ class Almanac(object):
 
         return True
 
-    def searchTwilightWorker(self):
+    def searchTwilightWorker(self, timeWindow):
         """
         searchTwilightWorker is the worker method which does the search for twilight events
         during one year with actual day as middle point. As this search take some time and
@@ -260,8 +248,8 @@ class Almanac(object):
         if location is None:
             return False
 
-        t0 = ts.tt_jd(int(timeJD.tt) - 182)
-        t1 = ts.tt_jd(int(timeJD.tt) + 182)
+        t0 = ts.tt_jd(int(timeJD.tt) - timeWindow)
+        t1 = ts.tt_jd(int(timeJD.tt) + timeWindow + 1)
 
         f = almanac.dark_twilight_day(self.app.ephemeris, location)
         t, e = almanac.find_discrete(t0, t1, f)
@@ -356,10 +344,26 @@ class Almanac(object):
         :return: true for test purpose
         """
 
-        self.thread = threading.Thread(target=self.searchTwilightWorker)
+        self.thread = threading.Thread(target=self.searchTwilightWorker, args=[182])
         self.thread.start()
 
         return True
+
+    def calcTwilightData(self):
+        ts = self.app.mount.obsSite.ts
+        timeJD = self.app.mount.obsSite.timeJD
+        location = self.app.mount.obsSite.location
+
+        if location is None:
+            return False
+
+        t0 = ts.tt_jd(int(timeJD.tt))
+        t1 = ts.tt_jd(int(timeJD.tt) + 1)
+
+        f = almanac.dark_twilight_day(self.app.ephemeris, location)
+        timeEvents, events = almanac.find_discrete(t0, t1, f)
+
+        return timeEvents, events
 
     def displayTwilightData(self):
         """
@@ -377,26 +381,15 @@ class Almanac(object):
             4: self.COLOR_WHITE1,
         }
 
-        ts = self.app.mount.obsSite.ts
-        timeJD = self.app.mount.obsSite.timeJD
-        location = self.app.mount.obsSite.location
-
-        if location is None:
-            return False
-
-        t0 = ts.tt_jd(int(timeJD.tt))
-        t1 = ts.tt_jd(int(timeJD.tt) + 1)
-
-        f = almanac.dark_twilight_day(self.app.ephemeris, location)
-        t, e = almanac.find_discrete(t0, t1, f)
+        timeEvents, events = self.calcTwilightData()
 
         text = ''
         self.ui.twilightEvents.clear()
 
-        for timeE, event in zip(t, e):
+        for timeEvent, event in zip(timeEvents, events):
             self.ui.twilightEvents.setTextColor(colors[event])
-            self.ui.twilightEvents.setFontWeight(PyQt5.QtGui.QFont.Bold)
-            text += f'{timeE.astimezone(tzlocal()).strftime("%H:%M:%S")} '
+            self.ui.twilightEvents.setFontWeight(QFont.Bold)
+            text += f'{timeEvent.astimezone(tzlocal()).strftime("%H:%M:%S")} '
             text += f'{almanac.TWILIGHTS[event]}'
             self.ui.twilightEvents.insertPlainText(text)
             text = '\n'

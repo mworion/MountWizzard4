@@ -187,7 +187,6 @@ def test_modelSolveDone_0(qtbot, app):
 
 
 def test_modelSolveDone_1(qtbot, app):
-    app.startModeling = time.time()
     mPoint = {'lenSequence': 3,
               'countSequence': 3}
 
@@ -204,8 +203,12 @@ def test_modelSolveDone_1(qtbot, app):
               }
 
     with qtbot.waitSignal(app.app.message) as blocker:
-        suc = app.modelSolveDone(result)
-        assert suc
+        with mock.patch.object(app,
+                               'updateProgress'):
+            with mock.patch.object(app,
+                                   'modelCycleThroughBuildPointsFinished'):
+                suc = app.modelSolveDone(result)
+                assert suc
     assert ['Solving  image-003:  test', 2] == blocker.args
 
 
@@ -224,6 +227,7 @@ def test_modelSolveDone_3(app):
               'countSequence': 3}
 
     app.resultQueue.put(mPoint)
+    app.app.data = [(0, 0, True), (1, 1, True), (2, 2, True)]
 
     class Julian:
         ut1 = 2458635.168
@@ -249,8 +253,12 @@ def test_modelSolveDone_3(app):
               }
 
     app.resultQueue.put(mPoint)
-    suc = app.modelSolveDone(result)
-    assert suc
+    with mock.patch.object(app,
+                           'updateProgress'):
+        with mock.patch.object(app,
+                               'modelCycleThroughBuildPointsFinished'):
+            suc = app.modelSolveDone(result)
+            assert suc
 
 
 def test_modelSolveDone_4(app):
@@ -269,9 +277,14 @@ def test_modelSolveDone_4(app):
               }
 
     app.resultQueue.put(mPoint)
+    app.app.data = [(0, 0, True), (1, 1, True), (2, 2, True)]
 
-    suc = app.modelSolveDone(result)
-    assert suc
+    with mock.patch.object(app,
+                           'updateProgress'):
+        with mock.patch.object(app,
+                               'modelCycleThroughBuildPointsFinished'):
+            suc = app.modelSolveDone(result)
+            assert suc
 
 
 def test_modelSolveDone_5(app):

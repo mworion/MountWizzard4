@@ -20,7 +20,7 @@ from queue import Queue
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
-from skyfield.api import Topos
+from skyfield.api import Topos, load
 
 # local import
 
@@ -179,11 +179,6 @@ class Mount(QObject):
             longitude = None
             elevation = None
 
-        class TimeJD:
-            @staticmethod
-            def utc_strftime(a):
-                return ''
-
         Alt = None
         Az = None
         haJNowTarget = None
@@ -194,8 +189,8 @@ class Mount(QObject):
         AzTarget = None
         AltTarget = None
         location = Topos(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
-        ts = None
-        timeJD = TimeJD()
+        ts = load.timescale(builtin=True)
+        timeJD = ts.now()
 
         @staticmethod
         def setTargetAltAz(alt_degrees=None, az_degrees=None):

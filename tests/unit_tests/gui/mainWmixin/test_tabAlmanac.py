@@ -16,171 +16,231 @@
 #
 ###########################################################
 # standard libraries
-import os
 import pytest
 import threading
 from unittest import mock
-import logging
-from pathlib import Path
 
 # external packages
-from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from mountcontrol.qtmount import Mount
 from skyfield.api import Topos
 
 # local import
-from gui.mainWmixin.tabAlmanac import Almanac
-from gui.widgets.main_ui import Ui_MainWindow
+from tests.baseTestSetupMixins import App
 from gui.utilities.widget import MWidget
-from base.loggerMW import CustomLogger
+from gui.widgets.main_ui import Ui_MainWindow
+from gui.mainWmixin.tabAlmanac import Almanac
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
+    yield
 
 
 @pytest.fixture(autouse=True, scope='function')
-def app(qtbot):
+def function(module):
 
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        update1s = pyqtSignal()
-        update30m = pyqtSignal()
-        message = pyqtSignal(str, int)
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData=Path('tests/data'))
-        mount.obsSite.location = Topos(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
-        ephemeris = mount.obsSite.loader('de421_23.bsp')
+    class Mixin(MWidget, Almanac):
+        def __init__(self):
+            super().__init__()
+            self.app = App()
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            Almanac.__init__(self)
 
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
-    app = Almanac(app=Test(), ui=ui,
-                  clickable=MWidget().clickable)
-
-    app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.guiSetText = MWidget().guiSetText
-    app.embedMatplot = MWidget().embedMatplot
-    app.generateFlat = MWidget().generateFlat
-    app.COLOR_BLUE1 = MWidget().COLOR_BLUE1
-    app.COLOR_BLUE2 = MWidget().COLOR_BLUE2
-    app.COLOR_BLUE3 = MWidget().COLOR_BLUE3
-    app.COLOR_BLUE4 = MWidget().COLOR_BLUE4
-    app.COLOR_WHITE1 = MWidget().COLOR_WHITE1
-    app.M_GREY = MWidget().M_GREY
-    app.M_BLUE1 = MWidget().M_BLUE1
-    app.M_BLUE2 = MWidget().M_BLUE2
-    app.M_BLUE3 = MWidget().M_BLUE3
-    app.M_BLUE4 = MWidget().M_BLUE4
-    app.M_WHITE = MWidget().M_WHITE
-    app.twilight = MWidget().embedMatplot(QWidget())
-    app.deviceStat = dict()
-    app.log = CustomLogger(logging.getLogger(__name__), {})
-    app.threadPool = QThreadPool()
-
-    yield app
+    window = Mixin()
+    yield window
 
 
-def test_initConfig_1(app):
-    suc = app.initConfig()
+def test_initConfig_1(function):
+    with mock.patch.object(function,
+                           'updateMoonPhase'):
+        with mock.patch.object(function,
+                               'searchTwilight'):
+            with mock.patch.object(function,
+                                   'displayTwilightData'):
+                with mock.patch.object(function,
+                                       'lunarNodes'):
+                    suc = function.initConfig()
+                    assert suc
+
+
+def test_storeConfig_1(function):
+    function.thread = None
+    suc = function.storeConfig()
     assert suc
 
 
-def test_storeConfig_1(app):
-    suc = app.storeConfig()
-    assert suc
-
-
-def test_storeConfig_2(app):
-    app.thread = threading.Thread()
+def test_storeConfig_2(function):
+    function.thread = threading.Thread()
     with mock.patch.object(threading.Thread,
                            'join'):
-        suc = app.storeConfig()
+        suc = function.storeConfig()
         assert suc
 
 
-def test_drawTwilight_1(app):
-    ts = app.app.mount.obsSite.ts
-    timeJD = app.app.mount.obsSite.timeJD
-    t0 = ts.tt_jd(int(timeJD.tt) - 182)
-    t1 = ts.tt_jd(int(timeJD.tt) + 182)
+def test_drawTwilight_1(function):
+    suc = function.drawTwilight(None, None)
+    assert not suc
 
-    app.civil = dict()
-    app.nautical = dict()
-    app.astronomical = dict()
-    app.dark = dict()
-    app.civil[0] = [[t0, 10], [t0, 10]]
-    app.nautical[0] = [[t0, 10], [t0, 10]]
-    app.astronomical[0] = [[t0, 10], [t0, 10]]
-    app.dark[0] = [[t0, 10], [t0, 10]]
 
-    axe, fig = app.generateFlat(widget=app.twilight)
+def test_drawTwilight_2(function):
+    function.twilight = function.embedMatplot(QWidget())
+    ts = function.app.mount.obsSite.ts
+    timeJD = function.app.mount.obsSite.timeJD
+    t0 = ts.tt_jd(int(timeJD.tt) - 180)
+    t1 = ts.tt_jd(int(timeJD.tt) + 180)
 
-    with mock.patch.object(app,
+    function.civil = dict()
+    function.nautical = dict()
+    function.astronomical = dict()
+    function.dark = dict()
+    function.civil[0] = []
+    function.nautical[0] = []
+    function.astronomical[0] = []
+    function.dark[0] = []
+
+    axe, fig = function.generateFlat(widget=function.twilight)
+
+    with mock.patch.object(function,
                            'generateFlat',
                            return_value=(axe, fig)):
         with mock.patch.object(axe.figure.canvas,
                                'draw'):
-            suc = app.drawTwilight(t0, t1)
+            suc = function.drawTwilight(t0, t1)
             assert suc
 
 
-def test_searchTwilightWorker_1(app):
-    with mock.patch.object(app,
+def test_drawTwilight_3(function):
+    function.twilight = function.embedMatplot(QWidget())
+    ts = function.app.mount.obsSite.ts
+    timeJD = function.app.mount.obsSite.timeJD
+    t0 = ts.tt_jd(int(timeJD.tt) - 180)
+    t1 = ts.tt_jd(int(timeJD.tt) + 180)
+
+    function.civil = dict()
+    function.nautical = dict()
+    function.astronomical = dict()
+    function.dark = dict()
+    function.civil[0] = [[t0, 10], [t0, 10]]
+    function.nautical[0] = [[t0, 10], [t0, 10]]
+    function.astronomical[0] = [[t0, 10], [t0, 10]]
+    function.dark[0] = [[t0, 10], [t0, 10]]
+
+    axe, fig = function.generateFlat(widget=function.twilight)
+
+    with mock.patch.object(function,
+                           'generateFlat',
+                           return_value=(axe, fig)):
+        with mock.patch.object(axe.figure.canvas,
+                               'draw'):
+            suc = function.drawTwilight(t0, t1)
+            assert suc
+
+
+def test_searchTwilightWorker_1(function):
+    function.app.mount.obsSite.location = Topos(latitude_degrees=0,
+                                                longitude_degrees=0,
+                                                elevation_m=0)
+    with mock.patch.object(function,
                            'drawTwilight'):
-        suc = app.searchTwilightWorker()
+        suc = function.searchTwilightWorker(1)
         assert suc
 
 
-def test_searchTwilight_1(app):
+def test_searchTwilightWorker_2(function):
+    function.app.mount.obsSite.location = None
+    with mock.patch.object(function,
+                           'drawTwilight'):
+        suc = function.searchTwilightWorker(1)
+        assert not suc
+
+
+def test_searchTwilight_1(function):
     with mock.patch.object(threading.Thread,
                            'start'):
-        suc = app.searchTwilight()
+        suc = function.searchTwilight()
         assert suc
 
 
-def test_displayTwilightData_1(app):
-    suc = app.displayTwilightData()
+def test_calcTwilightData_1(function):
+    suc = function.calcTwilightData()
+    assert not suc
+
+
+def test_calcTwilightData_2(function):
+    function.app.mount.obsSite.location = Topos(latitude_degrees=0,
+                                                longitude_degrees=0,
+                                                elevation_m=0)
+    suc = function.calcTwilightData()
     assert suc
 
 
-def test_getMoonPhase_1(app):
-    a, b, c = app.getMoonPhase()
+def test_displayTwilightData_1(function):
+    with mock.patch.object(function,
+                           'calcTwilightData',
+                           return_value=([], [])):
+        suc = function.displayTwilightData()
+        assert suc
+
+
+def test_displayTwilightData_2(function):
+    ts = function.app.mount.obsSite.ts
+    timeJD = function.app.mount.obsSite.timeJD
+    t0 = ts.tt_jd(int(timeJD.tt) - 180)
+    with mock.patch.object(function,
+                           'calcTwilightData',
+                           return_value=([(t0, t0), (1, 1)])):
+        suc = function.displayTwilightData()
+        assert suc
+
+
+def test_getMoonPhase_1(function):
+    a, b, c = function.getMoonPhase()
     assert a is not None
     assert b is not None
     assert c is not None
 
 
-def test_updateMoonPhase_1(app):
-    with mock.patch.object(app,
+def test_updateMoonPhase_1(function):
+    with mock.patch.object(function,
                            'getMoonPhase',
-                           return_value=(20, 45, 20)):
-        suc = app.updateMoonPhase()
+                           return_value=(20, 45, .20)):
+        suc = function.updateMoonPhase()
         assert suc
 
 
-def test_updateMoonPhase_2(app):
-    with mock.patch.object(app,
+def test_updateMoonPhase_2(function):
+    with mock.patch.object(function,
                            'getMoonPhase',
-                           return_value=(45, 135, 45)):
-        suc = app.updateMoonPhase()
+                           return_value=(45, 135, .45)):
+        suc = function.updateMoonPhase()
         assert suc
 
 
-def test_updateMoonPhase_3(app):
-    with mock.patch.object(app,
+def test_updateMoonPhase_3(function):
+    with mock.patch.object(function,
                            'getMoonPhase',
-                           return_value=(70, 225, 70)):
-        suc = app.updateMoonPhase()
+                           return_value=(70, 225, .70)):
+        suc = function.updateMoonPhase()
         assert suc
 
 
-def test_updateMoonPhase_4(app):
-    with mock.patch.object(app,
+def test_updateMoonPhase_4(function):
+    with mock.patch.object(function,
                            'getMoonPhase',
-                           return_value=(95, 315, 95)):
-        suc = app.updateMoonPhase()
+                           return_value=(95, 315, .95)):
+        suc = function.updateMoonPhase()
         assert suc
+
+
+def test_updateMoonPhase_5(function):
+    with mock.patch.object(function,
+                           'getMoonPhase',
+                           return_value=(95, 315, 10)):
+        suc = function.updateMoonPhase()
+        assert suc
+
+
+def test_lunarNodes_1(function):
+    suc = function.lunarNodes()
+    assert suc

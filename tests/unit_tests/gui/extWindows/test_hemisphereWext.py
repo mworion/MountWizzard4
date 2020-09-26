@@ -24,7 +24,7 @@ from PyQt5.QtWidgets import QMessageBox
 from skyfield.api import Angle
 
 # local import
-from tests.baseTestSetup import App
+from tests.baseTestSetupExtWindows import App
 from gui.extWindows.hemisphereW import HemisphereWindow
 
 

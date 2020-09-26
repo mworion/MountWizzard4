@@ -25,7 +25,7 @@ from PyQt5.Qt3DCore import QTransform, QEntity
 from skyfield.api import Angle
 
 # local import
-from tests.baseTestSetup import App
+from tests.baseTestSetupExtWindows import App
 from gui.utilities.widget import MWidget
 from gui.extWindows.simulatorW import SimulatorWindow
 from gui.extWindows.simulator import tools

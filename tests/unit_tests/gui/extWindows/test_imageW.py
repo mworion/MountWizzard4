@@ -31,7 +31,7 @@ import numpy as np
 import cv2
 
 # local import
-from tests.baseTestSetup import App
+from tests.baseTestSetupExtWindows import App
 from gui.utilities.widget import MWidget
 from gui.extWindows.imageW import ImageWindow
 

@@ -26,7 +26,7 @@ import matplotlib.patches as mpatches
 from skyfield.api import Angle
 
 # local import
-from tests.baseTestSetup import App
+from tests.baseTestSetupExtWindows import App
 from gui.utilities.widget import MWidget
 from gui.extWindows.hemisphereW import HemisphereWindow
 

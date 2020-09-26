@@ -22,7 +22,6 @@ import unittest.mock as mock
 # external packages
 import matplotlib
 matplotlib.use('Qt5Agg')
-from PyQt5.QtCore import QEvent
 from PyQt5.QtGui import QCloseEvent
 import matplotlib.pyplot as plt
 from skyfield.api import EarthSatellite
@@ -30,7 +29,7 @@ from skyfield.api import Angle
 from skyfield.api import load
 
 # local import
-from tests.baseTestSetup import App
+from tests.baseTestSetupExtWindows import App
 from gui.utilities.widget import MWidget
 from gui.extWindows.satelliteW import SatelliteWindow
 from resource import resources
@@ -318,13 +317,6 @@ def test_drawSatellite_3(function, module):
                  3: {'rise': t4,
                      'settle': t5}
                  }
-    with mock.patch.object(function,
-                           'drawSphere1'):
-        with mock.patch.object(function,
-                               'drawSphere2'):
-            with mock.patch.object(function,
-                                   'drawEarth'):
-                with mock.patch.object(function,
-                                       'drawHorizonView'):
-                    suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)
-                    assert suc
+
+    suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)
+    assert suc

@@ -25,7 +25,7 @@ from PyQt5.QtGui import QCloseEvent, QResizeEvent
 import numpy as np
 
 # local import
-from tests.baseTestSetup import App
+from tests.baseTestSetupExtWindows import App
 from gui.utilities.widget import MWidget
 from gui.extWindows.analyseW import AnalyseWindow
 

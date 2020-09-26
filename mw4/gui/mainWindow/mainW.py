@@ -27,7 +27,6 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtGui import QPixmap
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-import PyQt5.uic
 from PyQt5.QtTest import QTest
 
 # local import

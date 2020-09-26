@@ -24,7 +24,7 @@ import numpy as np
 from PyQt5.QtGui import QCloseEvent
 
 # local import
-from tests.baseTestSetup import App
+from tests.baseTestSetupExtWindows import App
 from gui.utilities.widget import MWidget
 from gui.extWindows.measureW import MeasureWindow
 

@@ -32,7 +32,6 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 # local import
 from base import transform
 
-
 class QMultiWait(QObject):
     """
     QMultiWaitable implements a signal collection class for waiting of entering multiple

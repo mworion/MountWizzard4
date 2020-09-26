@@ -21,7 +21,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.160.0b3',
+    version='0.160.0',
     packages=[
         'mw4',
         'mw4.base',
@@ -58,7 +58,7 @@ setup(
         'scipy==1.5.2',
         'requests==2.24.0',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.29',
+        'skyfield==1.27',
         'sgp4>=2.2',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==2.0.0',

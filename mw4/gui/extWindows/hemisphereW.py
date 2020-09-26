@@ -636,8 +636,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                       marker='$\u2714$',
                       color=self.M_YELLOW,
                       zorder=25,
-                      markersize=15,
-                      alpha=0.6,
+                      markersize=13,
+                      alpha=0.7,
+                      markeredgecolor=self.M_BLUE
                       )
 
         self.pointsBuildAnnotate = list()

@@ -32,6 +32,7 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 # local import
 from base import transform
 
+
 class QMultiWait(QObject):
     """
     QMultiWaitable implements a signal collection class for waiting of entering multiple
@@ -58,6 +59,7 @@ class QMultiWait(QObject):
     def checkSignal(self):
         sender = self.sender()
         self.waitready.add(sender)
+
         if len(self.waitready) == len(self.waitable):
             self.ready.emit()
 
@@ -67,6 +69,7 @@ class QMultiWait(QObject):
     def clear(self):
         for signal in self.waitable:
             signal.disconnect(self.checkSignal)
+
         self.waitable = set()
         self.waitready = set()
 

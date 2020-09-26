@@ -20,6 +20,7 @@ Unreleased Betas
 - move weather api to device
 - move mount MAC and IP to device
 - move relay ip to device
+- update skyfield to 1.29
 
 Released betas
 --------------
@@ -27,7 +28,8 @@ Released betas
 
 ..note::
     Please be aware that with new device management the setting might be invalid or don't
-    work anymore. Ideally you start with an empty configuration.
+    work anymore. Ideally you start with an empty configuration. For experts: you could
+    delete the part "driversData" from the config file.
 
 - refactoring device management
 - bugfix polar / flat diagram in manage model
@@ -46,10 +48,9 @@ Released betas
 - stability
 - adding exclude done build points
 - adding automatic retry for model build
-- adding feature for selecting point for deletion out of model overview
+- adding feature for selecting point for deletion out of model overview by double click
 - changed numbers from 0 to number from 1 (human like)
 - clear checkmarks after successful model run
-- update skyfield to 1.29
 - update matplotlib to 3.3.2
 - update photutils to 1.0.1
 - update importlib_metadata to 2.0.0

@@ -44,6 +44,7 @@ class Astrometry:
         return
 
     signals = AstrometrySignals()
+    run = {}
     solveThreading = None
 
 

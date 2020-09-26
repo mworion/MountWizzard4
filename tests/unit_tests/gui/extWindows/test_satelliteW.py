@@ -18,300 +18,263 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
-from queue import Queue
 
 # external packages
 import matplotlib
 matplotlib.use('Qt5Agg')
-from PyQt5.QtCore import QThreadPool
+from PyQt5.QtCore import QEvent
 from PyQt5.QtGui import QCloseEvent
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
 import matplotlib.pyplot as plt
-from mountcontrol.mount import Mount
-from skyfield.toposlib import Topos
 from skyfield.api import EarthSatellite
+from skyfield.api import Angle
+from skyfield.api import load
 
 # local import
+from tests.baseTestSetup import App
+from gui.utilities.widget import MWidget
 from gui.extWindows.satelliteW import SatelliteWindow
-import resource.resources
+from resource import resources
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
+    ts = load.timescale(builtin=True)
+    yield ts
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global Test
+def function(module):
 
-    class Test1:
-        horizonP = {(10, 0), (15, 360)}
-
-    class Test(QObject):
-        config = {'mainW': {}}
-        update1s = pyqtSignal()
-        messageQueue = Queue()
-        threadPool = QThreadPool()
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        data = Test1()
-        mount.obsSite.location = Topos(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
-
-    yield
+    window = SatelliteWindow(app=App())
+    window.app.mount.obsSite.ts = module
+    yield window
 
 
-def test_initConfig_1(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    app.app.config['satelliteW'] = {}
-    suc = app.initConfig()
+def test_initConfig_1(function):
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_2(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
+def test_initConfig_2(function):
+    suc = function.initConfig()
+    assert suc
 
-    del app.app.config['satelliteW']
-    suc = app.initConfig()
+    function.app.config['satelliteW'] = {'winPosX': 10000}
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_3(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
+def test_initConfig_3(function):
+    suc = function.initConfig()
+    assert suc
 
-    app.app.config['satelliteW'] = {}
-    app.app.config['satelliteW']['winPosX'] = 10000
-    app.app.config['satelliteW']['winPosY'] = 10000
-    suc = app.initConfig()
+    function.app.config['satelliteW'] = {'winPosY': 10000}
+    suc = function.initConfig()
     assert suc
 
 
-def test_storeConfig_1(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
+def test_storeConfig_1(function):
+    if 'satelliteW' in function.app.config:
+        del function.app.config['satelliteW']
 
-    if 'satelliteW' in app.app.config:
-        del app.app.config['satelliteW']
-    suc = app.storeConfig()
+    suc = function.storeConfig()
     assert suc
 
 
-def test_storeConfig_2(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
+def test_storeConfig_2(function):
+    function.app.config['satelliteW'] = {}
 
-    app.app.config['satelliteW'] = {}
-    suc = app.storeConfig()
+    suc = function.storeConfig()
     assert suc
 
 
-def test_closeEvent_1(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    app.closeEvent(QCloseEvent())
-
-
-def test_resizeEvent(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    app.resizeEvent(None)
+def test_closeEvent_1(function):
+    with mock.patch.object(function,
+                           'show'):
+        with mock.patch.object(MWidget,
+                               'closeEvent'):
+            function.closeEvent(QCloseEvent)
 
 
-def test_updatePositions_1(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
+def test_showWindow(function):
+    with mock.patch.object(function,
+                           'drawSatellite'):
+        with mock.patch.object(MWidget,
+                               'show'):
+            suc = function.showWindow()
+            assert suc
 
-    suc = app.updatePositions()
+
+def test_markerSatellite(function):
+    val = function.markerSatellite()
+    assert val is not None
+
+
+def test_updatePositions_1(function):
+    suc = function.updatePositions()
     assert not suc
 
 
-def test_updatePositions_2(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    suc = app.updatePositions(observe='t')
+def test_updatePositions_2(function):
+    suc = function.updatePositions(observe='t')
     assert not suc
 
 
-def test_updatePositions_3(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    suc = app.updatePositions(observe='t', subpoint='t')
+def test_updatePositions_3(function):
+    suc = function.updatePositions(observe='t', subpoint='t')
     assert not suc
 
 
-def test_updatePositions_4(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    suc = app.updatePositions(observe='t', subpoint='t', altaz='t')
+def test_updatePositions_4(function):
+    suc = function.updatePositions(observe='t', subpoint='t', altaz='t')
     assert not suc
 
 
-def test_updatePositions_5(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-    app.satellite = 1
-
-    suc = app.updatePositions(observe='t', subpoint='t', altaz='t')
+def test_updatePositions_5(function):
+    function.satellite = 1
+    suc = function.updatePositions(observe='t', subpoint='t', altaz='t')
     assert not suc
 
 
-def test_updatePositions_6(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-    app.satellite = 1
-    app.plotSatPosEarth = 1
+def test_updatePositions_6(function):
+    function.satellite = 1
+    function.plotSatPosEarth = 1
 
-    suc = app.updatePositions(observe='t', subpoint='t', altaz='t')
+    suc = function.updatePositions(observe='t', subpoint='t', altaz='t')
     assert not suc
 
 
-def test_updatePositions_7(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-    app.satellite = 1
-    app.plotSatPosEarth = 1
-    app.plotSatPosHorizon = 1
+def test_updatePositions_7(function):
+    function.satellite = 1
+    function.plotSatPosEarth = 1
+    function.plotSatPosHorizon = 1
 
-    suc = app.updatePositions(observe='t', subpoint='t', altaz='t')
+    suc = function.updatePositions(observe='t', subpoint='t', altaz='t')
     assert not suc
 
 
-def test_updatePositions_8(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-    app.satellite = 1
-    app.plotSatPosEarth = 1
-    app.plotSatPosHorizon = 1
-    app.plotSatPosSphere1 = 1
+def test_updatePositions_8(function):
+    function.satellite = 1
+    function.plotSatPosEarth = 1
+    function.plotSatPosHorizon = 1
+    function.plotSatPosSphere1 = 1
 
-    suc = app.updatePositions(observe='t', subpoint='t', altaz='t')
+    suc = function.updatePositions(observe='t', subpoint='t', altaz='t')
     assert not suc
 
 
-def test_updatePositions_9(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
+def test_updatePositions_9(function):
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
-    app.plotSatPosEarth, = plt.plot([1, 0], [1, 0])
-    app.plotSatPosHorizon, = plt.plot([1, 0], [1, 0])
-    app.plotSatPosSphere1, = ax.plot([1], [1], [1])
-    app.plotSatPosSphere2, = ax.plot([1], [1], [1])
+    function.plotSatPosEarth, = plt.plot([1, 0], [1, 0])
+    function.plotSatPosHorizon, = plt.plot([1, 0], [1, 0])
+    function.plotSatPosSphere1, = ax.plot([1], [1], [1])
+    function.plotSatPosSphere2, = ax.plot([1], [1], [1])
 
-    now = app.app.mount.obsSite.ts.now()
-    observe = app.satellite.at(now)
+    now = function.app.mount.obsSite.ts.now()
+    observe = function.satellite.at(now)
     subpoint = observe.subpoint()
-    difference = app.satellite - app.app.mount.obsSite.location
+    difference = function.satellite - function.app.mount.obsSite.location
     altaz = difference.at(now).altaz()
 
-    with mock.patch.object(app.plotSatPosSphere1,
+    with mock.patch.object(function.plotSatPosSphere1,
                            'set_data_3d'):
-        with mock.patch.object(app.plotSatPosSphere2,
+        with mock.patch.object(function.plotSatPosSphere2,
                                'set_data_3d'):
-            with mock.patch.object(app.plotSatPosEarth,
+            with mock.patch.object(function.plotSatPosEarth,
                                    'set_data'):
-                with mock.patch.object(app.plotSatPosHorizon,
+                with mock.patch.object(function.plotSatPosHorizon,
                                        'set_data'):
-                    suc = app.updatePositions(observe=observe,
-                                              subpoint=subpoint,
-                                              altaz=altaz)
+                    suc = function.updatePositions(observe=observe,
+                                                   subpoint=subpoint,
+                                                   altaz=altaz)
                     assert suc
 
 
-def test_makeCubeLimits_1(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
+def test_makeCubeLimits_1(function):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
-    app.makeCubeLimits(ax)
+    function.makeCubeLimits(ax)
 
 
-def test_makeCubeLimits_2(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
+def test_makeCubeLimits_2(function):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
-    app.makeCubeLimits(ax, hw=(1, 2, 3))
+    function.makeCubeLimits(ax, hw=(1, 2, 3))
 
 
-def test_makeCubeLimits_3(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
+def test_makeCubeLimits_3(function):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
-    app.makeCubeLimits(ax, hw=3)
+    function.makeCubeLimits(ax, hw=3)
 
 
-def test_drawSphere1_1(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    app.drawSphere1()
+def test_drawSphere1_1(function):
+    function.drawSphere1()
 
 
-def test_drawSphere2_1(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    app.drawSphere2()
-
-
-def test_drawEarth_1(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    app.drawEarth()
+def test_drawSphere2_1(function):
+    function.app.mount.obsSite.location.latitude = Angle(degrees=45)
+    function.app.mount.obsSite.location.longitude = Angle(degrees=45)
+    function.drawSphere2()
 
 
-def test_drawHorizonView_1(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    app.drawHorizonView()
+def test_drawEarth_1(function):
+    function.drawEarth()
 
 
-def test_drawSatellite_1(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
-
-    suc = app.drawSatellite()
+def test_staticHorizon_1(function):
+    function.app.data.horizonP = []
+    axe, _ = function.generateFlat(widget=function.satHorizonMat, horizon=False)
+    suc = function.staticHorizon(axe)
     assert not suc
 
 
-def test_drawSatellite_2(qtbot):
-    app = SatelliteWindow(app=Test())
-    qtbot.addWidget(app)
+def test_staticHorizon_2(function):
+    axe, _ = function.generateFlat(widget=function.satHorizonMat, horizon=False)
+    function.app.data.horizonP = [(0, 0), (0, 360)]
+    suc = function.staticHorizon(axe)
+    assert suc
 
+
+def test_drawHorizonView_1(function):
+    function.drawHorizonView()
+
+
+def test_drawSatellite_1(function):
+    with mock.patch.object(function,
+                           'drawSphere1'):
+        with mock.patch.object(function,
+                               'drawSphere2'):
+            with mock.patch.object(function,
+                                   'drawEarth'):
+                with mock.patch.object(function,
+                                       'drawHorizonView'):
+                    suc = function.drawSatellite()
+                    assert not suc
+
+
+def test_drawSatellite_2(function, module):
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
-    tt = Test().mount.obsSite.ts.now().tt
+    tt = module.now().tt
 
-    t0 = Test().mount.obsSite.ts.tt_jd(tt + 0)
-    t1 = Test().mount.obsSite.ts.tt_jd(tt + 0.1)
-    t2 = Test().mount.obsSite.ts.tt_jd(tt + 0.2)
-    t3 = Test().mount.obsSite.ts.tt_jd(tt + 0.3)
+    t0 = module.tt_jd(tt + 0)
+    t1 = module.tt_jd(tt + 0.1)
+    t2 = module.tt_jd(tt + 0.2)
+    t3 = module.tt_jd(tt + 0.3)
 
     satOrbits = {0: {'rise': t0,
                      'settle': t1},
@@ -319,5 +282,49 @@ def test_drawSatellite_2(qtbot):
                      'settle': t3}
                  }
 
-    suc = app.drawSatellite(satellite=satellite, satOrbits=satOrbits)
-    assert suc
+    with mock.patch.object(function,
+                           'drawSphere1'):
+        with mock.patch.object(function,
+                               'drawSphere2'):
+            with mock.patch.object(function,
+                                   'drawEarth'):
+                with mock.patch.object(function,
+                                       'drawHorizonView'):
+                    suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)
+                    assert suc
+
+
+def test_drawSatellite_3(function, module):
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 00.03279710179072"]
+    satellite = EarthSatellite(*tle[1:3], name=tle[0])
+
+    tt = module.now().tt
+
+    t0 = module.tt_jd(tt + 0)
+    t1 = module.tt_jd(tt + 0.1)
+    t2 = module.tt_jd(tt + 0.2)
+    t3 = module.tt_jd(tt + 0.3)
+    t4 = module.tt_jd(tt + 0.4)
+    t5 = module.tt_jd(tt + 0.5)
+
+    satOrbits = {0: {'rise': t0,
+                     'settle': t1},
+                 1: {'rise': t2,
+                     'settle': t3},
+                 2: {'rise': t3,
+                     'settle': t4},
+                 3: {'rise': t4,
+                     'settle': t5}
+                 }
+    with mock.patch.object(function,
+                           'drawSphere1'):
+        with mock.patch.object(function,
+                               'drawSphere2'):
+            with mock.patch.object(function,
+                                   'drawEarth'):
+                with mock.patch.object(function,
+                                       'drawHorizonView'):
+                    suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)
+                    assert suc

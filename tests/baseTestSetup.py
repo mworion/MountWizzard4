@@ -20,6 +20,7 @@ from queue import Queue
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
+from skyfield.api import Topos
 
 # local import
 
@@ -172,6 +173,7 @@ class Mount(QObject):
         pointDone = pyqtSignal()
 
     class MountObsSite:
+
         class Location:
             latitude = None
             longitude = None
@@ -191,7 +193,8 @@ class Mount(QObject):
         angularPosDEC = None
         AzTarget = None
         AltTarget = None
-        location = Location()
+        location = Topos(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+        ts = None
         timeJD = TimeJD()
 
         @staticmethod

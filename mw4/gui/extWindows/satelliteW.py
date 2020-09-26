@@ -88,13 +88,10 @@ class SatelliteWindow(widget.MWidget):
         self.signals.show.connect(self.drawSatellite)
         self.signals.update.connect(self.updatePositions)
 
-        # as we cannot access data from Qt resource system, we have to convert it to
-        # ByteIO first
         stream = QFile(':/data/worldmap.dat')
         stream.open(QFile.ReadOnly)
         pickleData = stream.readAll()
         stream.close()
-        # loading the world image from nasa as PNG as matplotlib only loads png.
         self.world = pickle.load(BytesIO(pickleData))
 
     def initConfig(self):
@@ -111,10 +108,13 @@ class SatelliteWindow(widget.MWidget):
         config = self.app.config['satelliteW']
         x = config.get('winPosX', 160)
         y = config.get('winPosY', 160)
+
         if x > self.screenSizeX:
             x = 0
+
         if y > self.screenSizeY:
             y = 0
+
         self.move(x, y)
         height = config.get('height', 600)
         width = config.get('width', 800)
@@ -132,7 +132,9 @@ class SatelliteWindow(widget.MWidget):
         """
         if 'satelliteW' not in self.app.config:
             self.app.config['satelliteW'] = {}
+
         config = self.app.config['satelliteW']
+
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
@@ -149,8 +151,6 @@ class SatelliteWindow(widget.MWidget):
         :return:
         """
         self.storeConfig()
-
-        # gui signals
         super().closeEvent(closeEvent)
 
     def showWindow(self):

@@ -26,6 +26,7 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
+from skyfield.api import Topos
 
 # local import
 from gui.mainWmixin.tabManageModel import ManageModel
@@ -42,6 +43,7 @@ def module_setup_teardown(qtbot):
         threadPool = QThreadPool()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData=Path('tests/data'))
+        mount.obsSite.location = Topos(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
         mwGlob = {'imageDir': 'tests/image',
@@ -85,15 +87,15 @@ def test_initConfig_1():
                            'showModelPosition'):
         app.initConfig()
         assert app.ui.targetRMS.value() == 99
-        assert not app.ui.checkShowErrorValues.isChecked()
+        assert not app.ui.showErrorValues.isChecked()
 
 
 def test_storeConfig_1():
     app.ui.targetRMS.setValue(33)
-    app.ui.checkShowErrorValues.setChecked(True)
+    app.ui.showErrorValues.setChecked(True)
     app.storeConfig()
     conf = app.app.config['mainW']
-    assert conf['checkShowErrorValues']
+    assert conf['showErrorValues']
     assert 33 == conf['targetRMS']
 
 
@@ -116,31 +118,31 @@ def test_showModelPosition_1():
                                     '17:43:41.26,+59*15:30.7,   8.4,005',
                                     ],
                                    4)
-    app.ui.checkShowErrorValues.setChecked(True)
-    suc = app.showModelPosition(app.app.mount.model)
+    app.ui.showErrorValues.setChecked(True)
+    suc = app.showModelPosition()
     assert suc
 
 
 def test_showModelPosition_2():
     app.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
     app.app.mount.model._starList = list()
-    app.ui.checkShowErrorValues.setChecked(True)
-    suc = app.showModelPosition(app.app.mount.model)
+    app.ui.showErrorValues.setChecked(True)
+    suc = app.showModelPosition()
     assert not suc
 
 
 def test_showModelPosition_3():
     app.app.mount.obsSite.location = []
     app.app.mount.model._starList = list()
-    app.ui.checkShowErrorValues.setChecked(True)
-    suc = app.showModelPosition(app.app.mount.model)
+    app.ui.showErrorValues.setChecked(True)
+    suc = app.showModelPosition()
     assert not suc
 
 
 def test_showModelPosition_4():
-    app.ui.checkShowErrorValues.setChecked(True)
+    app.ui.showErrorValues.setChecked(True)
     app.app.mount.model._starList = list()
-    suc = app.showModelPosition(app.app.mount.model)
+    suc = app.showModelPosition()
     assert not suc
 
 
@@ -152,27 +154,27 @@ def test_showErrorAscending_1():
                                     '17:43:41.26,+59*15:30.7,   8.4,005',
                                     ],
                                    4)
-    suc = app.showErrorAscending(app.app.mount.model)
+    suc = app.showErrorAscending()
     assert suc
 
 
 def test_showErrorAscending_2():
     app.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
     app.app.mount.model._starList = list()
-    suc = app.showErrorAscending(app.app.mount.model)
+    suc = app.showErrorAscending()
     assert not suc
 
 
 def test_showErrorAscending_3():
     app.app.mount.obsSite.location = []
     app.app.mount.model._starList = list()
-    suc = app.showErrorAscending(app.app.mount.model)
+    suc = app.showErrorAscending()
     assert not suc
 
 
 def test_showErrorAscending_4():
     app.app.mount.model._starList = list()
-    suc = app.showErrorAscending(app.app.mount.model)
+    suc = app.showErrorAscending()
     assert not suc
 
 
@@ -184,27 +186,27 @@ def test_showErrorDistribution_1():
                                     '17:43:41.26,+59*15:30.7,   8.4,005',
                                     ],
                                    4)
-    suc = app.showErrorDistribution(app.app.mount.model)
+    suc = app.showErrorDistribution()
     assert suc
 
 
 def test_showErrorDistribution_2():
     app.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
     app.app.mount.model._starList = list()
-    suc = app.showErrorDistribution(app.app.mount.model)
+    suc = app.showErrorDistribution()
     assert not suc
 
 
 def test_showErrorDistribution_3():
     app.app.mount.obsSite.location = []
     app.app.mount.model._starList = list()
-    suc = app.showErrorDistribution(app.app.mount.model)
+    suc = app.showErrorDistribution()
     assert not suc
 
 
 def test_showErrorDistribution_4():
     app.app.mount.model._starList = list()
-    suc = app.showErrorDistribution(app.app.mount.model)
+    suc = app.showErrorDistribution()
     assert not suc
 
 
@@ -459,6 +461,7 @@ def test_deleteWorstPoint_1():
 def test_deleteWorstPoint_2():
     app.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
     app.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    app.app.mount.model.numberStars = 2
     with mock.patch.object(app.app.mount.model,
                            'deletePoint',
                            return_value=True):

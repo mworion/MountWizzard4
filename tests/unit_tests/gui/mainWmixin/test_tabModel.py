@@ -149,7 +149,7 @@ def test_updateProgress_4(app):
 
 def test_updateProgress_5(app):
     app.startModeling = time.time()
-    suc = app.updateProgress(number=3, count=0)
+    suc = app.updateProgress(number=3, count=1)
     assert suc
 
 
@@ -187,6 +187,7 @@ def test_modelSolveDone_0(qtbot, app):
 
 
 def test_modelSolveDone_1(qtbot, app):
+    app.startModeling = time.time()
     mPoint = {'lenSequence': 3,
               'countSequence': 3}
 

@@ -24,8 +24,8 @@ import json
 from datetime import datetime
 
 # external packages
-import PyQt5.uic
 from PyQt5.QtTest import QTest
+from PyQt5.QtCore import QObject, pyqtSignal
 from mountcontrol.alignStar import AlignStar
 from mountcontrol.convert import convertToHMS, convertToDMS
 
@@ -33,7 +33,7 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 from base import transform
 
 
-class QMultiWait(PyQt5.QtCore.QObject):
+class QMultiWait(QObject):
     """
     QMultiWaitable implements a signal collection class for waiting of entering multiple
     signals before firing the "AND" relation of all signals.
@@ -44,7 +44,7 @@ class QMultiWait(PyQt5.QtCore.QObject):
     in addition all received signals could be reset
     """
 
-    ready = PyQt5.QtCore.pyqtSignal()
+    ready = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -246,7 +246,7 @@ class Model:
         :return: success
         """
 
-        if not 0 <= count < number:
+        if not 0 < count <= number:
             return False
 
         fraction = count / number

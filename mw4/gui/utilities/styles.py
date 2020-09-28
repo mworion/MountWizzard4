@@ -55,13 +55,11 @@ class MWStyles:
     M_BLUE2 = '#0C3648'
     M_BLUE3 = '#082430'
     M_BLUE4 = '#061828'
-    M_BLUE_ALPHA = '#2090C080'
     M_BLACK = '#000000'
     M_WHITE_H = '#F0F0F0'
     M_WHITE = '#A0A0A0'
     M_WHITE_L = '#808080'
     M_GREY = '#404040'
-    M_GREY_ALPHA = '#40404080'
     M_GREY_LIGHT = '#202020'
     M_GREY_DARK = '#101010'
     M_GREEN_H = '#00A000'
@@ -69,13 +67,11 @@ class MWStyles:
     M_GREEN_L = '#004000'
     M_GREEN_LL = '#003000'
     M_RED = '#B03030'
-    M_RED_ALPHA = '#B0303080'
     M_PINK_H = '#F000F0'
     M_PINK = '#B000B0'
     M_YELLOW_H = '#FFFF00'
     M_YELLOW = '#C0C000'
     M_YELLOW_L = '#808000'
-    M_YELLOW_L_ALPHA = '#80800080'
 
     # define the basic style of the mountwizzard3 theme
     # rise the font size for retina displays

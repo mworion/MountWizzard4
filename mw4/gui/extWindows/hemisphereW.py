@@ -701,7 +701,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                                2 * slew,
                                                90,
                                                zorder=-5,
-                                               color=self.M_BLUE_ALPHA,
+                                               color=self.M_BLUE,
+                                               alpha=0.5,
                                                visible=visible)
         axes.add_patch(self.meridianSlew)
 
@@ -715,7 +716,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                                 2 * track,
                                                 90,
                                                 zorder=-10,
-                                                color=self.M_YELLOW_L_ALPHA,
+                                                color=self.M_YELLOW,
+                                                alpha=0.5,
                                                 visible=visible)
         axes.add_patch(self.meridianTrack)
 
@@ -744,13 +746,15 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                                    360,
                                                    90 - high,
                                                    zorder=-30,
-                                                   color=self.M_RED_ALPHA,
+                                                   color=self.M_RED,
+                                                   alpha=0.5,
                                                    visible=True)
         self.horizonLimitLow = mpatches.Rectangle((0, 0),
                                                   360,
                                                   low,
                                                   zorder=-30,
-                                                  color=self.M_RED_ALPHA,
+                                                  color=self.M_RED,
+                                                  alpha=0.5,
                                                   visible=True)
         axes.add_patch(self.horizonLimitHigh)
         axes.add_patch(self.horizonLimitLow)
@@ -815,7 +819,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                               30,
                                               88,
                                               zorder=-30,
-                                              color=self.M_GREY_ALPHA,
+                                              color=self.M_GREY,
+                                              alpha=0.5,
                                               lw=3,
                                               clip_on=True,
                                               fill=True,

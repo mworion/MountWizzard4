@@ -32,6 +32,23 @@ from gui.extWindows.hemisphereWext import HemisphereWindowExt
 class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
     """
     the hemisphere window class handles all interaction with model points show / edit etc.
+    the z orders is aligned as follows:
+    there are two planes static / moving where the moving is behind the static one. the
+    static on has to be transparent.
+    
+    on the static plane we have (and set to the z order)
+        - horizon               0
+        - horizon limits        0
+        - meridian limit track  10
+        - meridian limit slew   15
+        - celestial path        20
+        - alignment stars       30
+        - build points          40
+        - checked build points  50
+        
+    on the moving plane we have (and set to the z order)
+        - dome                  0
+        - pointing marker       10
 
     """
 
@@ -542,6 +559,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        xycoords='data',
                                        color=self.M_WHITE_L,
                                        fontsize=12,
+                                       zorder=30,
                                        clip_on=True,
                                        visible=visible,
                                        )
@@ -585,12 +603,14 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.horizonFill, = axes.fill(az,
                                       alt,
                                       color=self.M_GREEN_LL,
-                                      zorder=-20)
+                                      alpha=0.5,
+                                      zorder=0)
         self.horizonMarker, = axes.plot(az,
                                         alt,
                                         color=self.MODE[self.operationMode]['horColor'],
                                         marker=self.MODE[self.operationMode]['horMarker'],
-                                        zorder=-20,
+                                        alpha=0.5,
+                                        zorder=0,
                                         lw=3)
 
         return True
@@ -625,7 +645,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                       lw=lw,
                                       fillstyle='none',
                                       color=self.MODE[self.operationMode]['buildPColor'],
-                                      zorder=20,
+                                      zorder=40,
                                       )
 
         for point in points:
@@ -635,7 +655,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             axes.plot(point[1], point[0],
                       marker='$\u2714$',
                       color=self.M_YELLOW,
-                      zorder=25,
+                      zorder=50,
                       markersize=13,
                       alpha=0.7,
                       markeredgecolor=self.M_BLUE
@@ -657,7 +677,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        xytext=(2, -10),
                                        textcoords='offset points',
                                        color=color,
-                                       zorder=10,
+                                       zorder=40,
                                        )
             self.pointsBuildAnnotate.append(annotation)
 
@@ -680,6 +700,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                         '.',
                                         markersize=1,
                                         fillstyle='none',
+                                        zorder=20,
                                         color=self.M_WHITE_L,
                                         visible=visible)
         return True
@@ -700,7 +721,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.meridianSlew = mpatches.Rectangle((180 - slew, 0),
                                                2 * slew,
                                                90,
-                                               zorder=-5,
+                                               zorder=15,
                                                color=self.M_BLUE,
                                                alpha=0.5,
                                                visible=visible)
@@ -715,7 +736,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.meridianTrack = mpatches.Rectangle((180 - track, 0),
                                                 2 * track,
                                                 90,
-                                                zorder=-10,
+                                                zorder=10,
                                                 color=self.M_YELLOW,
                                                 alpha=0.5,
                                                 visible=visible)
@@ -745,14 +766,14 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.horizonLimitHigh = mpatches.Rectangle((0, high),
                                                    360,
                                                    90 - high,
-                                                   zorder=-30,
+                                                   zorder=-10,
                                                    color=self.M_RED,
                                                    alpha=0.5,
                                                    visible=True)
         self.horizonLimitLow = mpatches.Rectangle((0, 0),
                                                   360,
                                                   low,
-                                                  zorder=-30,
+                                                  zorder=-10,
                                                   color=self.M_RED,
                                                   alpha=0.5,
                                                   visible=True)
@@ -818,9 +839,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.pointerDome = mpatches.Rectangle((165, 1),
                                               30,
                                               88,
-                                              zorder=-30,
+                                              zorder=0,
                                               color=self.M_GREY,
-                                              alpha=0.5,
                                               lw=3,
                                               clip_on=True,
                                               fill=True,
@@ -850,7 +870,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                      markersize=7,
                                      linestyle='',
                                      color=self.MODE[self.operationMode]['starColor'],
-                                     zorder=-20,
+                                     zorder=30,
                                      visible=visible,
                                      )
         for alt, az, name in zip(hip.alt, hip.az, hip.name):
@@ -860,6 +880,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        textcoords='offset points',
                                        xycoords='data',
                                        color=self.M_WHITE_L,
+                                       zorder=30,
                                        fontsize=12,
                                        clip_on=True,
                                        visible=visible,

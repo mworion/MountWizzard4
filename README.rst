@@ -48,7 +48,7 @@ Version, build and code coverage status
 
 |PYTEST MacOS| |PYTEST Win| 
 
-|CODECOV| |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS|
+|CODE_QUALITY_PYTHON| |CODECOV| |CODE_QUALITY_ALERTS|
 
 |6U| |6W| |6M|
 

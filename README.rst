@@ -46,13 +46,9 @@ Version, build and code coverage status
 ---------------------------------------
 |PYPI_VERSION| |DownLoadsAbs| |DownLoadsMonth|
 
-|PYTEST MacOS| |PYTEST Win| |CODECOV|
+|PYTEST MacOS| |PYTEST Win| 
 
-|CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS|
-
-Coverage chart: 
-
-|CODECOV_CHART|
+|CODECOV| |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS|
 
 |6U| |6W| |6M|
 

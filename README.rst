@@ -2,9 +2,9 @@ MountWizzard4
 =============
 
 Welcome to MountWizzard4 is a utility for 10micron users for improving the workflow for
-astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu tested). As a python
-application, it should run in all environments supporting python 3.6-3.8 and PyQt5 as a Gui
-framework.
+astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu 18.04 tested). As a 
+python application, it should run in all environments supporting python 3.6-3.8 and PyQt5 
+as a GUI framework.
 
 For being fully operational, MW4 needs either:
 
@@ -18,7 +18,7 @@ connect over IP with your environment.
 
 For the core devices there is fom 0.150.16 on native ASCOM support (Windows platform only).
 Please be reminded, that ASCOM has 32bit and 64bit driver implementations and MW4 could also
-be installed in 32bit or 64 bit python environment. They could be not be mixed! 32bit python
+be installed in 32bit or 64 bit python environment. They could be not be mixed! 32bit python 
 supports only 32bit drivers and vice versa. Normally this should not be an issue...
 
 In addition an online connection is used for some services which might be very helpful.
@@ -28,8 +28,8 @@ functions don't work with older firmware versions. It should not be a problem us
 versions. A HW pre2012 might also have some issues.
 
 Documentation
--------------
-|DOCS| There is an online documentation for MW4 available:
+^^^^^^^^^^^^^
+There is an online documentation for MW4 available:
 
 Web based: https://mountwizzard4.readthedocs.io
 
@@ -39,11 +39,15 @@ Installing procedures: https://mountwizzard4.readthedocs.io/en/latest/install/in
 
 Changelog: https://mountwizzard4.readthedocs.io/en/latest/changelog.html
 
-Youtube in the channel: https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/
+Status: |DOCS|
+
+And there are some video for explanation available in the Youtube in the channel: 
+
+https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/
 
 
 Version, build and code coverage status
----------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 |PYPI_VERSION| |DownLoadsAbs| |DownLoadsMonth|
 
 |PYTEST MacOS| |PYTEST Win| 
@@ -57,14 +61,13 @@ Version, build and code coverage status
 |8U| |8W| |8M|
 
 Feedback and issue reports
--——————-————--———--—-————-
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 Please report your issues: https://github.com/mworion/MountWizzard4/issues. Please have a good description (maybe a screenshot if it‘s related to GUI) and add the log file(s) to the issue. Any feedback welcome!
 
 Finally
--------
+^^^^^^^
 MountWizzard4 is still in beta development. The use this software is at your own risk! No
-responsibility for damages to your mount or other equipment or your environment, please take
-care yourself!
+responsibility for damages to your mount or other equipment or your environment, please take care yourself!
 
 Hope this tool makes fun and helps for your hobby,
 

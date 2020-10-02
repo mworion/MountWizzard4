@@ -355,7 +355,7 @@ class Almanac:
         location = self.app.mount.obsSite.location
 
         if location is None:
-            return False
+            return [], []
 
         t0 = ts.tt_jd(int(timeJD.tt))
         t1 = ts.tt_jd(int(timeJD.tt) + 1)

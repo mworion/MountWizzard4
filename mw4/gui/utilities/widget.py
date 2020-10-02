@@ -27,7 +27,7 @@ import numpy as np
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, qApp, QFileDialog
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtGui import QPalette, QIcon
-from PyQt5.QtCore import Qt, QSortFilterProxyModel, QSize, QDir, QObject, pyqtSignal, QEvent
+from PyQt5.QtCore import Qt, QSortFilterProxyModel, QDir, QObject, pyqtSignal, QEvent
 from PyQt5.QtCore import QSize
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvas
@@ -530,7 +530,7 @@ class MWidget(QWidget, styles.MWStyles):
     @staticmethod
     def embedMatplot(widget=None, constrainedLayout=True):
         """
-        Embedmatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5
+        embedMatplot provides the wrapper to use matplotlib drawings inside a pyqt5
         application gui. you call it with the parent widget, which is linked to matplotlib
         canvas of the same size. the background is set to transparent, so you could layer
         multiple figures on top.
@@ -543,14 +543,13 @@ class MWidget(QWidget, styles.MWStyles):
         if not widget:
             return None
 
-        # to avoid a white flash before drawing on top.
         widget.setStyleSheet("background:transparent;")
         layout = QVBoxLayout(widget)
         layout.setContentsMargins(0, 0, 0, 0)
         staticCanvas = FigureCanvas(Figure(dpi=75,
-                                           facecolor='none',
+                                           facecolor='None',
                                            frameon=False,
-                                           constrained_layout=constrainedLayout,
+                                           tight_layout=constrainedLayout,
                                            )
                                     )
         FigureCanvasQTAgg.updateGeometry(staticCanvas)
@@ -577,7 +576,7 @@ class MWidget(QWidget, styles.MWStyles):
         with lock:
             fig = widget.figure
             fig.clf()
-            axe = fig.add_subplot(1, 1, 1, polar=True, facecolor=self.M_GREY_DARK)
+            axe = fig.add_subplot(1, 1, 1, polar=True, facecolor='None')
             axe.grid(True, color=self.M_GREY)
 
             if title:
@@ -597,12 +596,13 @@ class MWidget(QWidget, styles.MWStyles):
 
             return axe, fig
 
-    def generateFlat(self, widget=None, title='', horizon=False):
+    def generateFlat(self, widget=None, title='', horizon=False, showAxes=True):
         """
 
         :param widget:
         :param title:
         :param horizon:
+        :param showAxes:
         :return:
         """
 
@@ -613,48 +613,61 @@ class MWidget(QWidget, styles.MWStyles):
             return None, None
 
         lock = Lock()
+        if showAxes:
+            color = self.M_BLUE
+        else:
+
+            color = self.M_TRANS
+
         with lock:
             figure = widget.figure
-            figure.clf()
-            axe = figure.add_subplot(1, 1, 1, facecolor=self.M_GREY_DARK)
+            if figure.axes:
+                axe = figure.axes[0]
+                axe.cla()
+            else:
+                figure.clf()
+                axe = figure.add_subplot(1, 1, 1, facecolor='None')
 
-            axe.spines['bottom'].set_color(self.M_BLUE)
-            axe.spines['top'].set_color(self.M_BLUE)
-            axe.spines['left'].set_color(self.M_BLUE)
-            axe.spines['right'].set_color(self.M_BLUE)
-            axe.grid(True, color=self.M_GREY)
+            axe.spines['bottom'].set_color(color)
+            axe.spines['top'].set_color(color)
+            axe.spines['left'].set_color(color)
+            axe.spines['right'].set_color(color)
+            axe.grid(showAxes, color=self.M_GREY)
 
             if title:
-                axe.set_title(title, color=self.M_BLUE, fontweight='bold', pad=15)
+                axe.set_title(title, color=color, fontweight='bold', pad=15)
 
-            axe.set_xlabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
-            axe.set_ylabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
-            axe.tick_params(axis='x', colors=self.M_BLUE, labelsize=12)
-            axe.tick_params(axis='y', colors=self.M_BLUE, labelsize=12)
+            axe.set_xlabel('', color=color, fontweight='bold', fontsize=12)
+            axe.set_ylabel('', color=color, fontweight='bold', fontsize=12)
+            axe.tick_params(axis='x', colors=color, labelsize=12)
+            axe.tick_params(axis='y', colors=color, labelsize=12)
 
             if not horizon:
                 return axe, figure
 
             axe.set_xlim(0, 360)
             axe.set_ylim(0, 90)
+
             axe.set_xticks(np.arange(0, 361, 45))
             axe.set_xticklabels(['0', '45', '90', '135', '180', '225', '270', '315', '360'])
-            axe.set_xlabel('Azimuth [degrees]', color=self.M_BLUE, fontweight='bold',
+            axe.set_xlabel('Azimuth [degrees]', color=color, fontweight='bold',
                            fontsize=12)
-            axe.set_ylabel('Altitude [degrees]', color=self.M_BLUE, fontweight='bold',
+            axe.set_ylabel('Altitude [degrees]', color=color, fontweight='bold',
                            fontsize=12)
-
+            """
             axeTop = axe.twiny()
             axeTop.set_facecolor((0, 0, 0, 0))
             axeTop.set_xlim(0, 360)
-            axeTop.tick_params(axis='x', top=True, colors=self.M_BLUE, labelsize=12)
+            axeTop.set_ylim(0, 90)
+            axeTop.tick_params(axis='x', top=True, colors=color, labelsize=12)
             axeTop.set_xticks(np.arange(0, 361, 45))
             axeTop.grid(False)
             axeTop.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'])
-            axeTop.spines['bottom'].set_color(self.M_BLUE)
-            axeTop.spines['top'].set_color(self.M_BLUE)
-            axeTop.spines['left'].set_color(self.M_BLUE)
-            axeTop.spines['right'].set_color(self.M_BLUE)
+            axeTop.spines['bottom'].set_color(color)
+            axeTop.spines['top'].set_color(color)
+            axeTop.spines['left'].set_color(color)
+            axeTop.spines['right'].set_color(color)
+            """
 
             return axe, figure
 

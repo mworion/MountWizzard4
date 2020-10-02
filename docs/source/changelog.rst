@@ -24,6 +24,7 @@ Unreleased Betas
 
 Released betas
 --------------
+
 0.160.0
 
 ..note::
@@ -56,7 +57,6 @@ Released betas
 - update importlib_metadata to 2.0.0
 - update opencv-python-headless to 4.4.0.44
 - adding good / total points to analyse window
-
 
 0.151.2
 

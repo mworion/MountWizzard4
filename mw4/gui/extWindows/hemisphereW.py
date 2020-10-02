@@ -19,6 +19,7 @@
 
 # external packages
 import PyQt5
+from PyQt5.QtCore import QRect
 import numpy as np
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
@@ -35,7 +36,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
     the z orders is aligned as follows:
     there are two planes static / moving where the moving is behind the static one. the
     static on has to be transparent.
-    
+
     on the static plane we have (and set to the z order)
         - horizon               0
         - horizon limits        0
@@ -45,7 +46,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         - alignment stars       30
         - build points          40
         - checked build points  50
-        
+
     on the moving plane we have (and set to the z order)
         - dome                  0
         - pointing marker       10
@@ -95,9 +96,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                       starAnnColor=self.M_WHITE_H)
         )
 
-        self.startup = True
-        self.resizeTimerValue = -1
-
         # attributes to be stored in class
         self.pointerAltAz = None
         self.pointerDome = None
@@ -113,11 +111,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.horizonLimitLow = None
         self.celestialPath = None
 
-        # doing the matplotlib embedding
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
-        self.hemisphereMat.parentWidget().setStyleSheet(self.BACK_BG)
-        self.hemisphereBack = None
-        self.hemisphereBackStars = None
+        self.hemisphereMatMove = self.embedMatplot(self.ui.hemisphereMove)
+        self.ui.hemisphereMove.stackUnder(self.ui.hemisphere)
 
     def initConfig(self):
         """
@@ -187,7 +183,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return:
         """
         self.app.update10s.disconnect(self.updateAlignStar)
-        self.app.update0_1s.disconnect(self.resizeTimer)
         self.app.redrawHemisphere.disconnect(self.drawHemisphere)
         self.app.mount.signals.settingDone.disconnect(self.updateSettings)
         self.storeConfig()
@@ -225,31 +220,11 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return:
         """
 
+        geometry = self.ui.hemisphere.geometry()
+        newGeometry = QRect(0, 0, geometry.width(), geometry.height())
+        self.ui.hemisphereMove.setGeometry(newGeometry)
+
         super().resizeEvent(event)
-        if self.startup:
-            self.startup = False
-        else:
-            self.resizeTimerValue = int(self.RESIZE_FINISHED_TIMEOUT / 0.1)
-
-    def resizeTimer(self):
-        """
-        the resize timer is a workaround because when resizing the window, the blit
-        function needs a new scaled background picture to retrieve. otherwise you will get
-        odd picture. unfortunately there is no resize finished event from qt
-        framework itself. problem is you never know, when resizing is finished.
-        it might be the best way to implement a event filter with mouse and resize
-        events to build a resize finished event. so the only quick solution is to wait for
-        some time after we got the last resize event and than draw the widgets
-        from scratch on.
-
-        :return: True for test purpose
-        """
-
-        self.resizeTimerValue -= 1
-        if self.resizeTimerValue == 0:
-            self.drawHemisphere()
-
-        return True
 
     def showWindow(self):
         """
@@ -258,7 +233,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         """
 
         self.app.update10s.connect(self.updateAlignStar)
-        self.app.update0_1s.connect(self.resizeTimer)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.mount.signals.settingDone.connect(self.updateSettings)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
@@ -284,58 +258,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.show()
         self.drawHemisphere()
 
-        return True
-
-    def drawBlit(self):
-        """
-        There were some optimizations in with regard to drawing speed derived from:
-        https://stackoverflow.com/questions/8955869/why-is-plotting-with-matplotlib-so-slow
-        so whenever a draw canvas is made, I store the background and painting the
-        pointers is done via blit.
-
-        :return: success
-        """
-
-        if not self.mutexDraw.tryLock():
-            return False
-
-        if self.hemisphereMat.figure.axes and self.hemisphereBackStars:
-            axe = self.hemisphereMat.figure.axes[0]
-            axe.figure.canvas.restore_region(self.hemisphereBackStars)
-            self.pointerAltAz.set_visible(True)
-            axe.draw_artist(self.pointerAltAz)
-            axe.draw_artist(self.pointerDome)
-            axe.figure.canvas.blit(axe.bbox)
-
-        self.mutexDraw.unlock()
-
-        return True
-
-    def drawBlitStars(self):
-        """
-        The alignment stars were the second layer to be draw.
-
-        There were some optimizations in with regard to drawing speed derived from:
-        https://stackoverflow.com/questions/8955869/why-is-plotting-with-matplotlib-so-slow
-        so whenever a draw canvas is made, I store the background and painting the
-        pointers is done via blit.
-
-        :return: success
-        """
-
-        if not self.mutexDraw.tryLock():
-            return False
-
-        if self.hemisphereMat.figure.axes and self.hemisphereBack:
-            axe = self.hemisphereMat.figure.axes[0]
-            axe.figure.canvas.restore_region(self.hemisphereBack)
-            axe.draw_artist(self.starsAlign)
-            for annotation in self.starsAlignAnnotate:
-                axe.draw_artist(annotation)
-            axe.figure.canvas.blit(axe.bbox)
-            self.hemisphereBackStars = axe.figure.canvas.copy_from_bbox(axe.bbox)
-
-        self.mutexDraw.unlock()
         return True
 
     def updateCelestialPath(self):
@@ -453,7 +375,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         suc = self.updateMeridian(sett) or suc
 
         if suc:
-            self.drawHemisphere()
+            self.hemisphereMat.figure.canvas.draw()
 
         return suc
 
@@ -474,20 +396,17 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         obsSite = self.app.mount.obsSite
 
-        if obsSite.Alt is None:
+        if obsSite.Alt is None or obsSite.Az is None or self.pointerAltAz is None:
+            self.pointerAltAz.set_visible(False)
             return False
 
-        if obsSite.Az is None:
-            return False
-
-        if self.pointerAltAz is None:
-            return False
+        else:
+            self.pointerAltAz.set_visible(True)
 
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
-
-        self.drawBlit()
+        self.hemisphereMatMove.figure.canvas.draw()
 
         return True
 
@@ -514,7 +433,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.pointerDome.set_xy((azimuth - 15, 1))
         self.pointerDome.set_visible(visible)
 
-        self.drawBlit()
+        self.hemisphereMatMove.figure.canvas.draw()
 
         return True
 
@@ -564,7 +483,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        visible=visible,
                                        )
             self.starsAlignAnnotate.append(annotation)
-        self.drawBlitStars()
+
+        self.hemisphereMat.figure.canvas.draw()
+
         return True
 
     def clearHemisphere(self):
@@ -766,14 +687,14 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.horizonLimitHigh = mpatches.Rectangle((0, high),
                                                    360,
                                                    90 - high,
-                                                   zorder=-10,
+                                                   zorder=0,
                                                    color=self.M_RED,
                                                    alpha=0.5,
                                                    visible=True)
         self.horizonLimitLow = mpatches.Rectangle((0, 0),
                                                   360,
                                                   low,
-                                                  zorder=-10,
+                                                  zorder=0,
                                                   color=self.M_RED,
                                                   alpha=0.5,
                                                   visible=True)
@@ -796,9 +717,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return: success
         """
 
-        if not self.mutexDraw.tryLock():
-            return False
-
         self.staticHorizon(axes=axes)
         self.staticCelestialEquator(axes=axes)
         self.staticMeridianLimits(axes=axes)
@@ -806,10 +724,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.staticModelData(axes=axes)
 
         axes.figure.canvas.draw()
-        axes.figure.canvas.flush_events()
-        self.hemisphereBack = axes.figure.canvas.copy_from_bbox(axes.bbox)
-
-        self.mutexDraw.unlock()
 
         return True
 
@@ -840,7 +754,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                               30,
                                               88,
                                               zorder=0,
-                                              color=self.M_GREY,
+                                              color=self.M_GREY_MID,
                                               lw=3,
                                               clip_on=True,
                                               fill=True,
@@ -886,7 +800,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        visible=visible,
                                        )
             self.starsAlignAnnotate.append(annotation)
-        self.drawBlitStars()
+
         return True
 
     def drawHemisphere(self):
@@ -903,14 +817,12 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return: True for test purpose
         """
 
-        # clearing axes before drawing, only static visible, dynamic only when content
-        # is available. visibility is handled with their update method
-        self.hemisphereMat.figure.canvas.draw()
         axe, _ = self.generateFlat(widget=self.hemisphereMat, horizon=True)
+        axeMove, _ = self.generateFlat(widget=self.hemisphereMatMove, horizon=True,
+                                       showAxes=False)
 
-        # calling renderer
         self.drawHemisphereStatic(axes=axe)
-        self.drawHemisphereMoving(axes=axe)
+        self.drawHemisphereMoving(axes=axeMove)
         self.drawAlignmentStars(axes=axe)
 
         return True

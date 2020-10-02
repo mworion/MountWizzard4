@@ -56,10 +56,9 @@ Version, build and code coverage status
 
 |8U| |8W| |8M|
 
-Bug reports
------------
-Please report bugs only under issues: https://github.com/mworion/MountWizzard4/issues.
-Any feedback welcome!
+Feedback and issue reports
+-——————-————--———--—-————-
+Please report your issues: https://github.com/mworion/MountWizzard4/issues. Please have a good description (maybe a screenshot if it‘s related to GUI) and add the log file(s) to the issue. Any feedback welcome!
 
 Finally
 -------

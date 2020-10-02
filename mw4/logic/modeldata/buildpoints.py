@@ -363,7 +363,7 @@ class DataPoint(object):
 
     def isCloseMeridian(self, point):
         """
-        isCloseMeridian check if a point is in inner to meridian slew limit
+        isCloseMeridian check if a point is close to meridian slew / track limits limit
 
         :param point:
         :return: status

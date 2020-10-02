@@ -638,12 +638,15 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         else:
             slew = 0
 
-        visible = self.ui.checkShowMeridian.isChecked()
+        isShow = self.ui.checkShowMeridian.isChecked()
+        isAvailable = slew > 0
+        visible = isShow and isAvailable
+
         self.meridianSlew = mpatches.Rectangle((180 - slew, 0),
                                                2 * slew,
                                                90,
                                                zorder=15,
-                                               color=self.M_BLUE,
+                                               color=self.M_YELLOW,
                                                alpha=0.5,
                                                visible=visible)
         axes.add_patch(self.meridianSlew)
@@ -654,11 +657,14 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         else:
             track = 0
 
+        isAvailable = track > 0
+        visible = isShow and isAvailable
+
         self.meridianTrack = mpatches.Rectangle((180 - track, 0),
                                                 2 * track,
                                                 90,
                                                 zorder=10,
-                                                color=self.M_YELLOW,
+                                                color=self.M_YELLOW_L,
                                                 alpha=0.5,
                                                 visible=visible)
         axes.add_patch(self.meridianTrack)

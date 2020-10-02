@@ -649,25 +649,12 @@ class MWidget(QWidget, styles.MWStyles):
             axe.set_ylim(0, 90)
 
             axe.set_xticks(np.arange(0, 361, 45))
-            axe.set_xticklabels(['0', '45', '90', '135', '180', '225', '270', '315', '360'])
+            axe.set_xticklabels(['0 N', '45 NE', '90 E', '135 SE', '180 S', '225 SW', '270 W',
+                                 '315 NW', '360 N'])
             axe.set_xlabel('Azimuth [degrees]', color=color, fontweight='bold',
                            fontsize=12)
             axe.set_ylabel('Altitude [degrees]', color=color, fontweight='bold',
                            fontsize=12)
-            """
-            axeTop = axe.twiny()
-            axeTop.set_facecolor((0, 0, 0, 0))
-            axeTop.set_xlim(0, 360)
-            axeTop.set_ylim(0, 90)
-            axeTop.tick_params(axis='x', top=True, colors=color, labelsize=12)
-            axeTop.set_xticks(np.arange(0, 361, 45))
-            axeTop.grid(False)
-            axeTop.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'])
-            axeTop.spines['bottom'].set_color(color)
-            axeTop.spines['top'].set_color(color)
-            axeTop.spines['left'].set_color(color)
-            axeTop.spines['right'].set_color(color)
-            """
 
             return axe, figure
 

@@ -335,46 +335,6 @@ class HemisphereWindowExt:
         if not suc:
             return False
 
-        x = event.xdata
-        y = event.ydata
-
-        if self.ui.checkShowSlewPath.isChecked():
-            ls = ':'
-            lw = 1
-
-        else:
-            ls = ''
-            lw = 0
-
-        color = self.M_PINK_H
-
-        if self.pointsBuild is None:
-            newBuildP, = axes.plot(x,
-                                   y,
-                                   marker=self.markerPoint(),
-                                   markersize=9,
-                                   linestyle=ls,
-                                   lw=lw,
-                                   fillstyle='none',
-                                   color=color,
-                                   zorder=20,
-                                   )
-            self.pointsBuild = newBuildP
-
-        xy = (x, y)
-        newAnnotation = axes.annotate('4',
-                                      xy=xy,
-                                      xytext=(2, -10),
-                                      textcoords='offset points',
-                                      color=self.M_WHITE,
-                                      zorder=10,
-                                      )
-
-        if self.pointsBuildAnnotate is None:
-            self.pointsBuildAnnotate = list()
-
-        self.pointsBuildAnnotate.insert(index, newAnnotation)
-
         return True
 
     def deleteBuildPoint(self, data=None, event=None):
@@ -389,10 +349,6 @@ class HemisphereWindowExt:
 
         index = self.getIndexPoint(event=event, plane=data.buildP)
         suc = data.delBuildP(position=index)
-
-        if suc:
-            self.pointsBuildAnnotate[index].remove()
-            del self.pointsBuildAnnotate[index]
 
         return suc
 
@@ -415,17 +371,6 @@ class HemisphereWindowExt:
 
         else:
             return False
-
-        if len(data.buildP):
-            y, x, status = zip(*data.buildP)
-
-        else:
-            y = x = []
-
-        self.pointsBuild.set_data(x, y)
-
-        for i in range(0, len(data.buildP)):
-            self.pointsBuildAnnotate[i].set_text('{0:2d}'.format(i))
 
         self.drawHemisphere()
 

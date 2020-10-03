@@ -184,6 +184,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         """
         self.app.update10s.disconnect(self.updateAlignStar)
         self.app.redrawHemisphere.disconnect(self.drawHemisphere)
+        self.app.updatePointMarker.disconnect(self.updatePointMarker)
         self.app.mount.signals.settingDone.disconnect(self.updateSettings)
         self.storeConfig()
 
@@ -234,6 +235,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         self.app.update10s.connect(self.updateAlignStar)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
+        self.app.updatePointMarker.connect(self.updatePointMarker)
         self.app.mount.signals.settingDone.connect(self.updateSettings)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.dome.signals.azimuth.connect(self.updateDome)
@@ -370,14 +372,14 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         sett = self.app.mount.setting
 
-        suc = self.updateCelestialPath()
-        suc = self.updateHorizonLimits(sett) or suc
-        suc = self.updateMeridian(sett) or suc
+        needDraw = self.updateCelestialPath()
+        needDraw = self.updateHorizonLimits(sett) or needDraw
+        needDraw = self.updateMeridian(sett) or needDraw
 
-        if suc:
+        if needDraw:
             self.hemisphereMat.figure.canvas.draw()
 
-        return suc
+        return needDraw
 
     def updatePointerAltAz(self):
         """
@@ -407,6 +409,41 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
         self.hemisphereMatMove.figure.canvas.draw()
+
+        return True
+
+    def getMarkerStatusParams(self, active, index):
+        if active:
+            marker = self.markerPoint()
+            color = self.MODE[self.operationMode]['buildPColor']
+            markersize = 9
+            annotationText = f'{index + 1:2d}'
+
+        else:
+            marker = '$\u2714$'
+            color = self.M_YELLOW
+            markersize = 11
+            annotationText = f'{index + 1:2d}'
+
+        return marker, markersize, color, annotationText
+
+    def updatePointMarker(self):
+        """
+
+        :return: success
+        """
+
+        for index, point in enumerate(self.app.data.buildP):
+            active = point[2]
+
+            marker, markersize, color, _ = self.getMarkerStatusParams(active, index)
+
+            self.pointsBuild[index].set_marker(marker)
+            self.pointsBuild[index].set_markersize(markersize)
+            self.pointsBuild[index].set_color(color)
+            self.pointsBuildAnnotate[index].set_color(color)
+
+        self.hemisphereMat.figure.canvas.draw()
 
         return True
 
@@ -544,57 +581,37 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return: success
         """
 
-        if not self.app.data.buildP:
+        points = self.app.data.buildP
+
+        if not points:
             return False
 
-        points = self.app.data.buildP
-        alt = [x[0] for x in points]
-        az = [x[1] for x in points]
-
-        if self.ui.checkShowSlewPath.isChecked():
-            ls = ':'
-            lw = 1
-
-        else:
-            ls = ''
-            lw = 0
-
-        self.pointsBuild, = axes.plot(az, alt,
-                                      marker=self.markerPoint(),
-                                      markersize=9,
-                                      linestyle=ls,
-                                      lw=lw,
-                                      fillstyle='none',
-                                      color=self.MODE[self.operationMode]['buildPColor'],
-                                      zorder=40,
-                                      )
-
-        for point in points:
-            if point[2]:
-                continue
-
-            axes.plot(point[1], point[0],
-                      marker='$\u2714$',
-                      color=self.M_YELLOW,
-                      zorder=50,
-                      markersize=13,
-                      alpha=0.7,
-                      markeredgecolor=self.M_BLUE
-                      )
-
+        self.pointsBuild = list()
         self.pointsBuildAnnotate = list()
 
-        for i, point in enumerate(points):
-            if point[2]:
-                annotationText = f'{i + 1:2d}'
-                color = self.M_WHITE
+        for index, point in enumerate(points):
+            az = point[1]
+            alt = point[0]
+            active = point[2]
 
-            else:
-                annotationText = f'{i + 1:2d}'
-                color = self.M_YELLOW
+            marker, markersize, color, text = self.getMarkerStatusParams(active, index)
 
-            annotation = axes.annotate(annotationText,
-                                       xy=(point[1], point[0]),
+            if self.ui.checkShowSlewPath.isChecked() and index > 0:
+                axes.plot((points[index - 1][1], points[index][1]),
+                          (points[index - 1][0], points[index][0]),
+                          ls=':', lw=1, color=self.M_WHITE, zorder=40)
+
+            p, = axes.plot(az, alt,
+                           marker=marker,
+                           markersize=markersize,
+                           fillstyle='none',
+                           color=self.MODE[self.operationMode]['buildPColor'],
+                           zorder=40,
+                           )
+            self.pointsBuild.append(p)
+
+            annotation = axes.annotate(text,
+                                       xy=(az, alt),
                                        xytext=(2, -10),
                                        textcoords='offset points',
                                        color=color,

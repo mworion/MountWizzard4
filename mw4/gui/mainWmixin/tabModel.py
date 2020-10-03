@@ -312,7 +312,7 @@ class Model:
                 self.modelQueue.put(mPoint)
 
                 self.app.data.setStatusBuildP(count - 1, False)
-                self.app.redrawHemisphere.emit()
+                self.app.updatePointMarker.emit()
 
             else:
                 text = f'Solving failed for image-{count:03d}'

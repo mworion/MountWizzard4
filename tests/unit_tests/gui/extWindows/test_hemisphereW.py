@@ -290,6 +290,9 @@ def test_staticHorizonLimits_2(function):
 
 
 def test_drawHemisphereStatic_1(function):
+    function.ui.checkUseHorizon.setChecked(True)
+    function.ui.checkShowCelestial.setChecked(True)
+    function.ui.checkShowMeridian.setChecked(True)
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     suc = function.drawHemisphereStatic(axe)
     assert suc
@@ -311,6 +314,13 @@ def test_drawAlignmentStars_1(function):
     assert suc
 
 
-def test_drawHemisphere(function):
+def test_drawHemisphere_1(function):
+    function.ui.checkShowAlignStar.setChecked(True)
+    suc = function.drawHemisphere()
+    assert suc
+
+
+def test_drawHemisphere_2(function):
+    function.ui.checkShowAlignStar.setChecked(False)
     suc = function.drawHemisphere()
     assert suc

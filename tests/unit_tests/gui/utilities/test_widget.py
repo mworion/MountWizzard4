@@ -22,475 +22,556 @@ import platform
 import os
 # external packages
 import PyQt5.QtWidgets
-from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QComboBox, QFileDialog, QWidget
 import PyQt5.QtTest
 import PyQt5.QtCore
 
 # local import
 from gui.utilities.widget import MWidget
+from gui.utilities.widget import FileSortProxyModel
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global app
-    app = MWidget()
-    qtbot.add_widget(app)
-
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
     yield
 
 
-def test_wIcon_1():
-    suc = app.wIcon()
+@pytest.fixture(autouse=True, scope='function')
+def function(module):
+
+    window = MWidget()
+    yield window
+
+
+def test_FileSortProxyModel_1():
+    w = QWidget()
+    dialog = QFileDialog()
+    dialog.setProxyModel(FileSortProxyModel(w))
+
+
+def test_wIcon_1(function):
+    suc = function.wIcon()
     assert not suc
 
 
-def test_wIcon_2():
+def test_wIcon_2(function):
     icon = PyQt5.QtWidgets.QStyle.SP_DialogApplyButton
-    suc = app.wIcon(icon=icon)
+    suc = function.wIcon(icon=icon)
     assert not suc
 
 
-def test_wIcon_3():
+def test_wIcon_3(function):
     ui = PyQt5.QtWidgets.QPushButton()
-    suc = app.wIcon(gui=ui)
+    suc = function.wIcon(gui=ui)
     assert not suc
 
 
-def test_wIcon_4():
+def test_wIcon_4(function):
     icon = PyQt5.QtWidgets.QStyle.SP_DialogApplyButton
     ui = PyQt5.QtWidgets.QPushButton()
-    suc = app.wIcon(gui=ui, icon=icon)
+    suc = function.wIcon(gui=ui, icon=icon)
     assert suc
 
 
-def test_getStyle_1():
+def test_getStyle_1(function):
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
-        ret = app.getStyle()
-        assert ret == app.MAC_STYLE + app.BASIC_STYLE
+        ret = function.getStyle()
+        assert ret == function.MAC_STYLE + function.BASIC_STYLE
 
 
-def test_getStyle_2():
+def test_getStyle_2(function):
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
-        ret = app.getStyle()
-        assert ret == app.NON_MAC_STYLE + app.BASIC_STYLE
+        ret = function.getStyle()
+        assert ret == function.NON_MAC_STYLE + function.BASIC_STYLE
 
 
-def test_initUI_1():
-    suc = app.initUI()
+def test_initUI_1(function):
+    suc = function.initUI()
     assert suc
 
 
-def test_changeStyleDynamic_1():
-    suc = app.changeStyleDynamic()
+def test_changeStyleDynamic_1(function):
+    suc = function.changeStyleDynamic()
     assert not suc
 
 
-def test_changeStyleDynamic_2():
+def test_changeStyleDynamic_2(function):
     ui = PyQt5.QtWidgets.QPushButton()
-    suc = app.changeStyleDynamic(ui)
+    suc = function.changeStyleDynamic(ui)
     assert not suc
 
 
-def test_changeStyleDynamic_3():
+def test_changeStyleDynamic_3(function):
     ui = PyQt5.QtWidgets.QPushButton()
-    suc = app.changeStyleDynamic(ui, 'color')
+    suc = function.changeStyleDynamic(ui, 'color')
     assert not suc
 
 
-def test_changeStyleDynamic_4():
+def test_changeStyleDynamic_4(function):
     ui = PyQt5.QtWidgets.QPushButton()
-    suc = app.changeStyleDynamic(ui, 'color', 'red')
+    suc = function.changeStyleDynamic(ui, 'color', 'red')
     assert suc
 
 
-def test_embedMatplot_1():
-    ret = app.embedMatplot()
+def test_embedMatplot_1(function):
+    ret = function.embedMatplot()
     assert ret is None
 
 
-def test_embedMatplot_2():
+def test_embedMatplot_2(function):
     ui = PyQt5.QtWidgets.QPushButton()
-    ret = app.embedMatplot(ui)
+    ret = function.embedMatplot(ui)
     assert ret
 
 
-def test_extractNames_0():
+def test_extractNames_0(function):
     name = ''
-    name, short, ext = app.extractNames(name)
+    name, short, ext = function.extractNames(name)
     assert name == ''
     assert short == ''
     assert ext == ''
 
 
-def test_extractNames_1():
+def test_extractNames_1(function):
     name = 1
-    name, short, ext = app.extractNames(name)
+    name, short, ext = function.extractNames(name)
     assert name == ''
     assert short == ''
     assert ext == ''
 
 
-def test_extractNames_2():
+def test_extractNames_2(function):
     name = ['test']
-    name, short, ext = app.extractNames(name)
-    assert name == os.path.abspath(os.getcwd() +'/test')
+    name, short, ext = function.extractNames(name)
+    assert name == os.path.abspath(os.getcwd() + '/test')
     assert short == 'test'
     assert ext == ''
 
 
-def test_extractNames_3():
+def test_extractNames_3(function):
     name = ['c:/test']
-    name, short, ext = app.extractNames(name)
+    name, short, ext = function.extractNames(name)
     assert name == os.path.abspath('c:/test')
     assert short == 'test'
     assert ext == ''
 
 
-def test_extractNames_4():
+def test_extractNames_4(function):
     name = ['c:/test.cfg']
-    name, short, ext = app.extractNames(name)
+    name, short, ext = function.extractNames(name)
     assert name == os.path.abspath('c:/test.cfg')
     assert short == 'test'
     assert ext == '.cfg'
 
 
-def test_extractNames_5():
+def test_extractNames_5(function):
     name = ['c:/test.cfg', 'c:/test.cfg']
-    name, short, ext = app.extractNames(name)
+    name, short, ext = function.extractNames(name)
     assert name == [os.path.abspath('c:/test.cfg'),
                     os.path.abspath('c:/test.cfg')]
     assert short == ['test', 'test']
     assert ext == ['.cfg', '.cfg']
 
 
-def test_extractNames_6():
+def test_extractNames_6(function):
     name = ['', 'c:/test.cfg']
-    name, short, ext = app.extractNames(name)
+    name, short, ext = function.extractNames(name)
     assert name == [os.path.abspath(''),
                     os.path.abspath('c:/test.cfg')]
     assert short == ['', 'test']
     assert ext == ['', '.cfg']
 
 
-def test_prepareFileDialog_1():
-    suc = app.prepareFileDialog()
+def test_prepareFileDialog_1(function):
+    suc = function.prepareFileDialog()
     assert not suc
 
 
-def test_prepareFileDialog_2():
+def test_prepareFileDialog_2(function):
     window = PyQt5.QtWidgets.QWidget()
-    suc = app.prepareFileDialog(window=window)
+    suc = function.prepareFileDialog(window=window)
     assert suc
 
 
-def test_prepareFileDialog_3():
+def test_prepareFileDialog_3(function):
     window = PyQt5.QtWidgets.QWidget()
-    suc = app.prepareFileDialog(window=window, enableDir=True)
+    suc = function.prepareFileDialog(window=window, enableDir=True)
     assert suc
 
 
-def test_runDialog_1():
-    dialog = PyQt5.QtWidgets.QFileDialog()
-    with mock.patch.object(app,
+def test_runDialog_1(function):
+    dialog = QFileDialog()
+    with mock.patch.object(QFileDialog,
+                           'exec_',
+                           return_value=0):
+        val = function.runDialog(dialog)
+        assert val == 0
+
+
+def test_openFile_1(function):
+    full, short, ext = function.openFile()
+    assert full == ''
+    assert short == ''
+    assert ext == ''
+
+
+def test_openFile_2(function):
+    window = PyQt5.QtWidgets.QWidget()
+    full, short, ext = function.openFile(window=window)
+    assert full == ''
+    assert short == ''
+    assert ext == ''
+
+
+def test_openFile_3(function):
+    window = PyQt5.QtWidgets.QWidget()
+    full, short, ext = function.openFile(window=window,
+                                         title='title')
+    assert full == ''
+    assert short == ''
+    assert ext == ''
+
+
+def test_openFile_4(function):
+    window = PyQt5.QtWidgets.QWidget()
+    full, short, ext = function.openFile(window=window,
+                                         title='title',
+                                         folder='.')
+    assert full == ''
+    assert short == ''
+    assert ext == ''
+
+
+def test_openFile_5(function):
+    window = PyQt5.QtWidgets.QWidget()
+    with mock.patch.object(function,
                            'runDialog',
                            return_value=0):
-        app.runDialog(dialog)
-
-
-def test_openFile_1():
-    full, short, ext = app.openFile()
-    assert full == ''
-    assert short == ''
-    assert ext == ''
-
-
-def test_openFile_2():
-    window = PyQt5.QtWidgets.QWidget()
-    full, short, ext = app.openFile(window=window)
-    assert full == ''
-    assert short == ''
-    assert ext == ''
-
-
-def test_openFile_3():
-    window = PyQt5.QtWidgets.QWidget()
-    full, short, ext = app.openFile(window=window,
-                                    title='title')
-    assert full == ''
-    assert short == ''
-    assert ext == ''
-
-
-def test_openFile_4():
-    window = PyQt5.QtWidgets.QWidget()
-    full, short, ext = app.openFile(window=window,
-                                    title='title',
-                                    folder='.')
-    assert full == ''
-    assert short == ''
-    assert ext == ''
-
-
-def test_openFile_5():
-    window = PyQt5.QtWidgets.QWidget()
-    with mock.patch.object(app,
-                           'runDialog',
-                           return_value=0):
-        full, short, ext = app.openFile(window=window,
-                                        title='title',
-                                        folder='.',
-                                        filterSet='*.*')
+        full, short, ext = function.openFile(window=window,
+                                             title='title',
+                                             folder='.',
+                                             filterSet='*.*')
         assert full == ''
         assert short == ''
         assert ext == ''
 
 
-def test_openFile_6():
+def test_openFile_6(function):
     window = PyQt5.QtWidgets.QWidget()
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'runDialog',
                            return_value=1):
         with mock.patch.object(PyQt5.QtWidgets.QFileDialog,
                                'selectedFiles',
                                return_value=('test1', 'test2')):
-            full, short, ext = app.openFile(window=window,
-                                            title='title',
-                                            folder='.',
-                                            filterSet='*.*',
-                                            multiple=True)
+            full, short, ext = function.openFile(window=window,
+                                                 title='title',
+                                                 folder='.',
+                                                 filterSet='*.*',
+                                                 multiple=True)
             assert full == ''
             assert short == ''
             assert ext == ''
 
 
-def test_saveFile_1():
-    full, short, ext = app.saveFile()
+def test_saveFile_1(function):
+    full, short, ext = function.saveFile()
     assert full == ''
     assert short == ''
     assert ext == ''
 
 
-def test_saveFile_2():
+def test_saveFile_2(function):
     window = PyQt5.QtWidgets.QWidget()
-    full, short, ext = app.saveFile(window=window)
+    full, short, ext = function.saveFile(window=window)
     assert full == ''
     assert short == ''
     assert ext == ''
 
 
-def test_saveFile_3():
+def test_saveFile_3(function):
     window = PyQt5.QtWidgets.QWidget()
-    full, short, ext = app.saveFile(window=window,
-                                    title='title')
+    full, short, ext = function.saveFile(window=window,
+                                         title='title')
     assert full == ''
     assert short == ''
     assert ext == ''
 
 
-def test_saveFile_4():
+def test_saveFile_4(function):
     window = PyQt5.QtWidgets.QWidget()
-    full, short, ext = app.saveFile(window=window,
-                                    title='title',
-                                    folder='.')
+    full, short, ext = function.saveFile(window=window,
+                                         title='title',
+                                         folder='.')
     assert full == ''
     assert short == ''
     assert ext == ''
 
 
-def test_saveFile_5():
+def test_saveFile_5(function):
     window = PyQt5.QtWidgets.QWidget()
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'runDialog',
                            return_value=0):
-        full, short, ext = app.saveFile(window=window,
-                                        title='title',
-                                        folder='.',
-                                        filterSet='*.*')
+        full, short, ext = function.saveFile(window=window,
+                                             title='title',
+                                             folder='.',
+                                             filterSet='*.*')
         assert full == ''
         assert short == ''
         assert ext == ''
 
 
-def test_saveFile_6():
+def test_saveFile_6(function):
     window = PyQt5.QtWidgets.QWidget()
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'runDialog',
                            return_value=1):
         with mock.patch.object(PyQt5.QtWidgets.QFileDialog,
                                'selectedFiles',
                                return_value=(['tests/test.txt'])):
-            full, short, ext = app.saveFile(window=window,
-                                            title='title',
-                                            folder='.',
-                                            filterSet='*.*')
+            full, short, ext = function.saveFile(window=window,
+                                                 title='title',
+                                                 folder='.',
+                                                 filterSet='*.*')
         assert short == 'test'
         assert ext == '.txt'
 
 
-def test_openDir_1():
-    full, short, ext = app.openDir()
+def test_openDir_1(function):
+    full, short, ext = function.openDir()
     assert full == ''
     assert short == ''
     assert ext == ''
 
 
-def test_openDir_2():
+def test_openDir_2(function):
     window = PyQt5.QtWidgets.QWidget()
-    full, short, ext = app.openDir(window=window)
+    full, short, ext = function.openDir(window=window)
     assert full == ''
     assert short == ''
     assert ext == ''
 
 
-def test_openDir_3():
+def test_openDir_3(function):
     window = PyQt5.QtWidgets.QWidget()
-    full, short, ext = app.openDir(window=window,
-                                   title='title')
+    full, short, ext = function.openDir(window=window,
+                                        title='title')
     assert full == ''
     assert short == ''
     assert ext == ''
 
 
-def test_openDir_4():
+def test_openDir_4(function):
     window = PyQt5.QtWidgets.QWidget()
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'runDialog',
                            return_value=1):
-        full, short, ext = app.openDir(window=window,
-                                       title='title',
-                                       folder='.')
+        full, short, ext = function.openDir(window=window,
+                                            title='title',
+                                            folder='.')
         assert full == os.getcwd()
         assert short == 'MountWizzard4'
         assert ext == ''
 
 
-def test_clickable_1():
-    suc = app.clickable()
+def test_openDir_5(function):
+    window = PyQt5.QtWidgets.QWidget()
+    with mock.patch.object(function,
+                           'runDialog',
+                           return_value=None):
+        full, short, ext = function.openDir(window=window,
+                                            title='title',
+                                            folder='.')
+        assert full == ''
+        assert short == ''
+        assert ext == ''
+
+
+def test_clickable_1(function):
+    suc = function.clickable()
     assert not suc
 
 
-def test_clickable_2():
-    widget = PyQt5.QtWidgets.QPushButton()
-    suc = app.clickable(widget=widget)
+def test_clickable_2(function):
+    widget = QWidget()
+    suc = function.clickable(widget=widget)
     assert suc
 
 
-def test_guiSetText_1():
-    suc = app.guiSetText(None, None)
+def test_guiSetText_1(function):
+    suc = function.guiSetText(None, None)
     assert not suc
 
 
-def test_guiSetText_2():
+def test_guiSetText_2(function):
     pb = PyQt5.QtWidgets.QPushButton()
-    suc = app.guiSetText(pb, None)
+    suc = function.guiSetText(pb, None)
     assert not suc
 
 
-def test_guiSetText_3():
+def test_guiSetText_3(function):
     pb = PyQt5.QtWidgets.QPushButton()
-    suc = app.guiSetText(pb, '3.5f')
+    suc = function.guiSetText(pb, '3.5f')
     assert suc
     assert pb.text() == '-'
 
 
-def test_guiSetText_4():
+def test_guiSetText_4(function):
     pb = PyQt5.QtWidgets.QPushButton()
-    suc = app.guiSetText(pb, '3.0f', 100)
+    suc = function.guiSetText(pb, '3.0f', 100)
     assert suc
     assert pb.text() == '100'
 
 
-def test_findIndexValue_1():
+def test_findIndexValue_1(function):
     ui = QComboBox()
     ui.addItem('dome')
     ui.addItem('test')
-    val = app.findIndexValue(ui=ui,
-                             searchString='dome')
+    val = function.findIndexValue(ui=ui,
+                                  searchString='dome')
     assert val == 0
 
 
-def test_findIndexValue_2():
+def test_findIndexValue_2(function):
     ui = QComboBox()
     ui.addItem('dome')
     ui.addItem('indi')
-    val = app.findIndexValue(ui=ui,
-                             searchString='indi')
+    val = function.findIndexValue(ui=ui,
+                                  searchString='indi')
     assert val == 1
 
 
-def test_findIndexValue_3():
+def test_findIndexValue_3(function):
     ui = QComboBox()
     ui.addItem('dome')
     ui.addItem('test')
     ui.addItem('indi - test')
-    val = app.findIndexValue(ui=ui,
-                             searchString='indi')
+    val = function.findIndexValue(ui=ui,
+                                  searchString='indi')
     assert val == 2
 
 
-def test_generatePolar_1():
-    axe, fig = app.generatePolar()
+def test_findIndexValue_4(function):
+    ui = QComboBox()
+    ui.addItem('dome')
+    ui.addItem('test')
+    ui.addItem('indi - test')
+    val = function.findIndexValue(ui=ui,
+                                  searchString='indi',
+                                  relaxed=True)
+    assert val == 2
+
+
+def test_findIndexValue_5(function):
+    ui = QComboBox()
+    val = function.findIndexValue(ui=ui,
+                                  searchString='indi')
+    assert val == 0
+
+
+def test_generatePolar_1(function):
+    axe, fig = function.generatePolar()
     assert axe is None
     assert fig is None
 
 
-def test_generatePolar_2():
+def test_generatePolar_2(function):
     ui = PyQt5.QtWidgets.QWidget()
-    axe, fig = app.generatePolar(widget=ui)
+    axe, fig = function.generatePolar(widget=ui)
     assert axe is None
     assert fig is None
 
 
-def test_generatePolar_3():
+def test_generatePolar_3(function):
     ui = PyQt5.QtWidgets.QWidget()
-    widget = app.embedMatplot(ui)
-    axe, fig = app.generatePolar(widget=widget)
+    widget = function.embedMatplot(ui)
+    axe, fig = function.generatePolar(widget=widget)
     assert axe
     assert fig
 
 
-def test_generatePolar_4():
+def test_generatePolar_4(function):
     ui = PyQt5.QtWidgets.QWidget()
-    widget = app.embedMatplot(ui)
-    axe, fig = app.generatePolar(widget=widget, title='test')
+    widget = function.embedMatplot(ui)
+    axe, fig = function.generatePolar(widget=widget, title='test')
     assert axe
     assert fig
 
 
-def test_generateFlat_1():
-    axe, fig = app.generateFlat()
+def test_generateFlat_1(function):
+    axe, fig = function.generateFlat()
     assert axe is None
     assert fig is None
 
 
-def test_generateFlat_2():
+def test_generateFlat_2(function):
     ui = PyQt5.QtWidgets.QWidget()
-    axe, fig = app.generateFlat(widget=ui)
+    axe, fig = function.generateFlat(widget=ui)
     assert axe is None
     assert fig is None
 
 
-def test_generateFlat_3():
+def test_generateFlat_3(function):
     ui = PyQt5.QtWidgets.QWidget()
-    widget = app.embedMatplot(ui)
-    axe, fig = app.generateFlat(widget=widget)
+    widget = function.embedMatplot(ui)
+    axe, fig = function.generateFlat(widget=widget)
     assert axe
     assert fig
 
 
-def test_generateFlat_4():
+def test_generateFlat_4(function):
     ui = PyQt5.QtWidgets.QWidget()
-    widget = app.embedMatplot(ui)
-    axe, fig = app.generateFlat(widget=widget, title='test')
+    widget = function.embedMatplot(ui)
+    axe, fig = function.generateFlat(widget=widget, title='test')
     assert axe
     assert fig
 
 
-def test_getIndexPoint_0():
+def test_generateFlat_5(function):
+    ui = PyQt5.QtWidgets.QWidget()
+    widget = function.embedMatplot(ui)
+    axe, fig = function.generateFlat(widget=widget, title='test', showAxes=False)
+    assert axe
+    assert fig
+
+
+def test_generateFlat_6(function):
+    ui = PyQt5.QtWidgets.QWidget()
+    widget = function.embedMatplot(ui)
+    function.generateFlat(widget=widget, title='test')
+    axe, fig = function.generateFlat(widget=widget, title='test')
+    assert axe
+    assert fig
+
+
+def test_generateFlat_7(function):
+    ui = PyQt5.QtWidgets.QWidget()
+    widget = function.embedMatplot(ui)
+    axe, fig = function.generateFlat(widget=widget, title='test', horizon=True)
+    assert axe
+    assert fig
+
+
+def test_returnDriver_1(function):
+    sender = QWidget()
+    searchDict = {}
+    driver = function.returnDriver(sender, searchDict)
+    assert driver == ''
+
+
+def test_returnDriver_2(function):
+    sender = QWidget()
+    searchDict = {}
+    driver = function.returnDriver(sender, searchDict, addKey='test')
+    assert driver == ''
+
+
+def test_getIndexPoint_0(function):
     class Test:
         pass
     event = Test()
@@ -498,25 +579,25 @@ def test_getIndexPoint_0():
     event.ydata = 45
     plane = []
     epsilon = 0
-    index = app.getIndexPoint(event=event,
-                              plane=plane,
-                              epsilon=epsilon,
-                              )
+    index = function.getIndexPoint(event=event,
+                                   plane=plane,
+                                   epsilon=epsilon,
+                                   )
     assert not index
 
 
-def test_getIndexPoint_1():
+def test_getIndexPoint_1(function):
     event = None
     plane = None
     epsilon = 0
-    index = app.getIndexPoint(event=event,
-                              plane=plane,
-                              epsilon=epsilon,
-                              )
+    index = function.getIndexPoint(event=event,
+                                   plane=plane,
+                                   epsilon=epsilon,
+                                   )
     assert not index
 
 
-def test_getIndexPoint_2():
+def test_getIndexPoint_2(function):
     class Test:
         pass
     event = Test()
@@ -524,14 +605,14 @@ def test_getIndexPoint_2():
     event.ydata = 45
     plane = None
     epsilon = 0
-    index = app.getIndexPoint(event=event,
-                              plane=plane,
-                              epsilon=epsilon,
-                              )
+    index = function.getIndexPoint(event=event,
+                                   plane=plane,
+                                   epsilon=epsilon,
+                                   )
     assert not index
 
 
-def test_getIndexPoint_3():
+def test_getIndexPoint_3(function):
     class Test:
         pass
     event = Test()
@@ -539,14 +620,14 @@ def test_getIndexPoint_3():
     event.ydata = 45
     plane = [(45, 0), (45, 360)]
     epsilon = 0
-    index = app.getIndexPoint(event=event,
-                              plane=plane,
-                              epsilon=epsilon,
-                              )
+    index = function.getIndexPoint(event=event,
+                                   plane=plane,
+                                   epsilon=epsilon,
+                                   )
     assert not index
 
 
-def test_getIndexPoint_4():
+def test_getIndexPoint_4(function):
     class Test:
         pass
     event = Test()
@@ -554,14 +635,14 @@ def test_getIndexPoint_4():
     event.ydata = 45
     plane = [(45, 0), (45, 360)]
     epsilon = 200
-    index = app.getIndexPoint(event=event,
-                              plane=plane,
-                              epsilon=epsilon,
-                              )
+    index = function.getIndexPoint(event=event,
+                                   plane=plane,
+                                   epsilon=epsilon,
+                                   )
     assert index == 0
 
 
-def test_getIndexPoint_5():
+def test_getIndexPoint_5(function):
     class Test:
         pass
     event = Test()
@@ -569,82 +650,82 @@ def test_getIndexPoint_5():
     event.ydata = 45
     plane = [(45, 0), (45, 360)]
     epsilon = 200
-    index = app.getIndexPoint(event=event,
-                              plane=plane,
-                              epsilon=epsilon,
-                              )
+    index = function.getIndexPoint(event=event,
+                                   plane=plane,
+                                   epsilon=epsilon,
+                                   )
     assert index == 1
 
 
-def test_getIndexPointX_1():
+def test_getIndexPointX_1(function):
     event = None
     plane = None
-    index = app.getIndexPointX(event=event,
-                               plane=plane,
-                               )
+    index = function.getIndexPointX(event=event,
+                                    plane=plane,
+                                    )
     assert not index
 
 
-def test_getIndexPointX_2():
+def test_getIndexPointX_2(function):
     class Test:
         pass
     event = Test()
     event.xdata = 182
     event.ydata = 45
     plane = None
-    index = app.getIndexPointX(event=event,
-                               plane=plane,
-                               )
+    index = function.getIndexPointX(event=event,
+                                    plane=plane,
+                                    )
     assert not index
 
 
-def test_getIndexPointX_3():
+def test_getIndexPointX_3(function):
     class Test:
         pass
     event = Test()
     event.xdata = 180
     event.ydata = 45
     plane = [(45, 0), (45, 360)]
-    index = app.getIndexPointX(event=event,
-                               plane=plane,
-                               )
+    index = function.getIndexPointX(event=event,
+                                    plane=plane,
+                                    )
     assert index == 0
 
 
-def test_getIndexPointX_4():
+def test_getIndexPointX_4(function):
     class Test:
         pass
     event = Test()
     event.xdata = 182
     event.ydata = 45
     plane = [(45, 0), (45, 360)]
-    index = app.getIndexPointX(event=event,
-                               plane=plane,
-                               )
+    index = function.getIndexPointX(event=event,
+                                    plane=plane,
+                                    )
     assert index == 0
 
 
-def test_getIndexPointX_5():
+def test_getIndexPointX_5(function):
     class Test:
         pass
     event = Test()
     event.xdata = 182
     event.ydata = 45
     plane = [(45, 0), (45, 180), (45, 360)]
-    index = app.getIndexPointX(event=event,
-                               plane=plane,
-                               )
+    index = function.getIndexPointX(event=event,
+                                    plane=plane,
+                                    )
     assert index == 1
 
 
-def test_getIndexPointX_6():
+def test_getIndexPointX_6(function):
     class Test:
         pass
     event = Test()
     event.xdata = 182
     event.ydata = 45
     plane = [(45, 0)]
-    index = app.getIndexPointX(event=event,
-                               plane=plane,
-                               )
+    index = function.getIndexPointX(event=event,
+                                    plane=plane,
+                                    )
     assert not index

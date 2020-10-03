@@ -39,6 +39,7 @@ from gui.utilities import styles
 
 __all__ = [
     'MWidget',
+    'FileSortProxyModel',
 ]
 
 
@@ -87,9 +88,6 @@ class MWidget(QWidget, styles.MWStyles):
                             Qt.WindowSystemMenuHint |
                             Qt.WindowMinimizeButtonHint |
                             Qt.WindowMaximizeButtonHint)
-
-    def closeEvent(self, closeEvent):
-        super().closeEvent(closeEvent)
 
     @staticmethod
     def wIcon(gui=None, icon=None):
@@ -250,18 +248,6 @@ class MWidget(QWidget, styles.MWStyles):
         else:
             dlg.setFilter(QDir.Files)
 
-        # remove unnecessary widgets from the file selector box
-        # dlg.findChildren(PyQt5.QtWidgets.QListView, 'sidebar')[0].setVisible(False)
-        # dlg.findChildren(QComboBox, 'lookInCombo')[0].setVisible(False)
-        # dlg.findChildren(QLabel, 'lookInLabel')[0].setVisible(False)
-        # dlg.findChildren(QWidget, 'backButton')[0].setVisible(False)
-        # dlg.findChildren(QWidget, 'forwardButton')[0].setVisible(False)
-        # dlg.findChildren(QWidget, 'toParentButton')[0].setVisible(False)
-        # dlg.findChildren(QWidget, 'newFolderButton')[0].setVisible(False)
-        # dlg.findChildren(QWidget, 'listModeButton')[0].setVisible(False)
-        # dlg.findChildren(QWidget, 'detailModeButton')[0].setVisible(False)
-
-        # position the window to parent in the center
         width = 600
         height = 400
 
@@ -452,7 +438,7 @@ class MWidget(QWidget, styles.MWStyles):
         if not widget:
             return None
 
-        class Filter(QObject):
+        class MouseDoubleClickEventFilter(QObject):
             clicked = pyqtSignal(object)
 
             def eventFilter(self, obj, event):
@@ -468,10 +454,10 @@ class MWidget(QWidget, styles.MWStyles):
 
                 return False
 
-        _filter = Filter(widget)
-        widget.installEventFilter(_filter)
+        doubleClickEventFilter = MouseDoubleClickEventFilter(widget)
+        widget.installEventFilter(doubleClickEventFilter)
 
-        return _filter.clicked
+        return doubleClickEventFilter.clicked
 
     @staticmethod
     def guiSetText(ui, formatElement, value=None):
@@ -613,6 +599,7 @@ class MWidget(QWidget, styles.MWStyles):
             return None, None
 
         lock = Lock()
+
         if showAxes:
             color = self.M_BLUE
 

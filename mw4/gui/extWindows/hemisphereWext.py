@@ -138,18 +138,12 @@ class HemisphereWindowExt:
     def slewDialog(self, question):
         """
 
-        :param altitude:
-        :param azimuth:
+        :param question:
         :return: OK
         """
 
         msg = QMessageBox
-        reply = msg.question(self,
-                             'Slewing mount',
-                             question,
-                             msg.Yes | msg.No,
-                             msg.No,
-                             )
+        reply = msg.question(self, 'Slewing mount', question, msg.Yes | msg.No, msg.No)
 
         if reply != msg.Yes:
             return False

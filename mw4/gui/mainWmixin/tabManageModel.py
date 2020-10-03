@@ -21,9 +21,7 @@ import json
 import os
 
 # external packages
-import PyQt5.QtCore
-import PyQt5.QtWidgets
-import PyQt5.uic
+from PyQt5.QtWidgets import QMessageBox, QLineEdit, QInputDialog
 import numpy as np
 import matplotlib.pyplot
 
@@ -472,11 +470,11 @@ class ManageModel(object):
         :return: success
         """
 
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         modelName, ok = dlg.getText(self,
                                     'Save model',
                                     'New model name',
-                                    PyQt5.QtWidgets.QLineEdit.Normal,
+                                    QLineEdit.Normal,
                                     '',
                                     )
         if modelName is None or not modelName:
@@ -508,7 +506,7 @@ class ManageModel(object):
             return False
 
         modelName = self.ui.nameList.currentItem().text()
-        msg = PyQt5.QtWidgets.QMessageBox
+        msg = QMessageBox
         reply = msg.question(self,
                              'Delete model',
                              f'Delete model [{modelName}] from database?',
@@ -614,7 +612,7 @@ class ManageModel(object):
         :return:
         """
 
-        msg = PyQt5.QtWidgets.QMessageBox
+        msg = QMessageBox
         reply = msg.question(self,
                              'Clear model',
                              'Clear actual alignment model?',
@@ -835,6 +833,22 @@ class ManageModel(object):
 
         return True
 
+    def deleteDialog(self, question):
+        """
+
+        :param question:
+        :return: OK
+        """
+
+        msg = QMessageBox
+        reply = msg.question(self, 'Deleting point', question, msg.Yes | msg.No, msg.No)
+
+        if reply != msg.Yes:
+            return False
+
+        else:
+            return True
+
     def onMouseEdit(self, event):
         """
         onMouseEdit handles the mouse event in normal mode. this means depending on the
@@ -851,33 +865,31 @@ class ManageModel(object):
         if not self.plane:
             return False
 
-        if event.dblclick:
-            event.xdata = (np.degrees(event.xdata) + 360) % 360
-            event.ydata = 90 - event.ydata
-            index = self.getIndexPoint(event=event, plane=self.plane, epsilon=5)
-
-        else:
+        if not event.dblclick:
             return False
 
+        event.xdata = (np.degrees(event.xdata) + 360) % 360
+        event.ydata = 90 - event.ydata
+        index = self.getIndexPoint(event=event, plane=self.plane, epsilon=5)
         error = self.app.mount.model.starList[index].errorRMS
 
         text = f'Do you want to delete \npoint {index + 1:3.0f}'
         text += f'\nRMS of {error:5.1f} arcsec'
 
-        msg = PyQt5.QtWidgets.QMessageBox
-        reply = msg.question(self, 'Delete model point', text, msg.Yes | msg.No, msg.No)
+        isYes = self.deleteDialog(text)
 
-        if reply != msg.Yes:
+        if not isYes:
             return False
 
         suc = self.app.mount.model.deletePoint(index)
+
         if not suc:
             self.app.message.emit(f'Point {index + 1:3.0f} cannot be deleted', 2)
             return False
-        else:
-            text = f'Point: {index + 1:3.0f}, RMS of {error:5.1f}'
-            text += f' arcsec deleted.'
-            self.app.message.emit(text, 0)
-            self.refreshModel()
+
+        text = f'Point: {index + 1:3.0f}, RMS of {error:5.1f}'
+        text += f' arcsec deleted.'
+        self.app.message.emit(text, 0)
+        self.refreshModel()
 
         return True

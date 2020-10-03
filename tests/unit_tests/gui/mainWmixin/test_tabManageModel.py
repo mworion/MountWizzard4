@@ -24,7 +24,7 @@ import json
 # external packages
 import PyQt5
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
@@ -52,6 +52,7 @@ def function(module):
                       pathToData=Path('tests/data'))
         mount.obsSite.location = Topos(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         update1s = pyqtSignal()
+        showAnalyse = pyqtSignal(object)
         message = pyqtSignal(str, int)
         mwGlob = {'imageDir': 'tests/image',
                   'modelDir': 'tests/model'}
@@ -544,14 +545,29 @@ def test_writeBuildModelOptimized_1(function):
     with mock.patch.object(function,
                            'writeRetrofitData',
                            return_value={}):
-        suc = function.writeBuildModelOptimized('test', [1], [2])
-        assert suc
+        with mock.patch.object(json,
+                               'load',
+                               return_value=[{'errorIndex': 1}, {'errorIndex': 3}]):
+            suc = function.writeBuildModelOptimized('test', [2], [1])
+            assert suc
 
 
-def test_clearRefreshModel(function):
+def test_clearRefreshModel_1(function):
     function.app.mount.signals.alignDone.connect(function.clearRefreshModel)
     suc = function.clearRefreshModel()
     assert suc
+
+
+def test_clearRefreshModel_2(function):
+    function.app.mount.signals.alignDone.connect(function.clearRefreshModel)
+    function.ui.autoUpdateActualAnalyse.setChecked(True)
+    with mock.patch.object(function,
+                           'findFittingModel',
+                           return_value=('test', [], [])):
+        with mock.patch.object(function,
+                               'showActualModelAnalyse'):
+            suc = function.clearRefreshModel()
+            assert suc
 
 
 def test_refreshModel(function):
@@ -599,11 +615,8 @@ def test_clearModel_3(function, qtbot):
 def test_deleteWorstPoint_1(function):
     function.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
     function.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
-    with mock.patch.object(function.app.mount.model,
-                           'deletePoint',
-                           return_value=False):
-        suc = function.deleteWorstPoint()
-        assert not suc
+    suc = function.deleteWorstPoint()
+    assert not suc
 
 
 def test_deleteWorstPoint_2(function):
@@ -617,6 +630,19 @@ def test_deleteWorstPoint_2(function):
                                'refreshModel'):
             suc = function.deleteWorstPoint()
             assert suc
+
+
+def test_deleteWorstPoint_3(function):
+    function.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
+    function.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    function.app.mount.model.numberStars = 2
+    with mock.patch.object(function.app.mount.model,
+                           'deletePoint',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'refreshModel'):
+            suc = function.deleteWorstPoint()
+            assert not suc
 
 
 def test_runTargetRMS_1(function):
@@ -779,3 +805,199 @@ def test_cancelOptimize_1(function):
     suc = function.cancelOptimize()
     assert suc
     assert not function.runningOptimize
+
+
+def test_showOriginalModelAnalyse_1(function):
+    function.fittedModelPath = ''
+    suc = function.showOriginalModelAnalyse()
+    assert not suc
+
+
+def test_showOriginalModelAnalyse_2(function):
+    function.fittedModelPath = 'test'
+    suc = function.showOriginalModelAnalyse()
+    assert not suc
+
+
+def test_showOriginalModelAnalyse_3(function):
+    function.fittedModelPath = 'tests/testData/test.model'
+    suc = function.showOriginalModelAnalyse()
+    assert suc
+
+
+def test_showActualModelAnalyse_1(function):
+    function.fittedModelPath = ''
+    suc = function.showActualModelAnalyse()
+    assert not suc
+
+
+def test_showActualModelAnalyse_2(function):
+    function.fittedModelPath = 'test'
+    suc = function.showActualModelAnalyse()
+    assert not suc
+
+
+def test_showActualModelAnalyse_3(function):
+    function.fittedModelPath = 'tests/testData/test.model'
+    suc = function.showActualModelAnalyse()
+    assert suc
+
+
+def test_deleteDialog_1(function):
+    with mock.patch.object(QMessageBox,
+                           'question',
+                           return_value=QMessageBox.No):
+        suc = function.deleteDialog('test')
+        assert not suc
+
+
+def test_deleteDialog_2(function):
+    with mock.patch.object(QMessageBox,
+                           'question',
+                           return_value=QMessageBox.Yes):
+        suc = function.deleteDialog('test')
+        assert suc
+
+
+def test_onMouseEdit_1(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = False
+        dblclick = True
+        button = 1
+
+    suc = function.onMouseEdit(Event())
+    assert not suc
+
+
+def test_onMouseEdit_2(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = False
+        button = 1
+
+    suc = function.onMouseEdit(Event())
+    assert not suc
+
+
+def test_onMouseEdit_3(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = False
+        button = 1
+
+    function.plane = [(0, 0), (0, 360)]
+
+    suc = function.onMouseEdit(Event())
+    assert not suc
+
+
+def test_onMouseEdit_4(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = False
+        button = 1
+
+    function.plane = [(0, 0), (0, 360)]
+
+    suc = function.onMouseEdit(Event())
+    assert not suc
+
+
+def test_onMouseEdit_5(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = True
+        button = 1
+
+    function.plane = [(0, 0), (0, 360)]
+    function.app.mount.model.starList = list()
+    a = ModelStar()
+    a.alt = 0
+    a.az = 0
+    a.coord = Star(ra_hours=0, dec_degrees=0)
+    a.errorAngle = Angle(degrees=0)
+    a.errorRMS = 1
+    function.app.mount.model.starList.append(a)
+
+    with mock.patch.object(function,
+                           'deleteDialog',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'getIndexPoint',
+                               return_value=0):
+            suc = function.onMouseEdit(Event())
+            assert not suc
+
+
+def test_onMouseEdit_6(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = True
+        button = 1
+
+    function.plane = [(0, 0), (0, 360)]
+    function.app.mount.model.starList = list()
+    a = ModelStar()
+    a.alt = 0
+    a.az = 0
+    a.coord = Star(ra_hours=0, dec_degrees=0)
+    a.errorAngle = Angle(degrees=0)
+    a.errorRMS = 1
+    function.app.mount.model.starList.append(a)
+
+    with mock.patch.object(function,
+                           'deleteDialog',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'getIndexPoint',
+                               return_value=0):
+            with mock.patch.object(function.app.mount.model,
+                                   'deletePoint',
+                                   return_value=False):
+                suc = function.onMouseEdit(Event())
+                assert not suc
+
+
+def test_onMouseEdit_7(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = True
+        button = 1
+
+    function.plane = [(0, 0), (0, 360)]
+    function.app.mount.model.starList = list()
+    a = ModelStar()
+    a.alt = 0
+    a.az = 0
+    a.coord = Star(ra_hours=0, dec_degrees=0)
+    a.errorAngle = Angle(degrees=0)
+    a.errorRMS = 1
+    function.app.mount.model.starList.append(a)
+
+    with mock.patch.object(function,
+                           'deleteDialog',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'getIndexPoint',
+                               return_value=0):
+            with mock.patch.object(function.app.mount.model,
+                                   'deletePoint',
+                                   return_value=True):
+                with mock.patch.object(function,
+                                       'refreshModel'):
+                    suc = function.onMouseEdit(Event())
+                    assert suc

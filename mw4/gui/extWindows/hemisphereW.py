@@ -185,7 +185,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.app.update1s.disconnect(self.hemisphereMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.disconnect(self.drawHemisphere)
         self.app.updatePointMarker.disconnect(self.updatePointMarker)
-        self.app.mount.signals.settingDone.disconnect(self.updateSettings)
+        self.app.mount.signals.settingDone.disconnect(self.drawHemisphere)
         self.storeConfig()
 
         # restore DAT status
@@ -194,8 +194,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         # signals for gui
         self.ui.checkShowSlewPath.clicked.disconnect(self.drawHemisphere)
-        self.ui.checkShowMeridian.clicked.disconnect(self.updateSettings)
-        self.ui.checkShowCelestial.clicked.disconnect(self.updateSettings)
+        self.ui.checkShowMeridian.clicked.disconnect(self.drawHemisphere)
+        self.ui.checkShowCelestial.clicked.disconnect(self.drawHemisphere)
         self.ui.checkUseHorizon.clicked.disconnect(self.drawHemisphere)
         self.ui.checkEditNone.clicked.disconnect(self.setOperationMode)
         self.ui.checkEditHorizonMask.clicked.disconnect(self.setOperationMode)
@@ -236,7 +236,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.app.update1s.connect(self.hemisphereMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.updatePointMarker.connect(self.updatePointMarker)
-        self.app.mount.signals.settingDone.connect(self.updateSettings)
+        self.app.mount.signals.settingDone.connect(self.drawHemisphere)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.dome.signals.azimuth.connect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.connect(self.updateDome)
@@ -245,8 +245,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
         self.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
         self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
-        self.ui.checkShowMeridian.clicked.connect(self.updateSettings)
-        self.ui.checkShowCelestial.clicked.connect(self.updateSettings)
+        self.ui.checkShowMeridian.clicked.connect(self.drawHemisphere)
+        self.ui.checkShowCelestial.clicked.connect(self.drawHemisphere)
         self.ui.checkEditNone.clicked.connect(self.setOperationMode)
         self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
@@ -260,125 +260,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.drawHemisphere()
 
         return True
-
-    def updateCelestialPath(self):
-        """
-        updateCelestialPath is called whenever an update of settings from mount are given.
-        it takes the actual values and corrects the point in window if window is in
-        show status.
-        If the object is not created, the routing returns false.
-
-        :return: needs drawing
-        """
-
-        if self.celestialPath is None:
-            return False
-
-        isVisible = self.celestialPath.get_visible()
-        newVisible = self.ui.checkShowCelestial.isChecked()
-        needDraw = isVisible != newVisible
-        self.celestialPath.set_visible(newVisible)
-
-        return needDraw
-
-    def updateMeridian(self, sett):
-        """
-        updateMeridian is called whenever an update of settings from mount are given. it
-        takes the actual values and corrects the point in window if window is in
-        show status.
-        If the object is not created, the routing returns false.
-
-        :param sett: settings reference from mount
-        :return: needs drawing
-        """
-
-        slew = sett.meridianLimitSlew
-        track = sett.meridianLimitTrack
-
-        if slew is None or track is None:
-            return False
-
-        if self.meridianTrack is None:
-            return False
-
-        if self.meridianSlew is None:
-            return False
-
-        isVisible = self.meridianTrack.get_visible()
-        newVisible = self.ui.checkShowMeridian.isChecked()
-        needDraw = isVisible != newVisible
-
-        self.meridianTrack.set_visible(newVisible)
-        self.meridianSlew.set_visible(newVisible)
-
-        self.meridianTrack.set_xy((180 - track, 0))
-        self.meridianSlew.set_xy((180 - slew, 0))
-
-        aktTrack = self.meridianTrack.get_width() / 2
-        aktSlew = self.meridianSlew.get_width() / 2
-
-        needDraw = needDraw or (track != aktTrack) or (slew != aktSlew)
-
-        self.meridianTrack.set_width(2 * track)
-        self.meridianSlew.set_width(2 * slew)
-
-        return needDraw
-
-    def updateHorizonLimits(self, sett):
-        """
-        updateHorizonLimits is called whenever an update of settings from mount are given. it
-        takes updateHorizonLimits actual values and corrects the point in window if window
-        is in show status.
-        If the object is not created, the routing returns false.
-
-        :param sett: settings reference from mount
-        :return: success
-        """
-
-        high = sett.horizonLimitHigh
-        low = sett.horizonLimitLow
-
-        if high is None or low is None:
-            return False
-
-        if self.horizonLimitLow is None:
-            return False
-
-        if self.horizonLimitHigh is None:
-            return False
-
-        aktHigh = self.horizonLimitHigh.get_xy()[1]
-        aktLow = self.horizonLimitLow.get_height()
-
-        needDraw = aktHigh != high or aktLow != low
-
-        self.horizonLimitHigh.set_xy((0, high))
-        self.horizonLimitHigh.set_height(90 - high)
-        self.horizonLimitLow.set_xy((0, 0))
-        self.horizonLimitLow.set_height(low)
-
-        return needDraw
-
-    def updateSettings(self):
-        """
-        updateSettings renders all static settings upon signals received and aggregates the
-        need of a drawing. the called methods have to detect if something changed to
-        determine if a redraw has to be done. this is done to reduce runtime and preserve
-        low CPU processing.
-
-        :return: needs draw
-        """
-
-        sett = self.app.mount.setting
-
-        needDraw = self.updateCelestialPath()
-        needDraw = self.updateHorizonLimits(sett) or needDraw
-        needDraw = self.updateMeridian(sett) or needDraw
-
-        if needDraw:
-            self.hemisphereMat.figure.canvas.draw()
-
-        return needDraw
 
     def updatePointerAltAz(self):
         """
@@ -706,6 +587,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                                    color=self.M_RED,
                                                    alpha=0.5,
                                                    visible=True)
+
         self.horizonLimitLow = mpatches.Rectangle((0, 0),
                                                   360,
                                                   low,
@@ -762,7 +644,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         self.pointerAltAz, = axes.plot(180, 45,
                                        zorder=10,
-                                       color=self.M_PINK,
+                                       color=self.M_PINK_H,
                                        marker=self.markerAltAz(),
                                        markersize=25,
                                        linestyle='none',
@@ -843,6 +725,10 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         if self.ui.checkShowAlignStar.isChecked():
             self.drawAlignmentStars(axes=axe)
+
+        else:
+            self.starsAlign = None
+            self.starsAlignAnnotate = None
 
         self.drawHemisphereStatic(axes=axe)
         self.drawHemisphereMoving(axes=axeMove)

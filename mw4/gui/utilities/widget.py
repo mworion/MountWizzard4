@@ -615,15 +615,17 @@ class MWidget(QWidget, styles.MWStyles):
         lock = Lock()
         if showAxes:
             color = self.M_BLUE
-        else:
 
+        else:
             color = self.M_TRANS
 
         with lock:
             figure = widget.figure
+
             if figure.axes:
                 axe = figure.axes[0]
                 axe.cla()
+
             else:
                 figure.clf()
                 axe = figure.add_subplot(1, 1, 1, facecolor='None')
@@ -651,10 +653,8 @@ class MWidget(QWidget, styles.MWStyles):
             axe.set_xticks(np.arange(0, 361, 45))
             axe.set_xticklabels(['0 N', '45 NE', '90 E', '135 SE', '180 S', '225 SW', '270 W',
                                  '315 NW', '360 N'])
-            axe.set_xlabel('Azimuth [degrees]', color=color, fontweight='bold',
-                           fontsize=12)
-            axe.set_ylabel('Altitude [degrees]', color=color, fontweight='bold',
-                           fontsize=12)
+            axe.set_xlabel('Azimuth [degrees]', color=color, fontweight='bold', fontsize=12)
+            axe.set_ylabel('Altitude [degrees]', color=color, fontweight='bold', fontsize=12)
 
             return axe, figure
 

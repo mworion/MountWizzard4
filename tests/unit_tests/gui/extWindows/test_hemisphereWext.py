@@ -52,22 +52,6 @@ def test_markerStar(function):
     function.markerStar()
 
 
-def test_configOperationMode_1(function):
-    function.ui.checkShowAlignStar.setChecked(True)
-    suc = function.configOperationMode()
-    assert suc
-    assert function.ui.checkPolarAlignment.isEnabled()
-
-
-def test_configOperationMode_2(function):
-    function.ui.checkShowAlignStar.setChecked(False)
-    function.ui.checkPolarAlignment.setChecked(True)
-    suc = function.configOperationMode()
-    assert suc
-    assert not function.ui.checkPolarAlignment.isEnabled()
-    assert function.ui.checkEditNone.isChecked()
-
-
 def test_setOperationMode_1(function):
     function.ui.checkEditNone.setChecked(True)
     with mock.patch.object(function,

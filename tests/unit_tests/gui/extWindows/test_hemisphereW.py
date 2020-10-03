@@ -86,22 +86,6 @@ def test_resizeEvent_2(function):
         function.resizeEvent(QEvent)
 
 
-def test_resizeTimer_1(function):
-    function.resizeTimerValue = 3
-    with mock.patch.object(function,
-                           'drawHemisphere'):
-        suc = function.resizeTimer()
-        assert suc
-
-
-def test_resizeTimer_2(function):
-    function.resizeTimerValue = 1
-    with mock.patch.object(function,
-                           'drawHemisphere'):
-        suc = function.resizeTimer()
-        assert suc
-
-
 def test_showWindow_1(function):
     with mock.patch.object(function,
                            'drawHemisphere'):
@@ -111,207 +95,28 @@ def test_showWindow_1(function):
             assert suc
 
 
-def test_drawBlit_1(function):
-    function.mutexDraw.lock()
-    suc = function.drawBlit()
-    assert not suc
-    function.mutexDraw.unlock()
-
-
-def test_drawBlit_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    axe.figure.canvas.blit(axe.bbox)
-    function.hemisphereBackStars = axe.figure.canvas.copy_from_bbox(axe.bbox)
-    function.pointerAltAz, = axe.plot(0, 0)
-    function.pointerDome, = axe.plot(0, 0)
-    axe.figure.canvas.draw()
-    suc = function.drawBlit()
-    assert suc
-
-
-def test_drawBlit_3(function):
-    function.hemisphereBack = None
-    suc = function.drawBlit()
-    assert suc
-
-
-def test_drawBlitStars_1(function):
-    function.mutexDraw.lock()
-    suc = function.drawBlitStars()
-    assert not suc
-    function.mutexDraw.unlock()
-
-
-def test_drawBlitStars_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    axe.figure.canvas.blit(axe.bbox)
-    function.hemisphereBack = axe.figure.canvas.copy_from_bbox(axe.bbox)
-    function.starsAlignAnnotate = [axe.annotate('test', (0, 0))]
-    function.starsAlign, = axe.plot(0, 0)
-    axe.figure.canvas.draw()
-    suc = function.drawBlitStars()
-    assert suc
-
-
-def test_drawBlitStars_3(function):
-    function.hemisphereBackStars = None
-    suc = function.drawBlitStars()
-    assert suc
-
-
-def test_updateCelestialPath_1(function):
-    suc = function.updateCelestialPath()
-    assert not suc
-
-
-def test_updateCelestialPath_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.celestialPath, = axe.plot(0, 0)
-    suc = function.updateCelestialPath()
-    assert suc
-
-
-def test_updateMeridian_1(function):
-    function.app.mount.setting.meridianLimitSlew = None
-    function.app.mount.setting.meridianLimitTrack = 3
-    suc = function.updateMeridian(function.app.mount.setting)
-    assert not suc
-
-
-def test_updateMeridian_2(function):
-    function.app.mount.setting.meridianLimitSlew = 3
-    function.app.mount.setting.meridianLimitTrack = None
-    suc = function.updateMeridian(function.app.mount.setting)
-    assert not suc
-
-
-def test_updateMeridian_3(function):
-    function.app.mount.setting.meridianLimitSlew = 3
-    function.app.mount.setting.meridianLimitTrack = 3
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.meridianTrack, = axe.plot(0, 0)
-    suc = function.updateMeridian(function.app.mount.setting)
-    assert not suc
-
-
-def test_updateMeridian_4(function):
-    function.app.mount.setting.meridianLimitSlew = 3
-    function.app.mount.setting.meridianLimitTrack = 3
-    function.meridianTrack = mpatches.Rectangle((0, 5), 1, 5)
-    function.meridianSlew = mpatches.Rectangle((0, 5), 1, 5)
-    suc = function.updateMeridian(function.app.mount.setting)
-    assert suc
-
-
-def test_updateMeridian_5(function):
-    function.app.mount.setting.meridianLimitSlew = 3
-    function.app.mount.setting.meridianLimitTrack = 3
-    function.meridianTrack = None
-    suc = function.updateMeridian(function.app.mount.setting)
-    assert not suc
-
-
-def test_updateMeridian_6(function):
-    function.app.mount.setting.meridianLimitSlew = 3
-    function.app.mount.setting.meridianLimitTrack = 3
-    function.meridianSlew = None
-    suc = function.updateMeridian(function.app.mount.setting)
-    assert not suc
-
-
-def test_updateHorizonLimits_1(function):
-    function.app.mount.setting.horizonLimitHigh = None
-    function.app.mount.setting.horizonLimitLow = 10
-    suc = function.updateHorizonLimits(function.app.mount.setting)
-    assert not suc
-
-
-def test_updateHorizonLimits_2(function):
-    function.app.mount.setting.horizonLimitHigh = 80
-    function.app.mount.setting.horizonLimitLow = None
-    suc = function.updateHorizonLimits(function.app.mount.setting)
-    assert not suc
-
-
-def test_updateHorizonLimits_3(function):
-    function.drawHemisphere()
-    function.app.mount.setting.horizonLimitHigh = 80
-    function.app.mount.setting.horizonLimitLow = 10
-    suc = function.updateHorizonLimits(function.app.mount.setting)
-    assert suc
-
-
-def test_updateHorizonLimits_4(function):
-    function.drawHemisphere()
-    function.app.mount.setting.horizonLimitHigh = 80
-    function.app.mount.setting.horizonLimitLow = 10
-    function.horizonLimitLow = mpatches.Rectangle((0, 5), 1, 5)
-    function.horizonLimitHigh = mpatches.Rectangle((0, 5), 1, 5)
-    suc = function.updateHorizonLimits(function.app.mount.setting)
-    assert suc
-
-
-def test_updateHorizonLimits_5(function):
-    function.app.mount.setting.horizonLimitHigh = 80
-    function.app.mount.setting.horizonLimitLow = 10
-    function.horizonLimitHigh = mpatches.Rectangle((0, 5), 1, 5)
-    function.horizonLimitLow = None
-    suc = function.updateHorizonLimits(function.app.mount.setting)
-    assert not suc
-
-
-def test_updateHorizonLimits_6(function):
-    function.app.mount.setting.horizonLimitHigh = 80
-    function.app.mount.setting.horizonLimitLow = 10
-    function.horizonLimitLow = mpatches.Rectangle((0, 5), 1, 5)
-    function.horizonLimitHigh = None
-    suc = function.updateHorizonLimits(function.app.mount.setting)
-    assert not suc
-
-
-def test_updateSettings_1(function):
-    with mock.patch.object(function,
-                           'updateCelestialPath',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'updateHorizonLimits',
-                               return_value=True):
-            with mock.patch.object(function,
-                                   'updateMeridian',
-                                   return_value=True):
-                with mock.patch.object(function,
-                                       'drawHemisphere'):
-                    suc = function.updateSettings()
-                    assert suc
-
-
 def test_updatePointerAltAz_1(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
+    function.pointerAltAz, = axe.plot(0, 0)
     suc = function.updatePointerAltAz()
     assert not suc
 
 
 def test_updatePointerAltAz_2(function):
-    function.app.mount.obsSite.Alt = 80
+    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
+    function.pointerAltAz, = axe.plot(0, 0)
+    function.app.mount.obsSite.Alt = Angle(degrees=80)
     suc = function.updatePointerAltAz()
     assert not suc
 
 
 def test_updatePointerAltAz_3(function):
-    function.app.mount.obsSite.Alt = 80
-    function.app.mount.obsSite.Az = 80
-    suc = function.updatePointerAltAz()
-    assert not suc
-
-
-def test_updatePointerAltAz_4(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
+    function.pointerAltAz, = axe.plot(0, 0)
     function.app.mount.obsSite.Alt = Angle(degrees=80)
     function.app.mount.obsSite.Az = Angle(degrees=80)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.pointerAltAz, = axe.plot(0, 0)
-    with mock.patch.object(function,
-                           'drawBlit'):
-        suc = function.updatePointerAltAz()
-        assert suc
+    suc = function.updatePointerAltAz()
+    assert suc
 
 
 def test_updateDome_1(function):
@@ -320,7 +125,7 @@ def test_updateDome_1(function):
 
 
 def test_updateDome_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
     function.pointerDome, = axe.plot(0, 0)
     suc = function.updateDome('test')
     assert not suc
@@ -329,10 +134,9 @@ def test_updateDome_2(function):
 def test_updateDome_3(function):
     function.pointerDome = mpatches.Rectangle((0, 5), 1, 5)
     function.app.deviceStat['dome'] = True
-    with mock.patch.object(function,
-                           'drawBlit'):
-        suc = function.updateDome(0)
-        assert suc
+
+    suc = function.updateDome(0)
+    assert suc
 
 
 def test_updateAlignStar_1(function):
@@ -364,10 +168,9 @@ def test_updateAlignStar_4(function):
     function.app.hipparcos.alt = [1]
     function.app.hipparcos.az = [1]
     function.app.hipparcos.name = ['test']
-    with mock.patch.object(function,
-                           'drawBlitStars'):
-        suc = function.updateAlignStar()
-        assert suc
+
+    suc = function.updateAlignStar()
+    assert suc
 
 
 def test_clearHemisphere(function):
@@ -455,14 +258,6 @@ def test_staticHorizonLimits_2(function):
 
 def test_drawHemisphereStatic_1(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.mutexDraw.lock()
-    suc = function.drawHemisphereStatic(axe)
-    assert not suc
-    function.mutexDraw.unlock()
-
-
-def test_drawHemisphereStatic_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     suc = function.drawHemisphereStatic(axe)
     assert suc
 
@@ -478,10 +273,9 @@ def test_drawAlignmentStars_1(function):
     function.app.hipparcos.alt = [1]
     function.app.hipparcos.az = [1]
     function.app.hipparcos.name = ['test']
-    with mock.patch.object(function,
-                           'drawBlitStars'):
-        suc = function.drawAlignmentStars(axe)
-        assert suc
+
+    suc = function.drawAlignmentStars(axe)
+    assert suc
 
 
 def test_drawHemisphere(function):

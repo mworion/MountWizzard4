@@ -163,16 +163,16 @@ def test_searchTwilight_1(function):
 
 
 def test_calcTwilightData_1(function):
-    suc = function.calcTwilightData()
-    assert not suc
+    val = function.calcTwilightData()
+    assert val == ([], [])
 
 
 def test_calcTwilightData_2(function):
     function.app.mount.obsSite.location = Topos(latitude_degrees=0,
                                                 longitude_degrees=0,
                                                 elevation_m=0)
-    suc = function.calcTwilightData()
-    assert suc
+    val = function.calcTwilightData()
+    assert val
 
 
 def test_displayTwilightData_1(function):

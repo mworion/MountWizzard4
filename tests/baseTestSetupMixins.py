@@ -21,6 +21,7 @@ from queue import Queue
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal
 from skyfield.api import Topos, load
+from logic.modeldata.buildpoints import DataPoint
 
 # local import
 
@@ -63,6 +64,8 @@ class Mount(QObject):
 
 
 class App(QObject):
+    config = {'mainW': {}}
+    deviceStat = {}
     update10s = pyqtSignal()
     update1s = pyqtSignal()
     update30m = pyqtSignal()
@@ -70,5 +73,7 @@ class App(QObject):
     messageQueue = Queue()
     mount = Mount()
     ephemeris = load('tests/testData/de421_23.bsp')
+    mwGlob = {'modelDir': 'tests/model',
+              'imageDir': 'tests/image'}
 
 

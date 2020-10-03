@@ -38,12 +38,7 @@ class Environ(object):
     processing if needed.
     """
 
-    def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
-
+    def __init__(self):
         self.refractionSources = {'onlineWeather': self.ui.onlineWeatherGroup,
                                   'sensorWeather': self.ui.sensorWeatherGroup,
                                   'directWeather': self.ui.directWeatherGroup,
@@ -414,9 +409,7 @@ class Environ(object):
 
         try:
             data = requests.get(url, timeout=30)
-        except TimeoutError:
-            self.log.error(f'{url} not reachable')
-            return None
+
         except Exception as e:
             self.log.critical(f'{url} general exception: {e}')
             return None
@@ -424,7 +417,9 @@ class Environ(object):
         if data.status_code != 200:
             self.log.error(f'{url}: status nok')
             return None
+
         self.log.debug(f'{url}: {data.status_code}')
+
         return data
 
     @staticmethod

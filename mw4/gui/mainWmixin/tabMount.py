@@ -87,6 +87,7 @@ class Mount(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
+
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
 

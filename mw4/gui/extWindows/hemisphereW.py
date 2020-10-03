@@ -495,9 +495,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return: success
         """
 
-        if not self.ui.checkShowAlignStar.isChecked():
-            return False
-
         if self.starsAlign is None:
             return False
 
@@ -513,7 +510,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             starAnnotation.remove()
         self.starsAlignAnnotate = list()
 
-        visible = self.ui.checkShowAlignStar.isChecked()
         for alt, az, name in zip(hip.alt, hip.az, hip.name):
             annotation = axes.annotate(name,
                                        xy=(az, alt),
@@ -524,7 +520,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        fontsize=12,
                                        zorder=30,
                                        clip_on=True,
-                                       visible=visible,
                                        )
             self.starsAlignAnnotate.append(annotation)
 
@@ -556,9 +551,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return:
         """
 
-        showHorizon = self.ui.checkUseHorizon.isChecked()
-
-        if not (self.app.data.horizonP and showHorizon):
+        if not self.app.data.horizonP:
             return False
 
         alt, az = zip(*self.app.data.horizonP)
@@ -570,6 +563,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                       color=self.M_GREEN_LL,
                                       alpha=0.5,
                                       zorder=0)
+
         self.horizonMarker, = axes.plot(az,
                                         alt,
                                         color=self.MODE[self.operationMode]['horColor'],
@@ -636,7 +630,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return: success
         """
 
-        visible = self.ui.checkShowCelestial.isChecked()
         celestial = self.app.data.generateCelestialEquator()
         alt, az = zip(*celestial)
 
@@ -646,8 +639,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                         markersize=1,
                                         fillstyle='none',
                                         zorder=20,
-                                        color=self.M_WHITE_L,
-                                        visible=visible)
+                                        color=self.M_WHITE_L)
         return True
 
     def staticMeridianLimits(self, axes=None):
@@ -662,18 +654,16 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         else:
             slew = 0
 
-        isShow = self.ui.checkShowMeridian.isChecked()
         isAvailable = slew > 0
-        visible = isShow and isAvailable
 
-        self.meridianSlew = mpatches.Rectangle((180 - slew, 0),
-                                               2 * slew,
-                                               90,
-                                               zorder=15,
-                                               color=self.M_YELLOW,
-                                               alpha=0.5,
-                                               visible=visible)
-        axes.add_patch(self.meridianSlew)
+        if isAvailable:
+            self.meridianSlew = mpatches.Rectangle((180 - slew, 0),
+                                                   2 * slew,
+                                                   90,
+                                                   zorder=15,
+                                                   color=self.M_YELLOW,
+                                                   alpha=0.5)
+            axes.add_patch(self.meridianSlew)
 
         if self.app.mount.setting.meridianLimitTrack is not None:
             track = self.app.mount.setting.meridianLimitTrack
@@ -682,16 +672,15 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             track = 0
 
         isAvailable = track > 0
-        visible = isShow and isAvailable
 
-        self.meridianTrack = mpatches.Rectangle((180 - track, 0),
-                                                2 * track,
-                                                90,
-                                                zorder=10,
-                                                color=self.M_YELLOW_L,
-                                                alpha=0.5,
-                                                visible=visible)
-        axes.add_patch(self.meridianTrack)
+        if isAvailable:
+            self.meridianTrack = mpatches.Rectangle((180 - track, 0),
+                                                    2 * track,
+                                                    90,
+                                                    zorder=10,
+                                                    color=self.M_YELLOW_L,
+                                                    alpha=0.5)
+            axes.add_patch(self.meridianTrack)
 
         return True
 
@@ -747,10 +736,16 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return: success
         """
 
-        self.staticHorizon(axes=axes)
-        self.staticCelestialEquator(axes=axes)
-        self.staticMeridianLimits(axes=axes)
-        self.staticHorizonLimits(axes=axes)
+        if self.ui.checkUseHorizon.isChecked():
+            self.staticHorizon(axes=axes)
+            self.staticHorizonLimits(axes=axes)
+
+        if self.ui.checkShowCelestial.isChecked():
+            self.staticCelestialEquator(axes=axes)
+
+        if self.ui.checkShowMeridian.isChecked():
+            self.staticMeridianLimits(axes=axes)
+
         self.staticModelData(axes=axes)
 
         axes.figure.canvas.draw()
@@ -804,10 +799,10 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return: true for test purpose
         """
 
-        visible = self.ui.checkShowAlignStar.isChecked()
         self.starsAlignAnnotate = list()
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()
+
         self.starsAlign, = axes.plot(hip.az,
                                      hip.alt,
                                      marker=self.markerStar(),
@@ -815,8 +810,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                      linestyle='None',
                                      color=self.MODE[self.operationMode]['starColor'],
                                      zorder=30,
-                                     visible=visible,
                                      )
+
         for alt, az, name in zip(hip.alt, hip.az, hip.name):
             annotation = axes.annotate(name,
                                        xy=(az, alt),
@@ -827,7 +822,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        zorder=30,
                                        fontsize=12,
                                        clip_on=True,
-                                       visible=visible,
                                        )
             self.starsAlignAnnotate.append(annotation)
 
@@ -852,7 +846,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        showAxes=False)
 
         self.drawHemisphereStatic(axes=axe)
+        visible = self.ui.checkShowAlignStar.isChecked()
+        if visible:
+            self.drawAlignmentStars(axes=axe)
         self.drawHemisphereMoving(axes=axeMove)
-        self.drawAlignmentStars(axes=axe)
 
         return True

@@ -183,6 +183,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return:
         """
         self.app.update10s.disconnect(self.updateAlignStar)
+        self.app.update1s.disconnect(self.hemisphereMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.disconnect(self.drawHemisphere)
         self.app.updatePointMarker.disconnect(self.updatePointMarker)
         self.app.mount.signals.settingDone.disconnect(self.updateSettings)
@@ -234,6 +235,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         """
 
         self.app.update10s.connect(self.updateAlignStar)
+        self.app.update1s.connect(self.hemisphereMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.updatePointMarker.connect(self.updatePointMarker)
         self.app.mount.signals.settingDone.connect(self.updateSettings)
@@ -408,7 +410,31 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
-        self.hemisphereMatMove.figure.canvas.draw()
+
+        return True
+
+    def updateDome(self, azimuth):
+        """
+        updateDome is called whenever an update of coordinates from dome are given.
+        it takes the actual values and corrects the point in window if window is in
+        show status.
+        If the object is not created, the routing returns false.
+
+        :param azimuth:
+        :return: success
+        """
+
+        if self.pointerDome is None:
+            return False
+
+        if not isinstance(azimuth, (int, float)):
+            self.pointerDome.set_visible(False)
+            return False
+
+        visible = self.app.deviceStat['dome']
+
+        self.pointerDome.set_xy((azimuth - 15, 1))
+        self.pointerDome.set_visible(visible)
 
         return True
 
@@ -451,33 +477,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             self.pointsBuildAnnotate[index].set_color(color)
 
         self.hemisphereMat.figure.canvas.draw()
-
-        return True
-
-    def updateDome(self, azimuth):
-        """
-        updateDome is called whenever an update of coordinates from dome are given.
-        it takes the actual values and corrects the point in window if window is in
-        show status.
-        If the object is not created, the routing returns false.
-
-        :param azimuth:
-        :return: success
-        """
-
-        if self.pointerDome is None:
-            return False
-
-        if not isinstance(azimuth, (int, float)):
-            self.pointerDome.set_visible(False)
-            return False
-
-        visible = self.app.deviceStat['dome']
-
-        self.pointerDome.set_xy((azimuth - 15, 1))
-        self.pointerDome.set_visible(visible)
-
-        self.hemisphereMatMove.figure.canvas.draw()
 
         return True
 

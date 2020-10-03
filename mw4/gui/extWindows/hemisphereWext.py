@@ -92,25 +92,6 @@ class HemisphereWindowExt:
 
         return marker
 
-    def configOperationMode(self):
-        """
-        configOperationMode enables and disables the select PolarAlign button according
-        to the status of Show align stars. without showing align stars it does not make
-        sense to enable this function.
-
-        :return: True for test purpose
-        """
-
-        if self.ui.checkShowAlignStar.isChecked():
-            self.ui.checkPolarAlignment.setEnabled(True)
-
-        else:
-            self.ui.checkPolarAlignment.setEnabled(False)
-            if self.ui.checkPolarAlignment.isChecked():
-                self.ui.checkEditNone.setChecked(True)
-
-        return True
-
     def setOperationMode(self):
         """
         setOperationMode changes the operation mode of the hemisphere window(s) depending
@@ -129,6 +110,7 @@ class HemisphereWindowExt:
             self.operationMode = 'horizon'
 
         elif self.ui.checkPolarAlignment.isChecked():
+            self.ui.checkShowAlignStar.setChecked(True)
             self.operationMode = 'star'
 
         self.drawHemisphere()

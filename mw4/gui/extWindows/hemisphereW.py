@@ -147,7 +147,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
-        self.configOperationMode()
 
         return True
 
@@ -203,7 +202,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkEditBuildPoints.clicked.disconnect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.disconnect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.disconnect(self.drawHemisphere)
-        self.ui.checkShowAlignStar.clicked.disconnect(self.configOperationMode)
         self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
         self.app.dome.signals.azimuth.disconnect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.disconnect(self.updateDome)
@@ -253,7 +251,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
-        self.ui.checkShowAlignStar.clicked.connect(self.configOperationMode)
 
         self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
                                                      self.onMouseDispatcher)
@@ -844,10 +841,10 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         axeMove, _ = self.generateFlat(widget=self.hemisphereMatMove, horizon=True,
                                        showAxes=False)
 
-        self.drawHemisphereStatic(axes=axe)
-        visible = self.ui.checkShowAlignStar.isChecked()
-        if visible:
+        if self.ui.checkShowAlignStar.isChecked():
             self.drawAlignmentStars(axes=axe)
+
+        self.drawHemisphereStatic(axes=axe)
         self.drawHemisphereMoving(axes=axeMove)
 
         return True

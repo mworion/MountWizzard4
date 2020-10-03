@@ -18,7 +18,6 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
-import logging
 import pytest
 import time
 import os
@@ -27,9 +26,9 @@ import glob
 
 # external packages
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QCheckBox
 from mountcontrol.qtmount import Mount
 import skyfield.api
 from skyfield.api import Angle
@@ -43,11 +42,27 @@ from gui.utilities.widget import MWidget
 from logic.imaging.camera import Camera
 from logic.dome.dome import Dome
 from logic.astrometry.astrometry import Astrometry
-from base.loggerMW import CustomLogger
+from logic.modeldata.buildpoints import DataPoint
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
+    yield
 
 
 @pytest.fixture(autouse=True, scope='function')
-def app(qtbot):
+def function(module):
+    class Test3:
+        checkAutoSolve = QCheckBox()
+        checkStackImages = QCheckBox()
+
+    class Test2:
+        deviceStat = {}
+        ui = Test3()
+
+        @staticmethod
+        def abortImage():
+            pass
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
@@ -57,6 +72,7 @@ def app(qtbot):
         threadPool = QThreadPool()
         mwGlob = {'modelDir': 'tests/model',
                   'imageDir': 'tests/image',
+                  'configDir': 'tests/config',
                   'tempDir': 'tests/temp'}
 
     class Test(QObject):
@@ -64,6 +80,7 @@ def app(qtbot):
         threadPool = QThreadPool()
         update1s = pyqtSignal()
         showImage = pyqtSignal(str)
+        updatePointMarker = pyqtSignal()
         __version__ = 'test'
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
@@ -71,40 +88,27 @@ def app(qtbot):
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
+        data = DataPoint(app=Test1())
         camera = Camera(app=Test1())
         astrometry = Astrometry(app=Test1())
         dome = Dome(app=Test1())
         mwGlob = {'modelDir': 'tests/model',
+                  'configDir': 'tests/config',
                   'imageDir': 'tests/image'}
-        uiWindows = {'showImageW': {'classObj': None}}
+        uiWindows = {'showImageW': {'classObj': Test2()}}
 
-    def refreshModel():
-        return
+    class Mixin(MWidget, Model):
+        def __init__(self):
+            super().__init__()
+            self.app = Test()
+            self.deviceStat = {}
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            Model.__init__(self)
 
-    def refreshName():
-        return
+    window = Mixin()
+    yield window
 
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
-    app = Model(app=Test(), ui=ui,
-                clickable=MWidget().clickable)
-    app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.close = MWidget().close
-    app.deleteLater = MWidget().deleteLater
-    app.deviceStat = dict()
-    app.lastGenerator = 'test'
-    app.log = CustomLogger(logging.getLogger(__name__), {})
-    app.threadPool = QThreadPool()
-    app.refreshName = refreshName
-    app.refreshModel = refreshModel
-
-    qtbot.addWidget(app)
-
-    yield app
-
-    app.threadPool.waitForDone(1000)
     files = glob.glob('tests/model/m-*.model')
     for f in files:
         os.remove(f)
@@ -112,66 +116,66 @@ def app(qtbot):
         shutil.rmtree(path)
 
 
-def test_initConfig_1(app):
-    app.app.config['mainW'] = {}
-    suc = app.initConfig()
+def test_initConfig_1(function):
+    function.app.config['mainW'] = {}
+    suc = function.initConfig()
     assert suc
 
 
-def test_storeConfig_1(app):
-    suc = app.storeConfig()
+def test_storeConfig_1(function):
+    suc = function.storeConfig()
     assert suc
 
 
-def test_updateProgress_1(app):
-    app.startModeling = time.time()
-    suc = app.updateProgress()
+def test_updateProgress_1(function):
+    function.startModeling = time.time()
+    suc = function.updateProgress()
     assert not suc
 
 
-def test_updateProgress_2(app):
-    app.startModeling = time.time()
-    suc = app.updateProgress(number=3, count=2)
+def test_updateProgress_2(function):
+    function.startModeling = time.time()
+    suc = function.updateProgress(number=3, count=2)
     assert suc
 
 
-def test_updateProgress_3(app):
-    app.startModeling = time.time()
-    suc = app.updateProgress(number=2, count=3)
+def test_updateProgress_3(function):
+    function.startModeling = time.time()
+    suc = function.updateProgress(number=2, count=3)
     assert not suc
 
 
-def test_updateProgress_4(app):
-    suc = app.updateProgress(number=0, count=2)
-    app.startModeling = time.time()
+def test_updateProgress_4(function):
+    suc = function.updateProgress(number=0, count=2)
+    function.startModeling = time.time()
     assert not suc
 
 
-def test_updateProgress_5(app):
-    app.startModeling = time.time()
-    suc = app.updateProgress(number=3, count=1)
+def test_updateProgress_5(function):
+    function.startModeling = time.time()
+    suc = function.updateProgress(number=3, count=1)
     assert suc
 
 
-def test_updateProgress_6(app):
-    app.startModeling = time.time()
-    suc = app.updateProgress(number=3, count=-1)
+def test_updateProgress_6(function):
+    function.startModeling = time.time()
+    suc = function.updateProgress(number=3, count=-1)
     assert not suc
 
 
-def test_updateProgress_7(app):
-    app.startModeling = time.time()
-    suc = app.updateProgress(number=3, count=2)
+def test_updateProgress_7(function):
+    function.startModeling = time.time()
+    suc = function.updateProgress(number=3, count=2)
     assert suc
 
 
-def test_updateProgress_8(app):
-    app.startModeling = time.time()
-    suc = app.updateProgress(count=-1)
+def test_updateProgress_8(function):
+    function.startModeling = time.time()
+    suc = function.updateProgress(count=-1)
     assert not suc
 
 
-def test_modelSolveDone_0(qtbot, app):
+def test_modelSolveDone_0(function, qtbot):
     result = {'raJ2000S': 0,
               'decJ2000S': 0,
               'angleS': 0,
@@ -182,15 +186,15 @@ def test_modelSolveDone_0(qtbot, app):
               'message': 'test',
               }
 
-    suc = app.modelSolveDone(result)
+    suc = function.modelSolveDone(result)
     assert not suc
 
 
-def test_modelSolveDone_1(qtbot, app):
+def test_modelSolveDone_1(function, qtbot):
     mPoint = {'lenSequence': 3,
               'countSequence': 3}
 
-    app.resultQueue.put(mPoint)
+    function.resultQueue.put(mPoint)
 
     result = {'raJ2000S': 0,
               'decJ2000S': 0,
@@ -202,32 +206,32 @@ def test_modelSolveDone_1(qtbot, app):
               'message': 'test',
               }
 
-    with qtbot.waitSignal(app.app.message) as blocker:
-        with mock.patch.object(app,
+    with qtbot.waitSignal(function.app.message) as blocker:
+        with mock.patch.object(function,
                                'updateProgress'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'modelCycleThroughBuildPointsFinished'):
-                suc = app.modelSolveDone(result)
+                suc = function.modelSolveDone(result)
                 assert suc
     assert ['Solving  image-003:  test', 2] == blocker.args
 
 
-def test_modelSolveDone_2(app):
+def test_modelSolveDone_2(function):
     mPoint = {'lenSequence': 3,
               'countSequence': 3}
 
-    app.resultQueue.put(mPoint)
+    function.resultQueue.put(mPoint)
 
-    suc = app.modelSolveDone({})
+    suc = function.modelSolveDone({})
     assert not suc
 
 
-def test_modelSolveDone_3(app):
+def test_modelSolveDone_3(function):
     mPoint = {'lenSequence': 3,
               'countSequence': 3}
 
-    app.resultQueue.put(mPoint)
-    app.app.data = [(0, 0, True), (1, 1, True), (2, 2, True)]
+    function.resultQueue.put(mPoint)
+    function.app.data.buildP = [(0, 0, True), (1, 1, True), (2, 2, True)]
 
     class Julian:
         ut1 = 2458635.168
@@ -252,16 +256,16 @@ def test_modelSolveDone_3(app):
               'errorRMS': 3,
               }
 
-    app.resultQueue.put(mPoint)
-    with mock.patch.object(app,
+    function.resultQueue.put(mPoint)
+    with mock.patch.object(function,
                            'updateProgress'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'modelCycleThroughBuildPointsFinished'):
-            suc = app.modelSolveDone(result)
+            suc = function.modelSolveDone(result)
             assert suc
 
 
-def test_modelSolveDone_4(app):
+def test_modelSolveDone_4(function):
     mPoint = {'lenSequence': 3,
               'countSequence': 3}
 
@@ -273,21 +277,21 @@ def test_modelSolveDone_4(app):
               'flippedS': False,
               'success': True,
               'message': 'test',
-              'julianDate': app.app.mount.obsSite.timeJD,
+              'julianDate': function.app.mount.obsSite.timeJD,
               }
 
-    app.resultQueue.put(mPoint)
-    app.app.data = [(0, 0, True), (1, 1, True), (2, 2, True)]
+    function.resultQueue.put(mPoint)
+    function.app.data.buildP = [(0, 0, True), (1, 1, True), (2, 2, True)]
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'updateProgress'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'modelCycleThroughBuildPointsFinished'):
-            suc = app.modelSolveDone(result)
+            suc = function.modelSolveDone(result)
             assert suc
 
 
-def test_modelSolveDone_5(app):
+def test_modelSolveDone_5(function):
     mPoint = {'lenSequence': 3,
               'countSequence': 2}
 
@@ -299,24 +303,24 @@ def test_modelSolveDone_5(app):
               'flippedS': False,
               'success': True,
               'message': 'test',
-              'julianDate': app.app.mount.obsSite.timeJD,
+              'julianDate': function.app.mount.obsSite.timeJD,
               }
 
-    app.startModeling = 0
-    app.resultQueue.put(mPoint)
+    function.startModeling = 0
+    function.resultQueue.put(mPoint)
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'modelCycleThroughBuildPointsFinished'):
-        suc = app.modelSolveDone(result)
+        suc = function.modelSolveDone(result)
         assert suc
 
 
-def test_modelSolve_1(app):
-    suc = app.modelSolve()
+def test_modelSolve_1(function):
+    suc = function.modelSolve()
     assert not suc
 
 
-def test_modelSolve_2(app):
+def test_modelSolve_2(function):
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': '',
@@ -325,19 +329,19 @@ def test_modelSolve_2(app):
 
               }
 
-    app.solveQueue.put(mPoint)
-    with mock.patch.object(app.app.astrometry,
+    function.solveQueue.put(mPoint)
+    with mock.patch.object(function.app.astrometry,
                            'solveThreading'):
-        suc = app.modelSolve()
+        suc = function.modelSolve()
         assert suc
 
 
-def test_modelImage_1(app):
-    suc = app.modelImage()
+def test_modelImage_1(function):
+    suc = function.modelImage()
     assert not suc
 
 
-def test_modelImage_2(app):
+def test_modelImage_2(function):
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': '',
@@ -348,20 +352,20 @@ def test_modelImage_2(app):
               'focalLength': 1,
               }
 
-    app.imageQueue.put(mPoint)
-    with mock.patch.object(app.app.camera,
+    function.imageQueue.put(mPoint)
+    with mock.patch.object(function.app.camera,
                            'expose'):
-        suc = app.modelImage()
+        suc = function.modelImage()
         assert suc
 
 
-def test_modelSlew_1(app):
-    suc = app.modelSlew()
+def test_modelSlew_1(function):
+    suc = function.modelSlew()
     assert not suc
 
 
-def test_modelSlew_2(app):
-    app.deviceStat['dome'] = False
+def test_modelSlew_2(function):
+    function.deviceStat['dome'] = False
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': '',
@@ -373,15 +377,15 @@ def test_modelSlew_2(app):
               'altitude': 0,
               }
 
-    app.slewQueue.put(mPoint)
-    with mock.patch.object(app.app.camera,
+    function.slewQueue.put(mPoint)
+    with mock.patch.object(function.app.camera,
                            'expose'):
-        suc = app.modelSlew()
+        suc = function.modelSlew()
         assert not suc
 
 
-def test_modelSlew_3(app):
-    app.deviceStat['dome'] = True
+def test_modelSlew_3(function):
+    function.deviceStat['dome'] = True
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': '',
@@ -392,21 +396,21 @@ def test_modelSlew_3(app):
               'azimuth': 0,
               'altitude': 0,
               }
-    app.slewQueue.put(mPoint)
-    with mock.patch.object(app.app.camera,
+    function.slewQueue.put(mPoint)
+    with mock.patch.object(function.app.camera,
                            'expose'):
-        with mock.patch.object(app.app.dome,
+        with mock.patch.object(function.app.dome,
                                'slewDome',
                                return_value=0):
-            with mock.patch.object(app.app.mount.obsSite,
+            with mock.patch.object(function.app.mount.obsSite,
                                    'setTargetAltAz',
                                    return_value=True):
-                suc = app.modelSlew()
+                suc = function.modelSlew()
                 assert suc
 
 
-def test_modelSlew_4(app):
-    app.deviceStat['dome'] = True
+def test_modelSlew_4(function):
+    function.deviceStat['dome'] = True
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': '',
@@ -417,156 +421,178 @@ def test_modelSlew_4(app):
               'azimuth': 0,
               'altitude': 0,
               }
-    app.slewQueue.put(mPoint)
-    app.ui.checkDomeGeometry.setChecked(True)
-    with mock.patch.object(app.app.camera,
+    function.slewQueue.put(mPoint)
+    function.ui.checkDomeGeometry.setChecked(True)
+    with mock.patch.object(function.app.camera,
                            'expose'):
-        with mock.patch.object(app.app.dome,
+        with mock.patch.object(function.app.dome,
                                'slewDome',
                                return_value=0):
-            with mock.patch.object(app.app.mount.obsSite,
+            with mock.patch.object(function.app.mount.obsSite,
                                    'setTargetAltAz',
                                    return_value=True):
-                suc = app.modelSlew()
+                suc = function.modelSlew()
                 assert suc
 
 
-def test_changeStatusDAT_1(app):
-    app.ui.checkDisableDAT.setChecked(True)
-    app.app.mount.setting.statusDualAxisTracking = True
-    with mock.patch.object(app.app.mount.setting,
+def test_changeStatusDAT_1(function):
+    function.ui.checkDisableDAT.setChecked(True)
+    function.app.mount.setting.statusDualAxisTracking = True
+    with mock.patch.object(function.app.mount.setting,
                            'setDualAxisTracking'):
-        suc = app.disableDAT()
+        suc = function.disableDAT()
         assert suc
-        assert app.statusDAT
+        assert function.statusDAT
 
 
-def test_changeStatusDAT_2(app):
-    app.ui.checkDisableDAT.setChecked(True)
-    app.app.mount.setting.statusDualAxisTracking = False
-    with mock.patch.object(app.app.mount.setting,
+def test_changeStatusDAT_2(function):
+    function.ui.checkDisableDAT.setChecked(True)
+    function.app.mount.setting.statusDualAxisTracking = False
+    with mock.patch.object(function.app.mount.setting,
                            'setDualAxisTracking'):
-        suc = app.disableDAT()
+        suc = function.disableDAT()
         assert suc
-        assert not app.statusDAT
+        assert not function.statusDAT
 
 
-def test_changeStatusDAT_3(app):
-    app.ui.checkDisableDAT.setChecked(True)
-    app.statusDAT = True
-    app.app.mount.setting.statusDualAxisTracking = True
-    with mock.patch.object(app.app.mount.setting,
+def test_changeStatusDAT_3(function):
+    function.ui.checkDisableDAT.setChecked(True)
+    function.statusDAT = True
+    function.app.mount.setting.statusDualAxisTracking = True
+    with mock.patch.object(function.app.mount.setting,
                            'setDualAxisTracking'):
-        suc = app.disableDAT()
+        suc = function.disableDAT()
         assert suc
-        assert app.statusDAT
+        assert function.statusDAT
 
 
-def test_changeStatusDAT_4(app):
-    app.ui.checkDisableDAT.setChecked(False)
-    app.statusDAT = True
-    app.app.mount.setting.statusDualAxisTracking = True
-    with mock.patch.object(app.app.mount.setting,
+def test_changeStatusDAT_4(function):
+    function.ui.checkDisableDAT.setChecked(False)
+    function.statusDAT = True
+    function.app.mount.setting.statusDualAxisTracking = True
+    with mock.patch.object(function.app.mount.setting,
                            'setDualAxisTracking'):
-        suc = app.disableDAT()
+        suc = function.disableDAT()
         assert not suc
-        assert app.statusDAT
+        assert function.statusDAT
 
 
-def test_restoreStatusDAT_1(app):
-    app.ui.checkDisableDAT.setChecked(True)
-    app.statusDAT = None
-    suc = app.restoreStatusDAT()
+def test_restoreStatusDAT_1(function):
+    function.ui.checkDisableDAT.setChecked(True)
+    function.statusDAT = None
+    suc = function.restoreStatusDAT()
     assert not suc
 
 
-def test_restoreStatusDAT_2(app):
-    app.ui.checkDisableDAT.setChecked(True)
-    app.statusDAT = True
-    with mock.patch.object(app.app.mount.setting,
+def test_restoreStatusDAT_2(function):
+    function.ui.checkDisableDAT.setChecked(True)
+    function.statusDAT = True
+    with mock.patch.object(function.app.mount.setting,
                            'setDualAxisTracking'):
-        suc = app.restoreStatusDAT()
+        suc = function.restoreStatusDAT()
         assert suc
 
 
-def test_restoreStatusDAT_3(app):
-    app.ui.checkDisableDAT.setChecked(False)
-    suc = app.restoreStatusDAT()
+def test_restoreStatusDAT_3(function):
+    function.ui.checkDisableDAT.setChecked(False)
+    suc = function.restoreStatusDAT()
     assert not suc
 
 
-def test_clearQueues(app):
-    suc = app.clearQueues()
+def test_clearQueues(function):
+    suc = function.clearQueues()
     assert suc
 
 
-def test_prepareGUI(app):
-    suc = app.prepareGUI()
+def test_setupModelRunContextAndGuiStatus_1(function):
+    function.app.uiWindows['showImageW']['classObj']=None
+    suc = function.setupModelRunContextAndGuiStatus()
+    assert not suc
+
+
+def test_setupModelRunContextAndGuiStatus_2(function):
+    function.app.uiWindows['showImageW']['classObj'].deviceStat['expose'] = False
+    function.app.uiWindows['showImageW']['classObj'].deviceStat['exposeN'] = False
+    suc = function.setupModelRunContextAndGuiStatus()
+    assert not suc
+
+
+def test_setupModelRunContextAndGuiStatus_3(function):
+    function.app.uiWindows['showImageW']['classObj'].deviceStat['expose'] = True
+    function.app.uiWindows['showImageW']['classObj'].deviceStat['exposeN'] = False
+    suc = function.setupModelRunContextAndGuiStatus()
+    assert not suc
+
+
+def test_setupModelRunContextAndGuiStatus_4(function):
+    function.app.uiWindows['showImageW']['classObj'].deviceStat['expose'] = True
+    function.app.uiWindows['showImageW']['classObj'].deviceStat['exposeN'] = True
+    suc = function.setupModelRunContextAndGuiStatus()
     assert suc
 
 
-def test_defaultGUI(app):
-    suc = app.restoreModelDefaultContextAndGuiStatus()
+def test_restoreModelDefaultContextAndGuiStatus(function):
+    suc = function.restoreModelDefaultContextAndGuiStatus()
     assert suc
 
 
-def test_prepareSignals_1(app):
-    suc = app.setupSignalsForModelRun()
+def test_prepareSignals_1(function):
+    suc = function.setupSignalsForModelRun()
     assert suc
 
 
-def test_prepareSignals_2(app):
-    app.deviceStat['dome'] = True
-    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 1}
+def test_prepareSignals_2(function):
+    function.deviceStat['dome'] = True
+    function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 1}
 
-    suc = app.setupSignalsForModelRun()
+    suc = function.setupSignalsForModelRun()
     assert suc
 
 
-def test_prepareSignals_3(app):
-    app.deviceStat['dome'] = True
+def test_prepareSignals_3(function):
+    function.deviceStat['dome'] = True
 
-    suc = app.setupSignalsForModelRun()
+    suc = function.setupSignalsForModelRun()
     assert suc
 
 
-def test_defaultSignals(app):
-    app.app.camera.signals.saved.connect(app.modelSolve)
-    app.app.camera.signals.integrated.connect(app.modelSlew)
-    app.app.astrometry.signals.done.connect(app.modelSolveDone)
-    app.collector.ready.connect(app.modelImage)
+def test_defaultSignals(function):
+    function.app.camera.signals.saved.connect(function.modelSolve)
+    function.app.camera.signals.integrated.connect(function.modelSlew)
+    function.app.astrometry.signals.done.connect(function.modelSolveDone)
+    function.collector.ready.connect(function.modelImage)
 
-    suc = app.restoreSignalsModelDefault()
+    suc = function.restoreSignalsModelDefault()
     assert suc
 
 
-def test_pauseBuild_1(app):
-    app.ui.pauseModel.setProperty('pause', True)
-    suc = app.pauseBuild()
+def test_pauseBuild_1(function):
+    function.ui.pauseModel.setProperty('pause', True)
+    suc = function.pauseBuild()
     assert suc
-    assert not app.ui.pauseModel.property('pause')
+    assert not function.ui.pauseModel.property('pause')
 
 
-def test_pauseBuild_2(app):
-    app.ui.pauseModel.setProperty('pause', False)
-    suc = app.pauseBuild()
+def test_pauseBuild_2(function):
+    function.ui.pauseModel.setProperty('pause', False)
+    suc = function.pauseBuild()
     assert suc
-    assert app.ui.pauseModel.property('pause')
+    assert function.ui.pauseModel.property('pause')
 
 
-def test_cancelFull(qtbot, app):
-    suc = app.setupSignalsForModelRun()
+def test_cancelFull(function, qtbot):
+    suc = function.setupSignalsForModelRun()
     assert suc
-    with mock.patch.object(app.app.camera,
+    with mock.patch.object(function.app.camera,
                            'abort'):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            suc = app.cancelBuild()
+        with qtbot.waitSignal(function.app.message) as blocker:
+            suc = function.cancelBuild()
             assert suc
         assert blocker.args == ['Modeling cancelled', 2]
 
 
-def test_retrofitModel_1(app):
-    app.app.mount.model.starList = list()
+def test_retrofitModel_1(function):
+    function.app.mount.model.starList = list()
 
     point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
@@ -578,39 +604,39 @@ def test_retrofitModel_1(app):
     stars.append(point)
 
     mPoint = {}
-    app.model = list()
-    app.model.append(mPoint)
-    app.model.append(mPoint)
-    app.model.append(mPoint)
+    function.model = list()
+    function.model.append(mPoint)
+    function.model.append(mPoint)
+    function.model.append(mPoint)
 
-    suc = app.retrofitModel()
+    suc = function.retrofitModel()
     assert suc
-    assert app.model == []
+    assert function.model == []
 
 
-def test_retrofitModel_2(app):
-    app.app.mount.model.starList = list()
+def test_retrofitModel_2(function):
+    function.app.mount.model.starList = list()
     point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
                       errorRMS=10,
                       errorAngle=skyfield.api.Angle(degrees=0))
-    app.app.mount.model.addStar(point)
-    app.app.mount.model.addStar(point)
-    app.app.mount.model.addStar(point)
-    app.app.mount.model.orthoError = 1
-    app.app.mount.model.polarError = 1
+    function.app.mount.model.addStar(point)
+    function.app.mount.model.addStar(point)
+    function.app.mount.model.addStar(point)
+    function.app.mount.model.orthoError = 1
+    function.app.mount.model.polarError = 1
 
     mPoint = {'test': 1}
-    app.model = list()
-    app.model.append(mPoint)
-    app.model.append(mPoint)
-    app.model.append(mPoint)
+    function.model = list()
+    function.model.append(mPoint)
+    function.model.append(mPoint)
+    function.model.append(mPoint)
 
-    suc = app.retrofitModel()
+    suc = function.retrofitModel()
     assert suc
 
 
-def test_generateSaveModel_1(app):
+def test_generateSaveModel_1(function):
     mPoint = {'raJNowM': Angle(hours=0),
               'decJNowM': Angle(degrees=0),
               'raJNowS': Angle(hours=0),
@@ -620,30 +646,30 @@ def test_generateSaveModel_1(app):
               'raJ2000S': Angle(hours=0),
               'decJ2000S': Angle(degrees=0),
               'siderealTime': Angle(hours=0),
-              'julianDate': app.app.mount.obsSite.timeJD,
+              'julianDate': function.app.mount.obsSite.timeJD,
               }
-    app.model = list()
-    app.model.append(mPoint)
-    app.model.append(mPoint)
-    app.model.append(mPoint)
+    function.model = list()
+    function.model.append(mPoint)
+    function.model.append(mPoint)
+    function.model.append(mPoint)
 
-    val = app.generateSaveModel()
+    val = function.generateSaveModel()
     assert len(val) == 3
 
 
-def test_saveModelFinish_1(app):
-    app.modelName = 'test'
-    app.app.mount.signals.alignDone.connect(app.saveModelFinish)
-    suc = app.saveModelFinish()
+def test_saveModelFinish_1(function):
+    function.modelName = 'test'
+    function.app.mount.signals.alignDone.connect(function.saveModelFinish)
+    suc = function.saveModelFinish()
     assert suc
 
 
-def test_saveModel_1(app):
-    suc = app.saveModelPrepare()
+def test_saveModel_1(function):
+    suc = function.saveModelPrepare()
     assert not suc
 
 
-def test_saveModel_2(app):
+def test_saveModel_2(function):
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': 'testPath',
@@ -656,22 +682,22 @@ def test_saveModel_2(app):
               'altitude': 0,
               }
 
-    app.model = list()
-    app.model.append(mPoint)
-    app.model.append(mPoint)
+    function.model = list()
+    function.model.append(mPoint)
+    function.model.append(mPoint)
 
-    suc = app.saveModelPrepare()
+    suc = function.saveModelPrepare()
     assert not suc
 
 
-def test_saveModel_3(app):
+def test_saveModel_3(function):
     class Julian:
         ut1 = 2458635.168
 
     def refreshModel():
         return
 
-    app.refreshModel = refreshModel
+    function.refreshModel = refreshModel
 
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
@@ -695,17 +721,17 @@ def test_saveModel_3(app):
               'errorRMS': 3,
               }
 
-    app.model = list()
-    app.modelName = 'test'
-    app.model.append(mPoint)
-    app.model.append(mPoint)
-    app.model.append(mPoint)
+    function.model = list()
+    function.modelName = 'test'
+    function.model.append(mPoint)
+    function.model.append(mPoint)
+    function.model.append(mPoint)
 
-    suc = app.saveModelPrepare()
+    suc = function.saveModelPrepare()
     assert suc
 
 
-def test_saveModel_4(app):
+def test_saveModel_4(function):
     class Julian:
         @staticmethod
         def utc_iso():
@@ -713,7 +739,7 @@ def test_saveModel_4(app):
 
     def refreshModel():
         return
-    app.refreshModel = refreshModel
+    function.refreshModel = refreshModel
 
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
@@ -738,16 +764,16 @@ def test_saveModel_4(app):
               'errorDEC': 2,
               'errorRMS': 3,
               }
-    app.model = list()
-    app.model.append(mPoint)
-    app.model.append(mPoint)
-    app.model.append(mPoint)
+    function.model = list()
+    function.model.append(mPoint)
+    function.model.append(mPoint)
+    function.model.append(mPoint)
 
-    suc = app.saveModelPrepare()
+    suc = function.saveModelPrepare()
     assert suc
 
 
-def test_generateBuildData_1(app):
+def test_generateBuildData_1(function):
     inputData = [
         {
             "altitude": 44.556745182012854,
@@ -774,17 +800,17 @@ def test_generateBuildData_1(app):
         },
     ]
 
-    build = app.generateBuildData(inputData)
+    build = function.generateBuildData(inputData)
     assert build[0].sCoord.dec.degrees == 64.3246
 
 
-def test_modelFinished_1(qtbot, app):
+def test_modelCycleThroughBuildPointsFinished_1(function, qtbot):
     class Julian:
         ut1 = 2458635.168
 
     def playSound(a):
         return
-    app.playSound = playSound
+    function.playSound = playSound
 
     inputData = {
          'raJ2000S': skyfield.api.Angle(hours=0),
@@ -807,27 +833,27 @@ def test_modelFinished_1(qtbot, app):
          'errorRMS': 3,
          }
 
-    app.modelQueue.put(inputData)
+    function.modelQueue.put(inputData)
 
-    app.app.camera.signals.saved.connect(app.modelSolve)
-    app.app.camera.signals.integrated.connect(app.modelSlew)
-    app.app.astrometry.signals.done.connect(app.modelSolveDone)
-    app.collector.ready.connect(app.modelImage)
+    function.app.camera.signals.saved.connect(function.modelSolve)
+    function.app.camera.signals.integrated.connect(function.modelSlew)
+    function.app.astrometry.signals.done.connect(function.modelSolveDone)
+    function.collector.ready.connect(function.modelImage)
 
-    with mock.patch.object(app.app.mount.model,
+    with mock.patch.object(function.app.mount.model,
                            'programAlign',
                            return_value=False):
-        suc = app.modelCycleThroughBuildPointsFinished()
+        suc = function.modelCycleThroughBuildPointsFinished()
         assert not suc
 
 
-def test_modelFinished_2(qtbot, app):
+def test_modelFinished_2(function, qtbot):
     class Julian:
         ut1 = 2458635.168
 
     def playSound(a):
         return
-    app.playSound = playSound
+    function.playSound = playSound
 
     inputData = {
         'raJ2000S': skyfield.api.Angle(hours=0),
@@ -850,29 +876,29 @@ def test_modelFinished_2(qtbot, app):
         'errorRMS': 3,
     }
 
-    app.modelQueue.put(inputData)
-    app.modelQueue.put(inputData)
-    app.modelQueue.put(inputData)
+    function.modelQueue.put(inputData)
+    function.modelQueue.put(inputData)
+    function.modelQueue.put(inputData)
 
-    app.app.camera.signals.saved.connect(app.modelSolve)
-    app.app.camera.signals.integrated.connect(app.modelSlew)
-    app.app.astrometry.signals.done.connect(app.modelSolveDone)
-    app.collector.ready.connect(app.modelImage)
+    function.app.camera.signals.saved.connect(function.modelSolve)
+    function.app.camera.signals.integrated.connect(function.modelSlew)
+    function.app.astrometry.signals.done.connect(function.modelSolveDone)
+    function.collector.ready.connect(function.modelImage)
 
-    with mock.patch.object(app.app.mount.model,
+    with mock.patch.object(function.app.mount.model,
                            'programAlign',
                            return_value=True):
-        suc = app.modelCycleThroughBuildPointsFinished()
+        suc = function.modelCycleThroughBuildPointsFinished()
         assert suc
 
 
-def test_modelFinished_3(qtbot, app):
+def test_modelFinished_3(function, qtbot):
     class Julian:
         ut1 = 2458635.168
 
     def playSound(a):
         return
-    app.playSound = playSound
+    function.playSound = playSound
 
     inputData = {
         'raJ2000S': skyfield.api.Angle(hours=0),
@@ -895,335 +921,335 @@ def test_modelFinished_3(qtbot, app):
         'errorRMS': 3,
     }
 
-    app.modelQueue.put(inputData)
-    app.modelQueue.put(inputData)
-    app.modelQueue.put(inputData)
+    function.modelQueue.put(inputData)
+    function.modelQueue.put(inputData)
+    function.modelQueue.put(inputData)
 
-    app.app.camera.signals.saved.connect(app.modelSolve)
-    app.app.camera.signals.integrated.connect(app.modelSlew)
-    app.app.astrometry.signals.done.connect(app.modelSolveDone)
-    app.collector.ready.connect(app.modelImage)
+    function.app.camera.signals.saved.connect(function.modelSolve)
+    function.app.camera.signals.integrated.connect(function.modelSlew)
+    function.app.astrometry.signals.done.connect(function.modelSolveDone)
+    function.collector.ready.connect(function.modelImage)
 
-    app.ui.checkEnableBackup.setChecked(True)
-    with mock.patch.object(app.app.mount.model,
+    function.ui.checkEnableBackup.setChecked(True)
+    with mock.patch.object(function.app.mount.model,
                            'programAlign',
                            return_value=True):
-        suc = app.modelCycleThroughBuildPointsFinished()
+        suc = function.modelCycleThroughBuildPointsFinished()
         assert suc
 
 
-def test_modelCore_1(app):
-    app.ui.astrometryDevice.setCurrentIndex(0)
-    with mock.patch.object(app,
+def test_modelCore_1(function):
+    function.ui.astrometryDevice.setCurrentIndex(0)
+    with mock.patch.object(function,
                            'modelSlew'):
-        suc = app.modelCycleThroughBuildPoints(points=[(0, 0)])
+        suc = function.modelCycleThroughBuildPoints(points=[(0, 0)])
         assert not suc
 
 
-def test_modelCore_2(app):
-    app.ui.astrometryDevice.setCurrentIndex(1)
-    with mock.patch.object(app,
+def test_modelCore_2(function):
+    function.ui.astrometryDevice.setCurrentIndex(1)
+    with mock.patch.object(function,
                            'modelSlew'):
-        suc = app.modelCycleThroughBuildPoints()
+        suc = function.modelCycleThroughBuildPoints()
         assert not suc
 
 
-def test_modelCore_3(app):
-    app.ui.astrometryDevice.setCurrentIndex(1)
-    with mock.patch.object(app,
+def test_modelCore_3(function):
+    function.ui.astrometryDevice.setCurrentIndex(1)
+    with mock.patch.object(function,
                            'modelSlew'):
-        suc = app.modelCycleThroughBuildPoints(points=[(0, 0)])
+        suc = function.modelCycleThroughBuildPoints(points=[(0, 0)])
         assert not suc
 
 
-def test_modelCore_4(app):
-    app.ui.astrometryDevice.setCurrentIndex(1)
-    with mock.patch.object(app,
+def test_modelCore_4(function):
+    function.ui.astrometryDevice.setCurrentIndex(1)
+    with mock.patch.object(function,
                            'modelSlew'):
-        suc = app.modelCycleThroughBuildPoints(points=[(0, 0), (0, 0), (0, 0)])
+        suc = function.modelCycleThroughBuildPoints(points=[(0, 0), (0, 0), (0, 0)])
         assert suc
 
 
-def test_modelBuild_1(app):
+def test_modelBuild_1(function):
     class Test:
         buildP = {}
 
-    app.app.data = Test()
+    function.app.data = Test()
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'modelCycleThroughBuildPoints',
                            return_value=True):
-        suc = app.modelBuild()
+        suc = function.modelBuild()
         assert not suc
 
 
-def test_modelBuild_2(app):
+def test_modelBuild_2(function):
     class Test:
         buildP = [(90, 90), (90, 90), (90, 90)]
 
-    app.app.data = Test()
+    function.app.data = Test()
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'modelCycleThroughBuildPoints',
                            return_value=True):
-        suc = app.modelBuild()
+        suc = function.modelBuild()
         assert not suc
 
 
-def test_modelBuild_2a(app):
+def test_modelBuild_2a(function):
     class Test:
         buildP = [(90, 90), (90, 90), (90, 90)]
 
-    app.app.data = Test()
+    function.app.data = Test()
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'modelCycleThroughBuildPoints',
                            return_value=True):
-        with mock.patch.object(app.app.mount.model,
+        with mock.patch.object(function.app.mount.model,
                                'clearAlign',
                                return_value=True):
-            with mock.patch.object(app.app.astrometry,
+            with mock.patch.object(function.app.astrometry,
                                    'checkAvailability',
                                    return_value=(True, True)):
-                suc = app.modelBuild()
+                suc = function.modelBuild()
                 assert suc
 
 
-def test_modelBuild_3(app):
+def test_modelBuild_3(function):
     class Test:
         buildP = [(1, 1)] * 100
 
-    app.app.data = Test()
+    function.app.data = Test()
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'modelCycleThroughBuildPoints',
                            return_value=True):
-        with mock.patch.object(app.app.astrometry,
+        with mock.patch.object(function.app.astrometry,
                                'checkAvailability',
                                return_value=(True, True)):
-            suc = app.modelBuild()
+            suc = function.modelBuild()
             assert not suc
 
 
-def test_modelBuild_4(app):
+def test_modelBuild_4(function):
     class Test:
         buildP = [(1, 1)] * 10
 
-    app.app.data = Test()
+    function.app.data = Test()
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'modelCycleThroughBuildPoints',
                            return_value=False):
-        with mock.patch.object(app.app.astrometry,
+        with mock.patch.object(function.app.astrometry,
                                'checkAvailability',
                                return_value=(True, True)):
-            suc = app.modelBuild()
+            suc = function.modelBuild()
             assert not suc
 
 
-def test_modelBuild_5(app):
+def test_modelBuild_5(function):
     class Test:
         buildP = [(1, 1)] * 10
 
-    app.app.data = Test()
+    function.app.data = Test()
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'modelCycleThroughBuildPoints',
                            return_value=False):
-        with mock.patch.object(app.app.mount.model,
+        with mock.patch.object(function.app.mount.model,
                                'clearAlign',
                                return_value=False):
-            with mock.patch.object(app.app.astrometry,
+            with mock.patch.object(function.app.astrometry,
                                    'checkAvailability',
                                    return_value=(True, True)):
-                suc = app.modelBuild()
+                suc = function.modelBuild()
                 assert not suc
 
 
-def test_modelBuild_6(app):
+def test_modelBuild_6(function):
     class Test:
         buildP = [(1, 1)] * 10
 
-    app.app.data = Test()
+    function.app.data = Test()
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'modelCycleThroughBuildPoints',
                            return_value=True):
-        with mock.patch.object(app.app.mount.model,
+        with mock.patch.object(function.app.mount.model,
                                'clearAlign',
                                return_value=True):
-            with mock.patch.object(app.app.astrometry,
+            with mock.patch.object(function.app.astrometry,
                                    'checkAvailability',
                                    return_value=(True, True)):
-                suc = app.modelBuild()
+                suc = function.modelBuild()
                 assert suc
 
 
-def test_loadProgramModel_1(app):
+def test_loadProgramModel_1(function):
     def openFile(a, b, c, d, multiple=False):
         return ('', '', '')
 
-    app.openFile = openFile
+    function.openFile = openFile
 
-    with mock.patch.object(app.app.mount.model,
+    with mock.patch.object(function.app.mount.model,
                            'programAlign',
                            return_value=True):
-        suc = app.loadProgramModel()
+        suc = function.loadProgramModel()
         assert not suc
 
 
-def test_loadProgramModel_2(app):
+def test_loadProgramModel_2(function):
     shutil.copy('tests/testData/m-test.model', 'tests/model/m-test.model')
 
     def openFile(a, b, c, d, multiple=False):
         return ('tests/model/m-test.model', 'm-test', '.model')
-    app.openFile = openFile
+    function.openFile = openFile
 
     def refreshModel():
         return
-    app.refreshModel = refreshModel
+    function.refreshModel = refreshModel
 
-    with mock.patch.object(app.app.mount.model,
+    with mock.patch.object(function.app.mount.model,
                            'programAlign',
                            return_value=True):
-        with mock.patch.object(app.app.mount.model,
+        with mock.patch.object(function.app.mount.model,
                                'clearAlign',
                                return_value=True):
-            suc = app.loadProgramModel()
+            suc = function.loadProgramModel()
             assert suc
 
 
-def test_updateAlignGui_numberStars(app):
+def test_updateAlignGui_numberStars(function):
     value = '50'
-    app.app.mount.model.numberStars = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert ' 50' == app.ui.numberStars.text()
-    assert ' 50' == app.ui.numberStars1.text()
+    function.app.mount.model.numberStars = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert ' 50' == function.ui.numberStars.text()
+    assert ' 50' == function.ui.numberStars1.text()
     value = None
-    app.app.mount.model.numberStars = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert '-' == app.ui.numberStars.text()
-    assert '-' == app.ui.numberStars1.text()
+    function.app.mount.model.numberStars = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert '-' == function.ui.numberStars.text()
+    assert '-' == function.ui.numberStars1.text()
 
 
-def test_updateAlignGui_altitudeError(app):
+def test_updateAlignGui_altitudeError(function):
     value = '50'
-    app.app.mount.model.altitudeError = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert ' 50.0' == app.ui.altitudeError.text()
+    function.app.mount.model.altitudeError = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert ' 50.0' == function.ui.altitudeError.text()
     value = None
-    app.app.mount.model.altitudeError = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert '-' == app.ui.altitudeError.text()
+    function.app.mount.model.altitudeError = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert '-' == function.ui.altitudeError.text()
 
 
-def test_updateAlignGui_errorRMS(app):
+def test_updateAlignGui_errorRMS(function):
     value = '50'
-    app.app.mount.model.errorRMS = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert '50.0' == app.ui.errorRMS.text()
-    assert '50.0' == app.ui.errorRMS1.text()
+    function.app.mount.model.errorRMS = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert '50.0' == function.ui.errorRMS.text()
+    assert '50.0' == function.ui.errorRMS1.text()
     value = None
-    app.app.mount.model.errorRMS = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert '-' == app.ui.errorRMS.text()
-    assert '-' == app.ui.errorRMS1.text()
+    function.app.mount.model.errorRMS = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert '-' == function.ui.errorRMS.text()
+    assert '-' == function.ui.errorRMS1.text()
 
 
-def test_updateAlignGui_azimuthError(app):
+def test_updateAlignGui_azimuthError(function):
     value = '50'
-    app.app.mount.model.azimuthError = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert ' 50.0' == app.ui.azimuthError.text()
+    function.app.mount.model.azimuthError = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert ' 50.0' == function.ui.azimuthError.text()
     value = None
-    app.app.mount.model.azimuthError = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert '-' == app.ui.azimuthError.text()
+    function.app.mount.model.azimuthError = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert '-' == function.ui.azimuthError.text()
 
 
-def test_updateAlignGui_terms(app):
+def test_updateAlignGui_terms(function):
     value = '50'
-    app.app.mount.model.terms = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert '50' == app.ui.terms.text()
+    function.app.mount.model.terms = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert '50' == function.ui.terms.text()
     value = None
-    app.app.mount.model.terms = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert '-' == app.ui.terms.text()
+    function.app.mount.model.terms = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert '-' == function.ui.terms.text()
 
 
-def test_updateAlignGui_orthoError(app):
+def test_updateAlignGui_orthoError(function):
     value = '50'
-    app.app.mount.model.orthoError = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert '180000' == app.ui.orthoError.text()
+    function.app.mount.model.orthoError = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert '180000' == function.ui.orthoError.text()
     value = None
-    app.app.mount.model.orthoError = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert '-' == app.ui.orthoError.text()
+    function.app.mount.model.orthoError = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert '-' == function.ui.orthoError.text()
 
 
-def test_updateAlignGui_positionAngle(app):
+def test_updateAlignGui_positionAngle(function):
     value = '50'
-    app.app.mount.model.positionAngle = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert ' 50.0' == app.ui.positionAngle.text()
+    function.app.mount.model.positionAngle = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert ' 50.0' == function.ui.positionAngle.text()
     value = None
-    app.app.mount.model.positionAngle = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert '-' == app.ui.positionAngle.text()
+    function.app.mount.model.positionAngle = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert '-' == function.ui.positionAngle.text()
 
 
-def test_updateAlignGui_polarError(app):
+def test_updateAlignGui_polarError(function):
     value = '50'
-    app.app.mount.model.polarError = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert '180000' == app.ui.polarError.text()
+    function.app.mount.model.polarError = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert '180000' == function.ui.polarError.text()
     value = None
-    app.app.mount.model.polarError = value
-    app.updateAlignGUI(app.app.mount.model)
-    assert '-' == app.ui.polarError.text()
+    function.app.mount.model.polarError = value
+    function.updateAlignGUI(function.app.mount.model)
+    assert '-' == function.ui.polarError.text()
 
 
-def test_updateTurnKnobsGUI_altitudeTurns_1(app):
+def test_updateTurnKnobsGUI_altitudeTurns_1(function):
     value = 1.5
-    app.app.mount.model.altitudeTurns = value
-    app.updateTurnKnobsGUI(app.app.mount.model)
-    assert '1.50 revs down' == app.ui.altitudeTurns.text()
+    function.app.mount.model.altitudeTurns = value
+    function.updateTurnKnobsGUI(function.app.mount.model)
+    assert '1.50 revs down' == function.ui.altitudeTurns.text()
     value = None
-    app.app.mount.model.altitudeTurns = value
-    app.updateTurnKnobsGUI(app.app.mount.model)
-    assert '-' == app.ui.altitudeTurns.text()
+    function.app.mount.model.altitudeTurns = value
+    function.updateTurnKnobsGUI(function.app.mount.model)
+    assert '-' == function.ui.altitudeTurns.text()
 
 
-def test_updateTurnKnobsGUI_altitudeTurns_2(app):
+def test_updateTurnKnobsGUI_altitudeTurns_2(function):
     value = -1.5
-    app.app.mount.model.altitudeTurns = value
-    app.updateTurnKnobsGUI(app.app.mount.model)
-    assert '1.50 revs up' == app.ui.altitudeTurns.text()
+    function.app.mount.model.altitudeTurns = value
+    function.updateTurnKnobsGUI(function.app.mount.model)
+    assert '1.50 revs up' == function.ui.altitudeTurns.text()
     value = None
-    app.app.mount.model.altitudeTurns = value
-    app.updateTurnKnobsGUI(app.app.mount.model)
-    assert '-' == app.ui.altitudeTurns.text()
+    function.app.mount.model.altitudeTurns = value
+    function.updateTurnKnobsGUI(function.app.mount.model)
+    assert '-' == function.ui.altitudeTurns.text()
 
 
-def test_updateTurnKnobsGUI_azimuthTurns_1(app):
+def test_updateTurnKnobsGUI_azimuthTurns_1(function):
     value = 1.5
-    app.app.mount.model.azimuthTurns = value
-    app.updateTurnKnobsGUI(app.app.mount.model)
-    assert '1.50 revs left' == app.ui.azimuthTurns.text()
+    function.app.mount.model.azimuthTurns = value
+    function.updateTurnKnobsGUI(function.app.mount.model)
+    assert '1.50 revs left' == function.ui.azimuthTurns.text()
     value = None
-    app.app.mount.model.azimuthTurns = value
-    app.updateTurnKnobsGUI(app.app.mount.model)
-    assert '-' == app.ui.azimuthTurns.text()
+    function.app.mount.model.azimuthTurns = value
+    function.updateTurnKnobsGUI(function.app.mount.model)
+    assert '-' == function.ui.azimuthTurns.text()
 
 
-def test_updateTurnKnobsGUI_azimuthTurns_2(app):
+def test_updateTurnKnobsGUI_azimuthTurns_2(function):
     value = -1.5
-    app.app.mount.model.azimuthTurns = value
-    app.updateTurnKnobsGUI(app.app.mount.model)
-    assert '1.50 revs right' == app.ui.azimuthTurns.text()
+    function.app.mount.model.azimuthTurns = value
+    function.updateTurnKnobsGUI(function.app.mount.model)
+    assert '1.50 revs right' == function.ui.azimuthTurns.text()
     value = None
-    app.app.mount.model.azimuthTurns = value
-    app.updateTurnKnobsGUI(app.app.mount.model)
-    assert '-' == app.ui.azimuthTurns.text()
+    function.app.mount.model.azimuthTurns = value
+    function.updateTurnKnobsGUI(function.app.mount.model)
+    assert '-' == function.ui.azimuthTurns.text()

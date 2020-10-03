@@ -31,16 +31,17 @@ from gui.utilities.widget import MWidget
 from gui.extWindows.hemisphereW import HemisphereWindow
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(scope='module')
 def module(qapp):
     yield
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(scope='function')
 def function(module):
 
     window = HemisphereWindow(app=App())
     yield window
+    del window
 
 
 def test_initConfig_1(function):
@@ -134,8 +135,39 @@ def test_updateDome_2(function):
 def test_updateDome_3(function):
     function.pointerDome = mpatches.Rectangle((0, 5), 1, 5)
     function.app.deviceStat['dome'] = True
-
     suc = function.updateDome(0)
+    assert suc
+
+
+def test_getMarkerStatusParams_1(function):
+    val = function.getMarkerStatusParams(True, 0)
+    marker, markersize, color, text = val
+    assert markersize == 9
+    assert color == function.M_GREEN_H
+    assert text == ' 1'
+
+
+def test_getMarkerStatusParams_2(function):
+    val = function.getMarkerStatusParams(False, 1)
+    marker, markersize, color, text = val
+    assert marker == '$\u2714$'
+    assert markersize == 11
+    assert color == function.M_YELLOW
+    assert text == ' 2'
+
+
+def test_updatePointMarker_1(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.pointsBuild = list()
+    function.pointsBuildAnnotate = list()
+    p, = axe.plot(0, 0)
+    function.pointsBuild.append(p)
+    function.pointsBuild.append(p)
+    function.pointsBuildAnnotate.append(axe.annotate('test', (0, 0)))
+    function.pointsBuildAnnotate.append(axe.annotate('test', (0, 0)))
+
+    function.app.data.buildP = [(0, 0, True), (0, 360, False)]
+    suc = function.updatePointMarker()
     assert suc
 
 
@@ -197,6 +229,7 @@ def test_staticHorizon_2(function):
 
 def test_staticModelData_1(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.app.data.buildP = list()
     suc = function.staticModelData(axe)
     assert not suc
 

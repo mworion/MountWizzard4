@@ -413,6 +413,13 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         return True
 
     def getMarkerStatusParams(self, active, index):
+        """
+
+        :param active:
+        :param index:
+        :return: values
+        """
+
         if active:
             marker = self.markerPoint()
             color = self.MODE[self.operationMode]['buildPColor']
@@ -769,7 +776,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        markersize=25,
                                        linestyle='none',
                                        fillstyle='none',
-                                       clip_on=True,
+                                       clip_on=False,
                                        visible=False,
                                        )
 
@@ -805,7 +812,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                      hip.alt,
                                      marker=self.markerStar(),
                                      markersize=7,
-                                     linestyle='',
+                                     linestyle='None',
                                      color=self.MODE[self.operationMode]['starColor'],
                                      zorder=30,
                                      visible=visible,

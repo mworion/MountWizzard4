@@ -63,12 +63,15 @@ class HemisphereWindowExt:
         circleB = mpath.Path.unit_circle()
         circleM = mpath.Path.unit_circle()
         circleS = mpath.Path.unit_circle()
+        circleC = mpath.Path.unit_circle()
         verts = np.concatenate([circleB.vertices,
                                 0.8 * circleM.vertices,
-                                0.3 * circleS.vertices])
+                                0.15 * circleS.vertices,
+                                0.1 * circleC.vertices])
         codes = np.concatenate([circleB.codes,
                                 circleM.codes,
-                                circleS.codes])
+                                circleS.codes,
+                                circleC.codes])
         marker = mpath.Path(verts, codes)
 
         return marker

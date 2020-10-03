@@ -21,6 +21,7 @@ Unreleased Betas
 - move mount MAC and IP to device
 - move relay ip to device
 - update skyfield to 1.29
+- updated hemisphere behavior
 
 Released betas
 --------------

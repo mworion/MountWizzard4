@@ -20,15 +20,20 @@ import unittest.mock as mock
 import pytest
 import platform
 import os
+
 # external packages
 import PyQt5.QtWidgets
 from PyQt5.QtWidgets import QComboBox, QFileDialog, QWidget
 import PyQt5.QtTest
 import PyQt5.QtCore
+from skyfield.api import Star, Angle
+from mountcontrol.modelStar import ModelStar
+from mountcontrol.model import Model
 
 # local import
 from gui.utilities.widget import MWidget
 from gui.utilities.widget import FileSortProxyModel
+from tests.baseTestSetupExtWindows import App
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -729,3 +734,28 @@ def test_getIndexPointX_6(function):
                                     plane=plane,
                                     )
     assert not index
+
+
+def test_writeRetrofitData_1(function):
+    val = function.writeRetrofitData({}, {})
+    assert val == {}
+
+
+def test_writeRetrofitData_2(function):
+    model = Model()
+    stars = list()
+    a = ModelStar()
+    a.obsSite = App().mount.obsSite
+    a.coord = Star(ra_hours=0, dec_degrees=0)
+    a.errorAngle = Angle(degrees=0)
+    a.errorRMS = 1
+    a.number = 1
+    stars.append(a)
+    model._starList = stars
+    model.terms = 22
+    model.errorRMS = 10
+    model.orthoError = 10
+    model.polarError = 10
+
+    val = function.writeRetrofitData(model, [{}])
+    assert val

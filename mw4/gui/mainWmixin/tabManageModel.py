@@ -38,12 +38,7 @@ class ManageModel(object):
     processing if needed.
     """
 
-    def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
-
+    def __init__(self):
         self.runningOptimize = False
         self.fittedModelPoints = []
         self.fittedModelPath = ''
@@ -132,7 +127,7 @@ class ManageModel(object):
         return True
 
     @staticmethod
-    def compareData(buildModel, mountModel):
+    def findKeysFromSourceInDest(buildModel, mountModel):
         """
 
         :param buildModel:
@@ -168,7 +163,7 @@ class ManageModel(object):
             buildModel[star['errorIndex']] = {'ha': star.get('haMountModel', 0),
                                               'dec': star.get('decMountModel', 0)}
 
-        pointsIn, pointsOut = self.compareData(buildModel, mountModel)
+        pointsIn, pointsOut = self.findKeysFromSourceInDest(buildModel, mountModel)
 
         return pointsIn, pointsOut
 
@@ -198,6 +193,7 @@ class ManageModel(object):
 
                 except Exception as e:
                     self.log.error(f'Cannot load model file: {[inFile]}, error: {e}')
+                    continue
 
             pointsIn, pointsOut = self.compareModel(buildModelData, mountModel)
 
@@ -228,9 +224,6 @@ class ManageModel(object):
 
         model = self.app.mount.model
         if model is None:
-            hasNoStars = True
-
-        elif not hasattr(model, 'starList'):
             hasNoStars = True
 
         else:
@@ -329,9 +322,6 @@ class ManageModel(object):
         if model is None:
             hasNoStars = True
 
-        elif not hasattr(model, 'starList'):
-            hasNoStars = True
-
         else:
             hasNoStars = model.starList is None or not model.starList
 
@@ -384,9 +374,6 @@ class ManageModel(object):
 
         model = self.app.mount.model
         if model is None:
-            hasNoStars = True
-
-        elif not hasattr(model, 'starList'):
             hasNoStars = True
 
         else:
@@ -546,7 +533,7 @@ class ManageModel(object):
         :param foundModel:
         :param pointsIn:
         :param pointsOut:
-        :return:
+        :return: true for test purpose
         """
 
         actPath = self.app.mwGlob['modelDir'] + '/' + foundModel + '.model'
@@ -566,6 +553,8 @@ class ManageModel(object):
 
         with open(newPath, 'w+') as newFile:
             json.dump(newModel, newFile, sort_keys=True, indent=4)
+
+        return True
 
     def clearRefreshModel(self):
         """

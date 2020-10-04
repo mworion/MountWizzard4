@@ -293,12 +293,11 @@ def test_showRises_1():
            '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
            '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
 
-    test = EarthSatellite(tle[1], tle[2], name=tle[0])
     app.satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
 
     with mock.patch.object(EarthSatellite,
                            'find_events',
-                           return_value=(app.app.mount.obsSite.timeJD, [1])):
+                           return_value=([app.app.mount.obsSite.timeJD], [1])):
         val = app.showRises()
         assert isinstance(val, dict)
 

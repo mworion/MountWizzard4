@@ -355,14 +355,19 @@ class Satellite(object):
         for ti, event in zip(t, events):
             if event == 0:
                 satOrbits[index] = {'rise': ti}
+
             elif event == 1:
                 continue
+
             elif event == 2:
                 if index not in satOrbits:
                     continue
+
                 satOrbits[index]['settle'] = ti
+
                 if ti.tt < obs.timeJD.tt:
                     continue
+
                 index += 1
 
         for satOrbit in satOrbits:

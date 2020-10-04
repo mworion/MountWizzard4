@@ -22,10 +22,8 @@ import platform
 import os
 
 # external packages
-import PyQt5.QtWidgets
-from PyQt5.QtWidgets import QComboBox, QFileDialog, QWidget
-import PyQt5.QtTest
-import PyQt5.QtCore
+from PyQt5.QtWidgets import QComboBox, QFileDialog, QWidget, QStyle, QPushButton
+from PyQt5.QtCore import pyqtSignal, QObject
 from skyfield.api import Star, Angle
 from mountcontrol.modelStar import ModelStar
 from mountcontrol.model import Model
@@ -33,6 +31,7 @@ from mountcontrol.model import Model
 # local import
 from gui.utilities.widget import MWidget
 from gui.utilities.widget import FileSortProxyModel
+from gui.utilities.widget import QMultiWait
 from tests.baseTestSetupExtWindows import App
 
 
@@ -48,6 +47,29 @@ def function(module):
     yield window
 
 
+def test_QMultiWait_1():
+    class Test(QObject):
+        a = pyqtSignal()
+    w = QMultiWait()
+    A = Test()
+    w.addWaitableSignal(A.a)
+
+
+def test_QMultiWait_2():
+    w = QMultiWait()
+    w.checkSignal()
+
+
+def test_QMultiWait_3():
+    w = QMultiWait()
+    w.resetSignals()
+
+
+def test_QMultiWait_4():
+    w = QMultiWait()
+    w.clear()
+
+
 def test_FileSortProxyModel_1():
     w = QWidget()
     dialog = QFileDialog()
@@ -60,20 +82,20 @@ def test_wIcon_1(function):
 
 
 def test_wIcon_2(function):
-    icon = PyQt5.QtWidgets.QStyle.SP_DialogApplyButton
+    icon = QStyle.SP_DialogApplyButton
     suc = function.wIcon(icon=icon)
     assert not suc
 
 
 def test_wIcon_3(function):
-    ui = PyQt5.QtWidgets.QPushButton()
+    ui = QPushButton()
     suc = function.wIcon(gui=ui)
     assert not suc
 
 
 def test_wIcon_4(function):
-    icon = PyQt5.QtWidgets.QStyle.SP_DialogApplyButton
-    ui = PyQt5.QtWidgets.QPushButton()
+    icon = QStyle.SP_DialogApplyButton
+    ui = QPushButton()
     suc = function.wIcon(gui=ui, icon=icon)
     assert suc
 
@@ -105,19 +127,19 @@ def test_changeStyleDynamic_1(function):
 
 
 def test_changeStyleDynamic_2(function):
-    ui = PyQt5.QtWidgets.QPushButton()
+    ui = QPushButton()
     suc = function.changeStyleDynamic(ui)
     assert not suc
 
 
 def test_changeStyleDynamic_3(function):
-    ui = PyQt5.QtWidgets.QPushButton()
+    ui = QPushButton()
     suc = function.changeStyleDynamic(ui, 'color')
     assert not suc
 
 
 def test_changeStyleDynamic_4(function):
-    ui = PyQt5.QtWidgets.QPushButton()
+    ui = QPushButton()
     suc = function.changeStyleDynamic(ui, 'color', 'red')
     assert suc
 
@@ -128,7 +150,7 @@ def test_embedMatplot_1(function):
 
 
 def test_embedMatplot_2(function):
-    ui = PyQt5.QtWidgets.QPushButton()
+    ui = QPushButton()
     ret = function.embedMatplot(ui)
     assert ret
 
@@ -197,13 +219,13 @@ def test_prepareFileDialog_1(function):
 
 
 def test_prepareFileDialog_2(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     suc = function.prepareFileDialog(window=window)
     assert suc
 
 
 def test_prepareFileDialog_3(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     suc = function.prepareFileDialog(window=window, enableDir=True)
     assert suc
 
@@ -225,7 +247,7 @@ def test_openFile_1(function):
 
 
 def test_openFile_2(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     full, short, ext = function.openFile(window=window)
     assert full == ''
     assert short == ''
@@ -233,7 +255,7 @@ def test_openFile_2(function):
 
 
 def test_openFile_3(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     full, short, ext = function.openFile(window=window,
                                          title='title')
     assert full == ''
@@ -242,7 +264,7 @@ def test_openFile_3(function):
 
 
 def test_openFile_4(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     full, short, ext = function.openFile(window=window,
                                          title='title',
                                          folder='.')
@@ -252,7 +274,7 @@ def test_openFile_4(function):
 
 
 def test_openFile_5(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     with mock.patch.object(function,
                            'runDialog',
                            return_value=0):
@@ -266,11 +288,11 @@ def test_openFile_5(function):
 
 
 def test_openFile_6(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     with mock.patch.object(function,
                            'runDialog',
                            return_value=1):
-        with mock.patch.object(PyQt5.QtWidgets.QFileDialog,
+        with mock.patch.object(QFileDialog,
                                'selectedFiles',
                                return_value=('test1', 'test2')):
             full, short, ext = function.openFile(window=window,
@@ -291,7 +313,7 @@ def test_saveFile_1(function):
 
 
 def test_saveFile_2(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     full, short, ext = function.saveFile(window=window)
     assert full == ''
     assert short == ''
@@ -299,7 +321,7 @@ def test_saveFile_2(function):
 
 
 def test_saveFile_3(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     full, short, ext = function.saveFile(window=window,
                                          title='title')
     assert full == ''
@@ -308,7 +330,7 @@ def test_saveFile_3(function):
 
 
 def test_saveFile_4(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     full, short, ext = function.saveFile(window=window,
                                          title='title',
                                          folder='.')
@@ -318,7 +340,7 @@ def test_saveFile_4(function):
 
 
 def test_saveFile_5(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     with mock.patch.object(function,
                            'runDialog',
                            return_value=0):
@@ -332,11 +354,11 @@ def test_saveFile_5(function):
 
 
 def test_saveFile_6(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     with mock.patch.object(function,
                            'runDialog',
                            return_value=1):
-        with mock.patch.object(PyQt5.QtWidgets.QFileDialog,
+        with mock.patch.object(QFileDialog,
                                'selectedFiles',
                                return_value=(['tests/test.txt'])):
             full, short, ext = function.saveFile(window=window,
@@ -355,7 +377,7 @@ def test_openDir_1(function):
 
 
 def test_openDir_2(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     full, short, ext = function.openDir(window=window)
     assert full == ''
     assert short == ''
@@ -363,7 +385,7 @@ def test_openDir_2(function):
 
 
 def test_openDir_3(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     full, short, ext = function.openDir(window=window,
                                         title='title')
     assert full == ''
@@ -372,7 +394,7 @@ def test_openDir_3(function):
 
 
 def test_openDir_4(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     with mock.patch.object(function,
                            'runDialog',
                            return_value=1):
@@ -385,7 +407,7 @@ def test_openDir_4(function):
 
 
 def test_openDir_5(function):
-    window = PyQt5.QtWidgets.QWidget()
+    window = QWidget()
     with mock.patch.object(function,
                            'runDialog',
                            return_value=None):
@@ -414,20 +436,20 @@ def test_guiSetText_1(function):
 
 
 def test_guiSetText_2(function):
-    pb = PyQt5.QtWidgets.QPushButton()
+    pb = QPushButton()
     suc = function.guiSetText(pb, None)
     assert not suc
 
 
 def test_guiSetText_3(function):
-    pb = PyQt5.QtWidgets.QPushButton()
+    pb = QPushButton()
     suc = function.guiSetText(pb, '3.5f')
     assert suc
     assert pb.text() == '-'
 
 
 def test_guiSetText_4(function):
-    pb = PyQt5.QtWidgets.QPushButton()
+    pb = QPushButton()
     suc = function.guiSetText(pb, '3.0f', 100)
     assert suc
     assert pb.text() == '100'
@@ -486,14 +508,14 @@ def test_generatePolar_1(function):
 
 
 def test_generatePolar_2(function):
-    ui = PyQt5.QtWidgets.QWidget()
+    ui = QWidget()
     axe, fig = function.generatePolar(widget=ui)
     assert axe is None
     assert fig is None
 
 
 def test_generatePolar_3(function):
-    ui = PyQt5.QtWidgets.QWidget()
+    ui = QWidget()
     widget = function.embedMatplot(ui)
     axe, fig = function.generatePolar(widget=widget)
     assert axe
@@ -501,7 +523,7 @@ def test_generatePolar_3(function):
 
 
 def test_generatePolar_4(function):
-    ui = PyQt5.QtWidgets.QWidget()
+    ui = QWidget()
     widget = function.embedMatplot(ui)
     axe, fig = function.generatePolar(widget=widget, title='test')
     assert axe
@@ -515,14 +537,14 @@ def test_generateFlat_1(function):
 
 
 def test_generateFlat_2(function):
-    ui = PyQt5.QtWidgets.QWidget()
+    ui = QWidget()
     axe, fig = function.generateFlat(widget=ui)
     assert axe is None
     assert fig is None
 
 
 def test_generateFlat_3(function):
-    ui = PyQt5.QtWidgets.QWidget()
+    ui = QWidget()
     widget = function.embedMatplot(ui)
     axe, fig = function.generateFlat(widget=widget)
     assert axe
@@ -530,7 +552,7 @@ def test_generateFlat_3(function):
 
 
 def test_generateFlat_4(function):
-    ui = PyQt5.QtWidgets.QWidget()
+    ui = QWidget()
     widget = function.embedMatplot(ui)
     axe, fig = function.generateFlat(widget=widget, title='test')
     assert axe
@@ -538,7 +560,7 @@ def test_generateFlat_4(function):
 
 
 def test_generateFlat_5(function):
-    ui = PyQt5.QtWidgets.QWidget()
+    ui = QWidget()
     widget = function.embedMatplot(ui)
     axe, fig = function.generateFlat(widget=widget, title='test', showAxes=False)
     assert axe
@@ -546,7 +568,7 @@ def test_generateFlat_5(function):
 
 
 def test_generateFlat_6(function):
-    ui = PyQt5.QtWidgets.QWidget()
+    ui = QWidget()
     widget = function.embedMatplot(ui)
     function.generateFlat(widget=widget, title='test')
     axe, fig = function.generateFlat(widget=widget, title='test')
@@ -555,7 +577,7 @@ def test_generateFlat_6(function):
 
 
 def test_generateFlat_7(function):
-    ui = PyQt5.QtWidgets.QWidget()
+    ui = QWidget()
     widget = function.embedMatplot(ui)
     axe, fig = function.generateFlat(widget=widget, title='test', horizon=True)
     assert axe

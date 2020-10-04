@@ -40,6 +40,7 @@ from gui.utilities import styles
 __all__ = [
     'MWidget',
     'FileSortProxyModel',
+    'QMultiWait',
 ]
 
 
@@ -52,6 +53,47 @@ class FileSortProxyModel(QSortFilterProxyModel):
 
     def sort(self, column, order):
         self.sourceModel().sort(0, Qt.DescendingOrder)
+
+
+class QMultiWait(QObject):
+    """
+    QMultiWaitable implements a signal collection class for waiting of entering multiple
+    signals before firing the "AND" relation of all signals.
+    derived from:
+
+    https://stackoverflow.com/questions/21108407/qt-how-to-wait-for-multiple-signals
+
+    in addition all received signals could be reset
+    """
+
+    ready = pyqtSignal()
+
+    def __init__(self):
+        super().__init__()
+        self.waitable = set()
+        self.waitready = set()
+
+    def addWaitableSignal(self, signal):
+        if signal not in self.waitable:
+            self.waitable.add(signal)
+            signal.connect(self.checkSignal)
+
+    def checkSignal(self):
+        sender = self.sender()
+        self.waitready.add(sender)
+
+        if len(self.waitready) == len(self.waitable):
+            self.ready.emit()
+
+    def resetSignals(self):
+        self.waitready = set()
+
+    def clear(self):
+        for signal in self.waitable:
+            signal.disconnect(self.checkSignal)
+
+        self.waitable = set()
+        self.waitready = set()
 
 
 class MWidget(QWidget, styles.MWStyles):

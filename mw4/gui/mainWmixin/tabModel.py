@@ -25,53 +25,12 @@ from datetime import datetime
 
 # external packages
 from PyQt5.QtTest import QTest
-from PyQt5.QtCore import QObject, pyqtSignal
 from mountcontrol.alignStar import AlignStar
 from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base import transform
-
-
-class QMultiWait(QObject):
-    """
-    QMultiWaitable implements a signal collection class for waiting of entering multiple
-    signals before firing the "AND" relation of all signals.
-    derived from:
-
-    https://stackoverflow.com/questions/21108407/qt-how-to-wait-for-multiple-signals
-
-    in addition all received signals could be reset
-    """
-
-    ready = pyqtSignal()
-
-    def __init__(self):
-        super().__init__()
-        self.waitable = set()
-        self.waitready = set()
-
-    def addWaitableSignal(self, signal):
-        if signal not in self.waitable:
-            self.waitable.add(signal)
-            signal.connect(self.checkSignal)
-
-    def checkSignal(self):
-        sender = self.sender()
-        self.waitready.add(sender)
-
-        if len(self.waitready) == len(self.waitable):
-            self.ready.emit()
-
-    def resetSignals(self):
-        self.waitready = set()
-
-    def clear(self):
-        for signal in self.waitable:
-            signal.disconnect(self.checkSignal)
-
-        self.waitable = set()
-        self.waitready = set()
+from gui.utilities.widget import QMultiWait
 
 
 class Model:
@@ -151,52 +110,68 @@ class Model:
 
         if model.numberStars is not None:
             text = f'{model.numberStars:3.0f}'
+
         else:
             text = '-'
+
         self.ui.numberStars.setText(text)
         self.ui.numberStars1.setText(text)
 
         if model.terms is not None:
             text = f'{model.terms:2.0f}'
+
         else:
             text = '-'
+
         self.ui.terms.setText(text)
 
         if model.errorRMS is not None:
             text = str(model.errorRMS)
+
         else:
             text = '-'
+
         self.ui.errorRMS.setText(text)
         self.ui.errorRMS1.setText(text)
 
         if model.positionAngle is not None:
             text = f'{model.positionAngle.degrees:5.1f}'
+
         else:
             text = '-'
+
         self.ui.positionAngle.setText(text)
 
         if model.polarError is not None:
             text = f'{model.polarError.degrees * 3600:5.0f}'
+
         else:
             text = '-'
+
         self.ui.polarError.setText(text)
 
         if model.orthoError is not None:
             text = f'{model.orthoError.degrees * 3600:5.0f}'
+
         else:
             text = '-'
+
         self.ui.orthoError.setText(text)
 
         if model.azimuthError is not None:
             text = f'{model.azimuthError.degrees:5.1f}'
+
         else:
             text = '-'
+
         self.ui.azimuthError.setText(text)
 
         if model.altitudeError is not None:
             text = f'{model.altitudeError.degrees:5.1f}'
+
         else:
             text = '-'
+
         self.ui.altitudeError.setText(text)
 
         return True
@@ -213,19 +188,25 @@ class Model:
         if model.azimuthTurns is not None:
             if model.azimuthTurns > 0:
                 text = '{0:3.2f} revs left'.format(abs(model.azimuthTurns))
+
             else:
                 text = '{0:3.2f} revs right'.format(abs(model.azimuthTurns))
+
         else:
             text = '-'
+
         self.ui.azimuthTurns.setText(text)
 
         if model.altitudeTurns is not None:
             if model.altitudeTurns > 0:
                 text = '{0:3.2f} revs down'.format(abs(model.altitudeTurns))
+
             else:
                 text = '{0:3.2f} revs up'.format(abs(model.altitudeTurns))
+
         else:
             text = '-'
+
         self.ui.altitudeTurns.setText(text)
 
         return True
@@ -819,12 +800,11 @@ class Model:
 
         return build
 
-    def processModelData(self):
+    def collectingModelRunOutput(self):
         """
 
         :return:
         """
-
         self.model = list()
 
         while not self.modelQueue.empty():
@@ -837,17 +817,59 @@ class Model:
         self.restoreStatusDAT()
 
         if len(self.model) < 3:
+            return False
+
+        return True
+
+    def programModelToMount(self, model):
+        """
+
+        :param model:
+        :return: True for test purpose
+        """
+
+        build = self.generateBuildData(model=model)
+        suc = self.app.mount.model.programAlign(build)
+
+        if not suc:
+            return False
+
+        self.saveModelPrepare()
+        self.app.mount.model.storeName('actual')
+        self.refreshName()
+
+        return True
+
+    def renewHemisphereView(self):
+        """
+
+        :return: True for test purpose
+        """
+        for i in range(0, len(self.app.data.buildP)):
+            self.app.data.setStatusBuildP(i, True)
+
+        self.app.updatePointMarker.emit()
+
+        return True
+
+    def processModelData(self):
+        """
+
+        :return:
+        """
+
+        suc = self.collectingModelRunOutput()
+
+        if not suc:
             self.app.message.emit(f'Modeling finished:    {self.modelName}', 2)
             self.app.message.emit('Model not enough valid model points available', 2)
             return False
 
         self.app.message.emit('Programming model to mount', 0)
-        build = self.generateBuildData(model=self.model)
-        suc = self.app.mount.model.programAlign(build)
+
+        suc = self.programModelToMount(self.model)
 
         if suc:
-            self.saveModelPrepare()
-            self.app.mount.model.storeName('actual')
             self.app.message.emit('Model programmed with success', 0)
 
         else:
@@ -859,12 +881,8 @@ class Model:
 
         self.app.message.emit(f'Modeling finished:    {self.modelName}', 1)
         self.playSound('ModelingFinished')
-        self.refreshName()
 
-        for i in range(0, len(self.app.data.buildP)):
-            self.app.data.setStatusBuildP(i, True)
-
-        self.app.redrawHemisphere.emit()
+        self.renewHemisphereView()
 
         if self.ui.parkMountAfterModel.isChecked():
             self.app.message.emit('Parking mount after model run', 0)
@@ -1094,17 +1112,18 @@ class Model:
         """
 
         folder = self.app.mwGlob['modelDir']
-        loadFilePath, fileName, ext = self.openFile(self,
-                                                    'Open model file',
-                                                    folder,
-                                                    'Model files (*.model)',
-                                                    multiple=True,
-                                                    )
+
+        ret = self.openFile(self, 'Open model file', folder, 'Model files (*.model)',
+                            multiple=True)
+        loadFilePath, fileName, ext = ret
+
         if not loadFilePath:
             return False
 
         if isinstance(loadFilePath, str):
             loadFilePath = [loadFilePath]
+            fileName = [fileName]
+            ext = [ext]
 
         if not self.clearAlignAndBackup():
             return False
@@ -1112,32 +1131,25 @@ class Model:
         self.app.message.emit('Programing models', 1)
 
         modelJSON = list()
+
         for index, file in enumerate(loadFilePath):
             self.app.message.emit(f'Loading model [{os.path.basename(file)}]', 0)
             with open(file, 'r') as infile:
                 model = json.load(infile)
                 modelJSON += model
 
-        if index:
-            postFix = 's'
-
-        else:
-            postFix = ''
-
         if len(modelJSON) > 99:
-            self.app.message.emit(f'Model{postFix} has more than 99 points', 2)
+            self.app.message.emit('Model(s) exceed(s) limit of 99 points', 2)
             return False
 
-        self.app.message.emit(f'Programming {index + 1} model{postFix} to mount', 0)
+        self.app.message.emit(f'Programming {index + 1} model(s) to mount', 0)
 
-        build = self.generateBuildData(modelJSON)
-        suc = self.app.mount.model.programAlign(build)
+        suc = self.programModelToMount(modelJSON)
 
         if suc:
-            self.app.message.emit(f'Model{postFix} programmed with success', 1)
-            self.refreshModel()
+            self.app.message.emit('Model programmed with success', 0)
 
         else:
-            self.app.message.emit('Programming error', 2)
+            self.app.message.emit('Model programming error', 2)
 
         return suc

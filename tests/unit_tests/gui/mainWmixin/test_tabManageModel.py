@@ -565,9 +565,11 @@ def test_clearRefreshModel_2(function):
                            'findFittingModel',
                            return_value=('test', [], [])):
         with mock.patch.object(function,
-                               'showActualModelAnalyse'):
-            suc = function.clearRefreshModel()
-            assert suc
+                               'writeBuildModelOptimized'):
+            with mock.patch.object(function,
+                                   'showActualModelAnalyse'):
+                suc = function.clearRefreshModel()
+                assert suc
 
 
 def test_refreshModel(function):

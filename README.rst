@@ -29,7 +29,7 @@ versions. A HW pre2012 might also have some issues.
 
 Documentation
 ^^^^^^^^^^^^^
-There is an online documentation for MW4 available:
+There is an online documentation available for MW4:
 
 Web based: https://mountwizzard4.readthedocs.io
 
@@ -41,7 +41,7 @@ Changelog: https://mountwizzard4.readthedocs.io/en/latest/changelog.html
 
 Status: |DOCS|
 
-And there are some video for explanation available in the Youtube in the channel: 
+And there are some videos available for explanation in Youtube channel: 
 
 https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/
 

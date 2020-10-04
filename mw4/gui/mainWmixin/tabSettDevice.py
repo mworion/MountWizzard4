@@ -518,7 +518,6 @@ class SettDevice:
 
         if isInternal:
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
-            self.deviceStat[driver] = True
 
         self.configDriver(driver=driver)
 

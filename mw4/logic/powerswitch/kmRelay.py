@@ -148,11 +148,11 @@ class KMRelay(QObject):
         :param loadConfig:
         :return: success
         """
-
         if not self.host:
             return False
 
         self.timerTask.start(self.CYCLE_POLLING)
+        self.signals.deviceConnected.emit('KMTronic')
 
         return True
 
@@ -163,6 +163,8 @@ class KMRelay(QObject):
         :return: True for test purpose
         """
         self.timerTask.stop()
+        self.signals.deviceDisconnected.emit('KMTronic')
+
         return True
 
     def debugOutput(self, result=None):

@@ -178,7 +178,7 @@ class MainWindow(MWidget,
         self.modelPositionPlot = self.embedMatplot(self.ui.modelPosition)
         self.errorAscendingPlot = self.embedMatplot(self.ui.errorAscending)
         self.errorDistributionPlot = self.embedMatplot(self.ui.errorDistribution)
-        self.twilight = self.embedMatplot(self.ui.twilight, constrainedLayout=True)
+        self.twilight = self.embedMatplot(self.ui.twilight)
         self.modelPositionPlot.figure.canvas.mpl_connect('button_press_event',
                                                          self.onMouseEdit)
 
@@ -601,9 +601,9 @@ class MainWindow(MWidget,
             'Relay': {'statID': 'relay',
                       'tab': self.ui.mainTabWidget,
                       },
-            'KMTronic': {'statID': 'relay',
-                         'tab': self.ui.settingsTabWidget,
-                         },
+            # 'RelayS': {'statID': 'relay',
+            #            'tab': self.ui.settingsTabWidget,
+            #            },
         }
 
         tabChanged = False

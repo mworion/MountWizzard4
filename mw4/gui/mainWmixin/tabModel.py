@@ -898,9 +898,9 @@ class Model:
 
     def modelCycleThroughBuildPointsFinished(self):
         """
-        modelCycleThroughBuildPointsFinished is called when tha last point was processed. it empties the solution
-        queue restores the default gui elements an signals. after that it programs the
-        resulting model to the mount and saves it to disk.
+        modelCycleThroughBuildPointsFinished is called when tha last point was processed.
+        it empties the solution queue restores the default gui elements an signals. after
+        that it programs the resulting model to the mount and saves it to disk.
 
         is the flag delete images after modeling is set, the entire directory will be
         deleted
@@ -1036,8 +1036,8 @@ class Model:
 
     def modelCycleThroughBuildPoints(self, modelPoints=None):
         """
-        modelCycleThroughBuildPoints is the main method for preparing a model run. in addition it checks
-        necessary components and prepares all the parameters.
+        modelCycleThroughBuildPoints is the main method for preparing a model run. in
+        addition it checks necessary components and prepares all the parameters.
         the modeling queue will be filled with point and the queue is started. the overall
         modeling process consists of a set of queues which are handled by events running
         in the gui event queue.

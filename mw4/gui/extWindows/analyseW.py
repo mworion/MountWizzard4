@@ -76,46 +76,22 @@ class AnalyseWindow(widget.MWidget):
         self.wIcon(self.ui.load, QIcon(':/icon/load.svg'))
 
         self.raPointErrorsRaw = self.embedMatplot(self.ui.raPointErrorsRaw)
-        self.raPointErrorsRaw.parentWidget().setStyleSheet(self.BACK_BG)
-
         self.decPointErrorsRaw = self.embedMatplot(self.ui.decPointErrorsRaw)
-        self.decPointErrorsRaw.parentWidget().setStyleSheet(self.BACK_BG)
-
         self.raPointErrorsRawRef = self.embedMatplot(self.ui.raPointErrorsRawRef)
-        self.raPointErrorsRawRef.parentWidget().setStyleSheet(self.BACK_BG)
-
         self.decPointErrorsRawRef = self.embedMatplot(self.ui.decPointErrorsRawRef)
-        self.decPointErrorsRawRef.parentWidget().setStyleSheet(self.BACK_BG)
-
         self.raModelErrors = self.embedMatplot(self.ui.raModelErrors)
-        self.raModelErrors.parentWidget().setStyleSheet(self.BACK_BG)
-
         self.decModelErrors = self.embedMatplot(self.ui.decModelErrors)
-        self.decModelErrors.parentWidget().setStyleSheet(self.BACK_BG)
-
         self.raModelErrorsRef = self.embedMatplot(self.ui.raModelErrorsRef)
-        self.raModelErrorsRef.parentWidget().setStyleSheet(self.BACK_BG)
-
         self.decModelErrorsRef = self.embedMatplot(self.ui.decModelErrorsRef)
-        self.decModelErrorsRef.parentWidget().setStyleSheet(self.BACK_BG)
-
         self.scaleImage = self.embedMatplot(self.ui.scaleImage)
-        self.scaleImage.parentWidget().setStyleSheet(self.BACK_BG)
-
         self.modelPositions = self.embedMatplot(self.ui.modelPositions)
-        self.modelPositions.parentWidget().setStyleSheet(self.BACK_BG)
-
         self.errorAscending = self.embedMatplot(self.ui.errorAscending)
-        self.errorAscending.parentWidget().setStyleSheet(self.BACK_BG)
-
         self.errorDistribution = self.embedMatplot(self.ui.errorDistribution)
-        self.errorDistribution.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.ui.load.clicked.connect(self.loadModel)
         self.ui.winsorizedLimit.clicked.connect(self.drawAll)
 
-        self.charts = [
-                       self.draw_raPointErrorsRaw,
+        self.charts = [self.draw_raPointErrorsRaw,
                        self.draw_decPointErrorsRaw,
                        self.draw_raModelErrors,
                        self.draw_decModelErrors,
@@ -126,8 +102,7 @@ class AnalyseWindow(widget.MWidget):
                        self.draw_scaleImage,
                        self.draw_modelPositions,
                        self.draw_errorAscending,
-                       self.draw_errorDistribution,
-                       ]
+                       self.draw_errorDistribution]
 
     def initConfig(self):
         """

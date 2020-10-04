@@ -729,7 +729,7 @@ class ManageModel(object):
 
             else:
                 text = f'Point: {wStar.number + 1:3.0f}, RMS of {wStar.errorRMS:5.1f}'
-                text += f' arcsec deleted.'
+                text += ' arcsec deleted.'
                 self.app.message.emit(text, 0)
 
             mount.getAlign()
@@ -888,7 +888,7 @@ class ManageModel(object):
             return False
 
         text = f'Point: {index + 1:3.0f}, RMS of {error:5.1f}'
-        text += f' arcsec deleted.'
+        text += ' arcsec deleted.'
         self.app.message.emit(text, 0)
         self.refreshModel()
 

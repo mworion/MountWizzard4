@@ -110,6 +110,10 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.horizonLimitHigh = None
         self.horizonLimitLow = None
         self.celestialPath = None
+        self.meridianSlewParam = None
+        self.meridianTrackParam = None
+        self.horizonLimitHighParam = None
+        self.horizonLimitLowParam = None
 
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
         self.hemisphereMatMove = self.embedMatplot(self.ui.hemisphereMove)
@@ -185,7 +189,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.app.update1s.disconnect(self.hemisphereMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.disconnect(self.drawHemisphere)
         self.app.updatePointMarker.disconnect(self.updatePointMarker)
-        self.app.mount.signals.settingDone.disconnect(self.drawHemisphere)
+        self.app.mount.signals.settingDone.disconnect(self.updateOnChangedParams)
         self.storeConfig()
 
         # restore DAT status
@@ -236,7 +240,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.app.update1s.connect(self.hemisphereMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.updatePointMarker.connect(self.updatePointMarker)
-        self.app.mount.signals.settingDone.connect(self.drawHemisphere)
+        self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.dome.signals.azimuth.connect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.connect(self.updateDome)
@@ -260,6 +264,36 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.drawHemisphere()
 
         return True
+
+    def updateOnChangedParams(self, sett):
+        """
+
+        :param sett:
+        :return: status redraw
+        """
+
+        needRedraw = False
+
+        if self.meridianSlewParam != sett.meridianLimitSlew:
+            self.meridianSlewParam = sett.meridianLimitSlew
+            needRedraw = True
+
+        if self.meridianTrackParam != sett.meridianLimitTrack:
+            self.meridianTrackParam = sett.meridianLimitTrack
+            needRedraw = True
+
+        if self.horizonLimitHighParam != sett.horizonLimitHigh:
+            self.horizonLimitHighParam = sett.horizonLimitHigh
+            needRedraw = True
+
+        if self.horizonLimitLowParam != sett.horizonLimitLow:
+            self.horizonLimitLowParam = sett.horizonLimitLow
+            needRedraw = True
+
+        if needRedraw:
+            self.drawHemisphere()
+
+        return needRedraw
 
     def updatePointerAltAz(self):
         """

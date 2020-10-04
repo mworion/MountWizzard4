@@ -96,6 +96,37 @@ def test_showWindow_1(function):
             assert suc
 
 
+def test_updateOnChangedParams_1(function):
+    class Test:
+        meridianLimitSlew = 0
+        meridianLimitTrack = 0
+        horizonLimitHigh = 0
+        horizonLimitLow = 0
+
+    with mock.patch.object(function,
+                           'drawHemisphere'):
+        suc = function.updateOnChangedParams(Test())
+        assert suc
+
+
+def test_updateOnChangedParams_2(function):
+    class Test:
+        meridianLimitSlew = 0
+        meridianLimitTrack = 0
+        horizonLimitHigh = 0
+        horizonLimitLow = 0
+
+    function.meridianSlewParam = 0
+    function.meridianTrackParam = 0
+    function.horizonLimitHighParam = 0
+    function.horizonLimitLowParam = 0
+
+    with mock.patch.object(function,
+                           'drawHemisphere'):
+        suc = function.updateOnChangedParams(Test())
+        assert not suc
+
+
 def test_updatePointerAltAz_1(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
     function.pointerAltAz, = axe.plot(0, 0)

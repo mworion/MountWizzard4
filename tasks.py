@@ -180,7 +180,7 @@ def test_mw_cov(c):
     runMW(c, 'bash <(curl -s https://codecov.io/bash) -t e1965db7-af35-4a93-9f3d-ed12a528607b')
 
 
-@task()
+@task(pre=[])
 def upload_cov(c):
     printMW('upload coverage')
     runMW(c, 'bash <(curl -s https://codecov.io/bash) -t e1965db7-af35-4a93-9f3d-ed12a528607b')

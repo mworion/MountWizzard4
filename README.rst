@@ -54,6 +54,8 @@ Version, build and code coverage status
 
 |CODE_QUALITY_PYTHON| |CODECOV| |CODE_QUALITY_ALERTS|
 
+|CODECOV_CHART|
+
 |6U| |6W| |6M|
 
 |7U| |7W| |7M|

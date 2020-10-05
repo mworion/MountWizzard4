@@ -313,10 +313,7 @@ def unittest_win(c):
     wWinInst = 'venv\\Scripts\\activate && python -m pip install'
     cmd = f'cd test && venv\\Scripts\\activate && cd MountWizzard4 && {test}'
     flake = 'cd test && venv\\Scripts\\activate && cd MountWizzard4'
-    wi = f'{flake} && python -m PyQt5.uic.pyuic mw4/gui/widgets/'
-    wo = f''
 
-    """
     printMW('unit testing mountwizzard4')
     printMW('test windows install')
     printMWp('...delete test dir')
@@ -341,7 +338,6 @@ def unittest_win(c):
         runMWd(c, f'scp -r mountwizzard4.tar.gz {wWinSCP}')
     runMW(c, f'ssh {uWin} "cd {wWin} && {wWinInst} mountwizzard4.tar.gz"')
 
-    """
     printMW('..clone MountWizzard4')
     runMW(c, f'ssh {uWin} "cd {wWin} && git clone https://github.com/mworion/MountWizzard4.git"')
 

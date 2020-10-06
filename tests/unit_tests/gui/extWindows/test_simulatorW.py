@@ -37,10 +37,11 @@ def module(qapp):
 
 
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(module, qtbot):
 
     window = SimulatorWindow(app=App())
     yield window
+    del window
 
 
 def test_initConfig_1(function):

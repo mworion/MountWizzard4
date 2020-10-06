@@ -45,16 +45,14 @@ class SimulatorWindow(widget.MWidget):
 
     def __init__(self, app):
         super().__init__()
-
         self.app = app
-
         self.ui = simulator_ui.Ui_SimulatorDialog()
         self.ui.setupUi(self)
         self.initUI()
 
         self.view = Qt3DWindow()
-        self.container = QWidget.createWindowContainer(self.view)
-        self.ui.simulator.addWidget(self.container)
+        container = QWidget.createWindowContainer(self.view)
+        self.ui.simulator.addWidget(container)
 
         self.rootEntity = QEntity()
         self.camera = self.view.camera()

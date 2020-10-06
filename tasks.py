@@ -314,6 +314,7 @@ def unittest_win(c):
     cmd = f'cd test && venv\\Scripts\\activate && cd MountWizzard4 && {test}'
     flake = 'cd test && venv\\Scripts\\activate && cd MountWizzard4'
 
+    """
     printMW('unit testing mountwizzard4')
     printMW('test windows install')
     printMWp('...delete test dir')
@@ -337,6 +338,7 @@ def unittest_win(c):
         printMWp('...copy *.tar.gz to test dir')
         runMWd(c, f'scp -r mountwizzard4.tar.gz {wWinSCP}')
     runMW(c, f'ssh {uWin} "cd {wWin} && {wWinInst} mountwizzard4.tar.gz"')
+    """
 
     printMW('..clone MountWizzard4')
     runMW(c, f'ssh {uWin} "cd {wWin} && git clone https://github.com/mworion/MountWizzard4.git"')

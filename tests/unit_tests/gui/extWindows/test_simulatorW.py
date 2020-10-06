@@ -41,7 +41,8 @@ def function(module, qtbot):
 
     window = SimulatorWindow(app=App())
     yield window
-    del window
+
+    window.deleteLater()
 
 
 def test_initConfig_1(function):

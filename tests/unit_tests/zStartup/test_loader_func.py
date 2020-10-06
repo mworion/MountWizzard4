@@ -23,11 +23,12 @@ import glob
 import unittest.mock as mock
 import socket
 import platform
+
 # external packages
 import pytest
 
 # local import
-from mw4 import loader
+from loader import except_hook, setupWorkDirs, writeSystemInfo, extractDataFiles
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -45,7 +46,7 @@ def test_except_hook(qtbot):
         with mock.patch.object(sys,
                                '__excepthook__',
                                ):
-            loader.except_hook(1, 2, 3)
+            except_hook(1, 2, 3)
 
 
 def test_setupWorkDirs_1(qtbot):
@@ -58,7 +59,7 @@ def test_setupWorkDirs_1(qtbot):
             with mock.patch.object(os.path,
                                    'isdir',
                                    return_value=True):
-                val = loader.setupWorkDirs(mwGlob={})
+                val = setupWorkDirs(mwGlob={})
                 assert val['modeldata'] == '4.0'
 
 
@@ -72,7 +73,7 @@ def test_setupWorkDirs_2(qtbot):
             with mock.patch.object(os.path,
                                    'isdir',
                                    return_value=False):
-                val = loader.setupWorkDirs(mwGlob={})
+                val = setupWorkDirs(mwGlob={})
                 assert val['modeldata'] == '4.0'
 
 
@@ -80,7 +81,7 @@ def test_writeSystemInfo_1(qtbot):
     mwGlob = dict()
     mwGlob['modeldata'] = ''
     mwGlob['workDir'] = ''
-    suc = loader.writeSystemInfo(mwGlob=mwGlob)
+    suc = writeSystemInfo(mwGlob=mwGlob)
     assert suc
 
 
@@ -91,26 +92,26 @@ def test_writeSystemInfo_2(qtbot):
     with mock.patch.object(socket,
                            'gethostbyname_ex',
                            side_effect=Exception()):
-        suc = loader.writeSystemInfo(mwGlob=mwGlob)
+        suc = writeSystemInfo(mwGlob=mwGlob)
         assert suc
 
 
 def test_extractDataFiles_1(qtbot):
-    suc = loader.extractDataFiles()
+    suc = extractDataFiles()
     assert not suc
 
 
 def test_extractDataFiles_2(qtbot):
     mwGlob = dict()
     mwGlob['dataDir'] = 'tests/data'
-    suc = loader.extractDataFiles(mwGlob=mwGlob)
+    suc = extractDataFiles(mwGlob=mwGlob)
     assert suc
 
 
 def test_extractDataFiles_3(qtbot):
     mwGlob = dict()
     mwGlob['dataDir'] = 'tests/data'
-    suc = loader.extractDataFiles(mwGlob=mwGlob)
+    suc = extractDataFiles(mwGlob=mwGlob)
     assert suc
 
 
@@ -123,7 +124,7 @@ def test_extractDataFiles_4(qtbot):
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
-        suc = loader.extractDataFiles(mwGlob=mwGlob)
+        suc = extractDataFiles(mwGlob=mwGlob)
         assert suc
     assert os.path.isfile('tests/data/Leap_Second.dat')
     assert os.path.isfile('tests/data/deltat.data')

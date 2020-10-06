@@ -67,7 +67,7 @@ def function(module):
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
-        loader = Loader('tests\\testData', verbose=False)
+        loader = Loader('tests/testData', verbose=False)
         planets = loader('de421_23.bsp')
         sensorWeather = SensorWeather(app=Test1())
         onlineWeather = OnlineWeather(app=Test1())

@@ -29,6 +29,7 @@ from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
 import requests
 from skyfield.toposlib import Topos
+from skyfield.api import Loader
 import numpy as np
 
 # local import
@@ -66,7 +67,8 @@ def function(module):
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
-        planets = mount.obsSite.loader('de421_23.bsp')
+        loader = Loader('tests\\testData', verbose=False)
+        planets = loader('de421_23.bsp')
         sensorWeather = SensorWeather(app=Test1())
         onlineWeather = OnlineWeather(app=Test1())
         powerWeather = WeatherUPB(app=Test1())
@@ -77,7 +79,7 @@ def function(module):
             super().__init__()
             self.app = Test()
             self.deviceStat = {}
-            self.threadPool = QThreadPool()
+            self.threadPool = self.app.threadPool
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
             Environ.__init__(self)

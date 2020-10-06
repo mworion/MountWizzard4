@@ -1115,15 +1115,13 @@ class Model:
 
         ret = self.openFile(self, 'Open model file', folder, 'Model files (*.model)',
                             multiple=True)
-        loadFilePath, fileName, ext = ret
+        loadFilePath, _, _ = ret
 
         if not loadFilePath:
             return False
 
         if isinstance(loadFilePath, str):
             loadFilePath = [loadFilePath]
-            fileName = [fileName]
-            ext = [ext]
 
         if not self.clearAlignAndBackup():
             return False

@@ -814,11 +814,6 @@ def test_saveModelPrepare_3(function):
     class Julian:
         ut1 = 2458635.168
 
-    def refreshModel():
-        return
-
-    function.refreshModel = refreshModel
-
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': 'testPath',
@@ -856,10 +851,6 @@ def test_saveModel_4(function):
         @staticmethod
         def utc_iso():
             return 2458635.168
-
-    def refreshModel():
-        return
-    function.refreshModel = refreshModel
 
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
@@ -1189,40 +1180,35 @@ def test_clearAlignAndBackup_1(function):
 
 
 def test_clearAlignAndBackup_2(function):
-    def refreshModel():
-        return
-    function.refreshModel = refreshModel
     with mock.patch.object(function.app.mount.model,
                            'clearAlign',
                            return_value=True):
         with mock.patch.object(function.app.mount.model,
                                'deleteName',
                                return_value=False):
-            suc = function.clearAlignAndBackup()
-            assert not suc
+            with mock.patch.object(function,
+                                   'refreshModel'):
+                suc = function.clearAlignAndBackup()
+                assert not suc
 
 
 def test_clearAlignAndBackup_3(function):
-    def refreshModel():
-        return
-    function.refreshModel = refreshModel
     with mock.patch.object(function.app.mount.model,
                            'clearAlign',
                            return_value=True):
         with mock.patch.object(function.app.mount.model,
                                'deleteName',
                                return_value=True):
-            with mock.patch.object(function.app.mount.model,
-                                   'storeName',
-                                   return_value=False):
-                suc = function.clearAlignAndBackup()
-                assert not suc
+            with mock.patch.object(function,
+                                   'refreshModel'):
+                with mock.patch.object(function.app.mount.model,
+                                       'storeName',
+                                       return_value=False):
+                    suc = function.clearAlignAndBackup()
+                    assert not suc
 
 
 def test_clearAlignAndBackup_4(function):
-    def refreshModel():
-        return
-    function.refreshModel = refreshModel
     with mock.patch.object(function.app.mount.model,
                            'clearAlign',
                            return_value=True):
@@ -1232,8 +1218,10 @@ def test_clearAlignAndBackup_4(function):
             with mock.patch.object(function.app.mount.model,
                                    'storeName',
                                    return_value=True):
-                suc = function.clearAlignAndBackup()
-                assert suc
+                with mock.patch.object(function,
+                                       'refreshModel'):
+                    suc = function.clearAlignAndBackup()
+                    assert suc
 
 
 def test_setupModelPointsAndContextData_1(function):

@@ -771,7 +771,6 @@ class Model:
             return False
 
         self.app.mount.signals.alignDone.connect(self.saveModelFinish)
-        self.refreshModel()
 
         return True
 
@@ -837,6 +836,7 @@ class Model:
         self.saveModelPrepare()
         self.app.mount.model.storeName('actual')
         self.refreshName()
+        self.refreshModel()
 
         return True
 

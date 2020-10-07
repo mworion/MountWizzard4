@@ -103,6 +103,7 @@ def function(module):
             self.app = Test()
             self.deviceStat = {}
             self.refreshName = None
+            self.refreshModel = None
             self.playSound = None
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
@@ -1000,10 +1001,12 @@ def test_programModelToMount_2(function):
                                    'saveModelPrepare'):
                 with mock.patch.object(function,
                                        'refreshName'):
-                    with mock.patch.object(function.app.mount.model,
-                                           'storeName'):
-                        suc = function.programModelToMount(function.model)
-                        assert suc
+                    with mock.patch.object(function,
+                                           'refreshModel'):
+                        with mock.patch.object(function.app.mount.model,
+                                               'storeName'):
+                            suc = function.programModelToMount(function.model)
+                            assert suc
 
 
 def test_renewHemisphereView_1(function):

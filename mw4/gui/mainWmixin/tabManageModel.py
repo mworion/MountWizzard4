@@ -50,6 +50,7 @@ class ManageModel(object):
 
         self.ui.showErrorValues.clicked.connect(self.showModelPosition)
         self.ui.showNumbers.clicked.connect(self.showModelPosition)
+        self.ui.showNoAnnotation.clicked.connect(self.showModelPosition)
         self.ui.refreshName.clicked.connect(self.refreshName)
         self.ui.refreshModel.clicked.connect(self.refreshModel)
         self.ui.clearModel.clicked.connect(self.clearModel)

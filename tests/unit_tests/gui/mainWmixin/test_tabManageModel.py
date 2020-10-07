@@ -20,6 +20,7 @@ import unittest.mock as mock
 import pytest
 from pathlib import Path
 import json
+import shutil
 
 # external packages
 import PyQt5
@@ -39,7 +40,9 @@ from gui.utilities.widget import MWidget
 
 @pytest.fixture(autouse=True, scope='module')
 def module(qapp):
-
+    shutil.copy('tests/testData/test.model', 'tests/model/test.model')
+    shutil.copy('tests/testData/test1.model', 'tests/model/test1.model')
+    shutil.copy('tests/testData/test-opt.model', 'tests/model/test-opt.model')
     yield
 
 

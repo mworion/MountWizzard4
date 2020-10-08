@@ -115,6 +115,27 @@ def test_runImage2xy_2(app):
     assert not suc
 
 
+def test_runImage2xy_3(app):
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=None):
+        with mock.patch.object(subprocess.Popen,
+                               'communicate',
+                               return_value=('', ''),
+                               side_effect=Exception()):
+            suc = app.runImage2xy()
+            assert not suc
+
+
+def test_runImage2xy_4(app):
+    with mock.patch.object(subprocess.Popen,
+                           'communicate',
+                           return_value=('', ''),
+                           side_effect=subprocess.TimeoutExpired('run', 1)):
+        suc = app.runImage2xy(binPath='clear')
+        assert not suc
+
+
 def test_runSolveField_1(app):
     suc = app.runSolveField()
     assert not suc
@@ -142,6 +163,27 @@ def test_runSolveField_2(app):
     assert not suc
 
 
+def test_runSolveField_3(app):
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=None):
+        with mock.patch.object(subprocess.Popen,
+                               'communicate',
+                               return_value=('', ''),
+                               side_effect=Exception()):
+            suc = app.runSolveField()
+            assert not suc
+
+
+def test_runSolveField_4(app):
+    with mock.patch.object(subprocess.Popen,
+                           'communicate',
+                           return_value=('', ''),
+                           side_effect=subprocess.TimeoutExpired('run', 1)):
+        suc = app.runSolveField(binPath='clear')
+        assert not suc
+
+
 def test_getWCSHeader_1(app):
     val = app.getWCSHeader()
     assert val is None
@@ -154,19 +196,12 @@ def test_getWCSHeader_2(app):
     assert val
 
 
-def test_solveNet_1(app):
+def test_solve_1(app):
     suc = app.solve()
     assert not suc
 
 
-def test_solveNet_2(app):
-    app.deviceName = 'KStars'
-    app.environment = {
-        'KStars': {
-            'programPath': '',
-            'indexPath': '',
-        }
-    }
+def test_solve_2(app):
     app.indexPath = 'tests/temp'
     with mock.patch.object(app,
                            'runImage2xy',
@@ -176,14 +211,7 @@ def test_solveNet_2(app):
         assert not suc
 
 
-def test_solveNet_3(app):
-    app.deviceName = 'KStars'
-    app.environment = {
-        'KStars': {
-            'programPath': '',
-            'indexPath': '',
-        }
-    }
+def test_solve_3(app):
     app.indexPath = 'tests/temp'
     with mock.patch.object(app,
                            'runImage2xy',
@@ -196,14 +224,7 @@ def test_solveNet_3(app):
             assert not suc
 
 
-def test_solveNet_4(app):
-    app.deviceName = 'KStars'
-    app.environment = {
-        'KStars': {
-            'programPath': '',
-            'indexPath': '',
-        }
-    }
+def test_solve_4(app):
     app.indexPath = 'tests/temp'
     with mock.patch.object(app,
                            'runImage2xy',
@@ -216,14 +237,7 @@ def test_solveNet_4(app):
             assert not suc
 
 
-def test_solveNet_5(app):
-    app.deviceName = 'CloudMakers'
-    app.environment = {
-        'CloudMakers': {
-            'programPath': '',
-            'indexPath': '',
-        }
-    }
+def test_solve_5(app):
     app.indexPath = 'tests/temp'
     with mock.patch.object(app,
                            'runImage2xy',
@@ -240,14 +254,7 @@ def test_solveNet_5(app):
                 assert not suc
 
 
-def test_solveNet_6(app):
-    app.deviceName = 'KStars'
-    app.environment = {
-        'KStars': {
-            'programPath': '',
-            'indexPath': '',
-        }
-    }
+def test_solve_6(app):
     app.indexPath = 'tests/temp'
     with mock.patch.object(app,
                            'runImage2xy',
@@ -264,15 +271,9 @@ def test_solveNet_6(app):
                 assert not suc
 
 
-def test_solveNet_7(app):
-    app.deviceName = 'KStars'
-    app.environment = {
-        'KStars': {
-            'programPath': '',
-            'indexPath': '',
-        }
-    }
+def test_solve_7(app):
     app.indexPath = 'tests/temp'
+    app.appPath = 'Astrometry.app'
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=True):

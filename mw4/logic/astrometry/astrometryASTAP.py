@@ -124,18 +124,21 @@ class AstrometryASTAP(object):
         runnable += options
 
         timeStart = time.time()
+
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
-                                            stderr=subprocess.PIPE
-                                            )
+                                            stderr=subprocess.PIPE)
             stdout, stderr = self.process.communicate(timeout=self.timeout)
+
         except subprocess.TimeoutExpired:
             self.log.critical('Timeout expired')
             return False
+
         except Exception as e:
             self.log.critical(f'error: {e} happened')
             return False
+
         else:
             delta = time.time() - timeStart
             self.log.info(f'ASTAP took {delta}s return code: '

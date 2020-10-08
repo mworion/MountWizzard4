@@ -262,6 +262,7 @@ class Astrometry:
         if not os.path.isfile(fitsPath):
             self.signals.done.emit(solver.result)
             return False
+
         if not self.mutexSolve.tryLock():
             self.log.info('overrun in solve threading')
             self.signals.done.emit(solver.result)

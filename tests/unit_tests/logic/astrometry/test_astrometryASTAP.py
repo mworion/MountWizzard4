@@ -118,15 +118,20 @@ def test_runASTAP_2(app):
 def test_runASTAP_3(app):
     with mock.patch.object(subprocess,
                            'Popen',
-                           side_effect=Exception()):
-        suc = app.runASTAP()
-        assert not suc
+                           return_value=None):
+        with mock.patch.object(subprocess.Popen,
+                               'communicate',
+                               return_value=('', ''),
+                               side_effect=Exception()):
+            suc = app.runASTAP()
+            assert not suc
 
 
 def test_runASTAP_4(app):
-    with mock.patch.object(subprocess,
-                           'Popen',
-                           side_effect=subprocess.TimeoutExpired):
+    with mock.patch.object(subprocess.Popen,
+                           'communicate',
+                           return_value=('', ''),
+                           side_effect=subprocess.TimeoutExpired('run', 1)):
         suc = app.runASTAP(binPath='clear')
         assert not suc
 
@@ -153,13 +158,6 @@ def test_solveASTAP_2(app):
 
 
 def test_solveASTAP_3(app):
-    app.deviceName = 'ASTAP-Mac'
-    app.environment = {
-        'ASTAP-Mac': {
-            'programPath': '',
-            'indexPath': '',
-        }
-    }
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=1):
@@ -168,13 +166,6 @@ def test_solveASTAP_3(app):
 
 
 def test_solveASTAP_4(app):
-    app.deviceName = 'ASTAP-Mac'
-    app.environment = {
-        'ASTAP-Mac': {
-            'programPath': '',
-            'indexPath': '',
-        }
-    }
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=0):
@@ -183,13 +174,6 @@ def test_solveASTAP_4(app):
 
 
 def test_solveASTAP_5(app):
-    app.deviceName = 'ASTAP-Mac'
-    app.environment = {
-        'ASTAP-Mac': {
-            'programPath': '',
-            'indexPath': '',
-        }
-    }
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=0):

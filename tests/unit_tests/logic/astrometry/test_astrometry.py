@@ -273,6 +273,7 @@ def test_solveThreading_3(app):
     app.framework = 'astap'
     file = 'tests/image/m51.fit'
     suc = app.solveThreading(fitsPath=file)
+    app.mutexSolve.unlock()
     assert suc
 
 
@@ -329,8 +330,11 @@ def test_checkAvailability_2(app):
 
 def test_startCommunication(app):
     app.framework = 'astap'
-    suc = app.startCommunication()
-    assert suc
+    with mock.patch.object(app,
+                           'checkAvailability',
+                           return_value=(True, True)):
+        suc = app.startCommunication()
+        assert suc
 
 
 def test_stopCommunication(app):

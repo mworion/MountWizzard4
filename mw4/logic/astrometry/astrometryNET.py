@@ -123,12 +123,15 @@ class AstrometryNET(object):
                                             stderr=subprocess.PIPE,
                                             )
             stdout, stderr = self.process.communicate(timeout=self.timeout)
+
         except subprocess.TimeoutExpired as e:
             self.log.critical(e)
             return False
+
         except Exception as e:
             self.log.critical(f'error: {e} happened')
             return False
+
         else:
             delta = time.time() - timeStart
             self.log.info(f'IMAGE2XY took {delta}s return code: '
@@ -180,12 +183,15 @@ class AstrometryNET(object):
                                             stderr=subprocess.PIPE,
                                             )
             stdout, stderr = self.process.communicate(timeout=self.timeout)
+
         except subprocess.TimeoutExpired as e:
             self.log.critical(e)
             return False
+
         except Exception as e:
             self.log.critical(f'error: {e} happened')
             return False
+
         else:
             delta = time.time() - timeStart
             self.log.info(f'SOLVE-FIELD took {delta}s return code: '
@@ -291,8 +297,10 @@ class AstrometryNET(object):
         # if parameters are passed, they have priority
         if raHint is None:
             raHint = raFITS
+
         if decHint is None:
             decHint = decFITS
+
         if scaleHint is None:
             scaleHint = scaleFITS
 

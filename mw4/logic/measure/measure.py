@@ -213,6 +213,7 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         if hasValidData:
             trackingIsStable = (periodData.mean() == 0)
+
         else:
             trackingIsStable = False
 

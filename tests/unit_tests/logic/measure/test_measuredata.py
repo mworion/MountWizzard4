@@ -228,6 +228,23 @@ def test_calculateReference_7():
     assert decA == 0.0
 
 
+def test_calculateReference_8():
+    app.raRef = 0
+    app.decRef = 0
+    app.angularPosRaRef = 0
+    app.angularPosDecRef = 0
+    app.app.mount.obsSite.raJNow = 1
+    app.app.mount.obsSite.decJNow = 1
+    app.app.mount.obsSite.angularPosRA = 1
+    app.app.mount.obsSite.angularPosDEC = 1
+    app.data['status'] = np.array([None] * 10)
+    ra, dec, raA, decA = app.calculateReference()
+    assert ra == 0.0
+    assert dec == 0.0
+    assert raA == 0.0
+    assert decA == 0.0
+
+
 def test_checkStart_1():
     suc = app.checkStart(2)
     assert suc

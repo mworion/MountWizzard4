@@ -62,7 +62,7 @@ class CoverAlpaca(AlpacaClass):
         :return: true for test purpose
         """
 
-        val = self.client.coverstate
+        val = self.client.coverstate()
         if val == 1:
             val = 'OPEN'
 
@@ -80,6 +80,7 @@ class CoverAlpaca(AlpacaClass):
 
         if park:
             self.client.opencover()
+
         else:
             self.client.closecover()
 

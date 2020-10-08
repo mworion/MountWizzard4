@@ -94,6 +94,7 @@ class CoverIndi(IndiClass):
         if park:
             cover['UNPARK'] = 'Off'
             cover['PARK'] = 'On'
+
         else:
             cover['UNPARK'] = 'On'
             cover['PARK'] = 'Off'

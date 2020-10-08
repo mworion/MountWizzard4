@@ -127,8 +127,8 @@ def test_sendCoverPark_3():
     app.UPDATE_RATE = 0
     with mock.patch.object(app.device,
                            'getSwitch',
-                           return_value={'PARK': True,
-                                         'UNPARK': False}):
+                           return_value={'PARK': 'On',
+                                         'UNPARK': 'Off'}):
         with mock.patch.object(app.client,
                                'sendNewSwitch',
                                return_value=False):
@@ -143,8 +143,8 @@ def test_sendCoverPark_4():
     app.UPDATE_RATE = 0
     with mock.patch.object(app.device,
                            'getSwitch',
-                           return_value={'PARK': True,
-                                         '': False}):
+                           return_value={'PARK': 'On',
+                                         '': 'Off'}):
         with mock.patch.object(app.client,
                                'sendNewSwitch',
                                return_value=False):
@@ -159,10 +159,10 @@ def test_sendCoverPark_5():
     app.UPDATE_RATE = 0
     with mock.patch.object(app.device,
                            'getSwitch',
-                           return_value={'PARK': True,
-                                         'UNPARK': False}):
+                           return_value={'PARK': 'Off',
+                                         'UNPARK': 'On'}):
         with mock.patch.object(app.client,
                                'sendNewSwitch',
                                return_value=True):
-            suc = app.sendCoverPark()
+            suc = app.sendCoverPark(park=False)
             assert suc

@@ -84,6 +84,7 @@ class CoverAscom(AscomClass):
 
         if park:
             self.client.opencover
+
         else:
             self.client.closecover
 

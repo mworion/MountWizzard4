@@ -65,7 +65,9 @@ setup(
         'opencv-python-headless==4.4.0.44',
         'deepdiff==5.0.2',
     ]
-    + (['pywin32==228'] if "Windows" == platform.system() else []),
+    + (['pywin32==228'] if "Windows" == platform.system() else [])
+    + (['pywinauto==0.6.8'] if "Windows" == platform.system() else []),
+
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='mworion',

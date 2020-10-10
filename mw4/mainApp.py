@@ -21,6 +21,7 @@ import os
 import sys
 import json
 from queue import Queue
+import platform
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
@@ -50,6 +51,7 @@ from logic.powerswitch.pegasusUPB import PegasusUPB
 from logic.measure.measure import MeasureData
 from logic.remote.remote import Remote
 from logic.astrometry.astrometry import Astrometry
+from logic.automation.automateWindows import AutomateWindows
 
 
 class MountWizzard4(QObject):
@@ -152,6 +154,7 @@ class MountWizzard4(QObject):
         # get all planets for calculation
         try:
             self.ephemeris = self.mount.obsSite.loader('de421_23.bsp')
+
         except Exception as e:
             self.log.critical(f'Failed loading planets: {e}')
             self.ephemeris = None
@@ -174,6 +177,8 @@ class MountWizzard4(QObject):
         self.measure = MeasureData(self)
         self.remote = Remote(self)
         self.astrometry = Astrometry(self)
+        if platform.system() == 'Windows':
+            self.automation = AutomateWindows(self)
 
         self.uiWindows = {}
 

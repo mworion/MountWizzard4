@@ -134,7 +134,7 @@ class Satellite(object):
         for name, _ in self.satellites.items():
             if not isinstance(name, str):
                 continue
-            entryName = f'{self.satellites[name].model.satnum:5d} - {name}'
+            entryName = f'{self.satellites[name].model.satnum:5d}: {name}'
             self.ui.listSatelliteNames.addItem(entryName)
         self.ui.listSatelliteNames.sortItems()
         self.ui.listSatelliteNames.update()

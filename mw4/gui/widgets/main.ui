@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>11</number>
+    <number>7</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -9058,7 +9058,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>25</y>
+       <y>20</y>
        <width>376</width>
        <height>261</height>
       </rect>
@@ -10520,7 +10520,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>25</y>
+       <y>15</y>
        <width>366</width>
        <height>56</height>
       </rect>
@@ -10612,9 +10612,9 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>100</y>
+       <y>80</y>
        <width>366</width>
-       <height>316</height>
+       <height>336</height>
       </rect>
      </property>
      <property name="title">
@@ -10629,13 +10629,199 @@ Hint if mount will need a flip when following satellite.</string>
         <x>10</x>
         <y>25</y>
         <width>346</width>
-        <height>281</height>
+        <height>301</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier New</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
       </property>
       <property name="toolTip">
        <string>List of satellites.</string>
       </property>
      </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_4">
+    <attribute name="title">
+     <string>Comet / Asteroid</string>
+    </attribute>
+    <widget class="QGroupBox" name="groupBox_30">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>15</y>
+       <width>366</width>
+       <height>56</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Minor planets data file</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QComboBox" name="minorPlanetSource">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>25</y>
+        <width>256</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the minor planets database from where the minor planet list should be loaded.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="filterMinorPlanet">
+      <property name="geometry">
+       <rect>
+        <x>275</x>
+        <y>30</y>
+        <width>81</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter for selecting minor planet names. The filter is not case sensitive.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_270">
+      <property name="geometry">
+       <rect>
+        <x>275</x>
+        <y>10</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>search string</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_58">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>366</width>
+       <height>291</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>List of available minor planets (comets, asteroids)</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QListWidget" name="listMinorPlanetNames">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>25</y>
+        <width>346</width>
+        <height>256</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier New</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of minor planets. This includes comets, asteroids and others.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="Line" name="line_69">
+     <property name="geometry">
+      <rect>
+       <x>385</x>
+       <y>10</y>
+       <width>11</width>
+       <height>416</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>2</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="progMinorPlanetToMount">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>395</y>
+       <width>366</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Starts the satellite tracking mode.</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Program MPC list to mount</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Analyse">

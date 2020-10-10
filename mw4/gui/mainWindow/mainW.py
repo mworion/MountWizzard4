@@ -52,6 +52,7 @@ from gui.mainWmixin.tabModel import Model
 from gui.mainWmixin.tabBuildPoints import BuildPoints
 from gui.mainWmixin.tabManageModel import ManageModel
 from gui.mainWmixin.tabSatellite import Satellite
+from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
 from gui.mainWmixin.tabRelay import Relay
 from gui.mainWmixin.tabTools import Tools
 from gui.mainWmixin.tabPower import Power
@@ -74,6 +75,7 @@ class MainWindow(MWidget,
                  BuildPoints,
                  ManageModel,
                  Satellite,
+                 MinorPlanetTime,
                  Relay,
                  Power,
                  Tools,

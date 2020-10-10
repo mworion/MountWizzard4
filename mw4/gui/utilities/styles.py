@@ -104,6 +104,11 @@ class MWStyles:
         font-weight: normal;
         font-size: 13pt;
     }
+    QListWidget {
+        font-family: Courier;
+        font-weight: normal;
+        font-size: 13pt;
+    }
     QToolTip {
         font-size: 13pt;
     }
@@ -131,6 +136,11 @@ class MWStyles:
         font-size: 9pt;
     }
     QTextBrowser {
+        font-family: Courier;
+        font-weight: normal;
+        font-size: 8pt;
+    }
+    QListWidget {
         font-family: Courier;
         font-weight: normal;
         font-size: 8pt;

@@ -140,12 +140,15 @@ class MessageWindow(widget.MWidget):
 
             if mType < 0:
                 continue
+
             if mType > len(self.messColor):
                 continue
+
             prefix = time.strftime('%H:%M:%S ', time.localtime())
-            message = prefix + message
+
             self.ui.message.setTextColor(self.messColor[mType])
             self.ui.message.setFontWeight(self.messFont[mType])
-            self.ui.message.insertPlainText(message + '\n')
+            self.ui.message.insertPlainText(prefix + message + '\n')
             self.ui.message.moveCursor(PyQt5.QtGui.QTextCursor.End)
+
         return True

@@ -213,10 +213,10 @@ class KMRelay(QObject):
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
 
         except requests.exceptions.Timeout:
-            self.log.info(f'Connection timeout: [{url}]')
+            pass
 
         except requests.exceptions.ConnectionError:
-            self.log.info(f'Connection error: [{url}]')
+            pass
 
         except Exception as e:
             self.log.critical(f'Error in request: {e}')

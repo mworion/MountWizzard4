@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>6</number>
+    <number>7</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -10646,9 +10646,9 @@ Hint if mount will need a flip when following satellite.</string>
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab_4">
+   <widget class="QWidget" name="MPC">
     <attribute name="title">
-     <string>Comet / Asteroid</string>
+     <string>Minor Planets</string>
     </attribute>
     <widget class="QGroupBox" name="groupBox_30">
      <property name="geometry">
@@ -10748,7 +10748,7 @@ Hint if mount will need a flip when following satellite.</string>
        <x>10</x>
        <y>80</y>
        <width>366</width>
-       <height>341</height>
+       <height>306</height>
       </rect>
      </property>
      <property name="title">
@@ -10763,7 +10763,7 @@ Hint if mount will need a flip when following satellite.</string>
         <x>5</x>
         <y>25</y>
         <width>351</width>
-        <height>311</height>
+        <height>276</height>
        </rect>
       </property>
       <property name="font">
@@ -10799,6 +10799,22 @@ Hint if mount will need a flip when following satellite.</string>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="progMinorPlanetsFull">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>395</y>
+       <width>366</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Generates model points along DSO track for a give time and other parameters.</string>
+     </property>
+     <property name="text">
+      <string>Program complete database to mount</string>
      </property>
     </widget>
    </widget>

@@ -57,6 +57,7 @@ class MinorPlanetTime:
         }
 
         self.ui.listMinorPlanetNames.doubleClicked.connect(self.progMinorPlanetToMount)
+        self.ui.progMinorPlanetsFull.clicked.connect(self.progMinorPlanetsFull)
         self.ui.filterMinorPlanet.textChanged.connect(self.filterMinorPlanetNamesList)
         self.ui.minorPlanetSource.currentIndexChanged.connect(
             self.loadMinorPlanetDataFromSourceURLs)
@@ -71,7 +72,24 @@ class MinorPlanetTime:
         :return: True for test purpose
         """
 
+        config = self.app.config['mainW']
+
+        self.ui.filterMinorPlanet.setText(config.get('filterMinorPlanet'))
         self.setupMinorPlanetSourceURLsDropDown()
+
+        return True
+
+    def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
+
+        config = self.app.config['mainW']
+        config['filterMinorPlanet'] = self.ui.filterMinorPlanet.text()
 
         return True
 
@@ -251,13 +269,30 @@ class MinorPlanetTime:
         source = self.ui.listMinorPlanetNames.currentItem().text()
         number = int(source.split(':')[0])
         mpc = self.minorPlanets[number]
-        print(mpc)
-        text = f'Should {source} be programmed to mount ?'
+        text = f'Should \n\n[{source}]\n\nbe programmed to mount ?'
         suc = self.programDialog(text)
 
         if not suc:
             return False
 
         self.app.message.emit(f'Program to mount:    [{source}]', 2)
+
+        return True
+
+    def progMinorPlanetsFull(self):
+        """
+
+        :return: success
+        """
+
+        source = self.ui.minorPlanetSource.currentText()
+
+        text = f'Should\n\n[{source}]\n\n be programmed to mount ?'
+        suc = self.programDialog(text)
+
+        if not suc:
+            return False
+
+        self.app.message.emit(f'Program database:    [{source}]', 2)
 
         return True

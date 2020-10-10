@@ -23,14 +23,13 @@ import platform
 # external packages
 from PyQt5.QtCore import QObject
 import requests
+import comtypes.client
+from pywinauto import Application, timings, findwindows, application
+from pywinauto.controls.win32_controls import ButtonWrapper, EditWrapper
+from winreg import OpenKey, CloseKey, EnumKey, EnumValue, HKEY_LOCAL_MACHINE, QueryInfoKey
 
 # local imports
 from base.loggerMW import CustomLogger
-if platform.system() == 'Windows':
-    import comtypes.client
-    from pywinauto import Application, timings, findwindows, application
-    from pywinauto.controls.win32_controls import ButtonWrapper, EditWrapper
-    from winreg import OpenKey, CloseKey, EnumKey, EnumValue, HKEY_LOCAL_MACHINE, QueryInfoKey
 
 
 class AutomationWindows(QObject):
@@ -39,27 +38,6 @@ class AutomationWindows(QObject):
 
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
-
-    UTC_1 = 'http://maia.usno.navy.mil/ser7/finals.data'
-    UTC_2 = 'http://maia.usno.navy.mil/ser7/tai-utc.dat'
-    UTC_1_FILE = 'finals.data'
-    UTC_2_FILE = 'tai-utc.dat'
-
-    COMETS_START = 102
-    COMETS_END = 161
-    COMETS = 'http://www.minorplanetcenter.net/iau/MPCORB/CometEls.txt'
-    COMETS_FILE = 'comets.mpc'
-
-    ASTEROIDS_START = 165
-    ASTEROIDS_END = 196
-    ASTEROIDS_MPC5000 = 'http://www.ap-i.net/pub/skychart/mpc/mpc5000.dat'
-    ASTEROIDS_NEA = 'http://www.minorplanetcenter.net/iau/MPCORB/NEA.txt'
-    ASTEROIDS_PHA = 'http://www.minorplanetcenter.net/iau/MPCORB/PHA.txt'
-    ASTEROIDS_TNO = 'http://www.minorplanetcenter.net/iau/MPCORB/Distant.txt'
-    ASTEROIDS_UNUSAL = 'http://www.minorplanetcenter.net/iau/MPCORB/Unusual.txt'
-    ASTEROIDS_FILE = 'asteroids.mpc'
-
-    OPENDIALOG = 'Dialog'
 
     def __init__(self, app):
         super().__init__()
@@ -76,18 +54,6 @@ class AutomationWindows(QObject):
         if self.TARGET_DIR == '':
             self.TARGET_DIR = os.getcwd()+'/config/'
 
-        # signal slot
-        self.app.ui.btn_downloadEarthrotation.clicked.connect()
-        self.app.ui.btn_downloadSpacestations.clicked.connect()
-        self.app.ui.btn_downloadSatbrighest.clicked.connect()
-        self.app.ui.btn_downloadAsteroidsMPC5000.clicked.connect()
-        self.app.ui.btn_downloadAsteroidsNEA.clicked.connect()
-        self.app.ui.btn_downloadAsteroidsPHA.clicked.connect()
-        self.app.ui.btn_downloadAsteroidsTNO.clicked.connect()
-        self.app.ui.btn_downloadComets.clicked.connect()
-        self.app.ui.btn_downloadAll.clicked.connect()
-        self.app.ui.btn_uploadMount.clicked.connect()
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -98,8 +64,6 @@ class AutomationWindows(QObject):
         """
 
         config = self.app.config['mainW']
-        self.app.ui.le_filterExpressionMPC.setText(self.app.config.get('filterExpressionMPC'))
-        self.app.ui.checkFilterMPC.setChecked(self.app.config.get('checkFilterMPC'))
 
     def storeConfig(self):
         """

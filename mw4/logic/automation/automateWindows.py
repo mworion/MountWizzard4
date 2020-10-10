@@ -19,7 +19,6 @@
 import os
 import logging
 import platform
-import shutil
 
 # external packages
 from PyQt5.QtCore import QObject
@@ -198,7 +197,6 @@ class AutomateWindows(QObject):
 
     def uploadMPCData(self, comets=False):
         self.prepareUpdater()
-        shutil.copy(self.app.mwGlob['dataDir'] + '/minorPlanets.mpc', self.installPath + 'minorPlanets.mpc')
 
         try:
             win = self.updater['10 micron control box update']
@@ -210,8 +208,7 @@ class AutomateWindows(QObject):
             else:
                 ButtonWrapper(win['Orbital parameters of asteroids']).check_by_click()
                 win['Edit...3'].click()
-                popup = self.updater['Asteroid' \
-                                     ' orbits']
+                popup = self.updater['Asteroid orbits']
 
             popup['MPC file'].click()
             filedialog = self.updater['Dialog']
@@ -259,6 +256,24 @@ class AutomateWindows(QObject):
 
         finally:
             os.chdir(self.actualWorkDir)
+
+    def writeCometMPC(self, dataDict):
+        """
+
+        :param dataDict:
+        :return:
+        """
+
+        return True
+
+    def writeAstroidMPC(self, dataDict):
+        """
+
+        :param dataDict:
+        :return:
+        """
+
+        return True
 
 
 if __name__ == "__main__":

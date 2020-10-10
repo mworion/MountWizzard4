@@ -172,7 +172,7 @@ class AutomateWindows(QObject):
             os.chdir(self.actualWorkDir)
             return False
 
-    def doUploadAndClose(self):
+    def doUploadAndCloseInstaller(self):
         win = self.updater['10 micron control box update']
         try:
             win['next'].click()
@@ -221,7 +221,7 @@ class AutomateWindows(QObject):
             return False
 
         else:
-            suc = self.doUploadAndClose()
+            suc = self.doUploadAndCloseInstaller()
             return suc
 
         finally:
@@ -251,11 +251,19 @@ class AutomateWindows(QObject):
             return False
 
         else:
-            suc = self.doUploadAndClose()
+            suc = self.doUploadAndCloseInstaller()
             return suc
 
         finally:
             os.chdir(self.actualWorkDir)
+
+    def writeEarthRotationData(self):
+        """
+
+        :return:
+        """
+
+        return True
 
     def writeCometMPC(self, dataDict):
         """

@@ -21,10 +21,13 @@ import time
 import subprocess
 import sys
 import platform
-from pkg_resources import working_set
-from distutils.version import StrictVersion
+import shutil
 
 # external packages
+from pkg_resources import working_set
+from distutils.version import StrictVersion
+from urllib.request import urlopen
+from contextlib import closing
 import PyQt5
 if platform.machine() not in Config.excludedPlatforms:
     import PyQt5.QtMultimedia
@@ -168,6 +171,14 @@ class SettMisc(object):
 
         return True
 
+    @staticmethod
+    def downloadFTP(url, dest):
+
+        print(url)
+        with closing(urlopen(url, timeout=10)) as r:
+            with open(dest, 'w+') as f:
+                shutil.copyfileobj(r, f)
+
     def updateDeltaT(self):
         """
         updateDeltaT download the necessary time files for skyfield timescale object
@@ -177,24 +188,33 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
+        URL = 'ftp://cddis.nasa.gov/products/iers/'
+        UTC_1 = 'finals.data'
+        UTC_2 = 'tai-utc.dat'
 
         isOnline = self.ui.isOnline.isChecked()
 
         if isOnline:
             try:
                 self.app.mount.obsSite.loader('deltat.data', reload=True)
+
             except Exception as e:
                 self.log.error(f'{e}')
 
             try:
                 self.app.mount.obsSite.loader('deltat.preds', reload=True)
+
             except Exception as e:
                 self.log.error(f'{e}')
 
             try:
                 self.app.mount.obsSite.loader('Leap_Second.dat', reload=True)
+
             except Exception as e:
                 self.log.error(f'{e}')
+
+            self.downloadFTP(URL + UTC_1, self.app.mwGlob['dataDir'] + '/' + UTC_1)
+            self.downloadFTP(URL + UTC_2, self.app.mwGlob['dataDir'] + '/' + UTC_2)
 
         return True
 

@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>7</number>
+    <number>6</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -10626,10 +10626,10 @@ Hint if mount will need a flip when following satellite.</string>
      <widget class="QListWidget" name="listSatelliteNames">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>5</x>
         <y>25</y>
-        <width>346</width>
-        <height>301</height>
+        <width>356</width>
+        <height>306</height>
        </rect>
       </property>
       <property name="font">
@@ -10748,7 +10748,7 @@ Hint if mount will need a flip when following satellite.</string>
        <x>10</x>
        <y>80</y>
        <width>366</width>
-       <height>291</height>
+       <height>341</height>
       </rect>
      </property>
      <property name="title">
@@ -10760,10 +10760,10 @@ Hint if mount will need a flip when following satellite.</string>
      <widget class="QListWidget" name="listMinorPlanetNames">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>5</x>
         <y>25</y>
-        <width>346</width>
-        <height>256</height>
+        <width>351</width>
+        <height>311</height>
        </rect>
       </property>
       <property name="font">
@@ -10799,28 +10799,6 @@ Hint if mount will need a flip when following satellite.</string>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="progMinorPlanetToMount">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>395</y>
-       <width>366</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>Starts the satellite tracking mode.</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>Program MPC list to mount</string>
      </property>
     </widget>
    </widget>

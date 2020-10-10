@@ -62,7 +62,7 @@ class Satellite(object):
             'Last 30 days launch': 'http://www.celestrak.com/NORAD/elements/tle-new.txt',
         }
 
-        self.ui.listSatelliteNames.itemPressed.connect(self.signalExtractSatelliteData)
+        self.ui.listSatelliteNames.doubleClicked.connect(self.signalExtractSatelliteData)
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadTLEDataFromSourceURLs)
@@ -134,7 +134,7 @@ class Satellite(object):
         for name, _ in self.satellites.items():
             if not isinstance(name, str):
                 continue
-            entryName = f'{self.satellites[name].model.satnum:5d}: {name}'
+            entryName = f'{self.satellites[name].model.satnum:6d}: {name}'
             self.ui.listSatelliteNames.addItem(entryName)
         self.ui.listSatelliteNames.sortItems()
         self.ui.listSatelliteNames.update()
@@ -449,17 +449,11 @@ class Satellite(object):
         winObj['classObj'].signals.show.emit(self.satellite, satOrbits)
         return True
 
-    def signalExtractSatelliteData(self, widget=None):
+    def signalExtractSatelliteData(self):
         """
 
-        :param widget: widget from where the signal is send
         :return: True for test purpose
         """
-        if not widget:
-            return False
-
-        if self.ui.listSatelliteNames.currentItem() is None:
-            return False
 
         satName = self.ui.listSatelliteNames.currentItem().text()[8:]
         self.extractSatelliteData(satName=satName)

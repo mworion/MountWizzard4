@@ -22,7 +22,7 @@ import shutil
 
 # external packages
 import requests
-from PyQt5.QtWidgets import QListView
+from PyQt5.QtWidgets import QListView, QMessageBox
 
 # local import
 from base.tpool import Worker
@@ -56,7 +56,7 @@ class MinorPlanetTime:
             'FTP IERS': 'ftp://cddis.nasa.gov/products/iers',
         }
 
-        # self.ui.listMinorPlanetNames.itemPressed.connect(self.progMinorPlanetListToMount)
+        self.ui.listMinorPlanetNames.doubleClicked.connect(self.progMinorPlanetToMount)
         self.ui.filterMinorPlanet.textChanged.connect(self.filterMinorPlanetNamesList)
         self.ui.minorPlanetSource.currentIndexChanged.connect(
             self.loadMinorPlanetDataFromSourceURLs)
@@ -222,5 +222,42 @@ class MinorPlanetTime:
                         isOnline=isOnline)
         worker.signals.finished.connect(self.setupMinorPlanetNameList)
         self.threadPool.start(worker)
+
+        return True
+
+    def programDialog(self, question):
+        """
+
+        :param question:
+        :return: OK
+        """
+
+        msg = QMessageBox
+        reply = msg.question(self, 'Program with QCI Updater', question, msg.Yes | msg.No,
+                             msg.No)
+
+        if reply != msg.Yes:
+            return False
+
+        else:
+            return True
+
+    def progMinorPlanetToMount(self):
+        """
+
+        :return: success
+        """
+
+        source = self.ui.listMinorPlanetNames.currentItem().text()
+        number = int(source.split(':')[0])
+        mpc = self.minorPlanets[number]
+        print(mpc)
+        text = f'Should {source} be programmed to mount ?'
+        suc = self.programDialog(text)
+
+        if not suc:
+            return False
+
+        self.app.message.emit(f'Program to mount:    [{source}]', 2)
 
         return True

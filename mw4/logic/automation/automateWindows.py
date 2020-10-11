@@ -41,6 +41,29 @@ class AutomateWindows(QObject):
     UTC_1_FILE = 'finals.data'
     UTC_2_FILE = 'tai-utc.dat'
 
+    COMET_FIELDS = ['Orbit_type',
+                    'Provisional_packed_desig',
+                    'Year_of_perihelion',
+                    'Month_of_perihelion',
+                    'Day_of_perihelion',
+                    'Perihelion_dist',
+                    'e',
+                    'Peri',
+                    'Node',
+                    'i',
+                    'Epoch_year',
+                    'Epoch_month',
+                    'Epoch_day',
+                    'H',
+                    'G',
+                    'Designation_and_name',
+                    'Ref'
+                    ]
+
+    ASTEROID_FIELDS = [
+
+    ]
+
     def __init__(self, app):
         super().__init__()
         self.app = app
@@ -265,21 +288,74 @@ class AutomateWindows(QObject):
 
         return True
 
-    def writeCometMPC(self, dataDict):
+    def writeCometMPC(self, datas=None):
         """
 
-        :param dataDict:
+        :param datas:
         :return:
         """
+        if not datas:
+            return False
+
+        if not isinstance(datas, list):
+            return False
+
+        dest = self.installPath + '/minorPlanets.mpc'
+        with open(dest, 'w') as f:
+            for data in datas:
+                line = ''
+                line += f'{"":4s}'
+                line += f'{data.get("Orbit_type", ""):1s}'
+                line += f'{data.get("Provisional_packed_desig", ""):7s}'
+                line += f'{"":2s}'
+                line += f'{data.get("Year_of_perihelion", 0):04d}'
+                line += f'{"":1s}'
+                line += f'{data.get("Month_of_perihelion", 0):02d}'
+                line += f'{"":1s}'
+                line += f'{data.get("Day_of_perihelion", 0):7.4f}'
+                line += f'{"":1s}'
+                line += f'{data.get("Perihelion_dist", 0):9.6f}'
+                line += f'{"":2s}'
+                line += f'{data.get("e", 0):8.6f}'
+                line += f'{"":2s}'
+                line += f'{data.get("Peri", 0):8.4f}'
+                line += f'{"":2s}'
+                line += f'{data.get("Node", 0):8.4f}'
+                line += f'{"":2s}'
+                line += f'{data.get("i", 0):8.4f}'
+                line += f'{"":2s}'
+
+                if 'Epoch_year' in data:
+                    line += f'{data.get("Epoch_year", 0):04d}'
+                    line += f'{data.get("Epoch_month", 0):02d}'
+                    line += f'{data.get("Epoch_day", 0):02d}'
+                else:
+                    line += f'{"":8s}'
+
+                line += f'{"":2s}'
+                line += f'{data.get("H", 0):4.1f}'
+                line += f'{"":1s}'
+                line += f'{data.get("G", 0):4.1f}'
+                line += f'{"":2s}'
+                line += f'{data.get("Designation_and_name", ""):56s}'
+                line += f'{"":1s}'
+                line += f'{data.get("Ref", " "):>9s}'
+                line += '\n'
+                f.write(line)
 
         return True
 
-    def writeAstroidMPC(self, dataDict):
+    def writeAstroidMPC(self, datas=None):
         """
 
-        :param dataDict:
+        :param datas:
         :return:
         """
+        if not datas:
+            return False
+
+        if not isinstance(datas, list):
+            return False
 
         return True
 

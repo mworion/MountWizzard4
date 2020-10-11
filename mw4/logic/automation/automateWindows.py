@@ -23,7 +23,8 @@ import shutil
 
 # external packages
 from PyQt5.QtCore import QObject
-from pywinauto import Application, timings, findwindows, application
+from pywinauto import Application, timings, application
+from pywinauto.findwindows import find_windows
 from pywinauto.controls.win32_controls import ButtonWrapper, EditWrapper
 from winreg import OpenKey, CloseKey, EnumKey, EnumValue, HKEY_LOCAL_MACHINE, QueryInfoKey
 
@@ -129,9 +130,10 @@ class AutomateWindows(QObject):
 
     def checkFloatingPointErrorWindow(self):
         try:
-            lambdaParam = findwindows.find_windows(title='GmQCIv2',
-                                                   class_name='#32770')[0]
-            dialog = timings.wait_until_passes(2, 0.2, lambda: lambdaParam)
+            dialog = timings.wait_until_passes(2,
+                                               0.2,
+                                               lambda: find_windows(title='GmQCIv2',
+                                                                    class_name='#32770')[0])
             winOK = self.updater.window(handle=dialog)
             winOK['OK'].click()
 
@@ -209,9 +211,10 @@ class AutomateWindows(QObject):
             return False
 
         try:
-            lambdaParam = findwindows.find_windows(title='Update completed',
-                                                   class_name='#32770')[0]
-            dialog = timings.wait_until_passes(60, 0.5, lambda: lambdaParam)
+            dialog = timings.wait_until_passes(60,
+                                               0.5,
+                                               lambda: find_windows(title='Update completed',
+                                                                    class_name='#32770')[0])
             winOK = self.updater.window(handle=dialog)
             winOK['OK'].click()
 
@@ -291,7 +294,13 @@ class AutomateWindows(QObject):
         sourceDir = self.app.mwGlob['dataDir'] + '/'
         destDir = self.installPath + '/'
 
-        shutil.copy(sourceDir + 'tai_utc.dat', destDir + 'tai_utc.dat')
+        if not os.path.isfile(sourceDir + 'tai-utc.dat'):
+            return False
+
+        if not os.path.isfile(sourceDir + 'finals.data'):
+            return False
+
+        shutil.copy(sourceDir + 'tai-utc.dat', destDir + 'tai-utc.dat')
         shutil.copy(sourceDir + 'finals.data', destDir + 'finals.data')
 
         return True

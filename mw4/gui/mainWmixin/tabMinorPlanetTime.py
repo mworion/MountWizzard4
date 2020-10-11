@@ -58,6 +58,7 @@ class MinorPlanetTime:
 
         self.ui.listMinorPlanetNames.doubleClicked.connect(self.progMinorPlanetToMount)
         self.ui.progMinorPlanetsFull.clicked.connect(self.progMinorPlanetsFull)
+        self.ui.progEarthRotationData.clicked.connect(self.progEarthRotationDataToMount)
         self.ui.filterMinorPlanet.textChanged.connect(self.filterMinorPlanetNamesList)
         self.ui.minorPlanetSource.currentIndexChanged.connect(
             self.loadMinorPlanetDataFromSourceURLs)
@@ -260,6 +261,41 @@ class MinorPlanetTime:
         else:
             return True
 
+    def progEarthRotationDataToMount(self):
+        """
+
+        :return: success
+        """
+
+        text = f'Should \n\n[Earth Rotation Data]\n\nbe programmed to mount ?'
+        suc = self.programDialog(text)
+
+        if not suc:
+            return False
+
+        self.app.message.emit('Program to mount:    [earth rotation data]', 1)
+        self.app.message.emit('Copy files: finals.data, tai-utc.dat', 0)
+
+        if not self.app.automation:
+            self.app.message.emit('Not running windows, no updater available', 2)
+            return False
+
+        suc = self.app.automation.writeEarthRotationData()
+
+        if not suc:
+            self.app.message.emit('Data could not be copied - stopping', 2)
+            return False
+
+        self.app.message.emit('Uploading to mount', 0)
+        suc = self.app.automation.uploadEarthRotationData()
+
+        if not suc:
+            self.app.message.emit('Uploading error', 2)
+
+        self.app.message.emit('Programming success', 1)
+
+        return True
+
     def progMinorPlanetToMount(self):
         """
 
@@ -293,6 +329,7 @@ class MinorPlanetTime:
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
+            return False
 
         self.app.message.emit('Uploading to mount', 0)
         suc = self.app.automation.uploadMPCData(comets=isComet)
@@ -335,6 +372,7 @@ class MinorPlanetTime:
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
+            return False
 
         self.app.message.emit('Uploading to mount', 0)
         suc = self.app.automation.uploadMPCData(comets=isComet)

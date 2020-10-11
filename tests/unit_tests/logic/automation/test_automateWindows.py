@@ -166,7 +166,7 @@ def test_writeAsteroidMPC_4(function):
     suc = function.writeAsteroidMPC(datas=testData)
     assert suc
 
-
+"""
 def test_writeAsteroidMPC_5(function):
     function.installPath = 'tests/temp'
 
@@ -186,7 +186,7 @@ def test_writeAsteroidMPC_5(function):
 
     assert testLine == refLine
 
-"""
+
 def test_writeAsteroidMPC_6(function):
     function.installPath = 'tests/temp'
 

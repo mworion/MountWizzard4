@@ -301,6 +301,7 @@ class AutomateWindows(QObject):
             return False
 
         dest = self.installPath + '/minorPlanets.mpc'
+
         with open(dest, 'w') as f:
             for data in datas:
                 line = ''
@@ -345,7 +346,7 @@ class AutomateWindows(QObject):
 
         return True
 
-    def writeAstroidMPC(self, datas=None):
+    def writeAsteroidMPC(self, datas=None):
         """
 
         :param datas:
@@ -356,6 +357,15 @@ class AutomateWindows(QObject):
 
         if not isinstance(datas, list):
             return False
+
+        dest = self.installPath + '/minorPlanets.mpc'
+
+        with open(dest, 'w') as f:
+            for data in datas:
+                line = ''
+                line += f'{"":4s}'
+                line += f'{data.get("Orbit_type", ""):1s}'
+                f.write(line)
 
         return True
 

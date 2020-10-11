@@ -10811,10 +10811,26 @@ Hint if mount will need a flip when following satellite.</string>
       </rect>
      </property>
      <property name="toolTip">
-      <string>Generates model points along DSO track for a give time and other parameters.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Program complete database to mount</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="progEarthRotationData">
+     <property name="geometry">
+      <rect>
+       <x>405</x>
+       <y>395</y>
+       <width>366</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual in /data existing earth rotation data to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Program earth rotation data</string>
      </property>
     </widget>
    </widget>

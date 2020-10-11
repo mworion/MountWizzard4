@@ -327,7 +327,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
         'deltat.preds',
         'de421_23.bsp',
         'active.txt',
-        'tai-utc.txt',
+        'tai-utc.dat',
         'finals.data',
     ]
 

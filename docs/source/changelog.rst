@@ -19,24 +19,26 @@ Unreleased Betas
 - update skyfield to 1.29
 
 (0.180.0)
+
 - move weather api to device
 - move mount MAC and IP to device
 - move relay ip to device
 
+(0.170.1)
 
-(0.170.0)
-- adding comets programming (windows only)
 - adding asteroids programming (windows only)
-- adding update deltaT for mount (windows only)
-
 
 Released betas
 --------------
+0.170.0
+
+- adding comets programming (windows only)
+- adding update deltaT for mount (windows only)
 
 0.160.2
+
 - performance hemisphere
 - updated hemisphere behavior
-
 
 0.160.0
 

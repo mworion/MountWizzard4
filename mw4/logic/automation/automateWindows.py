@@ -208,7 +208,7 @@ class AutomateWindows(QObject):
 
         try:
             dialog = timings.wait_until_passes(60, 0.5, lambda: findwindows.find_windows(title='Update completed',
-                                                                                       class_name='#32770')[0])
+                                                                                         class_name='#32770')[0])
             winOK = self.updater.window(handle=dialog)
             winOK['OK'].click()
 

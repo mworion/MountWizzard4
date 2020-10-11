@@ -21,7 +21,7 @@ import time
 import subprocess
 import sys
 import platform
-import shutil
+from ftplib import FTP
 
 # external packages
 from pkg_resources import working_set
@@ -105,7 +105,6 @@ class SettMisc(object):
         self.setWeatherOnline()
         self.setupAudioGui()
         self.setupIERS()
-        self.updateDeltaT()
 
         self.showUpdates()
 
@@ -168,53 +167,6 @@ class SettMisc(object):
         else:
             iers.conf.auto_download = False
             iers.conf.auto_max_age = 99999
-
-        return True
-
-    @staticmethod
-    def downloadFTP(url, dest):
-
-        print(url)
-        with closing(urlopen(url, timeout=10)) as r:
-            with open(dest, 'w+') as f:
-                shutil.copyfileobj(r, f)
-
-    def updateDeltaT(self):
-        """
-        updateDeltaT download the necessary time files for skyfield timescale object
-        if online status is set. if download does not succeed, we keep working with the old
-        files. as we don't create a new timescale object the new file versions will be used
-        when mw4 starts the next time.
-
-        :return: True for test purpose
-        """
-        URL = 'ftp://cddis.nasa.gov/products/iers/'
-        UTC_1 = 'finals.data'
-        UTC_2 = 'tai-utc.dat'
-
-        isOnline = self.ui.isOnline.isChecked()
-
-        if isOnline:
-            try:
-                self.app.mount.obsSite.loader('deltat.data', reload=True)
-
-            except Exception as e:
-                self.log.error(f'{e}')
-
-            try:
-                self.app.mount.obsSite.loader('deltat.preds', reload=True)
-
-            except Exception as e:
-                self.log.error(f'{e}')
-
-            try:
-                self.app.mount.obsSite.loader('Leap_Second.dat', reload=True)
-
-            except Exception as e:
-                self.log.error(f'{e}')
-
-            #self.downloadFTP(URL + UTC_1, self.app.mwGlob['dataDir'] + '/' + UTC_1)
-            #self.downloadFTP(URL + UTC_2, self.app.mwGlob['dataDir'] + '/' + UTC_2)
 
         return True
 

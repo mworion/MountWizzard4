@@ -267,7 +267,7 @@ class MinorPlanetTime:
         :return: success
         """
 
-        text = f'Should \n\n[Earth Rotation Data]\n\nbe programmed to mount ?'
+        text = 'Should \n\n[Earth Rotation Data]\n\nbe programmed to mount ?'
         suc = self.programDialog(text)
 
         if not suc:

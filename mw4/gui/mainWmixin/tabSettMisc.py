@@ -70,7 +70,6 @@ class SettMisc(object):
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
         self.ui.isOnline.clicked.connect(self.setupIERS)
-        self.ui.isOnline.clicked.connect(self.updateDeltaT)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
         self.ui.versionRelease.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.showUpdates)

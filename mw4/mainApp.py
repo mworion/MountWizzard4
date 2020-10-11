@@ -51,7 +51,9 @@ from logic.powerswitch.pegasusUPB import PegasusUPB
 from logic.measure.measure import MeasureData
 from logic.remote.remote import Remote
 from logic.astrometry.astrometry import Astrometry
-from logic.automation.automateWindows import AutomateWindows
+
+if platform.system() == 'Windows':
+    from logic.automation.automateWindows import AutomateWindows
 
 
 class MountWizzard4(QObject):
@@ -68,7 +70,6 @@ class MountWizzard4(QObject):
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
 
-    # central message and logging dispatching
     message = pyqtSignal(str, int)
     messageQueue = Queue()
     redrawHemisphere = pyqtSignal()
@@ -80,7 +81,6 @@ class MountWizzard4(QObject):
     showAnalyse = pyqtSignal(str)
     remoteCommand = pyqtSignal(str)
 
-    # all cyclic tasks
     update0_1s = pyqtSignal()
     update1s = pyqtSignal()
     update3s = pyqtSignal()
@@ -177,8 +177,12 @@ class MountWizzard4(QObject):
         self.measure = MeasureData(self)
         self.remote = Remote(self)
         self.astrometry = Astrometry(self)
+
         if platform.system() == 'Windows':
             self.automation = AutomateWindows(self)
+
+        else:
+            self.automation = None
 
         self.uiWindows = {}
 

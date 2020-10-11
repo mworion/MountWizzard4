@@ -281,6 +281,10 @@ class MinorPlanetTime:
         self.app.message.emit(f'Program to mount:    [{source}]', 1)
         self.app.message.emit('Exporting MPC data', 0)
 
+        if not self.app.automation:
+            self.app.message.emit('Not running windows, no updater available', 2)
+            return False
+
         if isComet:
             suc = self.app.automation.writeCometMPC(mpc)
 
@@ -318,6 +322,10 @@ class MinorPlanetTime:
 
         self.app.message.emit(f'Program database:    [{source}]', 1)
         self.app.message.emit('Exporting MPC data', 0)
+
+        if not self.app.automation:
+            self.app.message.emit('Not running windows, no updater available', 2)
+            return False
 
         if isComet:
             suc = self.app.automation.writeCometMPC(self.minorPlanets)

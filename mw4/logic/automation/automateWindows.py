@@ -19,6 +19,7 @@
 import os
 import logging
 import platform
+import shutil
 
 # external packages
 from PyQt5.QtCore import QObject
@@ -287,6 +288,11 @@ class AutomateWindows(QObject):
 
         :return:
         """
+        sourceDir = self.app.mwGlob['dataDir'] + '/'
+        destDir = self.installPath + '/'
+
+        shutil.copy(sourceDir + 'tai_utc.dat', destDir + 'tai_utc.dat')
+        shutil.copy(sourceDir + 'finals.data', destDir + 'finals.data')
 
         return True
 

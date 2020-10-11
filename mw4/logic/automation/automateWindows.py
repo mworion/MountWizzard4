@@ -368,14 +368,3 @@ class AutomateWindows(QObject):
                 f.write(line)
 
         return True
-
-
-if __name__ == "__main__":
-    from PyQt5.QtCore import QThreadPool
-
-    class App:
-        threadPool = QThreadPool()
-        mwGlob = {'dataDir': 'c:/Users/astro/PycharmProjects/MountWizzard4/data'}
-
-    a = AutomateWindows(App())
-    a.uploadMPCData(comets=False)

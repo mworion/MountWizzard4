@@ -213,8 +213,8 @@ class SettMisc(object):
             except Exception as e:
                 self.log.error(f'{e}')
 
-            self.downloadFTP(URL + UTC_1, self.app.mwGlob['dataDir'] + '/' + UTC_1)
-            self.downloadFTP(URL + UTC_2, self.app.mwGlob['dataDir'] + '/' + UTC_2)
+            #self.downloadFTP(URL + UTC_1, self.app.mwGlob['dataDir'] + '/' + UTC_1)
+            #self.downloadFTP(URL + UTC_2, self.app.mwGlob['dataDir'] + '/' + UTC_2)
 
         return True
 

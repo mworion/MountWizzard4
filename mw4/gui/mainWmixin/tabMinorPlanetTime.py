@@ -268,14 +268,35 @@ class MinorPlanetTime:
 
         source = self.ui.listMinorPlanetNames.currentItem().text()
         number = int(source.split(':')[0])
-        mpc = self.minorPlanets[number]
+        mpc = [self.minorPlanets[number]]
+        isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
+        isAsteroid = not isComet
+
         text = f'Should \n\n[{source}]\n\nbe programmed to mount ?'
         suc = self.programDialog(text)
 
         if not suc:
             return False
 
-        self.app.message.emit(f'Program to mount:    [{source}]', 2)
+        self.app.message.emit(f'Program to mount:    [{source}]', 1)
+        self.app.message.emit('Exporting MPC data', 0)
+
+        if isComet:
+            suc = self.app.automation.writeCometMPC(mpc)
+
+        if isAsteroid:
+            suc = self.app.automation.writeAsteroidMPC(mpc)
+
+        if not suc:
+            self.app.message.emit('Data could not be exported - stopping', 2)
+
+        self.app.message.emit('Uploading to mount', 0)
+        suc = self.app.automation.uploadMPCData(comets=isComet)
+
+        if not suc:
+            self.app.message.emit('Uploading error', 2)
+
+        self.app.message.emit('Programming success', 1)
 
         return True
 
@@ -286,6 +307,8 @@ class MinorPlanetTime:
         """
 
         source = self.ui.minorPlanetSource.currentText()
+        isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
+        isAsteroid = not isComet
 
         text = f'Should\n\n[{source}]\n\n be programmed to mount ?'
         suc = self.programDialog(text)
@@ -293,6 +316,24 @@ class MinorPlanetTime:
         if not suc:
             return False
 
-        self.app.message.emit(f'Program database:    [{source}]', 2)
+        self.app.message.emit(f'Program database:    [{source}]', 1)
+        self.app.message.emit('Exporting MPC data', 0)
+
+        if isComet:
+            suc = self.app.automation.writeCometMPC(self.minorPlanets)
+
+        if isAsteroid:
+            suc = self.app.automation.writeAsteroidMPC(self.minorPlanets)
+
+        if not suc:
+            self.app.message.emit('Data could not be exported - stopping', 2)
+
+        self.app.message.emit('Uploading to mount', 0)
+        suc = self.app.automation.uploadMPCData(comets=isComet)
+
+        if not suc:
+            self.app.message.emit('Uploading error', 2)
+
+        self.app.message.emit('Programming success', 1)
 
         return True

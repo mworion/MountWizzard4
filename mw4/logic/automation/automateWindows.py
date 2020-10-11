@@ -128,8 +128,9 @@ class AutomateWindows(QObject):
 
     def checkFloatingPointErrorWindow(self):
         try:
-            dialog = timings.wait_until_passes(2, 0.2, lambda: findwindows.find_windows(title='GmQCIv2',
-                                                                                        class_name='#32770')[0])
+            lambdaParam = findwindows.find_windows(title='GmQCIv2',
+                                                   class_name='#32770')[0]
+            dialog = timings.wait_until_passes(2, 0.2, lambda: lambdaParam)
             winOK = self.updater.window(handle=dialog)
             winOK['OK'].click()
 
@@ -207,8 +208,9 @@ class AutomateWindows(QObject):
             return False
 
         try:
-            dialog = timings.wait_until_passes(60, 0.5, lambda: findwindows.find_windows(title='Update completed',
-                                                                                         class_name='#32770')[0])
+            lambdaParam = findwindows.find_windows(title='Update completed',
+                                                   class_name='#32770')[0]
+            dialog = timings.wait_until_passes(60, 0.5, lambda: lambdaParam)
             winOK = self.updater.window(handle=dialog)
             winOK['OK'].click()
 

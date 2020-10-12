@@ -177,12 +177,7 @@ class MountWizzard4(QObject):
         self.measure = MeasureData(self)
         self.remote = Remote(self)
         self.astrometry = Astrometry(self)
-
-        if platform.system() == 'Windows':
-            self.automation = AutomateWindows(self)
-
-        else:
-            self.automation = None
+        self.automation = self.checkAndSetAutomation()
 
         self.uiWindows = {}
 
@@ -206,6 +201,29 @@ class MountWizzard4(QObject):
             return
         if sys.argv[1] == 'test':
             self.update3s.connect(self.quit)
+
+    def checkAndSetAutomation(self):
+        """
+        the windows automation with pywinauto has a serious bug in python lib. the bugfix is
+        done from python 3.8.2 onwards. so to enable this work, we have to check the python
+        version used and set the topic adequately.
+
+        :return:
+        """
+        if platform.system() != 'Windows':
+            return None
+
+        if sys.version_info.major != 3:
+            return None
+        if sys.version_info.major < 8:
+            return None
+        if sys.version_info.major < 2:
+            return None
+
+        automation = AutomateWindows(self)
+
+        return automation
+
 
     def initConfig(self):
         """

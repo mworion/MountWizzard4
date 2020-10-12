@@ -25,6 +25,11 @@ import traceback
 import locale
 import html
 
+# the following lines should avoid erro messages from OLE Automation in conjunction with PyQt5
+import warnings
+warnings.simplefilter("ignore", UserWarning)
+sys.coinit_flags = 2
+
 # external packages
 from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
 from PyQt5.QtGui import QMouseEvent, QIcon

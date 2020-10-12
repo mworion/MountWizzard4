@@ -279,12 +279,12 @@ class MinorPlanetTime:
         if not suc:
             return False
 
-        self.app.message.emit('Program to mount:    [earth rotation data]', 1)
-        self.app.message.emit('Copy files: finals.data, tai-utc.dat', 0)
-
         if not self.app.automation:
             self.app.message.emit('Not running windows, no updater available', 2)
             return False
+
+        self.app.message.emit('Program to mount:    [earth rotation data]', 1)
+        self.app.message.emit('Copy files: finals.data, tai-utc.dat', 0)
 
         suc = self.app.automation.writeEarthRotationData()
 

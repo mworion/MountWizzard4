@@ -215,9 +215,9 @@ class MountWizzard4(QObject):
 
         if sys.version_info.major != 3:
             return None
-        if sys.version_info.major < 8:
+        if sys.version_info.minor < 8:
             return None
-        if sys.version_info.major < 2:
+        if sys.version_info.micro < 2:
             return None
 
         automation = AutomateWindows(self)

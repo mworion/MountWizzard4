@@ -21,13 +21,10 @@ import time
 import subprocess
 import sys
 import platform
-from ftplib import FTP
 
 # external packages
 from pkg_resources import working_set
 from distutils.version import StrictVersion
-from urllib.request import urlopen
-from contextlib import closing
 import PyQt5
 if platform.machine() not in Config.excludedPlatforms:
     import PyQt5.QtMultimedia

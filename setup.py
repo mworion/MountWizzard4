@@ -21,7 +21,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.170.0',
+    version='0.170.1',
     packages=[
         'mw4',
         'mw4.base',
@@ -33,6 +33,7 @@ setup(
         'mw4.gui.utilities',
         'mw4.gui.widgets',
         'mw4.logic.astrometry',
+        'mw4.logic.automation',
         'mw4.logic.cover',
         'mw4.logic.dome',
         'mw4.logic.environment',

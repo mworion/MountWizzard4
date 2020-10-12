@@ -19,6 +19,7 @@
 import gzip
 import json
 import shutil
+import os
 
 # external packages
 import requests
@@ -211,8 +212,13 @@ class MinorPlanetTime:
         dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
 
         self.ui.listMinorPlanetNames.clear()
-        self.downloadFile(source, url, dest)
-        self.unzipFile(dest)
+
+        if isOnline:
+            self.downloadFile(source, url, dest)
+            self.unzipFile(dest)
+
+        if not os.path.isfile(dest[:-3]):
+            return False
 
         with open(dest[:-3]) as inFile:
             self.minorPlanets = json.load(inFile)

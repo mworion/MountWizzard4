@@ -224,7 +224,6 @@ class MountWizzard4(QObject):
 
         return automation
 
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui

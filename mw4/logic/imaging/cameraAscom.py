@@ -73,6 +73,8 @@ class CameraAscom(AscomClass):
         self.dataEntry(self.client.StartX, 'CCD_FRAME.X')
         self.dataEntry(self.client.StartY, 'CCD_FRAME.Y')
 
+        self.log.debug(f'Initial data: {self.data}')
+
         return True
 
     def workerPollData(self):
@@ -260,10 +262,6 @@ class CameraAscom(AscomClass):
         """
 
         if not self.deviceConnected:
-            return False
-
-        if binning > min(self.data.get('CCD_BINNING.HOR_BIN_MAX', 1),
-                         self.data.get('CCD_BINNING.VERT_BIN_MAX', 1)):
             return False
 
         self.abortExpose = False

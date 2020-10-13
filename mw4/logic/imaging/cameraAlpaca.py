@@ -72,6 +72,8 @@ class CameraAlpaca(AlpacaClass):
         self.dataEntry(self.client.startx(), 'CCD_FRAME.X')
         self.dataEntry(self.client.starty(), 'CCD_FRAME.Y')
 
+        self.log.debug(f'Initial data: {self.data}')
+
         return True
 
     def workerPollData(self):
@@ -250,10 +252,6 @@ class CameraAlpaca(AlpacaClass):
         """
 
         if not self.deviceConnected:
-            return False
-
-        if binning > min(self.data.get('CCD_BINNING.HOR_BIN_MAX', 1),
-                         self.data.get('CCD_BINNING.VERT_BIN_MAX', 1)):
             return False
 
         self.abortExpose = False

@@ -10648,7 +10648,7 @@ Hint if mount will need a flip when following satellite.</string>
    </widget>
    <widget class="QWidget" name="MPC">
     <attribute name="title">
-     <string>Minor Planets</string>
+     <string>Comet/Asteroid</string>
     </attribute>
     <widget class="QGroupBox" name="groupBox_30">
      <property name="geometry">
@@ -10806,7 +10806,7 @@ Hint if mount will need a flip when following satellite.</string>
       <rect>
        <x>10</x>
        <y>395</y>
-       <width>366</width>
+       <width>181</width>
        <height>26</height>
       </rect>
      </property>
@@ -10814,7 +10814,7 @@ Hint if mount will need a flip when following satellite.</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Program complete database to mount</string>
+      <string>Program complete database</string>
      </property>
     </widget>
     <widget class="QPushButton" name="progEarthRotationData">
@@ -10831,6 +10831,22 @@ Hint if mount will need a flip when following satellite.</string>
      </property>
      <property name="text">
       <string>Program earth rotation data</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="progMinorPlanetsFiltered">
+     <property name="geometry">
+      <rect>
+       <x>195</x>
+       <y>395</y>
+       <width>181</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Program filtered database</string>
      </property>
     </widget>
    </widget>
@@ -14801,7 +14817,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>

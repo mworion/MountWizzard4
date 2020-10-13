@@ -59,6 +59,7 @@ class MinorPlanetTime:
 
         self.ui.listMinorPlanetNames.doubleClicked.connect(self.progMinorPlanetToMount)
         self.ui.progMinorPlanetsFull.clicked.connect(self.progMinorPlanetsFull)
+        self.ui.progMinorPlanetsFiltered.clicked.connect(self.progMinorPlanetsFiltered)
         self.ui.progEarthRotationData.clicked.connect(self.progEarthRotationDataToMount)
         self.ui.filterMinorPlanet.textChanged.connect(self.filterMinorPlanetNamesList)
         self.ui.minorPlanetSource.currentIndexChanged.connect(
@@ -145,6 +146,26 @@ class MinorPlanetTime:
 
         return True
 
+    @staticmethod
+    def generateName(index, mp):
+
+        if 'Designation_and_name' in mp:
+            name = f'{index:5d}: {mp["Designation_and_name"]}'
+
+        elif 'Name' in mp and 'Principal_desig' in mp:
+            name = f'{index:5d}: {mp["Principal_desig"]} - {mp["Name"]} {mp["Number"]}'
+
+        elif 'Principal_desig' in mp:
+            name = f'{index:5d}: {mp["Principal_desig"]}'
+
+        elif 'Name' in mp:
+            name = f'{index:5d}: {mp["Name"]} {mp["Number"]}'
+
+        else:
+            name = ''
+
+        return name
+
     def setupMinorPlanetNameList(self):
         """
 
@@ -153,20 +174,9 @@ class MinorPlanetTime:
 
         self.ui.listMinorPlanetNames.clear()
         for index, mp in enumerate(self.minorPlanets):
-            if 'Designation_and_name' in mp:
-                text = f'{index:5d}: {mp["Designation_and_name"]}'
+            text = self.generateName(index, mp)
 
-            elif 'Name' in mp and 'Principal_desig' in mp:
-                text = f'{index:5d}: {mp["Principal_desig"]} - {mp["Name"]} {mp["Number"]}'
-
-            elif 'Principal_desig' in mp:
-                text = f'{index:5d}: {mp["Principal_desig"]}'
-
-            elif 'Name' in mp:
-                text = f'{index:5d}: {mp["Name"]} {mp["Number"]}'
-
-            else:
-                print(mp)
+            if not text:
                 continue
 
             self.ui.listMinorPlanetNames.addItem(text)
@@ -332,6 +342,60 @@ class MinorPlanetTime:
 
         if isAsteroid:
             suc = self.app.automation.writeAsteroidMPC(mpc)
+
+        if not suc:
+            self.app.message.emit('Data could not be exported - stopping', 2)
+            return False
+
+        self.app.message.emit('Uploading to mount', 0)
+        suc = self.app.automation.uploadMPCData(comets=isComet)
+
+        if not suc:
+            self.app.message.emit('Uploading error', 2)
+
+        self.app.message.emit('Programming success', 1)
+
+        return True
+
+    def progMinorPlanetsFiltered(self):
+        """
+
+        :return: success
+        """
+
+        source = self.ui.minorPlanetSource.currentText()
+        isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
+        isAsteroid = not isComet
+
+        text = f'Should\n\n[{source}]\n\n be programmed to mount ?'
+        suc = self.programDialog(text)
+
+        if not suc:
+            return False
+
+        if not self.app.automation:
+            self.app.message.emit('Not running windows, no updater available', 2)
+            return False
+
+        self.app.message.emit(f'Program database:    [{source}]', 1)
+        self.app.message.emit('Exporting MPC data', 0)
+
+        filterStr = self.ui.filterMinorPlanet.text().lower()
+
+        filtered = list
+        for index, mp in self.minorPlanets:
+            text = self.generateName(index, mp)
+
+            if not filterStr in text:
+                continue
+
+            filtered.append(mp)
+
+        if isComet:
+            suc = self.app.automation.writeCometMPC(filtered)
+
+        if isAsteroid:
+            suc = self.app.automation.writeAsteroidMPC(filtered)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)

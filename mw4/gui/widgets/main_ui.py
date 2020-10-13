@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/main.ui'
+# Form implementation generated from reading ui file 'main.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.2
 #
@@ -3932,11 +3932,14 @@ class Ui_MainWindow(object):
         self.line_69.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_69.setObjectName("line_69")
         self.progMinorPlanetsFull = QtWidgets.QPushButton(self.MPC)
-        self.progMinorPlanetsFull.setGeometry(QtCore.QRect(10, 395, 366, 26))
+        self.progMinorPlanetsFull.setGeometry(QtCore.QRect(10, 395, 181, 26))
         self.progMinorPlanetsFull.setObjectName("progMinorPlanetsFull")
         self.progEarthRotationData = QtWidgets.QPushButton(self.MPC)
         self.progEarthRotationData.setGeometry(QtCore.QRect(405, 395, 366, 26))
         self.progEarthRotationData.setObjectName("progEarthRotationData")
+        self.progMinorPlanetsFiltered = QtWidgets.QPushButton(self.MPC)
+        self.progMinorPlanetsFiltered.setGeometry(QtCore.QRect(195, 395, 181, 26))
+        self.progMinorPlanetsFiltered.setObjectName("progMinorPlanetsFiltered")
         self.mainTabWidget.addTab(self.MPC, "")
         self.Analyse = QtWidgets.QWidget()
         self.Analyse.setObjectName("Analyse")
@@ -8729,7 +8732,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.mainTabWidget.setCurrentIndex(7)
         self.tabWidget.setCurrentIndex(0)
-        self.settingsTabWidget.setCurrentIndex(5)
+        self.settingsTabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.cameraDevice, self.cameraSetup)
         MainWindow.setTabOrder(self.cameraSetup, self.filterDevice)
@@ -9568,10 +9571,12 @@ class Ui_MainWindow(object):
         self.groupBox_58.setTitle(_translate("MainWindow", "List of available minor planets (comets, asteroids)"))
         self.listMinorPlanetNames.setToolTip(_translate("MainWindow", "<html><head/><body><p>List of minor planets. This includes comets, asteroids and others.</p></body></html>"))
         self.progMinorPlanetsFull.setToolTip(_translate("MainWindow", "<html><head/><body><p>Programs the actual selected minor planet database (comets or asteroids) to the mount computer.</p></body></html>"))
-        self.progMinorPlanetsFull.setText(_translate("MainWindow", "Program complete database to mount"))
+        self.progMinorPlanetsFull.setText(_translate("MainWindow", "Program complete database"))
         self.progEarthRotationData.setToolTip(_translate("MainWindow", "<html><head/><body><p>Programs the actual in /data existing earth rotation data to the mount computer.</p></body></html>"))
         self.progEarthRotationData.setText(_translate("MainWindow", "Program earth rotation data"))
-        self.mainTabWidget.setTabText(self.mainTabWidget.indexOf(self.MPC), _translate("MainWindow", "Minor Planets"))
+        self.progMinorPlanetsFiltered.setToolTip(_translate("MainWindow", "<html><head/><body><p>Programs the actual selected but filtered (with text string) minor planet database (comets or asteroids) to the mount computer.</p></body></html>"))
+        self.progMinorPlanetsFiltered.setText(_translate("MainWindow", "Program filtered database"))
+        self.mainTabWidget.setTabText(self.mainTabWidget.indexOf(self.MPC), _translate("MainWindow", "Comet/Asteroid"))
         self.cancelAnalyse.setToolTip(_translate("MainWindow", "<html><head/><body><p>Cancels the analyse run.</p></body></html>"))
         self.cancelAnalyse.setText(_translate("MainWindow", "Cancel Analyse Run"))
         self.groupBox_14.setTitle(_translate("MainWindow", "Load analyse file"))

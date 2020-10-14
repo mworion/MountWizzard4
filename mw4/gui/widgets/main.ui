@@ -10655,7 +10655,7 @@ Hint if mount will need a flip when following satellite.</string>
       <rect>
        <x>10</x>
        <y>15</y>
-       <width>366</width>
+       <width>391</width>
        <height>56</height>
       </rect>
      </property>
@@ -10670,7 +10670,7 @@ Hint if mount will need a flip when following satellite.</string>
        <rect>
         <x>10</x>
         <y>25</y>
-        <width>256</width>
+        <width>271</width>
         <height>26</height>
        </rect>
       </property>
@@ -10687,9 +10687,9 @@ Hint if mount will need a flip when following satellite.</string>
      <widget class="QLineEdit" name="filterMinorPlanet">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>290</x>
         <y>30</y>
-        <width>81</width>
+        <width>91</width>
         <height>21</height>
        </rect>
       </property>
@@ -10723,7 +10723,7 @@ Hint if mount will need a flip when following satellite.</string>
      <widget class="QLabel" name="label_270">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>290</x>
         <y>10</y>
         <width>81</width>
         <height>16</height>
@@ -10746,9 +10746,9 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
-       <width>366</width>
-       <height>306</height>
+       <y>115</y>
+       <width>391</width>
+       <height>276</height>
       </rect>
      </property>
      <property name="title">
@@ -10762,8 +10762,8 @@ Hint if mount will need a flip when following satellite.</string>
        <rect>
         <x>5</x>
         <y>25</y>
-        <width>351</width>
-        <height>276</height>
+        <width>381</width>
+        <height>246</height>
        </rect>
       </property>
       <property name="font">
@@ -10782,7 +10782,7 @@ Hint if mount will need a flip when following satellite.</string>
     <widget class="Line" name="line_69">
      <property name="geometry">
       <rect>
-       <x>385</x>
+       <x>410</x>
        <y>10</y>
        <width>11</width>
        <height>416</height>
@@ -10806,7 +10806,7 @@ Hint if mount will need a flip when following satellite.</string>
       <rect>
        <x>10</x>
        <y>395</y>
-       <width>181</width>
+       <width>191</width>
        <height>26</height>
       </rect>
      </property>
@@ -10820,9 +10820,9 @@ Hint if mount will need a flip when following satellite.</string>
     <widget class="QPushButton" name="progEarthRotationData">
      <property name="geometry">
       <rect>
-       <x>405</x>
+       <x>430</x>
        <y>395</y>
-       <width>366</width>
+       <width>341</width>
        <height>26</height>
       </rect>
      </property>
@@ -10836,9 +10836,9 @@ Hint if mount will need a flip when following satellite.</string>
     <widget class="QPushButton" name="progMinorPlanetsFiltered">
      <property name="geometry">
       <rect>
-       <x>195</x>
+       <x>210</x>
        <y>395</y>
-       <width>181</width>
+       <width>191</width>
        <height>26</height>
       </rect>
      </property>
@@ -10847,6 +10847,37 @@ Hint if mount will need a flip when following satellite.</string>
      </property>
      <property name="text">
       <string>Program filtered database</string>
+     </property>
+    </widget>
+    <widget class="QProgressBar" name="downloadMinorPlanetProgress">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>391</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="textVisible">
+      <bool>true</bool>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="invertedAppearance">
+      <bool>false</bool>
+     </property>
+     <property name="textDirection">
+      <enum>QProgressBar::TopToBottom</enum>
      </property>
     </widget>
    </widget>

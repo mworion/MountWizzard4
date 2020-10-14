@@ -23,6 +23,7 @@ import os
 
 # external packages
 import requests
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QListView, QMessageBox
 
 # local import
@@ -31,11 +32,13 @@ from base.tpool import Worker
 
 class MinorPlanetTime:
     """
-    the MinorPlanetTime window class handles the main menu as well as the show and no show part of
-    any other window. all necessary processing for functions of that gui will be linked
+    the MinorPlanetTime window class handles the main menu as well as the show and no show
+    part of any other window. all necessary processing for functions of that gui will be linked
     to this class. therefore window classes will have a threadpool for managing async
     processing if needed.
     """
+
+    signalProgress = pyqtSignal(object)
 
     def __init__(self):
         self.minorPlanets = dict()
@@ -46,11 +49,12 @@ class MinorPlanetTime:
         self.minorPlanetSourceURLs = {
             'Please select': '',
             'Comets Current': 'cometels.json.gz',
-            'Asteroids MPC5000 (large! >100 MB)': 'mpcorb_extended.json.gz',
+            # 'Asteroids MPC5000 (large! >100 MB)': 'mpcorb_extended.json.gz',
+            'Asteroids Daily': 'daily_extended.json.gz',
             'Asteroids Near Earth Position': 'nea_extended.json.gz',
             'Asteroids Potential Hazardous': 'pha_extended.json.gz',
             'Asteroids TNO, Centaurus, SDO': 'distant_extended.json.gz',
-            'Asteroids Unusual e>0.5 or q>6 au': 'unusual_extended.dat.gz',
+            'Asteroids Unusual e>0.5 or q>6 au': 'unusual_extended.json.gz',
         }
 
         self.timeSourceURLs = {
@@ -62,9 +66,9 @@ class MinorPlanetTime:
         self.ui.progMinorPlanetsFiltered.clicked.connect(self.progMinorPlanetsFiltered)
         self.ui.progEarthRotationData.clicked.connect(self.progEarthRotationDataToMount)
         self.ui.filterMinorPlanet.textChanged.connect(self.filterMinorPlanetNamesList)
-        self.ui.minorPlanetSource.currentIndexChanged.connect(
-            self.loadMinorPlanetDataFromSourceURLs)
-        self.ui.isOnline.stateChanged.connect(self.loadMinorPlanetDataFromSourceURLs)
+        self.ui.minorPlanetSource.currentIndexChanged.connect(self.loadDataFromSourceURLs)
+        self.ui.isOnline.stateChanged.connect(self.loadDataFromSourceURLs)
+        self.signalProgress.connect(self.setProgress)
 
     def initConfig(self):
         """
@@ -187,21 +191,30 @@ class MinorPlanetTime:
 
         return True
 
-    def downloadFile(self, source, url, dest):
+    def setProgress(self, progressPercent):
+        self.ui.downloadMinorPlanetProgress.setValue(progressPercent)
+
+    def downloadFile(self, url, dest):
         """
 
-        :param source:
         :param url:
         :param dest:
         :return:
         """
-        self.app.message.emit(f'Download data from:  [{source}]', 0)
 
-        r = requests.get(url, stream=True)
+        r = requests.get(url, stream=True, timeout=1)
+        totalSizeBytes = int(r.headers.get('content-length', 0))
+
         with open(dest, 'wb') as f:
-            for n, chunk in enumerate(r.iter_content(128 * 1024)):
+            for n, chunk in enumerate(r.iter_content(512)):
+                progressPercent = int(n * 512 / totalSizeBytes * 100)
+                self.signalProgress.emit(progressPercent)
+
                 if chunk:
                     f.write(chunk)
+            self.signalProgress.emit(100)
+
+        return True
 
     @staticmethod
     def unzipFile(dest):
@@ -224,7 +237,9 @@ class MinorPlanetTime:
         self.ui.listMinorPlanetNames.clear()
 
         if isOnline:
-            self.downloadFile(source, url, dest)
+            self.app.message.emit(f'Download data for:   [{source}]', 1)
+            self.ui.downloadMinorPlanetProgress.setValue(0)
+            self.downloadFile(url, dest)
             self.unzipFile(dest)
 
         if not os.path.isfile(dest[:-3]):
@@ -233,11 +248,11 @@ class MinorPlanetTime:
         with open(dest[:-3]) as inFile:
             self.minorPlanets = json.load(inFile)
 
-        self.app.message.emit(f'Data loaded for:     [{source}]', 0)
+        self.app.message.emit(f'Data loaded for:     [{source}]', 1)
 
         return True
 
-    def loadMinorPlanetDataFromSourceURLs(self):
+    def loadDataFromSourceURLs(self):
         """
 
         :return: success

@@ -115,21 +115,6 @@ class MinorPlanetTime:
 
         return True
 
-    def setupAsteroidSourceURLsDropDown(self):
-        """
-        setupAsteroidSourceURLsDropDown handles the dropdown list for the satellite data
-        online sources. therefore we add the necessary entries to populate the list.
-
-        :return: success for test
-        """
-
-        self.ui.asteroidSource.clear()
-        self.ui.asteroidSource.setView(QListView())
-        for name in self.asteroidSourceURLs.keys():
-            self.ui.asteroidSource.addItem(name)
-
-        return True
-
     def filterMinorPlanetNamesList(self):
         """
 
@@ -222,7 +207,7 @@ class MinorPlanetTime:
             with open(dest[:-3], 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
 
-    def loadMinorPlanetDataFromSourceURLsWorker(self, source='', isOnline=False):
+    def loadDataFromSourceURLsWorker(self, source='', isOnline=False):
         """
 
         :return: success
@@ -243,6 +228,7 @@ class MinorPlanetTime:
             self.unzipFile(dest)
 
         if not os.path.isfile(dest[:-3]):
+            self.app.message.emit(f'No data file for:    [{source}]', 2)
             return False
 
         with open(dest[:-3]) as inFile:
@@ -267,7 +253,7 @@ class MinorPlanetTime:
             return False
 
         isOnline = self.ui.isOnline.isChecked()
-        worker = Worker(self.loadMinorPlanetDataFromSourceURLsWorker,
+        worker = Worker(self.loadDataFromSourceURLsWorker,
                         source=source,
                         isOnline=isOnline)
         worker.signals.finished.connect(self.setupMinorPlanetNameList)

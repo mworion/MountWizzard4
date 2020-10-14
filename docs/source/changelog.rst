@@ -34,6 +34,7 @@ Released betas
 
 - adding comets programming (windows only)
 - adding update deltaT for mount (windows only)
+- adding progressbar for minot planet data download
 
 0.160.2
 

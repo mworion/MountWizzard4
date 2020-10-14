@@ -1002,8 +1002,13 @@ class Model:
         binning = self.ui.binning.value()
         subFrame = self.ui.subFrame.value()
         fastReadout = self.ui.checkFastDownload.isChecked()
-        solveTimeout = self.app.astrometry.run['astap'].timeout
-        searchRadius = self.app.astrometry.run['astap'].searchRadius
+        
+        framework = self.app.astrometry.framework
+        if framework not in self.app.astrometry.run:
+            return []
+        
+        solveTimeout = self.app.astrometry.run[framework].timeout
+        searchRadius = self.app.astrometry.run[8].searchRadius
         focalLength = self.ui.focalLength.value()
         lenSequence = len(self.app.data.buildP)
 
@@ -1090,15 +1095,13 @@ class Model:
         modelPoints = self.setupModelPointsAndContextData()
 
         if not modelPoints:
+            self.app.message.emit(f'Modeling cancelled, no valid points.', 2)
             return False
 
         self.setupModelRunContextAndGuiStatus()
         self.disableDAT()
-
         self.app.message.emit(f'Modeling start:      {self.modelName}', 1)
-
         self.modelBuildRetryCounter = self.ui.numberBuildRetries.value()
-
         self.modelCycleThroughBuildPoints(modelPoints=modelPoints)
 
         return True
@@ -1141,7 +1144,6 @@ class Model:
             return False
 
         self.app.message.emit(f'Programming {index + 1} model(s) to mount', 0)
-
         suc = self.programModelToMount(modelJSON)
 
         if suc:

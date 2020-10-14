@@ -28,12 +28,13 @@ Unreleased Betas
 
 - adding asteroids programming (windows only)
 
-Released betas
---------------
-0.170.0
+(0.170.0)
 
 - adding comets programming (windows only)
 - adding update deltaT for mount (windows only)
+
+Released betas
+--------------
 
 0.160.2
 

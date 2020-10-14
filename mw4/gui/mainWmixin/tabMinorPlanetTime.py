@@ -367,7 +367,7 @@ class MinorPlanetTime:
         isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
         isAsteroid = not isComet
 
-        text = f'Should\n\n[{source}]\n\n be programmed to mount ?'
+        text = f'Should\n\n[{source}]\n\nfiltered database\n\nbe programmed to mount ?'
         suc = self.programDialog(text)
 
         if not suc:
@@ -386,7 +386,7 @@ class MinorPlanetTime:
         for index, mp in self.minorPlanets:
             text = self.generateName(index, mp)
 
-            if not filterStr in text:
+            if filterStr not in text:
                 continue
 
             filtered.append(mp)
@@ -421,7 +421,7 @@ class MinorPlanetTime:
         isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
         isAsteroid = not isComet
 
-        text = f'Should\n\n[{source}]\n\n be programmed to mount ?'
+        text = f'Should\n\n[{source}]\n\nfull database\n\nbe programmed to mount ?'
         suc = self.programDialog(text)
 
         if not suc:

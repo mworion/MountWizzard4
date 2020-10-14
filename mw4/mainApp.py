@@ -52,9 +52,6 @@ from logic.measure.measure import MeasureData
 from logic.remote.remote import Remote
 from logic.astrometry.astrometry import Astrometry
 
-if platform.system() == 'Windows':
-    from logic.automation.automateWindows import AutomateWindows
-
 
 class MountWizzard4(QObject):
     """
@@ -220,6 +217,7 @@ class MountWizzard4(QObject):
         if sys.version_info.micro < 2:
             return None
 
+        from logic.automation.automateWindows import AutomateWindows
         automation = AutomateWindows(self)
 
         return automation

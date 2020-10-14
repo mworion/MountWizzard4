@@ -24,17 +24,16 @@ Unreleased Betas
 - move mount MAC and IP to device
 - move relay ip to device
 
-(0.170.1)
+(0.175.0)
 
 - adding asteroids programming (windows only)
 
-(0.170.0)
+Released betas
+--------------
+0.170.3
 
 - adding comets programming (windows only)
 - adding update deltaT for mount (windows only)
-
-Released betas
---------------
 
 0.160.2
 

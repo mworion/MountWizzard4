@@ -1002,15 +1002,16 @@ class Model:
         binning = self.ui.binning.value()
         subFrame = self.ui.subFrame.value()
         fastReadout = self.ui.checkFastDownload.isChecked()
-        
-        framework = self.app.astrometry.framework
-        if framework not in self.app.astrometry.run:
-            return []
-        
-        solveTimeout = self.app.astrometry.run[framework].timeout
         searchRadius = self.app.astrometry.run[8].searchRadius
         focalLength = self.ui.focalLength.value()
         lenSequence = len(self.app.data.buildP)
+
+        framework = self.app.astrometry.framework
+
+        if framework not in self.app.astrometry.run:
+            return []
+
+        solveTimeout = self.app.astrometry.run[framework].timeout
 
         modelPoints = list()
         for index, point in enumerate(self.app.data.buildP):

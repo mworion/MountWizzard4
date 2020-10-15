@@ -973,6 +973,7 @@ class Model:
 
         if not suc:
             self.app.message.emit('Actual model cannot be cleared', 2)
+            self.app.message.emit('Model build cancelled', 2)
             return False
 
         else:
@@ -983,11 +984,11 @@ class Model:
 
         suc = self.app.mount.model.deleteName('backup')
         if not suc:
-            return False
+            self.log.info('Cannot delete backup model on mount')
 
         suc = self.app.mount.model.storeName('backup')
         if not suc:
-            return False
+            self.app.message.emit('Cannot save backup model on mount, proceeding with model run', 2)
 
         return True
 

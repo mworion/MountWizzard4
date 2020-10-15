@@ -108,71 +108,17 @@ class Model:
         :return:    True if ok for testing
         """
 
-        if model.numberStars is not None:
-            text = f'{model.numberStars:3.0f}'
-
-        else:
-            text = '-'
-
-        self.ui.numberStars.setText(text)
-        self.ui.numberStars1.setText(text)
-
-        if model.terms is not None:
-            text = f'{model.terms:2.0f}'
-
-        else:
-            text = '-'
-
-        self.ui.terms.setText(text)
-
-        if model.errorRMS is not None:
-            text = str(model.errorRMS)
-
-        else:
-            text = '-'
-
-        self.ui.errorRMS.setText(text)
-        self.ui.errorRMS1.setText(text)
-
-        if model.positionAngle is not None:
-            text = f'{model.positionAngle.degrees:5.1f}'
-
-        else:
-            text = '-'
-
-        self.ui.positionAngle.setText(text)
-
-        if model.polarError is not None:
-            text = f'{model.polarError.degrees * 3600:5.0f}'
-
-        else:
-            text = '-'
-
-        self.ui.polarError.setText(text)
-
-        if model.orthoError is not None:
-            text = f'{model.orthoError.degrees * 3600:5.0f}'
-
-        else:
-            text = '-'
-
-        self.ui.orthoError.setText(text)
-
-        if model.azimuthError is not None:
-            text = f'{model.azimuthError.degrees:5.1f}'
-
-        else:
-            text = '-'
-
-        self.ui.azimuthError.setText(text)
-
-        if model.altitudeError is not None:
-            text = f'{model.altitudeError.degrees:5.1f}'
-
-        else:
-            text = '-'
-
-        self.ui.altitudeError.setText(text)
+        self.guiSetText(self.ui.numberStars, '2.0f', model.numberStars) 
+        self.guiSetText(self.ui.numberStars1, '2.0f', model.numberStars) 
+        self.guiSetText(self.ui.errorRMS, '5.1f', model.errorRMS) 
+        self.guiSetText(self.ui.errorRMS1, '5.1f', model.errorRMS) 
+        self.guiSetText(self.ui.positionAngle, '5.1f', model.positionAngle) 
+        val = model.polarError.degrees * 3600 if model.polarError is not None else None
+        self.guiSetText(self.ui.polarError, '5.0f', val) 
+        val = model.orthoError.degrees * 3600 if model.orthoError is not None else None
+        self.guiSetText(self.ui.orthoError, '5.0f', val) 
+        self.guiSetText(self.ui.azimuthError, '5.1f', model.azimuthError.degrees) 
+        self.guiSetText(self.ui.altitudeError, '5.1f', model.altitudeError.degrees) 
 
         return True
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/main.ui'
+# Form implementation generated from reading ui file 'main.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.2
 #
@@ -8740,7 +8740,7 @@ class Ui_MainWindow(object):
         self.mountOff.setObjectName("mountOff")
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(7)
+        self.mainTabWidget.setCurrentIndex(5)
         self.tabWidget.setCurrentIndex(0)
         self.settingsTabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -9459,11 +9459,11 @@ class Ui_MainWindow(object):
         self.deleteName.setText(_translate("MainWindow", "Delete"))
         self.saveName.setToolTip(_translate("MainWindow", "Saves actual alignment model under selected name or edited name."))
         self.saveName.setText(_translate("MainWindow", "Save"))
-        self.showErrorValues.setToolTip(_translate("MainWindow", "Sets the epoch for showing the pointing coordinates to JNow"))
+        self.showErrorValues.setToolTip(_translate("MainWindow", "<html><head/><body><p>Show model point error in arcsec close to the model point.</p></body></html>"))
         self.showErrorValues.setText(_translate("MainWindow", "Error values"))
-        self.showNumbers.setToolTip(_translate("MainWindow", "Sets the epoch for showing the pointing coordinates to J2000"))
+        self.showNumbers.setToolTip(_translate("MainWindow", "<html><head/><body><p>Show the number close to the model point.</p></body></html>"))
         self.showNumbers.setText(_translate("MainWindow", "Numbers"))
-        self.showNoAnnotation.setToolTip(_translate("MainWindow", "Sets the epoch for showing the pointing coordinates to J2000"))
+        self.showNoAnnotation.setToolTip(_translate("MainWindow", "<html><head/><body><p>No annotations are shown close to the model point. </p></body></html>"))
         self.showNoAnnotation.setText(_translate("MainWindow", "No Annotation"))
         self.numberStars1.setToolTip(_translate("MainWindow", "Number of alignment stars in actual used pointing model"))
         self.numberStars1.setText(_translate("MainWindow", "00"))

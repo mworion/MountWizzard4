@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>7</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -8702,7 +8702,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </font>
        </property>
        <property name="toolTip">
-        <string>Sets the epoch for showing the pointing coordinates to JNow</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show model point error in arcsec close to the model point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
@@ -8738,7 +8738,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </font>
        </property>
        <property name="toolTip">
-        <string>Sets the epoch for showing the pointing coordinates to J2000</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the number close to the model point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
@@ -8774,7 +8774,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </font>
        </property>
        <property name="toolTip">
-        <string>Sets the epoch for showing the pointing coordinates to J2000</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No annotations are shown close to the model point. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>

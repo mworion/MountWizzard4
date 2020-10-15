@@ -30,6 +30,11 @@ Unreleased Betas
 
 Released betas
 --------------
+0.170.4
+
+- bugfixes
+- correction of tooltips
+
 0.170.3
 
 - adding comets programming (windows only)

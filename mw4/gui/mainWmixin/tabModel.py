@@ -108,17 +108,19 @@ class Model:
         :return:    True if ok for testing
         """
 
-        self.guiSetText(self.ui.numberStars, '2.0f', model.numberStars) 
-        self.guiSetText(self.ui.numberStars1, '2.0f', model.numberStars) 
-        self.guiSetText(self.ui.errorRMS, '5.1f', model.errorRMS) 
-        self.guiSetText(self.ui.errorRMS1, '5.1f', model.errorRMS) 
-        self.guiSetText(self.ui.positionAngle, '5.1f', model.positionAngle) 
+        self.guiSetText(self.ui.numberStars, '2.0f', model.numberStars)
+        self.guiSetText(self.ui.numberStars1, '2.0f', model.numberStars)
+        self.guiSetText(self.ui.errorRMS, '5.1f', model.errorRMS)
+        self.guiSetText(self.ui.errorRMS1, '5.1f', model.errorRMS)
+        self.guiSetText(self.ui.positionAngle, '5.1f', model.positionAngle)
         val = model.polarError.degrees * 3600 if model.polarError is not None else None
-        self.guiSetText(self.ui.polarError, '5.0f', val) 
+        self.guiSetText(self.ui.polarError, '5.0f', val)
         val = model.orthoError.degrees * 3600 if model.orthoError is not None else None
-        self.guiSetText(self.ui.orthoError, '5.0f', val) 
-        self.guiSetText(self.ui.azimuthError, '5.1f', model.azimuthError.degrees) 
-        self.guiSetText(self.ui.altitudeError, '5.1f', model.altitudeError.degrees) 
+        self.guiSetText(self.ui.orthoError, '5.0f', val)
+        val = model.azimuthError.degrees if model.azimuthError is not None else None
+        self.guiSetText(self.ui.azimuthError, '5.1f', val)
+        val = model.altitudeError.degrees if model.altitudeError is not None else None
+        self.guiSetText(self.ui.altitudeError, '5.1f', val)
 
         return True
 
@@ -949,7 +951,6 @@ class Model:
         binning = self.ui.binning.value()
         subFrame = self.ui.subFrame.value()
         fastReadout = self.ui.checkFastDownload.isChecked()
-        searchRadius = self.app.astrometry.run[8].searchRadius
         focalLength = self.ui.focalLength.value()
         lenSequence = len(self.app.data.buildP)
 
@@ -959,6 +960,7 @@ class Model:
             return []
 
         solveTimeout = self.app.astrometry.run[framework].timeout
+        searchRadius = self.app.astrometry.run[framework].searchRadius
 
         modelPoints = list()
         for index, point in enumerate(self.app.data.buildP):

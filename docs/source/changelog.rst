@@ -5,27 +5,27 @@ changes list, please refer to the commit list on GitHub.
 
 Unreleased Betas
 ----------------
-
-(0.200.0)
+(1.1)
 
 - 3d Simulator (mount, dome, build points etc)
 
-(0.190.0)
+(0.200.0)
 
 - update PyQt5 to 5.15.2
 - full integration testing
 - meridian areas in hemisphere more precise
 - retrofit based on hashes
-- update skyfield to 1.29
 
-(0.180.0)
+(0.190.0)
 
 - move weather api to device
 - move mount MAC and IP to device
 - move relay ip to device
+- bringing back polar diagram
 
-(0.175.0)
+(0.180.0)
 
+- update skyfield to 1.30
 - adding asteroids programming (windows only)
 
 Released betas

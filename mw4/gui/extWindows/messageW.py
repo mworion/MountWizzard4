@@ -19,6 +19,7 @@
 import time
 
 # external packages
+from PyQt5.QtGui import QTextCursor
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
@@ -149,6 +150,6 @@ class MessageWindow(widget.MWidget):
             self.ui.message.setTextColor(self.messColor[mType])
             self.ui.message.setFontWeight(self.messFont[mType])
             self.ui.message.insertPlainText(prefix + message + '\n')
-            self.ui.message.moveCursor(PyQt5.QtGui.QTextCursor.End)
+            self.ui.message.moveCursor(QTextCursor.End)
 
         return True

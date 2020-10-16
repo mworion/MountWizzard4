@@ -314,54 +314,17 @@ class Mount(object):
         :return:    True if ok for testing
         """
 
-        if sett.slewRate is not None:
-            self.ui.slewRate.setText('{0:2.0f}'.format(sett.slewRate))
-        else:
-            self.ui.slewRate.setText('-')
-
-        if sett.timeToFlip is not None:
-            self.ui.timeToFlip.setText('{0:3.0f}'.format(sett.timeToFlip))
-        else:
-            self.ui.timeToFlip.setText('-')
-
-        if sett.timeToMeridian() is not None:
-            self.ui.timeToMeridian.setText('{0:3.0f}'.format(sett.timeToMeridian()))
-        else:
-            self.ui.timeToMeridian.setText('-')
-
-        if sett.refractionTemp is not None:
-            self.ui.refractionTemp.setText('{0:+4.1f}'.format(sett.refractionTemp))
-            self.ui.refractionTemp1.setText('{0:+4.1f}'.format(sett.refractionTemp))
-        else:
-            self.ui.refractionTemp.setText('-')
-            self.ui.refractionTemp1.setText('-')
-
-        if sett.refractionPress is not None:
-            self.ui.refractionPress.setText('{0:6.1f}'.format(sett.refractionPress))
-            self.ui.refractionPress1.setText('{0:6.1f}'.format(sett.refractionPress))
-        else:
-            self.ui.refractionPress.setText('-')
-            self.ui.refractionPress1.setText('-')
-
-        if sett.meridianLimitTrack is not None:
-            self.ui.meridianLimitTrack.setText(str(sett.meridianLimitTrack))
-        else:
-            self.ui.meridianLimitTrack.setText('-')
-
-        if sett.meridianLimitSlew is not None:
-            self.ui.meridianLimitSlew.setText(str(sett.meridianLimitSlew))
-        else:
-            self.ui.meridianLimitSlew.setText('-')
-
-        if sett.horizonLimitLow is not None:
-            self.ui.horizonLimitLow.setText(str(sett.horizonLimitLow))
-        else:
-            self.ui.horizonLimitLow.setText('-')
-
-        if sett.horizonLimitHigh is not None:
-            self.ui.horizonLimitHigh.setText(str(sett.horizonLimitHigh))
-        else:
-            self.ui.horizonLimitHigh.setText('-')
+        self.guiSetText(self.ui.slewRate, '2.0f', sett.slewRate)
+        self.guiSetText(self.ui.timeToFlip, '3.0f', sett.timeToFlip)
+        self.guiSetText(self.ui.timeToMeridian, '3.0f', sett.timeToMeridian())
+        self.guiSetText(self.ui.refractionTemp, '+4.1f', sett.refractionTemp)
+        self.guiSetText(self.ui.refractionTemp1, '+4.1f', sett.refractionTemp)
+        self.guiSetText(self.ui.refractionPress, '6.1f', sett.refractionPress)
+        self.guiSetText(self.ui.refractionPress1, '6.1f', sett.refractionPress)
+        self.guiSetText(self.ui.meridianLimitTrack, '3.0f', sett.meridianLimitTrack)
+        self.guiSetText(self.ui.meridianLimitSlew, '3.0f', sett.meridianLimitSlew)
+        self.guiSetText(self.ui.horizonLimitLow, '3.0f', sett.horizonLimitLow)
+        self.guiSetText(self.ui.horizonLimitHigh, '3.0f', sett.horizonLimitHigh)
 
         return True
 

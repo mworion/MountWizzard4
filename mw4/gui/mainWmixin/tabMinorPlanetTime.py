@@ -177,7 +177,13 @@ class MinorPlanetTime:
         return True
 
     def setProgress(self, progressPercent):
+        """
+
+        :param progressPercent:
+        :return: True for test purpose
+        """
         self.ui.downloadMinorPlanetProgress.setValue(progressPercent)
+        return True
 
     def downloadFile(self, url, dest):
         """
@@ -186,6 +192,9 @@ class MinorPlanetTime:
         :param dest:
         :return:
         """
+
+        if not os.path.dirname(dest):
+            return False
 
         r = requests.get(url, stream=True, timeout=1)
         totalSizeBytes = int(r.headers.get('content-length', 0))
@@ -203,9 +212,16 @@ class MinorPlanetTime:
 
     @staticmethod
     def unzipFile(dest):
+        """
+
+        :param dest:
+        :return: True for test purpose
+        """
         with gzip.open(dest, 'rb') as f_in:
             with open(dest[:-3], 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
+
+        return True
 
     def loadDataFromSourceURLsWorker(self, source='', isOnline=False):
         """

@@ -73,6 +73,8 @@ class App(QObject):
     mount = Mount()
     ephemeris = load('tests/testData/de421_23.bsp')
     mwGlob = {'modelDir': 'tests/model',
-              'imageDir': 'tests/image'}
+              'imageDir': 'tests/image',
+              'dataDir': 'tests/data',
+              }
 
 

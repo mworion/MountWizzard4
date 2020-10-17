@@ -113,5 +113,5 @@ updated one)
 
 .. note::
     Before doing any changes or updates, please do a backup of your environment to be safe
-    in case of errors in the update process. This could simly be done by making a copy of
+    in case of errors in the update process. This could simply be done by making a copy of
     your work folder.

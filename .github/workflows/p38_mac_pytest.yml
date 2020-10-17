@@ -64,7 +64,8 @@ jobs:
 
     - name: Running unit tests
       run: |
-        pytest tests/unit_tests/zStartup
+        pytest tests/unit_tests/zLoader
+        pytest tests/unit_tests/zMainApp
         pytest tests/unit_tests/base
         pytest tests/unit_tests/gui/extWindows
         pytest tests/unit_tests/gui/mainWindow

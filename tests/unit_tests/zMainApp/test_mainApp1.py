@@ -18,6 +18,7 @@
 # standard libraries
 import sys
 import unittest.mock as mock
+
 # external packages
 import PyQt5
 

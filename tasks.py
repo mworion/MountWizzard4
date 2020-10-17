@@ -161,7 +161,8 @@ def test_ib(c):
 def test_mw_cov(c):
     printMW('unit testing mountwizzard with coverage and upload')
     runMW(c, 'flake8')
-    runMW(c, 'pytest tests/unit_tests/zStartup --cov=mw4/')
+    runMW(c, 'pytest tests/unit_tests/zLoader --cov=mw4/')
+    runMW(c, 'pytest tests/unit_tests/zMainApp --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/base --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/logic/astrometry --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/logic/cover --cov-append --cov=mw4/')
@@ -190,7 +191,8 @@ def upload_cov(c):
 def test_mw(c):
     printMW('testing mountwizzard')
     runMW(c, 'flake8')
-    runMW(c, 'pytest tests/unit_tests/zStartup')
+    runMW(c, 'pytest tests/unit_tests/zLoader')
+    runMW(c, 'pytest tests/unit_tests/zMainApp')
     runMW(c, 'pytest tests/unit_tests/base')
     runMW(c, 'pytest tests/unit_tests/logic/astrometry')
     runMW(c, 'pytest tests/unit_tests/logic/cover')
@@ -345,7 +347,7 @@ def unittest_win(c):
     runMW(c, f'ssh {uWin} "{flake} && flake8"')
 
     printMW('..run unittests')
-    runMW(c, f'ssh {uWin} "{cmd}zStartup --cov=mw4"')
+    runMW(c, f'ssh {uWin} "{cmd}zLoader --cov=mw4"')
     runMW(c, f'ssh {uWin} "{cmd}base --cov=mw4 --cov-append"')
     runMW(c, f'ssh {uWin} "{cmd}logic --cov=mw4 --cov-append"')
     runMW(c, f'ssh {uWin} "{cmd}gui/extWindows --cov=mw4 --cov-append"')

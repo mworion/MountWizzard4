@@ -162,7 +162,7 @@ def test_mw_cov(c):
     printMW('unit testing mountwizzard with coverage and upload')
     runMW(c, 'flake8')
     runMW(c, 'pytest tests/unit_tests/zLoader --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/zMainApp --cov=mw4/')
+    runMW(c, 'pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/base --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/logic/astrometry --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/logic/cover --cov-append --cov=mw4/')

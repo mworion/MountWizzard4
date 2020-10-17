@@ -21,7 +21,6 @@ from queue import Queue
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal
 from skyfield.api import Topos, load
-from logic.modeldata.buildpoints import DataPoint
 
 # local import
 

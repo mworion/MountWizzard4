@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - 'mw4/**'
-      - 'tests/**'
+      - 'tests/unit_tests/**'
       - 'setup.py'
       - '.github/workflows/p38_mac_pytest.yml'
 

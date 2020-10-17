@@ -20,12 +20,15 @@ from unittest import mock
 import pytest
 import os
 import json
-
+import platform
 
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject
 
 # local import
+if not platform.system() == 'Windows':
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
+
 from logic.automation.automateWindows import AutomateWindows
 
 # todo: https://github.com/pywinauto/pywinauto/issues/858

@@ -134,8 +134,8 @@ def test_updateAlignGui_numberStars(function):
     value = '50'
     function.app.mount.model.numberStars = value
     function.updateAlignGUI(function.app.mount.model)
-    assert ' 50' == function.ui.numberStars.text()
-    assert ' 50' == function.ui.numberStars1.text()
+    assert '50' == function.ui.numberStars.text()
+    assert '50' == function.ui.numberStars1.text()
     value = None
     function.app.mount.model.numberStars = value
     function.updateAlignGUI(function.app.mount.model)
@@ -143,23 +143,29 @@ def test_updateAlignGui_numberStars(function):
     assert '-' == function.ui.numberStars1.text()
 
 
-def test_updateAlignGui_altitudeError(function):
+def test_updateAlignGui_altitudeError_1(function):
     value = '50'
     function.app.mount.model.altitudeError = value
     function.updateAlignGUI(function.app.mount.model)
     assert ' 50.0' == function.ui.altitudeError.text()
+
+
+def test_updateAlignGui_altitudeError_2(function):
     value = None
     function.app.mount.model.altitudeError = value
     function.updateAlignGUI(function.app.mount.model)
     assert '-' == function.ui.altitudeError.text()
 
 
-def test_updateAlignGui_errorRMS(function):
+def test_updateAlignGui_errorRMS_1(function):
     value = '50'
     function.app.mount.model.errorRMS = value
     function.updateAlignGUI(function.app.mount.model)
-    assert '50.0' == function.ui.errorRMS.text()
-    assert '50.0' == function.ui.errorRMS1.text()
+    assert ' 50.0' == function.ui.errorRMS.text()
+    assert ' 50.0' == function.ui.errorRMS1.text()
+
+
+def test_updateAlignGui_errorRMS_2(function):
     value = None
     function.app.mount.model.errorRMS = value
     function.updateAlignGUI(function.app.mount.model)
@@ -167,55 +173,70 @@ def test_updateAlignGui_errorRMS(function):
     assert '-' == function.ui.errorRMS1.text()
 
 
-def test_updateAlignGui_azimuthError(function):
+def test_updateAlignGui_azimuthError_1(function):
     value = '50'
     function.app.mount.model.azimuthError = value
     function.updateAlignGUI(function.app.mount.model)
     assert ' 50.0' == function.ui.azimuthError.text()
+
+
+def test_updateAlignGui_azimuthError_2(function):
     value = None
     function.app.mount.model.azimuthError = value
     function.updateAlignGUI(function.app.mount.model)
     assert '-' == function.ui.azimuthError.text()
 
 
-def test_updateAlignGui_terms(function):
+def test_updateAlignGui_terms_1(function):
     value = '50'
     function.app.mount.model.terms = value
     function.updateAlignGUI(function.app.mount.model)
     assert '50' == function.ui.terms.text()
+
+
+def test_updateAlignGui_terms_2(function):
     value = None
     function.app.mount.model.terms = value
     function.updateAlignGUI(function.app.mount.model)
     assert '-' == function.ui.terms.text()
 
 
-def test_updateAlignGui_orthoError(function):
+def test_updateAlignGui_orthoError_1(function):
     value = '50'
     function.app.mount.model.orthoError = value
     function.updateAlignGUI(function.app.mount.model)
     assert '180000' == function.ui.orthoError.text()
+
+
+def test_updateAlignGui_orthoError_2(function):
     value = None
     function.app.mount.model.orthoError = value
     function.updateAlignGUI(function.app.mount.model)
     assert '-' == function.ui.orthoError.text()
 
 
-def test_updateAlignGui_positionAngle(function):
+def test_updateAlignGui_positionAngle_1(function):
     value = '50'
     function.app.mount.model.positionAngle = value
     function.updateAlignGUI(function.app.mount.model)
     assert ' 50.0' == function.ui.positionAngle.text()
+
+
+def test_updateAlignGui_positionAngle_2(function):
     value = None
     function.app.mount.model.positionAngle = value
     function.updateAlignGUI(function.app.mount.model)
     assert '-' == function.ui.positionAngle.text()
 
 
-def test_updateAlignGui_polarError(function):
+def test_updateAlignGui_polarError_1(function):
     value = '50'
     function.app.mount.model.polarError = value
     function.updateAlignGUI(function.app.mount.model)
     assert '180000' == function.ui.polarError.text()
+
+
+def test_updateAlignGui_polarError_2(function):
     value = None
     function.app.mount.model.polarError = value
     function.updateAlignGUI(function.app.mount.model)
@@ -1189,7 +1210,7 @@ def test_clearAlignAndBackup_2(function):
             with mock.patch.object(function,
                                    'refreshModel'):
                 suc = function.clearAlignAndBackup()
-                assert not suc
+                assert suc
 
 
 def test_clearAlignAndBackup_3(function):
@@ -1205,7 +1226,7 @@ def test_clearAlignAndBackup_3(function):
                                        'storeName',
                                        return_value=False):
                     suc = function.clearAlignAndBackup()
-                    assert not suc
+                    assert suc
 
 
 def test_clearAlignAndBackup_4(function):
@@ -1225,11 +1246,13 @@ def test_clearAlignAndBackup_4(function):
 
 
 def test_setupModelPointsAndContextData_1(function):
+    function.app.astrometry.framework = 'astap'
     val = function.setupModelPointsAndContextData()
     assert val == []
 
 
 def test_setupModelPointsAndContextData_2(function):
+    function.app.astrometry.framework = 'astap'
     function.app.data.buildP = [(0, 0, True), (10, 10, True), (20, 20, True)]
     val = function.setupModelPointsAndContextData()
     assert len(val) == 3
@@ -1241,6 +1264,7 @@ def test_setupModelPointsAndContextData_2(function):
 
 
 def test_setupModelPointsAndContextData_3(function):
+    function.app.astrometry.framework = 'astap'
     function.app.data.buildP = [(0, 0, True), (10, 10, False), (20, 20, True)]
     function.ui.excludeDonePoints.setChecked(True)
     val = function.setupModelPointsAndContextData()

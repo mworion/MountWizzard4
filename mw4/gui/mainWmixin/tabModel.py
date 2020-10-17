@@ -112,7 +112,9 @@ class Model:
         self.guiSetText(self.ui.numberStars1, '2.0f', model.numberStars)
         self.guiSetText(self.ui.errorRMS, '5.1f', model.errorRMS)
         self.guiSetText(self.ui.errorRMS1, '5.1f', model.errorRMS)
-        self.guiSetText(self.ui.positionAngle, '5.1f', model.positionAngle)
+        self.guiSetText(self.ui.terms, '2.0f', model.terms)
+        val = model.positionAngle.degrees if model.positionAngle is not None else None
+        self.guiSetText(self.ui.positionAngle, '5.1f', val)
         val = model.polarError.degrees * 3600 if model.polarError is not None else None
         self.guiSetText(self.ui.polarError, '5.0f', val)
         val = model.orthoError.degrees * 3600 if model.orthoError is not None else None
@@ -955,10 +957,6 @@ class Model:
         lenSequence = len(self.app.data.buildP)
 
         framework = self.app.astrometry.framework
-
-        if framework not in self.app.astrometry.run:
-            return []
-
         solveTimeout = self.app.astrometry.run[framework].timeout
         searchRadius = self.app.astrometry.run[framework].searchRadius
 
@@ -1042,6 +1040,7 @@ class Model:
             return False
 
         self.setupModelFilenamesAndDirectories()
+
         modelPoints = self.setupModelPointsAndContextData()
 
         if not modelPoints:

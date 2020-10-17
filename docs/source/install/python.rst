@@ -25,7 +25,10 @@ There is a video on youtube with the install process python: https://youtu.be/xJ
 .. note::
     On windows there are some new features from 0.170.4 on which supports comet, earth
     rotation and asteroids update for the mount. These functions are available from
-    python 3.8.2 on. Earlier versions run have issues.
+    python 3.8.2 on. Earlier versions run have issues. If you would like to upgrade an older
+    python installation, please see the comments below for windows. On other OS there is no
+    need for doing that.
+
 
 Windows
 -------

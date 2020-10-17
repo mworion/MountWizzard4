@@ -284,7 +284,7 @@ class MinorPlanetTime:
         :return: OK
         """
 
-        msg = QMessageBox
+        msg = QMessageBox()
         reply = msg.question(self, 'Program with QCI Updater', question, msg.Yes | msg.No,
                              msg.No)
 
@@ -324,6 +324,7 @@ class MinorPlanetTime:
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
+            return False
 
         self.app.message.emit('Programming success', 1)
 
@@ -399,8 +400,8 @@ class MinorPlanetTime:
 
         filterStr = self.ui.filterMinorPlanet.text().lower()
 
-        filtered = list
-        for index, mp in self.minorPlanets:
+        filtered = list()
+        for index, mp in enumerate(self.minorPlanets):
             text = self.generateName(index, mp)
 
             if filterStr not in text:

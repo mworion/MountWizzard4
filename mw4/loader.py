@@ -25,7 +25,8 @@ import traceback
 import locale
 import html
 
-# the following lines should avoid erro messages from OLE Automation in conjunction with PyQt5
+# the following lines should avoid errors messages from OLE Automation in conjunction with
+# PyQt5
 import warnings
 warnings.simplefilter("ignore", UserWarning)
 sys.coinit_flags = 2
@@ -106,35 +107,21 @@ class QAwesomeTooltipEventFilter(QObject):
         Tooltip-specific event filter handling the passed Qt object and event.
         """
 
-        # If this is a tooltip event...
         if event.type() == QEvent.ToolTipChange:
-            # If the target Qt object containing this tooltip is *NOT* a widget,
-            # raise a human-readable exception. While this should *NEVER* be the
-            # case, edge cases are edge cases because they sometimes happen.
             if not isinstance(widget, QWidget):
                 self.log.error('QObject "{}" not a widget.'.format(widget))
                 return False
 
-            # Tooltip for this widget if any *OR* the empty string otherwise.
             tooltip = widget.toolTip()
 
-            # If this tooltip is both non-empty and not already rich text...
             if tooltip == '<html><head/><body><p><br/></p></body></html>':
                 widget.setToolTip(None)
                 return True
 
             elif tooltip and not Qt.mightBeRichText(tooltip):
-                # Convert this plaintext tooltip into a rich text tooltip by:
-                #
-                # * Escaping all HTML syntax in this tooltip.
-                # * Embedding this tooltip in the Qt-specific "<qt>...</qt>" tag.
                 tooltip = '<qt>{}</qt>'.format(html.escape(tooltip))
-
-                # Replace this widget's non-working plaintext tooltip with this
-                # working rich text tooltip.
                 widget.setToolTip(tooltip)
 
-                # Notify the parent event handler this event has been handled.
                 return True
 
         elif event.type() == QEvent.ToolTip:
@@ -142,14 +129,12 @@ class QAwesomeTooltipEventFilter(QObject):
                 self.log.error('QObject "{}" not a widget.'.format(widget))
                 return False
 
-            # Tooltip for this widget if any *OR* the empty string otherwise.
             tooltip = widget.toolTip()
 
             if tooltip == '<html><head/><body><p><br/></p></body></html>':
                 widget.setToolTip(None)
                 return True
 
-        # Else, defer to the default superclass handling of this event.
         return super().eventFilter(widget, event)
 
 

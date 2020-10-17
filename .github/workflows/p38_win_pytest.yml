@@ -82,5 +82,3 @@ jobs:
         file: ./coverage.xml
         flags: unittests
         name: codecov-umbrella
-        # yml: ./codecov.yml      # optional
-        # fail_ci_if_error: True  # optional default is false

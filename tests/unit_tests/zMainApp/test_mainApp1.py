@@ -40,7 +40,10 @@ def test_start_parameters(qapp):
                                'start'):
             with mock.patch.object(PyQt5.QtCore.QBasicTimer,
                                    'start'):
-                with mock.patch.object(sys,
-                                       'argv',
-                                       ['test']):
-                    MountWizzard4(mwGlob=mwGlob, application=qapp)
+                with mock.patch.object(MountWizzard4,
+                                       'checkAndSetAutomation',
+                                       return_value=None):
+                    with mock.patch.object(sys,
+                                           'argv',
+                                           ['test']):
+                        MountWizzard4(mwGlob=mwGlob, application=qapp)

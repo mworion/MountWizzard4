@@ -30,9 +30,7 @@ from mainApp import MountWizzard4
 
 
 @pytest.fixture(autouse=True, scope='module')
-def module_setup_teardown(qapp):
-    global app
-
+def app(qapp):
     mwGlob = {'configDir': 'tests/config',
               'dataDir': 'tests/data',
               'tempDir': 'tests/temp',
@@ -51,12 +49,15 @@ def module_setup_teardown(qapp):
                                'start'):
             with mock.patch.object(PyQt5.QtCore.QBasicTimer,
                                    'start'):
-                app = MountWizzard4(mwGlob=mwGlob, application=qapp)
-                yield app
+                with mock.patch.object(MountWizzard4,
+                                       'checkAndSetAutomation',
+                                       return_value=None):
+                    app = MountWizzard4(mwGlob=mwGlob, application=qapp)
+                    yield app
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown_func(qapp):
+def module_setup_teardown_func(app):
 
     if os.path.isfile('tests/config/config.cfg'):
         os.remove('tests/config/config.cfg')
@@ -68,12 +69,12 @@ def module_setup_teardown_func(qapp):
     yield
 
 
-def test_initConfig_1():
+def test_initConfig_1(app):
     val = app.initConfig()
     assert val.longitude.degrees == 0
 
 
-def test_initConfig_2():
+def test_initConfig_2(app):
     app.config['mainW'] = {}
     app.config['mainW']['loglevelDebug'] = True
 
@@ -81,7 +82,7 @@ def test_initConfig_2():
     assert val.longitude.degrees == 0
 
 
-def test_initConfig_3():
+def test_initConfig_3(app):
     app.config['mainW'] = {}
     app.config['mainW']['loglevelDeepDebug'] = True
 
@@ -89,13 +90,13 @@ def test_initConfig_3():
     assert val.longitude.degrees == 0
 
 
-def test_storeConfig_1():
+def test_storeConfig_1(app):
     suc = app.storeConfig()
     assert suc
 
 
-def test_storeConfig_2():
-    def Sender():
+def test_storeConfig_2(app):
+    def Sender(app):
         return None
 
     app.sender = Sender
@@ -107,79 +108,79 @@ def test_storeConfig_2():
         del app.uiWindows['showMessageW']['classObj']
 
 
-def test_sendUpdate_1():
+def test_sendUpdate_1(app):
     app.timerCounter = 0
     suc = app.sendUpdate()
     assert suc
 
 
-def test_sendUpdate_2():
+def test_sendUpdate_2(app):
     app.timerCounter = 4
     suc = app.sendUpdate()
     assert suc
 
 
-def test_sendUpdate_3():
+def test_sendUpdate_3(app):
     app.timerCounter = 19
     suc = app.sendUpdate()
     assert suc
 
 
-def test_sendUpdate_4():
+def test_sendUpdate_4(app):
     app.timerCounter = 79
     suc = app.sendUpdate()
     assert suc
 
 
-def test_sendUpdate_5():
+def test_sendUpdate_5(app):
     app.timerCounter = 574
     suc = app.sendUpdate()
     assert suc
 
 
-def test_sendUpdate_6():
+def test_sendUpdate_6(app):
     app.timerCounter = 1800 - 12 - 1
     suc = app.sendUpdate()
     assert suc
 
 
-def test_sendUpdate_7():
+def test_sendUpdate_7(app):
     app.timerCounter = 6000 - 13 - 1
     suc = app.sendUpdate()
     assert suc
 
 
-def test_sendUpdate_8():
+def test_sendUpdate_8(app):
     app.timerCounter = 18000 - 14 - 1
     suc = app.sendUpdate()
     assert suc
 
 
-def test_sendUpdate_9():
+def test_sendUpdate_9(app):
     app.timerCounter = 36000 - 15 - 1
     suc = app.sendUpdate()
     assert suc
 
 
-def test_quit_1():
+def test_quit_1(app):
     with mock.patch.object(PyQt5.QtCore.QCoreApplication,
                            'quit'):
         suc = app.quit()
         assert suc
 
 
-def test_defaultConfig():
+def test_defaultConfig(app):
     val = app.defaultConfig()
     assert val
 
 
-def test_loadConfig_1():
+def test_loadConfig_1(app):
     suc = app.loadConfig()
     assert not suc
     assert app.config['profileName'] == 'config'
 
 
-def test_loadConfig_2():
+def test_loadConfig_2(app):
     with open('tests/config/profile', 'w') as outfile:
         outfile.write('config')
 
@@ -188,7 +189,7 @@ def test_loadConfig_2():
     assert app.config['profileName'] == 'config'
 
 
-def test_loadConfig_3():
+def test_loadConfig_3(app):
     with open('tests/config/profile', 'w') as outfile:
         outfile.write('config')
     config = app.defaultConfig()
@@ -202,7 +203,7 @@ def test_loadConfig_3():
     assert app.config['version'] == '4.0'
 
 
-def test_loadConfig_4():
+def test_loadConfig_4(app):
     with open('tests/config/profile', 'w') as outfile:
         outfile.write('config')
     config = app.defaultConfig()
@@ -220,12 +221,12 @@ def test_loadConfig_4():
     assert app.config['version'] == '4.0'
 
 
-def test_convertData():
+def test_convertData(app):
     val = app.convertData('test')
     assert val == 'test'
 
 
-def test_saveConfig_1():
+def test_saveConfig_1(app):
     app.config = {'profileName': 'config'}
 
     suc = app.saveConfig()
@@ -237,7 +238,7 @@ def test_saveConfig_1():
     assert name == 'config'
 
 
-def test_saveConfig_2():
+def test_saveConfig_2(app):
     app.config = {'profileName': 'config'}
 
     suc = app.saveConfig('config')
@@ -249,7 +250,7 @@ def test_saveConfig_2():
     assert name == 'config'
 
 
-def test_saveConfig_3():
+def test_saveConfig_3(app):
     app.config = {'profileName': 'new'}
 
     suc = app.saveConfig('new')
@@ -261,7 +262,7 @@ def test_saveConfig_3():
     assert name == 'new'
 
 
-def test_saveConfig_4():
+def test_saveConfig_4(app):
     app.config = {'profileName': 'new'}
 
     suc = app.saveConfig()
@@ -273,19 +274,19 @@ def test_saveConfig_4():
     assert name == 'new'
 
 
-def test_loadMountData_1():
+def test_loadMountData_1(app):
     app.mountUp = False
     suc = app.loadMountData(True)
     assert suc
 
 
-def test_loadMountData_2():
+def test_loadMountData_2(app):
     app.mountUp = False
     suc = app.loadMountData(False)
     assert not suc
 
 
-def test_loadMountData_3():
+def test_loadMountData_3(app):
     app.mountUp = True
     with mock.patch.object(app.mainW,
                            'searchTwilightWorker'):
@@ -295,12 +296,12 @@ def test_loadMountData_3():
             assert not suc
 
 
-def test_loadMountData_4():
+def test_loadMountData_4(app):
     app.mountUp = True
     suc = app.loadMountData(True)
     assert suc
 
 
-def test_writeMessageQueue():
+def test_writeMessageQueue(app):
     suc = app.writeMessageQueue('test', 1)
     assert suc

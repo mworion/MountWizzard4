@@ -1044,7 +1044,7 @@ class Model:
         modelPoints = self.setupModelPointsAndContextData()
 
         if not modelPoints:
-            self.app.message.emit(f'Modeling cancelled, no valid points.', 2)
+            self.app.message.emit('Modeling cancelled, no valid points', 2)
             return False
 
         self.setupModelRunContextAndGuiStatus()

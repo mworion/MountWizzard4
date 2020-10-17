@@ -231,7 +231,7 @@ def test_expose_3():
 
     suc = app.expose(expTime=1,
                      binning=4)
-    assert not suc
+    assert suc
 
 
 def test_abort_1():

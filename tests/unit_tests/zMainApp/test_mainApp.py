@@ -20,6 +20,7 @@ import os
 import glob
 import json
 import unittest.mock as mock
+
 # external packages
 import pytest
 import PyQt5

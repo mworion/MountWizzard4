@@ -716,7 +716,7 @@ def test_getIndexPointX_3(function):
     index = function.getIndexPointX(event=event,
                                     plane=plane,
                                     )
-    assert index == 0
+    assert index == 1
 
 
 def test_getIndexPointX_4(function):
@@ -729,7 +729,7 @@ def test_getIndexPointX_4(function):
     index = function.getIndexPointX(event=event,
                                     plane=plane,
                                     )
-    assert index == 0
+    assert index == 1
 
 
 def test_getIndexPointX_5(function):
@@ -742,7 +742,7 @@ def test_getIndexPointX_5(function):
     index = function.getIndexPointX(event=event,
                                     plane=plane,
                                     )
-    assert index == 1
+    assert index == 2
 
 
 def test_getIndexPointX_6(function):
@@ -755,7 +755,7 @@ def test_getIndexPointX_6(function):
     index = function.getIndexPointX(event=event,
                                     plane=plane,
                                     )
-    assert not index
+    assert index == 1
 
 
 def test_writeRetrofitData_1(function):

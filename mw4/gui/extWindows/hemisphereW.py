@@ -100,8 +100,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.pointsBuild = None
         self.starsAlign = None
         self.starsAlignAnnotate = None
-        self.horizonFill = None
-        self.horizonMarker = None
         self.meridianSlew = None
         self.meridianTrack = None
         self.horizonLimitHigh = None
@@ -117,8 +115,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.pointsBuildAnnotate = None
         self.pointsPolarBuild = None
         self.pointsPolarBuildAnnotate = None
-        self.horizonPolarFill = None
-        self.horizonPolarMarker = None
 
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
         self.hemisphereMatMove = self.embedMatplot(self.ui.hemisphereMove)
@@ -518,40 +514,43 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         alt, az = zip(*self.app.data.horizonP)
 
         if polar:
+            az = np.radians(az)
             alt = np.array(alt)
-            az = np.array(az)
-            self.horizonFill, = axes.fill(np.radians(az),
-                                          90 - alt,
-                                          color=self.M_GREEN_LL,
-                                          alpha=0.5,
-                                          zorder=0)
+            azF = np.radians(range(0, 361, 5))
+            altF = np.interp(azF, az, alt)
 
-            self.horizonMarker, = axes.plot(np.radians(az),
-                                            90 - alt,
-                                            color=self.MODE[self.operationMode]['horColor'],
-                                            marker=self.MODE[self.operationMode]['horMarker'],
-                                            alpha=0.5,
-                                            zorder=0,
-                                            lw=3)
+            axes.fill(azF,
+                      90 - altF,
+                      color=self.M_GREEN_LL,
+                      alpha=0.5,
+                      zorder=0)
+
+            axes.plot(az,
+                      90 - alt,
+                      color=self.MODE[self.operationMode]['horColor'],
+                      marker=self.MODE[self.operationMode]['horMarker'],
+                      alpha=0.5,
+                      zorder=0,
+                      ls='none')
 
         else:
             alt = np.array(alt)
             az = np.array(az)
             altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
             azF = np.concatenate([[0], [0], az, [360], [360]])
-            self.horizonFill, = axes.fill(azF,
-                                          altF,
-                                          color=self.M_GREEN_LL,
-                                          alpha=0.5,
-                                          zorder=0)
+            axes.fill(azF,
+                      altF,
+                      color=self.M_GREEN_LL,
+                      alpha=0.5,
+                      zorder=0)
 
-            self.horizonMarker, = axes.plot(az,
-                                            alt,
-                                            color=self.MODE[self.operationMode]['horColor'],
-                                            marker=self.MODE[self.operationMode]['horMarker'],
-                                            alpha=0.5,
-                                            zorder=0,
-                                            lw=3)
+            axes.plot(az,
+                      alt,
+                      color=self.MODE[self.operationMode]['horColor'],
+                      marker=self.MODE[self.operationMode]['horMarker'],
+                      alpha=0.5,
+                      zorder=0,
+                      ls='none')
 
         return True
 
@@ -879,8 +878,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             self.pointsBuildAnnotate = None
             self.pointsPolarBuild = None
             self.pointsPolarBuildAnnotate = None
-            self.horizonPolarFill = None
-            self.horizonPolarMarker = None
             self.polarMat.figure.clf()
             self.polarMatMove.figure.clf()
 

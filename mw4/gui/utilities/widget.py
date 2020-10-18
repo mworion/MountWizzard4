@@ -792,11 +792,11 @@ class MWidget(QWidget, styles.MWStyles):
         if plane is None:
             return None
 
-        if len(plane) < 2:
+        if not plane:
             return None
 
         xt = [i[1] for i in plane]
-        index = int(bisect.bisect_left(xt, event.xdata) - 1)
+        index = int(bisect.bisect_left(xt, event.xdata))
 
         return index
 

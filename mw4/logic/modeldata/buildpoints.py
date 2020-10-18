@@ -590,23 +590,6 @@ class DataPoint(object):
 
         return True
 
-    @staticmethod
-    def checkBoundaries(points):
-        """
-        checkBoundaries removes point 0,0 and 0, 360 if present.
-
-        :param points:
-        :return: points
-        """
-
-        if points[0] == (0, 0):
-            del points[0]
-
-        if points[len(points) - 1] == (0, 360):
-            del points[-1]
-
-        return points
-
     def saveHorizonP(self, fileName=None):
         """
         saveHorizonP saves the actual modeldata points list in a file in json dump format
@@ -619,10 +602,9 @@ class DataPoint(object):
             return False
 
         fileName = self.configDir + '/' + fileName + '.hpts'
-        points = self.checkBoundaries(self.horizonP)
 
         with open(fileName, 'w') as handle:
-            json.dump(points,
+            json.dump(self.horizonP,
                       handle,
                       indent=4)
 

@@ -236,11 +236,13 @@ class HemisphereWindowExt:
 
         index = self.getIndexPointX(event=event, plane=data.horizonP)
 
-        if index is None:
+        print(index)
+
+        if index is None and data.horizonP:
             return False
 
         suc = data.addHorizonP(value=(event.ydata, event.xdata),
-                               position=index + 1)
+                               position=index)
         return suc
 
     def deleteHorizonPoint(self, data=None, event=None):
@@ -283,9 +285,9 @@ class HemisphereWindowExt:
         else:
             return False
 
-        y, x = zip(*data.horizonP)
-        self.horizonMarker.set_data(x, y)
-        self.horizonFill.set_xy(np.column_stack((x, y)))
+        if not data.horizonP:
+            return False
+
         self.drawHemisphere()
 
         return suc
@@ -305,10 +307,12 @@ class HemisphereWindowExt:
         index = self.getIndexPoint(event=event, plane=data.buildP, epsilon=360)
 
         if index is None:
-            index = len(data.buildP)
+            return False
+
+        index = len(data.buildP) if data.buildP else len(data.buildP) + 1
 
         suc = data.addBuildP(value=(event.ydata, event.xdata, True),
-                             position=index + 1)
+                             position=index)
         if not suc:
             return False
 

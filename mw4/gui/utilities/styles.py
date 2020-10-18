@@ -50,7 +50,7 @@ class MWStyles:
     BACK_GREEN = 'background-color: green;'
     BACK_NORM = 'background-color: #202020;'
 
-    M_TRANS = '#000000FF'
+    M_TRANS = '#20202000'
     M_BLUE = '#2090C0'
     M_BLUE1 = '#104860'
     M_BLUE2 = '#0C3648'

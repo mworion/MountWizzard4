@@ -411,7 +411,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             self.pointsBuild[index].set_color(color)
             self.pointsBuildAnnotate[index].set_color(color)
 
-        self.hemisphereMat.figure.canvas.draw()
+        self.hemisphereMatMove.figure.canvas.draw()
 
         return True
 

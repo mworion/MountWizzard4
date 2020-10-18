@@ -297,7 +297,7 @@ class DataPoint(object):
 
         position = int(position)
 
-        if position < 0 or position > len(self._horizonP) - 1:
+        if position < 0 or position > len(self._horizonP):
             self.log.warning('invalid position: {0}'.format(position))
             return False
 

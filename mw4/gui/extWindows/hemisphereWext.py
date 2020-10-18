@@ -251,6 +251,7 @@ class HemisphereWindowExt:
         :return: success
         """
         index = self.getIndexPoint(event=event, plane=data.horizonP)
+
         if index is None:
             return False
 
@@ -278,7 +279,7 @@ class HemisphereWindowExt:
         else:
             return False
 
-        if not data.horizonP:
+        if data.horizonP is None:
             return False
 
         self.drawHemisphere()

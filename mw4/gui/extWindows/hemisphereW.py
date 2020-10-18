@@ -156,6 +156,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
+        self.ui.showPolar.setChecked(False)
 
         self.togglePolar()
 

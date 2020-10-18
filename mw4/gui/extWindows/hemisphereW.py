@@ -861,7 +861,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         g = self.ui.hemisphere.geometry()
         self.ui.hemisphereMove.setGeometry(QRect(0, 0, g.width(), g.height()))
 
-        if False:
+        if hasPolar:
             axePolar.figure.canvas.flush_events()
             g = self.ui.polar.geometry()
             self.ui.polarMove.setGeometry(QRect(0, 0, g.width(), g.height()))

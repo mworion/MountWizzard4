@@ -116,34 +116,9 @@ class DataPoint(object):
         self._horizonP = list()
         self._buildP = list()
 
-    @staticmethod
-    def checkHorizonBoundaries(value):
-        """
-        checkHorizonBoundaries secures that the horizon always has the points (0, 0) at the
-        beginning of the list and (0, 360) at the end of the list.
-
-        :return: True for test purpose
-        """
-
-        if not value:
-            retValue = [(0, 0), (0, 360)]
-            return retValue
-
-        retValue = list() + value
-
-        if retValue[0] != (0, 0):
-            retValue = [(0, 0)] + retValue
-
-        horMax = len(retValue)
-        if retValue[horMax - 1] != (0, 360):
-            retValue = retValue + [(0, 360)]
-
-        return retValue
-
     @property
     def horizonP(self):
-        value = self.checkHorizonBoundaries(self._horizonP)
-        return value
+        return self._horizonP
 
     @horizonP.setter
     def horizonP(self, value):

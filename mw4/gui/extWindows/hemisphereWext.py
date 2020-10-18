@@ -240,7 +240,7 @@ class HemisphereWindowExt:
             return False
 
         suc = data.addHorizonP(value=(event.ydata, event.xdata),
-                               position=index)
+                               position=index + 1)
         return suc
 
     def deleteHorizonPoint(self, data=None, event=None):
@@ -259,8 +259,8 @@ class HemisphereWindowExt:
             return False
 
         suc = False
-        if len(data.horizonP) > 2:
-            suc = data.delHorizonP(position=index - 1)
+        if len(data.horizonP) > 0:
+            suc = data.delHorizonP(position=index)
 
         return suc
 
@@ -307,10 +307,8 @@ class HemisphereWindowExt:
         if index is None:
             index = len(data.buildP)
 
-        index += 1
-
         suc = data.addBuildP(value=(event.ydata, event.xdata, True),
-                             position=index)
+                             position=index + 1)
         if not suc:
             return False
 

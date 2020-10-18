@@ -511,27 +511,47 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         return True
 
-    def staticHorizon(self, axes=None):
+    def staticHorizon(self, axes=None, polar=False):
         if not self.app.data.horizonP:
             return False
 
         alt, az = zip(*self.app.data.horizonP)
-        alt = np.array(alt)
-        az = np.array(az)
 
-        self.horizonFill, = axes.fill(az,
-                                      alt,
-                                      color=self.M_GREEN_LL,
-                                      alpha=0.5,
-                                      zorder=0)
+        if polar:
+            alt = np.array(alt)
+            az = np.array(az)
+            self.horizonFill, = axes.fill(np.radians(az),
+                                          90 - alt,
+                                          color=self.M_GREEN_LL,
+                                          alpha=0.5,
+                                          zorder=0)
 
-        self.horizonMarker, = axes.plot(az,
-                                        alt,
-                                        color=self.MODE[self.operationMode]['horColor'],
-                                        marker=self.MODE[self.operationMode]['horMarker'],
-                                        alpha=0.5,
-                                        zorder=0,
-                                        lw=3)
+            self.horizonMarker, = axes.plot(np.radians(az),
+                                            90 - alt,
+                                            color=self.MODE[self.operationMode]['horColor'],
+                                            marker=self.MODE[self.operationMode]['horMarker'],
+                                            alpha=0.5,
+                                            zorder=0,
+                                            lw=3)
+
+        else:
+            alt = np.array(alt)
+            az = np.array(az)
+            altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
+            azF = np.concatenate([[0], [0], az, [360], [360]])
+            self.horizonFill, = axes.fill(azF,
+                                          altF,
+                                          color=self.M_GREEN_LL,
+                                          alpha=0.5,
+                                          zorder=0)
+
+            self.horizonMarker, = axes.plot(az,
+                                            alt,
+                                            color=self.MODE[self.operationMode]['horColor'],
+                                            marker=self.MODE[self.operationMode]['horMarker'],
+                                            alpha=0.5,
+                                            zorder=0,
+                                            lw=3)
 
         return True
 
@@ -612,6 +632,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
     def staticCelestialEquator(self, axes=None, polar=False):
         celestial = self.app.data.generateCelestialEquator()
         alt, az = zip(*celestial)
+        alt = np.array(alt)
 
         if polar:
             self.celestialPath, = axes.plot(np.radians(az),
@@ -717,6 +738,12 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         """
 
         if polar:
+            if self.ui.checkShowCelestial.isChecked():
+                self.staticCelestialEquator(axes=axes, polar=polar)
+
+            if self.ui.checkUseHorizon.isChecked():
+                self.staticHorizon(axes=axes, polar=polar)
+
             self.staticModelData(axes=axes, polar=polar)
 
         else:

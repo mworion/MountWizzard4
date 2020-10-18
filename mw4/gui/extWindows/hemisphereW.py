@@ -196,6 +196,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.app.update1s.disconnect(self.hemisphereMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.disconnect(self.drawHemisphere)
         self.app.updatePointMarker.disconnect(self.updatePointMarker)
+        self.app.updatePointMarker.disconnect(self.updatePolarPointMarker)
         self.app.mount.signals.settingDone.disconnect(self.updateOnChangedParams)
         self.storeConfig()
 
@@ -259,6 +260,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.app.update1s.connect(self.polarMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.updatePointMarker.connect(self.updatePointMarker)
+        self.app.updatePointMarker.connect(self.updatePolarPointMarker)
         self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.mount.signals.pointDone.connect(self.updatePointerPolarAltAz)
@@ -443,7 +445,29 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             self.pointsBuild[index].set_color(color)
             self.pointsBuildAnnotate[index].set_color(color)
 
-        self.hemisphereMatMove.figure.canvas.draw()
+        self.hemisphereMat.figure.canvas.draw()
+
+        return True
+
+    def updatePolarPointMarker(self):
+        """
+
+        :return: success
+        """
+        if not self.pointsPolarBuild:
+            return False
+
+        for index, point in enumerate(self.app.data.buildP):
+            active = point[2]
+
+            marker, markersize, color, _ = self.getMarkerStatusParams(active, index)
+
+            self.pointsPolarBuild[index].set_marker(marker)
+            self.pointsPolarBuild[index].set_markersize(markersize)
+            self.pointsPolarBuild[index].set_color(color)
+            self.pointsPolarBuildAnnotate[index].set_color(color)
+
+        self.polarMat.figure.canvas.draw()
 
         return True
 

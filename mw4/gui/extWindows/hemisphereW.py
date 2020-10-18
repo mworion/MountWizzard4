@@ -539,6 +539,14 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                       zorder=0,
                       ls='none')
 
+            axes.plot(azF,
+                      90 - altF,
+                      color=self.MODE[self.operationMode]['horColor'],
+                      marker='',
+                      alpha=0.5,
+                      zorder=0,
+                      lw=3)
+
         else:
             alt = np.array(alt)
             az = np.array(az)
@@ -557,6 +565,14 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                       alpha=0.5,
                       zorder=0,
                       ls='none')
+
+            axes.plot(azF,
+                      altF,
+                      color=self.MODE[self.operationMode]['horColor'],
+                      marker='',
+                      alpha=0.5,
+                      zorder=0,
+                      lw=3)
 
         return True
 
@@ -641,6 +657,12 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         return True
 
     def staticCelestialEquator(self, axes=None, polar=False):
+        """
+
+        :param axes:
+        :param polar:
+        :return:
+        """
         celestial = self.app.data.generateCelestialEquator()
         alt, az = zip(*celestial)
         alt = np.array(alt)
@@ -706,6 +728,12 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         return True
 
     def staticHorizonLimits(self, axes=None, polar=False):
+        """
+
+        :param axes:
+        :param polar:
+        :return:
+        """
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
 

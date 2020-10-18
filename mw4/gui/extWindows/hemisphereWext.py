@@ -233,11 +233,7 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return:
         """
-
         index = self.getIndexPointX(event=event, plane=data.horizonP)
-
-        print(index)
-
         if index is None and data.horizonP:
             return False
 
@@ -254,9 +250,7 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return: success
         """
-
         index = self.getIndexPoint(event=event, plane=data.horizonP)
-
         if index is None:
             return False
 
@@ -275,7 +269,6 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return: success
         """
-
         if event.button == 1:
             suc = self.addHorizonPoint(data=data, event=event)
 
@@ -303,12 +296,10 @@ class HemisphereWindowExt:
         :return:
         """
         index = self.getIndexPoint(event=event, plane=data.buildP, epsilon=360)
-
         if index is None:
             return False
 
         index += 1
-
         suc = data.addBuildP(value=(event.ydata, event.xdata, True),
                              position=index)
         if not suc:
@@ -325,9 +316,7 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return: success
         """
-
         index = self.getIndexPoint(event=event, plane=data.buildP)
-
         if index is None:
             return False
 
@@ -367,9 +356,7 @@ class HemisphereWindowExt:
         :param event: mouse events
         :return: success
         """
-
         data = self.app.data
-        axes = self.hemisphereMat.figure.axes[0].axes
 
         if not event.inaxes:
             return False
@@ -397,7 +384,6 @@ class HemisphereWindowExt:
         :param event: mouse events
         :return: success
         """
-
         if not event.inaxes:
             return False
 
@@ -446,7 +432,6 @@ class HemisphereWindowExt:
         :param event: button event for parsing
         :return: True for test purpose
         """
-
         if self.ui.checkEditNone.isChecked():
             self.onMouseNormal(event)
 

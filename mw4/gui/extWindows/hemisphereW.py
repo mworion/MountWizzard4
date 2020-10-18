@@ -512,15 +512,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         return True
 
     def staticHorizon(self, axes=None):
-        """
-        staticHorizon draw the horizon line. in case of a polar plot it will be reversed,
-        which mean the background will be green and to horizon polygon will be drawn in
-        background color
-
-        :param axes: matplotlib axes object
-        :return:
-        """
-
         if not self.app.data.horizonP:
             return False
 
@@ -544,21 +535,19 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         return True
 
-    def staticModelData(self, axes=None):
-        """
-        staticModelData draw in the chart the build points and their index as annotations
-
-        :param axes: matplotlib axes object
-        :return: success
-        """
-
+    def staticModelData(self, axes=None, polar=False):
         points = self.app.data.buildP
 
         if not points:
             return False
 
-        self.pointsBuild = list()
-        self.pointsBuildAnnotate = list()
+        if polar:
+            self.pointsPolarBuild = list()
+            self.pointsPolarBuildAnnotate = list()
+
+        else:
+            self.pointsBuild = list()
+            self.pointsBuildAnnotate = list()
 
         for index, point in enumerate(points):
             az = point[1]
@@ -568,56 +557,81 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             marker, markersize, color, text = self.getMarkerStatusParams(active, index)
 
             if self.ui.checkShowSlewPath.isChecked() and index > 0:
-                axes.plot((points[index - 1][1], points[index][1]),
-                          (points[index - 1][0], points[index][0]),
-                          ls=':', lw=1, color=self.M_WHITE, zorder=40)
+                if polar:
+                    axes.plot(np.radians((points[index - 1][1], points[index][1])),
+                              (90 - points[index - 1][0], 90 - points[index][0]),
+                              ls=':', lw=1, color=self.M_WHITE, zorder=40)
 
-            p, = axes.plot(az, alt,
-                           marker=marker,
-                           markersize=markersize,
-                           fillstyle='none',
-                           color=self.MODE[self.operationMode]['buildPColor'],
-                           zorder=40,
-                           )
-            self.pointsBuild.append(p)
+                else:
+                    axes.plot((points[index - 1][1], points[index][1]),
+                              (points[index - 1][0], points[index][0]),
+                              ls=':', lw=1, color=self.M_WHITE, zorder=40)
 
-            annotation = axes.annotate(text,
-                                       xy=(az, alt),
-                                       xytext=(2, -10),
-                                       textcoords='offset points',
-                                       color=color,
-                                       zorder=40,
-                                       )
-            self.pointsBuildAnnotate.append(annotation)
+            if polar:
+                p, = axes.plot(np.radians(az), 90 - alt,
+                               marker=marker,
+                               markersize=markersize,
+                               fillstyle='none',
+                               color=self.MODE[self.operationMode]['buildPColor'],
+                               zorder=40,
+                               )
+                self.pointsPolarBuild.append(p)
+
+            else:
+                p, = axes.plot(az, alt,
+                               marker=marker,
+                               markersize=markersize,
+                               fillstyle='none',
+                               color=self.MODE[self.operationMode]['buildPColor'],
+                               zorder=40,
+                               )
+                self.pointsBuild.append(p)
+
+            if polar:
+                annotation = axes.annotate(text,
+                                           xy=(np.radians(az), 90 - alt),
+                                           xytext=(2, -10),
+                                           textcoords='offset points',
+                                           color=color,
+                                           zorder=40,
+                                           )
+                self.pointsPolarBuildAnnotate.append(annotation)
+
+            else:
+                annotation = axes.annotate(text,
+                                           xy=(az, alt),
+                                           xytext=(2, -10),
+                                           textcoords='offset points',
+                                           color=color,
+                                           zorder=40,
+                                           )
+                self.pointsBuildAnnotate.append(annotation)
 
         return True
 
-    def staticCelestialEquator(self, axes=None):
-        """
-        staticCelestialEquator draw ra / dec lines on the chart
-
-        :param axes: matplotlib axes object
-        :return: success
-        """
-
+    def staticCelestialEquator(self, axes=None, polar=False):
         celestial = self.app.data.generateCelestialEquator()
         alt, az = zip(*celestial)
 
-        self.celestialPath, = axes.plot(az,
-                                        alt,
-                                        '.',
-                                        markersize=1,
-                                        fillstyle='none',
-                                        zorder=20,
-                                        color=self.M_WHITE_L)
+        if polar:
+            self.celestialPath, = axes.plot(np.radians(az),
+                                            90 - alt,
+                                            '.',
+                                            markersize=1,
+                                            fillstyle='none',
+                                            zorder=20,
+                                            color=self.M_WHITE_L)
+        else:
+            self.celestialPath, = axes.plot(az,
+                                            alt,
+                                            '.',
+                                            markersize=1,
+                                            fillstyle='none',
+                                            zorder=20,
+                                            color=self.M_WHITE_L)
         return True
 
     def staticMeridianLimits(self, axes=None):
-        """
-
-        :param axes: matplotlib axes object
-        :return: success
-        """
         if self.app.mount.setting.meridianLimitSlew is not None:
             slew = self.app.mount.setting.meridianLimitSlew
 
@@ -654,13 +668,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         return True
 
-    def staticHorizonLimits(self, axes=None):
-        """
-
-        :param axes: matplotlib axes object
-        :return: success
-        """
-
+    def staticHorizonLimits(self, axes=None, polar=False):
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
 
@@ -708,7 +716,10 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return: success
         """
 
-        if not polar:
+        if polar:
+            self.staticModelData(axes=axes, polar=polar)
+
+        else:
             if self.ui.checkUseHorizon.isChecked():
                 self.staticHorizon(axes=axes)
                 self.staticHorizonLimits(axes=axes)
@@ -719,9 +730,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             if self.ui.checkShowMeridian.isChecked():
                 self.staticMeridianLimits(axes=axes)
 
-            self.staticModelData(axes=axes)
+            self.staticModelData(axes=axes, polar=polar)
 
-            return True
+        return True
 
     def drawHemisphereMoving(self, axes=None, polar=False):
         """

@@ -432,7 +432,7 @@ def test_addBuildPoint_1(function):
     with mock.patch.object(function,
                            'getIndexPoint',
                            return_value=None):
-        suc = function.addBuildPoint(data=data, event=Event(), axes=axe)
+        suc = function.addBuildPoint(data=data, event=Event())
         assert not suc
 
 
@@ -451,7 +451,7 @@ def test_addBuildPoint_2(function):
         with mock.patch.object(function.app.data,
                                'addBuildP',
                                return_value=False):
-            suc = function.addBuildPoint(data=data, event=Event(), axes=axe)
+            suc = function.addBuildPoint(data=data, event=Event())
             assert not suc
 
 
@@ -470,7 +470,7 @@ def test_addBuildPoint_3(function):
         with mock.patch.object(function.app.data,
                                'addBuildP',
                                return_value=True):
-            suc = function.addBuildPoint(data=data, event=Event(), axes=axe)
+            suc = function.addBuildPoint(data=data, event=Event())
             assert suc
 
 
@@ -491,7 +491,7 @@ def test_addBuildPoint_4(function):
         with mock.patch.object(function.app.data,
                                'addBuildP',
                                return_value=True):
-            suc = function.addBuildPoint(data=data, event=Event(), axes=axe)
+            suc = function.addBuildPoint(data=data, event=Event())
             assert suc
 
 
@@ -544,7 +544,7 @@ def test_editBuildPoints_1(function):
                            return_value=False):
         with mock.patch.object(function,
                                'drawHemisphere'):
-            suc = function.editBuildPoints(data=function.app.data, event=Event(), axes=axe)
+            suc = function.editBuildPoints(data=function.app.data, event=Event())
             assert not suc
 
 
@@ -562,7 +562,7 @@ def test_editBuildPoints_2(function):
                            return_value=False):
         with mock.patch.object(function,
                                'drawHemisphere'):
-            suc = function.editBuildPoints(data=function.app.data, event=Event(), axes=axe)
+            suc = function.editBuildPoints(data=function.app.data, event=Event())
             assert not suc
 
 
@@ -574,7 +574,7 @@ def test_editBuildPoints_3(function):
     function.pointsBuild, = axe.plot(0, 0)
     with mock.patch.object(function,
                            'drawHemisphere'):
-        suc = function.editBuildPoints(data=function.app.data, event=Event(), axes=axe)
+        suc = function.editBuildPoints(data=function.app.data, event=Event())
         assert not suc
 
 
@@ -592,7 +592,7 @@ def test_editBuildPoints_4(function):
                            return_value=False):
         with mock.patch.object(function,
                                'drawHemisphere'):
-            suc = function.editBuildPoints(data=function.app.data, event=Event(), axes=axe)
+            suc = function.editBuildPoints(data=function.app.data, event=Event())
             assert not suc
 
 

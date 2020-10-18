@@ -761,7 +761,7 @@ class MWidget(QWidget, styles.MWStyles):
             return None
 
         if len(plane) == 0:
-            return None
+            return 0
 
         xt = np.asarray([i[1] for i in plane])
         yt = np.asarray([i[0] for i in plane])
@@ -787,9 +787,6 @@ class MWidget(QWidget, styles.MWStyles):
         """
 
         if event is None:
-            return None
-
-        if plane is None:
             return None
 
         if not plane:

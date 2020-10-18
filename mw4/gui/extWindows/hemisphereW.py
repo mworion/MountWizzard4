@@ -508,6 +508,12 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         return True
 
     def staticHorizon(self, axes=None, polar=False):
+        """
+
+        :param axes:
+        :param polar:
+        :return:
+        """
         if not self.app.data.horizonP:
             return False
 
@@ -555,6 +561,12 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         return True
 
     def staticModelData(self, axes=None, polar=False):
+        """
+
+        :param axes:
+        :param polar:
+        :return:
+        """
         points = self.app.data.buildP
 
         if not points:
@@ -652,6 +664,11 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         return True
 
     def staticMeridianLimits(self, axes=None):
+        """
+
+        :param axes:
+        :return:
+        """
         if self.app.mount.setting.meridianLimitSlew is not None:
             slew = self.app.mount.setting.meridianLimitSlew
 
@@ -735,7 +752,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :param polar: flag if polar should be drawn
         :return: success
         """
-
         if polar:
             if self.ui.checkShowCelestial.isChecked():
                 self.staticCelestialEquator(axes=axes, polar=polar)

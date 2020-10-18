@@ -325,10 +325,16 @@ class DataPoint(object):
             point = (point[0], 0)
 
         x = range(0, 361)
-        y = np.interp(x,
-                      [i[1] for i in self.horizonP],
-                      [i[0] for i in self.horizonP],
-                      )
+
+        if self.horizonP:
+            xRef = [i[1] for i in self.horizonP]
+            yRef = [i[0] for i in self.horizonP]
+
+        else:
+            xRef = [0]
+            yRef = [0]
+
+        y = np.interp(x, xRef, yRef)
 
         if point[0] > y[int(point[1])]:
             return True

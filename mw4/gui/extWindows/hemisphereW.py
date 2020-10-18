@@ -117,6 +117,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
         self.hemisphereMatMove = self.embedMatplot(self.ui.hemisphereMove)
+        self.ui.hemisphereMove.setParent(self.ui.hemisphere)
         self.ui.hemisphereMove.stackUnder(self.ui.hemisphere)
 
     def initConfig(self):
@@ -151,6 +152,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
+
+        self.togglePolar()
 
         return True
 
@@ -206,6 +209,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkEditBuildPoints.clicked.disconnect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.disconnect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.disconnect(self.drawHemisphere)
+        self.ui.showPolar.clicked.disconnect(self.togglePolar)
         self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
         self.app.dome.signals.azimuth.disconnect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.disconnect(self.updateDome)
@@ -255,12 +259,31 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
+        self.ui.showPolar.clicked.connect(self.togglePolar)
 
         self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
                                                      self.onMouseDispatcher)
         self.hemisphereMat.figure.canvas.mpl_connect('motion_notify_event',
                                                      self.showMouseCoordinates)
         self.show()
+        self.drawHemisphere()
+
+        return True
+
+    def togglePolar(self):
+        """
+
+        :return: success
+        """
+
+        if self.ui.showPolar.isChecked():
+            self.ui.polar.setMaximumSize(16777215, 16777215)
+            self.ui.polar.setVisible(True)
+
+        else:
+            self.ui.polar.setFixedWidth(1)
+            self.ui.polar.setVisible(False)
+
         self.drawHemisphere()
 
         return True
@@ -659,9 +682,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             self.staticMeridianLimits(axes=axes)
 
         self.staticModelData(axes=axes)
-
-        axes.figure.canvas.draw()
-
         return True
 
     def drawHemisphereMoving(self, axes=None):
@@ -757,6 +777,11 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         axeMove, _ = self.generateFlat(widget=self.hemisphereMatMove, horizon=True,
                                        showAxes=False)
 
+        axe.figure.canvas.flush_events()
+
+        g = self.ui.hemisphere.geometry()
+        self.ui.hemisphereMove.setGeometry(QRect(0, 0, g.width(), g.height()))
+
         if self.ui.checkShowAlignStar.isChecked():
             self.drawAlignmentStars(axes=axe)
 
@@ -766,5 +791,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         self.drawHemisphereStatic(axes=axe)
         self.drawHemisphereMoving(axes=axeMove)
+        axe.figure.canvas.draw()
+        axeMove.figure.canvas.draw()
 
         return True

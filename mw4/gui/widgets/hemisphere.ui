@@ -326,29 +326,8 @@
         </property>
         <item>
          <widget class="QCheckBox" name="showPolar">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>120</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>Arial</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Not implemented</string>
-          </property>
           <property name="text">
-           <string>Polar Diagram </string>
-          </property>
-          <property name="checkable">
-           <bool>false</bool>
+           <string>Show Polar</string>
           </property>
          </widget>
         </item>

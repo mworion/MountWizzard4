@@ -586,7 +586,7 @@ class MWidget(QWidget, styles.MWStyles):
 
         return staticCanvas
 
-    def generatePolar(self, widget=None, title=''):
+    def generatePolar(self, widget=None, title='', showAxes=True):
         """
 
         :param widget:
@@ -601,19 +601,33 @@ class MWidget(QWidget, styles.MWStyles):
             return None, None
 
         lock = Lock()
+
+        if showAxes:
+            color = self.M_BLUE
+
+        else:
+            color = self.M_RED
+
         with lock:
-            fig = widget.figure
-            fig.clf()
-            axe = fig.add_subplot(1, 1, 1, polar=True, facecolor='None')
+            figure = widget.figure
+
+            if figure.axes:
+                axe = figure.axes[0]
+                axe.cla()
+
+            else:
+                figure.clf()
+                axe = figure.add_subplot(1, 1, 1, polar=True, facecolor='None')
+
             axe.grid(True, color=self.M_GREY)
 
             if title:
-                axe.set_title(title, color=self.M_BLUE, fontweight='bold', pad=15)
+                axe.set_title(title, color=color, fontweight='bold', pad=15)
 
-            axe.set_xlabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
-            axe.set_ylabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
-            axe.tick_params(axis='x', colors=self.M_BLUE, labelsize=12)
-            axe.tick_params(axis='y', colors=self.M_BLUE, labelsize=12)
+            axe.set_xlabel('', color=color, fontweight='bold', fontsize=12)
+            axe.set_ylabel('', color=color, fontweight='bold', fontsize=12)
+            axe.tick_params(axis='x', colors=color, labelsize=12)
+            axe.tick_params(axis='y', colors=color, labelsize=12)
             axe.set_theta_zero_location('N')
             axe.set_rlabel_position(45)
             axe.set_theta_direction(-1)
@@ -622,7 +636,7 @@ class MWidget(QWidget, styles.MWStyles):
             axe.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))
             axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
 
-            return axe, fig
+            return axe, figure
 
     def generateFlat(self, widget=None, title='', horizon=False, showAxes=True):
         """
@@ -646,7 +660,7 @@ class MWidget(QWidget, styles.MWStyles):
             color = self.M_BLUE
 
         else:
-            color = self.M_TRANS
+            color = self.M_RED
 
         with lock:
             figure = widget.figure

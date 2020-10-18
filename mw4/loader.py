@@ -382,7 +382,7 @@ def main():
     extractDataFiles(mwGlob=mwGlob, splashW=splashW)
 
     # and finally starting the application
-    splashW.showMessage('Loading Data')
+    splashW.showMessage('Initialize Application')
     splashW.setValue(80)
 
     # setting except hook for saving some data of errors

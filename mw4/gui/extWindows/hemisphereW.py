@@ -116,13 +116,13 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.pointsPolarBuild = None
         self.pointsPolarBuildAnnotate = None
 
+        self.ui.hemisphereMove.stackUnder(self.ui.hemisphere)
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
         self.hemisphereMatMove = self.embedMatplot(self.ui.hemisphereMove)
-        self.ui.hemisphereMove.stackUnder(self.ui.hemisphere)
 
+        self.ui.polar.stackUnder(self.ui.polarMove)
         self.polarMat = self.embedMatplot(self.ui.polar)
         self.polarMatMove = self.embedMatplot(self.ui.polarMove)
-        self.ui.polarMove.stackUnder(self.ui.polar)
 
     def initConfig(self):
         """
@@ -527,7 +527,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
             axes.fill(azF,
                       90 - altF,
-                      color=self.M_GREEN_LL,
+                      color=self.M_TRANS,
                       alpha=0.5,
                       zorder=0)
 

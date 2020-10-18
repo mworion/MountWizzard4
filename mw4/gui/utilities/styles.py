@@ -68,6 +68,7 @@ class MWStyles:
     M_GREEN = '#008000'
     M_GREEN_L = '#004000'
     M_GREEN_LL = '#003000'
+    M_GREEN_LL_A = '#00100040'
     M_RED = '#B03030'
     M_PINK_H = '#FF00FF'
     M_PINK = '#B000B0'

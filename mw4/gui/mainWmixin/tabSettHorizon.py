@@ -20,7 +20,7 @@
 # local import
 
 
-class SettHorizon(object):
+class SettHorizon:
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -37,6 +37,7 @@ class SettHorizon(object):
         self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
         self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
+        self.ui.clearHorizonMask.clicked.connect(self.clearHorizonMask)
 
     def initConfig(self):
         """
@@ -135,4 +136,14 @@ class SettHorizon(object):
             self.app.message.emit(f'Horizon mask [{fileName}] saved', 0)
         else:
             self.app.message.emit(f'Horizon mask [{fileName}] cannot no be saved', 2)
+        return True
+
+    def clearHorizonMask(self):
+        """
+
+        :return:
+        """
+        self.app.data.horizonP = []
+        self.ui.horizonFileName.setText('')
+        self.app.redrawHemisphere.emit()
         return True

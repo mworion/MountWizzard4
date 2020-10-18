@@ -392,9 +392,6 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.loadBuildPoints, QIcon(':/icon/load.svg'))
         self.wIcon(self.ui.saveBuildPoints, QIcon(':/icon/save.svg'))
         self.wIcon(self.ui.saveBuildPointsAs, QIcon(':/icon/save.svg'))
-        self.wIcon(self.ui.loadHorizonMask, QIcon(':/icon/load.svg'))
-        self.wIcon(self.ui.saveHorizonMask, QIcon(':/icon/save.svg'))
-        self.wIcon(self.ui.saveHorizonMaskAs, QIcon(':/icon/save.svg'))
         self.wIcon(self.ui.clearBuildP, QIcon(':/icon/trash.svg'))
         self.wIcon(self.ui.genBuildGrid, QIcon(':/icon/run.svg'))
         self.wIcon(self.ui.genBuildMax, QIcon(':/icon/run.svg'))
@@ -411,6 +408,12 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.genBuildSpiralNorm, QIcon(':/icon/run.svg'))
         self.wIcon(self.ui.genBuildSpiralMin, QIcon(':/icon/run.svg'))
         self.wIcon(self.ui.genBuildDSO, QIcon(':/icon/run.svg'))
+
+        # horizon
+        self.wIcon(self.ui.loadHorizonMask, QIcon(':/icon/load.svg'))
+        self.wIcon(self.ui.saveHorizonMask, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.saveHorizonMaskAs, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.clearHorizonMask, QIcon(':/icon/trash.svg'))
 
         # model
         self.wIcon(self.ui.plateSolveSync, QIcon(':/icon/start.svg'))

@@ -378,8 +378,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         else:
             self.pointerPolarAltAz.set_visible(True)
 
-        alt = obsSite.Alt.degrees
-        az = obsSite.Az.degrees
+        alt = 90 - obsSite.Alt.degrees
+        az = obsSite.Az.radians
         self.pointerPolarAltAz.set_data((az, alt))
 
         return True
@@ -736,7 +736,19 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return:
         """
 
-        if not polar:
+        if polar:
+            self.pointerPolarAltAz, = axes.plot(np.radians(180), 45,
+                                                zorder=10,
+                                                color=self.M_PINK_H,
+                                                marker=self.markerAltAz(),
+                                                markersize=25,
+                                                linestyle='none',
+                                                fillstyle='none',
+                                                clip_on=False,
+                                                visible=False,
+                                                )
+
+        else:
             self.pointerAltAz, = axes.plot(180, 45,
                                            zorder=10,
                                            color=self.M_PINK_H,
@@ -758,18 +770,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                                   fill=True,
                                                   visible=False)
             axes.add_patch(self.pointerDome)
-
-        else:
-            self.pointerPolarAltAz, = axes.plot(180, 45,
-                                                zorder=10,
-                                                color=self.M_PINK_H,
-                                                marker=self.markerAltAz(),
-                                                markersize=25,
-                                                linestyle='none',
-                                                fillstyle='none',
-                                                clip_on=False,
-                                                visible=False,
-                                                )
 
         return True
 
@@ -832,9 +832,10 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        showAxes=False)
 
         if hasPolar:
-            axePolar, _ = self.generateFlat(widget=self.polarMat, horizon=True)
-            axePolarMove, _ = self.generateFlat(widget=self.polarMatMove, horizon=True,
-                                                showAxes=False)
+            axePolar, _ = self.generatePolar(widget=self.polarMat, horizon=True)
+            axePolarMove, _ = self.generatePolar(widget=self.polarMatMove, horizon=True,
+                                                 showAxes=False)
+
         else:
             self.pointerPolarAltAz = None
             self.pointsBuildAnnotate = None
@@ -849,7 +850,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         g = self.ui.hemisphere.geometry()
         self.ui.hemisphereMove.setGeometry(QRect(0, 0, g.width(), g.height()))
 
-        if hasPolar:
+        if False:
             axePolar.figure.canvas.flush_events()
             g = self.ui.polar.geometry()
             self.ui.polarMove.setGeometry(QRect(0, 0, g.width(), g.height()))

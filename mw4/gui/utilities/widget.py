@@ -586,11 +586,13 @@ class MWidget(QWidget, styles.MWStyles):
 
         return staticCanvas
 
-    def generatePolar(self, widget=None, title='', showAxes=True):
+    def generatePolar(self, widget=None, title='', horizon=False, showAxes=True):
         """
 
         :param widget:
         :param title:
+        :param horizon:
+        :param showAxes:
         :return:
         """
 
@@ -637,6 +639,13 @@ class MWidget(QWidget, styles.MWStyles):
             # ticks have to be set before labels to be sure to have them positioned correctly
             axe.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))
             axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
+
+            if not horizon:
+                return axe, figure
+
+            axe.set_ylim(0, 90)
+            axe.set_yticks(range(0, 91, 15))
+            axe.set_yticklabels(['', '75', '60', '45', '30', '15', ''])
 
             return axe, figure
 

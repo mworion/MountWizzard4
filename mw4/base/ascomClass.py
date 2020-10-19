@@ -267,8 +267,11 @@ class AscomClass(object):
         :param loadConfig:
         :return: True for test purpose
         """
+        if not self.deviceName:
+            return False
 
         pythoncom.CoInitialize()
+
         try:
             self.client = win32com.client.Dispatch(self.deviceName)
 

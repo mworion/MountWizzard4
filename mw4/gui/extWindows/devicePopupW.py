@@ -192,9 +192,6 @@ class DevicePopup(widget.MWidget):
                 elif isinstance(ui, QDoubleSpinBox):
                     ui.setValue(frameworks[fw][element])
 
-                else:
-                    self.log.info(f'Element {element} in gui for framework {fw} not found')
-
         return True
 
     def initConfig(self):

@@ -591,8 +591,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                       zorder=0,
                       ls='none')
 
-            axes.plot(azF,
-                      altF,
+            axes.plot(az,
+                      alt,
                       color=self.MODE[self.operationMode]['horColor'],
                       marker='',
                       alpha=0.5,

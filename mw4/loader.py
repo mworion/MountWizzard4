@@ -279,7 +279,6 @@ def writeSystemInfo(mwGlob=None):
     :return: true for test purpose
     """
     log.critical('-' * 100)
-    log.critical('MountWizzard4 started !')
     log.critical(f'mountwizzard4    : {version("mountwizzard4")}')
     log.critical(f'indibase         : {version("indibase")}')
     log.critical(f'mountcontrol     : {version("mountcontrol")}')
@@ -291,9 +290,9 @@ def writeSystemInfo(mwGlob=None):
     log.critical(f'Qt               : {QT_VERSION_STR}')
     log.critical(f'release          : {platform.release()}')
     log.critical(f'machine          : {platform.machine()}')
-    log.critical(f'CPU              : {platform.processor()}')
+    log.critical(f'cpu              : {platform.processor()}')
     log.critical(f'node             : {platform.node()}')
-    log.critical(f'IP addr.         : {socket.gethostname()}')
+    log.critical(f'ip addr.         : {socket.gethostname()}')
     log.critical(f'sys.executable   : {sys.executable}')
     log.critical('-' * 100)
 

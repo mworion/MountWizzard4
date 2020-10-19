@@ -125,9 +125,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.polarMat = self.embedMatplot(self.ui.polar)
         self.polarMatMove = self.embedMatplot(self.ui.polarMove)
 
-        if not Config.featureFlags['hemispherePolar']:
-            self.ui.showPolar.setEnabled(False)
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -161,6 +158,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
 
+        if not Config.featureFlags['hemispherePolar']:
+            self.ui.showPolar.setEnabled(False)
+            self.ui.showPolar.setChecked(False)
         self.togglePolar()
 
         return True

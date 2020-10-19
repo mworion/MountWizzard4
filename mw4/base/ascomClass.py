@@ -299,7 +299,7 @@ class AscomClass(object):
                 self.disconnectClient()
 
             except Exception as e:
-                self.log.info(f'Connection to [{self.deviceName}] could not be closed: {e}')
+                self.log.info(f'Connection to [{self.deviceName}]:  could not be closed, {e}')
 
         self.deviceConnected = False
         self.serverConnected = False

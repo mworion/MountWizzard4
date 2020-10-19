@@ -278,7 +278,7 @@ def writeSystemInfo(mwGlob=None):
 
     :return: true for test purpose
     """
-
+    log.critical('-' * 100)
     log.critical('MountWizzard4 started !')
     log.critical(f'mountwizzard4    : {version("mountwizzard4")}')
     log.critical(f'indibase         : {version("indibase")}')
@@ -295,6 +295,7 @@ def writeSystemInfo(mwGlob=None):
     log.critical(f'node             : {platform.node()}')
     log.critical(f'IP addr.         : {socket.gethostname()}')
     log.critical(f'sys.executable   : {sys.executable}')
+    log.critical('-' * 100)
 
     return True
 

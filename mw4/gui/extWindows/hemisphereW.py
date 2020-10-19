@@ -15,6 +15,7 @@
 # Licence APL2.0
 #
 ###########################################################
+import base.packageConfig as Config
 # standard libraries
 
 # external packages
@@ -124,6 +125,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.polarMat = self.embedMatplot(self.ui.polar)
         self.polarMatMove = self.embedMatplot(self.ui.polarMove)
 
+        if not Config.featureFlags['hemispherePolar']:
+            self.ui.showPolar.setEnabled(False)
+
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -156,7 +160,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
-        self.ui.showPolar.setChecked(False)
 
         self.togglePolar()
 
@@ -558,7 +561,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
             axes.plot(az,
                       90 - alt,
-                      color=self.MODE[self.operationMode]['horColor'],
+                      color=self.MODE['normal']['horColor'],
                       marker=self.MODE[self.operationMode]['horMarker'],
                       alpha=0.5,
                       zorder=0,
@@ -566,7 +569,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
             axes.plot(azF,
                       90 - altF,
-                      color=self.MODE[self.operationMode]['horColor'],
+                      color=self.MODE['normal']['horColor'],
                       marker='',
                       alpha=0.5,
                       zorder=0,
@@ -644,7 +647,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                marker=marker,
                                markersize=markersize,
                                fillstyle='none',
-                               color=self.MODE[self.operationMode]['buildPColor'],
+                               color=self.MODE['normal']['buildPColor'],
                                zorder=40,
                                )
                 self.pointsPolarBuild.append(p)

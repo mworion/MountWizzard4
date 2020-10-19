@@ -327,7 +327,7 @@
         <item>
          <widget class="QCheckBox" name="showPolar">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>Show Polar Diagram</string>

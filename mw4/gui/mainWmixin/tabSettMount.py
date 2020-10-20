@@ -79,6 +79,7 @@ class SettMount(object):
         if self.app.mount.bootMount():
             self.app.message.emit('Sent boot command to mount', 0)
             return True
+
         else:
             self.app.message.emit('Mount cannot be booted', 2)
             return False
@@ -87,6 +88,7 @@ class SettMount(object):
         if self.app.mount.shutdown():
             self.app.message.emit('Shutting mount down', 0)
             return True
+
         else:
             self.app.message.emit('Mount cannot be shutdown', 2)
             return False
@@ -103,24 +105,29 @@ class SettMount(object):
         if not value:
             self.log.warning('wrong MAC value: {0}'.format(value))
             return None
+
         if not isinstance(value, str):
             self.log.warning('wrong MAC value: {0}'.format(value))
             return None
+
         value = value.upper()
         value = value.replace('.', ':')
         value = value.split(':')
         if len(value) != 6:
             self.log.warning('wrong MAC value: {0}'.format(value))
             return None
+
         for chunk in value:
             if len(chunk) != 2:
                 self.log.warning('wrong MAC value: {0}'.format(value))
                 return None
+
             for char in chunk:
                 if char not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                                 'A', 'B', 'C', 'D', 'E', 'F']:
                     self.log.warning('wrong MAC value: {0}'.format(value))
                     return None
+
         # now we build the right format
         value = '{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}'.format(*value)
         return value

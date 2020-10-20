@@ -55,7 +55,6 @@ class SettMisc(object):
         self.mutexInstall = PyQt5.QtCore.QMutex()
 
         # setting functional signals
-        self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
         self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
         self.app.dome.signals.slewFinished.connect(lambda: self.playSound('DomeSlew'))
         self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
@@ -401,40 +400,6 @@ class SettMisc(object):
 
         worker.signals.result.connect(self.installFinished)
         self.threadPool.start(worker)
-
-        return True
-
-    def updateFwGui(self, fw):
-        """
-        updateFwGui write all firmware data to the gui.
-
-        :return:    True if ok for testing
-        """
-
-        if fw.product is not None:
-            self.ui.product.setText(fw.product)
-        else:
-            self.ui.product.setText('-')
-
-        if fw.vString is not None:
-            self.ui.vString.setText(fw.vString)
-        else:
-            self.ui.vString.setText('-')
-
-        if fw.date is not None:
-            self.ui.fwdate.setText(fw.date)
-        else:
-            self.ui.fwdate.setText('-')
-
-        if fw.time is not None:
-            self.ui.fwtime.setText(fw.time)
-        else:
-            self.ui.fwtime.setText('-')
-
-        if fw.hardware is not None:
-            self.ui.hardware.setText(fw.hardware)
-        else:
-            self.ui.hardware.setText('-')
 
         return True
 

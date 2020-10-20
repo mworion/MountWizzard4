@@ -42,6 +42,7 @@ class SettMount(object):
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
         self.app.mount.signals.settingDone.connect(self.setMountMAC)
+        self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
         self.ui.settleTimeMount.valueChanged.connect(self.setMountSettlingTime)
 
     def initConfig(self):
@@ -184,5 +185,20 @@ class SettMount(object):
         """
 
         self.app.mount.settlingTime = self.ui.settleTimeMount.value()
+
+        return True
+
+    def updateFwGui(self, fw):
+        """
+        updateFwGui write all firmware data to the gui.
+
+        :return:    True if ok for testing
+        """
+
+        self.guiSetText(self.ui.product, 's', fw.product)
+        self.guiSetText(self.ui.vString, 's', fw.vString)
+        self.guiSetText(self.ui.fwdate, 's', fw.date)
+        self.guiSetText(self.ui.fwtime, 's', fw.time)
+        self.guiSetText(self.ui.hardware, 's', fw.hardware)
 
         return True

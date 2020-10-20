@@ -42,7 +42,6 @@ class SettMount(object):
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
         self.app.mount.signals.settingDone.connect(self.setMountMAC)
-        self.ui.openWeatherMapKey.editingFinished.connect(self.setOpenWeatherMapAPIKey)
         self.ui.settleTimeMount.valueChanged.connect(self.setMountSettlingTime)
 
     def initConfig(self):
@@ -57,8 +56,6 @@ class SettMount(object):
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
         self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
-        self.ui.openWeatherMapKey.setText(config.get('openWeatherMapKey', ''))
-        self.setOpenWeatherMapAPIKey()
         self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 0))
 
         return True
@@ -73,7 +70,6 @@ class SettMount(object):
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
         config['rackCompMAC'] = self.ui.rackCompMAC.text()
-        config['openWeatherMapKey'] = self.ui.openWeatherMapKey.text()
         config['settleTimeMount'] = self.ui.settleTimeMount.value()
 
         return True
@@ -178,21 +174,6 @@ class SettMount(object):
         if self.app.mount.MAC is None:
             return False
         self.ui.mountMAC.setText(self.app.mount.MAC)
-
-        return True
-
-    def setOpenWeatherMapAPIKey(self):
-        """
-
-        :return: success
-        """
-
-        weather = self.app.onlineWeather
-
-        if not weather:
-            return False
-
-        weather.keyAPI = self.ui.openWeatherMapKey.text()
 
         return True
 

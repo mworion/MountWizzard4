@@ -48,6 +48,7 @@ class DevicePopup(widget.MWidget):
         'alpaca': 'ALPACA',
         'astrometry': 'ASTROMETRY',
         'astap': 'ASTAP',
+        'onlineWeather': 'Online Weather',
     }
 
     def __init__(self,
@@ -104,6 +105,10 @@ class DevicePopup(widget.MWidget):
                 'timeout': self.ui.astapTimeout,
                 'appPath': self.ui.astapIndexPath,
                 'indexPath': self.ui.astapAppPath,
+            },
+            'onlineWeather': {
+                'apiKey': self.ui.onlineWeatherApiKey,
+                'hostaddress': self.ui.onlineWeatherHostAddress,
             },
         }
 

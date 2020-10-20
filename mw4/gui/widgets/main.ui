@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>12</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -14878,7 +14878,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -15821,6 +15821,25 @@ Hint if mount will need a flip when following satellite.</string>
          <rect>
           <x>310</x>
           <y>80</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the observing conditions part of the power device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="onlineWeatherSetup">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>110</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -18526,32 +18545,6 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_64">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>265</y>
-         <width>366</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>OpenWeatherMap API key</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLineEdit" name="openWeatherMapKey">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>346</width>
-          <height>22</height>
-         </rect>
         </property>
        </widget>
       </widget>
@@ -24849,7 +24842,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>checkFastDownload</tabstop>
   <tabstop>checkKeepImages</tabstop>
   <tabstop>mountHost</tabstop>
-  <tabstop>openWeatherMapKey</tabstop>
   <tabstop>settleTimeMount</tabstop>
   <tabstop>rackCompMAC</tabstop>
   <tabstop>settleTimeDome</tabstop>

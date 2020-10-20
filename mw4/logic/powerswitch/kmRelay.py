@@ -86,8 +86,14 @@ class KMRelay(QObject):
         # minimum set for driver package built in
         self.framework = ''
         self.data = {}
-        self.defaultConfig = {'framework': '',
-                              'frameworks': {'internal': {'deviceName': 'KMRelay'}}}
+        self.defaultConfig = {
+            'framework': '',
+            'frameworks': {
+                'internal': {
+                    'deviceName': 'KMRelay'
+                }
+            }
+        }
         self.run = {
             'internal': self
         }

@@ -43,7 +43,9 @@ Released betas
 0.170.5
 
 - update skyfield to 1.30
+- update astropy 4.0.3
 - bugfixes
+- rework logging
 - rework hemisphere window
 
 0.170.4

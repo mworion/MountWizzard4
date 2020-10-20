@@ -65,7 +65,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>6</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="ALPACA">
     <attribute name="title">
@@ -1641,7 +1641,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>IP address of INDI server, ip address and host names!</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address for open weather service&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -1692,7 +1692,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>IP address of INDI server, ip address and host names!</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;api key for open weather service&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -1733,7 +1733,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="Relay">
+   <widget class="QWidget" name="relay">
     <attribute name="title">
      <string>Relay</string>
     </attribute>
@@ -1789,13 +1789,13 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>IP address of INDI server, ip address and host names!</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address for relay device&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
      </property>
      <property name="text">
-      <string>api.openweathermap.org</string>
+      <string/>
      </property>
      <property name="maxLength">
       <number>50</number>
@@ -1840,7 +1840,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>Passwor for alpaca device</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Passwor for relay device&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -1891,7 +1891,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>User for alpaca device</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;User for relay device&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -1979,6 +1979,46 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>alpacaHostAddress</tabstop>
+  <tabstop>alpacaPort</tabstop>
+  <tabstop>alpacaDeviceList</tabstop>
+  <tabstop>alpacaDiscover</tabstop>
+  <tabstop>alpacaUser</tabstop>
+  <tabstop>alpacaPassword</tabstop>
+  <tabstop>alpacaCopyConfig</tabstop>
+  <tabstop>ascomDevice</tabstop>
+  <tabstop>ascomSelector</tabstop>
+  <tabstop>indiHostAddress</tabstop>
+  <tabstop>indiPort</tabstop>
+  <tabstop>indiDeviceList</tabstop>
+  <tabstop>indiDiscover</tabstop>
+  <tabstop>indiMessages</tabstop>
+  <tabstop>indiLoadConfig</tabstop>
+  <tabstop>indiCopyConfig</tabstop>
+  <tabstop>selectAstrometryAppPath</tabstop>
+  <tabstop>astrometryAppPath</tabstop>
+  <tabstop>selectAstrometryIndexPath</tabstop>
+  <tabstop>astrometryIndexPath</tabstop>
+  <tabstop>astrometryDeviceList</tabstop>
+  <tabstop>astrometrySearchRadius</tabstop>
+  <tabstop>astrometryTimeout</tabstop>
+  <tabstop>selectAstapAppPath</tabstop>
+  <tabstop>astapAppPath</tabstop>
+  <tabstop>selectAstapIndexPath</tabstop>
+  <tabstop>astapIndexPath</tabstop>
+  <tabstop>astapDeviceList</tabstop>
+  <tabstop>astapSearchRadius</tabstop>
+  <tabstop>astapTimeout</tabstop>
+  <tabstop>onlineWeatherHostAddress</tabstop>
+  <tabstop>onlineWeatherApiKey</tabstop>
+  <tabstop>relayHostAddress</tabstop>
+  <tabstop>relayUser</tabstop>
+  <tabstop>relayPassword</tabstop>
+  <tabstop>cancel</tabstop>
+  <tabstop>ok</tabstop>
+  <tabstop>tab</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
  <designerdata>

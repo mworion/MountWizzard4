@@ -56,7 +56,7 @@ class KMRelay(QObject):
     The class KMRelay inherits all information and handling of KMtronic relay board
     attributes of the connected board and provides the abstracted interface.
 
-        >>> relay = KMRelay(host=None, user='', password='')
+        >>> relay = KMRelay()
 
     """
 
@@ -75,11 +75,7 @@ class KMRelay(QObject):
     # width for pulse
     PULSEWIDTH = 0.5
 
-    def __init__(self,
-                 host=None,
-                 user=None,
-                 password=None,
-                 ):
+    def __init__(self):
         super().__init__()
 
         self.signals = RelaySignals()
@@ -89,63 +85,28 @@ class KMRelay(QObject):
         self.defaultConfig = {
             'framework': '',
             'frameworks': {
-                'internal': {
-                    'deviceName': 'KMRelay'
+                'relay': {
+                    'deviceName': 'KMRelay',
+                    'hostaddress': '',
+                    'user': '',
+                    'password': '',
                 }
             }
         }
         self.run = {
-            'internal': self
+            'relay': self
         }
-        self.deviceName = ''
 
-        self.host = host
         self.mutexPoll = QMutex()
-        self.user = user
-        self.password = password
+        self.deviceName = ''
+        self.hostaddress = ''
+        self.user = ''
+        self.password = ''
         self.status = [0] * 8
 
         self.timerTask = QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.cyclePolling)
-
-    @property
-    def host(self):
-        return self._host
-
-    def checkFormat(self, value):
-        # checking format
-        if not value:
-            self.log.info('Host value not configured')
-            return None
-        if not isinstance(value, (tuple, str)):
-            self.log.warning(f'Wrong host value: {value}')
-            return None
-        # now we got the right format
-        if isinstance(value, str):
-            value = (value, self.DEFAULT_PORT)
-        return value
-
-    @host.setter
-    def host(self, value):
-        value = self.checkFormat(value)
-        self._host = value
-
-    @property
-    def user(self):
-        return self._user
-
-    @user.setter
-    def user(self, value):
-        self._user = value
-
-    @property
-    def password(self):
-        return self._password
-
-    @password.setter
-    def password(self, value):
-        self._password = value
 
     def startCommunication(self, loadConfig=False):
         """
@@ -154,11 +115,11 @@ class KMRelay(QObject):
         :param loadConfig:
         :return: success
         """
-        if not self.host:
+        if not self.hostaddress:
             return False
 
         self.timerTask.start(self.CYCLE_POLLING)
-        self.signals.deviceConnected.emit('KMTronic')
+        # self.signals.deviceConnected.emit('KMTronic')
 
         return True
 
@@ -205,14 +166,14 @@ class KMRelay(QObject):
         :return: result: return values from web interface of box
         """
 
-        if self.host is None:
+        if self.hostaddress is None:
             return None
 
         if not self.mutexPoll.tryLock():
             return None
 
         auth = requests.auth.HTTPBasicAuth(self.user, self.password)
-        url = f'http://{self._host[0]}:{self._host[1]}{url}'
+        url = f'http://{self.hostaddress}:80{url}'
         result = None
 
         try:
@@ -259,6 +220,7 @@ class KMRelay(QObject):
             self.status[value[0] - 1] = value[1]
 
         self.signals.statusReady.emit()
+        self.signals.deviceConnected.emit('KMTronic')
 
         return True
 

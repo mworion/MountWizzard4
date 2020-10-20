@@ -156,7 +156,7 @@ class MountWizzard4(QObject):
             self.log.critical(f'Failed loading planets: {e}')
             self.ephemeris = None
 
-        self.relay = KMRelay(host='localhost')
+        self.relay = KMRelay()
         self.sensorWeather = SensorWeather(self)
         self.onlineWeather = OnlineWeather(self)
         self.directWeather = DirectWeather(self)

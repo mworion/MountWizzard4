@@ -151,7 +151,7 @@ class SettDevice:
             },
             'relay': {
                 'uiDropDown': self.ui.relayDevice,
-                'uiSetup': None,
+                'uiSetup': self.ui.relaySetup,
                 'class': self.app.relay,
                 'deviceType': None,
             },

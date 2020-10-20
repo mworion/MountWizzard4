@@ -15174,6 +15174,25 @@ Hint if mount will need a flip when following satellite.</string>
          <string>Set</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="relaySetup">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>80</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the observing conditions part of the power device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_41">
        <property name="geometry">
@@ -18283,7 +18302,7 @@ When clicking the button, you could change the value.</string>
      </widget>
      <widget class="QWidget" name="MountRemote">
       <attribute name="title">
-       <string>Mount / WeatherAPI</string>
+       <string>Mount</string>
       </attribute>
       <widget class="Line" name="line_97">
        <property name="geometry">
@@ -19415,7 +19434,7 @@ When clicking the button, you could change the value.</string>
      </widget>
      <widget class="QWidget" name="ParkPos">
       <attribute name="title">
-       <string>ParkPositions</string>
+       <string>ParkPositions / Relay</string>
       </attribute>
       <widget class="Line" name="line_83">
        <property name="geometry">
@@ -21643,247 +21662,6 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>Fill</string>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="Relay">
-      <attribute name="title">
-       <string>Relay</string>
-      </attribute>
-      <widget class="Line" name="line_85">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>10</y>
-         <width>11</width>
-         <height>371</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_95">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>15</y>
-         <width>366</width>
-         <height>116</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Relay IP settings</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_197">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>85</y>
-          <width>161</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Password</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="relayPassword">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>85</y>
-          <width>151</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Courier</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Password of relay switch. Is not saved encrypted !&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>empty</string>
-        </property>
-        <property name="maxLength">
-         <number>15</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="relayHost">
-        <property name="geometry">
-         <rect>
-          <x>110</x>
-          <y>25</y>
-          <width>251</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Courier</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of relay switch, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>127.0.0.1</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_196">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>55</y>
-          <width>161</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Username</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="relayUser">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>55</y>
-          <width>151</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Courier</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Username of relay switch. Is not saved encrypted !&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>empty</string>
-        </property>
-        <property name="maxLength">
-         <number>15</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>25</y>
-          <width>71</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>IP Address</string>
         </property>
        </widget>
       </widget>
@@ -24885,25 +24663,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>posAlt9</tabstop>
   <tabstop>posAz9</tabstop>
   <tabstop>posSave9</tabstop>
-  <tabstop>relayHost</tabstop>
-  <tabstop>relayUser</tabstop>
-  <tabstop>relayPassword</tabstop>
-  <tabstop>relayButtonText0</tabstop>
-  <tabstop>relayFun0</tabstop>
-  <tabstop>relayButtonText1</tabstop>
-  <tabstop>relayFun1</tabstop>
-  <tabstop>relayButtonText2</tabstop>
-  <tabstop>relayFun2</tabstop>
-  <tabstop>relayButtonText3</tabstop>
-  <tabstop>relayFun3</tabstop>
-  <tabstop>relayButtonText4</tabstop>
-  <tabstop>relayFun4</tabstop>
-  <tabstop>relayButtonText5</tabstop>
-  <tabstop>relayFun5</tabstop>
-  <tabstop>relayButtonText6</tabstop>
-  <tabstop>relayFun6</tabstop>
-  <tabstop>relayButtonText7</tabstop>
-  <tabstop>relayFun7</tabstop>
   <tabstop>isOnline</tabstop>
   <tabstop>versionRelease</tabstop>
   <tabstop>versionBeta</tabstop>

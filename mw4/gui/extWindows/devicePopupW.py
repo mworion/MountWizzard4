@@ -49,6 +49,7 @@ class DevicePopup(widget.MWidget):
         'astrometry': 'ASTROMETRY',
         'astap': 'ASTAP',
         'onlineWeather': 'Online Weather',
+        'relay': 'Relay',
     }
 
     def __init__(self,
@@ -109,6 +110,11 @@ class DevicePopup(widget.MWidget):
             'onlineWeather': {
                 'apiKey': self.ui.onlineWeatherApiKey,
                 'hostaddress': self.ui.onlineWeatherHostAddress,
+            },
+            'relay': {
+                'hostaddress': self.ui.relayHostAddress,
+                'user': self.ui.relayUser,
+                'password': self.ui.relayPassword,
             },
         }
 

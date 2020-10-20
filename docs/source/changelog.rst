@@ -21,7 +21,7 @@ Unreleased Betas
 
 (0.210.0)
 
-- retrofit based on hashes
+- retrofit model based on hashed coordinates
 
 (0.200.0)
 
@@ -30,6 +30,7 @@ Unreleased Betas
 (0.190.0)
 
 - adding asteroids programming (windows only)
+- adding switch interface Pegasus UPB for ASCOM / ALPACA
 
 (0.180.0)
 
@@ -44,6 +45,7 @@ Released betas
 
 - update skyfield to 1.30
 - update astropy 4.0.3
+- update mountcontrol 0.176
 - bugfixes
 - rework logging
 - rework hemisphere window

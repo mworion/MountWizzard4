@@ -26,6 +26,13 @@ from skyfield.api import Topos, load
 
 
 class Mount(QObject):
+    class MountFirmware:
+        product = 'test'
+        hardware = 'test'
+        vString = '12345'
+        date = 'test'
+        time = 'test'
+
     class MountGeometry:
         offNorth = 0
         offEast = 0
@@ -35,6 +42,8 @@ class Mount(QObject):
 
     class MountSignals(QObject):
         locationDone = pyqtSignal()
+        settingDone = pyqtSignal()
+        firmwareDone = pyqtSignal()
 
     class MountObsSite:
 
@@ -59,6 +68,9 @@ class Mount(QObject):
     signals = MountSignals()
     obsSite = MountObsSite()
     geometry = MountGeometry()
+    firmware = MountFirmware()
+    bootMount = None
+    shutdown = None
     host = None
 
 

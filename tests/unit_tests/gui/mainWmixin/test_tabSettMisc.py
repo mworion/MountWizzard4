@@ -410,61 +410,6 @@ def test_setLoggingLevel3(qtbot):
     assert val == 10
 
 
-def test_updateFwGui_productName():
-    value = 'Test1234'
-    app.app.mount.firmware.product = value
-    app.updateFwGui(app.app.mount.firmware)
-    assert value == app.ui.product.text()
-    value = None
-    app.app.mount.firmware.product = value
-    app.updateFwGui(app.app.mount.firmware)
-    assert '-' == app.ui.product.text()
-
-
-def test_updateFwGui_hwVersion():
-    value = 'Test1234'
-    app.app.mount.firmware.hardware = value
-    app.updateFwGui(app.app.mount.firmware)
-    assert value == app.ui.hardware.text()
-    value = None
-    app.app.mount.firmware.hardware = value
-    app.updateFwGui(app.app.mount.firmware)
-    assert '-' == app.ui.hardware.text()
-
-
-def test_updateFwGui_numberString():
-    value = '2.15.18'
-    app.app.mount.firmware.vString = value
-    app.updateFwGui(app.app.mount.firmware)
-    assert value == app.ui.vString.text()
-    value = None
-    app.app.mount.firmware.vString = value
-    app.updateFwGui(app.app.mount.firmware)
-    assert '-' == app.ui.vString.text()
-
-
-def test_updateFwGui_fwdate():
-    value = 'Test1234'
-    app.app.mount.firmware.date = value
-    app.updateFwGui(app.app.mount.firmware)
-    assert value == app.ui.fwdate.text()
-    value = None
-    app.app.mount.firmware.date = value
-    app.updateFwGui(app.app.mount.firmware)
-    assert '-' == app.ui.fwdate.text()
-
-
-def test_updateFwGui_fwtime():
-    value = 'Test1234'
-    app.app.mount.firmware.time = value
-    app.updateFwGui(app.app.mount.firmware)
-    assert value == app.ui.fwtime.text()
-    value = None
-    app.app.mount.firmware.time = value
-    app.updateFwGui(app.app.mount.firmware)
-    assert '-' == app.ui.fwtime.text()
-
-
 def test_playAudioDomeSlewFinished_1():
     with mock.patch.object(QSound,
                            'play'):

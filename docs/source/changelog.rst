@@ -13,29 +13,34 @@ Unreleased Betas
 
 - First production release
 
-(0.220.0)
+(0.250.0)
+
+- full integration testing
+
+(0.240.0)
 
 - update PyQt5 to 5.15.2
-- full integration testing
 - retrofit based on hashes
 
-(0.210.0)
+(0.230.0)
 
 - retrofit model based on hashed coordinates
 
-(0.200.0)
+(0.220.0)
 
 - bringing back polar diagram
+
+(0.200.0)
+
+- adding switch interface Pegasus UPB for ASCOM / ALPACA
 
 (0.190.0)
 
 - adding asteroids programming (windows only)
-- adding switch interface Pegasus UPB for ASCOM / ALPACA
 
 (0.180.0)
 
 - move weather api to device
-- move mount MAC and IP to device
 - move relay ip to device
 
 Released betas

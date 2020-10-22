@@ -51,8 +51,6 @@ def function(module):
 
     yield window
 
-    window.deleteLater()
-
 
 def test_writeCometMPC_1(function):
     function.installPath = 'tests/temp'

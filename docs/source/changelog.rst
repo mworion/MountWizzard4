@@ -44,6 +44,7 @@ Released betas
 
 - move weather api to device
 - move relay ip to device
+- more room for profile name
 - cleanup gui
 
 0.170.5

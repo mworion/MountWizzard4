@@ -14878,7 +14878,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -22673,7 +22673,7 @@ When clicking the button, you could change the value.</string>
          <x>380</x>
          <y>10</y>
          <width>11</width>
-         <height>381</height>
+         <height>371</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -22693,7 +22693,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>340</y>
+         <y>335</y>
          <width>366</width>
          <height>46</height>
         </rect>
@@ -22787,7 +22787,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>305</y>
+         <y>295</y>
          <width>366</width>
          <height>86</height>
         </rect>
@@ -24058,7 +24058,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <x>455</x>
      <y>5</y>
      <width>140</width>
-     <height>106</height>
+     <height>66</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -24085,27 +24085,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
    </property>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>75</y>
-      <width>44</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>10</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Profile</string>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="timeUTC">
     <property name="enabled">
      <bool>false</bool>
@@ -24113,7 +24092,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     <property name="geometry">
      <rect>
       <x>5</x>
-      <y>55</y>
+      <y>45</y>
       <width>131</width>
       <height>21</height>
      </rect>
@@ -24175,7 +24154,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
       <x>5</x>
       <y>15</y>
       <width>131</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -24232,66 +24211,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <bool>true</bool>
     </property>
     <property name="large" stdset="0">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="profile">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>45</x>
-      <y>75</y>
-      <width>91</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>80</width>
-      <height>25</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>16777215</width>
-      <height>16777215</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>10</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="mouseTracking">
-     <bool>false</bool>
-    </property>
-    <property name="focusPolicy">
-     <enum>Qt::NoFocus</enum>
-    </property>
-    <property name="acceptDrops">
-     <bool>false</bool>
-    </property>
-    <property name="toolTip">
-     <string>Shows the actual selected profile name.</string>
-    </property>
-    <property name="text">
-     <string>-</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-    <property name="readOnly">
      <bool>true</bool>
     </property>
    </widget>
@@ -24579,6 +24498,100 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="text">
      <string>Mount Off</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="statusOnline_2">
+   <property name="geometry">
+    <rect>
+     <x>455</x>
+     <y>75</y>
+     <width>140</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>140</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>140</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <property name="title">
+    <string>Profile</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+   <widget class="QLineEdit" name="profile">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>3</x>
+      <y>13</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>80</width>
+      <height>21</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="toolTip">
+     <string>Shows the actual selected profile name.</string>
+    </property>
+    <property name="text">
+     <string>-</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

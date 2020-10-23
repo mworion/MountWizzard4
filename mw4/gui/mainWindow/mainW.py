@@ -443,6 +443,10 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.refreshName, QIcon(':/icon/reload.svg'))
         self.wIcon(self.ui.refreshModel, QIcon(':/icon/reload.svg'))
 
+        # minor planets
+        self.wIcon(self.ui.progMinorPlanetsFull, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.progMinorPlanetsFiltered, QIcon(':/icon/run.svg'))
+
         # satellite
         self.wIcon(self.ui.stopSatelliteTracking, QIcon(':/icon/cross-circle.svg'))
         self.wIcon(self.ui.startSatelliteTracking, QIcon(':/icon/start.svg'))

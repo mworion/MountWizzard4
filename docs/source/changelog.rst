@@ -38,13 +38,13 @@ Unreleased Betas
 
 - adding asteroids programming (windows only)
 
-(0.180.0)
+Released betas
+--------------
+0.180.0
 
 - move weather api to device
 - move relay ip to device
-
-Released betas
---------------
+- cleanup gui
 
 0.170.5
 

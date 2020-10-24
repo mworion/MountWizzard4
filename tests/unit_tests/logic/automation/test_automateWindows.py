@@ -52,11 +52,10 @@ def function(module):
                   'dataDir': 'tests/data',
                   }
 
-    for file in os.listdir('tests/data'):
+    for file in ['tai-utc.dat', 'finals.data']:
         os.remove('tests/data/' + file)
 
     window = AutomateWindows(app=Test())
-
     yield window
 
 

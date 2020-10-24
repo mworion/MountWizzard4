@@ -277,6 +277,7 @@ def test_addHorizonPoint_1(function):
     class Event:
         xdata = 10
         ydata = 10
+    function.app.data.horizonP = [(0, 0), (0, 360)]
     with mock.patch.object(function,
                            'getIndexPointX',
                            return_value=None):
@@ -291,6 +292,7 @@ def test_addHorizonPoint_2(function):
     class Event:
         xdata = 10
         ydata = 10
+    function.app.data.horizonP = [(0, 0), (0, 360)]
     with mock.patch.object(function,
                            'getIndexPointX',
                            return_value=1):
@@ -305,6 +307,7 @@ def test_addHorizonPoint_3(function):
     class Event:
         xdata = 10
         ydata = 10
+    function.app.data.horizonP = [(0, 0), (0, 360)]
     with mock.patch.object(function,
                            'getIndexPointX',
                            return_value=1):
@@ -382,6 +385,7 @@ def test_editHorizonMask_1(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.horizonMarker, = axe.plot(0, 0)
     function.horizonFill, = axe.fill([0, 1, 2], [0, 1, 2])
+    function.app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
     with mock.patch.object(function,
                            'addHorizonPoint',
                            return_value=False):
@@ -398,13 +402,12 @@ def test_editHorizonMask_2(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.horizonMarker, = axe.plot(0, 0)
     function.horizonFill, = axe.fill([0, 1, 2], [0, 1, 2])
+    function.app.data.horizonP = None
     with mock.patch.object(function,
                            'deleteHorizonPoint',
                            return_value=False):
-        with mock.patch.object(function,
-                               'drawHemisphere'):
-            suc = function.editHorizonMask(data=function.app.data, event=Event())
-            assert not suc
+        suc = function.editHorizonMask(data=function.app.data, event=Event())
+        assert not suc
 
 
 def test_editHorizonMask_3(function):
@@ -414,10 +417,8 @@ def test_editHorizonMask_3(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.horizonMarker, = axe.plot(0, 0)
     function.horizonFill, = axe.fill([0, 1, 2], [0, 1, 2])
-    with mock.patch.object(function,
-                           'drawHemisphere'):
-        suc = function.editHorizonMask(data=function.app.data, event=Event())
-        assert not suc
+    suc = function.editHorizonMask(data=function.app.data, event=Event())
+    assert not suc
 
 
 def test_addBuildPoint_1(function):
@@ -503,7 +504,7 @@ def test_deleteBuildPoint_1(function):
     data = function.app.data
     with mock.patch.object(function,
                            'getIndexPoint',
-                           return_value=1):
+                           return_value=None):
         with mock.patch.object(function.app.data,
                                'delBuildP',
                                return_value=False):
@@ -512,6 +513,22 @@ def test_deleteBuildPoint_1(function):
 
 
 def test_deleteBuildPoint_2(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        button = 0
+    data = function.app.data
+    with mock.patch.object(function,
+                           'getIndexPoint',
+                           return_value=1):
+        with mock.patch.object(function.app.data,
+                               'delBuildP',
+                               return_value=False):
+            suc = function.deleteBuildPoint(data=data, event=Event())
+            assert not suc
+
+
+def test_deleteBuildPoint_3(function):
     class Event:
         xdata = 10
         ydata = 10

@@ -53,7 +53,9 @@ def function(module):
                   }
 
     for file in ['tai-utc.dat', 'finals.data']:
-        os.remove('tests/data/' + file)
+        path = 'tests/data/' + file
+        if os.path.isfile(path):
+            os.remove(path)
 
     window = AutomateWindows(app=Test())
     yield window

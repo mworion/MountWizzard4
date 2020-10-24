@@ -23,10 +23,12 @@ import shutil
 
 # external packages
 from PyQt5.QtCore import QObject
-from pywinauto import Application, timings, application
+from pywinauto import timings, application
 from pywinauto.findwindows import find_windows
 from pywinauto.controls.win32_controls import ButtonWrapper, EditWrapper
-from winreg import OpenKey, CloseKey, EnumKey, EnumValue, HKEY_LOCAL_MACHINE, QueryInfoKey
+from winreg import HKEY_LOCAL_MACHINE
+import winreg
+import pywinauto
 
 # local imports
 from base.loggerMW import CustomLogger
@@ -79,6 +81,9 @@ class AutomateWindows(QObject):
 
     @staticmethod
     def getRegistryPath():
+        """
+        :return:
+        """
         if platform.machine().endswith('64'):
             regPath = 'SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall'
 
@@ -88,29 +93,41 @@ class AutomateWindows(QObject):
         return regPath
 
     @staticmethod
-    def checkRegistrationSubkeysValues(subkey):
+    def convertRegistryEntryToDict(subkey):
         """
-
         :param subkey:
         :return:
         """
         values = dict()
 
-        for j in range(0, QueryInfoKey(subkey)[1]):
-            values[EnumValue(subkey, j)[0]] = EnumValue(subkey, j)[1]
+        for j in range(0, winreg.QueryInfoKey(subkey)[1]):
+            values[winreg.EnumValue(subkey, j)[0]] = winreg.EnumValue(subkey, j)[1]
+
+        return values
+
+    def getValuesForNameKeyFromRegistry(self, nameKey):
+        """
+        :param nameKey:
+        :return:
+        """
+        regPath = self.getRegistryPath()
+        key = winreg.OpenKey(HKEY_LOCAL_MACHINE, regPath)
+        subkey = winreg.OpenKey(key, nameKey)
+        values = self.convertRegistryEntryToDict(subkey)
+        winreg.CloseKey(subkey)
+        winreg.CloseKey(key)
 
         return values
 
     @staticmethod
     def searchNameInRegistry(appName, key):
         """
-
         :param appName:
         :param key:
         :return:
         """
-        for i in range(0, QueryInfoKey(key)[0]):
-            nameKey = EnumKey(key, i)
+        for i in range(0, winreg.QueryInfoKey(key)[0]):
+            nameKey = winreg.EnumKey(key, i)
             if appName in nameKey:
                 break
         else:
@@ -118,26 +135,31 @@ class AutomateWindows(QObject):
 
         return nameKey
 
-    def extractPropertiesFromRegistry(self, appName):
+    def getNameKeyFromRegistry(self, appName):
         """
-
         :param appName:
-        :param key:
         :return:
         """
         regPath = self.getRegistryPath()
-        key = OpenKey(HKEY_LOCAL_MACHINE, regPath)
+        key = winreg.OpenKey(HKEY_LOCAL_MACHINE, regPath)
         nameKey = self.searchNameInRegistry(appName, key)
+        winreg.CloseKey(key)
 
-        if not nameKey:
-            CloseKey(key)
+        return nameKey
+
+    def extractPropertiesFromRegistry(self, appName):
+        """
+        :param appName:
+        :return:
+        """
+
+        nameKey = self.getNameKeyFromRegistry(appName)
+        if not appName:
             return False, '', ''
 
-        subkey = OpenKey(key, nameKey)
-        values = self.checkRegistrationSubkeysValues(subkey)
-        CloseKey(subkey)
+        values = self.getValuesForNameKeyFromRegistry(nameKey)
 
-        if appName in values['DisplayName'] and 'InstallLocation' in values:
+        if appName in values.get('DisplayName', '') and 'InstallLocation' in values:
             available = True
             name = values['DisplayName']
             installPath = values['InstallLocation']
@@ -147,13 +169,10 @@ class AutomateWindows(QObject):
             installPath = ''
             name = ''
 
-        CloseKey(key)
-
         return available, installPath, name
 
     def getAppSettings(self, appName):
         """
-
         :param appName:
         :return:
         """
@@ -186,7 +205,10 @@ class AutomateWindows(QObject):
             return True
 
     def startUpdater(self):
-        self.updater = Application(backend='win32')
+        """
+        :return:
+        """
+        self.updater = pywinauto.Application(backend='win32')
 
         try:
             self.updater.start(self.installPath + self.UPDATER_EXE)
@@ -195,35 +217,45 @@ class AutomateWindows(QObject):
             self.logger.error('Failed to start updater, please check!')
             return False
 
+        except Exception as e:
+            self.logger.error(f'Failed to start updater, error {e}')
+            return False
+
         else:
             suc = self.checkFloatingPointErrorWindow()
             return suc
 
-    def clearUploadMenu(self):
+    def clearUploadMenuCommands(self):
+        """
+        :return:
+        """
+        win = self.updater['10 micron control box update']
+        win['next'].click()
+        win['next'].click()
+        ButtonWrapper(win['Control box firmware']).uncheck_by_click()
+        ButtonWrapper(win['Orbital parameters of comets']).uncheck_by_click()
+        ButtonWrapper(win['Orbital parameters of asteroids']).uncheck_by_click()
+        ButtonWrapper(win['Orbital parameters of satellites']).uncheck_by_click()
+        ButtonWrapper(win['UTC / Earth rotation data']).uncheck_by_click()
+        return True
 
+    def clearUploadMenu(self):
+        """
+        :return:
+        """
         try:
-            win = self.updater['10 micron control box update']
-            win['next'].click()
-            win['next'].click()
-            ButtonWrapper(win['Control box firmware']).uncheck_by_click()
+            self.clearUploadMenuCommands()
 
         except Exception as e:
             self.logger.error('error{0}'.format(e))
             return False
 
-        ButtonWrapper(win['Orbital parameters of comets']).uncheck_by_click()
-        ButtonWrapper(win['Orbital parameters of asteroids']).uncheck_by_click()
-        ButtonWrapper(win['Orbital parameters of satellites']).uncheck_by_click()
-        ButtonWrapper(win['UTC / Earth rotation data']).uncheck_by_click()
-
         return True
 
     def prepareUpdater(self):
         """
-
         :return:
         """
-
         self.updater = None
         os.chdir(os.path.dirname(self.installPath))
 
@@ -238,17 +270,14 @@ class AutomateWindows(QObject):
             return False
 
     def doUploadAndCloseInstaller(self):
+        """
+        :return:
+        """
         win = self.updater['10 micron control box update']
         try:
             win['next'].click()
             win['next'].click()
             win['Update Now'].click()
-
-        except Exception as e:
-            self.logger.error(f'error{e}')
-            return False
-
-        try:
             dialog = timings.wait_until_passes(60,
                                                0.5,
                                                lambda: find_windows(title='Update completed',
@@ -294,7 +323,7 @@ class AutomateWindows(QObject):
         finally:
             os.chdir(self.actualWorkDir)
 
-    def dialogEarthRotation(self):
+    def uploadEarthRotationDataCommands(self):
         """
 
         :return:
@@ -321,7 +350,7 @@ class AutomateWindows(QObject):
         self.prepareUpdater()
 
         try:
-            self.dialogEarthRotation()
+            self.uploadEarthRotationDataCommands()
 
         except Exception as e:
             self.logger.error(f'error{e}')

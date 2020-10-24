@@ -32,7 +32,9 @@ if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 from logic.automation.automateWindows import AutomateWindows
-from winreg import HKEY_LOCAL_MACHINE, OpenKey
+import winreg
+from pywinauto import timings
+import pywinauto
 
 # todo: https://github.com/pywinauto/pywinauto/issues/858
 
@@ -74,13 +76,225 @@ def test_getRegistrationKeyPath_2(function):
         assert val == 'SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall'
 
 
-def test_checkRegistrationSubkeys_1(function):
-    p = function.getRegistryPath()
-    key = OpenKey(HKEY_LOCAL_MACHINE, p)
-    avail, name, path = function.extractPropertiesFromRegistry('*', key)
-    assert avail
-    assert path == ''
-    assert name == ''
+def test_convertRegistryEntryToDict(function):
+    with mock.patch.object(winreg,
+                           'QueryInfoKey',
+                           return_value=[0, 1]):
+        with mock.patch.object(winreg,
+                               'EnumValue',
+                               return_value=['test', 'test']):
+            val = function.convertRegistryEntryToDict('test')
+            assert val
+
+
+def test_searchNameInRegistry_1(function):
+    with mock.patch.object(winreg,
+                           'QueryInfoKey',
+                           return_value=[1]):
+        with mock.patch.object(winreg,
+                               'EnumKey',
+                               return_value=['test']):
+            val = function.searchNameInRegistry('test', 'test')
+            assert val
+
+
+def test_searchNameInRegistry_2(function):
+    with mock.patch.object(winreg,
+                           'QueryInfoKey',
+                           return_value=[1]):
+        with mock.patch.object(winreg,
+                               'EnumKey',
+                               return_value=['test']):
+            val = function.searchNameInRegistry('none', 'none')
+            assert not val
+
+
+def test_getNameKeyFromRegistry_1(function):
+    with mock.patch.object(function,
+                           'getRegistryPath',
+                           return_value='test'):
+        with mock.patch.object(winreg,
+                               'OpenKey',
+                               return_value='test'):
+            with mock.patch.object(function,
+                                   'searchNameInRegistry',
+                                   return_value='test'):
+                with mock.patch.object(winreg,
+                                       'CloseKey',
+                                       return_value='test'):
+                    val = function.getNameKeyFromRegistry('test')
+                    assert val == 'test'
+
+
+def test_extractPropertiesFromRegistry_1(function):
+    with mock.patch.object(function,
+                           'getNameKeyFromRegistry',
+                           return_value=''):
+        avail, path, name = function.extractPropertiesFromRegistry('')
+        assert not avail
+        assert path == ''
+        assert name == ''
+
+
+def test_extractPropertiesFromRegistry_2(function):
+    with mock.patch.object(function,
+                           'getNameKeyFromRegistry',
+                           return_value='test'):
+        with mock.patch.object(function,
+                               'getValuesForNameKeyFromRegistry',
+                               return_value={}):
+            avail, path, name = function.extractPropertiesFromRegistry('test')
+            assert not avail
+            assert path == ''
+            assert name == ''
+
+
+def test_extractPropertiesFromRegistry_3(function):
+    with mock.patch.object(function,
+                           'getNameKeyFromRegistry',
+                           return_value='test'):
+        with mock.patch.object(function,
+                               'getValuesForNameKeyFromRegistry',
+                               return_value={'DisplayName': 'test',
+                                             'InstallLocation': 'test'}):
+            avail, path, name = function.extractPropertiesFromRegistry('test')
+            assert avail
+            assert path == 'test'
+            assert name == 'test'
+
+
+def test_getAppSettings_1(function):
+    with mock.patch.object(function,
+                           'extractPropertiesFromRegistry',
+                           return_value='test'):
+        avail, path, name = function.getAppSettings('test')
+        assert not avail
+        assert path == ''
+        assert name == ''
+
+
+def test_getAppSettings_2(function):
+    with mock.patch.object(function,
+                           'extractPropertiesFromRegistry',
+                           return_value='test',
+                           side_effect=Exception()):
+        avail, path, name = function.getAppSettings('test')
+        assert not avail
+        assert path == ''
+        assert name == ''
+
+
+def test_getAppSettings_3(function):
+    with mock.patch.object(function,
+                           'extractPropertiesFromRegistry',
+                           return_value=(True, 'test', 'test')):
+        avail, path, name = function.getAppSettings('test')
+        assert avail
+        assert path == 'test'
+        assert name == 'test'
+
+
+def test_checkFloatingPointErrorWindow_1(function):
+    class Test1:
+        @staticmethod
+        def click():
+            pass
+
+    class Test:
+        @staticmethod
+        def window(handle=None):
+            return {'OK': Test1()}
+
+    function.updater = Test()
+    with mock.patch.object(timings,
+                           'wait_until_passes'):
+        suc = function.checkFloatingPointErrorWindow()
+        assert suc
+
+
+def test_checkFloatingPointErrorWindow_2(function):
+    class Test1:
+        @staticmethod
+        def click():
+            pass
+
+    class Test:
+        @staticmethod
+        def window(handle=None):
+            return {'OK': Test1()}
+
+    function.updater = Test()
+    with mock.patch.object(timings,
+                           'wait_until_passes',
+                           side_effect=Exception()):
+        suc = function.checkFloatingPointErrorWindow()
+        assert not suc
+
+
+def test_checkFloatingPointErrorWindow_3(function):
+    class Test1:
+        @staticmethod
+        def click():
+            pass
+
+    class Test:
+        @staticmethod
+        def window(handle=None):
+            return {'OK': Test1()}
+
+    function.updater = Test()
+    with mock.patch.object(timings,
+                           'wait_until_passes',
+                           side_effect=timings.TimeoutError):
+        suc = function.checkFloatingPointErrorWindow()
+        assert suc
+
+
+def test_startUpdater_1(function):
+    class Test:
+        @staticmethod
+        def start(a):
+            pass
+
+    with mock.patch.object(pywinauto,
+                           'Application',
+                           return_value=Test()):
+        with mock.patch.object(Test,
+                               'start',
+                               side_effect=pywinauto.application.AppStartError()):
+            suc = function.startUpdater()
+            assert not suc
+
+
+def test_startUpdater_2(function):
+    class Test:
+        @staticmethod
+        def start(a):
+            pass
+
+    with mock.patch.object(pywinauto,
+                           'Application',
+                           return_value=Test()):
+        with mock.patch.object(Test,
+                               'start',
+                               side_effect=Exception()):
+            suc = function.startUpdater()
+            assert not suc
+
+
+def test_startUpdater_3(function):
+    class Test:
+        @staticmethod
+        def start(a):
+            pass
+
+    with mock.patch.object(pywinauto,
+                           'Application',
+                           return_value=Test()):
+        with mock.patch.object(function,
+                               'checkFloatingPointErrorWindow'):
+            suc = function.startUpdater()
+            assert suc
 
 
 def test_uploadEarthRotationData_1(function):
@@ -88,7 +302,7 @@ def test_uploadEarthRotationData_1(function):
     with mock.patch.object(function,
                            'prepareUpdater'):
         with mock.patch.object(function,
-                               'dialogEarthRotation',
+                               'uploadEarthRotationDataCommands',
                                side_effect=Exception()):
             suc = function.uploadEarthRotationData()
             assert not suc
@@ -99,7 +313,7 @@ def test_uploadEarthRotationData_2(function):
     with mock.patch.object(function,
                            'prepareUpdater'):
         with mock.patch.object(function,
-                               'dialogEarthRotation'):
+                               'uploadEarthRotationDataCommands'):
             with mock.patch.object(function,
                                    'doUploadAndCloseInstaller',
                                    return_value=False):
@@ -112,7 +326,7 @@ def test_uploadEarthRotationData_3(function):
     with mock.patch.object(function,
                            'prepareUpdater'):
         with mock.patch.object(function,
-                               'dialogEarthRotation'):
+                               'uploadEarthRotationDataCommands'):
             with mock.patch.object(function,
                                    'doUploadAndCloseInstaller',
                                    return_value=True):

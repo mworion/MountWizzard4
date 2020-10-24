@@ -36,7 +36,6 @@ import winreg
 from pywinauto import timings
 import pywinauto
 import pywinauto.controls.win32_controls as controls
-from pywinauto.controls.win32_controls import ButtonWrapper
 # todo: https://github.com/pywinauto/pywinauto/issues/858
 
 

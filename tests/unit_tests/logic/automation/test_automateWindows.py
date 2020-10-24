@@ -21,6 +21,8 @@ import pytest
 import os
 import json
 import platform
+import shutil
+from unittest import mock
 
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject
@@ -30,6 +32,7 @@ if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 from logic.automation.automateWindows import AutomateWindows
+from winreg import HKEY_LOCAL_MACHINE, OpenKey
 
 # todo: https://github.com/pywinauto/pywinauto/issues/858
 
@@ -47,9 +50,92 @@ def function(module):
                   'dataDir': 'tests/data',
                   }
 
+    for file in os.listdir('tests/data'):
+        os.remove('tests/data/' + file)
+
     window = AutomateWindows(app=Test())
 
     yield window
+
+
+def test_getRegistrationKeyPath_1(function):
+    with mock.patch.object(platform,
+                           'machine',
+                           return_value='64'):
+        val = function.getRegistryPath()
+        assert val == 'SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall'
+
+
+def test_getRegistrationKeyPath_2(function):
+    with mock.patch.object(platform,
+                           'machine',
+                           return_value='32'):
+        val = function.getRegistryPath()
+        assert val == 'SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall'
+
+
+def test_checkRegistrationSubkeys_1(function):
+    p = function.getRegistryPath()
+    key = OpenKey(HKEY_LOCAL_MACHINE, p)
+    avail, name, path = function.extractPropertiesFromRegistry('*', key)
+    assert avail
+    assert path == ''
+    assert name == ''
+
+
+def test_uploadEarthRotationData_1(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'dialogEarthRotation',
+                               side_effect=Exception()):
+            suc = function.uploadEarthRotationData()
+            assert not suc
+
+
+def test_uploadEarthRotationData_2(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'dialogEarthRotation'):
+            with mock.patch.object(function,
+                                   'doUploadAndCloseInstaller',
+                                   return_value=False):
+                suc = function.uploadEarthRotationData()
+                assert not suc
+
+
+def test_uploadEarthRotationData_3(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'dialogEarthRotation'):
+            with mock.patch.object(function,
+                                   'doUploadAndCloseInstaller',
+                                   return_value=True):
+                suc = function.uploadEarthRotationData()
+                assert suc
+
+
+def test_writeEarthRotationData_1(function):
+    suc = function.writeEarthRotationData()
+    assert not suc
+
+
+def test_writeEarthRotationData_2(function):
+    shutil.copy('tests/testData/tai-utc.dat', 'tests/data/tai-utc.dat')
+    suc = function.writeEarthRotationData()
+    assert not suc
+
+
+def test_writeEarthRotationData_3(function):
+    shutil.copy('tests/testData/tai-utc.dat', 'tests/data/tai-utc.dat')
+    shutil.copy('tests/testData/finals.data', 'tests/data/finals.data')
+    suc = function.writeEarthRotationData()
+    assert suc
 
 
 def test_writeCometMPC_1(function):

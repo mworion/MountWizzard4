@@ -71,14 +71,14 @@ class AutomateWindows(QObject):
         self.app = app
         self.threadPool = app.threadPool
 
-        val = self.checkRegistrationKeys('10micron QCI')
+        val = self.getAppSettings('10micron QCI')
         self.available, self.name, self.installPath = val
         self.updaterRunnable = self.installPath + self.UPDATER_EXE
         self.updater = None
         self.actualWorkDir = os.getcwd()
 
     @staticmethod
-    def getRegistrationKeyPath():
+    def getRegistryPath():
         if platform.machine().endswith('64'):
             regPath = 'SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall'
 
@@ -87,46 +87,84 @@ class AutomateWindows(QObject):
 
         return regPath
 
-    def checkRegistrationKeys(self, appSearchName):
-        regPath = self.getRegistrationKeyPath()
+    @staticmethod
+    def checkRegistrationSubkeysValues(subkey):
+        """
 
-        installPath = ''
-        available = False
-        name = ''
+        :param subkey:
+        :return:
+        """
+        values = dict()
 
-        try:
-            key = OpenKey(HKEY_LOCAL_MACHINE, regPath)
-            for i in range(0, QueryInfoKey(key)[0]):
-                nameKey = EnumKey(key, i)
-                subkey = OpenKey(key, nameKey)
+        for j in range(0, QueryInfoKey(subkey)[1]):
+            values[EnumValue(subkey, j)[0]] = EnumValue(subkey, j)[1]
 
-                for j in range(0, QueryInfoKey(subkey)[1]):
-                    values = EnumValue(subkey, j)
+        return values
 
-                    if values[0] == 'DisplayName':
-                        name = values[1]
+    @staticmethod
+    def searchNameInRegistry(appName, key):
+        """
 
-                    if values[0] == 'InstallLocation':
-                        installPath = values[1]
+        :param appName:
+        :param key:
+        :return:
+        """
+        for i in range(0, QueryInfoKey(key)[0]):
+            nameKey = EnumKey(key, i)
+            if appName in nameKey:
+                break
+        else:
+            nameKey = ''
 
-                if appSearchName in name:
-                    available = True
-                    CloseKey(subkey)
-                    break
+        return nameKey
 
-                else:
-                    CloseKey(subkey)
+    def extractPropertiesFromRegistry(self, appName):
+        """
 
+        :param appName:
+        :param key:
+        :return:
+        """
+        regPath = self.getRegistryPath()
+        key = OpenKey(HKEY_LOCAL_MACHINE, regPath)
+        nameKey = self.searchNameInRegistry(appName, key)
+
+        if not nameKey:
             CloseKey(key)
-            if not available:
-                installPath = ''
-                name = ''
+            return False, '', ''
+
+        subkey = OpenKey(key, nameKey)
+        values = self.checkRegistrationSubkeysValues(subkey)
+        CloseKey(subkey)
+
+        if appName in values['DisplayName'] and 'InstallLocation' in values:
+            available = True
+            name = values['DisplayName']
+            installPath = values['InstallLocation']
+
+        else:
+            available = False
+            installPath = ''
+            name = ''
+
+        CloseKey(key)
+
+        return available, installPath, name
+
+    def getAppSettings(self, appName):
+        """
+
+        :param appName:
+        :return:
+        """
+        try:
+            available, installPath, displayName = self.extractPropertiesFromRegistry(appName)
 
         except Exception as e:
-            self.logger.debug(f'Name: {name}, path: {installPath}, error: {e}')
+            self.logger.debug(f'{e}')
+            return False, '', ''
 
-        finally:
-            return available, name, installPath
+        return available, displayName, installPath
 
     def checkFloatingPointErrorWindow(self):
         try:
@@ -256,23 +294,34 @@ class AutomateWindows(QObject):
         finally:
             os.chdir(self.actualWorkDir)
 
+    def dialogEarthRotation(self):
+        """
+
+        :return:
+        """
+        win = self.updater['10 micron control box update']
+        ButtonWrapper(win['UTC / Earth rotation data']).check_by_click()
+        win['Edit...1'].click()
+        popup = self.updater['UTC / Earth rotation data']
+        popup['Import files...'].click()
+        filedialog = self.updater['Open finals data']
+        EditWrapper(filedialog['Edit13']).set_text(self.installPath + self.UTC_1_FILE)
+        filedialog['Button16'].click()
+        filedialog = self.updater['Open tai-utc.dat']
+        EditWrapper(filedialog['Edit13']).set_text(self.installPath + self.UTC_2_FILE)
+        filedialog['Button16'].click()
+        fileOK = self.updater['UTC data']
+        fileOK['OK'].click()
+
     def uploadEarthRotationData(self):
+        """
+
+        :return:
+        """
         self.prepareUpdater()
 
         try:
-            win = self.updater['10 micron control box update']
-            ButtonWrapper(win['UTC / Earth rotation data']).check_by_click()
-            win['Edit...1'].click()
-            popup = self.updater['UTC / Earth rotation data']
-            popup['Import files...'].click()
-            filedialog = self.updater['Open finals data']
-            EditWrapper(filedialog['Edit13']).set_text(self.installPath + self.UTC_1_FILE)
-            filedialog['Button16'].click()
-            filedialog = self.updater['Open tai-utc.dat']
-            EditWrapper(filedialog['Edit13']).set_text(self.installPath + self.UTC_2_FILE)
-            filedialog['Button16'].click()
-            fileOK = self.updater['UTC data']
-            fileOK['OK'].click()
+            self.dialogEarthRotation()
 
         except Exception as e:
             self.logger.error(f'error{e}')

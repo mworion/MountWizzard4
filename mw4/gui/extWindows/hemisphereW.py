@@ -391,7 +391,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         updateDome is called whenever an update of coordinates from dome are given.
         it takes the actual values and corrects the point in window if window is in
         show status.
-        If the object is not created, the routing returns false.
 
         :param azimuth:
         :return: success

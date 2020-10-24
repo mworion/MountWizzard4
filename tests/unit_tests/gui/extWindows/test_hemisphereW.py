@@ -74,14 +74,7 @@ def test_closeEvent_1(function):
 
 
 def test_resizeEvent_1(function):
-    function.startup = False
-    with mock.patch.object(MWidget,
-                           'resizeEvent'):
-        function.resizeEvent(QEvent)
-
-
-def test_resizeEvent_2(function):
-    function.startup = True
+    function.ui.showPolar.setChecked(True)
     with mock.patch.object(MWidget,
                            'resizeEvent'):
         function.resizeEvent(QEvent)
@@ -94,6 +87,17 @@ def test_showWindow_1(function):
                                'show'):
             suc = function.showWindow()
             assert suc
+
+
+def test_togglePolar_1(function):
+    suc = function.togglePolar()
+    assert suc
+
+
+def test_togglePolar_2(function):
+    function.ui.showPolar.setChecked(True)
+    suc = function.togglePolar()
+    assert suc
 
 
 def test_updateOnChangedParams_1(function):
@@ -128,8 +132,7 @@ def test_updateOnChangedParams_2(function):
 
 
 def test_updatePointerAltAz_1(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
-    function.pointerAltAz, = axe.plot(0, 0)
+    function.pointerAltAz = None
     suc = function.updatePointerAltAz()
     assert not suc
 
@@ -138,6 +141,7 @@ def test_updatePointerAltAz_2(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
     function.pointerAltAz, = axe.plot(0, 0)
     function.app.mount.obsSite.Alt = Angle(degrees=80)
+    function.app.mount.obsSite.Az = None
     suc = function.updatePointerAltAz()
     assert not suc
 
@@ -145,9 +149,51 @@ def test_updatePointerAltAz_2(function):
 def test_updatePointerAltAz_3(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
     function.pointerAltAz, = axe.plot(0, 0)
+    function.app.mount.obsSite.Alt = None
+    function.app.mount.obsSite.Az = Angle(degrees=80)
+    suc = function.updatePointerAltAz()
+    assert not suc
+
+
+def test_updatePointerAltAz_4(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
+    function.pointerAltAz, = axe.plot(0, 0)
     function.app.mount.obsSite.Alt = Angle(degrees=80)
     function.app.mount.obsSite.Az = Angle(degrees=80)
     suc = function.updatePointerAltAz()
+    assert suc
+
+
+def test_updatePointerPolarAltAz_1(function):
+    function.pointerPolarAltAz = None
+    suc = function.updatePointerPolarAltAz()
+    assert not suc
+
+
+def test_updatePointerPolarAltAz_2(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
+    function.pointerPolarAltAz, = axe.plot(0, 0)
+    function.app.mount.obsSite.Alt = Angle(degrees=80)
+    function.app.mount.obsSite.Az = None
+    suc = function.updatePointerPolarAltAz()
+    assert not suc
+
+
+def test_updatePointerPolarAltAz_3(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
+    function.pointerPolarAltAz, = axe.plot(0, 0)
+    function.app.mount.obsSite.Alt = None
+    function.app.mount.obsSite.Az = Angle(degrees=80)
+    suc = function.updatePointerPolarAltAz()
+    assert not suc
+
+
+def test_updatePointerPolarAltAz_4(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
+    function.pointerPolarAltAz, = axe.plot(0, 0)
+    function.app.mount.obsSite.Alt = Angle(degrees=80)
+    function.app.mount.obsSite.Az = Angle(degrees=80)
+    suc = function.updatePointerPolarAltAz()
     assert suc
 
 
@@ -202,6 +248,27 @@ def test_updatePointMarker_1(function):
     assert suc
 
 
+def test_updatePolarPointMarker_1(function):
+    function.pointsPolarBuild = list()
+    suc = function.updatePolarPointMarker()
+    assert not suc
+
+
+def test_updatePolarPointMarker_2(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.pointsPolarBuild = list()
+    function.pointsPolarBuildAnnotate = list()
+    p, = axe.plot(0, 0)
+    function.pointsPolarBuild.append(p)
+    function.pointsPolarBuild.append(p)
+    function.pointsPolarBuildAnnotate.append(axe.annotate('test', (0, 0)))
+    function.pointsPolarBuildAnnotate.append(axe.annotate('test', (0, 0)))
+
+    function.app.data.buildP = [(0, 0, True), (0, 360, False)]
+    suc = function.updatePolarPointMarker()
+    assert suc
+
+
 def test_updateAlignStar_1(function):
     function.ui.checkShowAlignStar.setChecked(False)
     suc = function.updateAlignStar()
@@ -245,6 +312,7 @@ def test_clearHemisphere(function):
 
 def test_staticHorizon_1(function):
     function.ui.checkUseHorizon.setChecked(False)
+    function.app.data.horizonP = list()
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     suc = function.staticHorizon(axe)
     assert not suc
@@ -255,6 +323,22 @@ def test_staticHorizon_2(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.app.data.horizonP = [(0, 0), (0, 360)]
     suc = function.staticHorizon(axe)
+    assert suc
+
+
+def test_staticHorizon_3(function):
+    function.ui.checkUseHorizon.setChecked(False)
+    function.app.data.horizonP = list()
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    suc = function.staticHorizon(axe, polar=True)
+    assert not suc
+
+
+def test_staticHorizon_4(function):
+    function.ui.checkUseHorizon.setChecked(True)
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.app.data.horizonP = [(0, 0), (0, 360)]
+    suc = function.staticHorizon(axe, polar=True)
     assert suc
 
 
@@ -281,10 +365,40 @@ def test_staticModelData_3(function):
     assert suc
 
 
-def test_staticCelestialEquator(function):
+def test_staticModelData_4(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.app.data.buildP = list()
+    suc = function.staticModelData(axe, polar=True)
+    assert not suc
+
+
+def test_staticModelData_5(function):
+    function.ui.checkShowSlewPath.setChecked(False)
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.app.data.buildP = [(0, 0, True), (0, 360, True)]
+    suc = function.staticModelData(axe, polar=True)
+    assert suc
+
+
+def test_staticModelData_6(function):
+    function.ui.checkShowSlewPath.setChecked(True)
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.app.data.buildP = [(0, 0, True), (0, 360, False)]
+    suc = function.staticModelData(axe, polar=True)
+    assert suc
+
+
+def test_staticCelestialEquator_1(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.ui.checkShowCelestial.setChecked(True)
     suc = function.staticCelestialEquator(axe)
+    assert suc
+
+
+def test_staticCelestialEquator_2(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.ui.checkShowCelestial.setChecked(True)
+    suc = function.staticCelestialEquator(axe, polar=True)
     assert suc
 
 
@@ -326,6 +440,15 @@ def test_drawHemisphereStatic_1(function):
     function.ui.checkShowMeridian.setChecked(True)
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     suc = function.drawHemisphereStatic(axe)
+    assert suc
+
+
+def test_drawHemisphereStatic_2(function):
+    function.ui.checkUseHorizon.setChecked(True)
+    function.ui.checkShowCelestial.setChecked(True)
+    function.ui.checkShowMeridian.setChecked(True)
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    suc = function.drawHemisphereStatic(axe, polar=True)
     assert suc
 
 

@@ -35,7 +35,8 @@ from logic.automation.automateWindows import AutomateWindows
 import winreg
 from pywinauto import timings
 import pywinauto
-
+import pywinauto.controls.win32_controls as controls
+from pywinauto.controls.win32_controls import ButtonWrapper
 # todo: https://github.com/pywinauto/pywinauto/issues/858
 
 
@@ -332,6 +333,173 @@ def test_uploadEarthRotationData_3(function):
                                    return_value=True):
                 suc = function.uploadEarthRotationData()
                 assert suc
+
+
+def test_clearUploadMenuCommands(function):
+    class Test:
+        @staticmethod
+        def click():
+            pass
+
+        @staticmethod
+        def uncheck_by_click():
+            pass
+
+    win = {'next': Test(),
+           'Control box firmware': Test(),
+           'Orbital parameters of comets': Test(),
+           'Orbital parameters of asteroids': Test(),
+           'Orbital parameters of satellites': Test(),
+           'UTC / Earth rotation data': Test()
+           }
+    function.updater = {'10 micron control box update': win}
+    with mock.patch.object(controls,
+                           'ButtonWrapper'):
+        suc = function.clearUploadMenuCommands()
+        assert suc
+
+
+def test_clearUploadMenu_1(function):
+    with mock.patch.object(function,
+                           'clearUploadMenuCommands'):
+        suc = function.clearUploadMenu()
+        assert suc
+
+
+def test_clearUploadMenu_2(function):
+    with mock.patch.object(function,
+                           'clearUploadMenuCommands',
+                           side_effect=Exception()):
+        suc = function.clearUploadMenu()
+        assert not suc
+
+
+def test_prepareUpdater_1(function):
+    with mock.patch.object(os,
+                           'chdir'):
+        with mock.patch.object(function,
+                               'startUpdater',
+                               return_value=False):
+            suc = function.prepareUpdater()
+            assert not suc
+
+
+def test_prepareUpdater_2(function):
+    with mock.patch.object(os,
+                           'chdir'):
+        with mock.patch.object(function,
+                               'startUpdater',
+                               return_value=True):
+            with mock.patch.object(function,
+                                   'clearUploadMenu',
+                                   return_value=False):
+                suc = function.prepareUpdater()
+                assert not suc
+
+
+def test_prepareUpdater_3(function):
+    with mock.patch.object(os,
+                           'chdir'):
+        with mock.patch.object(function,
+                               'startUpdater',
+                               return_value=True):
+            with mock.patch.object(function,
+                                   'clearUploadMenu',
+                                   return_value=True):
+                suc = function.prepareUpdater()
+                assert suc
+
+
+def test_doUploadAndCloseInstallerCommands(function):
+    class Test:
+        @staticmethod
+        def click():
+            pass
+
+    win = {'next': Test(),
+           'Update Now': Test(),
+           'OK': Test()
+           }
+    function.updater = {'10 micron control box update': win}
+    with mock.patch.object(timings,
+                           'wait_until_passes'):
+        suc = function.doUploadAndCloseInstallerCommands()
+        assert suc
+
+
+def test_pressOK(function):
+    class Test1:
+        @staticmethod
+        def click():
+            pass
+
+    class Test:
+        @staticmethod
+        def window(handle=None):
+            return {'OK': Test1()}
+
+    function.updater = Test()
+    with mock.patch.object(timings,
+                           'wait_until_passes'):
+        suc = function.pressOK()
+        assert suc
+
+
+def test_doUploadAndCloseInstaller_1(function):
+    with mock.patch.object(function,
+                           'doUploadAndCloseInstallerCommands'):
+        with mock.patch.object(function,
+                               'pressOK'):
+            suc = function.doUploadAndCloseInstaller()
+            assert suc
+
+
+def test_doUploadAndCloseInstaller_2(function):
+    with mock.patch.object(function,
+                           'doUploadAndCloseInstallerCommands'):
+        with mock.patch.object(function,
+                               'pressOK',
+                               side_effect=Exception()):
+            suc = function.doUploadAndCloseInstaller()
+            assert not suc
+
+
+def test_uploadEarthRotationDataCommands(function):
+    class Test:
+        @staticmethod
+        def click():
+            pass
+
+        @staticmethod
+        def check_by_click():
+            pass
+
+        @staticmethod
+        def set_text(a):
+            pass
+
+    win = {'UTC / Earth rotation data': Test(),
+           'Edit...1': Test(),
+           }
+    popup = {'Import files...': Test()
+             }
+    dialog = {'Button16': Test(),
+              'Edit13': Test(),
+              }
+    ok = {'OK': Test()
+          }
+    function.updater = {'10 micron control box update': win,
+                        'UTC / Earth rotation data': popup,
+                        'Open finals data': dialog,
+                        'Open tai-utc.dat': dialog,
+                        'UTC data': ok
+                        }
+    with mock.patch.object(controls,
+                           'ButtonWrapper'):
+        with mock.patch.object(controls,
+                               'EditWrapper'):
+            suc = function.uploadEarthRotationDataCommands()
+            assert suc
 
 
 def test_writeEarthRotationData_1(function):

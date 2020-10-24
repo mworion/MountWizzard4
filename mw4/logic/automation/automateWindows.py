@@ -22,13 +22,13 @@ import platform
 import shutil
 
 # external packages
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QObject 
 from pywinauto import timings, application
 from pywinauto.findwindows import find_windows
-from pywinauto.controls.win32_controls import ButtonWrapper, EditWrapper
 from winreg import HKEY_LOCAL_MACHINE
 import winreg
 import pywinauto
+import pywinauto.controls.win32_controls as controls
 
 # local imports
 from base.loggerMW import CustomLogger
@@ -232,11 +232,11 @@ class AutomateWindows(QObject):
         win = self.updater['10 micron control box update']
         win['next'].click()
         win['next'].click()
-        ButtonWrapper(win['Control box firmware']).uncheck_by_click()
-        ButtonWrapper(win['Orbital parameters of comets']).uncheck_by_click()
-        ButtonWrapper(win['Orbital parameters of asteroids']).uncheck_by_click()
-        ButtonWrapper(win['Orbital parameters of satellites']).uncheck_by_click()
-        ButtonWrapper(win['UTC / Earth rotation data']).uncheck_by_click()
+        controls.ButtonWrapper(win['Control box firmware']).uncheck_by_click()
+        controls.ButtonWrapper(win['Orbital parameters of comets']).uncheck_by_click()
+        controls.ButtonWrapper(win['Orbital parameters of asteroids']).uncheck_by_click()
+        controls.ButtonWrapper(win['Orbital parameters of satellites']).uncheck_by_click()
+        controls.ButtonWrapper(win['UTC / Earth rotation data']).uncheck_by_click()
         return True
 
     def clearUploadMenu(self):
@@ -269,21 +269,37 @@ class AutomateWindows(QObject):
             os.chdir(self.actualWorkDir)
             return False
 
-    def doUploadAndCloseInstaller(self):
+        return True
+
+    def doUploadAndCloseInstallerCommands(self):
         """
         :return:
         """
         win = self.updater['10 micron control box update']
+        win['next'].click()
+        win['next'].click()
+        win['Update Now'].click()
+        return True
+
+    def pressOK(self):
+        """
+        :return:
+        """
+        dialog = timings.wait_until_passes(60,
+                                           0.5,
+                                           lambda: find_windows(title='Update completed',
+                                                                class_name='#32770')[0])
+        winOK = self.updater.window(handle=dialog)
+        winOK['OK'].click()
+        return True
+
+    def doUploadAndCloseInstaller(self):
+        """
+        :return:
+        """
         try:
-            win['next'].click()
-            win['next'].click()
-            win['Update Now'].click()
-            dialog = timings.wait_until_passes(60,
-                                               0.5,
-                                               lambda: find_windows(title='Update completed',
-                                                                    class_name='#32770')[0])
-            winOK = self.updater.window(handle=dialog)
-            winOK['OK'].click()
+            self.doUploadAndCloseInstallerCommands()
+            self.pressOK()
 
         except Exception as e:
             self.logger.error('error{0}'.format(e))
@@ -297,18 +313,18 @@ class AutomateWindows(QObject):
         try:
             win = self.updater['10 micron control box update']
             if comets:
-                ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
+                controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
                 win['Edit...4'].click()
                 popup = self.updater['Comet orbits']
 
             else:
-                ButtonWrapper(win['Orbital parameters of asteroids']).check_by_click()
+                controls.ButtonWrapper(win['Orbital parameters of asteroids']).check_by_click()
                 win['Edit...3'].click()
                 popup = self.updater['Asteroid orbits']
 
             popup['MPC file'].click()
             filedialog = self.updater['Dialog']
-            EditWrapper(filedialog['Edit13']).set_text(self.installPath + 'minorPlanets.mpc')
+            controls.EditWrapper(filedialog['Edit13']).set_text(self.installPath + 'minorPlanets.mpc')
             filedialog['Button16'].click()
             popup['Close'].click()
 
@@ -329,18 +345,19 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
-        ButtonWrapper(win['UTC / Earth rotation data']).check_by_click()
+        controls.ButtonWrapper(win['UTC / Earth rotation data']).check_by_click()
         win['Edit...1'].click()
         popup = self.updater['UTC / Earth rotation data']
         popup['Import files...'].click()
         filedialog = self.updater['Open finals data']
-        EditWrapper(filedialog['Edit13']).set_text(self.installPath + self.UTC_1_FILE)
+        controls.EditWrapper(filedialog['Edit13']).set_text(self.installPath + self.UTC_1_FILE)
         filedialog['Button16'].click()
         filedialog = self.updater['Open tai-utc.dat']
-        EditWrapper(filedialog['Edit13']).set_text(self.installPath + self.UTC_2_FILE)
+        controls.EditWrapper(filedialog['Edit13']).set_text(self.installPath + self.UTC_2_FILE)
         filedialog['Button16'].click()
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
+        return True
 
     def uploadEarthRotationData(self):
         """

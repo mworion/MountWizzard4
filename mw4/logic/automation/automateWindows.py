@@ -186,6 +186,9 @@ class AutomateWindows(QObject):
         return available, displayName, installPath
 
     def checkFloatingPointErrorWindow(self):
+        """
+        :return:
+        """
         try:
             dialog = timings.wait_until_passes(2,
                                                0.2,
@@ -307,26 +310,38 @@ class AutomateWindows(QObject):
 
         return True
 
+    def uploadMPCDataCommands(self, comets=False):
+        """
+        :param comets:
+        :return:
+        """
+        win = self.updater['10 micron control box update']
+        if comets:
+            controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
+            win['Edit...4'].click()
+            popup = self.updater['Comet orbits']
+
+        else:
+            controls.ButtonWrapper(win['Orbital parameters of asteroids']).check_by_click()
+            win['Edit...3'].click()
+            popup = self.updater['Asteroid orbits']
+
+        popup['MPC file'].click()
+        filedialog = self.updater['Dialog']
+        controls.EditWrapper(filedialog['Edit13']).set_text(
+            self.installPath + 'minorPlanets.mpc')
+        filedialog['Button16'].click()
+        popup['Close'].click()
+        return True
+
     def uploadMPCData(self, comets=False):
-        self.prepareUpdater()
-
+        """
+        :param comets:
+        :return:
+        """
         try:
-            win = self.updater['10 micron control box update']
-            if comets:
-                controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
-                win['Edit...4'].click()
-                popup = self.updater['Comet orbits']
-
-            else:
-                controls.ButtonWrapper(win['Orbital parameters of asteroids']).check_by_click()
-                win['Edit...3'].click()
-                popup = self.updater['Asteroid orbits']
-
-            popup['MPC file'].click()
-            filedialog = self.updater['Dialog']
-            controls.EditWrapper(filedialog['Edit13']).set_text(self.installPath + 'minorPlanets.mpc')
-            filedialog['Button16'].click()
-            popup['Close'].click()
+            self.prepareUpdater()
+            self.uploadMPCDataCommands(comets=comets)
 
         except Exception as e:
             self.logger.error(f'error{e}')

@@ -298,6 +298,44 @@ def test_startUpdater_3(function):
             assert suc
 
 
+def test_uploadEarthRotationDataCommands(function):
+    class Test:
+        @staticmethod
+        def click():
+            pass
+
+        @staticmethod
+        def check_by_click():
+            pass
+
+        @staticmethod
+        def set_text(a):
+            pass
+
+    win = {'UTC / Earth rotation data': Test(),
+           'Edit...1': Test(),
+           }
+    popup = {'Import files...': Test()
+             }
+    dialog = {'Button16': Test(),
+              'Edit13': Test(),
+              }
+    ok = {'OK': Test()
+          }
+    function.updater = {'10 micron control box update': win,
+                        'UTC / Earth rotation data': popup,
+                        'Open finals data': dialog,
+                        'Open tai-utc.dat': dialog,
+                        'UTC data': ok
+                        }
+    with mock.patch.object(controls,
+                           'ButtonWrapper'):
+        with mock.patch.object(controls,
+                               'EditWrapper'):
+            suc = function.uploadEarthRotationDataCommands()
+            assert suc
+
+
 def test_uploadEarthRotationData_1(function):
     function.actualWorkDir = os.getcwd()
     with mock.patch.object(function,
@@ -464,7 +502,7 @@ def test_doUploadAndCloseInstaller_2(function):
             assert not suc
 
 
-def test_uploadEarthRotationDataCommands(function):
+def test_uploadMPCDataCommands_1(function):
     class Test:
         @staticmethod
         def click():
@@ -478,28 +516,103 @@ def test_uploadEarthRotationDataCommands(function):
         def set_text(a):
             pass
 
-    win = {'UTC / Earth rotation data': Test(),
-           'Edit...1': Test(),
+    win = {'Orbital parameters of comets': Test(),
+           'Orbital parameters of asteroids': Test(),
+           'Edit...4': Test(),
+           'Edit...3': Test(),
            }
-    popup = {'Import files...': Test()
+    popup = {'MPC file': Test(),
+             'Close': Test(),
              }
     dialog = {'Button16': Test(),
               'Edit13': Test(),
               }
-    ok = {'OK': Test()
-          }
     function.updater = {'10 micron control box update': win,
-                        'UTC / Earth rotation data': popup,
-                        'Open finals data': dialog,
-                        'Open tai-utc.dat': dialog,
-                        'UTC data': ok
+                        'Asteroid orbits': popup,
+                        'Comet orbits': popup,
+                        'Dialog': dialog,
                         }
     with mock.patch.object(controls,
                            'ButtonWrapper'):
         with mock.patch.object(controls,
                                'EditWrapper'):
-            suc = function.uploadEarthRotationDataCommands()
+            suc = function.uploadMPCDataCommands()
             assert suc
+
+
+def test_uploadMPCDataCommands_2(function):
+    class Test:
+        @staticmethod
+        def click():
+            pass
+
+        @staticmethod
+        def check_by_click():
+            pass
+
+        @staticmethod
+        def set_text(a):
+            pass
+
+    win = {'Orbital parameters of comets': Test(),
+           'Orbital parameters of asteroids': Test(),
+           'Edit...4': Test(),
+           'Edit...3': Test(),
+           }
+    popup = {'MPC file': Test(),
+             'Close': Test(),
+             }
+    dialog = {'Button16': Test(),
+              'Edit13': Test(),
+              }
+    function.updater = {'10 micron control box update': win,
+                        'Asteroid orbits': popup,
+                        'Comet orbits': popup,
+                        'Dialog': dialog,
+                        }
+    with mock.patch.object(controls,
+                           'ButtonWrapper'):
+        with mock.patch.object(controls,
+                               'EditWrapper'):
+            suc = function.uploadMPCDataCommands(comets=True)
+            assert suc
+
+
+def test_uploadMPCData_1(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'uploadMPCDataCommands'):
+            with mock.patch.object(function,
+                                   'doUploadAndCloseInstaller',
+                                   return_value=False):
+                suc = function.uploadMPCData()
+                assert not suc
+
+
+def test_uploadMPCData_2(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'uploadMPCDataCommands'):
+            with mock.patch.object(function,
+                                   'doUploadAndCloseInstaller',
+                                   return_value=True):
+                suc = function.uploadMPCData()
+                assert suc
+
+
+def test_uploadMPCData_3(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'uploadMPCDataCommands',
+                               side_effect=Exception()):
+            suc = function.uploadMPCData()
+            assert not suc
 
 
 def test_writeEarthRotationData_1(function):

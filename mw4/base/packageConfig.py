@@ -20,5 +20,4 @@ excludedPlatforms = ['armv7l']
 
 featureFlags = {'simulator': False,
                 'analyse': False,
-                'hemispherePolar': False,
                 }

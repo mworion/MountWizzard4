@@ -15,7 +15,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import base.packageConfig as Config
 # standard libraries
 
 # external packages
@@ -75,18 +74,21 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                         starSize=6,
                         starColor=self.M_YELLOW_L,
                         starAnnColor=self.M_WHITE_L),
+
             build=dict(horMarker='None',
                        horColor=self.M_GREEN,
                        buildPColor=self.M_PINK_H,
                        starSize=6,
                        starColor=self.M_YELLOW_L,
                        starAnnColor=self.M_WHITE_L),
+
             horizon=dict(horMarker='o',
                          horColor=self.M_PINK_H,
                          buildPColor=self.M_GREEN_L,
                          starSize=6,
                          starColor=self.M_YELLOW_L,
                          starAnnColor=self.M_WHITE_L),
+
             star=dict(horMarker='None',
                       horColor=self.M_GREEN_LL,
                       buildPColor=self.M_GREEN_L,
@@ -111,7 +113,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.meridianTrackParam = None
         self.horizonLimitHighParam = None
         self.horizonLimitLowParam = None
-
         self.pointerPolarAltAz = None
         self.pointsBuildAnnotate = None
         self.pointsPolarBuild = None
@@ -157,11 +158,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
-
-        if not Config.featureFlags['hemispherePolar']:
-            self.ui.showPolar.setEnabled(False)
-            self.ui.showPolar.setChecked(False)
-        self.togglePolar()
 
         return True
 
@@ -287,8 +283,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                                      self.onMouseDispatcher)
         self.hemisphereMat.figure.canvas.mpl_connect('motion_notify_event',
                                                      self.showMouseCoordinates)
+        self.togglePolar()
         self.show()
-        self.drawHemisphere()
 
         return True
 
@@ -970,11 +966,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         self.drawHemisphereStatic(axes=axe)
         self.drawHemisphereMoving(axes=axeMove)
-        axe.figure.canvas.draw()
 
         if hasPolar:
             self.drawHemisphereStatic(axes=axePolar, polar=True)
             self.drawHemisphereMoving(axes=axePolarMove, polar=True)
-            axePolar.figure.canvas.draw()
 
         return True

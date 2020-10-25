@@ -32,6 +32,7 @@ Unreleased Betas
 
 (0.200.0)
 
+- safety margin to horizon line checking for model points
 - adding asteroids programming (windows only)
 
 Released betas

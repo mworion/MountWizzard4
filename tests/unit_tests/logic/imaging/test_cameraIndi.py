@@ -440,7 +440,7 @@ def test_sendCoolerSwitch_3():
         with mock.patch.object(app.client,
                                'sendNewSwitch',
                                return_value=True):
-            suc = app.sendCoolerSwitch()
+            suc = app.sendCoolerSwitch(True)
             assert suc
 
 

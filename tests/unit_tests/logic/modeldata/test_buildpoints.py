@@ -1032,7 +1032,7 @@ def test_genAlign5():
     assert 0 == len(app.buildP)
 
 
-def test_isAboveHorizon():
+def test_isAboveHorizon_1():
     app.clearHorizonP()
     suc = app.isAboveHorizon((10, 50))
     assert suc
@@ -1042,6 +1042,12 @@ def test_isAboveHorizon():
     assert suc
     suc = app.isAboveHorizon((-10, 50))
     assert not suc
+
+
+def test_isAboveHorizon_2():
+    app.horizonP = [(1, 2), (2, 3)]
+    suc = app.isAboveHorizon((10, 50))
+    assert suc
 
 
 def test_deleteBelowHorizon1():

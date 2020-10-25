@@ -341,6 +341,7 @@ class CameraIndi(IndiClass):
         if coolerOn:
             cooler['COOLER_ON'] = 'On'
             cooler['COOLER_OFF'] = 'Off'
+
         else:
             cooler['COOLER_ON'] = 'Off'
             cooler['COOLER_OFF'] = 'On'

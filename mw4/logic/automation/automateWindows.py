@@ -22,7 +22,7 @@ import platform
 import shutil
 
 # external packages
-from PyQt5.QtCore import QObject 
+from PyQt5.QtCore import QObject
 from pywinauto import timings, application
 from pywinauto.findwindows import find_windows
 from winreg import HKEY_LOCAL_MACHINE

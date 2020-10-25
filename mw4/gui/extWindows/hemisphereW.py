@@ -966,9 +966,11 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         self.drawHemisphereStatic(axes=axe)
         self.drawHemisphereMoving(axes=axeMove)
+        axe.figure.canvas.draw()
 
         if hasPolar:
             self.drawHemisphereStatic(axes=axePolar, polar=True)
             self.drawHemisphereMoving(axes=axePolarMove, polar=True)
+            axePolar.figure.canvas.draw()
 
         return True

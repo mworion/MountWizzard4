@@ -17,6 +17,8 @@
 ###########################################################
 # standard libraries
 import pytest
+from unittest import mock
+
 # external packages
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
@@ -152,5 +154,41 @@ def test_sendAdjustableOutput_1():
 
 def test_sendAdjustableOutput_2():
     app.framework = 'indi'
-    suc = app.sendAdjustableOutput()
+    with mock.patch.object(app.run['indi'],
+                           'sendAdjustableOutput',
+                           return_value=False):
+        suc = app.sendAdjustableOutput()
+        assert not suc
+
+
+def test_sendAdjustableOutput_3():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'sendAdjustableOutput',
+                           return_value=True):
+        suc = app.sendAdjustableOutput()
+        assert suc
+
+
+def test_reboot_1():
+    app.framework = ''
+    suc = app.reboot()
     assert not suc
+
+
+def test_reboot_2():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'reboot',
+                           return_value=False):
+        suc = app.reboot()
+        assert not suc
+
+
+def test_reboot_3():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'reboot',
+                           return_value=True):
+        suc = app.reboot()
+        assert suc

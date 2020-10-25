@@ -297,6 +297,12 @@ def test_getRelay_1(qtbot):
     assert not suc
 
 
+def test_getRelay_2(qtbot):
+    app.hostaddress = None
+    suc = app.getRelay()
+    assert not suc
+
+
 def test_getByte_1():
     relay = 7
     state = True

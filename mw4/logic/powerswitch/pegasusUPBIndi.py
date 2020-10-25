@@ -180,6 +180,7 @@ class PegasusUPBIndi(IndiClass):
 
         if power[portName] == 'On':
             power[portName] = 'Off'
+
         else:
             power[portName] = 'On'
 
@@ -329,6 +330,7 @@ class PegasusUPBIndi(IndiClass):
             propertyName = 'AUX_HEATER_OUTLET'
             dew = self.device.getNumber(propertyName)
             portName = f'OUTLET_{conv[port]}'
+
         else:
             propertyName = 'DEW_PWM'
             dew = self.device.getNumber(propertyName)

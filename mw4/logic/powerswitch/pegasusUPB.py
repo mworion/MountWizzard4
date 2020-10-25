@@ -169,19 +169,6 @@ class PegasusUPB:
         suc = self.run[self.framework].toggleAutoDew()
         return suc
 
-    def toggleAutoDewPort(self, port=None):
-        """
-        toggleAutoDewPort
-
-        :param port:
-        :return: true fot test purpose
-        """
-        if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].toggleAutoDewPort(port=port)
-        return suc
-
     def sendDew(self, port='', value=None):
         """
 

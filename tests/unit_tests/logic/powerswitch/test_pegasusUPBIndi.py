@@ -288,6 +288,16 @@ def test_togglePowerPortBoot_6():
         assert not suc
 
 
+def test_togglePowerPortBoot_7():
+    app.device = Device()
+    app.isINDIGO = False
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'POWER_PORT_1': 'Off'}):
+        suc = app.togglePowerPortBoot(port=1)
+        assert not suc
+
+
 def test_toggleHubUSB_1():
     suc = app.toggleHubUSB()
     assert not suc
@@ -392,6 +402,14 @@ def test_toggleAutoDew_1():
 
 def test_toggleAutoDew_2():
     app.device = Device()
+    app.modelVersion = 1
+    suc = app.toggleAutoDew()
+    assert not suc
+
+
+def test_toggleAutoDew_2b():
+    app.device = Device()
+    app.modelVersion = 0
     suc = app.toggleAutoDew()
     assert not suc
 
@@ -512,8 +530,8 @@ def test_sendDew_2():
 def test_sendDew_3():
     app.device = Device()
     with mock.patch.object(app.device,
-                           'getSwitch',
-                           return_value={'DEW_1': 'On'}):
+                           'getNumber',
+                           return_value={'DEW_1': 50}):
         suc = app.sendDew(port=1)
         assert not suc
 
@@ -521,8 +539,8 @@ def test_sendDew_3():
 def test_sendDew_4():
     app.device = Device()
     with mock.patch.object(app.device,
-                           'getSwitch',
-                           return_value={'DEW_1': 'On'}):
+                           'getNumber',
+                           return_value={'DEW_1': 50}):
         suc = app.sendDew(port='A')
         assert not suc
 
@@ -531,8 +549,8 @@ def test_sendDew_5():
     app.device = Device()
     app.isINDIGO = 'On'
     with mock.patch.object(app.device,
-                           'getSwitch',
-                           return_value={'OUTLET_1': 'On'}):
+                           'getNumber',
+                           return_value={'OUTLET_1': 50}):
         suc = app.sendDew(port='A')
         assert not suc
 

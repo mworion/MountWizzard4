@@ -402,8 +402,6 @@ def test_openDir_4(function):
                                             title='title',
                                             folder='.')
         assert full == os.getcwd()
-        assert short == 'MountWizzard4'
-        assert ext == ''
 
 
 def test_openDir_5(function):

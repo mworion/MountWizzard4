@@ -57,11 +57,13 @@ class TelescopeAscom(AscomClass):
         value = self.client.ApertureDiameter
         if isinstance(value, float):
             value = value * 1000
+
         self.dataEntry(value, 'TELESCOPE_INFO.TELESCOPE_APERTURE')
 
         value = self.client.FocalLength
         if isinstance(value, float):
             value = value * 1000
+
         self.dataEntry(value, 'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH')
 
         return True

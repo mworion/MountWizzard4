@@ -85,3 +85,16 @@ def test_getInitialConfig_2():
         assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100
         assert app.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570
 
+
+def test_getInitialConfig_3():
+    app.deviceConnected = True
+    app.client.ApertureDiameter = 0.100
+    app.client.FocalLength = 0.570
+    with mock.patch.object(AscomClass,
+                           'getInitialConfig',
+                           return_value=True):
+        suc = app.getInitialConfig()
+        assert suc
+        assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100
+        assert app.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570
+

@@ -145,6 +145,12 @@ def test_updateOpenWeatherMapDataWorker_3():
     assert suc
 
 
+def test_updateOpenWeatherMapDataWorker_4():
+    data = {'list': []}
+    suc = app.updateOpenWeatherMapDataWorker(data=data)
+    assert not suc
+
+
 def test_getOpenWeatherMapDataWorker_1():
     val = app.getOpenWeatherMapDataWorker()
     assert val is None
@@ -172,6 +178,17 @@ def test_getOpenWeatherMapDataWorker_3():
 
 
 def test_getOpenWeatherMapDataWorker_4():
+    class Test:
+        status_code = 300
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=TimeoutError(),
+                           return_value=Test()):
+        val = app.getOpenWeatherMapDataWorker('http://localhost')
+        assert val is None
+
+
+def test_getOpenWeatherMapDataWorker_5():
     class Test:
         status_code = 200
 

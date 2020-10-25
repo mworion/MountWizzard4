@@ -177,7 +177,7 @@ class CameraIndi(IndiClass):
             return False
         if 'format' not in data:
             return False
-        if data['name'] != 'CCD1':
+        if data.get('name', '') != 'CCD1':
             return False
         if not self.imagePath:
             return False

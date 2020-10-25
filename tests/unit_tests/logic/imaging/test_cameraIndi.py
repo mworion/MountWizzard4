@@ -132,6 +132,14 @@ def test_setExposureState_4():
     assert suc
 
 
+def test_setExposureState_5():
+    app.device = Device()
+    app.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': 1}
+    setattr(app.device, 'CCD_EXPOSURE', {'state': 'Busy'})
+    suc = app.setExposureState()
+    assert suc
+
+
 def test_sendDownloadMode_1():
     app.deviceName = 'test'
     app.device = None
@@ -165,8 +173,12 @@ def test_updateNumber_2():
 
 
 def test_updateBLOB_1():
-    suc = app.updateBLOB('test', 'test')
-    assert not suc
+    app.device = Device()
+    with mock.patch.object(IndiClass,
+                           'updateBLOB',
+                           return_value=False):
+        suc = app.updateBLOB('test', 'test')
+        assert not suc
 
 
 def test_updateBLOB_2():
@@ -174,8 +186,11 @@ def test_updateBLOB_2():
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=True):
-        suc = app.updateBLOB('test', 'test')
-        assert not suc
+        with mock.patch.object(app.device,
+                               'getBlob',
+                               return_value={}):
+            suc = app.updateBLOB('test', 'test')
+            assert not suc
 
 
 def test_updateBLOB_3():
@@ -198,30 +213,27 @@ def test_updateBLOB_4():
         with mock.patch.object(app.device,
                                'getBlob',
                                return_value={'value': 1,
-                                             'name': 'CCD1'}):
+                                             'name': 'test'}):
             suc = app.updateBLOB('test', 'test')
             assert not suc
 
 
 def test_updateBLOB_5():
     app.device = Device()
-    app.data = {'value': 1}
-    app.imagePath = 'tests/image/test.fit'
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=True):
         with mock.patch.object(app.device,
                                'getBlob',
                                return_value={'value': 1,
-                                             'name': 'CCD1'}):
+                                             'name': 'CCD2',
+                                             'format': 'test'}):
             suc = app.updateBLOB('test', 'test')
             assert not suc
 
 
 def test_updateBLOB_6():
     app.device = Device()
-    app.data = {'value': 1}
-    app.imagePath = 'tests/image/test.fit'
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=True):
@@ -231,10 +243,25 @@ def test_updateBLOB_6():
                                              'name': 'CCD1',
                                              'format': 'test'}):
             suc = app.updateBLOB('test', 'test')
-            assert suc
+            assert not suc
 
 
 def test_updateBLOB_7():
+    app.device = Device()
+    app.imagePath = 'tests/dummy/test.txt'
+    with mock.patch.object(IndiClass,
+                           'updateBLOB',
+                           return_value=True):
+        with mock.patch.object(app.device,
+                               'getBlob',
+                               return_value={'value': 1,
+                                             'name': 'CCD1',
+                                             'format': 'test'}):
+            suc = app.updateBLOB('test', 'test')
+            assert not suc
+
+
+def test_updateBLOB_8():
     app.device = Device()
     app.imagePath = 'tests/image/test.fit'
     hdu = fits.HDUList()
@@ -254,7 +281,7 @@ def test_updateBLOB_7():
                 assert suc
 
 
-def test_updateBLOB_8():
+def test_updateBLOB_9():
     app.device = Device()
     app.imagePath = 'tests/image/test.fit'
     hdu = fits.HDUList()
@@ -274,7 +301,7 @@ def test_updateBLOB_8():
                 assert suc
 
 
-def test_updateBLOB_9():
+def test_updateBLOB_10():
     app.device = Device()
     app.imagePath = 'tests/image/test.fit'
     hdu = fits.HDUList()
@@ -287,6 +314,26 @@ def test_updateBLOB_9():
                                return_value={'value': 1,
                                              'name': 'CCD1',
                                              'format': '.fits'}):
+            with mock.patch.object(fits.HDUList,
+                                   'fromstring',
+                                   return_value=hdu):
+                suc = app.updateBLOB('test', 'test')
+                assert suc
+
+
+def test_updateBLOB_11():
+    app.device = Device()
+    app.imagePath = 'tests/image/test.fit'
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    with mock.patch.object(IndiClass,
+                           'updateBLOB',
+                           return_value=True):
+        with mock.patch.object(app.device,
+                               'getBlob',
+                               return_value={'value': 1,
+                                             'name': 'CCD1',
+                                             'format': '.test'}):
             with mock.patch.object(fits.HDUList,
                                    'fromstring',
                                    return_value=hdu):

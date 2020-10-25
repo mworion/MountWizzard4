@@ -147,6 +147,13 @@ def test_calcSubFrame_4():
     assert val == (250, 250, 500, 500)
 
 
+def test_calcSubFrame_5():
+    app.data = {'CCD_INFO.CCD_MAX_X': 1000,
+                'CCD_INFO.CCD_MAX_Y': 1000}
+    val = app.calcSubFrame(5)
+    assert val == (0, 0, 1000, 1000)
+
+
 def test_sendDownloadMode_1():
     app.framework = ''
     suc = app.sendDownloadMode()
@@ -160,6 +167,13 @@ def test_sendDownloadMode_2():
                            return_value=True):
         suc = app.sendDownloadMode()
         assert suc
+
+
+def test_resetExposed():
+    app.exposing = True
+    suc = app.resetExposed()
+    assert suc
+    assert not app.exposing
 
 
 def test_expose_1():

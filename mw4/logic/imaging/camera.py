@@ -187,6 +187,7 @@ class Camera:
             height = maxY
             posX = 0
             posY = 0
+
         else:
             width = int(maxX * subFrame / 100)
             height = int(maxY * subFrame / 100)
@@ -210,11 +211,9 @@ class Camera:
 
     def resetExposed(self):
         """
-
         :return: True for test purpose
         """
         self.exposing = False
-
         return True
 
     def expose(self,

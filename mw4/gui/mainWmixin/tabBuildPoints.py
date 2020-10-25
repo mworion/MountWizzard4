@@ -100,6 +100,9 @@ class BuildPoints:
 
         self.ui.checkAutoDeleteMeridian.setChecked(config.get('checkAutoDeleteMeridian', False))
         self.ui.checkAutoDeleteHorizon.setChecked(config.get('checkAutoDeleteHorizon', False))
+        self.ui.checkSafetyMarginHorizon.setChecked(config.get('checkSafetyMarginHorizon',
+                                                               False))
+        self.ui.safetyMarginHorizon.setValue(config.get('safetyMarginHorizon', 0))
         self.ui.checkAvoidFlip.setChecked(config.get('checkAvoidFlip', False))
         self.ui.checkSortNothing.setChecked(config.get('checkSortNothing', True))
         self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
@@ -139,6 +142,8 @@ class BuildPoints:
         config['timeShiftDSO'] = self.ui.timeShiftDSO.value()
         config['checkAutoDeleteMeridian'] = self.ui.checkAutoDeleteMeridian.isChecked()
         config['checkAutoDeleteHorizon'] = self.ui.checkAutoDeleteHorizon.isChecked()
+        config['checkSafetyMarginHorizon'] = self.ui.checkSafetyMarginHorizon.isChecked()
+        config['safetyMarginHorizon'] = self.ui.safetyMarginHorizon.value()
         config['checkAvoidFlip'] = self.ui.checkAvoidFlip.isChecked()
         config['checkSortNothing'] = self.ui.checkSortNothing.isChecked()
         config['checkSortEW'] = self.ui.checkSortEW.isChecked()
@@ -603,6 +608,10 @@ class BuildPoints:
 
         if self.ui.checkAutoDeleteMeridian.isChecked():
             self.app.data.deleteCloseMeridian()
+
+        if self.ui.checkSafetyMarginHorizon.isChecked():
+            value = self.ui.safetyMarginHorizon.value()
+            self.app.data.deleteCloseHorizonLine(value)
 
         return True
 

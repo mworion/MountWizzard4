@@ -86,6 +86,12 @@ class DomeAscom(AscomClass):
 
     @staticmethod
     def diffModulus(x, y, m):
+        """
+        :param x:
+        :param y:
+        :param m:
+        :return:
+        """
         diff = abs(x - y)
         diff = abs(diff % m)
         return min(diff, abs(diff - m))
@@ -96,7 +102,7 @@ class DomeAscom(AscomClass):
         :return: true for test purpose
         """
 
-        azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', -1)
+        azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
         statusIsSlewing = self.data.get('slewing', False)
 
         if self.targetAzimuth is not None:

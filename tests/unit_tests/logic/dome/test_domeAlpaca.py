@@ -55,6 +55,11 @@ def test_waitSettlingAndEmit():
     assert suc
 
 
+def test_diffModulus_1():
+    val = app.diffModulus(1, 359, 360)
+    assert val == 2
+
+
 def test_emitData_1():
     app.data['slewing'] = False
     app.slewing = False
@@ -82,11 +87,34 @@ def test_emitData_3():
         assert suc
 
 
+def test_emitData_4():
+    app.data['slewing'] = False
+    app.slewing = True
+    app.targetAzimuth = 1
+    with mock.patch.object(app.settlingWait,
+                           'start'):
+        suc = app.emitData()
+        assert suc
+
+
 def test_workerPollData_1():
     with mock.patch.object(AlpacaBase,
                            'get'):
-        suc = app.workerPollData()
-        assert suc
+        with mock.patch.object(app.client,
+                               'shutterstatus',
+                               return_value=0):
+            suc = app.workerPollData()
+            assert suc
+
+
+def test_workerPollData_2():
+    with mock.patch.object(AlpacaBase,
+                           'get'):
+        with mock.patch.object(app.client,
+                               'shutterstatus',
+                               return_value=1):
+            suc = app.workerPollData()
+            assert suc
 
 
 def test_slewToAltAz_1():

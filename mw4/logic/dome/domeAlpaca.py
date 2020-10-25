@@ -88,13 +88,18 @@ class DomeAlpaca(AlpacaClass):
 
     @staticmethod
     def diffModulus(x, y, m):
+        """
+        :param x:
+        :param y:
+        :param m:
+        :return:
+        """
         diff = abs(x - y)
         diff = abs(diff % m)
         return min(diff, abs(diff - m))
 
     def emitData(self):
         """
-
         :return: true for test purpose
         """
 
@@ -107,11 +112,10 @@ class DomeAlpaca(AlpacaClass):
         else:
             hasReachedTarget = True
 
-        isSlewing = statusIsSlewing or not hasReachedTarget
-        hasStopped = self.slewing and not statusIsSlewing and hasReachedTarget
+        hasStopped = self.slewing and (not statusIsSlewing and hasReachedTarget)
 
-        if isSlewing:
-            self.slewing = True
+        if not self.slewing:
+            self.slewing = statusIsSlewing and not hasReachedTarget
 
         if hasStopped:
             # start timer for settling time and emit signal afterwards

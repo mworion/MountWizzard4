@@ -82,6 +82,13 @@ def test_workerPollData_3():
     assert suc
 
 
+def test_workerPollData_4():
+    app.deviceConnected = True
+    app.client.coverstate = 0
+    suc = app.workerPollData()
+    assert suc
+
+
 def test_sendCoverPark_1():
     app.deviceConnected = False
     suc = app.sendCoverPark(park=True)

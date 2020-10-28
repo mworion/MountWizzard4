@@ -32,10 +32,6 @@ from base.tpool import Worker
 
 class MinorPlanetTime:
     """
-    the MinorPlanetTime window class handles the main menu as well as the show and no show
-    part of any other window. all necessary processing for functions of that gui will be linked
-    to this class. therefore window classes will have a threadpool for managing async
-    processing if needed.
     """
 
     signalProgress = pyqtSignal(object)

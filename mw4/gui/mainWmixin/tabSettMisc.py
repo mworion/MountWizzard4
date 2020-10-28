@@ -39,8 +39,6 @@ from base import tpool
 
 class SettMisc(object):
     """
-    the SettMisc window class handles the settings misc menu. all necessary processing
-    for functions of that gui will be linked to this class.
     """
 
     def __init__(self, app=None, ui=None, clickable=None):

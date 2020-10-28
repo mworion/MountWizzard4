@@ -25,9 +25,6 @@ import wakeonlan
 
 class SettMount(object):
     """
-    the main window class handles the main menu as well as the show and no show part of
-    any other window. all necessary processing for functions of that gui will be linked
-    to this class. SettMount is a mixin feature for this class
     """
 
     def __init__(self):

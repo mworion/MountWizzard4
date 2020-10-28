@@ -30,10 +30,6 @@ import numpy as np
 
 class Almanac:
     """
-    the main window class handles the main menu as well as the show and no show part of
-    any other window. all necessary processing for functions of that gui will be linked
-    to this class. therefore window classes will have a threadPool for managing async
-    processing if needed.
     """
 
     phasesText = {

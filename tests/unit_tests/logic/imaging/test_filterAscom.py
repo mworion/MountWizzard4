@@ -86,6 +86,14 @@ def test_getInitialConfig_3():
     assert app.data['FILTER_NAME.FILTER_SLOT_NAME_1'] == 'test1'
 
 
+def test_getInitialConfig_4():
+    app.deviceConnected = True
+    app.client.Names = ['test', None]
+    suc = app.getInitialConfig()
+    assert suc
+    assert app.data['FILTER_NAME.FILTER_SLOT_NAME_0'] == 'test'
+
+
 def test_workerPollData_0():
     app.deviceConnected = False
     app.client.Position = -1

@@ -486,7 +486,7 @@ def test_updateSetting_meridianLimitTrack_1():
     value = '15'
     app.app.mount.setting.meridianLimitTrack = value
     app.updateSettingGUI(app.app.mount.setting)
-    assert '15.0' == app.ui.meridianLimitTrack.text()
+    assert ' 15' == app.ui.meridianLimitTrack.text()
     value = None
     app.app.mount.setting.meridianLimitTrack = value
     app.updateSettingGUI(app.app.mount.setting)
@@ -497,7 +497,7 @@ def test_updateSetting_meridianLimitSlew():
     value = '15'
     app.app.mount.setting.meridianLimitSlew = value
     app.updateSettingGUI(app.app.mount.setting)
-    assert '15.0' == app.ui.meridianLimitSlew.text()
+    assert ' 15' == app.ui.meridianLimitSlew.text()
     value = None
     app.app.mount.setting.meridianLimitSlew = value
     app.updateSettingGUI(app.app.mount.setting)
@@ -508,7 +508,7 @@ def test_updateSetting_horizonLimitLow():
     value = '0'
     app.app.mount.setting.horizonLimitLow = value
     app.updateSettingGUI(app.app.mount.setting)
-    assert '0.0' == app.ui.horizonLimitLow.text()
+    assert '  0' == app.ui.horizonLimitLow.text()
     value = None
     app.app.mount.setting.horizonLimitLow = value
     app.updateSettingGUI(app.app.mount.setting)
@@ -519,7 +519,7 @@ def test_updateSetting_horizonLimitHigh():
     value = '50'
     app.app.mount.setting.horizonLimitHigh = value
     app.updateSettingGUI(app.app.mount.setting)
-    assert '50.0' == app.ui.horizonLimitHigh.text()
+    assert ' 50' == app.ui.horizonLimitHigh.text()
     value = None
     app.app.mount.setting.horizonLimitHigh = value
     app.updateSettingGUI(app.app.mount.setting)

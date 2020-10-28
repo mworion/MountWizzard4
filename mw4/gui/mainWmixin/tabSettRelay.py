@@ -88,9 +88,6 @@ class SettRelay(object):
         self.setupRelayGui()
 
         # make the gui signals linked to slots
-        self.ui.relayHost.editingFinished.connect(self.relayHost)
-        self.ui.relayUser.editingFinished.connect(self.relayUser)
-        self.ui.relayPassword.editingFinished.connect(self.relayPassword)
         for relayButtonText in self.relayButtonTexts:
             relayButtonText.editingFinished.connect(self.updateRelayButtonText)
         for button in self.relayButtons:
@@ -105,12 +102,6 @@ class SettRelay(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.relayHost.setText(config.get('relayHost', ''))
-        self.relayHost()
-        self.ui.relayUser.setText(config.get('relayUser', ''))
-        self.relayUser()
-        self.ui.relayPassword.setText(config.get('relayPassword', ''))
-        self.relayPassword()
         for button, key in zip(self.relayButtonTexts, self.relayButtonTextKeys):
             button.setText(config.get(key, ''))
         for dropDown, key in zip(self.relayDropDowns, self.relayDropDownKeys):
@@ -127,9 +118,6 @@ class SettRelay(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['relayHost'] = self.ui.relayHost.text()
-        config['relayUser'] = self.ui.relayUser.text()
-        config['relayPassword'] = self.ui.relayPassword.text()
         for button, key in zip(self.relayButtonTexts, self.relayButtonTextKeys):
             config[key] = button.text()
         for dropDown, key in zip(self.relayDropDowns, self.relayDropDownKeys):
@@ -190,12 +178,3 @@ class SettRelay(object):
             self.app.message.emit('Relay action cannot be performed', 2)
             return False
         return True
-
-    def relayHost(self):
-        self.app.relay.host = self.ui.relayHost.text()
-
-    def relayUser(self):
-        self.app.relay.user = self.ui.relayUser.text()
-
-    def relayPassword(self):
-        self.app.relay.password = self.ui.relayPassword.text()

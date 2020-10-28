@@ -18,203 +18,234 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import logging
+
 # external packages
-from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from mountcontrol.qtmount import Mount
 import wakeonlan
 
 # local import
-from gui.mainWmixin.tabSettMount import SettMount
-from gui.widgets.main_ui import Ui_MainWindow
-from logic.environment.onlineWeather import OnlineWeather
+from tests.baseTestSetupMixins import App
 from gui.utilities.widget import MWidget
-from base.loggerMW import CustomLogger
+from gui.widgets.main_ui import Ui_MainWindow
+from gui.mainWmixin.tabSettMount import SettMount
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global ui, widget, Test, Test1, app
-
-    class Test1(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        update10s = pyqtSignal()
-        threadPool = QThreadPool()
-
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        onlineWeather = OnlineWeather(app=Test1())
-        update1s = pyqtSignal()
-        message = pyqtSignal(str, int)
-        mwGlob = {'imageDir': 'tests/image'}
-
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
-    app = SettMount(app=Test(), ui=ui,
-                    clickable=MWidget().clickable)
-
-    app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.close = MWidget().close
-    app.openDir = MWidget().openDir
-    app.deleteLater = MWidget().deleteLater
-    app.log = CustomLogger(logging.getLogger(__name__), {})
-
-    qtbot.addWidget(app)
-
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
     yield
 
 
-def test_initConfig_1():
-    app.app.config['mainW'] = {}
-    suc = app.initConfig()
+@pytest.fixture(autouse=True, scope='function')
+def function(module):
+
+    class Mixin(MWidget, SettMount):
+        def __init__(self):
+            super().__init__()
+            self.app = App()
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            SettMount.__init__(self)
+
+    window = Mixin()
+    yield window
+
+
+def test_initConfig_1(function):
+    function.app.config['mainW'] = {}
+    suc = function.initConfig()
     assert suc
 
 
-def test_mountBoot_1():
-    with mock.patch.object(app.app.mount,
+def test_mountBoot_1(function):
+    with mock.patch.object(function.app.mount,
                            'bootMount',
                            return_value=False):
-        suc = app.mountBoot()
+        suc = function.mountBoot()
         assert not suc
 
 
-def test_mountBoot_2():
-    with mock.patch.object(app.app.mount,
+def test_mountBoot_2(function):
+    with mock.patch.object(function.app.mount,
                            'bootMount',
                            return_value=True):
-        suc = app.mountBoot()
+        suc = function.mountBoot()
         assert suc
 
 
-def test_mountShutdown_1():
-    with mock.patch.object(app.app.mount,
+def test_mountShutdown_1(function):
+    with mock.patch.object(function.app.mount,
                            'shutdown',
                            return_value=False):
-        suc = app.mountShutdown()
+        suc = function.mountShutdown()
         assert not suc
 
 
-def test_mountShutdown_2():
-    with mock.patch.object(app.app.mount,
+def test_mountShutdown_2(function):
+    with mock.patch.object(function.app.mount,
                            'shutdown',
                            return_value=True):
-        suc = app.mountShutdown()
+        suc = function.mountShutdown()
         assert suc
 
 
-def test_storeConfig_1():
-    app.storeConfig()
+def test_storeConfig_1(function):
+    function.storeConfig()
 
 
-def test_checkFormatMAC_1():
-    val = app.checkFormatMAC('')
+def test_checkFormatMAC_1(function):
+    val = function.checkFormatMAC('')
     assert val is None
 
 
-def test_checkFormatMAC_2():
-    val = app.checkFormatMAC(5)
+def test_checkFormatMAC_2(function):
+    val = function.checkFormatMAC(5)
     assert val is None
 
 
-def test_checkFormatMAC_3():
-    val = app.checkFormatMAC('test')
+def test_checkFormatMAC_3(function):
+    val = function.checkFormatMAC('test')
     assert val is None
 
 
-def test_checkFormatMAC_4():
-    val = app.checkFormatMAC('00:00:00')
+def test_checkFormatMAC_4(function):
+    val = function.checkFormatMAC('00:00:00')
     assert val is None
 
 
-def test_checkFormatMAC_5():
-    val = app.checkFormatMAC('00:00:00:00.00.kk')
+def test_checkFormatMAC_5(function):
+    val = function.checkFormatMAC('00:00:00:00.00.kk')
     assert val is None
 
 
-def test_checkFormatMAC_6():
-    val = app.checkFormatMAC('00.11.22:ab:44:55')
+def test_checkFormatMAC_6(function):
+    val = function.checkFormatMAC('00.11.22:ab:44:55')
     assert val == '00:11:22:AB:44:55'
 
 
-def test_bootRackComp_1():
+def test_bootRackComp_1(function):
     with mock.patch.object(wakeonlan,
                            'send_magic_packet',
                            return_value=False):
-        suc = app.bootRackComp()
+        suc = function.bootRackComp()
         assert suc
 
 
-def test_bootRackComp_2():
-    app.ui.rackCompMAC.setText('00:00:00:00:00:xy')
+def test_bootRackComp_2(function):
+    function.ui.rackCompMAC.setText('00:00:00:00:00:xy')
     with mock.patch.object(wakeonlan,
                            'send_magic_packet',
                            return_value=True):
-        suc = app.bootRackComp()
+        suc = function.bootRackComp()
         assert not suc
 
 
-def test_mountHost():
-    app.ui.mountHost.setText('test')
-    app.mountHost()
+def test_mountHost(function):
+    function.ui.mountHost.setText('test')
+    function.mountHost()
 
-    assert app.app.mount.host == ('test', 3492)
-
-
-def test_mountMAC():
-    app.ui.mountMAC.setText('00:00:00:00:00:00')
-    app.mountMAC()
-
-    assert app.app.mount.MAC == '00:00:00:00:00:00'
+    assert function.app.mount.host == 'test'
 
 
-def test_setMountMAC_1():
-    suc = app.setMountMAC()
+def test_mountMAC(function):
+    function.ui.mountMAC.setText('00:00:00:00:00:00')
+    function.mountMAC()
+
+    assert function.app.mount.MAC == '00:00:00:00:00:00'
+
+
+def test_setMountMAC_1(function):
+    suc = function.setMountMAC()
     assert not suc
 
 
-def test_setMountMAC_2():
+def test_setMountMAC_2(function):
     class Test:
         addressLanMAC = None
         typeConnection = 0
-    suc = app.setMountMAC(Test())
+    suc = function.setMountMAC(Test())
     assert not suc
 
 
-def test_setMountMAC_3():
+def test_setMountMAC_3(function):
     class Test:
         addressLanMAC = ''
         typeConnection = 0
-    suc = app.setMountMAC(Test())
+    suc = function.setMountMAC(Test())
     assert not suc
 
 
-def test_setMountMAC_4():
+def test_setMountMAC_4(function):
     class Test:
         addressLanMAC = None
         typeConnection = 0
-    app.app.mount.MAC = None
-    suc = app.setMountMAC(Test())
+    function.app.mount.MAC = None
+    suc = function.setMountMAC(Test())
     assert not suc
 
 
-def test_setMountMAC_6():
+def test_setMountMAC_6(function):
     class Test:
         addressLanMAC = '00:00:00:00:00:00'
         typeConnection = 3
-    app.app.mount.MAC = '00:00:00:00:00:00'
-    suc = app.setMountMAC(Test())
+    function.app.mount.MAC = '00:00:00:00:00:00'
+    suc = function.setMountMAC(Test())
     assert suc
 
 
-def test_setMountSettlingTime_1():
-    suc = app.setMountSettlingTime()
+def test_setMountSettlingTime_1(function):
+    suc = function.setMountSettlingTime()
     assert suc
+
+
+def test_updateFwGui_productName(function):
+    value = 'Test1234'
+    function.app.mount.firmware.product = value
+    function.updateFwGui(function.app.mount.firmware)
+    assert value == function.ui.product.text()
+    value = None
+    function.app.mount.firmware.product = value
+    function.updateFwGui(function.app.mount.firmware)
+    assert '-' == function.ui.product.text()
+
+
+def test_updateFwGui_hwVersion(function):
+    value = 'Test1234'
+    function.app.mount.firmware.hardware = value
+    function.updateFwGui(function.app.mount.firmware)
+    assert value == function.ui.hardware.text()
+    value = None
+    function.app.mount.firmware.hardware = value
+    function.updateFwGui(function.app.mount.firmware)
+    assert '-' == function.ui.hardware.text()
+
+
+def test_updateFwGui_numberString(function):
+    value = '2.15.18'
+    function.app.mount.firmware.vString = value
+    function.updateFwGui(function.app.mount.firmware)
+    assert value == function.ui.vString.text()
+    value = None
+    function.app.mount.firmware.vString = value
+    function.updateFwGui(function.app.mount.firmware)
+    assert '-' == function.ui.vString.text()
+
+
+def test_updateFwGui_fwdate(function):
+    value = 'Test1234'
+    function.app.mount.firmware.date = value
+    function.updateFwGui(function.app.mount.firmware)
+    assert value == function.ui.fwdate.text()
+    value = None
+    function.app.mount.firmware.date = value
+    function.updateFwGui(function.app.mount.firmware)
+    assert '-' == function.ui.fwdate.text()
+
+
+def test_updateFwGui_fwtime(function):
+    value = 'Test1234'
+    function.app.mount.firmware.time = value
+    function.updateFwGui(function.app.mount.firmware)
+    assert value == function.ui.fwtime.text()
+    value = None
+    function.app.mount.firmware.time = value
+    function.updateFwGui(function.app.mount.firmware)
+    assert '-' == function.ui.fwtime.text()

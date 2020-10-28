@@ -73,30 +73,28 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         # minimum set for driver package built in
         self.framework = ''
         self.run = {
-            'internal': self
+            'onlineWeather': self
         }
         self.deviceName = ''
 
         self.data = {}
-        self.defaultConfig = {'framework': '',
-                              'frameworks': {'internal': {'deviceName': 'Online'}}}
+        self.defaultConfig = {
+            'framework': '',
+            'frameworks': {
+                'onlineWeather': {
+                    'deviceName': 'OnlineWeather',
+                    'apiKey': '',
+                    'hostaddress': 'api.openweathermap.org',
+                }
+            }
+        }
 
         self.running = False
-
-        self._keyAPI = ''
+        self.hostaddress = ''
+        self.apiKey = ''
         self._online = False
 
         self.app.update10s.connect(self.updateOpenWeatherMapData)
-
-    @property
-    def keyAPI(self):
-        return self._keyAPI
-
-    @keyAPI.setter
-    def keyAPI(self, value):
-        self._keyAPI = value
-        if value:
-            self.updateOpenWeatherMapData()
 
     @property
     def online(self):
@@ -116,7 +114,11 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         :return: success of reconnecting to server
         """
 
+        if not self.apiKey:
+            return False
+
         self.running = True
+        self.signals.deviceConnected.emit('OnlineWeather')
         self.updateOpenWeatherMapData()
 
         return True
@@ -130,6 +132,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
 
         self.running = False
         self.data.clear()
+        self.signals.deviceDisconnected.emit('OnlineWeather')
 
         return True
 
@@ -256,7 +259,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         :return: success
         """
 
-        if not self.keyAPI:
+        if not self.apiKey:
             self.signals.connected.emit(None)
             return False
 
@@ -273,8 +276,8 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         lat = self.location.latitude.degrees
         lon = self.location.longitude.degrees
 
-        webSite = 'http://api.openweathermap.org/data/2.5/forecast'
-        url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&APPID={self.keyAPI}'
+        webSite = f'http://{self.hostaddress}/data/2.5/forecast'
+        url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&APPID={self.apiKey}'
         self.getOpenWeatherMapData(url=url)
         self.log.info(f'{url}')
 

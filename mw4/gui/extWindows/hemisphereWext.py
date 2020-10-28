@@ -233,10 +233,8 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return:
         """
-
         index = self.getIndexPointX(event=event, plane=data.horizonP)
-
-        if index is None:
+        if index is None and data.horizonP:
             return False
 
         suc = data.addHorizonP(value=(event.ydata, event.xdata),
@@ -252,15 +250,14 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return: success
         """
-
         index = self.getIndexPoint(event=event, plane=data.horizonP)
 
         if index is None:
             return False
 
         suc = False
-        if len(data.horizonP) > 2:
-            suc = data.delHorizonP(position=index - 1)
+        if len(data.horizonP) > 0:
+            suc = data.delHorizonP(position=index)
 
         return suc
 
@@ -273,7 +270,6 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return: success
         """
-
         if event.button == 1:
             suc = self.addHorizonPoint(data=data, event=event)
 
@@ -283,14 +279,14 @@ class HemisphereWindowExt:
         else:
             return False
 
-        y, x = zip(*data.horizonP)
-        self.horizonMarker.set_data(x, y)
-        self.horizonFill.set_xy(np.column_stack((x, y)))
+        if data.horizonP is None:
+            return False
+
         self.drawHemisphere()
 
         return suc
 
-    def addBuildPoint(self, data=None, event=None, axes=None):
+    def addBuildPoint(self, data=None, event=None):
         """
         addBuildPoint calculates from the position of the left mouse click the position
         where the next modeldata point should be added. the coordinates are given from mouse
@@ -298,17 +294,13 @@ class HemisphereWindowExt:
 
         :param data: point in tuples (alt, az)
         :param event: mouse event
-        :param axes: link to drawing axes in matplotlib
         :return:
         """
-
         index = self.getIndexPoint(event=event, plane=data.buildP, epsilon=360)
-
         if index is None:
-            index = len(data.buildP)
+            return False
 
         index += 1
-
         suc = data.addBuildP(value=(event.ydata, event.xdata, True),
                              position=index)
         if not suc:
@@ -325,25 +317,26 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return: success
         """
-
         index = self.getIndexPoint(event=event, plane=data.buildP)
+        if index is None:
+            return False
+
         suc = data.delBuildP(position=index)
 
         return suc
 
-    def editBuildPoints(self, data=None, event=None, axes=None):
+    def editBuildPoints(self, data=None, event=None):
         """
         editBuildPoints does dispatching the different mouse clicks for adding or deleting
         model data points and call the function accordingly.
 
         :param data: points in tuples (alt, az)
         :param event: mouse event
-        :param axes: link to drawing axes in matplotlib
         :return: success
         """
 
         if event.button == 1:
-            suc = self.addBuildPoint(data=data, event=event, axes=axes)
+            suc = self.addBuildPoint(data=data, event=event)
 
         elif event.button == 3:
             suc = self.deleteBuildPoint(data=data, event=event)
@@ -364,9 +357,7 @@ class HemisphereWindowExt:
         :param event: mouse events
         :return: success
         """
-
         data = self.app.data
-        axes = self.hemisphereMat.figure.axes[0].axes
 
         if not event.inaxes:
             return False
@@ -378,7 +369,7 @@ class HemisphereWindowExt:
             suc = self.editHorizonMask(event=event, data=data)
 
         elif self.ui.checkEditBuildPoints.isChecked():
-            suc = self.editBuildPoints(event=event, data=data, axes=axes)
+            suc = self.editBuildPoints(event=event, data=data)
 
         else:
             return False
@@ -394,7 +385,6 @@ class HemisphereWindowExt:
         :param event: mouse events
         :return: success
         """
-
         if not event.inaxes:
             return False
 
@@ -443,7 +433,6 @@ class HemisphereWindowExt:
         :param event: button event for parsing
         :return: True for test purpose
         """
-
         if self.ui.checkEditNone.isChecked():
             self.onMouseNormal(event)
 

@@ -586,11 +586,13 @@ class MWidget(QWidget, styles.MWStyles):
 
         return staticCanvas
 
-    def generatePolar(self, widget=None, title=''):
+    def generatePolar(self, widget=None, title='', horizon=False, showAxes=True):
         """
 
         :param widget:
         :param title:
+        :param horizon:
+        :param showAxes:
         :return:
         """
 
@@ -601,19 +603,35 @@ class MWidget(QWidget, styles.MWStyles):
             return None, None
 
         lock = Lock()
+
+        if showAxes:
+            color = self.M_BLUE
+            colorGrid = self.M_GREY
+
+        else:
+            color = self.M_TRANS
+            colorGrid = self.M_TRANS
+
         with lock:
-            fig = widget.figure
-            fig.clf()
-            axe = fig.add_subplot(1, 1, 1, polar=True, facecolor='None')
-            axe.grid(True, color=self.M_GREY)
+            figure = widget.figure
+
+            if figure.axes:
+                axe = figure.axes[0]
+                axe.cla()
+
+            else:
+                figure.clf()
+                axe = figure.add_subplot(1, 1, 1, polar=True, facecolor='None')
+
+            axe.grid(True, color=colorGrid)
 
             if title:
-                axe.set_title(title, color=self.M_BLUE, fontweight='bold', pad=15)
+                axe.set_title(title, color=color, fontweight='bold', pad=15)
 
-            axe.set_xlabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
-            axe.set_ylabel('', color=self.M_BLUE, fontweight='bold', fontsize=12)
-            axe.tick_params(axis='x', colors=self.M_BLUE, labelsize=12)
-            axe.tick_params(axis='y', colors=self.M_BLUE, labelsize=12)
+            axe.set_xlabel('', color=color, fontweight='bold', fontsize=12)
+            axe.set_ylabel('', color=color, fontweight='bold', fontsize=12)
+            axe.tick_params(axis='x', colors=color, labelsize=12)
+            axe.tick_params(axis='y', colors=color, labelsize=12)
             axe.set_theta_zero_location('N')
             axe.set_rlabel_position(45)
             axe.set_theta_direction(-1)
@@ -622,7 +640,14 @@ class MWidget(QWidget, styles.MWStyles):
             axe.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))
             axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
 
-            return axe, fig
+            if not horizon:
+                return axe, figure
+
+            axe.set_ylim(0, 90)
+            axe.set_yticks(range(0, 91, 15))
+            axe.set_yticklabels(['', '75', '60', '45', '30', '15', ''])
+
+            return axe, figure
 
     def generateFlat(self, widget=None, title='', horizon=False, showAxes=True):
         """
@@ -644,9 +669,11 @@ class MWidget(QWidget, styles.MWStyles):
 
         if showAxes:
             color = self.M_BLUE
+            colorGrid = self.M_GREY
 
         else:
             color = self.M_TRANS
+            colorGrid = self.M_TRANS
 
         with lock:
             figure = widget.figure
@@ -663,7 +690,7 @@ class MWidget(QWidget, styles.MWStyles):
             axe.spines['top'].set_color(color)
             axe.spines['left'].set_color(color)
             axe.spines['right'].set_color(color)
-            axe.grid(showAxes, color=self.M_GREY)
+            axe.grid(showAxes, color=colorGrid)
 
             if title:
                 axe.set_title(title, color=color, fontweight='bold', pad=15)
@@ -734,7 +761,7 @@ class MWidget(QWidget, styles.MWStyles):
             return None
 
         if len(plane) == 0:
-            return None
+            return 0
 
         xt = np.asarray([i[1] for i in plane])
         yt = np.asarray([i[0] for i in plane])
@@ -762,14 +789,11 @@ class MWidget(QWidget, styles.MWStyles):
         if event is None:
             return None
 
-        if plane is None:
-            return None
-
-        if len(plane) < 2:
+        if not plane:
             return None
 
         xt = [i[1] for i in plane]
-        index = int(bisect.bisect_left(xt, event.xdata) - 1)
+        index = int(bisect.bisect_left(xt, event.xdata))
 
         return index
 

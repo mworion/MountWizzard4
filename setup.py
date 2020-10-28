@@ -21,7 +21,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.160.2',
+    version='0.190.0',
     packages=[
         'mw4',
         'mw4.base',
@@ -33,6 +33,7 @@ setup(
         'mw4.gui.utilities',
         'mw4.gui.widgets',
         'mw4.logic.astrometry',
+        'mw4.logic.automation',
         'mw4.logic.cover',
         'mw4.logic.dome',
         'mw4.logic.environment',
@@ -46,26 +47,28 @@ setup(
     ],
     python_requires='>=3.6.0, <3.9',
     install_requires=[
-        'mountcontrol==0.175',
+        'mountcontrol==0.176',
         'indibase==0.138',
         'numpy==1.19.2',
         'PyQt5==5.14.2; platform_machine != "armv7l"',
         'PyQt3D==5.14.0; platform_machine != "armv7l"',
         'PyQtWebEngine==5.14.0; platform_machine != "armv7l"',
         'matplotlib==3.3.2',
-        'astropy==4.0.1',
+        'astropy==4.0.3',
         'photutils==1.0.1',
         'scipy==1.5.2',
         'requests==2.24.0',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.27',
-        'sgp4>=2.2',
+        'skyfield==1.30',
+        'sgp4>=2.13',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==2.0.0',
         'opencv-python-headless==4.4.0.44',
         'deepdiff==5.0.2',
     ]
-    + (['pywin32==228'] if "Windows" == platform.system() else []),
+    + (['pywin32==228'] if "Windows" == platform.system() else [])
+    + (['pywinauto==0.6.8'] if "Windows" == platform.system() else []),
+
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='mworion',

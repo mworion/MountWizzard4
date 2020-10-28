@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - 'mw4/**'
-      - 'tests/unittests/**'
+      - 'tests/unit_tests/**'
       - 'setup.py'
       - '.github/workflows/p38_win_pytest.yml'
 
@@ -57,7 +57,7 @@ jobs:
 
     - name: Install pytest
       run: |
-        python -m pip install pytest
+        python -m pip install pytest==4.6.11
         python -m pip install pytest-qt
         python -m pip install pytest-cov
         python -m pip install pytest-flake8
@@ -65,7 +65,8 @@ jobs:
 
     - name: Running unit tests
       run: |
-        pytest tests/unit_tests/zStartup --cov=mw4/ --cov-report=xml
+        pytest tests/unit_tests/zLoader --cov=mw4/ --cov-report=xml
+        pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/ --cov-report=xml
         pytest tests/unit_tests/base --cov-append --cov=mw4/ --cov-report=xml
         pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/ --cov-report=xml
         pytest tests/unit_tests/gui/mainWindow --cov-append --cov=mw4/ --cov-report=xml
@@ -81,5 +82,3 @@ jobs:
         file: ./coverage.xml
         flags: unittests
         name: codecov-umbrella
-        # yml: ./codecov.yml      # optional
-        # fail_ci_if_error: True  # optional default is false

@@ -48,6 +48,8 @@ class DevicePopup(widget.MWidget):
         'alpaca': 'ALPACA',
         'astrometry': 'ASTROMETRY',
         'astap': 'ASTAP',
+        'onlineWeather': 'Online Weather',
+        'relay': 'Relay',
     }
 
     def __init__(self,
@@ -104,6 +106,15 @@ class DevicePopup(widget.MWidget):
                 'timeout': self.ui.astapTimeout,
                 'appPath': self.ui.astapIndexPath,
                 'indexPath': self.ui.astapAppPath,
+            },
+            'onlineWeather': {
+                'apiKey': self.ui.onlineWeatherApiKey,
+                'hostaddress': self.ui.onlineWeatherHostAddress,
+            },
+            'relay': {
+                'hostaddress': self.ui.relayHostAddress,
+                'user': self.ui.relayUser,
+                'password': self.ui.relayPassword,
             },
         }
 
@@ -191,9 +202,6 @@ class DevicePopup(widget.MWidget):
 
                 elif isinstance(ui, QDoubleSpinBox):
                     ui.setValue(frameworks[fw][element])
-
-                else:
-                    self.log.info(f'Element {element} in gui for framework {fw} not found')
 
         return True
 

@@ -88,7 +88,7 @@ def setCustomLoggingLevel(level='WARN'):
 
 class CustomLogger(logging.LoggerAdapter):
     """
-    The MWLog class offers an adapter interface interface to allow a more customized
+    The CustomLogger class offers an adapter interface interface to allow a more customized
     logging functionality.
 
     """

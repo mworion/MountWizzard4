@@ -669,7 +669,7 @@ def test_scanValid_4():
 
 def test_scanValid_5():
     delattr(app.drivers['onlineWeather']['class'], 'signals')
-    app.drivers['onlineWeather']['class'].framework = 'internal'
+    app.drivers['onlineWeather']['class'].framework = 'onlineWeather'
     suc = app.scanValid('onlineWeather', 'test')
     assert not suc
 

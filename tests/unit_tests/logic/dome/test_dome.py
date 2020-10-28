@@ -122,6 +122,7 @@ def test_slewDome_3():
 def test_slewDome_4():
     app.data = {'AZ': 1}
     app.framework = 'indi'
+    app.isGeometry = True
 
     with mock.patch.object(app.app.mount.geometry,
                            'calcTransformationMatrices',
@@ -133,6 +134,7 @@ def test_slewDome_4():
 def test_slewDome_5():
     app.data = {'AZ': 1}
     app.framework = 'indi'
+    app.isGeometry = True
 
     with mock.patch.object(app.app.mount.geometry,
                            'calcTransformationMatrices',

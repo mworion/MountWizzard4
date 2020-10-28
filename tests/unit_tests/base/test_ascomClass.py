@@ -240,7 +240,8 @@ def test_startPollStatus():
 def test_startCommunication_1():
     if platform.system() != 'Windows':
         return
-
+    
+    app.deviceName = 'test'
     with mock.patch.object(app,
                            'startTimer'):
         with mock.patch.object(pythoncom,
@@ -255,6 +256,7 @@ def test_startCommunication_2():
     if platform.system() != 'Windows':
         return
 
+    app.deviceName = 'test'
     with mock.patch.object(app,
                            'startTimer'):
         with mock.patch.object(pythoncom,
@@ -266,12 +268,21 @@ def test_startCommunication_2():
                 assert not suc
 
 
-def test_stopCommunication_4():
+def test_startCommunication_3():
+    if platform.system() != 'Windows':
+        return
+
+    suc = app.startCommunication()
+    assert not suc
+
+
+def test_stopCommunication_1():
     if platform.system() != 'Windows':
         return
 
     app.deviceConnected = True
     app.serverConnected = True
+    app.deviceName = 'test'
     with mock.patch.object(app,
                            'stopTimer'):
         with mock.patch.object(pythoncom,
@@ -282,12 +293,13 @@ def test_stopCommunication_4():
             assert not app.deviceConnected
 
 
-def test_stopCommunication_5():
+def test_stopCommunication_2():
     if platform.system() != 'Windows':
         return
 
     app.deviceConnected = True
     app.serverConnected = True
+    app.deviceName = 'test'
     app.client = 'test'
     with mock.patch.object(app,
                            'disconnectClient',

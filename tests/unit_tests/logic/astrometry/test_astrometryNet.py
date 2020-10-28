@@ -347,3 +347,17 @@ def test_checkAvailability_3(app):
                                    return_value='Windows'):
                 suc = app.checkAvailability()
                 assert suc == (True, True)
+
+
+def test_checkAvailability_4(app):
+    with mock.patch.object(os.path,
+                       'isfile',
+                       return_value=False):
+        with mock.patch.object(glob,
+                               'glob',
+                               return_value=False):
+            with mock.patch.object(platform,
+                                   'system',
+                                   return_value='Linux'):
+                suc = app.checkAvailability()
+                assert suc == (False, False)

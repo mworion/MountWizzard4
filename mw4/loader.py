@@ -25,6 +25,12 @@ import traceback
 import locale
 import html
 
+# the following lines should avoid errors messages from OLE Automation in conjunction with
+# PyQt5
+import warnings
+warnings.simplefilter("ignore", UserWarning)
+sys.coinit_flags = 2
+
 # external packages
 from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
 from PyQt5.QtGui import QMouseEvent, QIcon
@@ -103,35 +109,21 @@ class QAwesomeTooltipEventFilter(QObject):
         Tooltip-specific event filter handling the passed Qt object and event.
         """
 
-        # If this is a tooltip event...
         if event.type() == QEvent.ToolTipChange:
-            # If the target Qt object containing this tooltip is *NOT* a widget,
-            # raise a human-readable exception. While this should *NEVER* be the
-            # case, edge cases are edge cases because they sometimes happen.
             if not isinstance(widget, QWidget):
                 self.log.error('QObject "{}" not a widget.'.format(widget))
                 return False
 
-            # Tooltip for this widget if any *OR* the empty string otherwise.
             tooltip = widget.toolTip()
 
-            # If this tooltip is both non-empty and not already rich text...
             if tooltip == '<html><head/><body><p><br/></p></body></html>':
                 widget.setToolTip(None)
                 return True
 
             elif tooltip and not Qt.mightBeRichText(tooltip):
-                # Convert this plaintext tooltip into a rich text tooltip by:
-                #
-                # * Escaping all HTML syntax in this tooltip.
-                # * Embedding this tooltip in the Qt-specific "<qt>...</qt>" tag.
                 tooltip = '<qt>{}</qt>'.format(html.escape(tooltip))
-
-                # Replace this widget's non-working plaintext tooltip with this
-                # working rich text tooltip.
                 widget.setToolTip(tooltip)
 
-                # Notify the parent event handler this event has been handled.
                 return True
 
         elif event.type() == QEvent.ToolTip:
@@ -139,14 +131,12 @@ class QAwesomeTooltipEventFilter(QObject):
                 self.log.error('QObject "{}" not a widget.'.format(widget))
                 return False
 
-            # Tooltip for this widget if any *OR* the empty string otherwise.
             tooltip = widget.toolTip()
 
             if tooltip == '<html><head/><body><p><br/></p></body></html>':
                 widget.setToolTip(None)
                 return True
 
-        # Else, defer to the default superclass handling of this event.
         return super().eventFilter(widget, event)
 
 
@@ -290,8 +280,7 @@ def writeSystemInfo(mwGlob=None):
 
     :return: true for test purpose
     """
-
-    log.critical('MountWizzard4 started !')
+    log.critical('-' * 100)
     log.critical(f'mountwizzard4    : {version("mountwizzard4")}')
     log.critical(f'indibase         : {version("indibase")}')
     log.critical(f'mountcontrol     : {version("mountcontrol")}')
@@ -303,10 +292,11 @@ def writeSystemInfo(mwGlob=None):
     log.critical(f'Qt               : {QT_VERSION_STR}')
     log.critical(f'release          : {platform.release()}')
     log.critical(f'machine          : {platform.machine()}')
-    log.critical(f'CPU              : {platform.processor()}')
+    log.critical(f'cpu              : {platform.processor()}')
     log.critical(f'node             : {platform.node()}')
-    log.critical(f'IP addr.         : {socket.gethostname()}')
+    log.critical(f'ip addr.         : {socket.gethostname()}')
     log.critical(f'sys.executable   : {sys.executable}')
+    log.critical('-' * 100)
 
     return True
 
@@ -329,6 +319,8 @@ def extractDataFiles(mwGlob=None, splashW=None):
         'deltat.preds',
         'de421_23.bsp',
         'active.txt',
+        'tai-utc.dat',
+        'finals.data',
     ]
 
     for file in files:
@@ -392,7 +384,7 @@ def main():
     extractDataFiles(mwGlob=mwGlob, splashW=splashW)
 
     # and finally starting the application
-    splashW.showMessage('Loading Data')
+    splashW.showMessage('Initialize Application')
     splashW.setValue(80)
 
     # setting except hook for saving some data of errors

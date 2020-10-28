@@ -108,71 +108,21 @@ class Model:
         :return:    True if ok for testing
         """
 
-        if model.numberStars is not None:
-            text = f'{model.numberStars:3.0f}'
-
-        else:
-            text = '-'
-
-        self.ui.numberStars.setText(text)
-        self.ui.numberStars1.setText(text)
-
-        if model.terms is not None:
-            text = f'{model.terms:2.0f}'
-
-        else:
-            text = '-'
-
-        self.ui.terms.setText(text)
-
-        if model.errorRMS is not None:
-            text = str(model.errorRMS)
-
-        else:
-            text = '-'
-
-        self.ui.errorRMS.setText(text)
-        self.ui.errorRMS1.setText(text)
-
-        if model.positionAngle is not None:
-            text = f'{model.positionAngle.degrees:5.1f}'
-
-        else:
-            text = '-'
-
-        self.ui.positionAngle.setText(text)
-
-        if model.polarError is not None:
-            text = f'{model.polarError.degrees * 3600:5.0f}'
-
-        else:
-            text = '-'
-
-        self.ui.polarError.setText(text)
-
-        if model.orthoError is not None:
-            text = f'{model.orthoError.degrees * 3600:5.0f}'
-
-        else:
-            text = '-'
-
-        self.ui.orthoError.setText(text)
-
-        if model.azimuthError is not None:
-            text = f'{model.azimuthError.degrees:5.1f}'
-
-        else:
-            text = '-'
-
-        self.ui.azimuthError.setText(text)
-
-        if model.altitudeError is not None:
-            text = f'{model.altitudeError.degrees:5.1f}'
-
-        else:
-            text = '-'
-
-        self.ui.altitudeError.setText(text)
+        self.guiSetText(self.ui.numberStars, '2.0f', model.numberStars)
+        self.guiSetText(self.ui.numberStars1, '2.0f', model.numberStars)
+        self.guiSetText(self.ui.errorRMS, '5.1f', model.errorRMS)
+        self.guiSetText(self.ui.errorRMS1, '5.1f', model.errorRMS)
+        self.guiSetText(self.ui.terms, '2.0f', model.terms)
+        val = model.positionAngle.degrees if model.positionAngle is not None else None
+        self.guiSetText(self.ui.positionAngle, '5.1f', val)
+        val = model.polarError.degrees * 3600 if model.polarError is not None else None
+        self.guiSetText(self.ui.polarError, '5.0f', val)
+        val = model.orthoError.degrees * 3600 if model.orthoError is not None else None
+        self.guiSetText(self.ui.orthoError, '5.0f', val)
+        val = model.azimuthError.degrees if model.azimuthError is not None else None
+        self.guiSetText(self.ui.azimuthError, '5.1f', val)
+        val = model.altitudeError.degrees if model.altitudeError is not None else None
+        self.guiSetText(self.ui.altitudeError, '5.1f', val)
 
         return True
 
@@ -973,6 +923,7 @@ class Model:
 
         if not suc:
             self.app.message.emit('Actual model cannot be cleared', 2)
+            self.app.message.emit('Model build cancelled', 2)
             return False
 
         else:
@@ -983,11 +934,11 @@ class Model:
 
         suc = self.app.mount.model.deleteName('backup')
         if not suc:
-            return False
+            self.log.info('Cannot delete backup model on mount')
 
         suc = self.app.mount.model.storeName('backup')
         if not suc:
-            return False
+            self.app.message.emit('Cannot save backup model on mount, proceeding with model run', 2)
 
         return True
 
@@ -1002,10 +953,12 @@ class Model:
         binning = self.ui.binning.value()
         subFrame = self.ui.subFrame.value()
         fastReadout = self.ui.checkFastDownload.isChecked()
-        solveTimeout = self.app.astrometry.run['astap'].timeout
-        searchRadius = self.app.astrometry.run['astap'].searchRadius
         focalLength = self.ui.focalLength.value()
         lenSequence = len(self.app.data.buildP)
+
+        framework = self.app.astrometry.framework
+        solveTimeout = self.app.astrometry.run[framework].timeout
+        searchRadius = self.app.astrometry.run[framework].searchRadius
 
         modelPoints = list()
         for index, point in enumerate(self.app.data.buildP):
@@ -1087,18 +1040,17 @@ class Model:
             return False
 
         self.setupModelFilenamesAndDirectories()
+
         modelPoints = self.setupModelPointsAndContextData()
 
         if not modelPoints:
+            self.app.message.emit('Modeling cancelled, no valid points', 2)
             return False
 
         self.setupModelRunContextAndGuiStatus()
         self.disableDAT()
-
         self.app.message.emit(f'Modeling start:      {self.modelName}', 1)
-
         self.modelBuildRetryCounter = self.ui.numberBuildRetries.value()
-
         self.modelCycleThroughBuildPoints(modelPoints=modelPoints)
 
         return True
@@ -1141,7 +1093,6 @@ class Model:
             return False
 
         self.app.message.emit(f'Programming {index + 1} model(s) to mount', 0)
-
         suc = self.programModelToMount(modelJSON)
 
         if suc:

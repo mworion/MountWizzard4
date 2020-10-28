@@ -111,6 +111,8 @@ class SettImaging(object):
         pixelSizeY = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_Y', 0)
         pixelX = self.app.camera.data.get('CCD_INFO.CCD_MAX_X', 0)
         pixelY = self.app.camera.data.get('CCD_INFO.CCD_MAX_Y', 0)
+        maxBinX = self.app.camera.data.get('CCD_BINNING.HOR_BIN_MAX', 9)
+        maxBinY = self.app.camera.data.get('CCD_BINNING.HOR_BIN_MAX', 9)
         rotation = self.app.camera.data.get('CCD_ROTATION.CCD_ROTATION_VALUE', 0)
         coolerTemp = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
         coolerPower = self.app.camera.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE', 0)
@@ -118,6 +120,10 @@ class SettImaging(object):
         downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW', False)
         focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         filterNumber = self.app.filter.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
+
+        maxBin = min(maxBinX, maxBinY)
+        self.ui.binning.setMaximum(maxBin)
+        self.ui.binningN.setMaximum(maxBin)
 
         self.app.camera.expTime = self.ui.expTime.value()
         self.app.camera.expTimeN = self.ui.expTimeN.value()

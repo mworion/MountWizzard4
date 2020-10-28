@@ -21,10 +21,10 @@ import time
 import subprocess
 import sys
 import platform
-from pkg_resources import working_set
-from distutils.version import StrictVersion
 
 # external packages
+from pkg_resources import working_set
+from distutils.version import StrictVersion
 import PyQt5
 if platform.machine() not in Config.excludedPlatforms:
     import PyQt5.QtMultimedia
@@ -55,7 +55,6 @@ class SettMisc(object):
         self.mutexInstall = PyQt5.QtCore.QMutex()
 
         # setting functional signals
-        self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
         self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
         self.app.dome.signals.slewFinished.connect(lambda: self.playSound('DomeSlew'))
         self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
@@ -67,7 +66,6 @@ class SettMisc(object):
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
         self.ui.isOnline.clicked.connect(self.setupIERS)
-        self.ui.isOnline.clicked.connect(self.updateDeltaT)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
         self.ui.versionRelease.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.showUpdates)
@@ -102,7 +100,6 @@ class SettMisc(object):
         self.setWeatherOnline()
         self.setupAudioGui()
         self.setupIERS()
-        self.updateDeltaT()
 
         self.showUpdates()
 
@@ -165,36 +162,6 @@ class SettMisc(object):
         else:
             iers.conf.auto_download = False
             iers.conf.auto_max_age = 99999
-
-        return True
-
-    def updateDeltaT(self):
-        """
-        updateDeltaT download the necessary time files for skyfield timescale object
-        if online status is set. if download does not succeed, we keep working with the old
-        files. as we don't create a new timescale object the new file versions will be used
-        when mw4 starts the next time.
-
-        :return: True for test purpose
-        """
-
-        isOnline = self.ui.isOnline.isChecked()
-
-        if isOnline:
-            try:
-                self.app.mount.obsSite.loader('deltat.data', reload=True)
-            except Exception as e:
-                self.log.error(f'{e}')
-
-            try:
-                self.app.mount.obsSite.loader('deltat.preds', reload=True)
-            except Exception as e:
-                self.log.error(f'{e}')
-
-            try:
-                self.app.mount.obsSite.loader('Leap_Second.dat', reload=True)
-            except Exception as e:
-                self.log.error(f'{e}')
 
         return True
 
@@ -433,40 +400,6 @@ class SettMisc(object):
 
         worker.signals.result.connect(self.installFinished)
         self.threadPool.start(worker)
-
-        return True
-
-    def updateFwGui(self, fw):
-        """
-        updateFwGui write all firmware data to the gui.
-
-        :return:    True if ok for testing
-        """
-
-        if fw.product is not None:
-            self.ui.product.setText(fw.product)
-        else:
-            self.ui.product.setText('-')
-
-        if fw.vString is not None:
-            self.ui.vString.setText(fw.vString)
-        else:
-            self.ui.vString.setText('-')
-
-        if fw.date is not None:
-            self.ui.fwdate.setText(fw.date)
-        else:
-            self.ui.fwdate.setText('-')
-
-        if fw.time is not None:
-            self.ui.fwtime.setText(fw.time)
-        else:
-            self.ui.fwtime.setText('-')
-
-        if fw.hardware is not None:
-            self.ui.hardware.setText(fw.hardware)
-        else:
-            self.ui.hardware.setText('-')
 
         return True
 

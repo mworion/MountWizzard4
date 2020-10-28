@@ -64,6 +64,15 @@ def test_getInitialConfig_3():
         assert app.data['FILTER_NAME.FILTER_SLOT_NAME_1'] == 'test1'
 
 
+def test_getInitialConfig_4():
+    with mock.patch.object(app.client,
+                           'names',
+                           return_value=['test', None]):
+        suc = app.getInitialConfig()
+        assert suc
+        assert app.data['FILTER_NAME.FILTER_SLOT_NAME_0'] == 'test'
+
+
 def test_workerPollData_1():
     with mock.patch.object(AlpacaBase,
                            'get',

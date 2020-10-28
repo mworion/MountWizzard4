@@ -267,8 +267,11 @@ class AscomClass(object):
         :param loadConfig:
         :return: True for test purpose
         """
+        if not self.deviceName:
+            return False
 
         pythoncom.CoInitialize()
+
         try:
             self.client = win32com.client.Dispatch(self.deviceName)
 
@@ -296,7 +299,7 @@ class AscomClass(object):
                 self.disconnectClient()
 
             except Exception as e:
-                self.log.info(f'Connection to [{self.deviceName}] could not be closed: {e}')
+                self.log.info(f'Connection to [{self.deviceName}]:  could not be closed, {e}')
 
         self.deviceConnected = False
         self.serverConnected = False

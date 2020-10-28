@@ -37,32 +37,7 @@ def module_setup_teardown():
         yield
 
 
-def test_host_0():
-    app.host = None
-    assert app.host is None
-
-
-def test_host_1():
-    app.host = 1.1
-    assert app.host is None
-
-
-def test_host_2():
-    app.host = ('localhost', 80)
-    assert app.host == ('localhost', 80)
-
-
-def test_user():
-    app.user = 'astro'
-    assert app.user == 'astro'
-
-
-def test_password():
-    app.password = 'astro'
-    assert app.password == 'astro'
-
-
-def test_startTimers_1():
+def test_startCommunication_1():
     app.host = None
     with mock.patch.object(app.timerTask,
                            'start'):
@@ -70,18 +45,10 @@ def test_startTimers_1():
         assert not suc
 
 
-def test_startTimers_2():
-    app.host = ('localhost', 80)
+def test_startCommunications_2():
+    app.hostaddress = 'localhost'
     with mock.patch.object(app.timerTask,
                            'start'):
-        suc = app.startCommunication()
-        assert suc
-
-
-def test_startTimers_3():
-    app.host = ('localhost', 80)
-    with mock.patch.object(app.timerTask,
-                           'start',):
         suc = app.startCommunication()
         assert suc
 
@@ -327,6 +294,12 @@ def test_getRelay_1(qtbot):
     app.mutexPoll.lock()
     suc = app.getRelay()
     app.mutexPoll.unlock()
+    assert not suc
+
+
+def test_getRelay_2(qtbot):
+    app.hostaddress = None
+    suc = app.getRelay()
     assert not suc
 
 

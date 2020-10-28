@@ -19,108 +19,71 @@
 import os
 import logging
 import platform
+import shutil
 
 # external packages
 from PyQt5.QtCore import QObject
-import requests
+from pywinauto import timings, application
+from pywinauto.findwindows import find_windows
+from winreg import HKEY_LOCAL_MACHINE
+import winreg
+import pywinauto
+import pywinauto.controls.win32_controls as controls
 
 # local imports
 from base.loggerMW import CustomLogger
-if platform.system() == 'Windows':
-    import comtypes.client
-    from pywinauto import Application, timings, findwindows, application
-    from pywinauto.controls.win32_controls import ButtonWrapper, EditWrapper
-    from winreg import OpenKey, CloseKey, EnumKey, EnumValue, HKEY_LOCAL_MACHINE, QueryInfoKey
 
 
-class AutomationWindows(QObject):
-    __all__ = ['AutomationWindows',
+class AutomateWindows(QObject):
+    __all__ = ['AutomateWindows',
                ]
 
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
 
-    UTC_1 = 'http://maia.usno.navy.mil/ser7/finals.data'
-    UTC_2 = 'http://maia.usno.navy.mil/ser7/tai-utc.dat'
+    UPDATER_EXE = 'GmQCIv2.exe'
     UTC_1_FILE = 'finals.data'
     UTC_2_FILE = 'tai-utc.dat'
 
-    COMETS_START = 102
-    COMETS_END = 161
-    COMETS = 'http://www.minorplanetcenter.net/iau/MPCORB/CometEls.txt'
-    COMETS_FILE = 'comets.mpc'
+    COMET_FIELDS = ['Orbit_type',
+                    'Provisional_packed_desig',
+                    'Year_of_perihelion',
+                    'Month_of_perihelion',
+                    'Day_of_perihelion',
+                    'Perihelion_dist',
+                    'e',
+                    'Peri',
+                    'Node',
+                    'i',
+                    'Epoch_year',
+                    'Epoch_month',
+                    'Epoch_day',
+                    'H',
+                    'G',
+                    'Designation_and_name',
+                    'Ref'
+                    ]
 
-    ASTEROIDS_START = 165
-    ASTEROIDS_END = 196
-    ASTEROIDS_MPC5000 = 'http://www.ap-i.net/pub/skychart/mpc/mpc5000.dat'
-    ASTEROIDS_NEA = 'http://www.minorplanetcenter.net/iau/MPCORB/NEA.txt'
-    ASTEROIDS_PHA = 'http://www.minorplanetcenter.net/iau/MPCORB/PHA.txt'
-    ASTEROIDS_TNO = 'http://www.minorplanetcenter.net/iau/MPCORB/Distant.txt'
-    ASTEROIDS_UNUSAL = 'http://www.minorplanetcenter.net/iau/MPCORB/Unusual.txt'
-    ASTEROIDS_FILE = 'asteroids.mpc'
+    ASTEROID_FIELDS = [
 
-    OPENDIALOG = 'Dialog'
+    ]
 
     def __init__(self, app):
         super().__init__()
         self.app = app
         self.threadPool = app.threadPool
 
-        self.appAvailable = False
-        self.appName = ''
-        self.appInstallPath = ''
-        self.appExe = 'GmQCIv2.exe'
-
-        self.checkApplication()
-        self.TARGET_DIR = self.appInstallPath
-        if self.TARGET_DIR == '':
-            self.TARGET_DIR = os.getcwd()+'/config/'
-
-        # signal slot
-        self.app.ui.btn_downloadEarthrotation.clicked.connect()
-        self.app.ui.btn_downloadSpacestations.clicked.connect()
-        self.app.ui.btn_downloadSatbrighest.clicked.connect()
-        self.app.ui.btn_downloadAsteroidsMPC5000.clicked.connect()
-        self.app.ui.btn_downloadAsteroidsNEA.clicked.connect()
-        self.app.ui.btn_downloadAsteroidsPHA.clicked.connect()
-        self.app.ui.btn_downloadAsteroidsTNO.clicked.connect()
-        self.app.ui.btn_downloadComets.clicked.connect()
-        self.app.ui.btn_downloadAll.clicked.connect()
-        self.app.ui.btn_uploadMount.clicked.connect()
-
-    def initConfig(self):
-        """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
-        :return: True for test purpose
-        """
-
-        config = self.app.config['mainW']
-        self.app.ui.le_filterExpressionMPC.setText(self.app.config.get('filterExpressionMPC'))
-        self.app.ui.checkFilterMPC.setChecked(self.app.config.get('checkFilterMPC'))
-
-    def storeConfig(self):
-        """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
-        :return: True for test purpose
-        """
-
-        config = self.app.config['mainW']
-        config['checkFilterMPC'] = self.ui.checkFilterMPC.isChecked()
-        config['filterExpressionMPC'] = self.ui.filterExpressionMPC.text()
+        val = self.getAppSettings('10micron QCI')
+        self.available, self.name, self.installPath = val
+        self.updaterRunnable = self.installPath + self.UPDATER_EXE
+        self.updater = None
+        self.actualWorkDir = os.getcwd()
 
     @staticmethod
-    def getRegistrationKeyPath():
+    def getRegistryPath():
         """
-
         :return:
         """
-
         if platform.machine().endswith('64'):
             regPath = 'SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall'
 
@@ -129,235 +92,406 @@ class AutomationWindows(QObject):
 
         return regPath
 
-    def checkRegistrationKeys(self, appSearchName):
+    @staticmethod
+    def convertRegistryEntryToDict(subkey):
         """
+        :param subkey:
+        :return:
+        """
+        values = dict()
 
-        :param appSearchName:
+        for j in range(0, winreg.QueryInfoKey(subkey)[1]):
+            values[winreg.EnumValue(subkey, j)[0]] = winreg.EnumValue(subkey, j)[1]
+
+        return values
+
+    def getValuesForNameKeyFromRegistry(self, nameKey):
+        """
+        :param nameKey:
+        :return:
+        """
+        regPath = self.getRegistryPath()
+        key = winreg.OpenKey(HKEY_LOCAL_MACHINE, regPath)
+        subkey = winreg.OpenKey(key, nameKey)
+        values = self.convertRegistryEntryToDict(subkey)
+        winreg.CloseKey(subkey)
+        winreg.CloseKey(key)
+
+        return values
+
+    @staticmethod
+    def searchNameInRegistry(appName, key):
+        """
+        :param appName:
+        :param key:
+        :return:
+        """
+        for i in range(0, winreg.QueryInfoKey(key)[0]):
+            nameKey = winreg.EnumKey(key, i)
+            if appName in nameKey:
+                break
+        else:
+            nameKey = ''
+
+        return nameKey
+
+    def getNameKeyFromRegistry(self, appName):
+        """
+        :param appName:
+        :return:
+        """
+        regPath = self.getRegistryPath()
+        key = winreg.OpenKey(HKEY_LOCAL_MACHINE, regPath)
+        nameKey = self.searchNameInRegistry(appName, key)
+        winreg.CloseKey(key)
+
+        return nameKey
+
+    def extractPropertiesFromRegistry(self, appName):
+        """
+        :param appName:
         :return:
         """
 
-        regPath = self.getRegistrationKeyPath()
+        nameKey = self.getNameKeyFromRegistry(appName)
+        if not appName:
+            return False, '', ''
 
-        appInstallPath = ''
-        appInstalled = False
-        appName = ''
+        values = self.getValuesForNameKeyFromRegistry(nameKey)
 
+        if appName in values.get('DisplayName', '') and 'InstallLocation' in values:
+            available = True
+            name = values['DisplayName']
+            installPath = values['InstallLocation']
+
+        else:
+            available = False
+            installPath = ''
+            name = ''
+
+        return available, installPath, name
+
+    def getAppSettings(self, appName):
+        """
+        :param appName:
+        :return:
+        """
         try:
-            key = OpenKey(HKEY_LOCAL_MACHINE, regPath)
-            for i in range(0, QueryInfoKey(key)[0]):
-                nameKey = EnumKey(key, i)
-                subkey = OpenKey(key, nameKey)
-                for j in range(0, QueryInfoKey(subkey)[1]):
-                    values = EnumValue(subkey, j)
-                    if values[0] == 'DisplayName':
-                        appName = values[1]
-                    if values[0] == 'InstallLocation':
-                        appInstallPath = values[1]
-                if appSearchName in appName:
-                    appInstalled = True
-                    CloseKey(subkey)
-                    break
-                else:
-                    CloseKey(subkey)
-            CloseKey(key)
-            if not appInstalled:
-                appInstallPath = ''
-                appName = ''
+            available, installPath, displayName = self.extractPropertiesFromRegistry(appName)
+
         except Exception as e:
-            self.logger.debug('Name: {0}, Path: {1}, error: {2}'.format(appName, appInstallPath, e))
-        finally:
-            return appInstalled, appName, appInstallPath
+            self.logger.debug(f'{e}')
+            return False, '', ''
 
-    def checkApplication(self):
-        self.appAvailable, self.appName, self.appInstallPath = self.app.checkRegistrationKeys('10micron QCI')
-        if self.appAvailable:
-            self.app.messageQueue.put('Found: {0}\n'.format(self.appName))
-            self.logger.info('Name: {0}, Path: {1}'.format(self.appName, self.appInstallPath))
-        else:
-            self.logger.info('Application 10micron Updater  not found on computer')
+        return available, displayName, installPath
 
-    def filterFileMPC(self, directory, filename, expression, start, end):
-        numberEntry = 0
-        with open(directory + filename, 'r') as inFile, open(directory + 'filter.mpc', 'w') as outFile:
-            for line in inFile:
-                searchExp = expression.split(',')
-                for exp in searchExp:
-                    if line.find(exp, start, end) != -1:
-                        outFile.write(line)
-                        numberEntry += 1
-        if numberEntry == 0:
-            return False
-        else:
-            self.app.messageQueue.put('Found {0} target(s) in MPC file: {1}\n'.format(numberEntry, filename))
-            self.logger.info('Found {0} target(s) in MPC file: {1}!'.format(numberEntry, filename))
+    def checkFloatingPointErrorWindow(self):
+        """
+        :return:
+        """
+        try:
+            dialog = timings.wait_until_passes(2,
+                                               0.2,
+                                               lambda: find_windows(title='GmQCIv2',
+                                                                    class_name='#32770')[0])
+            winOK = self.updater.window(handle=dialog)
+            winOK['OK'].click()
+
+        except timings.TimeoutError:
             return True
 
-    def downloadFile(self, url, filename):
-        try:
-            r = requests.get(url, stream=True)
-            if r.status_code == 200:
-                numberOfChunks = 0
-                with open(filename, 'wb') as f:
-                    for chunk in r.iter_content(128):
-                        numberOfChunks += 1
-                        f.write(chunk)
-            self.app.messageQueue.put('Downloaded {0} Bytes\n'.format(128 * numberOfChunks))
         except Exception as e:
-            self.logger.error('Download of {0} failed, error{1}'.format(url, e))
-            self.app.messageQueue.put('#BRDownload Error {0}\n'.format(e))
-        return
+            self.logger.error(f'error{e}')
+            return False
 
-    def uploadMount(self):
-        actual_work_dir = ''
+        else:
+            return True
+
+    def startUpdater(self):
+        """
+        :return:
+        """
+        self.updater = pywinauto.Application(backend='win32')
+
         try:
-            actual_work_dir = os.getcwd()
-            os.chdir(os.path.dirname(self.appInstallPath))
-            app = Application(backend='win32')
-            app.start(self.appInstallPath + self.appExe)
-            # timings.Timings.Slow()
+            self.updater.start(self.installPath + self.UPDATER_EXE)
+
         except application.AppStartError:
             self.logger.error('Failed to start updater, please check!')
-            self.app.messageQueue.put('#BRFailed to start updater, please check\n')
-            os.chdir(actual_work_dir)
-            return
-        try:
-            dialog = timings.WaitUntilPasses(2, 0.2, lambda: findwindows.find_windows(title='GmQCIv2', class_name='#32770')[0])
-            winOK = app.window_(handle=dialog)
-            winOK['OK'].click()
-        except timings.TimeoutError as e:
-            self.logger.warning('No invalid floating point windows occurred - moving forward')
+            return False
+
         except Exception as e:
-            self.logger.error('error{0}'.format(e))
-        finally:
-            pass
-        try:
-            win = app['10 micron control box update']
-            win['next'].click()
-            win['next'].click()
-            ButtonWrapper(win['Control box firmware']).UncheckByClick()
-        except Exception as e:
-            self.logger.error('error{0}'.format(e))
-            self.app.messageQueue.put('#BRError in starting 10micron updater, please check\n')
-            os.chdir(actual_work_dir)
-            return
-        ButtonWrapper(win['Orbital parameters of comets']).UncheckByClick()
-        ButtonWrapper(win['Orbital parameters of asteroids']).UncheckByClick()
-        ButtonWrapper(win['Orbital parameters of satellites']).UncheckByClick()
-        ButtonWrapper(win['UTC / Earth rotation data']).UncheckByClick()
-        try:
-            uploadNecessary = False
-            if self.app.ui.checkComets.isChecked():
-                ButtonWrapper(win['Orbital parameters of comets']).CheckByClick()
-                win['Edit...4'].click()
-                popup = app['Comet orbits']
-                popup['MPC file'].click()
-                filedialog = app[self.OPENDIALOG]
-                if self.app.ui.checkFilterMPC.isChecked():
-                    if self.filterFileMPC(self.TARGET_DIR, self.COMETS_FILE, self.app.ui.le_filterExpressionMPC.text(), self.COMETS_START, self.COMETS_END):
-                        uploadNecessary = True
-                    EditWrapper(filedialog['Edit13']).SetText(self.TARGET_DIR + 'filter.mpc')
-                else:
-                    uploadNecessary = True
-                    EditWrapper(filedialog['Edit13']).SetText(self.TARGET_DIR + self.COMETS_FILE)
-                filedialog['Button16'].click()
-                popup['Close'].click()
-            else:
-                ButtonWrapper(win['Orbital parameters of comets']).UncheckByClick()
-            if self.app.ui.checkAsteroids.isChecked():
-                ButtonWrapper(win['Orbital parameters of asteroids']).CheckByClick()
-                win['Edit...3'].click()
-                popup = app['Asteroid orbits']
-                popup['MPC file'].click()
-                filedialog = app[self.OPENDIALOG]
-                if self.app.ui.checkFilterMPC.isChecked():
-                    if self.filterFileMPC(self.TARGET_DIR, self.ASTEROIDS_FILE, self.app.ui.le_filterExpressionMPC.text(), self.ASTEROIDS_START, self.ASTEROIDS_END):
-                        uploadNecessary = True
-                    EditWrapper(filedialog['Edit13']).SetText(self.TARGET_DIR + 'filter.mpc')
-                else:
-                    uploadNecessary = True
-                    EditWrapper(filedialog['Edit13']).SetText(self.TARGET_DIR + self.ASTEROIDS_FILE)
-                filedialog['Button16'].click()
-                popup['Close'].click()
-            else:
-                ButtonWrapper(win['Orbital parameters of asteroids']).UncheckByClick()
-            if self.app.ui.checkTLE.isChecked():
-                ButtonWrapper(win['Orbital parameters of satellites']).CheckByClick()
-                win['Edit...2'].click()
-                popup = app['Satellites orbits']
-                popup['Load from file'].click()
-                filedialog = app[self.OPENDIALOG]
-                EditWrapper(filedialog['Edit13']).SetText(self.TARGET_DIR + self.SATBRIGHTEST_FILE)
-                filedialog['Button16'].click()
-                popup['Close'].click()
-                uploadNecessary = True
-            else:
-                ButtonWrapper(win['Orbital parameters of satellites']).UncheckByClick()
-            if self.app.ui.checkTLE.isChecked():
-                ButtonWrapper(win['Orbital parameters of satellites']).CheckByClick()
-                win['Edit...2'].click()
-                popup = app['Satellites orbits']
-                popup['Load from file'].click()
-                filedialog = app[self.OPENDIALOG]
-                EditWrapper(filedialog['Edit13']).SetText(self.TARGET_DIR + self.SPACESTATIONS_FILE)
-                filedialog['Button16'].click()
-                popup['Close'].click()
-                uploadNecessary = True
-            else:
-                ButtonWrapper(win['Orbital parameters of satellites']).UncheckByClick()
-            if self.app.ui.checkEarthrotation.isChecked():
-                ButtonWrapper(win['UTC / Earth rotation data']).CheckByClick()
-                win['Edit...1'].click()
-                popup = app['UTC / Earth rotation data']
-                popup['Import files...'].click()
-                filedialog = app['Open finals data']
-                EditWrapper(filedialog['Edit13']).SetText(self.TARGET_DIR + self.UTC_1_FILE)
-                filedialog['Button16'].click()
-                filedialog = app['Open tai-utc.dat']
-                EditWrapper(filedialog['Edit13']).SetText(self.TARGET_DIR + self.UTC_2_FILE)
-                filedialog['Button16'].click()
-                fileOK = app['UTC data']
-                fileOK['OK'].click()
-                uploadNecessary = True
-            else:
-                ButtonWrapper(win['UTC / Earth rotation data']).UncheckByClick()
-        except Exception as e:
-            self.logger.error('error{0}'.format(e))
-            self.app.messageQueue.put('#BRError in choosing upload files, please check 10micron updater\n')
-            os.chdir(actual_work_dir)
-            return
-        if not self.app.workerMountDispatcher.mountStatus['Once']:
-            self.app.messageQueue.put('Upload only possible with connected mount !')
-            uploadNecessary = False
-        if uploadNecessary:
-            try:
-                win['next'].click()
-                win['next'].click()
-                win['Update Now'].click()
-            except Exception as e:
-                self.logger.error('error{0}'.format(e))
-                self.app.messageQueue.put('#BRError in uploading files, please check 10micron updater\n')
-                os.chdir(actual_work_dir)
-                return
-            try:
-                dialog = timings.WaitUntilPasses(60, 0.5, lambda: findwindows.find_windows(title='Update completed', class_name='#32770')[0])
-                winOK = app.window_(handle=dialog)
-                winOK['OK'].click()
-            except Exception as e:
-                self.logger.error('error{0}'.format(e))
-                self.app.messageQueue.put('#BRError in closing 10micron updater, please check\n')
-                os.chdir(actual_work_dir)
-                return
+            self.logger.error(f'Failed to start updater, error {e}')
+            return False
+
         else:
-            try:
-                win['Cancel'].click()
-                winOK = app['Exit updater']
-                winOK['Yes'].click()
-            except Exception as e:
-                self.logger.error('error{0}'.format(e))
-                self.app.messageQueue.put('#BRError in closing Updater, please check\n')
-                os.chdir(actual_work_dir)
-                return
+            suc = self.checkFloatingPointErrorWindow()
+            return suc
 
+    def clearUploadMenuCommands(self):
+        """
+        :return:
+        """
+        win = self.updater['10 micron control box update']
+        win['next'].click()
+        win['next'].click()
+        controls.ButtonWrapper(win['Control box firmware']).uncheck_by_click()
+        controls.ButtonWrapper(win['Orbital parameters of comets']).uncheck_by_click()
+        controls.ButtonWrapper(win['Orbital parameters of asteroids']).uncheck_by_click()
+        controls.ButtonWrapper(win['Orbital parameters of satellites']).uncheck_by_click()
+        controls.ButtonWrapper(win['UTC / Earth rotation data']).uncheck_by_click()
+        return True
 
-if __name__ == "__main__":
-    pass
+    def clearUploadMenu(self):
+        """
+        :return:
+        """
+        try:
+            self.clearUploadMenuCommands()
+
+        except Exception as e:
+            self.logger.error('error{0}'.format(e))
+            return False
+
+        return True
+
+    def prepareUpdater(self):
+        """
+        :return:
+        """
+        self.updater = None
+        os.chdir(os.path.dirname(self.installPath))
+
+        suc = self.startUpdater()
+        if not suc:
+            os.chdir(self.actualWorkDir)
+            return False
+
+        suc = self.clearUploadMenu()
+        if not suc:
+            os.chdir(self.actualWorkDir)
+            return False
+
+        return True
+
+    def doUploadAndCloseInstallerCommands(self):
+        """
+        :return:
+        """
+        win = self.updater['10 micron control box update']
+        win['next'].click()
+        win['next'].click()
+        win['Update Now'].click()
+        return True
+
+    def pressOK(self):
+        """
+        :return:
+        """
+        dialog = timings.wait_until_passes(60,
+                                           0.5,
+                                           lambda: find_windows(title='Update completed',
+                                                                class_name='#32770')[0])
+        winOK = self.updater.window(handle=dialog)
+        winOK['OK'].click()
+        return True
+
+    def doUploadAndCloseInstaller(self):
+        """
+        :return:
+        """
+        try:
+            self.doUploadAndCloseInstallerCommands()
+            self.pressOK()
+
+        except Exception as e:
+            self.logger.error('error{0}'.format(e))
+            return False
+
+        return True
+
+    def uploadMPCDataCommands(self, comets=False):
+        """
+        :param comets:
+        :return:
+        """
+        win = self.updater['10 micron control box update']
+        if comets:
+            controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
+            win['Edit...4'].click()
+            popup = self.updater['Comet orbits']
+
+        else:
+            controls.ButtonWrapper(win['Orbital parameters of asteroids']).check_by_click()
+            win['Edit...3'].click()
+            popup = self.updater['Asteroid orbits']
+
+        popup['MPC file'].click()
+        filedialog = self.updater['Dialog']
+        controls.EditWrapper(filedialog['Edit13']).set_text(
+            self.installPath + 'minorPlanets.mpc')
+        filedialog['Button16'].click()
+        popup['Close'].click()
+        return True
+
+    def uploadMPCData(self, comets=False):
+        """
+        :param comets:
+        :return:
+        """
+        try:
+            self.prepareUpdater()
+            self.uploadMPCDataCommands(comets=comets)
+
+        except Exception as e:
+            self.logger.error(f'error{e}')
+            return False
+
+        else:
+            suc = self.doUploadAndCloseInstaller()
+            return suc
+
+        finally:
+            os.chdir(self.actualWorkDir)
+
+    def uploadEarthRotationDataCommands(self):
+        """
+
+        :return:
+        """
+        win = self.updater['10 micron control box update']
+        controls.ButtonWrapper(win['UTC / Earth rotation data']).check_by_click()
+        win['Edit...1'].click()
+        popup = self.updater['UTC / Earth rotation data']
+        popup['Import files...'].click()
+        filedialog = self.updater['Open finals data']
+        controls.EditWrapper(filedialog['Edit13']).set_text(self.installPath + self.UTC_1_FILE)
+        filedialog['Button16'].click()
+        filedialog = self.updater['Open tai-utc.dat']
+        controls.EditWrapper(filedialog['Edit13']).set_text(self.installPath + self.UTC_2_FILE)
+        filedialog['Button16'].click()
+        fileOK = self.updater['UTC data']
+        fileOK['OK'].click()
+        return True
+
+    def uploadEarthRotationData(self):
+        """
+
+        :return:
+        """
+        self.prepareUpdater()
+
+        try:
+            self.uploadEarthRotationDataCommands()
+
+        except Exception as e:
+            self.logger.error(f'error{e}')
+            os.chdir(self.actualWorkDir)
+            return False
+
+        else:
+            suc = self.doUploadAndCloseInstaller()
+            return suc
+
+        finally:
+            os.chdir(self.actualWorkDir)
+
+    def writeEarthRotationData(self):
+        """
+
+        :return:
+        """
+        sourceDir = self.app.mwGlob['dataDir'] + '/'
+        destDir = self.installPath + '/'
+
+        if not os.path.isfile(sourceDir + 'tai-utc.dat'):
+            return False
+
+        if not os.path.isfile(sourceDir + 'finals.data'):
+            return False
+
+        shutil.copy(sourceDir + 'tai-utc.dat', destDir + 'tai-utc.dat')
+        shutil.copy(sourceDir + 'finals.data', destDir + 'finals.data')
+
+        return True
+
+    def writeCometMPC(self, datas=None):
+        """
+
+        :param datas:
+        :return:
+        """
+        if not datas:
+            return False
+
+        if not isinstance(datas, list):
+            return False
+
+        dest = self.installPath + '/minorPlanets.mpc'
+
+        with open(dest, 'w') as f:
+            for data in datas:
+                line = ''
+                line += f'{"":4s}'
+                line += f'{data.get("Orbit_type", ""):1s}'
+                line += f'{data.get("Provisional_packed_desig", ""):7s}'
+                line += f'{"":2s}'
+                line += f'{data.get("Year_of_perihelion", 0):04d}'
+                line += f'{"":1s}'
+                line += f'{data.get("Month_of_perihelion", 0):02d}'
+                line += f'{"":1s}'
+                line += f'{data.get("Day_of_perihelion", 0):7.4f}'
+                line += f'{"":1s}'
+                line += f'{data.get("Perihelion_dist", 0):9.6f}'
+                line += f'{"":2s}'
+                line += f'{data.get("e", 0):8.6f}'
+                line += f'{"":2s}'
+                line += f'{data.get("Peri", 0):8.4f}'
+                line += f'{"":2s}'
+                line += f'{data.get("Node", 0):8.4f}'
+                line += f'{"":2s}'
+                line += f'{data.get("i", 0):8.4f}'
+                line += f'{"":2s}'
+
+                if 'Epoch_year' in data:
+                    line += f'{data.get("Epoch_year", 0):04d}'
+                    line += f'{data.get("Epoch_month", 0):02d}'
+                    line += f'{data.get("Epoch_day", 0):02d}'
+                else:
+                    line += f'{"":8s}'
+
+                line += f'{"":2s}'
+                line += f'{data.get("H", 0):4.1f}'
+                line += f'{"":1s}'
+                line += f'{data.get("G", 0):4.1f}'
+                line += f'{"":2s}'
+                line += f'{data.get("Designation_and_name", ""):56s}'
+                line += f'{"":1s}'
+                line += f'{data.get("Ref", " "):>9s}'
+                line += '\n'
+                f.write(line)
+
+        return True
+
+    def writeAsteroidMPC(self, datas=None):
+        """
+
+        :param datas:
+        :return:
+        """
+        if not datas:
+            return False
+
+        if not isinstance(datas, list):
+            return False
+
+        dest = self.installPath + '/minorPlanets.mpc'
+
+        with open(dest, 'w') as f:
+            for data in datas:
+                line = ''
+                line += f'{"":4s}'
+                line += f'{data.get("Orbit_type", ""):1s}'
+                f.write(line)
+
+        return True

@@ -140,59 +140,29 @@ def test_genHaDecParams5():
     assert val
 
 
-def test_checkHorizonBoundaries_1():
-    value = []
-    val = app.checkHorizonBoundaries(value)
-    assert val == [(0, 0), (0, 360)]
-
-
-def test_checkHorizonBoundaries_2():
-    value = []
-    val = app.checkHorizonBoundaries(value)
-    assert val == [(0, 0), (0, 360)]
-
-
-def test_checkHorizonBoundaries_3():
-    value = [(0, 10), (0, 30)]
-    val = app.checkHorizonBoundaries(value)
-    assert val == [(0, 0), (0, 10), (0, 30), (0, 360)]
-
-
-def test_checkHorizonBoundaries_4():
-    value = [(0, 0), (0, 30)]
-    val = app.checkHorizonBoundaries(value)
-    assert val == [(0, 0), (0, 30), (0, 360)]
-
-
-def test_checkHorizonBoundaries_5():
-    value = [(0, 10), (0, 360)]
-    val = app.checkHorizonBoundaries(value)
-    assert val == [(0, 0), (0, 10), (0, 360)]
-
-
 def test_horizonP1():
     app.genGreaterCircle('max')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == 127
+    assert len(app.horizonP) == 125
     app.genGreaterCircle('med')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == 97
+    assert len(app.horizonP) == 95
     app.genGreaterCircle('norm')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == 78
+    assert len(app.horizonP) == 76
     app.genGreaterCircle('min')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == 53
+    assert len(app.horizonP) == 51
 
 
 def test_horizonP2():
     app.horizonP = '456'
-    assert len(app.horizonP) == 2
+    assert len(app.horizonP) == 0
 
 
 def test_horizonP3():
     app.horizonP = [(1, 1), (1, 1), 'test']
-    assert len(app.horizonP) == 2
+    assert len(app.horizonP) == 0
 
 
 def test_buildP1():
@@ -512,9 +482,9 @@ def test_delBuildP4():
 def test_clearHorizonP():
     app.genGreaterCircle('max')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == 127
+    assert len(app.horizonP) == 125
     app.clearHorizonP()
-    assert len(app.horizonP) == 2
+    assert len(app.horizonP) == 0
 
 
 def test_addHorizonP1():
@@ -522,52 +492,49 @@ def test_addHorizonP1():
     suc = app.addHorizonP((10, 10))
     assert suc
     assert len(app._horizonP) == 1
-    assert len(app.horizonP) == 3
 
     suc = app.addHorizonP((10, 10))
     assert suc
     assert len(app._horizonP) == 2
-    assert len(app.horizonP) == 4
 
     suc = app.addHorizonP((10, 10))
     assert suc
     assert len(app._horizonP) == 3
-    assert len(app.horizonP) == 5
 
 
 def test_addHorizonP2():
     app.horizonP = []
     suc = app.addHorizonP(10)
     assert not suc
-    assert len(app.horizonP) == 2
+    assert len(app.horizonP) == 0
 
 
 def test_addHorizonP3():
     app.horizonP = []
     suc = app.addHorizonP((10, 10, 10))
     assert not suc
-    assert len(app.horizonP) == 2
+    assert len(app.horizonP) == 0
 
 
 def test_addHorizonP4():
     app.horizonP = [(10, 10), (10, 10)]
     suc = app.addHorizonP((10, 10), position=1)
     assert suc
-    assert len(app.horizonP) == 5
+    assert len(app.horizonP) == 3
 
 
 def test_addHorizonP5():
     app.horizonP = [(10, 10), (10, 10)]
     suc = app.addHorizonP((10, 10), position=20)
     assert suc
-    assert len(app.horizonP) == 5
+    assert len(app.horizonP) == 3
 
 
 def test_addHorizonP6():
     app.horizonP = [(10, 10), (10, 10)]
     suc = app.addHorizonP((10, 10), position=-5)
     assert suc
-    assert len(app.horizonP) == 5
+    assert len(app.horizonP) == 3
 
 
 def test_addHorizonP7():
@@ -585,46 +552,46 @@ def test_addHorizonP8():
 def test_delHorizonP1():
     app.genGreaterCircle('max')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == 127
+    assert len(app.horizonP) == 125
     suc = app.delHorizonP(5)
     assert suc
-    assert len(app.horizonP) == 126
+    assert len(app.horizonP) == 124
     suc = app.delHorizonP(1)
     assert suc
-    assert len(app.horizonP) == 125
+    assert len(app.horizonP) == 123
     suc = app.delHorizonP(10)
     assert suc
-    assert len(app.horizonP) == 124
+    assert len(app.horizonP) == 122
 
 
 def test_delHorizonP2():
     app.genGreaterCircle('max')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == 127
+    assert len(app.horizonP) == 125
 
     suc = app.delHorizonP(-5)
     assert not suc
-    assert len(app.horizonP) == len(app.buildP) + 2
+    assert len(app.horizonP) == len(app.buildP)
 
 
 def test_delHorizonP3():
     app.genGreaterCircle('max')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == len(app.buildP) + 2
+    assert len(app.horizonP) == len(app.buildP)
 
     suc = app.delHorizonP(170)
     assert not suc
-    assert len(app.horizonP) == len(app.buildP) + 2
+    assert len(app.horizonP) == len(app.buildP)
 
 
 def test_delHorizonP4():
     app.genGreaterCircle('max')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == len(app.buildP) + 2
+    assert len(app.horizonP) == len(app.buildP)
 
     suc = app.delHorizonP('1')
     assert not suc
-    assert len(app.horizonP) == len(app.buildP) + 2
+    assert len(app.horizonP) == len(app.buildP)
 
 
 def test_delHorizonP5():
@@ -791,27 +758,6 @@ def test_loadBuildP_7():
     assert app.buildP == values
 
 
-def test_checkBoundaries_1():
-    points = [(0, 0), (0, 1), (0, 2), (0, 360)]
-    pointsRet = [(0, 1), (0, 2)]
-    value = app.checkBoundaries(points)
-    assert pointsRet == value
-
-
-def test_checkBoundaries_2():
-    points = [(0, 1), (0, 2), (0, 360)]
-    pointsRet = [(0, 1), (0, 2)]
-    value = app.checkBoundaries(points)
-    assert pointsRet == value
-
-
-def test_checkBoundaries_3():
-    points = [(0, 0), (0, 1), (0, 2)]
-    pointsRet = [(0, 1), (0, 2)]
-    value = app.checkBoundaries(points)
-    assert pointsRet == value
-
-
 def test_saveHorizonP_10():
     app._horizonP = [(0, 1), (0, 2)]
     suc = app.saveHorizonP(fileName='test_save_horizon')
@@ -825,14 +771,14 @@ def test_saveHorizonP_11():
 
 
 def test_saveHorizonP_12():
-    app._horizonP = [(0, 0), (0, 1), (0, 2), (0, 360)]
+    app._horizonP = [(0, 1), (0, 2)]
     suc = app.saveHorizonP(fileName='test_horizon_1')
     assert suc
     fileName = 'tests/config/' + 'test_horizon_1' + '.hpts'
     with open(fileName, 'r') as infile:
         value = json.load(infile)
-        assert value[0] != [0, 0]
-        assert value[-1] != [0, 360]
+        assert value[0] == [0, 1]
+        assert value[-1] == [0, 2]
 
 
 def test_loadHorizonP_1():
@@ -864,7 +810,7 @@ def test_loadHorizonP_4():
                   indent=4)
     suc = app.loadHorizonP('test_horizon_2', '.hpts')
     assert suc
-    assert app.horizonP == [(0, 0)] + values + [(0, 360)]
+    assert app.horizonP == values
 
 
 def test_loadHorizonP_5():
@@ -875,7 +821,7 @@ def test_loadHorizonP_5():
         outfile.write(binascii.unhexlify('9f'))
     suc = app.loadHorizonP('test_horizon_2', '.hpts')
     assert not suc
-    assert app.horizonP == [(0, 0), (0, 360)]
+    assert app.horizonP == []
 
 
 def test_loadHorizonP_6():
@@ -886,31 +832,31 @@ def test_loadHorizonP_6():
         outfile.writelines('[test, ]],[]}')
     suc = app.loadHorizonP('test_horizon_2', '.hpts')
     assert not suc
-    assert app.horizonP == [(0, 0), (0, 360)]
+    assert app.horizonP == []
 
 
 def test_loadHorizonP_7():
     # load file with path
     fileName = 'tests/config/test_horizon_2.txt'
-    values = [(1, 1), (2, 2)]
+    values = [(1.0, 1.0), (2.0, 2.0)]
     with open(fileName, 'w') as outfile:
         outfile.write('1:1\n2:2\n')
 
     suc = app.loadHorizonP('test_horizon_2', '.txt')
     assert suc
-    assert app.horizonP == [(0, 0)] + values + [(0, 360)]
+    assert app.horizonP == values
 
 
 def test_loadHorizonP_8():
     # load file with path
     fileName = 'tests/config/test_horizon_2.csv'
-    values = [(1, 1), (2, 2)]
+    values = [(1.0, 1.0), (2.0, 2.0)]
     with open(fileName, 'w') as outfile:
         outfile.write('1,1\n2,2\n')
 
     suc = app.loadHorizonP('test_horizon_2', '.csv')
     assert suc
-    assert app.horizonP == [(0, 0)] + values + [(0, 360)]
+    assert app.horizonP == values
 
 
 def test_genGrid1():
@@ -1086,7 +1032,7 @@ def test_genAlign5():
     assert 0 == len(app.buildP)
 
 
-def test_isAboveHorizon():
+def test_isAboveHorizon_1():
     app.clearHorizonP()
     suc = app.isAboveHorizon((10, 50))
     assert suc
@@ -1096,6 +1042,12 @@ def test_isAboveHorizon():
     assert suc
     suc = app.isAboveHorizon((-10, 50))
     assert not suc
+
+
+def test_isAboveHorizon_2():
+    app.horizonP = [(1, 2), (2, 3)]
+    suc = app.isAboveHorizon((10, 50))
+    assert suc
 
 
 def test_deleteBelowHorizon1():

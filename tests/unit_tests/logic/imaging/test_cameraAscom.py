@@ -158,7 +158,7 @@ def test_sendDownloadMode_3():
 
 def test_sendDownloadMode_4():
     app.deviceConnected = False
-    app.data['CAN_FAST'] = False
+    app.data['CAN_FAST'] = True
     suc = app.sendDownloadMode()
     assert not suc
 
@@ -231,7 +231,7 @@ def test_expose_3():
 
     suc = app.expose(expTime=1,
                      binning=4)
-    assert not suc
+    assert suc
 
 
 def test_abort_1():

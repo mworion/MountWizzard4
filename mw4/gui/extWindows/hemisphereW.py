@@ -56,8 +56,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
     __all__ = ['HemisphereWindow',
                ]
 
-    RESIZE_FINISHED_TIMEOUT = 0.3
-
     def __init__(self, app):
         super().__init__()
 
@@ -76,18 +74,21 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                         starSize=6,
                         starColor=self.M_YELLOW_L,
                         starAnnColor=self.M_WHITE_L),
+
             build=dict(horMarker='None',
                        horColor=self.M_GREEN,
                        buildPColor=self.M_PINK_H,
                        starSize=6,
                        starColor=self.M_YELLOW_L,
                        starAnnColor=self.M_WHITE_L),
+
             horizon=dict(horMarker='o',
                          horColor=self.M_PINK_H,
                          buildPColor=self.M_GREEN_L,
                          starSize=6,
                          starColor=self.M_YELLOW_L,
                          starAnnColor=self.M_WHITE_L),
+
             star=dict(horMarker='None',
                       horColor=self.M_GREEN_LL,
                       buildPColor=self.M_GREEN_L,
@@ -100,24 +101,30 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.pointerAltAz = None
         self.pointerDome = None
         self.pointsBuild = None
-        self.pointsBuildAnnotate = list()
         self.starsAlign = None
-        self.starsAlignAnnotate = list()
-        self.horizonFill = None
-        self.horizonMarker = None
+        self.starsAlignAnnotate = None
         self.meridianSlew = None
         self.meridianTrack = None
         self.horizonLimitHigh = None
         self.horizonLimitLow = None
         self.celestialPath = None
+        self.celestialPolarPath = None
         self.meridianSlewParam = None
         self.meridianTrackParam = None
         self.horizonLimitHighParam = None
         self.horizonLimitLowParam = None
+        self.pointerPolarAltAz = None
+        self.pointsBuildAnnotate = None
+        self.pointsPolarBuild = None
+        self.pointsPolarBuildAnnotate = None
 
+        self.ui.hemisphereMove.stackUnder(self.ui.hemisphere)
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
         self.hemisphereMatMove = self.embedMatplot(self.ui.hemisphereMove)
-        self.ui.hemisphereMove.stackUnder(self.ui.hemisphere)
+
+        self.ui.polar.stackUnder(self.ui.polarMove)
+        self.polarMat = self.embedMatplot(self.ui.polar)
+        self.polarMatMove = self.embedMatplot(self.ui.polarMove)
 
     def initConfig(self):
         """
@@ -189,6 +196,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.app.update1s.disconnect(self.hemisphereMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.disconnect(self.drawHemisphere)
         self.app.updatePointMarker.disconnect(self.updatePointMarker)
+        self.app.updatePointMarker.disconnect(self.updatePolarPointMarker)
         self.app.mount.signals.settingDone.disconnect(self.updateOnChangedParams)
         self.storeConfig()
 
@@ -206,12 +214,18 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkEditBuildPoints.clicked.disconnect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.disconnect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.disconnect(self.drawHemisphere)
+        self.ui.showPolar.clicked.disconnect(self.togglePolar)
         self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
+        self.app.mount.signals.pointDone.disconnect(self.updatePointerPolarAltAz)
         self.app.dome.signals.azimuth.disconnect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.disconnect(self.updateDome)
         self.app.dome.signals.serverDisconnected.disconnect(self.updateDome)
 
         plt.close(self.hemisphereMat.figure)
+        plt.close(self.polarMat.figure)
+        plt.close(self.hemisphereMatMove.figure)
+        plt.close(self.polarMatMove.figure)
+
         super().closeEvent(closeEvent)
 
     def resizeEvent(self, event):
@@ -228,6 +242,11 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         newGeometry = QRect(0, 0, geometry.width(), geometry.height())
         self.ui.hemisphereMove.setGeometry(newGeometry)
 
+        if self.ui.showPolar.isChecked():
+            geometry = self.ui.polar.geometry()
+            newGeometry = QRect(0, 0, geometry.width(), geometry.height())
+            self.ui.polarMove.setGeometry(newGeometry)
+
         super().resizeEvent(event)
 
     def showWindow(self):
@@ -238,10 +257,13 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         self.app.update10s.connect(self.updateAlignStar)
         self.app.update1s.connect(self.hemisphereMatMove.figure.canvas.draw)
+        self.app.update1s.connect(self.polarMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.updatePointMarker.connect(self.updatePointMarker)
+        self.app.updatePointMarker.connect(self.updatePolarPointMarker)
         self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
+        self.app.mount.signals.pointDone.connect(self.updatePointerPolarAltAz)
         self.app.dome.signals.azimuth.connect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.connect(self.updateDome)
         self.app.dome.signals.serverDisconnected.connect(self.updateDome)
@@ -255,12 +277,31 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
+        self.ui.showPolar.clicked.connect(self.togglePolar)
 
         self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
                                                      self.onMouseDispatcher)
         self.hemisphereMat.figure.canvas.mpl_connect('motion_notify_event',
                                                      self.showMouseCoordinates)
+        self.togglePolar()
         self.show()
+
+        return True
+
+    def togglePolar(self):
+        """
+
+        :return: success
+        """
+
+        if self.ui.showPolar.isChecked():
+            self.ui.polar.setMaximumSize(16777215, 16777215)
+            self.ui.polar.setVisible(True)
+
+        else:
+            self.ui.polar.setFixedWidth(1)
+            self.ui.polar.setVisible(False)
+
         self.drawHemisphere()
 
         return True
@@ -297,22 +338,15 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
     def updatePointerAltAz(self):
         """
-        updatePointerAltAz is called whenever an update of coordinates from mount are
-        given. it takes the actual values and corrects the point in window if window is in
-        show status.
-        If the object is not created, the routing returns false.
-
-        There were some optimizations in with regard to drawing speed derived from:
-        https://stackoverflow.com/questions/8955869/why-is-plotting-with-matplotlib-so-slow
-        so whenever a draw canvas is made, I store the background and painting the
-        pointers is done via blit.
-
         :return: success
         """
 
+        if self.pointerAltAz is None:
+            return False
+
         obsSite = self.app.mount.obsSite
 
-        if obsSite.Alt is None or obsSite.Az is None or self.pointerAltAz is None:
+        if obsSite.Alt is None or obsSite.Az is None:
             self.pointerAltAz.set_visible(False)
             return False
 
@@ -325,12 +359,34 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         return True
 
+    def updatePointerPolarAltAz(self):
+        """
+        :return: success
+        """
+
+        if self.pointerPolarAltAz is None:
+            return False
+
+        obsSite = self.app.mount.obsSite
+
+        if obsSite.Alt is None or obsSite.Az is None:
+            self.pointerPolarAltAz.set_visible(False)
+            return False
+
+        else:
+            self.pointerPolarAltAz.set_visible(True)
+
+        alt = 90 - obsSite.Alt.degrees
+        az = obsSite.Az.radians
+        self.pointerPolarAltAz.set_data((az, alt))
+
+        return True
+
     def updateDome(self, azimuth):
         """
         updateDome is called whenever an update of coordinates from dome are given.
         it takes the actual values and corrects the point in window if window is in
         show status.
-        If the object is not created, the routing returns false.
 
         :param azimuth:
         :return: success
@@ -389,6 +445,28 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             self.pointsBuildAnnotate[index].set_color(color)
 
         self.hemisphereMat.figure.canvas.draw()
+
+        return True
+
+    def updatePolarPointMarker(self):
+        """
+
+        :return: success
+        """
+        if not self.pointsPolarBuild:
+            return False
+
+        for index, point in enumerate(self.app.data.buildP):
+            active = point[2]
+
+            marker, markersize, color, _ = self.getMarkerStatusParams(active, index)
+
+            self.pointsPolarBuild[index].set_marker(marker)
+            self.pointsPolarBuild[index].set_markersize(markersize)
+            self.pointsPolarBuild[index].set_color(color)
+            self.pointsPolarBuildAnnotate[index].set_color(color)
+
+        self.polarMat.figure.canvas.draw()
 
         return True
 
@@ -452,54 +530,94 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         return True
 
-    def staticHorizon(self, axes=None):
+    def staticHorizon(self, axes=None, polar=False):
         """
-        staticHorizon draw the horizon line. in case of a polar plot it will be reversed,
-        which mean the background will be green and to horizon polygon will be drawn in
-        background color
 
-        :param axes: matplotlib axes object
+        :param axes:
+        :param polar:
         :return:
         """
-
         if not self.app.data.horizonP:
             return False
 
         alt, az = zip(*self.app.data.horizonP)
-        alt = np.array(alt)
-        az = np.array(az)
 
-        self.horizonFill, = axes.fill(az,
-                                      alt,
-                                      color=self.M_GREEN_LL,
-                                      alpha=0.5,
-                                      zorder=0)
+        if polar:
+            az = np.radians(az)
+            alt = np.array(alt)
+            azF = np.radians(range(0, 361, 5))
+            altF = np.interp(azF, az, alt)
 
-        self.horizonMarker, = axes.plot(az,
-                                        alt,
-                                        color=self.MODE[self.operationMode]['horColor'],
-                                        marker=self.MODE[self.operationMode]['horMarker'],
-                                        alpha=0.5,
-                                        zorder=0,
-                                        lw=3)
+            axes.fill(azF,
+                      90 - altF,
+                      color=self.M_TRANS,
+                      alpha=0.5,
+                      zorder=0)
+
+            axes.plot(az,
+                      90 - alt,
+                      color=self.MODE['normal']['horColor'],
+                      marker=self.MODE[self.operationMode]['horMarker'],
+                      alpha=0.5,
+                      zorder=0,
+                      ls='none')
+
+            axes.plot(azF,
+                      90 - altF,
+                      color=self.MODE['normal']['horColor'],
+                      marker='',
+                      alpha=0.5,
+                      zorder=0,
+                      lw=3)
+
+        else:
+            alt = np.array(alt)
+            az = np.array(az)
+            altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
+            azF = np.concatenate([[0], [0], az, [360], [360]])
+            axes.fill(azF,
+                      altF,
+                      color=self.M_GREEN_LL,
+                      alpha=0.5,
+                      zorder=0)
+
+            axes.plot(az,
+                      alt,
+                      color=self.MODE[self.operationMode]['horColor'],
+                      marker=self.MODE[self.operationMode]['horMarker'],
+                      alpha=0.5,
+                      zorder=0,
+                      ls='none')
+
+            axes.plot(az,
+                      alt,
+                      color=self.MODE[self.operationMode]['horColor'],
+                      marker='',
+                      alpha=0.5,
+                      zorder=0,
+                      lw=3)
 
         return True
 
-    def staticModelData(self, axes=None):
-        """
-        staticModelData draw in the chart the build points and their index as annotations
-
-        :param axes: matplotlib axes object
-        :return: success
+    def staticModelData(self, axes=None, polar=False):
         """
 
+        :param axes:
+        :param polar:
+        :return:
+        """
         points = self.app.data.buildP
 
         if not points:
             return False
 
-        self.pointsBuild = list()
-        self.pointsBuildAnnotate = list()
+        if polar:
+            self.pointsPolarBuild = list()
+            self.pointsPolarBuildAnnotate = list()
+
+        else:
+            self.pointsBuild = list()
+            self.pointsBuildAnnotate = list()
 
         for index, point in enumerate(points):
             az = point[1]
@@ -509,55 +627,92 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             marker, markersize, color, text = self.getMarkerStatusParams(active, index)
 
             if self.ui.checkShowSlewPath.isChecked() and index > 0:
-                axes.plot((points[index - 1][1], points[index][1]),
-                          (points[index - 1][0], points[index][0]),
-                          ls=':', lw=1, color=self.M_WHITE, zorder=40)
+                if polar:
+                    axes.plot(np.radians((points[index - 1][1], points[index][1])),
+                              (90 - points[index - 1][0], 90 - points[index][0]),
+                              ls=':', lw=1, color=self.M_WHITE, zorder=40)
 
-            p, = axes.plot(az, alt,
-                           marker=marker,
-                           markersize=markersize,
-                           fillstyle='none',
-                           color=self.MODE[self.operationMode]['buildPColor'],
-                           zorder=40,
-                           )
-            self.pointsBuild.append(p)
+                else:
+                    axes.plot((points[index - 1][1], points[index][1]),
+                              (points[index - 1][0], points[index][0]),
+                              ls=':', lw=1, color=self.M_WHITE, zorder=40)
 
-            annotation = axes.annotate(text,
-                                       xy=(az, alt),
-                                       xytext=(2, -10),
-                                       textcoords='offset points',
-                                       color=color,
-                                       zorder=40,
-                                       )
-            self.pointsBuildAnnotate.append(annotation)
+            if polar:
+                p, = axes.plot(np.radians(az), 90 - alt,
+                               marker=marker,
+                               markersize=markersize,
+                               fillstyle='none',
+                               color=self.MODE['normal']['buildPColor'],
+                               zorder=40,
+                               )
+                self.pointsPolarBuild.append(p)
+
+            else:
+                p, = axes.plot(az, alt,
+                               marker=marker,
+                               markersize=markersize,
+                               fillstyle='none',
+                               color=self.MODE[self.operationMode]['buildPColor'],
+                               zorder=40,
+                               )
+                self.pointsBuild.append(p)
+
+            if polar:
+                annotation = axes.annotate(text,
+                                           xy=(np.radians(az), 90 - alt),
+                                           xytext=(2, -10),
+                                           textcoords='offset points',
+                                           color=color,
+                                           zorder=40,
+                                           )
+                self.pointsPolarBuildAnnotate.append(annotation)
+
+            else:
+                annotation = axes.annotate(text,
+                                           xy=(az, alt),
+                                           xytext=(2, -10),
+                                           textcoords='offset points',
+                                           color=color,
+                                           zorder=40,
+                                           )
+                self.pointsBuildAnnotate.append(annotation)
 
         return True
 
-    def staticCelestialEquator(self, axes=None):
-        """
-        staticCelestialEquator draw ra / dec lines on the chart
-
-        :param axes: matplotlib axes object
-        :return: success
+    def staticCelestialEquator(self, axes=None, polar=False):
         """
 
+        :param axes:
+        :param polar:
+        :return:
+        """
         celestial = self.app.data.generateCelestialEquator()
         alt, az = zip(*celestial)
+        alt = np.array(alt)
 
-        self.celestialPath, = axes.plot(az,
-                                        alt,
-                                        '.',
-                                        markersize=1,
-                                        fillstyle='none',
-                                        zorder=20,
-                                        color=self.M_WHITE_L)
+        if polar:
+            self.celestialPath, = axes.plot(np.radians(az),
+                                            90 - alt,
+                                            '.',
+                                            markersize=1,
+                                            fillstyle='none',
+                                            zorder=20,
+                                            color=self.M_WHITE_L)
+        else:
+            self.celestialPath, = axes.plot(az,
+                                            alt,
+                                            '.',
+                                            markersize=1,
+                                            fillstyle='none',
+                                            zorder=20,
+                                            color=self.M_WHITE_L)
         return True
 
     def staticMeridianLimits(self, axes=None):
         """
 
-        :param axes: matplotlib axes object
-        :return: success
+        :param axes:
+        :return:
         """
         if self.app.mount.setting.meridianLimitSlew is not None:
             slew = self.app.mount.setting.meridianLimitSlew
@@ -595,13 +750,13 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         return True
 
-    def staticHorizonLimits(self, axes=None):
+    def staticHorizonLimits(self, axes=None, polar=False):
         """
 
-        :param axes: matplotlib axes object
-        :return: success
+        :param axes:
+        :param polar:
+        :return:
         """
-
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
 
@@ -634,7 +789,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         return True
 
-    def drawHemisphereStatic(self, axes=None):
+    def drawHemisphereStatic(self, axes=None, polar=False):
         """
          drawHemisphereStatic renders the static part of the hemisphere window and puts
          all drawing on the static plane. the content consist of:
@@ -645,26 +800,34 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         with all their styles an coloring
 
         :param axes: matplotlib axes object
+        :param polar: flag if polar should be drawn
         :return: success
         """
+        if polar:
+            if self.ui.checkShowCelestial.isChecked():
+                self.staticCelestialEquator(axes=axes, polar=polar)
 
-        if self.ui.checkUseHorizon.isChecked():
-            self.staticHorizon(axes=axes)
-            self.staticHorizonLimits(axes=axes)
+            if self.ui.checkUseHorizon.isChecked():
+                self.staticHorizon(axes=axes, polar=polar)
 
-        if self.ui.checkShowCelestial.isChecked():
-            self.staticCelestialEquator(axes=axes)
+            self.staticModelData(axes=axes, polar=polar)
 
-        if self.ui.checkShowMeridian.isChecked():
-            self.staticMeridianLimits(axes=axes)
+        else:
+            if self.ui.checkUseHorizon.isChecked():
+                self.staticHorizon(axes=axes)
+                self.staticHorizonLimits(axes=axes)
 
-        self.staticModelData(axes=axes)
+            if self.ui.checkShowCelestial.isChecked():
+                self.staticCelestialEquator(axes=axes)
 
-        axes.figure.canvas.draw()
+            if self.ui.checkShowMeridian.isChecked():
+                self.staticMeridianLimits(axes=axes)
+
+            self.staticModelData(axes=axes, polar=polar)
 
         return True
 
-    def drawHemisphereMoving(self, axes=None):
+    def drawHemisphereMoving(self, axes=None, polar=False):
         """
         drawHemisphereMoving is rendering the moving part which consists of:
             - pointer: where the mount points to
@@ -673,31 +836,44 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         because we update this part very often.
 
         :param axes: matplotlib axes object
+        :param polar: flag if polar should be drawn
         :return:
         """
 
-        self.pointerAltAz, = axes.plot(180, 45,
-                                       zorder=10,
-                                       color=self.M_PINK_H,
-                                       marker=self.markerAltAz(),
-                                       markersize=25,
-                                       linestyle='none',
-                                       fillstyle='none',
-                                       clip_on=False,
-                                       visible=False,
-                                       )
+        if polar:
+            self.pointerPolarAltAz, = axes.plot(np.radians(180), 45,
+                                                zorder=10,
+                                                color=self.M_PINK_H,
+                                                marker=self.markerAltAz(),
+                                                markersize=25,
+                                                linestyle='none',
+                                                fillstyle='none',
+                                                clip_on=False,
+                                                visible=False,
+                                                )
 
-        self.pointerDome = mpatches.Rectangle((165, 1),
-                                              30,
-                                              88,
-                                              zorder=0,
-                                              color=self.M_GREY_MID,
-                                              lw=3,
-                                              clip_on=True,
-                                              fill=True,
-                                              visible=False)
+        else:
+            self.pointerAltAz, = axes.plot(180, 45,
+                                           zorder=10,
+                                           color=self.M_PINK_H,
+                                           marker=self.markerAltAz(),
+                                           markersize=25,
+                                           linestyle='none',
+                                           fillstyle='none',
+                                           clip_on=False,
+                                           visible=False,
+                                           )
 
-        axes.add_patch(self.pointerDome)
+            self.pointerDome = mpatches.Rectangle((165, 1),
+                                                  30,
+                                                  88,
+                                                  zorder=0,
+                                                  color=self.M_GREY_MID,
+                                                  lw=3,
+                                                  clip_on=True,
+                                                  fill=True,
+                                                  visible=False)
+            axes.add_patch(self.pointerDome)
 
         return True
 
@@ -753,9 +929,33 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return: True for test purpose
         """
 
+        hasPolar = self.ui.showPolar.isChecked()
+
         axe, _ = self.generateFlat(widget=self.hemisphereMat, horizon=True)
         axeMove, _ = self.generateFlat(widget=self.hemisphereMatMove, horizon=True,
                                        showAxes=False)
+
+        if hasPolar:
+            axePolar, _ = self.generatePolar(widget=self.polarMat, horizon=True)
+            axePolarMove, _ = self.generatePolar(widget=self.polarMatMove, horizon=True,
+                                                 showAxes=False)
+
+        else:
+            self.pointerPolarAltAz = None
+            self.pointsBuildAnnotate = None
+            self.pointsPolarBuild = None
+            self.pointsPolarBuildAnnotate = None
+            self.polarMat.figure.clf()
+            self.polarMatMove.figure.clf()
+
+        axe.figure.canvas.flush_events()
+        g = self.ui.hemisphere.geometry()
+        self.ui.hemisphereMove.setGeometry(QRect(0, 0, g.width(), g.height()))
+
+        if hasPolar:
+            axePolar.figure.canvas.flush_events()
+            g = self.ui.polar.geometry()
+            self.ui.polarMove.setGeometry(QRect(0, 0, g.width(), g.height()))
 
         if self.ui.checkShowAlignStar.isChecked():
             self.drawAlignmentStars(axes=axe)
@@ -766,5 +966,11 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         self.drawHemisphereStatic(axes=axe)
         self.drawHemisphereMoving(axes=axeMove)
+        axe.figure.canvas.draw()
+
+        if hasPolar:
+            self.drawHemisphereStatic(axes=axePolar, polar=True)
+            self.drawHemisphereMoving(axes=axePolarMove, polar=True)
+            axePolar.figure.canvas.draw()
 
         return True

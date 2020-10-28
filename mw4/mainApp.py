@@ -21,6 +21,7 @@ import os
 import sys
 import json
 from queue import Queue
+import platform
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
@@ -66,7 +67,6 @@ class MountWizzard4(QObject):
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
 
-    # central message and logging dispatching
     message = pyqtSignal(str, int)
     messageQueue = Queue()
     redrawHemisphere = pyqtSignal()
@@ -78,7 +78,6 @@ class MountWizzard4(QObject):
     showAnalyse = pyqtSignal(str)
     remoteCommand = pyqtSignal(str)
 
-    # all cyclic tasks
     update0_1s = pyqtSignal()
     update1s = pyqtSignal()
     update3s = pyqtSignal()
@@ -152,11 +151,12 @@ class MountWizzard4(QObject):
         # get all planets for calculation
         try:
             self.ephemeris = self.mount.obsSite.loader('de421_23.bsp')
+
         except Exception as e:
             self.log.critical(f'Failed loading planets: {e}')
             self.ephemeris = None
 
-        self.relay = KMRelay(host='localhost')
+        self.relay = KMRelay()
         self.sensorWeather = SensorWeather(self)
         self.onlineWeather = OnlineWeather(self)
         self.directWeather = DirectWeather(self)
@@ -174,6 +174,7 @@ class MountWizzard4(QObject):
         self.measure = MeasureData(self)
         self.remote = Remote(self)
         self.astrometry = Astrometry(self)
+        self.automation = self.checkAndSetAutomation()
 
         self.uiWindows = {}
 
@@ -197,6 +198,29 @@ class MountWizzard4(QObject):
             return
         if sys.argv[1] == 'test':
             self.update3s.connect(self.quit)
+
+    def checkAndSetAutomation(self):
+        """
+        the windows automation with pywinauto has a serious bug in python lib. the bugfix is
+        done from python 3.8.2 onwards. so to enable this work, we have to check the python
+        version used and set the topic adequately.
+
+        :return:
+        """
+        if platform.system() != 'Windows':
+            return None
+
+        if sys.version_info.major != 3:
+            return None
+        if sys.version_info.minor < 8:
+            return None
+        if sys.version_info.micro < 2:
+            return None
+
+        from logic.automation.automateWindows import AutomateWindows
+        automation = AutomateWindows(self)
+
+        return automation
 
     def initConfig(self):
         """

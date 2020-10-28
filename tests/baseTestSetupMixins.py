@@ -21,12 +21,18 @@ from queue import Queue
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal
 from skyfield.api import Topos, load
-from logic.modeldata.buildpoints import DataPoint
 
 # local import
 
 
 class Mount(QObject):
+    class MountFirmware:
+        product = 'test'
+        hardware = 'test'
+        vString = '12345'
+        date = 'test'
+        time = 'test'
+
     class MountGeometry:
         offNorth = 0
         offEast = 0
@@ -36,6 +42,8 @@ class Mount(QObject):
 
     class MountSignals(QObject):
         locationDone = pyqtSignal()
+        settingDone = pyqtSignal()
+        firmwareDone = pyqtSignal()
 
     class MountObsSite:
 
@@ -60,6 +68,9 @@ class Mount(QObject):
     signals = MountSignals()
     obsSite = MountObsSite()
     geometry = MountGeometry()
+    firmware = MountFirmware()
+    bootMount = None
+    shutdown = None
     host = None
 
 
@@ -74,6 +85,8 @@ class App(QObject):
     mount = Mount()
     ephemeris = load('tests/testData/de421_23.bsp')
     mwGlob = {'modelDir': 'tests/model',
-              'imageDir': 'tests/image'}
+              'imageDir': 'tests/image',
+              'dataDir': 'tests/data',
+              }
 
 

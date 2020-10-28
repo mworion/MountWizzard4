@@ -50,7 +50,7 @@ class MWStyles:
     BACK_GREEN = 'background-color: green;'
     BACK_NORM = 'background-color: #202020;'
 
-    M_TRANS = '#000000FF'
+    M_TRANS = '#20202000'
     M_BLUE = '#2090C0'
     M_BLUE1 = '#104860'
     M_BLUE2 = '#0C3648'
@@ -68,6 +68,7 @@ class MWStyles:
     M_GREEN = '#008000'
     M_GREEN_L = '#004000'
     M_GREEN_LL = '#003000'
+    M_GREEN_LL_A = '#00100040'
     M_RED = '#B03030'
     M_PINK_H = '#FF00FF'
     M_PINK = '#B000B0'
@@ -104,6 +105,11 @@ class MWStyles:
         font-weight: normal;
         font-size: 13pt;
     }
+    QListWidget {
+        font-family: Courier;
+        font-weight: normal;
+        font-size: 13pt;
+    }
     QToolTip {
         font-size: 13pt;
     }
@@ -131,6 +137,11 @@ class MWStyles:
         font-size: 9pt;
     }
     QTextBrowser {
+        font-family: Courier;
+        font-weight: normal;
+        font-size: 8pt;
+    }
+    QListWidget {
         font-family: Courier;
         font-weight: normal;
         font-size: 8pt;

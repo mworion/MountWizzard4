@@ -5,26 +5,74 @@ changes list, please refer to the commit list on GitHub.
 
 Unreleased Betas
 ----------------
-
-(0.200.0)
+(1.1)
 
 - 3d Simulator (mount, dome, build points etc)
 
-(0.190.0)
+(1.0)
+
+- First production release
+
+(0.240.0)
 
 - full integration testing
+
+(0.230.0)
+
 - update PyQt5 to 5.15.2
-- performance hemisphere
-- meridian areas in hemisphere more precise
 - retrofit based on hashes
-- move weather api to device
-- move mount MAC and IP to device
-- move relay ip to device
-- update skyfield to 1.29
-- updated hemisphere behavior
+
+(0.220.0)
+
+- retrofit model based on hashed coordinates
+
+(0.210.0)
+
+- adding switch interface Pegasus UPB for ASCOM / ALPACA
+
+(0.200.0)
+
+- safety margin to horizon line checking for model points
+- adding asteroids programming (windows only)
 
 Released betas
 --------------
+0.190.0
+
+- bringing back polar diagram
+- bringing up test coverage
+
+0.180.0
+
+- move weather api to device
+- move relay ip to device
+- more room for profile name
+- cleanup gui
+
+0.170.5
+
+- update skyfield to 1.30
+- update astropy 4.0.3
+- update mountcontrol 0.176
+- bugfixes
+- rework logging
+- rework hemisphere window
+
+0.170.4
+
+- bugfixes
+- correction of tooltips
+
+0.170.3
+
+- adding comets programming (windows only)
+- adding update deltaT for mount (windows only)
+- adding progressbar for minot planet data download
+
+0.160.2
+
+- performance hemisphere
+- updated hemisphere behavior
 
 0.160.0
 

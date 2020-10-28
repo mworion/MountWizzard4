@@ -25,6 +25,7 @@ import csv
 # external packages
 import numpy as np
 import skyfield.api
+from scipy.spatial import distance
 
 # local imports
 from base.loggerMW import CustomLogger
@@ -116,34 +117,9 @@ class DataPoint(object):
         self._horizonP = list()
         self._buildP = list()
 
-    @staticmethod
-    def checkHorizonBoundaries(value):
-        """
-        checkHorizonBoundaries secures that the horizon always has the points (0, 0) at the
-        beginning of the list and (0, 360) at the end of the list.
-
-        :return: True for test purpose
-        """
-
-        if not value:
-            retValue = [(0, 0), (0, 360)]
-            return retValue
-
-        retValue = list() + value
-
-        if retValue[0] != (0, 0):
-            retValue = [(0, 0)] + retValue
-
-        horMax = len(retValue)
-        if retValue[horMax - 1] != (0, 360):
-            retValue = retValue + [(0, 360)]
-
-        return retValue
-
     @property
     def horizonP(self):
-        value = self.checkHorizonBoundaries(self._horizonP)
-        return value
+        return self._horizonP
 
     @horizonP.setter
     def horizonP(self, value):
@@ -322,7 +298,7 @@ class DataPoint(object):
 
         position = int(position)
 
-        if position < 0 or position > len(self._horizonP) - 1:
+        if position < 0 or position > len(self._horizonP):
             self.log.warning('invalid position: {0}'.format(position))
             return False
 
@@ -333,6 +309,29 @@ class DataPoint(object):
     def clearHorizonP(self):
         self._horizonP.clear()
 
+    @staticmethod
+    def isCloseHorizonLine(point, margin, horizonI):
+        """
+        see answers
+        https://codereview.stackexchange.com/questions
+        /28207/finding-the-closest-point-to-a-list-of-points
+        :param point:
+        :param margin:
+        :param horizonI:
+        :return:
+        """
+
+        pointRef = np.asarray([point[1], point[0]])
+        closest_index = distance.cdist([pointRef], horizonI).argmin()
+        pointClose = horizonI[closest_index]
+        val = np.sqrt(np.sum((pointRef - pointClose)**2))
+
+        if val < margin:
+            return True
+
+        else:
+            return False
+
     def isAboveHorizon(self, point):
         """
         isAboveHorizon calculates for a given point the relationship to the actual horizon
@@ -342,7 +341,6 @@ class DataPoint(object):
         :param point:
         :return:
         """
-
         if point[1] > 360:
             point = (point[0], 360)
 
@@ -350,10 +348,16 @@ class DataPoint(object):
             point = (point[0], 0)
 
         x = range(0, 361)
-        y = np.interp(x,
-                      [i[1] for i in self.horizonP],
-                      [i[0] for i in self.horizonP],
-                      )
+
+        if self.horizonP:
+            xRef = [i[1] for i in self.horizonP]
+            yRef = [i[0] for i in self.horizonP]
+
+        else:
+            xRef = [0]
+            yRef = [0]
+
+        y = np.interp(x, xRef, yRef)
 
         if point[0] > y[int(point[1])]:
             return True
@@ -368,7 +372,6 @@ class DataPoint(object):
         :param point:
         :return: status
         """
-
         slew = self.app.mount.setting.meridianLimitSlew
         track = self.app.mount.setting.meridianLimitTrack
 
@@ -393,7 +396,6 @@ class DataPoint(object):
         :return: true for test purpose
         """
         self._buildP = [x for x in self._buildP if self.isAboveHorizon(x)]
-
         return True
 
     def deleteCloseMeridian(self):
@@ -403,13 +405,24 @@ class DataPoint(object):
 
         :return: true for test purpose
         """
-        self._buildP = [x for x in self._buildP if self.isCloseMeridian(x)]
+        self._buildP = [x for x in self._buildP if not self.isCloseMeridian(x)]
+        return True
 
+    def deleteCloseHorizonLine(self, m):
+        """
+        :param m: margin to horizon line in degrees
+        :return:
+        """
+        azH = [x[1] for x in self.horizonP]
+        altH = [x[0] for x in self.horizonP]
+        azI = range(0, 361, 1)
+        altI = np.interp(azI, azH, altH)
+        horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
+        self._buildP = [x for x in self._buildP if not self.isCloseHorizonLine(x, m, horizonI)]
         return True
 
     def sort(self, eastwest=False, highlow=False, pierside=None):
         """
-
         :param eastwest: flag if to be sorted east - west
         :param highlow:  flag if sorted high low altitude
         :param pierside:  start pierside sorting with this position
@@ -615,23 +628,6 @@ class DataPoint(object):
 
         return True
 
-    @staticmethod
-    def checkBoundaries(points):
-        """
-        checkBoundaries removes point 0,0 and 0, 360 if present.
-
-        :param points:
-        :return: points
-        """
-
-        if points[0] == (0, 0):
-            del points[0]
-
-        if points[len(points) - 1] == (0, 360):
-            del points[-1]
-
-        return points
-
     def saveHorizonP(self, fileName=None):
         """
         saveHorizonP saves the actual modeldata points list in a file in json dump format
@@ -644,10 +640,9 @@ class DataPoint(object):
             return False
 
         fileName = self.configDir + '/' + fileName + '.hpts'
-        points = self.checkBoundaries(self.horizonP)
 
         with open(fileName, 'w') as handle:
-            json.dump(points,
+            json.dump(self.horizonP,
                       handle,
                       indent=4)
 

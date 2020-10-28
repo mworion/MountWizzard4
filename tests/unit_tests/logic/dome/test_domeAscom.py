@@ -68,6 +68,11 @@ def test_waitSettlingAndEmit():
     assert suc
 
 
+def test_diffModulus_1():
+    val = app.diffModulus(1, 359, 360)
+    assert val == 2
+
+
 def test_emitData_1():
     app.data['slewing'] = False
     app.slewing = False
@@ -80,6 +85,7 @@ def test_emitData_1():
 def test_emitData_2():
     app.data['slewing'] = True
     app.slewing = False
+    app.targetAzimuth = 10
     with mock.patch.object(app.settlingWait,
                            'start'):
         suc = app.emitData()
@@ -95,6 +101,16 @@ def test_emitData_3():
         assert suc
 
 
+def test_emitData_4():
+    app.data['slewing'] = False
+    app.slewing = True
+    app.targetAzimuth = 1
+    with mock.patch.object(app.settlingWait,
+                           'start'):
+        suc = app.emitData()
+        assert suc
+
+
 def test_workerPollData_1():
     app.deviceConnected = False
     suc = app.workerPollData()
@@ -103,6 +119,42 @@ def test_workerPollData_1():
 
 def test_workerPollData_2():
     app.deviceConnected = True
+    suc = app.workerPollData()
+    assert suc
+
+
+def test_workerPollData_3():
+    class Test:
+        shutterstatus = 0
+        Slewing = False
+        Azimuth = 0
+
+    app.deviceConnected = True
+    app.client = Test()
+    suc = app.workerPollData()
+    assert suc
+
+
+def test_workerPollData_4():
+    class Test:
+        shutterstatus = 1
+        Slewing = False
+        Azimuth = 0
+
+    app.deviceConnected = True
+    app.client = Test()
+    suc = app.workerPollData()
+    assert suc
+
+
+def test_workerPollData_5():
+    class Test:
+        shutterstatus = mock.PropertyMock(side_effect=Exception)
+        Slewing = False
+        Azimuth = 0
+
+    app.deviceConnected = True
+    app.client = Test()
     suc = app.workerPollData()
     assert suc
 

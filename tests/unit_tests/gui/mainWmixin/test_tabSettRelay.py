@@ -104,27 +104,6 @@ def test_toggleRelay_2(qtbot):
         assert ['Relay action cannot be performed', 2] == blocker.args
 
 
-def test_relayHost():
-    app.ui.relayHost.setText('test')
-    app.relayHost()
-
-    assert app.app.relay.host == ('test', 80)
-
-
-def test_relayUser():
-    app.ui.relayUser.setText('test')
-    app.relayUser()
-
-    assert app.app.relay.user == 'test'
-
-
-def test_relayPassword():
-    app.ui.relayPassword.setText('test')
-    app.relayPassword()
-
-    assert app.app.relay.password == 'test'
-
-
 def test_doRelayAction_1(qtbot):
     app.relayDropDowns[7].setCurrentIndex(0)
     with mock.patch.object(app.app.relay,

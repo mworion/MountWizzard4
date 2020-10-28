@@ -52,6 +52,7 @@ from gui.mainWmixin.tabModel import Model
 from gui.mainWmixin.tabBuildPoints import BuildPoints
 from gui.mainWmixin.tabManageModel import ManageModel
 from gui.mainWmixin.tabSatellite import Satellite
+from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
 from gui.mainWmixin.tabRelay import Relay
 from gui.mainWmixin.tabTools import Tools
 from gui.mainWmixin.tabPower import Power
@@ -74,6 +75,7 @@ class MainWindow(MWidget,
                  BuildPoints,
                  ManageModel,
                  Satellite,
+                 MinorPlanetTime,
                  Relay,
                  Power,
                  Tools,
@@ -390,9 +392,6 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.loadBuildPoints, QIcon(':/icon/load.svg'))
         self.wIcon(self.ui.saveBuildPoints, QIcon(':/icon/save.svg'))
         self.wIcon(self.ui.saveBuildPointsAs, QIcon(':/icon/save.svg'))
-        self.wIcon(self.ui.loadHorizonMask, QIcon(':/icon/load.svg'))
-        self.wIcon(self.ui.saveHorizonMask, QIcon(':/icon/save.svg'))
-        self.wIcon(self.ui.saveHorizonMaskAs, QIcon(':/icon/save.svg'))
         self.wIcon(self.ui.clearBuildP, QIcon(':/icon/trash.svg'))
         self.wIcon(self.ui.genBuildGrid, QIcon(':/icon/run.svg'))
         self.wIcon(self.ui.genBuildMax, QIcon(':/icon/run.svg'))
@@ -409,6 +408,12 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.genBuildSpiralNorm, QIcon(':/icon/run.svg'))
         self.wIcon(self.ui.genBuildSpiralMin, QIcon(':/icon/run.svg'))
         self.wIcon(self.ui.genBuildDSO, QIcon(':/icon/run.svg'))
+
+        # horizon
+        self.wIcon(self.ui.loadHorizonMask, QIcon(':/icon/load.svg'))
+        self.wIcon(self.ui.saveHorizonMask, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.saveHorizonMaskAs, QIcon(':/icon/save.svg'))
+        self.wIcon(self.ui.clearHorizonMask, QIcon(':/icon/trash.svg'))
 
         # model
         self.wIcon(self.ui.plateSolveSync, QIcon(':/icon/start.svg'))
@@ -437,6 +442,10 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.deleteName, QIcon(':/icon/trash.svg'))
         self.wIcon(self.ui.refreshName, QIcon(':/icon/reload.svg'))
         self.wIcon(self.ui.refreshModel, QIcon(':/icon/reload.svg'))
+
+        # minor planets
+        self.wIcon(self.ui.progMinorPlanetsFull, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.progMinorPlanetsFiltered, QIcon(':/icon/run.svg'))
 
         # satellite
         self.wIcon(self.ui.stopSatelliteTracking, QIcon(':/icon/cross-circle.svg'))

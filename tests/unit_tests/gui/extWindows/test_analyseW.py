@@ -148,7 +148,7 @@ def test_plotFigureFlat_1(function):
 
     with mock.patch.object(axe.figure.canvas,
                            'draw'):
-        suc = function.plotFigureFlat(axe, [0], [1], ['E'], 'X', 'Y')
+        suc = function.plotFigureFlat(axe, [0, 1], [0, 1], ['E', 'E'], 'X', 'Y')
         assert suc
 
 
@@ -158,7 +158,7 @@ def test_plotFigureFlat_2(function):
     function.ui.winsorizedLimit.setChecked(True)
     with mock.patch.object(axe.figure.canvas,
                            'draw'):
-        suc = function.plotFigureFlat(axe, [0], [1], ['E'], 'X', 'Y', sort=True)
+        suc = function.plotFigureFlat(axe, [0, 1], [0, 1], ['E', 'E'], 'X', 'Y', sort=True)
         assert suc
 
 
@@ -168,7 +168,7 @@ def test_plotFigureFlat_3(function):
     function.ui.winsorizedLimit.setChecked(True)
     with mock.patch.object(axe.figure.canvas,
                            'draw'):
-        suc = function.plotFigureFlat(axe, [0], [0], ['W'], 'X', 'Y',
+        suc = function.plotFigureFlat(axe, [0, 1], [0, 1], ['W', 'W'], 'X', 'Y',
                                       poly=1)
         assert suc
 
@@ -179,7 +179,7 @@ def test_plotFigureFlat_4(function):
     function.ui.winsorizedLimit.setChecked(True)
     with mock.patch.object(axe.figure.canvas,
                            'draw'):
-        suc = function.plotFigureFlat(axe, [0], [0], ['E'], 'X', 'Y',
+        suc = function.plotFigureFlat(axe, [0, 1], [0, 1], ['E', 'E'], 'X', 'Y',
                                       poly=1)
         assert suc
 

@@ -74,6 +74,16 @@ def test_startCommunication_1():
     with mock.patch.object(app,
                            'updateOpenWeatherMapData'):
         suc = app.startCommunication()
+        assert not suc
+        assert not app.running
+
+
+def test_startCommunication_2():
+    app.running = False
+    app.apiKey = 'test'
+    with mock.patch.object(app,
+                           'updateOpenWeatherMapData'):
+        suc = app.startCommunication()
         assert suc
         assert app.running
 
@@ -135,6 +145,12 @@ def test_updateOpenWeatherMapDataWorker_3():
     assert suc
 
 
+def test_updateOpenWeatherMapDataWorker_4():
+    data = {'list': []}
+    suc = app.updateOpenWeatherMapDataWorker(data=data)
+    assert not suc
+
+
 def test_getOpenWeatherMapDataWorker_1():
     val = app.getOpenWeatherMapDataWorker()
     assert val is None
@@ -163,6 +179,17 @@ def test_getOpenWeatherMapDataWorker_3():
 
 def test_getOpenWeatherMapDataWorker_4():
     class Test:
+        status_code = 300
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=TimeoutError(),
+                           return_value=Test()):
+        val = app.getOpenWeatherMapDataWorker('http://localhost')
+        assert val is None
+
+
+def test_getOpenWeatherMapDataWorker_5():
+    class Test:
         status_code = 200
 
         @staticmethod
@@ -182,20 +209,20 @@ def test_updateOpenWeatherMapData_1():
 
 
 def test_updateOpenWeatherMapData_2():
-    app.keyAPI = 'test'
+    app.apiKey = 'test'
     suc = app.updateOpenWeatherMapData()
     assert not suc
 
 
 def test_updateOpenWeatherMapData_3():
-    app.keyAPI = 'test'
+    app.apiKey = 'test'
     app.online = True
     suc = app.updateOpenWeatherMapData()
     assert not suc
 
 
 def test_updateOpenWeatherMapData_4():
-    app.keyAPI = 'test'
+    app.apiKey = 'test'
     app.online = True
     app.running = True
     suc = app.updateOpenWeatherMapData()

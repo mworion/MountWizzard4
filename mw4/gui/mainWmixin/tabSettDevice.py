@@ -121,7 +121,7 @@ class SettDevice:
             },
             'onlineWeather': {
                 'uiDropDown': self.ui.onlineWeatherDevice,
-                'uiSetup': None,
+                'uiSetup': self.ui.onlineWeatherSetup,
                 'class': self.app.onlineWeather,
                 'deviceType': None,
             },
@@ -151,7 +151,7 @@ class SettDevice:
             },
             'relay': {
                 'uiDropDown': self.ui.relayDevice,
-                'uiSetup': None,
+                'uiSetup': self.ui.relaySetup,
                 'class': self.app.relay,
                 'deviceType': None,
             },
@@ -552,8 +552,10 @@ class SettDevice:
 
             if isAscom and isAscomAutoConnect:
                 autoStart = True
+
             elif isAscom and not isAscomAutoConnect:
                 autoStart = False
+
             else:
                 autoStart = True
 

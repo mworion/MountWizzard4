@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>11</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -6148,7 +6148,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>195</y>
+       <y>190</y>
        <width>361</width>
        <height>71</height>
       </rect>
@@ -6260,9 +6260,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>295</y>
+       <y>280</y>
        <width>366</width>
-       <height>126</height>
+       <height>146</height>
       </rect>
      </property>
      <property name="title">
@@ -6309,7 +6309,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>190</x>
         <y>45</y>
-        <width>86</width>
+        <width>81</width>
         <height>26</height>
        </rect>
       </property>
@@ -6404,8 +6404,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>75</y>
-        <width>351</width>
+        <y>80</y>
+        <width>256</width>
         <height>20</height>
        </rect>
       </property>
@@ -6428,8 +6428,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>95</y>
-        <width>351</width>
+        <y>120</y>
+        <width>256</width>
         <height>20</height>
        </rect>
       </property>
@@ -6448,12 +6448,132 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Auto delete points within meridian limits</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="clearHorizonMask">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>45</y>
+        <width>81</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Saves the horizon mask in a new file.</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>Clear</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="safetyMarginHorizon">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>100</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Number of points.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="minimum">
+       <double>0.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>10.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>1.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_162">
+      <property name="geometry">
+       <rect>
+        <x>335</x>
+        <y>100</y>
+        <width>16</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>°</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkSafetyMarginHorizon">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>256</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>If checked, all model points are deleted, which are below the horizon mask.</string>
+      </property>
+      <property name="text">
+       <string>Add safety distance to horizon line</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QPushButton" name="clearBuildP">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>395</y>
+       <y>400</y>
        <width>361</width>
        <height>25</height>
       </rect>
@@ -6553,7 +6673,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>25</x>
-       <y>370</y>
+       <y>375</y>
        <width>336</width>
        <height>20</height>
       </rect>
@@ -8702,7 +8822,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </font>
        </property>
        <property name="toolTip">
-        <string>Sets the epoch for showing the pointing coordinates to JNow</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show model point error in arcsec close to the model point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
@@ -8738,7 +8858,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </font>
        </property>
        <property name="toolTip">
-        <string>Sets the epoch for showing the pointing coordinates to J2000</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the number close to the model point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
@@ -8774,7 +8894,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </font>
        </property>
        <property name="toolTip">
-        <string>Sets the epoch for showing the pointing coordinates to J2000</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No annotations are shown close to the model point. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
@@ -9058,7 +9178,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>25</y>
+       <y>20</y>
        <width>376</width>
        <height>261</height>
       </rect>
@@ -10520,7 +10640,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>25</y>
+       <y>15</y>
        <width>366</width>
        <height>56</height>
       </rect>
@@ -10612,9 +10732,9 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>100</y>
+       <y>80</y>
        <width>366</width>
-       <height>316</height>
+       <height>336</height>
       </rect>
      </property>
      <property name="title">
@@ -10626,16 +10746,259 @@ Hint if mount will need a flip when following satellite.</string>
      <widget class="QListWidget" name="listSatelliteNames">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>5</x>
         <y>25</y>
-        <width>346</width>
-        <height>281</height>
+        <width>356</width>
+        <height>306</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier New</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
       </property>
       <property name="toolTip">
        <string>List of satellites.</string>
       </property>
      </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="MPC">
+    <attribute name="title">
+     <string>Comet/Asteroid</string>
+    </attribute>
+    <widget class="QGroupBox" name="groupBox_30">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>15</y>
+       <width>391</width>
+       <height>56</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Minor planets data file</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QComboBox" name="minorPlanetSource">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>25</y>
+        <width>271</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the minor planets database from where the minor planet list should be loaded.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="filterMinorPlanet">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>30</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter for selecting minor planet names. The filter is not case sensitive.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_270">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>10</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>search string</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_58">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>115</y>
+       <width>391</width>
+       <height>276</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>List of available minor planets (comets, asteroids)</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QListWidget" name="listMinorPlanetNames">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>25</y>
+        <width>381</width>
+        <height>246</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier New</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of minor planets. This includes comets, asteroids and others.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="Line" name="line_69">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>10</y>
+       <width>11</width>
+       <height>416</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>2</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="progMinorPlanetsFull">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>395</y>
+       <width>191</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Program complete database</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="progEarthRotationData">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>395</y>
+       <width>341</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual in /data existing earth rotation data to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Program earth rotation data</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="progMinorPlanetsFiltered">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>395</y>
+       <width>191</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Program filtered database</string>
+     </property>
+    </widget>
+    <widget class="QProgressBar" name="downloadMinorPlanetProgress">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>391</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="textVisible">
+      <bool>true</bool>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="invertedAppearance">
+      <bool>false</bool>
+     </property>
+     <property name="textDirection">
+      <enum>QProgressBar::TopToBottom</enum>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Analyse">
@@ -14901,6 +15264,25 @@ Hint if mount will need a flip when following satellite.</string>
          <string>Set</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="relaySetup">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>80</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the observing conditions part of the relay device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_41">
        <property name="geometry">
@@ -15554,6 +15936,25 @@ Hint if mount will need a flip when following satellite.</string>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the observing conditions part of the power device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="onlineWeatherSetup">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>110</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the observing conditions part of the online weather device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -17991,7 +18392,7 @@ When clicking the button, you could change the value.</string>
      </widget>
      <widget class="QWidget" name="MountRemote">
       <attribute name="title">
-       <string>Mount / WeatherAPI</string>
+       <string>Mount</string>
       </attribute>
       <widget class="Line" name="line_97">
        <property name="geometry">
@@ -18181,8 +18582,8 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="groupBox_63">
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>205</y>
+         <x>400</x>
+         <y>15</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -18256,37 +18657,11 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_64">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>265</y>
-         <width>366</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>OpenWeatherMap API key</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLineEdit" name="openWeatherMapKey">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>346</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="groupBox_31">
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>110</y>
+         <y>115</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -18376,6 +18751,367 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="value">
          <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="FirmwareGroup">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>180</y>
+         <width>366</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Firmware data</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLineEdit" name="fwtime">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>70</y>
+          <width>96</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="maxLength">
+         <number>8</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="firmwareProductName_3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>45</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>FW:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="firmwareProductName_4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>36</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Date:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="firmwareProductName_5">
+        <property name="geometry">
+         <rect>
+          <x>225</x>
+          <y>70</y>
+          <width>36</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Time:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="product">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>65</x>
+          <y>20</y>
+          <width>291</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="maxLength">
+         <number>25</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="fwdate">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>65</x>
+          <y>70</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="maxLength">
+         <number>25</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="firmwareProductName_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Product:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="hardware">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>45</y>
+          <width>96</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="maxLength">
+         <number>25</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="Hardware">
+        <property name="geometry">
+         <rect>
+          <x>225</x>
+          <y>45</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>HW:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="vString">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>65</x>
+          <y>45</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="maxLength">
+         <number>8</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>
@@ -19149,7 +19885,7 @@ When clicking the button, you could change the value.</string>
      </widget>
      <widget class="QWidget" name="ParkPos">
       <attribute name="title">
-       <string>ParkPositions</string>
+       <string>ParkPositions / Relay</string>
       </attribute>
       <widget class="Line" name="line_83">
        <property name="geometry">
@@ -21380,247 +22116,6 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-     </widget>
-     <widget class="QWidget" name="Relay">
-      <attribute name="title">
-       <string>Relay</string>
-      </attribute>
-      <widget class="Line" name="line_85">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>10</y>
-         <width>11</width>
-         <height>371</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_95">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>15</y>
-         <width>366</width>
-         <height>116</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Relay IP settings</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_197">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>85</y>
-          <width>161</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Password</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="relayPassword">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>85</y>
-          <width>151</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Courier</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Password of relay switch. Is not saved encrypted !&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>empty</string>
-        </property>
-        <property name="maxLength">
-         <number>15</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="relayHost">
-        <property name="geometry">
-         <rect>
-          <x>110</x>
-          <y>25</y>
-          <width>251</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Courier</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of relay switch, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>127.0.0.1</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_196">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>55</y>
-          <width>161</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Username</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="relayUser">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>55</y>
-          <width>151</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Courier</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Username of relay switch. Is not saved encrypted !&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>empty</string>
-        </property>
-        <property name="maxLength">
-         <number>15</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>25</y>
-          <width>71</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>IP Address</string>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="groupBox_96">
        <property name="geometry">
         <rect>
@@ -22268,7 +22763,7 @@ When clicking the button, you could change the value.</string>
          <x>380</x>
          <y>10</y>
          <width>11</width>
-         <height>381</height>
+         <height>371</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -22288,7 +22783,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>305</y>
+         <y>335</y>
          <width>366</width>
          <height>46</height>
         </rect>
@@ -22382,7 +22877,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>305</y>
+         <y>295</y>
          <width>366</width>
          <height>86</height>
         </rect>
@@ -22408,367 +22903,6 @@ When clicking the button, you could change the value.</string>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial','Arial','Arial','Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial';&quot;&gt;pyqt5, matplotlib, wakeonlan, numpy, requests, astropy, skyfield, qimage2ndarray, importlib_metadata, opencv, scipy, photutils&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="FirmwareGroup">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>190</y>
-         <width>366</width>
-         <height>101</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Firmware data</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLineEdit" name="fwtime">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>70</y>
-          <width>96</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>8</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="firmwareProductName_3">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>45</y>
-          <width>56</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>FW:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="firmwareProductName_4">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>70</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Date:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="firmwareProductName_5">
-        <property name="geometry">
-         <rect>
-          <x>225</x>
-          <y>70</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Time:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="product">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>65</x>
-          <y>20</y>
-          <width>291</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>25</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="fwdate">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>65</x>
-          <y>70</y>
-          <width>101</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>25</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="firmwareProductName_2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>56</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Product:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="hardware">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>45</y>
-          <width>96</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>25</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="Hardware">
-        <property name="geometry">
-         <rect>
-          <x>225</x>
-          <y>45</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>HW:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="vString">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>65</x>
-          <y>45</y>
-          <width>101</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>8</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
         </property>
        </widget>
       </widget>
@@ -23039,7 +23173,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>80</y>
+         <y>85</y>
          <width>366</width>
          <height>96</height>
         </rect>
@@ -24014,7 +24148,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <x>455</x>
      <y>5</y>
      <width>140</width>
-     <height>106</height>
+     <height>66</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -24041,27 +24175,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
    </property>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>75</y>
-      <width>44</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>10</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Profile</string>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="timeUTC">
     <property name="enabled">
      <bool>false</bool>
@@ -24069,7 +24182,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     <property name="geometry">
      <rect>
       <x>5</x>
-      <y>55</y>
+      <y>45</y>
       <width>131</width>
       <height>21</height>
      </rect>
@@ -24131,7 +24244,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
       <x>5</x>
       <y>15</y>
       <width>131</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -24188,66 +24301,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <bool>true</bool>
     </property>
     <property name="large" stdset="0">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="profile">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>45</x>
-      <y>75</y>
-      <width>91</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>80</width>
-      <height>25</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>16777215</width>
-      <height>16777215</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>10</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="mouseTracking">
-     <bool>false</bool>
-    </property>
-    <property name="focusPolicy">
-     <enum>Qt::NoFocus</enum>
-    </property>
-    <property name="acceptDrops">
-     <bool>false</bool>
-    </property>
-    <property name="toolTip">
-     <string>Shows the actual selected profile name.</string>
-    </property>
-    <property name="text">
-     <string>-</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-    <property name="readOnly">
      <bool>true</bool>
     </property>
    </widget>
@@ -24538,6 +24591,100 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
    </widget>
   </widget>
+  <widget class="QGroupBox" name="statusOnline_2">
+   <property name="geometry">
+    <rect>
+     <x>455</x>
+     <y>75</y>
+     <width>140</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>140</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>140</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <property name="title">
+    <string>Profile</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+   <widget class="QLineEdit" name="profile">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>3</x>
+      <y>13</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>80</width>
+      <height>21</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="toolTip">
+     <string>Shows the actual selected profile name.</string>
+    </property>
+    <property name="text">
+     <string>-</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
  </widget>
  <tabstops>
   <tabstop>cameraDevice</tabstop>
@@ -24576,7 +24723,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>checkFastDownload</tabstop>
   <tabstop>checkKeepImages</tabstop>
   <tabstop>mountHost</tabstop>
-  <tabstop>openWeatherMapKey</tabstop>
   <tabstop>settleTimeMount</tabstop>
   <tabstop>rackCompMAC</tabstop>
   <tabstop>settleTimeDome</tabstop>
@@ -24620,25 +24766,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>posAlt9</tabstop>
   <tabstop>posAz9</tabstop>
   <tabstop>posSave9</tabstop>
-  <tabstop>relayHost</tabstop>
-  <tabstop>relayUser</tabstop>
-  <tabstop>relayPassword</tabstop>
-  <tabstop>relayButtonText0</tabstop>
-  <tabstop>relayFun0</tabstop>
-  <tabstop>relayButtonText1</tabstop>
-  <tabstop>relayFun1</tabstop>
-  <tabstop>relayButtonText2</tabstop>
-  <tabstop>relayFun2</tabstop>
-  <tabstop>relayButtonText3</tabstop>
-  <tabstop>relayFun3</tabstop>
-  <tabstop>relayButtonText4</tabstop>
-  <tabstop>relayFun4</tabstop>
-  <tabstop>relayButtonText5</tabstop>
-  <tabstop>relayFun5</tabstop>
-  <tabstop>relayButtonText6</tabstop>
-  <tabstop>relayFun6</tabstop>
-  <tabstop>relayButtonText7</tabstop>
-  <tabstop>relayFun7</tabstop>
   <tabstop>isOnline</tabstop>
   <tabstop>versionRelease</tabstop>
   <tabstop>versionBeta</tabstop>

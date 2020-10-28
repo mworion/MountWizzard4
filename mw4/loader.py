@@ -41,6 +41,8 @@ from gui.utilities import splash
 # noinspection PyUnresolvedReferences
 import resource.resources
 
+resource.resources.qInitResources()
+
 # package settings
 matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False

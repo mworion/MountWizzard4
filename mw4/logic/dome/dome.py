@@ -148,9 +148,10 @@ class Dome:
                                                                    pierside=piersideT)
 
             if alt is None or az is None:
-                self.log.warning(f'Geometry E: {haT.radians}, {decT.radians}, {piersideT}')
+                self.log.warning(f'Geometry error: {haT.hours}, {decT.degrees}, {piersideT}')
                 alt = altitude
                 az = azimuth
+
             else:
                 alt = alt.degrees
                 az = az.degrees

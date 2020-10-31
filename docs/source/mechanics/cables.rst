@@ -5,7 +5,9 @@ one 12V 1,5 mm :sup:`2` for PC, one 12V 1,5 mm :sup:`2` for UPB) and a single li
 ethernet cat6 wire.,nothing else. So there is no USB connection outside the OTA on top of
 the setup. I tried to use cable as short as possible.
 
-For cable management I did some brackets and sliders with my 3D printer.
+For cable management I did some brackets and sliders with my 3D printer. for the used parts
+you find the 3D STL files on https://github.com/mworion/MountWizzard4/tree/master/3D_Models
+
 
 OTA to Mount
 ------------

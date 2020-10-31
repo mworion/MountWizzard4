@@ -21,7 +21,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.190.0',
+    version='0.190.1b0',
     packages=[
         'mw4',
         'mw4.base',
@@ -53,7 +53,7 @@ setup(
         'matplotlib==3.3.2',
         'astropy==4.0.3',
         'photutils==1.0.1',
-        'scipy==1.5.2',
+        'scipy==1.5.3',
         'requests==2.24.0',
         'requests_toolbelt==0.9.1',
         'skyfield==1.30',
@@ -65,9 +65,9 @@ setup(
     ]
     + (['pywin32==228'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
-    + (['PyQt5==5.14.2'] if platform.machine() in ['armv7l', 'armv8'] else [])
-    + (['PyQt3D==5.14.0'] if platform.machine() in ['armv7l', 'armv8'] else [])
-    + (['PyQtWebEngine==5.14.0'] if platform.machine() in ['armv7l', 'armv8'] else []),
+    + (['PyQt5==5.14.2'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
+    + (['PyQt3D==5.14.0'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
+    + (['PyQtWebEngine==5.14.0'] if platform.machine() not in ['armv7l', 'aarch64'] else []),
 
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

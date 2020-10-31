@@ -9,4 +9,5 @@ Installing MW4
     mw4
     platesolvers
     rpi3
+    rpi4
 

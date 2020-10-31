@@ -16,8 +16,8 @@
 #
 ###########################################################
 
-excludedPlatforms = ['armv7l']
+excludedPlatforms = ['armv7l', 'aarch64']
 
-featureFlags = {'simulator': True,
+featureFlags = {'simulator': False,
                 'analyse': False,
                 }

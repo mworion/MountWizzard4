@@ -50,9 +50,6 @@ setup(
         'mountcontrol==0.176',
         'indibase==0.138',
         'numpy==1.19.2',
-        'PyQt5==5.14.2; platform_machine != "armv7l"',
-        'PyQt3D==5.14.0; platform_machine != "armv7l"',
-        'PyQtWebEngine==5.14.0; platform_machine != "armv7l"',
         'matplotlib==3.3.2',
         'astropy==4.0.3',
         'photutils==1.0.1',
@@ -67,7 +64,10 @@ setup(
         'deepdiff==5.0.2',
     ]
     + (['pywin32==228'] if "Windows" == platform.system() else [])
-    + (['pywinauto==0.6.8'] if "Windows" == platform.system() else []),
+    + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
+    + (['PyQt5==5.14.2'] if platform.machine() in ['armv7l', 'armv8'] else [])
+    + (['PyQt3D==5.14.0'] if platform.machine() in ['armv7l', 'armv8'] else [])
+    + (['PyQtWebEngine==5.14.0'] if platform.machine() in ['armv7l', 'armv8'] else []),
 
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

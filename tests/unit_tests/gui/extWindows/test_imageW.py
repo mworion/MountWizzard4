@@ -28,7 +28,6 @@ from astropy.io import fits
 from astropy import wcs
 from skyfield.api import Angle
 import numpy as np
-import cv2
 
 # local import
 from tests.baseTestSetupExtWindows import App
@@ -608,10 +607,11 @@ def test_showImage_5(function):
 
 def test_showImage_6(function):
     class Data:
-        data = np.random.rand(100, 100, 3)
+        data = np.random.rand(100, 100)
         header = {'BAYERPAT': 1,
                   'CTYPE1': 'DEF',
-                  'CTYPE2': 'DEF',}
+                  'CTYPE2': 'DEF',
+                  }
 
     class FitsHandle:
         @staticmethod
@@ -627,16 +627,14 @@ def test_showImage_6(function):
     with mock.patch.object(fits,
                            'open',
                            return_value=FitsHandle()):
-        with mock.patch.object(cv2,
-                               'cvtColor'):
+        with mock.patch.object(function,
+                               'zoomImage'):
             with mock.patch.object(function,
-                                   'zoomImage'):
+                                   'stackImages'):
                 with mock.patch.object(function,
-                                       'stackImages'):
-                    with mock.patch.object(function,
-                                           'prepareImage'):
-                        suc = function.showImage(imagePath='tests/image/m51.fit')
-                        assert suc
+                                       'prepareImage'):
+                    suc = function.showImage(imagePath='tests/image/m51.fit')
+                    assert suc
 
 
 def test_showCurrent_1(function):

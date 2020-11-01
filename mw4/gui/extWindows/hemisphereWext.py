@@ -164,16 +164,18 @@ class HemisphereWindowExt:
         lat = self.app.mount.obsSite.location.latitude
         azimuthT = self.app.mount.obsSite.AzTarget
         altitudeT = self.app.mount.obsSite.AltTarget
-        delta = self.app.dome.slewDome(altitude=altitudeT,
-                                       azimuth=azimuthT,
-                                       piersideT=piersideT,
-                                       haT=haT,
-                                       decT=decT,
-                                       lat=lat)
 
-        geoStat = 'Geometry corrected' if delta else 'Equal mount'
-        text = f'Slewing dome:        {geoStat}, az: {azimuthT:3.1f} delta: {delta:3.1f}'
-        self.app.message.emit(text, 0)
+        if self.app.deviceStat['dome']:
+            delta = self.app.dome.slewDome(altitude=altitudeT,
+                                           azimuth=azimuthT,
+                                           piersideT=piersideT,
+                                           haT=haT,
+                                           decT=decT,
+                                           lat=lat)
+
+            geoStat = 'Geometry corrected' if delta else 'Equal mount'
+            text = f'Slewing dome:        {geoStat}, az: {azimuthT:3.1f} delta: {delta:3.1f}'
+            self.app.message.emit(text, 0)
 
         suc = self.app.mount.obsSite.startSlewing(slewType=alignType)
 

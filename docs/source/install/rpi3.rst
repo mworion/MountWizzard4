@@ -1,8 +1,8 @@
 Installing MW4 on RaspberryPi 3
 ===============================
 
-Installing Python
------------------
+Installing Python on RPi3
+-------------------------
 
 To get MW4 installed on RPi3 you will follow the instructions of Robert Lancaste (many
 thanks to him fore this work!) on https://github.com/rlancaste/AstroPi3 with installing
@@ -29,16 +29,10 @@ available on your system:
     :align: center
     :scale: 71%
 
-Next we have to do is to install a virtual environment capability:
-
-.. code-block:: python
-
-    sudo apt-get install virtualenv
-
 If everything went fine, we can proceed to the next step.
 
-Installing PyQt5
-----------------
+Installing PyQt5 on RPi3
+------------------------
 As on arm the installation of PyQt5 could not be done through pip, the actual tested path is
 to install Qt directly via apt-get on your RBP3. As result, you cannot install MW4 easily in a
 virtual environment as apt-get will install all libraries in a system path.

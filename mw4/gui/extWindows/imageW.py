@@ -15,8 +15,10 @@
 # Licence APL2.0
 #
 ###########################################################
+import base.packageConfig as Config
 # standard libraries
 import os
+import platform
 
 # external packages
 import PyQt5.QtWidgets
@@ -32,7 +34,8 @@ from photutils import CircularAperture, DAOStarFinder
 import matplotlib.pyplot as plt
 from skyfield.api import Angle
 import numpy as np
-import cv2
+if platform.machine() not in Config.excludedPlatforms:
+    import cv2
 from mountcontrol.convert import convertToDMS, convertToHMS
 
 # local import
@@ -821,9 +824,11 @@ class ImageWindow(widget.MWidget):
         if self.header is None:
             return False
 
-        # todo: if it's an exposure directly, I get a bayer mosaic ??
-        if 'BAYERPAT' in self.header and len(self.image.shape) > 2:
-            self.image = cv2.cvtColor(self.image, cv2.COLOR_BAYER_BG2GRAY)
+        isAvailable = platform.machine() not in Config.excludedPlatforms
+        if isAvailable:
+            # todo: if it's an exposure directly, I get a bayer mosaic ??
+            if 'BAYERPAT' in self.header and len(self.image.shape) > 2:
+                self.image = cv2.cvtColor(self.image, cv2.COLOR_BAYER_BG2GRAY)
 
         # correct faulty headers, because some imaging programs did not
         # interpret the Keywords in the right manner (SGPro)

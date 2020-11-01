@@ -21,7 +21,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.190.1b0',
+    version='0.190.1b1',
     packages=[
         'mw4',
         'mw4.base',
@@ -49,7 +49,7 @@ setup(
     install_requires=[
         'mountcontrol==0.176',
         'indibase==0.138',
-        'numpy==1.19.2',
+        'numpy==1.19.3',
         'matplotlib==3.3.2',
         'astropy==4.0.3',
         'photutils==1.0.1',
@@ -60,14 +60,14 @@ setup(
         'sgp4>=2.13',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==2.0.0',
-        'opencv-python-headless==4.4.0.44',
         'deepdiff==5.0.2',
     ]
     + (['pywin32==228'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
-    + (['PyQt5==5.14.2'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
+    + (['PyQt5==5.14.2'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.14.0'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
-    + (['PyQtWebEngine==5.14.0'] if platform.machine() not in ['armv7l', 'aarch64'] else []),
+    + (['PyQtWebEngine==5.14.0'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
+    + (['opencv-python-headless==4.4.0.44'] if platform.machine() not in ['armv7l', 'aarch64'] else []),
 
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

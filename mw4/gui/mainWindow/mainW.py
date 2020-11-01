@@ -39,9 +39,9 @@ from gui.extWindows.measureW import MeasureWindow
 from gui.extWindows.imageW import ImageWindow
 from gui.extWindows.satelliteW import SatelliteWindow
 from gui.extWindows.analyseW import AnalyseWindow
-from gui.extWindows.simulatorW import SimulatorWindow
 if platform.machine() not in Config.excludedPlatforms:
     # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
+    from gui.extWindows.simulatorW import SimulatorWindow
     from gui.extWindows.keypadW import KeypadWindow
 
 from gui.widgets.main_ui import Ui_MainWindow
@@ -152,7 +152,9 @@ class MainWindow(MWidget,
             'name': 'AnalyseDialog',
             'class': AnalyseWindow,
         }
-        if Config.featureFlags['simulator']:
+        isSimulator = Config.featureFlags['simulator']
+        isAvailable = platform.machine() not in Config.excludedPlatforms
+        if isSimulator and isAvailable:
             self.uiWindows['showSimulatorW'] = {
                 'button': self.ui.mountConnected,
                 'classObj': None,
@@ -160,7 +162,7 @@ class MainWindow(MWidget,
                 'class': SimulatorWindow,
             }
         # todo: we can only add keypad on arm when we have compiled version
-        if platform.machine() not in Config.excludedPlatforms:
+        if isAvailable:
             self.uiWindows['showKeypadW'] = {
                 'button': self.ui.openKeypadW,
                 'classObj': None,
@@ -267,7 +269,8 @@ class MainWindow(MWidget,
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
 
-        if not Config.featureFlags['analyse']:
+        isAnalyse = Config.featureFlags['analyse']
+        if not isAnalyse:
             tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
             tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)

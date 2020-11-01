@@ -35,10 +35,6 @@ be OK. Next we have to do is to install a virtual environment capability:
 
 If everything went fine, you could
 
-git clone https://github.com/mdegans/nano_build_opencv.git
-cd nano_build_opencv/
-./build_opencv.sh 4.4.0
-
 
 Installing PyQt5 on RPI4
 ------------------------

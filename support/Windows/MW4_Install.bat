@@ -102,7 +102,7 @@ exit
 
 echo.
 echo ---------------------------------------------
-echo Installing mountwizzard4 - take a minute
+echo Installing mountwizzard4 - takes some time
 echo ---------------------------------------------
 echo.
 

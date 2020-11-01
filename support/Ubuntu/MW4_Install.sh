@@ -13,7 +13,7 @@ echo Checking installed python version
 echo ---------------------------------------------
 echo .
 
-echo Checking environment and start script > install.log
+echo checking environment and start script > install.log
 
 T=`python3 --version`
 P_VER=""
@@ -75,7 +75,7 @@ virtualenv venv >> install.log
 
 echo .
 echo ---------------------------------------------
-echo Installing mountwizzard4 - take a minute
+echo Installing mountwizzard4 - takes some time
 echo ---------------------------------------------
 echo .
 
@@ -83,7 +83,7 @@ echo . >> install.log
 
 source ./venv/bin/activate
 python -m pip install pip --upgrade >> install.log
-python -m pip install mountwizzard4 --upgrade --no-cache-dir >>install.log
+python -m pip install mountwizzard4 --upgrade --no-cache-dir >> install.log
 
 
 echo .

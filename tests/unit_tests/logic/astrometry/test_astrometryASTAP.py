@@ -59,7 +59,6 @@ def app():
     shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
 
     yield app
-    app.threadPool.waitForDone(3000)
 
 
 def test_setDefaultPath_1(app):

@@ -59,7 +59,6 @@ def app():
         os.remove(fileP)
 
     yield app
-    app.threadPool.waitForDone(3000)
 
 
 def test_setDefaultPath_1(app):

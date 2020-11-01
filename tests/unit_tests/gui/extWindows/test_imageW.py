@@ -45,6 +45,7 @@ def function(module):
 
     window = ImageWindow(app=App())
     yield window
+    window.app.threadPool.waitForDone(3000)
 
 
 def test_initConfig_1(function):

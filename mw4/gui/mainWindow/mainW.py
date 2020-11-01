@@ -328,7 +328,6 @@ class MainWindow(MWidget,
         config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
 
-        # store the config of the mixins
         self.mwSuper('storeConfig')
         self.storeConfigExtendedWindows()
 
@@ -346,7 +345,6 @@ class MainWindow(MWidget,
         self.app.timer0_1s.stop()
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.closeExtendedWindows()
-        # self.stopDrivers()
         super().closeEvent(closeEvent)
         self.app.quit()
 

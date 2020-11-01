@@ -78,20 +78,21 @@ def test_debugOutput_2():
 
 
 def test_getRelay_1():
-    app.host = None
+    app.hostaddress = None
     suc = app.getRelay()
     assert suc is None
 
 
 def test_getRelay_2():
-    app.host = ('localhost', 8080)
+    app.hostaddress = 'localhost'
     app.mutexPoll.lock()
     suc = app.getRelay()
     assert suc is None
+    app.mutexPoll.unlock()
 
 
 def test_getRelay_3():
-    app.host = ('localhost', 8080)
+    app.hostaddress = 'localhost'
     with mock.patch.object(requests,
                            'get',
                            return_value=None,
@@ -101,7 +102,7 @@ def test_getRelay_3():
 
 
 def test_getRelay_4():
-    app.host = ('localhost', 8080)
+    app.hostaddress = 'localhost'
     with mock.patch.object(requests,
                            'get',
                            return_value=None,
@@ -111,7 +112,7 @@ def test_getRelay_4():
 
 
 def test_getRelay_5():
-    app.host = ('localhost', 8080)
+    app.hostaddress = 'localhost'
     with mock.patch.object(requests,
                            'get',
                            return_value=None,
@@ -123,7 +124,7 @@ def test_getRelay_5():
 def test_cyclePolling_1():
     app.user = 'test'
     app.password = 'test'
-    app.host = ('localhost', 80)
+    app.hostaddress = 'localhost'
     with mock.patch.object(app,
                            'getRelay',
                            return_value=None):
@@ -138,7 +139,7 @@ def test_cyclePolling_2():
 
     app.user = 'test'
     app.password = 'test'
-    app.host = ('localhost', 80)
+    app.hostaddress = 'localhost'
     with mock.patch.object(app,
                            'getRelay',
                            return_value=Test()):
@@ -153,7 +154,7 @@ def test_cyclePolling_3():
 
     app.user = 'test'
     app.password = 'test'
-    app.host = ('localhost', 80)
+    app.hostaddress = 'localhost'
     with mock.patch.object(app,
                            'getRelay',
                            return_value=Test()):

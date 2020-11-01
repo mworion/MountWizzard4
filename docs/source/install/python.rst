@@ -109,6 +109,7 @@ install script provided and install MW in a new work dir. You could copy all you
 change to your work directory and run the command:
 
 .. code-block:: python
+
     python -m venv --upgrade venv
 
 This will upgrade your work environment to the python version of your computer (so the

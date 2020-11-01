@@ -36,6 +36,7 @@ from skyfield.api import Angle
 import numpy as np
 if platform.machine() not in Config.excludedPlatforms:
     import cv2
+from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
 from mountcontrol.convert import convertToDMS, convertToHMS
 
 # local import
@@ -828,7 +829,8 @@ class ImageWindow(widget.MWidget):
         if isAvailable:
             # todo: if it's an exposure directly, I get a bayer mosaic ??
             if 'BAYERPAT' in self.header and len(self.image.shape) > 2:
-                self.image = cv2.cvtColor(self.image, cv2.COLOR_BAYER_BG2GRAY)
+                self.image = demosaicing_CFA_Bayer_bilinear(self.image)
+                # self.image = cv2.cvtColor(self.image, cv2.COLOR_BAYER_BG2GRAY)
 
         # correct faulty headers, because some imaging programs did not
         # interpret the Keywords in the right manner (SGPro)

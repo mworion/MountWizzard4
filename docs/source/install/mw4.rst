@@ -207,10 +207,16 @@ If you would like to have MW4 displayed bigger than 100%, please increase the
 QT_SCALE_FACTOR to the value desired. A value of 1 means 100%, so 2 means 200%.
 
 
+DPI scaling on Ubuntu
+---------------------
+This is quite similar to windows. You have to set the environment variables QT_SCALE_FACTOR
+and QT_FONT_DPI accordingly. They are already part of the MW4_Run.sh scripts.
+
+
 Upgrade
 -------
 
-If you plan to upgrade MW4 to a newer release, you could use on of the
+If you plan to upgrade MW4 to the newest release, you could use on of the
 
 .. code-block:: python
 
@@ -220,5 +226,7 @@ If you plan to upgrade MW4 to a newer release, you could use on of the
 
 scripts. In some circumstances this might be necessary, but for normal use MW4 has it's own
 internal updater and using the script is not necessary. The command script updates to the
-latest release, alpha or beta releases are left out.
+latest release.
+
+.. note:: All alpha or beta releases are left out !
 

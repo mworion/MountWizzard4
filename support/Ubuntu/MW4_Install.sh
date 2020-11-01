@@ -66,6 +66,8 @@ virtualenv venv >> install.log
   echo ---------------------------------------------
   echo No valid virtual environment installed
   echo Please check the install.log for errors
+  echo install virtualenv with
+  echo sudo apt-get install python3-virtualenv
   echo ---------------------------------------------
   echo .
   exit

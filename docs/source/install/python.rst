@@ -81,18 +81,26 @@ An example is from: https://linuxize.com/post/how-to-install-python-3-7-on-ubunt
     sudo apt-get upgrade
     sudo apt-get install python3.8
 
-Please check the right version and the availability of virtualenv in your setup.
+Please check the right version and the availability of virtualenv in your setup. If
+virtualenv is not present in your setup, please install it prior to run the install
+scripts with:
+
+.. code-block:: python
+
+    sudo apt-get install python3-virtualenv
+
 
 
 Updating python in your existing environment
-============================================
+--------------------------------------------
 
 This is a step which should be done if you are familiar with some pc experience.
 Hence the steps are not complicated, the setups of you environment might be somehow special
 and need a adjusted treatment. The following steps explain a standard procedure.
 
+
 Update python version on your windows computer
-----------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Please go to the python website an download the appropriate python version. Please be
 reminded that right now python 3.9 is not supported! On windows please check the selection
 of the 32bit or 64bit correctly. It should be the version you have already chosen.

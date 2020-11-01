@@ -53,6 +53,7 @@ def app():
     app = Astrometry(app=Test())
 
     yield app
+    app.threadPool.waitForDone(3000)
 
 
 def test_properties_1(app):

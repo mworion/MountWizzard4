@@ -13,27 +13,34 @@ Unreleased Betas
 
 - First production release
 
-(0.240.0)
+(0.250.0)
 
 - full integration testing
 
-(0.230.0)
+(0.240.0)
 
 - update PyQt5 to 5.15.2
 - retrofit based on hashes
 
-(0.220.0)
+(0.230.0)
 
 - retrofit model based on hashed coordinates
 
-(0.210.0)
+(0.220.0)
 
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
 
-(0.200.0)
+(0.210.0)
 
 - safety margin to horizon line checking for model points
 - adding asteroids programming (windows only)
+
+(0.200.0)
+
+- adding support for RaspberryPi4 with Ubuntu Mate 20.04.1LTS
+- changing opencv-python-headless to colour_demosaicing library
+- bugfix slewing in hemisphere without any device
+- adding safety margin between build points and horizon lines
 
 Released betas
 --------------

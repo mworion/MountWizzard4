@@ -15,7 +15,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import base.packageConfig as pConf
 # standard libraries
 import os
 
@@ -33,9 +32,7 @@ from photutils import CircularAperture, DAOStarFinder
 import matplotlib.pyplot as plt
 from skyfield.api import Angle
 import numpy as np
-if pConf.isAvailable:
-    import cv2
-# from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
+from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
 from mountcontrol.convert import convertToDMS, convertToHMS
 
 # local import
@@ -824,11 +821,9 @@ class ImageWindow(widget.MWidget):
         if self.header is None:
             return False
 
-        if pConf.isAvailable:
-            # todo: if it's an exposure directly, I get a bayer mosaic ??
-            if 'BAYERPAT' in self.header and len(self.image.shape) > 2:
-                # self.image = demosaicing_CFA_Bayer_bilinear(self.image)
-                self.image = cv2.cvtColor(self.image, cv2.COLOR_BAYER_BG2GRAY)
+        if 'BAYERPAT' in self.header:
+            self.image = demosaicing_CFA_Bayer_bilinear(self.image)
+            self.image = np.dot(self.image, [0.2989, 0.5870, 0.1140])
 
         # correct faulty headers, because some imaging programs did not
         # interpret the Keywords in the right manner (SGPro)

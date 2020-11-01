@@ -66,8 +66,7 @@ setup(
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
     + (['PyQt5==5.14.2'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.14.0'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
-    + (['PyQtWebEngine==5.14.0'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
-    + (['opencv-python-headless==4.4.0.44'] if platform.machine() not in ['armv7l', 'aarch64'] else []),
+    + (['PyQtWebEngine==5.14.0'] if platform.machine() not in ['armv7l', 'aarch64'] else []),
 
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

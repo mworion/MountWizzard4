@@ -61,6 +61,7 @@ setup(
         'qimage2ndarray==1.8.3',
         'importlib_metadata==2.0.0',
         'deepdiff==5.0.2',
+        'colour_demosaicing==0.1.5',
     ]
     + (['pywin32==228'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])

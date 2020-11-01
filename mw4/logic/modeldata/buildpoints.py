@@ -413,6 +413,9 @@ class DataPoint(object):
         :param m: margin to horizon line in degrees
         :return:
         """
+        if not self.horizonP:
+            return
+
         azH = [x[1] for x in self.horizonP]
         altH = [x[0] for x in self.horizonP]
         azI = range(0, 361, 1)

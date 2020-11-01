@@ -15,12 +15,11 @@
 # Licence APL2.0
 #
 ###########################################################
-import base.packageConfig as Config
+import base.packageConfig as pConf
 # standard libraries
 import logging
 from datetime import datetime
 import gc
-import platform
 
 # external packages
 from PyQt5.QtGui import QIcon
@@ -39,7 +38,7 @@ from gui.extWindows.measureW import MeasureWindow
 from gui.extWindows.imageW import ImageWindow
 from gui.extWindows.satelliteW import SatelliteWindow
 from gui.extWindows.analyseW import AnalyseWindow
-if platform.machine() not in Config.excludedPlatforms:
+if pConf.isAvailable:
     # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
     from gui.extWindows.simulatorW import SimulatorWindow
     from gui.extWindows.keypadW import KeypadWindow
@@ -152,9 +151,7 @@ class MainWindow(MWidget,
             'name': 'AnalyseDialog',
             'class': AnalyseWindow,
         }
-        isSimulator = Config.featureFlags['simulator']
-        isAvailable = platform.machine() not in Config.excludedPlatforms
-        if isSimulator and isAvailable:
+        if pConf.isSimulator and pConf.isAvailable:
             self.uiWindows['showSimulatorW'] = {
                 'button': self.ui.mountConnected,
                 'classObj': None,
@@ -162,7 +159,7 @@ class MainWindow(MWidget,
                 'class': SimulatorWindow,
             }
         # todo: we can only add keypad on arm when we have compiled version
-        if isAvailable:
+        if pConf.isAvailable:
             self.uiWindows['showKeypadW'] = {
                 'button': self.ui.openKeypadW,
                 'classObj': None,
@@ -269,8 +266,7 @@ class MainWindow(MWidget,
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
 
-        isAnalyse = Config.featureFlags['analyse']
-        if not isAnalyse:
+        if not pConf.isAnalyse:
             tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
             tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)

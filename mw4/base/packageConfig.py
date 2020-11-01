@@ -15,9 +15,9 @@
 # Licence APL2.0
 #
 ###########################################################
+import platform
 
 excludedPlatforms = ['armv7l', 'aarch64']
-
-featureFlags = {'simulator': False,
-                'analyse': False,
-                }
+isAvailable = platform.system() not in excludedPlatforms
+isSimulator = False
+isAnalyse = False

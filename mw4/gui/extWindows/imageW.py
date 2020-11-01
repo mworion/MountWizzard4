@@ -15,10 +15,9 @@
 # Licence APL2.0
 #
 ###########################################################
-import base.packageConfig as Config
+import base.packageConfig as pConf
 # standard libraries
 import os
-import platform
 
 # external packages
 import PyQt5.QtWidgets
@@ -34,7 +33,7 @@ from photutils import CircularAperture, DAOStarFinder
 import matplotlib.pyplot as plt
 from skyfield.api import Angle
 import numpy as np
-if platform.machine() not in Config.excludedPlatforms:
+if pConf.isAvailable:
     import cv2
 # from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
 from mountcontrol.convert import convertToDMS, convertToHMS
@@ -825,8 +824,7 @@ class ImageWindow(widget.MWidget):
         if self.header is None:
             return False
 
-        isAvailable = platform.machine() not in Config.excludedPlatforms
-        if isAvailable:
+        if pConf.isAvailable:
             # todo: if it's an exposure directly, I get a bayer mosaic ??
             if 'BAYERPAT' in self.header and len(self.image.shape) > 2:
                 # self.image = demosaicing_CFA_Bayer_bilinear(self.image)

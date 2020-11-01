@@ -24,12 +24,8 @@ import pytest
 from base import packageConfig
 
 
-def test_exclude():
-    assert packageConfig.excludedPlatforms == ['armv7l']
-
-
 def test_config():
-    assert 'analyse' in packageConfig.featureFlags
-    assert 'simulator' in packageConfig.featureFlags
+    assert 'armv7l' in packageConfig.excludedPlatforms
+    assert 'aarch64' in packageConfig.excludedPlatforms
 
 

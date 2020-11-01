@@ -21,3 +21,6 @@ excludedPlatforms = ['armv7l', 'aarch64']
 isAvailable = platform.system() not in excludedPlatforms
 isSimulator = False
 isAnalyse = False
+isWindows = platform.system() == 'Windows'
+isLinux = platform.system() == 'Linux'
+isMac = platform.system() == 'Darwin'

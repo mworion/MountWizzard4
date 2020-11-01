@@ -15,18 +15,17 @@
 # Licence APL2.0
 #
 ###########################################################
-import base.packageConfig as Config
+import base.packageConfig as pConf
 # standard libraries
 import time
 import subprocess
 import sys
-import platform
 
 # external packages
 from pkg_resources import working_set
 from distutils.version import StrictVersion
 import PyQt5
-if platform.machine() not in Config.excludedPlatforms:
+if pConf.isAvailable:
     import PyQt5.QtMultimedia
 import requests
 from importlib_metadata import version
@@ -372,7 +371,7 @@ class SettMisc(object):
         :return: True for test purpose
         """
 
-        if platform.system() == 'Windows':
+        if pConf.isWindows:
             timeout = 180
         else:
             timeout = 90
@@ -451,7 +450,7 @@ class SettMisc(object):
         :return: True for test purpose
         """
 
-        if platform.machine() in Config.excludedPlatforms:
+        if not pConf.isAvailable:
             return False
 
         self.audioSignalsSet['Beep'] = ':/sound/beep.wav'

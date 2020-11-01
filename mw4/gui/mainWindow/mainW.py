@@ -29,20 +29,18 @@ import PyQt5.QtWidgets
 from PyQt5.QtTest import QTest
 
 # local import
+if pConf.isAvailable:
+    from gui.extWindows.simulatorW import SimulatorWindow
+    from gui.extWindows.keypadW import KeypadWindow
+
 from base.loggerMW import CustomLogger
 from gui.utilities.widget import MWidget
-
 from gui.extWindows.messageW import MessageWindow
 from gui.extWindows.hemisphereW import HemisphereWindow
 from gui.extWindows.measureW import MeasureWindow
 from gui.extWindows.imageW import ImageWindow
 from gui.extWindows.satelliteW import SatelliteWindow
 from gui.extWindows.analyseW import AnalyseWindow
-if pConf.isAvailable:
-    # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
-    from gui.extWindows.simulatorW import SimulatorWindow
-    from gui.extWindows.keypadW import KeypadWindow
-
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMount import Mount
 from gui.mainWmixin.tabEnviron import Environ

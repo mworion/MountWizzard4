@@ -159,7 +159,7 @@ Run one of the scripts
 
     MW4_Run.bat         # Windows
     MW4_Run.sh          # Ubuntu
-    MW4_Tun.command     # OSx
+    MW4_Run.command     # OSx
 
 This script will start MW4 for the first time and it will create some subdirectories in your
 working folder. When starting, a splash screen show the progress of it's initialization.
@@ -188,6 +188,21 @@ shell in the menu. This might take some seconds before MW4 comes up with the spl
 If you see the upper window, you succeed and from now on you are able to customize your
 setup of MW4 and it's features.
 
+Setting up Ubuntu
+-----------------
+For Ubuntu the scripts also include an icon file (mw4.png) as well as a desktop description
+file (MountWizzard4.desktop). In order to use this add-on, please adjust the directories
+used in this file:
+
+.. image:: image/ubuntu_setup.png
+    :align: center
+    :scale: 71%
+
+Unfortunately this is broken un Ubuntu 20.04LTS, see (including the workaround):
+
+https://askubuntu.com/questions/1231413/basic-desktop-actions-are-not-available-on-ubuntu-20-04
+
+If you install nemo as file manager, the desktop icons will work.
 
 DPI scaling on windows
 ----------------------

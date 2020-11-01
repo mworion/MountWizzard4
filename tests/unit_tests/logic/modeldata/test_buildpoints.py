@@ -198,14 +198,14 @@ def test_isCloseMeridian_2():
     app.app.mount.setting.meridianLimitSlew = 5
     app.app.mount.setting.meridianLimitTrack = 5
     suc = app.isCloseMeridian((90, 45))
-    assert suc
+    assert not suc
 
 
 def test_isCloseMeridian_3():
     app.app.mount.setting.meridianLimitSlew = 5
     app.app.mount.setting.meridianLimitTrack = 5
     suc = app.isCloseMeridian((45, 180))
-    assert not suc
+    assert suc
 
 
 def test_deleteCloseMeridian_1():

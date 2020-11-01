@@ -384,10 +384,10 @@ class DataPoint(object):
         upper = 180 + value
 
         if lower < point[1] < upper:
-            return False
+            return True
 
         else:
-            return True
+            return False
 
     def deleteBelowHorizon(self):
         """

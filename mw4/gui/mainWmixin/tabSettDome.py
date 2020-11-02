@@ -109,7 +109,7 @@ class SettDome(object):
             self.app.message.emit('Critical dome radius, please check', 2)
 
         self.app.mount.geometry.offGEM = self.ui.offGEM.value()
-        self.app.mount.geometry.offLAT = - self.ui.offLAT.value()
+        self.app.mount.geometry.offLAT = self.ui.offLAT.value()
         self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
         self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
         self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()

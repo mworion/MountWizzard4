@@ -37,13 +37,16 @@ Unreleased Betas
 
 (0.200.0)
 
-- adding support for RaspberryPi4 with Ubuntu Mate 20.04.1LTS
-- changing opencv-python-headless to colour_demosaicing library
-- bugfix slewing in hemisphere without any device
 - adding safety margin between build points and horizon lines
 
 Released betas
 --------------
+0.190.3
+
+- changing opencv-python-headless to colour_demosaicing library
+- adding support for RaspberryPi4 with Ubuntu Mate 20.04.1LTS
+- bugfix slewing in hemisphere without any device
+
 0.190.0
 
 - bringing back polar diagram

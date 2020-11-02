@@ -258,6 +258,7 @@ class SimulatorWindow(widget.MWidget):
         """
         self.dome.create(self.world['ref']['e'],
                          self.ui.checkDomeEnable.isChecked())
+        self.setDomeTransparency()
 
         return True
 
@@ -446,6 +447,7 @@ class SimulatorWindow(widget.MWidget):
         dome = self.ui.checkDomeEnable.isChecked()
         horizon = self.ui.checkShowHorizon.isChecked()
         points = self.ui.checkShowBuildPoints.isChecked()
+        isDomeTransparent = self.ui.checkDomeTransparent.isChecked()
 
         self.createWorld(rEntity)
         self.telescope.create(self.world['ref']['e'], True)
@@ -457,6 +459,7 @@ class SimulatorWindow(widget.MWidget):
         self.updateSettings()
         self.dome.updateSettings()
         self.dome.updatePositions()
+        self.dome.setTransparency(isDomeTransparent)
         self.telescope.updateSettings()
         self.telescope.updatePositions()
 

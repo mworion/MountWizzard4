@@ -38,7 +38,7 @@ class SettDome(object):
         self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeShutterWidth.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
-        self.ui.checkDomeGeometry.clicked.connect(self.setUseGeometryInMount)
+        self.ui.checkDomeGeometry.clicked.connect(self.setUseGEMOffsetCalculations)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
         self.ui.checkDomeGeometry.clicked.connect(self.setUseGEMOffsetCalculations)
         self.app.mount.signals.firmwareDone.connect(self.setUseGeometryInMount)
@@ -126,7 +126,7 @@ class SettDome(object):
         """
 
         isGeometry = self.ui.checkDomeGeometry.isChecked()
-        self.app.dome.useGeometry = isGeometry
+        self.app.dome.isGeometry = isGeometry
 
         return True
 

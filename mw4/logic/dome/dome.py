@@ -145,10 +145,6 @@ class Dome:
                 alt = altitude
                 az = azimuth
 
-            else:
-                alt = alt.degrees
-                az = az.degrees
-
         else:
             alt = altitude
             az = azimuth

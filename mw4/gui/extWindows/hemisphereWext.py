@@ -158,8 +158,8 @@ class HemisphereWindowExt:
         :return: success
         """
 
-        azimuthT = self.app.mount.obsSite.AzTarget
-        altitudeT = self.app.mount.obsSite.AltTarget
+        azimuthT = self.app.mount.obsSite.AzTarget.degrees
+        altitudeT = self.app.mount.obsSite.AltTarget.degrees
 
         if self.app.deviceStat['dome']:
             delta = self.app.dome.slewDome(altitude=altitudeT,

@@ -112,7 +112,7 @@ def test_slewDome_3():
     app.framework = 'indi'
     app.isGeometry = True
 
-    with mock.patch.object(app.app.mount.geometry,
+    with mock.patch.object(app.app.mount,
                            'calcTransformationMatrices',
                            return_value=(Angle(degrees=10), Angle(degrees=10), 0, 0, 0)):
         val = app.slewDome(piersideT='W', haT=Angle(hours=0), decT=Angle(degrees=0))
@@ -124,7 +124,7 @@ def test_slewDome_4():
     app.framework = 'indi'
     app.isGeometry = True
 
-    with mock.patch.object(app.app.mount.geometry,
+    with mock.patch.object(app.app.mount,
                            'calcTransformationMatrices',
                            return_value=(None, Angle(degrees=10), 0, 0, 0)):
         val = app.slewDome(piersideT='W', haT=Angle(hours=0), decT=Angle(degrees=0))
@@ -136,7 +136,7 @@ def test_slewDome_5():
     app.framework = 'indi'
     app.isGeometry = True
 
-    with mock.patch.object(app.app.mount.geometry,
+    with mock.patch.object(app.app.mount,
                            'calcTransformationMatrices',
                            return_value=(Angle(degrees=10), None, 0, 0, 0)):
         val = app.slewDome(piersideT='W', haT=Angle(hours=0), decT=Angle(degrees=0))

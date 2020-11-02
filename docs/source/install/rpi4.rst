@@ -33,8 +33,8 @@ headers for python to be able to compile necessary packages:
 
 .. code-block:: python
 
-sudo apt-get install python3-virtualenv
-sudo apt-get install python3-dev
+    sudo apt-get install python3-virtualenv
+    sudo apt-get install python3-dev
 
 .. note:: You need to have both packages installed as otherwise the install script does not run.
 

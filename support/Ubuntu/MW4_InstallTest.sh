@@ -83,6 +83,8 @@ echo . >> install.log
 
 source ./venv/bin/activate
 python -m pip install pip --upgrade >> install.log
+python -m pip install setuptools --upgrade >> install.log
+python -m pip install wheel --upgrade >> install.log
 python -m pip install mountwizzard4.tar.gz >> install.log
 
 

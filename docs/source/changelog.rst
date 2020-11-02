@@ -37,6 +37,7 @@ Unreleased Betas
 
 (0.200.0)
 
+- correcting dome geometry
 - adding safety margin between build points and horizon lines
 
 Released betas

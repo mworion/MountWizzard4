@@ -49,7 +49,7 @@ setup(
     install_requires=[
         'mountcontrol==0.177',
         'indibase==0.138',
-        'numpy==1.19.3',
+        'numpy==1.19.4',
         'matplotlib==3.3.2',
         'astropy==4.0.3',
         'photutils==1.0.1',

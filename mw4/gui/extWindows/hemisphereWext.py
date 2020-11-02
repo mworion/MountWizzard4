@@ -158,20 +158,12 @@ class HemisphereWindowExt:
         :return: success
         """
 
-        haT = self.app.mount.obsSite.haJNowTarget
-        decT = self.app.mount.obsSite.decJNowTarget
-        piersideT = self.app.mount.obsSite.piersideTarget
-        lat = self.app.mount.obsSite.location.latitude
         azimuthT = self.app.mount.obsSite.AzTarget
         altitudeT = self.app.mount.obsSite.AltTarget
 
         if self.app.deviceStat['dome']:
             delta = self.app.dome.slewDome(altitude=altitudeT,
-                                           azimuth=azimuthT,
-                                           piersideT=piersideT,
-                                           haT=haT,
-                                           decT=decT,
-                                           lat=lat)
+                                           azimuth=azimuthT)
 
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
             text = f'Slewing dome:        {geoStat}, az: {azimuthT:3.1f} delta: {delta:3.1f}'

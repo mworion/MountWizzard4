@@ -124,31 +124,24 @@ class Dome:
         suc = self.run[self.framework].stopCommunication()
         return suc
 
-    def slewDome(self, altitude=0, azimuth=0, piersideT='', haT=None, decT=None, lat=None):
+    def slewDome(self, altitude=0, azimuth=0):
         """
 
         :param altitude:
         :param azimuth:
-        :param piersideT: target of pierside for slew
-        :param haT: target hours angle for slew
-        :param decT: target declination for slew
-        :param lat: latitude of mount position
         :return: success
         """
 
         if not self.data:
             return False
 
-        geometry = self.app.mount.geometry
+        mount = self.app.mount
 
-        if piersideT and self.isGeometry:
-            alt, az, _, _, _ = geometry.calcTransformationMatrices(ha=haT,
-                                                                   dec=decT,
-                                                                   lat=lat,
-                                                                   pierside=piersideT)
+        if self.isGeometry:
+            alt, az, _, _, _ = mount.calcTransformationMatrices()
 
             if alt is None or az is None:
-                self.log.warning(f'Geometry error: {haT.hours}, {decT.degrees}, {piersideT}')
+                self.log.warning(f'Geometry error, alt:{altitude}, az:{azimuth}')
                 alt = altitude
                 az = azimuth
 

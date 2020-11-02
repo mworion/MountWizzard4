@@ -390,27 +390,13 @@ class Model:
             return False
 
         if self.deviceStat['dome']:
-            useGeometry = self.ui.checkDomeGeometry.isChecked()
             alt = mPoint['altitude']
             az = mPoint['azimuth']
 
-            if useGeometry:
-                haT = self.app.mount.obsSite.haJNowTarget
-                decT = self.app.mount.obsSite.decJNowTarget
-                piersideT = self.app.mount.obsSite.piersideTarget
-                lat = self.app.mount.obsSite.location.latitude
-                delta = self.app.dome.slewDome(altitude=alt,
-                                               azimuth=az,
-                                               piersideT=piersideT,
-                                               haT=haT,
-                                               decT=decT,
-                                               lat=lat)
+            delta = self.app.dome.slewDome(altitude=alt,
+                                           azimuth=az)
 
-            else:
-                delta = self.app.dome.slewDome(altitude=alt,
-                                               azimuth=az)
-
-            geoStat = 'Geometry corrected' if useGeometry else 'Equal mount'
+            geoStat = 'Geometry corrected' if delta else 'Equal mount'
             text = f'Slewing  dome:       point: {mPoint["countSequence"]:03d}, '
             text += f'{geoStat}, az: {az:3.1f} delta: {delta:3.1f}'
             self.app.message.emit(text, 0)

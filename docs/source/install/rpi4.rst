@@ -28,11 +28,15 @@ later is installed.
              packages missing for that version.
 
 The actual Ubuntu mate 20.04.1LTS distribution comes with python 3.8.5, so everything should
-be OK. Next we have to do is to install a virtual environment capability:
+be OK. Next we have to do is to install a virtual environment capability and the development 
+headers for python to be able to compile necessary packages:
 
 .. code-block:: python
 
 sudo apt-get install python3-virtualenv
+sudo apt-get install python3-dev
+
+.. note:: You need to have both packages installed as otherwise the install script does not run.
 
 If everything went fine, you could proceed like installing in Ubuntu. Attached some images
 during installation:

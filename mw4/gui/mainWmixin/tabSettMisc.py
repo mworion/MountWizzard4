@@ -82,6 +82,7 @@ class SettMisc(object):
 
         config = self.app.config['mainW']
 
+        self.setupAudioGui()
         self.ui.loglevelDeepDebug.setChecked(config.get('loglevelDeepDebug', True))
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
@@ -95,7 +96,6 @@ class SettMisc(object):
 
         self.setLoggingLevel()
         self.setWeatherOnline()
-        self.setupAudioGui()
         self.setupIERS()
 
         self.showUpdates()

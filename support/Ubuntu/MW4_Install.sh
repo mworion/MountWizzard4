@@ -48,7 +48,6 @@ fi
 echo . >> install.log
 echo installing wheel >> install.log
 python3 -m pip install pip --upgrade >> install.log
-python3 -m pip install wheel >> install.log
 
 echo .
 echo ---------------------------------------------

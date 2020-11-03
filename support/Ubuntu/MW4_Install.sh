@@ -2,7 +2,7 @@
 cd $(dirname "$0")
 
 #
-# Installer for Ubuntu / Ubuntu Mate
+# Installer for Ubuntu
 # (c) 2020 mworion
 #
 
@@ -84,10 +84,6 @@ source ./venv/bin/activate
 python -m pip install pip --upgrade >> install.log
 python -m pip install setuptools --upgrade >> install.log
 python -m pip install wheel --upgrade >> install.log
-python -m pip install numpy==1.19.4 >> install.log
-python -m pip install astropy==4.0.3 >> install.log
-python -m pip install matplotlib==3.3.2 >> install.log
-python -m pip install photutils==1.0.1 >> install.log
 python -m pip install mountwizzard4 >> install.log
 
 
@@ -99,5 +95,3 @@ echo ---------------------------------------------
 echo .
 
 echo MountWizzard4 successfully installed >> install.log
-
-

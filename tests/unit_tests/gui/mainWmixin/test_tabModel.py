@@ -582,7 +582,7 @@ def test_modelSlew_4(function):
               'altitude': 0,
               }
     function.slewQueue.put(mPoint)
-    function.ui.checkDomeGeometry.setChecked(True)
+    function.ui.checkUseDomeGeometry.setChecked(True)
     with mock.patch.object(function.app.camera,
                            'expose'):
         with mock.patch.object(function.app.dome,

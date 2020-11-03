@@ -2,7 +2,7 @@
 cd $(dirname "$0")
 
 #
-# Installer for Ubuntu
+# Installer for Ubuntu Mate
 # (c) 2020 mworion
 #
 
@@ -13,7 +13,7 @@ echo Checking installed python version
 echo ---------------------------------------------
 echo .
 
-echo checking environment and start script > install.log
+echo checking environment and start script
 
 T=`python3 --version`
 P_VER=""
@@ -26,7 +26,7 @@ elif [ "${T:0:10}" == "Python 3.6" ]; then
   P_VER="python3.6"
 fi
 
-echo variable P_VER has value of $P_VER >> install.log
+echo variable P_VER has value of $P_VER
 
 if [ "${P_VER:0:6}" == "python" ]; then
   echo .
@@ -45,9 +45,9 @@ else
 
 fi
 
-echo . >> install.log
-echo installing wheel >> install.log
-python3 -m pip install pip --upgrade >> install.log
+echo .
+echo installing wheel
+python3 -m pip install pip --upgrade
 
 echo .
 echo ---------------------------------------------
@@ -55,11 +55,11 @@ echo Installing $P_VER in virtual environ
 echo ---------------------------------------------
 echo .
 
-echo . >> install.log
-echo Installing $P_VER in virtual environ >> install.log
+echo .
+echo Installing $P_VER in virtual environ
 
 {
-virtualenv venv >> install.log
+virtualenv venv
 } || {
   echo .
   echo ---------------------------------------------
@@ -78,13 +78,17 @@ echo Installing mountwizzard4 - takes some time
 echo ---------------------------------------------
 echo .
 
-echo . >> install.log
+echo .
 
 source ./venv/bin/activate
-python -m pip install pip --upgrade >> install.log
-python -m pip install setuptools --upgrade >> install.log
-python -m pip install wheel --upgrade >> install.log
-python -m pip install mountwizzard4.tar.gz >> install.log
+pip install pip --upgrade
+pip install setuptools --upgrade
+pip install wheel --upgrade
+pip install numpy==1.19.4
+pip install astropy==4.0.3
+pip install matplotlib==3.3.2
+pip install photutils==1.0.1
+pip install mountwizzard4
 
 
 echo .
@@ -94,6 +98,6 @@ echo For details see install.log
 echo ---------------------------------------------
 echo .
 
-echo MountWizzard4 successfully installed >> install.log
+echo MountWizzard4 successfully installed
 
 

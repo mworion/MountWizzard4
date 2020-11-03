@@ -33,10 +33,10 @@ manager pip and the development headers for python to be able to compile necessa
 
 .. code-block:: python
 
-    sudo apt-get install python3-virtualenv
-    sudo apt-get install python3-dev
-    sudo apt-get install python3-pip
-    sudo apt-get install qt5-default
+    sudo apt-get install python3-virtualenv         # as the name says
+    sudo apt-get install python3-dev                # python headers for compile packages
+    sudo apt-get install python3-pip                # compile setup for packages
+    sudo apt-get install qt5-default                # sources for PyQt5 package build
 
 .. note:: You need to have both packages installed as otherwise the install script does not run.
 

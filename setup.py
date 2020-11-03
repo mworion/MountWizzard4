@@ -21,7 +21,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.190.4',
+    version='0.191.0',
     packages=[
         'mw4',
         'mw4.base',
@@ -49,7 +49,7 @@ setup(
     install_requires=[
         'mountcontrol==0.177',
         'indibase==0.138',
-        'numpy==1.19.4',
+        'numpy==1.19.3',
         'matplotlib==3.3.2',
         'astropy==4.0.3',
         'photutils==1.0.1',

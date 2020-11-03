@@ -84,10 +84,10 @@ source ./venv/bin/activate
 pip install pip --upgrade
 pip install setuptools --upgrade
 pip install wheel --upgrade
-pip install numpy==1.19.4
-pip install astropy==4.0.3
-pip install matplotlib==3.3.2
-pip install photutils==1.0.1
+pip install astropy-4.0.3-cp38-cp38-linux_aarch64.whl
+pip install matplotlib-3.3.2-cp38-cp38-linux_aarch64.whl
+pip install photutils-1.0.1-cp38-cp38-linux_aarch64.whl
+pip install PyQt5-5.14.2-cp35.cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl
 pip install mountwizzard4
 
 

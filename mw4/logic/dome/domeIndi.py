@@ -47,7 +47,7 @@ class DomeIndi(IndiClass):
         self.signals = signals
         self.data = data
         self.settlingTime = 0
-        self.azimuth = -1
+        self.azimuthTarget = 0
         self.slewing = False
 
         self.app.update1s.connect(self.updateStatus)
@@ -79,7 +79,6 @@ class DomeIndi(IndiClass):
         if self.device is None:
             return False
 
-        # setting polling updates in driver
         update = self.device.getNumber('POLLING_PERIOD')
 
         if 'PERIOD_MS' not in update:
@@ -108,7 +107,8 @@ class DomeIndi(IndiClass):
         if not self.client.connected:
             return False
 
-        self.signals.azimuth.emit(self.azimuth)
+        azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
+        self.signals.azimuth.emit(azimuth)
 
         return True
 
@@ -120,8 +120,21 @@ class DomeIndi(IndiClass):
         """
 
         self.signals.slewFinished.emit()
+        self.signals.message.emit('')
 
         return True
+
+    @staticmethod
+    def diffModulus(x, y, m):
+        """
+        :param x:
+        :param y:
+        :param m:
+        :return:
+        """
+        diff = abs(x - y)
+        diff = abs(diff % m)
+        return min(diff, abs(diff - m))
 
     def updateNumber(self, deviceName, propertyName):
         """
@@ -140,16 +153,9 @@ class DomeIndi(IndiClass):
             if element != 'DOME_ABSOLUTE_POSITION':
                 continue
 
-            # starting condition: don't do anything
-            if self.azimuth == -1:
-                self.azimuth = float(value)
-                continue
-
-            # send trigger for new data
-            self.signals.azimuth.emit(self.azimuth)
-
-            # calculate the stop slewing condition
-            isSlewing = (self.device.ABS_DOME_POSITION['state'] == 'Busy')
+            azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
+            hasToMove = self.diffModulus(azimuth, self.azimuthTarget, 360) > 1
+            isSlewing = self.slewing and hasToMove
 
             if isSlewing:
                 self.signals.message.emit('slewing')
@@ -158,12 +164,11 @@ class DomeIndi(IndiClass):
                 self.signals.message.emit('')
 
             if self.slewing and not isSlewing:
-                # start timer for settling time and emit signal afterwards
+                self.signals.message.emit('settle')
                 self.settlingWait.start(self.settlingTime)
 
-            # store for the next cycle
-            self.azimuth = float(value)
             self.slewing = isSlewing
+            self.signals.azimuth.emit(azimuth)
 
         return True
 
@@ -195,7 +200,8 @@ class DomeIndi(IndiClass):
                                         elements=position,
                                         )
 
-        if suc:
-            self.slewing = True
+        self.slewing = True
+        self.azimuthTarget = azimuth
+        self.signals.message.emit('slewing')
 
         return suc

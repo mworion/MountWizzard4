@@ -47,11 +47,9 @@ class DomeAlpaca(AlpacaClass):
         self.client = Dome()
         self.signals = signals
         self.data = data
-        self.settlingTime = 0
-        self.azimuth = 0
         self.slewing = False
-        self.targetAzimuth = None
-        self.targetAltitude = None
+        self.azimuthTarget = 0
+        self.settlingTime = 0
 
         self.settlingWait = PyQt5.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
@@ -83,6 +81,7 @@ class DomeAlpaca(AlpacaClass):
         """
 
         self.signals.slewFinished.emit()
+        self.signals.message.emit('')
 
         return True
 
@@ -104,31 +103,21 @@ class DomeAlpaca(AlpacaClass):
         """
 
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
-        statusIsSlewing = self.data.get('slewing', False)
+        hasToMove = self.diffModulus(azimuth, self.azimuthTarget, 360) > 1
+        isSlewing = self.slewing and hasToMove
 
-        if self.targetAzimuth is not None:
-            hasReachedTarget = self.diffModulus(azimuth, self.targetAzimuth, 360) < 0.5
-
-        else:
-            hasReachedTarget = True
-
-        hasStopped = self.slewing and (not statusIsSlewing and hasReachedTarget)
-
-        if not self.slewing:
-            self.slewing = statusIsSlewing and not hasReachedTarget
-
-        if hasStopped:
-            # start timer for settling time and emit signal afterwards
-            self.settlingWait.start(self.settlingTime)
-            self.slewing = False
-
-        self.signals.azimuth.emit(azimuth)
-
-        if self.slewing:
+        if isSlewing:
             self.signals.message.emit('slewing')
 
         else:
             self.signals.message.emit('')
+
+        if self.slewing and not isSlewing:
+            self.signals.message.emit('settle')
+            self.settlingWait.start(self.settlingTime)
+
+        self.slewing = isSlewing
+        self.signals.azimuth.emit(azimuth)
 
         return True
 
@@ -138,7 +127,6 @@ class DomeAlpaca(AlpacaClass):
         :return: true for test purpose
         """
         self.dataEntry(self.client.azimuth(), 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
-        self.dataEntry(self.client.slewing(), 'slewing')
 
         val = self.client.shutterstatus()
 
@@ -164,9 +152,9 @@ class DomeAlpaca(AlpacaClass):
         :return: success
         """
 
+        self.signals.message.emit('slewing')
         self.slewing = True
-        self.targetAzimuth = azimuth
-        self.targetAltitude = altitude
+        self.azimuthTarget = azimuth
         self.client.slewtoazimuth(Azimuth=azimuth)
 
         return True

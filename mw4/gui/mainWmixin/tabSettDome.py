@@ -38,9 +38,8 @@ class SettDome(object):
         self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeShutterWidth.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
-        self.ui.checkDomeGeometry.clicked.connect(self.setUseGEMOffsetCalculations)
+        self.ui.checkUseDomeGeometry.clicked.connect(self.setUseDomeGeometry)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
-        self.ui.checkDomeGeometry.clicked.connect(self.setUseGEMOffsetCalculations)
         self.app.mount.signals.firmwareDone.connect(self.setUseGeometryInMount)
 
     def initConfig(self):
@@ -61,10 +60,10 @@ class SettDome(object):
         self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
         self.ui.offGEM.setValue(config.get('offGEM', 0))
         self.ui.offLAT.setValue(config.get('offLAT', 0))
-        self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
+        self.ui.checkUseDomeGeometry.setChecked(config.get('checkUseDomeGeometry', False))
         self.ui.checkAutomaticDome.setChecked(config.get('checkAutomaticDome', False))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
-        self.setUseGEMOffsetCalculations()
+        self.setUseDomeGeometry()
 
         return True
 
@@ -85,7 +84,7 @@ class SettDome(object):
         config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
         config['offGEM'] = self.ui.offGEM.value()
         config['offLAT'] = self.ui.offLAT.value()
-        config['checkDomeGeometry'] = self.ui.checkDomeGeometry.isChecked()
+        config['checkUseDomeGeometry'] = self.ui.checkUseDomeGeometry.isChecked()
         config['checkAutomaticDome'] = self.ui.checkAutomaticDome.isChecked()
         config['settleTimeDome'] = self.ui.settleTimeDome.value()
 
@@ -119,14 +118,14 @@ class SettDome(object):
 
         return True
 
-    def setUseGEMOffsetCalculations(self):
+    def setUseDomeGeometry(self):
         """
 
         :return: True for test purpose
         """
 
-        isGeometry = self.ui.checkDomeGeometry.isChecked()
-        self.app.dome.isGeometry = isGeometry
+        useGeometry = self.ui.checkUseDomeGeometry.isChecked()
+        self.app.dome.useGeometry = useGeometry
 
         return True
 

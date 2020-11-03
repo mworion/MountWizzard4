@@ -86,8 +86,6 @@ class Dome:
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
-        self.isGeometry = False
-
         # signalling from subclasses to main
         alpacaSignals = self.run['alpaca'].client.signals
         alpacaSignals.serverConnected.connect(self.signals.serverConnected)
@@ -100,6 +98,20 @@ class Dome:
         indiSignals.serverDisconnected.connect(self.signals.serverDisconnected)
         indiSignals.deviceConnected.connect(self.signals.deviceConnected)
         indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
+        self.useGeometry = False
+
+    @property
+    def settlingTime(self):
+        if self.framework not in self.run:
+            return 0
+        return self.run[self.framework].settlingTime
+
+    @settlingTime.setter
+    def settlingTime(self, value):
+        if self.framework not in self.run:
+            return
+        self.run[self.framework].settlingTime = value
 
     def startCommunication(self, loadConfig=False):
         """
@@ -137,7 +149,7 @@ class Dome:
 
         mount = self.app.mount
 
-        if self.isGeometry:
+        if self.useGeometry:
             alt, az, _, _, _ = mount.calcTransformationMatrices()
 
             if alt is None or az is None:

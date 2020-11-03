@@ -635,6 +635,7 @@ class MWidget(QWidget, styles.MWStyles):
             axe.set_theta_zero_location('N')
             axe.set_rlabel_position(45)
             axe.set_theta_direction(-1)
+            axe.spines['polar'].set_color(color)
 
             # ticks have to be set before labels to be sure to have them positioned correctly
             axe.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))

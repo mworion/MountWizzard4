@@ -134,8 +134,9 @@ def test_slewDialog_2(function):
 
 
 def test_slewSelectedTarget_1(function):
-    function.app.mount.obsSite.AltTarget = 0
-    function.app.mount.obsSite.AzTarget = 0
+    function.app.deviceStat['dome'] = False
+    function.app.mount.obsSite.AltTarget = Angle(degrees=0)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=0)
     with mock.patch.object(function.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=False):
@@ -147,12 +148,9 @@ def test_slewSelectedTarget_1(function):
 
 
 def test_slewSelectedTarget_2(function):
-    function.app.mount.obsSite.haJNowTarget = 0
-    function.app.mount.obsSite.decJNowTarget = 0
-    function.app.mount.obsSite.AltTarget = 0
-    function.app.mount.obsSite.AzTarget = 0
-    function.app.mount.obsSite.piersideTarget = 'E'
-    function.app.mount.obsSite.location.latitude = Angle(degrees=0)
+    function.app.deviceStat['dome'] = False
+    function.app.mount.obsSite.AltTarget = Angle(degrees=0)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=0)
     with mock.patch.object(function.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=True):
@@ -164,12 +162,9 @@ def test_slewSelectedTarget_2(function):
 
 
 def test_slewSelectedTarget_3(function):
-    function.app.mount.obsSite.haJNowTarget = 0
-    function.app.mount.obsSite.decJNowTarget = 0
-    function.app.mount.obsSite.AltTarget = 0
-    function.app.mount.obsSite.AzTarget = 0
-    function.app.mount.obsSite.piersideTarget = 'E'
-    function.app.mount.obsSite.location.latitude = Angle(degrees=0)
+    function.app.deviceStat['dome'] = True
+    function.app.mount.obsSite.AltTarget = Angle(degrees=0)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=0)
     with mock.patch.object(function.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=True):

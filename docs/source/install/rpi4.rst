@@ -40,8 +40,19 @@ manager pip and the development headers for python to be able to compile necessa
 
 .. note:: You need to have both packages installed as otherwise the install script does not run.
 
-If everything went fine, you could proceed like installing in Ubuntu. Attached some images
-during installation:
+If everything went fine, you could proceed like installing in Ubuntu.
+
+Using the precompiled wheels from Ubuntu_Mate_Scripts.zip
+---------------------------------------------------------
+
+There is also a possible shortcut as with the script for Ubuntu Mate 20.04.1 there are
+precompiled packages included which might speedup the installation process. Please give it a
+try. Please extract zip file to your work folder
+
+Picture of RPi4 process
+-----------------------
+
+Attached some images during installation:
 
 
 .. image:: image/rpi4_scripts.png

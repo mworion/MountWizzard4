@@ -46,8 +46,15 @@ Using the precompiled wheels from Ubuntu_Mate_Scripts.zip
 ---------------------------------------------------------
 
 There is also a possible shortcut as with the script for Ubuntu Mate 20.04.1 there are
-precompiled packages included which might speedup the installation process. Please give it a
-try. Please extract zip file to your work folder
+precompiled packages included which might speedup the installation process. Please download
+the ZIP folder and extract it to your work folder and run
+
+.. code-block:: python
+
+    ./MW4_Install_Mate.sh
+
+After a short while MW4 is installed and should be ready to run.
+
 
 Picture of RPi4 process
 -----------------------

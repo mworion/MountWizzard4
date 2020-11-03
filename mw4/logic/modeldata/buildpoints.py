@@ -376,7 +376,7 @@ class DataPoint(object):
         track = self.app.mount.setting.meridianLimitTrack
 
         if slew is None or track is None:
-            return True
+            return False
 
         value = max(slew, track)
 

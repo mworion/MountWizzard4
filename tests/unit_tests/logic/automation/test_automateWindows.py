@@ -766,7 +766,7 @@ def test_writeAsteroidMPC_5(function):
     with open('tests/testData/mpc_asteroid_test.txt', 'r') as f:
         refLine = f.readline()
 
-    assert testLine == refLine
+    assert testLine[:80] == refLine[:80]
 
 
 """

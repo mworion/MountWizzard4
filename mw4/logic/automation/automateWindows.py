@@ -45,27 +45,56 @@ class AutomateWindows(QObject):
     UTC_1_FILE = 'finals.data'
     UTC_2_FILE = 'tai-utc.dat'
 
-    COMET_FIELDS = ['Orbit_type',
-                    'Provisional_packed_desig',
-                    'Year_of_perihelion',
-                    'Month_of_perihelion',
-                    'Day_of_perihelion',
-                    'Perihelion_dist',
-                    'e',
-                    'Peri',
-                    'Node',
-                    'i',
-                    'Epoch_year',
-                    'Epoch_month',
-                    'Epoch_day',
-                    'H',
-                    'G',
-                    'Designation_and_name',
-                    'Ref'
-                    ]
+    COMET_FIELDS = [
+        'Orbit_type',
+        'Provisional_packed_desig',
+        'Year_of_perihelion',
+        'Month_of_perihelion',
+        'Day_of_perihelion',
+        'Perihelion_dist',
+        'e',
+        'Peri',
+        'Node',
+        'i',
+        'Epoch_year',
+        'Epoch_month',
+        'Epoch_day',
+        'H',
+        'G',
+        'Designation_and_name',
+        'Ref'
+    ]
 
     ASTEROID_FIELDS = [
-
+        'H',
+        'G',
+        'Num_obs',
+        'rms',
+        'U',
+        'Arc_years',
+        'Perturbers',
+        'Perturbers_2',
+        'Principal_desig',
+        'Epoch',
+        'M',
+        'Peri',
+        'Node',
+        'i',
+        'e',
+        'n',
+        'a',
+        'Ref',
+        'Num_opps',
+        'Computer',
+        'Hex_flags',
+        'Last_obs',
+        'Tp',
+        'Orbital_period',
+        'Perihelion_dist',
+        'Aphelion_dist',
+        'Semilatus_rectum',
+        'Synodic_period',
+        'Orbit_type'
     ]
 
     def __init__(self, app):
@@ -490,8 +519,62 @@ class AutomateWindows(QObject):
         with open(dest, 'w') as f:
             for data in datas:
                 line = ''
-                line += f'{"":4s}'
-                line += f'{data.get("Orbit_type", ""):1s}'
+                line += f'{"":7s}'
+                line += f'{data.get("H",0):5.2f}'
+                line += f'{"":1s}'
+                line += f'{data.get("G",0):5.2f}'
+                line += f'{"":1s}'
+                line += f'{"EPOCH":5s}'
+                line += f'{"":1s}'
+                line += f'{data.get("M",0):9.5f}'
+                line += f'{"":1s}'
+                line += f'{data.get("Peri",0):9.5f}'
+                line += f'{"":1s}'
+                line += f'{data.get("Node",0):9.5f}'
+                line += f'{"":1s}'
+                line += f'{data.get("i",0):9.5f}'
+                line += f'{"":1s}'
+                line += f'{data.get("e",0):9.7f}'
+                line += f'{"":1s}'
+                line += f'{data.get("n",0):11.8f}'
+                line += f'{"":1s}'
+                line += f'{data.get("a",0):11.7f}'
+                line += f'{"":1s}'
+                line += f'{data.get("U", ""):1s}'
+                line += f'{"":1s}'
+                line += f'{data.get("Ref", ""):9s}'
+                line += f'{"":1s}'
+                line += f'{data.get("Num_obs",0):5.0f}'
+                line += f'{"":1s}'
+                line += f'{data.get("Num_opps",0):3.0f}'
+
+                line += f'{"":1s}'
+                if 'Arc_years' in data:
+                    line += f'{data.get("Arc_years",""):9s}'
+
+                elif 'Arc_length' in data:
+                    line += f'{data.get("Arc_length",0):4.0f} days'
+
+                else:
+                    line += f'{"":9s}'
+
+                line += f'{"":1s}'
+                line += f'{data.get("rms",0):4.2f}'
+                line += f'{"":1s}'
+                line += f'{data.get("Perturbers", ""):3s}'
+                line += f'{"":1s}'
+                line += f'{data.get("Perturbers_2", ""):3s}'
+                line += f'{"":1s}'
+                line += f'{data.get("Computer", ""):10s}'
+                line += f'{"":1s}'
+                line += f'{data.get("Hex_flags", ""):4s}'
+                line += f'{"":1s}'
+                line += f'         {data.get("Principal_desig", ""):18s}'
+                line += f'{"":1s}'
+                line += f'{data.get("Last_obs", "").replace("-", ""):8s}'
+                line += f'{"":1s}'
+                line += f'{data.get("Tp", 0):13.5f}'
+                line += '\n'
                 f.write(line)
 
         return True

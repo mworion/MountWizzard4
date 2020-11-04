@@ -752,7 +752,7 @@ def test_writeAsteroidMPC_4(function):
 def test_writeAsteroidMPC_5(function):
     function.installPath = 'tests/temp'
 
-    with open('tests/testData/mpc_Asteroid_test.json') as f:
+    with open('tests/testData/mpc_asteroid_test.json') as f:
         data = json.load(f)
 
     testData = [data[0]]

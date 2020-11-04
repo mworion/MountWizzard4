@@ -33,12 +33,7 @@ class Mount(object):
     """
     """
 
-    def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
-
+    def __init__(self):
         self.typeConnectionTexts = ['RS-232',
                                     'GPS/RS-232',
                                     'LAN',
@@ -82,7 +77,7 @@ class Mount(object):
 
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
+        config = self.app.config.get('mainW', {})
 
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
@@ -116,19 +111,24 @@ class Mount(object):
 
         if obs.Alt is not None:
             self.ui.ALT.setText('{0:5.2f}'.format(obs.Alt.degrees))
+
         else:
             self.ui.ALT.setText('-')
 
         if obs.Az is not None:
             self.ui.AZ.setText('{0:5.2f}'.format(obs.Az.degrees))
+
         else:
             self.ui.AZ.setText('-')
 
-        ra = obs.raJNow
-        dec = obs.decJNow
-        if self.ui.checkJ2000.isChecked():
-            if ra is not None and dec is not None and obs.timeJD is not None:
-                ra, dec = transform.JNowToJ2000(ra, dec, obs.timeJD)
+        isJ2000 = self.ui.checkJ2000.isChecked()
+        isValid = obs.raJNow is not None and obs.decJNow is not None and obs.timeJD is not None
+        if isJ2000 and isValid:
+            ra, dec = transform.JNowToJ2000(obs.raJNow, obs.decJNow, obs.timeJD)
+
+        else:
+            ra = obs.raJNow
+            dec = obs.decJNow
 
         if ra is not None:
             raFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
@@ -136,6 +136,7 @@ class Mount(object):
             raText = raFormat.format(*val)
             self.ui.RA.setText(raText)
             self.ui.RAfloat.setText(f'{ra.hours:3.4f}')
+
         else:
             self.ui.RA.setText('-')
             self.ui.RAfloat.setText('-')
@@ -146,12 +147,14 @@ class Mount(object):
             decText = decFormat.format(*val, sign='+' if dec.degrees > 0 else '-')
             self.ui.DEC.setText(decText)
             self.ui.DECfloat.setText(f'{dec.degrees:+3.4f}')
+
         else:
             self.ui.DEC.setText('-')
             self.ui.DECfloat.setText('-')
 
         if obs.pierside is not None:
             self.ui.pierside.setText('WEST' if obs.pierside == 'W' else 'EAST')
+
         else:
             self.ui.pierside.setText('-')
 
@@ -161,6 +164,7 @@ class Mount(object):
             haText = haFormat.format(*val)
             self.ui.HA.setText(haText)
             self.ui.HAfloat.setText(f'{obs.haJNow.hours:3.4f}')
+
         else:
             self.ui.HA.setText('-')
             self.ui.HAfloat.setText('-')
@@ -186,6 +190,7 @@ class Mount(object):
             val = obs.timeSidereal.hms()
             siderealText = siderealFormat.format(*val)
             self.ui.timeSidereal.setText(siderealText)
+
         else:
             self.ui.timeSidereal.setText('-')
 
@@ -209,36 +214,46 @@ class Mount(object):
             now = datetime.datetime.now()
             expire = datetime.datetime.strptime(sett.UTCExpire, '%Y-%m-%d')
             deltaYellow = datetime.timedelta(days=30)
+
             if now > expire:
                 self.changeStyleDynamic(ui, 'color', 'red')
+
             elif now > expire - deltaYellow:
                 self.changeStyleDynamic(ui, 'color', 'yellow')
+
             else:
                 self.changeStyleDynamic(ui, 'color', '')
+
         self.guiSetText(self.ui.UTCExpire, 's', sett.UTCExpire)
 
         ui = self.ui.statusUnattendedFlip
         if sett.statusUnattendedFlip is None:
             text = '-'
             self.changeStyleDynamic(ui, 'status', '')
+
         elif sett.statusUnattendedFlip:
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
+
         else:
             text = 'OFF'
             self.changeStyleDynamic(ui, 'status', '')
+
         self.guiSetText(ui, 's', text)
 
         ui = self.ui.statusDualAxisTracking
         if sett.statusDualAxisTracking is None:
             text = '-'
             self.changeStyleDynamic(ui, 'status', '')
+
         elif sett.statusDualAxisTracking:
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
+
         else:
             text = 'OFF'
             self.changeStyleDynamic(ui, 'status', '')
+
         self.guiSetText(ui, 's', text)
 
         ui = self.ui.statusRefraction
@@ -247,16 +262,19 @@ class Mount(object):
             self.changeStyleDynamic(ui, 'status', '')
             self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
             self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
+
         elif sett.statusRefraction:
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
             self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
             self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
+
         else:
             text = 'OFF'
             self.changeStyleDynamic(ui, 'status', '')
             self.changeStyleDynamic(self.ui.refractionTemp1, 'color', 'yellow')
             self.changeStyleDynamic(self.ui.refractionPress1, 'color', 'yellow')
+
         self.guiSetText(ui, 's', text)
 
         return True
@@ -363,10 +381,12 @@ class Mount(object):
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
+
         elif obs.checkRateSidereal():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
+
         elif obs.checkRateSolar():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')

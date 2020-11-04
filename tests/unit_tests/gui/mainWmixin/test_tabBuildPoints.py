@@ -530,6 +530,7 @@ def test_clearBuildP_2(function):
 def test_autoDeletePoints(function):
     function.ui.checkAutoDeleteHorizon.setChecked(True)
     function.ui.checkAutoDeleteMeridian.setChecked(True)
+    function.ui.checkSafetyMarginHorizon.setChecked(True)
     suc = function.autoDeletePoints()
     assert suc
 

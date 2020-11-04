@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>12</number>
+    <number>11</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -14724,7 +14724,7 @@ Hint if mount will need a flip when following satellite.</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>If checked, the renaming process will run through all subdirectories.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the mount will move until stop is pressed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>continous</string>
@@ -14746,7 +14746,7 @@ Hint if mount will need a flip when following satellite.</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>If checked, the renaming process will run through all subdirectories.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the mount will move for about 2 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>2s</string>
@@ -14768,7 +14768,7 @@ Hint if mount will need a flip when following satellite.</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>If checked, the renaming process will run through all subdirectories.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the mount will move for about 1 second.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>1s</string>
@@ -14790,7 +14790,7 @@ Hint if mount will need a flip when following satellite.</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>If checked, the renaming process will run through all subdirectories.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the mount will move for about 5 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>5s</string>
@@ -14812,7 +14812,7 @@ Hint if mount will need a flip when following satellite.</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>If checked, the renaming process will run through all subdirectories.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the mount will move for about 10 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>10s</string>

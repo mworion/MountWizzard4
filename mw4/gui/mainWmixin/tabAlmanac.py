@@ -228,6 +228,26 @@ class Almanac:
 
         return True
 
+    def calcTwilightData(self, timeWindow=0):
+        """
+        :param timeWindow:
+        :return:
+        """
+        ts = self.app.mount.obsSite.ts
+        timeJD = self.app.mount.obsSite.timeJD
+        location = self.app.mount.obsSite.location
+
+        if location is None:
+            return [], [], None
+
+        t0 = ts.tt_jd(int(timeJD.tt) - timeWindow)
+        t1 = ts.tt_jd(int(timeJD.tt) + timeWindow + 1)
+
+        f = almanac.dark_twilight_day(self.app.ephemeris, location)
+        timeEvents, events = almanac.find_discrete(t0, t1, f)
+
+        return timeEvents, events, t0
+
     def searchTwilightWorker(self, timeWindow):
         """
         searchTwilightWorker is the worker method which does the search for twilight events
@@ -236,19 +256,9 @@ class Almanac:
 
         :return: true for test purpose
         """
-
-        ts = self.app.mount.obsSite.ts
-        timeJD = self.app.mount.obsSite.timeJD
-        location = self.app.mount.obsSite.location
-
-        if location is None:
+        t, e, t0 = self.calcTwilightData(timeWindow)
+        if t0 is None:
             return False
-
-        t0 = ts.tt_jd(int(timeJD.tt) - timeWindow)
-        t1 = ts.tt_jd(int(timeJD.tt) + timeWindow + 1)
-
-        f = almanac.dark_twilight_day(self.app.ephemeris, location)
-        t, e = almanac.find_discrete(t0, t1, f)
 
         self.civil = {0: []}
         civilP = 0
@@ -262,11 +272,10 @@ class Almanac:
         nauticalE = False
         astronomicalE = False
         darkE = False
-
         stat = 4
         lastDay = round(t0.tt + 0.5, 0)
-
         minDay = None
+
         for ti, event in zip(t, e):
             hour = int(ti.astimezone(tzlocal()).strftime('%H'))
             minute = int(ti.astimezone(tzlocal()).strftime('%M'))
@@ -326,8 +335,7 @@ class Almanac:
                 civilE = True
 
             stat = event
-
-        maxDay = ti
+            maxDay = ti
 
         self.drawTwilight(minDay, maxDay)
 
@@ -345,22 +353,6 @@ class Almanac:
 
         return True
 
-    def calcTwilightData(self):
-        ts = self.app.mount.obsSite.ts
-        timeJD = self.app.mount.obsSite.timeJD
-        location = self.app.mount.obsSite.location
-
-        if location is None:
-            return [], []
-
-        t0 = ts.tt_jd(int(timeJD.tt))
-        t1 = ts.tt_jd(int(timeJD.tt) + 1)
-
-        f = almanac.dark_twilight_day(self.app.ephemeris, location)
-        timeEvents, events = almanac.find_discrete(t0, t1, f)
-
-        return timeEvents, events
-
     def displayTwilightData(self):
         """
         displayTwilightData populates the readable list of twilight events in the upcoming
@@ -377,7 +369,7 @@ class Almanac:
             4: self.COLOR_WHITE1,
         }
 
-        timeEvents, events = self.calcTwilightData()
+        timeEvents, events, _ = self.calcTwilightData()
 
         text = ''
         self.ui.twilightEvents.clear()

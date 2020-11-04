@@ -137,14 +137,33 @@ def test_drawTwilight_3(function):
             assert suc
 
 
-def test_searchTwilightWorker_1(function):
+def test_calcTwilightData_1(function):
     function.app.mount.obsSite.location = Topos(latitude_degrees=0,
                                                 longitude_degrees=0,
                                                 elevation_m=0)
+    val = function.calcTwilightData()
+    assert val
+
+
+def test_calcTwilightData_2(function):
+    function.app.mount.obsSite.location = None
+    val = function.calcTwilightData(1)
+    val = function.calcTwilightData()
+    assert val == ([], [], None)
+
+
+def test_searchTwilightWorker_1(function):
+    tsNow = function.app.mount.obsSite.ts.now()
+    t = [tsNow, tsNow]
+    e = [1, 1]
+    t0 = tsNow
     with mock.patch.object(function,
                            'drawTwilight'):
-        suc = function.searchTwilightWorker(1)
-        assert suc
+        with mock.patch.object(function,
+                               'calcTwilightData',
+                               return_value=(t, e, t0)):
+            suc = function.searchTwilightWorker(1)
+            assert suc
 
 
 def test_searchTwilightWorker_2(function):
@@ -155,6 +174,16 @@ def test_searchTwilightWorker_2(function):
         assert not suc
 
 
+def test_searchTwilightWorker_3(function):
+    function.app.mount.obsSite.location = Topos(latitude_degrees=0,
+                                                longitude_degrees=0,
+                                                elevation_m=0)
+    with mock.patch.object(function,
+                           'drawTwilight'):
+        suc = function.searchTwilightWorker(1)
+        assert suc
+
+
 def test_searchTwilight_1(function):
     with mock.patch.object(threading.Thread,
                            'start'):
@@ -162,23 +191,10 @@ def test_searchTwilight_1(function):
         assert suc
 
 
-def test_calcTwilightData_1(function):
-    val = function.calcTwilightData()
-    assert val == ([], [])
-
-
-def test_calcTwilightData_2(function):
-    function.app.mount.obsSite.location = Topos(latitude_degrees=0,
-                                                longitude_degrees=0,
-                                                elevation_m=0)
-    val = function.calcTwilightData()
-    assert val
-
-
 def test_displayTwilightData_1(function):
     with mock.patch.object(function,
                            'calcTwilightData',
-                           return_value=([], [])):
+                           return_value=([], [], None)):
         suc = function.displayTwilightData()
         assert suc
 
@@ -189,7 +205,7 @@ def test_displayTwilightData_2(function):
     t0 = ts.tt_jd(int(timeJD.tt) - 180)
     with mock.patch.object(function,
                            'calcTwilightData',
-                           return_value=([(t0, t0), (1, 1)])):
+                           return_value=([(t0, t0), (1, 1), ts.now()])):
         suc = function.displayTwilightData()
         assert suc
 

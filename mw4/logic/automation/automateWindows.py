@@ -502,6 +502,32 @@ class AutomateWindows(QObject):
 
         return True
 
+    @staticmethod
+    def generatePackedDesignation(designation):
+        """
+        :param designation:
+        :return:
+        """
+        centConvert = {'18': 'I',
+                       '19': 'J',
+                       '20': 'K',
+                       '21': 'L'}
+
+        designation = designation.strip()
+
+        century = designation[0:2]
+        centuryP = centConvert.get(century, ' ')
+        year = designation[2:4]
+        halfMonth = designation[5]
+        halfMonthOrder = designation[6]
+        cycle = int(designation[7:11])
+
+        if cycle < 100:
+            cycleT = f'{cycle:02d}'
+
+        packed = f'{centuryP}{year}{halfMonth}{cycleT:2s}{halfMonthOrder}'
+        return packed
+
     def writeAsteroidMPC(self, datas=None):
         """
 
@@ -519,7 +545,11 @@ class AutomateWindows(QObject):
         with open(dest, 'w') as f:
             for data in datas:
                 line = ''
-                line += f'{"J94W01Y":7s}'
+
+                designation = data.get("Principal_desig", "")
+                packedD = self.generatePackedDesignation(designation)
+
+                line += f'{packedD:7s}'
                 line += f'{"":1s}'
                 line += f'{data.get("H",0):<5g}'
                 line += f'{"":1s}'

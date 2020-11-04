@@ -28,12 +28,7 @@ class Power(object):
     """
     """
 
-    def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
-
+    def __init__(self):
         self.powerOnOFF = {'1': self.ui.powerPort1,
                            '2': self.ui.powerPort2,
                            '3': self.ui.powerPort3,
@@ -298,9 +293,6 @@ class Power(object):
         """
 
         actValue = float(self.ui.adjustableOutput.text())
-
-        if actValue is None:
-            return False
 
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getDouble(self,

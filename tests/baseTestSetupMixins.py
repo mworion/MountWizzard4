@@ -25,6 +25,46 @@ from skyfield.api import Topos, load
 # local import
 
 
+class Power:
+    class PowerSignals(QObject):
+        version = pyqtSignal()
+
+    signals = PowerSignals()
+    data = {}
+
+    @staticmethod
+    def sendDew(port=None, value=None):
+        return True
+
+    @staticmethod
+    def togglePowerPort(port=None):
+        return True
+
+    @staticmethod
+    def togglePowerPortBoot(port=None):
+        return True
+
+    @staticmethod
+    def toggleHubUSB():
+        return True
+
+    @staticmethod
+    def togglePortUSB(port=None):
+        return True
+
+    @staticmethod
+    def toggleAutoDew():
+        return True
+
+    @staticmethod
+    def reboot():
+        return True
+
+    @staticmethod
+    def sendAdjustableOutput(value=None):
+        return True
+
+
 class Mount(QObject):
     class MountFirmware:
         product = 'test'
@@ -210,6 +250,7 @@ class App(QObject):
     message = pyqtSignal(str, int)
     messageQueue = Queue()
     mount = Mount()
+    power = Power()
     ephemeris = load('tests/testData/de421_23.bsp')
     mwGlob = {'modelDir': 'tests/model',
               'imageDir': 'tests/image',

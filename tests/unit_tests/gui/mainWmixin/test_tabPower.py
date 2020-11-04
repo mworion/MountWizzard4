@@ -18,191 +18,193 @@
 # standard libraries
 import pytest
 from unittest import mock
-from queue import Queue
-# external packages
 from PyQt5.QtWidgets import QInputDialog
-from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
 
 # local import
-from gui.mainWmixin.tabPower import Power
-from gui.widgets.main_ui import Ui_MainWindow
+from tests.baseTestSetupMixins import App
 from gui.utilities.widget import MWidget
-from logic.powerswitch.pegasusUPB import PegasusUPB
+from gui.widgets.main_ui import Ui_MainWindow
+from gui.mainWmixin.tabPower import Power
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global ui, widget, Test, Test1, app
-
-    class Test1:
-        threadPool = QThreadPool()
-
-    class Test(QObject):
-        config = {'mainW': {}}
-        messageQueue = Queue()
-        threadPool = QThreadPool()
-        update1s = pyqtSignal()
-        power = PegasusUPB(app=Test1())
-
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
-    app = Power(app=Test(), ui=ui,
-                clickable=MWidget().clickable)
-    app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.close = MWidget().close
-    app.deleteLater = MWidget().deleteLater
-    qtbot.addWidget(app)
-
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
     yield
 
 
-def test_clearPowerGui_1(qtbot):
+@pytest.fixture(autouse=True, scope='function')
+def function(module):
 
-    app.clearPowerGui()
+    class Mixin(MWidget, Power):
+        def __init__(self):
+            super().__init__()
+            self.app = App()
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            Power.__init__(self)
 
-
-def test_setGuiVersion_1(qtbot):
-
-    app.setGuiVersion()
-
-
-def test_setGuiVersion_2(qtbot):
-
-    app.setGuiVersion(version=2)
-
-
-def test_updatePowerGui_1(qtbot):
-
-    app.updatePowerGui()
+    window = Mixin()
+    yield window
 
 
-def test_setDew_1(qtbot):
+def test_clearPowerGui_1(function, qtbot):
+    function.clearPowerGui()
+
+
+def test_setGuiVersion_1(function, qtbot):
+    function.setGuiVersion()
+
+
+def test_setGuiVersion_2(function, qtbot):
+    function.setGuiVersion(version=2)
+
+
+def test_updatePowerGui_1(function, qtbot):
+    function.updatePowerGui()
+
+
+def test_updatePowerGui_2(function, qtbot):
+    function.app.power.data = {'FIRMWARE_INFO.VERSION': '1.5'}
+    function.updatePowerGui()
+
+
+def test_setDew_1(function, qtbot):
     class Sender:
         @staticmethod
         def parent():
-            return ui.dewA
+            return function.ui.dewA
 
     with mock.patch.object(QInputDialog,
                            'getInt',
                            return_value=(0, False)):
-        app.sender = Sender
-        app.setDew()
+        function.sender = Sender
+        function.setDew()
 
 
-def test_setDew_2(qtbot):
+def test_setDew_2(function, qtbot):
     class Sender:
         @staticmethod
         def parent():
-            return ui.dewA
+            return function.ui.dewA
 
     with mock.patch.object(QInputDialog,
                            'getInt',
                            return_value=(0, False)):
-        app.sender = Sender
-        app.setDew()
+        function.sender = Sender
+        function.setDew()
 
 
-def test_setDew_3(qtbot):
+def test_setDew_3(function, qtbot):
     class Sender:
         @staticmethod
         def parent():
-            return ui.dewA
+            return function.ui.dewA
 
     with mock.patch.object(QInputDialog,
                            'getInt',
                            return_value=(0, False)):
-        app.sender = Sender
-        app.ui.dewA.setText('10')
-        app.setDew()
+        function.sender = Sender
+        function.ui.dewA.setText('10')
+        function.setDew()
 
 
-def test_setDew_4(qtbot):
+def test_setDew_4(function, qtbot):
     class Sender:
         @staticmethod
         def parent():
-            return ui.dewA
+            return function.ui.dewA
 
     with mock.patch.object(QInputDialog,
                            'getInt',
                            return_value=(0, True)):
-        app.sender = Sender
-        app.ui.dewA.setText('10')
-        app.setDew()
+        function.sender = Sender
+        function.ui.dewA.setText('10')
+        function.setDew()
 
 
-def test_togglePowerPort_1(qtbot):
+def test_togglePowerPort_1(function, qtbot):
     def Sender():
-        return ui.powerPort1
+        return function.ui.powerPort1
 
-    app.sender = Sender
-    app.togglePowerPort()
+    function.sender = Sender
+    function.togglePowerPort()
 
 
-def test_togglePowerPort_2(qtbot):
+def test_togglePowerPort_2(function, qtbot):
     def Sender():
-        return ui.dewA
+        return function.ui.dewA
 
-    app.sender = Sender
-    app.togglePowerPort()
+    function.sender = Sender
+    function.togglePowerPort()
 
 
-def test_togglePowerBootPort_1(qtbot):
+def test_togglePowerBootPort_1(function, qtbot):
     def Sender():
-        return ui.powerBootPort1
+        return function.ui.powerBootPort1
 
-    app.sender = Sender
-    app.togglePowerBootPort()
+    function.sender = Sender
+    function.togglePowerBootPort()
 
 
-def test_togglePowerBootPort_2(qtbot):
+def test_togglePowerBootPort_2(function, qtbot):
     def Sender():
-        return ui.dewA
+        return function.ui.dewA
 
-    app.sender = Sender
-    app.togglePowerBootPort()
-
-
-def test_toggleHubUSB_1(qtbot):
-    app.toggleHubUSB()
+    function.sender = Sender
+    function.togglePowerBootPort()
 
 
-def test_togglePortUSB_1(qtbot):
+def test_toggleHubUSB_1(function, qtbot):
+    function.toggleHubUSB()
+
+
+def test_togglePortUSB_1(function, qtbot):
     def Sender():
-        return ui.portUSB1
+        return function.ui.portUSB1
 
-    app.sender = Sender
-    app.togglePortUSB()
+    function.sender = Sender
+    function.togglePortUSB()
 
 
-def test_togglePortUSB_2(qtbot):
+def test_togglePortUSB_2(function, qtbot):
     def Sender():
-        return ui.dewA
+        return function.ui.dewA
 
-    app.sender = Sender
-    app.togglePortUSB()
-
-
-def test_toggleAutoDew_1(qtbot):
-    app.toggleAutoDew()
+    function.sender = Sender
+    function.togglePortUSB()
 
 
-def test_setAdjustableOutput_2(qtbot):
-    app.ui.adjustableOutput.setText('10')
+def test_toggleAutoDew_1(function, qtbot):
+    function.toggleAutoDew()
+
+
+def test_setAdjustableOutput_2(function, qtbot):
+    function.ui.adjustableOutput.setText('10')
     with mock.patch.object(QInputDialog,
                            'getDouble',
                            return_value=(0, False)):
-        app.setAdjustableOutput()
+        function.setAdjustableOutput()
 
 
-def test_setAdjustableOutput_3(qtbot):
-    app.ui.adjustableOutput.setText('10')
+def test_setAdjustableOutput_3(function, qtbot):
+    function.ui.adjustableOutput.setText('10')
     with mock.patch.object(QInputDialog,
                            'getDouble',
                            return_value=(0, True)):
-        app.setAdjustableOutput()
+        function.setAdjustableOutput()
 
+
+def test_rebootUPB_1(function):
+    with mock.patch.object(function.app.power,
+                           'reboot',
+                           return_value=False):
+        suc = function.rebootUPB()
+        assert not suc
+
+
+def test_rebootUPB_2(function):
+    with mock.patch.object(function.app.power,
+                           'reboot',
+                           return_value=True):
+        suc = function.rebootUPB()
+        assert suc

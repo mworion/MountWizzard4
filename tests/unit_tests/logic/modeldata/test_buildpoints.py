@@ -191,7 +191,7 @@ def test_buildP3():
 
 def test_isCloseMeridian_1():
     suc = app.isCloseMeridian((90, 45))
-    assert suc
+    assert not suc
 
 
 def test_isCloseMeridian_2():

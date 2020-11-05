@@ -26,6 +26,7 @@ from unittest import mock
 
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject
+from skyfield.api import load
 
 # local import
 if not platform.system() == 'Windows':
@@ -46,8 +47,12 @@ def module(qapp):
 
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
+    class Mount(QObject):
+        ts = load.timescale(builtin=True)
+
     class Test(QObject):
         threadPool = QThreadPool()
+        mount = Mount()
         mwGlob = {'tempDir': 'tests/temp',
                   'dataDir': 'tests/data',
                   }
@@ -734,10 +739,8 @@ def test_generateCycleCountPackedText(function):
         'a0',
         'f8'
     ]
-    print()
     for cycle, text in zip(cycles, texts):
-        val = function.generateCycleCountPackedText(cycle)
-        print(val, text)
+        val = function.generateCycleCountTextPacked(cycle)
         assert val == text
 
 
@@ -766,9 +769,35 @@ def test_generatePackedDesignation_1(function):
     ]
 
     for desig, res in zip(designations, results):
-        val = function.generatePackedDesignation(desig)
-        print(val, res)
+        val = function.generateDesignationPacked(desig)
         assert val == res
+
+
+def test_convertDatePacked(function):
+    values = ['01', '10', '30', '01', '22']
+    results = ['1', 'A', 'U', '1', 'M']
+
+    for value, result in zip(values, results):
+        val = function.convertDatePacked(value)
+        assert val == result
+
+
+def test_generateDatePacked(function):
+
+    months = ['01', '01', '09', '10', '10']
+    days = ['01', '10', '30', '01', '22']
+    results = ['11', '1A', '9U', 'A1', 'AM']
+
+    for mon, day, result in zip(months, days, results):
+        val = function.generateDatePacked(mon, day)
+        assert val == result
+
+
+def test_generateEpochPacked(function):
+    epoch = 2458600.5
+    epochPackedText = 'K194R'
+    val = function.generateEpochPacked(epoch)
+    assert val == epochPackedText
 
 
 def test_writeAsteroidMPC_1(function):
@@ -790,7 +819,7 @@ def test_writeAsteroidMPC_2(function):
 def test_writeAsteroidMPC_3(function):
     function.installPath = 'tests/temp'
 
-    data = [{'Principal_desig': '2016 NU22'}]
+    data = [{}]
 
     suc = function.writeAsteroidMPC(datas=data)
     assert suc
@@ -826,10 +855,9 @@ def test_writeAsteroidMPC_5(function):
     with open('tests/testData/mpc_asteroid_test.txt', 'r') as f:
         refLine = f.readline()
 
-    assert testLine[:80] == refLine[:80]
+    assert testLine[:202] == refLine[:202]
 
 
-"""
 def test_writeAsteroidMPC_6(function):
     function.installPath = 'tests/temp'
 
@@ -846,5 +874,6 @@ def test_writeAsteroidMPC_6(function):
         refLines = f.readlines()
 
     for test, ref in zip(testLines, refLines):
-        assert test == ref
-"""
+        assert test[0:8] == ref[0:8]
+        assert test[14:202] == ref[14:202]
+

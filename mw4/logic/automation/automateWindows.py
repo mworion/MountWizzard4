@@ -504,7 +504,7 @@ class AutomateWindows(QObject):
         return True
 
     @staticmethod
-    def generateCycleCountPackedText(cycle):
+    def generateCycleCountTextPacked(cycle):
         """
         :param cycle:
         :return:
@@ -529,11 +529,11 @@ class AutomateWindows(QObject):
 
         return cycleText
 
-    def generatePackedDesignation(self, designation):
+    @staticmethod
+    def generateCenturyPacked(century):
         """
-        description of conversion in
-        https://minorplanetcenter.net//iau/info/PackedDes.html
-        :param designation:
+
+        :param century:
         :return:
         """
         centConvert = {'18': 'I',
@@ -541,10 +541,24 @@ class AutomateWindows(QObject):
                        '20': 'K',
                        '21': 'L'}
 
-        designation = designation.strip()
-
-        century = designation[0:2]
         centuryP = centConvert.get(century, ' ')
+
+        return centuryP
+
+    def generateDesignationPacked(self, designation):
+        """
+        description of conversion in
+        https://minorplanetcenter.net//iau/info/PackedDes.html
+        :param designation:
+        :return:
+        """
+        if not designation:
+            return 'xxxxxxx'
+
+        designation = designation.strip()
+        century = designation[0:2]
+        centuryPacked = self.generateCenturyPacked(century)
+
         year = designation[2:4]
         halfMonth = designation[5]
         halfMonthOrder = designation[6]
@@ -556,10 +570,60 @@ class AutomateWindows(QObject):
         else:
             cycle = 0
 
-        cycleText = self.generateCycleCountPackedText(cycle)
+        cycleText = self.generateCycleCountTextPacked(cycle)
 
-        packed = f'{centuryP}{year}{halfMonth}{cycleText}{halfMonthOrder}'
-        return packed
+        designationPacked = f'{centuryPacked}{year}{halfMonth}{cycleText}{halfMonthOrder}'
+        return designationPacked
+
+    @staticmethod
+    def convertDatePacked(value):
+        """
+        :param value:
+        :return:
+        """
+        value = int(value)
+
+        if value < 10:
+            resultChar = f'{value:1d}'
+
+        elif 10 <= value < 36:
+            resultChar = chr(ord('A') + value - 10)
+
+        else:
+            resultChar = ' '
+
+        return resultChar
+
+    def generateDatePacked(self, month, day):
+        """
+        :param month:
+        :param day:
+        :return:
+        """
+        dateChar1 = self.convertDatePacked(month)
+        dateChar2 = self.convertDatePacked(day)
+
+        dayPacked = dateChar1 + dateChar2
+        return dayPacked
+
+    def generateEpochPacked(self, epoch):
+        """
+
+        :param epoch:
+        :return:
+        """
+        if not epoch:
+            return 'xxxxx'
+
+        date = self.app.mount.ts.tt_jd(int(epoch + 0.5))
+        year, month, day = date.tt_strftime('%Y-%m-%d').split('-')
+        century = year[0:2]
+        centuryPacked = self.generateCenturyPacked(century)
+        year = year[2:4]
+        dayPacked = self.generateDatePacked(month, day)
+
+        epochPackedText = f'{centuryPacked:1s}{year:2s}{dayPacked}'
+        return epochPackedText
 
     def writeAsteroidMPC(self, datas=None):
         """
@@ -581,50 +645,51 @@ class AutomateWindows(QObject):
                 line = ''
 
                 designation = data.get("Principal_desig", "")
-                packedD = self.generatePackedDesignation(designation)
+                designationPacked = self.generateDesignationPacked(designation)
+                epochPacked = self.generateEpochPacked(data.get("Epoch", 0))
 
-                line += f'{packedD:7s}'
+                line += f'{designationPacked:7s}'
                 line += f'{"":1s}'
-                line += f'{data.get("H",0):<5g}'
+                line += f'{data.get("H", 0):<5g}'
                 line += f'{"":1s}'
-                line += f'{data.get("G",0):5g}'
+                line += f'{data.get("G", 0):5g}'
                 line += f'{"":1s}'
-                line += f'{"K194R":5s}'
+                line += f'{epochPacked:5s}'
                 line += f'{"":1s}'
-                line += f'{data.get("M",0):9.5f}'
+                line += f'{data.get("M", 0):9.5f}'
                 line += f'{"":2s}'
-                line += f'{data.get("Peri",0):9.5f}'
+                line += f'{data.get("Peri", 0):9.5f}'
                 line += f'{"":2s}'
-                line += f'{data.get("Node",0):9.5f}'
+                line += f'{data.get("Node", 0):9.5f}'
                 line += f'{"":2s}'
-                line += f'{data.get("i",0):9.5f}'
+                line += f'{data.get("i", 0):9.5f}'
                 line += f'{"":2s}'
-                line += f'{data.get("e",0):9.7f}'
-                line += f'{"":2s}'
-                line += f'{data.get("n",0):11.8f}'
+                line += f'{data.get("e", 0):9.7f}'
                 line += f'{"":1s}'
-                line += f'{data.get("a",0):11.7f}'
+                line += f'{data.get("n", 0):11.8f}'
+                line += f'{"":1s}'
+                line += f'{data.get("a", 0):11.7f}'
                 line += f'{"":2s}'
                 line += f'{data.get("U", ""):1s}'
                 line += f'{"":1s}'
                 line += f'{data.get("Ref", ""):9s}'
                 line += f'{"":1s}'
-                line += f'{data.get("Num_obs",0):5.0f}'
+                line += f'{data.get("Num_obs", 0):5.0f}'
                 line += f'{"":1s}'
-                line += f'{data.get("Num_opps",0):3.0f}'
+                line += f'{data.get("Num_opps", 0):3.0f}'
 
                 line += f'{"":1s}'
                 if 'Arc_years' in data:
                     line += f'{data.get("Arc_years",""):9s}'
 
                 elif 'Arc_length' in data:
-                    line += f'{data.get("Arc_length",0):4.0f} days'
+                    line += f'{data.get("Arc_length", 0):4.0f} days'
 
                 else:
                     line += f'{"":9s}'
 
                 line += f'{"":1s}'
-                line += f'{data.get("rms",0):4.2f}'
+                line += f'{data.get("rms", 0):4.2f}'
                 line += f'{"":1s}'
                 line += f'{data.get("Perturbers", ""):3s}'
                 line += f'{"":1s}'

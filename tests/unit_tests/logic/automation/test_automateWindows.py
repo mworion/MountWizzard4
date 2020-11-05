@@ -804,13 +804,18 @@ def test_generateEpochPacked(function):
     assert val == epochPackedText
 
 
-def test_generateOldDesignationPacked(function):
+def test_generateOldDesignationPacked_1(function):
     numberTexts = ['(1)', '(100)', '(5986)', '(12345)', '(123456)']
     results = ['00001  ', '00100  ', '05986  ', '12345  ', 'C3456  ']
 
     for numberText, result in zip(numberTexts, results):
         val = function.generateOldDesignationPacked(numberText)
         assert val == result
+
+
+def test_generateOldDesignationPacked_2(function):
+    val = function.generateOldDesignationPacked('')
+    assert val == 'xxxxxxx'
 
 
 def test_writeAsteroidMPC_1(function):

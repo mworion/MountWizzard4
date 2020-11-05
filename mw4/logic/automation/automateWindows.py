@@ -704,11 +704,7 @@ class AutomateWindows(QObject):
 
                 elif 'Arc_length' in data:
                     arcLength = data.get("Arc_length", 0)
-                    if arcLength % 1:
-                        line += f'{arcLength:4.2f} days'
-
-                    else:
-                        line += f'{arcLength:4.0f} days'
+                    line += f'{arcLength:4.0f} days'
 
                 else:
                     line += f'{"":9s}'

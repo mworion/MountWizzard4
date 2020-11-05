@@ -30,18 +30,15 @@ Unreleased Betas
 
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
 
-(0.210.0)
-
-- safety margin to horizon line checking for model points
-- adding asteroids programming (windows only)
-
-(0.200.0)
-
-- correcting dome geometry
-- adding safety margin between build points and horizon lines
 
 Released betas
 --------------
+0.200.0
+
+- correcting dome geometry
+- adding safety margin between build points and horizon lines
+- adding asteroids programming (windows only)
+
 0.190.3
 
 - changing opencv-python-headless to colour_demosaicing library

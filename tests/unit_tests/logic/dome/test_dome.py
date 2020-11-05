@@ -116,7 +116,7 @@ def test_slewDome_3():
                            'calcTransformationMatrices',
                            return_value=(Angle(degrees=10), Angle(degrees=10), 0, 0, 0)):
         val = app.slewDome(altitude=0, azimuth=0)
-        assert val == 0
+        assert val == -10
 
 
 def test_slewDome_4():

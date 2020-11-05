@@ -890,3 +890,47 @@ def test_writeAsteroidMPC_6(function):
         assert test[0:8] == ref[0:8]
         assert test[14:202] == ref[14:202]
 
+
+def test_writeAsteroidMPC_7(function):
+    function.installPath = 'tests/temp'
+
+    with open('tests/testData/nea_extended_test.json') as f:
+        data = json.load(f)
+
+    testData = [data[0]]
+
+    suc = function.writeAsteroidMPC(datas=testData)
+    assert suc
+
+    with open('tests/temp/minorPlanets.mpc', 'r') as f:
+        testLine = f.readline()
+
+    with open('tests/testData/nea_extended_test.txt', 'r') as f:
+        refLine = f.readline()
+
+    assert testLine[:202] == refLine[:202]
+
+
+def test_writeAsteroidMPC_8(function):
+    function.installPath = 'tests/temp'
+
+    with open('tests/testData/nea_extended_test.json') as f:
+        data = json.load(f)
+
+    suc = function.writeAsteroidMPC(datas=data)
+    assert suc
+
+    with open('tests/temp/minorPlanets.mpc', 'r') as f:
+        testLines = f.readlines()
+
+    with open('tests/testData/nea_extended_test.txt', 'r') as f:
+        refLines = f.readlines()
+
+    for test, ref in zip(testLines, refLines):
+        if ref[0:3] in ['PLS']:
+            continue
+
+        assert test[0:7] == ref[0:7]
+        assert test[21:140] == ref[21:140]
+        assert test[142:167] == ref[142:167]
+

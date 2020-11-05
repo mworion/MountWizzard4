@@ -504,7 +504,30 @@ class AutomateWindows(QObject):
         return True
 
     @staticmethod
-    def generateCycleCountTextPacked(cycle):
+    def convertDatePacked(value):
+        """
+        conversion is described on
+        https://www.minorplanetcenter.net/iau/info/PackedDates.html
+        :param value:
+        :return:
+        """
+        value = int(value)
+
+        if value < 10:
+            resultChar = f'{value:1d}'
+
+        elif 10 <= value < 36:
+            resultChar = chr(ord('A') + value - 10)
+
+        elif 36 <= value < 62:
+            resultChar = chr(ord('a') + value - 36)
+
+        else:
+            resultChar = ' '
+
+        return resultChar
+
+    def generateCycleCountTextPacked(self, cycle):
         """
         :param cycle:
         :return:
@@ -512,19 +535,7 @@ class AutomateWindows(QObject):
         digit1Value = cycle % 10
         digit2Value = int(cycle / 10)
         cycleChar1 = f'{digit1Value:1d}'
-
-        if digit2Value < 10:
-            cycleChar2 = f'{digit2Value:1d}'
-
-        elif 10 <= digit2Value < 36:
-            cycleChar2 = chr(ord('A') + digit2Value - 10)
-
-        elif 36 <= digit2Value < 62:
-            cycleChar2 = chr(ord('a') + digit2Value - 36)
-
-        else:
-            pass
-
+        cycleChar2 = self.convertDatePacked(digit2Value)
         cycleText = cycleChar2 + cycleChar1
 
         return cycleText
@@ -564,7 +575,7 @@ class AutomateWindows(QObject):
         halfMonthOrder = designation[6]
         cycleText = designation[7:11]
 
-        if cycleText:
+        if cycleText and cycleText.isdigit():
             cycle = int(cycleText)
 
         else:
@@ -574,27 +585,6 @@ class AutomateWindows(QObject):
 
         designationPacked = f'{centuryPacked}{year}{halfMonth}{cycleText}{halfMonthOrder}'
         return designationPacked
-
-    @staticmethod
-    def convertDatePacked(value):
-        """
-        conversion is described on
-        https://www.minorplanetcenter.net/iau/info/PackedDates.html
-        :param value:
-        :return:
-        """
-        value = int(value)
-
-        if value < 10:
-            resultChar = f'{value:1d}'
-
-        elif 10 <= value < 36:
-            resultChar = chr(ord('A') + value - 10)
-
-        else:
-            resultChar = ' '
-
-        return resultChar
 
     def generateDatePacked(self, month, day):
         """
@@ -713,7 +703,12 @@ class AutomateWindows(QObject):
                     line += f'{data.get("Arc_years",""):9s}'
 
                 elif 'Arc_length' in data:
-                    line += f'{data.get("Arc_length", 0):4.0f} days'
+                    arcLength = data.get("Arc_length", 0)
+                    if arcLength % 1:
+                        line += f'{arcLength:4.2f} days'
+
+                    else:
+                        line += f'{arcLength:4.0f} days'
 
                 else:
                     line += f'{"":9s}'
@@ -729,7 +724,14 @@ class AutomateWindows(QObject):
                 line += f'{"":1s}'
                 line += f'{data.get("Hex_flags", ""):4s}'
                 line += f'{"":1s}'
-                line += f'         {data.get("Principal_desig", ""):18s}'
+
+                if 'Number' in data:
+                    line += f'{data.get("Number", ""):>8s} {data.get("Name", ""):18s}'
+
+                else:
+                    line += f'{"":9s}'
+                    line += f'{data.get("Principal_desig", ""):18s}'
+
                 line += f'{"":1s}'
                 line += f'{data.get("Last_obs", "").replace("-", ""):8s}'
                 line += f'{"":1s}'

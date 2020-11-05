@@ -8,6 +8,7 @@ Unreleased Betas
 (1.1)
 
 - 3d Simulator (mount, dome, build points etc)
+- update PyQt5 to 5.15.2
 
 (1.0)
 
@@ -17,27 +18,22 @@ Unreleased Betas
 
 - full integration testing
 
-(0.240.0)
+(0.2xxx)
 
-- update PyQt5 to 5.15.2
 - retrofit based on hashes
-
-(0.230.0)
-
 - retrofit model based on hashed coordinates
-
-(0.220.0)
-
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
-
 
 Released betas
 --------------
 0.200.0
 
+- adding asteroids programming (windows only)
+
+0.191.1
+
 - correcting dome geometry
 - adding safety margin between build points and horizon lines
-- adding asteroids programming (windows only)
 
 0.190.3
 

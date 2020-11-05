@@ -436,7 +436,7 @@ class AutomateWindows(QObject):
         if not os.path.isfile(sourceDir + 'tai-utc.dat'):
             return False
 
-        if not os.path.isfile(sourceDir + 'finals.data'):
+        if not os.path.isfile(sourceDir + 'finals2000A.all'):
             return False
 
         shutil.copy(sourceDir + 'tai-utc.dat', destDir + 'tai-utc.dat')

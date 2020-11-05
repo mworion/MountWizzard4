@@ -61,7 +61,7 @@ def function(module):
                   'dataDir': 'tests/data',
                   }
 
-    for file in ['tai-utc.dat', 'finals.data']:
+    for file in ['tai-utc.dat', 'finals2000A.all']:
         path = 'tests/data/' + file
         if os.path.isfile(path):
             os.remove(path)
@@ -637,7 +637,7 @@ def test_writeEarthRotationData_2(function):
 
 def test_writeEarthRotationData_3(function):
     shutil.copy('tests/testData/tai-utc.dat', 'tests/data/tai-utc.dat')
-    shutil.copy('tests/testData/finals.data', 'tests/data/finals.data')
+    shutil.copy('tests/testData/finals2000A.all', 'tests/data/finals2000A.all')
     suc = function.writeEarthRotationData()
     assert suc
 

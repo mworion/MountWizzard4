@@ -231,11 +231,8 @@ class MinorPlanetTime:
         url = self.mpcPrefix + self.minorPlanetSourceURLs[source]
         dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
 
-        self.ui.listMinorPlanetNames.clear()
-
         if isOnline:
             self.app.message.emit(f'Download data for:   [{source}]', 1)
-            self.ui.downloadMinorPlanetProgress.setValue(0)
             self.downloadFile(url, dest)
             self.unzipFile(dest)
 
@@ -264,6 +261,8 @@ class MinorPlanetTime:
         if source == 'Please select':
             return False
 
+        self.ui.listMinorPlanetNames.clear()
+        self.ui.downloadMinorPlanetProgress.setValue(0)
         isOnline = self.ui.isOnline.isChecked()
         worker = Worker(self.loadDataFromSourceURLsWorker,
                         source=source,

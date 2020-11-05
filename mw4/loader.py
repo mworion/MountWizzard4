@@ -314,13 +314,10 @@ def extractDataFiles(mwGlob=None, splashW=None):
         return False
 
     files = [
-        'Leap_Second.dat',
-        'deltat.data',
-        'deltat.preds',
         'de421_23.bsp',
         'active.txt',
         'tai-utc.dat',
-        'finals.data',
+        'finals2000A.all',
     ]
 
     for file in files:

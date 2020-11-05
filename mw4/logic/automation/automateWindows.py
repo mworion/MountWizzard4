@@ -440,7 +440,13 @@ class AutomateWindows(QObject):
             return False
 
         shutil.copy(sourceDir + 'tai-utc.dat', destDir + 'tai-utc.dat')
-        shutil.copy(sourceDir + 'finals.data', destDir + 'finals.data')
+
+        with open(sourceDir + 'finals2000A.all', 'r') as infile:
+            with open(destDir + 'finals.data', 'w') as outfile:
+                for line in infile:
+                    if int(line[0:2]) < 20:
+                        continue
+                    outfile.writelines(line)
 
         return True
 

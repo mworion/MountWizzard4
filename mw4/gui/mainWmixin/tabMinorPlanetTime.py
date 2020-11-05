@@ -307,7 +307,7 @@ class MinorPlanetTime:
             return False
 
         self.app.message.emit('Program to mount:    [earth rotation data]', 1)
-        self.app.message.emit('Copy files: finals.data, tai-utc.dat', 0)
+        self.app.message.emit('Writing files: finals.data, tai-utc.dat', 0)
 
         suc = self.app.automation.writeEarthRotationData()
 

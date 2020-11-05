@@ -446,7 +446,8 @@ class AutomateWindows(QObject):
 
     def writeCometMPC(self, datas=None):
         """
-
+        data format of json and file description in
+        https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
         :param datas:
         :return:
         """
@@ -503,8 +504,35 @@ class AutomateWindows(QObject):
         return True
 
     @staticmethod
-    def generatePackedDesignation(designation):
+    def generateCycleCountPackedText(cycle):
         """
+        :param cycle:
+        :return:
+        """
+        digit1Value = cycle % 10
+        digit2Value = int(cycle / 10)
+        cycleChar1 = f'{digit1Value:1d}'
+
+        if digit2Value < 10:
+            cycleChar2 = f'{digit2Value:1d}'
+
+        elif 10 <= digit2Value < 36:
+            cycleChar2 = chr(ord('A') + digit2Value - 10)
+
+        elif 36 <= digit2Value < 62:
+            cycleChar2 = chr(ord('a') + digit2Value - 36)
+
+        else:
+            pass
+
+        cycleText = cycleChar2 + cycleChar1
+
+        return cycleText
+
+    def generatePackedDesignation(self, designation):
+        """
+        description of conversion in
+        https://minorplanetcenter.net//iau/info/PackedDes.html
         :param designation:
         :return:
         """
@@ -520,17 +548,23 @@ class AutomateWindows(QObject):
         year = designation[2:4]
         halfMonth = designation[5]
         halfMonthOrder = designation[6]
-        cycle = int(designation[7:11])
+        cycleText = designation[7:11]
 
-        if cycle < 100:
-            cycleT = f'{cycle:02d}'
+        if cycleText:
+            cycle = int(cycleText)
 
-        packed = f'{centuryP}{year}{halfMonth}{cycleT:2s}{halfMonthOrder}'
+        else:
+            cycle = 0
+
+        cycleText = self.generateCycleCountPackedText(cycle)
+
+        packed = f'{centuryP}{year}{halfMonth}{cycleText}{halfMonthOrder}'
         return packed
 
     def writeAsteroidMPC(self, datas=None):
         """
-
+        data format of json and file description in
+        https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
         :param datas:
         :return:
         """

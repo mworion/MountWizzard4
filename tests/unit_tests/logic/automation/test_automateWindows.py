@@ -711,6 +711,66 @@ def test_writeCometMPC_6(function):
 """
 
 
+def test_generateCycleCountPackedText(function):
+    cycles = [
+        0,
+        1,
+        13,
+        108,
+        127,
+        162,
+        193,
+        360,
+        418,
+    ]
+    texts = [
+        '00',
+        '01',
+        '13',
+        'A8',
+        'C7',
+        'G2',
+        'J3',
+        'a0',
+        'f8'
+    ]
+    print()
+    for cycle, text in zip(cycles, texts):
+        val = function.generateCycleCountPackedText(cycle)
+        print(val, text)
+        assert val == text
+
+
+def test_generatePackedDesignation_1(function):
+    designations = [
+        '1995 XA',
+        '1995 XL1',
+        '1995 FB13',
+        '1998 SQ108',
+        '1998 SV127',
+        '1998 SS162',
+        '2099 AZ193',
+        '2008 AA360',
+        '2007 TA418'
+    ]
+    results = [
+        'J95X00A',
+        'J95X01L',
+        'J95F13B',
+        'J98SA8Q',
+        'J98SC7V',
+        'J98SG2S',
+        'K99AJ3Z',
+        'K08Aa0A',
+        'K07Tf8A'
+    ]
+
+    for desig, res in zip(designations, results):
+        val = function.generatePackedDesignation(desig)
+        print(val, res)
+        assert val == res
+
+
 def test_writeAsteroidMPC_1(function):
     function.installPath = 'tests/temp'
 
@@ -721,7 +781,7 @@ def test_writeAsteroidMPC_1(function):
 def test_writeAsteroidMPC_2(function):
     function.installPath = 'tests/temp'
 
-    data = {'test': 'test'}
+    data = {'Principal_desig': '2016 NU22'}
 
     suc = function.writeAsteroidMPC(datas=data)
     assert not suc
@@ -730,7 +790,7 @@ def test_writeAsteroidMPC_2(function):
 def test_writeAsteroidMPC_3(function):
     function.installPath = 'tests/temp'
 
-    data = [{'test': 'test'}]
+    data = [{'Principal_desig': '2016 NU22'}]
 
     suc = function.writeAsteroidMPC(datas=data)
     assert suc

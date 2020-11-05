@@ -774,8 +774,8 @@ def test_generatePackedDesignation_1(function):
 
 
 def test_convertDatePacked(function):
-    values = ['01', '10', '30', '01', '22']
-    results = ['1', 'A', 'U', '1', 'M']
+    values = ['01', '10', '30', '01', '22', '99']
+    results = ['1', 'A', 'U', '1', 'M', ' ']
 
     for value, result in zip(values, results):
         val = function.convertDatePacked(value)

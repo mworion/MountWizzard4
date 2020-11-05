@@ -578,6 +578,8 @@ class AutomateWindows(QObject):
     @staticmethod
     def convertDatePacked(value):
         """
+        conversion is described on
+        https://www.minorplanetcenter.net/iau/info/PackedDates.html
         :param value:
         :return:
         """
@@ -596,6 +598,8 @@ class AutomateWindows(QObject):
 
     def generateDatePacked(self, month, day):
         """
+        conversion is described on
+        https://www.minorplanetcenter.net/iau/info/PackedDates.html
         :param month:
         :param day:
         :return:
@@ -608,7 +612,8 @@ class AutomateWindows(QObject):
 
     def generateEpochPacked(self, epoch):
         """
-
+        conversion is described on
+        https://www.minorplanetcenter.net/iau/info/PackedDates.html
         :param epoch:
         :return:
         """

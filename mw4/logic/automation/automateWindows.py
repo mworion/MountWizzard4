@@ -620,7 +620,7 @@ class AutomateWindows(QObject):
         if not epoch:
             return 'xxxxx'
 
-        date = self.app.mount.ts.tt_jd(int(epoch + 0.5))
+        date = self.app.mount.obsSite.ts.tt_jd(int(epoch + 0.5))
         year, month, day = date.tt_strftime('%Y-%m-%d').split('-')
         century = year[0:2]
         centuryPacked = self.generateCenturyPacked(century)
@@ -630,10 +630,28 @@ class AutomateWindows(QObject):
         epochPackedText = f'{centuryPacked:1s}{year:2s}{dayPacked}'
         return epochPackedText
 
+    def generateOldDesignationPacked(self, numberText):
+        """
+        :param numberText:
+        :return:
+        """
+        if not numberText:
+            return 'xxxxxxx'
+
+        number = int(numberText.rstrip(')').lstrip('('))
+
+        numberChar = self.convertDatePacked(number / 10000)
+        designationPacked = f'{numberChar}{number % 10000:04d}  '
+
+        return designationPacked
+
     def writeAsteroidMPC(self, datas=None):
         """
         data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
+
+        we have a mix of new and old style designation to manage. the old style seem to
+        have the ley 'Number' in json, new style not.
         :param datas:
         :return:
         """
@@ -649,9 +667,13 @@ class AutomateWindows(QObject):
             for data in datas:
                 line = ''
 
-                designation = data.get("Principal_desig", "")
-                designationPacked = self.generateDesignationPacked(designation)
-                epochPacked = self.generateEpochPacked(data.get("Epoch", 0))
+                if 'Number' in data:
+                    numberText = data.get('Number', '')
+                    designationPacked = self.generateOldDesignationPacked(numberText)
+
+                else:
+                    designation = data.get('Principal_desig', '')
+                    designationPacked = self.generateDesignationPacked(designation)
 
                 line += f'{designationPacked:7s}'
                 line += f'{"":1s}'
@@ -659,6 +681,9 @@ class AutomateWindows(QObject):
                 line += f'{"":1s}'
                 line += f'{data.get("G", 0):5g}'
                 line += f'{"":1s}'
+
+                epochPacked = self.generateEpochPacked(data.get('Epoch', 0))
+
                 line += f'{epochPacked:5s}'
                 line += f'{"":1s}'
                 line += f'{data.get("M", 0):9.5f}'

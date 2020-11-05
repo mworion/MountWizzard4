@@ -47,8 +47,12 @@ def module(qapp):
 
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
-    class Mount(QObject):
+
+    class MountObsSite:
         ts = load.timescale(builtin=True)
+
+    class Mount:
+        obsSite = MountObsSite()
 
     class Test(QObject):
         threadPool = QThreadPool()
@@ -798,6 +802,15 @@ def test_generateEpochPacked(function):
     epochPackedText = 'K194R'
     val = function.generateEpochPacked(epoch)
     assert val == epochPackedText
+
+
+def test_generateOldDesignationPacked(function):
+    numberTexts = ['(1)', '(100)', '(5986)', '(12345)', '(123456)']
+    results = ['00001  ', '00100  ', '05986  ', '12345  ', 'C3456  ']
+
+    for numberText, result in zip(numberTexts, results):
+        val = function.generateOldDesignationPacked(numberText)
+        assert val == result
 
 
 def test_writeAsteroidMPC_1(function):

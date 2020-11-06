@@ -62,6 +62,8 @@ class ManageModel(object):
         self.ui.targetRMS.valueChanged.connect(self.showModelPosition)
         self.ui.targetRMS.valueChanged.connect(self.showErrorAscending)
         self.ui.targetRMS.valueChanged.connect(self.showErrorDistribution)
+        self.modelPositionPlot.figure.canvas.mpl_connect('button_press_event',
+                                                         self.onMouseEdit)
 
     def initConfig(self):
         """
@@ -225,8 +227,6 @@ class ManageModel(object):
             hasNoStars = model.starList is None or not model.starList
 
         axe, fig = self.generatePolar(widget=self.modelPositionPlot)
-        self.modelPositionPlot.figure.canvas.mpl_connect('button_press_event',
-                                                         self.onMouseEdit)
 
         axe.set_yticks(range(0, 90, 10))
         axe.set_ylim(0, 90)

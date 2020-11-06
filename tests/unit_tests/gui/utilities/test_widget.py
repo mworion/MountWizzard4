@@ -528,6 +528,22 @@ def test_generatePolar_4(function):
     assert fig
 
 
+def test_generatePolar_5(function):
+    ui = QWidget()
+    widget = function.embedMatplot(ui)
+    axe, fig = function.generatePolar(widget=widget, horizon=True)
+    assert axe
+    assert fig
+
+
+def test_generatePolar_6(function):
+    ui = QWidget()
+    widget = function.embedMatplot(ui)
+    axe, fig = function.generatePolar(widget=widget, showAxes=False)
+    assert axe
+    assert fig
+
+
 def test_generateFlat_1(function):
     axe, fig = function.generateFlat()
     assert axe is None
@@ -580,6 +596,25 @@ def test_generateFlat_7(function):
     axe, fig = function.generateFlat(widget=widget, title='test', horizon=True)
     assert axe
     assert fig
+
+
+def test_generateColorbar_1(function):
+    ui = QWidget()
+    widget = function.embedMatplot(ui)
+    axe, fig = function.generatePolar(widget=widget, title='test')
+    scatter = axe.scatter([0, 1], [0, 1])
+    suc = function.generateColorbar(figure=fig, scatter=scatter, label='test')
+    assert suc
+
+
+def test_generateColorbar_2(function):
+    ui = QWidget()
+    widget = function.embedMatplot(ui)
+    axe, fig = function.generatePolar(widget=widget, title='test')
+    scatter = axe.scatter([0, 1], [0, 1])
+    function.generateColorbar(figure=fig, scatter=scatter, label='test')
+    suc = function.generateColorbar(figure=fig, scatter=scatter, label='test')
+    assert not suc
 
 
 def test_returnDriver_1(function):

@@ -402,12 +402,22 @@ def test_staticCelestialEquator_2(function):
     assert suc
 
 
+def test_staticCelestialEquator_3(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.ui.checkShowCelestial.setChecked(True)
+    with mock.patch.object(function.app.data,
+                           'generateCelestialEquator',
+                           return_value=None):
+        suc = function.staticCelestialEquator(axe, polar=True)
+        assert not suc
+
+
 def test_staticMeridianLimits_1(function):
     function.app.mount.setting.meridianLimitSlew = None
     function.app.mount.setting.meridianLimitTrack = None
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     suc = function.staticMeridianLimits(axe)
-    assert suc
+    assert not suc
 
 
 def test_staticMeridianLimits_2(function):

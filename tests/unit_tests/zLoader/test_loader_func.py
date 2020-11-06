@@ -126,10 +126,7 @@ def test_extractDataFiles_4(qtbot):
                            return_value=False):
         suc = extractDataFiles(mwGlob=mwGlob)
         assert suc
-    assert os.path.isfile('tests/data/Leap_Second.dat')
-    assert os.path.isfile('tests/data/deltat.data')
-    assert os.path.isfile('tests/data/deltat.preds')
     assert os.path.isfile('tests/data/de421_23.bsp')
     assert os.path.isfile('tests/data/active.txt')
-    assert os.path.isfile('tests/data/finals.data')
+    assert os.path.isfile('tests/data/finals2000A.all')
     assert os.path.isfile('tests/data/tai-utc.dat')

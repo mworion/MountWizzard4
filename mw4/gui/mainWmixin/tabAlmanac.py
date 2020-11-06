@@ -435,7 +435,7 @@ class Almanac:
         maskP.setPen(QPen(QColor(255, 255, 255)))
         maskP.drawRect(0, 0, width, height)
 
-        if mpDegree <= 90:
+        if 0 <= mpDegree <= 90:
             maskP.setBrush(QColor(48, 48, 48))
             maskP.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 

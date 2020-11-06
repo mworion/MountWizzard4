@@ -30,6 +30,8 @@ from PyQt5.QtGui import QPalette, QIcon
 from PyQt5.QtCore import Qt, QSortFilterProxyModel, QDir, QObject, pyqtSignal, QEvent
 from PyQt5.QtCore import QSize
 from matplotlib.figure import Figure
+from matplotlib.ticker import FormatStrFormatter
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 
@@ -714,6 +716,29 @@ class MWidget(QWidget, styles.MWStyles):
             axe.set_ylabel('Altitude [degrees]', color=color, fontweight='bold', fontsize=12)
 
             return axe, figure
+
+    def generateColorbar(self, figure=None, scatter=None, label=''):
+        """
+        :param figure:
+        :param scatter:
+        :param label:
+        :return:
+        """
+        if len(figure.axes) > 1:
+            return False
+
+        formatString = FormatStrFormatter('%1.0f')
+        figure.colorbar(scatter,
+                        pad=0.1,
+                        fraction=0.12,
+                        aspect=25,
+                        shrink=0.9,
+                        format=formatString,
+                        )
+        figure.axes[1].set_ylabel(label, color=self.M_BLUE)
+        figure.axes[1].tick_params(axis='y', labelcolor=self.M_BLUE, color=self.M_BLUE)
+
+        return True
 
     @staticmethod
     def returnDriver(sender, searchDict, addKey=''):

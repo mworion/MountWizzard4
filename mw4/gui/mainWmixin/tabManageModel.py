@@ -225,6 +225,8 @@ class ManageModel(object):
             hasNoStars = model.starList is None or not model.starList
 
         axe, fig = self.generatePolar(widget=self.modelPositionPlot)
+        self.modelPositionPlot.figure.canvas.mpl_connect('button_press_event',
+                                                         self.onMouseEdit)
 
         axe.set_yticks(range(0, 90, 10))
         axe.set_ylim(0, 90)
@@ -281,27 +283,14 @@ class ManageModel(object):
                              fontweight='bold',
                              zorder=1,
                              )
-
-        formatString = matplotlib.ticker.FormatStrFormatter('%1.0f')
-        colorbar = fig.colorbar(scatter,
-                                pad=0.1,
-                                fraction=0.12,
-                                aspect=25,
-                                shrink=0.9,
-                                format=formatString,
-                                )
-        colorbar.set_label('Error [arcsec]', color=self.M_BLUE)
-        yTicks = matplotlib.pyplot.getp(colorbar.ax.axes, 'yticklabels')
-        matplotlib.pyplot.setp(yTicks,
-                               color=self.M_BLUE,
-                               fontweight='bold')
+        self.generateColorbar(scatter=scatter, figure=fig, label='Error [arcsec]')
 
         yValues = self.ui.targetRMS.value()
-        xMin = colorbar.ax.get_xlim()[0]
-        xMax = colorbar.ax.get_xlim()[1]
+        xMin = fig.axes[1].get_xlim()[0]
+        xMax = fig.axes[1].get_xlim()[1]
         vRange = xMax - xMin
         xValues = [xMin - 0.15 * vRange, xMax + 0.2 * vRange]
-        colorbar.ax.plot(xValues, [yValues] * 2, self.M_PINK_H, lw=3, clip_on=False)
+        fig.axes[1].plot(xValues, [yValues] * 2, self.M_PINK_H, lw=3, clip_on=False)
 
         axe.figure.canvas.draw()
         return True
@@ -867,9 +856,12 @@ class ManageModel(object):
 
         event.xdata = (np.degrees(event.xdata) + 360) % 360
         event.ydata = 90 - event.ydata
-        index = self.getIndexPoint(event=event, plane=self.plane, epsilon=5)
-        error = self.app.mount.model.starList[index].errorRMS
 
+        index = self.getIndexPoint(event=event, plane=self.plane, epsilon=5)
+        if index is None:
+            return False
+
+        error = self.app.mount.model.starList[index].errorRMS
         text = f'Do you want to delete \npoint {index + 1:3.0f}'
         text += f'\nRMS of {error:5.1f} arcsec'
 

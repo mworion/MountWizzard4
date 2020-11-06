@@ -23,6 +23,7 @@ Unreleased Betas
 - retrofit based on hashes
 - retrofit model based on hashed coordinates
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
+- optimizing dome for less movements on small changes
 
 (0.210.0)
 

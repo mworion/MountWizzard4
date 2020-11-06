@@ -435,6 +435,7 @@ class MountWizzard4(QObject):
             self.mount.getTLE()
             self.mountUp = True
             return True
+
         elif not status and self.mountUp:
             location = self.mount.obsSite.location
             self.mount.resetData()

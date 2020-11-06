@@ -681,12 +681,14 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
     def staticCelestialEquator(self, axes=None, polar=False):
         """
-
         :param axes:
         :param polar:
         :return:
         """
         celestial = self.app.data.generateCelestialEquator()
+        if not celestial:
+            return False
+
         alt, az = zip(*celestial)
         alt = np.array(alt)
 
@@ -714,39 +716,28 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :param axes:
         :return:
         """
-        if self.app.mount.setting.meridianLimitSlew is not None:
-            slew = self.app.mount.setting.meridianLimitSlew
 
-        else:
-            slew = 0
+        slew = self.app.mount.setting.meridianLimitSlew
+        track = self.app.mount.setting.meridianLimitTrack
 
-        isAvailable = slew > 0
+        if slew is None or track is None:
+            return False
 
-        if isAvailable:
-            self.meridianSlew = mpatches.Rectangle((180 - slew, 0),
-                                                   2 * slew,
-                                                   90,
-                                                   zorder=15,
-                                                   color=self.M_YELLOW,
-                                                   alpha=0.5)
-            axes.add_patch(self.meridianSlew)
+        self.meridianSlew = mpatches.Rectangle((180 - slew, 0),
+                                               2 * slew,
+                                               90,
+                                               zorder=15,
+                                               color=self.M_YELLOW,
+                                               alpha=0.5)
+        axes.add_patch(self.meridianSlew)
 
-        if self.app.mount.setting.meridianLimitTrack is not None:
-            track = self.app.mount.setting.meridianLimitTrack
-
-        else:
-            track = 0
-
-        isAvailable = track > 0
-
-        if isAvailable:
-            self.meridianTrack = mpatches.Rectangle((180 - track, 0),
-                                                    2 * track,
-                                                    90,
-                                                    zorder=10,
-                                                    color=self.M_YELLOW_L,
-                                                    alpha=0.5)
-            axes.add_patch(self.meridianTrack)
+        self.meridianTrack = mpatches.Rectangle((180 - track, 0),
+                                                2 * track,
+                                                90,
+                                                zorder=10,
+                                                color=self.M_YELLOW_L,
+                                                alpha=0.5)
+        axes.add_patch(self.meridianTrack)
 
         return True
 
@@ -945,6 +936,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             self.pointsBuildAnnotate = None
             self.pointsPolarBuild = None
             self.pointsPolarBuildAnnotate = None
+            axePolar = None
+            axePolarMove = None
             self.polarMat.figure.clf()
             self.polarMatMove.figure.clf()
 

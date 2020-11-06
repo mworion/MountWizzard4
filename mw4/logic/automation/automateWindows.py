@@ -513,7 +513,7 @@ class AutomateWindows(QObject):
         """
         value = int(value)
 
-        if value < 10:
+        if 0 <= value < 10:
             resultChar = f'{value:1d}'
 
         elif 10 <= value < 36:

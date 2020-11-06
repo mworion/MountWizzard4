@@ -62,8 +62,6 @@ class ManageModel(object):
         self.ui.targetRMS.valueChanged.connect(self.showModelPosition)
         self.ui.targetRMS.valueChanged.connect(self.showErrorAscending)
         self.ui.targetRMS.valueChanged.connect(self.showErrorDistribution)
-        self.modelPositionPlot.figure.canvas.mpl_connect('button_press_event',
-                                                         self.onMouseEdit)
 
     def initConfig(self):
         """

@@ -110,6 +110,7 @@ def function_setup_teardown(qtbot):
         showImage = pyqtSignal(str)
         update3s = pyqtSignal()
         update30m = pyqtSignal()
+        sendSatelliteData = pyqtSignal()
         remoteCommand = pyqtSignal(str)
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)

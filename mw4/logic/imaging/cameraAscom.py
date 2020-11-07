@@ -36,25 +36,20 @@ class CameraAscom(AscomClass):
     __all__ = ['CameraAscom',
                ]
 
-    # specific timing for device
     CYCLE_DEVICE = 3000
     CYCLE_DATA = 1000
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
-        # as we have in the base class only the base client there, we will get more
-        # specialized with Dome (which is derived from the base class)
         self.signals = signals
         self.data = data
         self.abortExpose = False
 
     def getInitialConfig(self):
         """
-
         :return: true for test purpose
         """
-
         super().getInitialConfig()
 
         if not self.deviceConnected:
@@ -79,10 +74,8 @@ class CameraAscom(AscomClass):
 
     def workerPollData(self):
         """
-
         :return: true for test purpose
         """
-
         if not self.deviceConnected:
             return False
 
@@ -108,10 +101,8 @@ class CameraAscom(AscomClass):
     def sendDownloadMode(self, fastReadout=False):
         """
         setDownloadMode sets the readout speed of the camera
-
         :return: success
         """
-
         canFast = self.data.get('CAN_FAST', False)
 
         if not canFast:
@@ -140,7 +131,6 @@ class CameraAscom(AscomClass):
                      focalLength=1,
                      ):
         """
-
         :param imagePath:
         :param expTime:
         :param binning:
@@ -152,7 +142,6 @@ class CameraAscom(AscomClass):
         :param focalLength:
         :return: success
         """
-
         if not self.deviceConnected:
             return False
 
@@ -257,10 +246,8 @@ class CameraAscom(AscomClass):
                focalLength=1,
                ):
         """
-
         :return: success
         """
-
         if not self.deviceConnected:
             return False
 
@@ -282,11 +269,8 @@ class CameraAscom(AscomClass):
 
     def abort(self):
         """
-        abort cancels the exposing
-
         :return: success
         """
-
         if not self.deviceConnected:
             return False
 
@@ -302,8 +286,6 @@ class CameraAscom(AscomClass):
 
     def sendCoolerSwitch(self, coolerOn=False):
         """
-        sendCoolerTemp send the desired cooler temp, but does not switch on / off the cooler
-
         :param coolerOn:
         :return: success
         """
@@ -316,8 +298,6 @@ class CameraAscom(AscomClass):
 
     def sendCoolerTemp(self, temperature=0):
         """
-        sendCoolerTemp send the desired cooler temp, indi does automatically start cooler
-
         :param temperature:
         :return: success
         """

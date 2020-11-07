@@ -178,7 +178,6 @@ class AscomClass(object):
         :param elementInv:
         :return: reset entry
         """
-
         resetValue = value is None and element in self.data
         if resetValue:
             del self.data[element]

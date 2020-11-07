@@ -24,16 +24,10 @@ from base.ascomClass import AscomClass
 
 
 class SensorWeatherAscom(AscomClass):
-    """
-    the class SkymeterAscom inherits all information and handling of the Dome device.
-    there will be some parameters who will define the slewing position of the dome relating
-    to the
-    """
 
     __all__ = ['SensorWeatherAscom',
                ]
 
-    # specific timing for device
     CYCLE_DEVICE = 3000
     CYCLE_DATA = 1000
 
@@ -62,9 +56,15 @@ class SensorWeatherAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = self.client.temperature
-        self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = self.client.pressure
-        self.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = self.client.dewpoint
-        self.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = self.client.humidity
+        try:
+            val = self.client.skyquality
+        except Exception:
+            val = 0
+        self.dataEntry(val, 'SKY_QUALITY.SKY_BRIGHTNESS')
+
+        self.dataEntry(self.client.temperature, 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
+        self.dataEntry(self.client.pressure, 'WEATHER_PARAMETERS.WEATHER_PRESSURE')
+        self.dataEntry(self.client.dewpoint, 'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
+        self.dataEntry(self.client.humidity, 'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
 
         return True

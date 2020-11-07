@@ -61,13 +61,12 @@ class Dome:
     log = CustomLogger(logger, {})
 
     def __init__(self, app):
-
         self.app = app
         self.threadPool = app.threadPool
         self.signals = DomeSignals()
 
         self.data = {
-            'Sewing': False,
+            'Slewing': False,
             'AzimuthTarget': 0,
         }
         self.defaultConfig = {'framework': '',
@@ -163,9 +162,6 @@ class Dome:
 
         if isSlewing:
             self.signals.message.emit('slewing')
-
-        else:
-            self.signals.message.emit('')
 
         if self.data['Slewing'] and not isSlewing:
             self.signals.message.emit('settle')

@@ -20,7 +20,6 @@ Unreleased Betas
 
 (0.2xxx)
 
-- retrofit based on hashes
 - retrofit model based on hashed coordinates
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
 - optimizing dome for less movements on small changes
@@ -33,7 +32,6 @@ Released betas
 - moving to skyfield 1.31 and get rid of some files related to time
 - mw4 generates the earth rotation files for 10micron updater
 - bugfixes
-
 
 0.200.0
 

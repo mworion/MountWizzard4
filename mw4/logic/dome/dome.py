@@ -164,7 +164,7 @@ class Dome:
             self.signals.message.emit('slewing')
 
         if self.data['Slewing'] and not isSlewing:
-            self.signals.message.emit('settle')
+            self.signals.message.emit('wait settle')
             self.settlingWait.start(self.settlingTime * 1000)
 
         self.data['Slewing'] = isSlewing

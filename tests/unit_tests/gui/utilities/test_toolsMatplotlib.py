@@ -206,20 +206,6 @@ def test_generateColorbar_2(function):
     assert not suc
 
 
-def test_returnDriver_1(function):
-    sender = QWidget()
-    searchDict = {}
-    driver = function.returnDriver(sender, searchDict)
-    assert driver == ''
-
-
-def test_returnDriver_2(function):
-    sender = QWidget()
-    searchDict = {}
-    driver = function.returnDriver(sender, searchDict, addKey='test')
-    assert driver == ''
-
-
 def test_getIndexPoint_0(function):
     class Test:
         pass

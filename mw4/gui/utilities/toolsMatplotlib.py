@@ -257,33 +257,6 @@ class ToolsMatplotlib:
         return True
 
     @staticmethod
-    def returnDriver(sender, searchDict, addKey=''):
-        """
-        returnDriver takes the sender widget from a gui interaction and compares is to the
-        widget objects of a search dicts to retrieve is original name.
-        therefore we need to swap key value pais in the search dict as we make a reverse
-        search.
-        in addition to make it more usable the search dict might have some sub dicts where
-        to find the gui elements. if given, the will be extracted on the forehand.
-
-        :param sender:
-        :param searchDict:
-        :param addKey:
-        :return:
-        """
-
-        if addKey:
-            searchD = dict([(key, value[addKey]) for key, value in searchDict.items()])
-
-        else:
-            searchD = searchDict
-
-        searchD = dict([(value, key) for key, value in searchD.items()])
-        driver = searchD.get(sender, '')
-
-        return driver
-
-    @staticmethod
     def getIndexPoint(event=None, plane=None, epsilon=2):
         """
         getIndexPoint returns the index of the point which is nearest to the coordinate

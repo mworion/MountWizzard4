@@ -451,3 +451,17 @@ def test_guiSetText_4(function):
     suc = function.guiSetText(pb, '3.0f', 100)
     assert suc
     assert pb.text() == '100'
+
+
+def test_returnDriver_1(function):
+    sender = QWidget()
+    searchDict = {}
+    driver = function.returnDriver(sender, searchDict)
+    assert driver == ''
+
+
+def test_returnDriver_2(function):
+    sender = QWidget()
+    searchDict = {}
+    driver = function.returnDriver(sender, searchDict, addKey='test')
+    assert driver == ''

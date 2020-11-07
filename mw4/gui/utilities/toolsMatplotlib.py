@@ -38,17 +38,6 @@ __all__ = [
 
 class ToolsMatplotlib:
     """
-    MWidget defines the common parts for all windows used in MountWizzard 4 and extends the
-    standard widgets. All widgets configs which are used mor than one time are centralized
-    in this class.
-
-    For the File dialogues, the original widgets are used, but with the removal of some
-    features to make them simpler. As one optimization they always show the files and
-    directories in descending order.
-
-    The styles of the widgets are defined separately in a css looking stylesheet. The
-    standard screen size will be 800x600 pixel for all windows, but except for the main
-    one are sizable.
     """
 
     __all__ = ['ToolsMatplotlib',

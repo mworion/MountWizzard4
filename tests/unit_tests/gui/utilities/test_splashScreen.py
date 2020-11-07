@@ -24,7 +24,7 @@ import pytest
 import unittest.mock as mock
 
 # local import
-from gui.utilities.splash import SplashScreen
+from gui.utilities.splashScreen import SplashScreen
 
 
 @pytest.fixture(autouse=True, scope='function')

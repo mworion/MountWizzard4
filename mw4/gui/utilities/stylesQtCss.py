@@ -76,8 +76,6 @@ class Styles:
     M_YELLOW = '#C0C000'
     M_YELLOW_L = '#808000'
 
-    # define the basic style of the mountwizzard3 theme
-    # rise the font size for retina displays
     MAC_STYLE = """
     QWidget {
         background-color: #181818;
@@ -114,6 +112,7 @@ class Styles:
         font-size: 13pt;
     }
     """
+
     NON_MAC_STYLE = """
     QWidget {
         background-color: #181818;
@@ -150,6 +149,7 @@ class Styles:
         font-size: 10pt;
     }
     """
+
     BASIC_STYLE = """
     QWidget {
         color: rgb(32, 144, 192);
@@ -250,14 +250,14 @@ class Styles:
     QGroupBox::title {
         left: 5px;
         subcontrol-origin: margin;
-        subcontrol-position: top left; /* position at the top center */
+        subcontrol-position: top left;
         color: #C0C0C0;
         background-color: #181818;
     }
     QGroupBox::title[large='true'] {
         left: 5px;
         subcontrol-origin: margin;
-        subcontrol-position: top left; /* position at the top center */
+        subcontrol-position: top left;
         color: rgb(32, 144, 196);
         background-color: #181818;
     }
@@ -345,8 +345,8 @@ class Styles:
     }
     QDoubleSpinBox::up-button {
         subcontrol-origin: border;
-        subcontrol-position: top right; /* position at the top right corner */
-        width: 12px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
+        subcontrol-position: top right;
+        width: 12px;
         border-width: 1px;
         border-radius: 2px;
         border-color: #404040;
@@ -360,8 +360,8 @@ class Styles:
     }
     QDoubleSpinBox::down-button {
         subcontrol-origin: border;
-        subcontrol-position: bottom right; /* position at the top right corner */
-        width: 12px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
+        subcontrol-position: bottom right;
+        width: 12px;
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
@@ -387,8 +387,8 @@ class Styles:
     }
     QSpinBox::up-button {
         subcontrol-origin: border;
-        subcontrol-position: top right; /* position at the top right corner */
-        width: 16px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
+        subcontrol-position: top right;
+        width: 16px;
         border-width: 1px;
         border-radius: 2px;
         border-color: #404040;
@@ -402,8 +402,8 @@ class Styles:
     }
     QSpinBox::down-button {
         subcontrol-origin: border;
-        subcontrol-position: bottom right; /* position at the top right corner */
-        width: 16px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
+        subcontrol-position: bottom right;
+        width: 16px;
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
@@ -523,8 +523,8 @@ class Styles:
     }
     QComboBox::drop-down {
         subcontrol-origin: border;
-        subcontrol-position: right; /* position at the top right corner */
-        width: 20px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
+        subcontrol-position: right;
+        width: 20px;
         border-color: #404040;
         border-width: 1px;
         border-style: outset;
@@ -560,10 +560,10 @@ class Styles:
     }
 
     /* lines */
-    QFrame[frameShape="4"] {/* horizontal lines */
+    QFrame[frameShape="4"] {
         color: rgb(16, 72, 96);
     }
-    QFrame[frameShape="5"] {/* vertical lines */
+    QFrame[frameShape="5"] {
         color: rgb(16, 72, 96);
     }
     /* tab widget */

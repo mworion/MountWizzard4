@@ -92,12 +92,12 @@ class Styles:
         font-family: Arial;
         font-weight: bold;
         font-size: 13pt;
-    } 
+    }
     QGroupBox {
         font-family: Arial;
         font-weight: normal;
         font-size: 11pt;
-    } 
+    }
     QTextBrowser {
         font-family: Courier;
         font-weight: normal;
@@ -124,12 +124,12 @@ class Styles:
         font-family: Arial;
         font-weight: bold;
         font-size: 20pt;
-    } 
+    }
     QGroupBox[large='true'] {
         font-family: Arial;
         font-weight: normal;
         font-size: 10pt;
-    }    
+    }
     QGroupBox {
         font-family: Arial;
         font-weight: normal;
@@ -204,10 +204,10 @@ class Styles:
         border-width: 1px;
         border-color: rgb(16, 72, 96);
         border-style: outset;
-    }  
+    }
     QLineEdit:read-only{
         background-color: #202020;
-    }  
+    }
     QLineEdit[color='green'] {
         border-width: 2px;
         border-style: outset;
@@ -237,7 +237,7 @@ class Styles:
     QLabel[color='red'] {
         color: red;
     }
-    
+
     /* Group Box */
     QGroupBox {
         background-color: #181818;
@@ -288,7 +288,7 @@ class Styles:
         background-color: rgb(32, 144, 192);
         image: url(:/icon/checkmark.ico);
     }
-    
+
     /* Checkboxes */
     QCheckBox {
         color: #C0C0C0;
@@ -465,23 +465,23 @@ class Styles:
     QPushButton[running='false'] {
         background-color: #202020;
         color: #C0C0C0;
-    }     
+    }
     QPushButton[running='true'] {
         background-color: rgb(32, 144, 192);
         color: #000000;
-    } 
+    }
     QPushButton[pause='false'] {
         background-color: #202020;
         color: #C0C0C0;
-    }     
+    }
     QPushButton[pause='true'] {
         background-color: #00C000;
         color: #000000;
-    } 
+    }
     QPushButton[cancel='true'] {
         background-color: rgb(192,0, 0);
         color: #C0C0C0;
-    } 
+    }
     QPushButton[cancel='false'] {
         background-color: #202020;
         color: #C0C0C0;
@@ -548,15 +548,15 @@ class Styles:
     QComboBox QListView::item {
         min-height: 28px;
     }
-    QComboBox QListView::item:selected { 
+    QComboBox QListView::item:selected {
         border-width: 1px;
         border-style: outset;
         border-color: #404040;
-        border-radius: 2px; 
+        border-radius: 2px;
         color: #101010;
         background-color: rgb(32, 144, 192);
     }
-    QComboBox QListView::item:!selected { 
+    QComboBox QListView::item:!selected {
     }
 
     /* lines */
@@ -660,7 +660,8 @@ class Styles:
     }
     QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
     {   background: none;
-    }    
+    }
+
     /* progress bar */
     QProgressBar {
         color: white;
@@ -674,7 +675,7 @@ class Styles:
         background-color: rgb(32, 144, 192);
         width: 1px;
         margin: 0px;
-        border-width: 0px; 
+        border-width: 0px;
         border-color: #404040;
         border-radius: 0px;
         border-style: outset;

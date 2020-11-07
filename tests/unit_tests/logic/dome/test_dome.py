@@ -45,23 +45,15 @@ def module_setup_teardown():
 
 
 def test_properties_1():
-    app.framework = 'indi'
-
-    app.host = ('localhost', 7624)
-    assert app.host == ('localhost', 7624)
-
-    app.deviceName = 'test'
-    assert app.deviceName == 'test'
+    app.framework = 'test'
+    app.settlingTime = 1
+    assert app.settlingTime == 0
 
 
 def test_properties_2():
-    app.framework = 'test'
-
-    app.host = ('localhost', 7624)
-    assert app.host == ('localhost', 7624)
-
-    app.deviceName = 'test'
-    assert app.deviceName == 'test'
+    app.framework = 'indi'
+    app.settlingTime = 1
+    assert app.settlingTime == 1
 
 
 def test_startCommunication_1():

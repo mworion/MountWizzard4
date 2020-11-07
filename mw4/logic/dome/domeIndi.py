@@ -58,11 +58,11 @@ class DomeIndi(IndiClass):
 
     @property
     def settlingTime(self):
-        return self._settlingTime * 1000
+        return self._settlingTime / 1000
 
     @settlingTime.setter
     def settlingTime(self, value):
-        self._settlingTime = value
+        self._settlingTime = value * 1000
 
     def setUpdateConfig(self, deviceName):
         """

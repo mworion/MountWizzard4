@@ -936,8 +936,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             self.pointsBuildAnnotate = None
             self.pointsPolarBuild = None
             self.pointsPolarBuildAnnotate = None
-            axePolar = None
-            axePolarMove = None
             self.polarMat.figure.clf()
             self.polarMatMove.figure.clf()
 

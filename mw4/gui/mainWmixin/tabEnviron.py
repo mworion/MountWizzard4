@@ -311,6 +311,11 @@ class Environ(object):
         self.ui.sensorWeatherPress.setText('-')
         self.ui.sensorWeatherDewPoint.setText('-')
         self.ui.sensorWeatherHumidity.setText('-')
+        self.ui.sensorWeatherCloudCover.setText('-')
+        self.ui.sensorWeatherRainVol.setText('-')
+        self.ui.sensorWeatherWindSpeed.setText('-')
+        self.ui.sensorWeatherWindDir.setText('-')
+        self.ui.sensorWeatherSQR.setText('-')
 
         return True
 
@@ -332,6 +337,21 @@ class Environ(object):
 
         value = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
         self.guiSetText(self.ui.sensorWeatherHumidity, '3.0f', value)
+
+        value = self.app.sensorWeather.data.get('cloudCover', 0)
+        self.guiSetText(self.ui.sensorWeatherCloudCover, '3.0f', value)
+
+        value = self.app.sensorWeather.data.get('rain', 0)
+        self.guiSetText(self.ui.sensorWeatherRainVol, '5.2f', value)
+
+        value = self.app.sensorWeather.data.get('windDir', 0)
+        self.guiSetText(self.ui.sensorWeatherWindDir, '3.0f', value)
+
+        value = self.app.sensorWeather.data.get('windSpeed', 0)
+        self.guiSetText(self.ui.sensorWeatherWindSpeed, '3.0f', value)
+
+        value = self.app.sensorWeather.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
+        self.guiSetText(self.ui.sensorWeatherSQR, '4.2f', value)
 
         return True
 

@@ -31,12 +31,12 @@ import numpy as np
 from scipy.stats.mstats import winsorize
 
 # local import
-from gui.utilities import widget
+from gui.utilities import toolsQtWidget
 from gui.widgets import analyse_ui
 from base.tpool import Worker
 
 
-class AnalyseWindow(widget.MWidget):
+class AnalyseWindow(toolsQtWidget.MWidget):
     """
     the analyse window class handles
 

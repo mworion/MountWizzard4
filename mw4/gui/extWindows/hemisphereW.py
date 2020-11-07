@@ -25,12 +25,12 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 
 # local import
-from gui.utilities import widget
+from gui.utilities import toolsQtWidget
 from gui.widgets import hemisphere_ui
 from gui.extWindows.hemisphereWext import HemisphereWindowExt
 
 
-class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
+class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
     """
     the hemisphere window class handles all interaction with model points show / edit etc.
     the z orders is aligned as follows:

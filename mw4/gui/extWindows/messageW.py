@@ -25,11 +25,11 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 
 # local import
-from gui.utilities import widget
+from gui.utilities import toolsQtWidget
 from gui.widgets import message_ui
 
 
-class MessageWindow(widget.MWidget):
+class MessageWindow(toolsQtWidget.MWidget):
     """
     the message window class handles
 

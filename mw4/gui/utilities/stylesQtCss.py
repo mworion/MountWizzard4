@@ -23,7 +23,7 @@ from PyQt5.QtGui import QColor
 # local imports
 
 
-class MWStyles:
+class Styles:
 
     COLOR_ASTRO = QColor(32, 144, 192)
     COLOR_BLUE = QColor(0, 0, 255)

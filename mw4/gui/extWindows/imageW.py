@@ -36,7 +36,7 @@ from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
 from mountcontrol.convert import convertToDMS, convertToHMS
 
 # local import
-from gui.utilities import widget
+from gui.utilities import toolsQtWidget
 from gui.widgets import image_ui
 from base.tpool import Worker
 
@@ -57,7 +57,7 @@ class ImageWindowSignals(PyQt5.QtCore.QObject):
     solveImage = PyQt5.QtCore.pyqtSignal(object)
 
 
-class ImageWindow(widget.MWidget):
+class ImageWindow(toolsQtWidget.MWidget):
     """
     the image window class handles fits image loading, stretching, zooming and handles
     the gui interface for display. both wcs and pixel coordinates will be used.

@@ -29,11 +29,11 @@ if platform.system() == 'Windows':
 # local import
 from base.indiClass import IndiClass
 from base.alpacaClass import AlpacaClass
-from gui.utilities import widget
+from gui.utilities import toolsQtWidget
 from gui.widgets.devicePopup_ui import Ui_DevicePopup
 
 
-class DevicePopup(widget.MWidget):
+class DevicePopup(toolsQtWidget.MWidget):
     """
     the DevicePopup window class handles
 

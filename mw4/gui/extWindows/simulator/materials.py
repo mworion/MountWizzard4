@@ -23,10 +23,10 @@ from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
 from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
 
 # local import
-from gui.utilities import styles
+from gui.utilities.stylesQtCss import Styles
 
 
-class Materials(styles.MWStyles):
+class Materials(Styles):
 
     __all__ = ['Materials',
                ]

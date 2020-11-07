@@ -34,7 +34,7 @@ if pConf.isAvailable:
     from gui.extWindows.keypadW import KeypadWindow
 
 from base.loggerMW import CustomLogger
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.messageW import MessageWindow
 from gui.extWindows.hemisphereW import HemisphereWindow
 from gui.extWindows.measureW import MeasureWindow

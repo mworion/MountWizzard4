@@ -26,11 +26,11 @@ from matplotlib import ticker
 import matplotlib.pyplot as plt
 
 # local import
-from gui.utilities import widget
+from gui.utilities import toolsQtWidget
 from gui.widgets import measure_ui
 
 
-class MeasureWindow(widget.MWidget):
+class MeasureWindow(toolsQtWidget.MWidget):
     """
     the measure window class handles
 

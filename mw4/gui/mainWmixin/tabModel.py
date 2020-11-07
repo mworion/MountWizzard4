@@ -30,7 +30,7 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base import transform
-from gui.utilities.widget import QMultiWait
+from gui.utilities.toolsQtWidget import QMultiWait
 
 
 class Model:

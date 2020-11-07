@@ -27,7 +27,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from skyfield import functions
 
 # local import
-from gui.utilities import widget
+from gui.utilities import toolsQtWidget
 from gui.widgets import satellite_ui
 
 
@@ -47,7 +47,7 @@ class SatelliteWindowSignals(QObject):
     update = pyqtSignal(object, object, object)
 
 
-class SatelliteWindow(widget.MWidget):
+class SatelliteWindow(toolsQtWidget.MWidget):
     """
     the satellite window class handles
 

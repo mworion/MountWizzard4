@@ -25,11 +25,11 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5 import sip
 
 # local import
-from gui.utilities import widget
+from gui.utilities import toolsQtWidget
 from gui.widgets import keypad_ui
 
 
-class KeypadWindow(widget.MWidget):
+class KeypadWindow(toolsQtWidget.MWidget):
     """
     the KeypadWindow window class handles
 

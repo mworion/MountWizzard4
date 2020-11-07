@@ -43,7 +43,7 @@ from importlib_metadata import version
 # local import
 from mainApp import MountWizzard4
 from base.loggerMW import CustomLogger, setupLogging
-from gui.utilities import splash
+from gui.utilities.splashScreen import SplashScreen
 # noinspection PyUnresolvedReferences
 import resource.resources
 
@@ -355,7 +355,7 @@ def main():
     # app = QApplication(sys.argv)
 
     # generating splash screen
-    splashW = splash.SplashScreen(application=app)
+    splashW = SplashScreen(application=app)
 
     # and start with a first splash screen
     splashW.showMessage('Start initialising')

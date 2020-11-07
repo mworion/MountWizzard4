@@ -1,0 +1,375 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+#
+# written in python 3, (c) 2019, 2020 by mworion
+#
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+import logging
+from threading import Lock
+import bisect
+
+# external packages
+import numpy as np
+from PyQt5.QtWidgets import QVBoxLayout
+from matplotlib.figure import Figure
+from matplotlib.ticker import FormatStrFormatter
+from matplotlib.backends.backend_qt5agg import FigureCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+
+# local imports
+from base.loggerMW import CustomLogger
+
+__all__ = [
+    'ToolsMatplotlib',
+]
+
+
+class ToolsMatplotlib:
+    """
+    MWidget defines the common parts for all windows used in MountWizzard 4 and extends the
+    standard widgets. All widgets configs which are used mor than one time are centralized
+    in this class.
+
+    For the File dialogues, the original widgets are used, but with the removal of some
+    features to make them simpler. As one optimization they always show the files and
+    directories in descending order.
+
+    The styles of the widgets are defined separately in a css looking stylesheet. The
+    standard screen size will be 800x600 pixel for all windows, but except for the main
+    one are sizable.
+    """
+
+    __all__ = ['ToolsMatplotlib',
+               ]
+
+    logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
+
+    @staticmethod
+    def findIndexValue(ui, searchString, relaxed=False):
+        """
+
+        :param ui:
+        :param searchString:
+        :param relaxed:
+        :return:
+        """
+
+        for index in range(ui.model().rowCount()):
+            modelIndex = ui.model().index(index, 0)
+            indexValue = ui.model().data(modelIndex)
+
+            if indexValue is None:
+                continue
+
+            if relaxed:
+                if searchString in indexValue:
+                    return index
+
+            else:
+                if indexValue.startswith(searchString):
+                    return index
+
+        return 0
+
+    @staticmethod
+    def embedMatplot(widget=None, constrainedLayout=True):
+        """
+        embedMatplot provides the wrapper to use matplotlib drawings inside a pyqt5
+        application gui. you call it with the parent widget, which is linked to matplotlib
+        canvas of the same size. the background is set to transparent, so you could layer
+        multiple figures on top.
+
+        :param      widget:         parent ui element, which is the reference for embedding
+        :param      constrainedLayout:
+        :return:    staticCanvas:   matplotlib reference as parent for figures
+        """
+
+        if not widget:
+            return None
+
+        widget.setStyleSheet("background:transparent;")
+        layout = QVBoxLayout(widget)
+        layout.setContentsMargins(0, 0, 0, 0)
+        staticCanvas = FigureCanvas(Figure(dpi=75,
+                                           facecolor='None',
+                                           frameon=False,
+                                           tight_layout=constrainedLayout,
+                                           )
+                                    )
+        FigureCanvasQTAgg.updateGeometry(staticCanvas)
+        layout.addWidget(staticCanvas)
+        staticCanvas.setParent(widget)
+
+        return staticCanvas
+
+    def generatePolar(self, widget=None, title='', horizon=False, showAxes=True):
+        """
+
+        :param widget:
+        :param title:
+        :param horizon:
+        :param showAxes:
+        :return:
+        """
+
+        if widget is None:
+            return None, None
+
+        if not hasattr(widget, 'figure'):
+            return None, None
+
+        lock = Lock()
+
+        if showAxes:
+            color = self.M_BLUE
+            colorGrid = self.M_GREY
+
+        else:
+            color = self.M_TRANS
+            colorGrid = self.M_TRANS
+
+        with lock:
+            figure = widget.figure
+
+            if figure.axes:
+                axe = figure.axes[0]
+                axe.cla()
+
+            else:
+                figure.clf()
+                axe = figure.add_subplot(1, 1, 1, polar=True, facecolor='None')
+
+            axe.grid(True, color=colorGrid)
+
+            if title:
+                axe.set_title(title, color=color, fontweight='bold', pad=15)
+
+            axe.set_xlabel('', color=color, fontweight='bold', fontsize=12)
+            axe.set_ylabel('', color=color, fontweight='bold', fontsize=12)
+            axe.tick_params(axis='x', colors=color, labelsize=12)
+            axe.tick_params(axis='y', colors=color, labelsize=12)
+            axe.set_theta_zero_location('N')
+            axe.set_rlabel_position(45)
+            axe.set_theta_direction(-1)
+            axe.spines['polar'].set_color(color)
+
+            # ticks have to be set before labels to be sure to have them positioned correctly
+            axe.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))
+            axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
+
+            if not horizon:
+                return axe, figure
+
+            axe.set_ylim(0, 90)
+            axe.set_yticks(range(0, 91, 15))
+            axe.set_yticklabels(['', '75', '60', '45', '30', '15', ''])
+
+            return axe, figure
+
+    def generateFlat(self, widget=None, title='', horizon=False, showAxes=True):
+        """
+
+        :param widget:
+        :param title:
+        :param horizon:
+        :param showAxes:
+        :return:
+        """
+
+        if widget is None:
+            return None, None
+
+        if not hasattr(widget, 'figure'):
+            return None, None
+
+        lock = Lock()
+
+        if showAxes:
+            color = self.M_BLUE
+            colorGrid = self.M_GREY
+
+        else:
+            color = self.M_TRANS
+            colorGrid = self.M_TRANS
+
+        with lock:
+            figure = widget.figure
+
+            if figure.axes:
+                axe = figure.axes[0]
+                axe.cla()
+
+            else:
+                figure.clf()
+                axe = figure.add_subplot(1, 1, 1, facecolor='None')
+
+            axe.spines['bottom'].set_color(color)
+            axe.spines['top'].set_color(color)
+            axe.spines['left'].set_color(color)
+            axe.spines['right'].set_color(color)
+            axe.grid(showAxes, color=colorGrid)
+
+            if title:
+                axe.set_title(title, color=color, fontweight='bold', pad=15)
+
+            axe.set_xlabel('', color=color, fontweight='bold', fontsize=12)
+            axe.set_ylabel('', color=color, fontweight='bold', fontsize=12)
+            axe.tick_params(axis='x', colors=color, labelsize=12)
+            axe.tick_params(axis='y', colors=color, labelsize=12)
+
+            if not horizon:
+                return axe, figure
+
+            axe.set_xlim(0, 360)
+            axe.set_ylim(0, 90)
+
+            axe.set_xticks(np.arange(0, 361, 45))
+            axe.set_xticklabels(['0 N', '45 NE', '90 E', '135 SE', '180 S', '225 SW', '270 W',
+                                 '315 NW', '360 N'])
+            axe.set_xlabel('Azimuth [degrees]', color=color, fontweight='bold', fontsize=12)
+            axe.set_ylabel('Altitude [degrees]', color=color, fontweight='bold', fontsize=12)
+
+            return axe, figure
+
+    def generateColorbar(self, figure=None, scatter=None, label=''):
+        """
+        :param figure:
+        :param scatter:
+        :param label:
+        :return:
+        """
+        if len(figure.axes) > 1:
+            return False
+
+        formatString = FormatStrFormatter('%1.0f')
+        figure.colorbar(scatter,
+                        pad=0.1,
+                        fraction=0.12,
+                        aspect=25,
+                        shrink=0.9,
+                        format=formatString,
+                        )
+        figure.axes[1].set_ylabel(label, color=self.M_BLUE)
+        figure.axes[1].tick_params(axis='y', labelcolor=self.M_BLUE, color=self.M_BLUE)
+
+        return True
+
+    @staticmethod
+    def returnDriver(sender, searchDict, addKey=''):
+        """
+        returnDriver takes the sender widget from a gui interaction and compares is to the
+        widget objects of a search dicts to retrieve is original name.
+        therefore we need to swap key value pais in the search dict as we make a reverse
+        search.
+        in addition to make it more usable the search dict might have some sub dicts where
+        to find the gui elements. if given, the will be extracted on the forehand.
+
+        :param sender:
+        :param searchDict:
+        :param addKey:
+        :return:
+        """
+
+        if addKey:
+            searchD = dict([(key, value[addKey]) for key, value in searchDict.items()])
+
+        else:
+            searchD = searchDict
+
+        searchD = dict([(value, key) for key, value in searchD.items()])
+        driver = searchD.get(sender, '')
+
+        return driver
+
+    @staticmethod
+    def getIndexPoint(event=None, plane=None, epsilon=2):
+        """
+        getIndexPoint returns the index of the point which is nearest to the coordinate
+        of the mouse click when the click is in distance epsilon of the points. otherwise
+        no index will be returned.
+
+        :param event: data of the mouse clicked event
+        :param plane: coordinates as tuples (alt, az)
+        :param epsilon:
+        :return: index or none
+        """
+
+        if event is None:
+            return None
+
+        if plane is None:
+            return None
+
+        if len(plane) == 0:
+            return 0
+
+        xt = np.asarray([i[1] for i in plane])
+        yt = np.asarray([i[0] for i in plane])
+        d = np.sqrt((xt - event.xdata)**2 / 4 + (yt - event.ydata)**2)
+        index = d.argsort()[:1][0]
+
+        if d[index] >= epsilon:
+            return None
+
+        index = int(index)
+
+        return index
+
+    @staticmethod
+    def getIndexPointX(event=None, plane=None):
+        """
+        getIndexPointX returns the index of the point which has a x coordinate closest to
+        the left of the x coordinate of the mouse click regardless which y coordinate it has
+
+        :param event: data of the mouse clicked event
+        :param plane: coordinates as tuples (x, y)
+        :return: index or none
+        """
+
+        if event is None:
+            return None
+
+        if not plane:
+            return None
+
+        xt = [i[1] for i in plane]
+        index = int(bisect.bisect_left(xt, event.xdata))
+
+        return index
+
+    @staticmethod
+    def writeRetrofitData(mountModel, buildModel):
+        """
+
+        :param mountModel:
+        :param buildModel:
+        :return:
+        """
+
+        for i, mPoint in enumerate(buildModel):
+            mPoint['errorRMS'] = mountModel.starList[i].errorRMS
+            mPoint['errorAngle'] = mountModel.starList[i].errorAngle.degrees
+            mPoint['haMountModel'] = mountModel.starList[i].coord.ra.hours
+            mPoint['decMountModel'] = mountModel.starList[i].coord.dec.degrees
+            mPoint['errorRA'] = mountModel.starList[i].errorRA()
+            mPoint['errorDEC'] = mountModel.starList[i].errorDEC()
+            mPoint['errorIndex'] = mountModel.starList[i].number
+            mPoint['modelTerms'] = mountModel.terms
+            mPoint['modelErrorRMS'] = mountModel.errorRMS
+            mPoint['modelOrthoError'] = mountModel.orthoError.degrees * 3600
+            mPoint['modelPolarError'] = mountModel.polarError.degrees * 3600
+
+        return buildModel

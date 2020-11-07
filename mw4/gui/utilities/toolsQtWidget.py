@@ -31,13 +31,13 @@ from PyQt5.QtCore import Qt, QSortFilterProxyModel, QDir, QObject, pyqtSignal, Q
 from PyQt5.QtCore import QSize
 from matplotlib.figure import Figure
 from matplotlib.ticker import FormatStrFormatter
-import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 
 # local imports
 from base.loggerMW import CustomLogger
-from gui.utilities import styles
+from gui.utilities.stylesQtCss import Styles
+from gui.utilities.toolsMatplotlib import ToolsMatplotlib
 
 __all__ = [
     'MWidget',
@@ -98,7 +98,7 @@ class QMultiWait(QObject):
         self.waitready = set()
 
 
-class MWidget(QWidget, styles.MWStyles):
+class MWidget(QWidget, Styles, ToolsMatplotlib):
     """
     MWidget defines the common parts for all windows used in MountWizzard 4 and extends the
     standard widgets. All widgets configs which are used mor than one time are centralized

@@ -29,7 +29,7 @@ Released betas
 0.211.0
 
 - refactor gui / utilities
-- refactor dome
+- refactor dome and removed douplicates
 - adding additional fields for environment sensor from hub if present
 - showing satellite data when opening sat window
 

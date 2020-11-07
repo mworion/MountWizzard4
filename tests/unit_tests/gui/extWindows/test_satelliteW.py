@@ -96,12 +96,10 @@ def test_closeEvent_1(function):
 
 
 def test_showWindow(function):
-    with mock.patch.object(function,
-                           'drawSatellite'):
-        with mock.patch.object(MWidget,
-                               'show'):
-            suc = function.showWindow()
-            assert suc
+    with mock.patch.object(MWidget,
+                           'show'):
+        suc = function.showWindow()
+        assert suc
 
 
 def test_markerSatellite(function):

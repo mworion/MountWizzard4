@@ -222,6 +222,7 @@ class App(QObject):
     updateDomeSettings = pyqtSignal()
     drawBuildPoints = pyqtSignal()
     drawHorizonPoints = pyqtSignal()
+    sendSatelliteData = pyqtSignal()
     showAnalyse = pyqtSignal(object)
     showImage = pyqtSignal(object)
     messageQueue = Queue()

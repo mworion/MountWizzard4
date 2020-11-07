@@ -80,7 +80,6 @@ class Satellite(object):
         """
 
         self.setupSatelliteSourceURLsDropDown()
-        # self.loadTLEDataFromSourceURLs()
 
         return True
 
@@ -180,9 +179,6 @@ class Satellite(object):
 
         if key not in self.satelliteSourceURLs:
             return False
-
-        # we could delete a filter when selecting new database
-        # self.ui.filterText.setText('')
 
         source = self.satelliteSourceURLs[key]
         isOnline = self.ui.isOnline.isChecked()

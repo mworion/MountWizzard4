@@ -504,6 +504,33 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         return doubleClickEventFilter.clicked
 
     @staticmethod
+    def guiSetText(ui, formatElement, value=None):
+        """
+
+        :param ui:
+        :param formatElement:
+        :param value:
+        :return: True for test purpose
+        """
+
+        if not ui:
+            return False
+
+        if not formatElement:
+            return False
+
+        if value is None:
+            text = '-'
+
+        else:
+            formatStr = '{0:' + formatElement + '}'
+            text = formatStr.format(value)
+
+        ui.setText(text)
+
+        return True
+
+    @staticmethod
     def returnDriver(sender, searchDict, addKey=''):
         """
         returnDriver takes the sender widget from a gui interaction and compares is to the

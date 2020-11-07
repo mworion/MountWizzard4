@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>11</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -15759,7 +15759,7 @@ Hint if mount will need a flip when following satellite.</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>If checked, the renaming process will run through all subdirectories.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mount will move on max speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Max</string>
@@ -15781,7 +15781,7 @@ Hint if mount will need a flip when following satellite.</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>If checked, the renaming process will run through all subdirectories.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mount will move on med speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Med</string>
@@ -15803,7 +15803,7 @@ Hint if mount will need a flip when following satellite.</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>If checked, the renaming process will run through all subdirectories.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mount will move on low speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Low</string>
@@ -15825,7 +15825,7 @@ Hint if mount will need a flip when following satellite.</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>If checked, the renaming process will run through all subdirectories.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mount will move on high speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>High</string>

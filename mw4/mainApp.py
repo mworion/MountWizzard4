@@ -74,6 +74,7 @@ class MountWizzard4(QObject):
     drawBuildPoints = pyqtSignal()
     drawHorizonPoints = pyqtSignal()
     updateDomeSettings = pyqtSignal()
+    sendSatelliteData = pyqtSignal()
     showImage = pyqtSignal(str)
     showAnalyse = pyqtSignal(str)
     remoteCommand = pyqtSignal(str)

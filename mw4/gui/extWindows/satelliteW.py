@@ -161,7 +161,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
 
-        self.drawSatellite()
+        self.app.sendSatelliteData.emit()
         self.show()
 
         return True
@@ -635,6 +635,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
 
         if satellite is None or satOrbits is None:
+            print('none received')
             self.drawSphere1()
             self.drawSphere2()
             self.drawEarth()

@@ -39,6 +39,7 @@ class Satellite(object):
 
         self.satellites = dict()
         self.satellite = None
+        self.satOrbits = None
         self.listSatelliteNamesProxy = None
         self.satellitesRawTLE = {}
 
@@ -64,6 +65,7 @@ class Satellite(object):
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadTLEDataFromSourceURLs)
         self.ui.filterText.textChanged.connect(self.filterSatelliteNamesList)
 
+        self.app.sendSatelliteData.connect(self.sendSatelliteData)
         self.app.mount.signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
         self.app.mount.signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
         self.ui.isOnline.stateChanged.connect(self.loadTLEDataFromSourceURLs)
@@ -431,19 +433,35 @@ class Satellite(object):
         self.updateOrbit()
         self.programTLEDataToMount()
         self.calcOrbitFromTLEInMount()
-        satOrbits = self.showRises()
+        self.satOrbits = self.showRises()
 
         winObj = self.app.uiWindows['showSatelliteW']
 
         if not winObj['classObj']:
             return False
 
-        winObj['classObj'].signals.show.emit(self.satellite, satOrbits)
+        winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits)
+        return True
+
+    def sendSatelliteData(self):
+        """
+        :return:
+        """
+
+        if not self.satellite or not self.satOrbits:
+            return False
+
+        winObj = self.app.uiWindows['showSatelliteW']
+
+        if not winObj['classObj']:
+            return False
+
+        winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits)
+
         return True
 
     def signalExtractSatelliteData(self):
         """
-
         :return: True for test purpose
         """
 

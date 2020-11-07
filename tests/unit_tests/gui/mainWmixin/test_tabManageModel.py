@@ -35,7 +35,7 @@ from mountcontrol.modelStar import ModelStar
 # local import
 from gui.mainWmixin.tabManageModel import ManageModel
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='module')

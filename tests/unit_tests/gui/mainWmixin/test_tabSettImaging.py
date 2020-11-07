@@ -31,7 +31,7 @@ from mountcontrol.qtmount import Mount
 # local import
 from gui.mainWmixin.tabSettImaging import SettImaging
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from logic.imaging.camera import Camera
 from logic.imaging.focuser import Focuser
 from logic.imaging.filter import Filter

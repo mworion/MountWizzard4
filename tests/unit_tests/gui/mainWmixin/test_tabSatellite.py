@@ -33,7 +33,7 @@ from sgp4.exporter import export_tle
 # local import
 from gui.mainWmixin.tabSatellite import Satellite
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from logic.environment.skymeter import Skymeter
 from base.loggerMW import CustomLogger
 

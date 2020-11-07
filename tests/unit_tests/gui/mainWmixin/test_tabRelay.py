@@ -28,7 +28,7 @@ from logic.powerswitch.kmRelay import KMRelay
 from gui.mainWmixin.tabSettRelay import SettRelay
 from gui.mainWmixin.tabRelay import Relay
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -27,7 +27,7 @@ from mountcontrol.qtmount import Mount
 from skyfield.toposlib import Topos
 
 # local import
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabBuildPoints import BuildPoints
 from logic.modeldata.buildpoints import DataPoint

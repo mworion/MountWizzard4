@@ -31,7 +31,7 @@ import numpy as np
 
 # local import
 from tests.baseTestSetupExtWindows import App
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.imageW import ImageWindow
 
 

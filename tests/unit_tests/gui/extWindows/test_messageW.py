@@ -24,7 +24,7 @@ from PyQt5.QtGui import QCloseEvent
 
 # local import
 from tests.baseTestSetupExtWindows import App
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.messageW import MessageWindow
 
 

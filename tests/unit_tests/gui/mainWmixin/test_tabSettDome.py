@@ -29,7 +29,7 @@ from skyfield.toposlib import Topos
 # local import
 from gui.mainWmixin.tabSettDome import SettDome
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from logic.dome.dome import Dome
 from base.loggerMW import CustomLogger
 

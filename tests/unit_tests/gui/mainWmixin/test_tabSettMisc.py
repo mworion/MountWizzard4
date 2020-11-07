@@ -33,7 +33,7 @@ import importlib_metadata
 # local import
 from gui.mainWmixin.tabSettMisc import SettMisc
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import CustomLogger
 from logic.dome.dome import Dome
 from logic.imaging.camera import Camera

@@ -31,7 +31,7 @@ from skyfield.toposlib import Topos
 # local import
 from gui.mainWmixin.tabSettDevice import SettDevice
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from logic.environment.sensorWeather import SensorWeather
 from logic.environment.onlineWeather import OnlineWeather
 from logic.environment.directWeather import DirectWeather

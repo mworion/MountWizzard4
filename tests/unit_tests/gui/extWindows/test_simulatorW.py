@@ -26,7 +26,7 @@ from skyfield.api import Angle
 
 # local import
 from tests.baseTestSetupExtWindows import App
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.simulatorW import SimulatorWindow
 from gui.extWindows.simulator import tools
 

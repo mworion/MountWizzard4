@@ -26,7 +26,7 @@ from skyfield.api import Topos
 
 # local import
 from tests.baseTestSetupMixins import App
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabAlmanac import Almanac
 

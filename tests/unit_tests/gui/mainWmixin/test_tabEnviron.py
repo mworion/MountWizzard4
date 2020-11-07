@@ -35,7 +35,7 @@ import numpy as np
 # local import
 from gui.mainWmixin.tabEnviron import Environ
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from logic.environment.sensorWeather import SensorWeather
 from logic.environment.onlineWeather import OnlineWeather
 from logic.environment.weatherUPB import WeatherUPB

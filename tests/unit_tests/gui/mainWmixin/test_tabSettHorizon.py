@@ -29,7 +29,7 @@ from mountcontrol.qtmount import Mount
 from gui.mainWmixin.tabSettHorizon import SettHorizon
 from gui.widgets.main_ui import Ui_MainWindow
 from logic.modeldata.buildpoints import DataPoint
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')

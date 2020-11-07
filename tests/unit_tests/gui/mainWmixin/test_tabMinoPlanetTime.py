@@ -29,7 +29,7 @@ from PyQt5.QtWidgets import QMessageBox
 
 # local import
 from tests.baseTestSetupMixins import App
-from gui.utilities.widget import MWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
 import base.tpool

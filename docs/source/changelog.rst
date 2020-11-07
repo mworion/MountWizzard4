@@ -23,10 +23,16 @@ Unreleased Betas
 - retrofit model based on hashed coordinates
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
 - optimizing dome for less movements on small changes
-- refactor gui / utilities
 
 Released betas
 --------------
+0.211.0
+
+- refactor gui / utilities
+- refactor dome
+- adding additional fields for environment sensor from hub if present
+- showing satellite data when opening sat window
+
 0.210.0
 
 - moving to skyfield 1.31 and get rid of some files related to time

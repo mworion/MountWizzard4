@@ -53,6 +53,7 @@ def module_setup_teardown(qtbot):
         threadPool = QThreadPool()
         update1s = pyqtSignal()
         update3s = pyqtSignal()
+        sendSatelliteData = pyqtSignal()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
@@ -402,6 +403,36 @@ def test_extractSatelliteData_4():
                            'showRises'):
         suc = app.extractSatelliteData(satName='NOAA 8')
         assert suc
+
+
+def test_sendSatelliteData_1():
+    app.satellite = None
+    app.satOrbits = None
+    suc = app.sendSatelliteData()
+    assert not suc
+
+
+def test_sendSatelliteData_2():
+    app.app.uiWindows = {'showSatelliteW': {'classObj': None}}
+    app.satellite = 1
+    app.satOrbits = 1
+    suc = app.sendSatelliteData()
+    assert not suc
+
+
+def test_sendSatelliteData_3():
+    class Test1(QObject):
+        update = pyqtSignal(object, object, object)
+        show = pyqtSignal(object, object)
+
+    class Test(QObject):
+        signals = Test1()
+
+    app.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
+    app.satellite = 1
+    app.satOrbits = 1
+    suc = app.sendSatelliteData()
+    assert suc
 
 
 def test_signalExtractSatelliteData_1():

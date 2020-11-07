@@ -201,7 +201,7 @@ class AlpacaClass:
 
     def pollStatus(self):
         """
-        pollStatus is the thread method to be called for collecting data
+        pollStatusWorker is the thread method to be called for collecting data
 
         :return: success
         """
@@ -245,7 +245,7 @@ class AlpacaClass:
 
     def startPollStatus(self):
         """
-        startPollStatus starts a thread every 1 second for polling.
+        pollStatus starts a thread every 1 second for polling.
 
         :return: success
         """

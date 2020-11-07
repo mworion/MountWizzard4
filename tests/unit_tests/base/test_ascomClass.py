@@ -158,7 +158,7 @@ def test_pollStatus_1():
     app.deviceConnected = False
     app.client = Test()
 
-    suc = app.pollStatus()
+    suc = app.pollStatusWorker()
     assert not suc
     assert not app.deviceConnected
 
@@ -174,7 +174,7 @@ def test_pollStatus_2():
     app.deviceConnected = True
     app.client = Test()
 
-    suc = app.pollStatus()
+    suc = app.pollStatusWorker()
     assert not suc
     assert not app.deviceConnected
 
@@ -190,7 +190,7 @@ def test_pollStatus_3():
     app.deviceConnected = False
     app.client = Test()
 
-    suc = app.pollStatus()
+    suc = app.pollStatusWorker()
     assert suc
     assert app.deviceConnected
 
@@ -208,7 +208,7 @@ def test_pollStatus_4():
     with mock.patch.object(app,
                            'isClientConnected',
                            side_effect=Exception()):
-        suc = app.pollStatus()
+        suc = app.pollStatusWorker()
         assert not suc
 
 
@@ -233,14 +233,14 @@ def test_pollData_2():
 
 
 def test_startPollStatus():
-    suc = app.startPollStatus()
+    suc = app.pollStatus()
     assert suc
 
 
 def test_startCommunication_1():
     if platform.system() != 'Windows':
         return
-    
+
     app.deviceName = 'test'
     with mock.patch.object(app,
                            'startTimer'):

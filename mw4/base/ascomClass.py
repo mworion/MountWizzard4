@@ -63,8 +63,8 @@ class AscomClass(object):
     log = CustomLogger(logger, {})
 
     # relaxed generic timing
-    CYCLE_DEVICE = 3000
-    CYCLE_DATA = 3000
+    CYCLE_POLL_STATUS = 3000
+    CYCLE_POLL_DATA = 3000
 
     def __init__(self, app=None, data=None, threadPool=None):
         super().__init__()
@@ -85,13 +85,13 @@ class AscomClass(object):
         self.deviceConnected = False
         self.serverConnected = False
 
-        self.cycleDevice = QTimer()
-        self.cycleDevice.setSingleShot(False)
-        self.cycleDevice.timeout.connect(self.startPollStatus)
+        self.cyclePollStatus = QTimer()
+        self.cyclePollStatus.setSingleShot(False)
+        self.cyclePollStatus.timeout.connect(self.pollStatus)
 
-        self.cycleData = QTimer()
-        self.cycleData.setSingleShot(False)
-        self.cycleData.timeout.connect(self.pollData)
+        self.cyclePollData = QTimer()
+        self.cyclePollData.setSingleShot(False)
+        self.cyclePollData.timeout.connect(self.pollData)
 
     def connectClient(self):
         self.client.connected = True
@@ -155,8 +155,8 @@ class AscomClass(object):
 
         :return: true for test purpose
         """
-        self.cycleData.start(self.CYCLE_DATA)
-        self.cycleDevice.start(self.CYCLE_DEVICE)
+        self.cyclePollData.start(self.CYCLE_POLL_DATA)
+        self.cyclePollStatus.start(self.CYCLE_POLL_STATUS)
 
         return True
 
@@ -166,14 +166,13 @@ class AscomClass(object):
 
         :return: true for test purpose
         """
-        self.cycleData.stop()
-        self.cycleDevice.stop()
+        self.cyclePollData.stop()
+        self.cyclePollStatus.stop()
 
         return True
 
     def dataEntry(self, value, element, elementInv=None):
         """
-
         :param value:
         :param element:
         :param elementInv:
@@ -199,9 +198,9 @@ class AscomClass(object):
 
         return resetValue
 
-    def pollStatus(self):
+    def pollStatusWorker(self):
         """
-        pollStatus is the thread method to be called for collecting data
+        pollStatusWorker is the thread method to be called for collecting data
 
         :return: success
         """
@@ -249,13 +248,13 @@ class AscomClass(object):
 
         return True
 
-    def startPollStatus(self):
+    def pollStatus(self):
         """
-        startPollStatus starts a thread every 1 second for polling.
+        pollStatus starts a thread every 1 second for polling.
 
         :return: success
         """
-        worker = Worker(self.pollStatus)
+        worker = Worker(self.pollStatusWorker)
         self.threadPool.start(worker)
 
         return True

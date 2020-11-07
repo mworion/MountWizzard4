@@ -35,10 +35,6 @@ class DomeIndi(IndiClass):
     __all__ = ['DomeIndi',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
-
-    # update rate to 1000 milli seconds for setting indi server
     UPDATE_RATE = 1000
 
     def __init__(self, app=None, signals=None, data=None):
@@ -46,23 +42,8 @@ class DomeIndi(IndiClass):
 
         self.signals = signals
         self.data = data
-        self.settlingTime = 0
-        self.azimuthTarget = 0
-        self.slewing = False
 
         self.app.update1s.connect(self.updateStatus)
-
-        self.settlingWait = PyQt5.QtCore.QTimer()
-        self.settlingWait.setSingleShot(True)
-        self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
-
-    @property
-    def settlingTime(self):
-        return self._settlingTime / 1000
-
-    @settlingTime.setter
-    def settlingTime(self, value):
-        self._settlingTime = value * 1000
 
     def setUpdateConfig(self, deviceName):
         """
@@ -112,30 +93,6 @@ class DomeIndi(IndiClass):
 
         return True
 
-    def waitSettlingAndEmit(self):
-        """
-        waitSettlingAndEmit emit the signal for slew finished
-
-        :return: true for test purpose
-        """
-
-        self.signals.slewFinished.emit()
-        self.signals.message.emit('')
-
-        return True
-
-    @staticmethod
-    def diffModulus(x, y, m):
-        """
-        :param x:
-        :param y:
-        :param m:
-        :return:
-        """
-        diff = abs(x - y)
-        diff = abs(diff % m)
-        return min(diff, abs(diff - m))
-
     def updateNumber(self, deviceName, propertyName):
         """
         updateNumber is called whenever a new number is received in client. it runs
@@ -154,20 +111,6 @@ class DomeIndi(IndiClass):
                 continue
 
             azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
-            hasToMove = self.diffModulus(azimuth, self.azimuthTarget, 360) > 1
-            isSlewing = self.slewing and hasToMove
-
-            if isSlewing:
-                self.signals.message.emit('slewing')
-
-            else:
-                self.signals.message.emit('')
-
-            if self.slewing and not isSlewing:
-                self.signals.message.emit('settle')
-                self.settlingWait.start(self.settlingTime)
-
-            self.slewing = isSlewing
             self.signals.azimuth.emit(azimuth)
 
         return True
@@ -181,7 +124,6 @@ class DomeIndi(IndiClass):
         :param azimuth:
         :return: success
         """
-
         if self.device is None:
             return False
 
@@ -199,9 +141,6 @@ class DomeIndi(IndiClass):
                                         propertyName='ABS_DOME_POSITION',
                                         elements=position,
                                         )
-
-        self.slewing = True
-        self.azimuthTarget = azimuth
         self.signals.message.emit('slewing')
 
         return suc

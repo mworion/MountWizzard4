@@ -122,94 +122,21 @@ def test_updateStatus_2():
     assert suc
 
 
-def test_waitSettlingTime():
-    suc = app.waitSettlingAndEmit()
-    assert suc
-
-
 def test_updateNumber_1():
     app.device = None
-    with mock.patch.object(app.settlingWait,
-                           'start'):
-        suc = app.updateNumber('test', 'test')
-        assert not suc
+    suc = app.updateNumber('test', 'test')
+    assert not suc
 
 
 def test_updateNumber_2():
     app.device = Device()
-    app.deviceName = ''
-    with mock.patch.object(app.settlingWait,
-                           'start'):
-        suc = app.updateNumber('test', 'test')
-        assert not suc
-
-
-def test_updateNumber_3():
-    app.device = Device()
     app.deviceName = 'test'
-    with mock.patch.object(app.settlingWait,
-                           'start'):
-        suc = app.updateNumber('test', 'test')
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'TEST': 1,
+                                         'DOME_ABSOLUTE_POSITION': 2}):
+        suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
         assert suc
-
-
-def test_updateNumber_4():
-    app.device = Device()
-    app.deviceName = 'test'
-    with mock.patch.object(app.device,
-                           'getNumber',
-                           return_value={'TEST': 1,
-                                         'DOME_ABSOLUTE_POSITION': 2}):
-        with mock.patch.object(app.settlingWait,
-                               'start'):
-            suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
-            assert suc
-
-
-def test_updateNumber_5():
-    app.device = Device()
-    app.device.ABS_DOME_POSITION = {'state': 'test'}
-    app.deviceName = 'test'
-    app.azimuth = 10
-    with mock.patch.object(app.device,
-                           'getNumber',
-                           return_value={'TEST': 1,
-                                         'DOME_ABSOLUTE_POSITION': 2}):
-        with mock.patch.object(app.settlingWait,
-                               'start'):
-            suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
-            assert suc
-
-
-def test_updateNumber_6():
-    app.device = Device()
-    app.device.ABS_DOME_POSITION = {'state': 'Busy'}
-    app.deviceName = 'test'
-    app.azimuth = 10
-    with mock.patch.object(app.device,
-                           'getNumber',
-                           return_value={'TEST': 1,
-                                         'DOME_ABSOLUTE_POSITION': 2}):
-        with mock.patch.object(app.settlingWait,
-                               'start'):
-            suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
-            assert suc
-
-
-def test_updateNumber_7():
-    app.device = Device()
-    app.device.ABS_DOME_POSITION = {'state': 'test'}
-    app.deviceName = 'test'
-    app.azimuth = 10
-    app.slewing = True
-    with mock.patch.object(app.device,
-                           'getNumber',
-                           return_value={'TEST': 1,
-                                         'DOME_ABSOLUTE_POSITION': 2}):
-        with mock.patch.object(app.settlingWait,
-                               'start'):
-            suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
-            assert suc
 
 
 def test_slewToAltAz_1():

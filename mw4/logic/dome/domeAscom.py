@@ -41,71 +41,14 @@ class DomeAscom(AscomClass):
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
-        # as we have in the base class only the base client there, we will get more
-        # specialized with Dome (which is derived from the base class)
         self.signals = signals
         self.data = data
-        self.slewing = False
-        self.azimuthTarget = 0
-        self.settlingTime = 0
-
-        self.settlingWait = PyQt5.QtCore.QTimer()
-        self.settlingWait.setSingleShot(True)
-        self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
-
-    @property
-    def settlingTime(self):
-        return self._settlingTime / 1000
-
-    @settlingTime.setter
-    def settlingTime(self, value):
-        self._settlingTime = value * 1000
-
-    def waitSettlingAndEmit(self):
-        """
-        waitSettlingAndEmit emit the signal for slew finished
-
-        :return: true for test purpose
-        """
-
-        self.signals.slewFinished.emit()
-        self.signals.message.emit('')
-
-        return True
-
-    @staticmethod
-    def diffModulus(x, y, m):
-        """
-        :param x:
-        :param y:
-        :param m:
-        :return:
-        """
-        diff = abs(x - y)
-        diff = abs(diff % m)
-        return min(diff, abs(diff - m))
 
     def processPolledData(self):
         """
-
         :return: true for test purpose
         """
-
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
-        hasToMove = self.diffModulus(azimuth, self.azimuthTarget, 360) > 1
-        isSlewing = self.slewing and hasToMove
-
-        if isSlewing:
-            self.signals.message.emit('slewing')
-
-        else:
-            self.signals.message.emit('')
-
-        if self.slewing and not isSlewing:
-            self.signals.message.emit('settle')
-            self.settlingWait.start(self.settlingTime)
-
-        self.slewing = isSlewing
         self.signals.azimuth.emit(azimuth)
 
         return True
@@ -151,13 +94,10 @@ class DomeAscom(AscomClass):
         :param azimuth:
         :return: success
         """
-
         if not self.deviceConnected:
             return False
 
         self.signals.message.emit('slewing')
-        self.slewing = True
-        self.azimuthTarget = azimuth
         self.client.SlewToAzimuth(azimuth)
 
         return True

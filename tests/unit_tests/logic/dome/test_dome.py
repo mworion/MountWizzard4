@@ -45,13 +45,6 @@ def module_setup_teardown():
 
 
 def test_properties_1():
-    app.framework = 'test'
-    app.settlingTime = 1
-    assert app.settlingTime == 0
-
-
-def test_properties_2():
-    app.framework = 'indi'
     app.settlingTime = 1
     assert app.settlingTime == 1
 
@@ -78,6 +71,46 @@ def test_stopCommunication_2():
     app.framework = 'indi'
     suc = app.stopCommunication()
     assert suc
+
+
+def test_waitSettlingAndEmit():
+    suc = app.waitSettlingAndEmit()
+    assert suc
+
+
+def test_diffModulus_1():
+    val = app.diffModulus(1, 359, 360)
+    assert val == 2
+
+
+def test_checkSlewingDome_1():
+    app.data['Slewing'] = False
+    app.data['AzimuthTarget'] = 0
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 0
+    with mock.patch.object(app.settlingWait,
+                           'start'):
+        suc = app.checkSlewingDome()
+        assert suc
+
+
+def test_checkSlewingDome_2():
+    app.data['Slewing'] = True
+    app.data['AzimuthTarget'] = 0
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 0
+    with mock.patch.object(app.settlingWait,
+                           'start'):
+        suc = app.checkSlewingDome()
+        assert suc
+
+
+def test_checkSlewingDome_3():
+    app.data['Slewing'] = True
+    app.data['AzimuthTarget'] = 5
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 0
+    with mock.patch.object(app.settlingWait,
+                           'start'):
+        suc = app.checkSlewingDome()
+        assert suc
 
 
 def test_slewDome_0():

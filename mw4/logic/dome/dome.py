@@ -66,7 +66,10 @@ class Dome:
         self.threadPool = app.threadPool
         self.signals = DomeSignals()
 
-        self.data = {}
+        self.data = {
+            'Sewing': False,
+            'AzimuthTarget': 0,
+        }
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
         self.framework = ''
@@ -99,25 +102,18 @@ class Dome:
         indiSignals.deviceConnected.connect(self.signals.deviceConnected)
         indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
+        self.app.update1s.connect(self.checkSlewingDome)
         self.useGeometry = False
-
-    @property
-    def settlingTime(self):
-        if self.framework not in self.run:
-            return 0
-        return self.run[self.framework].settlingTime
-
-    @settlingTime.setter
-    def settlingTime(self, value):
-        if self.framework not in self.run:
-            return
-        self.run[self.framework].settlingTime = value
+        self.settlingTime = 0
+        self.settlingWait = PyQt5.QtCore.QTimer()
+        self.settlingWait.setSingleShot(True)
+        self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
 
     def startCommunication(self, loadConfig=False):
         """
-
+        :param loadConfig:
+        :return:
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -126,15 +122,59 @@ class Dome:
 
     def stopCommunication(self):
         """
-
+        :return:
         """
-
         if self.framework not in self.run.keys():
             return False
 
         self.signals.message.emit('')
         suc = self.run[self.framework].stopCommunication()
         return suc
+
+    def waitSettlingAndEmit(self):
+        """
+        :return: true for test purpose
+        """
+
+        self.signals.slewFinished.emit()
+        self.signals.message.emit('')
+
+        return True
+
+    @staticmethod
+    def diffModulus(x, y, m):
+        """
+        :param x:
+        :param y:
+        :param m:
+        :return:
+        """
+        diff = abs(x - y)
+        diff = abs(diff % m)
+        return min(diff, abs(diff - m))
+
+    def checkSlewingDome(self):
+        """
+        :return:
+        """
+        azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
+        hasToMove = self.diffModulus(azimuth, self.data['AzimuthTarget'], 360) > 1
+        isSlewing = self.data['Slewing'] and hasToMove
+
+        if isSlewing:
+            self.signals.message.emit('slewing')
+
+        else:
+            self.signals.message.emit('')
+
+        if self.data['Slewing'] and not isSlewing:
+            self.signals.message.emit('settle')
+            self.settlingWait.start(self.settlingTime * 1000)
+
+        self.data['Slewing'] = isSlewing
+        self.signals.azimuth.emit(azimuth)
+
+        return True
 
     def slewDome(self, altitude=0, azimuth=0):
         """
@@ -166,6 +206,9 @@ class Dome:
             az = azimuth
 
         delta = azimuth - az
+
+        self.data['Slewing'] = True
+        self.data['AzimuthTarget'] = azimuth
         self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
 
         return delta

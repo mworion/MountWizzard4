@@ -43,51 +43,9 @@ def module_setup_teardown():
         yield
 
 
-def test_waitSettlingAndEmit():
-    suc = app.waitSettlingAndEmit()
-    assert suc
-
-
-def test_diffModulus_1():
-    val = app.diffModulus(1, 359, 360)
-    assert val == 2
-
-
 def test_processPolledData_1():
-    app.data['slewing'] = False
-    app.slewing = False
-    with mock.patch.object(app.settlingWait,
-                           'start'):
-        suc = app.processPolledData()
-        assert suc
-
-
-def test_processPolledData_2():
-    app.data['slewing'] = True
-    app.slewing = False
-    with mock.patch.object(app.settlingWait,
-                           'start'):
-        suc = app.processPolledData()
-        assert suc
-
-
-def test_processPolledData_3():
-    app.data['slewing'] = False
-    app.slewing = True
-    with mock.patch.object(app.settlingWait,
-                           'start'):
-        suc = app.processPolledData()
-        assert suc
-
-
-def test_processPolledData_4():
-    app.data['slewing'] = False
-    app.slewing = True
-    app.targetAzimuth = 1
-    with mock.patch.object(app.settlingWait,
-                           'start'):
-        suc = app.processPolledData()
-        assert suc
+    suc = app.processPolledData()
+    assert suc
 
 
 def test_workerPollData_1():
@@ -111,9 +69,7 @@ def test_workerPollData_2():
 
 
 def test_slewToAltAz_1():
-    app.slewing = False
     with mock.patch.object(AlpacaBase,
                            'put'):
         suc = app.slewToAltAz()
         assert suc
-        assert app.slewing

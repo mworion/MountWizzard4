@@ -107,7 +107,8 @@ CS Michel
     :target: https://pypi.python.org/pypi/mountwizzard4
     :alt: MountWizzard4's PyPI Status
     
-.. |DownLoadsAbs| image:: https://pepy.tech/badge/mountwizzard4
+.. |DownLoadsAbs| image:: https://static.pepy.tech/personalized-badge/mountwizzard4?period=total&units=none&left_color=black&right_color=blue&left_text=Downloads
     :target: https://pepy.tech/project/mountwizzard4
-.. |DownLoadsMonth| image:: https://pepy.tech/badge/mountwizzard4/month
-    :target: https://pepy.tech/project/mountwizzard4/month
+.. |DownLoadsMonth| image:: https://static.pepy.tech/personalized-badge/mountwizzard4?period=month&units=none&left_color=black&right_color=blue&left_text=Downloads
+    :target: https://pepy.tech/project/mountwizzard4
+

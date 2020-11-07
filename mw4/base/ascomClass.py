@@ -250,7 +250,7 @@ class AscomClass(object):
 
     def pollStatus(self):
         """
-        pollStatus starts a thread every 1 second for polling.
+        workerPollStatus starts a thread every 1 second for polling.
 
         :return: success
         """

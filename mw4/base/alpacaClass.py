@@ -39,8 +39,8 @@ class AlpacaClass:
     log = CustomLogger(logger, {})
 
     # relaxed generic timing
-    CYCLE_DEVICE = 3000
-    CYCLE_DATA = 3000
+    CYCLE_POLL_STATUS = 3000
+    CYCLE_POLL_DATA = 3000
 
     def __init__(self, app=None, data=None, threadPool=None):
         super().__init__()
@@ -71,7 +71,7 @@ class AlpacaClass:
 
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
-        self.cycleDevice.timeout.connect(self.startPollStatus)
+        self.cycleDevice.timeout.connect(self.pollStatus)
 
         self.cycleData = QTimer()
         self.cycleData.setSingleShot(False)
@@ -159,8 +159,8 @@ class AlpacaClass:
 
         :return: true for test purpose
         """
-        self.cycleData.start(self.CYCLE_DATA)
-        self.cycleDevice.start(self.CYCLE_DEVICE)
+        self.cycleData.start(self.CYCLE_POLL_DATA)
+        self.cycleDevice.start(self.CYCLE_POLL_STATUS)
         return True
 
     def stopTimer(self):
@@ -199,7 +199,7 @@ class AlpacaClass:
 
         return resetValue
 
-    def pollStatus(self):
+    def workerPollStatus(self):
         """
         pollStatusWorker is the thread method to be called for collecting data
 
@@ -243,13 +243,13 @@ class AlpacaClass:
         self.threadPool.start(worker)
         return True
 
-    def startPollStatus(self):
+    def pollStatus(self):
         """
-        pollStatus starts a thread every 1 second for polling.
+        workerPollStatus starts a thread every 1 second for polling.
 
         :return: success
         """
-        worker = Worker(self.pollStatus)
+        worker = Worker(self.workerPollStatus)
         self.threadPool.start(worker)
 
         return True

@@ -131,7 +131,7 @@ def test_pollStatus_1():
     with mock.patch.object(app.client,
                            'connected',
                            return_value=False):
-        suc = app.pollStatus()
+        suc = app.workerPollStatus()
         assert not suc
         assert not app.deviceConnected
 
@@ -141,7 +141,7 @@ def test_pollStatus_2():
     with mock.patch.object(app.client,
                            'connected',
                            return_value=True):
-        suc = app.pollStatus()
+        suc = app.workerPollStatus()
         assert suc
         assert app.deviceConnected
 
@@ -151,7 +151,7 @@ def test_pollStatus_3():
     with mock.patch.object(app.client,
                            'connected',
                            return_value=True):
-        suc = app.pollStatus()
+        suc = app.workerPollStatus()
         assert suc
         assert app.deviceConnected
 
@@ -161,7 +161,7 @@ def test_pollStatus_4():
     with mock.patch.object(app.client,
                            'connected',
                            return_value=False):
-        suc = app.pollStatus()
+        suc = app.workerPollStatus()
         assert not suc
         assert not app.deviceConnected
 
@@ -187,7 +187,7 @@ def test_pollData_2():
 
 
 def test_startPollStatus():
-    suc = app.startPollStatus()
+    suc = app.pollStatus()
     assert suc
 
 

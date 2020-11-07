@@ -166,8 +166,8 @@ def test_pollStatus_4():
         assert not app.deviceConnected
 
 
-def test_emitData():
-    app.emitData()
+def test_processPolledData():
+    app.processPolledData()
 
 
 def test_workerPollData():

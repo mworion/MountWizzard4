@@ -58,11 +58,6 @@ def module_setup_teardown():
         yield
 
 
-def test_getInitialConfig_1():
-    suc = app.getInitialConfig()
-    assert suc
-
-
 def test_waitSettlingAndEmit():
     suc = app.waitSettlingAndEmit()
     assert suc
@@ -73,41 +68,41 @@ def test_diffModulus_1():
     assert val == 2
 
 
-def test_emitData_1():
+def test_processPolledData_1():
     app.data['slewing'] = False
     app.slewing = False
     with mock.patch.object(app.settlingWait,
                            'start'):
-        suc = app.emitData()
+        suc = app.processPolledData()
         assert suc
 
 
-def test_emitData_2():
+def test_processPolledData_2():
     app.data['slewing'] = True
     app.slewing = False
     app.targetAzimuth = 10
     with mock.patch.object(app.settlingWait,
                            'start'):
-        suc = app.emitData()
+        suc = app.processPolledData()
         assert suc
 
 
-def test_emitData_3():
+def test_processPolledData_3():
     app.data['slewing'] = False
     app.slewing = True
     with mock.patch.object(app.settlingWait,
                            'start'):
-        suc = app.emitData()
+        suc = app.processPolledData()
         assert suc
 
 
-def test_emitData_4():
+def test_processPolledData_4():
     app.data['slewing'] = False
     app.slewing = True
     app.targetAzimuth = 1
     with mock.patch.object(app.settlingWait,
                            'start'):
-        suc = app.emitData()
+        suc = app.processPolledData()
         assert suc
 
 

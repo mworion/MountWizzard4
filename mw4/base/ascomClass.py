@@ -227,7 +227,7 @@ class AscomClass(object):
 
         return suc
 
-    def emitData(self):
+    def processPolledData(self):
         pass
 
     def workerPollData(self):
@@ -243,7 +243,7 @@ class AscomClass(object):
             return False
 
         worker = Worker(self.workerPollData)
-        worker.signals.result.connect(self.emitData)
+        worker.signals.result.connect(self.processPolledData)
         self.threadPool.start(worker)
 
         return True

@@ -212,8 +212,8 @@ def test_pollStatus_4():
         assert not suc
 
 
-def test_emitData():
-    app.emitData()
+def test_processPolledData():
+    app.processPolledData()
 
 
 def test_workerPollData():

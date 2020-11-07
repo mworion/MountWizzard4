@@ -175,7 +175,6 @@ class AlpacaClass:
 
     def dataEntry(self, value, element, elementInv=None):
         """
-
         :param value:
         :param element:
         :param elementInv:
@@ -223,7 +222,7 @@ class AlpacaClass:
 
         return suc
 
-    def emitData(self):
+    def processPolledData(self):
         pass
 
     def workerPollData(self):
@@ -239,7 +238,7 @@ class AlpacaClass:
             return False
 
         worker = Worker(self.workerPollData)
-        worker.signals.result.connect(self.emitData)
+        worker.signals.result.connect(self.processPolledData)
         self.threadPool.start(worker)
         return True
 

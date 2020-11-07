@@ -63,16 +63,6 @@ class DomeAlpaca(AlpacaClass):
     def settlingTime(self, value):
         self._settlingTime = value * 1000
 
-    def getInitialConfig(self):
-        """
-
-        :return: true for test purpose
-        """
-
-        super().getInitialConfig()
-
-        return True
-
     def waitSettlingAndEmit(self):
         """
         waitSettlingAndEmit emit the signal for slew finished
@@ -97,7 +87,7 @@ class DomeAlpaca(AlpacaClass):
         diff = abs(diff % m)
         return min(diff, abs(diff - m))
 
-    def emitData(self):
+    def processPolledData(self):
         """
         :return: true for test purpose
         """

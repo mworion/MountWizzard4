@@ -19,20 +19,12 @@
 import logging
 import platform
 import os
-from threading import Lock
-import bisect
 
 # external packages
-import numpy as np
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, qApp, QFileDialog
-from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtGui import QPalette, QIcon
 from PyQt5.QtCore import Qt, QSortFilterProxyModel, QDir, QObject, pyqtSignal, QEvent
 from PyQt5.QtCore import QSize
-from matplotlib.figure import Figure
-from matplotlib.ticker import FormatStrFormatter
-from matplotlib.backends.backend_qt5agg import FigureCanvas
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 
 # local imports
 from base.loggerMW import CustomLogger

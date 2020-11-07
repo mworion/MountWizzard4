@@ -569,9 +569,24 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
 
         alt, az = zip(*self.app.data.horizonP)
+        alt = np.array(alt)
+        az = np.array(az)
+        altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
+        azF = np.concatenate([[0], [0], az, [360], [360]])
 
-        axes.fill(az, alt, color=self.M_GREEN, zorder=-20, alpha=0.2)
-        axes.plot(az, alt, color=self.M_GREEN, zorder=-20, lw=2, alpha=0.4)
+        axes.fill(azF,
+                  altF,
+                  color=self.M_GREEN_LL,
+                  alpha=0.7,
+                  zorder=-20)
+
+        axes.plot(az,
+                  alt,
+                  color=self.M_GREEN,
+                  marker='',
+                  alpha=0.5,
+                  zorder=0,
+                  lw=3)
 
         return True
 

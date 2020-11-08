@@ -232,22 +232,6 @@ def test_loadDataFromSourceURLs_3(function):
         assert suc
 
 
-def test_programDialog_1(function):
-    with mock.patch.object(QMessageBox,
-                           'question',
-                           return_value=QMessageBox().Yes):
-        suc = function.messageDialog('test')
-        assert suc
-
-
-def test_programDialog_2(function):
-    with mock.patch.object(QMessageBox,
-                           'question',
-                           return_value=QMessageBox().No):
-        suc = function.messageDialog('test')
-        assert not suc
-
-
 def test_progEarthRotationDataToMount_1(function):
     with mock.patch.object(function,
                            'messageDialog',

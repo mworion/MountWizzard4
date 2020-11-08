@@ -20,7 +20,7 @@ import pytest
 
 
 # external packages
-from PyQt5.QtWidgets import QComboBox, QWidget
+from PyQt5.QtWidgets import QComboBox, QWidget, QPushButton
 from skyfield.api import Star, Angle
 from mountcontrol.modelStar import ModelStar
 from mountcontrol.model import Model
@@ -40,6 +40,17 @@ def function(module):
 
     window = MWidget()
     yield window
+
+
+def test_embedMatplot_1(function):
+    ret = function.embedMatplot()
+    assert ret is None
+
+
+def test_embedMatplot_2(function):
+    ui = QPushButton()
+    ret = function.embedMatplot(ui)
+    assert ret
 
 
 def test_findIndexValue_1(function):

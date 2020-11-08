@@ -22,17 +22,13 @@ import platform
 import os
 
 # external packages
-from PyQt5.QtWidgets import QComboBox, QFileDialog, QWidget, QStyle, QPushButton
+from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle, QPushButton
 from PyQt5.QtCore import pyqtSignal, QObject
-from skyfield.api import Star, Angle
-from mountcontrol.modelStar import ModelStar
-from mountcontrol.model import Model
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.toolsQtWidget import FileSortProxyModel
 from gui.utilities.toolsQtWidget import QMultiWait
-from tests.baseTestSetupExtWindows import App
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -144,17 +140,6 @@ def test_changeStyleDynamic_4(function):
     assert suc
 
 
-def test_embedMatplot_1(function):
-    ret = function.embedMatplot()
-    assert ret is None
-
-
-def test_embedMatplot_2(function):
-    ui = QPushButton()
-    ret = function.embedMatplot(ui)
-    assert ret
-
-
 def test_extractNames_0(function):
     name = ''
     name, short, ext = function.extractNames(name)
@@ -237,6 +222,32 @@ def test_runDialog_1(function):
                            return_value=0):
         val = function.runDialog(dialog)
         assert val == 0
+
+
+def test_messageDialog_1(function):
+    widget = QWidget()
+    with mock.patch.object(QMessageBox,
+                           'question',
+                           return_value=QMessageBox.No):
+        with mock.patch.object(QMessageBox,
+                               'show'):
+            with mock.patch.object(function,
+                                   'runDialog'):
+                suc = function.messageDialog(widget, 'test', 'test')
+                assert not suc
+
+
+def test_messageDialog_2(function):
+    widget = QWidget()
+    with mock.patch.object(QMessageBox,
+                           'question',
+                           return_value=QMessageBox.Yes):
+        with mock.patch.object(QMessageBox,
+                               'show'):
+            with mock.patch.object(function,
+                                   'runDialog'):
+                suc = function.messageDialog(widget, 'test', 'test')
+                assert not suc
 
 
 def test_openFile_1(function):

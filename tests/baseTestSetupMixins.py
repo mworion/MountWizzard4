@@ -241,6 +241,10 @@ class Mount(QObject):
         return True
 
 
+class Automation:
+    installPath = None
+
+
 class App(QObject):
     config = {'mainW': {}}
     deviceStat = {}
@@ -251,6 +255,7 @@ class App(QObject):
     messageQueue = Queue()
     mount = Mount()
     power = Power()
+    automation = Automation()
     ephemeris = load('tests/testData/de421_23.bsp')
     mwGlob = {'modelDir': 'tests/model',
               'imageDir': 'tests/image',

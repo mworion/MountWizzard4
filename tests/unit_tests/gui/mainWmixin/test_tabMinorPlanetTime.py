@@ -24,15 +24,13 @@ import os
 # external packages
 import requests
 from PyQt5.QtCore import QThreadPool
-from PyQt5.QtWidgets import QMessageBox
-
 
 # local import
 from tests.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
-import base.tpool
+from logic.automation.automationHelper import AutomationHelper
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -47,6 +45,7 @@ def function(module):
         def __init__(self):
             super().__init__()
             self.app = App()
+            self.automationHelper = AutomationHelper(self.app)
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
@@ -240,53 +239,49 @@ def test_progEarthRotationDataToMount_1(function):
         assert not suc
 
 
-def test_progEarthRotationDataToMount_2(function):
+def test_progEarthRotationDataToMount_3(function):
     function.app.automation = None
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progEarthRotationDataToMount()
-        assert not suc
-
-
-def test_progEarthRotationDataToMount_3(function):
-    class Test:
-        @staticmethod
-        def writeEarthRotationData():
-            return False
-
-    function.app.automation = Test()
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        suc = function.progEarthRotationDataToMount()
-        assert not suc
+        with mock.patch.object(function.automationHelper,
+                               'writeEarthRotationData',
+                               return_value=False):
+            suc = function.progEarthRotationDataToMount()
+            assert not suc
 
 
 def test_progEarthRotationDataToMount_4(function):
-    class Test:
-        @staticmethod
-        def writeEarthRotationData():
-            return True
-
-        @staticmethod
-        def uploadEarthRotationData():
-            return False
-
-    function.app.automation = Test()
+    function.app.automation = None
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progEarthRotationDataToMount()
-        assert not suc
+        with mock.patch.object(function.automationHelper,
+                               'writeEarthRotationData',
+                               return_value=True):
+            suc = function.progEarthRotationDataToMount()
+            assert not suc
 
 
 def test_progEarthRotationDataToMount_5(function):
     class Test:
         @staticmethod
-        def writeEarthRotationData():
-            return True
+        def uploadEarthRotationData():
+            return False
 
+    function.app.automation = Test()
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.automationHelper,
+                               'writeEarthRotationData',
+                               return_value=True):
+            suc = function.progEarthRotationDataToMount()
+            assert not suc
+
+
+def test_progEarthRotationDataToMount_6(function):
+    class Test:
         @staticmethod
         def uploadEarthRotationData():
             return True
@@ -295,8 +290,11 @@ def test_progEarthRotationDataToMount_5(function):
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progEarthRotationDataToMount()
-        assert suc
+        with mock.patch.object(function.automationHelper,
+                               'writeEarthRotationData',
+                               return_value=True):
+            suc = function.progEarthRotationDataToMount()
+            assert suc
 
 
 def test_progMinorPlanetToMount_1(function):
@@ -326,70 +324,77 @@ def test_progMinorPlanetToMount_2(function):
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progMinorPlanetToMount()
-        assert not suc
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=False):
+            suc = function.progMinorPlanetToMount()
+            assert not suc
 
 
 def test_progMinorPlanetToMount_3(function):
-    class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return False
-
     function.ui.listMinorPlanetNames.clear()
     function.ui.listMinorPlanetNames.addItem('00000: test')
     function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.addItem('Asteroid')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.minorPlanets = [1]
-    function.app.automation = Test()
+    function.app.automation = None
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progMinorPlanetToMount()
-        assert not suc
+        with mock.patch.object(function.automationHelper,
+                               'writeAsteroidMPC',
+                               return_value=False):
+            suc = function.progMinorPlanetToMount()
+            assert not suc
 
 
 def test_progMinorPlanetToMount_4(function):
-    class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return True
-
-        @staticmethod
-        def writeAsteroidMPC(a):
-            return True
-
-        @staticmethod
-        def uploadMPCData(comets=False):
-            return False
-
     function.ui.listMinorPlanetNames.clear()
     function.ui.listMinorPlanetNames.addItem('00000: test')
     function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.addItem('Asteroid')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.minorPlanets = [1]
-    function.app.automation = Test()
+    function.app.automation = None
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progMinorPlanetToMount()
-        assert suc
+        with mock.patch.object(function.automationHelper,
+                               'writeAsteroidMPC',
+                               return_value=True):
+            suc = function.progMinorPlanetToMount()
+            assert not suc
 
 
 def test_progMinorPlanetToMount_5(function):
     class Test:
         @staticmethod
-        def writeCometMPC(a):
-            return True
+        def uploadMPCData(comets=False):
+            return False
 
-        @staticmethod
-        def writeAsteroidMPC(a):
-            return True
+    function.ui.listMinorPlanetNames.clear()
+    function.ui.listMinorPlanetNames.addItem('00000: test')
+    function.ui.listMinorPlanetNames.setCurrentRow(0)
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    function.minorPlanets = [1]
+    function.app.automation = Test()
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
+            suc = function.progMinorPlanetToMount()
+            assert not suc
 
+
+def test_progMinorPlanetToMount_6(function):
+    class Test:
         @staticmethod
         def uploadMPCData(comets=False):
             return True
@@ -405,20 +410,15 @@ def test_progMinorPlanetToMount_5(function):
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progMinorPlanetToMount()
-        assert suc
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
+            suc = function.progMinorPlanetToMount()
+            assert suc
 
 
-def test_progMinorPlanetToMount_6(function):
+def test_progMinorPlanetToMount_7(function):
     class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return True
-
-        @staticmethod
-        def writeAsteroidMPC(a):
-            return True
-
         @staticmethod
         def uploadMPCData(comets=False):
             return True
@@ -434,29 +434,19 @@ def test_progMinorPlanetToMount_6(function):
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progMinorPlanetToMount()
-        assert suc
+        with mock.patch.object(function.automationHelper,
+                               'writeAsteroidMPC',
+                               return_value=True):
+            suc = function.progMinorPlanetToMount()
+            assert suc
 
 
-def test_progMinorPlanetsFiltered_0(function):
+def test_progMinorPlanetsFiltered_1(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Please')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     suc = function.progMinorPlanetsFiltered()
     assert not suc
-
-
-def test_progMinorPlanetsFiltered_1(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = ['test', 'aster']
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=False):
-        suc = function.progMinorPlanetsFiltered()
-        assert not suc
 
 
 def test_progMinorPlanetsFiltered_2(function):
@@ -465,122 +455,109 @@ def test_progMinorPlanetsFiltered_2(function):
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
     function.minorPlanets = ['test', 'aster']
-    function.app.automation = None
     with mock.patch.object(function,
                            'messageDialog',
-                           return_value=True):
+                           return_value=False):
         suc = function.progMinorPlanetsFiltered()
         assert not suc
 
 
 def test_progMinorPlanetsFiltered_3(function):
-    class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return False
-
+    function.app.automation = None
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
     function.minorPlanets = ['test', 'aster']
-    function.app.automation = Test()
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progMinorPlanetsFiltered()
-        assert not suc
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=False):
+            suc = function.progMinorPlanetsFiltered()
+            assert not suc
 
 
 def test_progMinorPlanetsFiltered_4(function):
-    class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return True
-
-        @staticmethod
-        def writeAsteroidMPC(a):
-            return True
-
-        @staticmethod
-        def uploadMPCData(comets=False):
-            return False
-
+    function.app.automation = None
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
     function.minorPlanets = ['test', 'aster']
-    function.app.automation = Test()
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progMinorPlanetsFiltered()
-        assert suc
-
-
-def test_progMinorPlanetsFiltered_5(function):
-    class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return True
-
-        @staticmethod
-        def writeAsteroidMPC(a):
-            return True
-
-        @staticmethod
-        def uploadMPCData(comets=False):
-            return True
-
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = ['test', 'aster']
-    function.app.automation = Test()
-    with mock.patch.object(function,
-                           'generateName',
-                           return_value='asteroid'):
-        with mock.patch.object(function,
-                               'messageDialog',
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
                                return_value=True):
             suc = function.progMinorPlanetsFiltered()
-            assert suc
+            assert not suc
 
 
-def test_progMinorPlanetsFiltered_6(function):
-    class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return True
-
-        @staticmethod
-        def writeAsteroidMPC(a):
-            return True
-
-        @staticmethod
-        def uploadMPCData(comets=False):
-            return True
-
+def test_progMinorPlanetsFiltered_4a(function):
+    function.app.automation = None
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Asteroid')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
     function.minorPlanets = ['test', 'aster']
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.automationHelper,
+                               'writeAsteroidMPC',
+                               return_value=True):
+            suc = function.progMinorPlanetsFiltered()
+            assert not suc
 
+
+def test_progMinorPlanetsFiltered_5(function):
+    class Test:
+        @staticmethod
+        def uploadMPCData(comets=False):
+            return False
+
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.minorPlanets = ['test', 'aster']
     function.app.automation = Test()
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function,
-                               'generateName',
-                               return_value='test'):
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
+            suc = function.progMinorPlanetsFiltered()
+            assert not suc
+
+
+def test_progMinorPlanetsFiltered_6(function):
+    class Test:
+        @staticmethod
+        def uploadMPCData(comets=False):
+            return True
+
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.app.automation = Test()
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
             suc = function.progMinorPlanetsFiltered()
             assert suc
 
 
-def test_progMinorPlanetsFull_0(function):
+def test_progMinorPlanetsFull_1(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Please')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -588,11 +565,12 @@ def test_progMinorPlanetsFull_0(function):
     assert not suc
 
 
-def test_progMinorPlanetsFull_1(function):
+def test_progMinorPlanetsFull_2(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.minorPlanets = [1]
+    function.ui.filterMinorPlanet.setText('test')
+    function.minorPlanets = ['test', 'aster']
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=False):
@@ -600,73 +578,81 @@ def test_progMinorPlanetsFull_1(function):
         assert not suc
 
 
-def test_progMinorPlanetsFull_2(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.minorPlanets = [1]
-    function.app.automation = None
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        suc = function.progMinorPlanetsFull()
-        assert not suc
-
-
 def test_progMinorPlanetsFull_3(function):
-    class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return False
-
+    function.app.automation = None
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.minorPlanets = [1]
-    function.app.automation = Test()
+    function.ui.filterMinorPlanet.setText('test')
+    function.minorPlanets = ['test', 'aster']
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progMinorPlanetsFull()
-        assert not suc
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=False):
+            suc = function.progMinorPlanetsFull()
+            assert not suc
 
 
 def test_progMinorPlanetsFull_4(function):
-    class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return True
-
-        @staticmethod
-        def writeAsteroidMPC(a):
-            return True
-
-        @staticmethod
-        def uploadMPCData(comets=False):
-            return False
-
+    function.app.automation = None
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.minorPlanets = [1]
-    function.app.automation = Test()
+    function.ui.filterMinorPlanet.setText('test')
+    function.minorPlanets = ['test', 'aster']
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progMinorPlanetsFull()
-        assert suc
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
+            suc = function.progMinorPlanetsFull()
+            assert not suc
+
+
+def test_progMinorPlanetsFull_4a(function):
+    function.app.automation = None
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Asteroid')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.minorPlanets = ['test', 'aster']
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.automationHelper,
+                               'writeAsteroidMPC',
+                               return_value=True):
+            suc = function.progMinorPlanetsFull()
+            assert not suc
 
 
 def test_progMinorPlanetsFull_5(function):
     class Test:
         @staticmethod
-        def writeCometMPC(a):
-            return True
+        def uploadMPCData(comets=False):
+            return False
 
-        @staticmethod
-        def writeAsteroidMPC(a):
-            return True
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.minorPlanets = ['test', 'aster']
+    function.app.automation = Test()
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
+            suc = function.progMinorPlanetsFull()
+            assert not suc
 
+
+def test_progMinorPlanetsFull_6(function):
+    class Test:
         @staticmethod
         def uploadMPCData(comets=False):
             return True
@@ -674,36 +660,14 @@ def test_progMinorPlanetsFull_5(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.minorPlanets = [1]
+    function.ui.filterMinorPlanet.setText('test')
+    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
     function.app.automation = Test()
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = function.progMinorPlanetsFull()
-        assert suc
-
-
-def test_progMinorPlanetsFull_6(function):
-    class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return True
-
-        @staticmethod
-        def writeAsteroidMPC(a):
-            return True
-
-        @staticmethod
-        def uploadMPCData(comets=False):
-            return True
-
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Asteroid')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.minorPlanets = [1]
-    function.app.automation = Test()
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        suc = function.progMinorPlanetsFull()
-        assert suc
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
+            suc = function.progMinorPlanetsFull()
+            assert suc

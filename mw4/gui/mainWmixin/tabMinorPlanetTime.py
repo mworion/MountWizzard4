@@ -24,10 +24,11 @@ import os
 # external packages
 import requests
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QListView, QMessageBox
+from PyQt5.QtWidgets import QListView
 
 # local import
 from base.tpool import Worker
+from logic.automation.automationHelper import AutomationHelper
 
 
 class MinorPlanetTime:
@@ -37,6 +38,8 @@ class MinorPlanetTime:
     signalProgress = pyqtSignal(object)
 
     def __init__(self):
+        self.installPath = ''
+        self.automationHelper = AutomationHelper(self.app)
         self.minorPlanets = dict()
         self.minorPlanet = None
         self.listMinorPlanetNamesProxy = None
@@ -79,6 +82,12 @@ class MinorPlanetTime:
 
         self.ui.filterMinorPlanet.setText(config.get('filterMinorPlanet'))
         self.setupMinorPlanetSourceURLsDropDown()
+
+        if self.app.automation:
+            self.installPath = self.app.automation.installPath
+
+        else:
+            self.installPath = self.app.mwGlob['dataDir']
 
         return True
 
@@ -284,17 +293,17 @@ class MinorPlanetTime:
         if not suc:
             return False
 
-        if not self.app.automation:
-            self.app.message.emit('Not running windows, no updater available', 2)
-            return False
-
         self.app.message.emit('Program to mount:    [earth rotation data]', 1)
         self.app.message.emit('Writing files: finals.data, tai-utc.dat', 0)
 
-        suc = self.app.automation.writeEarthRotationData()
+        suc = self.automationHelper.writeEarthRotationData(self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be copied - stopping', 2)
+            return False
+
+        if not self.app.automation:
+            self.app.message.emit('Not running windows, no updater available', 2)
             return False
 
         self.app.message.emit('Uploading to mount', 0)
@@ -326,21 +335,21 @@ class MinorPlanetTime:
         if not suc:
             return False
 
-        if not self.app.automation:
-            self.app.message.emit('Not running windows, no updater available', 2)
-            return False
-
         self.app.message.emit(f'Program to mount:    [{source}]', 1)
         self.app.message.emit('Exporting MPC data', 0)
 
         if isComet:
-            suc = self.app.automation.writeCometMPC(mpc)
+            suc = self.automationHelper.writeCometMPC(mpc, self.installPath)
 
         if isAsteroid:
-            suc = self.app.automation.writeAsteroidMPC(mpc)
+            suc = self.automationHelper.writeAsteroidMPC(mpc, self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
+            return False
+
+        if not self.app.automation:
+            self.app.message.emit('Not running windows, no updater available', 2)
             return False
 
         self.app.message.emit('Uploading to mount', 0)
@@ -351,7 +360,7 @@ class MinorPlanetTime:
 
         self.app.message.emit('Programming success', 1)
 
-        return True
+        return suc
 
     def progMinorPlanetsFiltered(self):
         """
@@ -367,13 +376,9 @@ class MinorPlanetTime:
             return False
 
         text = f'Should filtered database\n\n[{source}]\n\nbe programmed to mount ?'
-        suc = self.messageDialog(self, 'Program with QCI Updater',text)
+        suc = self.messageDialog(self, 'Program with QCI Updater', text)
 
         if not suc:
-            return False
-
-        if not self.app.automation:
-            self.app.message.emit('Not running windows, no updater available', 2)
             return False
 
         self.app.message.emit(f'Program database:    [{source}]', 1)
@@ -391,13 +396,17 @@ class MinorPlanetTime:
             filtered.append(mp)
 
         if isComet:
-            suc = self.app.automation.writeCometMPC(filtered)
+            suc = self.automationHelper.writeCometMPC(filtered, self.installPath)
 
         if isAsteroid:
-            suc = self.app.automation.writeAsteroidMPC(filtered)
+            suc = self.automationHelper.writeAsteroidMPC(filtered, self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
+            return False
+
+        if not self.app.automation:
+            self.app.message.emit('Not running windows, no updater available', 2)
             return False
 
         self.app.message.emit('Uploading to mount', 0)
@@ -408,7 +417,7 @@ class MinorPlanetTime:
 
         self.app.message.emit('Programming success', 1)
 
-        return True
+        return suc
 
     def progMinorPlanetsFull(self):
         """
@@ -437,10 +446,10 @@ class MinorPlanetTime:
         self.app.message.emit('Exporting MPC data', 0)
 
         if isComet:
-            suc = self.app.automation.writeCometMPC(self.minorPlanets)
+            suc = self.automationHelper.writeCometMPC(self.minorPlanets, self.installPath)
 
         if isAsteroid:
-            suc = self.app.automation.writeAsteroidMPC(self.minorPlanets)
+            suc = self.automationHelper.writeAsteroidMPC(self.minorPlanets, self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
@@ -454,4 +463,4 @@ class MinorPlanetTime:
 
         self.app.message.emit('Programming success', 1)
 
-        return True
+        return suc

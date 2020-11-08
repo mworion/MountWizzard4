@@ -447,9 +447,6 @@ def test_progMinorPlanetsFiltered_0(function):
 
 
 def test_progMinorPlanetsFiltered_1(function):
-    function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('00000: test')
-    function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -463,9 +460,6 @@ def test_progMinorPlanetsFiltered_1(function):
 
 
 def test_progMinorPlanetsFiltered_2(function):
-    function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('00000: test')
-    function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -485,9 +479,6 @@ def test_progMinorPlanetsFiltered_3(function):
         def writeCometMPC(a):
             return False
 
-    function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('00000: test')
-    function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -515,9 +506,6 @@ def test_progMinorPlanetsFiltered_4(function):
         def uploadMPCData(comets=False):
             return False
 
-    function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('00000: test')
-    function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -545,9 +533,6 @@ def test_progMinorPlanetsFiltered_5(function):
         def uploadMPCData(comets=False):
             return True
 
-    function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('00000: test')
-    function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -578,9 +563,6 @@ def test_progMinorPlanetsFiltered_6(function):
         def uploadMPCData(comets=False):
             return True
 
-    function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('00000: test')
-    function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Asteroid')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -607,9 +589,6 @@ def test_progMinorPlanetsFull_0(function):
 
 
 def test_progMinorPlanetsFull_1(function):
-    function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('00000: test')
-    function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -622,9 +601,6 @@ def test_progMinorPlanetsFull_1(function):
 
 
 def test_progMinorPlanetsFull_2(function):
-    function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('00000: test')
-    function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -643,9 +619,6 @@ def test_progMinorPlanetsFull_3(function):
         def writeCometMPC(a):
             return False
 
-    function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('00000: test')
-    function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -672,9 +645,6 @@ def test_progMinorPlanetsFull_4(function):
         def uploadMPCData(comets=False):
             return False
 
-    function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('00000: test')
-    function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -701,9 +671,6 @@ def test_progMinorPlanetsFull_5(function):
         def uploadMPCData(comets=False):
             return True
 
-    function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('00000: test')
-    function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -730,9 +697,6 @@ def test_progMinorPlanetsFull_6(function):
         def uploadMPCData(comets=False):
             return True
 
-    function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('00000: test')
-    function.ui.listMinorPlanetNames.setCurrentRow(0)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Asteroid')
     function.ui.minorPlanetSource.setCurrentIndex(0)

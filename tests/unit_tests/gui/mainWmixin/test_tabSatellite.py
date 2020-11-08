@@ -74,6 +74,7 @@ def module_setup_teardown(qtbot):
     app.close = MWidget().close
     app.findIndexValue = MWidget().findIndexValue
     app.deleteLater = MWidget().deleteLater
+    app.messageDialog = MWidget().messageDialog
     app.deviceStat = dict()
     app.log = CustomLogger(logging.getLogger(__name__), {})
     app.threadPool = QThreadPool()
@@ -567,20 +568,152 @@ def test_stopTrack_3():
         assert suc
 
 
-"""
-def test_brandon():
-    from sgp4.api import Satrec, accelerated
-    print('Accelerated?', accelerated)
-    tle = [
-        "NOAA 8",
-        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
-    ]
-    sat = Satrec.twoline2rv(tle[1], tle[2])
-    print(sat.no_kozai)
-    print(sat.inclo)
-    print(sat.nodeo)
-    print(sat.ecco)
-    print(sat.argpo)
-    a = 1/0
-"""
+def test_progSatellitesFiltered_1():
+
+    app.ui.satelliteSource.clear()
+    app.ui.satelliteSource.addItem('Comet')
+    app.ui.satelliteSource.setCurrentIndex(0)
+    app.ui.filterSatellite.setText('test')
+    with mock.patch.object(app,
+                           'messageDialog',
+                           return_value=False):
+        suc = app.progSatellitesFiltered()
+        assert not suc
+
+
+def test_progSatellitesFiltered_2():
+
+    app.ui.satelliteSource.clear()
+    app.ui.satelliteSource.addItem('Comet')
+    app.ui.satelliteSource.setCurrentIndex(0)
+    app.ui.filterSatellite.setText('test')
+    app.app.automation = None
+    with mock.patch.object(app,
+                           'messageDialog',
+                           return_value=True):
+        suc = app.progSatellitesFiltered()
+        assert not suc
+
+
+def test_progSatellitesFiltered_3():
+    class Test:
+        @staticmethod
+        def writeCometMPC(a):
+            return False
+
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2], name=tle[0])
+
+    app.satellites = {'NOAA 8': sat,
+                      'Test1': sat}
+    app.ui.satelliteSource.clear()
+    app.ui.satelliteSource.addItem('Comet')
+    app.ui.satelliteSource.setCurrentIndex(0)
+    app.ui.filterSatellite.setText('test')
+    app.app.automation = Test()
+    with mock.patch.object(app,
+                           'messageDialog',
+                           return_value=True):
+        suc = app.progSatellitesFiltered()
+        assert suc
+
+
+def test_progSatellitesFiltered_4():
+    class Test:
+        @staticmethod
+        def writeCometMPC(a):
+            return True
+
+        @staticmethod
+        def writeAsteroidMPC(a):
+            return True
+
+        @staticmethod
+        def uploadMPCData(comets=False):
+            return False
+
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    app.satellites = {'NOAA 8': sat,
+                      'Test1': sat}
+    app.ui.satelliteSource.clear()
+    app.ui.satelliteSource.addItem('Comet')
+    app.ui.satelliteSource.setCurrentIndex(0)
+    app.ui.filterSatellite.setText('test')
+    app.app.automation = Test()
+    with mock.patch.object(app,
+                           'messageDialog',
+                           return_value=True):
+        suc = app.progSatellitesFiltered()
+        assert suc
+
+
+def test_progSatellitesFiltered_5():
+    class Test:
+        @staticmethod
+        def writeCometMPC(a):
+            return True
+
+        @staticmethod
+        def writeAsteroidMPC(a):
+            return True
+
+        @staticmethod
+        def uploadMPCData(comets=False):
+            return True
+
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    app.satellites = {'NOAA 8': sat,
+                      'Test1': sat}
+    app.ui.satelliteSource.clear()
+    app.ui.satelliteSource.addItem('Comet')
+    app.ui.satelliteSource.setCurrentIndex(0)
+    app.ui.filterSatellite.setText('test')
+    app.app.automation = Test()
+    with mock.patch.object(app,
+                           'messageDialog',
+                           return_value=True):
+        suc = app.progSatellitesFiltered()
+        assert suc
+
+
+def test_progSatellitesFiltered_6():
+    class Test:
+        @staticmethod
+        def writeCometMPC(a):
+            return True
+
+        @staticmethod
+        def writeAsteroidMPC(a):
+            return True
+
+        @staticmethod
+        def uploadMPCData(comets=False):
+            return True
+
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    app.satellites = {'NOAA 8': sat,
+                      'Test1': sat}
+    app.ui.satelliteSource.clear()
+    app.ui.satelliteSource.addItem('Asteroid')
+    app.ui.satelliteSource.setCurrentIndex(0)
+    app.ui.filterSatellite.setText('test')
+
+    app.app.automation = Test()
+    with mock.patch.object(app,
+                           'messageDialog',
+                           return_value=True):
+        suc = app.progSatellitesFiltered()
+        assert suc

@@ -603,13 +603,15 @@ class Satellite(object):
         filterStr = self.ui.filterMinorPlanet.text().lower()
 
         filtered = list()
-        for index, mp in enumerate(self.minorPlanets):
-            text = self.generateName(index, mp)
+        for name, _ in self.satellites.items():
+            if not isinstance(name, str):
+                continue
 
+            text = f'{self.satellites[name].model.satnum:6d}: {name}'
             if filterStr not in text:
                 continue
 
-            filtered.append(mp)
+            filtered.append(self.satellites[name])
 
         suc = True
 

@@ -26,7 +26,7 @@ from PyQt5.QtCore import QThreadPool, QObject
 from skyfield.api import load
 
 # local import
-from logic.automation.automationHelper import AutomationHelper
+from logic.databaseProcessing.dataWriter import DataWriter
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -55,7 +55,7 @@ def function(module):
         if os.path.isfile(path):
             os.remove(path)
 
-    window = AutomationHelper(app=Test())
+    window = DataWriter(app=Test())
     yield window
 
 

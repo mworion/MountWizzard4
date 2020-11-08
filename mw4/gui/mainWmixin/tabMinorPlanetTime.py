@@ -28,7 +28,7 @@ from PyQt5.QtWidgets import QListView
 
 # local import
 from base.tpool import Worker
-from logic.automation.automationHelper import AutomationHelper
+from logic.databaseProcessing.dataWriter import DataWriter
 
 
 class MinorPlanetTime:
@@ -39,7 +39,7 @@ class MinorPlanetTime:
 
     def __init__(self):
         self.installPath = ''
-        self.automationHelper = AutomationHelper(self.app)
+        self.automationHelper = DataWriter(self.app)
         self.minorPlanets = dict()
         self.minorPlanet = None
         self.listMinorPlanetNamesProxy = None

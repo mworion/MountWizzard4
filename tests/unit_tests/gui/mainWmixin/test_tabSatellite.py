@@ -18,14 +18,10 @@
 # standard libraries
 import pytest
 from unittest import mock
-import logging
 # external packages
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
-from mountcontrol.qtmount import Mount
-from skyfield.toposlib import Topos
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle
 from sgp4.exporter import export_tle
@@ -35,7 +31,7 @@ from tests.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabSatellite import Satellite
-from logic.automation.automationHelper import AutomationHelper
+from logic.databaseProcessing.automationHelper import AutomationHelper
 
 
 @pytest.fixture(autouse=True, scope='module')

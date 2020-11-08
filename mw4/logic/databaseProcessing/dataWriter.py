@@ -26,11 +26,11 @@ import os
 from base.loggerMW import CustomLogger
 
 
-class AutomationHelper:
+class DataWriter:
     """
 
     """
-    __all__ = ['AutomationHelper',
+    __all__ = ['DataWriter',
                ]
 
     logger = logging.getLogger(__name__)

@@ -30,7 +30,7 @@ from tests.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
-from logic.automation.automationHelper import AutomationHelper
+from logic.databaseProcessing.automationHelper import AutomationHelper
 
 
 @pytest.fixture(autouse=True, scope='module')

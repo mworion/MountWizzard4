@@ -31,146 +31,121 @@ from skyfield.api import Angle
 from sgp4.exporter import export_tle
 
 # local import
-from gui.mainWmixin.tabSatellite import Satellite
-from gui.widgets.main_ui import Ui_MainWindow
+from tests.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
-from logic.environment.skymeter import Skymeter
-from base.loggerMW import CustomLogger
+from gui.widgets.main_ui import Ui_MainWindow
+from gui.mainWmixin.tabSatellite import Satellite
+from logic.automation.automationHelper import AutomationHelper
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
+    yield
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global ui, widget, Test, Test1, app
+def function(module):
 
-    class Test1(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        update10s = pyqtSignal()
-        threadPool = QThreadPool()
+    class Mixin(MWidget, Satellite):
+        def __init__(self):
+            super().__init__()
+            self.app = App()
+            self.automationHelper = AutomationHelper(self.app)
+            self.threadPool = QThreadPool()
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            Satellite.__init__(self)
 
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        update1s = pyqtSignal()
-        update3s = pyqtSignal()
-        sendSatelliteData = pyqtSignal()
-        message = pyqtSignal(str, int)
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        mwGlob = {'dataDir': 'tests/data'}
-        uiWindows = {'showSatelliteW': None}
-        mount.obsSite.location = Topos(latitude_degrees=50,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
-        skymeter = Skymeter(app=Test1())
-
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
-    app = Satellite(app=Test(), ui=ui,
-                    clickable=MWidget().clickable)
-    app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.close = MWidget().close
-    app.findIndexValue = MWidget().findIndexValue
-    app.deleteLater = MWidget().deleteLater
-    app.messageDialog = MWidget().messageDialog
-    app.deviceStat = dict()
-    app.log = CustomLogger(logging.getLogger(__name__), {})
-    app.threadPool = QThreadPool()
-
-    qtbot.addWidget(app)
-
-    yield
-
-    app.threadPool.waitForDone(1000)
+    window = Mixin()
+    yield window
 
 
-def test_sources():
-    assert len(app.satelliteSourceURLs) == 13
+def test_sources(function):
+    assert len(function.satelliteSourceURLs) == 13
 
 
-def test_initConfig_1():
-    suc = app.initConfig()
+def test_initConfig_1(function):
+    suc = function.initConfig()
     assert suc
 
 
-def test_setupSatelliteSourceURLsDropDown():
-    suc = app.setupSatelliteSourceURLsDropDown()
+def test_setupSatelliteSourceURLsDropDown(function):
+    suc = function.setupSatelliteSourceURLsDropDown()
     assert suc
-    assert len(app.ui.satelliteSource) == len(app.satelliteSourceURLs)
+    assert len(function.ui.satelliteSource) == len(function.satelliteSourceURLs)
 
 
-def test_filterSatelliteNamesList_1():
-    suc = app.filterSatelliteNamesList()
-    assert suc
-
-
-def test_setupSatelliteGui_1():
-    suc = app.setupSatelliteNameList()
+def test_filterSatelliteNamesList_1(function):
+    suc = function.filterSatelliteNamesList()
     assert suc
 
 
-def test_setupSatelliteGui_2():
+def test_setupSatelliteGui_1(function):
+    suc = function.setupSatelliteNameList()
+    assert suc
+
+
+def test_setupSatelliteGui_2(function):
     class Test1:
         satnum = 12345
 
     class Test:
         model = Test1()
 
-    app.satellites = {'sat1': Test()}
-    suc = app.setupSatelliteNameList()
+    function.satellites = {'sat1': Test()}
+    suc = function.setupSatelliteNameList()
     assert suc
 
 
-def test_loadSatelliteSourceWorker_1():
-    suc = app.loadTLEDataFromSourceURLsWorker()
+def test_loadSatelliteSourceWorker_1(function):
+    suc = function.loadTLEDataFromSourceURLsWorker()
     assert not suc
 
 
-def test_loadSatelliteSourceWorker_2():
-    app.ui.satelliteSource.addItem('Active')
-    suc = app.loadTLEDataFromSourceURLsWorker()
+def test_loadSatelliteSourceWorker_2(function):
+    function.ui.satelliteSource.addItem('Active')
+    suc = function.loadTLEDataFromSourceURLsWorker()
     assert not suc
 
 
-def test_loadSatelliteSourceWorker_3():
+def test_loadSatelliteSourceWorker_3(function):
     source = 'http://www.celestrak.com/NORAD/elements/visual.txt'
-    suc = app.loadTLEDataFromSourceURLsWorker(source=source, isOnline=False)
+    suc = function.loadTLEDataFromSourceURLsWorker(source=source, isOnline=False)
     assert suc
 
 
-def test_loadTLEDataFromSourceURLs_1():
-    suc = app.loadTLEDataFromSourceURLs()
+def test_loadTLEDataFromSourceURLs_1(function):
+    suc = function.loadTLEDataFromSourceURLs()
     assert not suc
 
 
-def test_loadTLEDataFromSourceURLs_2():
-    app.ui.satelliteSource.addItem('Active')
-    suc = app.loadTLEDataFromSourceURLs()
+def test_loadTLEDataFromSourceURLs_2(function):
+    function.ui.satelliteSource.addItem('Active')
+    suc = function.loadTLEDataFromSourceURLs()
     assert suc
 
 
-def test_updateOrbit_1():
-    suc = app.updateOrbit()
+def test_updateOrbit_1(function):
+    suc = function.updateOrbit()
     assert not suc
 
 
-def test_updateOrbit_2():
-    app.satellite = 'test'
-    suc = app.updateOrbit()
+def test_updateOrbit_2(function):
+    function.satellite = 'test'
+    function.app.uiWindows['showSatelliteW'] = None
+    suc = function.updateOrbit()
     assert not suc
 
 
-def test_updateOrbit_3():
-    app.satellite = 'test'
-    app.ui.mainTabWidget.setCurrentIndex(1)
-    app.app.uiWindows = {'showSatelliteW': {'test': 1}}
-    suc = app.updateOrbit()
+def test_updateOrbit_3(function):
+    function.satellite = 'test'
+    function.ui.mainTabWidget.setCurrentIndex(1)
+    function.app.uiWindows = {'showSatelliteW': {'test': 1}}
+    suc = function.updateOrbit()
     assert not suc
 
 
-def test_updateOrbit_4():
+def test_updateOrbit_4(function):
     class Test1(QObject):
         update = pyqtSignal(object, object, object)
 
@@ -180,104 +155,104 @@ def test_updateOrbit_4():
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    app.ui.mainTabWidget.setCurrentIndex(1)
-    app.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
-    suc = app.updateOrbit()
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.ui.mainTabWidget.setCurrentIndex(1)
+    function.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
+    suc = function.updateOrbit()
     assert suc
 
 
-def test_updateOrbit_5():
+def test_updateOrbit_5(function):
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    app.ui.mainTabWidget.setCurrentIndex(5)
-    app.app.uiWindows = {'showSatelliteW': {'test': 1}}
-    suc = app.updateOrbit()
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.ui.mainTabWidget.setCurrentIndex(5)
+    function.app.uiWindows = {'showSatelliteW': {'test': 1}}
+    suc = function.updateOrbit()
     assert not suc
 
 
-def test_programTLEToMount_1():
-    app.app.mount.mountUp = False
-    suc = app.programTLEDataToMount()
+def test_programTLEToMount_1(function):
+    function.app.mount.mountUp = False
+    suc = function.programTLEDataToMount()
     assert not suc
 
 
-def test_programTLEToMount_2():
+def test_programTLEToMount_2(function):
     class Test:
         name = 'TIANGONG 1'
 
-    app.satellite = Test()
-    app.app.mount.mountUp = True
-    app.app.mount.satellite.tleParams.name = 'TIANGONG 1'
-    suc = app.programTLEDataToMount()
+    function.satellite = Test()
+    function.app.mount.mountUp = True
+    function.app.mount.satellite.tleParams.name = 'TIANGONG 1'
+    suc = function.programTLEDataToMount()
     assert suc
 
 
-def test_programTLEToMount_3():
+def test_programTLEToMount_3(function):
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satellitesRawTLE = {tle[0].strip('\n'):
+    function.satellitesRawTLE = {tle[0].strip('\n'):
                             {'line0': tle[0].strip('\n'),
                              'line1': tle[1].strip('\n'),
                              'line2': tle[2].strip('\n'),
                              }
                             }
 
-    app.app.mount.mountUp = True
-    app.app.mount.satellite.tleParams.name = 'TIANGONG 2'
-    with mock.patch.object(app.app.mount.satellite,
+    function.app.mount.mountUp = True
+    function.app.mount.satellite.tleParams.name = 'TIANGONG 2'
+    with mock.patch.object(function.app.mount.satellite,
                            'setTLE',
                            return_value=False):
-        suc = app.programTLEDataToMount()
+        suc = function.programTLEDataToMount()
         assert not suc
 
 
-def test_programTLEToMount_4():
+def test_programTLEToMount_4(function):
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satellitesRawTLE = {tle[0].strip('\n'):
+    function.satellitesRawTLE = {tle[0].strip('\n'):
                             {'line0': tle[0].strip('\n'),
                              'line1': tle[1].strip('\n'),
                              'line2': tle[2].strip('\n'),
                              }
                             }
-    app.app.mount.mountUp = True
-    app.app.mount.satellite.tleParams.name = 'TIANGONG 2'
-    with mock.patch.object(app.app.mount.satellite,
+    function.app.mount.mountUp = True
+    function.app.mount.satellite.tleParams.name = 'TIANGONG 2'
+    with mock.patch.object(function.app.mount.satellite,
                            'setTLE',
                            return_value=True):
-        suc = app.programTLEDataToMount()
+        suc = function.programTLEDataToMount()
         assert suc
 
 
-def test_calcTLEParams_1():
-    with mock.patch.object(app.app.mount,
+def test_calcTLEParams_1(function):
+    with mock.patch.object(function.app.mount,
                            'calcTLE'):
-        suc = app.calcOrbitFromTLEInMount()
+        suc = function.calcOrbitFromTLEInMount()
         assert not suc
 
 
-def test_calcTLEParams_2():
-    app.satellite = 'test'
-    with mock.patch.object(app.app.mount,
+def test_calcTLEParams_2(function):
+    function.satellite = 'test'
+    with mock.patch.object(function.app.mount,
                            'calcTLE'):
-        suc = app.calcOrbitFromTLEInMount()
+        suc = function.calcOrbitFromTLEInMount()
         assert suc
 
 
-def test_tle_export_1():
+def test_tle_export_1(function):
     tle = ['NOAA 8',
            '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
            '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
@@ -290,96 +265,96 @@ def test_tle_export_1():
     assert tle[2] == line2
 
 
-def test_showRises_1():
+def test_showRises_1(function):
     tle = ['NOAA 8',
            '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
            '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
 
-    app.satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
+    function.satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
 
     with mock.patch.object(EarthSatellite,
                            'find_events',
-                           return_value=([app.app.mount.obsSite.timeJD], [1])):
-        val = app.showRises()
+                           return_value=([function.app.mount.obsSite.timeJD], [1])):
+        val = function.showRises()
         assert isinstance(val, dict)
 
 
-def test_showRises_2():
-    t0 = app.app.mount.obsSite.timeJD
-    t1 = app.app.mount.obsSite.ts.tt_jd(app.app.mount.obsSite.timeJD.tt + 0.1)
-    t2 = app.app.mount.obsSite.ts.tt_jd(app.app.mount.obsSite.timeJD.tt + 0.2)
+def test_showRises_2(function):
+    t0 = function.app.mount.obsSite.timeJD
+    t1 = function.app.mount.obsSite.ts.tt_jd(function.app.mount.obsSite.timeJD.tt + 0.1)
+    t2 = function.app.mount.obsSite.ts.tt_jd(function.app.mount.obsSite.timeJD.tt + 0.2)
 
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     with mock.patch.object(EarthSatellite,
                            'find_events',
                            return_value=([t0, t1, t2],
                                          [0, 2, 1])):
-        val = app.showRises()
+        val = function.showRises()
         assert isinstance(val, dict)
 
 
-def test_showRises_3():
-    t0 = app.app.mount.obsSite.timeJD
-    t1 = app.app.mount.obsSite.ts.tt_jd(app.app.mount.obsSite.timeJD.tt + 0.1)
-    t2 = app.app.mount.obsSite.ts.tt_jd(app.app.mount.obsSite.timeJD.tt + 0.2)
-    t3 = app.app.mount.obsSite.ts.tt_jd(app.app.mount.obsSite.timeJD.tt + 0.3)
+def test_showRises_3(function):
+    t0 = function.app.mount.obsSite.timeJD
+    t1 = function.app.mount.obsSite.ts.tt_jd(function.app.mount.obsSite.timeJD.tt + 0.1)
+    t2 = function.app.mount.obsSite.ts.tt_jd(function.app.mount.obsSite.timeJD.tt + 0.2)
+    t3 = function.app.mount.obsSite.ts.tt_jd(function.app.mount.obsSite.timeJD.tt + 0.3)
 
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    app.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     with mock.patch.object(EarthSatellite,
                            'find_events',
                            return_value=([t0, t1, t2, t3],
                                          [2, 2, 2, 2])):
-        val = app.showRises()
+        val = function.showRises()
         assert isinstance(val, dict)
 
 
-def test_signalExtractSatelliteData_1a():
-    widget = app.ui.listSatelliteNames
+def test_signalExtractSatelliteData_1a(function):
+    widget = function.ui.listSatelliteNames
     widget.addItem('test12345')
 
 
-def test_extractSatelliteData_1():
-    suc = app.extractSatelliteData(satName='')
+def test_extractSatelliteData_1(function):
+    suc = function.extractSatelliteData(satName='')
     assert not suc
 
 
-def test_extractSatelliteData_2():
+def test_extractSatelliteData_2(function):
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    app.satellites = {'NOAA 8': sat,
+    function.satellites = {'NOAA 8': sat,
                       'Test1': sat}
 
-    suc = app.extractSatelliteData(satName='NOAA 8')
+    suc = function.extractSatelliteData(satName='NOAA 8')
     assert not suc
 
 
-def test_extractSatelliteData_3():
-    app.ui.listSatelliteNames.clear()
-    app.ui.listSatelliteNames.addItem('NOAA 8')
-    app.ui.listSatelliteNames.addItem('Test1')
+def test_extractSatelliteData_3(function):
+    function.ui.listSatelliteNames.clear()
+    function.ui.listSatelliteNames.addItem('NOAA 8')
+    function.ui.listSatelliteNames.addItem('Test1')
 
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    app.satellites = {'NOAA 8': sat,
+    function.satellites = {'NOAA 8': sat,
                       'Test1': sat}
 
-    suc = app.extractSatelliteData(satName='TIANGONG 1')
+    suc = function.extractSatelliteData(satName='TIANGONG 1')
     assert not suc
 
 
-def test_extractSatelliteData_4():
+def test_extractSatelliteData_4(function):
     class Test1(QObject):
         update = pyqtSignal(object, object, object)
         show = pyqtSignal(object, object)
@@ -387,41 +362,41 @@ def test_extractSatelliteData_4():
     class Test(QObject):
         signals = Test1()
 
-    app.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
-    app.ui.listSatelliteNames.clear()
-    app.ui.listSatelliteNames.addItem('        NOAA 8')
-    app.ui.listSatelliteNames.addItem('        Test1')
+    function.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
+    function.ui.listSatelliteNames.clear()
+    function.ui.listSatelliteNames.addItem('        NOAA 8')
+    function.ui.listSatelliteNames.addItem('        Test1')
 
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    app.satellites = {'NOAA 8': sat,
+    function.satellites = {'NOAA 8': sat,
                       'Test1': sat}
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'showRises'):
-        suc = app.extractSatelliteData(satName='NOAA 8')
+        suc = function.extractSatelliteData(satName='NOAA 8')
         assert suc
 
 
-def test_sendSatelliteData_1():
-    app.satellite = None
-    app.satOrbits = None
-    suc = app.sendSatelliteData()
+def test_sendSatelliteData_1(function):
+    function.satellite = None
+    function.satOrbits = None
+    suc = function.sendSatelliteData()
     assert not suc
 
 
-def test_sendSatelliteData_2():
-    app.app.uiWindows = {'showSatelliteW': {'classObj': None}}
-    app.satellite = 1
-    app.satOrbits = 1
-    suc = app.sendSatelliteData()
+def test_sendSatelliteData_2(function):
+    function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
+    function.satellite = 1
+    function.satOrbits = 1
+    suc = function.sendSatelliteData()
     assert not suc
 
 
-def test_sendSatelliteData_3():
+def test_sendSatelliteData_3(function):
     class Test1(QObject):
         update = pyqtSignal(object, object, object)
         show = pyqtSignal(object, object)
@@ -429,41 +404,41 @@ def test_sendSatelliteData_3():
     class Test(QObject):
         signals = Test1()
 
-    app.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
-    app.satellite = 1
-    app.satOrbits = 1
-    suc = app.sendSatelliteData()
+    function.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
+    function.satellite = 1
+    function.satOrbits = 1
+    suc = function.sendSatelliteData()
     assert suc
 
 
-def test_signalExtractSatelliteData_1():
-    app.ui.listSatelliteNames.addItem('Test 1234567')
-    app.ui.listSatelliteNames.setCurrentRow(0)
-    with mock.patch.object(app,
+def test_signalExtractSatelliteData_1(function):
+    function.ui.listSatelliteNames.addItem('Test 1234567')
+    function.ui.listSatelliteNames.setCurrentRow(0)
+    with mock.patch.object(function,
                            'extractSatelliteData',):
-        suc = app.signalExtractSatelliteData()
+        suc = function.signalExtractSatelliteData()
         assert suc
 
 
-def test_getSatelliteDataFromDatabase_1():
-    suc = app.getSatelliteDataFromDatabase()
+def test_getSatelliteDataFromDatabase_1(function):
+    suc = function.getSatelliteDataFromDatabase()
     assert not suc
 
 
-def test_getSatelliteDataFromDatabase_2():
+def test_getSatelliteDataFromDatabase_2(function):
     class Test:
         name = 'test'
 
-    suc = app.getSatelliteDataFromDatabase(Test())
+    suc = function.getSatelliteDataFromDatabase(Test())
     assert suc
 
 
-def test_enableTrack_1():
-    suc = app.updateSatelliteTrackGui()
+def test_enableTrack_1(function):
+    suc = function.updateSatelliteTrackGui()
     assert not suc
 
 
-def test_enableTrack_2():
+def test_enableTrack_2(function):
     class Test:
         jdStart = None
         jdEnd = None
@@ -471,11 +446,11 @@ def test_enableTrack_2():
         message = None
         altitude = None
 
-    suc = app.updateSatelliteTrackGui(Test())
+    suc = function.updateSatelliteTrackGui(Test())
     assert suc
 
 
-def test_enableTrack_3():
+def test_enableTrack_3(function):
     class Test:
         jdStart = 2458715.14771
         jdEnd = 2458715.15
@@ -483,237 +458,328 @@ def test_enableTrack_3():
         message = 'test'
         altitude = Angle(degrees=50)
 
-    suc = app.updateSatelliteTrackGui(Test())
+    suc = function.updateSatelliteTrackGui(Test())
     assert suc
 
 
-def test_startTrack_1():
-    app.app.mount.mountUp = False
-    suc = app.startTrack()
+def test_startTrack_1(function):
+    function.app.mount.mountUp = False
+    suc = function.startTrack()
     assert not suc
 
 
-def test_startTrack_2():
-    app.app.mount.mountUp = True
-    with mock.patch.object(app.app.mount.satellite,
+def test_startTrack_2(function):
+    function.app.mount.mountUp = True
+    with mock.patch.object(function.app.mount.satellite,
                            'slewTLE',
                            return_value=(False, 'test')):
-        suc = app.startTrack()
+        suc = function.startTrack()
         assert not suc
 
 
-def test_startTrack_3():
-    app.app.mount.mountUp = True
-    with mock.patch.object(app.app.mount.satellite,
+def test_startTrack_3(function):
+    function.app.mount.mountUp = True
+    with mock.patch.object(function.app.mount.satellite,
                            'slewTLE',
                            return_value=(False, 'test')):
-        suc = app.startTrack()
+        suc = function.startTrack()
         assert not suc
 
 
-def test_startTrack_4():
-    app.app.mount.mountUp = True
-    app.app.mount.obsSite.status = 5
-    with mock.patch.object(app.app.mount.satellite,
+def test_startTrack_4(function):
+    function.app.mount.mountUp = True
+    function.app.mount.obsSite.status = 5
+    with mock.patch.object(function.app.mount.satellite,
                            'slewTLE',
                            return_value=(False, 'test')):
-        suc = app.startTrack()
+        suc = function.startTrack()
         assert not suc
 
 
-def test_startTrack_5():
-    app.app.mount.mountUp = True
-    app.app.mount.obsSite.status = 5
-    with mock.patch.object(app.app.mount.satellite,
+def test_startTrack_5(function):
+    function.app.mount.mountUp = True
+    function.app.mount.obsSite.status = 5
+    with mock.patch.object(function.app.mount.satellite,
                            'slewTLE',
                            return_value=(True, 'test')):
-        suc = app.startTrack()
+        suc = function.startTrack()
         assert suc
 
 
-def test_startTrack_6():
-    app.app.mount.mountUp = True
-    app.app.mount.obsSite.status = 5
-    with mock.patch.object(app.app.mount.satellite,
+def test_startTrack_6(function):
+    function.app.mount.mountUp = True
+    function.app.mount.obsSite.status = 5
+    with mock.patch.object(function.app.mount.satellite,
                            'slewTLE',
                            return_value=(True, 'test')):
-        with mock.patch.object(app.app.mount.obsSite,
+        with mock.patch.object(function.app.mount.obsSite,
                                'unpark',
                                return_value=True):
-            suc = app.startTrack()
+            suc = function.startTrack()
             assert suc
 
 
-def test_stopTrack_1():
-    app.app.mount.mountUp = False
-    suc = app.stopTrack()
+def test_stopTrack_1(function):
+    function.app.mount.mountUp = False
+    suc = function.stopTrack()
     assert not suc
 
 
-def test_stopTrack_2():
-    app.app.mount.mountUp = True
-    with mock.patch.object(app.app.mount.obsSite,
+def test_stopTrack_2(function):
+    function.app.mount.mountUp = True
+    with mock.patch.object(function.app.mount.obsSite,
                            'stopTracking',
                            return_value=False):
-        suc = app.stopTrack()
+        suc = function.stopTrack()
         assert not suc
 
 
-def test_stopTrack_3():
-    app.app.mount.mountUp = True
-    with mock.patch.object(app.app.mount.obsSite,
+def test_stopTrack_3(function):
+    function.app.mount.mountUp = True
+    with mock.patch.object(function.app.mount.obsSite,
                            'stopTracking',
                            return_value=True):
-        suc = app.stopTrack()
+        suc = function.stopTrack()
         assert suc
 
 
-def test_progSatellitesFiltered_1():
+def test_progSatellitesFiltered_2(function):
+    class Satnum:
+        satnum = 1
 
-    app.ui.satelliteSource.clear()
-    app.ui.satelliteSource.addItem('Comet')
-    app.ui.satelliteSource.setCurrentIndex(0)
-    app.ui.filterSatellite.setText('test')
-    with mock.patch.object(app,
+    class Model:
+        model = Satnum()
+
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.satellites = {'test': Model(), '00000': Model()}
+    with mock.patch.object(function,
                            'messageDialog',
                            return_value=False):
-        suc = app.progSatellitesFiltered()
+        suc = function.progSatellitesFiltered()
         assert not suc
 
 
-def test_progSatellitesFiltered_2():
+def test_progSatellitesFiltered_3(function):
+    class Satnum:
+        satnum = 1
 
-    app.ui.satelliteSource.clear()
-    app.ui.satelliteSource.addItem('Comet')
-    app.ui.satelliteSource.setCurrentIndex(0)
-    app.ui.filterSatellite.setText('test')
-    app.app.automation = None
-    with mock.patch.object(app,
+    class Model:
+        model = Satnum()
+
+    function.app.automation = None
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.satellites = {'test': Model(), '00000': Model()}
+    with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = app.progSatellitesFiltered()
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=False):
+            suc = function.progSatellitesFiltered()
+            assert not suc
+
+
+def test_progSatellitesFiltered_4(function):
+    class Satnum:
+        satnum = 1
+
+    class Model:
+        model = Satnum()
+
+    function.app.automation = None
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.satellites = {'test': Model(), '00000': Model()}
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
+            suc = function.progSatellitesFiltered()
+            assert not suc
+
+
+def test_progSatellitesFiltered_5(function):
+    class Test:
+        @staticmethod
+        def uploadMPCData(comets=False):
+            return False
+
+    class Satnum:
+        satnum = 1
+
+    class Model:
+        model = Satnum()
+
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.satellites = {'test': Model(), '00000': Model()}
+    function.app.automation = Test()
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
+            suc = function.progSatellitesFiltered()
+            assert not suc
+
+
+def test_progSatellitesFiltered_6(function):
+    class Test:
+        @staticmethod
+        def uploadMPCData(comets=False):
+            return True
+
+    class Satnum:
+        satnum = 1
+
+    class Model:
+        model = Satnum()
+
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.satellites = {'test': Model(), '00000': Model()}
+    function.app.automation = Test()
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
+            suc = function.progSatellitesFiltered()
+            assert suc
+
+
+def test_progSatellitesFull_2(function):
+    class Satnum:
+        satnum = 1
+
+    class Model:
+        model = Satnum()
+
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.satellites = {'test': Model(), '00000': Model()}
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=False):
+        suc = function.progSatellitesFull()
         assert not suc
 
 
-def test_progSatellitesFiltered_3():
-    class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return False
+def test_progSatellitesFull_3(function):
+    class Satnum:
+        satnum = 1
 
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2], name=tle[0])
+    class Model:
+        model = Satnum()
 
-    app.satellites = {'NOAA 8': sat,
-                      'Test1': sat}
-    app.ui.satelliteSource.clear()
-    app.ui.satelliteSource.addItem('Comet')
-    app.ui.satelliteSource.setCurrentIndex(0)
-    app.ui.filterSatellite.setText('test')
-    app.app.automation = Test()
-    with mock.patch.object(app,
+    function.app.automation = None
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.satellites = {'test': Model(), '00000': Model()}
+    with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = app.progSatellitesFiltered()
-        assert suc
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=False):
+            suc = function.progSatellitesFull()
+            assert not suc
 
 
-def test_progSatellitesFiltered_4():
+def test_progSatellitesFull_4(function):
+    class Satnum:
+        satnum = 1
+
+    class Model:
+        model = Satnum()
+
+    function.app.automation = None
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.satellites = {'test': Model(), '00000': Model()}
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
+            suc = function.progSatellitesFull()
+            assert not suc
+
+
+def test_progSatellitesFull_5(function):
     class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return True
-
-        @staticmethod
-        def writeAsteroidMPC(a):
-            return True
-
         @staticmethod
         def uploadMPCData(comets=False):
             return False
 
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    app.satellites = {'NOAA 8': sat,
-                      'Test1': sat}
-    app.ui.satelliteSource.clear()
-    app.ui.satelliteSource.addItem('Comet')
-    app.ui.satelliteSource.setCurrentIndex(0)
-    app.ui.filterSatellite.setText('test')
-    app.app.automation = Test()
-    with mock.patch.object(app,
+    class Satnum:
+        satnum = 1
+
+    class Model:
+        model = Satnum()
+
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.satellites = {'test': Model(), '00000': Model()}
+    function.app.automation = Test()
+    with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = app.progSatellitesFiltered()
-        assert suc
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
+            suc = function.progSatellitesFull()
+            assert not suc
 
 
-def test_progSatellitesFiltered_5():
+def test_progSatellitesFull_6(function):
     class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return True
-
-        @staticmethod
-        def writeAsteroidMPC(a):
-            return True
-
         @staticmethod
         def uploadMPCData(comets=False):
             return True
 
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    class Satnum:
+        satnum = 1
 
-    app.satellites = {'NOAA 8': sat,
-                      'Test1': sat}
-    app.ui.satelliteSource.clear()
-    app.ui.satelliteSource.addItem('Comet')
-    app.ui.satelliteSource.setCurrentIndex(0)
-    app.ui.filterSatellite.setText('test')
-    app.app.automation = Test()
-    with mock.patch.object(app,
+    class Model:
+        model = Satnum()
+
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.satellites = {'test': Model(), '00000': Model()}
+    function.app.automation = Test()
+    with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        suc = app.progSatellitesFiltered()
-        assert suc
-
-
-def test_progSatellitesFiltered_6():
-    class Test:
-        @staticmethod
-        def writeCometMPC(a):
-            return True
-
-        @staticmethod
-        def writeAsteroidMPC(a):
-            return True
-
-        @staticmethod
-        def uploadMPCData(comets=False):
-            return True
-
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
-
-    app.satellites = {'NOAA 8': sat,
-                      'Test1': sat}
-    app.ui.satelliteSource.clear()
-    app.ui.satelliteSource.addItem('Asteroid')
-    app.ui.satelliteSource.setCurrentIndex(0)
-    app.ui.filterSatellite.setText('test')
-
-    app.app.automation = Test()
-    with mock.patch.object(app,
-                           'messageDialog',
-                           return_value=True):
-        suc = app.progSatellitesFiltered()
-        assert suc
+        with mock.patch.object(function.automationHelper,
+                               'writeCometMPC',
+                               return_value=True):
+            suc = function.progSatellitesFull()
+            assert suc

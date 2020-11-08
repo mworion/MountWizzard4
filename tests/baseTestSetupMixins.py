@@ -20,7 +20,7 @@ from queue import Queue
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal
-from skyfield.api import Topos, load
+from skyfield.api import Topos, load, Loader
 
 # local import
 
@@ -66,6 +66,20 @@ class Power:
 
 
 class Mount(QObject):
+    class MountSatellite:
+        class Name:
+            name = ''
+
+        tleParams = Name()
+
+        @staticmethod
+        def setTLE(line0='', line1='', line2=''):
+            return
+
+        @staticmethod
+        def slewTLE():
+            return
+
     class MountFirmware:
         product = 'test'
         hardware = 'test'
@@ -141,6 +155,8 @@ class Mount(QObject):
         settingDone = pyqtSignal()
         pointDone = pyqtSignal()
         firmwareDone = pyqtSignal()
+        calcTLEdone = pyqtSignal()
+        getTLEdone = pyqtSignal()
 
     class MountObsSite:
 
@@ -165,6 +181,8 @@ class Mount(QObject):
         location = Topos(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         ts = load.timescale(builtin=True)
         timeJD = ts.now()
+        loader = Loader('tests/temp')
+        status = 0
 
         @staticmethod
         def checkRateSidereal():
@@ -231,6 +249,7 @@ class Mount(QObject):
     geometry = MountGeometry()
     firmware = MountFirmware()
     setting = MountSetting()
+    satellite = MountSatellite()
 
     bootMount = None
     shutdown = None
@@ -239,6 +258,10 @@ class Mount(QObject):
     @staticmethod
     def getLocation():
         return True
+
+    @staticmethod
+    def calcTLE():
+        return
 
 
 class Automation:
@@ -250,7 +273,9 @@ class App(QObject):
     deviceStat = {}
     update10s = pyqtSignal()
     update1s = pyqtSignal()
+    update3s = pyqtSignal()
     update30m = pyqtSignal()
+    sendSatelliteData = pyqtSignal()
     message = pyqtSignal(str, int)
     messageQueue = Queue()
     mount = Mount()
@@ -261,5 +286,6 @@ class App(QObject):
               'imageDir': 'tests/image',
               'dataDir': 'tests/data',
               }
+    uiWindows = {}
 
 

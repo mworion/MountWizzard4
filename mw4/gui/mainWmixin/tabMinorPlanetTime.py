@@ -161,7 +161,7 @@ class MinorPlanetTime:
         else:
             name = ''
 
-        return name
+        return name[:40]
 
     def setupMinorPlanetNameList(self):
         """

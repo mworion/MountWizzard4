@@ -441,10 +441,13 @@ class MainWindow(MWidget,
         # minor planets
         self.wIcon(self.ui.progMinorPlanetsFull, QIcon(':/icon/run.svg'))
         self.wIcon(self.ui.progMinorPlanetsFiltered, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.progEarthRotationData, QIcon(':/icon/run.svg'))
 
         # satellite
         self.wIcon(self.ui.stopSatelliteTracking, QIcon(':/icon/cross-circle.svg'))
         self.wIcon(self.ui.startSatelliteTracking, QIcon(':/icon/start.svg'))
+        self.wIcon(self.ui.progSatellitesFull, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.progSatellitesFiltered, QIcon(':/icon/run.svg'))
 
         # analyse
         self.wIcon(self.ui.runFlexure, QIcon(':/icon/start.svg'))

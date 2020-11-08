@@ -438,10 +438,6 @@ class MinorPlanetTime:
         if not suc:
             return False
 
-        if not self.app.automation:
-            self.app.message.emit('Not running windows, no updater available', 2)
-            return False
-
         self.app.message.emit(f'Program database:    [{source}]', 1)
         self.app.message.emit('Exporting MPC data', 0)
 
@@ -453,6 +449,10 @@ class MinorPlanetTime:
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
+            return False
+
+        if not self.app.automation:
+            self.app.message.emit('Not running windows, no updater available', 2)
             return False
 
         self.app.message.emit('Uploading to mount', 0)

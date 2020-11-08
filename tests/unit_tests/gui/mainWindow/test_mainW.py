@@ -136,6 +136,7 @@ def function_setup_teardown(qtbot):
         ephemeris = eph
         measure = MeasureData(app=Test1())
         power = PegasusUPB(app=Test1())
+        automation = None
         astrometry = Astrometry(app=Test1())
         timer0_1s = QTimer()
 

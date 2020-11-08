@@ -83,7 +83,10 @@ class MinorPlanetTime:
         self.ui.filterMinorPlanet.setText(config.get('filterMinorPlanet'))
         self.setupMinorPlanetSourceURLsDropDown()
 
-        if self.app.automation:
+        if not self.app.automation:
+            return True
+
+        if self.app.automation.installPath:
             self.installPath = self.app.automation.installPath
 
         else:

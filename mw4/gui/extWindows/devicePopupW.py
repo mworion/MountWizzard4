@@ -20,6 +20,7 @@ import platform
 
 # external packages
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QListView, QComboBox, QLineEdit
 from PyQt5.QtWidgets import QCheckBox, QDoubleSpinBox
 
@@ -73,6 +74,8 @@ class DevicePopup(toolsQtWidget.MWidget):
         x = geometry[0] + int((geometry[2] - self.width()) / 2)
         y = geometry[1] + int((geometry[3] - self.height()) / 2)
         self.move(x, y)
+        pixmap = QPixmap(':/icon/cogs.svg')
+        self.ui.iconPixmap.setPixmap(pixmap)
 
         self.returnValues = {'close': 'cancel'}
         self.framework2gui = {

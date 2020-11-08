@@ -319,14 +319,14 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         """
 
         msg = QMessageBox()
+        msg.setWindowModality(Qt.ApplicationModal)
+        msg.setStyleSheet(self.getStyle())
         msg.setWindowTitle(title)
-        pixmap = QPixmap(':/icon/question.svg').scaled(32, 32)
+        pixmap = QPixmap(':/icon/question.svg').scaled(64, 64)
         msg.setIconPixmap(pixmap)
         msg.setText(question)
         msg.setStandardButtons(msg.Yes | msg.No)
         msg.setDefaultButton(msg.No)
-        msg.setWindowModality(Qt.ApplicationModal)
-        msg.setStyleSheet(self.getStyle())
         msg.show()
         x = parentWidget.x() + int((parentWidget.width() - msg.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - msg.height()) / 2)

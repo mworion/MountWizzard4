@@ -438,6 +438,14 @@ def test_progMinorPlanetToMount_6(function):
         assert suc
 
 
+def test_progMinorPlanetsFiltered_0(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Please')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    suc = function.progMinorPlanetsFiltered()
+    assert not suc
+
+
 def test_progMinorPlanetsFiltered_1(function):
     function.ui.listMinorPlanetNames.clear()
     function.ui.listMinorPlanetNames.addItem('00000: test')
@@ -588,6 +596,14 @@ def test_progMinorPlanetsFiltered_6(function):
                                return_value='test'):
             suc = function.progMinorPlanetsFiltered()
             assert suc
+
+
+def test_progMinorPlanetsFull_0(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Please')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    suc = function.progMinorPlanetsFull()
+    assert not suc
 
 
 def test_progMinorPlanetsFull_1(function):

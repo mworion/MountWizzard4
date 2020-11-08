@@ -1,0 +1,330 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+#
+# written in python3 , (c) 2019, 2020 by mworion
+#
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+import pytest
+import os
+import json
+import shutil
+
+# external packages
+from PyQt5.QtCore import QThreadPool, QObject
+from skyfield.api import load
+
+# local import
+from logic.automation.automationHelper import AutomationHelper
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
+    yield
+
+
+@pytest.fixture(autouse=True, scope='function')
+def function(module):
+
+    class MountObsSite:
+        ts = load.timescale(builtin=True)
+
+    class Mount:
+        obsSite = MountObsSite()
+
+    class Test(QObject):
+        threadPool = QThreadPool()
+        mount = Mount()
+        mwGlob = {'tempDir': 'tests/temp',
+                  'dataDir': 'tests/data',
+                  }
+
+    for file in ['tai-utc.dat', 'finals2000A.all']:
+        path = 'tests/data/' + file
+        if os.path.isfile(path):
+            os.remove(path)
+
+    window = AutomationHelper(app=Test())
+    yield window
+
+
+def test_writeEarthRotationData_1(function):
+    suc = function.writeEarthRotationData()
+    assert not suc
+
+
+def test_writeEarthRotationData_2(function):
+    shutil.copy('tests/testData/tai-utc.dat', 'tests/data/tai-utc.dat')
+    suc = function.writeEarthRotationData()
+    assert not suc
+
+
+def test_writeEarthRotationData_3(function):
+    shutil.copy('tests/testData/tai-utc.dat', 'tests/data/tai-utc.dat')
+    shutil.copy('tests/testData/finals2000A.all', 'tests/data/finals2000A.all')
+    suc = function.writeEarthRotationData(installPath='tests/temp')
+    assert suc
+
+
+def test_writeCometMPC_1(function):
+    suc = function.writeCometMPC()
+    assert not suc
+
+
+def test_writeCometMPC_2(function):
+    data = {'test': 'test'}
+
+    suc = function.writeCometMPC(datas=data, installPath='tests/temp')
+    assert not suc
+
+
+def test_writeCometMPC_3(function):
+    data = [{'test': 'test'}]
+
+    suc = function.writeCometMPC(datas=data, installPath='tests/temp')
+    assert suc
+    assert os.path.isfile('tests/temp/minorPlanets.mpc')
+
+
+def test_writeCometMPC_4(function):
+    with open('tests/testData/mpc_comet_test.json') as f:
+        data = json.load(f)
+
+    testData = [data[0]]
+
+    suc = function.writeCometMPC(datas=testData, installPath='tests/temp')
+    assert suc
+
+
+def test_writeCometMPC_5(function):
+    with open('tests/testData/mpc_comet_test.json') as f:
+        data = json.load(f)
+
+    testData = [data[0]]
+
+    suc = function.writeCometMPC(datas=testData, installPath='tests/temp')
+    assert suc
+
+    with open('tests/temp/minorPlanets.mpc', 'r') as f:
+        testLine = f.readline()
+
+    with open('tests/testData/mpc_comet_test.txt', 'r') as f:
+        refLine = f.readline()
+
+    assert testLine == refLine
+
+
+def test_generateCycleCountPackedText(function):
+    cycles = [
+        0,
+        1,
+        13,
+        108,
+        127,
+        162,
+        193,
+        360,
+        418,
+    ]
+    texts = [
+        '00',
+        '01',
+        '13',
+        'A8',
+        'C7',
+        'G2',
+        'J3',
+        'a0',
+        'f8'
+    ]
+    for cycle, text in zip(cycles, texts):
+        val = function.generateCycleCountTextPacked(cycle)
+        assert val == text
+
+
+def test_generatePackedDesignation_1(function):
+    designations = [
+        '1995 XA',
+        '1995 XL1',
+        '1995 FB13',
+        '1998 SQ108',
+        '1998 SV127',
+        '1998 SS162',
+        '2099 AZ193',
+        '2008 AA360',
+        '2007 TA418'
+    ]
+    results = [
+        'J95X00A',
+        'J95X01L',
+        'J95F13B',
+        'J98SA8Q',
+        'J98SC7V',
+        'J98SG2S',
+        'K99AJ3Z',
+        'K08Aa0A',
+        'K07Tf8A'
+    ]
+
+    for desig, res in zip(designations, results):
+        val = function.generateDesignationPacked(desig)
+        assert val == res
+
+
+def test_convertDatePacked(function):
+    values = ['01', '10', '30', '01', '22', '99']
+    results = ['1', 'A', 'U', '1', 'M', ' ']
+
+    for value, result in zip(values, results):
+        val = function.convertDatePacked(value)
+        assert val == result
+
+
+def test_generateDatePacked(function):
+
+    months = ['01', '01', '09', '10', '10']
+    days = ['01', '10', '30', '01', '22']
+    results = ['11', '1A', '9U', 'A1', 'AM']
+
+    for mon, day, result in zip(months, days, results):
+        val = function.generateDatePacked(mon, day)
+        assert val == result
+
+
+def test_generateEpochPacked(function):
+    epoch = 2458600.5
+    epochPackedText = 'K194R'
+    val = function.generateEpochPacked(epoch)
+    assert val == epochPackedText
+
+
+def test_generateOldDesignationPacked_1(function):
+    numberTexts = ['(1)', '(100)', '(5986)', '(12345)', '(123456)']
+    results = ['00001  ', '00100  ', '05986  ', '12345  ', 'C3456  ']
+
+    for numberText, result in zip(numberTexts, results):
+        val = function.generateOldDesignationPacked(numberText)
+        assert val == result
+
+
+def test_generateOldDesignationPacked_2(function):
+    val = function.generateOldDesignationPacked('')
+    assert val == 'xxxxxxx'
+
+
+def test_writeAsteroidMPC_1(function):
+    suc = function.writeAsteroidMPC()
+    assert not suc
+
+
+def test_writeAsteroidMPC_2(function):
+    data = {'Principal_desig': '2016 NU22'}
+
+    suc = function.writeAsteroidMPC(datas=data, installPath='tests/temp')
+    assert not suc
+
+
+def test_writeAsteroidMPC_3(function):
+    data = [{}]
+
+    suc = function.writeAsteroidMPC(datas=data, installPath='tests/temp')
+    assert suc
+    assert os.path.isfile('tests/temp/minorPlanets.mpc')
+
+
+def test_writeAsteroidMPC_4(function):
+    with open('tests/testData/mpc_asteroid_test.json') as f:
+        data = json.load(f)
+
+    testData = [data[0]]
+
+    suc = function.writeAsteroidMPC(datas=testData, installPath='tests/temp')
+    assert suc
+
+
+def test_writeAsteroidMPC_5(function):
+    with open('tests/testData/mpc_asteroid_test.json') as f:
+        data = json.load(f)
+
+    testData = [data[0]]
+
+    suc = function.writeAsteroidMPC(datas=testData, installPath='tests/temp')
+    assert suc
+
+    with open('tests/temp/minorPlanets.mpc', 'r') as f:
+        testLine = f.readline()
+
+    with open('tests/testData/mpc_asteroid_test.txt', 'r') as f:
+        refLine = f.readline()
+
+    assert testLine[:202] == refLine[:202]
+
+
+def test_writeAsteroidMPC_6(function):
+    with open('tests/testData/mpc_asteroid_test.json') as f:
+        data = json.load(f)
+
+    suc = function.writeAsteroidMPC(datas=data, installPath='tests/temp')
+    assert suc
+
+    with open('tests/temp/minorPlanets.mpc', 'r') as f:
+        testLines = f.readlines()
+
+    with open('tests/testData/mpc_asteroid_test.txt', 'r') as f:
+        refLines = f.readlines()
+
+    for test, ref in zip(testLines, refLines):
+        assert test[0:8] == ref[0:8]
+        assert test[14:202] == ref[14:202]
+
+
+def test_writeAsteroidMPC_7(function):
+    with open('tests/testData/nea_extended_test.json') as f:
+        data = json.load(f)
+
+    testData = [data[0]]
+
+    suc = function.writeAsteroidMPC(datas=testData, installPath='tests/temp')
+    assert suc
+
+    with open('tests/temp/minorPlanets.mpc', 'r') as f:
+        testLine = f.readline()
+
+    with open('tests/testData/nea_extended_test.txt', 'r') as f:
+        refLine = f.readline()
+
+    assert testLine[:202] == refLine[:202]
+
+
+def test_writeAsteroidMPC_8(function):
+    with open('tests/testData/nea_extended_test.json') as f:
+        data = json.load(f)
+
+    suc = function.writeAsteroidMPC(datas=data, installPath='tests/temp')
+    assert suc
+
+    with open('tests/temp/minorPlanets.mpc', 'r') as f:
+        testLines = f.readlines()
+
+    with open('tests/testData/nea_extended_test.txt', 'r') as f:
+        refLines = f.readlines()
+
+    for test, ref in zip(testLines, refLines):
+        if ref[0:3] in ['PLS']:
+            continue
+
+        assert test[0:7] == ref[0:7]
+        assert test[21:140] == ref[21:140]
+        assert test[142:167] == ref[142:167]
+

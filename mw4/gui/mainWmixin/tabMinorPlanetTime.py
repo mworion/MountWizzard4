@@ -84,9 +84,9 @@ class MinorPlanetTime:
         self.setupMinorPlanetSourceURLsDropDown()
 
         if not self.app.automation:
-            return True
+            self.installPath = self.app.mwGlob['dataDir']
 
-        if self.app.automation.installPath:
+        elif self.app.automation.installPath:
             self.installPath = self.app.automation.installPath
 
         else:

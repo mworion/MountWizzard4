@@ -272,23 +272,6 @@ class MinorPlanetTime:
 
         return True
 
-    def programDialog(self, question):
-        """
-
-        :param question:
-        :return: OK
-        """
-
-        msg = QMessageBox()
-        reply = msg.question(self, 'Program with QCI Updater', question, msg.Yes | msg.No,
-                             msg.No)
-
-        if reply != msg.Yes:
-            return False
-
-        else:
-            return True
-
     def progEarthRotationDataToMount(self):
         """
 
@@ -296,7 +279,7 @@ class MinorPlanetTime:
         """
 
         text = 'Should \n\n[Earth Rotation Data]\n\nbe programmed to mount ?'
-        suc = self.programDialog(text)
+        suc = self.messageDialog(self, 'Program with QCI Updater', text)
 
         if not suc:
             return False
@@ -338,7 +321,7 @@ class MinorPlanetTime:
         isAsteroid = not isComet
 
         text = f'Should \n\n[{source}]\n\nbe programmed to mount ?'
-        suc = self.programDialog(text)
+        suc = self.messageDialog(self, 'Program with QCI Updater', text)
 
         if not suc:
             return False
@@ -380,8 +363,11 @@ class MinorPlanetTime:
         isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
         isAsteroid = not isComet
 
-        text = f'Should\n\n[{source}]\n\nfiltered database\n\nbe programmed to mount ?'
-        suc = self.programDialog(text)
+        if source.startswith('Please'):
+            return False
+
+        text = f'Should filtered database\n\n[{source}]\n\nbe programmed to mount ?'
+        suc = self.messageDialog(self, 'Program with QCI Updater',text)
 
         if not suc:
             return False
@@ -434,8 +420,11 @@ class MinorPlanetTime:
         isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
         isAsteroid = not isComet
 
-        text = f'Should\n\n[{source}]\n\nfull database\n\nbe programmed to mount ?'
-        suc = self.programDialog(text)
+        if source.startswith('Please'):
+            return False
+
+        text = f'Should full database\n\n[{source}]\n\nbe programmed to mount ?'
+        suc = self.messageDialog(self, 'Program with QCI Updater', text)
 
         if not suc:
             return False

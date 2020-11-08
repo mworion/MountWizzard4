@@ -21,8 +21,8 @@ import platform
 import os
 
 # external packages
-from PyQt5.QtWidgets import QWidget, QDesktopWidget, qApp, QFileDialog
-from PyQt5.QtGui import QPalette, QIcon
+from PyQt5.QtWidgets import QWidget, QDesktopWidget, qApp, QFileDialog, QMessageBox
+from PyQt5.QtGui import QPalette, QIcon, QPixmap
 from PyQt5.QtCore import Qt, QSortFilterProxyModel, QDir, QObject, pyqtSignal, QEvent
 from PyQt5.QtCore import QSize
 
@@ -309,6 +309,35 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         """
 
         return dlg.exec_()
+
+    def messageDialog(self, parentWidget, title, question):
+        """
+        :param parentWidget:
+        :param title:
+        :param question:
+        :return: OK
+        """
+
+        msg = QMessageBox()
+        msg.setWindowTitle(title)
+        pixmap = QPixmap(':/icon/question.svg').scaled(32, 32)
+        msg.setIconPixmap(pixmap)
+        msg.setText(question)
+        msg.setStandardButtons(msg.Yes | msg.No)
+        msg.setDefaultButton(msg.No)
+        msg.setWindowModality(Qt.ApplicationModal)
+        msg.setStyleSheet(self.getStyle())
+        msg.show()
+        x = parentWidget.x() + int((parentWidget.width() - msg.width()) / 2)
+        y = parentWidget.y() + int((parentWidget.height() - msg.height()) / 2)
+        msg.move(x, y)
+        reply = self.runDialog(msg)
+
+        if reply != msg.Yes:
+            return False
+
+        else:
+            return True
 
     def openFile(self,
                  window=None,

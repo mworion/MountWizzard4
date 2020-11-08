@@ -587,8 +587,8 @@ class Satellite(object):
         """
 
         source = self.ui.satelliteSource.currentText()
-        text = f'Should\n\n[{source}]\n\nfiltered database\n\nbe programmed to mount ?'
-        suc = self.programDialog(text)
+        text = f'Should filtered database\n\n[{source}]\n\nbe programmed to mount ?'
+        suc = self.messageDialog(self, 'Program with QCI Updater', text)
 
         if not suc:
             return False
@@ -627,15 +627,15 @@ class Satellite(object):
 
         return True
 
-    def progMSatellitesFull(self):
+    def progSatellitesFull(self):
         """
 
         :return: success
         """
 
         source = self.ui.satelliteSource.currentText()
-        text = f'Should\n\n[{source}]\n\nfull database\n\nbe programmed to mount ?'
-        suc = self.programDialog(text)
+        text = f'Should full database\n\n[{source}]\n\nbe programmed to mount ?'
+        suc = self.messageDialog(self, 'Program with QCI Updater', text)
 
         if not suc:
             return False

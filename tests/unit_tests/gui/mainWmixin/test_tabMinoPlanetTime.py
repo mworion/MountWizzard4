@@ -236,7 +236,7 @@ def test_programDialog_1(function):
     with mock.patch.object(QMessageBox,
                            'question',
                            return_value=QMessageBox().Yes):
-        suc = function.programDialog('test')
+        suc = function.messageDialog('test')
         assert suc
 
 
@@ -244,13 +244,13 @@ def test_programDialog_2(function):
     with mock.patch.object(QMessageBox,
                            'question',
                            return_value=QMessageBox().No):
-        suc = function.programDialog('test')
+        suc = function.messageDialog('test')
         assert not suc
 
 
 def test_progEarthRotationDataToMount_1(function):
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=False):
         suc = function.progEarthRotationDataToMount()
         assert not suc
@@ -259,7 +259,7 @@ def test_progEarthRotationDataToMount_1(function):
 def test_progEarthRotationDataToMount_2(function):
     function.app.automation = None
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progEarthRotationDataToMount()
         assert not suc
@@ -273,7 +273,7 @@ def test_progEarthRotationDataToMount_3(function):
 
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progEarthRotationDataToMount()
         assert not suc
@@ -291,7 +291,7 @@ def test_progEarthRotationDataToMount_4(function):
 
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progEarthRotationDataToMount()
         assert not suc
@@ -309,7 +309,7 @@ def test_progEarthRotationDataToMount_5(function):
 
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progEarthRotationDataToMount()
         assert suc
@@ -324,7 +324,7 @@ def test_progMinorPlanetToMount_1(function):
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.minorPlanets = [1]
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=False):
         suc = function.progMinorPlanetToMount()
         assert not suc
@@ -340,7 +340,7 @@ def test_progMinorPlanetToMount_2(function):
     function.minorPlanets = [1]
     function.app.automation = None
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetToMount()
         assert not suc
@@ -361,7 +361,7 @@ def test_progMinorPlanetToMount_3(function):
     function.minorPlanets = [1]
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetToMount()
         assert not suc
@@ -390,7 +390,7 @@ def test_progMinorPlanetToMount_4(function):
     function.minorPlanets = [1]
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetToMount()
         assert suc
@@ -419,7 +419,7 @@ def test_progMinorPlanetToMount_5(function):
     function.minorPlanets = [1]
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetToMount()
         assert suc
@@ -448,7 +448,7 @@ def test_progMinorPlanetToMount_6(function):
     function.minorPlanets = [1]
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetToMount()
         assert suc
@@ -464,7 +464,7 @@ def test_progMinorPlanetsFiltered_1(function):
     function.ui.filterMinorPlanet.setText('test')
     function.minorPlanets = ['test', 'aster']
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=False):
         suc = function.progMinorPlanetsFiltered()
         assert not suc
@@ -481,7 +481,7 @@ def test_progMinorPlanetsFiltered_2(function):
     function.minorPlanets = ['test', 'aster']
     function.app.automation = None
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetsFiltered()
         assert not suc
@@ -503,7 +503,7 @@ def test_progMinorPlanetsFiltered_3(function):
     function.minorPlanets = ['test', 'aster']
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetsFiltered()
         assert not suc
@@ -533,7 +533,7 @@ def test_progMinorPlanetsFiltered_4(function):
     function.minorPlanets = ['test', 'aster']
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetsFiltered()
         assert suc
@@ -566,7 +566,7 @@ def test_progMinorPlanetsFiltered_5(function):
                            'generateName',
                            return_value='asteroid'):
         with mock.patch.object(function,
-                               'programDialog',
+                               'messageDialog',
                                return_value=True):
             suc = function.progMinorPlanetsFiltered()
             assert suc
@@ -597,7 +597,7 @@ def test_progMinorPlanetsFiltered_6(function):
 
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         with mock.patch.object(function,
                                'generateName',
@@ -615,7 +615,7 @@ def test_progMinorPlanetsFull_1(function):
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.minorPlanets = [1]
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=False):
         suc = function.progMinorPlanetsFull()
         assert not suc
@@ -631,7 +631,7 @@ def test_progMinorPlanetsFull_2(function):
     function.minorPlanets = [1]
     function.app.automation = None
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetsFull()
         assert not suc
@@ -652,7 +652,7 @@ def test_progMinorPlanetsFull_3(function):
     function.minorPlanets = [1]
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetsFull()
         assert not suc
@@ -681,7 +681,7 @@ def test_progMinorPlanetsFull_4(function):
     function.minorPlanets = [1]
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetsFull()
         assert suc
@@ -710,7 +710,7 @@ def test_progMinorPlanetsFull_5(function):
     function.minorPlanets = [1]
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetsFull()
         assert suc
@@ -739,7 +739,7 @@ def test_progMinorPlanetsFull_6(function):
     function.minorPlanets = [1]
     function.app.automation = Test()
     with mock.patch.object(function,
-                           'programDialog',
+                           'messageDialog',
                            return_value=True):
         suc = function.progMinorPlanetsFull()
         assert suc

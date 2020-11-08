@@ -59,11 +59,13 @@ class Satellite(object):
             'Last 30 days launch': 'http://www.celestrak.com/NORAD/elements/tle-new.txt',
         }
 
+        self.ui.progSatellitesFull.clicked.connect(self.progSatellitesFull)
+        self.ui.progSatellitesFiltered.clicked.connect(self.progSatellitesFiltered)
         self.ui.listSatelliteNames.doubleClicked.connect(self.signalExtractSatelliteData)
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadTLEDataFromSourceURLs)
-        self.ui.filterText.textChanged.connect(self.filterSatelliteNamesList)
+        self.ui.filterSatellite.textChanged.connect(self.filterSatelliteNamesList)
 
         self.app.sendSatelliteData.connect(self.sendSatelliteData)
         self.app.mount.signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
@@ -106,7 +108,7 @@ class Satellite(object):
         :return: true for test purpose
         """
         listSat = self.ui.listSatelliteNames
-        filterStr = self.ui.filterText.text()
+        filterStr = self.ui.filterSatellite.text()
 
         for row in range(listSat.model().rowCount()):
             isFound = filterStr.lower() in listSat.model().index(row).data().lower()
@@ -577,3 +579,86 @@ class Satellite(object):
             self.app.message.emit('Stopped tracking', 0)
 
         return suc
+
+    def progSatellitesFiltered(self):
+        """
+
+        :return: success
+        """
+
+        source = self.ui.satelliteSource.currentText()
+        text = f'Should\n\n[{source}]\n\nfiltered database\n\nbe programmed to mount ?'
+        suc = self.programDialog(text)
+
+        if not suc:
+            return False
+
+        if not self.app.automation:
+            self.app.message.emit('Not running windows, no updater available', 2)
+            return False
+
+        self.app.message.emit(f'Program database:    [{source}]', 1)
+        self.app.message.emit('Exporting MPC data', 0)
+
+        filterStr = self.ui.filterMinorPlanet.text().lower()
+
+        filtered = list()
+        for index, mp in enumerate(self.minorPlanets):
+            text = self.generateName(index, mp)
+
+            if filterStr not in text:
+                continue
+
+            filtered.append(mp)
+
+        suc = True
+
+        if not suc:
+            self.app.message.emit('Data could not be exported - stopping', 2)
+            return False
+
+        self.app.message.emit('Uploading to mount', 0)
+        suc = True
+
+        if not suc:
+            self.app.message.emit('Uploading error', 2)
+
+        self.app.message.emit('Programming success', 1)
+
+        return True
+
+    def progMSatellitesFull(self):
+        """
+
+        :return: success
+        """
+
+        source = self.ui.satelliteSource.currentText()
+        text = f'Should\n\n[{source}]\n\nfull database\n\nbe programmed to mount ?'
+        suc = self.programDialog(text)
+
+        if not suc:
+            return False
+
+        if not self.app.automation:
+            self.app.message.emit('Not running windows, no updater available', 2)
+            return False
+
+        self.app.message.emit(f'Program database:    [{source}]', 1)
+        self.app.message.emit('Exporting MPC data', 0)
+
+        suc = True
+
+        if not suc:
+            self.app.message.emit('Data could not be exported - stopping', 2)
+            return False
+
+        self.app.message.emit('Uploading to mount', 0)
+        suc = True
+
+        if not suc:
+            self.app.message.emit('Uploading error', 2)
+
+        self.app.message.emit('Programming success', 1)
+
+        return True

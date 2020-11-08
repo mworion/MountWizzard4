@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>7</number>
+    <number>6</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -11582,7 +11582,7 @@ Hint if mount will need a flip when following satellite.</string>
        <string>Selects the TLE database from where the satellite list should be loaded.</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="filterText">
+     <widget class="QLineEdit" name="filterSatellite">
       <property name="geometry">
        <rect>
         <x>290</x>

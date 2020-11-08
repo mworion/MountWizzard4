@@ -54,7 +54,8 @@ class AutomationHelper:
         if not os.path.isfile(sourceDir + 'finals2000A.all'):
             return False
 
-        shutil.copy(sourceDir + 'tai-utc.dat', destDir + 'tai-utc.dat')
+        if destDir != sourceDir:
+            shutil.copy(sourceDir + 'tai-utc.dat', destDir + 'tai-utc.dat')
 
         with open(sourceDir + 'finals2000A.all', 'r') as infile:
             with open(destDir + 'finals.data', 'w') as outfile:

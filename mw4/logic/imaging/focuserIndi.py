@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-import logging
 
 # external packages
 
@@ -33,8 +32,6 @@ class FocuserIndi(IndiClass):
 
     __all__ = ['FocuserIndi',
                ]
-
-    logger = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server
     UPDATE_RATE = 1

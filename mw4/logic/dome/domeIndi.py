@@ -16,11 +16,10 @@
 #
 ###########################################################
 # standard libraries
-import logging
+
 # external packages
-import PyQt5
+
 # local imports
-from base.loggerMW import CustomLogger
 from base.indiClass import IndiClass
 
 

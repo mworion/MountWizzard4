@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import zlib
 import os
 
@@ -24,7 +23,6 @@ import os
 import astropy.io.fits as fits
 
 # local imports
-from base.loggerMW import CustomLogger
 from base.indiClass import IndiClass
 
 
@@ -38,9 +36,6 @@ class CameraIndi(IndiClass):
 
     __all__ = ['CameraIndi',
                ]
-
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
 
     # update rate to 1000 milli seconds for setting indi server
     UPDATE_RATE = 1000

@@ -16,10 +16,10 @@
 #
 ###########################################################
 # standard libraries
-import logging
+
 # external packages
+
 # local imports
-from base.loggerMW import CustomLogger
 from base.indiClass import IndiClass
 
 
@@ -32,9 +32,6 @@ class TelescopeIndi(IndiClass):
 
     __all__ = ['TelescopeIndi',
                ]
-
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
 
     # update rate to 10 seconds for setting indi server
     UPDATE_RATE = 10

@@ -16,12 +16,10 @@
 #
 ###########################################################
 # standard libraries
-import logging
 
 # external packages
 
 # local imports
-from base.loggerMW import CustomLogger
 from base.indiClass import IndiClass
 
 
@@ -34,9 +32,6 @@ class WeatherUPBIndi(IndiClass):
 
     __all__ = ['WeatherUPBIndi',
                ]
-
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
 
     # update rate to 1000 milli seconds for setting indi server
     UPDATE_RATE = 1000

@@ -135,22 +135,6 @@ class HemisphereWindowExt:
 
         return True
 
-    def slewDialog(self, question):
-        """
-
-        :param question:
-        :return: OK
-        """
-
-        msg = QMessageBox
-        reply = msg.question(self, 'Slewing mount', question, msg.Yes | msg.No, msg.No)
-
-        if reply != msg.Yes:
-            return False
-
-        else:
-            return True
-
     def slewSelectedTarget(self, alignType='normal'):
         """
 
@@ -201,7 +185,7 @@ class HemisphereWindowExt:
         textFormat = 'Do you want to slew the mount to:\n\nAzimuth:\t{0}°\nAltitude:\t{1}°'
         question = textFormat.format(azimuth, altitude)
 
-        suc = self.slewDialog(question)
+        suc = self.messageDialog(self, 'Slewing mount', question)
 
         if not suc:
             return False
@@ -403,7 +387,7 @@ class HemisphereWindowExt:
         textFormat = 'Align: {0}\nDo you want to slew the mount to:\n\n{1}'
         question = textFormat.format(alignType, name)
 
-        suc = self.slewDialog(question)
+        suc = self.messageDialog(self, 'Slewing mount', question)
 
         if not suc:
             return False

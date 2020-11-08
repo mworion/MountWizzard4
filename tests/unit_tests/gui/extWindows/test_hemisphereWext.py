@@ -117,22 +117,6 @@ def test_showMouseCoordinates_3(function):
     assert function.ui.altitude.text() == '10.0'
 
 
-def test_slewDialog_1(function):
-    with mock.patch.object(QMessageBox,
-                           'question',
-                           return_value=QMessageBox.No):
-        suc = function.slewDialog('test')
-        assert not suc
-
-
-def test_slewDialog_2(function):
-    with mock.patch.object(QMessageBox,
-                           'question',
-                           return_value=QMessageBox.Yes):
-        suc = function.slewDialog('test')
-        assert suc
-
-
 def test_slewSelectedTarget_1(function):
     function.app.deviceStat['dome'] = False
     function.app.mount.obsSite.AltTarget = Angle(degrees=0)
@@ -223,7 +207,7 @@ def test_onMouseNormal_4(function):
         button = 1
 
     with mock.patch.object(function,
-                           'slewDialog',
+                           'messageDialog',
                            return_value=False):
         suc = function.onMouseNormal(Event())
         assert not suc
@@ -238,7 +222,7 @@ def test_onMouseNormal_5(function):
         button = 1
 
     with mock.patch.object(function,
-                           'slewDialog',
+                           'messageDialog',
                            return_value=True):
         with mock.patch.object(function,
                                'slewSelectedTarget',
@@ -256,7 +240,7 @@ def test_onMouseNormal_6(function):
         button = 1
 
     with mock.patch.object(function,
-                           'slewDialog',
+                           'messageDialog',
                            return_value=True):
         with mock.patch.object(function,
                                'slewSelectedTarget',
@@ -720,7 +704,7 @@ def test_onMouseStar_4(function):
         button = 1
 
     with mock.patch.object(function,
-                           'slewDialog',
+                           'messageDialog',
                            return_value=False):
         with mock.patch.object(function,
                                'getIndexPoint',
@@ -738,7 +722,7 @@ def test_onMouseStar_5(function):
         button = 3
 
     with mock.patch.object(function,
-                           'slewDialog',
+                           'messageDialog',
                            return_value=False):
         with mock.patch.object(function,
                                'getIndexPoint',
@@ -758,7 +742,7 @@ def test_onMouseStar_6(function):
         button = 1
 
     with mock.patch.object(function,
-                           'slewDialog',
+                           'messageDialog',
                            return_value=False):
         with mock.patch.object(function,
                                'getIndexPoint',
@@ -781,7 +765,7 @@ def test_onMouseStar_7(function):
         button = 1
 
     with mock.patch.object(function,
-                           'slewDialog',
+                           'messageDialog',
                            return_value=True):
         with mock.patch.object(function,
                                'getIndexPoint',
@@ -807,7 +791,7 @@ def test_onMouseStar_8(function):
         button = 1
 
     with mock.patch.object(function,
-                           'slewDialog',
+                           'messageDialog',
                            return_value=True):
         with mock.patch.object(function,
                                'getIndexPoint',

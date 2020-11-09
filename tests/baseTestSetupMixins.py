@@ -181,7 +181,7 @@ class Mount(QObject):
         location = Topos(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         ts = load.timescale(builtin=True)
         timeJD = ts.now()
-        loader = Loader('tests/temp')
+        loader = Loader('tests/temp', verbose=False)
         status = 0
 
         @staticmethod

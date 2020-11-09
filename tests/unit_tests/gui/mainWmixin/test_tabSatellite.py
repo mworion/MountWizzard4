@@ -18,6 +18,8 @@
 # standard libraries
 import pytest
 from unittest import mock
+import os
+
 # external packages
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import QThreadPool
@@ -61,6 +63,10 @@ def test_sources(function):
 
 
 def test_initConfig_1(function):
+    class Test:
+        installPath = ''
+
+    function.app.automation = Test()
     suc = function.initConfig()
     assert suc
     assert function.installPath == 'tests/data'
@@ -114,15 +120,27 @@ def test_loadSatelliteSourceWorker_1(function):
 
 
 def test_loadSatelliteSourceWorker_2(function):
-    function.ui.satelliteSource.addItem('Active')
-    suc = function.loadTLEDataFromSourceURLsWorker()
-    assert not suc
+    source = 'test'
+    with mock.patch.object(function.app.mount.obsSite.loader,
+                           'tle_file',
+                           return_value={}):
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=False):
+            suc = function.loadTLEDataFromSourceURLsWorker(source=source, isOnline=False)
+            assert not suc
 
 
 def test_loadSatelliteSourceWorker_3(function):
-    source = 'http://www.celestrak.com/NORAD/elements/visual.txt'
-    suc = function.loadTLEDataFromSourceURLsWorker(source=source, isOnline=False)
-    assert suc
+    source = 'test'
+    with mock.patch.object(function.app.mount.obsSite.loader,
+                           'tle_file',
+                           return_value={}):
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=True):
+            suc = function.loadTLEDataFromSourceURLsWorker(source=source, isOnline=False)
+            assert suc
 
 
 def test_loadTLEDataFromSourceURLs_1(function):

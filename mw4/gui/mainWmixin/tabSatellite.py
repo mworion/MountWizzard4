@@ -287,6 +287,7 @@ class Satellite(object):
         satellite = self.app.mount.satellite
         if satellite.tleParams.name == self.satellite.name:
             self.app.message.emit(f'Actual satellite is  [{self.satellite.name}]', 0)
+
         else:
             self.app.message.emit(f'Programming [{self.satellite.name}] to mount', 0)
             line0 = self.satellite.name
@@ -611,10 +612,6 @@ class Satellite(object):
         if not suc:
             return False
 
-        if not self.app.automation:
-            self.app.message.emit('Not running windows, no updater available', 2)
-            return False
-
         self.app.message.emit(f'Program database:    [{source}]', 1)
         self.app.message.emit('Exporting MPC data', 0)
 
@@ -631,13 +628,17 @@ class Satellite(object):
 
             filtered.append(self.satellites[name])
 
-        suc = self.databaseProcessing.writeSatelliteTLE('', self.installPath)
+        suc = self.databaseProcessing.writeSatelliteTLE(filtered, self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
             return False
-            
-        self.app.message.emit('Uploading to mount', 0)
+
+        if not self.app.automation:
+            self.app.message.emit('Not running windows, no updater available', 2)
+            return False
+
+        self.app.message.emit('Uploading TLE data to mount', 0)
         suc = self.app.automation.uploadTLEData()
 
         if not suc:
@@ -660,20 +661,20 @@ class Satellite(object):
         if not suc:
             return False
 
-        if not self.app.automation:
-            self.app.message.emit('Not running windows, no updater available', 2)
-            return False
-
         self.app.message.emit(f'Program database:    [{source}]', 1)
-        self.app.message.emit('Exporting MPC data', 0)
+        self.app.message.emit('Exporting TLE data', 0)
 
-        suc = self.databaseProcessing.writeSatelliteTLE('', self.installPath)
+        suc = self.databaseProcessing.writeSatelliteTLE(self.satellites, self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
             return False
 
-        self.app.message.emit('Uploading to mount', 0)
+        if not self.app.automation:
+            self.app.message.emit('Not running windows, no updater available', 2)
+            return False
+
+        self.app.message.emit('Uploading TLE data to mount', 0)
         suc = self.app.automation.uploadTLEData()
 
         if not suc:

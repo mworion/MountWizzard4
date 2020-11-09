@@ -412,7 +412,7 @@ class MinorPlanetTime:
             self.app.message.emit('Not running windows, no updater available', 2)
             return False
 
-        self.app.message.emit('Uploading to mount', 0)
+        self.app.message.emit('Uploading MPC data to mount', 0)
         suc = self.app.automation.uploadMPCData(comets=isComet)
 
         if not suc:
@@ -458,7 +458,7 @@ class MinorPlanetTime:
             self.app.message.emit('Not running windows, no updater available', 2)
             return False
 
-        self.app.message.emit('Uploading to mount', 0)
+        self.app.message.emit('Uploading MPC data to mount', 0)
         suc = self.app.automation.uploadMPCData(comets=isComet)
 
         if not suc:

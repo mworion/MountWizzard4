@@ -24,6 +24,7 @@ import shutil
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject
 from skyfield.api import load
+from skyfield.api import EarthSatellite
 
 # local import
 from logic.databaseProcessing.dataWriter import DataWriter
@@ -328,3 +329,30 @@ def test_writeAsteroidMPC_8(function):
         assert test[21:140] == ref[21:140]
         assert test[142:167] == ref[142:167]
 
+
+def test_writeSatelliteTLE_1(function):
+    data = None
+    suc = function.writeSatelliteTLE(datas=data, installPath='tests/temp')
+    assert not suc
+
+
+def test_writeSatelliteTLE_2(function):
+    data = ''
+    suc = function.writeSatelliteTLE(datas=data, installPath='tests/temp')
+    assert not suc
+
+
+def test_writeSatelliteTLE_3(function):
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    data = {'NOAA 8': EarthSatellite(tle[1], tle[2],  name=tle[0])}
+    suc = function.writeSatelliteTLE(datas=data, installPath='tests/temp')
+    assert suc
+
+    with open('tests/temp/satellites.txt', 'r') as f:
+        refLines = f.readlines()
+
+    assert tle[0] == refLines[0].strip('\n')
+    assert tle[1] == refLines[1].strip('\n')
+    assert tle[2] == refLines[2].strip('\n')

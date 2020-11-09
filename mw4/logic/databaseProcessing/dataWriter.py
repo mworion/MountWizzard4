@@ -21,6 +21,7 @@ import shutil
 import os
 
 # external packages
+from sgp4.exporter import export_tle
 
 # local import
 from base.loggerMW import CustomLogger
@@ -362,8 +363,9 @@ class DataWriter:
                 f.write(line)
 
         return True
-        
-    def writeSatelliteTLE(self, datas=None, installPath=''):
+
+    @staticmethod
+    def writeSatelliteTLE(datas=None, installPath=''):
         """
         data format of TLE and file description in
 
@@ -374,9 +376,16 @@ class DataWriter:
         if not datas:
             return False
 
-        if not isinstance(datas, list):
+        if not isinstance(datas, dict):
             return False
 
-        dest = installPath + '/minorPlanets.mpc'
+        dest = installPath + '/satellites.txt'
+
+        with open(dest, 'w') as f:
+            for name in datas:
+                line1, line2 = export_tle(datas[name].model)
+                f.write(name + '\n')
+                f.write(line1 + '\n')
+                f.write(line2 + '\n')
 
         return True

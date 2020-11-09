@@ -30,7 +30,7 @@ from tests.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
-from logic.databaseProcessing.automationHelper import AutomationHelper
+from logic.databaseProcessing.dataWriter import DataWriter
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -45,7 +45,7 @@ def function(module):
         def __init__(self):
             super().__init__()
             self.app = App()
-            self.automationHelper = AutomationHelper(self.app)
+            self.automationHelper = DataWriter(self.app)
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)

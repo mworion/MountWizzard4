@@ -23,17 +23,18 @@ Unreleased Betas
 - retrofit model based on hashed coordinates
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
 - optimizing dome for less movements on small changes
-- adding sat database donwload
-- optimizing question dialogs
 - making park positions really park
 - refactor setup for park
+- optimizing question dialogs
+- adding upload from satellites databases
+- refactoring
 
 Released betas
 --------------
 0.211.0
 
 - refactor gui / utilities
-- refactor dome and removed douplicates
+- refactor dome and removed duplicates
 - adding additional fields for environment sensor from hub if present
 - showing satellite data when opening sat window
 

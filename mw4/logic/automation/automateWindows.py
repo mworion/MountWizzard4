@@ -322,7 +322,7 @@ class AutomateWindows(QObject):
                                                                 class_name='#32770')[0])
         winOK = self.updater.window(handle=dialog)
         winOK['OK'].click()
-        
+
         return True
 
     def doUploadAndCloseInstaller(self):
@@ -400,7 +400,7 @@ class AutomateWindows(QObject):
         filedialog['Button16'].click()
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
-        
+
         return True
 
     def uploadEarthRotationData(self):

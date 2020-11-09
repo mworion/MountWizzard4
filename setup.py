@@ -36,6 +36,7 @@ setup(
         'mw4.logic.automation',
         'mw4.logic.cover',
         'mw4.logic.dome',
+        'mw4.logic.databaseProcessing',
         'mw4.logic.environment',
         'mw4.logic.imaging',
         'mw4.logic.measure',

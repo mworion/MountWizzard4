@@ -393,7 +393,7 @@ class MinorPlanetTime:
         for index, mp in enumerate(self.minorPlanets):
             text = self.generateName(index, mp)
 
-            if filterStr not in text:
+            if filterStr.lower() not in text.lower():
                 continue
 
             filtered.append(mp)

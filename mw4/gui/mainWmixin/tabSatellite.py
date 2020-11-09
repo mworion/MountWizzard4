@@ -617,16 +617,16 @@ class Satellite(object):
 
         filterStr = self.ui.filterSatellite.text().lower()
 
-        filtered = list()
+        filtered = dict()
         for name, _ in self.satellites.items():
             if not isinstance(name, str):
                 continue
 
             text = f'{self.satellites[name].model.satnum:6d}: {name}'
-            if filterStr not in text:
+            if filterStr.lower() not in text.lower():
                 continue
 
-            filtered.append(self.satellites[name])
+            filtered[name] = self.satellites[name]
 
         suc = self.databaseProcessing.writeSatelliteTLE(filtered, self.installPath)
 

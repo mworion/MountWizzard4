@@ -525,6 +525,22 @@ def test_progMinorPlanetsFiltered_5(function):
         with mock.patch.object(function.databaseProcessing,
                                'writeCometMPC',
                                return_value=True):
+            suc = function.progMinorPlanetsFiltered()
+            assert not suc
+
+
+def test_progMinorPlanetsFiltered_6(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    function.ui.filterMinorPlanet.setText('test')
+    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.databaseProcessing,
+                               'writeCometMPC',
+                               return_value=True):
             with mock.patch.object(function.app.automation,
                                    'uploadMPCData',
                                    return_value=False):
@@ -532,7 +548,7 @@ def test_progMinorPlanetsFiltered_5(function):
                 assert not suc
 
 
-def test_progMinorPlanetsFiltered_6(function):
+def test_progMinorPlanetsFiltered_7(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -623,7 +639,7 @@ def test_progMinorPlanetsFull_4a(function):
             assert not suc
 
 
-def test_progMinorPlanetsFull_5(function):
+def test_progMinorPlanetsFull_6(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)

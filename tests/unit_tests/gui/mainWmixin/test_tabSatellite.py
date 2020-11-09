@@ -539,7 +539,7 @@ def test_stopTrack_3(function):
         assert suc
 
 
-def test_progSatellitesFiltered_2(function):
+def test_progSatellitesFiltered_1(function):
     class Satnum:
         satnum = 1
 
@@ -550,7 +550,8 @@ def test_progSatellitesFiltered_2(function):
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
     function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '00000': Model()}
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=False):
@@ -558,7 +559,7 @@ def test_progSatellitesFiltered_2(function):
         assert not suc
 
 
-def test_progSatellitesFiltered_3(function):
+def test_progSatellitesFiltered_2(function):
     class Satnum:
         satnum = 1
 
@@ -570,7 +571,28 @@ def test_progSatellitesFiltered_3(function):
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
     function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '00000': Model()}
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        suc = function.progSatellitesFiltered()
+        assert not suc
+
+
+def test_progSatellitesFiltered_3(function):
+    class Satnum:
+        satnum = 1
+
+    class Model:
+        model = Satnum()
+
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterSatellite.setText('test')
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -593,7 +615,8 @@ def test_progSatellitesFiltered_4(function):
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
     function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '00000': Model()}
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -615,7 +638,8 @@ def test_progSatellitesFiltered_5(function):
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
     function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '00000': Model()}
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -640,7 +664,7 @@ def test_progSatellitesFiltered_6(function):
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
     function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '00000': Model()}
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -654,26 +678,7 @@ def test_progSatellitesFiltered_6(function):
                 assert suc
 
 
-def test_progSatellitesFull_2(function):
-    class Satnum:
-        satnum = 1
-
-    class Model:
-        model = Satnum()
-
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '00000': Model()}
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=False):
-        suc = function.progSatellitesFull()
-        assert not suc
-
-
-def test_progSatellitesFull_3(function):
+def test_progSatellitesFull_1(function):
     class Satnum:
         satnum = 1
 
@@ -685,7 +690,49 @@ def test_progSatellitesFull_3(function):
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
     function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '00000': Model()}
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=False):
+        suc = function.progSatellitesFull()
+        assert not suc
+
+
+def test_progSatellitesFull_2(function):
+    class Satnum:
+        satnum = 1
+
+    class Model:
+        model = Satnum()
+
+    function.app.automation = None
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterSatellite.setText('test')
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        suc = function.progSatellitesFull()
+        assert not suc
+
+
+def test_progSatellitesFull_3(function):
+    class Satnum:
+        satnum = 1
+
+    class Model:
+        model = Satnum()
+
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterSatellite.setText('test')
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -703,12 +750,12 @@ def test_progSatellitesFull_4(function):
     class Model:
         model = Satnum()
 
-    function.app.automation = None
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
     function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '00000': Model()}
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -730,7 +777,8 @@ def test_progSatellitesFull_5(function):
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
     function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '00000': Model()}
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -755,7 +803,8 @@ def test_progSatellitesFull_6(function):
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
     function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '00000': Model()}
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):

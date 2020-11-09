@@ -431,8 +431,10 @@ class Satellite(object):
 
         if days > 10:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')
+
         elif 3 < days < 10:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'yellow')
+
         else:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', '')
 
@@ -515,17 +517,20 @@ class Satellite(object):
         if tleParams.jdStart is not None:
             time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdStart)
             self.ui.satTransitStartUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
+
         else:
             self.ui.satTransitStartUTC.setText('No transit')
 
         if tleParams.jdEnd is not None:
             time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdEnd)
             self.ui.satTransitEndUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
+
         else:
             self.ui.satTransitEndUTC.setText('No transit')
 
         if tleParams.flip:
             self.ui.satNeedFlip.setText('YES')
+
         else:
             self.ui.satNeedFlip.setText('NO')
 
@@ -559,6 +564,7 @@ class Satellite(object):
             suc = self.app.mount.obsSite.unpark()
             if suc:
                 self.app.message.emit('Mount unparked', 0)
+
             else:
                 self.app.message.emit('Cannot unpark mount', 2)
 
@@ -612,7 +618,7 @@ class Satellite(object):
         self.app.message.emit(f'Program database:    [{source}]', 1)
         self.app.message.emit('Exporting MPC data', 0)
 
-        filterStr = self.ui.filterMinorPlanet.text().lower()
+        filterStr = self.ui.filterSatellite.text().lower()
 
         filtered = list()
         for name, _ in self.satellites.items():

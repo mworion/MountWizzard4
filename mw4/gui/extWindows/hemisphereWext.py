@@ -18,7 +18,6 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtWidgets import QMessageBox
 import numpy as np
 import matplotlib.path as mpath
 

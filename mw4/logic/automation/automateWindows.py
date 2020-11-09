@@ -19,7 +19,6 @@
 import os
 import logging
 import platform
-import shutil
 
 # external packages
 from PyQt5.QtCore import QObject

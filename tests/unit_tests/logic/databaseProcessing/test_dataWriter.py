@@ -350,7 +350,7 @@ def test_writeSatelliteTLE_3(function):
     suc = function.writeSatelliteTLE(datas=data, installPath='tests/temp')
     assert suc
 
-    with open('tests/temp/satellites.txt', 'r') as f:
+    with open('tests/temp/satellites.tle', 'r') as f:
         refLines = f.readlines()
 
     assert tle[0] == refLines[0].strip('\n')

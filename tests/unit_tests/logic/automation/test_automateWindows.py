@@ -307,81 +307,6 @@ def test_startUpdater_3(function):
             assert suc
 
 
-def test_uploadEarthRotationDataCommands(function):
-    class Test:
-        @staticmethod
-        def click():
-            pass
-
-        @staticmethod
-        def check_by_click():
-            pass
-
-        @staticmethod
-        def set_text(a):
-            pass
-
-    win = {'UTC / Earth rotation data': Test(),
-           'Edit...1': Test(),
-           }
-    popup = {'Import files...': Test()
-             }
-    dialog = {'Button16': Test(),
-              'Edit13': Test(),
-              }
-    ok = {'OK': Test()
-          }
-    function.updater = {'10 micron control box update': win,
-                        'UTC / Earth rotation data': popup,
-                        'Open finals data': dialog,
-                        'Open tai-utc.dat': dialog,
-                        'UTC data': ok
-                        }
-    with mock.patch.object(controls,
-                           'ButtonWrapper'):
-        with mock.patch.object(controls,
-                               'EditWrapper'):
-            suc = function.uploadEarthRotationDataCommands()
-            assert suc
-
-
-def test_uploadEarthRotationData_1(function):
-    function.actualWorkDir = os.getcwd()
-    with mock.patch.object(function,
-                           'prepareUpdater'):
-        with mock.patch.object(function,
-                               'uploadEarthRotationDataCommands',
-                               side_effect=Exception()):
-            suc = function.uploadEarthRotationData()
-            assert not suc
-
-
-def test_uploadEarthRotationData_2(function):
-    function.actualWorkDir = os.getcwd()
-    with mock.patch.object(function,
-                           'prepareUpdater'):
-        with mock.patch.object(function,
-                               'uploadEarthRotationDataCommands'):
-            with mock.patch.object(function,
-                                   'doUploadAndCloseInstaller',
-                                   return_value=False):
-                suc = function.uploadEarthRotationData()
-                assert not suc
-
-
-def test_uploadEarthRotationData_3(function):
-    function.actualWorkDir = os.getcwd()
-    with mock.patch.object(function,
-                           'prepareUpdater'):
-        with mock.patch.object(function,
-                               'uploadEarthRotationDataCommands'):
-            with mock.patch.object(function,
-                                   'doUploadAndCloseInstaller',
-                                   return_value=True):
-                suc = function.uploadEarthRotationData()
-                assert suc
-
-
 def test_clearUploadMenuCommands(function):
     class Test:
         @staticmethod
@@ -622,3 +547,151 @@ def test_uploadMPCData_3(function):
                                side_effect=Exception()):
             suc = function.uploadMPCData()
             assert not suc
+
+
+def test_uploadEarthRotationDataCommands(function):
+    class Test:
+        @staticmethod
+        def click():
+            pass
+
+        @staticmethod
+        def check_by_click():
+            pass
+
+        @staticmethod
+        def set_text(a):
+            pass
+
+    win = {'UTC / Earth rotation data': Test(),
+           'Edit...1': Test(),
+           }
+    popup = {'Import files...': Test()
+             }
+    dialog = {'Button16': Test(),
+              'Edit13': Test(),
+              }
+    ok = {'OK': Test()
+          }
+    function.updater = {'10 micron control box update': win,
+                        'UTC / Earth rotation data': popup,
+                        'Open finals data': dialog,
+                        'Open tai-utc.dat': dialog,
+                        'UTC data': ok
+                        }
+    with mock.patch.object(controls,
+                           'ButtonWrapper'):
+        with mock.patch.object(controls,
+                               'EditWrapper'):
+            suc = function.uploadEarthRotationDataCommands()
+            assert suc
+
+
+def test_uploadEarthRotationData_1(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'uploadEarthRotationDataCommands',
+                               side_effect=Exception()):
+            suc = function.uploadEarthRotationData()
+            assert not suc
+
+
+def test_uploadEarthRotationData_2(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'uploadEarthRotationDataCommands'):
+            with mock.patch.object(function,
+                                   'doUploadAndCloseInstaller',
+                                   return_value=False):
+                suc = function.uploadEarthRotationData()
+                assert not suc
+
+
+def test_uploadEarthRotationData_3(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'uploadEarthRotationDataCommands'):
+            with mock.patch.object(function,
+                                   'doUploadAndCloseInstaller',
+                                   return_value=True):
+                suc = function.uploadEarthRotationData()
+                assert suc
+
+
+def test_uploadTLEDataCommands(function):
+    class Test:
+        @staticmethod
+        def click():
+            pass
+
+        @staticmethod
+        def check_by_click():
+            pass
+
+        @staticmethod
+        def set_text(a):
+            pass
+
+    win = {'Orbital parameters of satellites': Test(),
+           'Edit...2': Test(),
+           }
+    popup = {'Load from file': Test(),
+             'Close': Test(),
+             }
+    dialog = {'Button16': Test(),
+              'Edit13': Test(),
+              }
+    function.updater = {'10 micron control box update': win,
+                        'Satellites orbits': popup,
+                        'Dialog': dialog,
+                        }
+
+    with mock.patch.object(controls,
+                           'ButtonWrapper'):
+        with mock.patch.object(controls,
+                               'EditWrapper'):
+            suc = function.uploadTLEDataCommands()
+            assert suc
+
+
+def test_uploadTLEData_1(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'uploadTLEDataCommands',
+                               side_effect=Exception()):
+            suc = function.uploadTLEData()
+            assert not suc
+
+
+def test_uploadTLEData_2(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'uploadTLEDataCommands'):
+            with mock.patch.object(function,
+                                   'doUploadAndCloseInstaller',
+                                   return_value=False):
+                suc = function.uploadTLEData()
+                assert not suc
+
+
+def test_uploadTLEData_3(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'uploadTLEDataCommands'):
+            with mock.patch.object(function,
+                                   'doUploadAndCloseInstaller',
+                                   return_value=True):
+                suc = function.uploadTLEData()
+                assert suc

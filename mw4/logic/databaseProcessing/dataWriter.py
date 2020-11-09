@@ -379,7 +379,7 @@ class DataWriter:
         if not isinstance(datas, dict):
             return False
 
-        dest = installPath + '/satellites.txt'
+        dest = installPath + '/satellites.tle'
 
         with open(dest, 'w') as f:
             for name in datas:

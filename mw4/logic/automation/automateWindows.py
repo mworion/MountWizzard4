@@ -430,14 +430,14 @@ class AutomateWindows(QObject):
         """
         win = self.updater['10 micron control box update']
 
-        controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
-        win['Edit...4'].click()
-        popup = self.updater['Comet orbits']
+        controls.ButtonWrapper(win['Orbital parameters of satellites']).check_by_click()
+        win['Edit...2'].click()
+        popup = self.updater['Satellites orbits']
 
-        popup['MPC file'].click()
+        popup['Load from file'].click()
         filedialog = self.updater['Dialog']
         controls.EditWrapper(filedialog['Edit13']).set_text(
-            self.installPath + 'minorPlanets.mpc')
+            self.installPath + 'satellites.tle')
         filedialog['Button16'].click()
         popup['Close'].click()
 

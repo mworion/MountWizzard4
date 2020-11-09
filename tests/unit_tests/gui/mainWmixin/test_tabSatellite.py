@@ -575,7 +575,7 @@ def test_progSatellitesFiltered_3(function):
                            'messageDialog',
                            return_value=True):
         with mock.patch.object(function.automationHelper,
-                               'writeCometMPC',
+                               'writeSatelliteTLE',
                                return_value=False):
             suc = function.progSatellitesFiltered()
             assert not suc
@@ -598,7 +598,7 @@ def test_progSatellitesFiltered_4(function):
                            'messageDialog',
                            return_value=True):
         with mock.patch.object(function.automationHelper,
-                               'writeCometMPC',
+                               'writeSatelliteTLE',
                                return_value=True):
             suc = function.progSatellitesFiltered()
             assert not suc
@@ -626,7 +626,7 @@ def test_progSatellitesFiltered_5(function):
                            'messageDialog',
                            return_value=True):
         with mock.patch.object(function.automationHelper,
-                               'writeCometMPC',
+                               'writeSatelliteTLE',
                                return_value=True):
             suc = function.progSatellitesFiltered()
             assert not suc
@@ -654,7 +654,7 @@ def test_progSatellitesFiltered_6(function):
                            'messageDialog',
                            return_value=True):
         with mock.patch.object(function.automationHelper,
-                               'writeCometMPC',
+                               'writeSatelliteTLE',
                                return_value=True):
             suc = function.progSatellitesFiltered()
             assert suc
@@ -696,7 +696,7 @@ def test_progSatellitesFull_3(function):
                            'messageDialog',
                            return_value=True):
         with mock.patch.object(function.automationHelper,
-                               'writeCometMPC',
+                               'writeSatelliteTLE',
                                return_value=False):
             suc = function.progSatellitesFull()
             assert not suc
@@ -719,7 +719,7 @@ def test_progSatellitesFull_4(function):
                            'messageDialog',
                            return_value=True):
         with mock.patch.object(function.automationHelper,
-                               'writeCometMPC',
+                               'writeSatelliteTLE',
                                return_value=True):
             suc = function.progSatellitesFull()
             assert not suc
@@ -747,7 +747,7 @@ def test_progSatellitesFull_5(function):
                            'messageDialog',
                            return_value=True):
         with mock.patch.object(function.automationHelper,
-                               'writeCometMPC',
+                               'writeSatelliteTLE',
                                return_value=True):
             suc = function.progSatellitesFull()
             assert not suc
@@ -775,7 +775,7 @@ def test_progSatellitesFull_6(function):
                            'messageDialog',
                            return_value=True):
         with mock.patch.object(function.automationHelper,
-                               'writeCometMPC',
+                               'writeSatelliteTLE',
                                return_value=True):
             suc = function.progSatellitesFull()
             assert suc

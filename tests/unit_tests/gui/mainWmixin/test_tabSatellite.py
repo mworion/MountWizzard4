@@ -46,7 +46,7 @@ def function(module):
         def __init__(self):
             super().__init__()
             self.app = App()
-            self.automationHelper = DataWriter(self.app)
+            self.databaseProcessing = DataWriter(self.app)
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
@@ -549,7 +549,7 @@ def test_progSatellitesFiltered_2(function):
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
+    function.ui.filterSatellite.setText('test')
     function.satellites = {'test': Model(), '00000': Model()}
     with mock.patch.object(function,
                            'messageDialog',
@@ -569,12 +569,12 @@ def test_progSatellitesFiltered_3(function):
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
+    function.ui.filterSatellite.setText('test')
     function.satellites = {'test': Model(), '00000': Model()}
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function.automationHelper,
+        with mock.patch.object(function.databaseProcessing,
                                'writeSatelliteTLE',
                                return_value=False):
             suc = function.progSatellitesFiltered()
@@ -592,12 +592,12 @@ def test_progSatellitesFiltered_4(function):
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
+    function.ui.filterSatellite.setText('test')
     function.satellites = {'test': Model(), '00000': Model()}
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function.automationHelper,
+        with mock.patch.object(function.databaseProcessing,
                                'writeSatelliteTLE',
                                return_value=True):
             suc = function.progSatellitesFiltered()
@@ -605,11 +605,6 @@ def test_progSatellitesFiltered_4(function):
 
 
 def test_progSatellitesFiltered_5(function):
-    class Test:
-        @staticmethod
-        def uploadMPCData(comets=False):
-            return False
-
     class Satnum:
         satnum = 1
 
@@ -619,25 +614,22 @@ def test_progSatellitesFiltered_5(function):
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
+    function.ui.filterSatellite.setText('test')
     function.satellites = {'test': Model(), '00000': Model()}
-    function.app.automation = Test()
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function.automationHelper,
+        with mock.patch.object(function.databaseProcessing,
                                'writeSatelliteTLE',
                                return_value=True):
-            suc = function.progSatellitesFiltered()
-            assert not suc
+            with mock.patch.object(function.app.automation,
+                                   'uploadTLEData',
+                                   return_value=False):
+                suc = function.progSatellitesFiltered()
+                assert not suc
 
 
 def test_progSatellitesFiltered_6(function):
-    class Test:
-        @staticmethod
-        def uploadMPCData(comets=False):
-            return True
-
     class Satnum:
         satnum = 1
 
@@ -647,17 +639,19 @@ def test_progSatellitesFiltered_6(function):
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
+    function.ui.filterSatellite.setText('test')
     function.satellites = {'test': Model(), '00000': Model()}
-    function.app.automation = Test()
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function.automationHelper,
+        with mock.patch.object(function.databaseProcessing,
                                'writeSatelliteTLE',
                                return_value=True):
-            suc = function.progSatellitesFiltered()
-            assert suc
+            with mock.patch.object(function.app.automation,
+                                   'uploadTLEData',
+                                   return_value=True):
+                suc = function.progSatellitesFiltered()
+                assert suc
 
 
 def test_progSatellitesFull_2(function):
@@ -670,7 +664,7 @@ def test_progSatellitesFull_2(function):
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
+    function.ui.filterSatellite.setText('test')
     function.satellites = {'test': Model(), '00000': Model()}
     with mock.patch.object(function,
                            'messageDialog',
@@ -690,12 +684,12 @@ def test_progSatellitesFull_3(function):
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
+    function.ui.filterSatellite.setText('test')
     function.satellites = {'test': Model(), '00000': Model()}
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function.automationHelper,
+        with mock.patch.object(function.databaseProcessing,
                                'writeSatelliteTLE',
                                return_value=False):
             suc = function.progSatellitesFull()
@@ -713,12 +707,12 @@ def test_progSatellitesFull_4(function):
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
+    function.ui.filterSatellite.setText('test')
     function.satellites = {'test': Model(), '00000': Model()}
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function.automationHelper,
+        with mock.patch.object(function.databaseProcessing,
                                'writeSatelliteTLE',
                                return_value=True):
             suc = function.progSatellitesFull()
@@ -726,11 +720,6 @@ def test_progSatellitesFull_4(function):
 
 
 def test_progSatellitesFull_5(function):
-    class Test:
-        @staticmethod
-        def uploadMPCData(comets=False):
-            return False
-
     class Satnum:
         satnum = 1
 
@@ -740,25 +729,22 @@ def test_progSatellitesFull_5(function):
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
+    function.ui.filterSatellite.setText('test')
     function.satellites = {'test': Model(), '00000': Model()}
-    function.app.automation = Test()
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function.automationHelper,
+        with mock.patch.object(function.databaseProcessing,
                                'writeSatelliteTLE',
                                return_value=True):
-            suc = function.progSatellitesFull()
-            assert not suc
+            with mock.patch.object(function.app.automation,
+                                   'uploadTLEData',
+                                   return_value=False):
+                suc = function.progSatellitesFull()
+                assert not suc
 
 
 def test_progSatellitesFull_6(function):
-    class Test:
-        @staticmethod
-        def uploadMPCData(comets=False):
-            return True
-
     class Satnum:
         satnum = 1
 
@@ -768,14 +754,16 @@ def test_progSatellitesFull_6(function):
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
+    function.ui.filterSatellite.setText('test')
     function.satellites = {'test': Model(), '00000': Model()}
-    function.app.automation = Test()
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function.automationHelper,
+        with mock.patch.object(function.databaseProcessing,
                                'writeSatelliteTLE',
                                return_value=True):
-            suc = function.progSatellitesFull()
-            assert suc
+            with mock.patch.object(function.app.automation,
+                                   'uploadTLEData',
+                                   return_value=True):
+                suc = function.progSatellitesFull()
+                assert suc

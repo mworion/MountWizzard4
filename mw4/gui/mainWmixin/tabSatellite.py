@@ -43,7 +43,8 @@ class Satellite(object):
         self.satOrbits = None
         self.listSatelliteNamesProxy = None
         self.satellitesRawTLE = {}
-        self.automationHelper = DataWriter(self.app)
+        self.databaseProcessing = DataWriter(self.app)
+        self.installPath = ''
 
         self.satelliteSourceURLs = {
             'Active': 'http://www.celestrak.com/NORAD/elements/active.txt',
@@ -86,6 +87,15 @@ class Satellite(object):
         """
 
         self.setupSatelliteSourceURLsDropDown()
+
+        if not self.app.automation:
+            self.installPath = self.app.mwGlob['dataDir']
+
+        elif self.app.automation.installPath:
+            self.installPath = self.app.automation.installPath
+
+        else:
+            self.installPath = self.app.mwGlob['dataDir']
 
         return True
 
@@ -615,21 +625,21 @@ class Satellite(object):
 
             filtered.append(self.satellites[name])
 
-        suc = self.automationHelper.writeSatelliteTLE('', self.installPath)
+        suc = self.databaseProcessing.writeSatelliteTLE('', self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
             return False
             
         self.app.message.emit('Uploading to mount', 0)
-        suc = self.automation.upoloadSatelliteData()
+        suc = self.app.automation.uploadTLEData()
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
 
         self.app.message.emit('Programming success', 1)
 
-        return True
+        return suc
 
     def progSatellitesFull(self):
         """
@@ -651,18 +661,18 @@ class Satellite(object):
         self.app.message.emit(f'Program database:    [{source}]', 1)
         self.app.message.emit('Exporting MPC data', 0)
 
-        suc = self.automationHelper.writeSatelliteTLE('', self.installPath)
+        suc = self.databaseProcessing.writeSatelliteTLE('', self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
             return False
 
         self.app.message.emit('Uploading to mount', 0)
-        suc = self.automation.upoloadSatelliteData()
+        suc = self.app.automation.uploadTLEData()
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
 
         self.app.message.emit('Programming success', 1)
 
-        return True
+        return suc

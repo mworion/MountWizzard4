@@ -424,20 +424,15 @@ class AutomateWindows(QObject):
         finally:
             os.chdir(self.actualWorkDir)
 
-    def uploadSatelliteDataCommands(self):
+    def uploadTLEDataCommands(self):
         """
         :return:
         """
         win = self.updater['10 micron control box update']
-        if comets:
-            controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
-            win['Edit...4'].click()
-            popup = self.updater['Comet orbits']
 
-        else:
-            controls.ButtonWrapper(win['Orbital parameters of asteroids']).check_by_click()
-            win['Edit...3'].click()
-            popup = self.updater['Asteroid orbits']
+        controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
+        win['Edit...4'].click()
+        popup = self.updater['Comet orbits']
 
         popup['MPC file'].click()
         filedialog = self.updater['Dialog']
@@ -448,15 +443,14 @@ class AutomateWindows(QObject):
 
         return True
 
-
-    def uploadSatelliteData(self):
+    def uploadTLEData(self):
         """
         :return:
         """
         self.prepareUpdater()
 
         try:
-            self.uploadSatelliteDataCommands()
+            self.uploadTLEDataCommands()
 
         except Exception as e:
             self.logger.error(f'error{e}')

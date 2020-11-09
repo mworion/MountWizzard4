@@ -39,7 +39,7 @@ class MinorPlanetTime:
 
     def __init__(self):
         self.installPath = ''
-        self.automationHelper = DataWriter(self.app)
+        self.databaseProcessing = DataWriter(self.app)
         self.minorPlanets = dict()
         self.minorPlanet = None
         self.listMinorPlanetNamesProxy = None
@@ -299,7 +299,7 @@ class MinorPlanetTime:
         self.app.message.emit('Program to mount:    [earth rotation data]', 1)
         self.app.message.emit('Writing files: finals.data, tai-utc.dat', 0)
 
-        suc = self.automationHelper.writeEarthRotationData(self.installPath)
+        suc = self.databaseProcessing.writeEarthRotationData(self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be copied - stopping', 2)
@@ -342,10 +342,10 @@ class MinorPlanetTime:
         self.app.message.emit('Exporting MPC data', 0)
 
         if isComet:
-            suc = self.automationHelper.writeCometMPC(mpc, self.installPath)
+            suc = self.databaseProcessing.writeCometMPC(mpc, self.installPath)
 
         if isAsteroid:
-            suc = self.automationHelper.writeAsteroidMPC(mpc, self.installPath)
+            suc = self.databaseProcessing.writeAsteroidMPC(mpc, self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
@@ -399,10 +399,10 @@ class MinorPlanetTime:
             filtered.append(mp)
 
         if isComet:
-            suc = self.automationHelper.writeCometMPC(filtered, self.installPath)
+            suc = self.databaseProcessing.writeCometMPC(filtered, self.installPath)
 
         if isAsteroid:
-            suc = self.automationHelper.writeAsteroidMPC(filtered, self.installPath)
+            suc = self.databaseProcessing.writeAsteroidMPC(filtered, self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
@@ -445,10 +445,10 @@ class MinorPlanetTime:
         self.app.message.emit('Exporting MPC data', 0)
 
         if isComet:
-            suc = self.automationHelper.writeCometMPC(self.minorPlanets, self.installPath)
+            suc = self.databaseProcessing.writeCometMPC(self.minorPlanets, self.installPath)
 
         if isAsteroid:
-            suc = self.automationHelper.writeAsteroidMPC(self.minorPlanets, self.installPath)
+            suc = self.databaseProcessing.writeAsteroidMPC(self.minorPlanets, self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)

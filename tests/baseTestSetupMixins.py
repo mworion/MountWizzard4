@@ -267,6 +267,17 @@ class Mount(QObject):
 class Automation:
     installPath = None
 
+    @staticmethod
+    def uploadTLEData():
+        return
+
+    @staticmethod
+    def uploadMPCData():
+        return
+
+    @staticmethod
+    def uploadEarthRotationData():
+        return
 
 class App(QObject):
     config = {'mainW': {}}

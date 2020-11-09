@@ -63,6 +63,21 @@ def test_sources(function):
 def test_initConfig_1(function):
     suc = function.initConfig()
     assert suc
+    assert function.installPath == 'tests/data'
+
+
+def test_initConfig_2(function):
+    function.app.automation = None
+    suc = function.initConfig()
+    assert suc
+    assert function.installPath == 'tests/data'
+
+
+def test_initConfig_3(function):
+    function.app.automation.installPath = 'test'
+    suc = function.initConfig()
+    assert suc
+    assert function.installPath == 'test'
 
 
 def test_setupSatelliteSourceURLsDropDown(function):

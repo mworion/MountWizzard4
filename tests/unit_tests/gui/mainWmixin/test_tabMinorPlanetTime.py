@@ -60,6 +60,25 @@ def test_initConfig_1(function):
                            'setupMinorPlanetSourceURLsDropDown'):
         suc = function.initConfig()
         assert suc
+        assert function.installPath == 'tests/data'
+
+
+def test_initConfig_2(function):
+    function.app.automation = None
+    with mock.patch.object(function,
+                           'setupMinorPlanetSourceURLsDropDown'):
+        suc = function.initConfig()
+        assert suc
+        assert function.installPath == 'tests/data'
+
+
+def test_initConfig_3(function):
+    function.app.automation.installPath = 'test'
+    with mock.patch.object(function,
+                           'setupMinorPlanetSourceURLsDropDown'):
+        suc = function.initConfig()
+        assert suc
+        assert function.installPath == 'test'
 
 
 def test_storeConfig_1(function):
@@ -454,7 +473,8 @@ def test_progMinorPlanetsFiltered_2(function):
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=False):
@@ -468,7 +488,8 @@ def test_progMinorPlanetsFiltered_3(function):
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -485,7 +506,8 @@ def test_progMinorPlanetsFiltered_4(function):
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -502,7 +524,7 @@ def test_progMinorPlanetsFiltered_4a(function):
     function.ui.minorPlanetSource.addItem('Asteroid')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'00000: test'}, {'00000: 0815'}]
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -518,7 +540,8 @@ def test_progMinorPlanetsFiltered_5(function):
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -534,7 +557,7 @@ def test_progMinorPlanetsFiltered_6(function):
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -553,7 +576,8 @@ def test_progMinorPlanetsFiltered_7(function):
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -580,7 +604,8 @@ def test_progMinorPlanetsFull_2(function):
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=False):
@@ -594,7 +619,8 @@ def test_progMinorPlanetsFull_3(function):
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -611,7 +637,8 @@ def test_progMinorPlanetsFull_4(function):
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -628,7 +655,8 @@ def test_progMinorPlanetsFull_4a(function):
     function.ui.minorPlanetSource.addItem('Asteroid')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -639,12 +667,13 @@ def test_progMinorPlanetsFull_4a(function):
             assert not suc
 
 
-def test_progMinorPlanetsFull_6(function):
+def test_progMinorPlanetsFull_5(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -663,7 +692,8 @@ def test_progMinorPlanetsFull_6(function):
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: test'}]
+    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):

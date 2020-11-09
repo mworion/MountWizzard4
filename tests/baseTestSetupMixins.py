@@ -272,12 +272,13 @@ class Automation:
         return
 
     @staticmethod
-    def uploadMPCData():
+    def uploadMPCData(comets=False):
         return
 
     @staticmethod
     def uploadEarthRotationData():
         return
+
 
 class App(QObject):
     config = {'mainW': {}}

@@ -362,3 +362,21 @@ class DataWriter:
                 f.write(line)
 
         return True
+        
+    def writeSatelliteTLE(self, datas=None, installPath=''):
+        """
+        data format of TLE and file description in
+
+        :param datas:
+        :param installPath:
+        :return:
+        """
+        if not datas:
+            return False
+
+        if not isinstance(datas, list):
+            return False
+
+        dest = installPath + '/minorPlanets.mpc'
+
+        return True

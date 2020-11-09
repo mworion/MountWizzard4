@@ -25,6 +25,7 @@ from sgp4.exporter import export_tle
 
 # local import
 from base.tpool import Worker
+from logic.databaseProcessing.dataWriter import DataWriter
 
 
 class Satellite(object):
@@ -42,6 +43,7 @@ class Satellite(object):
         self.satOrbits = None
         self.listSatelliteNamesProxy = None
         self.satellitesRawTLE = {}
+        self.automationHelper = DataWriter(self.app)
 
         self.satelliteSourceURLs = {
             'Active': 'http://www.celestrak.com/NORAD/elements/active.txt',
@@ -613,14 +615,14 @@ class Satellite(object):
 
             filtered.append(self.satellites[name])
 
-        suc = True
+        suc = self.automationHelper.writeSatelliteTLE('', self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
             return False
-
+            
         self.app.message.emit('Uploading to mount', 0)
-        suc = True
+        suc = self.automation.upoloadSatelliteData()
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
@@ -649,14 +651,14 @@ class Satellite(object):
         self.app.message.emit(f'Program database:    [{source}]', 1)
         self.app.message.emit('Exporting MPC data', 0)
 
-        suc = True
+        suc = self.automationHelper.writeSatelliteTLE('', self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
             return False
 
         self.app.message.emit('Uploading to mount', 0)
-        suc = True
+        suc = self.automation.upoloadSatelliteData()
 
         if not suc:
             self.app.message.emit('Uploading error', 2)

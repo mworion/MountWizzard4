@@ -322,6 +322,7 @@ class AutomateWindows(QObject):
                                                                 class_name='#32770')[0])
         winOK = self.updater.window(handle=dialog)
         winOK['OK'].click()
+        
         return True
 
     def doUploadAndCloseInstaller(self):
@@ -384,7 +385,6 @@ class AutomateWindows(QObject):
 
     def uploadEarthRotationDataCommands(self):
         """
-
         :return:
         """
         win = self.updater['10 micron control box update']
@@ -400,17 +400,63 @@ class AutomateWindows(QObject):
         filedialog['Button16'].click()
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
+        
         return True
 
     def uploadEarthRotationData(self):
         """
-
         :return:
         """
         self.prepareUpdater()
 
         try:
             self.uploadEarthRotationDataCommands()
+
+        except Exception as e:
+            self.logger.error(f'error{e}')
+            os.chdir(self.actualWorkDir)
+            return False
+
+        else:
+            suc = self.doUploadAndCloseInstaller()
+            return suc
+
+        finally:
+            os.chdir(self.actualWorkDir)
+
+    def uploadSatelliteDataCommands(self):
+        """
+        :return:
+        """
+        win = self.updater['10 micron control box update']
+        if comets:
+            controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
+            win['Edit...4'].click()
+            popup = self.updater['Comet orbits']
+
+        else:
+            controls.ButtonWrapper(win['Orbital parameters of asteroids']).check_by_click()
+            win['Edit...3'].click()
+            popup = self.updater['Asteroid orbits']
+
+        popup['MPC file'].click()
+        filedialog = self.updater['Dialog']
+        controls.EditWrapper(filedialog['Edit13']).set_text(
+            self.installPath + 'minorPlanets.mpc')
+        filedialog['Button16'].click()
+        popup['Close'].click()
+
+        return True
+
+
+    def uploadSatelliteData(self):
+        """
+        :return:
+        """
+        self.prepareUpdater()
+
+        try:
+            self.uploadSatelliteDataCommands()
 
         except Exception as e:
             self.logger.error(f'error{e}')

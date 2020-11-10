@@ -23,11 +23,12 @@ Unreleased Betas
 - retrofit model based on hashed coordinates
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
 - optimizing dome for less movements on small changes
-- making park positions really park
-- refactor setup for park
+
+(0.220.0)
 - optimizing question dialogs
 - adding upload from satellites databases
 - refactoring
+- making park positions really park
 
 Released betas
 --------------

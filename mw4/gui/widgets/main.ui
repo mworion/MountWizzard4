@@ -14635,7 +14635,7 @@ Hint if mount will need a flip when following satellite.</string>
        <x>405</x>
        <y>20</y>
        <width>366</width>
-       <height>206</height>
+       <height>211</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -14951,7 +14951,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>180</y>
+        <y>185</y>
         <width>171</width>
         <height>25</height>
        </rect>
@@ -15378,9 +15378,9 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>235</y>
+       <y>245</y>
        <width>366</width>
-       <height>191</height>
+       <height>181</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -15396,7 +15396,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>30</y>
+        <y>25</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -15426,7 +15426,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>100</y>
+        <y>95</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -15456,7 +15456,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>170</x>
-        <y>65</y>
+        <y>60</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -15486,7 +15486,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>65</y>
+        <y>60</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -15516,7 +15516,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>65</y>
+        <y>60</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -15546,7 +15546,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>30</y>
+        <y>25</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -15576,7 +15576,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>100</y>
+        <y>95</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -15606,7 +15606,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>170</x>
-        <y>30</y>
+        <y>25</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -15636,7 +15636,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>170</x>
-        <y>100</y>
+        <y>95</y>
         <width>66</width>
         <height>25</height>
        </rect>
@@ -15666,7 +15666,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>140</y>
+        <y>135</y>
         <width>346</width>
         <height>41</height>
        </rect>
@@ -15789,7 +15789,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>260</x>
-        <y>20</y>
+        <y>15</y>
         <width>96</width>
         <height>116</height>
        </rect>
@@ -15934,7 +15934,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -21001,7 +21001,7 @@ When clicking the button, you could change the value.</string>
          <string>999</string>
         </property>
         <property name="text">
-         <string>90</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -21067,7 +21067,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Dew</string>
+         <string>Position 4</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -21106,7 +21106,7 @@ When clicking the button, you could change the value.</string>
          <string>999</string>
         </property>
         <property name="text">
-         <string>359</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -21145,7 +21145,7 @@ When clicking the button, you could change the value.</string>
          <string>999</string>
         </property>
         <property name="text">
-         <string>270</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -21208,7 +21208,7 @@ When clicking the button, you could change the value.</string>
          <string>#99</string>
         </property>
         <property name="text">
-         <string>89</string>
+         <string>-</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -21268,7 +21268,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Dew</string>
+         <string>Position 2</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -21334,7 +21334,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Flat West</string>
+         <string>Position 0</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -21370,7 +21370,7 @@ When clicking the button, you could change the value.</string>
          <string>#99</string>
         </property>
         <property name="text">
-         <string>1</string>
+         <string>-</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -21463,7 +21463,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>CCD</string>
+         <string>Position 3</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -21523,7 +21523,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>CCD</string>
+         <string>Position 5</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -21637,7 +21637,7 @@ When clicking the button, you could change the value.</string>
          <string>#99</string>
         </property>
         <property name="text">
-         <string/>
+         <string>-</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -21676,7 +21676,7 @@ When clicking the button, you could change the value.</string>
          <string>#99</string>
         </property>
         <property name="text">
-         <string>1</string>
+         <string>-</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -21715,7 +21715,7 @@ When clicking the button, you could change the value.</string>
          <string>#99</string>
         </property>
         <property name="text">
-         <string>1</string>
+         <string>-</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -21781,7 +21781,7 @@ When clicking the button, you could change the value.</string>
          <string>#99</string>
         </property>
         <property name="text">
-         <string>1</string>
+         <string>-</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -21925,7 +21925,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>CCD</string>
+         <string>Position 7</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -22039,7 +22039,7 @@ When clicking the button, you could change the value.</string>
          <string>999</string>
         </property>
         <property name="text">
-         <string>90</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -22078,7 +22078,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Flat East</string>
+         <string>Position 1</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -22117,7 +22117,7 @@ When clicking the button, you could change the value.</string>
          <string>999</string>
         </property>
         <property name="text">
-         <string>90</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -22231,7 +22231,7 @@ When clicking the button, you could change the value.</string>
          <string>#99</string>
         </property>
         <property name="text">
-         <string>1</string>
+         <string>-</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -22315,7 +22315,7 @@ When clicking the button, you could change the value.</string>
          <string>999</string>
         </property>
         <property name="text">
-         <string>270</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -22381,7 +22381,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>CCD</string>
+         <string>Position 6</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -22420,7 +22420,7 @@ When clicking the button, you could change the value.</string>
          <string>999</string>
         </property>
         <property name="text">
-         <string>90</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -22459,7 +22459,7 @@ When clicking the button, you could change the value.</string>
          <string>#99</string>
         </property>
         <property name="text">
-         <string>1</string>
+         <string>-</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -22498,7 +22498,7 @@ When clicking the button, you could change the value.</string>
          <string>999</string>
         </property>
         <property name="text">
-         <string>1</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -22737,7 +22737,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>CCD</string>
+         <string>Position 8</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -22776,7 +22776,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>CCD</string>
+         <string>Position 9</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -22842,7 +22842,7 @@ When clicking the button, you could change the value.</string>
          <string>#99</string>
         </property>
         <property name="text">
-         <string>1</string>
+         <string>-</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -22881,7 +22881,7 @@ When clicking the button, you could change the value.</string>
          <string>999</string>
         </property>
         <property name="text">
-         <string>90</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -22990,7 +22990,7 @@ When clicking the button, you could change the value.</string>
          <string>#99</string>
         </property>
         <property name="text">
-         <string>1</string>
+         <string>-</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -23029,7 +23029,7 @@ When clicking the button, you could change the value.</string>
          <string>999</string>
         </property>
         <property name="text">
-         <string>90</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

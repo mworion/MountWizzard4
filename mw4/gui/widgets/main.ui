@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>11</number>
+    <number>7</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -11810,9 +11810,9 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>110</y>
+       <y>80</y>
        <width>391</width>
-       <height>276</height>
+       <height>306</height>
       </rect>
      </property>
      <property name="title">
@@ -11827,7 +11827,7 @@ Hint if mount will need a flip when following satellite.</string>
         <x>5</x>
         <y>25</y>
         <width>381</width>
-        <height>246</height>
+        <height>276</height>
        </rect>
       </property>
       <property name="font">
@@ -11911,37 +11911,6 @@ Hint if mount will need a flip when following satellite.</string>
      </property>
      <property name="text">
       <string>Program filtered database</string>
-     </property>
-    </widget>
-    <widget class="QProgressBar" name="downloadMinorPlanetProgress">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>391</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="maximum">
-      <number>100</number>
-     </property>
-     <property name="value">
-      <number>0</number>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="textVisible">
-      <bool>true</bool>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="invertedAppearance">
-      <bool>false</bool>
-     </property>
-     <property name="textDirection">
-      <enum>QProgressBar::TopToBottom</enum>
      </property>
     </widget>
    </widget>

@@ -135,7 +135,7 @@ def build_widgets(c):
     widgetDir = './mw4/gui/widgets/'
     widgets = ['hemisphere', 'image', 'main', 'measure', 'message',
                'satellite', 'keypad', 'devicePopup', 'analyse',
-               'simulator', 'mount3D']
+               'simulator', 'downloadPopup']
     for widget in widgets:
         name = widgetDir + widget
         runMW(c, f'python -m PyQt5.uic.pyuic -x {name}.ui -o {name}_ui.py')

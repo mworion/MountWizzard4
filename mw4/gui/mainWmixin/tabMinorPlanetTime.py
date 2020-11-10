@@ -22,20 +22,16 @@ import shutil
 import os
 
 # external packages
-import requests
-from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QListView
 
 # local import
-from base.tpool import Worker
 from logic.databaseProcessing.dataWriter import DataWriter
+from gui.extWindows.downloadPopupW import DownloadPopup
 
 
 class MinorPlanetTime:
     """
     """
-
-    signalProgress = pyqtSignal(object)
 
     def __init__(self):
         self.installPath = ''
@@ -67,7 +63,6 @@ class MinorPlanetTime:
         self.ui.filterMinorPlanet.textChanged.connect(self.filterMinorPlanetNamesList)
         self.ui.minorPlanetSource.currentIndexChanged.connect(self.loadDataFromSourceURLs)
         self.ui.isOnline.stateChanged.connect(self.loadDataFromSourceURLs)
-        self.signalProgress.connect(self.setProgress)
 
     def initConfig(self):
         """
@@ -184,40 +179,6 @@ class MinorPlanetTime:
 
         return True
 
-    def setProgress(self, progressPercent):
-        """
-
-        :param progressPercent:
-        :return: True for test purpose
-        """
-        self.ui.downloadMinorPlanetProgress.setValue(progressPercent)
-        return True
-
-    def downloadFile(self, url, dest):
-        """
-
-        :param url:
-        :param dest:
-        :return:
-        """
-
-        if not os.path.dirname(dest):
-            return False
-
-        r = requests.get(url, stream=True, timeout=1)
-        totalSizeBytes = int(r.headers.get('content-length', 0))
-
-        with open(dest, 'wb') as f:
-            for n, chunk in enumerate(r.iter_content(512)):
-                progressPercent = int(n * 512 / totalSizeBytes * 100)
-                self.signalProgress.emit(progressPercent)
-
-                if chunk:
-                    f.write(chunk)
-            self.signalProgress.emit(100)
-
-        return True
-
     @staticmethod
     def unzipFile(dest):
         """
@@ -228,34 +189,6 @@ class MinorPlanetTime:
         with gzip.open(dest, 'rb') as f_in:
             with open(dest[:-3], 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
-
-        return True
-
-    def loadDataFromSourceURLsWorker(self, source='', isOnline=False):
-        """
-
-        :return: success
-        """
-
-        if not source:
-            return False
-
-        url = self.mpcPrefix + self.minorPlanetSourceURLs[source]
-        dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
-
-        if isOnline:
-            self.app.message.emit(f'Download data for:   [{source}]', 1)
-            self.downloadFile(url, dest)
-            self.unzipFile(dest)
-
-        if not os.path.isfile(dest[:-3]):
-            self.app.message.emit(f'No data file for:    [{source}]', 2)
-            return False
-
-        with open(dest[:-3]) as inFile:
-            self.minorPlanets = json.load(inFile)
-
-        self.app.message.emit(f'Data loaded for:     [{source}]', 1)
 
         return True
 
@@ -274,13 +207,23 @@ class MinorPlanetTime:
             return False
 
         self.ui.listMinorPlanetNames.clear()
-        self.ui.downloadMinorPlanetProgress.setValue(0)
         isOnline = self.ui.isOnline.isChecked()
-        worker = Worker(self.loadDataFromSourceURLsWorker,
-                        source=source,
-                        isOnline=isOnline)
-        worker.signals.finished.connect(self.setupMinorPlanetNameList)
-        self.threadPool.start(worker)
+        url = self.mpcPrefix + self.minorPlanetSourceURLs[source]
+        dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
+
+        if isOnline:
+            self.app.message.emit(f'Download data for:   [{source}]', 1)
+            DownloadPopup(self, url=url, dest=dest, callBack=self.setupMinorPlanetNameList)
+            self.unzipFile(dest)
+
+        if not os.path.isfile(dest[:-3]):
+            self.app.message.emit(f'No data file for:    [{source}]', 2)
+            return False
+
+        with open(dest[:-3]) as inFile:
+            self.minorPlanets = json.load(inFile)
+
+        self.app.message.emit(f'Data loaded for:     [{source}]', 1)
 
         return True
 

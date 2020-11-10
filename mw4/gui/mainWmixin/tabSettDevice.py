@@ -384,12 +384,11 @@ class SettDevice:
         :return: True for test purpose
         """
 
-        geometry = self.pos().x(), self.pos().y(), self.width(), self.height()
         data = self.driversData[driver]
         deviceType = self.drivers[driver]['deviceType']
 
-        self.popupUi = DevicePopup(app=self.app,
-                                   geometry=geometry,
+        self.popupUi = DevicePopup(self,
+                                   app=self.app,
                                    driver=driver,
                                    deviceType=deviceType,
                                    data=data)

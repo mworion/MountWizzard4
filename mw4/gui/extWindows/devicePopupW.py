@@ -54,8 +54,8 @@ class DevicePopup(toolsQtWidget.MWidget):
     }
 
     def __init__(self,
+                 parentWidget,
                  app=None,
-                 geometry=None,
                  driver=None,
                  deviceType=None,
                  data=None):
@@ -71,8 +71,8 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
         self.setWindowModality(Qt.ApplicationModal)
-        x = geometry[0] + int((geometry[2] - self.width()) / 2)
-        y = geometry[1] + int((geometry[3] - self.height()) / 2)
+        x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
+        y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
         pixmap = QPixmap(':/icon/cogs.svg')
         self.ui.iconPixmap.setPixmap(pixmap)

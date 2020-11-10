@@ -207,10 +207,11 @@ class MinorPlanetTime:
             return False
 
         self.ui.listMinorPlanetNames.clear()
-        isOnline = self.ui.isOnline.isChecked()
+
         url = self.mpcPrefix + self.minorPlanetSourceURLs[source]
         dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
 
+        isOnline = self.ui.isOnline.isChecked()
         if isOnline:
             self.app.message.emit(f'Download data for:   [{source}]', 1)
             DownloadPopup(self, url=url, dest=dest, callBack=self.setupMinorPlanetNameList)

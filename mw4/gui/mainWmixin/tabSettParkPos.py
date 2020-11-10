@@ -67,6 +67,7 @@ class SettParkPos(object):
             keyConfig = 'posAz{0:1d}'.format(i)
             textField.setText(config.get(keyConfig, '-'))
         self.updateParkPosButtonText()
+        self.ui.parkMountAfterSlew.setChecked(config.get('parkMountAfterSlew', False))
 
         return True
 
@@ -90,6 +91,7 @@ class SettParkPos(object):
         for i, textField in enumerate(self.posAz):
             keyConfig = 'posAz{0:1d}'.format(i)
             config[keyConfig] = textField.text()
+        config['parkMountAfterSlew'] = self.ui.parkMountAfterSlew.isChecked()
 
         return True
 
@@ -123,6 +125,18 @@ class SettParkPos(object):
 
         return True
 
+    def parkAtPos(self):
+        """
+        :return:
+        """
+        self.app.mount.signals.slewFinished.disconnect(self.parkAtPos)
+        suc = self.app.mount.obsSite.parkOnActualPosition()
+
+        if not suc:
+            self.app.message.emit(f'Cannot park at current position', 2)
+
+        return suc
+
     def slewToParkPos(self):
         """
         slewToParkPos takes the configured data from park positions menu and slews the mount
@@ -148,24 +162,34 @@ class SettParkPos(object):
             except Exception as e:
                 self.log.critical(f'no usable values in data: error {e}')
                 self.app.message.emit('Missing correct entries in settings', 2)
-            else:
-                posTextValue = posText.text()
+                return False
 
-                if altValue < -5:
-                    altValue = -5
-                elif altValue > 90:
-                    altValue = 90
-                azValue = azValue % 360
+            posTextValue = posText.text()
 
-                suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,
-                                                            az_degrees=azValue)
-                if suc:
-                    suc = self.app.mount.obsSite.startSlewing(slewType='notrack')
-                if suc:
-                    self.app.message.emit(f'Slew to [{posTextValue}]', 0)
-                else:
-                    self.app.message.emit(f'Cannot slew to [{posTextValue}]', 2)
-                return suc
+            if altValue < -5:
+                altValue = -5
+            elif altValue > 90:
+                altValue = 90
+            azValue = azValue % 360
+
+            suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,
+                                                        az_degrees=azValue)
+
+            if suc:
+                suc = self.app.mount.obsSite.startSlewing(slewType='notrack')
+
+            if not suc:
+                self.app.message.emit(f'Cannot slew to [{posTextValue}]', 2)
+                return False
+
+            self.app.message.emit(f'Slew to [{posTextValue}]', 0)
+
+            if not self.ui.parkMountAfterSlew.isChecked():
+                return True
+
+            self.app.mount.signals.slewFinished.connect(self.parkAtPos)
+
+            return True
 
         return False
 

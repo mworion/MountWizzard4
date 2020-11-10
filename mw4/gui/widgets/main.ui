@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>6</number>
+    <number>11</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -14633,16 +14633,16 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>25</y>
+       <y>20</y>
        <width>366</width>
-       <height>186</height>
+       <height>206</height>
       </rect>
      </property>
      <property name="toolTip">
       <string>Slews and parks the mount to a preprogrammed position.</string>
      </property>
      <property name="title">
-      <string>Defined park positions (slew &amp; park)</string>
+      <string>Defined positions (slew &amp; park)</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
@@ -14947,14 +14947,36 @@ Hint if mount will need a flip when following satellite.</string>
        <string>Button 2</string>
       </property>
      </widget>
+     <widget class="QCheckBox" name="parkMountAfterSlew">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>180</y>
+        <width>171</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the mount will be parked after slew and settling time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Park mount after slew</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_46">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>25</y>
+       <y>20</y>
        <width>366</width>
-       <height>391</height>
+       <height>406</height>
       </rect>
      </property>
      <property name="title">
@@ -14967,7 +14989,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>130</x>
-        <y>195</y>
+        <y>210</y>
         <width>226</width>
         <height>21</height>
        </rect>
@@ -15024,7 +15046,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>130</x>
-        <y>220</y>
+        <y>235</y>
         <width>226</width>
         <height>21</height>
        </rect>
@@ -15103,7 +15125,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>9</x>
-        <y>195</y>
+        <y>210</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -15116,7 +15138,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>9</x>
-        <y>170</y>
+        <y>185</y>
         <width>186</width>
         <height>16</height>
        </rect>
@@ -15129,7 +15151,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>9</x>
-        <y>220</y>
+        <y>235</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -15164,7 +15186,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>131</x>
-        <y>295</y>
+        <y>310</y>
         <width>226</width>
         <height>21</height>
        </rect>
@@ -15183,7 +15205,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>131</x>
-        <y>270</y>
+        <y>285</y>
         <width>226</width>
         <height>21</height>
        </rect>
@@ -15202,7 +15224,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>325</y>
+        <y>340</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -15215,7 +15237,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>245</y>
+        <y>260</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -15228,7 +15250,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>270</y>
+        <y>285</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -15241,7 +15263,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>80</x>
-        <y>325</y>
+        <y>340</y>
         <width>276</width>
         <height>21</height>
        </rect>
@@ -15263,7 +15285,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>80</x>
-        <y>355</y>
+        <y>370</y>
         <width>111</width>
         <height>26</height>
        </rect>
@@ -15285,7 +15307,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>295</y>
+        <y>310</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -15298,7 +15320,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>131</x>
-        <y>245</y>
+        <y>260</y>
         <width>226</width>
         <height>21</height>
        </rect>
@@ -15356,7 +15378,7 @@ Hint if mount will need a flip when following satellite.</string>
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>225</y>
+       <y>235</y>
        <width>366</width>
        <height>191</height>
       </rect>

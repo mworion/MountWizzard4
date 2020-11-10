@@ -118,6 +118,24 @@ def test_setupParkPosGui(qtbot):
     assert 10 == len(app.posSaveButtons)
 
 
+def test_parkAtPos_1(qtbot):
+    app.app.mount.signals.slewFinished.connect(app.parkAtPos)
+    with mock.patch.object(app.app.mount.obsSite,
+                           'parkOnActualPosition',
+                           return_value=False):
+        suc = app.parkAtPos()
+        assert not suc
+
+
+def test_parkAtPos_2(qtbot):
+    app.app.mount.signals.slewFinished.connect(app.parkAtPos)
+    with mock.patch.object(app.app.mount.obsSite,
+                           'parkOnActualPosition',
+                           return_value=True):
+        suc = app.parkAtPos()
+        assert suc
+
+
 def test_slewParkPos_1(qtbot):
     def Sender():
         return ui.powerPort1
@@ -147,6 +165,24 @@ def test_slewParkPos_2(qtbot):
 
 
 def test_slewParkPos_3(qtbot):
+    def Sender():
+        return ui.posButton0
+    app.sender = Sender
+    app.ui.posAlt0.setText('40')
+    app.ui.posAz0.setText('180')
+    with mock.patch.object(app.app.mount.obsSite,
+                           'setTargetAltAz',
+                           return_value=True):
+        with mock.patch.object(app.app.mount.obsSite,
+                               'startSlewing',
+                               return_value=True):
+            suc = app.slewToParkPos()
+            assert suc
+
+
+def test_slewParkPos_3a(qtbot):
+    app.ui.parkMountAfterSlew.setChecked(True)
+
     def Sender():
         return ui.posButton0
     app.sender = Sender

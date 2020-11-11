@@ -49,7 +49,7 @@ from logic.powerswitch.kmRelay import KMRelay
 from logic.measure.measure import MeasureData
 from logic.remote.remote import Remote
 from base.loggerMW import CustomLogger
-from gui.extWindows.devicePopupW import DevicePopup
+import gui.extWindows.devicePopupW
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -357,26 +357,6 @@ def test_copyConfig_4():
             suc = app.copyConfig('telescope', 'indi')
             assert suc
             assert app.driversData['cover']['frameworks']['indi']['test'] == 1
-
-
-def test_callPopup_1():
-    app.driversData = {
-        'telescope': {
-            'framework': 'astap',
-            'frameworks': {
-                'astap': {
-                    'deviceName': 'astap',
-                    'deviceList': ['test', 'test1'],
-                    'searchRadius': 30,
-                    'appPath': 'test',
-                },
-            }
-        }
-    }
-    with mock.patch.object(DevicePopup,
-                           'show'):
-        suc = app.callPopup('telescope')
-        assert suc
 
 
 def test_dispatchPopup():

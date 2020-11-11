@@ -159,31 +159,6 @@ def test_unzipFile(function):
     assert os.path.isfile('tests/temp/test.json')
 
 
-def test_loadDataFromSourceURLsWorker_1(function):
-    suc = function.loadDataFromSourceURLsWorker()
-    assert not suc
-
-
-def test_loadDataFromSourceURLsWorker_2(function):
-    with mock.patch.object(function,
-                           'downloadFile'):
-        with mock.patch.object(function,
-                               'unzipFile'):
-            suc = function.loadDataFromSourceURLsWorker('Asteroids Daily', True)
-            assert not suc
-
-
-def test_loadDataFromSourceURLsWorker_3(function):
-    shutil.copy('tests/testData/test.json', 'tests/data/test.json')
-    function.minorPlanetSourceURLs['test'] = 'test.json.gz'
-    with mock.patch.object(function,
-                           'downloadFile'):
-        with mock.patch.object(function,
-                               'unzipFile'):
-            suc = function.loadDataFromSourceURLsWorker('test', True)
-            assert suc
-
-
 def test_loadDataFromSourceURLs_1(function):
     function.ui.minorPlanetSource.clear()
     suc = function.loadDataFromSourceURLs()

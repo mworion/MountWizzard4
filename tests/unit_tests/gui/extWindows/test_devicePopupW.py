@@ -22,6 +22,7 @@ import platform
 
 # external packages
 from PyQt5.QtGui import QCloseEvent
+from PyQt5.QtWidgets import QWidget
 if platform.system() == 'Windows':
     import win32com.client
 
@@ -53,12 +54,11 @@ def function(module):
                 }
             }
     }
-    geometry = [100, 100, 100, 100]
-
+    widget = QWidget()
     with mock.patch.object(DevicePopup,
                            'show'):
-        window = DevicePopup(app=App(),
-                             geometry=geometry,
+        window = DevicePopup(widget,
+                             app=App(),
                              data=data,
                              driver='telescope',
                              deviceType='telescope')

@@ -111,8 +111,10 @@ class DownloadPopup(toolsQtWidget.MWidget):
                         url=url,
                         dest=dest)
         worker.signals.result.connect(self.close)
+
         if self.callBack:
             worker.signals.result.connect(self.callBack)
+
         self.threadPool.start(worker)
 
         return True

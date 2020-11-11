@@ -152,48 +152,6 @@ def test_setupMinorPlanetNameList_2(function):
         assert suc
 
 
-def test_setProgress(function):
-    suc = function.setProgress(0)
-    assert suc
-    assert function.ui.downloadMinorPlanetProgress.value() == 0
-
-
-def test_downloadFile_1(function):
-    class Get:
-        @staticmethod
-        def get(a, b):
-            return 100
-
-    class Test:
-        headers = Get()
-
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=Test()):
-        suc = function.downloadFile('', '')
-        assert not suc
-
-
-def test_downloadFile_2(function):
-    class Get:
-        @staticmethod
-        def get(a, b):
-            return 100
-
-    class Test:
-        headers = Get()
-
-        @staticmethod
-        def iter_content(a):
-            yield b'1234567890'
-
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=Test()):
-        suc = function.downloadFile('', 'tests/temp/test.txt')
-        assert suc
-
-
 def test_unzipFile(function):
     shutil.copy('tests/testData/test.json.gz', 'tests/temp/test.json.gz')
     suc = function.unzipFile('tests/temp/test.json.gz')

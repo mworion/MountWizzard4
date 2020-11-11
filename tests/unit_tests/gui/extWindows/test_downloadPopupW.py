@@ -22,7 +22,6 @@ import pytest
 # external packages
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QWidget
-import requests
 
 
 # local import

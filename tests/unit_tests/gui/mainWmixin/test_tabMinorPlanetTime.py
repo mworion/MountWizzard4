@@ -20,6 +20,7 @@ import pytest
 from unittest import mock
 import shutil
 import os
+import json
 
 # external packages
 from PyQt5.QtCore import QThreadPool
@@ -30,6 +31,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
 from logic.databaseProcessing.dataWriter import DataWriter
+import gui.extWindows.downloadPopupW
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -160,27 +162,52 @@ def test_unzipFile(function):
 
 def test_loadDataFromSourceURLs_1(function):
     function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('xxx')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
     suc = function.loadDataFromSourceURLs()
     assert not suc
 
 
 def test_loadDataFromSourceURLs_2(function):
     function.ui.minorPlanetSource.clear()
+    function.minorPlanetSourceURLs['test'] = 'test.json.gz'
     function.ui.minorPlanetSource.addItem('Please select')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
     suc = function.loadDataFromSourceURLs()
     assert not suc
 
 
 def test_loadDataFromSourceURLs_3(function):
-    shutil.copy('tests/testData/test.json.gz', 'tests/data/test.json.gz')
-    function.minorPlanetSourceURLs['test'] = 'test.json.gz'
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('test')
+    with mock.patch.object(function,
+                           'unzipFile'):
+        with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+            function.minorPlanetSourceURLs['test'] = 'test.json.gz'
+            function.ui.minorPlanetSource.clear()
+            function.ui.minorPlanetSource.addItem('test')
+            function.ui.minorPlanetSource.setCurrentIndex(0)
+            function.ui.isOnline.setChecked(False)
+            suc = function.loadDataFromSourceURLs()
+            assert not suc
 
-    with mock.patch.object(function.threadPool,
-                           'start'):
-        suc = function.loadDataFromSourceURLs()
-        assert suc
+
+def test_loadDataFromSourceURLs_4(function):
+    with mock.patch.object(function,
+                           'unzipFile'):
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=True):
+            with mock.patch.object(json,
+                                   'load',
+                                   return_value=[]):
+                function.minorPlanetSourceURLs['test'] = 'test.json.gz'
+                function.ui.minorPlanetSource.clear()
+                function.ui.minorPlanetSource.addItem('test')
+                function.ui.minorPlanetSource.setCurrentIndex(0)
+                function.ui.isOnline.setChecked(True)
+                suc = function.loadDataFromSourceURLs()
+                assert suc
 
 
 def test_progEarthRotationDataToMount_1(function):

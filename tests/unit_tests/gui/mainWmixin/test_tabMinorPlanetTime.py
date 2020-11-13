@@ -22,7 +22,6 @@ import shutil
 import os
 
 # external packages
-import requests
 from PyQt5.QtCore import QThreadPool
 
 # local import
@@ -173,6 +172,7 @@ def test_loadDataFromSourceURLs_2(function):
 
 
 def test_loadDataFromSourceURLs_3(function):
+    shutil.copy('tests/testData/test.json.gz', 'tests/data/test.json.gz')
     function.minorPlanetSourceURLs['test'] = 'test.json.gz'
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('test')

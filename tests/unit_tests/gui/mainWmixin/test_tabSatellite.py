@@ -24,6 +24,7 @@ import os
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QWidget
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle
 from sgp4.exporter import export_tle
@@ -97,12 +98,19 @@ def test_filterSatelliteNamesList_1(function):
     assert suc
 
 
-def test_setupSatelliteGui_1(function):
+def test_filterSatelliteNamesList_2(function):
+    function.ui.listSatelliteNames.addItem('test')
+    function.ui.filterSatellite.setText('abc')
+    suc = function.filterSatelliteNamesList()
+    assert suc
+
+
+def test_setupSatelliteNameList_1(function):
     suc = function.setupSatelliteNameList()
     assert suc
 
 
-def test_setupSatelliteGui_2(function):
+def test_setupSatelliteNameList_2(function):
     class Test1:
         satnum = 12345
 
@@ -110,6 +118,18 @@ def test_setupSatelliteGui_2(function):
         model = Test1()
 
     function.satellites = {'sat1': Test()}
+    suc = function.setupSatelliteNameList()
+    assert suc
+
+
+def test_setupSatelliteNameList_3(function):
+    class Test1:
+        satnum = 12345
+
+    class Test:
+        model = Test1()
+
+    function.satellites = {0: Test()}
     suc = function.setupSatelliteNameList()
     assert suc
 
@@ -200,6 +220,25 @@ def test_updateOrbit_5(function):
     function.app.uiWindows = {'showSatelliteW': {'test': 1}}
     suc = function.updateOrbit()
     assert not suc
+
+
+def test_updateOrbit_6(function):
+    class Test1(QObject):
+        update = pyqtSignal(object, object, object)
+
+    class Test(QObject):
+        signals = Test1()
+
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    tabWidget = function.ui.mainTabWidget.findChild(QWidget, 'Satellite')
+    tabIndex = function.ui.mainTabWidget.indexOf(tabWidget)
+    function.ui.mainTabWidget.setCurrentIndex(tabIndex)
+    function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
+    suc = function.updateOrbit()
+    assert suc
 
 
 def test_programTLEToMount_1(function):
@@ -300,6 +339,7 @@ def test_showRises_1(function):
            '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
 
     function.satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
+    function.app.mount.setting.horizonLimitLow = None
 
     with mock.patch.object(EarthSatellite,
                            'find_events',

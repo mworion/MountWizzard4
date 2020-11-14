@@ -32,12 +32,7 @@ class Satellite(object):
     """
     """
 
-    def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
-
+    def __init__(self):
         self.satellites = dict()
         self.satellite = None
         self.satOrbits = None
@@ -128,6 +123,7 @@ class Satellite(object):
 
             if isVisible:
                 listSat.setRowHidden(row, False)
+
             else:
                 listSat.setRowHidden(row, True)
 
@@ -331,6 +327,7 @@ class Satellite(object):
         minAlt = self.app.mount.setting.horizonLimitLow
         if minAlt is None:
             minAlt = 0
+
         loc = self.app.mount.obsSite.location
         obs = self.app.mount.obsSite
 

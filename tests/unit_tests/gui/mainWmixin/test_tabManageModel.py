@@ -944,6 +944,34 @@ def test_onMouseEdit_5(function):
             assert not suc
 
 
+def test_onMouseEdit_5b(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = True
+        button = 1
+
+    function.plane = [(0, 0), (0, 360)]
+    function.app.mount.model.starList = list()
+    a = ModelStar()
+    a.alt = 0
+    a.az = 0
+    a.coord = Star(ra_hours=0, dec_degrees=0)
+    a.errorAngle = Angle(degrees=0)
+    a.errorRMS = 1
+    function.app.mount.model.starList.append(a)
+
+    with mock.patch.object(function,
+                           'deleteDialog',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'getIndexPoint',
+                               return_value=None):
+            suc = function.onMouseEdit(Event())
+            assert not suc
+
+
 def test_onMouseEdit_6(function):
     class Event:
         xdata = 10

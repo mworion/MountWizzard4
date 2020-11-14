@@ -337,7 +337,7 @@ def test_writeSatelliteTLE_1(function):
 
 
 def test_writeSatelliteTLE_2(function):
-    data = ''
+    data = 'test'
     suc = function.writeSatelliteTLE(datas=data, installPath='tests/temp')
     assert not suc
 

@@ -23,7 +23,7 @@ import os
 
 # external packages
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle, QPushButton
-from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtCore import pyqtSignal, QObject, QEvent
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
@@ -43,6 +43,11 @@ def function(module):
     yield window
 
 
+def test_FileSortProxyModel_1():
+    f = FileSortProxyModel()
+    f.sort()
+
+
 def test_QMultiWait_1():
     class Test(QObject):
         a = pyqtSignal()
@@ -52,7 +57,11 @@ def test_QMultiWait_1():
 
 
 def test_QMultiWait_2():
+    class Test(QObject):
+        a = pyqtSignal()
     w = QMultiWait()
+    A = Test()
+    w.addWaitableSignal(A.a)
     w.checkSignal()
 
 
@@ -62,7 +71,11 @@ def test_QMultiWait_3():
 
 
 def test_QMultiWait_4():
+    class Test(QObject):
+        a = pyqtSignal()
     w = QMultiWait()
+    A = Test()
+    w.addWaitableSignal(A.a)
     w.clear()
 
 
@@ -211,7 +224,7 @@ def test_prepareFileDialog_2(function):
 
 def test_prepareFileDialog_3(function):
     window = QWidget()
-    suc = function.prepareFileDialog(window=window, enableDir=True)
+    suc = function.prepareFileDialog(window=window, enableDir=True, reverseOrder=True)
     assert suc
 
 
@@ -232,7 +245,8 @@ def test_messageDialog_1(function):
         with mock.patch.object(QMessageBox,
                                'show'):
             with mock.patch.object(function,
-                                   'runDialog'):
+                                   'runDialog',
+                                   return_value=QMessageBox.No):
                 suc = function.messageDialog(widget, 'test', 'test')
                 assert not suc
 
@@ -245,9 +259,10 @@ def test_messageDialog_2(function):
         with mock.patch.object(QMessageBox,
                                'show'):
             with mock.patch.object(function,
-                                   'runDialog'):
+                                   'runDialog',
+                                   return_value=QMessageBox.Yes):
                 suc = function.messageDialog(widget, 'test', 'test')
-                assert not suc
+                assert suc
 
 
 def test_openFile_1(function):

@@ -27,6 +27,7 @@ import skyfield.api
 from skyfield.api import Angle
 from skyfield.toposlib import Topos
 from mountcontrol.mount import Mount
+import numpy as np
 
 # local import
 from logic.modeldata.buildpoints import DataPoint
@@ -187,30 +188,6 @@ def test_buildP3():
     app.buildP = ()
     app.buildP = [(1, 1), (1, 1), 'test']
     assert len(app.buildP) == 0
-
-
-def test_isCloseMeridian_1():
-    suc = app.isCloseMeridian((90, 45))
-    assert not suc
-
-
-def test_isCloseMeridian_2():
-    app.app.mount.setting.meridianLimitSlew = 5
-    app.app.mount.setting.meridianLimitTrack = 5
-    suc = app.isCloseMeridian((90, 45))
-    assert not suc
-
-
-def test_isCloseMeridian_3():
-    app.app.mount.setting.meridianLimitSlew = 5
-    app.app.mount.setting.meridianLimitTrack = 5
-    suc = app.isCloseMeridian((45, 180))
-    assert suc
-
-
-def test_deleteCloseMeridian_1():
-    suc = app.deleteCloseMeridian()
-    assert suc
 
 
 def test_genGreaterCircle1():
@@ -487,6 +464,107 @@ def test_clearHorizonP():
     assert len(app.horizonP) == 0
 
 
+def test_isCloseHorizonLine_1():
+    point = (45, 45)
+    margin = 5
+    azI = range(0, 361, 1)
+    altI = np.interp(azI, [0, 90, 180, 360], [42, 42, 42, 42])
+    horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
+    suc = app.isCloseHorizonLine(point, margin, horizonI)
+    assert suc
+
+
+def test_isCloseHorizonLine_2():
+    point = (45, 45)
+    margin = 1
+    azI = range(0, 361, 1)
+    altI = np.interp(azI, [0, 90, 180, 360], [42, 42, 42, 42])
+    horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
+    suc = app.isCloseHorizonLine(point, margin, horizonI)
+    assert not suc
+
+
+def test_isAboveHorizon_1():
+    app.clearHorizonP()
+    suc = app.isAboveHorizon((10, 50))
+    assert suc
+    suc = app.isAboveHorizon((10, 370))
+    assert suc
+    suc = app.isAboveHorizon((10, -50))
+    assert suc
+    suc = app.isAboveHorizon((-10, 50))
+    assert not suc
+
+
+def test_isAboveHorizon_2():
+    app.horizonP = [(1, 2), (2, 3)]
+    suc = app.isAboveHorizon((10, 50))
+    assert suc
+
+
+def test_isCloseMeridian_1():
+    suc = app.isCloseMeridian((90, 45))
+    assert not suc
+
+
+def test_isCloseMeridian_2():
+    app.app.mount.setting.meridianLimitSlew = 5
+    app.app.mount.setting.meridianLimitTrack = 5
+    suc = app.isCloseMeridian((90, 45))
+    assert not suc
+
+
+def test_isCloseMeridian_3():
+    app.app.mount.setting.meridianLimitSlew = 5
+    app.app.mount.setting.meridianLimitTrack = 5
+    suc = app.isCloseMeridian((45, 180))
+    assert suc
+
+
+def test_deleteBelowHorizon1():
+    app.clearHorizonP()
+    app.buildP = [(10, 10, True), (-5, 40, True), (40, 60, True)]
+    app.deleteBelowHorizon()
+    assert len(app.buildP) == 2
+
+
+def test_deleteBelowHorizon2():
+    app.clearHorizonP()
+    app.buildP = [(10, 10, True), (5, 40, True), (-40, 60, True)]
+    app.deleteBelowHorizon()
+    assert len(app.buildP) == 2
+
+
+def test_deleteBelowHorizon3():
+    app.clearHorizonP()
+    app.buildP = [(-10, 10, True), (5, 40, True), (40, 60, True)]
+    app.deleteBelowHorizon()
+    assert len(app.buildP) == 2
+
+
+def test_deleteBelowHorizon4():
+    app.clearHorizonP()
+    app.buildP = [(-10, 10, True), (-5, 40, True), (-40, 60, True)]
+    app.deleteBelowHorizon()
+    assert len(app.buildP) == 0
+
+
+def test_deleteCloseMeridian_1():
+    suc = app.deleteCloseMeridian()
+    assert suc
+
+
+def test_deleteCloseHorizonLine_1():
+    suc = app.deleteCloseHorizonLine(0)
+    assert not suc
+
+
+def test_deleteCloseHorizonLine_2():
+    app.horizonP = [(0, 10), (180, 40), (360, 60)]
+    suc = app.deleteCloseHorizonLine(0)
+    assert suc
+
+
 def test_addHorizonP1():
     app.horizonP = []
     suc = app.addHorizonP((10, 10))
@@ -601,20 +679,6 @@ def test_delHorizonP5():
 
     suc = app.delHorizonP(154)
     assert not suc
-
-
-def test_saveBuildP_11():
-    app.genGreaterCircle('min')
-    suc = app.saveBuildP()
-    assert not suc
-
-
-def test_saveBuildP_12():
-    fileName = 'tests/config/save_test.bpts'
-    app.genGreaterCircle('min')
-    suc = app.saveBuildP('save_test')
-    assert suc
-    assert os.path.isfile(fileName)
 
 
 def test_loadJSON_1():
@@ -758,27 +822,18 @@ def test_loadBuildP_7():
     assert app.buildP == values
 
 
-def test_saveHorizonP_10():
-    app._horizonP = [(0, 1), (0, 2)]
-    suc = app.saveHorizonP(fileName='test_save_horizon')
-    assert suc
-
-
-def test_saveHorizonP_11():
-    app._horizonP = [(0, 1), (0, 2)]
-    suc = app.saveHorizonP()
+def test_saveBuildP_11():
+    app.genGreaterCircle('min')
+    suc = app.saveBuildP()
     assert not suc
 
 
-def test_saveHorizonP_12():
-    app._horizonP = [(0, 1), (0, 2)]
-    suc = app.saveHorizonP(fileName='test_horizon_1')
+def test_saveBuildP_12():
+    fileName = 'tests/config/save_test.bpts'
+    app.genGreaterCircle('min')
+    suc = app.saveBuildP('save_test')
     assert suc
-    fileName = 'tests/config/' + 'test_horizon_1' + '.hpts'
-    with open(fileName, 'r') as infile:
-        value = json.load(infile)
-        assert value[0] == [0, 1]
-        assert value[-1] == [0, 2]
+    assert os.path.isfile(fileName)
 
 
 def test_loadHorizonP_1():
@@ -857,6 +912,29 @@ def test_loadHorizonP_8():
     suc = app.loadHorizonP('test_horizon_2', '.csv')
     assert suc
     assert app.horizonP == values
+
+
+def test_saveHorizonP_10():
+    app._horizonP = [(0, 1), (0, 2)]
+    suc = app.saveHorizonP(fileName='test_save_horizon')
+    assert suc
+
+
+def test_saveHorizonP_11():
+    app._horizonP = [(0, 1), (0, 2)]
+    suc = app.saveHorizonP()
+    assert not suc
+
+
+def test_saveHorizonP_12():
+    app._horizonP = [(0, 1), (0, 2)]
+    suc = app.saveHorizonP(fileName='test_horizon_1')
+    assert suc
+    fileName = 'tests/config/' + 'test_horizon_1' + '.hpts'
+    with open(fileName, 'r') as infile:
+        value = json.load(infile)
+        assert value[0] == [0, 1]
+        assert value[-1] == [0, 2]
 
 
 def test_genGrid1():
@@ -1030,52 +1108,6 @@ def test_genAlign5():
                        )
     assert not suc
     assert 0 == len(app.buildP)
-
-
-def test_isAboveHorizon_1():
-    app.clearHorizonP()
-    suc = app.isAboveHorizon((10, 50))
-    assert suc
-    suc = app.isAboveHorizon((10, 370))
-    assert suc
-    suc = app.isAboveHorizon((10, -50))
-    assert suc
-    suc = app.isAboveHorizon((-10, 50))
-    assert not suc
-
-
-def test_isAboveHorizon_2():
-    app.horizonP = [(1, 2), (2, 3)]
-    suc = app.isAboveHorizon((10, 50))
-    assert suc
-
-
-def test_deleteBelowHorizon1():
-    app.clearHorizonP()
-    app.buildP = [(10, 10, True), (-5, 40, True), (40, 60, True)]
-    app.deleteBelowHorizon()
-    assert len(app.buildP) == 2
-
-
-def test_deleteBelowHorizon2():
-    app.clearHorizonP()
-    app.buildP = [(10, 10, True), (5, 40, True), (-40, 60, True)]
-    app.deleteBelowHorizon()
-    assert len(app.buildP) == 2
-
-
-def test_deleteBelowHorizon3():
-    app.clearHorizonP()
-    app.buildP = [(-10, 10, True), (5, 40, True), (40, 60, True)]
-    app.deleteBelowHorizon()
-    assert len(app.buildP) == 2
-
-
-def test_deleteBelowHorizon4():
-    app.clearHorizonP()
-    app.buildP = [(-10, 10, True), (-5, 40, True), (-40, 60, True)]
-    app.deleteBelowHorizon()
-    assert len(app.buildP) == 0
 
 
 def test_sort_1():

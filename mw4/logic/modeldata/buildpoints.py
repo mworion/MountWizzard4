@@ -422,6 +422,7 @@ class DataPoint(object):
         altI = np.interp(azI, azH, altH)
         horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
         self._buildP = [x for x in self._buildP if not self.isCloseHorizonLine(x, m, horizonI)]
+
         return True
 
     def sort(self, eastwest=False, highlow=False, pierside=None):

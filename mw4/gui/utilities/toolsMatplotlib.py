@@ -60,7 +60,7 @@ class ToolsMatplotlib:
             modelIndex = ui.model().index(index, 0)
             indexValue = ui.model().data(modelIndex)
 
-            if indexValue is None:
+            if not indexValue:
                 continue
 
             if relaxed:

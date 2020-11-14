@@ -53,6 +53,14 @@ def test_embedMatplot_2(function):
     assert ret
 
 
+def test_findIndexValue_0(function):
+    ui = QComboBox()
+    ui.addItem('')
+    val = function.findIndexValue(ui=ui,
+                                  searchString='dome')
+    assert val == 0
+
+
 def test_findIndexValue_1(function):
     ui = QComboBox()
     ui.addItem('dome')

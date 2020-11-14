@@ -87,7 +87,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
             return False
 
         r = requests.get(url, stream=True, timeout=1)
-        totalSizeBytes = int(r.headers.get('content-length', 0))
+        totalSizeBytes = int(r.headers.get('content-length', 1))
 
         with open(dest, 'wb') as f:
             for n, chunk in enumerate(r.iter_content(512)):

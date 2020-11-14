@@ -18,10 +18,12 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+import builtins
 
 # external packages
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QWidget
+import requests
 
 
 # local import
@@ -54,7 +56,38 @@ def test_setProgress(function):
     assert function.ui.progressBar.value() == 0
 
 
+def test_downloadFileWorker_1(function):
+    suc = function.downloadFileWorker('', '')
+    assert not suc
+
+
+def test_downloadFileWorker_2(function):
+    class Response:
+        headers = {}
+
+        @staticmethod
+        def iter_content(a):
+            return [b's' * 512]
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Response()):
+        suc = function.downloadFileWorker(url='', dest='tests/temp/test.txt')
+        assert suc
+
+
 def test_downloadFile_1(function):
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        suc = function.downloadFile('', '')
+        assert suc
+
+
+def test_downloadFile_2(function):
+    def test():
+        return
+
+    function.callBack = test
     with mock.patch.object(function.threadPool,
                            'start'):
         suc = function.downloadFile('', '')

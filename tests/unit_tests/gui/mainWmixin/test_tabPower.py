@@ -122,6 +122,20 @@ def test_setDew_4(function, qtbot):
         function.setDew()
 
 
+def test_setDew_5(function, qtbot):
+    class Sender:
+        @staticmethod
+        def parent():
+            return function.ui.dewA
+    function.dew = {'test': function.ui.dewB}
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=(0, True)):
+        function.sender = Sender
+        function.ui.dewA.setText('10')
+        function.setDew()
+
+
 def test_togglePowerPort_1(function, qtbot):
     def Sender():
         return function.ui.powerPort1

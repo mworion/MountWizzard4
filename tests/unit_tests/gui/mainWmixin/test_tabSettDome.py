@@ -18,6 +18,8 @@
 # standard libraries
 import pytest
 import logging
+from unittest import mock
+
 # external packages
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
@@ -100,9 +102,18 @@ def test_toggleUseGeometry_1():
 
 
 def test_toggleUseGeometry_2():
-    app.ui.domeRadius.setValue(0.3)
+    app.ui.domeRadius.setValue(1.1)
     suc = app.setUseGeometryInMount()
     assert suc
+
+
+def test_toggleUseGeometry_3():
+    app.ui.domeRadius.setValue(1.1)
+    app.ui.checkAutomaticDome.setChecked(True)
+    with mock.patch.object(app,
+                           'updateDomeGeometryToGui'):
+        suc = app.setUseGeometryInMount()
+        assert suc
 
 
 def test_updateDomeGeometry_1():

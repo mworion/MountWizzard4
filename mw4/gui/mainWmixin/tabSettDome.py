@@ -104,7 +104,7 @@ class SettDome(object):
         value = self.ui.domeRadius.value()
         self.app.mount.geometry.domeRadius = value
 
-        if value < 0.5:
+        if value < 1.25:
             self.app.message.emit('Critical dome radius, please check', 2)
 
         self.app.mount.geometry.offGEM = self.ui.offGEM.value()

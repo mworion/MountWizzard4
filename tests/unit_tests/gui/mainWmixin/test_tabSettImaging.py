@@ -100,9 +100,30 @@ def test_updateParameters_2():
     app.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 1
     app.app.camera.data['CCD_COOLER.COOLER_ON'] = True
     app.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
+    app.app.camera.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = None
 
-    suc = app.updateParameters()
-    assert suc
+    app.ui.checkAutomaticTelescope.setChecked(True)
+    with mock.patch.object(app,
+                           'updateTelescopeParametersToGui'):
+        suc = app.updateParameters()
+        assert suc
+
+
+def test_updateParameters_3():
+    app.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
+    app.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
+    app.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
+    app.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 1
+    app.app.camera.data['CCD_COOLER.COOLER_ON'] = True
+    app.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
+    app.app.camera.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 0
+    app.ui.checkAutomaticTelescope.setChecked(False)
+    app.ui.aperture.setValue(0)
+    app.ui.focalLength.setValue(0)
+    with mock.patch.object(app,
+                           'updateTelescopeParametersToGui'):
+        suc = app.updateParameters()
+        assert suc
 
 
 def test_updateTelescopeParametersToGui_1():

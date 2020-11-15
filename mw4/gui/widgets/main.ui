@@ -15903,7 +15903,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -19110,7 +19110,7 @@ When clicking the button, you could change the value.</string>
          <number>0</number>
         </property>
         <property name="minimum">
-         <double>50.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
          <double>10000.000000000000000</double>
@@ -19149,7 +19149,7 @@ When clicking the button, you could change the value.</string>
          <number>0</number>
         </property>
         <property name="minimum">
-         <double>10.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
          <double>10000.000000000000000</double>

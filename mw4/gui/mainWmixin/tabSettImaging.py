@@ -134,11 +134,7 @@ class SettImaging(object):
         self.app.telescope.focalLength = focalLength
         self.app.telescope.aperture = aperture
 
-        if filterNumber is not None:
-            key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
-
-        else:
-            key = ''
+        key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
         text = self.app.filter.data.get(key, 'not found')
 
         if focalLength and pixelSizeX and pixelSizeY:

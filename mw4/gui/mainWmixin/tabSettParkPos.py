@@ -133,7 +133,7 @@ class SettParkPos(object):
         suc = self.app.mount.obsSite.parkOnActualPosition()
 
         if not suc:
-            self.app.message.emit(f'Cannot park at current position', 2)
+            self.app.message.emit('Cannot park at current position', 2)
 
         return suc
 

@@ -198,3 +198,8 @@ def test_saveHorizonMaskFileAs_3(qtbot):
                 suc = app.saveHorizonMaskAs()
                 assert suc
             assert ['Horizon mask [test] cannot no be saved', 2] == blocker.args
+
+
+def test_clearHorizonMask():
+    suc = app.clearHorizonMask()
+    assert suc

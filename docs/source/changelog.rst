@@ -24,14 +24,15 @@ Unreleased Betas
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
 - optimizing dome for less movements on small changes
 
-(0.220.0)
+Released betas
+--------------
+0.220.0
+
 - optimizing question dialogs
 - adding upload from satellites databases
 - refactoring
-- making park positions really park
+- making park / slew positions really park
 
-Released betas
---------------
 0.211.0
 
 - refactor gui / utilities

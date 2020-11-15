@@ -154,13 +154,6 @@ def test_setupMinorPlanetNameList_2(function):
         assert suc
 
 
-def test_unzipFile(function):
-    shutil.copy('tests/testData/test.json.gz', 'tests/temp/test.json.gz')
-    suc = function.unzipFile('tests/temp/test.json.gz')
-    assert suc
-    assert os.path.isfile('tests/temp/test.json')
-
-
 def test_loadDataFromSourceURLs_1(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('xxx')
@@ -179,42 +172,38 @@ def test_loadDataFromSourceURLs_2(function):
 
 
 def test_loadDataFromSourceURLs_3(function):
-    with mock.patch.object(function,
-                           'unzipFile'):
-        with mock.patch.object(os.path,
-                               'isfile',
-                               return_value=False):
-            function.minorPlanetSourceURLs['test'] = 'test.json.gz'
-            function.ui.minorPlanetSource.clear()
-            function.ui.minorPlanetSource.addItem('test')
-            function.ui.minorPlanetSource.setCurrentIndex(0)
-            function.ui.isOnline.setChecked(False)
-            suc = function.loadDataFromSourceURLs()
-            assert not suc
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        function.minorPlanetSourceURLs['test'] = 'test.json.gz'
+        function.ui.minorPlanetSource.clear()
+        function.ui.minorPlanetSource.addItem('test')
+        function.ui.minorPlanetSource.setCurrentIndex(0)
+        function.ui.isOnline.setChecked(False)
+        suc = function.loadDataFromSourceURLs()
+        assert not suc
 
 
 def test_loadDataFromSourceURLs_4(function, qtbot):
     with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
-        with mock.patch.object(function,
-                               'unzipFile'):
-            with mock.patch.object(os.path,
-                                   'isfile',
-                                   return_value=True):
-                with mock.patch.object(json,
-                                       'load',
-                                       return_value=[]):
-                    with mock.patch.object(builtins,
-                                           'open'):
-                        with qtbot.waitSignal(function.app.message) as blocker:
-                            function.minorPlanetSourceURLs['test'] = 'test.json.gz'
-                            function.ui.minorPlanetSource.clear()
-                            function.ui.minorPlanetSource.addItem('test')
-                            function.ui.minorPlanetSource.setCurrentIndex(0)
-                            function.ui.isOnline.setChecked(True)
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=True):
+            with mock.patch.object(json,
+                                   'load',
+                                   return_value=[]):
+                with mock.patch.object(builtins,
+                                       'open'):
+                    with qtbot.waitSignal(function.app.message) as blocker:
+                        function.minorPlanetSourceURLs['test'] = 'test.json.gz'
+                        function.ui.minorPlanetSource.clear()
+                        function.ui.minorPlanetSource.addItem('test')
+                        function.ui.minorPlanetSource.setCurrentIndex(0)
+                        function.ui.isOnline.setChecked(True)
 
-                            suc = function.loadDataFromSourceURLs()
-                            assert suc
-                            assert blocker.args[0].startswith('Data loaded')
+                        suc = function.loadDataFromSourceURLs()
+                        assert suc
+                        assert blocker.args[0].startswith('Data loaded')
 
 
 def test_progEarthRotationDataToMount_1(function):

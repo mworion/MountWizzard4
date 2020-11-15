@@ -16,9 +16,7 @@
 #
 ###########################################################
 # standard libraries
-import gzip
 import json
-import shutil
 import os
 
 # external packages
@@ -179,19 +177,6 @@ class MinorPlanetTime:
 
         return True
 
-    @staticmethod
-    def unzipFile(dest):
-        """
-
-        :param dest:
-        :return: True for test purpose
-        """
-        with gzip.open(dest, 'rb') as f_in:
-            with open(dest[:-3], 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
-
-        return True
-
     def loadDataFromSourceURLs(self):
         """
 
@@ -210,19 +195,22 @@ class MinorPlanetTime:
 
         url = self.mpcPrefix + self.minorPlanetSourceURLs[source]
         dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
+        destUnzip = dest[:-3]
 
         isOnline = self.ui.isOnline.isChecked()
         if isOnline:
             self.app.message.emit(f'Download data for:   [{source}]', 1)
             DownloadPopup(self, url=url, dest=dest, callBack=self.setupMinorPlanetNameList)
-            self.unzipFile(dest)
 
-        if not os.path.isfile(dest[:-3]):
+        if not os.path.isfile(destUnzip):
             self.app.message.emit(f'No data file for:    [{source}]', 2)
             return False
 
-        with open(dest[:-3]) as inFile:
-            self.minorPlanets = json.load(inFile)
+        with open(destUnzip) as inFile:
+            try:
+                self.minorPlanets = json.load(inFile)
+            except Exception:
+                pass
 
         self.app.message.emit(f'Data loaded for:     [{source}]', 1)
 

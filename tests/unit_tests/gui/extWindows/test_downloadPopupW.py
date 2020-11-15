@@ -18,7 +18,8 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import builtins
+import os
+import shutil
 
 # external packages
 from PyQt5.QtCore import QThreadPool
@@ -51,9 +52,20 @@ def function(module):
 
 
 def test_setProgress(function):
-    suc = function.setProgress(0)
+    suc = function.setProgressBarToValue(0)
     assert suc
     assert function.ui.progressBar.value() == 0
+
+
+def test_downloadUrl(function):
+    pass
+
+
+def test_unzipFile(function):
+    shutil.copy('tests/testData/test.json.gz', 'tests/temp/test.json.gz')
+    suc = function.unzipFile('tests/temp/test.json.gz')
+    assert suc
+    assert os.path.isfile('tests/temp/test.json')
 
 
 def test_downloadFileWorker_1(function):

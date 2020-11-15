@@ -18,6 +18,8 @@
 # standard libraries
 import os
 import time
+import gzip
+import shutil
 
 # external packages
 from PyQt5.QtCore import Qt, pyqtSignal
@@ -39,6 +41,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
                ]
 
     signalProgress = pyqtSignal(object)
+    signalProgressBarColor = pyqtSignal(object)
 
     def __init__(self,
                  parentWidget,
@@ -52,6 +55,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
         self.callBack = callBack
+        self.cancel = False
         self.setWindowModality(Qt.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
@@ -61,31 +65,40 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.setWindowTitle(f'Downloading [{baseName}]')
 
         self.threadPool = parentWidget.threadPool
-        self.ui.cancel.clicked.connect(self.close)
-        self.signalProgress.connect(self.setProgress)
+        self.ui.cancel.clicked.connect(self.cancelDownload)
+        self.signalProgress.connect(self.setProgressBarToValue)
+        self.signalProgressBarColor.connect(self.setProgressBarColor)
         self.downloadFile(url, dest)
         self.show()
 
-    def setProgress(self, progressPercent):
+    def cancelDownload(self):
         """
+        :return:
+        """
+        self.cancel = True
 
+    def setProgressBarColor(self, color):
+        """
+        :param color:
+        :return:
+        """
+        css = 'QProgressBar::chunk {background-color: ' + color + ';}'
+        self.ui.progressBar.setStyleSheet(css)
+
+    def setProgressBarToValue(self, progressPercent):
+        """
         :param progressPercent:
         :return: True for test purpose
         """
         self.ui.progressBar.setValue(progressPercent)
         return True
 
-    def downloadFileWorker(self, url, dest):
+    def getFileFromUrl(self, url, dest):
         """
-
         :param url:
         :param dest:
         :return:
         """
-
-        if not os.path.dirname(dest):
-            return False
-
         r = requests.get(url, stream=True, timeout=1)
         totalSizeBytes = int(r.headers.get('content-length', 1))
 
@@ -96,9 +109,71 @@ class DownloadPopup(toolsQtWidget.MWidget):
 
                 if chunk:
                     f.write(chunk)
+
+                if self.cancel:
+                    break
+
             self.signalProgress.emit(100)
+        return not self.cancel
+
+    @staticmethod
+    def unzipFile(dest):
+        """
+        :param dest:
+        :return: True for test purpose
+        """
+        destUnzip = dest[:-3]
+        with gzip.open(dest, 'rb') as f_in:
+            with open(destUnzip, 'wb') as f_out:
+                shutil.copyfileobj(f_in, f_out)
+
+        if os.path.isfile(dest):
+            os.remove(dest)
+
+        return True
+
+    def downloadFileWorker(self, url, dest):
+        """
+        :param url:
+        :param dest:
+        :return:
+        """
+
+        if not os.path.dirname(dest):
+            return False
+
+        if os.path.isfile(dest):
+            os.remove(dest)
+
+        try:
+            suc = self.getFileFromUrl(url, dest)
+
+        except TimeoutError:
+            self.log.info(f'Download [{url}] timed out')
+            return False
+
+        except Exception as e:
+            self.log.error(f'Download [{url}] timed out')
+            return False
+
+        if not suc:
+            self.signalProgressBarColor.emit('red')
+
+        else:
+            self.signalProgressBarColor.emit('green')
 
         time.sleep(1)
+
+        if not suc:
+            return False
+
+        try:
+            self.unzipFile(dest)
+
+        except Exception as e:
+            self.log.error(f'Download [{url}] timed out')
+            return False
+
         return True
 
     def downloadFile(self, url, dest):
@@ -107,9 +182,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :param dest:
         :return:
         """
-        worker = Worker(self.downloadFileWorker,
-                        url=url,
-                        dest=dest)
+        worker = Worker(self.downloadFileWorker, url=url, dest=dest)
         worker.signals.result.connect(self.close)
 
         if self.callBack:

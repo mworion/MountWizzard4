@@ -49,7 +49,6 @@ from logic.powerswitch.kmRelay import KMRelay
 from logic.measure.measure import MeasureData
 from logic.remote.remote import Remote
 from base.loggerMW import CustomLogger
-import gui.extWindows.devicePopupW
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -122,15 +121,83 @@ def module_setup_teardown(qtbot):
     app.threadPool.waitForDone(1000)
 
 
+def test_checkStructureDriversData_1():
+    config = {
+        'driversData': {
+            'cover': {}
+        }
+    }
+    with mock.patch('deepdiff.DeepDiff', return_value={}):
+        suc = app.checkStructureDriversData('cover', config)
+        assert not suc
+
+
+def test_checkStructureDriversData_2():
+    class Test:
+        defaultConfig = {}
+
+    config = {
+        'driversData': {
+            'cover': {}
+        }
+    }
+    app.drivers = {
+        'cover': {
+            'class': Test()
+        }
+    }
+    with mock.patch('deepdiff.DeepDiff',
+                    return_value={'dictionary_item_added'}):
+        suc = app.checkStructureDriversData('cover', config)
+        assert suc
+
+
 def test_initConfig_1():
     app.config['mainW'] = {}
-    suc = app.initConfig()
-    assert suc
+    with mock.patch.object(app,
+                           'setupDeviceGui'):
+        with mock.patch.object(app,
+                               'startDrivers'):
+            suc = app.initConfig()
+            assert suc
 
 
 def test_initConfig_2():
-    suc = app.initConfig()
-    assert suc
+    app.drivers = {'cover': {}}
+    app.app.config['mainW'] = {
+        'driversData': {
+            'cover': {}
+        }
+    }
+    with mock.patch.object(app,
+                           'setupDeviceGui'):
+        with mock.patch.object(app,
+                               'startDrivers'):
+            with mock.patch.object(app,
+                                   'checkStructureDriversData'):
+                with mock.patch.object(app,
+                                       'setDefaultData'):
+                    suc = app.initConfig()
+                    assert suc
+
+
+def test_initConfig_3():
+    app.drivers = {'cover': {}}
+    app.app.config['mainW'] = {
+        'driversData': {
+            'camera': {}
+        }
+    }
+    with mock.patch.object(app,
+                           'setupDeviceGui'):
+        with mock.patch.object(app,
+                               'startDrivers'):
+            with mock.patch.object(app,
+                                   'checkStructureDriversData'):
+                with mock.patch.object(app,
+                                       'setDefaultData'):
+                    suc = app.initConfig()
+                    assert suc
 
 
 def test_storeConfig_1():
@@ -185,7 +252,7 @@ def test_processPopupResults_1():
         ok = QPushButton()
 
     class Test:
-        returnValues = {'driver': 'telescope'}
+        returnValues = {'driver': ''}
         ui = UI()
 
     app.driversData = {
@@ -208,6 +275,38 @@ def test_processPopupResults_1():
 
 
 def test_processPopupResults_2():
+    class UI:
+        ok = QPushButton()
+
+    class Test:
+        returnValues = {'driver': 'telescope',
+                        'indiCopyConfig': True,
+                        'alpacaCopyConfig': True,
+        }
+        ui = UI()
+
+    app.driversData = {
+        'telescope': {
+            'framework': 'astap',
+            'frameworks': {
+                'astap': {
+                    'deviceName': '',
+                    'deviceList': ['test', 'test1'],
+                    'searchRadius': 30,
+                    'appPath': 'test',
+                },
+            }
+        }
+    }
+    app.popupUi = Test()
+    app.popupUi.ui.ok.clicked.connect(app.processPopupResults)
+    with mock.patch.object(app,
+                           'copyConfig'):
+        suc = app.processPopupResults()
+        assert not suc
+
+
+def test_processPopupResults_3():
     class UI:
         ok = QPushButton()
 
@@ -357,6 +456,33 @@ def test_copyConfig_4():
             suc = app.copyConfig('telescope', 'indi')
             assert suc
             assert app.driversData['cover']['frameworks']['indi']['test'] == 1
+
+
+def test_callPopup_1():
+    class Pop:
+        class OK:
+            class Clicked:
+                class Connect:
+                    @staticmethod
+                    def connect(a):
+                        return
+                clicked = Connect()
+            ok = Clicked()
+        ui = OK()
+
+    app.driversData = {
+        'cover': {
+        }
+    }
+    app.drivers = {
+        'cover': {
+            'deviceType': 'cover'
+        }
+    }
+    with mock.patch('gui.mainWmixin.tabSettDevice.DevicePopup',
+                    return_value=Pop()):
+        suc = app.callPopup('cover')
+        assert suc
 
 
 def test_dispatchPopup():

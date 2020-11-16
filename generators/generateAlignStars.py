@@ -210,10 +210,10 @@ def make_test():
     t = ts.now()
 
     # standard version plus
+    """
     timeStart = time.time()
     alt = list()
     az = list()
-    """
     obs = observer.at(t)
     for value in starsDict:
         name, coord = list(value.items())[0]

@@ -39,7 +39,7 @@ wWin = 'test'
 wWinSCP = uWin + ':/Users/mw/test'
 
 
-clientMac = 'astro-mac-catalina.fritz.box'
+clientMac = 'astro-mac-bigsur.fritz.box'
 userMac = 'mw@' + clientMac
 workMac = 'test'
 workMacSCP = userMac + ':/Users/mw/test'

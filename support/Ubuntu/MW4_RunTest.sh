@@ -13,7 +13,7 @@ echo Checking installed python version
 echo ---------------------------------------------
 echo .
 
-echo Checking environment and start script > install.log
+echo Checking environment and start script > run.log
 
 T=`python3 --version`
 P_VER=""
@@ -26,7 +26,7 @@ elif [ "${T:0:10}" == "Python 3.6" ]; then
   P_VER="python3.6"
 fi
 
-echo variable P_VER has value of $P_VER >> install.log
+echo variable P_VER has value of $P_VER >> run.log
 
 if [ "${P_VER:0:6}" == "python" ]; then
   echo .
@@ -50,6 +50,6 @@ export QT_FONT_DPI=96
 
 source ./venv/bin/activate
 
-startCommand="python ./venv/lib/$P_VER/site-packages/mw4/loader.py test"
+startCommand="python ./venv/lib/$P_VER/site-packages/mw4/loader.py test >>run.log"
 $($startCommand)
 deactivate

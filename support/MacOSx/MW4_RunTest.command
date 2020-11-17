@@ -1,7 +1,18 @@
-#!/bin/zsh
-
-# changing to the actual directory as working directory
+#!/bin/bash
 cd $(dirname "$0")
+
+#
+# run script for Ubuntu
+# (c) 2020 mworion
+#
+
+echo
+echo ----------------------------------------
+echo Checking installed python version
+echo ----------------------------------------
+echo
+
+echo Checking environment and start script > run.log
 
 # get version of python3 installation
 T=$(python3 --version)
@@ -15,35 +26,38 @@ elif [[ $T == *"3.7"* ]]; then
 
 elif [[ $T == *"3.6"* ]]; then
   P_VER="python3.6"
+fi
 
+echo variable P_VER has value of $P_VER >> run.log
+
+if [ "${P_VER:0:6}" == "python" ]; then
+  echo
+  echo ----------------------------------------
+  echo Python version ok
+  echo ----------------------------------------
+  echo
 else
-  echo ""
-  echo "----------------------------------------"
-  echo "No valid python version installed"
-  echo "----------------------------------------"
-  echo ""
-  exit
+  echo
+  echo ----------------------------------------
+  echo No valid python version installed
+  echo Please run MW4_Install.command first
+  echo ----------------------------------------
+  echo
 
+  exit
 fi
 
-# check if virtualenv is available
 if [ ! -f ./venv/bin/activate ]; then
-  echo ""
-  echo "----------------------------------------"
-  echo "No valid virtual environment installed"
-  echo "Please run MW4_Install.command first"
-  echo "----------------------------------------"
-  echo ""
+  echo
+  echo ----------------------------------------
+  echo No valid virtual environment installed
+  echo Please run MW4_Install.command first
+  echo ----------------------------------------
+  echo
   exit
-
 fi
 
-# now enable the virtual environment
-source ./venv/bin/activate > /dev/null
-
-# running mountwizzard4
-COMMAND="python ./venv/lib/$P_VER/site-packages/mw4/loader.py test > run.log"
+source ./venv/bin/activate >> run.log
+COMMAND="python ./venv/lib/$P_VER/site-packages/mw4/loader.py test >> run.log"
 eval ${COMMAND}
-
-# closing virtual environment
 deactivate

@@ -7,12 +7,30 @@ cd $(dirname "$0")
 #
 
 echo
+echo ---------------------------------------------
+echo Script version 0.2
+echo ---------------------------------------------
+echo
+
+if [ ! -f ./venv/bin/activate ]; then
+  echo
+  echo ----------------------------------------
+  echo No valid virtual environment installed
+  echo Please run MW4_Install.command first
+  echo ----------------------------------------
+  echo
+  exit
+fi
+
+source ./venv/bin/activate > update.log
+
+echo
 echo ----------------------------------------
-echo No valid python version installed
+echo Checking installed python version
 echo ----------------------------------------
 echo
 
-echo Checking environment and start script > update.log
+echo Checking environment and start script >> update.log
 
 # get version of python3 installation
 T=$(python3 --version)
@@ -47,21 +65,11 @@ else
   exit
 fi
 
-if [ ! -f ./venv/bin/activate ]; then
-  echo
-  echo ----------------------------------------
-  echo No valid virtual environment installed
-  echo Please run MW4_Install.command first
-  echo ----------------------------------------
-  echo
-  exit
-fi
-
-source ./venv/bin/activate > /dev/null
 pip install mountwizzard4 --upgrade --no-cache-dir >> update.log
 deactivate
 
 echo
+echo ----------------------------------------
 echo Updated mountwizzard4 successfully
 echo For details see update.log
 echo ----------------------------------------

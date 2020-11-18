@@ -8,6 +8,28 @@ cd $(dirname "$0")
 
 echo
 echo ---------------------------------------------
+echo Script version 0.2
+echo ---------------------------------------------
+echo
+
+if [ ! -f ./venv/bin/activate ]; then
+  echo
+  echo ----------------------------------------
+  echo No valid virtual environment installed
+  echo Please run MW4_Install.command first
+  echo ----------------------------------------
+  echo
+
+  exit
+fi
+
+export QT_SCALE_FACTOR=1
+export QT_FONT_DPI=96
+
+source ./venv/bin/activate
+
+echo
+echo ---------------------------------------------
 echo Checking installed python version
 echo ---------------------------------------------
 echo
@@ -44,21 +66,6 @@ else
   exit
 fi
 
-if [ ! -f ./venv/bin/activate ]; then
-  echo
-  echo ----------------------------------------
-  echo No valid virtual environment installed
-  echo Please run MW4_Install.command first
-  echo ----------------------------------------
-  echo
-
-  exit
-fi
-
-export QT_SCALE_FACTOR=1
-export QT_FONT_DPI=96
-
-source ./venv/bin/activate
 startCommand="python ./venv/lib/$P_VER/site-packages/mw4/loader.py >> run.log"
 $($startCommand)
 deactivate

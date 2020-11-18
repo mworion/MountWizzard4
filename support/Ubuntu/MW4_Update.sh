@@ -6,7 +6,12 @@ cd $(dirname "$0")
 # (c) 2020 mworion
 #
 
-# starting a new install log
+echo
+echo ---------------------------------------------
+echo Script version 0.2
+echo ---------------------------------------------
+echo
+
 echo
 echo ---------------------------------------------
 echo Checking installed python version
@@ -34,15 +39,14 @@ if [ "${P_VER:0:6}" == "python" ]; then
   echo Python version ok
   echo ---------------------------------------------
   echo
-
 else
   echo
   echo ---------------------------------------------
   echo No valid python version installed
   echo ---------------------------------------------
   echo
-  exit
 
+  exit
 fi
 
 echo

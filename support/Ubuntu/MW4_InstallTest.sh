@@ -6,12 +6,17 @@ cd $(dirname "$0")
 # (c) 2020 mworion
 #
 
-# starting a new install log
-echo .
+echo
+echo ---------------------------------------------
+echo Script version 0.2
+echo ---------------------------------------------
+echo
+
+echo
 echo ---------------------------------------------
 echo Checking installed python version
 echo ---------------------------------------------
-echo .
+echo
 
 echo checking environment and start script > install.log
 
@@ -29,56 +34,55 @@ fi
 echo variable P_VER has value of $P_VER >> install.log
 
 if [ "${P_VER:0:6}" == "python" ]; then
-  echo .
+  echo
   echo ---------------------------------------------
   echo Python version ok
   echo ---------------------------------------------
-  echo .
-
+  echo
 else
-  echo .
+  echo
   echo ---------------------------------------------
   echo No valid python version installed
   echo ---------------------------------------------
-  echo .
-  exit
+  echo
 
+  exit
 fi
 
-echo . >> install.log
+echo  >> install.log
 echo installing wheel >> install.log
 python3 -m pip install pip --upgrade >> install.log
 
-echo .
+echo
 echo ---------------------------------------------
 echo Installing $P_VER in virtual environ
 echo ---------------------------------------------
-echo .
+echo
 
-echo . >> install.log
+echo  >> install.log
 echo Installing $P_VER in virtual environ >> install.log
 
 {
 virtualenv venv >> install.log
 } || {
-  echo .
+  echo
   echo ---------------------------------------------
   echo No valid virtual environment installed
   echo Please check the install.log for errors
   echo install virtualenv with
   echo sudo apt-get install python3-virtualenv
   echo ---------------------------------------------
-  echo .
+  echo
   exit
 }
 
-echo .
+echo
 echo ---------------------------------------------
 echo Installing mountwizzard4 - takes some time
 echo ---------------------------------------------
-echo .
+echo
 
-echo . >> install.log
+echo  >> install.log
 
 source ./venv/bin/activate
 python -m pip install pip --upgrade >> install.log
@@ -86,13 +90,12 @@ python -m pip install setuptools --upgrade >> install.log
 python -m pip install wheel --upgrade >> install.log
 python -m pip install mountwizzard4.tar.gz >> install.log
 
-
-echo .
+echo
 echo ---------------------------------------------
 echo Installed mountwizzard4 successfully
 echo For details see install.log
 echo ---------------------------------------------
-echo .
+echo
 
 echo MountWizzard4 successfully installed >> install.log
 

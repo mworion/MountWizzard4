@@ -5,6 +5,21 @@ cd $(dirname "$0")
 # run script for Ubuntu
 # (c) 2020 mworion
 #
+echo ---------------------------------------------
+echo Script version 0.2
+echo ---------------------------------------------
+
+if [ ! -f ./venv/bin/activate ]; then
+  echo
+  echo ---------------------------------------------
+  echo No valid virtual environment installed
+  echo Please run MW4_Install.command first
+  echo ---------------------------------------------
+  echo
+  exit
+fi
+
+source ./venv/bin/activate > run.log
 
 echo
 echo ---------------------------------------------
@@ -12,7 +27,7 @@ echo Checking installed python version
 echo ---------------------------------------------
 echo
 
-echo Checking environment and start script > run.log
+echo Checking environment and start script >> run.log
 
 # get version of python3 installation
 T=$(python3 --version)
@@ -47,17 +62,6 @@ else
   exit
 fi
 
-if [ ! -f ./venv/bin/activate ]; then
-  echo
-  echo ---------------------------------------------
-  echo No valid virtual environment installed
-  echo Please run MW4_Install.command first
-  echo ---------------------------------------------
-  echo
-  exit
-fi
-
-source ./venv/bin/activate >> run.log
 COMMAND="python ./venv/lib/$P_VER/site-packages/mw4/loader.py >> run.log"
 eval ${COMMAND}
 deactivate

@@ -4,7 +4,12 @@ rem Installer for Win10
 rem (c) 2020 mworion
 rem
 
-rem starting a new install log
+echo.
+echo ---------------------------------------------
+echo Script version 0.2
+echo ---------------------------------------------
+echo.
+
 echo.
 echo ---------------------------------------------
 echo Checking installed python version
@@ -13,7 +18,6 @@ echo.
 
 echo Checking environment and start script > install.log
 
-rem get version of python installation
 for /f "delims=" %%a in ('python --version') do @set T=%%a
 
 echo variable T has value of %T% >> install.log
@@ -41,15 +45,13 @@ echo.
 exit
 
 :proceed32Bit
-rem write python test file
 echo import platform > test.py
 echo print(platform.architecture()[0]) >> test.py
 
 for /f "delims=" %%a in ('python test.py') do @set OS=%%a
-rem delete python test file
 del test.py
 
-echo . >> install.log
+echo. >> install.log
 echo Checking 32/64 bit OS >> install.log
 echo variable OS has value of %OS% >> install.log
 echo %OS% | find "32" > nul
@@ -57,7 +59,7 @@ if errorlevel 1 goto :64bit
 
 echo python 32bit installed >> install.log
 echo.
-echo ---------------------------------------------
+echo --------------------------------------------
 echo python 32Bit installed
 echo ---------------------------------------------
 echo.
@@ -73,19 +75,19 @@ echo ---------------------------------------------
 echo.
 
 :proceedVirtualenv
-echo . >> install.log
+echo. >> install.log
 echo installing wheel >> install.log
 python -m pip install wheel --disable-pip-version-check >> install.log
 
 :proceedSetupVirtualenv
-rem installing virtual environment
+
 echo.
 echo ---------------------------------------------
 echo Installing %P_VER% in virtual environ
 echo ---------------------------------------------
 echo.
 
-echo . >> install.log
+echo. >> install.log
 echo Installing %P_VER% in virtual environ >> install.log
 python -m venv venv >> install.log
 if not errorlevel 1 goto :proceedInstallMW4
@@ -107,7 +109,7 @@ echo Installing mountwizzard4 - takes some time
 echo ---------------------------------------------
 echo.
 
-echo . >> install.log
+echo. >> install.log
 echo Installing mountwizzard4 - take a minute >> install.log
 venv\Scripts\activate && python -m pip install mountwizzard4.tar.gz --disable-pip-version-check >>install.log
 
@@ -118,5 +120,4 @@ echo For details see install.log
 echo ---------------------------------------------
 echo.
 
-echo .
 echo MountWizzard4 successfully installed >> install.log

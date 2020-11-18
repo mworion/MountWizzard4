@@ -28,6 +28,8 @@ import html
 # the following lines should avoid errors messages from OLE Automation in conjunction with
 # PyQt5
 import warnings
+from astropy.utils.exceptions import AstropyWarning
+warnings.simplefilter('ignore', category=AstropyWarning)
 warnings.simplefilter("ignore", UserWarning)
 sys.coinit_flags = 2
 

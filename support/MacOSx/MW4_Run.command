@@ -5,9 +5,11 @@ cd $(dirname "$0")
 # run script for Ubuntu
 # (c) 2020 mworion
 #
+echo
 echo ---------------------------------------------
 echo Script version 0.2
 echo ---------------------------------------------
+echo
 
 if [ ! -f ./venv/bin/activate ]; then
   echo

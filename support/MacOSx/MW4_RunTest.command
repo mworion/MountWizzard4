@@ -75,3 +75,9 @@ fi
 COMMAND="python ./venv/lib/$P_VER/site-packages/mw4/loader.py test >> run.log"
 eval ${COMMAND}
 deactivate
+
+echo
+echo ---------------------------------------------
+echo mountwizzard4 test run finished
+echo ---------------------------------------------
+echo

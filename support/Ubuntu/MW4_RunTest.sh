@@ -65,3 +65,9 @@ fi
 startCommand="python ./venv/lib/$P_VER/site-packages/mw4/loader.py test >>run.log"
 $($startCommand)
 deactivate
+
+echo
+echo ---------------------------------------------
+echo mountwizzard4 test run finished
+echo ---------------------------------------------
+echo

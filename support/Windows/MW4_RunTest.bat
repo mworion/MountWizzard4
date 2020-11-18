@@ -18,5 +18,54 @@ echo run script version 0.2
 echo ---------------------------------------------
 echo.
 
-venv\Scripts\activate &&^
-venv\Scripts\python.exe venv\Lib\site-packages\mw4\loader.py test > run.log
+call venv\Scripts\activate > run.log
+
+echo.
+echo ---------------------------------------------
+echo checking installed python version
+echo ---------------------------------------------
+echo.
+
+echo checking environment and start script >> run.log
+
+for /f "delims=" %%a in ('python --version') do @set T=%%a
+
+echo variable T has value of %T% >> run.log
+
+echo %T% | find "3.8" > nul
+if not errorlevel 1 SET P_VER='python3.8'
+
+echo %T% | find "3.7" > nul
+if not errorlevel 1 SET P_VER='python3.7'
+
+echo %T% | find "3.6" > nul
+if not errorlevel 1 SET P_VER='python3.6'
+
+echo variable P_VER has value of %P_VER% >> run.log
+
+echo %P_VER% | find "python" > nul
+if not errorlevel 1 goto :proceedOK
+
+echo.
+echo ---------------------------------------------
+echo no valid python version installed
+echo ---------------------------------------------
+echo.
+exit
+
+:proceedOK
+echo.
+echo ---------------------------------------------
+echo python version ok
+echo ---------------------------------------------
+echo.
+
+SET QT_SCALE_FACTOR=2 >> run.log
+SET QT_FONT_DPI=96 >> run.log
+venv\Scripts\python.exe venv\Lib\site-packages\mw4\loader.py test >> run.log
+
+echo.
+echo ---------------------------------------------
+echo mountwizzard4 test run finished
+echo ---------------------------------------------
+echo.

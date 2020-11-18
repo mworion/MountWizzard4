@@ -22,7 +22,7 @@ echo
 
 echo
 echo ---------------------------------------------
-echo Checking installed python version
+echo checking installed python version
 echo ---------------------------------------------
 echo
 
@@ -44,13 +44,13 @@ echo variable P_VER has value of $P_VER
 if [ "${P_VER:0:6}" == "python" ]; then
   echo
   echo ---------------------------------------------
-  echo Python version ok
+  echo python version ok
   echo ---------------------------------------------
   echo
 else
   echo
   echo ---------------------------------------------
-  echo No valid python version installed
+  echo no valid python version installed
   echo ---------------------------------------------
   echo
 
@@ -63,7 +63,7 @@ python3 -m pip install pip --upgrade >> install.log
 
 echo
 echo ---------------------------------------------
-echo Installing $P_VER in virtual environ
+echo installing $P_VER in virtual environ
 echo ---------------------------------------------
 echo
 
@@ -74,8 +74,8 @@ virtualenv venv
 } || {
   echo
   echo ---------------------------------------------
-  echo No valid virtual environment installed
-  echo Please check the install.log for errors
+  echo no valid virtual environment installed
+  echo please check the install.log for errors
   echo install virtualenv with
   echo sudo apt-get install python3-virtualenv
   echo ---------------------------------------------
@@ -101,8 +101,8 @@ pip install mountwizzard4 >> install.log
 
 echo
 echo ---------------------------------------------
-echo Installed mountwizzard4 successfully
-echo For details see install.log
+echo installed mountwizzard4 successfully
+echo for details see install.log
 echo ---------------------------------------------
 echo
 

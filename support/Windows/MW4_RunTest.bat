@@ -18,4 +18,5 @@ echo run script version 0.2
 echo ---------------------------------------------
 echo.
 
-venv\Scripts\activate && venv\Scripts\python.exe venv\Lib\site-packages\mw4\loader.py test > runTest.log
+venv\Scripts\activate &&^
+venv\Scripts\python.exe venv\Lib\site-packages\mw4\loader.py test > run.log

@@ -27,7 +27,7 @@ source ./venv/bin/activate
 
 echo
 echo ---------------------------------------------
-echo Checking installed python version
+echo checking installed python version
 echo ---------------------------------------------
 echo
 
@@ -49,13 +49,13 @@ echo variable P_VER has value of $P_VER >> run.log
 if [ "${P_VER:0:6}" == "python" ]; then
   echo
   echo ---------------------------------------------
-  echo Python version ok
+  echo python version ok
   echo ---------------------------------------------
   echo
 else
   echo
   echo ---------------------------------------------
-  echo No valid python version installed
+  echo no valid python version installed
   echo ---------------------------------------------
   echo
 

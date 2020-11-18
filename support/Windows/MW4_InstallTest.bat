@@ -20,7 +20,7 @@ echo.
 
 echo.
 echo ---------------------------------------------
-echo Checking installed python version
+echo checking installed python version
 echo ---------------------------------------------
 echo.
 
@@ -46,7 +46,7 @@ if not errorlevel 1 goto :proceed32Bit
 
 echo.
 echo ---------------------------------------------
-echo No valid python version installed
+echo no valid python version installed
 echo ---------------------------------------------
 echo.
 
@@ -91,7 +91,7 @@ python -m pip install wheel --disable-pip-version-check >> install.log
 
 echo.
 echo ---------------------------------------------
-echo Installing %P_VER% in virtual environ
+echo installing %P_VER% in virtual environ
 echo ---------------------------------------------
 echo.
 
@@ -113,7 +113,7 @@ exit
 
 echo.
 echo ---------------------------------------------
-echo Installing mountwizzard4 - takes some time
+echo installing mountwizzard4 - takes some time
 echo ---------------------------------------------
 echo.
 
@@ -123,8 +123,8 @@ venv\Scripts\activate && python -m pip install mountwizzard4.tar.gz --disable-pi
 
 echo.
 echo ---------------------------------------------
-echo Installed mountwizzard4 successfully
-echo For details see install.log
+echo installed mountwizzard4 successfully
+echo for details see install.log
 echo ---------------------------------------------
 echo.
 

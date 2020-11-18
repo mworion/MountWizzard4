@@ -22,8 +22,8 @@ echo
 if [ ! -f ./venv/bin/activate ]; then
   echo
   echo ---------------------------------------------
-  echo No valid virtual environment installed
-  echo Please run MW4_Install.command first
+  echo no valid virtual environment installed
+  echo please run MW4_Install.command first
   echo ---------------------------------------------
   echo
   exit
@@ -33,7 +33,7 @@ source ./venv/bin/activate > run.log
 
 echo
 echo ---------------------------------------------
-echo Checking installed python version
+echo checking installed python version
 echo ---------------------------------------------
 echo
 
@@ -58,14 +58,14 @@ echo variable P_VER has value of $P_VER >> run.log
 if [ "${P_VER:0:6}" == "python" ]; then
   echo
   echo ---------------------------------------------
-  echo Python version ok
+  echo python version ok
   echo ---------------------------------------------
   echo
 else
   echo
   echo ---------------------------------------------
-  echo No valid python version installed
-  echo Please run MW4_Install.command first
+  echo no valid python version installed
+  echo please run MW4_Install.command first
   echo ---------------------------------------------
   echo
 

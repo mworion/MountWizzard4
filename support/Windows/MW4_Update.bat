@@ -18,4 +18,19 @@ echo update script version 0.2
 echo ---------------------------------------------
 echo.
 
-venv\Scripts\activate && pip install mountwizzard4 --upgrade --no-cache-dir >> update.log
+
+echo.
+echo ---------------------------------------------
+echo updating MW4 to newest official release
+echo ---------------------------------------------
+echo.
+
+venv\Scripts\activate &&^
+pip install mountwizzard4 --upgrade --no-cache-dir >> update.log
+
+echo.
+echo ----------------------------------------
+echo updated mountwizzard4 successfully
+echo for details see update.log
+echo ----------------------------------------
+echo.

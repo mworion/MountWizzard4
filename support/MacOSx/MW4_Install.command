@@ -22,7 +22,7 @@ echo
 
 echo
 echo ---------------------------------------------
-echo Checking installed python version
+echo checking installed python version
 echo ---------------------------------------------
 echo
 
@@ -48,13 +48,13 @@ fi
 if [ "${P_VER:0:6}" == "python" ]; then
   echo
   echo ---------------------------------------------
-  echo Python version ok
+  echo python version ok
   echo ---------------------------------------------
   echo
 else
   echo
   echo ---------------------------------------------
-  echo No valid python version installed
+  echo no valid python version installed
   echo ---------------------------------------------
   echo
 
@@ -63,7 +63,7 @@ fi
 
 echo
 echo ---------------------------------------------
-echo Updating pip installer
+echo updating pip installer
 echo ---------------------------------------------
 echo
 
@@ -71,7 +71,7 @@ python3 -m pip install --upgrade pip --user >> install.log
 
 echo
 echo ---------------------------------------------
-echo Installing $P_VER in virtual environ
+echo installing $P_VER in virtual environ
 echo ---------------------------------------------
 echo
 
@@ -82,8 +82,8 @@ eval ${COMMAND}
 if [ ! -f ./venv/bin/activate ]; then
   echo
   echo ---------------------------------------------
-  echo No valid virtual environment installed
-  echo Please check the install.log for errors
+  echo no valid virtual environment installed
+  echo please check the install.log for errors
   echo ---------------------------------------------
   echo
 
@@ -92,7 +92,7 @@ fi
 
 echo
 echo ---------------------------------------------
-echo Installing mountwizzard4 - takes some time
+echo installing mountwizzard4 - takes some time
 echo ---------------------------------------------
 echo
 
@@ -105,8 +105,8 @@ deactivate
 
 echo
 echo ---------------------------------------------
-echo Installed mountwizzard4 successfully
-echo For details see install.log
+echo installed mountwizzard4 successfully
+echo for details see install.log
 echo ---------------------------------------------
 echo
 

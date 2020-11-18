@@ -22,7 +22,7 @@ echo
 
 echo
 echo ---------------------------------------------
-echo Checking installed python version
+echo checking installed python version
 echo ---------------------------------------------
 echo
 
@@ -44,13 +44,13 @@ echo variable P_VER has value of $P_VER >> update.log
 if [ "${P_VER:0:6}" == "python" ]; then
   echo
   echo ---------------------------------------------
-  echo Python version ok
+  echo python version ok
   echo ---------------------------------------------
   echo
 else
   echo
   echo ---------------------------------------------
-  echo No valid python version installed
+  echo no valid python version installed
   echo ---------------------------------------------
   echo
 
@@ -59,10 +59,17 @@ fi
 
 echo
 echo ---------------------------------------------
-echo Updating MW4 to newest official release
+echo updating MW4 to newest official release
 echo ---------------------------------------------
 echo
 
 source ./venv/bin/activate
 pip install mountwizzard4 --upgrade --no-cache-dir >> update.log
 deactivate
+
+echo
+echo ----------------------------------------
+echo updated mountwizzard4 successfully
+echo for details see update.log
+echo ----------------------------------------
+echo

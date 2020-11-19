@@ -65,7 +65,6 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.setWindowTitle(f'Downloading [{baseName}]')
 
         self.threadPool = parentWidget.threadPool
-        self.ui.cancel.clicked.connect(self.cancelDownload)
         self.signalProgress.connect(self.setProgressBarToValue)
         self.signalProgressBarColor.connect(self.setProgressBarColor)
         self.downloadFile(url, dest)

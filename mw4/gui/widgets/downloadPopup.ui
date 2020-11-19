@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>80</height>
+    <height>46</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>400</width>
-    <height>80</height>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -49,19 +49,6 @@
   <property name="windowTitle">
    <string>Device Setup</string>
   </property>
-  <widget class="QPushButton" name="cancel">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>45</y>
-     <width>75</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Cancel</string>
-   </property>
-  </widget>
   <widget class="QProgressBar" name="progressBar">
    <property name="geometry">
     <rect>
@@ -94,9 +81,6 @@
    </property>
   </widget>
  </widget>
- <tabstops>
-  <tabstop>cancel</tabstop>
- </tabstops>
  <resources/>
  <connections/>
  <designerdata>

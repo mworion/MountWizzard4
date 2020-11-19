@@ -19,8 +19,6 @@ from invoke import task
 from PIL import Image
 import glob
 import time
-from importlib_metadata import version
-from git import Repo
 
 #
 # defining all necessary virtual client login for building over all platforms

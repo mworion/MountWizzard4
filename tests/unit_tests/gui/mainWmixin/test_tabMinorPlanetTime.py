@@ -32,7 +32,6 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
 from logic.databaseProcessing.dataWriter import DataWriter
-import gui.extWindows.downloadPopupW
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -154,6 +153,67 @@ def test_setupMinorPlanetNameList_2(function):
         assert suc
 
 
+def test_processSourceData_1(function):
+    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=False):
+            with mock.patch.object(json,
+                                   'load',
+                                   return_value=[]):
+                with mock.patch.object(builtins,
+                                       'open'):
+                    function.minorPlanetSourceURLs['test'] = 'test.json.gz'
+                    function.ui.minorPlanetSource.clear()
+                    function.ui.minorPlanetSource.addItem('test')
+                    function.ui.minorPlanetSource.setCurrentIndex(0)
+                    function.ui.isOnline.setChecked(True)
+
+                    suc = function.processSourceData()
+                    assert not suc
+
+
+def test_processSourceData_2(function):
+    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=True):
+            with mock.patch.object(json,
+                                   'load',
+                                   return_value=[]):
+                with mock.patch.object(builtins,
+                                       'open'):
+                    function.minorPlanetSourceURLs['test'] = 'test.json.gz'
+                    function.ui.minorPlanetSource.clear()
+                    function.ui.minorPlanetSource.addItem('test')
+                    function.ui.minorPlanetSource.setCurrentIndex(0)
+                    function.ui.isOnline.setChecked(True)
+
+                    suc = function.processSourceData()
+                    assert suc
+
+
+def test_processSourceData_3(function):
+    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=True):
+            with mock.patch.object(json,
+                                   'load',
+                                   return_value=[],
+                                   side_effect=Exception):
+                with mock.patch.object(builtins,
+                                       'open'):
+                    function.minorPlanetSourceURLs['test'] = 'test.json.gz'
+                    function.ui.minorPlanetSource.clear()
+                    function.ui.minorPlanetSource.addItem('test')
+                    function.ui.minorPlanetSource.setCurrentIndex(0)
+                    function.ui.isOnline.setChecked(True)
+
+                    suc = function.processSourceData()
+                    assert suc
+
+
 def test_loadDataFromSourceURLs_1(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('xxx')
@@ -180,30 +240,6 @@ def test_loadDataFromSourceURLs_3(function):
         function.ui.minorPlanetSource.addItem('test')
         function.ui.minorPlanetSource.setCurrentIndex(0)
         function.ui.isOnline.setChecked(False)
-        suc = function.loadDataFromSourceURLs()
-        assert not suc
-
-
-def test_loadDataFromSourceURLs_4(function, qtbot):
-    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
-        with mock.patch.object(os.path,
-                               'isfile',
-                               return_value=True):
-            with mock.patch.object(json,
-                                   'load',
-                                   return_value=[]):
-                with mock.patch.object(builtins,
-                                       'open'):
-                    with qtbot.waitSignal(function.app.message) as blocker:
-                        function.minorPlanetSourceURLs['test'] = 'test.json.gz'
-                        function.ui.minorPlanetSource.clear()
-                        function.ui.minorPlanetSource.addItem('test')
-                        function.ui.minorPlanetSource.setCurrentIndex(0)
-                        function.ui.isOnline.setChecked(True)
-
-                        suc = function.loadDataFromSourceURLs()
-                        assert suc
-                        assert blocker.args[0].startswith('Data loaded')
 
 
 def test_progEarthRotationDataToMount_1(function):

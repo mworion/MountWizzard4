@@ -34,7 +34,7 @@ class MinorPlanetTime:
     def __init__(self):
         self.installPath = ''
         self.databaseProcessing = DataWriter(self.app)
-        self.minorPlanets = dict()
+        self.minorPlanets = {}
         self.minorPlanet = None
         self.listMinorPlanetNamesProxy = None
 
@@ -193,11 +193,13 @@ class MinorPlanetTime:
         with open(destUnzip) as inFile:
             try:
                 self.minorPlanets = json.load(inFile)
+
             except Exception:
-                pass
+                self.minorPlanets = {}
 
         self.setupMinorPlanetNameList()
         self.app.message.emit(f'Data loaded for:     [{source}]', 1)
+
         return True
 
     def loadDataFromSourceURLs(self):
@@ -217,7 +219,6 @@ class MinorPlanetTime:
 
         url = self.mpcPrefix + self.minorPlanetSourceURLs[source]
         dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
-        destUnzip = dest[:-3]
 
         isOnline = self.ui.isOnline.isChecked()
         if isOnline:

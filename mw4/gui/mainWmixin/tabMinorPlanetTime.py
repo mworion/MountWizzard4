@@ -197,8 +197,9 @@ class MinorPlanetTime:
             except Exception:
                 self.minorPlanets = {}
 
-        self.setupMinorPlanetNameList()
-        self.app.message.emit(f'Data loaded for:     [{source}]', 1)
+            else:
+                self.setupMinorPlanetNameList()
+                self.app.message.emit(f'Data loaded for:     [{source}]', 1)
 
         return True
 

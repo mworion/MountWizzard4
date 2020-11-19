@@ -84,6 +84,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         """
         css = 'QProgressBar::chunk {background-color: ' + color + ';}'
         self.ui.progressBar.setStyleSheet(css)
+        return True
 
     def setProgressBarToValue(self, progressPercent):
         """

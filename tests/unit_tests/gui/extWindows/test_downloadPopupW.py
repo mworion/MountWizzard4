@@ -171,18 +171,17 @@ def test_downloadFileWorker_7(function):
                 assert suc
 
 
-def test_downloadFile_1(function):
-    with mock.patch.object(function.threadPool,
-                           'start'):
-        suc = function.downloadFile('', '')
-        assert suc
-
-
-def test_downloadFile_2(function):
+def test_processResult(function):
     def test():
         return
 
     function.callBack = test
+    suc = function.processResult(True)
+    assert suc
+
+
+def test_downloadFile_1(function):
+    function.callBack = 1
     with mock.patch.object(function.threadPool,
                            'start'):
         suc = function.downloadFile('', '')

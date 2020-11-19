@@ -177,9 +177,31 @@ class MinorPlanetTime:
 
         return True
 
-    def loadDataFromSourceURLs(self):
+    def processSourceData(self):
+        """
+        :return:
         """
 
+        source = self.ui.minorPlanetSource.currentText()
+        dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
+        destUnzip = dest[:-3]
+
+        if not os.path.isfile(destUnzip):
+            self.app.message.emit(f'No data file for:    [{source}]', 2)
+            return False
+
+        with open(destUnzip) as inFile:
+            try:
+                self.minorPlanets = json.load(inFile)
+            except Exception:
+                pass
+
+        self.setupMinorPlanetNameList()
+        self.app.message.emit(f'Data loaded for:     [{source}]', 1)
+        return True
+
+    def loadDataFromSourceURLs(self):
+        """
         :return: success
         """
 
@@ -200,19 +222,7 @@ class MinorPlanetTime:
         isOnline = self.ui.isOnline.isChecked()
         if isOnline:
             self.app.message.emit(f'Download data for:   [{source}]', 1)
-            DownloadPopup(self, url=url, dest=dest, callBack=self.setupMinorPlanetNameList)
-
-        if not os.path.isfile(destUnzip):
-            self.app.message.emit(f'No data file for:    [{source}]', 2)
-            return False
-
-        with open(destUnzip) as inFile:
-            try:
-                self.minorPlanets = json.load(inFile)
-            except Exception:
-                pass
-
-        self.app.message.emit(f'Data loaded for:     [{source}]', 1)
+            DownloadPopup(self, url=url, dest=dest, callBack=self.processSourceData)
 
         return True
 

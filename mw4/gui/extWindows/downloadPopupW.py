@@ -176,6 +176,15 @@ class DownloadPopup(toolsQtWidget.MWidget):
 
         return True
 
+    def processResult(self, result):
+        """
+        :return:
+        """
+        if result:
+            self.callBack()
+        self.close()
+        return True
+
     def downloadFile(self, url, dest):
         """
         :param url:
@@ -183,10 +192,9 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :return:
         """
         worker = Worker(self.downloadFileWorker, url=url, dest=dest)
-        worker.signals.result.connect(self.close)
 
         if self.callBack:
-            worker.signals.result.connect(self.callBack)
+            worker.signals.result.connect(self.processResult)
 
         self.threadPool.start(worker)
 

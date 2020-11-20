@@ -129,6 +129,11 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :param dest:
         :return:
         """
+        if not os.path.dirname(dest):
+            return False
+
+        if os.path.isfile(dest):
+            os.remove(dest)
 
         try:
             self.getFileFromUrl(url, dest)
@@ -177,12 +182,6 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :return:
         """
         self.worker = Worker(self.downloadFileWorker, url=url, dest=dest)
-
-        if not os.path.dirname(dest):
-            return False
-
-        if os.path.isfile(dest):
-            os.remove(dest)
 
         if self.callBack:
             self.worker.signals.result.connect(self.processResult)

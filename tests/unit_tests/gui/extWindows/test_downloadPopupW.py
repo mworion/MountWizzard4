@@ -52,12 +52,6 @@ def function(module):
     yield window
 
 
-def test_cancelDownload(function):
-    function.cancel = False
-    function.cancelDownload()
-    assert function.cancel
-
-
 def set_setProgressBarColor(function):
     suc = function.setProgressBarColor('red')
     assert suc
@@ -91,12 +85,11 @@ def test_getFileFromUrl_2(function):
         @staticmethod
         def iter_content(a):
             return [b's' * 512]
-    function.cancel = True
     with mock.patch.object(requests,
                            'get',
                            return_value=Response()):
         suc = function.getFileFromUrl('http://local', 'tests/temp/test.txt')
-        assert not suc
+        assert suc
 
 
 def test_unzipFile(function):
@@ -116,24 +109,30 @@ def test_downloadFileWorker_2(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            side_effect=TimeoutError):
-        suc = function.downloadFileWorker(url='', dest='tests/temp/test.txt')
-        assert not suc
+        with mock.patch.object(time,
+                               'sleep'):
+            suc = function.downloadFileWorker(url='', dest='tests/temp/test.txt')
+            assert not suc
 
 
 def test_downloadFileWorker_3(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            side_effect=TimeoutError):
-        suc = function.downloadFileWorker(url='', dest='test/test.txt')
-        assert not suc
+        with mock.patch.object(time,
+                               'sleep'):
+            suc = function.downloadFileWorker(url='', dest='test/test.txt')
+            assert not suc
 
 
 def test_downloadFileWorker_4(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            side_effect=Exception):
-        suc = function.downloadFileWorker(url='', dest='test/test.txt')
-        assert not suc
+        with mock.patch.object(time,
+                               'sleep'):
+            suc = function.downloadFileWorker(url='', dest='test/test.txt')
+            assert not suc
 
 
 def test_downloadFileWorker_5(function):

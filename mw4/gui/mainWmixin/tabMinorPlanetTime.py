@@ -181,7 +181,6 @@ class MinorPlanetTime:
         """
         :return:
         """
-
         source = self.ui.minorPlanetSource.currentText()
         dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
         destUnzip = dest[:-3]
@@ -197,9 +196,9 @@ class MinorPlanetTime:
             except Exception:
                 self.minorPlanets = {}
 
-            else:
-                self.setupMinorPlanetNameList()
-                self.app.message.emit(f'Data loaded for:     [{source}]', 1)
+            self.app.message.emit(f'Data loaded for:     [{source}]', 1)
+
+        self.setupMinorPlanetNameList()
 
         return True
 

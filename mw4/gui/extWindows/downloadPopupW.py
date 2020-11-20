@@ -55,7 +55,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
         self.callBack = callBack
-        self.cancel = False
+        self.worker = None
         self.setWindowModality(Qt.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
@@ -69,12 +69,6 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.signalProgressBarColor.connect(self.setProgressBarColor)
         self.downloadFile(url, dest)
         self.show()
-
-    def cancelDownload(self):
-        """
-        :return:
-        """
-        self.cancel = True
 
     def setProgressBarColor(self, color):
         """
@@ -110,11 +104,8 @@ class DownloadPopup(toolsQtWidget.MWidget):
                 if chunk:
                     f.write(chunk)
 
-                if self.cancel:
-                    break
-
             self.signalProgress.emit(100)
-        return not self.cancel
+        return True
 
     @staticmethod
     def unzipFile(dest):
@@ -139,39 +130,32 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :return:
         """
 
-        if not os.path.dirname(dest):
-            return False
-
-        if os.path.isfile(dest):
-            os.remove(dest)
-
         try:
-            suc = self.getFileFromUrl(url, dest)
+            self.getFileFromUrl(url, dest)
 
         except TimeoutError:
             self.log.info(f'Download [{url}] timed out')
+            self.signalProgressBarColor.emit('red')
+            time.sleep(1)
             return False
 
         except Exception as e:
-            self.log.error(f'Download [{url}] timed out')
-            return False
-
-        if not suc:
+            self.log.error(f'Download [{url}] error: {e}')
             self.signalProgressBarColor.emit('red')
+            time.sleep(1)
+            return False
 
         else:
             self.signalProgressBarColor.emit('green')
 
-        time.sleep(1)
-
-        if not suc:
-            return False
+        finally:
+            time.sleep(1)
 
         try:
             self.unzipFile(dest)
 
         except Exception as e:
-            self.log.error(f'Download [{url}] timed out')
+            self.log.error(f'Error in unzip [{url}], {e}')
             return False
 
         return True
@@ -182,6 +166,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         """
         if result:
             self.callBack()
+
         self.close()
         return True
 
@@ -191,11 +176,17 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :param dest:
         :return:
         """
-        worker = Worker(self.downloadFileWorker, url=url, dest=dest)
+        self.worker = Worker(self.downloadFileWorker, url=url, dest=dest)
+
+        if not os.path.dirname(dest):
+            return False
+
+        if os.path.isfile(dest):
+            os.remove(dest)
 
         if self.callBack:
-            worker.signals.result.connect(self.processResult)
+            self.worker.signals.result.connect(self.processResult)
 
-        self.threadPool.start(worker)
+        self.threadPool.start(self.worker)
 
         return True

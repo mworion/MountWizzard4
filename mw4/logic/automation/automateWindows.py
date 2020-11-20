@@ -239,7 +239,8 @@ class AutomateWindows(QObject):
         """
         :return:
         """
-        self.updater = pywinauto.Application(backend='win32')
+        timings.Timings.fast()
+        self.updater = pywinauto.Application(backend='uia')
 
         try:
             self.updater.start(self.installPath + self.UPDATER_EXE)
@@ -357,8 +358,8 @@ class AutomateWindows(QObject):
 
         popup['MPC file'].click()
         filedialog = self.updater['Dialog']
-        controls.EditWrapper(filedialog['Edit13']).set_text(
-            self.installPath + 'minorPlanets.mpc')
+        text = self.installPath + 'minorPlanets.mpc'
+        controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
         filedialog['Button16'].click()
         popup['Close'].click()
         return True
@@ -393,10 +394,12 @@ class AutomateWindows(QObject):
         popup = self.updater['UTC / Earth rotation data']
         popup['Import files...'].click()
         filedialog = self.updater['Open finals data']
-        controls.EditWrapper(filedialog['Edit13']).set_text(self.installPath + self.UTC_1_FILE)
+        text = self.installPath + self.UTC_1_FILE
+        controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
         filedialog['Button16'].click()
         filedialog = self.updater['Open tai-utc.dat']
-        controls.EditWrapper(filedialog['Edit13']).set_text(self.installPath + self.UTC_2_FILE)
+        text = self.installPath + self.UTC_2_FILE
+        controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
         filedialog['Button16'].click()
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
@@ -436,8 +439,8 @@ class AutomateWindows(QObject):
 
         popup['Load from file'].click()
         filedialog = self.updater['Dialog']
-        controls.EditWrapper(filedialog['Edit13']).set_text(
-            self.installPath + 'satellites.tle')
+        text = self.installPath + 'satellites.tle'
+        controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
         filedialog['Button16'].click()
         popup['Close'].click()
 

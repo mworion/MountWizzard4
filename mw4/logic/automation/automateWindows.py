@@ -101,7 +101,8 @@ class AutomateWindows(QObject):
         self.app = app
         self.threadPool = app.threadPool
 
-        val = self.getAppSettings('"10micron QCI"')
+        val = self.getAppSettings('10micron QCI')
+        self.log.info(f'QCI Updater settings: [{val}]')
         self.available, self.name, self.installPath = val
         self.updaterRunnable = self.installPath + self.UPDATER_EXE
         self.updater = None
@@ -241,7 +242,11 @@ class AutomateWindows(QObject):
         """
         timings.Timings.fast()
         self.log.info(f'Found QCI updater: [{self.installPath}]')
-        self.updater = pywinauto.Application(backend='uia')
+        if platform.architecture()[0] == '32bit':
+            self.updater = pywinauto.Application(backend='win32')
+
+        else:
+            self.updater = pywinauto.Application(backend='uia')
 
         try:
             self.updater.start(self.installPath + self.UPDATER_EXE)

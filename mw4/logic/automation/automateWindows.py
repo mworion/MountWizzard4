@@ -101,7 +101,7 @@ class AutomateWindows(QObject):
         self.app = app
         self.threadPool = app.threadPool
 
-        val = self.getAppSettings('10micron QCI')
+        val = self.getAppSettings('"10micron QCI"')
         self.available, self.name, self.installPath = val
         self.updaterRunnable = self.installPath + self.UPDATER_EXE
         self.updater = None
@@ -240,6 +240,7 @@ class AutomateWindows(QObject):
         :return:
         """
         timings.Timings.fast()
+        self.log.info(f'Found QCI updater: [{self.installPath}]')
         self.updater = pywinauto.Application(backend='uia')
 
         try:

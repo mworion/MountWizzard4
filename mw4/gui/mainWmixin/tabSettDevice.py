@@ -200,7 +200,7 @@ class SettDevice:
 
         if 'dictionary_item_added' in res or 'dictionary_item_removed' in res:
             config['driversData'][driver] = defaultConfig
-            self.log.warn(f'Config for {[driver]} updated to default')
+            self.log.warning(f'Config for {[driver]} updated to default')
             return False
 
         return True

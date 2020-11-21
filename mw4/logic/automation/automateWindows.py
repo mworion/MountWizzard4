@@ -367,7 +367,10 @@ class AutomateWindows(QObject):
         filedialog = self.updater['Dialog']
         text = self.installPath + 'minorPlanets.mpc'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-        filedialog['Button16'].click()
+        if platform.architecture()[0] == '32bit':
+            filedialog['Button16'].click()
+        else:
+            filedialog['OpenButton4'].click()
         popup['Close'].click()
         return True
 
@@ -403,14 +406,19 @@ class AutomateWindows(QObject):
         filedialog = self.updater['Open finals data']
         text = self.installPath + self.UTC_1_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
-        filedialog['Button16'].click()
+        if platform.architecture()[0] == '32bit':
+            filedialog['Button16'].click()
+        else:
+            filedialog['OpenButton4'].click()
         filedialog = self.updater['Open tai-utc.dat']
         text = self.installPath + self.UTC_2_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
-        filedialog['Button16'].click()
+        if platform.architecture()[0] == '32bit':
+            filedialog['Button16'].click()
+        else:
+            filedialog['OpenButton4'].click()
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
-
         return True
 
     def uploadEarthRotationData(self):
@@ -443,12 +451,14 @@ class AutomateWindows(QObject):
         controls.ButtonWrapper(win['Orbital parameters of satellites']).check_by_click()
         win['Edit...2'].click()
         popup = self.updater['Satellites orbits']
-
         popup['Load from file'].click()
         filedialog = self.updater['Dialog']
         text = self.installPath + 'satellites.tle'
         controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
-        filedialog['Button16'].click()
+        if platform.architecture()[0] == '32bit':
+            filedialog['Button16'].click()
+        else:
+            filedialog['OpenButton4'].click()
         popup['Close'].click()
 
         return True

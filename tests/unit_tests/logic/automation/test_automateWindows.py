@@ -461,7 +461,8 @@ def test_uploadMPCDataCommands_1(function):
     popup = {'MPC file': Test(),
              'Close': Test(),
              }
-    dialog = {'Button16': Test(),
+    dialog = {'OpenButton4': Test(),
+              'Button16': Test(),
               'File &name:Edit': Test(),
               }
     function.updater = {'10 micron control box update': win,
@@ -499,7 +500,8 @@ def test_uploadMPCDataCommands_2(function):
     popup = {'MPC file': Test(),
              'Close': Test(),
              }
-    dialog = {'Button16': Test(),
+    dialog = {'OpenButton4': Test(),
+              'Button16': Test(),
               'File &name:Edit': Test(),
               }
     function.updater = {'10 micron control box update': win,
@@ -571,7 +573,8 @@ def test_uploadEarthRotationDataCommands(function):
            }
     popup = {'Import files...': Test()
              }
-    dialog = {'Button16': Test(),
+    dialog = {'OpenButton4': Test(),
+              'Button16': Test(),
               'File &name:Edit': Test(),
               }
     ok = {'OK': Test()
@@ -647,7 +650,8 @@ def test_uploadTLEDataCommands(function):
     popup = {'Load from file': Test(),
              'Close': Test(),
              }
-    dialog = {'Button16': Test(),
+    dialog = {'OpenButton4': Test(),
+              'Button16': Test(),
               'File &name:Edit': Test(),
               }
     function.updater = {'10 micron control box update': win,

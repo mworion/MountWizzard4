@@ -240,13 +240,14 @@ class AutomateWindows(QObject):
         """
         :return:
         """
-        timings.Timings.fast()
         self.log.info(f'Found QCI updater: [{self.installPath}]')
         if platform.architecture()[0] == '32bit':
             self.updater = pywinauto.Application(backend='win32')
+            timings.Timings.fast()
 
         else:
             self.updater = pywinauto.Application(backend='uia')
+            timings.Timings.slow()
 
         try:
             self.updater.start(self.installPath + self.UPDATER_EXE)

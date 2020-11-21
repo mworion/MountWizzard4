@@ -16,12 +16,9 @@
 #
 ###########################################################
 # standard libraries
-from unittest import mock
 import pytest
 import os
-import json
 import platform
-import shutil
 from unittest import mock
 
 # external packages
@@ -266,14 +263,17 @@ def test_startUpdater_1(function):
         def start(a):
             pass
 
-    with mock.patch.object(pywinauto,
-                           'Application',
-                           return_value=Test()):
-        with mock.patch.object(Test,
-                               'start',
-                               side_effect=pywinauto.application.AppStartError()):
-            suc = function.startUpdater()
-            assert not suc
+    with mock.patch.object(platform,
+                           'architecture',
+                           return_value=['32bit']):
+        with mock.patch.object(pywinauto,
+                               'Application',
+                               return_value=Test()):
+            with mock.patch.object(Test,
+                                   'start',
+                                   side_effect=pywinauto.application.AppStartError()):
+                suc = function.startUpdater()
+                assert not suc
 
 
 def test_startUpdater_2(function):
@@ -282,14 +282,17 @@ def test_startUpdater_2(function):
         def start(a):
             pass
 
-    with mock.patch.object(pywinauto,
-                           'Application',
-                           return_value=Test()):
-        with mock.patch.object(Test,
-                               'start',
-                               side_effect=Exception()):
-            suc = function.startUpdater()
-            assert not suc
+    with mock.patch.object(platform,
+                           'architecture',
+                           return_value=['64bit']):
+        with mock.patch.object(pywinauto,
+                               'Application',
+                               return_value=Test()):
+            with mock.patch.object(Test,
+                                   'start',
+                                   side_effect=Exception()):
+                suc = function.startUpdater()
+                assert not suc
 
 
 def test_startUpdater_3(function):
@@ -459,7 +462,7 @@ def test_uploadMPCDataCommands_1(function):
              'Close': Test(),
              }
     dialog = {'Button16': Test(),
-              'Edit13': Test(),
+              'File &name:Edit': Test(),
               }
     function.updater = {'10 micron control box update': win,
                         'Asteroid orbits': popup,
@@ -497,7 +500,7 @@ def test_uploadMPCDataCommands_2(function):
              'Close': Test(),
              }
     dialog = {'Button16': Test(),
-              'Edit13': Test(),
+              'File &name:Edit': Test(),
               }
     function.updater = {'10 micron control box update': win,
                         'Asteroid orbits': popup,
@@ -569,7 +572,7 @@ def test_uploadEarthRotationDataCommands(function):
     popup = {'Import files...': Test()
              }
     dialog = {'Button16': Test(),
-              'Edit13': Test(),
+              'File &name:Edit': Test(),
               }
     ok = {'OK': Test()
           }
@@ -645,7 +648,7 @@ def test_uploadTLEDataCommands(function):
              'Close': Test(),
              }
     dialog = {'Button16': Test(),
-              'Edit13': Test(),
+              'File &name:Edit': Test(),
               }
     function.updater = {'10 micron control box update': win,
                         'Satellites orbits': popup,

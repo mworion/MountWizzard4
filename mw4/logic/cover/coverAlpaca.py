@@ -61,15 +61,16 @@ class CoverAlpaca(AlpacaClass):
         """
         :return: true for test purpose
         """
+        states = ['NotPresent', 'Closed', 'Moving', 'Open', 'Unknown', 'Error']
 
-        val = self.client.coverstate()
-        if val == 1:
-            val = 'OPEN'
+        if not self.deviceConnected:
+            return False
 
-        else:
-            val = 'CLOSED'
+        state = self.client.coverstate()
+        stateText = states[state]
+        self.dataEntry(stateText, 'Status.Cover')
 
-        self.dataEntry(val, 'Status.Cover')
+        self.dataEntry(stateText, 'Status.Cover')
 
         return True
 

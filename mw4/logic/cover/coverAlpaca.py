@@ -70,8 +70,6 @@ class CoverAlpaca(AlpacaClass):
         stateText = states[state]
         self.dataEntry(stateText, 'Status.Cover')
 
-        self.dataEntry(stateText, 'Status.Cover')
-
         return True
 
     def sendCoverPark(self, park=True):
@@ -80,9 +78,9 @@ class CoverAlpaca(AlpacaClass):
         """
 
         if park:
-            self.client.opencover()
+            self.client.closecover()
 
         else:
-            self.client.closecover()
+            self.client.opencover()
 
         return True

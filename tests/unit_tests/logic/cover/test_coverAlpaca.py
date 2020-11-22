@@ -51,14 +51,16 @@ def test_getInitialConfig_1():
 
 
 def test_workerPollData_1():
+    app.deviceConnected = False
     with mock.patch.object(app.client,
                            'coverstate',
                            return_value=1):
         suc = app.workerPollData()
-        assert suc
+        assert not suc
 
 
 def test_workerPollData_2():
+    app.deviceConnected = True
     with mock.patch.object(app.client,
                            'coverstate',
                            return_value=0):

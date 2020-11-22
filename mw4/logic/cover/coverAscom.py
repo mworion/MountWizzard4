@@ -59,18 +59,14 @@ class CoverAscom(AscomClass):
         """
         :return: true for test purpose
         """
+        states = ['NotPresent', 'Closed', 'Moving', 'Open', 'Unknown', 'Error']
 
         if not self.deviceConnected:
             return False
 
         val = self.client.coverstate
-        if val == 1:
-            val = 'OPEN'
-
-        else:
-            val = 'CLOSED'
-
-        self.dataEntry(val, 'Status.Cover')
+        state = states[val]
+        self.dataEntry(state, 'Status.Cover')
 
         return True
 
@@ -83,9 +79,9 @@ class CoverAscom(AscomClass):
             return False
 
         if park:
-            self.client.opencover
+            self.client.closecover
 
         else:
-            self.client.closecover
+            self.client.opencover
 
         return True

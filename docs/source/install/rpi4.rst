@@ -3,7 +3,8 @@ Installing MW4 on RaspberryPi 4
 
 We are installing MW4 on an ubuntu 20.04.1LTS 64Bit system. In relation to the RPi3 it seems
 to be much simpler to do. Nevertheless some of the big packages will be compiled on your
-system during installation, which means this will take some time (hours).
+system during installation, which means this will take some time (hours). There is the
+opportunity to use precompiled packages out of the install scripts provided.
 
 Another big step forward is that you could use now a virtual environment for installing MW4.
 
@@ -14,8 +15,14 @@ To get MW4 installed on RPi4 you will follow the instructions of Dustin Casto:
 
 https://homenetworkguy.com/how-to/install-ubuntu-mate-20-04-lts-on-raspberry-pi-4/
 
-to get Ubuntu Mate 20.04.1 LTS on your RPi4. After you have finished the setup and got the
-desktop up and running, the command
+to get Ubuntu Mate 20.04.1 LTS on your RPi4.
+
+.. hint:: Some users experience problems with KStars/EKOS on original ubuntu-mate desktop.
+          So the recommendation is to use a KDE bases desktop like kubuntu. The easiest way to
+          install a desktop on top of the server installation is using:
+          https://github.com/wimpysworld/desktopify
+
+After you have finished the setup and got the desktop up and running, the command
 
 .. code-block:: python
 

@@ -26,6 +26,13 @@ Unreleased Betas
 
 Released betas
 --------------
+0.220.2
+
+- added support for windows automation with 64bit python (is slow)
+- added support for ASCOM6.5 CoverDevice
+- improved upload functionality for comets / asteroids / earth rotation
+- earth rotation data does not need downloads
+
 0.220.0
 
 - optimizing question dialogs

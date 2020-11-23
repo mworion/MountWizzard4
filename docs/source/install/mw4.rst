@@ -228,8 +228,8 @@ This is quite similar to windows. You have to set the environment variables QT_S
 and QT_FONT_DPI accordingly. They are already part of the MW4_Run.sh scripts.
 
 
-Upgrade
--------
+Update manually
+---------------
 
 If you plan to upgrade MW4 to the newest release, you could use on of the
 
@@ -243,5 +243,5 @@ scripts. In some circumstances this might be necessary, but for normal use MW4 h
 internal updater and using the script is not necessary. The command script updates to the
 latest release.
 
-.. note:: All alpha or beta releases are left out !
+.. note:: You only could update to official releases. Beta's are not possible.
 

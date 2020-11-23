@@ -42,7 +42,7 @@ issues. MW4 also support ASCOM devices (camera, dome) in Windows environment.
         - yes
         - yes
         - yes
-        - No tested
+        - not tested
     *   - Telescope
         - yes
         - yes
@@ -52,7 +52,7 @@ issues. MW4 also support ASCOM devices (camera, dome) in Windows environment.
         - yes
         - yes
         - yes
-        - No tested
+        - not tested
     *   - Skymeter
         - yes
         - yes
@@ -62,17 +62,17 @@ issues. MW4 also support ASCOM devices (camera, dome) in Windows environment.
         - yes
         - yes
         - yes
-        - No
+        - no
     *   - Pegasus UPB
-        - No
-        - No
+        - no
+        - no
         - yes
-        - Yes
+        - yes
     *   - Cover
-        - No
-        - No
         - yes
-        - Not tested
+        - yes
+        - yes
+        - not tested
 
 It is recommended to use mount firmware 2.16 or later as some of the functions don't work
 with older firmware versions.

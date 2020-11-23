@@ -1,7 +1,7 @@
 =====================
 Documentation for MW4
 =====================
-.. note:: Please note that MountWizzard4 is still beta and under development!
+.. note:: Please remember that MountWizzard4 is still beta and under development!
 
 .. toctree::
     :maxdepth: 3
@@ -19,5 +19,6 @@ Documentation for MW4
     modeling/index
     mechanics/index
     changelog
+    changelogScripts
 
 * :ref:`search`

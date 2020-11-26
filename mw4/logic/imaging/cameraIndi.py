@@ -263,7 +263,6 @@ class CameraIndi(IndiClass):
         if not suc:
             self.log.info('Camera has no download quality settings')
 
-        # setting binning value for x and y equally
         indiCmd = self.device.getNumber('CCD_BINNING')
         indiCmd['HOR_BIN'] = binning
         indiCmd['VER_BIN'] = binning
@@ -286,7 +285,6 @@ class CameraIndi(IndiClass):
         if not suc:
             return False
 
-        # setting and starting exposure
         indiCmd = self.device.getNumber('CCD_EXPOSURE')
         indiCmd['CCD_EXPOSURE_VALUE'] = expTime
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
@@ -359,7 +357,6 @@ class CameraIndi(IndiClass):
         if not self.device:
             return False
 
-        # setting fast mode:
         temp = self.device.getNumber('CCD_TEMPERATURE')
 
         if 'CCD_TEMPERATURE_VALUE' not in temp:

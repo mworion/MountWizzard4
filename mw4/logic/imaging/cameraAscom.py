@@ -153,13 +153,10 @@ class CameraAscom(AscomClass):
 
         self.sendDownloadMode(fastReadout=fastReadout)
 
-        # set frame sizes
         self.client.StartX = posX
         self.client.StartY = posY
         self.client.NumX = int(width / binning)
         self.client.NumY = int(height / binning)
-
-        # set binning
         self.client.BinX = binning
         self.client.BinY = binning
 
@@ -172,19 +169,18 @@ class CameraAscom(AscomClass):
             if ra is not None and dec is not None and obsTime is not None:
                 ra, dec = transform.JNowToJ2000(ra, dec, obsTime)
 
-        # start exposure
         self.client.StartExposure(expTime, True)
-
-        # wait for finishing
+        
         timeLeft = expTime
-
         while not self.client.ImageReady:
             text = f'expose {timeLeft:3.0f} s'
             QTest.qWait(100)
             if timeLeft >= 0.1:
                 timeLeft -= 0.1
+                
             else:
                 timeLeft = 0
+                
             self.signals.message.emit(text)
             if self.abortExpose:
                 break
@@ -192,13 +188,11 @@ class CameraAscom(AscomClass):
         self.signals.integrated.emit()
 
         if not self.abortExpose:
-            # download image
             self.signals.message.emit('download')
             data = np.array(self.client.ImageArray, dtype=np.uint16)
             data = np.transpose(data)
 
         if not self.abortExpose:
-            # creating a fits file and saving the image
             self.signals.message.emit('saving')
             hdu = fits.PrimaryHDU(data=data)
             header = hdu.header
@@ -262,7 +256,7 @@ class CameraAscom(AscomClass):
                         width=width,
                         height=height,
                         focalLength=focalLength)
-        # worker.signals.result.connect(self.emitStatus)
+                        
         self.threadPool.start(worker)
 
         return True

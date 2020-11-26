@@ -153,14 +153,11 @@ class CameraAlpaca(AlpacaClass):
         height = int(height)
 
         self.sendDownloadMode(fastReadout=fastReadout)
-
-        # set frame sizes
+        
         self.client.startx(StartX=posX)
         self.client.starty(StartY=posY)
         self.client.numx(NumX=int(width / binning))
         self.client.numy(NumY=int(height / binning))
-
-        # set binning
         self.client.binx(BinX=binning)
         self.client.biny(BinY=binning)
 
@@ -193,13 +190,11 @@ class CameraAlpaca(AlpacaClass):
         self.signals.integrated.emit()
 
         if not self.abortExpose:
-            # download image
             self.signals.message.emit('download')
             data = np.array(self.client.imagearray(), dtype=np.uint16)
             data = np.transpose(data)
 
         if not self.abortExpose:
-            # creating a fits file and saving the image
             self.signals.message.emit('saving')
             hdu = fits.PrimaryHDU(data=data)
             header = hdu.header

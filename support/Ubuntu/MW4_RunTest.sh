@@ -21,10 +21,10 @@ echo run script version 0.2
 echo ---------------------------------------------
 echo
 
-export QT_SCALE_FACTOR=1
-export QT_FONT_DPI=96
+export QT_SCALE_FACTOR=1 > run.log 2>&1
+export QT_FONT_DPI=96 >>run.log 2>&1
 
-source ./venv/bin/activate
+source ./venv/bin/activate venv >>run.log 2>&1
 
 echo
 echo ---------------------------------------------
@@ -32,7 +32,7 @@ echo checking installed python version
 echo ---------------------------------------------
 echo
 
-echo Checking environment and start script > run.log
+echo Checking environment and start script >> run.log 2>&1
 
 T=`python3 --version`
 P_VER=""
@@ -45,7 +45,7 @@ elif [ "${T:0:10}" == "Python 3.6" ]; then
   P_VER="python3.6"
 fi
 
-echo variable P_VER has value of $P_VER >> run.log
+echo variable P_VER has value of $P_VER >> run.log 2>&1
 
 if [ "${P_VER:0:6}" == "python" ]; then
   echo
@@ -59,13 +59,13 @@ else
   echo no valid python version installed
   echo ---------------------------------------------
   echo
-
+  echo no valid python version installed >> run.log 2>&1
   exit
 fi
 
-startCommand="python ./venv/lib/$P_VER/site-packages/mw4/loader.py test >>run.log"
+startCommand="python ./venv/lib/$P_VER/site-packages/mw4/loader.py test >>run.log 2>&1"
 $($startCommand)
-deactivate
+deactivate >> run.log 2>&1
 
 echo
 echo ---------------------------------------------

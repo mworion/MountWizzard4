@@ -30,7 +30,7 @@ if [ ! -f ./venv/bin/activate ]; then
   exit
 fi
 
-source ./venv/bin/activate > run.log
+source ./venv/bin/activate venv > run.log 2>&1
 
 echo
 echo ---------------------------------------------
@@ -38,7 +38,7 @@ echo checking installed python version
 echo ---------------------------------------------
 echo
 
-echo Checking environment and start script >> run.log
+echo Checking environment and start script >> run.log 2>&1
 
 # get version of python3 installation
 T=$(python3 --version)
@@ -54,7 +54,7 @@ elif [[ $T == *"3.6"* ]]; then
   P_VER="python3.6"
 fi
 
-echo variable P_VER has value of $P_VER >> run.log
+echo variable P_VER has value of $P_VER >> run.log 2>&1
 
 if [ "${P_VER:0:6}" == "python" ]; then
   echo
@@ -69,10 +69,9 @@ else
   echo please run MW4_Install.command first
   echo ---------------------------------------------
   echo
-
   exit
 fi
 
-COMMAND="python ./venv/lib/$P_VER/site-packages/mw4/loader.py >> run.log"
+COMMAND="python ./venv/lib/$P_VER/site-packages/mw4/loader.py >> run.log 2>&1"
 eval ${COMMAND}
-deactivate
+deactivate >> run.log 2>&1

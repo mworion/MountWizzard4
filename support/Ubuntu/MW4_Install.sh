@@ -27,7 +27,7 @@ echo checking installed python version
 echo ---------------------------------------------
 echo
 
-echo checking environment and start script > install.log
+echo checking environment and start script > install.log 2>&1
 
 T=`python3 --version`
 P_VER=""
@@ -40,7 +40,7 @@ elif [ "${T:0:10}" == "Python 3.6" ]; then
   P_VER="python3.6"
 fi
 
-echo variable P_VER has value of $P_VER >> install.log
+echo variable P_VER has value of $P_VER >> install.log 2>&1
 
 if [ "${P_VER:0:6}" == "python" ]; then
   echo
@@ -54,7 +54,6 @@ else
   echo no valid python version installed
   echo ---------------------------------------------
   echo
-
   exit
 fi
 
@@ -64,7 +63,7 @@ echo updating pip installer
 echo ----------------------------------------
 echo
 
-python3 -m pip install pip --upgrade >> install.log
+python3 -m pip install pip --upgrade >> install.log 2>&1
 
 echo
 echo ---------------------------------------------
@@ -72,10 +71,10 @@ echo Installing $P_VER in virtual environ
 echo ---------------------------------------------
 echo
 
-echo Installing $P_VER in virtual environ >> install.log
+echo Installing $P_VER in virtual environ >> install.log 2>&1
 
 {
-virtualenv venv >> install.log
+virtualenv venv >> install.log 2>&1
 } || {
   echo
   echo ---------------------------------------------
@@ -85,6 +84,7 @@ virtualenv venv >> install.log
   echo sudo apt-get install python3-virtualenv
   echo ---------------------------------------------
   echo
+  echo no valid virtual environment installed >> install.log 2>&1
 
   exit
 }
@@ -95,12 +95,12 @@ echo installing mountwizzard4 - takes some time
 echo ---------------------------------------------
 echo
 
-source ./venv/bin/activate >> install.log
-python -m pip install pip --upgrade >> install.log
-python -m pip install setuptools --upgrade >> install.log
-python -m pip install wheel --upgrade >> install.log
-python -m pip install mountwizzard4 --upgrade --no-cache-dir >> install.log
-deactivate
+source ./venv/bin/activate venv >> install.log 2>&1
+python -m pip install pip --upgrade >> install.log 2>&1
+python -m pip install setuptools --upgrade >> install.log 2>&1
+python -m pip install wheel --upgrade >> install.log 2>&1
+python -m pip install mountwizzard4 --upgrade --no-cache-dir >> install.log 2>&1
+deactivate >> install.log  2>&1
 
 echo
 echo ---------------------------------------------
@@ -109,4 +109,4 @@ echo for details see install.log
 echo ---------------------------------------------
 echo
 
-echo MountWizzard4 successfully installed >> install.log
+echo MountWizzard4 successfully installed >> install.log 2>&1

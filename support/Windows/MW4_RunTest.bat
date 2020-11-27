@@ -20,15 +20,26 @@ echo run script version 0.2
 echo ---------------------------------------------
 echo.
 
-call venv\Scripts\activate > run.log
+call venv\Scripts\activate venv > run.log 2>&1
 
+if not errorlevel 1 goto :proceedRunMW4
+echo.
+echo ---------------------------------------------
+echo no valid virtual environment installed
+echo please check the install.log for errors
+echo ---------------------------------------------
+echo.
+echo no valid virtual environment installed >> run.log 2>&1
+exit
+
+:proceedRunMW4
 echo.
 echo ---------------------------------------------
 echo checking installed python version
 echo ---------------------------------------------
 echo.
 
-echo checking environment and start script >> run.log
+echo checking environment and start script >> run.log 2>&1
 
 for /f "delims=" %%a in ('python --version') do @set T=%%a
 
@@ -43,7 +54,7 @@ if not errorlevel 1 SET P_VER='python3.7'
 echo %T% | find "3.6" > nul
 if not errorlevel 1 SET P_VER='python3.6'
 
-echo variable P_VER has value of %P_VER% >> run.log
+echo variable P_VER has value of %P_VER% >> run.log 2>&1
 
 echo %P_VER% | find "python" > nul
 if not errorlevel 1 goto :proceedOK
@@ -53,6 +64,7 @@ echo ---------------------------------------------
 echo no valid python version installed
 echo ---------------------------------------------
 echo.
+echo no valid python version installed >> run.log 2>&1
 exit
 
 :proceedOK
@@ -62,9 +74,9 @@ echo python version ok
 echo ---------------------------------------------
 echo.
 
-SET QT_SCALE_FACTOR=2 >> run.log
-SET QT_FONT_DPI=96 >> run.log
-venv\Scripts\python.exe venv\Lib\site-packages\mw4\loader.py test >> run.log
+SET QT_SCALE_FACTOR=2 >> run.log 2>&1
+SET QT_FONT_DPI=96 >> run.log 2>&1
+venv\Scripts\python.exe venv\Lib\site-packages\mw4\loader.py test >> run.log 2>&1
 
 echo.
 echo ---------------------------------------------

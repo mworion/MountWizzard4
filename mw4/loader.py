@@ -350,61 +350,39 @@ def main():
 
     :return: nothing
     """
-
-    # setting locale
     locale.setlocale(locale.LC_ALL, '')
-
-    # initiating the main app
     app = MyApp(sys.argv)
     # app = QApplication(sys.argv)
 
-    # generating splash screen
     splashW = SplashScreen(application=app)
-
-    # and start with a first splash screen
     splashW.showMessage('Start initialising')
     splashW.setValue(0)
-
-    # checking workdir and if the system is started from frozen app
     mwGlob = dict()
     mwGlob = setupWorkDirs(mwGlob)
 
-    # now setup the logging environment
     splashW.showMessage('Setup logging')
     splashW.setValue(20)
     setupLogging()
 
-    # start logging with basic system data for information
     splashW.showMessage('Write system info to log')
     splashW.setValue(40)
     writeSystemInfo(mwGlob=mwGlob)
 
-    # loading leap seconds, spice kernel and hipparcos catalogue
     splashW.showMessage('Loading star and time data')
     splashW.setValue(60)
     extractDataFiles(mwGlob=mwGlob, splashW=splashW)
 
-    # and finally starting the application
     splashW.showMessage('Initialize Application')
     splashW.setValue(80)
-
-    # setting except hook for saving some data of errors
     sys.excepthook = except_hook
-
-    # adding a icon
     app.setWindowIcon(QIcon(':/icon/mw4.ico'))
-
-    # adding event filter for formatting the tooltips nicely
     app.installEventFilter(QAwesomeTooltipEventFilter(app))
-
     MountWizzard4(mwGlob=mwGlob, application=app)
 
-    # end of splash screen
     splashW.showMessage('Finishing loading')
     splashW.setValue(100)
     splashW.close()
 
-    # quit app
     sys.exit(app.exec_())
 
 

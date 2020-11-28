@@ -173,6 +173,7 @@ class MyApp(QApplication):
 
         if obj == self.last:
             return returnValue
+
         else:
             self.last = obj
 
@@ -244,6 +245,7 @@ def except_hook(typeException, valueException, tbackException):
     log.critical('')
     for i in range(0, len(result)):
         log.critical(result[i].replace('\n', ''))
+
     log.critical('')
     sys.__excepthook__(typeException, valueException, tbackException)
 

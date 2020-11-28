@@ -16,8 +16,9 @@ echo " ██║ ╚═╝ ██║ ╚███╔███╔╝      ██�
 echo " ╚═╝     ╚═╝  ╚══╝╚══╝       ╚═╝"
 echo
 echo ---------------------------------------------
-echo run script version 0.2
+echo run script version 0.3
 echo ---------------------------------------------
+echo run script version 0.3 > run.log 2>&1
 echo
 
 if [ ! -f ./venv/bin/activate ]; then
@@ -30,7 +31,7 @@ if [ ! -f ./venv/bin/activate ]; then
   exit
 fi
 
-source ./venv/bin/activate venv > run.log 2>&1
+source ./venv/bin/activate venv >> run.log 2>&1
 
 echo
 echo ---------------------------------------------

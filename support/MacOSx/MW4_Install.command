@@ -17,8 +17,9 @@ echo " ██║ ╚═╝ ██║ ╚███╔███╔╝      ██�
 echo " ╚═╝     ╚═╝  ╚══╝╚══╝       ╚═╝"
 echo
 echo ---------------------------------------------
-echo install script version 0.2
+echo install script version 0.3
 echo ---------------------------------------------
+echo install script version 0.3 > install.log 2>&1
 echo
 
 echo
@@ -28,7 +29,7 @@ echo ---------------------------------------------
 echo
 
 # starting a new install log
-python3 --version > install.log 2>&1
+python3 --version >> install.log 2>&1
 
 # changing to the actual directory as working directory
 

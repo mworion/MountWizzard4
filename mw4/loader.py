@@ -33,6 +33,9 @@ warnings.simplefilter('ignore', category=AstropyWarning)
 warnings.simplefilter("ignore", UserWarning)
 sys.coinit_flags = 2
 
+# bigsur workaround
+os.environ['QT_MAC_WANTS_LAYER'] = '1'
+
 # external packages
 from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
 from PyQt5.QtGui import QMouseEvent, QIcon

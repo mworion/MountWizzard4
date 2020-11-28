@@ -17,14 +17,15 @@ echo " ██║ ╚═╝ ██║ ╚███╔███╔╝      ██�
 echo " ╚═╝     ╚═╝  ╚══╝╚══╝       ╚═╝"
 echo
 echo ---------------------------------------------
-echo run script version 0.2
+echo run script version 0.3
 echo ---------------------------------------------
+echo run script version 0.3 >> run.log 2>&1
 echo
 
-export QT_SCALE_FACTOR=1 > run.log 2>&1
+export QT_SCALE_FACTOR=1 >> run.log 2>&1
 export QT_FONT_DPI=96 >>run.log 2>&1
 
-source ./venv/bin/activate venv >>run.log 2>&1
+source ./venv/bin/activate venv >> run.log 2>&1
 
 echo
 echo ---------------------------------------------

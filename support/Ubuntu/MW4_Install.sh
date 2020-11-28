@@ -17,8 +17,9 @@ echo " ██║ ╚═╝ ██║ ╚███╔███╔╝      ██�
 echo " ╚═╝     ╚═╝  ╚══╝╚══╝       ╚═╝"
 echo
 echo ---------------------------------------------
-echo install script version 0.2
+echo install script version 0.3
 echo ---------------------------------------------
+echo install script version 0.3 > install.log 2>&1
 echo
 
 echo
@@ -27,7 +28,7 @@ echo checking installed python version
 echo ---------------------------------------------
 echo
 
-echo checking environment and start script > install.log 2>&1
+echo checking environment and start script >> install.log 2>&1
 
 T=`python3 --version`
 P_VER=""

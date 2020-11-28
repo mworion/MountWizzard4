@@ -16,11 +16,12 @@ echo ##     ## ##  ##  ##       ##
 echo ##     ##  ###  ###        ##
 echo.
 echo ---------------------------------------------
-echo run script version 0.2
+echo run script version 0.3
 echo ---------------------------------------------
+echo run script version 0.3 > run.log 2>&1
 echo.
 
-call venv\Scripts\activate venv > run.log 2>&1
+call venv\Scripts\activate venv >> run.log 2>&1
 
 if not errorlevel 1 goto :proceedRunMW4
 echo.

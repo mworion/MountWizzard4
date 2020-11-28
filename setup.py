@@ -21,7 +21,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.220.2',
+    version='0.220.3b1',
     packages=[
         'mw4',
         'mw4.base',
@@ -35,8 +35,8 @@ setup(
         'mw4.logic.astrometry',
         'mw4.logic.automation',
         'mw4.logic.cover',
-        'mw4.logic.dome',
         'mw4.logic.databaseProcessing',
+        'mw4.logic.dome',
         'mw4.logic.environment',
         'mw4.logic.imaging',
         'mw4.logic.measure',

@@ -19,6 +19,7 @@
 import unittest.mock as mock
 import pytest
 import platform
+import logging
 
 # external packages
 from PyQt5.QtGui import QCloseEvent
@@ -33,6 +34,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.devicePopupW import DevicePopup
 from base.indiClass import IndiClass
 from base.alpacaClass import AlpacaClass
+from base.loggerMW import addLoggingLevel
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -62,6 +64,8 @@ def function(module):
                              data=data,
                              driver='telescope',
                              deviceType='telescope')
+        window.log = logging.getLogger()
+        addLoggingLevel('TRACE', 5)
     yield window
 
 

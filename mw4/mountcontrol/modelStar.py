@@ -45,6 +45,7 @@ class ModelStar(object):
         >>>                     errorRMS=0,
         >>>                     errorAngle=0,
         >>>                     number=0,
+        >>>                     obsSite=None,
         >>>                     )
 
     point could be from type skyfield.api.Star or just a tuple of (ha, dec) where

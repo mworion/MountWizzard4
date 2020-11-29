@@ -170,11 +170,11 @@ class Geometry(object):
         """
 
         if mountType not in self.geometryData:
-            self.log.critical(f'[{mountType}] not in database')
+            self.log.error(f'[{mountType}] not in database')
             return False
 
         else:
-            self.log.info(f'using [{mountType}] geometry')
+            self.log.debug(f'using [{mountType}] geometry')
 
         self.offBaseAltAxisX = self.geometryData[mountType]['offBaseAltAxisX']
         self.offBaseAltAxisZ = self.geometryData[mountType]['offBaseAltAxisZ']
@@ -300,7 +300,7 @@ class Geometry(object):
         text += f'offVert:{self.offVert}, offLAT:{self.offLAT}, '
         text += f'domeRadius:{self.domeRadius}'
 
-        self.log.info(text)
+        self.log.debug(text)
 
         ha = ha.radians
         dec = dec.radians
@@ -416,11 +416,11 @@ class Geometry(object):
         p = 2 * np.dot(PD, PB)
         q = (np.dot(PB, PB) - self.domeRadius**2)
 
-        self.log.info(f'Geometry calc p:[{p}], q:[{q}]')
+        self.log.debug(f'Geometry calc p:[{p}], q:[{q}]')
 
         # there should be always a reasonable solution
         if (p * p / 4 - q) < 0:
-            self.log.critical('Geometry solution impossible')
+            self.log.error('Geometry solution impossible')
             return None, None, None, None, None
 
         t1 = - p / 2 + np.sqrt(p * p / 4 - q)
@@ -454,6 +454,6 @@ class Geometry(object):
                             P5[:-1], P6[:-1], P7[:-1], P8[:-1], P9[:-1],
                             P10[:-1]]
 
-        self.log.info(f'az:{azDome}, alt:{altDome}')
+        self.log.debug(f'az:{azDome}, alt:{altDome}')
 
         return altDome, azDome, x, y, z

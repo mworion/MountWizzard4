@@ -87,7 +87,7 @@ class AlignStar(object):
             dec = valueToAngle(dec)
         if not ra or not dec:
             self._mCoord = None
-            self.log.error('Malformed value: {0}'.format(value))
+            self.log.warning('Malformed value: {0}'.format(value))
             return
         self._mCoord = skyfield.api.Star(ra=ra,
                                          dec=dec)
@@ -103,7 +103,7 @@ class AlignStar(object):
             self._pierside = value
         else:
             self._pierside = None
-            self.log.error('Malformed value: {0}'.format(value))
+            self.log.warning('Malformed value: {0}'.format(value))
 
     @property
     def sCoord(self):
@@ -131,7 +131,7 @@ class AlignStar(object):
             dec = valueToAngle(dec)
         if not ra or not dec:
             self._sCoord = None
-            self.log.error('Malformed value: {0}'.format(value))
+            self.log.warning('Malformed value: {0}'.format(value))
             return
         self._sCoord = skyfield.api.Star(ra=ra,
                                          dec=dec)

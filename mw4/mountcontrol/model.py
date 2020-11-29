@@ -136,7 +136,7 @@ class Model(object):
     def terms(self, value):
         # qci mount don't deliver this value
         if value == '':
-            self.log.error('QCI mount does not provide terms')
+            self.log.warning('QCI mount does not provide terms')
         self._terms = valueToFloat(value)
 
     @property
@@ -146,7 +146,7 @@ class Model(object):
     @errorRMS.setter
     def errorRMS(self, value):
         if value == '':
-            self.log.error('QCI mount does not provide RMS')
+            self.log.warning('QCI mount does not provide RMS')
             return
         self._errorRMS = valueToFloat(value)
 
@@ -187,7 +187,7 @@ class Model(object):
             self._starList.insert(len(self._starList), value)
             return
         if not isinstance(value, (list, str)):
-            self.log.error('malformed value: {0}'.format(value))
+            self.log.warning('malformed value: {0}'.format(value))
             return
         if isinstance(value, str):
             value = value.split(',')
@@ -211,7 +211,7 @@ class Model(object):
 
         value = valueToInt(value)
         if value < 0 or value > len(self._starList) - 1:
-            self.log.error('invalid value: {0}'.format(value))
+            self.log.warning('invalid value: {0}'.format(value))
             return
         self._starList.pop(value)
 
@@ -265,7 +265,7 @@ class Model(object):
         """
 
         if not isinstance(value, str):
-            self.log.error('malformed value: {0}'.format(value))
+            self.log.warning('malformed value: {0}'.format(value))
             return
         self._nameList.insert(len(self._nameList), value)
 
@@ -280,7 +280,7 @@ class Model(object):
 
         value = valueToInt(value)
         if value < 0 or value > len(self._nameList) - 1:
-            self.log.error('invalid value: {0}'.format(value))
+            self.log.warning('invalid value: {0}'.format(value))
             return
         self._nameList.pop(value)
 
@@ -311,7 +311,7 @@ class Model(object):
         """
 
         if len(response) != numberOfChunks:
-            self.log.error('wrong number of chunks')
+            self.log.warning('wrong number of chunks')
             return False
         for name in response:
             if not name:
@@ -330,10 +330,10 @@ class Model(object):
         """
 
         if len(response) != numberOfChunks:
-            self.log.error('wrong number of chunks')
+            self.log.warning('wrong number of chunks')
             return False
         if len(response) != 1:
-            self.log.error('wrong number of chunks')
+            self.log.warning('wrong number of chunks')
             return False
         self.numberNames = response[0]
         return True
@@ -392,7 +392,7 @@ class Model(object):
         """
 
         if len(response) != numberOfChunks:
-            self.log.error('Wrong number of chunks')
+            self.log.warning('Wrong number of chunks')
             return False
         for number, starData in enumerate(response):
             if not starData:
@@ -415,12 +415,12 @@ class Model(object):
         """
 
         if len(response) != numberOfChunks or len(response) == 0:
-            self.log.error('Wrong number of chunks')
+            self.log.warning('Wrong number of chunks')
             return False
 
         self.numberStars = response[0]
         if numberOfChunks < 2:
-            self.log.error('Wrong number of chunks')
+            self.log.warning('Wrong number of chunks')
             return False
 
         responseSplit = response[1].split(',')
@@ -428,7 +428,7 @@ class Model(object):
         if response[0] in ['0', '1', '2'] and response[1] == 'E':
             responseSplit = [None] * 9
         if len(responseSplit) != 9:
-            self.log.error('Wrong number of chunks in getain')
+            self.log.warning('Wrong number of chunks in getain')
             return False
 
         self.azimuthError = responseSplit[0]
@@ -492,10 +492,10 @@ class Model(object):
         if not suc:
             return False
         if len(response) != numberOfChunks:
-            self.log.error('Wrong number of chunks')
+            self.log.warning('Wrong number of chunks')
             return False
         if len(response) != 2:
-            self.log.error('Wrong number of chunks')
+            self.log.warning('Wrong number of chunks')
             return False
 
         self.numberNames = response[0]
@@ -569,7 +569,7 @@ class Model(object):
             return False
 
         if response[0] != '1':
-            self.log.warning('model >{0}< overwritten'.format(name))
+            self.log.info('model >{0}< overwritten'.format(name))
         if response[1] != '1':
             return False
 

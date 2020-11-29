@@ -129,7 +129,7 @@ class ObsSite(object):
 
         except Exception as e:
             self.ts = self.loader.timescale(builtin=True)
-            self.log.info(f'Used built-in as degradation because of : {e}')
+            self.log.debug(f'Used built-in as degradation because of : {e}')
 
         return True
 
@@ -148,10 +148,10 @@ class ObsSite(object):
 
         else:
             self.loader = api.load
-            self.log.info('No path for timescale given, using default')
+            self.log.debug('No path for timescale given, using default')
             self.loadTimescale()
 
-        self.log.info(f'Loader dir:[{self.loader.directory}]')
+        self.log.debug(f'Loader dir:[{self.loader.directory}]')
         return True
 
     @property
@@ -165,11 +165,11 @@ class ObsSite(object):
             return
         if not isinstance(value, (list, tuple)):
             self._location = None
-            self.log.warning(f'Malformed value: {value}')
+            self.log.info(f'Malformed value: {value}')
             return
         if len(value) != 3:
             self._location = None
-            self.log.warning(f'Malformed value: {value}')
+            self.log.info(f'Malformed value: {value}')
             return
         lat, lon, elev = value
         if not isinstance(lat, api.Angle):
@@ -179,7 +179,7 @@ class ObsSite(object):
         elev = valueToFloat(elev)
         if lat is None or lon is None or elev is None:
             self._location = None
-            self.log.warning(f'Malformed value: {value}')
+            self.log.info(f'Malformed value: {value}')
             return
         self._location = api.Topos(longitude=lon,
                                    latitude=lat,
@@ -346,7 +346,7 @@ class ObsSite(object):
             self._pierside = value
         else:
             self._pierside = None
-            self.log.warning(f'Malformed value: {value}')
+            self.log.info(f'Malformed value: {value}')
 
     @property
     def piersideTarget(self):
@@ -360,7 +360,7 @@ class ObsSite(object):
             self._piersideTarget = 'E'
         else:
             self._piersideTarget = None
-            self.log.warning(f'Malformed value: {value}')
+            self.log.info(f'Malformed value: {value}')
 
     @property
     def Alt(self):
@@ -451,7 +451,7 @@ class ObsSite(object):
         """
 
         if len(response) != numberOfChunks:
-            self.log.error('Wrong number of chunks')
+            self.log.warning('Wrong number of chunks')
             return False
         elev = response[0]
         # due to compatibility to LX200 protocol east is negative, so we change that
@@ -493,7 +493,7 @@ class ObsSite(object):
         """
 
         if len(response) != numberOfChunks:
-            self.log.error('Wrong number of chunks')
+            self.log.warning('Wrong number of chunks')
             return False
         self.timeSidereal = response[0]
         # remove the leap seconds flag if present
@@ -583,7 +583,7 @@ class ObsSite(object):
         if not suc:
             return False
         if not response[0].startswith('0'):
-            self.log.info(f'Slew could not be done: {response}')
+            self.log.debug(f'Slew could not be done: {response}')
             return False
         return True
 
@@ -647,10 +647,10 @@ class ObsSite(object):
             return False
         result = response[0][0:2]
         if result.count('0') > 0:
-            self.log.info(f'Coordinates could not be set, {response}')
+            self.log.debug(f'Coordinates could not be set, {response}')
             return False
         if len(response) != 4:
-            self.log.info(f'Missing return values, {response}')
+            self.log.debug(f'Missing return values, {response}')
             return False
         self.piersideTarget = response[0][2]
         self.AltTarget = response[0][3:]
@@ -727,10 +727,10 @@ class ObsSite(object):
             return False
         result = response[0][0:2]
         if result.count('0') > 0:
-            self.log.info(f'Coordinates could not be set, {response}')
+            self.log.debug(f'Coordinates could not be set, {response}')
             return False
         if len(response) != 4:
-            self.log.info(f'Missing return values, {response}')
+            self.log.debug(f'Missing return values, {response}')
             return False
         self.piersideTarget = response[0][2]
         self.AltTarget = response[0][3:]
@@ -796,10 +796,10 @@ class ObsSite(object):
             return False
         result = response[0][0:2]
         if result.count('0') > 0:
-            self.log.info(f'Coordinates could not be set, {response}')
+            self.log.debug(f'Coordinates could not be set, {response}')
             return False
         if len(response) != 4:
-            self.log.info(f'Missing return values, {response}')
+            self.log.debug(f'Missing return values, {response}')
             return False
         self.piersideTarget = response[0][2]
         self.AltTarget = response[0][3:]

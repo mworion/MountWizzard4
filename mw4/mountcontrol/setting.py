@@ -321,7 +321,7 @@ class Setting(object):
         """
 
         if len(response) != numberOfChunks:
-            self.log.error('wrong number of chunks')
+            self.log.warning('wrong number of chunks')
             return False
         self.slewRate = response[0]
         self.slewRateMin = response[1]

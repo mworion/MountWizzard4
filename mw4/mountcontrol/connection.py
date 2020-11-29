@@ -199,7 +199,7 @@ class Connection(object):
             client.shutdown(socket.SHUT_RDWR)
             client.close()
         except Exception as e:
-            self.log.error(f'hard close: {e}')
+            self.log.warning(f'hard close: {e}')
         return True
 
     def buildClient(self):
@@ -210,10 +210,10 @@ class Connection(object):
         :return: client for socket connection if succeeded
         """
         if not self.host:
-            self.log.warning(f'[{self.id}] no host defined')
+            self.log.info(f'[{self.id}] no host defined')
             return None
         if not isinstance(self.host, tuple):
-            self.log.warning(f'[{self.id}] host entry malformed')
+            self.log.info(f'[{self.id}] host entry malformed')
             return None
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.settimeout(self.SOCKET_TIMEOUT)
@@ -222,15 +222,15 @@ class Connection(object):
             client.connect(self.host)
         except socket.timeout:
             self.closeClientHard(client)
-            self.log.info(f'[{self.id}] socket timeout')
+            self.log.debug(f'[{self.id}] socket timeout')
             return None
         except socket.error as e:
             self.closeClientHard(client)
-            self.log.info(f'[{self.id}] socket error: {e}')
+            self.log.debug(f'[{self.id}] socket error: {e}')
             return None
         except Exception as e:
             self.closeClientHard(client)
-            self.log.info(f'[{self.id}] socket error: {e}')
+            self.log.debug(f'[{self.id}] socket error: {e}')
             return None
         else:
             return client
@@ -247,7 +247,7 @@ class Connection(object):
             client.sendall(commandString.encode())
         except Exception as e:
             self.closeClientHard(client)
-            self.log.info(f'[{self.id}] socket error: {e}')
+            self.log.debug(f'[{self.id}] socket error: {e}')
             return False
         else:
             return True
@@ -272,7 +272,7 @@ class Connection(object):
                 try:
                     chunk = chunkRaw.decode('ASCII')
                 except Exception as e:
-                    self.log.error(f'[{self.id}] {e}, {chunkRaw}')
+                    self.log.warning(f'[{self.id}] {e}, {chunkRaw}')
                     return False, ''
                 if not chunk:
                     break
@@ -282,14 +282,14 @@ class Connection(object):
                 elif numberOfChunks != 0 and numberOfChunks == response.count('#'):
                     break
         except socket.timeout:
-            self.log.info(f'[{self.id}] socket timeout')
+            self.log.debug(f'[{self.id}] socket timeout')
             return False, response
         except Exception as e:
-            self.log.info(f'[{self.id}] socket error: {e}')
+            self.log.debug(f'[{self.id}] socket error: {e}')
             return False, response
         else:
             response = response.rstrip('#').split('#')
-            self.log.debug(f'[{self.id}] response : {response}')
+            self.log.trace(f'[{self.id}] response : {response}')
             return True, response
 
     def communicate(self, commandString):
@@ -305,13 +305,13 @@ class Connection(object):
         """
 
         if not self.validCommandSet(commandString):
-            self.log.error(f'[{self.id}] unknown commands: {commandString}')
+            self.log.warning(f'[{self.id}] unknown commands: {commandString}')
             return False, 'wrong commands', 0
 
         # analysing the command
         numberOfChunks, getData, minBytes = self.analyseCommand(commandString)
         logFormat = '[{0}] sending  : {1}, getData: {2}, minBytes: {3}, chunks: {4}, host: {5}'
-        self.log.debug(logFormat.format(self.id,
+        self.log.trace(logFormat.format(self.id,
                                         commandString,
                                         getData,
                                         minBytes,

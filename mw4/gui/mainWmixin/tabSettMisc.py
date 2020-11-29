@@ -51,16 +51,15 @@ class SettMisc(object):
         self.process = None
         self.mutexInstall = PyQt5.QtCore.QMutex()
 
-        # setting functional signals
         self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
         self.app.dome.signals.slewFinished.connect(lambda: self.playSound('DomeSlew'))
         self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
         self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
         self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
 
-        # setting ui signals
+        self.ui.loglevelDebugTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
-        self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
+        self.ui.loglevelStandard.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
         self.ui.isOnline.clicked.connect(self.setupIERS)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
@@ -68,7 +67,6 @@ class SettMisc(object):
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
 
-        # defining and loading all necessary audio files
         self.setupAudioSignals()
 
     def initConfig(self):
@@ -83,9 +81,9 @@ class SettMisc(object):
         config = self.app.config['mainW']
 
         self.setupAudioGui()
-        self.ui.loglevelDeepDebug.setChecked(config.get('loglevelDeepDebug', True))
+        self.ui.loglevelDebugTrace.setChecked(config.get('loglevelDebugTrace', True))
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
-        self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
+        self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', False))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
@@ -113,9 +111,9 @@ class SettMisc(object):
 
         config = self.app.config['mainW']
 
-        config['loglevelDeepDebug'] = self.ui.loglevelDeepDebug.isChecked()
+        config['loglevelDebugTrace'] = self.ui.loglevelDebugTrace.isChecked()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
-        config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
+        config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
@@ -406,13 +404,13 @@ class SettMisc(object):
 
         :return: nothing
         """
-        if self.ui.loglevelDeepDebug.isChecked():
-            setCustomLoggingLevel('DEBUG')
+        if self.ui.loglevelDebugTrace.isChecked():
+            setCustomLoggingLevel('TRACE')
 
         elif self.ui.loglevelDebug.isChecked():
-            setCustomLoggingLevel('INFO')
+            setCustomLoggingLevel('DEBUG')
 
-        elif self.ui.loglevelInfo.isChecked():
+        elif self.ui.loglevelStandard.isChecked():
             setCustomLoggingLevel('WARN')
 
     def setupAudioGui(self):

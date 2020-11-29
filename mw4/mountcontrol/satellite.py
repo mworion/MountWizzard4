@@ -240,7 +240,7 @@ class Satellite(object):
         """
 
         if len(response) != numberOfChunks:
-            self.log.error('wrong number of chunks')
+            self.log.warning('wrong number of chunks')
             return False
 
         if response[0] == 'E':
@@ -345,11 +345,11 @@ class Satellite(object):
         """
 
         if len(response) != numberOfChunks:
-            self.log.error('wrong number of chunks')
+            self.log.warning('wrong number of chunks')
             return False
 
         if len(response) != 3:
-            self.log.error('wrong number of chunks')
+            self.log.warning('wrong number of chunks')
             return False
 
         if response[0] == 'E':
@@ -484,11 +484,11 @@ class Satellite(object):
         """
 
         if len(response) != numberOfChunks:
-            self.log.error('wrong number of chunks')
+            self.log.warning('wrong number of chunks')
             return False
 
         if len(response) != 1:
-            self.log.error('wrong number of chunks')
+            self.log.warning('wrong number of chunks')
             return False
 
         if not response[0]:

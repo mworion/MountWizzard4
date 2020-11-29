@@ -99,7 +99,7 @@ class ModelStar(object):
         dec = stringToDegree(dec)
         if not ha or not dec:
             self._coord = None
-            self.log.error('Malformed value: {0}'.format(value))
+            self.log.warning('Malformed value: {0}'.format(value))
             return
         self._coord = skyfield.api.Star(ra_hours=ha,
                                         dec_degrees=dec)

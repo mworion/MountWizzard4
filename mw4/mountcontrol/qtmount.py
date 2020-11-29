@@ -220,7 +220,7 @@ class Mount(mountcontrol.mount.Mount):
 
         :return: true for test purpose
         """
-        self.log.warning(f'Cycle error: {e}')
+        self.log.info(f'Cycle error: {e}')
         return True
 
     def clearCycleCheckMountUp(self):
@@ -260,7 +260,7 @@ class Mount(mountcontrol.mount.Mount):
 
         :return: true for test purpose
         """
-        self.log.error(f'Cycle error: {e}')
+        self.log.warning(f'Cycle error: {e}')
         return True
 
     def clearCyclePointing(self):
@@ -314,7 +314,7 @@ class Mount(mountcontrol.mount.Mount):
 
         :return: true for test purpose
         """
-        self.log.error(f'Cycle error: {e}')
+        self.log.warning(f'Cycle error: {e}')
         return True
 
     def clearCycleSetting(self):
@@ -350,7 +350,7 @@ class Mount(mountcontrol.mount.Mount):
 
         :return: true for test purpose
         """
-        self.log.error(f'Cycle error: {e}')
+        self.log.warning(f'Cycle error: {e}')
         return True
 
     def clearGetAlign(self):
@@ -386,7 +386,7 @@ class Mount(mountcontrol.mount.Mount):
 
         :return: true for test purpose
         """
-        self.log.error(f'Cycle error: {e}')
+        self.log.warning(f'Cycle error: {e}')
         return True
 
     def clearGetNames(self):
@@ -422,7 +422,7 @@ class Mount(mountcontrol.mount.Mount):
 
         :return: true for test purpose
         """
-        self.log.error(f'Cycle error: {e}')
+        self.log.warning(f'Cycle error: {e}')
         return True
 
     def clearGetFW(self):
@@ -459,7 +459,7 @@ class Mount(mountcontrol.mount.Mount):
 
         :return: true for test purpose
         """
-        self.log.error(f'Cycle error: {e}')
+        self.log.warning(f'Cycle error: {e}')
         return True
 
     def clearGetLocation(self):
@@ -495,7 +495,7 @@ class Mount(mountcontrol.mount.Mount):
 
         :return: true for test purpose
         """
-        self.log.error(f'Cycle error: {e}')
+        self.log.warning(f'Cycle error: {e}')
         return True
 
     def clearCalcTLE(self):
@@ -531,7 +531,7 @@ class Mount(mountcontrol.mount.Mount):
 
         :return: true for test purpose
         """
-        self.log.error(f'Cycle error: {e}')
+        self.log.warning(f'Cycle error: {e}')
         return True
 
     def clearStatTLE(self):
@@ -567,7 +567,7 @@ class Mount(mountcontrol.mount.Mount):
 
         :return: true for test purpose
         """
-        self.log.error(f'Cycle error: {e}')
+        self.log.warning(f'Cycle error: {e}')
         return True
 
     def clearGetTLE(self):

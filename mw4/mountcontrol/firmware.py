@@ -117,7 +117,7 @@ class Firmware(object):
             else:
                 value = None
         except Exception as e:
-            self.log.error(f'error: {e}, malformed value: {parts}')
+            self.log.warning(f'error: {e}, malformed value: {parts}')
             return None
         else:
             return value
@@ -146,7 +146,7 @@ class Firmware(object):
         """
 
         if len(response) != numberOfChunks:
-            self.log.error('wrong number of chunks')
+            self.log.warning('wrong number of chunks')
             return False
         self.date = response[0]
         self.vString = response[1]

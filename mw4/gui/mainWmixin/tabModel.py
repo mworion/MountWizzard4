@@ -211,6 +211,8 @@ class Model:
             return False
 
         mPoint = self.resultQueue.get()
+        self.log.info(f'Result from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+
         number = mPoint["lenSequence"]
         count = mPoint["countSequence"]
 
@@ -288,6 +290,7 @@ class Model:
             return False
 
         mPoint = self.solveQueue.get()
+        self.log.info(f'Solve from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
         self.app.showImage.emit(mPoint["imagePath"])
 
@@ -331,6 +334,8 @@ class Model:
             return False
 
         mPoint = self.imageQueue.get()
+        self.log.info(f'Image from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+
         self.collector.resetSignals()
 
         while self.ui.pauseModel.property('pause'):
@@ -382,6 +387,8 @@ class Model:
             return False
 
         mPoint = self.slewQueue.get()
+        self.log.info(f'Slew from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
                                                     az_degrees=mPoint['azimuth'],
                                                     )

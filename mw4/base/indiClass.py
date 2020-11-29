@@ -21,9 +21,9 @@ import logging
 # external packages
 from PyQt5.QtTest import QTest
 from PyQt5.QtCore import QTimer
-from indibase import qtIndiBase
 
 # local imports
+from indibase import qtIndiBase
 
 
 class IndiClass:

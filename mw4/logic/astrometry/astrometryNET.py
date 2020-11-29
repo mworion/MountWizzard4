@@ -25,9 +25,9 @@ import platform
 
 # external packages
 from astropy.io import fits
-from mountcontrol import convert
 
 # local imports
+from mountcontrol import convert
 
 
 class AstrometryNET(object):

@@ -23,9 +23,9 @@ import os
 import PyQt5
 from astropy.io import fits
 import numpy as np
-from mountcontrol.convert import convertToAngle
 
 # local imports
+from mountcontrol.convert import convertToAngle
 from base import tpool
 from logic.astrometry.astrometryNET import AstrometryNET
 from logic.astrometry.astrometryASTAP import AstrometryASTAP

@@ -107,8 +107,6 @@ def setupLogging():
                         handlers=[logging.FileHandler(name)],
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
-    logging.getLogger('mountcontrol').setLevel(logging.INFO)
-    logging.getLogger('indibase').setLevel(logging.INFO)
 
     # setting different log level for imported packages to avoid unnecessary data
     # urllib3 is used by requests, so we have to add this as well
@@ -127,6 +125,5 @@ def setCustomLoggingLevel(level='WARN'):
     :return: true for test purpose
     """
     logging.getLogger().setLevel(level)
-    # logging.getLogger('indibase').setLevel(level)
-    # logging.getLogger('mountcontrol').setLevel(level)
+
     return True

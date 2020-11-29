@@ -26,11 +26,11 @@ import platform
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
 from skyfield.api import Topos
-from mountcontrol import qtmount
 from importlib_metadata import version
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
+from mountcontrol import qtmount
 from gui.mainWindow.mainW import MainWindow
 from logic.powerswitch.kmRelay import KMRelay
 from logic.modeldata.buildpoints import DataPoint

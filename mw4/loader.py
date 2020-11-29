@@ -287,8 +287,6 @@ def writeSystemInfo(mwGlob=None):
     """
     log.header('-' * 100)
     log.header(f'mountwizzard4    : {version("mountwizzard4")}')
-    log.header(f'indibase         : {version("indibase")}')
-    log.header(f'mountcontrol     : {version("mountcontrol")}')
     log.header(f'actual workdir   : {mwGlob["workDir"]}')
     log.header(f'python           : {platform.python_version()}')
     log.header(f'python runtime   : {platform.architecture()[0]}')

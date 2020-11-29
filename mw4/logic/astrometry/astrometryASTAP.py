@@ -130,7 +130,7 @@ class AstrometryASTAP(object):
             stdout, stderr = self.process.communicate(timeout=self.timeout)
 
         except subprocess.TimeoutExpired:
-            self.log.critical('Timeout expired')
+            self.log.error('Timeout expired')
             return False
 
         except Exception as e:

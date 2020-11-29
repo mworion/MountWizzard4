@@ -261,7 +261,7 @@ class CameraIndi(IndiClass):
 
         suc = self.sendDownloadMode(fastReadout=fastReadout)
         if not suc:
-            self.log.info('Camera has no download quality settings')
+            self.log.info('Download quality could not be set')
 
         indiCmd = self.device.getNumber('CCD_BINNING')
         indiCmd['HOR_BIN'] = binning

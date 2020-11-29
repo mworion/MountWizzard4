@@ -130,7 +130,6 @@ class Model:
         :param model:
         :return:    True if ok for testing
         """
-
         if model.azimuthTurns is not None:
             if model.azimuthTurns > 0:
                 text = '{0:3.2f} revs left'.format(abs(model.azimuthTurns))
@@ -167,7 +166,6 @@ class Model:
         :param count: index of the actual processed point
         :return: success
         """
-
         if not 0 < count <= number:
             return False
 
@@ -203,9 +201,7 @@ class Model:
         :param result: true for test purpose
         :return: success
         """
-
         self.log.info('Processing astrometry result')
-
         if self.resultQueue.empty():
             self.log.warning('empty result queue')
             return False
@@ -282,9 +278,7 @@ class Model:
 
         :return: success
         """
-
         self.log.info('Solving started')
-
         if self.solveQueue.empty():
             self.log.warning('empty solve queue')
             return False
@@ -326,9 +320,7 @@ class Model:
 
         :return: success
         """
-
         self.log.info('Imaging started')
-
         if self.imageQueue.empty():
             self.log.warning('empty image queue')
             return False
@@ -379,9 +371,7 @@ class Model:
         :return: success
 
         """
-
         self.log.info('Slew started')
-
         if self.slewQueue.empty():
             self.log.warning('Empty slew queue')
             return False
@@ -392,7 +382,6 @@ class Model:
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
                                                     az_degrees=mPoint['azimuth'],
                                                     )
-
         if not suc:
             return False
 
@@ -424,10 +413,8 @@ class Model:
 
     def disableDAT(self):
         """
-
         :return: True for test purpose
         """
-
         if not self.ui.checkDisableDAT.isChecked():
             return False
 
@@ -442,10 +429,8 @@ class Model:
 
     def restoreStatusDAT(self):
         """
-
         :return: true for test purpose
         """
-
         if not self.ui.checkDisableDAT.isChecked():
             return False
 
@@ -463,7 +448,6 @@ class Model:
 
         :return: true for test purpose
         """
-
         self.slewQueue.queue.clear()
         self.imageQueue.queue.clear()
         self.solveQueue.queue.clear()
@@ -475,7 +459,6 @@ class Model:
 
     def setupModelRunContextAndGuiStatus(self):
         """
-
         :return:
         """
         self.changeStyleDynamic(self.ui.runModel, 'running', True)
@@ -514,7 +497,6 @@ class Model:
 
         :return: true for test purpose
         """
-
         self.changeStyleDynamic(self.ui.runModel, 'running', False)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', False)
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
@@ -549,7 +531,6 @@ class Model:
 
         :return: true for test purpose
         """
-
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
 
         hasDome = self.deviceStat.get('dome', False)
@@ -574,7 +555,6 @@ class Model:
 
         :return: true for test purpose
         """
-
         self.app.camera.signals.saved.disconnect(self.modelSolve)
         self.app.camera.signals.integrated.disconnect(self.modelSlew)
         self.app.astrometry.signals.done.disconnect(self.modelSolveDone)
@@ -585,11 +565,11 @@ class Model:
 
     def pauseBuild(self):
         """
-
         :return: True for test purpose
         """
         if self.ui.pauseModel.property('pause'):
             self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
+
         else:
             self.changeStyleDynamic(self.ui.pauseModel, 'pause', True)
 
@@ -602,7 +582,6 @@ class Model:
 
         :return: true for test purpose
         """
-
         self.restoreStatusDAT()
         self.app.camera.abort()
         self.app.astrometry.abort()
@@ -623,7 +602,6 @@ class Model:
 
         :return: True for test purpose
         """
-
         mountModel = self.app.mount.model
 
         if len(mountModel.starList) != len(self.model):
@@ -643,7 +621,6 @@ class Model:
 
         :return: save model format
         """
-
         modelDataForSave = list()
 
         for mPoint in self.model:
@@ -681,7 +658,6 @@ class Model:
 
         :return: True for test purpose
         """
-
         self.app.mount.signals.alignDone.disconnect(self.saveModelFinish)
         self.retrofitModel()
         self.app.message.emit(f'Writing model:       [{self.modelName}]', 0)
@@ -704,7 +680,6 @@ class Model:
 
         :return: success
         """
-
         if len(self.model) < 3:
             self.log.info(f'Only {len(self.model)} points available')
             return False
@@ -722,7 +697,6 @@ class Model:
         :param model:
         :return: build
         """
-
         if model is None:
             model = []
 
@@ -740,7 +714,6 @@ class Model:
 
     def collectingModelRunOutput(self):
         """
-
         :return:
         """
         self.model = list()
@@ -761,11 +734,9 @@ class Model:
 
     def programModelToMount(self, model):
         """
-
         :param model:
         :return: True for test purpose
         """
-
         build = self.generateBuildData(model=model)
         suc = self.app.mount.model.programAlign(build)
 
@@ -781,7 +752,6 @@ class Model:
 
     def renewHemisphereView(self):
         """
-
         :return: True for test purpose
         """
         for i in range(0, len(self.app.data.buildP)):
@@ -793,10 +763,8 @@ class Model:
 
     def processModelData(self):
         """
-
         :return:
         """
-
         suc = self.collectingModelRunOutput()
 
         if not suc:
@@ -846,7 +814,6 @@ class Model:
 
         :return: true for test purpose
         """
-
         if self.retryQueue.qsize() == 0:
             self.processModelData()
             return True
@@ -856,6 +823,7 @@ class Model:
             return True
 
         self.app.message.emit('Starting retry failed points', 1)
+        self.log.info('Retry started')
 
         numberPointsRetry = self.retryQueue.qsize()
         countPointsRetry = 0

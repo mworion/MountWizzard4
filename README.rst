@@ -6,6 +6,9 @@ astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu 18.04 tested).
 python application, it should run in all environments supporting python 3.6-3.8 and PyQt5 
 as a GUI framework.
 
+.. note:: Please check these pages for some hints to your installation:
+          https://mountwizzard4.readthedocs.io/en/latest/issues.html
+
 For being fully operational, MW4 needs either:
 
 INDI server(s) (see: https://indilib.org) where your devices are connected to.
@@ -29,7 +32,7 @@ versions. A HW pre2012 might also have some issues.
 
 Documentation
 ^^^^^^^^^^^^^
-There is an online documentation available for MW4:
+There is an online documentation available for MW4 which could be search for entries:
 
 Web based: https://mountwizzard4.readthedocs.io
 

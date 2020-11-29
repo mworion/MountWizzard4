@@ -7,7 +7,7 @@ Documentation for MW4
     :maxdepth: 3
 
     overview
-    issues
+    problemSolving
 
 .. toctree::
     :maxdepth: 3

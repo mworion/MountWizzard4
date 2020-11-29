@@ -8,6 +8,11 @@ Unreleased Betas
 
 Released versions
 -----------------
+0.3
+
+- adding more error log support
+- improved ui
+
 0.2
 
 - added support functions for better error handling while using

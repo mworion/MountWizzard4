@@ -26,6 +26,10 @@ Unreleased Betas
 
 Released betas
 --------------
+0.220.3
+
+- support for MacOSx Bigsur
+
 0.220.2
 
 - added support for windows automation with 64bit python (is slow)

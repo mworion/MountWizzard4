@@ -23,7 +23,6 @@ import platform
 import PyQt5
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.dome.domeIndi import DomeIndi
 from logic.dome.domeAlpaca import DomeAlpaca
 if platform.system() == 'Windows':
@@ -57,8 +56,7 @@ class Dome:
     __all__ = ['Dome',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
         self.app = app

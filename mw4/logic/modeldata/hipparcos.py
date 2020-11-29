@@ -23,7 +23,6 @@ import numpy as np
 import astropy._erfa as erfa
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.modeldata.alignstars import generateAlignStars
 
 
@@ -42,8 +41,7 @@ class Hipparcos(object):
     __all__ = ['Hipparcos',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self,
                  app=None,

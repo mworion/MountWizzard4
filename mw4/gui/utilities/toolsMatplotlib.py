@@ -29,7 +29,6 @@ from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 
 # local imports
-from base.loggerMW import CustomLogger
 
 __all__ = [
     'ToolsMatplotlib',
@@ -43,8 +42,7 @@ class ToolsMatplotlib:
     __all__ = ['ToolsMatplotlib',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     @staticmethod
     def findIndexValue(ui, searchString, relaxed=False):

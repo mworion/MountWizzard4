@@ -23,7 +23,6 @@ import platform
 from PyQt5.QtCore import QObject, pyqtSignal
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.cover.coverIndi import CoverIndi
 from logic.cover.coverAlpaca import CoverAlpaca
 if platform.system() == 'Windows':
@@ -53,8 +52,7 @@ class Cover:
     __all__ = ['Cover',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
 

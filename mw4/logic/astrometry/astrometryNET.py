@@ -28,7 +28,6 @@ from astropy.io import fits
 from mountcontrol import convert
 
 # local imports
-from base.loggerMW import CustomLogger
 
 
 class AstrometryNET(object):
@@ -46,8 +45,7 @@ class AstrometryNET(object):
     __all__ = ['AstrometryNET',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, parent=None):
         self.parent = parent
@@ -401,18 +399,18 @@ class AstrometryNET(object):
 
         # checking binaries
         if not os.path.isfile(program):
-            self.log.info(f'[{program}] not found')
+            self.log.warning(f'[{program}] not found')
             sucProgram = False
         else:
             sucProgram = True
 
         # checking indexes
         if not glob.glob(index):
-            self.log.info('No index files found')
+            self.log.warning('No index files found')
             sucIndex = False
         else:
             sucIndex = True
 
-        self.log.info(f'astrometry.net OK, app:{program} index:{index}')
+        self.log.warning(f'astrometry.net OK, app:{program} index:{index}')
 
         return sucProgram, sucIndex

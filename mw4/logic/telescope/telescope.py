@@ -23,7 +23,6 @@ import platform
 import PyQt5
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.telescope.telescopeIndi import TelescopeIndi
 from logic.telescope.telescopeAlpaca import TelescopeAlpaca
 if platform.system() == 'Windows':
@@ -53,8 +52,7 @@ class Telescope:
     __all__ = ['Telescope',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
 

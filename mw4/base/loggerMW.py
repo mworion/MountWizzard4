@@ -91,6 +91,8 @@ def setupLogging():
 
     :return: true for test purpose
     """
+    addLoggingLevel('UI', 35)
+    addLoggingLevel('HEADER', 55)
 
     logging.Formatter.converter = timeTz
     timeTag = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
@@ -106,11 +108,11 @@ def setupLogging():
                         )
 
     # setting different log level for the internal libraries we shift one step up
-    # standard ERROR    will be CRITICAL    logging hard error statements without solution
-    # standard WARNING  will be ERROR       classical warnings which still enables work
-    # standard INFO     will be WARNING     all GUI interaction stuff with user
-    # standard DEBUG    will be INFO        all functional interface parameters
-    # missing TRACE     will be debug       all low level communications (IP, SPI, etc)
+    # standard ERROR    will be 50 CRITICAL    logging hard error statements without solution
+    # standard WARNING  will be 40 ERROR       classical warnings which still enables work
+    # standard INFO     will be 30 WARNING     all GUI interaction stuff with user
+    # standard DEBUG    will be 20 INFO        all functional interface parameters
+    # missing TRACE     will be 10 DEBUG       all low level communications (IP, SPI, etc)
     logging.getLogger('mountcontrol').setLevel(logging.INFO)
     logging.getLogger('indibase').setLevel(logging.INFO)
 
@@ -131,27 +133,6 @@ def setCustomLoggingLevel(level='WARN'):
     :return: true for test purpose
     """
     logging.getLogger().setLevel(level)
-    logging.getLogger('indibase').setLevel(level)
-    logging.getLogger('mountcontrol').setLevel(level)
+    # logging.getLogger('indibase').setLevel(level)
+    # logging.getLogger('mountcontrol').setLevel(level)
     return True
-
-
-class CustomLogger(logging.LoggerAdapter):
-    """
-    The CustomLogger class offers an adapter interface interface to allow a more customized
-    logging functionality.
-
-    """
-    __all__ = ['CustomLogger']
-
-    def process(self, msg, kwargs):
-        """
-        if you want to prepend or append the contextual information to the message string,
-        you just need to subclass LoggerAdapter and override process() to do what you need.
-        that's what i am doing here.
-
-        :param msg:
-        :param kwargs:
-        :return:
-        """
-        return f'{msg}', kwargs

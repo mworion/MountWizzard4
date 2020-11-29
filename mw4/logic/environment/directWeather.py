@@ -21,7 +21,6 @@ import logging
 # external packages
 
 # local imports
-from base.loggerMW import CustomLogger
 
 
 class DirectWeather:
@@ -36,8 +35,7 @@ class DirectWeather:
     __all__ = ['DirectWeather',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app=None):
 

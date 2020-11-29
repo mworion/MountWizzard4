@@ -23,7 +23,6 @@ import platform
 import PyQt5
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.environment.skymeterIndi import SkymeterIndi
 from logic.environment.skymeterAlpaca import SkymeterAlpaca
 if platform.system() == 'Windows':
@@ -53,8 +52,7 @@ class Skymeter:
     __all__ = ['Skymeter',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
 

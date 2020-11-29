@@ -33,7 +33,6 @@ from gui.mainWmixin.tabSettDome import SettDome
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 from logic.dome.dome import Dome
-from base.loggerMW import CustomLogger
 
 
 @pytest.fixture(autouse=True, scope='function')

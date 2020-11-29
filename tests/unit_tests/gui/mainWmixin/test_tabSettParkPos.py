@@ -31,7 +31,6 @@ from skyfield.toposlib import Topos
 from gui.mainWmixin.tabSettParkPos import SettParkPos
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
-from base.loggerMW import CustomLogger
 
 
 @pytest.fixture(autouse=True, scope='function')

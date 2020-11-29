@@ -33,7 +33,6 @@ if pConf.isAvailable:
     from gui.extWindows.simulatorW import SimulatorWindow
     from gui.extWindows.keypadW import KeypadWindow
 
-from base.loggerMW import CustomLogger
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.messageW import MessageWindow
 from gui.extWindows.hemisphereW import HemisphereWindow
@@ -94,8 +93,7 @@ class MainWindow(MWidget,
     __all__ = ['MainWindow',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
         super().__init__()

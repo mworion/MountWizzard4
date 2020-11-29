@@ -23,7 +23,6 @@ import platform
 import PyQt5
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.imaging.focuserIndi import FocuserIndi
 from logic.imaging.focuserAlpaca import FocuserAlpaca
 if platform.system() == 'Windows':
@@ -53,8 +52,7 @@ class Focuser:
     __all__ = ['Focuser',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
 

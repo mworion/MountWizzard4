@@ -28,7 +28,6 @@ from PyQt5.QtCore import QTimer
 import requests
 
 # local imports
-from base.loggerMW import CustomLogger
 
 
 class RelaySignals(QObject):
@@ -63,8 +62,7 @@ class KMRelay(QObject):
     __all__ = ['KMRelay',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     # polling cycle for relay box
     CYCLE_POLLING = 1000

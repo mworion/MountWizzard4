@@ -27,7 +27,6 @@ from PyQt5.QtCore import Qt, QSortFilterProxyModel, QDir, QObject, pyqtSignal, Q
 from PyQt5.QtCore import QSize
 
 # local imports
-from base.loggerMW import CustomLogger
 from gui.utilities.stylesQtCss import Styles
 from gui.utilities.toolsMatplotlib import ToolsMatplotlib
 
@@ -108,8 +107,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
     __all__ = ['MWidget',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self):
         super().__init__()

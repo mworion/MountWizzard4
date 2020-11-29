@@ -24,7 +24,6 @@ from PyQt5.QtCore import QTimer
 from indibase import qtIndiBase
 
 # local imports
-from base.loggerMW import CustomLogger
 
 
 class IndiClass:
@@ -37,8 +36,7 @@ class IndiClass:
 
     __all__ = ['IndiClass']
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5

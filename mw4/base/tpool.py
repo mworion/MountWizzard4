@@ -23,7 +23,6 @@ import sys
 from PyQt5.QtCore import QObject, pyqtSignal, QRunnable, pyqtSlot
 
 # local imports
-from base.loggerMW import CustomLogger
 
 
 __all__ = ['Worker',
@@ -51,8 +50,7 @@ class Worker(QRunnable):
 
     __all__ = ['Worker']
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, fn, *args, **kwargs):
         super(Worker, self).__init__()

@@ -26,7 +26,6 @@ from PyQt5.QtCore import QObject, pyqtSignal
 import requests
 
 # local imports
-from base.loggerMW import CustomLogger
 
 
 class AlpacaSignals(QObject):
@@ -59,8 +58,7 @@ class AlpacaBase:
 
     __all__ = ['AlpacaBase']
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self):
         super().__init__()

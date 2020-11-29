@@ -24,7 +24,6 @@ import os
 from sgp4.exporter import export_tle
 
 # local import
-from base.loggerMW import CustomLogger
 
 
 class DataWriter:
@@ -34,8 +33,7 @@ class DataWriter:
     __all__ = ['DataWriter',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
         super().__init__()

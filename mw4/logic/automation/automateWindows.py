@@ -30,15 +30,13 @@ import pywinauto
 import pywinauto.controls.win32_controls as controls
 
 # local imports
-from base.loggerMW import CustomLogger
 
 
 class AutomateWindows(QObject):
     __all__ = ['AutomateWindows',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     UPDATER_EXE = 'GmQCIv2.exe'
     UTC_1_FILE = 'finals.data'

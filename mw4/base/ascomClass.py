@@ -28,7 +28,6 @@ from PyQt5.QtCore import QObject, pyqtSignal, QTimer
 from PyQt5.QtTest import QTest
 
 # local imports
-from base.loggerMW import CustomLogger
 from base.tpool import Worker
 
 
@@ -59,8 +58,7 @@ class AscomClass(object):
         >>> a = AscomClass(app=None, data=None, threadPool=None)
     """
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     # relaxed generic timing
     CYCLE_POLL_STATUS = 3000

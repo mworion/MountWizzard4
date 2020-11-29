@@ -28,7 +28,6 @@ import skyfield.api
 from scipy.spatial import distance
 
 # local imports
-from base.loggerMW import CustomLogger
 from base import transform
 
 __all__ = ['HaDecToAltAz',
@@ -75,8 +74,7 @@ class DataPoint(object):
 
     __all__ = ['DataPoint']
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     # data for generating greater circles, dec and step only for east, west is reversed
     DEC = {'min': [-15, 0, 15, 30, 45, 60, 75],

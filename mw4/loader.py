@@ -46,8 +46,9 @@ import matplotlib
 from importlib_metadata import version
 
 # local import
+from base.loggerMW import setupLogging
+setupLogging()
 from mainApp import MountWizzard4
-from base.loggerMW import CustomLogger, setupLogging
 from gui.utilities.splashScreen import SplashScreen
 # noinspection PyUnresolvedReferences
 import resource.resources
@@ -59,8 +60,7 @@ matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False
 
 # now starting with implementation
-logger = logging.getLogger()
-log = CustomLogger(logger, {})
+log = logging.getLogger()
 
 
 class QAwesomeTooltipEventFilter(QObject):
@@ -106,8 +106,7 @@ class QAwesomeTooltipEventFilter(QObject):
         https://bugreports.qt.io/browse/QTBUG-41051
     """
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def eventFilter(self, widget, event):
         """
@@ -156,8 +155,7 @@ class MyApp(QApplication):
     including event and object name to be analyse the input methods.
     """
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
     last = None
 
     def __init__(self, *argv):
@@ -181,22 +179,21 @@ class MyApp(QApplication):
             self.last = obj
 
         if isinstance(obj, QTabBar):
-            self.log.warning(f'Click Tab     : [{obj.tabText(obj.currentIndex())}]')
+            self.log.ui(f'Click Tab     : [{obj.tabText(obj.currentIndex())}]')
         elif isinstance(obj, QComboBox):
-            self.log.warning(f'Click DropDown: [{obj.objectName()}]')
-            self.log.trace('test')
+            self.log.ui(f'Click DropDown: [{obj.objectName()}]')
         elif isinstance(obj, QPushButton):
-            self.log.warning(f'Click Button  : [{obj.objectName()}]')
+            self.log.ui(f'Click Button  : [{obj.objectName()}]')
         elif isinstance(obj, QRadioButton):
-            self.log.warning(f'Click Radio   : [{obj.objectName()}]:{obj.isChecked()}')
+            self.log.ui(f'Click Radio   : [{obj.objectName()}]:{obj.isChecked()}')
         elif isinstance(obj, QGroupBox):
-            self.log.warning(f'Click Group   : [{obj.objectName()}]:{obj.isChecked()}')
+            self.log.ui(f'Click Group   : [{obj.objectName()}]:{obj.isChecked()}')
         elif isinstance(obj, QCheckBox):
-            self.log.warning(f'Click Checkbox: [{obj.objectName()}]:{obj.isChecked()}')
+            self.log.ui(f'Click Checkbox: [{obj.objectName()}]:{obj.isChecked()}')
         elif isinstance(obj, QLineEdit):
-            self.log.warning(f'Click EditLine: [{obj.objectName()}]:{obj.text()}')
+            self.log.ui(f'Click EditLine: [{obj.objectName()}]:{obj.text()}')
         else:
-            self.log.warning(f'Click Object  : [{obj.objectName()}]')
+            self.log.ui(f'Click Object  : [{obj.objectName()}]')
 
         return returnValue
 
@@ -288,23 +285,23 @@ def writeSystemInfo(mwGlob=None):
 
     :return: true for test purpose
     """
-    log.critical('-' * 100)
-    log.critical(f'mountwizzard4    : {version("mountwizzard4")}')
-    log.critical(f'indibase         : {version("indibase")}')
-    log.critical(f'mountcontrol     : {version("mountcontrol")}')
-    log.critical(f'actual workdir   : {mwGlob["workDir"]}')
-    log.critical(f'python           : {platform.python_version()}')
-    log.critical(f'python runtime   : {platform.architecture()[0]}')
-    log.critical(f'platform         : {platform.system()}')
-    log.critical(f'PyQt5            : {PYQT_VERSION_STR}')
-    log.critical(f'Qt               : {QT_VERSION_STR}')
-    log.critical(f'release          : {platform.release()}')
-    log.critical(f'machine          : {platform.machine()}')
-    log.critical(f'cpu              : {platform.processor()}')
-    log.critical(f'node             : {platform.node()}')
-    log.critical(f'ip addr.         : {socket.gethostname()}')
-    log.critical(f'sys.executable   : {sys.executable}')
-    log.critical('-' * 100)
+    log.header('-' * 100)
+    log.header(f'mountwizzard4    : {version("mountwizzard4")}')
+    log.header(f'indibase         : {version("indibase")}')
+    log.header(f'mountcontrol     : {version("mountcontrol")}')
+    log.header(f'actual workdir   : {mwGlob["workDir"]}')
+    log.header(f'python           : {platform.python_version()}')
+    log.header(f'python runtime   : {platform.architecture()[0]}')
+    log.header(f'platform         : {platform.system()}')
+    log.header(f'PyQt5            : {PYQT_VERSION_STR}')
+    log.header(f'Qt               : {QT_VERSION_STR}')
+    log.header(f'release          : {platform.release()}')
+    log.header(f'machine          : {platform.machine()}')
+    log.header(f'cpu              : {platform.processor()}')
+    log.header(f'node             : {platform.node()}')
+    log.header(f'ip addr.         : {socket.gethostname()}')
+    log.header(f'sys.executable   : {sys.executable}')
+    log.header('-' * 100)
 
     return True
 
@@ -363,10 +360,6 @@ def main():
     splashW.setValue(0)
     mwGlob = dict()
     mwGlob = setupWorkDirs(mwGlob)
-
-    splashW.showMessage('Setup logging')
-    splashW.setValue(20)
-    setupLogging()
 
     splashW.showMessage('Write system info to log')
     splashW.setValue(40)

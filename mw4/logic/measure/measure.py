@@ -23,7 +23,6 @@ import PyQt5
 import numpy as np
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.measure.measureRaw import MeasureDataRaw
 from logic.measure.measureCSV import MeasureDataCSV
 
@@ -58,8 +57,7 @@ class MeasureData(PyQt5.QtCore.QObject):
     __all__ = ['MeasureData',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server
     CYCLE_UPDATE_TASK = 1000

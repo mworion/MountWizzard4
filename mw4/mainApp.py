@@ -30,7 +30,6 @@ from mountcontrol import qtmount
 from importlib_metadata import version
 
 # local import
-from base.loggerMW import CustomLogger
 from base.loggerMW import setCustomLoggingLevel
 from gui.mainWindow.mainW import MainWindow
 from logic.powerswitch.kmRelay import KMRelay
@@ -64,8 +63,7 @@ class MountWizzard4(QObject):
     __all__ = ['MountWizzard4']
     __version__ = version('mountwizzard4')
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     message = pyqtSignal(str, int)
     messageQueue = Queue()
@@ -457,7 +455,7 @@ class MountWizzard4(QObject):
         :return: True for test purpose
         """
 
-        self.log.info('Message window: [{0}]'.format(message))
+        self.log.ui(f'Message window: [{message}]')
         self.messageQueue.put((message, mType))
 
         return True

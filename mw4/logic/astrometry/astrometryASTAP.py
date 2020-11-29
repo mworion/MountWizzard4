@@ -27,7 +27,6 @@ import platform
 from astropy.io import fits
 
 # local imports
-from base.loggerMW import CustomLogger
 
 
 class AstrometryASTAP(object):
@@ -51,8 +50,7 @@ class AstrometryASTAP(object):
                    32: 'No Star database found',
                    33: 'Error reading star database'}
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, parent):
         self.parent = parent
@@ -300,18 +298,18 @@ class AstrometryASTAP(object):
 
         # checking binaries
         if not os.path.isfile(program):
-            self.log.info(f'[{program}] not found')
+            self.log.warning(f'[{program}] not found')
             sucProgram = False
         else:
             sucProgram = True
 
         # checking indexes
         if not glob.glob(index):
-            self.log.info('No index files found')
+            self.log.warning('No index files found')
             sucIndex = False
         else:
             sucIndex = True
 
-        self.log.info(f'ASTAP OK, app:{program} index:{index}')
+        self.log.warning(f'ASTAP OK, app:{program} index:{index}')
 
         return sucProgram, sucIndex

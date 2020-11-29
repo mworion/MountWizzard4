@@ -26,7 +26,6 @@ import numpy as np
 from mountcontrol.convert import convertToAngle
 
 # local imports
-from base.loggerMW import CustomLogger
 from base import tpool
 from logic.astrometry.astrometryNET import AstrometryNET
 from logic.astrometry.astrometryASTAP import AstrometryASTAP
@@ -66,8 +65,7 @@ class Astrometry:
     __all__ = ['Astrometry',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
 

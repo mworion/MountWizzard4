@@ -21,7 +21,6 @@ import logging
 from PyQt5.QtCore import QObject
 from PyQt5 import QtNetwork
 # local imports
-from base.loggerMW import CustomLogger
 
 
 class Remote(QObject):
@@ -36,8 +35,7 @@ class Remote(QObject):
     __all__ = ['Remote',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self,
                  app=None,

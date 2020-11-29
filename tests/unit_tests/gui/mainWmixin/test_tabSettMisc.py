@@ -34,7 +34,6 @@ import importlib_metadata
 from gui.mainWmixin.tabSettMisc import SettMisc
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
-from base.loggerMW import CustomLogger
 from logic.dome.dome import Dome
 from logic.imaging.camera import Camera
 from logic.astrometry.astrometry import Astrometry

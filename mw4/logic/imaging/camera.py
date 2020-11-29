@@ -24,7 +24,6 @@ import PyQt5
 from PyQt5.QtTest import QTest
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.imaging.cameraIndi import CameraIndi
 from logic.imaging.cameraAlpaca import CameraAlpaca
 if platform.system() == 'Windows':
@@ -58,8 +57,7 @@ class Camera:
     __all__ = ['Camera',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
 

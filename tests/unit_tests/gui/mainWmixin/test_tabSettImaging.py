@@ -37,7 +37,6 @@ from logic.imaging.focuser import Focuser
 from logic.imaging.filter import Filter
 from logic.cover.cover import Cover
 from logic.telescope.telescope import Telescope
-from base.loggerMW import CustomLogger
 
 
 @pytest.fixture(autouse=True, scope='function')

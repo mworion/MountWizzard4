@@ -27,7 +27,7 @@ from base import loggerMW
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
-    logger = logging.getLogger(__name__)
+    log = logging.getLogger(__name__)
     app = loggerMW.CustomLogger(logger, {})
 
     yield

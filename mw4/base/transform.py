@@ -28,7 +28,7 @@ __all__ = [
     'JNowToJ2000',
 ]
 
-logger = logging.getLogger()
+log = logging.getLogger()
 
 lock = Lock()
 

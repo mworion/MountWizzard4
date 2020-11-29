@@ -48,7 +48,6 @@ from logic.astrometry.astrometry import Astrometry
 from logic.powerswitch.kmRelay import KMRelay
 from logic.measure.measure import MeasureData
 from logic.remote.remote import Remote
-from base.loggerMW import CustomLogger
 
 
 @pytest.fixture(autouse=True, scope='function')

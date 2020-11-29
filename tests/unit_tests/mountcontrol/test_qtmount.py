@@ -22,11 +22,12 @@
 from unittest import mock
 import pytest
 import os
+
 # external packages
 import wakeonlan
+
 # local imports
-from mountcontrol.qtmount import WorkerSignals
-from mountcontrol.qtmount import Worker
+from base.tpool import Worker
 from mountcontrol.qtmount import MountSignals
 from mountcontrol.qtmount import Mount
 
@@ -38,14 +39,6 @@ def module_setup_teardown():
               pathToData=os.getcwd() + '/data',
               verbose=True)
     yield
-
-
-def test_workerSignals():
-    WorkerSignals()
-
-
-def test_worker():
-    Worker(None)
 
 
 def test_mountSignals():

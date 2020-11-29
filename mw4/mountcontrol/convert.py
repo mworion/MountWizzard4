@@ -179,7 +179,7 @@ def topoToAltAz(ha, dec, lat):
     :return:
     """
     if lat is None:
-        logger.warning('lat nof defined')
+        log.warning('lat nof defined')
         return None, None
 
     ha = (ha * 360 / 24 + 360.0) % 360.0

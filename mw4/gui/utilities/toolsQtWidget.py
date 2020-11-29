@@ -107,8 +107,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
     __all__ = ['MWidget',
                ]
 
-    log = logging.getLogger(__name__)
-
     def __init__(self):
         super().__init__()
 

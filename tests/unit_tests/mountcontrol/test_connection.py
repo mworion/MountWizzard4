@@ -22,8 +22,12 @@
 import unittest
 import unittest.mock as mock
 import socket
+
 # external packages
+
 # local imports
+from base.loggerMW import setupLogging
+setupLogging()
 from mountcontrol.connection import Connection
 
 

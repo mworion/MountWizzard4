@@ -461,7 +461,7 @@ def test_preparePlot_5(function):
 
 
 def test_workerPhotometry_1(function):
-    function.image = np.random.rand(100, 100)
+    function.image = np.random.rand(100, 100) + 1
     function.image[50][50] = 100
     function.image[51][50] = 50
     function.image[50][51] = 50

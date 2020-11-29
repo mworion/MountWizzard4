@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 from queue import Queue
+import logging
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
@@ -238,4 +239,3 @@ class App(QObject):
     threadPool = QThreadPool()
     mwGlob = {'modelDir': 'tests/model',
               'imageDir': 'tests/image'}
-

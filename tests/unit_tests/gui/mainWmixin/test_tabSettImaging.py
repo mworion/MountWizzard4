@@ -70,7 +70,7 @@ def module_setup_teardown(qtbot):
     app.guiSetText = MWidget().guiSetText
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
-    app.log = CustomLogger(logging.getLogger(__name__), {})
+    app.log = logging.getLogger(__name__)
 
     qtbot.addWidget(app)
 

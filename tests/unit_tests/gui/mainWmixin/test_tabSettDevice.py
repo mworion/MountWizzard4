@@ -106,7 +106,7 @@ def module_setup_teardown(qtbot):
     app.width = MWidget().width
     app.returnDriver = MWidget().returnDriver
     app.deviceStat = dict()
-    app.log = CustomLogger(logging.getLogger(__name__), {})
+    app.log = logging.getLogger(__name__)
     app.threadPool = QThreadPool()
     app.config = dict()
     app.BACK_NORM = '#000000'

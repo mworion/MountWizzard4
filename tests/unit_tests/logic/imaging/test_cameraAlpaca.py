@@ -26,6 +26,8 @@ from mountcontrol.mount import Mount
 from skyfield.api import Angle
 
 # local import
+from base.loggerMW import setupLogging
+setupLogging()
 from logic.imaging.cameraAlpaca import CameraAlpaca
 from logic.imaging.camera import CameraSignals
 from base.alpacaBase import AlpacaBase

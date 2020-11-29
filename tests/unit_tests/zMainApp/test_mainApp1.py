@@ -18,13 +18,16 @@
 # standard libraries
 import sys
 import unittest.mock as mock
+import logging
 
 # external packages
 import PyQt5
 
 # local import
 from mainApp import MountWizzard4
+from base.loggerMW import addLoggingLevel
 
+addLoggingLevel('TRACE', 5)
 
 def test_start_parameters(qapp):
     mwGlob = {'configDir': 'tests/config',

@@ -20,6 +20,7 @@ import os
 import glob
 import json
 import unittest.mock as mock
+import logging
 
 # external packages
 import pytest
@@ -27,7 +28,7 @@ import PyQt5
 
 # local import
 from mainApp import MountWizzard4
-
+from base.loggerMW import addLoggingLevel
 
 @pytest.fixture(autouse=True, scope='module')
 def app(qapp):
@@ -53,6 +54,9 @@ def app(qapp):
                                        'checkAndSetAutomation',
                                        return_value=None):
                     app = MountWizzard4(mwGlob=mwGlob, application=qapp)
+                    app.log = logging.getLogger()
+                    addLoggingLevel('TRACE', 5)
+                    addLoggingLevel('UI', 35)
                     yield app
 
 

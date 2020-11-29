@@ -17,7 +17,6 @@
 ###########################################################
 # standard libraries
 import logging
-import warnings
 import datetime
 from dateutil.tz import tzutc
 
@@ -30,6 +29,62 @@ def timeTz(*args):
     return datetime.datetime.now(tzutc()).timetuple()
 
 
+def addLoggingLevel(levelName, levelNum, methodName=None):
+    """
+    Comprehensively adds a new logging level to the `logging` module and the
+    currently configured logging class.
+
+    `levelName` becomes an attribute of the `logging` module with the value
+    `levelNum`. `methodName` becomes a convenience method for both `logging`
+    itself and the class returned by `logging.getLoggerClass()` (usually just
+    `logging.Logger`). If `methodName` is not specified, `levelName.lower()` is
+    used.
+
+    To avoid accidental clobberings of existing attributes, this method will
+    raise an `AttributeError` if the level name is already an attribute of the
+    `logging` module or if the method name is already present
+
+    This method was inspired by the answers to Stack Overflow post
+    http://stackoverflow.com/q/2183233/2988730, especially
+    http://stackoverflow.com/a/13638084/2988730
+
+    Example
+    -------
+    >>> addLoggingLevel('TRACE', logging.DEBUG - 5)
+    >>> logging.getLogger(__name__).setLevel("TRACE")
+    >>> logging.getLogger(__name__).trace('that worked')
+    >>> logging.trace('so did this')
+    >>> logging.TRACE
+    5
+
+    """
+    if not methodName:
+        methodName = levelName.lower()
+
+    if hasattr(logging, levelName):
+        return
+        # raise AttributeError('{} already defined in logging module'.format(levelName))
+    if hasattr(logging, methodName):
+        return
+        # raise AttributeError('{} already defined in logging module'.format(methodName))
+    if hasattr(logging.getLoggerClass(), methodName):
+        return
+        # raise AttributeError('{} already defined in logger class'.format(methodName))
+
+    def logForLevel(self, message, *args, **kwargs):
+        if self.isEnabledFor(levelNum):
+            self._log(levelNum, message, args, **kwargs)
+
+    def logToRoot(message, *args, **kwargs):
+        if logging.root.isEnabledFor(levelNum):
+            logging.root._log(levelNum, message, args, **kwargs)
+
+    logging.addLevelName(levelNum, levelName)
+    setattr(logging, levelName, levelNum)
+    setattr(logging.getLoggerClass(), methodName, logForLevel)
+    setattr(logging, methodName, logToRoot)
+
+
 def setupLogging():
     """
     setupLogging defines the logger and formats and disables unnecessary library logging
@@ -38,9 +93,8 @@ def setupLogging():
     """
 
     logging.Formatter.converter = timeTz
-
-    warnings.filterwarnings('ignore')
-    name = 'mw4-{0}.log'.format(datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d"))
+    timeTag = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
+    name = f'mw4-{timeTag}.log'
     logging.basicConfig(level=logging.DEBUG,
                         format='[%(asctime)s.%(msecs)03d]'
                                '[%(levelname)1.1s]'
@@ -57,13 +111,11 @@ def setupLogging():
     # standard INFO     will be WARNING     all GUI interaction stuff with user
     # standard DEBUG    will be INFO        all functional interface parameters
     # missing TRACE     will be debug       all low level communications (IP, SPI, etc)
-
     logging.getLogger('mountcontrol').setLevel(logging.INFO)
     logging.getLogger('indibase').setLevel(logging.INFO)
 
     # setting different log level for imported packages to avoid unnecessary data
     # urllib3 is used by requests, so we have to add this as well
-
     logging.getLogger('PyQt5').setLevel(logging.ERROR)
     logging.getLogger('requests').setLevel(logging.ERROR)
     logging.getLogger('urllib3').setLevel(logging.ERROR)
@@ -78,11 +130,9 @@ def setCustomLoggingLevel(level='WARN'):
 
     :return: true for test purpose
     """
-
     logging.getLogger().setLevel(level)
     logging.getLogger('indibase').setLevel(level)
     logging.getLogger('mountcontrol').setLevel(level)
-
     return True
 
 
@@ -92,7 +142,6 @@ class CustomLogger(logging.LoggerAdapter):
     logging functionality.
 
     """
-
     __all__ = ['CustomLogger']
 
     def process(self, msg, kwargs):
@@ -105,5 +154,4 @@ class CustomLogger(logging.LoggerAdapter):
         :param kwargs:
         :return:
         """
-
         return f'{msg}', kwargs

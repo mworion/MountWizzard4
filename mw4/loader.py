@@ -184,6 +184,7 @@ class MyApp(QApplication):
             self.log.warning(f'Click Tab     : [{obj.tabText(obj.currentIndex())}]')
         elif isinstance(obj, QComboBox):
             self.log.warning(f'Click DropDown: [{obj.objectName()}]')
+            self.log.trace('test')
         elif isinstance(obj, QPushButton):
             self.log.warning(f'Click Button  : [{obj.objectName()}]')
         elif isinstance(obj, QRadioButton):

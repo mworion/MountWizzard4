@@ -68,7 +68,7 @@ class CameraAscom(AscomClass):
         self.dataEntry(self.client.StartX, 'CCD_FRAME.X')
         self.dataEntry(self.client.StartY, 'CCD_FRAME.Y')
 
-        self.log.debug(f'Initial data: {self.data}')
+        self.log.trace(f'Initial data: {self.data}')
 
         return True
 
@@ -115,7 +115,7 @@ class CameraAscom(AscomClass):
             self.client.FastReadout = True
 
         quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
-        self.log.info(f'camera has readout quality entry: {quality}')
+        self.log.debug(f'camera has readout quality entry: {quality}')
 
         return True
 
@@ -218,7 +218,7 @@ class CameraAscom(AscomClass):
                 header['TELESCOP'] = self.app.mount.firmware.product
 
             hdu.writeto(imagePath, overwrite=True)
-            self.log.warning(f'Saved Image: [{imagePath}]')
+            self.log.info(f'Saved Image: [{imagePath}]')
 
         if self.abortExpose:
             imagePath = ''

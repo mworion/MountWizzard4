@@ -312,7 +312,7 @@ class MeasureData(PyQt5.QtCore.QObject):
         """
 
         if not self.mutexMeasure.tryLock():
-            self.log.info('overrun in measure')
+            self.log.debug('overrun in measure')
             return False
 
         lenData = len(self.data['time'])

@@ -259,7 +259,7 @@ class DevicePopup(toolsQtWidget.MWidget):
                 frameworkData[element] = ui.value()
 
             else:
-                self.log.info(f'Element {element} in gui for framework {framework} not found')
+                self.log.debug(f'Element {element} in gui for framework {framework} not found')
 
         return True
 

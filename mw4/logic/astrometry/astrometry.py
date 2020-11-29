@@ -106,7 +106,7 @@ class Astrometry:
             raHint = convertToAngle(ra, isHours=True)
             decHint = convertToAngle(dec, isHours=False)
 
-        self.log.info(f'Header RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale:'
+        self.log.debug(f'Header RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale:'
                       f' {scaleHint}')
 
         return raHint, decHint, scaleHint, ra, dec
@@ -160,7 +160,7 @@ class Astrometry:
                  error in arcsec and flag if image is flipped
         """
 
-        self.log.info(f'wcs header: [{wcsHeader}]')
+        self.log.debug(f'wcs header: [{wcsHeader}]')
         raJ2000 = convertToAngle(wcsHeader.get('CRVAL1'), isHours=True)
         decJ2000 = convertToAngle(wcsHeader.get('CRVAL2'), isHours=False)
 
@@ -262,7 +262,7 @@ class Astrometry:
             return False
 
         if not self.mutexSolve.tryLock():
-            self.log.info('overrun in solve threading')
+            self.log.debug('overrun in solve threading')
             self.signals.done.emit(solver.result)
             return False
 

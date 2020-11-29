@@ -187,7 +187,7 @@ class Dome:
             alt, az, _, _, _ = mount.calcTransformationMatrices()
 
             if alt is None or az is None:
-                self.log.warning(f'Geometry error, alt:{altitude}, az:{azimuth}')
+                self.log.info(f'Geometry error, alt:{altitude}, az:{azimuth}')
                 alt = altitude
                 az = azimuth
 

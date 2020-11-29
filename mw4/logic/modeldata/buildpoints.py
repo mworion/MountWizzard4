@@ -126,7 +126,7 @@ class DataPoint(object):
             return
 
         if not all([isinstance(x, tuple) for x in value]):
-            self.log.warning('Malformed value: {0}'.format(value))
+            self.log.info('Malformed value: {0}'.format(value))
             self._horizonP.clear()
             return
 
@@ -145,7 +145,7 @@ class DataPoint(object):
             return
 
         if not all([isinstance(x, tuple) for x in value]):
-            self.log.warning('Malformed value: {0}'.format(value))
+            self.log.info('Malformed value: {0}'.format(value))
             self._buildP = list()
             return
 
@@ -165,18 +165,18 @@ class DataPoint(object):
             return False
 
         if not isinstance(value, tuple):
-            self.log.warning('malformed value: {0}'.format(value))
+            self.log.info('malformed value: {0}'.format(value))
             return False
 
         if len(value) != 3:
-            self.log.warning('malformed value: {0}'.format(value))
+            self.log.info('malformed value: {0}'.format(value))
             return False
 
         if position is None:
             position = len(self._buildP)
 
         if not isinstance(position, (int, float)):
-            self.log.warning('malformed position: {0}'.format(position))
+            self.log.info('malformed position: {0}'.format(position))
             return False
 
         if self.app.mount.setting.horizonLimitHigh is not None:
@@ -213,13 +213,13 @@ class DataPoint(object):
         """
 
         if not isinstance(position, (int, float)):
-            self.log.warning('malformed position: {0}'.format(position))
+            self.log.info('malformed position: {0}'.format(position))
             return False
 
         position = int(position)
 
         if position < 0 or position > len(self._buildP) - 1:
-            self.log.warning('invalid position: {0}'.format(position))
+            self.log.info('invalid position: {0}'.format(position))
             return False
 
         self._buildP.pop(position)
@@ -261,18 +261,18 @@ class DataPoint(object):
             return False
 
         if not isinstance(value, tuple):
-            self.log.warning('malformed value: {0}'.format(value))
+            self.log.info('malformed value: {0}'.format(value))
             return False
 
         if len(value) != 2:
-            self.log.warning('malformed value: {0}'.format(value))
+            self.log.info('malformed value: {0}'.format(value))
             return False
 
         if position is None:
             position = len(self.horizonP)
 
         if not isinstance(position, (int, float)):
-            self.log.warning('malformed position: {0}'.format(position))
+            self.log.info('malformed position: {0}'.format(position))
             return False
 
         position = int(position)
@@ -291,13 +291,13 @@ class DataPoint(object):
         """
 
         if not isinstance(position, (int, float)):
-            self.log.warning('malformed position: {0}'.format(position))
+            self.log.info('malformed position: {0}'.format(position))
             return False
 
         position = int(position)
 
         if position < 0 or position > len(self._horizonP):
-            self.log.warning('invalid position: {0}'.format(position))
+            self.log.info('invalid position: {0}'.format(position))
             return False
 
         self._horizonP.pop(position)
@@ -473,7 +473,7 @@ class DataPoint(object):
                 value = json.load(handle)
 
         except Exception as e:
-            self.log.warning('Cannot BPTS load: {0}, error: {1}'.format(fileName, e))
+            self.log.info('Cannot BPTS load: {0}, error: {1}'.format(fileName, e))
             value = None
 
         else:
@@ -505,7 +505,7 @@ class DataPoint(object):
                     else:
                         value.append(reversed(convertedX))
         except Exception as e:
-            self.log.warning('Cannot CSV load: {0}, error: {1}'.format(fileName, e))
+            self.log.info('Cannot CSV load: {0}, error: {1}'.format(fileName, e))
             value = None
         else:
             value = [tuple(x) for x in value]

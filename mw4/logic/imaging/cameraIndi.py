@@ -182,20 +182,20 @@ class CameraIndi(IndiClass):
         if data['format'] == '.fits.fz':
             HDU = fits.HDUList.fromstring(data['value'])
             fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
-            self.log.warning('Image BLOB is in FPacked format')
+            self.log.info('Image BLOB is in FPacked format')
 
         elif data['format'] == '.fits.z':
             HDU = fits.HDUList.fromstring(zlib.decompress(data['value']))
             fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
-            self.log.warning('Image BLOB is compressed fits format')
+            self.log.info('Image BLOB is compressed fits format')
 
         elif data['format'] == '.fits':
             HDU = fits.HDUList.fromstring(data['value'])
             fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
-            self.log.warning('Image BLOB is uncompressed fits format')
+            self.log.info('Image BLOB is uncompressed fits format')
 
         else:
-            self.log.warning('Image BLOB is not supported')
+            self.log.info('Image BLOB is not supported')
 
         self.signals.saved.emit(self.imagePath)
         return True
@@ -212,7 +212,7 @@ class CameraIndi(IndiClass):
 
         # setting fast mode:
         quality = self.device.getSwitch('READOUT_QUALITY')
-        self.log.info(f'camera has readout quality entry: {quality}')
+        self.log.debug(f'camera has readout quality entry: {quality}')
 
         if fastReadout:
             quality['QUALITY_LOW'] = 'On'
@@ -261,7 +261,7 @@ class CameraIndi(IndiClass):
 
         suc = self.sendDownloadMode(fastReadout=fastReadout)
         if not suc:
-            self.log.info('Download quality could not be set')
+            self.log.debug('Download quality could not be set')
 
         indiCmd = self.device.getNumber('CCD_BINNING')
         indiCmd['HOR_BIN'] = binning

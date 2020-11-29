@@ -114,12 +114,12 @@ class AscomClass(object):
 
             except Exception as e:
                 suc = False
-                self.log.warning(f'Connection error [{self.deviceName}]: [{e}]')
+                self.log.info(f'Connection error [{self.deviceName}]: [{e}]')
 
             else:
                 suc = self.isClientConnected()
                 if suc:
-                    self.log.info(f'[{self.deviceName}] connected, [{retry}] retries needed')
+                    self.log.debug(f'[{self.deviceName}] connected, [{retry}] retries needed')
                     break
 
             finally:
@@ -206,7 +206,7 @@ class AscomClass(object):
             suc = self.isClientConnected()
 
         except Exception as e:
-            self.log.warning(f'Connection status error [{self.deviceName}]: [{e}]')
+            self.log.info(f'Connection status error [{self.deviceName}]: [{e}]')
             suc = False
 
         if self.deviceConnected and not suc:
@@ -295,7 +295,7 @@ class AscomClass(object):
                 self.disconnectClient()
 
             except Exception as e:
-                self.log.info(f'Connection to [{self.deviceName}]:  could not be closed, {e}')
+                self.log.debug(f'Connection to [{self.deviceName}]:  could not be closed, {e}')
 
         self.deviceConnected = False
         self.serverConnected = False

@@ -141,7 +141,7 @@ class KMRelay(QObject):
         """
 
         if result is None:
-            self.log.warning('No valid result')
+            self.log.info('No valid result')
             return False
 
         text = result.text.replace('\r\n', ', ')
@@ -150,7 +150,7 @@ class KMRelay(QObject):
         url = result.url
         elapsed = result.elapsed
 
-        self.log.debug(f'Result: {url}, {reason}, {status}, {elapsed}, {text}')
+        self.log.trace(f'Result: {url}, {reason}, {status}, {elapsed}, {text}')
 
         return True
 
@@ -252,7 +252,7 @@ class KMRelay(QObject):
         :return: success
         """
 
-        self.log.info(f'Pulse relay:{relayNumber}')
+        self.log.debug(f'Pulse relay:{relayNumber}')
         byteOn = self.getByte(relayNumber=relayNumber, state=True)
         byteOff = self.getByte(relayNumber=relayNumber, state=False)
         value1 = self.getRelay(f'/FFE0{byteOn:02X}')
@@ -260,10 +260,10 @@ class KMRelay(QObject):
         value2 = self.getRelay(f'/FFE0{byteOff:02X}')
 
         if value1 is None or value2 is None:
-            self.log.error(f'Relay:{relayNumber}')
+            self.log.warning(f'Relay:{relayNumber}')
             return False
         elif value1.reason != 'OK' or value2.reason != 'OK':
-            self.log.error(f'Relay:{relayNumber}')
+            self.log.warning(f'Relay:{relayNumber}')
             return False
 
         return True
@@ -276,14 +276,14 @@ class KMRelay(QObject):
         :return: success
         """
 
-        self.log.info(f'Switch relay:{relayNumber}')
+        self.log.debug(f'Switch relay:{relayNumber}')
         value = self.getRelay('/relays.cgi?relay={0:1d}'.format(relayNumber + 1))
 
         if value is None:
-            self.log.error(f'Relay:{relayNumber}')
+            self.log.warning(f'Relay:{relayNumber}')
             return False
         elif value.reason != 'OK':
-            self.log.error(f'Relay:{relayNumber}')
+            self.log.warning(f'Relay:{relayNumber}')
             return False
 
         return True
@@ -297,15 +297,15 @@ class KMRelay(QObject):
         :return: success
         """
 
-        self.log.info(f'Set relay:{relayNumber}')
+        self.log.debug(f'Set relay:{relayNumber}')
         byteOn = self.getByte(relayNumber=relayNumber, state=value)
         value = self.getRelay(f'/FFE0{byteOn:02X}')
 
         if value is None:
-            self.log.error(f'Relay:{relayNumber}')
+            self.log.warning(f'Relay:{relayNumber}')
             return False
         elif value.reason != 'OK':
-            self.log.error(f'Relay:{relayNumber}')
+            self.log.warning(f'Relay:{relayNumber}')
             return False
 
         return True

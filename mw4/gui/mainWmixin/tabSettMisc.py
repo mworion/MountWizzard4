@@ -188,9 +188,9 @@ class SettMisc(object):
         verBeta = [x for x in vPackage if 'b' in x]
         verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
 
-        self.log.info(f'Package Alpha  : {verAlpha[:10]}')
-        self.log.info(f'Package Beta   : {verBeta[:10]}')
-        self.log.info(f'Package Release: {verRelease[:10]}')
+        self.log.debug(f'Package Alpha  : {verAlpha[:10]}')
+        self.log.debug(f'Package Beta   : {verBeta[:10]}')
+        self.log.debug(f'Package Release: {verRelease[:10]}')
 
         if self.ui.versionBeta.isChecked():
             vPackage = verBeta
@@ -243,7 +243,7 @@ class SettMisc(object):
         hasBase = hasattr(sys, 'base_prefix')
 
         status = hasReal or hasBase and sys.base_prefix != sys.prefix
-        self.log.info(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
+        self.log.debug(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
 
         return status
 
@@ -321,7 +321,7 @@ class SettMisc(object):
 
         else:
             delta = time.time() - timeStart
-            self.log.info(f'pip install took {delta}s return code: '
+            self.log.debug(f'pip install took {delta}s return code: '
                           + str(self.process.returncode)
                           + f' output: [{output}]'
                           )
@@ -348,7 +348,7 @@ class SettMisc(object):
             self.app.message.emit(f'MountWizzard4 {versionPackage} installed', 1)
             self.app.message.emit('Please restart to enable new version', 1)
             packages = sorted(["%s==%s" % (i.key, i.version) for i in working_set])
-            self.log.info(f'After update:   {packages}')
+            self.log.debug(f'After update:   {packages}')
 
         else:
             self.app.message.emit('Could not install update installation ', 2)
@@ -385,7 +385,7 @@ class SettMisc(object):
             return False
 
         packages = sorted(["%s==%s" % (i.key, i.version) for i in working_set])
-        self.log.info(f'Before update:  {packages}')
+        self.log.debug(f'Before update:  {packages}')
 
         versionPackage = self.ui.versionAvailable.text()
         self.changeStyleDynamic(self.ui.installVersion, 'running', True)

@@ -115,7 +115,7 @@ class QAwesomeTooltipEventFilter(QObject):
 
         if event.type() == QEvent.ToolTipChange:
             if not isinstance(widget, QWidget):
-                self.log.error('QObject "{}" not a widget.'.format(widget))
+                self.log.warning('QObject "{}" not a widget.'.format(widget))
                 return False
 
             tooltip = widget.toolTip()
@@ -132,7 +132,7 @@ class QAwesomeTooltipEventFilter(QObject):
 
         elif event.type() == QEvent.ToolTip:
             if not isinstance(widget, QWidget):
-                self.log.error('QObject "{}" not a widget.'.format(widget))
+                self.log.warning('QObject "{}" not a widget.'.format(widget))
                 return False
 
             tooltip = widget.toolTip()
@@ -274,7 +274,7 @@ def setupWorkDirs(mwGlob):
             os.makedirs(mwGlob[dirPath])
 
         if not os.access(mwGlob[dirPath], os.W_OK):
-            log.error('no write access to {0}'.format(dirPath))
+            log.warning('no write access to {0}'.format(dirPath))
 
     return mwGlob
 
@@ -332,10 +332,10 @@ def extractDataFiles(mwGlob=None, splashW=None):
         filePath = mwGlob['dataDir'] + '/' + file
 
         if QFile.copy(f':/data/{file}', filePath):
-            log.info(f'Writing missing file:  [{file}]')
+            log.debug(f'Writing missing file:  [{file}]')
 
         else:
-            log.info(f'Already existing file: [{file}]')
+            log.debug(f'Already existing file: [{file}]')
 
         os.chmod(filePath, 0o666)
 

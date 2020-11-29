@@ -139,7 +139,7 @@ class AstrometryASTAP(object):
 
         else:
             delta = time.time() - timeStart
-            self.log.info(f'ASTAP took {delta}s return code: '
+            self.log.debug(f'ASTAP took {delta}s return code: '
                           + f'{self.process.returncode}'
                           + f' [{fitsPath}]'
                           + ' stderr: '
@@ -197,7 +197,7 @@ class AstrometryASTAP(object):
 
         if not os.path.isfile(fitsPath):
             self.result['message'] = 'Image missing'
-            self.log.info('Image missing for solving')
+            self.log.debug('Image missing for solving')
             return False
 
         tempFile = self.tempDir + '/temp'
@@ -237,12 +237,12 @@ class AstrometryASTAP(object):
         if retValue:
             text = self.returnCodes.get(retValue, 'Unknown code')
             self.result['message'] = f'ASTAP error: [{text}]'
-            self.log.error(f'ASTAP error [{text}] in [{fitsPath}]')
+            self.log.warning(f'ASTAP error [{text}] in [{fitsPath}]')
             return False
 
         if not os.path.isfile(wcsPath):
             self.result['message'] = 'Solve failed'
-            self.log.info(f'Solve files for [{wcsPath}] missing')
+            self.log.debug(f'Solve files for [{wcsPath}] missing')
             return False
 
         with open(wcsPath) as wcsTextFile:
@@ -298,18 +298,18 @@ class AstrometryASTAP(object):
 
         # checking binaries
         if not os.path.isfile(program):
-            self.log.warning(f'[{program}] not found')
+            self.log.info(f'[{program}] not found')
             sucProgram = False
         else:
             sucProgram = True
 
         # checking indexes
         if not glob.glob(index):
-            self.log.warning('No index files found')
+            self.log.info('No index files found')
             sucIndex = False
         else:
             sucIndex = True
 
-        self.log.warning(f'ASTAP OK, app:{program} index:{index}')
+        self.log.info(f'ASTAP OK, app:{program} index:{index}')
 
         return sucProgram, sucIndex

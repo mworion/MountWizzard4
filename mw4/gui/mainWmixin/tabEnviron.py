@@ -431,10 +431,10 @@ class Environ(object):
             return None
 
         if data.status_code != 200:
-            self.log.error(f'{url}: status nok')
+            self.log.warning(f'{url}: status nok')
             return None
 
-        self.log.debug(f'{url}: {data.status_code}')
+        self.log.trace(f'{url}: {data.status_code}')
 
         return data
 

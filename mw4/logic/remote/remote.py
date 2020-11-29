@@ -73,11 +73,11 @@ class Remote(QObject):
         hostAddress = QtNetwork.QHostAddress('127.0.0.1')
 
         if not self.tcpServer.listen(hostAddress, 3490):
-            self.log.warning('Port already in use')
+            self.log.info('Port already in use')
             self.tcpServer = None
             return False
         else:
-            self.log.info('Remote access enabled')
+            self.log.debug('Remote access enabled')
             self.tcpServer.newConnection.connect(self.addConnection)
             return True
 
@@ -110,7 +110,7 @@ class Remote(QObject):
         self.clientConnection = self.tcpServer.nextPendingConnection()
 
         if self.clientConnection == 0:
-            self.log.error('Cannot establish incoming connection')
+            self.log.warning('Cannot establish incoming connection')
             return False
 
         self.clientConnection.nextBlockSize = 0
@@ -118,7 +118,7 @@ class Remote(QObject):
         self.clientConnection.disconnected.connect(self.removeConnection)
         self.clientConnection.error.connect(self.handleError)
         connection = self.clientConnection.peerAddress().toString()
-        self.log.info(f'Connection to MountWizzard from {connection}')
+        self.log.debug(f'Connection to MountWizzard from {connection}')
 
         return True
 
@@ -142,12 +142,12 @@ class Remote(QObject):
         command = command.replace('\n', '')
         command = command.replace('\r', '')
 
-        self.log.info(f'Command {command} from {connection} received')
+        self.log.debug(f'Command {command} from {connection} received')
 
         if command in validCommands:
             self.app.remoteCommand.emit(command)
         else:
-            self.log.error(f'Unknown command {command} from {connection} received')
+            self.log.warning(f'Unknown command {command} from {connection} received')
 
         return True
 
@@ -160,7 +160,7 @@ class Remote(QObject):
 
         connection = self.clientConnection.peerAddress().toString()
         self.clientConnection.close()
-        self.log.info(f'Connection from {connection} closed')
+        self.log.debug(f'Connection from {connection} closed')
 
         return True
 

@@ -111,7 +111,7 @@ class AlpacaBase:
         :return:
         """
 
-        self.log.debug('get api version')
+        self.log.trace('get api version')
 
         url = '{0}://{1}:{2}/management/apiversions'.format(
             self.protocol,
@@ -123,11 +123,11 @@ class AlpacaBase:
             response = requests.get(url, timeout=3)
 
         except requests.exceptions.Timeout:
-            self.log.warning('timeout')
+            self.log.info('timeout')
             return None
 
         except requests.exceptions.ConnectionError:
-            self.log.info('[connection error')
+            self.log.debug('[connection error')
             return None
 
         except Exception as e:
@@ -135,17 +135,17 @@ class AlpacaBase:
             return None
 
         if response.status_code == 400 or response.status_code == 500:
-            self.log.info(f'{response.text}')
+            self.log.debug(f'{response.text}')
             return None
 
         response = response.json()
 
         if response['ErrorNumber'] != 0:
-            self.log.error(f'{response} err:{response["ErrorNumber"]}'
+            self.log.warning(f'{response} err:{response["ErrorNumber"]}'
                            f',{response["ErrorMessage"]}')
             return None
 
-        self.log.debug(f'[response:{response}')
+        self.log.trace(f'[response:{response}')
 
         return response['Value']
 
@@ -155,7 +155,7 @@ class AlpacaBase:
         :return:
         """
 
-        self.log.debug('discover devices')
+        self.log.trace('discover devices')
 
         url = '{0}://{1}:{2}/management/v{3}/configureddevices'.format(
             self.protocol,
@@ -168,11 +168,11 @@ class AlpacaBase:
             response = requests.get(url, timeout=3)
 
         except requests.exceptions.Timeout:
-            self.log.warning('timeout')
+            self.log.info('timeout')
             return None
 
         except requests.exceptions.ConnectionError:
-            self.log.info('[connection error')
+            self.log.debug('[connection error')
             return None
 
         except Exception as e:
@@ -180,17 +180,17 @@ class AlpacaBase:
             return None
 
         if response.status_code == 400 or response.status_code == 500:
-            self.log.info(f'{response.text}')
+            self.log.debug(f'{response.text}')
             return None
 
         response = response.json()
 
         if response['ErrorNumber'] != 0:
-            self.log.error(f'{response} err:{response["ErrorNumber"]}'
+            self.log.warning(f'{response} err:{response["ErrorNumber"]}'
                            f',{response["ErrorMessage"]}')
             return None
 
-        self.log.debug(f'[response:{response}')
+        self.log.trace(f'[response:{response}')
 
         return response['Value']
 
@@ -212,17 +212,17 @@ class AlpacaBase:
         uid = uuid.uuid4().int % 2**32
         data['ClientTransactionID'] = uid
 
-        self.log.debug(f'[{uid:10d}] {self.baseUrl}, attr:[{attr}]')
+        self.log.trace(f'[{uid:10d}] {self.baseUrl}, attr:[{attr}]')
 
         try:
             response = requests.get(f'{self.baseUrl}/{attr}', data=data, timeout=5)
 
         except requests.exceptions.Timeout:
-            self.log.warning(f'[{uid:10d}] timeout')
+            self.log.info(f'[{uid:10d}] timeout')
             return None
 
         except requests.exceptions.ConnectionError:
-            self.log.info(f'[{uid:10d}] connection error')
+            self.log.debug(f'[{uid:10d}] connection error')
             return None
 
         except Exception as e:
@@ -230,17 +230,17 @@ class AlpacaBase:
             return None
 
         if response.status_code == 400 or response.status_code == 500:
-            self.log.info(f'{response.text}')
+            self.log.debug(f'{response.text}')
             return None
 
         response = response.json()
 
         if response['ErrorNumber'] != 0:
-            self.log.error(f'{response} err:{response["ErrorNumber"]}'
+            self.log.warning(f'{response} err:{response["ErrorNumber"]}'
                            f',{response["ErrorMessage"]}')
             return None
 
-        self.log.debug(f'[{uid:10d}] response:{response}')
+        self.log.trace(f'[{uid:10d}] response:{response}')
         return response['Value']
 
     def put(self, attr: str, **data):
@@ -260,17 +260,17 @@ class AlpacaBase:
         uid = uuid.uuid4().int % 2**32
         data['ClientTransactionID'] = uid
 
-        self.log.debug(f'[{uid:08d}] {self.baseUrl}, attr:[{attr}]')
+        self.log.trace(f'[{uid:08d}] {self.baseUrl}, attr:[{attr}]')
 
         try:
             response = requests.put(f'{self.baseUrl}/{attr}', data=data, timeout=5)
 
         except requests.exceptions.Timeout:
-            self.log.warning(f'[{uid:10d}] timeout')
+            self.log.info(f'[{uid:10d}] timeout')
             return None
 
         except requests.exceptions.ConnectionError:
-            self.log.info(f'[{uid:10d}] connection error')
+            self.log.debug(f'[{uid:10d}] connection error')
             return None
 
         except Exception as e:
@@ -278,16 +278,16 @@ class AlpacaBase:
             return None
 
         if response.status_code == 400 or response.status_code == 500:
-            self.log.info(f'[{uid:10d}] {response.text}')
+            self.log.debug(f'[{uid:10d}] {response.text}')
             return None
 
         response = response.json()
 
         if response['ErrorNumber'] != 0:
-            self.log.error(f'err:{response["ErrorNumber"]},{response["ErrorMessage"]}')
+            self.log.warning(f'err:{response["ErrorNumber"]},{response["ErrorMessage"]}')
             return None
 
-        self.log.debug(f'[{uid:10d}] response:{response}')
+        self.log.trace(f'[{uid:10d}] response:{response}')
 
         return response
 
@@ -1948,7 +1948,7 @@ class Telescope(AlpacaBase):
             data = UTCDate.isoformat()
 
         else:
-            self.log.error(f'type error in: [{UTCDate}]')
+            self.log.warning(f'type error in: [{UTCDate}]')
             return None
 
         self.put("utcdate", UTCDate=data)

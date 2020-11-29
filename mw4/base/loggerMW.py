@@ -91,8 +91,9 @@ def setupLogging():
 
     :return: true for test purpose
     """
-    addLoggingLevel('UI', 35)
     addLoggingLevel('HEADER', 55)
+    addLoggingLevel('UI', 35)
+    addLoggingLevel('TRACE', 5)
 
     logging.Formatter.converter = timeTz
     timeTag = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
@@ -106,23 +107,16 @@ def setupLogging():
                         handlers=[logging.FileHandler(name)],
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
-
-    # setting different log level for the internal libraries we shift one step up
-    # standard ERROR    will be 50 CRITICAL    logging hard error statements without solution
-    # standard WARNING  will be 40 ERROR       classical warnings which still enables work
-    # standard INFO     will be 30 WARNING     all GUI interaction stuff with user
-    # standard DEBUG    will be 20 INFO        all functional interface parameters
-    # missing TRACE     will be 10 DEBUG       all low level communications (IP, SPI, etc)
     logging.getLogger('mountcontrol').setLevel(logging.INFO)
     logging.getLogger('indibase').setLevel(logging.INFO)
 
     # setting different log level for imported packages to avoid unnecessary data
     # urllib3 is used by requests, so we have to add this as well
-    logging.getLogger('PyQt5').setLevel(logging.ERROR)
-    logging.getLogger('requests').setLevel(logging.ERROR)
-    logging.getLogger('urllib3').setLevel(logging.ERROR)
-    logging.getLogger('matplotlib').setLevel(logging.ERROR)
-    logging.getLogger('astropy').setLevel(logging.ERROR)
+    logging.getLogger('PyQt5').setLevel(logging.WARNING)
+    logging.getLogger('requests').setLevel(logging.WARNING)
+    logging.getLogger('urllib3').setLevel(logging.WARNING)
+    logging.getLogger('matplotlib').setLevel(logging.WARNING)
+    logging.getLogger('astropy').setLevel(logging.WARNING)
     return True
 
 

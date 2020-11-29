@@ -338,7 +338,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                 polynomW = np.polyfit(xW, yW, poly)
 
             except Exception as e:
-                self.log.info(f'Interpolation failed: {e}')
+                self.log.debug(f'Interpolation failed: {e}')
 
             else:
                 hasNoNan = not np.isnan(polynomW).any()
@@ -352,7 +352,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                 polynomE = np.polyfit(xE, yE, poly)
 
             except Exception as e:
-                self.log.info(f'Interpolation failed: {e}')
+                self.log.debug(f'Interpolation failed: {e}')
 
             else:
                 hasNoNan = not np.isnan(polynomE).any()

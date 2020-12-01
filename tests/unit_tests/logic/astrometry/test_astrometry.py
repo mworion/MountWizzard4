@@ -270,12 +270,12 @@ def test_solveThreading_2(app):
 
 
 def test_solveThreading_3(app):
-    os.scandir('tests/image')
     app.framework = 'astap'
     file = 'tests/image/m51.fit'
+    app.mutexSolve.lock()
     suc = app.solveThreading(fitsPath=file)
+    assert not suc
     app.mutexSolve.unlock()
-    assert suc
 
 
 def test_solveThreading_4(app):
@@ -286,17 +286,6 @@ def test_solveThreading_4(app):
         suc = app.solveThreading(fitsPath=file)
         app.mutexSolve.unlock()
         assert suc
-
-
-def test_solveThreading_5(app):
-    app.mutexSolve.lock()
-    app.framework = 'astap'
-    file = 'tests/image/m51.fit'
-    with mock.patch.object(app.threadPool,
-                           'start'):
-        suc = app.solveThreading(fitsPath=file)
-        app.mutexSolve.unlock()
-        assert not suc
 
 
 def test_abort_1(app):

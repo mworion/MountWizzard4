@@ -4,8 +4,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# (c) 2016, 2017, 2018
-#
+# (c) 2016, 2017, 2018#
 # Licence APL2.0
 #
 ############################################################

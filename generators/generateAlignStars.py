@@ -19,8 +19,8 @@ HEADER = '''
 # Python  v3.7.4
 #
 # Michael Würtenberger
-# (c) 2019
 #
+# written in python3 , (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################

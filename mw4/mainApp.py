@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -201,7 +201,7 @@ class MountWizzard4(QObject):
     def checkAndSetAutomation(self):
         """
         the windows automation with pywinauto has a serious bug in python lib. the bugfix is
-        done from python 3.8.2 onwards. so to enable this work, we have to check the python
+        done from python3.8.2 onwards. so to enable this work, we have to check the python
         version used and set the topic adequately.
 
         :return:

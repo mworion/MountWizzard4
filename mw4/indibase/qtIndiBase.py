@@ -9,12 +9,8 @@
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
-# Python  v3.7.4
-
 #
-# Michael Würtenberger
-# (c) 2019
-#
+# written in python3 , (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################

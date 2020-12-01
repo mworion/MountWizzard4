@@ -21,7 +21,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.220.3',
+    version='0.220.4b1',
     packages=[
         'mw4',
         'mw4.base',
@@ -89,7 +89,6 @@ setup(
         'Development Status :: 4 - Beta',
         'Environment :: MacOS X',
         'Environment :: Other Environment',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation',

@@ -24,17 +24,19 @@ import socket
 import traceback
 import locale
 import html
-
-# the following lines should avoid errors messages from OLE Automation in conjunction with
-# PyQt5
 import warnings
-from astropy.utils.exceptions import AstropyWarning
-warnings.simplefilter('ignore', category=AstropyWarning)
+
+# remove some annoing warning
+#from astropy.utils.exceptions import AstropyWarning
+#warnings.simplefilter('ignore', category=AstropyWarning)
+
+# the following lines should avoid errors messages from OLE Automation in
+# conjunction with PyQt5
 warnings.simplefilter("ignore", UserWarning)
 sys.coinit_flags = 2
 
-# bigsur workaround
-os.environ['QT_MAC_WANTS_LAYER'] = '1'
+# bigsur workaround not needed for 5.15.2 onwards
+# os.environ['QT_MAC_WANTS_LAYER'] = '1'
 
 # external packages
 from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
@@ -50,16 +52,12 @@ from base.loggerMW import setupLogging
 setupLogging()
 from mainApp import MountWizzard4
 from gui.utilities.splashScreen import SplashScreen
-# noinspection PyUnresolvedReferences
 import resource.resources
 
 resource.resources.qInitResources()
-
-# package settings
 matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False
 
-# now starting with implementation
 log = logging.getLogger()
 
 

@@ -26,17 +26,10 @@ import locale
 import html
 import warnings
 
-# remove some annoing warning
-#from astropy.utils.exceptions import AstropyWarning
-#warnings.simplefilter('ignore', category=AstropyWarning)
-
 # the following lines should avoid errors messages from OLE Automation in
 # conjunction with PyQt5
 warnings.simplefilter("ignore", UserWarning)
 sys.coinit_flags = 2
-
-# bigsur workaround not needed for 5.15.2 onwards
-# os.environ['QT_MAC_WANTS_LAYER'] = '1'
 
 # external packages
 from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR

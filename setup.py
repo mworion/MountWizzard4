@@ -48,7 +48,7 @@ setup(
         'mw4.mountcontrol',
         'mw4.resource',
     ],
-    python_requires='>=3.6.0, <3.9',
+    python_requires='>=3.7.0, <3.9',
     install_requires=[
         'numpy==1.19.3',
         'matplotlib==3.3.3',
@@ -64,6 +64,7 @@ setup(
         'importlib_metadata==2.0.0',
         'deepdiff==5.0.2',
         'colour_demosaicing==0.1.5',
+        'wakeonlan==1.1.6'
     ]
     + (['pywin32==228'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])

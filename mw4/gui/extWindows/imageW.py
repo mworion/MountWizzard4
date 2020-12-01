@@ -507,7 +507,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
 
         fallback = list(self.stretchValues.keys())[0]
-        value = self.stretchValues.get(self.ui.stretch.currentText(), fallback)
+        value = self.stretchValues.get(self.ui.stretch.currentText(),
+                                       self.stretchValues[fallback])
         self.stretch = AsinhStretch(a=value)
 
         return True

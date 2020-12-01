@@ -248,11 +248,13 @@ def test_colorImage_2(function):
 
 
 def test_stretchImage_1(function):
+    function.stretchValues = {'Low': 1}
     suc = function.stretchImage()
     assert suc
 
 
 def test_stretchImage_2(function):
+    function.stretchValues = {'Low': 1}
     suc = function.stretchImage()
     assert suc
     assert isinstance(function.stretch, astropy.visualization.AsinhStretch)
@@ -602,8 +604,14 @@ def test_showImage_4(function):
 def test_showImage_5(function):
     function.ui.zoom.addItem(' 1x Zoom')
     shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-    suc = function.showImage(imagePath='tests/image/m51.fit')
-    assert suc
+    with mock.patch.object(function,
+                           'zoomImage'):
+        with mock.patch.object(function,
+                               'stackImages'):
+            with mock.patch.object(function,
+                                   'prepareImage'):
+                suc = function.showImage(imagePath='tests/image/m51.fit')
+                assert suc
 
 
 def test_showImage_6(function):

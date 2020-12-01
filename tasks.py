@@ -156,7 +156,7 @@ def test_ib(c):
 @task()
 def test_mw_cov(c):
     printMW('unit testing mountwizzard with coverage and upload')
-    runMW(c, 'flake8')
+    # runMW(c, 'flake8')
     runMW(c, 'pytest tests/unit_tests/zLoader --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/base --cov-append --cov=mw4/')
@@ -176,6 +176,8 @@ def test_mw_cov(c):
     runMW(c, 'pytest tests/unit_tests/gui/mainWindow --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/')
+    runMW(c, 'pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/')
+    runMW(c, 'pytest tests/unit_tests/indibase --cov-append --cov=mw4/')
     runMW(c, 'bash <(curl -s https://codecov.io/bash) -t e1965db7-af35-4a93-9f3d-ed12a528607b')
 
 
@@ -188,7 +190,7 @@ def upload_cov(c):
 @task()
 def test_mw(c):
     printMW('testing mountwizzard')
-    runMW(c, 'flake8')
+    # runMW(c, 'flake8')
     runMW(c, 'pytest tests/unit_tests/zLoader')
     runMW(c, 'pytest tests/unit_tests/zMainApp')
     runMW(c, 'pytest tests/unit_tests/base')
@@ -208,6 +210,8 @@ def test_mw(c):
     runMW(c, 'pytest tests/unit_tests/gui/mainWindow')
     runMW(c, 'pytest tests/unit_tests/gui/mainWmixin')
     runMW(c, 'pytest tests/unit_tests/gui/utilities')
+    runMW(c, 'pytest tests/unit_tests/mountcontrol')
+    runMW(c, 'pytest tests/unit_tests/indibase')
 
 
 @task(pre=[])

@@ -2,7 +2,7 @@ import time
 import skyfield.named_stars
 import skyfield.api
 import numpy as np
-import astropy._erfa as erfa
+import erfa
 
 HEADER = '''
 ############################################################

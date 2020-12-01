@@ -20,7 +20,7 @@ import logging
 
 # external packages
 import numpy as np
-import astropy._erfa as erfa
+import erfa
 
 # local imports
 from logic.modeldata.alignstars import generateAlignStars

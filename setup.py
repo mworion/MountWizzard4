@@ -51,13 +51,14 @@ setup(
     python_requires='>=3.6.0, <3.9',
     install_requires=[
         'numpy==1.19.3',
-        'matplotlib==3.3.2',
-        'astropy==4.0.3',
+        'matplotlib==3.3.3',
+        'pyerfa==1.7.1.1',
+        'astropy==4.2',
         'photutils==1.0.1',
         'scipy==1.5.3',
         'requests==2.24.0',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.31',
+        'skyfield==1.33',
         'sgp4>=2.13',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==2.0.0',
@@ -66,9 +67,9 @@ setup(
     ]
     + (['pywin32==228'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
-    + (['PyQt5==5.14.2'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt3D==5.14.0'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
-    + (['PyQtWebEngine==5.14.0'] if platform.machine() not in ['armv7l', 'aarch64'] else []),
+    + (['PyQt5==5.15.2'] if platform.machine() not in ['armv7l'] else [])
+    + (['PyQt3D==5.15.2'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
+    + (['PyQtWebEngine==5.15.2'] if platform.machine() not in ['armv7l', 'aarch64'] else []),
 
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

@@ -46,6 +46,7 @@ class CameraIndi(IndiClass):
         self.signals = signals
         self.data = data
         self.imagePath = ''
+        self.isDownloading = False
 
     def setUpdateConfig(self, deviceName):
         """
@@ -123,7 +124,7 @@ class CameraIndi(IndiClass):
 
         elif self.device.CCD_EXPOSURE['state'] == 'Busy':
             if value == 0:
-                self.signals.integrated.emit()
+                self.isDownloading = True
                 self.signals.message.emit('download')
 
             else:
@@ -131,6 +132,10 @@ class CameraIndi(IndiClass):
 
         elif self.device.CCD_EXPOSURE['state'] == 'Ok':
             self.signals.message.emit('')
+
+        if self.device.CCD_EXPOSURE['state'] in ['Idle', 'Ok'] and self.isDownloading:
+            self.signals.integrated.emit()
+            self.isDownloading = False
 
         return True
 

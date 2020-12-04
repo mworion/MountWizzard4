@@ -207,7 +207,12 @@ class ToolsMatplotlib:
             axe.spines['top'].set_color(color)
             axe.spines['left'].set_color(color)
             axe.spines['right'].set_color(color)
-            axe.grid(showAxes, color=colorGrid)
+
+            if showAxes:
+                axe.grid(showAxes, color=colorGrid)
+
+            else:
+                axe.grid(showAxes)
 
             if title:
                 axe.set_title(title, color=color, fontweight='bold', pad=15)

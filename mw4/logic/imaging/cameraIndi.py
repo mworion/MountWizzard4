@@ -110,10 +110,8 @@ class CameraIndi(IndiClass):
 
     def setExposureState(self):
         """
-
         :return: success
         """
-
         if not hasattr(self.device, 'CCD_EXPOSURE'):
             return False
 

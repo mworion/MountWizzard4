@@ -152,7 +152,6 @@ class CameraAscom(AscomClass):
         height = int(height)
 
         self.sendDownloadMode(fastReadout=fastReadout)
-
         self.client.StartX = posX
         self.client.StartY = posY
         self.client.NumX = int(width / binning)
@@ -160,7 +159,6 @@ class CameraAscom(AscomClass):
         self.client.BinX = binning
         self.client.BinY = binning
 
-        # catch the right position and time
         isMount = self.app.deviceStat['mount']
         if isMount:
             ra = self.app.mount.obsSite.raJNow
@@ -170,17 +168,17 @@ class CameraAscom(AscomClass):
                 ra, dec = transform.JNowToJ2000(ra, dec, obsTime)
 
         self.client.StartExposure(expTime, True)
-        
+
         timeLeft = expTime
         while not self.client.ImageReady:
             text = f'expose {timeLeft:3.0f} s'
             QTest.qWait(100)
             if timeLeft >= 0.1:
                 timeLeft -= 0.1
-                
+
             else:
                 timeLeft = 0
-                
+
             self.signals.message.emit(text)
             if self.abortExpose:
                 break
@@ -256,7 +254,7 @@ class CameraAscom(AscomClass):
                         width=width,
                         height=height,
                         focalLength=focalLength)
-                        
+
         self.threadPool.start(worker)
 
         return True

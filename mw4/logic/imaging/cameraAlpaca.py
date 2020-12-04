@@ -153,7 +153,6 @@ class CameraAlpaca(AlpacaClass):
         height = int(height)
 
         self.sendDownloadMode(fastReadout=fastReadout)
-        
         self.client.startx(StartX=posX)
         self.client.starty(StartY=posY)
         self.client.numx(NumX=int(width / binning))
@@ -161,7 +160,6 @@ class CameraAlpaca(AlpacaClass):
         self.client.binx(BinX=binning)
         self.client.biny(BinY=binning)
 
-        # catch the right position and time
         isMount = self.app.deviceStat['mount']
         if isMount:
             ra = self.app.mount.obsSite.raJNow
@@ -170,12 +168,9 @@ class CameraAlpaca(AlpacaClass):
             if ra is not None and dec is not None and obsTime is not None:
                 ra, dec = transform.JNowToJ2000(ra, dec, obsTime)
 
-        # start exposure
         self.client.startexposure(Duration=expTime, Light=True)
 
-        # wait for finishing
         timeLeft = expTime
-
         while not self.client.imageready():
             text = f'expose {timeLeft:3.0f} s'
             QTest.qWait(100)

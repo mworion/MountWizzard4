@@ -92,8 +92,6 @@ class MainWindow(MWidget,
     __all__ = ['MainWindow',
                ]
 
-    log = logging.getLogger(__name__)
-
     def __init__(self, app):
         super().__init__()
 

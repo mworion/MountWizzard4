@@ -191,6 +191,7 @@ def upload_cov(c):
 def test_mw(c):
     printMW('testing mountwizzard')
     # runMW(c, 'flake8')
+    """
     runMW(c, 'pytest tests/unit_tests/zLoader')
     runMW(c, 'pytest tests/unit_tests/zMainApp')
     runMW(c, 'pytest tests/unit_tests/base')
@@ -206,6 +207,7 @@ def test_mw(c):
     runMW(c, 'pytest tests/unit_tests/logic/remote')
     runMW(c, 'pytest tests/unit_tests/logic/telescope')
     runMW(c, 'pytest tests/unit_tests/gui/extWindows')
+    """
     runMW(c, 'pytest tests/unit_tests/gui/mainWindow')
     runMW(c, 'pytest tests/unit_tests/gui/mainWmixin')
     runMW(c, 'pytest tests/unit_tests/gui/utilities')

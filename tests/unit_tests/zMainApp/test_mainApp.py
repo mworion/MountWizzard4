@@ -30,6 +30,7 @@ import PyQt5
 from mainApp import MountWizzard4
 from base.loggerMW import addLoggingLevel
 
+
 @pytest.fixture(autouse=True, scope='module')
 def app(qapp):
     mwGlob = {'configDir': 'tests/config',

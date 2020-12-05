@@ -19,6 +19,7 @@
 import unittest.mock as mock
 import glob
 import os
+
 # external packages
 import pytest
 import PyQt5

@@ -16,7 +16,9 @@
 #
 ###########################################################
 # standard libraries
+
 # external packages
+
 # local import
 
 
@@ -30,14 +32,12 @@ class SettParkPos(object):
             self.ui = ui
             self.clickable = clickable
 
-        # define lists for the gui entries
         self.posButtons = list()
         self.posTexts = list()
         self.posAlt = list()
         self.posAz = list()
         self.posSaveButtons = list()
 
-        # dynamically generate the widgets
         self.setupParkPosGui()
         for posText in self.posTexts:
             posText.editingFinished.connect(self.updateParkPosButtonText)

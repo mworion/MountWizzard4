@@ -20,7 +20,6 @@
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-import PyQt5.uic
 from deepdiff import DeepDiff
 
 # local import

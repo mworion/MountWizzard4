@@ -21,7 +21,6 @@
 import PyQt5.QtCore
 import PyQt5.QtGui
 import PyQt5.QtWidgets
-import PyQt5.uic
 import requests
 import numpy as np
 import qimage2ndarray

@@ -15,10 +15,11 @@
 #
 ###########################################################
 # standard libraries
+
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-import PyQt5.uic
+
 # local import
 
 

@@ -59,7 +59,6 @@ class Mount(object):
     # 10 microns have 3492 as default port
     DEFAULT_PORT = 3492
 
-    # noinspection PyPep8Naming
     def __init__(self,
                  host=None,
                  MAC=None,
@@ -72,7 +71,6 @@ class Mount(object):
         self.pathToData = pathToData
         self.verbose = verbose
 
-        # instantiating the data classes
         self.firmware = Firmware(self.host)
         self.setting = Setting(self.host)
         self.satellite = Satellite(self.host)
@@ -83,9 +81,6 @@ class Mount(object):
                                )
         self.model = Model(self.host, self.obsSite)
         self.host = host
-
-        # suppress unnecessary warnings
-        np.seterr(invalid='ignore')
 
     def checkFormatHost(self, value):
         """
@@ -116,7 +111,6 @@ class Mount(object):
     def host(self, value):
         value = self.checkFormatHost(value)
         self._host = value
-        # now setting to subclasses
         self.firmware.host = value
         self.setting.host = value
         self.model.host = value

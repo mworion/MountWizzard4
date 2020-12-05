@@ -32,6 +32,7 @@ from PyQt5.QtCore import QTimer
 from mountcontrol.qtmount import Mount
 from skyfield.api import Topos
 from skyfield.api import load
+import astropy
 
 # local import
 from gui.mainWindow.mainW import MainWindow

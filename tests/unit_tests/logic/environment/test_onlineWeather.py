@@ -26,6 +26,8 @@ from mountcontrol.mount import Mount
 
 # local import
 from logic.environment.onlineWeather import OnlineWeather
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')

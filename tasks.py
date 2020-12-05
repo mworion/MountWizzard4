@@ -195,7 +195,6 @@ def test_mw(c):
     runMW(c, 'pytest tests/unit_tests/zMainApp')
     runMW(c, 'pytest tests/unit_tests/base')
     runMW(c, 'pytest tests/unit_tests/logic/astrometry')
-    runMW(c, 'pytest tests/unit_tests/logic/automation')
     runMW(c, 'pytest tests/unit_tests/logic/cover')
     runMW(c, 'pytest tests/unit_tests/logic/databaseProcessing')
     runMW(c, 'pytest tests/unit_tests/logic/dome')
@@ -212,6 +211,7 @@ def test_mw(c):
     runMW(c, 'pytest tests/unit_tests/gui/utilities')
     runMW(c, 'pytest tests/unit_tests/mountcontrol')
     runMW(c, 'pytest tests/unit_tests/indibase')
+    runMW(c, 'pytest tests/unit_tests/logic/automation')
 
 
 @task(pre=[])

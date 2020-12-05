@@ -39,6 +39,8 @@ from logic.environment.sensorWeather import SensorWeather
 from logic.environment.onlineWeather import OnlineWeather
 from logic.environment.weatherUPB import WeatherUPB
 from logic.environment.skymeter import Skymeter
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='module')

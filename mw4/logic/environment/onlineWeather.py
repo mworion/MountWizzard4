@@ -16,10 +16,12 @@
 ###########################################################
 # standard libraries
 import logging
+
 # external packages
 import PyQt5.QtCore
 import numpy as np
 import requests
+
 # local imports
 from base.tpool import Worker
 

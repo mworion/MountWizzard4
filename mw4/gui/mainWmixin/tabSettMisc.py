@@ -10,8 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
-#
+# written in python3, (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -51,16 +50,15 @@ class SettMisc(object):
         self.process = None
         self.mutexInstall = PyQt5.QtCore.QMutex()
 
-        # setting functional signals
         self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
         self.app.dome.signals.slewFinished.connect(lambda: self.playSound('DomeSlew'))
         self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
         self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
         self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
 
-        # setting ui signals
+        self.ui.loglevelDebugTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
-        self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
+        self.ui.loglevelStandard.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
         self.ui.isOnline.clicked.connect(self.setupIERS)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
@@ -68,7 +66,6 @@ class SettMisc(object):
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
 
-        # defining and loading all necessary audio files
         self.setupAudioSignals()
 
     def initConfig(self):
@@ -83,9 +80,9 @@ class SettMisc(object):
         config = self.app.config['mainW']
 
         self.setupAudioGui()
-        self.ui.loglevelDeepDebug.setChecked(config.get('loglevelDeepDebug', True))
+        self.ui.loglevelDebugTrace.setChecked(config.get('loglevelDebugTrace', True))
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
-        self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
+        self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', False))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
@@ -113,9 +110,9 @@ class SettMisc(object):
 
         config = self.app.config['mainW']
 
-        config['loglevelDeepDebug'] = self.ui.loglevelDeepDebug.isChecked()
+        config['loglevelDebugTrace'] = self.ui.loglevelDebugTrace.isChecked()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
-        config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
+        config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
@@ -188,9 +185,9 @@ class SettMisc(object):
         verBeta = [x for x in vPackage if 'b' in x]
         verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
 
-        self.log.info(f'Package Alpha  : {verAlpha[:10]}')
-        self.log.info(f'Package Beta   : {verBeta[:10]}')
-        self.log.info(f'Package Release: {verRelease[:10]}')
+        self.log.debug(f'Package Alpha  : {verAlpha[:10]}')
+        self.log.debug(f'Package Beta   : {verBeta[:10]}')
+        self.log.debug(f'Package Release: {verRelease[:10]}')
 
         if self.ui.versionBeta.isChecked():
             vPackage = verBeta
@@ -243,7 +240,7 @@ class SettMisc(object):
         hasBase = hasattr(sys, 'base_prefix')
 
         status = hasReal or hasBase and sys.base_prefix != sys.prefix
-        self.log.info(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
+        self.log.debug(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
 
         return status
 
@@ -321,7 +318,7 @@ class SettMisc(object):
 
         else:
             delta = time.time() - timeStart
-            self.log.info(f'pip install took {delta}s return code: '
+            self.log.debug(f'pip install took {delta}s return code: '
                           + str(self.process.returncode)
                           + f' output: [{output}]'
                           )
@@ -348,7 +345,7 @@ class SettMisc(object):
             self.app.message.emit(f'MountWizzard4 {versionPackage} installed', 1)
             self.app.message.emit('Please restart to enable new version', 1)
             packages = sorted(["%s==%s" % (i.key, i.version) for i in working_set])
-            self.log.info(f'After update:   {packages}')
+            self.log.debug(f'After update:   {packages}')
 
         else:
             self.app.message.emit('Could not install update installation ', 2)
@@ -385,7 +382,7 @@ class SettMisc(object):
             return False
 
         packages = sorted(["%s==%s" % (i.key, i.version) for i in working_set])
-        self.log.info(f'Before update:  {packages}')
+        self.log.debug(f'Before update:  {packages}')
 
         versionPackage = self.ui.versionAvailable.text()
         self.changeStyleDynamic(self.ui.installVersion, 'running', True)
@@ -406,13 +403,13 @@ class SettMisc(object):
 
         :return: nothing
         """
-        if self.ui.loglevelDeepDebug.isChecked():
-            setCustomLoggingLevel('DEBUG')
+        if self.ui.loglevelDebugTrace.isChecked():
+            setCustomLoggingLevel('TRACE')
 
         elif self.ui.loglevelDebug.isChecked():
-            setCustomLoggingLevel('INFO')
+            setCustomLoggingLevel('DEBUG')
 
-        elif self.ui.loglevelInfo.isChecked():
+        elif self.ui.loglevelStandard.isChecked():
             setCustomLoggingLevel('WARN')
 
     def setupAudioGui(self):

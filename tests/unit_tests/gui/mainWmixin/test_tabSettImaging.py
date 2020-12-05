@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -37,7 +37,6 @@ from logic.imaging.focuser import Focuser
 from logic.imaging.filter import Filter
 from logic.cover.cover import Cover
 from logic.telescope.telescope import Telescope
-from base.loggerMW import CustomLogger
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -71,7 +70,7 @@ def module_setup_teardown(qtbot):
     app.guiSetText = MWidget().guiSetText
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
-    app.log = CustomLogger(logging.getLogger(__name__), {})
+    app.log = logging.getLogger(__name__)
 
     qtbot.addWidget(app)
 

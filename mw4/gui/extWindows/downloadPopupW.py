@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -139,13 +139,13 @@ class DownloadPopup(toolsQtWidget.MWidget):
             self.getFileFromUrl(url, dest)
 
         except TimeoutError:
-            self.log.info(f'Download [{url}] timed out')
+            self.log.debug(f'Download [{url}] timed out')
             self.signalProgressBarColor.emit('red')
             time.sleep(1)
             return False
 
         except Exception as e:
-            self.log.error(f'Download [{url}] error: {e}')
+            self.log.warning(f'Download [{url}] error: {e}')
             self.signalProgressBarColor.emit('red')
             time.sleep(1)
             return False
@@ -160,7 +160,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
             self.unzipFile(dest)
 
         except Exception as e:
-            self.log.error(f'Error in unzip [{url}], {e}')
+            self.log.warning(f'Error in unzip [{url}], {e}')
             return False
 
         return True

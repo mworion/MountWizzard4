@@ -11,13 +11,12 @@
 # GUI with PyQT5 for python
 #
 # written in python3 , (c) 2019, 2020 by mworion
-#
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
 import pytest
-import logging
+
 # external packages
 
 # local import
@@ -27,8 +26,6 @@ from base import loggerMW
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
-    logger = logging.getLogger(__name__)
-    app = loggerMW.CustomLogger(logger, {})
 
     yield
 
@@ -47,9 +44,4 @@ def test_setCustomLoggingLevel():
     suc = loggerMW.setCustomLoggingLevel()
     assert suc
 
-
-def test_process():
-    val, kwargs = app.process('test', '10')
-    assert val == 'test'
-    assert kwargs == '10'
 

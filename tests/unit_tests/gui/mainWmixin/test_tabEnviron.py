@@ -10,8 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
-#
+# written in python3, (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -40,6 +39,8 @@ from logic.environment.sensorWeather import SensorWeather
 from logic.environment.onlineWeather import OnlineWeather
 from logic.environment.weatherUPB import WeatherUPB
 from logic.environment.skymeter import Skymeter
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='module')

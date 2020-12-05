@@ -3,7 +3,7 @@ MountWizzard4
 
 Welcome to MountWizzard4 is a utility for 10micron users for improving the workflow for
 astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu 18.04 tested). As a 
-python application, it should run in all environments supporting python 3.6-3.8 and PyQt5 
+python application, it should run in all environments supporting python3.6-3.8 and PyQt5
 as a GUI framework.
 
 .. note:: Please check these pages for some hints to your installation:
@@ -59,8 +59,6 @@ Version, build and code coverage status
 
 |CODECOV_CHART|
 
-|6U| |6W| |6M|
-
 |7U| |7W| |7M|
 
 |8U| |8W| |8M|
@@ -96,9 +94,6 @@ CS Michel
 .. |CODE_QUALITY_PYTHON| image:: https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
     :target: https://lgtm.com/projects/g/mworion/MountWizzard4/?mode=list
 
-.. |6U| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.6%20Ubuntu%20Package/badge.svg
-.. |6W| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.6%20Windows%20Package/badge.svg
-.. |6M| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.6%20MacOS%20Package/badge.svg
 .. |7U| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.7%20Ubuntu%20Package/badge.svg
 .. |7W| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.7%20Windows%20Package/badge.svg
 .. |7M| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.7%20MacOS%20Package/badge.svg

@@ -10,8 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
-#
+# written in python3, (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -22,6 +21,7 @@ import glob
 import os
 import gc
 import shutil
+import logging
 
 # external packages
 from PyQt5.QtCore import QObject
@@ -54,7 +54,7 @@ from logic.remote.remote import Remote
 from logic.measure.measure import MeasureData
 from logic.telescope.telescope import Telescope
 from logic.astrometry.astrometry import Astrometry
-
+from base.loggerMW import addLoggingLevel
 
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
@@ -163,6 +163,9 @@ def function_setup_teardown(qtbot):
         with mock.patch.object(ImageWindow,
                                'show'):
             app = MainWindow(app=Test())
+            app.log = logging.getLogger()
+            addLoggingLevel('TRACE', 5)
+            addLoggingLevel('UI', 35)
             yield
 
     files = glob.glob('tests/config/*.cfg')

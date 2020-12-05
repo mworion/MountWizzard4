@@ -1,0 +1,1336 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+#
+# written in python3 , (c) 2019, 2020 by mworion
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+import unittest
+import unittest.mock as mock
+import os
+# external packages
+import skyfield.api
+# local imports
+from mountcontrol.obsSite import ObsSite
+
+
+class TestConfigData(unittest.TestCase):
+
+    def setUp(self):
+        global pathToData
+        pathToData = os.getcwd() + '/data'
+
+    #
+    #
+    # testing the timescale reference
+    #
+    #
+
+    def test_Data_without_ts(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        self.assertEqual(isinstance(obsSite.ts, skyfield.api.Timescale), True)
+
+    def test_Data_with_ts(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        self.assertEqual(isinstance(obsSite.ts, skyfield.api.Timescale), True)
+
+    def test_Site_location_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        elev = '999.9'
+        lon = '+160*30:45.5'
+        lat = '+45*30:45.5'
+        obsSite.location = lat, lon, elev
+        self.assertAlmostEqual(160, obsSite.location.longitude.dms()[0], 6)
+        self.assertAlmostEqual(30, obsSite.location.longitude.dms()[1], 6)
+        self.assertAlmostEqual(45.5, obsSite.location.longitude.dms()[2], 6)
+        self.assertAlmostEqual(45, obsSite.location.latitude.dms()[0], 6)
+        self.assertAlmostEqual(30, obsSite.location.latitude.dms()[1], 6)
+        self.assertAlmostEqual(45.5, obsSite.location.latitude.dms()[2], 6)
+        self.assertAlmostEqual(999.9, obsSite.location.elevation.m, 6)
+
+    def test_Site_location_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        elev = '999.9'
+        lon = '+160*30:45.5'
+        lat = '+45*30:45.5'
+        obsSite.location = (lat, lon, elev)
+        self.assertAlmostEqual(160, obsSite.location.longitude.dms()[0], 6)
+        self.assertAlmostEqual(30, obsSite.location.longitude.dms()[1], 6)
+        self.assertAlmostEqual(45.5, obsSite.location.longitude.dms()[2], 6)
+        self.assertAlmostEqual(45, obsSite.location.latitude.dms()[0], 6)
+        self.assertAlmostEqual(30, obsSite.location.latitude.dms()[1], 6)
+        self.assertAlmostEqual(45.5, obsSite.location.latitude.dms()[2], 6)
+        self.assertAlmostEqual(999.9, obsSite.location.elevation.m, 6)
+
+    def test_Site_location_3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        elev = 100
+        lon = 100
+        lat = 45
+        obsSite.location = skyfield.api.Topos(longitude_degrees=lon,
+                                              latitude_degrees=lat,
+                                              elevation_m=elev)
+        self.assertAlmostEqual(100, obsSite.location.longitude.dms()[0], 6)
+        self.assertAlmostEqual(0, obsSite.location.longitude.dms()[1], 6)
+        self.assertAlmostEqual(0, obsSite.location.longitude.dms()[2], 6)
+        self.assertAlmostEqual(45, obsSite.location.latitude.dms()[0], 6)
+        self.assertAlmostEqual(0, obsSite.location.latitude.dms()[1], 6)
+        self.assertAlmostEqual(0, obsSite.location.latitude.dms()[2], 6)
+        self.assertAlmostEqual(100, obsSite.location.elevation.m, 6)
+
+    def test_Site_location_4(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        lon = '+160*30:45.5'
+        lat = '+45*30:45.5'
+        obsSite.location = (lat, lon)
+        self.assertEqual(None, obsSite.location)
+        self.assertEqual(None, obsSite._location)
+
+    def test_Site_location_5(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        lat = '+45*30:45.5'
+        obsSite.location = lat
+        self.assertEqual(None, obsSite.location)
+
+    def test_Site_timeJD(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.utc_ut1 = '0'
+        obsSite.timeJD = '2458240.12345678'
+        self.assertEqual(2458240.12345678, obsSite.timeJD.ut1)
+        obsSite.timeJD = 2458240.12345678
+        self.assertEqual(2458240.12345678, obsSite.timeJD.ut1)
+        obsSite.timeJD = '2458240.a23e5678'
+        self.assertAlmostEqual(obsSite.ts.now(), obsSite.timeJD, 4)
+        self.assertEqual(None, obsSite._timeJD)
+
+    def test_Site_timeJD1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.timeJD = '2458240.12345678'
+        self.assertAlmostEqual(obsSite.ts.now(), obsSite.timeJD, 4)
+
+    def test_Site_utc_ut1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.utc_ut1 = '123.11'
+        self.assertEqual(123.11 / 86400, obsSite.utc_ut1)
+
+    def test_Site_timeSidereal(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.timeSidereal = '12:30:00.00'
+        self.assertEqual(obsSite.timeSidereal.hours, 12.5)
+        obsSite.timeSidereal = '12:aa:30.01'
+        self.assertEqual(None, obsSite.timeSidereal)
+        self.assertEqual(None, obsSite._timeSidereal)
+        obsSite.timeSidereal = 34
+        self.assertEqual(None, obsSite.timeSidereal)
+
+    def test_Site_ra(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.raJNow = skyfield.api.Angle(hours=34)
+        self.assertEqual(34, obsSite.raJNow.hours)
+        obsSite.raJNow = 34
+        self.assertEqual(34, obsSite.raJNow.hours)
+        self.assertEqual(34, obsSite._raJNow.hours)
+        obsSite.raJNow = '34'
+        self.assertEqual(34, obsSite.raJNow.hours)
+        obsSite.raJNow = '34f'
+        self.assertEqual(None, obsSite.raJNow)
+
+    def test_Site_dec(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.decJNow = skyfield.api.Angle(degrees=34)
+        self.assertEqual(34, obsSite.decJNow.degrees)
+        obsSite.decJNow = 34
+        self.assertEqual(34, obsSite.decJNow.degrees)
+        self.assertEqual(34, obsSite._decJNow.degrees)
+        obsSite.decJNow = '34'
+        self.assertEqual(34, obsSite.decJNow.degrees)
+        obsSite.decJNow = '34f'
+        self.assertEqual(None, obsSite.decJNow)
+
+    def test_Site_alt(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.Alt = skyfield.api.Angle(degrees=34)
+        self.assertEqual(34, obsSite.Alt.degrees)
+        obsSite.Alt = 34
+        self.assertEqual(34, obsSite.Alt.degrees)
+        self.assertEqual(34, obsSite._Alt.degrees)
+        obsSite.Alt = '34'
+        self.assertEqual(34, obsSite.Alt.degrees)
+        obsSite.Alt = '34f'
+        self.assertEqual(None, obsSite.Alt)
+
+    def test_Site_az(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.Az = skyfield.api.Angle(degrees=34)
+        self.assertEqual(34, obsSite.Az.degrees)
+        obsSite.Az = 34
+        self.assertEqual(34, obsSite.Az.degrees)
+        self.assertEqual(34, obsSite._Az.degrees)
+        obsSite.Az = '34'
+        self.assertEqual(34, obsSite.Az.degrees)
+        obsSite.Az = '34f'
+        self.assertEqual(None, obsSite.Az)
+
+    def test_Site_pierside(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.pierside = 'E'
+        self.assertEqual(obsSite.pierside, 'E')
+        obsSite.pierside = 'e'
+        self.assertEqual(obsSite.pierside, 'E')
+        obsSite.pierside = 'w'
+        self.assertEqual(obsSite.pierside, 'W')
+        self.assertEqual(obsSite._pierside, 'W')
+        obsSite.pierside = 'W'
+        self.assertEqual(obsSite.pierside, 'W')
+        obsSite.pierside = 'WW'
+        self.assertEqual(obsSite.pierside, None)
+        obsSite.pierside = '12'
+        self.assertEqual(obsSite.pierside, None)
+        obsSite.pierside = 17
+        self.assertEqual(obsSite.pierside, None)
+
+    def test_Site_raTarget(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.raJNowTarget = '*34:00:00.00'
+        self.assertEqual(34, obsSite.raJNowTarget.hours)
+        obsSite.raJNowTarget = 34
+        self.assertEqual(None, obsSite.raJNowTarget)
+        self.assertEqual(None, obsSite._raJNowTarget)
+        obsSite.raJNowTarget = '34'
+        self.assertEqual(None, obsSite.raJNowTarget)
+        obsSite.raJNowTarget = '34f'
+        self.assertEqual(None, obsSite.raJNowTarget)
+
+    def test_Site_decTarget(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.decJNowTarget = '*34:00:00.00'
+        self.assertEqual(34, obsSite.decJNowTarget.degrees)
+        obsSite.decJNowTarget = 34
+        self.assertEqual(None, obsSite.decJNowTarget)
+        self.assertEqual(None, obsSite._decJNowTarget)
+        obsSite.decJNowTarget = '34'
+        self.assertEqual(None, obsSite.decJNowTarget)
+        obsSite.decJNowTarget = '34f'
+        self.assertEqual(None, obsSite.decJNowTarget)
+
+    def test_Site_altTarget(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.AltTarget = '*34:00:00.00'
+        self.assertEqual(34, obsSite.AltTarget.degrees)
+        obsSite.AltTarget = 34
+        self.assertEqual(None, obsSite.AltTarget)
+        self.assertEqual(None, obsSite._AltTarget)
+        obsSite.AltTarget = '34'
+        self.assertEqual(None, obsSite.AltTarget)
+        obsSite.AltTarget = '34f'
+        self.assertEqual(None, obsSite.AltTarget)
+
+    def test_Site_azTarget(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.AzTarget = '*34:00:00.00'
+        self.assertEqual(34, obsSite.AzTarget.degrees)
+        obsSite.AzTarget = 34
+        self.assertEqual(None, obsSite.AzTarget)
+        self.assertEqual(None, obsSite._AzTarget)
+        obsSite.AzTarget = '34'
+        self.assertEqual(None, obsSite.AzTarget)
+        obsSite.AzTarget = '34f'
+        self.assertEqual(None, obsSite.AzTarget)
+
+    def test_Site_piersideTarget(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.piersideTarget = '2'
+        self.assertEqual(obsSite.piersideTarget, 'W')
+        obsSite.piersideTarget = '3'
+        self.assertEqual(obsSite.piersideTarget, 'E')
+        obsSite.piersideTarget = '3'
+        self.assertEqual(obsSite.piersideTarget, 'E')
+        self.assertEqual(obsSite._piersideTarget, 'E')
+        obsSite.piersideTarget = '3'
+        self.assertEqual(obsSite.piersideTarget, 'E')
+        obsSite.piersideTarget = 'WW'
+        self.assertEqual(obsSite.piersideTarget, None)
+        obsSite.piersideTarget = '12'
+        self.assertEqual(obsSite.piersideTarget, None)
+        obsSite.piersideTarget = 0
+        self.assertEqual(obsSite.piersideTarget, None)
+
+    def test_Site_status(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.status = '1'
+        self.assertEqual(1, obsSite.status)
+        obsSite.status = 1
+        self.assertEqual(1, obsSite.status)
+        self.assertEqual(1, obsSite._status)
+        obsSite.status = '1d'
+        self.assertEqual(None, obsSite.status)
+        obsSite.status = '1d'
+        self.assertEqual(None, obsSite.status)
+        obsSite.status = '0'
+        self.assertEqual(0, obsSite.status)
+        obsSite.status = '100'
+        self.assertEqual(None, obsSite.status)
+
+    def test_Site_statusText1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.status = '1d'
+        self.assertEqual(None, obsSite.status)
+        # self.assertEqual(None, obsSite.statusText())
+
+    def test_Site_statusText2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.status = '1'
+        self.assertEqual(1, obsSite.status)
+        self.assertEqual('Stopped after STOP', obsSite.statusText())
+
+    def test_Site_statusSlew(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        obsSite.statusSlew = '1'
+        self.assertEqual(True, obsSite.statusSlew)
+        obsSite.statusSlew = 1
+        self.assertEqual(True, obsSite.statusSlew)
+        self.assertEqual(True, obsSite._statusSlew)
+        obsSite.statusSlew = True
+        self.assertEqual(True, obsSite.statusSlew)
+        obsSite.statusSlew = False
+        self.assertEqual(False, obsSite.statusSlew)
+        obsSite.statusSlew = 'True'
+        self.assertEqual(True, obsSite.statusSlew)
+        obsSite.statusSlew = '100'
+        self.assertEqual(True, obsSite.statusSlew)
+        obsSite.statusSlew = '-100'
+        self.assertEqual(True, obsSite.statusSlew)
+        obsSite.statusSlew = ''
+        self.assertEqual(False, obsSite.statusSlew)
+        obsSite.statusSlew = (0, 0)
+        self.assertEqual(True, obsSite.statusSlew)
+
+    def test_ObsSite_parseLocation_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['+0585.2', '-011:35:00.0', '+48:07:00.0', '03']
+        suc = obsSite.parseLocation(response, 4)
+        self.assertEqual(True, suc)
+
+    def test_ObsSite_parseLocation_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['+0585.2', '+011:35:00.0', '+48:07:00.0', '03']
+        suc = obsSite.parseLocation(response, 4)
+        self.assertEqual(True, suc)
+
+    def test_ObsSite_parseLocation_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        suc = obsSite.parseLocation(response, 4)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_parseLocation_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['+master', '-011:35:00.0', '+48:07:00.0', '03']
+
+        suc = obsSite.parseLocation(response, 4)
+        self.assertEqual(True, suc)
+
+    def test_ObsSite_parseLocation_not_ok3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['+0585.2', '-011:35:00.0', '+48:sdj.0', '03']
+
+        suc = obsSite.parseLocation(response, 4)
+        self.assertEqual(True, suc)
+
+    def test_ObsSite_parseLocation_not_ok4(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['+0585.2', '-011:EE:00.0', '+48:07:00.0', '03']
+
+        suc = obsSite.parseLocation(response, 4)
+        self.assertEqual(True, suc)
+
+    def test_ObsSite_poll_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['+0585.2', '-011:35:00.0', '+48:07:00.0', '03']
+
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 4
+            suc = obsSite.getLocation()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_poll_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['+0585.2', '-011:35:00.0', '+48:07:00.0', '03']
+
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 4
+            suc = obsSite.getLocation()
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_poll_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['+0585.2', '-011:35:00.0', '+48:07:00.0', '03']
+
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 6
+            suc = obsSite.getLocation()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing pollSetting pointing
+    #
+    #
+
+    def test_ObsSite_parsePointing_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['13:15:35.68', '0.12', '+100.0000', '-050.0000',
+                    '19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0']
+        suc = obsSite.parsePointing(response, 5)
+        self.assertEqual(True, suc)
+
+    def test_ObsSite_parsePointing_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['13:15:35.68', '0.12', '+100.0000', '-050.0000',
+                    '19.44591,+88.0032,W,000.0000,+47.9945,2458352.10403639,5,0']
+        suc = obsSite.parsePointing(response, 5)
+        self.assertEqual(True, suc)
+        self.assertEqual(type(obsSite.Az), skyfield.api.Angle)
+
+    def test_ObsSite_parsePointing_ok3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['13:15:35.68', '0.12', '+100.0000', '-050.0000',
+                    '19.44591,+88.0032,W,000.0001,+00.0000,2458352.10403639,5,0']
+        suc = obsSite.parsePointing(response, 5)
+        self.assertEqual(True, suc)
+        self.assertEqual(type(obsSite.Alt), skyfield.api.Angle)
+
+    def test_ObsSite_pollPointing_ok4(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['13:15:35.68', '0.12', '+100.0000', '-050.0000',
+                    '19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0']
+
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 5
+            suc = obsSite.pollPointing()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_pollPointing_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['13:15:35.68', '0.12',
+                    '19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0']
+
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 3
+            suc = obsSite.pollPointing()
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_pollPointing_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['13:15:35.68', '0.12',
+                    '19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0']
+
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 6
+            suc = obsSite.pollPointing()
+            self.assertEqual(False, suc)
+
+    def test_startSlewing_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        suc = obsSite.startSlewing(slewType='')
+        self.assertEqual(suc, False)
+
+    def test_startSlewing_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = '1#'
+
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = obsSite.startSlewing(slewType='normal')
+            self.assertEqual(suc, False)
+
+    def test_startSlewing_3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = '1#'
+
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 3
+            suc = obsSite.startSlewing(slewType='normal')
+            self.assertEqual(suc, False)
+
+    def test_startSlewing_4(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = '0#'
+
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.startSlewing(slewType='normal')
+            self.assertEqual(suc, True)
+
+    def test_ObsSite_slewAltAz_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['112+45:00:00.0', '180:00:00.0', '12:30:00.00', '+45:30:00.0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 7
+            alt = skyfield.api.Angle(degrees=30)
+            az = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetAltAz(alt, az)
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_slewAltAz_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        alt = 0
+        az = 0
+        suc = obsSite.setTargetAltAz(alt, az)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_slewAltAz_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        alt = skyfield.api.Angle(degrees=30)
+        az = 0
+        suc = obsSite.setTargetAltAz(alt, az)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_slewAltAz_not_ok3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        alt = skyfield.api.Angle(degrees=30)
+        az = skyfield.api.Angle(degrees=30)
+        suc = obsSite.setTargetAltAz(alt, az)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_slewAltAz_not_ok4(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['00']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            alt = skyfield.api.Angle(degrees=30)
+            az = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetAltAz(alt, az)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_slewAltAz_not_ok5(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            alt = skyfield.api.Angle(degrees=30)
+            az = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetAltAz(alt, az)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_slewAltAz_not_ok6(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['1#2']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            alt = skyfield.api.Angle(degrees=30)
+            az = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetAltAz(alt, az)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_slewAltAz_not_ok7(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1#2']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            alt = skyfield.api.Angle(degrees=30)
+            az = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetAltAz(alt, az)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_slewAltAz_not_ok8(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        alt = skyfield.api.Angle(hours=5, preference='hours')
+        az = skyfield.api.Angle(degrees=30)
+        suc = obsSite.setTargetAltAz(alt, az)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_slewAltAz_not_ok9(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        alt = skyfield.api.Angle(degrees=30)
+        az = skyfield.api.Angle(hours=5, preference='hours')
+        suc = obsSite.setTargetAltAz(alt, az)
+        self.assertEqual(False, suc)
+
+    #
+    #
+    # testing setTargetRaDec
+    #
+    #
+
+    def test_ObsSite_slewRaDec_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['112+45:00:00.0', '180:00:00.0', '12:30:00.00', '+45:30:00.0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            ra = skyfield.api.Angle(hours=5, preference='hours')
+            dec = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetRaDec(ra, dec)
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_slewRaDec_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['112+45:00:00.0', '180:00:00.0', '12:30:00.00', '+45:30:00.0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            ra = skyfield.api.Angle(hours=5, preference='hours')
+            dec = skyfield.api.Angle(degrees=30)
+            target = skyfield.starlib.Star(ra=ra, dec=dec)
+            suc = obsSite.setTargetRaDec(target=target)
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_slewRaDec_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        ra = 0
+        dec = 0
+        suc = obsSite.setTargetRaDec(ra, dec)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_slewRaDec_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        ra = None
+        dec = None
+        suc = obsSite.setTargetRaDec(ra, dec)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_slewRaDec_not_ok3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        ra = None
+        dec = None
+        target = None
+        suc = obsSite.setTargetRaDec(ra, dec, target)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_slewRaDec_not_ok4(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        ra = skyfield.api.Angle(hours=30, preference='hours')
+        dec = None
+        suc = obsSite.setTargetRaDec(ra, dec)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_slewRaDec_not_ok5(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        ra = skyfield.api.Angle(hours=30, preference='hours')
+        dec = skyfield.api.Angle(degrees=30)
+        suc = obsSite.setTargetRaDec(ra, dec)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_slewRaDec_not_ok6(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['00']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            ra = skyfield.api.Angle(hours=5, preference='hours')
+            dec = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetRaDec(ra, dec)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_slewRaDec_not_ok7(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            ra = skyfield.api.Angle(hours=5, preference='hours')
+            dec = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetRaDec(ra, dec)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_slewRaDec_not_ok8(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1#']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            ra = skyfield.api.Angle(hours=5, preference='hours')
+            dec = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetRaDec(ra, dec)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_slewRaDec_not_ok9(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1#']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            ra = skyfield.api.Angle(hours=5, preference='hours')
+            dec = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetRaDec(ra, dec)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_slewRaDec_not_ok10(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        ra = skyfield.api.Angle(degrees=30)
+        dec = skyfield.api.Angle(degrees=30)
+        suc = obsSite.setTargetRaDec(ra, dec)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_slewRaDec_not_ok11(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        ra = skyfield.api.Angle(degrees=30)
+        dec = skyfield.api.Angle(hours=5, preference='hours')
+        suc = obsSite.setTargetRaDec(ra, dec)
+        self.assertEqual(False, suc)
+
+    #
+    #
+    # testing shutdown
+    #
+    #
+
+    def test_ObsSite_shutdown_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.shutdown()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_shutdown_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.shutdown()
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_shutdown_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = obsSite.shutdown()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing setSite
+    #
+    #
+
+    def test_ObsSite_setLocation_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        observer = skyfield.api.Topos(latitude_degrees=50,
+                                      longitude_degrees=11,
+                                      elevation_m=580)
+        response = ['111']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setLocation(observer)
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setLocation_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        observer = skyfield.api.Topos(latitude_degrees=50,
+                                      longitude_degrees=11,
+                                      elevation_m=580)
+        response = ['101']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setLocation(observer)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setLocation_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        observer = skyfield.api.Topos(latitude_degrees=50,
+                                      longitude_degrees=11,
+                                      elevation_m=580)
+        response = ['111']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = obsSite.setLocation(observer)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setLocation_not_ok3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['111']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = obsSite.setLocation(1234)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setLatitude_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setLatitude(lat_degrees=50)
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setLatitude_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setLatitude(lat_degrees='50')
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setLatitude_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = obsSite.setLatitude(lat_degrees=50)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setLatitude_not_ok3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setLatitude(lat_degrees=50)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setLongitude_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setLongitude(lon_degrees=50)
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setLongitude_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setLongitude(lon_degrees='50')
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setLongitude_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = obsSite.setLongitude(lon_degrees=50)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setLongitude_not_ok3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setLongitude(lon_degrees=50)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setElevation_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setElevation('500')
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setElevation_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setElevation('er')
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setElevation_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = obsSite.setElevation('500')
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setElevation_not_ok3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setElevation('500')
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing startTracking
+    #
+    #
+
+    def test_ObsSite_startTracking_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.startTracking()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_startTracking_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.startTracking()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing stopTracking
+    #
+    #
+
+    def test_ObsSite_stopTracking_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.stopTracking()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_stopTracking_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.stopTracking()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing setLunarTracking
+    #
+    #
+
+    def test_ObsSite_setLunarTracking_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.setLunarTracking()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setLunarTracking_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.setLunarTracking()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing setSiderealTracking
+    #
+    #
+
+    def test_ObsSite_setSiderealTracking_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.setSiderealTracking()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setSiderealTracking_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.setSiderealTracking()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing setSolarTracking
+    #
+    #
+
+    def test_ObsSite_setSolarTracking_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.setSolarTracking()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setSolarTracking_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.setSolarTracking()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing park
+    #
+    #
+
+    def test_ObsSite_park_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.park()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_park_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.park()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing unpark
+    #
+    #
+
+    def test_ObsSite_unpark_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.unpark()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_unpark_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.unpark()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing parkOnActualPosition
+    #
+    #
+
+    def test_ObsSite_parkOnActualPosition_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.parkOnActualPosition()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_parkOnActualPosition_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = obsSite.parkOnActualPosition()
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_parkOnActualPosition_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = obsSite.parkOnActualPosition()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing stop
+    #
+    #
+
+    def test_ObsSite_stop_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.stop()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_stop_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.stop()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing flip
+    #
+    #
+
+    def test_ObsSite_flip_ok(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.flip()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_flip_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.flip()
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_flip_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = obsSite.flip()
+            self.assertEqual(False, suc)
+
+    def test_Checking_trackingRate1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite.trackingRate = '62.4'
+        self.assertEqual(True, obsSite.checkRateLunar())
+        self.assertEqual(False, obsSite.checkRateSidereal())
+        self.assertEqual(False, obsSite.checkRateSolar())
+
+    def test_Checking_trackingRate2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite.trackingRate = '60.2'
+        self.assertEqual(False, obsSite.checkRateLunar())
+        self.assertEqual(True, obsSite.checkRateSidereal())
+        self.assertEqual(False, obsSite.checkRateSolar())
+
+    def test_Checking_trackingRate3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite.trackingRate = '60.3'
+        self.assertEqual(False, obsSite.checkRateLunar())
+        self.assertEqual(False, obsSite.checkRateSidereal())
+        self.assertEqual(True, obsSite.checkRateSolar())
+
+    def test_Checking_trackingRate4(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite.trackingRate = '6'
+        self.assertEqual(False, obsSite.checkRateLunar())
+        self.assertEqual(False, obsSite.checkRateSidereal())
+        self.assertEqual(False, obsSite.checkRateSolar())
+
+    def test_ObsSite_trackingRate(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite.trackingRate = '67'
+        self.assertEqual(67, obsSite.trackingRate)
+
+    def test_moveNorth_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.moveNorth()
+            self.assertEqual(suc, False)
+
+    def test_moveNorth_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.moveNorth()
+            self.assertEqual(suc, True)
+
+    def test_moveEast_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.moveEast()
+            self.assertEqual(suc, False)
+
+    def test_moveEast_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.moveEast()
+            self.assertEqual(suc, True)
+
+    def test_moveSouth_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.moveSouth()
+            self.assertEqual(suc, False)
+
+    def test_moveSouth_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.moveSouth()
+            self.assertEqual(suc, True)
+
+    def test_moveWest_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.moveWest()
+            self.assertEqual(suc, False)
+
+    def test_moveWest_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.moveWest()
+            self.assertEqual(suc, True)
+
+    def test_stopMoveNorth_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.stopMoveNorth()
+            self.assertEqual(suc, False)
+
+    def test_stopMoveNorth_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.stopMoveNorth()
+            self.assertEqual(suc, True)
+
+    def test_stopMoveEast_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.stopMoveEast()
+            self.assertEqual(suc, False)
+
+    def test_stopMoveEast_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.stopMoveEast()
+            self.assertEqual(suc, True)
+
+    def test_stopMoveSouth_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.stopMoveSouth()
+            self.assertEqual(suc, False)
+
+    def test_stopMoveSouth_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.stopMoveSouth()
+            self.assertEqual(suc, True)
+
+    def test_stopMoveWest_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.stopMoveWest()
+            self.assertEqual(suc, False)
+
+    def test_stopMoveWest_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.stopMoveWest()
+            self.assertEqual(suc, True)
+
+    def test_stopMoveAll_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.stopMoveAll()
+            self.assertEqual(suc, False)
+
+    def test_stopMoveAll_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = []
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.stopMoveAll()
+            self.assertEqual(suc, True)

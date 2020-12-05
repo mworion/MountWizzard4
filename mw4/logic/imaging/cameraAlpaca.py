@@ -72,7 +72,7 @@ class CameraAlpaca(AlpacaClass):
         self.dataEntry(self.client.startx(), 'CCD_FRAME.X')
         self.dataEntry(self.client.starty(), 'CCD_FRAME.Y')
 
-        self.log.debug(f'Initial data: {self.data}')
+        self.log.trace(f'Initial data: {self.data}')
 
         return True
 
@@ -117,7 +117,7 @@ class CameraAlpaca(AlpacaClass):
             self.client.fastreadout(FastReadout=True)
 
         quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
-        self.log.info(f'camera has readout quality entry: {quality}')
+        self.log.debug(f'camera has readout quality entry: {quality}')
 
         return True
 
@@ -215,7 +215,7 @@ class CameraAlpaca(AlpacaClass):
                 header['TELESCOP'] = self.app.mount.firmware.product
 
             hdu.writeto(imagePath, overwrite=True)
-            self.log.warning(f'Saved Image: [{imagePath}]')
+            self.log.info(f'Saved Image: [{imagePath}]')
 
         if self.abortExpose:
             imagePath = ''

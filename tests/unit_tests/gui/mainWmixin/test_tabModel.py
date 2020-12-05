@@ -43,6 +43,8 @@ from logic.imaging.camera import Camera
 from logic.dome.dome import Dome
 from logic.astrometry.astrometry import Astrometry
 from logic.modeldata.buildpoints import DataPoint
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='module')

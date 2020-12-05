@@ -22,7 +22,6 @@ import logging
 import PyQt5
 
 # local imports
-from base.loggerMW import CustomLogger
 
 
 class MeasureDataRaw(PyQt5.QtCore.QObject):
@@ -40,8 +39,7 @@ class MeasureDataRaw(PyQt5.QtCore.QObject):
     __all__ = ['MeasureDataRaw',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server
     CYCLE_UPDATE_TASK = 1000

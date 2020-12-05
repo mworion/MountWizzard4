@@ -11,7 +11,6 @@
 # GUI with PyQT5 for python
 #
 # written in python3 , (c) 2019, 2020 by mworion
-#
 # Licence APL2.0
 #
 ###########################################################
@@ -21,7 +20,6 @@ import datetime
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-import PyQt5.uic
 from mountcontrol.convert import stringToAngle
 from skyfield.toposlib import Topos
 

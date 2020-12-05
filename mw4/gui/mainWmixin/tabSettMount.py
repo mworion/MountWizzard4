@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -95,29 +95,29 @@ class SettMount(object):
         """
 
         if not value:
-            self.log.warning('wrong MAC value: {0}'.format(value))
+            self.log.info('wrong MAC value: {0}'.format(value))
             return None
 
         if not isinstance(value, str):
-            self.log.warning('wrong MAC value: {0}'.format(value))
+            self.log.info('wrong MAC value: {0}'.format(value))
             return None
 
         value = value.upper()
         value = value.replace('.', ':')
         value = value.split(':')
         if len(value) != 6:
-            self.log.warning('wrong MAC value: {0}'.format(value))
+            self.log.info('wrong MAC value: {0}'.format(value))
             return None
 
         for chunk in value:
             if len(chunk) != 2:
-                self.log.warning('wrong MAC value: {0}'.format(value))
+                self.log.info('wrong MAC value: {0}'.format(value))
                 return None
 
             for char in chunk:
                 if char not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                                 'A', 'B', 'C', 'D', 'E', 'F']:
-                    self.log.warning('wrong MAC value: {0}'.format(value))
+                    self.log.info('wrong MAC value: {0}'.format(value))
                     return None
 
         # now we build the right format

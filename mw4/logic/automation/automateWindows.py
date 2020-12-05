@@ -10,8 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
-#
+# written in python3, (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -30,15 +29,13 @@ import pywinauto
 import pywinauto.controls.win32_controls as controls
 
 # local imports
-from base.loggerMW import CustomLogger
 
 
 class AutomateWindows(QObject):
     __all__ = ['AutomateWindows',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     UPDATER_EXE = 'GmQCIv2.exe'
     UTC_1_FILE = 'finals.data'
@@ -102,7 +99,7 @@ class AutomateWindows(QObject):
         self.threadPool = app.threadPool
 
         val = self.getAppSettings('10micron QCI')
-        self.log.info(f'QCI Updater settings: [{val}]')
+        self.log.debug(f'QCI Updater settings: [{val}]')
         self.available, self.name, self.installPath = val
         self.updaterRunnable = self.installPath + self.UPDATER_EXE
         self.updater = None
@@ -240,7 +237,7 @@ class AutomateWindows(QObject):
         """
         :return:
         """
-        self.log.info(f'Found QCI updater: [{self.installPath}]')
+        self.log.debug(f'Found QCI updater: [{self.installPath}]')
         if platform.architecture()[0] == '32bit':
             self.updater = pywinauto.Application(backend='win32')
             timings.Timings.fast()

@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -24,7 +24,6 @@ import os
 from sgp4.exporter import export_tle
 
 # local import
-from base.loggerMW import CustomLogger
 
 
 class DataWriter:
@@ -34,8 +33,7 @@ class DataWriter:
     __all__ = ['DataWriter',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
         super().__init__()

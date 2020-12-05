@@ -21,7 +21,6 @@
 import PyQt5.QtCore
 import PyQt5.QtGui
 import PyQt5.QtWidgets
-import PyQt5.uic
 import requests
 import numpy as np
 import qimage2ndarray
@@ -431,10 +430,10 @@ class Environ(object):
             return None
 
         if data.status_code != 200:
-            self.log.error(f'{url}: status nok')
+            self.log.warning(f'{url}: status nok')
             return None
 
-        self.log.debug(f'{url}: {data.status_code}')
+        self.log.trace(f'{url}: {data.status_code}')
 
         return data
 

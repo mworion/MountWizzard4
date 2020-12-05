@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -26,12 +26,11 @@ import platform
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
 from skyfield.api import Topos
-from mountcontrol import qtmount
 from importlib_metadata import version
 
 # local import
-from base.loggerMW import CustomLogger
 from base.loggerMW import setCustomLoggingLevel
+from mountcontrol import qtmount
 from gui.mainWindow.mainW import MainWindow
 from logic.powerswitch.kmRelay import KMRelay
 from logic.modeldata.buildpoints import DataPoint
@@ -64,8 +63,7 @@ class MountWizzard4(QObject):
     __all__ = ['MountWizzard4']
     __version__ = version('mountwizzard4')
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     message = pyqtSignal(str, int)
     messageQueue = Queue()
@@ -203,7 +201,7 @@ class MountWizzard4(QObject):
     def checkAndSetAutomation(self):
         """
         the windows automation with pywinauto has a serious bug in python lib. the bugfix is
-        done from python 3.8.2 onwards. so to enable this work, we have to check the python
+        done from python3.8.2 onwards. so to enable this work, we have to check the python
         version used and set the topic adequately.
 
         :return:
@@ -364,7 +362,7 @@ class MountWizzard4(QObject):
 
         if not os.path.isfile(fileName):
             self.config = self.defaultConfig()
-            self.log.warning(f'Config file {fileName} not existing')
+            self.log.info(f'Config file {fileName} not existing')
             return False
 
         try:
@@ -457,7 +455,7 @@ class MountWizzard4(QObject):
         :return: True for test purpose
         """
 
-        self.log.info('Message window: [{0}]'.format(message))
+        self.log.ui(f'Message window: [{message}]')
         self.messageQueue.put((message, mType))
 
         return True

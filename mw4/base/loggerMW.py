@@ -11,7 +11,6 @@
 # GUI with PyQT5 for python
 #
 # written in python3 , (c) 2019, 2020 by mworion
-#
 # Licence APL2.0
 #
 ###########################################################
@@ -35,9 +34,13 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
     currently configured logging class.
 
     `levelName` becomes an attribute of the `logging` module with the value
-    `levelNum`. `methodName` becomes a convenience method for both `logging`
+    `levelNum`.
+
+    `methodName` becomes a convenience method for both `logging`
     itself and the class returned by `logging.getLoggerClass()` (usually just
-    `logging.Logger`). If `methodName` is not specified, `levelName.lower()` is
+    `logging.Logger`).
+
+    If `methodName` is not specified, `levelName.lower()` is
     used.
 
     To avoid accidental clobberings of existing attributes, this method will
@@ -91,6 +94,9 @@ def setupLogging():
 
     :return: true for test purpose
     """
+    addLoggingLevel('HEADER', 55)
+    addLoggingLevel('UI', 35)
+    addLoggingLevel('TRACE', 5)
 
     logging.Formatter.converter = timeTz
     timeTag = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
@@ -105,22 +111,13 @@ def setupLogging():
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
 
-    # setting different log level for the internal libraries we shift one step up
-    # standard ERROR    will be CRITICAL    logging hard error statements without solution
-    # standard WARNING  will be ERROR       classical warnings which still enables work
-    # standard INFO     will be WARNING     all GUI interaction stuff with user
-    # standard DEBUG    will be INFO        all functional interface parameters
-    # missing TRACE     will be debug       all low level communications (IP, SPI, etc)
-    logging.getLogger('mountcontrol').setLevel(logging.INFO)
-    logging.getLogger('indibase').setLevel(logging.INFO)
-
     # setting different log level for imported packages to avoid unnecessary data
     # urllib3 is used by requests, so we have to add this as well
-    logging.getLogger('PyQt5').setLevel(logging.ERROR)
-    logging.getLogger('requests').setLevel(logging.ERROR)
-    logging.getLogger('urllib3').setLevel(logging.ERROR)
-    logging.getLogger('matplotlib').setLevel(logging.ERROR)
-    logging.getLogger('astropy').setLevel(logging.ERROR)
+    logging.getLogger('PyQt5').setLevel(logging.WARNING)
+    logging.getLogger('requests').setLevel(logging.WARNING)
+    logging.getLogger('urllib3').setLevel(logging.WARNING)
+    logging.getLogger('matplotlib').setLevel(logging.WARNING)
+    # logging.getLogger('astropy').setLevel(logging.WARNING)
     return True
 
 
@@ -131,27 +128,5 @@ def setCustomLoggingLevel(level='WARN'):
     :return: true for test purpose
     """
     logging.getLogger().setLevel(level)
-    logging.getLogger('indibase').setLevel(level)
-    logging.getLogger('mountcontrol').setLevel(level)
+
     return True
-
-
-class CustomLogger(logging.LoggerAdapter):
-    """
-    The CustomLogger class offers an adapter interface interface to allow a more customized
-    logging functionality.
-
-    """
-    __all__ = ['CustomLogger']
-
-    def process(self, msg, kwargs):
-        """
-        if you want to prepend or append the contextual information to the message string,
-        you just need to subclass LoggerAdapter and override process() to do what you need.
-        that's what i am doing here.
-
-        :param msg:
-        :param kwargs:
-        :return:
-        """
-        return f'{msg}', kwargs

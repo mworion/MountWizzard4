@@ -299,5 +299,3 @@ class App(QObject):
               'dataDir': 'tests/data',
               }
     uiWindows = {}
-
-

@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -20,7 +20,6 @@
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-import PyQt5.uic
 from deepdiff import DeepDiff
 
 # local import
@@ -200,7 +199,7 @@ class SettDevice:
 
         if 'dictionary_item_added' in res or 'dictionary_item_removed' in res:
             config['driversData'][driver] = defaultConfig
-            self.log.warning(f'Config for {[driver]} updated to default')
+            self.log.info(f'Config for {[driver]} updated to default')
             return False
 
         return True

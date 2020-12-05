@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -18,13 +18,16 @@
 # standard libraries
 import sys
 import unittest.mock as mock
+import logging
 
 # external packages
 import PyQt5
 
 # local import
 from mainApp import MountWizzard4
+from base.loggerMW import addLoggingLevel
 
+addLoggingLevel('TRACE', 5)
 
 def test_start_parameters(qapp):
     mwGlob = {'configDir': 'tests/config',

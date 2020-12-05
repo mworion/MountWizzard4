@@ -22,7 +22,6 @@ import logging
 import PyQt5
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 
 
@@ -50,8 +49,7 @@ class PegasusUPB:
 
     __all__ = ['PegasusUPB']
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
 

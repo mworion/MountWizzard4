@@ -11,18 +11,18 @@
 # GUI with PyQT5 for python
 #
 # written in python3 , (c) 2019, 2020 by mworion
-#
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
 import logging
+
 # external packages
 import PyQt5.QtCore
 import numpy as np
 import requests
+
 # local imports
-from base.loggerMW import CustomLogger
 from base.tpool import Worker
 
 
@@ -57,8 +57,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
     __all__ = ['OnlineWeather',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self,
                  app=None,
@@ -185,7 +184,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
             return False
 
         val = data['list'][0]
-        self.log.debug(f'onlineWeatherData:[{val}]')
+        self.log.trace(f'onlineWeatherData:[{val}]')
 
         if 'main' in val:
             self.data['temperature'] = val['main']['temp'] - 273.15
@@ -223,7 +222,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
             data = requests.get(url, timeout=30)
 
         except TimeoutError:
-            self.log.error(f'{url} not reachable')
+            self.log.warning(f'{url} not reachable')
             return None
 
         except Exception as e:
@@ -231,7 +230,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
             return None
 
         if data.status_code != 200:
-            self.log.error(f'{url}: status nok')
+            self.log.warning(f'{url}: status nok')
             return None
 
         return data.json()
@@ -279,6 +278,6 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         webSite = f'http://{self.hostaddress}/data/2.5/forecast'
         url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&APPID={self.apiKey}'
         self.getOpenWeatherMapData(url=url)
-        self.log.info(f'{url}')
+        self.log.debug(f'{url}')
 
         return True

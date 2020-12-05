@@ -10,8 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
-#
+# written in python3, (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -21,10 +20,9 @@ import logging
 # external packages
 from PyQt5.QtTest import QTest
 from PyQt5.QtCore import QTimer
-from indibase import qtIndiBase
 
 # local imports
-from base.loggerMW import CustomLogger
+from indibase import qtIndiBase
 
 
 class IndiClass:
@@ -37,8 +35,7 @@ class IndiClass:
 
     __all__ = ['IndiClass']
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
@@ -202,7 +199,7 @@ class IndiClass:
 
         if self.deviceName:
             suc = self.client.watchDevice(self.deviceName)
-            self.log.info(f'INDI watch: {self.deviceName}, watch: result:{suc}')
+            self.log.debug(f'INDI watch: {self.deviceName}, watch: result:{suc}')
             return suc
         return False
 
@@ -213,7 +210,7 @@ class IndiClass:
         :return: true for test purpose
         """
 
-        self.log.info(f'INDI server disconnected, devices: {devices.keys()}')
+        self.log.debug(f'INDI server disconnected, devices: {devices.keys()}')
         return True
 
     def newDevice(self, deviceName):
@@ -229,7 +226,7 @@ class IndiClass:
             self.device = self.client.getDevice(deviceName)
             self.app.message.emit(f'INDI device found:   [{deviceName}]', 0)
         else:
-            self.log.warning(f'INDI device snoop: {deviceName}')
+            self.log.info(f'INDI device snoop: {deviceName}')
 
         return True
 
@@ -271,7 +268,7 @@ class IndiClass:
         if suc:
             return True
 
-        self.log.info(f'Cannot start to: {self.deviceName} retry: {self.retryCounter}')
+        self.log.debug(f'Cannot start to: {self.deviceName} retry: {self.retryCounter}')
 
         if self.retryCounter < self.NUMBER_RETRY:
             self.timerRetry.start(self.RETRY_DELAY)
@@ -292,7 +289,7 @@ class IndiClass:
         suc = self.client.connectServer()
 
         if not suc:
-            self.log.info(f'Cannot start to: {self.deviceName} retry: {self.retryCounter}')
+            self.log.debug(f'Cannot start to: {self.deviceName} retry: {self.retryCounter}')
         else:
             self.timerRetry.start(self.RETRY_DELAY)
 
@@ -565,7 +562,7 @@ class IndiClass:
         if self.discoverType is None:
             return False
 
-        self.log.info(f'Found: [{deviceName}], interface: [{interface}]')
+        self.log.debug(f'Found: [{deviceName}], interface: [{interface}]')
 
         interface = int(interface)
 

@@ -11,7 +11,6 @@
 # GUI with PyQT5 for python
 #
 # written in python3 , (c) 2019, 2020 by mworion
-#
 # Licence APL2.0
 #
 ###########################################################
@@ -23,10 +22,9 @@ import os
 import PyQt5
 from astropy.io import fits
 import numpy as np
-from mountcontrol.convert import convertToAngle
 
 # local imports
-from base.loggerMW import CustomLogger
+from mountcontrol.convert import convertToAngle
 from base import tpool
 from logic.astrometry.astrometryNET import AstrometryNET
 from logic.astrometry.astrometryASTAP import AstrometryASTAP
@@ -66,8 +64,7 @@ class Astrometry:
     __all__ = ['Astrometry',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
 
@@ -108,7 +105,7 @@ class Astrometry:
             raHint = convertToAngle(ra, isHours=True)
             decHint = convertToAngle(dec, isHours=False)
 
-        self.log.info(f'Header RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale:'
+        self.log.debug(f'Header RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale:'
                       f' {scaleHint}')
 
         return raHint, decHint, scaleHint, ra, dec
@@ -162,7 +159,7 @@ class Astrometry:
                  error in arcsec and flag if image is flipped
         """
 
-        self.log.info(f'wcs header: [{wcsHeader}]')
+        self.log.debug(f'wcs header: [{wcsHeader}]')
         raJ2000 = convertToAngle(wcsHeader.get('CRVAL1'), isHours=True)
         decJ2000 = convertToAngle(wcsHeader.get('CRVAL2'), isHours=False)
 
@@ -264,7 +261,7 @@ class Astrometry:
             return False
 
         if not self.mutexSolve.tryLock():
-            self.log.info('overrun in solve threading')
+            self.log.debug('overrun in solve threading')
             self.signals.done.emit(solver.result)
             return False
 

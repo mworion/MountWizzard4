@@ -10,8 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
-#
+# written in python3, (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -27,7 +26,6 @@ import platform
 from astropy.io import fits
 
 # local imports
-from base.loggerMW import CustomLogger
 
 
 class AstrometryASTAP(object):
@@ -51,8 +49,7 @@ class AstrometryASTAP(object):
                    32: 'No Star database found',
                    33: 'Error reading star database'}
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, parent):
         self.parent = parent
@@ -132,7 +129,7 @@ class AstrometryASTAP(object):
             stdout, stderr = self.process.communicate(timeout=self.timeout)
 
         except subprocess.TimeoutExpired:
-            self.log.critical('Timeout expired')
+            self.log.error('Timeout expired')
             return False
 
         except Exception as e:
@@ -141,7 +138,7 @@ class AstrometryASTAP(object):
 
         else:
             delta = time.time() - timeStart
-            self.log.info(f'ASTAP took {delta}s return code: '
+            self.log.debug(f'ASTAP took {delta}s return code: '
                           + f'{self.process.returncode}'
                           + f' [{fitsPath}]'
                           + ' stderr: '
@@ -199,7 +196,7 @@ class AstrometryASTAP(object):
 
         if not os.path.isfile(fitsPath):
             self.result['message'] = 'Image missing'
-            self.log.info('Image missing for solving')
+            self.log.debug('Image missing for solving')
             return False
 
         tempFile = self.tempDir + '/temp'
@@ -239,12 +236,12 @@ class AstrometryASTAP(object):
         if retValue:
             text = self.returnCodes.get(retValue, 'Unknown code')
             self.result['message'] = f'ASTAP error: [{text}]'
-            self.log.error(f'ASTAP error [{text}] in [{fitsPath}]')
+            self.log.warning(f'ASTAP error [{text}] in [{fitsPath}]')
             return False
 
         if not os.path.isfile(wcsPath):
             self.result['message'] = 'Solve failed'
-            self.log.info(f'Solve files for [{wcsPath}] missing')
+            self.log.debug(f'Solve files for [{wcsPath}] missing')
             return False
 
         with open(wcsPath) as wcsTextFile:

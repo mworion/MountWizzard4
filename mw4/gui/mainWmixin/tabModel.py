@@ -10,8 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
-#
+# written in python3, (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -201,19 +200,19 @@ class Model:
         :param result: true for test purpose
         :return: success
         """
-        self.log.info('Processing astrometry result')
+        self.log.debug('Processing astrometry result')
         if self.resultQueue.empty():
-            self.log.warning('empty result queue')
+            self.log.info('empty result queue')
             return False
 
         mPoint = self.resultQueue.get()
-        self.log.info(f'Result from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+        self.log.debug(f'Result from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
         number = mPoint["lenSequence"]
         count = mPoint["countSequence"]
 
         if not result:
-            self.log.info('Solving result is missing')
+            self.log.debug('Solving result is missing')
             return False
 
         mPoint.update(result)
@@ -226,7 +225,7 @@ class Model:
             mPoint['decJNowS'] = decJNowS
 
             if mPoint['errorRMS_S'] < self.MAX_ERROR_MODEL_POINT:
-                self.log.info(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+                self.log.debug(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
                 self.modelQueue.put(mPoint)
 
                 self.app.data.setStatusBuildP(count - 1, False)
@@ -278,18 +277,18 @@ class Model:
 
         :return: success
         """
-        self.log.info('Solving started')
+        self.log.debug('Solving started')
         if self.solveQueue.empty():
-            self.log.warning('empty solve queue')
+            self.log.info('empty solve queue')
             return False
 
         mPoint = self.solveQueue.get()
-        self.log.info(f'Solve from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+        self.log.debug(f'Solve from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
         self.app.showImage.emit(mPoint["imagePath"])
 
         self.resultQueue.put(mPoint)
-        self.log.info(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+        self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         self.app.astrometry.solveThreading(fitsPath=mPoint["imagePath"],
                                            updateFits=False,
                                            )
@@ -320,13 +319,13 @@ class Model:
 
         :return: success
         """
-        self.log.info('Imaging started')
+        self.log.debug('Imaging started')
         if self.imageQueue.empty():
-            self.log.warning('empty image queue')
+            self.log.info('empty image queue')
             return False
 
         mPoint = self.imageQueue.get()
-        self.log.info(f'Image from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+        self.log.debug(f'Image from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
         self.collector.resetSignals()
 
@@ -350,7 +349,7 @@ class Model:
         mPoint['pierside'] = self.app.mount.obsSite.pierside
 
         self.solveQueue.put(mPoint)
-        self.log.info(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+        self.log.debug(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
         text = f'Exposing image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
@@ -371,13 +370,13 @@ class Model:
         :return: success
 
         """
-        self.log.info('Slew started')
+        self.log.debug('Slew started')
         if self.slewQueue.empty():
-            self.log.warning('Empty slew queue')
+            self.log.info('Empty slew queue')
             return False
 
         mPoint = self.slewQueue.get()
-        self.log.info(f'Slew from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+        self.log.debug(f'Slew from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
                                                     az_degrees=mPoint['azimuth'],
@@ -399,7 +398,7 @@ class Model:
 
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
-        self.log.info(f'Queued to image [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+        self.log.debug(f'Queued to image [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
         text = f'Slewing  mount:      point: {mPoint["countSequence"]:03d}, '
         text += f'altitude: {mPoint["altitude"]:3.0f}, '
@@ -607,7 +606,7 @@ class Model:
         if len(mountModel.starList) != len(self.model):
             text = f'length starList [{len(mountModel.starList)}] and length '
             text += f'model [{len(self.model)}] is different'
-            self.log.info(text)
+            self.log.debug(text)
             self.model = []
 
         self.model = self.writeRetrofitData(mountModel, self.model)
@@ -681,7 +680,7 @@ class Model:
         :return: success
         """
         if len(self.model) < 3:
-            self.log.info(f'Only {len(self.model)} points available')
+            self.log.debug(f'Only {len(self.model)} points available')
             return False
 
         self.app.mount.signals.alignDone.connect(self.saveModelFinish)
@@ -823,7 +822,7 @@ class Model:
             return True
 
         self.app.message.emit('Starting retry failed points', 1)
-        self.log.info('Retry started')
+        self.log.debug('Retry started')
 
         numberPointsRetry = self.retryQueue.qsize()
         countPointsRetry = 0
@@ -891,7 +890,7 @@ class Model:
 
         suc = self.app.mount.model.deleteName('backup')
         if not suc:
-            self.log.info('Cannot delete backup model on mount')
+            self.log.debug('Cannot delete backup model on mount')
 
         suc = self.app.mount.model.storeName('backup')
         if not suc:

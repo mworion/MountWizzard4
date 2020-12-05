@@ -10,8 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python3
 #
-# written in python 3, (c) 2019, 2020 by mworion
-#
+# written in python3, (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -21,11 +20,12 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.220.4',
+    version='0.220.4b1',
     packages=[
         'mw4',
         'mw4.base',
         'mw4.gui',
+        'mw4.indibase',
         'mw4.gui.extWindows',
         'mw4.gui.extWindows.simulator',
         'mw4.gui.mainWmixin',
@@ -44,31 +44,32 @@ setup(
         'mw4.logic.powerswitch',
         'mw4.logic.remote',
         'mw4.logic.telescope',
+        'mw4.mountcontrol',
         'mw4.resource',
     ],
-    python_requires='>=3.6.0, <3.9',
+    python_requires='>=3.7.0, <3.9',
     install_requires=[
-        'mountcontrol==0.177',
-        'indibase==0.138',
         'numpy==1.19.3',
-        'matplotlib==3.3.2',
-        'astropy==4.0.3',
+        'matplotlib==3.3.3',
+        'pyerfa==1.7.1.1',
+        'astropy==4.2',
         'photutils==1.0.1',
         'scipy==1.5.3',
         'requests==2.24.0',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.31',
+        'skyfield==1.33',
         'sgp4>=2.13',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==2.0.0',
         'deepdiff==5.0.2',
         'colour_demosaicing==0.1.5',
+        'wakeonlan==1.1.6'
     ]
     + (['pywin32==228'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
-    + (['PyQt5==5.14.2'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt3D==5.14.0'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
-    + (['PyQtWebEngine==5.14.0'] if platform.machine() not in ['armv7l', 'aarch64'] else []),
+    + (['PyQt5==5.15.2'] if platform.machine() not in ['armv7l'] else [])
+    + (['PyQt3D==5.15.2'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
+    + (['PyQtWebEngine==5.15.2'] if platform.machine() not in ['armv7l', 'aarch64'] else []),
 
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
@@ -88,7 +89,6 @@ setup(
         'Development Status :: 4 - Beta',
         'Environment :: MacOS X',
         'Environment :: Other Environment',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation',

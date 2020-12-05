@@ -23,7 +23,6 @@ import platform
 import PyQt5
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.imaging.filterIndi import FilterIndi
 from logic.imaging.filterAlpaca import FilterAlpaca
 if platform.system() == 'Windows':
@@ -57,8 +56,7 @@ class Filter:
     __all__ = ['Filter',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
 

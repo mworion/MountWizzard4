@@ -31,7 +31,6 @@ from skyfield.toposlib import Topos
 from gui.mainWmixin.tabSettParkPos import SettParkPos
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
-from base.loggerMW import CustomLogger
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -66,7 +65,7 @@ def module_setup_teardown(qtbot):
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
     app.deviceStat = dict()
-    app.log = CustomLogger(logging.getLogger(__name__), {})
+    app.log = logging.getLogger(__name__)
     app.threadPool = QThreadPool()
 
     qtbot.addWidget(app)

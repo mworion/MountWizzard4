@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -29,7 +29,6 @@ from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 
 # local imports
-from base.loggerMW import CustomLogger
 
 __all__ = [
     'ToolsMatplotlib',
@@ -43,8 +42,7 @@ class ToolsMatplotlib:
     __all__ = ['ToolsMatplotlib',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     @staticmethod
     def findIndexValue(ui, searchString, relaxed=False):
@@ -209,7 +207,12 @@ class ToolsMatplotlib:
             axe.spines['top'].set_color(color)
             axe.spines['left'].set_color(color)
             axe.spines['right'].set_color(color)
-            axe.grid(showAxes, color=colorGrid)
+
+            if showAxes:
+                axe.grid(showAxes, color=colorGrid)
+
+            else:
+                axe.grid(showAxes)
 
             if title:
                 axe.set_title(title, color=color, fontweight='bold', pad=15)

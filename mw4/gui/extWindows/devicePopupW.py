@@ -10,8 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
-#
+# written in python3, (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -259,7 +258,7 @@ class DevicePopup(toolsQtWidget.MWidget):
                 frameworkData[element] = ui.value()
 
             else:
-                self.log.info(f'Element {element} in gui for framework {framework} not found')
+                self.log.debug(f'Element {element} in gui for framework {framework} not found')
 
         return True
 

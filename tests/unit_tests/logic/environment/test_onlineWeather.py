@@ -11,7 +11,6 @@
 # GUI with PyQT5 for python
 #
 # written in python3 , (c) 2019, 2020 by mworion
-#
 # Licence APL2.0
 #
 ###########################################################
@@ -27,6 +26,8 @@ from mountcontrol.mount import Mount
 
 # local import
 from logic.environment.onlineWeather import OnlineWeather
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')

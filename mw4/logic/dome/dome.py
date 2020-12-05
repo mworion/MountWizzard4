@@ -10,8 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
-#
+# written in python3, (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -23,7 +22,6 @@ import platform
 import PyQt5
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.dome.domeIndi import DomeIndi
 from logic.dome.domeAlpaca import DomeAlpaca
 if platform.system() == 'Windows':
@@ -57,8 +55,7 @@ class Dome:
     __all__ = ['Dome',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
         self.app = app
@@ -189,7 +186,7 @@ class Dome:
             alt, az, _, _, _ = mount.calcTransformationMatrices()
 
             if alt is None or az is None:
-                self.log.warning(f'Geometry error, alt:{altitude}, az:{azimuth}')
+                self.log.info(f'Geometry error, alt:{altitude}, az:{azimuth}')
                 alt = altitude
                 az = azimuth
 

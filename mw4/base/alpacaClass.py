@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -23,7 +23,6 @@ from PyQt5.QtCore import QTimer
 
 # local imports
 from base.alpacaBase import AlpacaBase
-from base.loggerMW import CustomLogger
 from base.tpool import Worker
 
 
@@ -35,8 +34,7 @@ class AlpacaClass:
         >>> a = AlpacaClass(app=None, data=None, threadPool=None)
     """
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     # relaxed generic timing
     CYCLE_POLL_STATUS = 3000

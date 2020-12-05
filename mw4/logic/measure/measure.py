@@ -11,7 +11,6 @@
 # GUI with PyQT5 for python
 #
 # written in python3 , (c) 2019, 2020 by mworion
-#
 # Licence APL2.0
 #
 ###########################################################
@@ -23,7 +22,6 @@ import PyQt5
 import numpy as np
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.measure.measureRaw import MeasureDataRaw
 from logic.measure.measureCSV import MeasureDataCSV
 
@@ -58,8 +56,7 @@ class MeasureData(PyQt5.QtCore.QObject):
     __all__ = ['MeasureData',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server
     CYCLE_UPDATE_TASK = 1000
@@ -314,7 +311,7 @@ class MeasureData(PyQt5.QtCore.QObject):
         """
 
         if not self.mutexMeasure.tryLock():
-            self.log.info('overrun in measure')
+            self.log.debug('overrun in measure')
             return False
 
         lenData = len(self.data['time'])

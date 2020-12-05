@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -25,10 +25,9 @@ import platform
 
 # external packages
 from astropy.io import fits
-from mountcontrol import convert
 
 # local imports
-from base.loggerMW import CustomLogger
+from mountcontrol import convert
 
 
 class AstrometryNET(object):
@@ -46,8 +45,7 @@ class AstrometryNET(object):
     __all__ = ['AstrometryNET',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, parent=None):
         self.parent = parent
@@ -134,7 +132,7 @@ class AstrometryNET(object):
 
         else:
             delta = time.time() - timeStart
-            self.log.info(f'IMAGE2XY took {delta}s return code: '
+            self.log.debug(f'IMAGE2XY took {delta}s return code: '
                           + str(self.process.returncode)
                           + f' [{fitsPath}]'
                           + ' stderr: '
@@ -194,7 +192,7 @@ class AstrometryNET(object):
 
         else:
             delta = time.time() - timeStart
-            self.log.info(f'SOLVE-FIELD took {delta}s return code: '
+            self.log.debug(f'SOLVE-FIELD took {delta}s return code: '
                           + str(self.process.returncode)
                           + f' [{fitsPath}]'
                           + ' stderr: '
@@ -288,7 +286,7 @@ class AstrometryNET(object):
                                fitsPath=fitsPath,
                                )
         if not suc:
-            self.log.error(f'IMAGE2XY error in [{fitsPath}]')
+            self.log.warning(f'IMAGE2XY error in [{fitsPath}]')
             self.result['message'] = 'image2xy failed'
             return False
 
@@ -334,17 +332,17 @@ class AstrometryNET(object):
                                  fitsPath=fitsPath,
                                  )
         if not suc:
-            self.log.error(f'SOLVE-FIELD error in [{fitsPath}]')
+            self.log.warning(f'SOLVE-FIELD error in [{fitsPath}]')
             self.result['message'] = 'solve-field error'
             return False
 
         if not os.path.isfile(solvedPath):
-            self.log.info(f'Solve files for [{fitsPath}] missing')
+            self.log.debug(f'Solve files for [{fitsPath}] missing')
             self.result['message'] = 'solve failed'
             return False
 
         if not os.path.isfile(wcsPath):
-            self.log.info(f'Solve files for [{wcsPath}] missing')
+            self.log.debug(f'Solve files for [{wcsPath}] missing')
             self.result['message'] = 'solve failed'
             return False
 

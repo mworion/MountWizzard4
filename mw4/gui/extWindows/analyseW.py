@@ -9,11 +9,8 @@
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
-# Python  v3.7.5
 #
-# Michael Würtenberger
-# (c) 2019, 2020
-#
+# written in python3 , (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -338,7 +335,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                 polynomW = np.polyfit(xW, yW, poly)
 
             except Exception as e:
-                self.log.info(f'Interpolation failed: {e}')
+                self.log.debug(f'Interpolation failed: {e}')
 
             else:
                 hasNoNan = not np.isnan(polynomW).any()
@@ -352,7 +349,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                 polynomE = np.polyfit(xE, yE, poly)
 
             except Exception as e:
-                self.log.info(f'Interpolation failed: {e}')
+                self.log.debug(f'Interpolation failed: {e}')
 
             else:
                 hasNoNan = not np.isnan(polynomE).any()

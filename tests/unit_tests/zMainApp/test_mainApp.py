@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -20,6 +20,7 @@ import os
 import glob
 import json
 import unittest.mock as mock
+import logging
 
 # external packages
 import pytest
@@ -27,6 +28,7 @@ import PyQt5
 
 # local import
 from mainApp import MountWizzard4
+from base.loggerMW import addLoggingLevel
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -53,6 +55,9 @@ def app(qapp):
                                        'checkAndSetAutomation',
                                        return_value=None):
                     app = MountWizzard4(mwGlob=mwGlob, application=qapp)
+                    app.log = logging.getLogger()
+                    addLoggingLevel('TRACE', 5)
+                    addLoggingLevel('UI', 35)
                     yield app
 
 

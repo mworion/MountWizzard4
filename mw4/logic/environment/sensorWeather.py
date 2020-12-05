@@ -10,8 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
-#
+# written in python3, (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -23,7 +22,6 @@ import platform
 import PyQt5
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.environment.sensorWeatherIndi import SensorWeatherIndi
 from logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
 if platform.system() == 'Windows':
@@ -53,8 +51,7 @@ class SensorWeather:
     __all__ = ['SensorWeather',
                ]
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
 

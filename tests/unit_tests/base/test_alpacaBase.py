@@ -11,25 +11,28 @@
 # GUI with PyQT5 for python
 #
 # written in python3 , (c) 2019, 2020 by mworion
-#
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
 from unittest import mock
+import logging
 
 # external packages
 import pytest
 import requests
 
 # local import
-from mw4.base.alpacaBase import AlpacaBase
+from base.alpacaBase import AlpacaBase
+from base.loggerMW import addLoggingLevel
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
     app = AlpacaBase()
+    app.log = logging.getLogger()
+    addLoggingLevel('TRACE', 5)
 
     yield
 

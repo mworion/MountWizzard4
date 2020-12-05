@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -34,11 +34,11 @@ import importlib_metadata
 from gui.mainWmixin.tabSettMisc import SettMisc
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
-from base.loggerMW import CustomLogger
 from logic.dome.dome import Dome
 from logic.imaging.camera import Camera
 from logic.astrometry.astrometry import Astrometry
 from logic.environment.onlineWeather import OnlineWeather
+from base.loggerMW import addLoggingLevel
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -78,7 +78,8 @@ def module_setup_teardown(qtbot):
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
     app.deviceStat = dict()
-    app.log = CustomLogger(logging.getLogger(__name__), {})
+    app.log = logging.getLogger(__name__)
+    addLoggingLevel('TRACE', 5)
     app.threadPool = QThreadPool()
 
     qtbot.addWidget(app)
@@ -393,21 +394,21 @@ def test_setLoggingLevel1(qtbot):
     app.ui.loglevelDebug.setChecked(True)
     app.setLoggingLevel()
     val = logging.getLogger().getEffectiveLevel()
-    assert val == 20
+    assert val == 10
 
 
 def test_setLoggingLevel2(qtbot):
-    app.ui.loglevelInfo.setChecked(True)
+    app.ui.loglevelStandard.setChecked(True)
     app.setLoggingLevel()
     val = logging.getLogger().getEffectiveLevel()
     assert val == 30
 
 
 def test_setLoggingLevel3(qtbot):
-    app.ui.loglevelDeepDebug.setChecked(True)
+    app.ui.loglevelDebugTrace.setChecked(True)
     app.setLoggingLevel()
     val = logging.getLogger().getEffectiveLevel()
-    assert val == 10
+    assert val == 5
 
 
 def test_playAudioDomeSlewFinished_1():

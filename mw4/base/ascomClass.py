@@ -10,8 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
-#
+# written in python3, (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -28,7 +27,6 @@ from PyQt5.QtCore import QObject, pyqtSignal, QTimer
 from PyQt5.QtTest import QTest
 
 # local imports
-from base.loggerMW import CustomLogger
 from base.tpool import Worker
 
 
@@ -59,8 +57,7 @@ class AscomClass(object):
         >>> a = AscomClass(app=None, data=None, threadPool=None)
     """
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     # relaxed generic timing
     CYCLE_POLL_STATUS = 3000
@@ -116,12 +113,12 @@ class AscomClass(object):
 
             except Exception as e:
                 suc = False
-                self.log.warning(f'Connection error [{self.deviceName}]: [{e}]')
+                self.log.info(f'Connection error [{self.deviceName}]: [{e}]')
 
             else:
                 suc = self.isClientConnected()
                 if suc:
-                    self.log.info(f'[{self.deviceName}] connected, [{retry}] retries needed')
+                    self.log.debug(f'[{self.deviceName}] connected, [{retry}] retries needed')
                     break
 
             finally:
@@ -208,7 +205,7 @@ class AscomClass(object):
             suc = self.isClientConnected()
 
         except Exception as e:
-            self.log.warning(f'Connection status error [{self.deviceName}]: [{e}]')
+            self.log.info(f'Connection status error [{self.deviceName}]: [{e}]')
             suc = False
 
         if self.deviceConnected and not suc:
@@ -274,7 +271,7 @@ class AscomClass(object):
             self.client = win32com.client.Dispatch(self.deviceName)
 
         except Exception as e:
-            self.log.critical(f'Dispatch for [{self.deviceName}] error: {e}')
+            self.log.error(f'Dispatch for [{self.deviceName}] error: {e}')
             return False
 
         else:
@@ -297,7 +294,7 @@ class AscomClass(object):
                 self.disconnectClient()
 
             except Exception as e:
-                self.log.info(f'Connection to [{self.deviceName}]:  could not be closed, {e}')
+                self.log.debug(f'Connection to [{self.deviceName}]:  could not be closed, {e}')
 
         self.deviceConnected = False
         self.serverConnected = False

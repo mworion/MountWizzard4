@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
@@ -507,7 +507,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
 
         fallback = list(self.stretchValues.keys())[0]
-        value = self.stretchValues.get(self.ui.stretch.currentText(), fallback)
+        value = self.stretchValues.get(self.ui.stretch.currentText(),
+                                       self.stretchValues[fallback])
         self.stretch = AsinhStretch(a=value)
 
         return True

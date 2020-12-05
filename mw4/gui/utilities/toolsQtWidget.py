@@ -10,13 +10,12 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-import logging
 import platform
 import os
 
@@ -27,7 +26,6 @@ from PyQt5.QtCore import Qt, QSortFilterProxyModel, QDir, QObject, pyqtSignal, Q
 from PyQt5.QtCore import QSize
 
 # local imports
-from base.loggerMW import CustomLogger
 from gui.utilities.stylesQtCss import Styles
 from gui.utilities.toolsMatplotlib import ToolsMatplotlib
 
@@ -107,9 +105,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
     __all__ = ['MWidget',
                ]
-
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
 
     def __init__(self):
         super().__init__()

@@ -11,7 +11,6 @@
 # GUI with PyQT5 for python
 #
 # written in python3 , (c) 2019, 2020 by mworion
-#
 # Licence APL2.0
 #
 ###########################################################
@@ -22,7 +21,6 @@ import logging
 import PyQt5
 
 # local imports
-from base.loggerMW import CustomLogger
 from logic.environment.weatherUPBIndi import WeatherUPBIndi
 
 
@@ -50,8 +48,7 @@ class WeatherUPB:
 
     __all__ = ['WeatherUPB']
 
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
+    log = logging.getLogger(__name__)
 
     def __init__(self, app):
 

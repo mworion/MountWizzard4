@@ -11,7 +11,6 @@
 # GUI with PyQT5 for python
 #
 # written in python3 , (c) 2019, 2020 by mworion
-#
 # Licence APL2.0
 #
 ###########################################################
@@ -33,7 +32,6 @@ from gui.mainWmixin.tabSettDome import SettDome
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 from logic.dome.dome import Dome
-from base.loggerMW import CustomLogger
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -70,7 +68,7 @@ def module_setup_teardown(qtbot):
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
     app.deviceStat = dict()
-    app.log = CustomLogger(logging.getLogger(__name__), {})
+    app.log = logging.getLogger(__name__)
     app.threadPool = QThreadPool()
 
     qtbot.addWidget(app)

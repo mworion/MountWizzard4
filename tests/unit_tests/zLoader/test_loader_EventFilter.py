@@ -19,6 +19,7 @@
 import pytest
 import os
 import glob
+
 # external packages
 from PyQt5.QtCore import QEvent
 from PyQt5.QtWidgets import QWidget

@@ -10,13 +10,15 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python 3, (c) 2019, 2020 by mworion
+# written in python3, (c) 2019, 2020 by mworion
 #
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
+
 # external packages
+
 # local import
 
 
@@ -30,14 +32,12 @@ class SettParkPos(object):
             self.ui = ui
             self.clickable = clickable
 
-        # define lists for the gui entries
         self.posButtons = list()
         self.posTexts = list()
         self.posAlt = list()
         self.posAz = list()
         self.posSaveButtons = list()
 
-        # dynamically generate the widgets
         self.setupParkPosGui()
         for posText in self.posTexts:
             posText.editingFinished.connect(self.updateParkPosButtonText)

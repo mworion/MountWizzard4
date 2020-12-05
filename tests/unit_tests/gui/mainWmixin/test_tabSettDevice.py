@@ -11,7 +11,6 @@
 # GUI with PyQT5 for python
 #
 # written in python3 , (c) 2019, 2020 by mworion
-#
 # Licence APL2.0
 #
 ###########################################################
@@ -48,7 +47,6 @@ from logic.astrometry.astrometry import Astrometry
 from logic.powerswitch.kmRelay import KMRelay
 from logic.measure.measure import MeasureData
 from logic.remote.remote import Remote
-from base.loggerMW import CustomLogger
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -107,7 +105,7 @@ def module_setup_teardown(qtbot):
     app.width = MWidget().width
     app.returnDriver = MWidget().returnDriver
     app.deviceStat = dict()
-    app.log = CustomLogger(logging.getLogger(__name__), {})
+    app.log = logging.getLogger(__name__)
     app.threadPool = QThreadPool()
     app.config = dict()
     app.BACK_NORM = '#000000'

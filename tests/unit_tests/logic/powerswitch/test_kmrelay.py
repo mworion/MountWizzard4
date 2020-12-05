@@ -25,6 +25,8 @@ import PyQt5
 import requests
 
 # local import
+from base.loggerMW import setupLogging
+setupLogging()
 from logic.powerswitch.kmRelay import KMRelay
 
 

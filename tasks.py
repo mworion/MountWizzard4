@@ -206,10 +206,8 @@ def test_mw(c):
     runMW(c, 'pytest tests/unit_tests/logic/remote')
     runMW(c, 'pytest tests/unit_tests/logic/telescope')
     runMW(c, 'pytest tests/unit_tests/gui/extWindows')
-    """
     runMW(c, 'pytest tests/unit_tests/gui/mainWindow')
     runMW(c, 'pytest tests/unit_tests/gui/mainWmixin')
-    """
     runMW(c, 'pytest tests/unit_tests/gui/utilities')
     runMW(c, 'pytest tests/unit_tests/mountcontrol')
     runMW(c, 'pytest tests/unit_tests/indibase')

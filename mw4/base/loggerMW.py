@@ -34,9 +34,13 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
     currently configured logging class.
 
     `levelName` becomes an attribute of the `logging` module with the value
-    `levelNum`. `methodName` becomes a convenience method for both `logging`
+    `levelNum`.
+
+    `methodName` becomes a convenience method for both `logging`
     itself and the class returned by `logging.getLoggerClass()` (usually just
-    `logging.Logger`). If `methodName` is not specified, `levelName.lower()` is
+    `logging.Logger`).
+
+    If `methodName` is not specified, `levelName.lower()` is
     used.
 
     To avoid accidental clobberings of existing attributes, this method will
@@ -113,7 +117,7 @@ def setupLogging():
     logging.getLogger('requests').setLevel(logging.WARNING)
     logging.getLogger('urllib3').setLevel(logging.WARNING)
     logging.getLogger('matplotlib').setLevel(logging.WARNING)
-    logging.getLogger('astropy').setLevel(logging.WARNING)
+    # logging.getLogger('astropy').setLevel(logging.WARNING)
     return True
 
 

@@ -21,6 +21,7 @@ import pytest
 import os
 import shutil
 import glob
+
 # external packages
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
@@ -33,6 +34,8 @@ from mountcontrol.qtmount import Mount
 from gui.mainWmixin.tabTools import Tools
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')

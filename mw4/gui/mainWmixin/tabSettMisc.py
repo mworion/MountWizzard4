@@ -318,10 +318,8 @@ class SettMisc(object):
 
         else:
             delta = time.time() - timeStart
-            self.log.debug(f'pip install took {delta}s return code: '
-                           + str(self.process.returncode)
-                           + f' output: [{output}]'
-                           )
+            retCode = str(self.process.returncode)
+            self.log.debug(f'pip install took {delta}s [{retCode}] [{output}]')
 
         success = (self.process.returncode == 0)
 

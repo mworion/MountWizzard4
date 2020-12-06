@@ -26,11 +26,6 @@ import locale
 import html
 import warnings
 
-# the following lines should avoid errors messages from OLE Automation in
-# conjunction with PyQt5
-warnings.simplefilter("ignore", UserWarning)
-sys.coinit_flags = 2
-
 # external packages
 from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
 from PyQt5.QtGui import QMouseEvent, QIcon
@@ -42,11 +37,14 @@ from importlib_metadata import version
 
 # local import
 from base.loggerMW import setupLogging
-setupLogging()
 from mainApp import MountWizzard4
 from gui.utilities.splashScreen import SplashScreen
 import resource.resources
 
+setupLogging()
+# the following lines should avoid errors messages from OLE Automation with PyQt5
+warnings.simplefilter("ignore", UserWarning)
+sys.coinit_flags = 2
 resource.resources.qInitResources()
 matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False

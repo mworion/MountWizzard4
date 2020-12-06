@@ -24,7 +24,8 @@ from PyQt5.QtWidgets import QApplication, QSplashScreen
 import numpy as np
 
 # local import
-from resource import resources
+import resource.resources
+resource.resources.qInitResources()
 
 
 class SplashScreen(QObject):

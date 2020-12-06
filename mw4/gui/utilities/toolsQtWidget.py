@@ -114,11 +114,10 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         self.screenSizeX = QDesktopWidget().screenGeometry().width()
         self.screenSizeY = QDesktopWidget().screenGeometry().height()
         self.setAttribute(Qt.WA_DeleteOnClose, True)
-        self.setWindowFlags(self.windowFlags() |
-                            Qt.CustomizeWindowHint |
-                            Qt.WindowSystemMenuHint |
-                            Qt.WindowMinimizeButtonHint |
-                            Qt.WindowMaximizeButtonHint)
+
+        newFlag = Qt.CustomizeWindowHint | Qt.WindowSystemMenuHint
+        newFlag = newFlag | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint
+        self.setWindowFlags(self.windowFlags() | newFlag)
 
     @staticmethod
     def wIcon(gui=None, icon=None):

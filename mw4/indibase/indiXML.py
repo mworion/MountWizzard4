@@ -33,8 +33,9 @@
 import logging
 import base64
 import numbers
-import logging
+
 # external packages
+
 import xml.etree.ElementTree as ETree
 # local imports
 
@@ -66,7 +67,7 @@ Notes:
 """
 
 
-class IndiXMLException:
+class IndiXMLException(TypeError):
     log = logging.getLogger(__name__)
 
     def __init__(self, msg):

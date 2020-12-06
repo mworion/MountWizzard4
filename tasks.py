@@ -138,22 +138,6 @@ def build_widgets(c):
 
 
 @task()
-def test_mc(c):
-    printMW('testing mountcontrol')
-    with c.cd('../mountcontrol'):
-        runMW(c, 'flake8')
-        runMW(c, 'pytest mountcontrol/test/* --cov-config tox.ini --cov mountcontrol/')
-
-
-@task()
-def test_ib(c):
-    printMW('testing indibase')
-    with c.cd('../indibase'):
-        runMW(c, 'flake8')
-        runMW(c, 'pytest indibase/test/test_units --cov-config .coveragerc --cov mw4/')
-
-
-@task()
 def test_mw_cov(c):
     printMW('unit testing mountwizzard with coverage and upload')
     # runMW(c, 'flake8')
@@ -214,25 +198,7 @@ def test_mw(c):
     runMW(c, 'pytest tests/unit_tests/logic/automation')
 
 
-@task(pre=[])
-def build_mc(c):
-    printMW('building dist mountcontrol')
-    with c.cd('../mountcontrol'):
-        runMW(c, 'rm -f dist/*.tar.gz')
-        runMW(c, 'python setup.py sdist')
-        runMW(c, 'cp dist/mountcontrol*.tar.gz ../MountWizzard4/dist/mountcontrol.tar.gz')
-
-
-@task(pre=[])
-def build_ib(c):
-    printMW('building dist indibase')
-    with c.cd('../indibase'):
-        runMW(c, 'rm -f dist/*.tar.gz')
-        runMW(c, 'python setup.py sdist')
-        runMW(c, 'cp dist/indibase*.tar.gz ../MountWizzard4/dist/indibase.tar.gz')
-
-
-@task(pre=[build_resource, build_widgets, build_mc, build_ib, version_doc])
+@task(pre=[build_resource, build_widgets, version_doc])
 def build_mw(c):
     printMW('building dist mountwizzard4')
     with c.cd('.'):
@@ -241,38 +207,19 @@ def build_mw(c):
         runMW(c, 'cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz')
 
 
-@task(pre=[])
-def upload_mc(c):
-    printMW('uploading dist mountcontrol')
-    with c.cd('../mountcontrol/dist'):
-        runMW(c, 'twine upload mountcontrol-*.tar.gz -r pypi')
-
-
-@task(pre=[])
-def upload_ib(c):
-    printMW('uploading dist indibase')
-    with c.cd('../indibase/dist'):
-        runMW(c, 'twine upload indibase-*.tar.gz -r pypi')
-
-
-@task(pre=[build_resource, build_widgets, build_mc, build_ib])
-def install_all(c):
+@task(pre=[build_resource, build_widgets])
+def install_mw(c):
     printMW('installing in work dir')
     with c.cd('./dist'):
         runMW(c, 'pip install indibase.tar.gz')
         runMW(c, 'pip install mountcontrol.tar.gz')
 
 
-@task(pre=[build_mw, install_all])
+@task(pre=[build_mw])
 def upload_mw(c):
     printMW('uploading dist mountwizzard4')
     with c.cd('./dist'):
         runMW(c, 'twine upload mountwizzard4-*.tar.gz -r pypi')
-
-
-@task(pre=[upload_mc, upload_ib, upload_mw])
-def upload_all(c):
-    printMW('uploading dist complete')
 
 
 @task(pre=[])

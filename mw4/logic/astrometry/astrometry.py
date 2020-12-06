@@ -106,7 +106,7 @@ class Astrometry:
             decHint = convertToAngle(dec, isHours=False)
 
         self.log.debug(f'Header RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale:'
-                      f' {scaleHint}')
+                       f' {scaleHint}')
 
         return raHint, decHint, scaleHint, ra, dec
 

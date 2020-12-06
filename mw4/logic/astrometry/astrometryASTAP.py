@@ -139,13 +139,13 @@ class AstrometryASTAP(object):
         else:
             delta = time.time() - timeStart
             self.log.debug(f'ASTAP took {delta}s return code: '
-                          + f'{self.process.returncode}'
-                          + f' [{fitsPath}]'
-                          + ' stderr: '
-                          + stderr.decode().replace('\n', ' ')
-                          + ' stdout: '
-                          + stdout.decode().replace('\n', ' ')
-                          )
+                           + f'{self.process.returncode}'
+                           + f' [{fitsPath}]'
+                           + ' stderr: '
+                           + stderr.decode().replace('\n', ' ')
+                           + ' stdout: '
+                           + stdout.decode().replace('\n', ' ')
+                           )
 
         return int(self.process.returncode)
 

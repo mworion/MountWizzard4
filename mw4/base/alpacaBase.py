@@ -142,7 +142,7 @@ class AlpacaBase:
 
         if response['ErrorNumber'] != 0:
             self.log.warning(f'{response} err:{response["ErrorNumber"]}'
-                           f',{response["ErrorMessage"]}')
+                             f',{response["ErrorMessage"]}')
             return None
 
         self.log.trace(f'[response:{response}')
@@ -187,7 +187,7 @@ class AlpacaBase:
 
         if response['ErrorNumber'] != 0:
             self.log.warning(f'{response} err:{response["ErrorNumber"]}'
-                           f',{response["ErrorMessage"]}')
+                             f',{response["ErrorMessage"]}')
             return None
 
         self.log.trace(f'[response:{response}')
@@ -237,7 +237,7 @@ class AlpacaBase:
 
         if response['ErrorNumber'] != 0:
             self.log.warning(f'{response} err:{response["ErrorNumber"]}'
-                           f',{response["ErrorMessage"]}')
+                             f',{response["ErrorMessage"]}')
             return None
 
         self.log.trace(f'[{uid:10d}] response:{response}')

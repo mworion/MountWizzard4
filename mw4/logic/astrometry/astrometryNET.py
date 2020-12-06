@@ -133,13 +133,13 @@ class AstrometryNET(object):
         else:
             delta = time.time() - timeStart
             self.log.debug(f'IMAGE2XY took {delta}s return code: '
-                          + str(self.process.returncode)
-                          + f' [{fitsPath}]'
-                          + ' stderr: '
-                          + stderr.decode().replace('\n', ' ')
-                          + ' stdout: '
-                          + stdout.decode().replace('\n', ' ')
-                          )
+                           + str(self.process.returncode)
+                           + f' [{fitsPath}]'
+                           + ' stderr: '
+                           + stderr.decode().replace('\n', ' ')
+                           + ' stdout: '
+                           + stdout.decode().replace('\n', ' ')
+                           )
 
         success = (self.process.returncode == 0)
         return success
@@ -193,13 +193,13 @@ class AstrometryNET(object):
         else:
             delta = time.time() - timeStart
             self.log.debug(f'SOLVE-FIELD took {delta}s return code: '
-                          + str(self.process.returncode)
-                          + f' [{fitsPath}]'
-                          + ' stderr: '
-                          + stderr.decode().replace('\n', ' ')
-                          + ' stdout: '
-                          + stdout.decode().replace('\n', ' ')
-                          )
+                           + str(self.process.returncode)
+                           + f' [{fitsPath}]'
+                           + ' stderr: '
+                           + stderr.decode().replace('\n', ' ')
+                           + ' stdout: '
+                           + stdout.decode().replace('\n', ' ')
+                           )
 
         success = (self.process.returncode == 0)
 

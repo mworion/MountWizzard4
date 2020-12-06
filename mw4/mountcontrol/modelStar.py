@@ -155,7 +155,7 @@ class ModelStar(object):
             return None
 
     def errorDEC(self):
-        if self._errorRMS is not None  and self._errorAngle is not None:
+        if self._errorRMS is not None and self._errorAngle is not None:
             return self._errorRMS * numpy.cos(self._errorAngle.radians)
         else:
             return None

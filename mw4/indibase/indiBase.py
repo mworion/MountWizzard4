@@ -446,7 +446,7 @@ class Client(PyQt5.QtCore.QObject):
         :param deviceName: name string of INDI device
         :return: success
         """
-        
+
         # todo: do connected state for each device
 
         if not self.connected:

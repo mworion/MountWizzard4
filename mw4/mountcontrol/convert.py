@@ -76,7 +76,7 @@ def stringToDegree(value):
     try:
         value = [float(x) for x in value]
 
-    except Exception as e:
+    except Exception:
         return None
 
     sign = 1 if value[0] >= 0 else -1
@@ -142,7 +142,7 @@ def valueToFloat(value):
     try:
         value = float(value)
 
-    except Exception as e:
+    except Exception:
         value = None
 
     return value
@@ -157,7 +157,7 @@ def valueToInt(value):
     try:
         value = int(value)
 
-    except Exception as e:
+    except Exception:
         value = None
 
     return value

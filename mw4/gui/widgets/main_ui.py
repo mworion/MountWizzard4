@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/main.ui'
+# Form implementation generated from reading ui file 'main.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -9052,7 +9052,7 @@ class Ui_MainWindow(object):
         self.profile.setObjectName("profile")
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(12)
+        self.mainTabWidget.setCurrentIndex(4)
         self.tabWidget.setCurrentIndex(0)
         self.settingsTabWidget.setCurrentIndex(5)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -9704,19 +9704,19 @@ class Ui_MainWindow(object):
         self.cancelModel.setToolTip(_translate("MainWindow", "Cancels a model build."))
         self.cancelModel.setText(_translate("MainWindow", "Cancel"))
         self.mSlew.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt;\">Progress in modeling.</span></p></body></html>"))
-        self.mSlew.setText(_translate("MainWindow", "0"))
+        self.mSlew.setText(_translate("MainWindow", "-"))
         self.label_35.setText(_translate("MainWindow", "Estimated time:"))
         self.runModel.setToolTip(_translate("MainWindow", "Run a model build."))
         self.runModel.setText(_translate("MainWindow", "Run"))
         self.mPoints.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt;\">Progress in modeling.</span></p></body></html>"))
-        self.mPoints.setText(_translate("MainWindow", "0"))
+        self.mPoints.setText(_translate("MainWindow", "-"))
         self.label_29.setText(_translate("MainWindow", "Elapsed time:"))
         self.mSolve.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt;\">Progress in modeling.</span></p></body></html>"))
-        self.mSolve.setText(_translate("MainWindow", "0"))
+        self.mSolve.setText(_translate("MainWindow", "-"))
         self.label_310.setText(_translate("MainWindow", "Slew:"))
         self.label_311.setText(_translate("MainWindow", "Solve:"))
         self.mImage.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt;\">Progress in modeling.</span></p></body></html>"))
-        self.mImage.setText(_translate("MainWindow", "0"))
+        self.mImage.setText(_translate("MainWindow", "-"))
         self.timeElapsed.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt;\">Progress in modeling.</span></p></body></html>"))
         self.timeElapsed.setText(_translate("MainWindow", "00:00:00"))
         self.label_216.setText(_translate("MainWindow", "Points:"))

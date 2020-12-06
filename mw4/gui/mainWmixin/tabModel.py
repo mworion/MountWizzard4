@@ -296,7 +296,7 @@ class Model:
         text = f'Solving  image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
         self.app.message.emit(text, 0)
-        self.ui.mSolve.setText(f'{mPoint["countSequence"] + 1:2d}')
+        self.ui.mSolve.setText(f'{mPoint["countSequence"]:2d}')
 
         return True
 
@@ -354,7 +354,7 @@ class Model:
         text = f'Exposing image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
         self.app.message.emit(text, 0)
-        self.ui.mImage.setText(f'{mPoint["countSequence"] + 1 :2d}')
+        self.ui.mImage.setText(f'{mPoint["countSequence"]:2d}')
 
         return True
 
@@ -406,7 +406,7 @@ class Model:
         self.app.message.emit(text, 0)
 
         self.ui.mPoints.setText(f'{mPoint["lenSequence"]:2d}')
-        self.ui.mSlew.setText(f'{mPoint["countSequence"] + 1:2d}')
+        self.ui.mSlew.setText(f'{mPoint["countSequence"]:2d}')
 
         return True
 
@@ -510,10 +510,10 @@ class Model:
         self.ui.timeEstimated.setText('00:00:00')
         self.ui.timeElapsed.setText('00:00:00')
         self.ui.timeFinished.setText('00:00:00')
-        self.ui.mPoints.setText('0')
-        self.ui.mSlew.setText('0')
-        self.ui.mImage.setText('0')
-        self.ui.mSolve.setText('0')
+        self.ui.mPoints.setText('-')
+        self.ui.mSlew.setText('-')
+        self.ui.mImage.setText('-')
+        self.ui.mSolve.setText('-')
         self.ui.modelProgress.setValue(0)
 
         return True

@@ -565,7 +565,6 @@ class MainWindow(MWidget,
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
 
-        # if mount is not up, you cannot program a model
         if self.deviceStat.get('mount', False):
             self.ui.batchModel.setEnabled(True)
 

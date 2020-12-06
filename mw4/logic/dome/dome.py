@@ -160,7 +160,7 @@ class Dome:
         else:
             hasToMove = self.diffModulus(azimuth, self.data['AzimuthTarget'], 360) > 1
 
-        isSlewing = self.data['Slewing'] and hasToMove
+        isSlewing = self.data.get('Slewing', False) and hasToMove
 
         if isSlewing:
             self.signals.message.emit('slewing')

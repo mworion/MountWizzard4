@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>12</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -8457,7 +8457,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <enum>Qt::RightToLeft</enum>
       </property>
       <property name="text">
-       <string>0</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -8539,7 +8539,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <enum>Qt::RightToLeft</enum>
       </property>
       <property name="text">
-       <string>0</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -8605,7 +8605,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <enum>Qt::RightToLeft</enum>
       </property>
       <property name="text">
-       <string>0</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -8692,7 +8692,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <enum>Qt::RightToLeft</enum>
       </property>
       <property name="text">
-       <string>0</string>
+       <string>-</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

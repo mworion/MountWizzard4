@@ -132,13 +132,10 @@ class Mount(mountcontrol.mount.Mount):
 
     @settlingTime.setter
     def settlingTime(self, value):
-        # settling time is in seconds
         self._settlingTime = value * 1000
 
     def waitSettlingAndEmit(self):
         """
-        waitSettlingAndEmit emit the signal for slew finished
-
         :return: true for test purpose
         """
         self.signals.slewFinished.emit()
@@ -146,8 +143,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def startTimers(self):
         """
-        startTimers enables the cyclic timers for polling necessary mount data.
-
         :return: true for test purpose
         """
         self.timerSetting.start(self.CYCLE_SETTING)
@@ -157,9 +152,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def stopTimers(self):
         """
-        stopTimers disables the cyclic timers for polling necessary mount data.
-        in addition wait for threadPool to finish
-
         :return: true for test purpose
         """
         self.timerPointing.stop()
@@ -196,22 +188,19 @@ class Mount(mountcontrol.mount.Mount):
         client.settimeout(self.SOCKET_TIMEOUT)
         try:
             client.connect(self.host)
+
         except Exception:
             self.mountUp = False
+
         else:
             self.mountUp = True
             client.shutdown(socket.SHUT_RDWR)
             client.close()
-        finally:
-            pass
 
         return self.mountUp
 
     def errorCycleCheckMountUp(self, e):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.log.info(f'Cycle error: {e}')
@@ -219,9 +208,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def clearCycleCheckMountUp(self):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.signals.mountUp.emit(self.mountUp)
@@ -249,9 +235,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def errorCyclePointing(self, e):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.log.warning(f'Cycle error: {e}')
@@ -264,20 +247,21 @@ class Mount(mountcontrol.mount.Mount):
 
         :return: true for test purpose
         """
-        # if  has emergency stop, emit warning
         if self.obsSite.status in [1, 98, 99]:
             if not self.statusAlert:
                 self.signals.alert.emit()
+
             self.statusAlert = True
+
         else:
             self.statusAlert = False
 
-        # if stop slewing, emit warning
         if self.obsSite.status not in [2, 6, 6]:
             if not self.statusSlew:
-                # start timer for settling time and emit signal afterwards
                 self.settlingWait.start(self._settlingTime)
+
             self.statusSlew = True
+
         else:
             self.statusSlew = False
 
@@ -286,15 +270,13 @@ class Mount(mountcontrol.mount.Mount):
 
     def cyclePointing(self):
         """
-        cyclePointing prepares the worker thread and the signals for getting the pointing
-        data.
-
         :return: success
         """
 
         if not self.mountUp:
             self.signals.pointDone.emit(self.obsSite)
             return False
+
         worker = Worker(self.obsSite.pollPointing)
         worker.signals.finished.connect(self.clearCyclePointing)
         worker.signals.error.connect(self.errorCyclePointing)
@@ -303,9 +285,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def errorCycleSetting(self, e):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.log.warning(f'Cycle error: {e}')
@@ -313,9 +292,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def clearCycleSetting(self):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.signals.settingDone.emit(self.setting)
@@ -331,6 +307,7 @@ class Mount(mountcontrol.mount.Mount):
         if not self.mountUp:
             self.signals.settingDone.emit(self.setting)
             return False
+
         worker = Worker(self.setting.pollSetting)
         worker.signals.finished.connect(self.clearCycleSetting)
         worker.signals.error.connect(self.errorCycleSetting)
@@ -339,9 +316,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def errorGetAlign(self, e):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.log.warning(f'Cycle error: {e}')
@@ -349,9 +323,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def clearGetAlign(self):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.signals.alignDone.emit(self.model)
@@ -367,6 +338,7 @@ class Mount(mountcontrol.mount.Mount):
         if not self.mountUp:
             self.signals.alignDone.emit(self.model)
             return False
+
         worker = Worker(self.model.pollStars)
         worker.signals.finished.connect(self.clearGetAlign)
         worker.signals.error.connect(self.errorGetAlign)
@@ -375,9 +347,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def errorGetNames(self, e):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.log.warning(f'Cycle error: {e}')
@@ -385,9 +354,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def clearGetNames(self):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.signals.namesDone.emit(self.model)
@@ -403,6 +369,7 @@ class Mount(mountcontrol.mount.Mount):
         if not self.mountUp:
             self.signals.namesDone.emit(self.model)
             return False
+
         worker = Worker(self.model.pollNames)
         worker.signals.finished.connect(self.clearGetNames)
         worker.signals.error.connect(self.errorGetNames)
@@ -411,9 +378,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def errorGetFW(self, e):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.log.warning(f'Cycle error: {e}')
@@ -421,9 +385,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def clearGetFW(self):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.geometry.initializeGeometry(self.firmware.product)
@@ -440,6 +401,7 @@ class Mount(mountcontrol.mount.Mount):
         if not self.mountUp:
             self.signals.firmwareDone.emit(self.firmware)
             return False
+
         worker = Worker(self.firmware.poll)
         worker.signals.finished.connect(self.clearGetFW)
         worker.signals.error.connect(self.errorGetFW)
@@ -448,9 +410,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def errorGetLocation(self, e):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.log.warning(f'Cycle error: {e}')
@@ -458,9 +417,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def clearGetLocation(self):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.signals.locationDone.emit(self.obsSite)
@@ -476,6 +432,7 @@ class Mount(mountcontrol.mount.Mount):
         if not self.mountUp:
             self.signals.locationDone.emit(self.obsSite)
             return False
+
         worker = Worker(self.obsSite.getLocation)
         worker.signals.finished.connect(self.clearGetLocation)
         worker.signals.error.connect(self.errorGetLocation)
@@ -484,9 +441,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def errorCalcTLE(self, e):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.log.warning(f'Cycle error: {e}')
@@ -494,9 +448,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def clearCalcTLE(self):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.signals.calcTLEdone.emit(self.satellite.tleParams)
@@ -512,6 +463,7 @@ class Mount(mountcontrol.mount.Mount):
         if not self.mountUp:
             self.signals.calcTLEdone.emit(self.satellite.tleParams)
             return False
+
         worker = Worker(self.satellite.calcTLE, self.obsSite.timeJD.tt)
         worker.signals.finished.connect(self.clearCalcTLE)
         worker.signals.error.connect(self.errorCalcTLE)
@@ -520,9 +472,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def errorStatTLE(self, e):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.log.warning(f'Cycle error: {e}')
@@ -530,9 +479,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def clearStatTLE(self):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.signals.statTLEdone.emit(self.satellite.tleParams)
@@ -548,6 +494,7 @@ class Mount(mountcontrol.mount.Mount):
         if not self.mountUp:
             self.signals.statTLEdone.emit(self.satellite.tleParams)
             return False
+
         worker = Worker(self.satellite.statTLE)
         worker.signals.finished.connect(self.clearStatTLE)
         worker.signals.error.connect(self.errorStatTLE)
@@ -556,9 +503,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def errorGetTLE(self, e):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.log.warning(f'Cycle error: {e}')
@@ -566,9 +510,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def clearGetTLE(self):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
-
         :return: true for test purpose
         """
         self.signals.getTLEdone.emit(self.satellite.tleParams)
@@ -584,6 +525,7 @@ class Mount(mountcontrol.mount.Mount):
         if not self.mountUp:
             self.signals.getTLEdone.emit(self.satellite.tleParams)
             return False
+
         worker = Worker(self.satellite.getTLE)
         worker.signals.finished.connect(self.clearGetTLE)
         worker.signals.error.connect(self.errorGetTLE)
@@ -592,25 +534,23 @@ class Mount(mountcontrol.mount.Mount):
 
     def bootMount(self):
         """
-        bootMount tries to boot the mount via WOL with a given MAC address
-
         :return:    True if success
         """
 
         if self.MAC is not None:
             wakeonlan.send_magic_packet(self.MAC)
             return True
+
         else:
             return False
 
     def shutdown(self):
         """
-        shutdown shuts the mount downs and resets the status
-
         :return:
         """
 
         suc = self.obsSite.shutdown()
         if suc:
             self.mountUp = False
+
         return suc

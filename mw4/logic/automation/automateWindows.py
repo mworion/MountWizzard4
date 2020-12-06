@@ -206,7 +206,7 @@ class AutomateWindows(QObject):
             available, installPath, displayName = self.extractPropertiesFromRegistry(appName)
 
         except Exception as e:
-            self.logger.debug(f'{e}')
+            self.log.debug(f'{e}')
             return False, '', ''
 
         return available, displayName, installPath
@@ -227,7 +227,7 @@ class AutomateWindows(QObject):
             return True
 
         except Exception as e:
-            self.logger.error(f'error{e}')
+            self.log.error(f'error{e}')
             return False
 
         else:
@@ -250,11 +250,11 @@ class AutomateWindows(QObject):
             self.updater.start(self.installPath + self.UPDATER_EXE)
 
         except application.AppStartError:
-            self.logger.error('Failed to start updater, please check!')
+            self.log.error('Failed to start updater, please check!')
             return False
 
         except Exception as e:
-            self.logger.error(f'Failed to start updater, error {e}')
+            self.log.error(f'Failed to start updater, error {e}')
             return False
 
         else:
@@ -283,7 +283,7 @@ class AutomateWindows(QObject):
             self.clearUploadMenuCommands()
 
         except Exception as e:
-            self.logger.error('error{0}'.format(e))
+            self.log.error('error{0}'.format(e))
             return False
 
         return True
@@ -339,7 +339,7 @@ class AutomateWindows(QObject):
             self.pressOK()
 
         except Exception as e:
-            self.logger.error('error{0}'.format(e))
+            self.log.error('error{0}'.format(e))
             return False
 
         return True
@@ -381,7 +381,7 @@ class AutomateWindows(QObject):
             self.uploadMPCDataCommands(comets=comets)
 
         except Exception as e:
-            self.logger.error(f'error{e}')
+            self.log.error(f'error{e}')
             return False
 
         else:
@@ -428,7 +428,7 @@ class AutomateWindows(QObject):
             self.uploadEarthRotationDataCommands()
 
         except Exception as e:
-            self.logger.error(f'error{e}')
+            self.log.error(f'error{e}')
             os.chdir(self.actualWorkDir)
             return False
 
@@ -470,7 +470,7 @@ class AutomateWindows(QObject):
             self.uploadTLEDataCommands()
 
         except Exception as e:
-            self.logger.error(f'error{e}')
+            self.log.error(f'error{e}')
             os.chdir(self.actualWorkDir)
             return False
 

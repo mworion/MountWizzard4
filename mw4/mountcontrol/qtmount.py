@@ -15,9 +15,7 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import socket
-import sys
 
 # external packages
 import PyQt5.QtCore

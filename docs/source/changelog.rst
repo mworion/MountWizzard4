@@ -8,7 +8,10 @@ Unreleased Betas
 (1.1)
 
 - 3d Simulator (mount, dome, build points etc)
-- update PyQt5 to 5.15.2
+- retrofit model based on hashed coordinates
+- adding switch interface Pegasus UPB for ASCOM / ALPACA
+- optimizing dome for less movements on small changes
+- implementing Baader dome control
 
 (1.0)
 
@@ -20,12 +23,16 @@ Unreleased Betas
 
 (0.2xxx)
 
-- retrofit model based on hashed coordinates
-- adding switch interface Pegasus UPB for ASCOM / ALPACA
-- optimizing dome for less movements on small changes
 
 Released betas
 --------------
+0.220.4b1
+
+- improved logging
+- imported some external packages
+- update PyQt5 to 5.15.2
+- bugfix for long download times
+
 0.220.3
 
 - support for MacOSx Bigsur

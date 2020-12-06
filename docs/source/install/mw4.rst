@@ -204,7 +204,7 @@ https://askubuntu.com/questions/1231413/basic-desktop-actions-are-not-available-
 
 If you install nemo as file manager, the desktop icons will work.
 
-DPI scaling on windows
+DPI scaling on Windows
 ----------------------
 If you are running a windows machine with setting the zoom factor for you display settings
 different to 100%, you might notice inadequate font sizes etc. Unfortunately this could not
@@ -220,6 +220,7 @@ these settings to make the appearance correct:
 
 If you would like to have MW4 displayed bigger than 100%, please increase the
 QT_SCALE_FACTOR to the value desired. A value of 1 means 100%, so 2 means 200%.
+You will experience to set the font adequately.
 
 
 DPI scaling on Ubuntu

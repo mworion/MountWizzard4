@@ -18,7 +18,6 @@
 import logging
 
 # external packages
-import numpy as np
 
 # local imports
 from mountcontrol.firmware import Firmware

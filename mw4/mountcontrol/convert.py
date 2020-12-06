@@ -160,9 +160,6 @@ def valueToInt(value):
     except Exception as e:
         value = None
 
-    finally:
-        return value
-
     return value
 
 

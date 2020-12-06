@@ -353,8 +353,10 @@ class Geometry(object):
         # depending of the pierside the direction is clockwise, turning to west over time
         if pierside == 'E':
             value = - ha + np.radians(6 / 24 * 360)
+
         else:
             value = - ha + np.radians(18 / 24 * 360)
+
         T5 = np.dot(T4, self.transformRotX(value))
         P6 = np.dot(T5, P0)
 
@@ -364,8 +366,7 @@ class Geometry(object):
         value = dec - np.radians(90)
         if pierside == 'E':
             value = -value
-        else:
-            value = value
+
         T6 = np.dot(T5, self.transformRotZ(value))
         P7 = np.dot(T6, P0)
 

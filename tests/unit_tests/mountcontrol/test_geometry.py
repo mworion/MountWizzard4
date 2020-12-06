@@ -87,11 +87,11 @@ def test_geometry_1():
                                                                  ha=Angle(hours=t[1]),
                                                                  lat=Angle(degrees=50),
                                                                  pierside=t[2])
-        assert alt.degrees == r[0]
-        assert az.degrees == r[1]
-        assert x == r[2]
-        assert y == r[3]
-        assert z == r[4]
+        assert pytest.approx(alt.degrees, 0.001) == r[0]
+        assert pytest.approx(az.degrees, 0.001) == r[1]
+        assert pytest.approx(x, 0.001) == r[2]
+        assert pytest.approx(y, 0.001) == r[3]
+        assert pytest.approx(z, 0.001) == r[4]
 
 
 def test_geometry_2():
@@ -147,11 +147,11 @@ def test_geometry_2():
                                                                  ha=Angle(hours=t[1]),
                                                                  lat=Angle(degrees=50),
                                                                  pierside=t[2])
-        assert alt.degrees == r[0]
-        assert az.degrees == r[1]
-        assert x == r[2]
-        assert y == r[3]
-        assert z == r[4]
+        assert pytest.approx(alt.degrees, 0.001) == r[0]
+        assert pytest.approx(az.degrees, 0.001) == r[1]
+        assert pytest.approx(x, 0.001) == r[2]
+        assert pytest.approx(y, 0.001) == r[3]
+        assert pytest.approx(z, 0.001) == r[4]
 
 
 def test_geometry_3():
@@ -207,11 +207,11 @@ def test_geometry_3():
                                                                  ha=Angle(hours=t[1]),
                                                                  lat=Angle(degrees=50),
                                                                  pierside=t[2])
-        assert alt.degrees == r[0]
-        assert az.degrees == r[1]
-        assert x == r[2]
-        assert y == r[3]
-        assert z == r[4]
+        assert pytest.approx(alt.degrees, 0.001) == r[0]
+        assert pytest.approx(az.degrees, 0.001) == r[1]
+        assert pytest.approx(x, 0.001) == r[2]
+        assert pytest.approx(y, 0.001) == r[3]
+        assert pytest.approx(z, 0.001) == r[4]
 
 
 def test_geometry_4():
@@ -267,11 +267,11 @@ def test_geometry_4():
                                                                  ha=Angle(hours=t[1]),
                                                                  lat=Angle(degrees=50),
                                                                  pierside=t[2])
-        assert alt.degrees == r[0]
-        assert az.degrees == r[1]
-        assert x == r[2]
-        assert y == r[3]
-        assert z == r[4]
+        assert pytest.approx(alt.degrees, 0.001) == r[0]
+        assert pytest.approx(az.degrees, 0.001) == r[1]
+        assert pytest.approx(x, 0.001) == r[2]
+        assert pytest.approx(y, 0.001) == r[3]
+        assert pytest.approx(z, 0.001) == r[4]
 
 
 def make_geometry_():

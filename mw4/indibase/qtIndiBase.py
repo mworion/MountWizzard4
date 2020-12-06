@@ -149,7 +149,7 @@ class Client(indibase.indiBase.Client):
 
         if result and not self.connected:
             suc = self.connectServer()
-            self.logger.info(f'Connect to server, result: {suc}')
+            self.log.info(f'Connect to server, result: {suc}')
             return suc
 
         else:
@@ -163,7 +163,7 @@ class Client(indibase.indiBase.Client):
 
         :return: nothing
         """
-        self.logger.error(f'Cycle error: {e}')
+        self.log.error(f'Cycle error: {e}')
 
     def clearCycleCheckServerUp(self):
         """

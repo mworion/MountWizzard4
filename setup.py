@@ -20,7 +20,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.220.4b1',
+    version='0.220.4b2',
     packages=[
         'mw4',
         'mw4.base',

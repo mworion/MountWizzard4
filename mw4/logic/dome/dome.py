@@ -154,7 +154,12 @@ class Dome:
         :return:
         """
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
-        hasToMove = self.diffModulus(azimuth, self.data['AzimuthTarget'], 360) > 1
+        if 'AzimuthTarget' not in self.data:
+            hasToMove = False
+
+        else:
+            hasToMove = self.diffModulus(azimuth, self.data['AzimuthTarget'], 360) > 1
+
         isSlewing = self.data['Slewing'] and hasToMove
 
         if isSlewing:

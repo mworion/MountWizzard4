@@ -66,12 +66,15 @@ class AlignStar(object):
         if isinstance(value, skyfield.api.Star):
             self._mCoord = value
             return
+
         if not isinstance(value, (tuple, list)):
             self._mCoord = None
             return
+
         if len(value) != 2:
             self._mCoord = None
             return
+
         ra, dec = value
         if isinstance(ra, str):
             ra = stringToAngle(ra, preference='hours')
@@ -81,10 +84,12 @@ class AlignStar(object):
             dec = stringToAngle(dec)
         if isinstance(dec, float):
             dec = valueToAngle(dec)
+
         if not ra or not dec:
             self._mCoord = None
             self.log.warning('Malformed value: {0}'.format(value))
             return
+
         self._mCoord = skyfield.api.Star(ra=ra,
                                          dec=dec)
 
@@ -97,6 +102,7 @@ class AlignStar(object):
         if value in ['E', 'W', 'e', 'w']:
             value = value.capitalize()
             self._pierside = value
+
         else:
             self._pierside = None
             self.log.warning('Malformed value: {0}'.format(value))
@@ -110,12 +116,15 @@ class AlignStar(object):
         if isinstance(value, skyfield.api.Star):
             self._sCoord = value
             return
+
         if not isinstance(value, (tuple, list)):
             self._sCoord = None
             return
+
         if len(value) != 2:
             self._sCoord = None
             return
+
         ra, dec = value
         if isinstance(ra, str):
             ra = stringToAngle(ra, preference='hours')
@@ -125,10 +134,12 @@ class AlignStar(object):
             dec = stringToAngle(dec)
         if isinstance(dec, float):
             dec = valueToAngle(dec)
+
         if not ra or not dec:
             self._sCoord = None
             self.log.warning('Malformed value: {0}'.format(value))
             return
+
         self._sCoord = skyfield.api.Star(ra=ra,
                                          dec=dec)
 
@@ -140,9 +151,12 @@ class AlignStar(object):
     def sidereal(self, value):
         if isinstance(value, str):
             self._sidereal = stringToAngle(value, preference='hours')
+
         elif isinstance(value, float):
             self._sidereal = valueToAngle(value, preference='hours')
+
         elif isinstance(value, skyfield.api.Angle):
             self._sidereal = value
+
         else:
             self._sidereal = None

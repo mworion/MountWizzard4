@@ -191,11 +191,15 @@ class Connection(object):
         """
         if not client:
             return False
+
         try:
             client.shutdown(socket.SHUT_RDWR)
             client.close()
+
         except Exception as e:
             self.log.warning(f'hard close: {e}')
+            return False
+
         return True
 
     def buildClient(self):
@@ -208,26 +212,33 @@ class Connection(object):
         if not self.host:
             self.log.info(f'[{self.id}] no host defined')
             return None
+
         if not isinstance(self.host, tuple):
             self.log.info(f'[{self.id}] host entry malformed')
             return None
+
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.settimeout(self.SOCKET_TIMEOUT)
         client.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+
         try:
             client.connect(self.host)
+
         except socket.timeout:
             self.closeClientHard(client)
             self.log.debug(f'[{self.id}] socket timeout')
             return None
+
         except socket.error as e:
             self.closeClientHard(client)
             self.log.debug(f'[{self.id}] socket error: {e}')
             return None
+
         except Exception as e:
             self.closeClientHard(client)
             self.log.debug(f'[{self.id}] socket error: {e}')
             return None
+
         else:
             return client
 
@@ -277,12 +288,15 @@ class Connection(object):
                     break
                 elif numberOfChunks != 0 and numberOfChunks == response.count('#'):
                     break
+
         except socket.timeout:
             self.log.debug(f'[{self.id}] socket timeout')
             return False, response
+
         except Exception as e:
             self.log.debug(f'[{self.id}] socket error: {e}')
             return False, response
+
         else:
             response = response.rstrip('#').split('#')
             self.log.trace(f'[{self.id}] response : {response}')
@@ -304,7 +318,6 @@ class Connection(object):
             self.log.warning(f'[{self.id}] unknown commands: {commandString}')
             return False, 'wrong commands', 0
 
-        # analysing the command
         numberOfChunks, getData, minBytes = self.analyseCommand(commandString)
         logFormat = '[{0}] sending  : {1}, getData: {2}, minBytes: {3}, chunks: {4}, host: {5}'
         self.log.trace(logFormat.format(self.id,
@@ -315,7 +328,6 @@ class Connection(object):
                                         self.host,
                                         ))
 
-        # test if we have valid parameters
         client = self.buildClient()
         if client is None:
             return False, '', numberOfChunks
@@ -325,12 +337,10 @@ class Connection(object):
         if not suc:
             return False, '', numberOfChunks
 
-        # if no response expected, we are finished
         if not getData:
             self.closeClientHard(client)
             return True, '', numberOfChunks
 
-        # get the response and close the client
         suc, response = self.receiveData(client=client,
                                          numberOfChunks=numberOfChunks,
                                          minBytes=minBytes)

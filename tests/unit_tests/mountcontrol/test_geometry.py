@@ -19,7 +19,7 @@ import pytest
 import os
 
 # external packages
-from skyfield.api import Angle, Topos
+from skyfield.api import Angle
 
 # local imports
 from mountcontrol.mount import Mount

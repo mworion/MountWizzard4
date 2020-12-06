@@ -161,7 +161,6 @@ def test_mw_cov(c):
     runMW(c, 'pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/base --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/logic/astrometry --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/automation --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/logic/databaseProcessing --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/logic/cover --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/logic/dome --cov-append --cov=mw4/')
@@ -178,6 +177,7 @@ def test_mw_cov(c):
     runMW(c, 'pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/')
     runMW(c, 'pytest tests/unit_tests/indibase --cov-append --cov=mw4/')
+    runMW(c, 'pytest tests/unit_tests/logic/automation --cov-append --cov=mw4/')
     runMW(c, 'bash <(curl -s https://codecov.io/bash) -t e1965db7-af35-4a93-9f3d-ed12a528607b')
 
 

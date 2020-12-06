@@ -16,7 +16,6 @@
 ###########################################################
 import base.packageConfig as pConf
 # standard libraries
-import logging
 from datetime import datetime
 import gc
 

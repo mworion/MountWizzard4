@@ -186,11 +186,9 @@ class ToolsMatplotlib:
 
         if showAxes:
             color = self.M_BLUE
-            colorGrid = self.M_GREY
 
         else:
             color = self.M_TRANS
-            colorGrid = self.M_TRANS
 
         with lock:
             figure = widget.figure
@@ -209,7 +207,7 @@ class ToolsMatplotlib:
             axe.spines['right'].set_color(color)
 
             if showAxes:
-                axe.grid(showAxes, color=colorGrid)
+                axe.grid(showAxes, color=self.M_GREY)
 
             else:
                 axe.grid(showAxes)

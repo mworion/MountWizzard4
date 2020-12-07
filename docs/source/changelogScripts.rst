@@ -5,6 +5,9 @@ changes list, please refer to the commit list on GitHub.
 
 Unreleased Betas
 ----------------
+(0.4)
+
+- further improvements
 
 Released versions
 -----------------

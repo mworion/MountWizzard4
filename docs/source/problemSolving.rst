@@ -28,18 +28,18 @@ Things to check before reporting an issue
 To have an eye on your setup here are some topics which you could check:
 
 - Mount connection available and stable. Wifi might have performance problems.
-Look for right network settings in mount and local setup.
+  Look for right network settings in mount and local setup.
 
 - Telescope driver connected in EKOS when using INDI setup. MW4 uses the header
-entries and passing them to the plate solver. Therefore EKOS needs a connected
-telescope to be able to put the header entries for RA / DEC into FITS header.
+  entries and passing them to the plate solver. Therefore EKOS needs a connected
+  telescope to be able to put the header entries for RA / DEC into FITS header.
 
 - If using local astrometry.net solver: index files installed and ready.
 
 - If model run does not start: all preconditions (imager, solver, etc. up and ready)
 
 - Good counter check is review settings, status bars, message window if something
-is going wrong.
+  is going wrong.
 
 
 Reporting issues

@@ -71,7 +71,7 @@ class FocuserAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.position(Position=position)
+        self.client.move(position)
         return True
 
     def halt(self):

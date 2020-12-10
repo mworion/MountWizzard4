@@ -23,16 +23,15 @@ Unreleased Betas
 
 (0.2xxx)
 
-- adding focuser handling
-
 Released betas
 --------------
-0.220.4b4
+0.220.4b5
 
 - improved logging
 - imported some external packages
 - update PyQt5 to 5.15.2
 - bugfix for long download times
+- adding focuser handling
 
 0.220.3
 

@@ -76,6 +76,6 @@ echo python version ok
 echo ---------------------------------------------
 echo.
 
-SET QT_SCALE_FACTOR=2 >> run.log 2>&1
+SET QT_SCALE_FACTOR=1 >> run.log 2>&1
 SET QT_FONT_DPI=96 >> run.log 2>&1
 venv\Scripts\python.exe venv\Lib\site-packages\mw4\loader.py >> run.log 2>&1

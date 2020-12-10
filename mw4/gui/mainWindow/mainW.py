@@ -482,6 +482,9 @@ class MainWindow(MWidget,
 
         # imaging
         self.wIcon(self.ui.copyFromTelescopeDriver, QIcon(':/icon/copy.svg'))
+        self.wIcon(self.ui.focuserStop, QIcon(':/icon/bolt-alt.svg'))
+        self.wIcon(self.ui.focuserIn, QIcon(':/icon/exit-down.svg'))
+        self.wIcon(self.ui.focuserOut, QIcon(':/icon/exit-up.svg'))
 
         # dome setting
         pixmap = QPixmap(':/pics/offset.png').scaled(301, 301)

@@ -99,9 +99,9 @@ class Filter:
 
     def startCommunication(self, loadConfig=False):
         """
-
+        :param loadConfig:
+        :return:
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -110,9 +110,8 @@ class Filter:
 
     def stopCommunication(self):
         """
-
+        :return:
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -122,8 +121,9 @@ class Filter:
     def sendFilterNumber(self, filterNumber=1):
         """
 
+        :param filterNumber:
+        :return:
         """
-
         if self.framework not in self.run.keys():
             return False
 

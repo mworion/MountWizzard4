@@ -77,3 +77,27 @@ def test_workerPollData_2():
     app.deviceConnected = False
     suc = app.workerPollData()
     assert not suc
+
+
+def test_move_1():
+    app.deviceConnected = True
+    suc = app.move(3)
+    assert suc
+
+
+def test_move_2():
+    app.deviceConnected = False
+    suc = app.move(3)
+    assert not suc
+
+
+def test_halt_1():
+    app.deviceConnected = True
+    suc = app.halt()
+    assert suc
+
+
+def test_halt_2():
+    app.deviceConnected = False
+    suc = app.halt()
+    assert not suc

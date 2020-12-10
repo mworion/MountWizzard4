@@ -101,3 +101,35 @@ def test_setUpdateConfig_6():
                                return_value=True):
             suc = app.setUpdateConfig('test')
             assert suc
+
+
+def test_move_1():
+    app.deviceName = 'test'
+    app.device = None
+    suc = app.move()
+    assert not suc
+
+
+def test_move_2():
+    app.deviceName = 'test'
+    app.device = Device()
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'Test': 1}):
+        suc = app.move()
+        assert not suc
+
+
+def test_move_3():
+    app.deviceName = 'test'
+    app.device = Device()
+    app.client = Client()
+    app.UPDATE_RATE = 0
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'ABS_FOCUS_POSITION': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewNumber',
+                               return_value=True):
+            suc = app.move()
+            assert suc

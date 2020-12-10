@@ -47,14 +47,10 @@ class FilterAlpaca(AlpacaClass):
 
     def getInitialConfig(self):
         """
-
         :return: success
         """
-
         super().getInitialConfig()
-
         names = self.client.names()
-
         if names is None:
             return False
 
@@ -67,25 +63,18 @@ class FilterAlpaca(AlpacaClass):
 
     def workerPollData(self):
         """
-
         :return: true for test purpose
         """
-
         position = self.client.position()
-
         if position == -1 or position is None:
             return False
 
         self.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = position
-
         return True
 
     def sendFilterNumber(self, filterNumber=0):
         """
-
         :return: true for test purpose
         """
-
         self.client.position(Position=filterNumber)
-
         return True

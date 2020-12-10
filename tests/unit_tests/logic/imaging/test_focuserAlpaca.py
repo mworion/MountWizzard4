@@ -54,3 +54,17 @@ def test_workerPollData_1():
         suc = app.workerPollData()
         assert suc
         assert app.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] == 1
+
+
+def test_move_1():
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.move(position=0)
+        assert suc
+
+
+def test_halt_1():
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.halt()
+        assert suc

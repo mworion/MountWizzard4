@@ -47,20 +47,29 @@ class FocuserAlpaca(AlpacaClass):
 
     def getInitialConfig(self):
         """
-
         :return: true for test purpose
         """
-
         super().getInitialConfig()
-
         return True
 
     def workerPollData(self):
         """
-
         :return: true for test purpose
         """
-
         self.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] = self.client.position()
+        return True
 
+    def move(self, position=None):
+        """
+        :param position:
+        :return:
+        """
+        self.client.move(Position=position)
+        return True
+
+    def halt(self):
+        """
+        :return:
+        """
+        self.client.halt()
         return True

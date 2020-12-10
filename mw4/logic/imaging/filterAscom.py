@@ -45,17 +45,13 @@ class FilterAscom(AscomClass):
 
     def getInitialConfig(self):
         """
-
         :return: success
         """
-
         super().getInitialConfig()
-
         if not self.deviceConnected:
             return False
 
         names = self.client.Names
-
         if names is None:
             return False
 
@@ -63,36 +59,28 @@ class FilterAscom(AscomClass):
             if name is None:
                 continue
             self.dataEntry(name, f'FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}')
-
         return True
 
     def workerPollData(self):
         """
-
         :return: true for test purpose
         """
-
         if not self.deviceConnected:
             return False
 
         position = self.client.Position
-
         if position == -1 or position is None:
             return False
 
         self.dataEntry(position, 'FILTER_SLOT.FILTER_SLOT_VALUE')
-
         return True
 
     def sendFilterNumber(self, filterNumber=0):
         """
-
         :return: true for test purpose
         """
-
         if not self.deviceConnected:
             return False
 
         self.client.Position = filterNumber
-
         return True

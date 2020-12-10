@@ -45,12 +45,9 @@ class FocuserAscom(AscomClass):
 
     def getInitialConfig(self):
         """
-
         :return: true for test purpose
         """
-
         super().getInitialConfig()
-
         if not self.deviceConnected:
             return False
 
@@ -58,13 +55,31 @@ class FocuserAscom(AscomClass):
 
     def workerPollData(self):
         """
-
         :return: true for test purpose
         """
-
         if not self.deviceConnected:
             return False
 
         self.dataEntry(self.client.Position, 'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION')
+        return True
 
+    def move(self, position=None):
+        """
+        :param position:
+        :return:
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.client.position(Position=position)
+        return True
+
+    def halt(self):
+        """
+        :return:
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.client.halt
         return True

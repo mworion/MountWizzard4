@@ -33,7 +33,6 @@ class FocuserIndi(IndiClass):
     __all__ = ['FocuserIndi',
                ]
 
-    # update rate to 1 seconds for setting indi server
     UPDATE_RATE = 1
 
     def __init__(self, app=None, signals=None, data=None):
@@ -69,4 +68,34 @@ class FocuserIndi(IndiClass):
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='PERIOD_MS',
                                         elements=update)
+        return suc
+
+    def move(self, position=None):
+        """
+        :param position:
+        :return:
+        """
+        if self.device is None:
+            return False
+
+        pos = self.device.getNumber('ABS_FOCUS_POSITION')
+        pos['FOCUS_ABSOLUTE_POSITION'] = position
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
+                                        propertyName='ABS_FOCUS_POSITION',
+                                        elements=pos,
+                                        )
+        return suc
+
+    def halt(self):
+        """
+        :return:
+        """
+        if self.device is None:
+            return False
+
+        pos = self.device.getNumber('ABS_FOCUS_POSITION')
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
+                                        propertyName='ABS_FOCUS_POSITION',
+                                        elements=pos,
+                                        )
         return suc

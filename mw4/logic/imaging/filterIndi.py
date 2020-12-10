@@ -33,7 +33,6 @@ class FilterIndi(IndiClass):
     __all__ = ['FilterIndi',
                ]
 
-    # update rate to 1 seconds for setting indi server
     UPDATE_RATE = 1
 
     def __init__(self, app=None, signals=None, data=None):
@@ -50,7 +49,6 @@ class FilterIndi(IndiClass):
         :param deviceName:
         :return: success
         """
-
         if deviceName != self.deviceName:
             return False
 
@@ -73,21 +71,16 @@ class FilterIndi(IndiClass):
 
     def sendFilterNumber(self, filterNumber=1):
         """
-        sendFilterNumber send the desired filter number
-
         :param filterNumber:
         :return: success
         """
-
         if self.device is None:
             return False
 
-        # setting fast mode:
         filterNo = self.device.getNumber('FILTER_SLOT')
         filterNo['FILTER_SLOT_VALUE'] = filterNumber
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='FILTER_SLOT',
                                         elements=filterNo,
                                         )
-
         return suc

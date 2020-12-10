@@ -19269,7 +19269,7 @@ When clicking the button, you could change the value.</string>
          <string>Steps</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="focuserIn">
+       <widget class="QPushButton" name="moveFocuserIn">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -19399,7 +19399,7 @@ When clicking the button, you could change the value.</string>
          <double>100.000000000000000</double>
         </property>
        </widget>
-       <widget class="QPushButton" name="focuserOut">
+       <widget class="QPushButton" name="moveFocuserOut">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -19415,7 +19415,7 @@ When clicking the button, you could change the value.</string>
          <string>Out</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="focuserStop">
+       <widget class="QPushButton" name="haltFocuser">
         <property name="enabled">
          <bool>true</bool>
         </property>

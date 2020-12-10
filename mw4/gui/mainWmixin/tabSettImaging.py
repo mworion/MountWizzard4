@@ -50,9 +50,9 @@ class SettImaging(object):
         self.ui.expTimeN.valueChanged.connect(self.updateParameters)
         self.ui.binningN.valueChanged.connect(self.updateParameters)
         self.ui.subFrame.valueChanged.connect(self.updateParameters)
-        self.ui.focuserStop.clicked.connect(self.focuserStop)
-        self.ui.focuserIn.clicked.connect(self.focuserIn)
-        self.ui.focuserOut.clicked.connect(self.focuserOut)
+        self.ui.haltFocuser.clicked.connect(self.haltFocuser)
+        self.ui.moveFocuserIn.clicked.connect(self.moveFocuserIn)
+        self.ui.moveFocuserOut.clicked.connect(self.moveFocuserOut)
         self.app.update1s.connect(self.updateCoverStatGui)
         self.app.update1s.connect(self.updateParameters)
 
@@ -415,7 +415,26 @@ class SettImaging(object):
         """
         :return: success
         """
+        pos = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         step = self.ui.focuserStepsize.value()
-        newPos =
+        newPos = pos - step
         self.app.focuser.move(position=newPos)
         return True
+
+    def moveFocuserOut(self):
+        """
+        :return: success
+        """
+        pos = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
+        step = self.ui.focuserStepsize.value()
+        newPos = pos + step
+        self.app.focuser.move(position=newPos)
+        return True
+
+    def haltFocuser(self):
+        """
+        :return: success
+        """
+        self.app.focuser.halt()
+        return True
+

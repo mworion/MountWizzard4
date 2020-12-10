@@ -23,10 +23,11 @@ Unreleased Betas
 
 (0.2xxx)
 
+- adding focuser handling
 
 Released betas
 --------------
-0.220.4b1
+0.220.4b4
 
 - improved logging
 - imported some external packages

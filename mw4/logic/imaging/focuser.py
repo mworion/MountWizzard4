@@ -95,9 +95,9 @@ class Focuser:
 
     def startCommunication(self, loadConfig=False):
         """
-
+        :param loadConfig:
+        :return:
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -106,11 +106,31 @@ class Focuser:
 
     def stopCommunication(self):
         """
-
+        :return:
         """
-
         if self.framework not in self.run.keys():
             return False
 
         suc = self.run[self.framework].stopCommunication()
+        return suc
+
+    def move(self, position=None):
+        """
+        :param position:
+        :return:
+        """
+        if self.framework not in self.run.keys():
+            return False
+
+        suc = self.run[self.framework].move(position=position)
+        return suc
+
+    def halt(self):
+        """
+        :return:
+        """
+        if self.framework not in self.run.keys():
+            return False
+
+        suc = self.run[self.framework].halt()
         return suc

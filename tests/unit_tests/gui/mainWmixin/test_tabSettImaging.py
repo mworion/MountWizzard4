@@ -268,3 +268,24 @@ def test_setCoverPark_1():
 def test_setCoverUnpark_1():
     suc = app.setCoverUnpark()
     assert suc
+
+
+def test_moveFocuserIn_1():
+    with mock.patch.object(app.app.focuser,
+                           'move'):
+        suc = app.moveFocuserIn()
+        assert suc
+
+
+def test_moveFocuserOut_1():
+    with mock.patch.object(app.app.focuser,
+                           'move'):
+        suc = app.moveFocuserOut()
+        assert suc
+
+
+def test_haltFocuser_1():
+    with mock.patch.object(app.app.focuser,
+                           'halt'):
+        suc = app.haltFocuser()
+        assert suc

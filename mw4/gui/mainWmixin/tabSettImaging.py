@@ -173,14 +173,21 @@ class SettImaging(object):
             FOVX = None
             FOVY = None
 
-        self.guiSetText(self.ui.speed, '2.1f', speed)
+        isAlpaca = 'FILTER_NAME.FILTER_SLOT_NAME_0' in self.app.focuser.data
+
+        if isAlpaca:
+            self.guiSetText(self.ui.filterNumber, '1.0f', filterNumber + 1)
+
+        else:
+            self.guiSetText(self.ui.filterNumber, '1.0f', filterNumber)
+
         self.guiSetText(self.ui.filterName, 's', text)
+        self.guiSetText(self.ui.speed, '2.1f', speed)
         self.guiSetText(self.ui.pixelSizeX, '2.2f', pixelSizeX)
         self.guiSetText(self.ui.pixelSizeY, '2.2f', pixelSizeY)
         self.guiSetText(self.ui.pixelX, '5.0f', pixelX)
         self.guiSetText(self.ui.pixelY, '5.0f', pixelY)
         self.guiSetText(self.ui.rotation, '3.1f', rotation)
-        self.guiSetText(self.ui.filterNumber, '1.0f', filterNumber)
         self.guiSetText(self.ui.coolerTemp, '3.1f', coolerTemp)
         self.guiSetText(self.ui.coolerPower, '3.1f', coolerPower)
         self.guiSetText(self.ui.focuserPosition, '6.0f', focus)

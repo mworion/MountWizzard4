@@ -120,7 +120,6 @@ class Filter:
 
     def sendFilterNumber(self, filterNumber=1):
         """
-
         :param filterNumber:
         :return:
         """

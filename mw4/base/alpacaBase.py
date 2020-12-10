@@ -2242,7 +2242,7 @@ class Focuser(AlpacaBase):
         if Position is None:
             return self.get("move")
 
-        self.put("move", Position=Position)
+        self.put("move", Position=int(Position))
 
 
 class Covercalibrator(AlpacaBase):

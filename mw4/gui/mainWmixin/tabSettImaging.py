@@ -50,6 +50,9 @@ class SettImaging(object):
         self.ui.expTimeN.valueChanged.connect(self.updateParameters)
         self.ui.binningN.valueChanged.connect(self.updateParameters)
         self.ui.subFrame.valueChanged.connect(self.updateParameters)
+        self.ui.focuserStop.clicked.connect(self.focuserStop)
+        self.ui.focuserIn.clicked.connect(self.focuserIn)
+        self.ui.focuserOut.clicked.connect(self.focuserOut)
         self.app.update1s.connect(self.updateCoverStatGui)
         self.app.update1s.connect(self.updateParameters)
 
@@ -280,28 +283,23 @@ class SettImaging(object):
         availNames = list(data[key] for key in data if 'FILTER_NAME.FILTER_SLOT_NAME_' in key)
         numberFilter = len(availNames)
 
-        if isAlpaca:
-            start = 0
-            end = numberFilter - 1
-        else:
-            start = 1
-            end = numberFilter
-
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set filter number',
-                               f'Value ({start}..{end}):',
+                               f'Value (1..{numberFilter}):',
                                actValue,
-                               start,
-                               end,
+                               1,
+                               numberFilter,
                                1,
                                )
 
         if not ok:
             return False
 
-        self.app.filter.sendFilterNumber(filterNumber=value)
+        if isAlpaca:
+            value -= 1
 
+        self.app.filter.sendFilterNumber(filterNumber=value)
         return True
 
     def setFilterName(self):
@@ -311,7 +309,6 @@ class SettImaging(object):
 
         :return: success
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         data = self.app.filter.data
 
@@ -336,58 +333,41 @@ class SettImaging(object):
             return False
 
         isAlpaca = 'FILTER_NAME.FILTER_SLOT_NAME_0' in data
-
         if isAlpaca:
             number = availNames.index(value)
+
         else:
             number = availNames.index(value) + 1
 
         self.app.filter.sendFilterNumber(filterNumber=number)
-
         return True
 
     def setDownloadModeFast(self):
         """
-        setDownloadModeFast set the download speed high for image download.
-
         :return:
         """
-
         self.app.camera.sendDownloadMode(fastReadout=True)
-
         return True
 
     def setDownloadModeSlow(self):
         """
-        setDownloadModeSlow set the download speed low for image download.
-
         :return:
         """
-
         self.app.camera.sendDownloadMode(fastReadout=False)
-
         return True
 
     def setCoolerOn(self):
         """
-        setCoolerOn set the on
-
         :return:
         """
-
         self.app.camera.sendCoolerSwitch(coolerOn=True)
-
         return True
 
     def setCoolerOff(self):
         """
-        setCoolerOff set the off
-
         :return:
         """
-
         self.app.camera.sendCoolerSwitch(coolerOn=False)
-
         return True
 
     def updateCoverStatGui(self):
@@ -419,20 +399,23 @@ class SettImaging(object):
 
     def setCoverPark(self):
         """
-        setCoverPark closes the cover
-
         :return: success
         """
-
         self.app.cover.sendCoverPark(park=True)
         return True
 
     def setCoverUnpark(self):
         """
-        setCoverPark opens the cover
-
         :return: success
         """
-
         self.app.cover.sendCoverPark(park=False)
+        return True
+
+    def moveFocuserIn(self):
+        """
+        :return: success
+        """
+        step = self.ui.focuserStepsize.value()
+        newPos =
+        self.app.focuser.move(position=newPos)
         return True

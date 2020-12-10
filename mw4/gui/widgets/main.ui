@@ -19360,7 +19360,7 @@ When clicking the button, you could change the value.</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="focuserSteps">
+       <widget class="QDoubleSpinBox" name="focuserStepsize">
         <property name="geometry">
          <rect>
           <x>110</x>

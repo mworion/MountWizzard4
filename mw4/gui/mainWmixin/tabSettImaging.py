@@ -173,14 +173,7 @@ class SettImaging(object):
             FOVX = None
             FOVY = None
 
-        isAlpaca = 'FILTER_NAME.FILTER_SLOT_NAME_0' in self.app.focuser.data
-
-        if isAlpaca:
-            self.guiSetText(self.ui.filterNumber, '1.0f', filterNumber + 1)
-
-        else:
-            self.guiSetText(self.ui.filterNumber, '1.0f', filterNumber)
-
+        self.guiSetText(self.ui.filterNumber, '1.0f', filterNumber)
         self.guiSetText(self.ui.filterName, 's', text)
         self.guiSetText(self.ui.speed, '2.1f', speed)
         self.guiSetText(self.ui.pixelSizeX, '2.2f', pixelSizeX)
@@ -292,21 +285,25 @@ class SettImaging(object):
         availNames = list(data[key] for key in data if 'FILTER_NAME.FILTER_SLOT_NAME_' in key)
         numberFilter = len(availNames)
 
+        if isAlpaca:
+            start = 0
+            end = numberFilter - 1
+        else:
+            start = 1
+            end = numberFilter
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set filter number',
-                               f'Value (1..{numberFilter}):',
+                               f'Value ({start}..{end}):',
                                actValue,
-                               1,
-                               numberFilter,
+                               start,
+                               end,
                                1,
                                )
 
         if not ok:
             return False
-
-        if isAlpaca:
-            value -= 1
 
         self.app.filter.sendFilterNumber(filterNumber=value)
         return True

@@ -252,10 +252,12 @@ class Connection(object):
         """
         try:
             client.sendall(commandString.encode())
+
         except Exception as e:
             self.closeClientHard(client)
             self.log.debug(f'[{self.id}] socket error: {e}')
             return False
+
         else:
             return True
 
@@ -278,14 +280,18 @@ class Connection(object):
                 chunkRaw = client.recv(2048)
                 try:
                     chunk = chunkRaw.decode('ASCII')
+
                 except Exception as e:
                     self.log.warning(f'[{self.id}] {e}, {chunkRaw}')
                     return False, ''
+
                 if not chunk:
                     break
+
                 response += chunk
                 if numberOfChunks == 0 and len(response) == minBytes:
                     break
+
                 elif numberOfChunks != 0 and numberOfChunks == response.count('#'):
                     break
 

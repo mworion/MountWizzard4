@@ -499,25 +499,24 @@ class Tools(object):
         self.slewSelectedTarget(slewType='normal')
         return True
 
-    def getStepsizeAltAz(self):
+    def getStepValuesAltAz(self):
         """
         :return:
         """
+        Alt = self.app.mount.obsSite.Alt.degrees
+        Az = self.app.mount.obsSite.Az.degrees
         stepsizes = [0.5, 1, 2, 5, 10]
         index = self.ui.moveStepSizeAltAz.currentIndex()
-        value = stepsizes[index]
-        print(value)
-        return value
+        stepsize = stepsizes[index]
+        return stepsize, Alt, Az
 
     def moveNorthAltAz(self):
         """
         :return: success
         """
-        actAlt = self.app.mount.obsSite.Alt.degrees
-        actAz = self.app.mount.obsSite.Az.degrees
-        step = self.getStepsizeAltAz()
-        Alt = actAlt + step
-        Az = actAz + 0
+        step, Alt, Az = self.getStepValuesAltAz()
+        Alt = Alt + step
+        Az = Az + 0
         self.slewTargetAltAz(Alt, Az)
         return True
 
@@ -525,11 +524,9 @@ class Tools(object):
         """
         :return: success
         """
-        actAlt = self.app.mount.obsSite.Alt.degrees
-        actAz = self.app.mount.obsSite.Az.degrees
-        step = self.getStepsizeAltAz()
-        Alt = actAlt + step
-        Az = actAz + step
+        step, Alt, Az = self.getStepValuesAltAz()
+        Alt = Alt + step
+        Az = Az + step
         self.slewTargetAltAz(Alt, Az)
         return True
 
@@ -537,11 +534,9 @@ class Tools(object):
         """
         :return: success
         """
-        actAlt = self.app.mount.obsSite.Alt.degrees
-        actAz = self.app.mount.obsSite.Az.degrees
-        step = self.getStepsizeAltAz()
-        Alt = actAlt + 0
-        Az = actAz + step
+        step, Alt, Az = self.getStepValuesAltAz()
+        Alt = Alt + 0
+        Az = Az + step
         self.slewTargetAltAz(Alt, Az)
         return True
 
@@ -549,11 +544,9 @@ class Tools(object):
         """
         :return: success
         """
-        actAlt = self.app.mount.obsSite.Alt.degrees
-        actAz = self.app.mount.obsSite.Az.degrees
-        step = self.getStepsizeAltAz()
-        Alt = actAlt - step
-        Az = actAz + step
+        step, Alt, Az = self.getStepValuesAltAz()
+        Alt = Alt - step
+        Az = Az + step
         self.slewTargetAltAz(Alt, Az)
         return True
 
@@ -561,11 +554,9 @@ class Tools(object):
         """
         :return: success
         """
-        actAlt = self.app.mount.obsSite.Alt.degrees
-        actAz = self.app.mount.obsSite.Az.degrees
-        step = self.getStepsizeAltAz()
-        Alt = actAlt - step
-        Az = actAz + 0
+        step, Alt, Az = self.getStepValuesAltAz()
+        Alt = Alt - step
+        Az = Az + 0
         self.slewTargetAltAz(Alt, Az)
         return True
 
@@ -573,11 +564,9 @@ class Tools(object):
         """
         :return: success
         """
-        actAlt = self.app.mount.obsSite.Alt.degrees
-        actAz = self.app.mount.obsSite.Az.degrees
-        step = self.getStepsizeAltAz()
-        Alt = actAlt - step
-        Az = actAz - step
+        step, Alt, Az = self.getStepValuesAltAz()
+        Alt = Alt - step
+        Az = Az - step
         self.slewTargetAltAz(Alt, Az)
         return True
 
@@ -585,11 +574,9 @@ class Tools(object):
         """
         :return: success
         """
-        actAlt = self.app.mount.obsSite.Alt.degrees
-        actAz = self.app.mount.obsSite.Az.degrees
-        step = self.getStepsizeAltAz()
-        Alt = actAlt - 0
-        Az = actAz - step
+        step, Alt, Az = self.getStepValuesAltAz()
+        Alt = Alt - 0
+        Az = Az - step
         self.slewTargetAltAz(Alt, Az)
         return True
 
@@ -597,10 +584,8 @@ class Tools(object):
         """
         :return: success
         """
-        actAlt = self.app.mount.obsSite.Alt.degrees
-        actAz = self.app.mount.obsSite.Az.degrees
-        step = self.getStepsizeAltAz()
-        Alt = actAlt + step
-        Az = actAz - step
+        step, Alt, Az = self.getStepValuesAltAz()
+        Alt = Alt + step
+        Az = Az - step
         self.slewTargetAltAz(Alt, Az)
         return True

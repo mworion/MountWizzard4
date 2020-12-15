@@ -55,34 +55,52 @@ class Tools(object):
                            self.ui.slewSpeedMed: self.app.mount.setting.setSlewSpeedMed,
                            self.ui.slewSpeedLow: self.app.mount.setting.setSlewSpeedLow,
                            }
+        self.setupStepsizes = {'Stepsize 0.25°': 0.25,
+                               'Stepsize 0.5°': 0.5,
+                               'Stepsize 1.0°': 1,
+                               'Stepsize 2.0°': 2,
+                               'Stepsize 5.0°': 5,
+                               'Stepsize 10°': 10,
+                               'Stepsize 20°': 20,
+                               }
+        self.setupMoveClassic = {self.ui.moveNorth: [1, 0],
+                                 self.ui.moveNorthEast: [1, 1],
+                                 self.ui.moveEast: [0, 1],
+                                 self.ui.moveSouthEast: [-1, 1],
+                                 self.ui.moveSouth: [-1, 0],
+                                 self.ui.moveSouthWest: [-1, -1],
+                                 self.ui.moveWest: [0, -1],
+                                 self.ui.moveNorthWest: [1, -1],
+                                 }
+        self.setupMoveAltAz = {self.ui.moveNorthAltAz: [1, 0],
+                               self.ui.moveNorthEastAltAz: [1, 1],
+                               self.ui.moveEastAltAz: [0, 1],
+                               self.ui.moveSouthEastAltAz: [-1, 1],
+                               self.ui.moveSouthAltAz: [-1, 0],
+                               self.ui.moveSouthWestAltAz: [-1, -1],
+                               self.ui.moveWestAltAz: [0, -1],
+                               self.ui.moveNorthWestAltAz: [1, -1],
+                               }
+        self.setupMoveRaDec = {self.ui.moveNorthRaDec: [1, 0],
+                               self.ui.moveNorthEastRaDec: [1, 1],
+                               self.ui.moveEastRaDec: [0, 1],
+                               self.ui.moveSouthEastRaDec: [-1, 1],
+                               self.ui.moveSouthRaDec: [-1, 0],
+                               self.ui.moveSouthWestRaDec: [-1, -1],
+                               self.ui.moveWestRaDec: [0, -1],
+                               self.ui.moveNorthWestRaDec: [1, -1],
+                               }
 
         self.slewSpeedSelected = None
-        self.setupSelectorGui()
+        self.setupGui()
 
         self.ui.renameStart.clicked.connect(self.renameRunGUI)
         self.ui.renameInputSelect.clicked.connect(self.chooseDir)
         self.ui.stopMoveAll.clicked.connect(self.stopMoveAll)
-        self.ui.moveNorth.clicked.connect(self.moveNorth)
-        self.ui.moveEast.clicked.connect(self.moveEast)
-        self.ui.moveSouth.clicked.connect(self.moveSouth)
-        self.ui.moveWest.clicked.connect(self.moveWest)
-        self.ui.moveNorthWest.clicked.connect(self.moveNorthWest)
-        self.ui.moveNorthEast.clicked.connect(self.moveNorthEast)
-        self.ui.moveSouthEast.clicked.connect(self.moveSouthEast)
-        self.ui.moveSouthWest.clicked.connect(self.moveSouthWest)
         self.ui.slewSpeedMax.clicked.connect(self.setSlewSpeed)
         self.ui.slewSpeedHigh.clicked.connect(self.setSlewSpeed)
         self.ui.slewSpeedMed.clicked.connect(self.setSlewSpeed)
         self.ui.slewSpeedLow.clicked.connect(self.setSlewSpeed)
-
-        self.ui.moveNorthAltAz.clicked.connect(self.moveNorthAltAz)
-        self.ui.moveEastAltAz.clicked.connect(self.moveEastAltAz)
-        self.ui.moveSouthAltAz.clicked.connect(self.moveSouthAltAz)
-        self.ui.moveWestAltAz.clicked.connect(self.moveWestAltAz)
-        self.ui.moveNorthWestAltAz.clicked.connect(self.moveNorthWestAltAz)
-        self.ui.moveNorthEastAltAz.clicked.connect(self.moveNorthEastAltAz)
-        self.ui.moveSouthEastAltAz.clicked.connect(self.moveSouthEastAltAz)
-        self.ui.moveSouthWestAltAz.clicked.connect(self.moveSouthWestAltAz)
 
     def initConfig(self):
         """
@@ -138,11 +156,8 @@ class Tools(object):
 
         return True
 
-    def setupSelectorGui(self):
+    def setupGui(self):
         """
-        setupSelectorGui handles the dropdown lists for all devices possible in
-        mountwizzard. therefore we add the necessary entries to populate the list.
-
         :return: success for test
         """
 
@@ -151,6 +166,23 @@ class Tools(object):
             selectorUI.setView(PyQt5.QtWidgets.QListView())
             for headerEntry in self.fitsHeaderKeywords:
                 selectorUI.addItem(headerEntry)
+
+        self.ui.moveStepSizeAltAz.clear()
+        for text in self.setupStepsizes:
+            self.ui.moveStepSizeAltAz.addItem(text)
+
+        self.ui.moveStepSizeRaDec.clear()
+        for text in self.setupStepsizes:
+            self.ui.moveStepSizeRaDec.addItem(text)
+
+        for ui in self.setupMoveClassic:
+            ui.clicked.connect(self.moveClassic)
+
+        for ui in self.setupMoveAltAz:
+            ui.clicked.connect(self.moveAltAz)
+
+        for ui in self.setupMoveRaDec:
+            ui.clicked.connect(self.moveRaDec)
 
         return True
 
@@ -353,79 +385,27 @@ class Tools(object):
         self.stopMoveAll()
         return True
 
-    def moveNorth(self):
+    def moveClassic(self):
         """
-        :return: success
+        :return:
         """
-        self.app.mount.obsSite.moveNorth()
-        self.changeStyleDynamic(self.ui.moveNorth, 'running', True)
-        self.moveDuration()
-        return True
+        ui = self.sender()
+        if ui not in self.setupMoveClassic:
+            return False
 
-    def moveEast(self):
-        """
-        :return: success
-        """
-        self.app.mount.obsSite.moveEast()
-        self.changeStyleDynamic(self.ui.moveEast, 'running', True)
-        self.moveDuration()
-        return True
+        self.changeStyleDynamic(ui, 'running', True)
+        directions = self.setupMoveClassic[ui]
 
-    def moveSouth(self):
-        """
-        :return: success
-        """
-        self.app.mount.obsSite.moveSouth()
-        self.changeStyleDynamic(self.ui.moveSouth, 'running', True)
-        self.moveDuration()
-        return True
+        if directions[0] == 1:
+            self.app.mount.obsSite.moveNorth()
+        elif directions[0] == -1:
+            self.app.mount.obsSite.moveSouth()
 
-    def moveWest(self):
-        """
-        :return: success
-        """
-        self.app.mount.obsSite.moveWest()
-        self.changeStyleDynamic(self.ui.moveWest, 'running', True)
-        self.moveDuration()
-        return True
+        if directions[1] == 1:
+            self.app.mount.obsSite.moveEast()
+        elif directions[1] == -1:
+            self.app.mount.obsSite.moveWest()
 
-    def moveNorthWest(self):
-        """
-        :return: success
-        """
-        self.app.mount.obsSite.moveWest()
-        self.app.mount.obsSite.moveNorth()
-        self.changeStyleDynamic(self.ui.moveNorthWest, 'running', True)
-        self.moveDuration()
-        return True
-
-    def moveNorthEast(self):
-        """
-        :return: success
-        """
-        self.app.mount.obsSite.moveEast()
-        self.app.mount.obsSite.moveNorth()
-        self.changeStyleDynamic(self.ui.moveNorthEast, 'running', True)
-        self.moveDuration()
-        return True
-
-    def moveSouthEast(self):
-        """
-        :return: success
-        """
-        self.app.mount.obsSite.moveEast()
-        self.app.mount.obsSite.moveSouth()
-        self.changeStyleDynamic(self.ui.moveSouthEast, 'running', True)
-        self.moveDuration()
-        return True
-
-    def moveSouthWest(self):
-        """
-        :return: success
-        """
-        self.app.mount.obsSite.moveWest()
-        self.app.mount.obsSite.moveSouth()
-        self.changeStyleDynamic(self.ui.moveSouthWest, 'running', True)
         self.moveDuration()
         return True
 
@@ -451,10 +431,11 @@ class Tools(object):
 
         :return: success
         """
-        if self.sender() not in self.slewSpeeds:
+        ui = self.sender()
+        if ui not in self.slewSpeeds:
             return False
 
-        self.slewSpeeds[self.sender()]()
+        self.slewSpeeds[ui]()
         return True
 
     def slewSelectedTarget(self, slewType='normal'):
@@ -462,8 +443,14 @@ class Tools(object):
         :param slewType:
         :return: success
         """
-        azimuthT = self.app.mount.obsSite.AzTarget.degrees
-        altitudeT = self.app.mount.obsSite.AltTarget.degrees
+        azimuthT = self.app.mount.obsSite.AzTarget
+        altitudeT = self.app.mount.obsSite.AltTarget
+
+        if azimuthT is None or altitudeT is None:
+            return False
+
+        azimuthT = altitudeT.degrees
+        altitudeT = altitudeT.degrees
 
         if self.app.deviceStat['dome']:
             delta = self.app.dome.slewDome(altitude=altitudeT,
@@ -487,105 +474,74 @@ class Tools(object):
         :return:
         """
         # todo: constraints set in mount
-        if Alt > 90:
-            Alt = 90
 
-        elif Alt < -5:
-            Alt = -5
-
-        Az = Az % 360
         self.app.mount.obsSite.setTargetAltAz(alt_degrees=Alt,
                                               az_degrees=Az)
         self.slewSelectedTarget(slewType='normal')
         return True
 
-    def getStepValuesAltAz(self):
+    def moveAltAz(self):
         """
         :return:
         """
-        Alt = self.app.mount.obsSite.Alt.degrees
-        Az = self.app.mount.obsSite.Az.degrees
-        stepsizes = [0.5, 1, 2, 5, 10]
-        index = self.ui.moveStepSizeAltAz.currentIndex()
-        stepsize = stepsizes[index]
-        return stepsize, Alt, Az
+        ui = self.sender()
+        if ui not in self.setupMoveAltAz:
+            return False
 
-    def moveNorthAltAz(self):
-        """
-        :return: success
-        """
-        step, Alt, Az = self.getStepValuesAltAz()
-        Alt = Alt + step
-        Az = Az + 0
-        self.slewTargetAltAz(Alt, Az)
+        Alt = self.app.mount.obsSite.Alt
+        Az = self.app.mount.obsSite.Az
+
+        if Alt is None or Az is None:
+            return False
+
+        key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]
+        step = self.setupStepsizes[key]
+        directions = self.setupMoveAltAz[ui]
+        targetAlt = Alt.degrees + directions[0] * step
+        targetAz = Az.degrees + directions[1] * step
+
+        if targetAlt > 90:
+            targetAlt = 90
+
+        elif targetAlt < -5:
+            targetAlt = -5
+
+        targetAz = targetAz % 360
+        self.slewTargetAltAz(targetAlt, targetAz)
         return True
 
-    def moveNorthEastAltAz(self):
+    def slewTargetRaDec(self, Ra, Dec):
         """
-        :return: success
+        :param Ra:
+        :param Dec:
+        :return:
         """
-        step, Alt, Az = self.getStepValuesAltAz()
-        Alt = Alt + step
-        Az = Az + step
-        self.slewTargetAltAz(Alt, Az)
+        self.app.mount.obsSite.setTargetRaDec(ra_hours=Ra,
+                                              dec_degrees=Dec)
+        self.slewSelectedTarget(slewType='normal')
         return True
 
-    def moveEastAltAz(self):
+    def moveRaDec(self):
         """
-        :return: success
+        :return:
         """
-        step, Alt, Az = self.getStepValuesAltAz()
-        Alt = Alt + 0
-        Az = Az + step
-        self.slewTargetAltAz(Alt, Az)
-        return True
+        ui = self.sender()
+        if ui not in self.setupMoveRaDec:
+            return False
 
-    def moveSouthEastAltAz(self):
-        """
-        :return: success
-        """
-        step, Alt, Az = self.getStepValuesAltAz()
-        Alt = Alt - step
-        Az = Az + step
-        self.slewTargetAltAz(Alt, Az)
-        return True
+        Ra = self.app.mount.obsSite.raJNow
+        Dec = self.app.mount.obsSite.decJNow
 
-    def moveSouthAltAz(self):
-        """
-        :return: success
-        """
-        step, Alt, Az = self.getStepValuesAltAz()
-        Alt = Alt - step
-        Az = Az + 0
-        self.slewTargetAltAz(Alt, Az)
-        return True
+        if Ra is None or Dec is None:
+            return False
 
-    def moveSouthWestAltAz(self):
-        """
-        :return: success
-        """
-        step, Alt, Az = self.getStepValuesAltAz()
-        Alt = Alt - step
-        Az = Az - step
-        self.slewTargetAltAz(Alt, Az)
-        return True
+        key = list(self.setupStepsizes)[self.ui.moveStepSizeRaDec.currentIndex()]
+        step = self.setupStepsizes[key]
+        directions = self.setupMoveRaDec[ui]
+        targetRa = Ra.hours + directions[0] * step * 24 / 360
+        targetDec = Dec.degrees + directions[1] * step
 
-    def moveWestAltAz(self):
-        """
-        :return: success
-        """
-        step, Alt, Az = self.getStepValuesAltAz()
-        Alt = Alt - 0
-        Az = Az - step
-        self.slewTargetAltAz(Alt, Az)
-        return True
+        print(directions, targetRa, targetDec)
 
-    def moveNorthWestAltAz(self):
-        """
-        :return: success
-        """
-        step, Alt, Az = self.getStepValuesAltAz()
-        Alt = Alt + step
-        Az = Az - step
-        self.slewTargetAltAz(Alt, Az)
+        self.slewTargetRaDec(targetRa, targetDec)
         return True

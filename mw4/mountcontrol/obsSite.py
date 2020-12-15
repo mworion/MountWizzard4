@@ -546,7 +546,7 @@ class ObsSite(object):
                 is on the other side: the string
             “5Object on the other side #”
 
-            the types of slew is:
+        the types of slew is:
         - 'normal'      slew to coordinates and tracking on
         - 'notrack':    slew to coordinates and tracking off
         - 'stop':       slew to coordinates and park
@@ -573,7 +573,6 @@ class ObsSite(object):
 
         conn = Connection(self.host)
 
-        # start slewing with first unpark and slew command
         commandString = ':PO#' + slewTypes[slewType]
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:

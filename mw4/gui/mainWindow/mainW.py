@@ -461,6 +461,7 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.posButton7, QIcon(':/icon/target.svg'))
         self.wIcon(self.ui.posButton8, QIcon(':/icon/target.svg'))
         self.wIcon(self.ui.posButton9, QIcon(':/icon/target.svg'))
+
         self.wIcon(self.ui.moveNorth, QIcon(':/icon/north.svg'))
         self.wIcon(self.ui.moveEast, QIcon(':/icon/east.svg'))
         self.wIcon(self.ui.moveSouth, QIcon(':/icon/south.svg'))
@@ -469,6 +470,23 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.moveNorthWest, QIcon(':/icon/northWest.svg'))
         self.wIcon(self.ui.moveSouthEast, QIcon(':/icon/southEast.svg'))
         self.wIcon(self.ui.moveSouthWest, QIcon(':/icon/southWest.svg'))
+        self.wIcon(self.ui.moveNorthAltAz, QIcon(':/icon/north.svg'))
+        self.wIcon(self.ui.moveEastAltAz, QIcon(':/icon/east.svg'))
+        self.wIcon(self.ui.moveSouthAltAz, QIcon(':/icon/south.svg'))
+        self.wIcon(self.ui.moveWestAltAz, QIcon(':/icon/west.svg'))
+        self.wIcon(self.ui.moveNorthEastAltAz, QIcon(':/icon/northEast.svg'))
+        self.wIcon(self.ui.moveNorthWestAltAz, QIcon(':/icon/northWest.svg'))
+        self.wIcon(self.ui.moveSouthEastAltAz, QIcon(':/icon/southEast.svg'))
+        self.wIcon(self.ui.moveSouthWestAltAz, QIcon(':/icon/southWest.svg'))
+        self.wIcon(self.ui.moveNorthRaDec, QIcon(':/icon/north.svg'))
+        self.wIcon(self.ui.moveEastRaDec, QIcon(':/icon/east.svg'))
+        self.wIcon(self.ui.moveSouthRaDec, QIcon(':/icon/south.svg'))
+        self.wIcon(self.ui.moveWestRaDec, QIcon(':/icon/west.svg'))
+        self.wIcon(self.ui.moveNorthEastRaDec, QIcon(':/icon/northEast.svg'))
+        self.wIcon(self.ui.moveNorthWestRaDec, QIcon(':/icon/northWest.svg'))
+        self.wIcon(self.ui.moveSouthEastRaDec, QIcon(':/icon/southEast.svg'))
+        self.wIcon(self.ui.moveSouthWestRaDec, QIcon(':/icon/southWest.svg'))
+
         self.wIcon(self.ui.stopMoveAll, QIcon(':/icon/stop_m.svg'))
 
         # driver setting

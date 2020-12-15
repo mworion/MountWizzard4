@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>12</number>
+    <number>11</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -14604,7 +14604,7 @@ Hint if mount will need a flip when following satellite.</string>
        <x>405</x>
        <y>20</y>
        <width>366</width>
-       <height>211</height>
+       <height>191</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -14650,7 +14650,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>154</y>
+        <y>140</y>
         <width>166</width>
         <height>25</height>
        </rect>
@@ -14710,7 +14710,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>121</y>
+        <y>110</y>
         <width>166</width>
         <height>25</height>
        </rect>
@@ -14740,7 +14740,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>190</x>
-        <y>154</y>
+        <y>140</y>
         <width>166</width>
         <height>25</height>
        </rect>
@@ -14770,7 +14770,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>190</x>
-        <y>55</y>
+        <y>50</y>
         <width>166</width>
         <height>25</height>
        </rect>
@@ -14800,7 +14800,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>88</y>
+        <y>80</y>
         <width>166</width>
         <height>25</height>
        </rect>
@@ -14830,7 +14830,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>190</x>
-        <y>88</y>
+        <y>80</y>
         <width>166</width>
         <height>25</height>
        </rect>
@@ -14860,7 +14860,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>190</x>
-        <y>121</y>
+        <y>110</y>
         <width>166</width>
         <height>25</height>
        </rect>
@@ -14890,7 +14890,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>55</y>
+        <y>50</y>
         <width>166</width>
         <height>25</height>
        </rect>
@@ -14920,7 +14920,7 @@ Hint if mount will need a flip when following satellite.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>185</y>
+        <y>165</y>
         <width>171</width>
         <height>25</height>
        </rect>
@@ -15343,312 +15343,58 @@ Hint if mount will need a flip when following satellite.</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_53">
+    <widget class="QTabWidget" name="tabMoving">
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>245</y>
+       <y>230</y>
        <width>366</width>
-       <height>181</height>
+       <height>196</height>
       </rect>
      </property>
-     <property name="toolTip">
-      <string>Allows to move the mount in different directions and slew speeds.</string>
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="title">
-      <string>Mount move</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QPushButton" name="moveNorth">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>25</y>
-        <width>66</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>N</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="moveSouth">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>95</y>
-        <width>66</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>S</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="moveEast">
-      <property name="geometry">
-       <rect>
-        <x>170</x>
-        <y>60</y>
-        <width>66</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>E</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="moveWest">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>60</y>
-        <width>66</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>W</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="stopMoveAll">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>60</y>
-        <width>66</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>Stop</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="moveNorthWest">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>25</y>
-        <width>66</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>NW</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="moveSouthWest">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>95</y>
-        <width>66</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>SW</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="moveNorthEast">
-      <property name="geometry">
-       <rect>
-        <x>170</x>
-        <y>25</y>
-        <width>66</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>NE</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="moveSouthEast">
-      <property name="geometry">
-       <rect>
-        <x>170</x>
-        <y>95</y>
-        <width>66</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>SE</string>
-      </property>
-     </widget>
-     <widget class="QGroupBox" name="groupBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>135</y>
-        <width>346</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Duration</string>
-      </property>
-      <widget class="QRadioButton" name="moveDurationCont">
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>Move Classic</string>
+      </attribute>
+      <widget class="QPushButton" name="moveNorth">
+       <property name="geometry">
+        <rect>
+         <x>95</x>
+         <y>10</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>N</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveNorthWest">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>15</y>
-         <width>86</width>
+         <y>10</y>
+         <width>66</width>
          <height>25</height>
         </rect>
        </property>
@@ -15658,120 +15404,27 @@ Hint if mount will need a flip when following satellite.</string>
          <height>25</height>
         </size>
        </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the mount will move until stop is pressed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>continous</string>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="moveDuration2">
-       <property name="geometry">
-        <rect>
-         <x>235</x>
-         <y>15</y>
-         <width>41</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>25</height>
-        </size>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the mount will move for about 2 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>2s</string>
+        <string>NW</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="moveDuration1">
-       <property name="geometry">
-        <rect>
-         <x>300</x>
-         <y>15</y>
-         <width>41</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the mount will move for about 1 second.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>1s</string>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="moveDuration5">
-       <property name="geometry">
-        <rect>
-         <x>170</x>
-         <y>15</y>
-         <width>41</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the mount will move for about 5 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>5s</string>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="moveDuration10">
-       <property name="geometry">
-        <rect>
-         <x>105</x>
-         <y>15</y>
-         <width>41</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the mount will move for about 10 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>10s</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="groupBox_20">
-      <property name="geometry">
-       <rect>
-        <x>260</x>
-        <y>15</y>
-        <width>96</width>
-        <height>116</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Speed</string>
-      </property>
-      <widget class="QRadioButton" name="slewSpeedMax">
+      <widget class="QPushButton" name="moveWest">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>15</y>
-         <width>56</width>
+         <y>50</y>
+         <width>66</width>
          <height>25</height>
         </rect>
        </property>
@@ -15781,19 +15434,27 @@ Hint if mount will need a flip when following satellite.</string>
          <height>25</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mount will move on max speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Max</string>
+        <string>W</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="slewSpeedMed">
+      <widget class="QPushButton" name="moveSouthEast">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>65</y>
-         <width>61</width>
+         <x>180</x>
+         <y>90</y>
+         <width>66</width>
          <height>25</height>
         </rect>
        </property>
@@ -15803,19 +15464,87 @@ Hint if mount will need a flip when following satellite.</string>
          <height>25</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mount will move on med speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Med</string>
+        <string>SE</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="slewSpeedLow">
+      <widget class="QPushButton" name="moveSouth">
+       <property name="geometry">
+        <rect>
+         <x>95</x>
+         <y>90</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>S</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveNorthEast">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>10</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>NE</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveSouthWest">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>90</y>
-         <width>61</width>
+         <width>66</width>
          <height>25</height>
         </rect>
        </property>
@@ -15825,19 +15554,188 @@ Hint if mount will need a flip when following satellite.</string>
          <height>25</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mount will move on low speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Low</string>
+        <string>SW</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="slewSpeedHigh">
+      <widget class="QPushButton" name="stopMoveAll">
+       <property name="geometry">
+        <rect>
+         <x>95</x>
+         <y>50</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Stop</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveEast">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>50</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>E</string>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_20">
+       <property name="geometry">
+        <rect>
+         <x>270</x>
+         <y>5</y>
+         <width>81</width>
+         <height>116</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Speed</string>
+       </property>
+       <widget class="QRadioButton" name="slewSpeedMax">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>15</y>
+          <width>56</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mount will move on max speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Max</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="slewSpeedMed">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>65</y>
+          <width>61</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mount will move on med speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Med</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="slewSpeedLow">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>61</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mount will move on low speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Low</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="slewSpeedHigh">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>61</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mount will move on high speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>High</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QComboBox" name="moveDuration">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>40</y>
-         <width>61</width>
+         <y>130</y>
+         <width>236</width>
          <height>25</height>
         </rect>
        </property>
@@ -15848,10 +15746,610 @@ Hint if mount will need a flip when following satellite.</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mount will move on high speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the time window for movements in RaDec direction&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Duration continous</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Duration 10 s</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Duration 5 s</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Duration 2 s</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Duration 1 s</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>Move Alt/Az</string>
+      </attribute>
+      <widget class="QPushButton" name="moveWestAltAz">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>High</string>
+        <string>Left</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveEastAltAz">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>50</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Right</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveSouthWestAltAz">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>DL</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveSouthAltAz">
+       <property name="geometry">
+        <rect>
+         <x>95</x>
+         <y>90</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Down</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveNorthWestAltAz">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>UL</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveNorthAltAz">
+       <property name="geometry">
+        <rect>
+         <x>95</x>
+         <y>10</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Up</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveNorthEastAltAz">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>10</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>UR</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveSouthEastAltAz">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>90</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>DR</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="moveStepSizeAltAz">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>130</y>
+         <width>236</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the stepsize for movements in Alt / Az direction&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Stepsize 0.5 °</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Stepsize 1.0 °</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Stepsize 2.0 °</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Stepsize 5.0 °</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Stepsize 10.0 °</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_6">
+      <attribute name="title">
+       <string>Move RA/DEC</string>
+      </attribute>
+      <widget class="QPushButton" name="moveWestRaDec">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>W</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveEastRaDec">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>50</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>E</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveSouthWestRaDec">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>SW</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveNorthRaDec">
+       <property name="geometry">
+        <rect>
+         <x>95</x>
+         <y>10</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>N</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveSouthEastRaDec">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>90</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>SE</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="moveStepSizeRaDec">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>130</y>
+         <width>236</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the stepsize for movements in Ra / Dec direction&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Stepsize 0.5 °</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Stepsize 1.0 °</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Stepsize 2.0 °</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Stepsize 5.0 °</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Stepsize 10.0 °</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QPushButton" name="moveNorthWestRaDec">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>NW</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveNorthEastRaDec">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>10</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>NE</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="moveSouthRaDec">
+       <property name="geometry">
+        <rect>
+         <x>95</x>
+         <y>90</y>
+         <width>66</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>S</string>
        </property>
       </widget>
      </widget>
@@ -25935,15 +26433,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>posButton7</tabstop>
   <tabstop>posButton8</tabstop>
   <tabstop>posButton9</tabstop>
-  <tabstop>moveNorthWest</tabstop>
-  <tabstop>moveNorth</tabstop>
-  <tabstop>moveNorthEast</tabstop>
-  <tabstop>moveEast</tabstop>
-  <tabstop>moveSouthEast</tabstop>
-  <tabstop>moveSouth</tabstop>
-  <tabstop>moveSouthWest</tabstop>
-  <tabstop>moveWest</tabstop>
-  <tabstop>stopMoveAll</tabstop>
   <tabstop>openMessageW</tabstop>
   <tabstop>openMeasureW</tabstop>
   <tabstop>openHemisphereW</tabstop>

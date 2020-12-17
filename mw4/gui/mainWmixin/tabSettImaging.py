@@ -443,4 +443,3 @@ class SettImaging(object):
         """
         self.app.focuser.halt()
         return True
-

@@ -20,7 +20,7 @@ import platform
 
 setup(
     name='mountwizzard4',
-    version='0.220.4b6',
+    version='0.220.4b7',
     packages=[
         'mw4',
         'mw4.base',
@@ -47,7 +47,7 @@ setup(
         'mw4.mountcontrol',
         'mw4.resource',
     ],
-    python_requires='>=3.7.0, <3.9',
+    python_requires='>=3.7.0, <3.10',
     install_requires=[
         'numpy==1.19.3',
         'matplotlib==3.3.3',
@@ -57,8 +57,8 @@ setup(
         'scipy==1.5.3',
         'requests==2.24.0',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.33',
-        'sgp4>=2.13',
+        'skyfield==1.34',
+        'sgp4>=2.1',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==2.0.0',
         'deepdiff==5.0.2',
@@ -91,6 +91,7 @@ setup(
         'Environment :: Other Environment',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: Implementation',
         'Programming Language :: Python :: 3 :: Only',
         'Operating System :: MacOS :: MacOS X',

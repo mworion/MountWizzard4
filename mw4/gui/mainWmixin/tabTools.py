@@ -81,16 +81,6 @@ class Tools(object):
                                self.ui.moveWestAltAz: [0, -1],
                                self.ui.moveNorthWestAltAz: [1, -1],
                                }
-        self.setupMoveRaDec = {self.ui.moveNorthRaDec: [1, 0],
-                               self.ui.moveNorthEastRaDec: [1, 1],
-                               self.ui.moveEastRaDec: [0, 1],
-                               self.ui.moveSouthEastRaDec: [-1, 1],
-                               self.ui.moveSouthRaDec: [-1, 0],
-                               self.ui.moveSouthWestRaDec: [-1, -1],
-                               self.ui.moveWestRaDec: [0, -1],
-                               self.ui.moveNorthWestRaDec: [1, -1],
-                               }
-
         self.slewSpeedSelected = None
         self.setupGui()
 
@@ -126,7 +116,6 @@ class Tools(object):
         self.ui.slewSpeedLow.setChecked(config.get('slewSpeedLow', False))
         self.ui.moveDuration.setCurrentIndex(config.get('moveDuration', 0))
         self.ui.moveStepSizeAltAz.setCurrentIndex(config.get('moveStepSizeAltAz', 0))
-        self.ui.moveStepSizeRaDec.setCurrentIndex(config.get('moveStepSizeRaDec', 0))
 
         return True
 
@@ -152,7 +141,6 @@ class Tools(object):
         config['slewSpeedLow'] = self.ui.slewSpeedLow.isChecked()
         config['moveDuration'] = self.ui.moveDuration.currentIndex()
         config['moveStepSizeAltAz'] = self.ui.moveStepSizeAltAz.currentIndex()
-        config['moveStepSizeRaDec'] = self.ui.moveStepSizeRaDec.currentIndex()
 
         return True
 
@@ -167,23 +155,15 @@ class Tools(object):
             for headerEntry in self.fitsHeaderKeywords:
                 selectorUI.addItem(headerEntry)
 
-        self.ui.moveStepSizeAltAz.clear()
-        for text in self.setupStepsizes:
-            self.ui.moveStepSizeAltAz.addItem(text)
-
-        self.ui.moveStepSizeRaDec.clear()
-        for text in self.setupStepsizes:
-            self.ui.moveStepSizeRaDec.addItem(text)
-
         for ui in self.setupMoveClassic:
             ui.clicked.connect(self.moveClassic)
 
         for ui in self.setupMoveAltAz:
             ui.clicked.connect(self.moveAltAz)
 
-        for ui in self.setupMoveRaDec:
-            ui.clicked.connect(self.moveRaDec)
-
+        self.ui.moveStepSizeAltAz.clear()
+        for text in self.setupStepsizes:
+            self.ui.moveStepSizeAltAz.addItem(text)
         return True
 
     @staticmethod
@@ -508,40 +488,4 @@ class Tools(object):
 
         targetAz = targetAz % 360
         self.slewTargetAltAz(targetAlt, targetAz)
-        return True
-
-    def slewTargetRaDec(self, Ra, Dec):
-        """
-        :param Ra:
-        :param Dec:
-        :return:
-        """
-        self.app.mount.obsSite.setTargetRaDec(ra_hours=Ra,
-                                              dec_degrees=Dec)
-        self.slewSelectedTarget(slewType='normal')
-        return True
-
-    def moveRaDec(self):
-        """
-        :return:
-        """
-        ui = self.sender()
-        if ui not in self.setupMoveRaDec:
-            return False
-
-        Ra = self.app.mount.obsSite.raJNow
-        Dec = self.app.mount.obsSite.decJNow
-
-        if Ra is None or Dec is None:
-            return False
-
-        key = list(self.setupStepsizes)[self.ui.moveStepSizeRaDec.currentIndex()]
-        step = self.setupStepsizes[key]
-        directions = self.setupMoveRaDec[ui]
-        targetRa = Ra.hours + directions[0] * step * 24 / 360
-        targetDec = Dec.degrees + directions[1] * step
-
-        print(directions, targetRa, targetDec)
-
-        self.slewTargetRaDec(targetRa, targetDec)
         return True

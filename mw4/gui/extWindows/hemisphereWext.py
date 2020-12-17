@@ -100,16 +100,20 @@ class HemisphereWindowExt:
 
         if self.ui.checkEditNone.isChecked():
             self.operationMode = 'normal'
+            self.ui.addPositionToHorizon.setEnabled(False)
 
         elif self.ui.checkEditBuildPoints.isChecked():
             self.operationMode = 'build'
+            self.ui.addPositionToHorizon.setEnabled(False)
 
         elif self.ui.checkEditHorizonMask.isChecked():
             self.operationMode = 'horizon'
+            self.ui.addPositionToHorizon.setEnabled(True)
 
         elif self.ui.checkPolarAlignment.isChecked():
             self.ui.checkShowAlignStar.setChecked(True)
             self.operationMode = 'star'
+            self.ui.addPositionToHorizon.setEnabled(False)
 
         self.drawHemisphere()
 
@@ -190,13 +194,32 @@ class HemisphereWindowExt:
 
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
                                                     az_degrees=azimuth)
-
         if not suc:
             self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
             return False
 
         suc = self.slewSelectedTarget(alignType='normal')
 
+        return suc
+
+    def addHorizonPointManual(self):
+        """
+        :return:
+        """
+        data = self.app.data
+        alt = self.app.mount.obsSite.Alt
+        az = self.app.mount.obsSite.Az
+
+        if alt is None or az is None:
+            return False
+
+        index = self.getIndexPointX(x=az.degrees, plane=data.horizonP)
+        if index is None and data.horizonP:
+            return False
+
+        suc = data.addHorizonP(value=(alt.degrees, az.degrees), position=index)
+        if suc:
+            self.drawHemisphere()
         return suc
 
     def addHorizonPoint(self, data=None, event=None):
@@ -209,7 +232,7 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return:
         """
-        index = self.getIndexPointX(event=event, plane=data.horizonP)
+        index = self.getIndexPointX(x=event.xdata, plane=data.horizonP)
         if index is None and data.horizonP:
             return False
 
@@ -259,7 +282,6 @@ class HemisphereWindowExt:
             return False
 
         self.drawHemisphere()
-
         return suc
 
     def addBuildPoint(self, data=None, event=None):

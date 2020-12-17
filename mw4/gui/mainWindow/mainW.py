@@ -478,15 +478,6 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.moveNorthWestAltAz, QIcon(':/icon/northWest.svg'))
         self.wIcon(self.ui.moveSouthEastAltAz, QIcon(':/icon/southEast.svg'))
         self.wIcon(self.ui.moveSouthWestAltAz, QIcon(':/icon/southWest.svg'))
-        self.wIcon(self.ui.moveNorthRaDec, QIcon(':/icon/north.svg'))
-        self.wIcon(self.ui.moveEastRaDec, QIcon(':/icon/east.svg'))
-        self.wIcon(self.ui.moveSouthRaDec, QIcon(':/icon/south.svg'))
-        self.wIcon(self.ui.moveWestRaDec, QIcon(':/icon/west.svg'))
-        self.wIcon(self.ui.moveNorthEastRaDec, QIcon(':/icon/northEast.svg'))
-        self.wIcon(self.ui.moveNorthWestRaDec, QIcon(':/icon/northWest.svg'))
-        self.wIcon(self.ui.moveSouthEastRaDec, QIcon(':/icon/southEast.svg'))
-        self.wIcon(self.ui.moveSouthWestRaDec, QIcon(':/icon/southWest.svg'))
-
         self.wIcon(self.ui.stopMoveAll, QIcon(':/icon/stop_m.svg'))
 
         # driver setting

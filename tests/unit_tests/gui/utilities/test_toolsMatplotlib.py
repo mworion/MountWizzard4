@@ -312,74 +312,49 @@ def test_getIndexPoint_5(function):
 
 
 def test_getIndexPointX_1(function):
-    event = None
+    x = None
     plane = None
-    index = function.getIndexPointX(event=event,
+    index = function.getIndexPointX(x=x,
                                     plane=plane,
                                     )
     assert not index
 
 
 def test_getIndexPointX_2(function):
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 182
-    event.ydata = 45
     plane = None
-    index = function.getIndexPointX(event=event,
+    index = function.getIndexPointX(x=182,
                                     plane=plane,
                                     )
     assert not index
 
 
 def test_getIndexPointX_3(function):
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
     plane = [(45, 0), (45, 360)]
-    index = function.getIndexPointX(event=event,
+    index = function.getIndexPointX(x=180,
                                     plane=plane,
                                     )
     assert index == 1
 
 
 def test_getIndexPointX_4(function):
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 182
-    event.ydata = 45
     plane = [(45, 0), (45, 360)]
-    index = function.getIndexPointX(event=event,
+    index = function.getIndexPointX(x=182,
                                     plane=plane,
                                     )
     assert index == 1
 
 
 def test_getIndexPointX_5(function):
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 182
-    event.ydata = 45
     plane = [(45, 0), (45, 180), (45, 360)]
-    index = function.getIndexPointX(event=event,
+    index = function.getIndexPointX(x=182,
                                     plane=plane,
                                     )
     assert index == 2
 
 
 def test_getIndexPointX_6(function):
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 182
-    event.ydata = 45
     plane = [(45, 0)]
-    index = function.getIndexPointX(event=event,
+    index = function.getIndexPointX(x=182,
                                     plane=plane,
                                     )
     assert index == 1

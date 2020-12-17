@@ -66,7 +66,7 @@
     <number>4</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,0,1">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,1">
      <property name="spacing">
       <number>4</number>
      </property>
@@ -214,27 +214,11 @@
         <property name="spacing">
          <number>10</number>
         </property>
-        <item row="0" column="0">
-         <widget class="QRadioButton" name="checkEditNone">
-          <property name="font">
-           <font>
-            <family>Arial</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Switching the hemisphere window to normal working mode.</string>
-          </property>
-          <property name="text">
-           <string>Normal</string>
-          </property>
-          <property name="checked">
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="checkPolarAlignment">
+          <property name="enabled">
            <bool>true</bool>
           </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QRadioButton" name="checkEditBuildPoints">
           <property name="font">
            <font>
             <family>Arial</family>
@@ -242,10 +226,10 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Enabling the edit mode for model build points.</string>
+           <string>Enabling the polar or ortho align procedure. For starting the procedure, enable align stars and choose a polar align star with left mouse click and a ortho align star with right mouse click.</string>
           </property>
           <property name="text">
-           <string>Edit Build Points</string>
+           <string>Align Polar/Ortho </string>
           </property>
          </widget>
         </item>
@@ -265,11 +249,8 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QRadioButton" name="checkPolarAlignment">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
+        <item row="1" column="0">
+         <widget class="QRadioButton" name="checkEditBuildPoints">
           <property name="font">
            <font>
             <family>Arial</family>
@@ -277,10 +258,48 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Enabling the polar or ortho align procedure. For starting the procedure, enable align stars and choose a polar align star with left mouse click and a ortho align star with right mouse click.</string>
+           <string>Enabling the edit mode for model build points.</string>
           </property>
           <property name="text">
-           <string>Align Polar/Ortho </string>
+           <string>Edit Build Points</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="checkEditNone">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Switching the hemisphere window to normal working mode.</string>
+          </property>
+          <property name="text">
+           <string>Normal</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="addPositionToHorizon">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>90</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add actual telescope position (Alt/Az) as point to the horizon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Add actual pos</string>
           </property>
          </widget>
         </item>
@@ -448,19 +467,6 @@
          </layout>
         </item>
        </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="Line" name="line_5">
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="midLineWidth">
-        <number>1</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
       </widget>
      </item>
      <item>

@@ -277,6 +277,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
         self.ui.showPolar.clicked.connect(self.togglePolar)
+        self.ui.addPositionToHorizon.clicked.connect(self.addHorizonPointManual)
 
         self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
                                                      self.onMouseDispatcher)

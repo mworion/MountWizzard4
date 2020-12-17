@@ -269,7 +269,6 @@ class ToolsMatplotlib:
         :param epsilon:
         :return: index or none
         """
-
         if event is None:
             return None
 
@@ -288,29 +287,26 @@ class ToolsMatplotlib:
             return None
 
         index = int(index)
-
         return index
 
     @staticmethod
-    def getIndexPointX(event=None, plane=None):
+    def getIndexPointX(x=None, plane=None):
         """
         getIndexPointX returns the index of the point which has a x coordinate closest to
         the left of the x coordinate of the mouse click regardless which y coordinate it has
 
-        :param event: data of the mouse clicked event
+        :param x: data of the mouse clicked event
         :param plane: coordinates as tuples (x, y)
         :return: index or none
         """
-
-        if event is None:
+        if x is None:
             return None
 
         if not plane:
             return None
 
         xt = [i[1] for i in plane]
-        index = int(bisect.bisect_left(xt, event.xdata))
-
+        index = int(bisect.bisect_left(xt, x))
         return index
 
     @staticmethod

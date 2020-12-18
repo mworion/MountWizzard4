@@ -54,7 +54,7 @@ setup(
         'pyerfa==1.7.1.1',
         'astropy==4.2',
         'photutils==1.0.1',
-        'scipy==1.5.3',
+        'scipy==1.5.4',
         'requests==2.24.0',
         'requests_toolbelt==0.9.1',
         'skyfield==1.34',

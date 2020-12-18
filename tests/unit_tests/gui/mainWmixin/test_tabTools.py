@@ -27,8 +27,10 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtTest import QTest
 from astropy.io import fits
 from mountcontrol.qtmount import Mount
+from skyfield.api import Angle
 
 # local import
 from gui.mainWmixin.tabTools import Tools
@@ -50,6 +52,7 @@ def module_setup_teardown(qtbot):
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
         mwGlob = {'imageDir': 'tests/image'}
+        deviceStat = {}
 
     widget = QWidget()
     ui = Ui_MainWindow()
@@ -284,6 +287,54 @@ def test_chooseDir_2():
         assert suc
 
 
+def test_moveDuration_1():
+    app.ui.moveDuration.setCurrentIndex(1)
+    with mock.patch.object(QTest,
+                           'qWait'):
+        with mock.patch.object(app,
+                               'stopMoveAll'):
+            suc = app.moveDuration()
+            assert suc
+
+
+def test_moveDuration_2():
+    app.ui.moveDuration.setCurrentIndex(2)
+    with mock.patch.object(QTest,
+                           'qWait'):
+        with mock.patch.object(app,
+                               'stopMoveAll'):
+            suc = app.moveDuration()
+            assert suc
+
+
+def test_moveDuration_3():
+    app.ui.moveDuration.setCurrentIndex(3)
+    with mock.patch.object(QTest,
+                           'qWait'):
+        with mock.patch.object(app,
+                               'stopMoveAll'):
+            suc = app.moveDuration()
+            assert suc
+
+
+def test_moveDuration_4():
+    app.ui.moveDuration.setCurrentIndex(4)
+    with mock.patch.object(QTest,
+                           'qWait'):
+        with mock.patch.object(app,
+                               'stopMoveAll'):
+            suc = app.moveDuration()
+            assert suc
+
+
+def test_moveDuration_5():
+    app.ui.moveDuration.setCurrentIndex(0)
+    with mock.patch.object(QTest,
+                           'qWait'):
+        suc = app.moveDuration()
+        assert not suc
+
+
 def test_moveClassic_1():
     def sender():
         return 0
@@ -348,3 +399,19 @@ def test_setSlewSpeed_2():
 
     suc = app.setSlewSpeed()
     assert suc
+
+
+def test_slewSelectedTarget_1():
+    suc = app.slewSelectedTarget()
+    assert not suc
+
+
+def test_slewSelectedTarget_2():
+    app.app.mount.obsSite.AltTarget = Angle(degrees=10)
+    app.app.mount.obsSite.AzTarget = Angle(degrees=10)
+    app.app.deviceStat['dome'] = False
+    with mock.patch.object(app.app.mount.obsSite,
+                           'startSlewing',
+                           return_value=True):
+        suc = app.slewSelectedTarget()
+        assert suc

@@ -360,7 +360,7 @@ class Tools(object):
             QTest.qWait(1000)
 
         else:
-            return True
+            return False
 
         self.stopMoveAll()
         return True

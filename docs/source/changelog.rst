@@ -25,13 +25,17 @@ Unreleased Betas
 
 Released betas
 --------------
-0.220.4b5
+0.220.4
 
 - improved logging
 - imported some external packages
 - update PyQt5 to 5.15.2
+- update to support python 3.9 now
+- removed python 3.6 support
 - bugfix for long download times
 - adding focuser handling
+- add moving alt / az direction with direct command (easy making horizon maps)
+- adding actual position to horizon map (easy making horizon maps)
 
 0.220.3
 

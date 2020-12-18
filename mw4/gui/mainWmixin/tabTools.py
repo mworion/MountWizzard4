@@ -490,7 +490,7 @@ class Tools(object):
         if alt is None or az is None or stat is None:
             return False
 
-        if stat not in [1, 7]:
+        if stat not in [0, 7]:
             return False
 
         key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]

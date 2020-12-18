@@ -515,7 +515,7 @@ def test_moveAltAz_5():
         return app.ui.moveNorthEastAltAz
 
     app.sender = sender
-    app.app.mount.obsSite.status = 1
+    app.app.mount.obsSite.status = 0
     app.app.mount.obsSite.Alt = 10
     app.app.mount.obsSite.Az = 10
 

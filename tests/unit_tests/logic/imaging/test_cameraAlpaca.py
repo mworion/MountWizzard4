@@ -22,19 +22,23 @@ import unittest.mock as mock
 # external packages
 from astropy.io import fits
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
-from mountcontrol.mount import Mount
 from skyfield.api import Angle
 
 # local import
-from base.loggerMW import setupLogging
-setupLogging()
+from mountcontrol.mount import Mount
+from logic.environment.skymeter import Skymeter
 from logic.imaging.cameraAlpaca import CameraAlpaca
 from logic.imaging.camera import CameraSignals
 from base.alpacaBase import AlpacaBase
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
+    class TestApp:
+        threadPool = QThreadPool()
+
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
@@ -43,6 +47,7 @@ def module_setup_teardown():
         mount.obsSite.raJNow = Angle(hours=12)
         mount.obsSite.decJNow = Angle(degrees=45)
         deviceStat = {'mount': True}
+        skymeter = Skymeter(app=TestApp())
 
     global app
     app = CameraAlpaca(app=Test(), signals=CameraSignals(), data={})

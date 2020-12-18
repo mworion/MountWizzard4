@@ -23,13 +23,16 @@ import platform
 # external packages
 from astropy.io import fits
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
-from mountcontrol.mount import Mount
 from skyfield.api import Angle
 
 # local import
+from mountcontrol.mount import Mount
+from logic.environment.skymeter import Skymeter
 from logic.imaging.cameraAscom import CameraAscom
 from logic.imaging.camera import CameraSignals
 from base.ascomClass import AscomClass
+from base.loggerMW import setupLogging
+setupLogging()
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
@@ -68,6 +71,9 @@ def module_setup_teardown():
         def StopExposure():
             return True
 
+    class TestApp:
+        threadPool = QThreadPool()
+
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
@@ -76,6 +82,7 @@ def module_setup_teardown():
         mount.obsSite.raJNow = Angle(hours=12)
         mount.obsSite.decJNow = Angle(degrees=45)
         deviceStat = {'mount': True}
+        skymeter = Skymeter(app=TestApp())
 
     global app
     app = CameraAscom(app=Test(), signals=CameraSignals(), data={})

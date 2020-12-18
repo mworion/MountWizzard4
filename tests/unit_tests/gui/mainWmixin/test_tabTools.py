@@ -415,3 +415,112 @@ def test_slewSelectedTarget_2():
                            return_value=True):
         suc = app.slewSelectedTarget()
         assert suc
+
+
+def test_slewSelectedTarget_3():
+    app.app.mount.obsSite.AltTarget = Angle(degrees=10)
+    app.app.mount.obsSite.AzTarget = Angle(degrees=10)
+    app.app.deviceStat['dome'] = False
+    with mock.patch.object(app.app.mount.obsSite,
+                           'startSlewing',
+                           return_value=False):
+        suc = app.slewSelectedTarget()
+        assert not suc
+
+
+def test_slewTargetAltAz_1():
+    app.app.mount.setting.horizonLimitHigh = 80
+    app.app.mount.setting.horizonLimitLow = 10
+    app.app.mount.obsSite.status = 0
+
+    with mock.patch.object(app,
+                           'slewSelectedTarget',
+                           return_value=True):
+        suc = app.slewTargetAltAz(100, 10)
+        assert suc
+
+
+def test_slewTargetAltAz_2():
+    app.app.mount.setting.horizonLimitHigh = 80
+    app.app.mount.setting.horizonLimitLow = 10
+    app.app.mount.obsSite.status = 1
+
+    with mock.patch.object(app,
+                           'slewSelectedTarget',
+                           return_value=False):
+        suc = app.slewTargetAltAz(-10, 10)
+        assert not suc
+
+
+def test_moveAltAz_1():
+    def sender():
+        return 0
+
+    app.sender = sender
+
+    suc = app.moveAltAz()
+    assert not suc
+
+
+def test_moveAltAz_2():
+    def sender():
+        return app.ui.moveNorthEastAltAz
+
+    app.sender = sender
+    app.app.mount.obsSite.status = None
+    app.app.mount.obsSite.Alt = 10
+    app.app.mount.obsSite.Az = 10
+
+    with mock.patch.object(app,
+                           'slewTargetAltAz',
+                           return_value=False):
+        suc = app.moveAltAz()
+        assert not suc
+
+
+def test_moveAltAz_3():
+    def sender():
+        return app.ui.moveNorthEastAltAz
+
+    app.sender = sender
+    app.app.mount.obsSite.status = 0
+    app.app.mount.obsSite.Alt = 10
+    app.app.mount.obsSite.Az = 10
+
+    with mock.patch.object(app,
+                           'slewTargetAltAz',
+                           return_value=False):
+        suc = app.moveAltAz()
+        assert not suc
+
+
+def test_moveAltAz_4():
+    def sender():
+        return app.ui.moveNorthEastAltAz
+
+    app.sender = sender
+    app.app.mount.obsSite.status = 1
+    app.app.mount.obsSite.Alt = 10
+    app.app.mount.obsSite.Az = 10
+
+    with mock.patch.object(app,
+                           'slewTargetAltAz',
+                           return_value=False):
+        suc = app.moveAltAz()
+        assert not suc
+
+
+def test_moveAltAz_5():
+    def sender():
+        return app.ui.moveNorthEastAltAz
+
+    app.sender = sender
+    app.app.mount.obsSite.status = 1
+    app.app.mount.obsSite.Alt = 10
+    app.app.mount.obsSite.Az = 10
+
+    with mock.patch.object(app,
+                           'slewTargetAltAz',
+                           return_value=True):
+        suc = app.moveAltAz()
+        assert suc

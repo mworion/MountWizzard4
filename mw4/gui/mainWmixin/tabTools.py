@@ -447,18 +447,33 @@ class Tools(object):
             self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuthT, altitudeT), 2)
         return suc
 
-    def slewTargetAltAz(self, Alt, Az):
+    def slewTargetAltAz(self, alt, az):
         """
-        :param Alt:
-        :param Az:
+        :param alt:
+        :param az:
         :return:
         """
-        # todo: constraints set in mount
+        altHigh = self.app.mount.setting.horizonLimitHigh
+        altLow = self.app.mount.setting.horizonLimitLow
 
-        self.app.mount.obsSite.setTargetAltAz(alt_degrees=Alt,
-                                              az_degrees=Az)
-        self.slewSelectedTarget(slewType='normal')
-        return True
+        if alt > altHigh:
+            alt = altHigh
+
+        elif alt < altLow:
+            alt = altLow
+
+        isTracking = self.app.mount.obsSite.status == 0
+
+        self.app.mount.obsSite.setTargetAltAz(alt_degrees=alt,
+                                              az_degrees=az)
+        if isTracking:
+            slewType = 'normal'
+
+        else:
+            slewType = 'notrack'
+
+        suc = self.slewSelectedTarget(slewType=slewType)
+        return suc
 
     def moveAltAz(self):
         """
@@ -468,24 +483,21 @@ class Tools(object):
         if ui not in self.setupMoveAltAz:
             return False
 
-        Alt = self.app.mount.obsSite.Alt
-        Az = self.app.mount.obsSite.Az
+        stat = self.app.mount.obsSite.status
+        alt = self.app.mount.obsSite.Alt
+        az = self.app.mount.obsSite.Az
 
-        if Alt is None or Az is None:
+        if alt is None or az is None or stat is None:
+            return False
+
+        if stat not in [1, 7]:
             return False
 
         key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]
         step = self.setupStepsizes[key]
         directions = self.setupMoveAltAz[ui]
-        targetAlt = Alt.degrees + directions[0] * step
-        targetAz = Az.degrees + directions[1] * step
-
-        if targetAlt > 90:
-            targetAlt = 90
-
-        elif targetAlt < -5:
-            targetAlt = -5
-
+        targetAlt = alt.degrees + directions[0] * step
+        targetAz = az.degrees + directions[1] * step
         targetAz = targetAz % 360
-        self.slewTargetAltAz(targetAlt, targetAz)
-        return True
+        suc = self.slewTargetAltAz(targetAlt, targetAz)
+        return suc

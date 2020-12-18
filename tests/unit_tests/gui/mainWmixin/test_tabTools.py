@@ -82,8 +82,8 @@ def test_storeConfig_1():
     assert suc
 
 
-def test_selectorGui():
-    suc = app.setupSelectorGui()
+def test_setupGui():
+    suc = app.setupGui()
     assert suc
     for _, ui in app.selectorsDropDowns.items():
         assert ui.count() == 7
@@ -284,80 +284,37 @@ def test_chooseDir_2():
         assert suc
 
 
-def test_moveNorth():
-    with mock.patch.object(app.app.mount.obsSite,
-                           'moveNorth',
-                           return_value=True):
-        suc = app.moveNorth()
+def test_moveClassic_1():
+    def sender():
+        return 0
+
+    app.sender = sender
+    with mock.patch.object(app,
+                           'moveDuration'):
+        suc = app.moveClassic()
+        assert not suc
+
+
+def test_moveClassic_2():
+    def sender():
+        return app.ui.moveNorthEast
+
+    app.sender = sender
+    with mock.patch.object(app,
+                           'moveDuration'):
+        suc = app.moveClassic()
         assert suc
 
 
-def test_moveEast():
-    with mock.patch.object(app.app.mount.obsSite,
-                           'moveEast',
-                           return_value=True):
-        suc = app.moveEast()
+def test_moveClassic_3():
+    def sender():
+        return app.ui.moveSouthWest
+
+    app.sender = sender
+    with mock.patch.object(app,
+                           'moveDuration'):
+        suc = app.moveClassic()
         assert suc
-
-
-def test_moveSouth():
-    with mock.patch.object(app.app.mount.obsSite,
-                           'moveSouth',
-                           return_value=True):
-        suc = app.moveSouth()
-        assert suc
-
-
-def test_moveWest():
-    with mock.patch.object(app.app.mount.obsSite,
-                           'moveWest',
-                           return_value=True):
-        suc = app.moveWest()
-        assert suc
-
-
-def test_moveNorthEast():
-    with mock.patch.object(app.app.mount.obsSite,
-                           'moveNorth',
-                           return_value=True):
-        with mock.patch.object(app.app.mount.obsSite,
-                               'moveEast',
-                               return_value=True):
-            suc = app.moveNorthEast()
-            assert suc
-
-
-def test_moveSouthEast():
-    with mock.patch.object(app.app.mount.obsSite,
-                           'moveEast',
-                           return_value=True):
-        with mock.patch.object(app.app.mount.obsSite,
-                               'moveEast',
-                               return_value=True):
-            suc = app.moveSouthEast()
-            assert suc
-
-
-def test_moveSouthWest():
-    with mock.patch.object(app.app.mount.obsSite,
-                           'moveSouth',
-                           return_value=True):
-        with mock.patch.object(app.app.mount.obsSite,
-                               'moveWest',
-                               return_value=True):
-            suc = app.moveSouthWest()
-            assert suc
-
-
-def test_moveNorthWest():
-    with mock.patch.object(app.app.mount.obsSite,
-                           'moveWest',
-                           return_value=True):
-        with mock.patch.object(app.app.mount.obsSite,
-                               'moveWest',
-                               return_value=True):
-            suc = app.moveNorthWest()
-            assert suc
 
 
 def test_stopMoveAll():

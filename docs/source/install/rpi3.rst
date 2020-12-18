@@ -22,7 +22,7 @@ should give you the following result:
 In addition you have to take care, that python 3.7 is installed. The
 actual Ubuntu mate 18.04.2 distribution comes with python 3.6, so we need to update this.
 Please follow the description: :ref:`Ubuntu`. After that you should get an
-python3.7
+python3.7 or newer
 available on your system:
 
 .. image:: image/rpi3_python37.png

@@ -1,7 +1,7 @@
 Known limitations
 =================
 
-MW4 does only support python 3.6 - 3.8 right now. The reason for that is the
+MW4 does only support python 3.7 - 3.9 right now. The reason for that is the
 missing availability of precompiled packages needed.
 
 On Apple MacOSx BigSur you need update to > 0.220.3 at the QT framework has some

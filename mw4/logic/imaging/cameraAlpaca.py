@@ -208,6 +208,8 @@ class CameraAlpaca(AlpacaClass):
             header['EXPTIME'] = expTime
             header['OBSERVER'] = 'MW4'
             header['DATE-OBS'] = self.app.mount.obsSite.timeJD.utc_iso()
+            header['CCD-TEMP'] = self.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
+            header['SQM'] = self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
 
             if isMount:
                 header['RA'] = ra._degrees

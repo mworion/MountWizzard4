@@ -6,4 +6,6 @@ Mechanical Ideas
     :maxdepth: 2
 
     cables
+    flipflat_sqr
+
 

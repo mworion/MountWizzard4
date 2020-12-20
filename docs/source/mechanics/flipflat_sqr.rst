@@ -3,14 +3,16 @@ Mounting FlipFlat and SQR
 
 .. warning:: Before starting please check if this solution also work for your
              environment. This means please check carefully dimensions and
-             devices. Changes made are on your own risk !
+             devices. This setup might not work for you.
 
-Description of parts
---------------------
+.. warning:: Changes on all devices are made at your own risk!
 
-..note:: Please use adequate parts if you would like to follow the example. In
-         my setup the diameter of the dew shield is 121.3 mm. It's a
-         Teleskop-Express Photo Line TLAPO1027-FT.
+Description of parts for FlipFlat / SQR holder
+----------------------------------------------
+
+.. note:: Please use adequate parts if you would like to follow the example. In
+          my setup the diameter of the dew shield is 121.3 mm. It's a
+          Teleskop-Express Photo Line TLAPO1027-FT.
 
 2 x M4 x 30 mm for connection dew shield ring to holder attachment
 2 x M4 x 15 mm for connecting the two dew shield rings
@@ -41,7 +43,8 @@ Alnitak Flip Flat device without any original holder part attached.
     :align: center
     :scale: 71%
 
-The STL holder part.
+The holder which fixes FlipFlat and unihedron and makes the link to the dew
+shield ring.
 
 .. image:: image/img_9485.png
     :align: center

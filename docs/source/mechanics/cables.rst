@@ -8,8 +8,8 @@ the setup. I tried to use cable as short as possible.
 For cable management I did some brackets and sliders with my 3D printer. for the used parts
 you find the 3D STL files on https://github.com/mworion/MountWizzard4/tree/master/3D_Models
 
-Description of parts
---------------------
+Description of parts for cable holders
+--------------------------------------
 
 ..note:: Please remind the following comments from Scott:
 

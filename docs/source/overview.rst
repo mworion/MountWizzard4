@@ -1,5 +1,5 @@
-Before starting with MountWizzard4
-==================================
+Before starting
+===============
 
 Overview
 --------

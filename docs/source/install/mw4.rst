@@ -41,12 +41,26 @@ To install MW4 on your computer, there are some support scripts available for Wi
 and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online, and
 available from Github:
 
-For Windows10: https://github.com/mworion/MountWizzard4/blob/master/support/Windows_Scripts.zip
+.. note:: Please check also scripts for updates of the script as they improve over time!
 
-For MacOs: https://github.com/mworion/MountWizzard4/blob/master/support/MacOSx_Scripts.zip
+Windows10:
 
-For Ubuntu: https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Scripts.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/Windows_Scripts.zip
 
+MacOSx:
+
+https://github.com/mworion/MountWizzard4/blob/master/support/MacOSx_Scripts.zip
+
+Ubuntu:
+
+https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Scripts.zip
+
+UbuntuMate ARM64:
+
+https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Mate_Scripts.zip
+
+Downloading the zip files
+-------------------------
 Please click the link and press download from the page:
 
 .. image:: image/scripts.png
@@ -202,7 +216,7 @@ Unfortunately this is broken un Ubuntu 20.04LTS, see (including the workaround):
 
 https://askubuntu.com/questions/1231413/basic-desktop-actions-are-not-available-on-ubuntu-20-04
 
-If you install nemo as file manager, the desktop icons will work.
+If you install nemo (hint as workaround) as file manager, the desktop icons will work.
 
 DPI scaling on Windows
 ----------------------
@@ -243,14 +257,16 @@ You will experience to set the font adequately.
 
 DPI scaling on Ubuntu
 ---------------------
-This is quite similar to windows. You have to set the environment variables QT_SCALE_FACTOR
-and QT_FONT_DPI accordingly. They are already part of the MW4_Run.sh scripts.
+This is quite similar to windows. You have to set the environment variables
+QT_SCALE_FACTOR and QT_FONT_DPI accordingly. They are already part of the
+MW4_Run.sh scripts.
 
 
 Update manually
 ---------------
-
-If you plan to upgrade MW4 to the newest release, you could use on of the
+If you plan to upgrade MW4 to the newest release, MW4 has it's own internal
+updater and using the script is not necessary. In some circumstances this might
+be necessary. In these cases you could use on of the
 
 .. code-block:: python
 
@@ -258,9 +274,7 @@ If you plan to upgrade MW4 to the newest release, you could use on of the
     MW4_Update.sh          # Ubuntu
     MW4_Update.command     # OSx
 
-scripts. In some circumstances this might be necessary, but for normal use MW4 has it's own
-internal updater and using the script is not necessary. The command script updates to the
-latest release.
+scripts. The command script updates to the latest release.
 
-.. note:: You only could update to official releases. Beta's are not possible.
+.. note:: You only could update to official releases. Beta's are not supported.
 

@@ -3,10 +3,6 @@
 
     overview
     problemSolving
-
-.. toctree::
-    :maxdepth: 3
-
     install/index
     explain/index
     config/index

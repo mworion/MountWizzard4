@@ -143,8 +143,8 @@ Installing MW on a raspberry pi will need to compile packages as they ar not
 provided from the package manager pypi.org.
 
 
-Things to check before reporting an issue
------------------------------------------
+Reporting issues
+----------------
 To have an eye on your setup here are some topics which you could check:
 
 - Mount connection available and stable. Wifi might have performance problems.
@@ -162,9 +162,6 @@ To have an eye on your setup here are some topics which you could check:
 - Good counter check is review settings, status bars, message window if something
   is going wrong.
 
-
-Reporting issues
-----------------
 As MW4 adds more functionality, your feedback is highly welcome! To improve
 quality and usability any feedback is highly welcome. To maintain a good
 transparency and a doable work for my, please respect some recommendations how

@@ -4,10 +4,11 @@ Installing MW4 on RaspberryPi 3
 Installing Python on RPi3
 -------------------------
 
-To get MW4 installed on RPi3 you will follow the instructions of Robert Lancaste (many
-thanks to him fore this work!) on https://github.com/rlancaste/AstroPi3 with installing
-AstroPi3 scripts. The installation procedure I describe is based on Raspbian Buster with
-desktop. As this distribution already supports python 3.7 we should check this:
+To get MW4 installed on RPi3 you will follow the instructions of Robert Lancaste
+(many thanks to him fore this work!) on https://github.com/rlancaste/AstroPi3 with
+installing AstroPi3 scripts. The installation procedure I describe is based on
+Raspbian Buster with desktop. As this distribution already supports python 3.7 we
+should check this:
 
 .. code-block:: python
 
@@ -20,10 +21,9 @@ should give you the following result:
     :scale: 71%
 
 In addition you have to take care, that python 3.7 is installed. The
-actual Ubuntu mate 18.04.2 distribution comes with python 3.6, so we need to update this.
-Please follow the description: :ref:`Ubuntu`. After that you should get an
-python3.7 or newer
-available on your system:
+actual Ubuntu mate 18.04.2 distribution comes with python 3.6, so we need to
+update this. Please follow the description: :ref:`Ubuntu`. After that you should
+get an python3.7 or newer available on your system:
 
 .. image:: image/rpi3_python37.png
     :align: center
@@ -33,12 +33,13 @@ If everything went fine, we can proceed to the next step.
 
 Installing PyQt5 on RPi3
 ------------------------
-As on arm the installation of PyQt5 could not be done through pip, the actual tested path is
-to install Qt directly via apt-get on your RBP3. As result, you cannot install MW4 easily in a
-virtual environment as apt-get will install all libraries in a system path.
+As on arm the installation of PyQt5 could not be done through pip, the actual
+tested path is to install Qt directly via apt-get on your RBP3. As result, you
+cannot install MW4 easily in a virtual environment as apt-get will install all
+libraries in a system path.
 
-As there were no compiled binaries for actual Qt version available, you have to compile it
-yourself.
+As there were no compiled binaries for actual Qt version available, you have to
+compile it yourself.
 
 .. code-block:: python
 
@@ -64,14 +65,14 @@ yourself.
     sudo make -j4
     sudo make install
 
-There are in different packages to be downloaded and installed. They build on each other, so
-keep the order of compiling and install. This procedure take about 2 hours or more,
-depending on the system.
+There are in different packages to be downloaded and installed. They build on each
+other, so keep the order of compiling and install. This procedure take about 2
+hours or more, depending on the system.
 
 .. warning::
-    So far PyQtWebEngine does not build on RPi3! So I removed for the build from 0.138 on
-    the capabilities, who need the PyQtWebEngine package. This is basically the Keypad. So
-    you will have limited features!
+    So far PyQtWebEngine does not build on RPi3! So I removed for the build from 0
+    .138 on the capabilities, who need the PyQtWebEngine package. This is
+    basically the Keypad. So you will have limited features!
 
 So before you could actually run MW4 you need to install some mor libraries:
 

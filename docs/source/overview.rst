@@ -6,12 +6,12 @@ Overview
 
 .. note:: Please remember that MountWizzard4 is still beta and under development!
 
-Welcome to MountWizzard4! MW4 is a utility for 10micron users for improving the workflow for
-astronomy work and imaging runs on Windows10, Mac OSX (beginning from 10.12) and Linux
-(Ubuntu from 16.04.).
-As a python application, it should run in all environments which support python 3.7, 3.8 or
-3.9 including Qt as a Gui framework. Please notice that python 3.9 and older python version
-prior to 3.7 and python 2 is not supported.
+Welcome to MountWizzard4! MW4 is a utility for 10micron users for improving the
+workflow for astronomy work and imaging runs on Windows10, Mac OSX (beginning from
+10.12) and Linux (Ubuntu from 16.04.).
+As a python application, it should run in all environments which support python
+3.7, 3.8 or 3.9 including Qt as a Gui framework. Please notice that python 3.9 and
+older python version prior to 3.7 and python 2 is not supported.
 
 There are some video about modeling: https://youtu.be/8YWLLo3siUY
 
@@ -19,10 +19,11 @@ and Polar alignment as well: https://youtu.be/Hc49N12fjVo
 
 Some more video's are linked from the documentation.
 
-For full operation MW4 needs actually running INDI / INDIGO Server(s), connected to your
-devices. In addition an online connection is used for some services which are helpful, but
-not necessary. MW4 supports ASCOM Alpaca for all devices, but the framework has some
-issues. MW4 also support ASCOM devices (camera, dome) in Windows environment.
+For full operation MW4 needs actually running INDI / INDIGO Server(s), connected
+to your devices. In addition an online connection is used for some services which
+are helpful, but not necessary. MW4 supports ASCOM Alpaca for all devices, but the
+framework has some issues. MW4 also support ASCOM devices (camera, dome) in
+Windows environment.
 
 .. list-table:: Supported devices and frameworks in MW4
     :widths: 20, 20, 20, 20, 20
@@ -79,8 +80,8 @@ issues. MW4 also support ASCOM devices (camera, dome) in Windows environment.
         - yes
         - not tested
 
-It is recommended to use mount firmware 2.16 or later as some of the functions don't work
-with older firmware versions.
+It is recommended to use mount firmware 2.16 or later as some of the functions
+don't work with older firmware versions.
 
 Here is an overview of the functionality available in MW4:
 
@@ -88,36 +89,42 @@ Here is an overview of the functionality available in MW4:
 - Control movement of the mount as well as tracking speeds.
 - Coordinates in J2000 as well as in JNow.
 - Virtual keypad
-- Model building with different model setups and model generating capabilities. Sorting points
-  for effective slew paths or dome situations.
-- Model building is done in parallel threads (imaging, plate solving, slewing) to reduce time.
-- Show the actual model and alignment error. Give hints on how to improve the raw polar alignment.
+- Model building with different model setups and model generating capabilities.
+  Sorting points for effective slew paths or dome situations.
+- Model building is done in parallel threads (imaging, plate solving, slewing)
+  to reduce time.
+- Show the actual model and alignment error. Give hints on how to improve the
+  raw polar alignment.
 - Model optimisation: deleting points, automatic removing point for target RMS etc.
 - Manage models stored in the mount (save, load, delete).
-- Dome geometry integration (MW4 knows about target flip side and slews dome correctly as
-  well as any geometrical constraints).
-- Environment data: MW4 shows data from OpenWeatherMap, ClearOutside, External Sensors like
-  MBox, Stickstation, UniHedronSQR as well as direct linked sensors like MGBox.
+- Dome geometry integration (MW4 knows about target flip side and slews dome
+  correctly as well as any geometrical constraints).
+- Environment data: MW4 shows data from OpenWeatherMap, ClearOutside, External
+  Sensors like MBox, Stickstation, UniHedronSQR as well as direct linked sensors
+  like MGBox.
 - Refraction handling external / internal from the above sources.
 - Satellite: searching, displaying, programming, updating tracking.
 - Tools: FITS Header renaming, Park positions, etc.
 - Remote shutdown of MW4 and Mount via IP commands.
 - Measurements and CSV saving for most environment and mount data
 - Imaging: control of connected camera / cooler / filter.
-- WOL (wake on LAN) boot for mount. MW4 catches MAC address automatically on first manual start.
+- WOL (wake on LAN) boot for mount. MW4 catches MAC address automatically on
+  first manual start.
 - Audio signals for different events (end slew, finished modeling, alert, etc.)
 - Updater for all MW4 functions.
 - Generate / load / save as many profiles as you would like.
-- Show alignment stars. Choose and automatically center for polar or orthogonal adjustments.
+- Show alignment stars. Choose and automatically center for polar or orthogonal
+  adjustments.
 - Imaging: expose one or N images, auto solve or auto stack these images.
-- Imaging: show distortion grid, astrometric calculations (flux, roundness, sharpness)
+- Imaging: show distortion grid, astrometric calculations (flux, roundness,
+  sharpness)
 
 Known limitations
 -----------------
 MW4 does only support python 3.7 - 3.9 right now. The reason for that is the
 missing availability of precompiled packages needed.
 
-On Apple MacOSx BigSur you need update to > 0.220.3 at the QT framework has some
+On Apple MacOSx BigSur you need update to > 0.220.3 at the Qt framework has some
 issues opening the primary display.
 
 Some features are limited to windows version only as they need the original
@@ -149,7 +156,8 @@ To have an eye on your setup here are some topics which you could check:
 
 - If using local astrometry.net solver: index files installed and ready.
 
-- If model run does not start: all preconditions (imager, solver, etc. up and ready)
+- If model run does not start: all preconditions (imager, solver, etc. up and
+  ready)
 
 - Good counter check is review settings, status bars, message window if something
   is going wrong.

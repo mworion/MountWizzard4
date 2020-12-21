@@ -41,7 +41,8 @@ To install MW4 on your computer, there are some support scripts available for Wi
 and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online, and
 available from Github:
 
-.. note:: Please check also scripts for updates of the script as they improve over time!
+.. note:: Please check also scripts for updates of the script as they improve
+          over time!
 
 Windows10:
 
@@ -67,12 +68,13 @@ Please click the link and press download from the page:
     :align: center
     :scale: 71%
 
-There is a video on youtube with the install process for Mac: https://youtu.be/xJxpx_SmrVc.
+There is a video on youtube with the install process for Mac:
+https://youtu.be/xJxpx_SmrVc.
 
 Short videos for installation
 -----------------------------
-For a better impression of how MW4 could be installed, there are some special videos showing
-a installation on different platforms.
+For a better impression of how MW4 could be installed, there are some special
+videos showing a installation on different platforms.
 
 .. hlist::
     :columns: 1
@@ -85,14 +87,17 @@ a installation on different platforms.
 Step 1
 ------
 
-Please create a working directory of your choice and location. For MacOSx I would recommend
-not using a location on the desktop as it might cause troubles with execution right in newer
-OSx installations. The directory can be renamed later on, it also can also be moved to any
-other location. Copy the scripts for your platform into this directory.
+Please create a working directory of your choice and location. For MacOSx I would
+recommend not using a location on the desktop as it might cause troubles with
+execution right in newer OSx installations. The directory can be renamed later on,
+it also can also be moved to any other location. Copy the scripts for your
+platform into this directory.
 
-.. hint:: Over time, there might be some improvements also made for these scripts. So if you
-          had installed MW4 some time ago and will install new setups, it might be helpful to
-          check if some new scripts are available for better handling.
+.. hint::
+    Over time, there might be some improvements also made for these scripts.
+    So if you had installed MW4 some time ago and will install new setups,
+    it might be helpful to check if some new scripts are available for better
+    handling.
 
 the directory should than for OSx look like:
 
@@ -129,8 +134,8 @@ and you could accept that by clicking "addition information" and than execute:
 Step 2
 ------
 
-Run one of the scripts following script. During installation a terminal window might and
-shows the progress of installation.
+Run one of the scripts following script. During installation a terminal window
+might and shows the progress of installation.
 
 .. code-block:: python
 
@@ -138,9 +143,10 @@ shows the progress of installation.
     MW4_Install.sh          # Ubuntu
     MW4_Install.command     # OSx
 
-With the script a virtual environment for python is installed in your working dir under the
-name "venv". After that it installs all necessary libraries and MW4 itself into this virtual
-environment. So any other installation of python applications is not influenced by MW4 install.
+With the script a virtual environment for python is installed in your working dir
+under the name "venv". After that it installs all necessary libraries and MW4
+itself into this virtual environment. So any other installation of python
+applications is not influenced by MW4 install.
 
 After running the install script the directory should for OSx look like:
 
@@ -161,8 +167,8 @@ Please use for the following step the install marked in red.
 MW4 is already installed inside the virtual environment venv in your work dir.
 
 .. warning::
-    Please check if an online connection is available on your computer during installation
-    as the libraries and MW4 is installed from online sources.
+    Please check if an online connection is available on your computer during
+    installation as the libraries and MW4 is installed from online sources.
 
 Step 3
 ------
@@ -175,9 +181,10 @@ Run one of the scripts
     MW4_Run.sh          # Ubuntu
     MW4_Run.command     # OSx
 
-This script will start MW4 for the first time and it will create some subdirectories in your
-working folder. When starting, a splash screen show the progress of it's initialization.
-After first start the directory should for OSx look like:
+This script will start MW4 for the first time and it will create some
+subdirectories in your working folder. When starting, a splash screen show the
+progress of it's initialization. After first start the directory should for OSx
+look like:
 
 .. image:: image/mac_3.png
     :align: center
@@ -191,9 +198,10 @@ In Windows10 it looks like:
 
 In Windows10 for the first time you might be asked again for permission (see above).
 
-With the first run you will see a log file written and you should have a first window from MW4
-open. Please notice that there will be no visible terminal window, but a minimized power
-shell in the menu. This might take some seconds before MW4 comes up with the splash screen:
+With the first run you will see a log file written and you should have a first
+window from MW4 open. Please notice that there will be no visible terminal window,
+but a minimized power shell in the menu. This might take some seconds before MW4
+comes up with the splash screen:
 
 .. image:: image/first_run.png
     :align: center
@@ -204,9 +212,9 @@ setup of MW4 and it's features.
 
 Setting up Ubuntu
 -----------------
-For Ubuntu the scripts also include an icon file (mw4.png) as well as a desktop description
-file (MountWizzard4.desktop). In order to use this add-on, please adjust the directories
-used in this file:
+For Ubuntu the scripts also include an icon file (mw4.png) as well as a desktop
+description file (MountWizzard4.desktop). In order to use this add-on, please
+adjust the directories used in this file:
 
 .. image:: image/ubuntu_setup.png
     :align: center
@@ -220,12 +228,13 @@ If you install nemo (hint as workaround) as file manager, the desktop icons will
 
 DPI scaling on Windows
 ----------------------
-If you are running a windows machine with setting the zoom factor for you display settings
-different to 100%, you might notice inadequate font sizes etc. Unfortunately this could not
-be worked around within MW4 itself, but you could change some environment variables to omit
-this problem. The actual script already contain some setting to keep the resolution to 100%
-even if you choose to increase this value for other applications. You want to play with
-these settings to make the appearance correct:
+If you are running a windows machine with setting the zoom factor for you display
+settings different to 100%, you might notice inadequate font sizes etc.
+Unfortunately this could not be worked around within MW4 itself, but you could
+change some environment variables to omit this problem. The actual script already
+contain some setting to keep the resolution to 100% even if you choose to increase
+this value for other applications. You want to play with these settings to make
+the appearance correct:
 
 .. code-block:: python
 

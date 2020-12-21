@@ -1,7 +1,7 @@
 Changelog
 =========
-The changelog contains the user related function or environment updates. For a detailed
-changes list, please refer to the commit list on GitHub.
+The changelog contains the user related function or environment updates. For a
+detailed changes list, please refer to the commit list on GitHub.
 
 Unreleased Betas
 ----------------
@@ -123,9 +123,9 @@ Released betas
 0.160.0
 
 ..note::
-    Please be aware that with new device management the setting might be invalid or don't
-    work anymore. Ideally you start with an empty configuration. For experts: you could
-    delete the part "driversData" from the config file.
+    Please be aware that with new device management the setting might be invalid
+    or don't work anymore. Ideally you start with an empty configuration. For
+    experts: you could delete the part "driversData" from the config file.
 
 - refactoring device management
 - bugfix polar / flat diagram in manage model
@@ -144,7 +144,8 @@ Released betas
 - stability
 - adding exclude done build points
 - adding automatic retry for model build
-- adding feature for selecting point for deletion out of model overview by double click
+- adding feature for selecting point for deletion out of model overview by double
+  click
 - changed numbers from 0 to number from 1 (human like)
 - clear checkmarks after successful model run
 - update matplotlib to 3.3.2

@@ -1,5 +1,5 @@
-Handbook for MountWizzard4
-==========================
+Before starting with MountWizzard4
+==================================
 
 Overview
 --------

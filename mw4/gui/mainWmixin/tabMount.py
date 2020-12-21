@@ -79,8 +79,6 @@ class Mount(object):
 
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
-
-        # showing once location data, because without mount heartbeat it won't show up
         self.updateLocGUI(self.app.mount.obsSite)
         return True
 
@@ -106,7 +104,6 @@ class Mount(object):
         :param obs:
         :return:    True if ok for testing
         """
-
         if obs.Alt is not None:
             self.ui.ALT.setText('{0:5.2f}'.format(obs.Alt.degrees))
 
@@ -178,7 +175,6 @@ class Mount(object):
         :param obs:
         :return:    True if ok for testing
         """
-
         if obs.timeJD is not None:
             text = obs.timeJD.utc_strftime('%H:%M:%S')
             self.ui.timeUTC.setText('UTC: ' + text)
@@ -203,7 +199,6 @@ class Mount(object):
         :param sett:
         :return:    True if ok for testing
         """
-
         if sett.UTCExpire is not None:
             ui = self.ui.UTCExpire
             ui.setText(sett.UTCExpire)
@@ -286,7 +281,6 @@ class Mount(object):
         :param sett:
         :return:    True if ok for testing
         """
-
         ui = self.ui.statusGPSSynced
         if sett.gpsSynced is None:
             text = '-'
@@ -325,7 +319,6 @@ class Mount(object):
 
         :return:    True if ok for testing
         """
-
         self.guiSetText(self.ui.slewRate, '2.0f', sett.slewRate)
         self.guiSetText(self.ui.timeToFlip, '3.0f', sett.timeToFlip)
         self.guiSetText(self.ui.timeToMeridian, '3.0f', sett.timeToMeridian())
@@ -373,7 +366,6 @@ class Mount(object):
         :param obs:
         :return:    True if ok for testing
         """
-
         if obs is None:
             return False
 
@@ -396,10 +388,8 @@ class Mount(object):
 
     def changeTracking(self):
         """
-
         :return:
         """
-
         obs = self.app.mount.obsSite
         if obs.status == 0:
             suc = obs.stopTracking()
@@ -419,10 +409,8 @@ class Mount(object):
 
     def changePark(self):
         """
-
         :return:
         """
-
         obs = self.app.mount.obsSite
         if obs.status == 5:
             suc = obs.unpark()

@@ -351,9 +351,11 @@ class Mount(object):
         """
         if obs is None:
             return False
+
         location = obs.location
         if location is None:
             return False
+
         lon = location.longitude.dstr().replace('deg', '')
         self.ui.siteLongitude.setText(lon)
         lat = location.latitude.dstr().replace('deg', '')
@@ -405,6 +407,7 @@ class Mount(object):
                 self.app.message.emit('Cannot stop tracking', 2)
             else:
                 self.app.message.emit('Stopped tracking', 0)
+
         else:
             suc = obs.startTracking()
             if not suc:
@@ -427,6 +430,7 @@ class Mount(object):
                 self.app.message.emit('Cannot unpark mount', 2)
             else:
                 self.app.message.emit('Mount unparked', 0)
+
         else:
             suc = obs.park()
             if not suc:
@@ -438,87 +442,78 @@ class Mount(object):
 
     def setLunarTracking(self):
         """
-
         :return:
         """
-
         obs = self.app.mount.obsSite
         suc = obs.setLunarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Lunar', 2)
             return False
+
         else:
             self.app.message.emit('Tracking set to Lunar', 0)
             return True
 
     def setSiderealTracking(self):
         """
-
         :return:
         """
-
         obs = self.app.mount.obsSite
         suc = obs.setSiderealTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Sidereal', 2)
             return False
+
         else:
             self.app.message.emit('Tracking set to Sidereal', 0)
             return True
 
     def setSolarTracking(self):
         """
-
         :return:
         """
-
         obs = self.app.mount.obsSite
         suc = obs.setSolarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Solar', 2)
             return False
+
         else:
             self.app.message.emit('Tracking set to Solar', 0)
             return True
 
     def flipMount(self):
         """
-        flipMount
-
         :return:
         """
-
         obs = self.app.mount.obsSite
         suc = obs.flip()
         if not suc:
             self.app.message.emit('Cannot flip mount', 2)
             return False
+
         else:
             self.app.message.emit('Mount flipped', 0)
             return True
 
     def stop(self):
         """
-
         :return:
         """
-
         obs = self.app.mount.obsSite
         suc = obs.stop()
         if not suc:
             self.app.message.emit('Cannot stop mount', 2)
             return False
+
         else:
             self.app.message.emit('Mount stopped', 0)
             return True
 
     def setMeridianLimitTrack(self):
         """
-        setMeridianLimitTrack implements a modal dialog for entering the value
-
         :return:    success as bool if value could be changed
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         if not self.deviceStat.get('mount', ''):
             msg.critical(self,
@@ -545,17 +540,15 @@ class Mount(object):
         if sett.setMeridianLimitTrack(value):
             self.app.message.emit(f'Meridian Limit Track: [{value}]', 0)
             return True
+
         else:
             self.app.message.emit('Meridian Limit Track cannot be set', 2)
             return False
 
     def setMeridianLimitSlew(self):
         """
-        setMeridianLimitSlew implements a modal dialog for entering the value
-
         :return:    success as bool if value could be changed
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         if not self.deviceStat.get('mount', ''):
             msg.critical(self,
@@ -582,17 +575,15 @@ class Mount(object):
         if sett.setMeridianLimitSlew(value):
             self.app.message.emit(f'Meridian Limit Slew: [{value}]', 0)
             return True
+
         else:
             self.app.message.emit('Meridian Limit Slew cannot be set', 2)
             return False
 
     def setHorizonLimitHigh(self):
         """
-        setHorizonLimitHigh implements a modal dialog for entering the value
-
         :return:    success as bool if value could be changed
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         if not self.deviceStat.get('mount', ''):
             msg.critical(self,
@@ -619,17 +610,15 @@ class Mount(object):
         if sett.setHorizonLimitHigh(value):
             self.app.message.emit(f'Horizon Limit High: [{value}]', 0)
             return True
+
         else:
             self.app.message.emit('Horizon Limit High cannot be set', 2)
             return False
 
     def setHorizonLimitLow(self):
         """
-        setHorizonLimitLow implements a modal dialog for entering the value
-
         :return:    success as bool if value could be changed
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         if not self.deviceStat.get('mount', ''):
             msg.critical(self,
@@ -656,17 +645,15 @@ class Mount(object):
         if sett.setHorizonLimitLow(value):
             self.app.message.emit(f'Horizon Limit Low: [{value}]', 0)
             return True
+
         else:
             self.app.message.emit('Horizon Limit Low cannot be set', 2)
             return False
 
     def setSlewRate(self):
         """
-        setSlewRate implements a modal dialog for entering the value
-
         :return:    success as bool if value could be changed
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         if not self.deviceStat.get('mount', ''):
             msg.critical(self,
@@ -695,19 +682,16 @@ class Mount(object):
         if sett.setSlewRate(value):
             self.app.message.emit(f'Slew Rate: [{value}]', 0)
             return True
+
         else:
             self.app.message.emit('Slew Rate cannot be set', 2)
             return False
 
     def setLongitude(self):
         """
-        setSiteLongitude implements a modal dialog for entering the value
-
         :return:    success as bool if value could be changed
         """
-
         obs = self.app.mount.obsSite
-
         if obs.location is None:
             return False
 
@@ -739,19 +723,16 @@ class Mount(object):
             self.app.message.emit(f'Longitude: [{value}]', 0)
             self.app.mount.getLocation()
             return True
+
         else:
             self.app.message.emit('Longitude cannot be set', 2)
             return False
 
     def setLatitude(self):
         """
-        setSiteLatitude implements a modal dialog for entering the value
-
         :return:    success as bool if value could be changed
         """
-
         obs = self.app.mount.obsSite
-
         if obs.location is None:
             return False
 
@@ -766,7 +747,6 @@ class Mount(object):
             return False
 
         value = stringToAngle(value)
-
         if value is None:
             return False
 
@@ -783,17 +763,15 @@ class Mount(object):
             self.app.message.emit(f'Latitude: [{value}]', 0)
             self.app.mount.getLocation()
             return True
+
         else:
             self.app.message.emit('Latitude cannot be set', 2)
             return False
 
     def setElevation(self):
         """
-        setSiteElevation implements a modal dialog for entering the value
-
         :return:    success as bool if value could be changed
         """
-
         obs = self.app.mount.obsSite
 
         if obs.location is None:
@@ -824,16 +802,14 @@ class Mount(object):
             self.app.message.emit(f'Elevation: [{value}]', 0)
             self.app.mount.getLocation()
             return True
+
         else:
             self.app.message.emit('Elevation cannot be set', 2)
 
     def setUnattendedFlip(self):
         """
-        setUnattendedFlip implements a modal dialog for entering the value
-
         :return:    success as bool if value could be changed
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         if not self.deviceStat.get('mount', ''):
             msg.critical(self,
@@ -857,18 +833,15 @@ class Mount(object):
         suc = sett.setUnattendedFlip(value == 'ON')
         if suc:
             self.app.message.emit(f'Unattended flip set to [{value}]', 0)
+
         else:
             self.app.message.emit('Unattended flip cannot be set', 2)
-
         return suc
 
     def setDualAxisTracking(self):
         """
-        setDualAxisTracking implements a modal dialog for entering the value
-
         :return:    success as bool if value could be changed
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         if not self.deviceStat.get('mount', ''):
             msg.critical(self,
@@ -892,18 +865,15 @@ class Mount(object):
         suc = sett.setDualAxisTracking(value == 'ON')
         if suc:
             self.app.message.emit(f'Dual axis tracking set to [{value}]', 0)
+
         else:
             self.app.message.emit('Dual axis tracking cannot be set', 2)
-
         return suc
 
     def setWOL(self):
         """
-        setWOL implements a modal dialog for entering the value
-
         :return:    success as bool if value could be changed
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         if not self.deviceStat.get('mount', ''):
             msg.critical(self,
@@ -927,18 +897,15 @@ class Mount(object):
         suc = sett.setWOL(value == 'ON')
         if suc:
             self.app.message.emit(f'WOL set to [{value}]', 0)
+
         else:
             self.app.message.emit('WOL cannot be set', 2)
-
         return suc
 
     def setRefraction(self):
         """
-        setRefractionCorrection implements a modal dialog for entering the value
-
         :return:    success as bool if value could be changed
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         if not self.deviceStat.get('mount', ''):
             msg.critical(self,
@@ -962,7 +929,7 @@ class Mount(object):
         suc = sett.setRefraction(value == 'ON')
         if suc:
             self.app.message.emit(f'Refraction correction set to [{value}]', 0)
+
         else:
             self.app.message.emit('Refraction correction cannot be set', 2)
-
         return suc

@@ -2,7 +2,6 @@
     :maxdepth: 3
 
     overview
-    problemSolving
     install/index
     explain/index
     config/index

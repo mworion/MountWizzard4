@@ -1,8 +1,3 @@
-=====================
-Documentation for MW4
-=====================
-.. note:: Please remember that MountWizzard4 is still beta and under development!
-
 .. toctree::
     :maxdepth: 3
 

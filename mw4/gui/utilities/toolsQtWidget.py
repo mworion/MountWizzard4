@@ -575,21 +575,20 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         return driver
 
     @staticmethod
-    def formatLatLon(inputValue, pf):
+    def formatLatLon(value, pf):
         """
-        :param inputValue:
+        :param value:
         :param pf: double character, first indicates the negative sign
         :return:
         """
-        p1 = re.compile(r'(\d{1,3})([' + pf + r'])\s?(\d\d)?\s?(\d\d)?\.?(\d*)?')
-        p2 = re.compile(r'([-+]?)(\d{1,3})\.?(\d*)?')
-        isSexagesimal = p1.fullmatch(inputValue) is not None
-        isFloat = p2.fullmatch(inputValue) is not None
+        p1 = re.compile(r'(\d{1,3})([' + pf + r'])\s?(\d\d)?\s?(\d\d)?[.,]?(\d*)?')
+        p2 = re.compile(r'([-+]?)(\d{1,3})[.,]?(\d*)?')
+        isSexagesimal = p1.fullmatch(value) is not None
+        isFloat = p2.fullmatch(value) is not None
 
-        elements = p2.split(inputValue)
+        elements = p2.split(value)
         if isFloat:
-            angle = float(inputValue)
-            angle = Angle(degrees=angle)
+            angle = float(value.replace(',', '.'))
 
         elif isSexagesimal:
             angle = float(elements[2])
@@ -599,11 +598,22 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
                 angle += float(elements[10]) / 3600
             if elements[4].startswith(pf[0]):
                 angle = -angle
-            angle = Angle(degrees=angle)
 
         else:
-            angle = None
+            return None
 
+        if 'N' in pf:
+            maxAbs = 90
+        else:
+            maxAbs = 180
+
+        if angle > maxAbs:
+            return None
+
+        elif angle < -maxAbs:
+            return None
+
+        angle = Angle(degrees=angle)
         return angle
 
     def formatLat(self, value):
@@ -620,4 +630,92 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :return:
         """
         angle = self.formatLatLon(value, 'WE')
+        return angle
+
+    @staticmethod
+    def formatRA(value):
+        """
+        :param value:
+        :return:
+        """
+        p1 = re.compile(r'([+-]?)(\d{1,3})[H]\s?(\d\d)?\s?(\d\d)?[.,]?(\d*)?')
+        p2 = re.compile(r'([+-]?)(\d{1,3})\s(\d\d)?\s?(\d\d)?[.,]?(\d*)?')
+        p3 = re.compile(r'([+-]?)(\d{1,3})[.,]?(\d*)?')
+        isP1 = p1.fullmatch(value) is not None
+        isP2 = p2.fullmatch(value) is not None
+        isSexagesimal = isP1 or isP2
+        isFloat = p3.fullmatch(value) is not None
+
+        if isP1:
+            elements = p1.split(value)
+        elif isP2:
+            elements = p2.split(value)
+
+        if isFloat:
+            angle = float(value.replace(',', '.'))
+
+        elif isSexagesimal:
+            angle = float(elements[2])
+            if len(elements) > 2:
+                angle += float(elements[3]) / 60
+            if len(elements) > 3:
+                angle += float(elements[4]) / 3600
+
+        else:
+            return None
+
+        if angle >= 24:
+            return None
+
+        if angle < 0:
+            return None
+
+        if isFloat:
+            angle = Angle(degrees=angle)
+
+        elif isSexagesimal:
+            angle = Angle(hours=angle)
+
+        return angle
+
+    @staticmethod
+    def formatDEC(value):
+        """
+        :param value:
+        :return:
+        """
+        p1 = re.compile(r'([+-]?)(\d{1,3})[D]\s?(\d\d)?\s?(\d\d)?[.,]?(\d*)?')
+        p2 = re.compile(r'([+-]?)(\d{1,3})\s(\d\d)?\s?(\d\d)?[.,]?(\d*)?')
+        p3 = re.compile(r'([+-]?)(\d{1,3})[.,]?(\d*)?')
+        isP1 = p1.fullmatch(value) is not None
+        isP2 = p2.fullmatch(value) is not None
+        isSexagesimal = isP1 or isP2
+        isFloat = p3.fullmatch(value) is not None
+
+        if isP1:
+            elements = p1.split(value)
+        elif isP2:
+            elements = p2.split(value)
+
+        if isFloat:
+            angle = float(value.replace(',', '.'))
+
+        elif isSexagesimal:
+            angle = float(elements[2])
+            if len(elements) > 2:
+                angle += float(elements[3]) / 60
+            if len(elements) > 3:
+                angle += float(elements[4]) / 3600
+            if elements[1].startswith('-'):
+                angle = -angle
+        else:
+            return None
+
+        if angle > 90:
+            return None
+
+        if angle < -90:
+            return None
+
+        angle = Angle(degrees=angle)
         return angle

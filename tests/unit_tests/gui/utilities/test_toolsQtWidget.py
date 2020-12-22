@@ -499,11 +499,13 @@ def test_formatLatLon_1(function):
         ['+12.5', 'SN', 12.5],
         ['12.5', 'SN', 12.5],
         ['-12.5', 'SN', -12.5],
+        ['-12,5', 'SN', -12.5],
         ['+12.5', 'WE', 12.5],
         ['12.5', 'WE', 12.5],
         ['-12.5', 'WE', -12.5],
         ['12N 30 30.55', 'SN', 12.508333],
         ['12N 30 30.5', 'SN', 12.508333],
+        ['12N 30 30,5', 'SN', 12.508333],
         ['12 30 30.5N', 'SN', None],
         ['12 30 30.5 N', 'SN', None],
         ['+12N 30 30.5', 'SN', None],
@@ -522,8 +524,11 @@ def test_formatLatLon_1(function):
         ['12E 30', 'WE', 12.5],
         ['12WE 30', 'WE', None],
         ['12N ', 'WE', None],
+        ['99N ', 'SN', None],
+        ['99S ', 'SN', None],
+        ['190E ', 'WE', None],
+        ['190W ', 'WE', None],
     ]
-    print()
     for value in values:
         angle = function.formatLatLon(value[0], value[1])
 
@@ -547,3 +552,47 @@ def test_formatLon(function):
                            return_value=10):
         angle = function.formatLon('12345')
         assert angle == 10
+
+
+def test_formatRA(function):
+    values = [
+        ['+12.5', 12.5],
+        ['12,5', 12.5],
+        ['-12.5', None],
+        ['-190.5', None],
+        ['190.5', None],
+        ['12H 30 30', 187.624999],
+        ['12D 30 30', None],
+        ['12 30 30', 187.624999],
+        ['12H 30 30.55', 187.624999],
+    ]
+    for value in values:
+        angle = function.formatRA(value[0])
+
+        if angle is None:
+            assert value[1] is None
+        else:
+            assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
+
+
+def test_formatDEC(function):
+    values = [
+        ['+12.5', 12.5],
+        ['12,5', 12.5],
+        ['-12.5', -12.5],
+        ['-90.5', None],
+        ['90.5', None],
+        ['12D 30 30', 12.508333],
+        ['12D 30 30.55', 12.508333],
+        ['12H 30 30.55', None],
+        ['12 30 30.55', 12.508333],
+        ['-12D 30 30.55', -12.508333],
+        ['-12 30 30.55', -12.508333],
+    ]
+    for value in values:
+        angle = function.formatDEC(value[0])
+
+        if angle is None:
+            assert value[1] is None
+        else:
+            assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)

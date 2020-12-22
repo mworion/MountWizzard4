@@ -686,14 +686,14 @@ class Mount(object):
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set Site Longitude',
-                                'Value: (East positive)',
+                                'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East:+',
                                 PyQt5.QtWidgets.QLineEdit.Normal,
                                 obs.location.longitude.dstr(),
                                 )
         if not ok:
             return False
 
-        value = stringToAngle(value)
+        value = self.formatLon(value)
 
         if value is None:
             return False
@@ -727,14 +727,14 @@ class Mount(object):
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set Site Latitude',
-                                'Value:',
+                                'Format: <dd[SN] mm ss.s> or <[+-]d.d>',
                                 PyQt5.QtWidgets.QLineEdit.Normal,
                                 obs.location.latitude.dstr(),
                                 )
         if not ok:
             return False
 
-        value = stringToAngle(value)
+        value = self.formatLat(value)
         if value is None:
             return False
 
@@ -768,7 +768,7 @@ class Mount(object):
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getDouble(self,
                                   'Set Site Elevation',
-                                  'Value: (meters)',
+                                  'Format: d.d',
                                   obs.location.elevation.m,
                                   0,
                                   8000,

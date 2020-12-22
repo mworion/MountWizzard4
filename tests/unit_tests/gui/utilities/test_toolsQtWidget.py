@@ -20,6 +20,7 @@ import unittest.mock as mock
 import pytest
 import platform
 import os
+import math
 
 # external packages
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle, QPushButton
@@ -491,3 +492,58 @@ def test_returnDriver_2(function):
     searchDict = {}
     driver = function.returnDriver(sender, searchDict, addKey='test')
     assert driver == ''
+
+
+def test_formatLatLon_1(function):
+    values = [
+        ['+12.5', 'SN', 12.5],
+        ['12.5', 'SN', 12.5],
+        ['-12.5', 'SN', -12.5],
+        ['+12.5', 'WE', 12.5],
+        ['12.5', 'WE', 12.5],
+        ['-12.5', 'WE', -12.5],
+        ['12N 30 30.55', 'SN', 12.508333],
+        ['12N 30 30.5', 'SN', 12.508333],
+        ['12 30 30.5N', 'SN', None],
+        ['12 30 30.5 N', 'SN', None],
+        ['+12N 30 30.5', 'SN', None],
+        ['12N 30 30', 'SN', 12.508333],
+        ['12S 30 30', 'SN', -12.508333],
+        ['12N 30', 'SN', 12.5],
+        ['12NS 30', 'SN', None],
+        ['12W ', 'SN', None],
+        ['12E 30 30.55', 'WE', 12.508333],
+        ['12E 30 30.5', 'WE', 12.508333],
+        ['12 30 30.5E', 'WE', None],
+        ['12 30 30.5 E', 'WE', None],
+        ['+12E 30 30.5', 'WE', None],
+        ['12E 30 30', 'WE', 12.508333],
+        ['12W 30 30', 'WE', -12.508333],
+        ['12E 30', 'WE', 12.5],
+        ['12WE 30', 'WE', None],
+        ['12N ', 'WE', None],
+    ]
+    print()
+    for value in values:
+        angle = function.formatLatLon(value[0], value[1])
+
+        if angle is None:
+            assert value[2] is None
+        else:
+            assert math.isclose(angle.degrees, value[2], abs_tol=0.000001)
+
+
+def test_formatLat(function):
+    with mock.patch.object(function,
+                           'formatLatLon',
+                           return_value=10):
+        angle = function.formatLat('12345')
+        assert angle == 10
+
+
+def test_formatLon(function):
+    with mock.patch.object(function,
+                           'formatLatLon',
+                           return_value=10):
+        angle = function.formatLon('12345')
+        assert angle == 10

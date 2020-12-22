@@ -18,12 +18,14 @@
 # standard libraries
 import platform
 import os
+import re
 
 # external packages
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, qApp, QFileDialog, QMessageBox
 from PyQt5.QtGui import QPalette, QIcon, QPixmap
 from PyQt5.QtCore import Qt, QSortFilterProxyModel, QDir, QObject, pyqtSignal, QEvent
 from PyQt5.QtCore import QSize
+from skyfield.api import Angle
 
 # local imports
 from gui.utilities.stylesQtCss import Styles
@@ -571,3 +573,51 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         driver = searchD.get(sender, '')
 
         return driver
+
+    @staticmethod
+    def formatLatLon(inputValue, pf):
+        """
+        :param inputValue:
+        :param pf: double character, first indicates the negative sign
+        :return:
+        """
+        p1 = re.compile(r'(\d{1,3})([' + pf + r'])\s?(\d\d)?\s?(\d\d)?\.?(\d*)?')
+        p2 = re.compile(r'([-+]?)(\d{1,3})\.?(\d*)?')
+        isSexagesimal = p1.fullmatch(inputValue) is not None
+        isFloat = p2.fullmatch(inputValue) is not None
+
+        elements = p2.split(inputValue)
+        if isFloat:
+            angle = float(inputValue)
+            angle = Angle(degrees=angle)
+
+        elif isSexagesimal:
+            angle = float(elements[2])
+            if len(elements) > 5:
+                angle += float(elements[6]) / 60
+            if len(elements) > 9:
+                angle += float(elements[10]) / 3600
+            if elements[4].startswith(pf[0]):
+                angle = -angle
+            angle = Angle(degrees=angle)
+
+        else:
+            angle = None
+
+        return angle
+
+    def formatLat(self, value):
+        """
+        :param value:
+        :return:
+        """
+        angle = self.formatLatLon(value, 'SN')
+        return angle
+
+    def formatLon(self, value):
+        """
+        :param value:
+        :return:
+        """
+        angle = self.formatLatLon(value, 'WE')
+        return angle

@@ -16119,9 +16119,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QLineEdit" name="moveCoordinateAz">
         <property name="geometry">
          <rect>
-          <x>65</x>
+          <x>50</x>
           <y>50</y>
-          <width>91</width>
+          <width>106</width>
           <height>21</height>
          </rect>
         </property>
@@ -16187,9 +16187,9 @@ position</string>
        <widget class="QLineEdit" name="moveCoordinateAlt">
         <property name="geometry">
          <rect>
-          <x>65</x>
+          <x>50</x>
           <y>25</y>
-          <width>91</width>
+          <width>106</width>
           <height>21</height>
          </rect>
         </property>
@@ -16236,9 +16236,9 @@ position</string>
        <widget class="QLineEdit" name="moveCoordinateDec">
         <property name="geometry">
          <rect>
-          <x>65</x>
+          <x>50</x>
           <y>50</y>
-          <width>91</width>
+          <width>106</width>
           <height>21</height>
          </rect>
         </property>
@@ -16272,9 +16272,9 @@ position</string>
        <widget class="QLineEdit" name="moveCoordinateRa">
         <property name="geometry">
          <rect>
-          <x>65</x>
+          <x>50</x>
           <y>25</y>
-          <width>91</width>
+          <width>106</width>
           <height>21</height>
          </rect>
         </property>

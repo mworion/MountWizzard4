@@ -581,7 +581,8 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param pf: double character, first indicates the negative sign
         :return:
         """
-        p1 = re.compile(r'(\d{1,3})([' + pf + r'])\s?(\d\d)?\s?(\d\d)?[.,]?(\d*)?')
+        value = value.strip()
+        p1 = re.compile(r'(\d{1,3})([' + pf + r'])\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
         p2 = re.compile(r'([-+]?)(\d{1,3})[.,]?(\d*)?')
         isSexagesimal = p1.fullmatch(value) is not None
         isFloat = p2.fullmatch(value) is not None
@@ -638,8 +639,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param value:
         :return:
         """
-        p1 = re.compile(r'([+-]?)(\d{1,3})[H]\s?(\d\d)?\s?(\d\d)?[.,]?(\d*)?')
-        p2 = re.compile(r'([+-]?)(\d{1,3})\s(\d\d)?\s?(\d\d)?[.,]?(\d*)?')
+        value = value.strip()
+        p1 = re.compile(r'([+-]?)(\d{1,3})[H]\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
+        p2 = re.compile(r'([+-]?)(\d{1,3})\s+(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
         p3 = re.compile(r'([+-]?)(\d{1,3})[.,]?(\d*)?')
         isP1 = p1.fullmatch(value) is not None
         isP2 = p2.fullmatch(value) is not None
@@ -684,8 +686,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param value:
         :return:
         """
-        p1 = re.compile(r'([+-]?)(\d{1,3})[D]\s?(\d\d)?\s?(\d\d)?[.,]?(\d*)?')
-        p2 = re.compile(r'([+-]?)(\d{1,3})\s(\d\d)?\s?(\d\d)?[.,]?(\d*)?')
+        value = value.strip()
+        p1 = re.compile(r'([+-]?)(\d{1,3})[D]\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
+        p2 = re.compile(r'([+-]?)(\d{1,3})\s+(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
         p3 = re.compile(r'([+-]?)(\d{1,3})[.,]?(\d*)?')
         isP1 = p1.fullmatch(value) is not None
         isP2 = p2.fullmatch(value) is not None
@@ -697,10 +700,13 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         elif isP2:
             elements = p2.split(value)
 
+        print(isFloat, isSexagesimal, isP1, isP2)
+
         if isFloat:
             angle = float(value.replace(',', '.'))
 
         elif isSexagesimal:
+            print(elements)
             angle = float(elements[2])
             if len(elements) > 2:
                 angle += float(elements[3]) / 60

@@ -91,6 +91,7 @@ class Tools(object):
         self.ui.slewSpeedHigh.clicked.connect(self.setSlewSpeed)
         self.ui.slewSpeedMed.clicked.connect(self.setSlewSpeed)
         self.ui.slewSpeedLow.clicked.connect(self.setSlewSpeed)
+        self.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
 
     def initConfig(self):
         """
@@ -501,3 +502,26 @@ class Tools(object):
         targetAz = targetAz % 360
         suc = self.slewTargetAltAz(targetAlt, targetAz)
         return suc
+
+    def setRA(self):
+        """
+        :return:    success as bool if value could be changed
+        """
+
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getText(self,
+                                'Set telescope RA',
+                                'Format: <ddH mm ss.s> in hours or <[+]d.d> in '
+                                'degrees',
+                                PyQt5.QtWidgets.QLineEdit.Normal,
+                                self.ui.moveCoordinateRa.text(),
+                                )
+        if not ok:
+            return False
+
+        value = self.formatRA(value)
+        if value is None:
+            return False
+
+        self.ui.moveCoordinateRa.setText(value.dstr())
+        return True

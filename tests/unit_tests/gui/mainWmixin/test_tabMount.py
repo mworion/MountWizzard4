@@ -96,7 +96,7 @@ def test_updatePointGui_ra(function):
     value = Angle(hours=45)
     function.app.mount.obsSite.raJNow = value
     function.updatePointGUI(function.app.mount.obsSite)
-    assert '45:00:00' == function.ui.RA.text()
+    assert '45 00 00' == function.ui.RA.text()
     value = None
     function.app.mount.obsSite.raJNow = value
     function.updatePointGUI(function.app.mount.obsSite)
@@ -108,7 +108,7 @@ def test_updatePointGui_dec_1(function):
     value = Angle(degrees=45)
     function.app.mount.obsSite.decJNow = value
     function.updatePointGUI(function.app.mount.obsSite)
-    assert '+45:00:00' == function.ui.DEC.text()
+    assert '+45 00 00' == function.ui.DEC.text()
 
 
 def test_updatePointGui_dec_2(function):
@@ -134,7 +134,7 @@ def test_updatePointGui_ha_1(function):
     function.app.mount.obsSite.haJNow = value
     function.app.mount.obsSite.timeSidereal = '00:00:00'
     function.updatePointGUI(function.app.mount.obsSite)
-    assert '12:00:00' == function.ui.HA.text()
+    assert '12 00 00' == function.ui.HA.text()
 
 
 def test_updatePointGui_ha_2(function):
@@ -550,8 +550,8 @@ def test_updateLocGUI_1(function):
                                                 latitude_degrees=49,
                                                 elevation_m=500)
     function.updateLocGUI(function.app.mount.obsSite)
-    assert '11 00\' 00.0\"' == function.ui.siteLongitude.text()
-    assert '49 00\' 00.0\"' == function.ui.siteLatitude.text()
+    assert '11E 00 00' == function.ui.siteLongitude.text()
+    assert '49N 00 00' == function.ui.siteLatitude.text()
     assert '500.0' == function.ui.siteElevation.text()
 
 
@@ -968,7 +968,7 @@ def test_setLongitude_5(function, qtbot):
                                                 elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
-                           return_value=('+160*30:45.5', True)):
+                           return_value=('11E 30 45.5', True)):
         with mock.patch.object(function.app.mount.obsSite,
                                'setLongitude',
                                return_value=True):
@@ -1045,7 +1045,7 @@ def test_setLatitude_5(function, qtbot):
                                                 elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
-                           return_value=('+45*30:45.5', True)):
+                           return_value=('45N 30 45.5', True)):
         with mock.patch.object(function.app.mount.obsSite,
                                'setLatitude',
                                return_value=True):

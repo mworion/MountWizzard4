@@ -94,6 +94,8 @@ class Tools(object):
         self.ui.slewSpeedLow.clicked.connect(self.setSlewSpeed)
         self.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
         self.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
+        self.clickable(self.ui.moveCoordinateAlt).connect(self.setALT)
+        self.clickable(self.ui.moveCoordinateAz).connect(self.setAZ)
 
     def initConfig(self):
         """
@@ -561,6 +563,11 @@ class Tools(object):
         if not ok:
             return False
 
+        try:
+            value = float(value)
+        except Exception:
+            return False
+
         value = Angle(degrees=value)
         text = str(value.degrees)
         self.ui.moveCoordinateAlt.setText(text)
@@ -578,6 +585,11 @@ class Tools(object):
                                 self.ui.moveCoordinateAz.text(),
                                 )
         if not ok:
+            return False
+
+        try:
+            value = float(value)
+        except Exception:
             return False
 
         value = Angle(degrees=value)

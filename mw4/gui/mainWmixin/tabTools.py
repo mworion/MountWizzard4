@@ -568,6 +568,18 @@ class Tools(object):
         except Exception:
             return False
 
+        if self.app.mount.setting.horizonLimitLow is None:
+            return False
+
+        if self.app.mount.setting.horizonLimitHigh is None:
+            return False
+
+        if value > self.app.mount.setting.horizonLimitHigh:
+            return False
+
+        if value < self.app.mount.setting.horizonLimitLow:
+            return False
+
         value = Angle(degrees=value)
         text = str(value.degrees)
         self.ui.moveCoordinateAlt.setText(text)
@@ -592,6 +604,7 @@ class Tools(object):
         except Exception:
             return False
 
+        value = (value + 360) % 360
         value = Angle(degrees=value)
         text = str(value.degrees)
         self.ui.moveCoordinateAz.setText(text)

@@ -16120,7 +16120,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>50</x>
-          <y>50</y>
+          <y>70</y>
           <width>106</width>
           <height>21</height>
          </rect>
@@ -16140,13 +16140,16 @@ Hint if mount will need a flip when following satellite.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter for selecting minor planet names. The filter is not case sensitive.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for azimuth direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -16156,9 +16159,9 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>80</y>
+          <y>115</y>
           <width>146</width>
-          <height>61</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -16179,9 +16182,7 @@ Hint if mount will need a flip when following satellite.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the given coordinate Alt &amp;amp; Az&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Slew to 
-ALT / AZ
-position</string>
+         <string>Slew to ALT / AZ</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="moveCoordinateAlt">
@@ -16208,7 +16209,7 @@ position</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter for selecting minor planet names. The filter is not case sensitive.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for alitude direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -16216,8 +16217,49 @@ position</string>
         <property name="text">
          <string/>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_315">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>25</y>
+          <width>36</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>ALT</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_316">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>70</y>
+          <width>36</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>AZ</string>
         </property>
        </widget>
       </widget>
@@ -16237,7 +16279,7 @@ position</string>
         <property name="geometry">
          <rect>
           <x>50</x>
-          <y>50</y>
+          <y>70</y>
           <width>106</width>
           <height>21</height>
          </rect>
@@ -16257,13 +16299,16 @@ position</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter for selecting minor planet names. The filter is not case sensitive.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for declination direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -16293,13 +16338,16 @@ position</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter for selecting minor planet names. The filter is not case sensitive.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for right ascension direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -16309,9 +16357,9 @@ position</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>80</y>
+          <y>115</y>
           <width>146</width>
-          <height>61</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -16332,9 +16380,45 @@ position</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the given coordinate Ra &amp;amp; Dec&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Slew to 
-RA / DEC
-position</string>
+         <string>Slew to RA / DEC</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_323">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>25</y>
+          <width>36</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>RA</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_324">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>70</y>
+          <width>36</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>DEC</string>
         </property>
        </widget>
       </widget>

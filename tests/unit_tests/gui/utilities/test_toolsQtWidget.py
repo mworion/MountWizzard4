@@ -553,7 +553,7 @@ def test_formatLon(function):
     with mock.patch.object(function,
                            'formatLatLonToAngle',
                            return_value=10):
-        angle = function.formatLon('12345')
+        angle = function.convertLonToAngle('12345')
         assert angle == 10
 
 

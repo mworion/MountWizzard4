@@ -97,10 +97,6 @@ class Mount(object):
 
     def updatePointGUI(self, obs):
         """
-        updatePointGUI update the gui upon events triggered be the reception of new data
-        from the mount. the mount data is polled, so we use this signal as well for the
-        update process.
-
         :param obs:
         :return:    True if ok for testing
         """
@@ -117,7 +113,9 @@ class Mount(object):
             self.ui.AZ.setText('-')
 
         isJ2000 = self.ui.checkJ2000.isChecked()
-        isValid = obs.raJNow is not None and obs.decJNow is not None and obs.timeJD is not None
+        isValid = obs.raJNow is not None
+        isValid = isValid and obs.decJNow is not None
+        isValid = isValid and obs.timeJD is not None
         if isJ2000 and isValid:
             ra, dec = transform.JNowToJ2000(obs.raJNow, obs.decJNow, obs.timeJD)
 
@@ -159,10 +157,6 @@ class Mount(object):
 
     def updateTimeGUI(self, obs):
         """
-        updateTimeGUI update the gui upon events triggered be the reception of new data
-        from the mount. the mount data is polled, so we use this signal as well for the
-        update process.
-
         :param obs:
         :return:    True if ok for testing
         """
@@ -183,10 +177,6 @@ class Mount(object):
 
     def updateSetStatGUI(self, sett):
         """
-        updateSetStatGUI update the gui upon events triggered be the reception of new
-        settings from the mount. the mount data is polled, so we use this signal as well
-        for the update process.
-
         :param sett:
         :return:    True if ok for testing
         """
@@ -265,10 +255,6 @@ class Mount(object):
 
     def updateSetSyncGUI(self, sett):
         """
-        updateSetSyncGUI update the gui upon events triggered be the reception of new
-        settings from the mount. the mount data is polled, so we use this signal as well
-        for the update process.
-
         :param sett:
         :return:    True if ok for testing
         """
@@ -304,10 +290,6 @@ class Mount(object):
 
     def updateSettingGUI(self, sett):
         """
-        updateSettingGUI update the gui upon events triggered be the reception of new
-        settings from the mount. the mount data is polled, so we use this signal as well
-        for the update process.
-
         :return:    True if ok for testing
         """
         self.guiSetText(self.ui.slewRate, '2.0f', sett.slewRate)
@@ -326,10 +308,6 @@ class Mount(object):
 
     def updateLocGUI(self, obs):
         """
-        updateLocGUI update the gui upon events triggered be the reception of new
-        settings from the mount. the mount data is polled, so we use this signal as well
-        for the update process.
-
         :param obs:
         :return:    True if ok for testing
         """
@@ -348,10 +326,6 @@ class Mount(object):
 
     def updateTrackingGui(self, obs):
         """
-        updateTrackingGui update the gui upon events triggered be the reception of new
-        settings from the mount. the mount data is polled, so we use this signal as well
-        for the update process.
-
         :param obs:
         :return:    True if ok for testing
         """
@@ -675,14 +649,15 @@ class Mount(object):
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set Site Longitude',
-                                'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East:+',
+                                'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East is '
+                                'positive',
                                 PyQt5.QtWidgets.QLineEdit.Normal,
                                 self.ui.siteLongitude.text(),
                                 )
         if not ok:
             return False
 
-        value = self.formatLon(value)
+        value = self.convertLonToAngle(value)
 
         if value is None:
             return False
@@ -697,7 +672,8 @@ class Mount(object):
             return False
 
         if obs.setLongitude(value):
-            self.app.message.emit(f'Longitude: [{value}]', 0)
+            self.app.message.emit(f'Longitude set to:    '
+                                  f'[{self.ui.siteLongitude.text()}]', 0)
             self.app.mount.getLocation()
             return True
 
@@ -723,7 +699,7 @@ class Mount(object):
         if not ok:
             return False
 
-        value = self.formatLat(value)
+        value = self.convertLatToAngle(value)
         if value is None:
             return False
 
@@ -737,7 +713,8 @@ class Mount(object):
             return False
 
         if obs.setLatitude(value):
-            self.app.message.emit(f'Latitude: [{value}]', 0)
+            self.app.message.emit(f'Latitude set to:     '
+                                  f'[{self.ui.siteLatitude.text()}]', 0)
             self.app.mount.getLocation()
             return True
 
@@ -776,7 +753,7 @@ class Mount(object):
             return False
 
         if obs.setElevation(value):
-            self.app.message.emit(f'Elevation: [{value}]', 0)
+            self.app.message.emit(f'Elevation set to:    [{value}]', 0)
             self.app.mount.getLocation()
             return True
 

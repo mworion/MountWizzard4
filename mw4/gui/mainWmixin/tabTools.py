@@ -466,6 +466,8 @@ class Tools(object):
         elif alt < altLow:
             alt = altLow
 
+        self.app.mount.obsSite.setTargetAltAz(alt_degrees=alt,
+                                              az_degrees=az)
         suc = self.slewSelectedTarget(slewType='keep')
         return suc
 

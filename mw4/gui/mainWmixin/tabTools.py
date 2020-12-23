@@ -519,12 +519,13 @@ class Tools(object):
         if not ok:
             return False
 
-        value = self.formatRA(value)
+        value = self.convertRaToAngle(value)
         if value is None:
             return False
 
-        text = self.formatHSTR(value)
+        text = self.formatHstrToText(value)
         self.ui.moveCoordinateRa.setText(text)
+        self.ui.moveCoordinateRaFloat.setText(f'{value.hours:2.5f}')
         return True
 
     def setDEC(self):
@@ -541,12 +542,13 @@ class Tools(object):
         if not ok:
             return False
 
-        value = self.formatDEC(value)
+        value = self.convertDecToAngle(value)
         if value is None:
             return False
 
-        text = self.formatDSTR(value)
+        text = self.formatDstrToText(value)
         self.ui.moveCoordinateDec.setText(text)
+        self.ui.moveCoordinateDecFloat.setText(f'{value.degrees:2.5f}')
         return True
 
     def setALT(self):

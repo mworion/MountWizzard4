@@ -640,7 +640,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :return:
         """
         value = value.strip()
-        p1 = re.compile(r'([+-]?)(\d{1,3})[H]\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
+        p1 = re.compile(r'([+-]?)(\d{1,3})H\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
         p2 = re.compile(r'([+-]?)(\d{1,3})\s+(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
         p3 = re.compile(r'([+-]?)(\d{1,3})[.,]?(\d*)?')
         isP1 = p1.fullmatch(value) is not None
@@ -673,7 +673,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
             return None
 
         if isFloat:
-            angle = Angle(degrees=angle)
+            angle = Angle(hours=angle / 360 * 24)
 
         elif isSexagesimal:
             angle = Angle(hours=angle)
@@ -687,7 +687,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :return:
         """
         value = value.strip()
-        p1 = re.compile(r'([+-]?)(\d{1,3})[D]\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
+        p1 = re.compile(r'([+-]?)(\d{1,3})Deg\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
         p2 = re.compile(r'([+-]?)(\d{1,3})\s+(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
         p3 = re.compile(r'([+-]?)(\d{1,3})[.,]?(\d*)?')
         isP1 = p1.fullmatch(value) is not None
@@ -725,3 +725,21 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
         angle = Angle(degrees=angle)
         return angle
+
+    @staticmethod
+    def formatHSTR(angle):
+        """
+        :param angle:
+        :return:
+        """
+        text = '{1} {2} {3}'.format(angle.signed_hms())
+        return text
+
+    @staticmethod
+    def formatDSTR(angle):
+        """
+        :param angle:
+        :return:
+        """
+        text = '{1} {2} {3}'.format(angle.signed_hms())
+        return text

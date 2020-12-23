@@ -511,7 +511,7 @@ class Tools(object):
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set telescope RA',
-                                'Format: <ddH mm ss.s> in hours or <[+]d.d> in '
+                                'Format: <dd[H] mm ss.s> in hours or <[+]d.d> in '
                                 'degrees',
                                 PyQt5.QtWidgets.QLineEdit.Normal,
                                 self.ui.moveCoordinateRa.text(),
@@ -523,5 +523,28 @@ class Tools(object):
         if value is None:
             return False
 
-        self.ui.moveCoordinateRa.setText(value.dstr())
+        self.ui.moveCoordinateRa.setText(value.hstr())
+        return True
+
+    def setDEC(self):
+        """
+        :return:    success as bool if value could be changed
+        """
+
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getText(self,
+                                'Set telescope DEC',
+                                'Format: <dd[Deg] mm ss.s> or <[+]d.d> in degrees',
+                                PyQt5.QtWidgets.QLineEdit.Normal,
+                                self.ui.moveCoordinateDec.text(),
+                                )
+        if not ok:
+            return False
+
+        value = self.formatDEC(value)
+        if value is None:
+            return False
+
+        text = self.formatDSTR(value)
+        self.ui.moveCoordinateDec.setText(text)
         return True

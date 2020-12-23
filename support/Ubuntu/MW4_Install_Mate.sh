@@ -95,10 +95,12 @@ source ./venv/bin/activate venv >> install.log 2>&1
 pip install pip --upgrade >> install.log 2>&1
 pip install setuptools --upgrade >> install.log 2>&1
 pip install wheel --upgrade >> install.log 2>&1
-pip install astropy-4.0.3-cp38-cp38-linux_aarch64.whl >> install.log 2>&1
-pip install matplotlib-3.3.2-cp38-cp38-linux_aarch64.whl >> install.log 2>&1
+pip install pyerfa-1.7.1.1-cp38-cp38-linux_aarch64.whl >> install.log 2>&1
+pip install astropy-4.2-cp38-cp38-linux_aarch64.whl >> install.log 2>&1
+pip install matplotlib-3.3.3-cp38-cp38-linux_aarch64.whl >> install.log 2>&1
 pip install photutils-1.0.1-cp38-cp38-linux_aarch64.whl >> install.log 2>&1
-pip install PyQt5-5.14.2-cp35.cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl >> install.log 2>&1
+pip install PyQt5_sip-12.8.1-cp38-cp38-linux_aarch64.whl >> install.log 2>&1
+pip install PyQt5-5.15.2-cp35.cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl >> install.log 2>&1
 pip install mountwizzard4 >> install.log 2>&1
 
 echo

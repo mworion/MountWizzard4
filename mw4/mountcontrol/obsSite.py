@@ -553,12 +553,12 @@ class ObsSite(object):
         - 'park':       slew to coordinates and park
         - 'polar':      slew to coordinates and miss for polar alignment
         - 'ortho':      slew to coordinates and miss for orthogonal alignment
+        - 'keep':       choose between normal and notrack to keep the tracking mode
 
 
         :param slewType:
         :return:
         """
-
         slewTypes = {
             'normal': ':MS#',
             'notrack': ':MA#',
@@ -566,10 +566,17 @@ class ObsSite(object):
             'park': ':PaX#',
             'polar': ':MSap#',
             'ortho': ':MSao#',
+            'keep': '',
         }
 
         if slewType not in slewTypes:
             return False
+
+        if slewType == 'keep':
+            if self.status == 0:
+                slewTypes['keep'] = ':MS#'
+            else:
+                slewTypes['keep'] = ':MA#'
 
         conn = Connection(self.host)
 

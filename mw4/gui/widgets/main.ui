@@ -16354,6 +16354,9 @@ Hint if mount will need a flip when following satellite.</string>
         </property>
        </widget>
        <widget class="QPushButton" name="moveRaDecAbsolute">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>10</x>

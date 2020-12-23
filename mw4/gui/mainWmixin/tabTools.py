@@ -92,6 +92,8 @@ class Tools(object):
         self.ui.slewSpeedHigh.clicked.connect(self.setSlewSpeed)
         self.ui.slewSpeedMed.clicked.connect(self.setSlewSpeed)
         self.ui.slewSpeedLow.clicked.connect(self.setSlewSpeed)
+        self.ui.moveAltAzAbsolute.clicked.connect(self.moveAltAzAbsolute)
+        self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
         self.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
         self.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
         self.clickable(self.ui.moveCoordinateAlt).connect(self.setALT)
@@ -464,17 +466,7 @@ class Tools(object):
         elif alt < altLow:
             alt = altLow
 
-        isTracking = self.app.mount.obsSite.status == 0
-
-        self.app.mount.obsSite.setTargetAltAz(alt_degrees=alt,
-                                              az_degrees=az)
-        if isTracking:
-            slewType = 'normal'
-
-        else:
-            slewType = 'notrack'
-
-        suc = self.slewSelectedTarget(slewType=slewType)
+        suc = self.slewSelectedTarget(slewType='keep')
         return suc
 
     def moveAltAz(self):
@@ -610,4 +602,25 @@ class Tools(object):
         value = Angle(degrees=value)
         text = str(value.degrees)
         self.ui.moveCoordinateAz.setText(text)
+        return True
+
+    def moveAltAzAbsolute(self):
+        """
+        :return:
+        """
+        alt = self.ui.moveCoordinateAlt.text()
+        if not alt:
+            return False
+
+        az = self.ui.moveCoordinateAz.text()
+        if not az:
+            return False
+
+        suc = self.slewTargetAltAz(float(alt), float(az))
+        return suc
+
+    def moveRaDecAbsolute(self):
+        """
+        :return:
+        """
         return True

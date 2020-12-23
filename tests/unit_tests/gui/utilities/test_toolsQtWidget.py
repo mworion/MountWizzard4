@@ -633,5 +633,28 @@ def test_formatDSTR(function):
     ]
     for value in values:
         text = function.formatDstrToText(value[0])
-        print(text)
+        assert text == value[1]
+
+
+def test_formatLatToText(function):
+    values = [
+        [Angle(degrees=12), '12N 00 00'],
+        [Angle(degrees=12.000001), '12N 00 00'],
+        [Angle(degrees=6), '06N 00 00'],
+        [Angle(degrees=-6), '06S 00 00'],
+    ]
+    for value in values:
+        text = function.formatLatToText(value[0])
+        assert text == value[1]
+
+
+def test_formatLonToText(function):
+    values = [
+        [Angle(degrees=12), '12E 00 00'],
+        [Angle(degrees=12.000001), '12E 00 00'],
+        [Angle(degrees=6), '06E 00 00'],
+        [Angle(degrees=-6), '06W 00 00'],
+    ]
+    for value in values:
+        text = function.formatLonToText(value[0])
         assert text == value[1]

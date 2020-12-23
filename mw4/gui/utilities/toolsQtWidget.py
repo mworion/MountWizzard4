@@ -581,6 +581,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param pf: double character, first indicates the negative sign
         :return:
         """
+        if value is None:
+            return None
+
         value = value.strip()
         p1 = re.compile(r'(\d{1,3})([' + pf + r'])\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
         p2 = re.compile(r'([-+]?)(\d{1,3})[.,]?(\d*)?')
@@ -639,6 +642,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param value:
         :return:
         """
+        if value is None:
+            return None
+
         value = value.strip()
         p1 = re.compile(r'([+-]?)(\d{1,3})H\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
         p2 = re.compile(r'([+-]?)(\d{1,3})\s+(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
@@ -686,6 +692,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param value:
         :return:
         """
+        if value is None:
+            return None
+
         value = value.strip()
         p1 = re.compile(r'([+-]?)(\d{1,3})Deg\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
         p2 = re.compile(r'([+-]?)(\d{1,3})\s+(\d\d)?\s*(\d\d)?[.,]?(\d*)?')

@@ -22,6 +22,7 @@ from pathlib import Path
 import PyQt5
 from PyQt5.QtTest import QTest
 from astropy.io import fits
+from skyfield.api import Angle
 
 # local import
 
@@ -408,9 +409,6 @@ class Tools(object):
 
     def setSlewSpeed(self):
         """
-        setSlewSpeed reads the gui elements and calls the method in mount class to set the
-        slew speed accordingly.
-
         :return: success
         """
         ui = self.sender()
@@ -508,7 +506,6 @@ class Tools(object):
         """
         :return:    success as bool if value could be changed
         """
-
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set telescope RA',
@@ -532,7 +529,6 @@ class Tools(object):
         """
         :return:    success as bool if value could be changed
         """
-
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set telescope DEC',
@@ -549,4 +545,42 @@ class Tools(object):
 
         text = self.formatDSTR(value)
         self.ui.moveCoordinateDec.setText(text)
+        return True
+
+    def setALT(self):
+        """
+        :return:    success as bool if value could be changed
+        """
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getText(self,
+                                'Set telescope Altitude',
+                                'Format: <[+-]d.d> in degrees',
+                                PyQt5.QtWidgets.QLineEdit.Normal,
+                                self.ui.moveCoordinateAlt.text(),
+                                )
+        if not ok:
+            return False
+
+        value = Angle(degrees=value)
+        text = str(value.degrees)
+        self.ui.moveCoordinateAlt.setText(text)
+        return True
+
+    def setAZ(self):
+        """
+        :return:    success as bool if value could be changed
+        """
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getText(self,
+                                'Set telescope Azimuth',
+                                'Format: <[+-]d.d> in degrees',
+                                PyQt5.QtWidgets.QLineEdit.Normal,
+                                self.ui.moveCoordinateAz.text(),
+                                )
+        if not ok:
+            return False
+
+        value = Angle(degrees=value)
+        text = str(value.degrees)
+        self.ui.moveCoordinateAz.setText(text)
         return True

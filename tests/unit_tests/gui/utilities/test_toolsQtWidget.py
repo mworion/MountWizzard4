@@ -495,7 +495,7 @@ def test_returnDriver_2(function):
     assert driver == ''
 
 
-def test_formatLatLon_1(function):
+def test_formatLatLonToAngle_1(function):
     values = [
         ['+12.5', 'SN', 12.5],
         ['12.5', 'SN', 12.5],
@@ -541,6 +541,11 @@ def test_formatLatLon_1(function):
             assert math.isclose(angle.degrees, value[2], abs_tol=0.000001)
 
 
+def test_formatLatLonToAngle_2(function):
+    val = function.formatLatLonToAngle(None, 'NS')
+    assert val is None
+
+
 def test_formatLat(function):
     with mock.patch.object(function,
                            'formatLatLonToAngle',
@@ -557,7 +562,7 @@ def test_formatLon(function):
         assert angle == 10
 
 
-def test_formatRA(function):
+def test_convertRaToAngle_1(function):
     values = [
         ['+12.5', 12.5],
         ['12,5', 12.5],
@@ -584,7 +589,12 @@ def test_formatRA(function):
             assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
 
 
-def test_formatDEC(function):
+def test_convertRaToAngle_2(function):
+    val = function.convertRaToAngle(None)
+    assert val is None
+
+
+def test_convertDecToAngle_1(function):
     values = [
         ['+12.5', 12.5],
         ['12,5', 12.5],
@@ -613,7 +623,12 @@ def test_formatDEC(function):
             assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
 
 
-def test_formatHSTR(function):
+def test_convertDecToAngle_2(function):
+    val = function.convertDecToAngle(None)
+    assert val is None
+
+
+def test_formatHstrToText(function):
     values = [
         [Angle(hours=12), '12 00 00'],
         [Angle(hours=12.000001), '12 00 00'],
@@ -624,7 +639,7 @@ def test_formatHSTR(function):
         assert text == value[1]
 
 
-def test_formatDSTR(function):
+def test_formatDstrToText(function):
     values = [
         [Angle(degrees=12), '+12 00 00'],
         [Angle(degrees=12.000001), '+12 00 00'],

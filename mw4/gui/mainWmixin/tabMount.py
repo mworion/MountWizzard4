@@ -126,10 +126,7 @@ class Mount(object):
             dec = obs.decJNow
 
         if ra is not None:
-            raFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            val = ra.hms()
-            raText = raFormat.format(*val)
-            self.ui.RA.setText(raText)
+            self.ui.RA.setText(self.formatHstrToText(ra))
             self.ui.RAfloat.setText(f'{ra.hours:3.4f}')
 
         else:
@@ -137,10 +134,7 @@ class Mount(object):
             self.ui.RAfloat.setText('-')
 
         if dec is not None:
-            decFormat = '{sign}{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            val = dec.signed_dms()[1:4]
-            decText = decFormat.format(*val, sign='+' if dec.degrees > 0 else '-')
-            self.ui.DEC.setText(decText)
+            self.ui.DEC.setText(self.formatDstrToText(dec))
             self.ui.DECfloat.setText(f'{dec.degrees:+3.4f}')
 
         else:
@@ -154,10 +148,7 @@ class Mount(object):
             self.ui.pierside.setText('-')
 
         if obs.haJNow is not None:
-            haFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            val = obs.haJNow.hms()
-            haText = haFormat.format(*val)
-            self.ui.HA.setText(haText)
+            self.ui.HA.setText(self.formatHstrToText(obs.haJNow))
             self.ui.HAfloat.setText(f'{obs.haJNow.hours:3.4f}')
 
         else:
@@ -349,10 +340,8 @@ class Mount(object):
         if location is None:
             return False
 
-        lon = location.longitude.dstr().replace('deg', '')
-        self.ui.siteLongitude.setText(lon)
-        lat = location.latitude.dstr().replace('deg', '')
-        self.ui.siteLatitude.setText(lat)
+        self.ui.siteLongitude.setText(self.formatLonToText(location.longitude))
+        self.ui.siteLatitude.setText(self.formatLatToText(location.latitude))
         self.ui.siteElevation.setText(str(location.elevation.m))
 
         return True
@@ -688,7 +677,7 @@ class Mount(object):
                                 'Set Site Longitude',
                                 'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East:+',
                                 PyQt5.QtWidgets.QLineEdit.Normal,
-                                obs.location.longitude.dstr(),
+                                self.ui.siteLongitude.text(),
                                 )
         if not ok:
             return False
@@ -729,7 +718,7 @@ class Mount(object):
                                 'Set Site Latitude',
                                 'Format: <dd[SN] mm ss.s> or <[+-]d.d>',
                                 PyQt5.QtWidgets.QLineEdit.Normal,
-                                obs.location.latitude.dstr(),
+                                self.ui.siteLatitude.text(),
                                 )
         if not ok:
             return False

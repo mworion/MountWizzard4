@@ -24,7 +24,8 @@ import math
 
 # external packages
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle, QPushButton
-from PyQt5.QtCore import pyqtSignal, QObject, QEvent
+from PyQt5.QtCore import pyqtSignal, QObject
+from skyfield.api import Angle
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
@@ -532,7 +533,7 @@ def test_formatLatLon_1(function):
         ['12N  30  30.5', 'SN', 12.508333],
     ]
     for value in values:
-        angle = function.formatLatLon(value[0], value[1])
+        angle = function.formatLatLonToAngle(value[0], value[1])
 
         if angle is None:
             assert value[2] is None
@@ -542,15 +543,15 @@ def test_formatLatLon_1(function):
 
 def test_formatLat(function):
     with mock.patch.object(function,
-                           'formatLatLon',
+                           'formatLatLonToAngle',
                            return_value=10):
-        angle = function.formatLat('12345')
+        angle = function.convertLatToAngle('12345')
         assert angle == 10
 
 
 def test_formatLon(function):
     with mock.patch.object(function,
-                           'formatLatLon',
+                           'formatLatLonToAngle',
                            return_value=10):
         angle = function.formatLon('12345')
         assert angle == 10
@@ -575,7 +576,7 @@ def test_formatRA(function):
         ['12  30   30.50', 187.624999],
     ]
     for value in values:
-        angle = function.formatRA(value[0])
+        angle = function.convertRaToAngle(value[0])
 
         if angle is None:
             assert value[1] is None
@@ -604,9 +605,33 @@ def test_formatDEC(function):
         ['12  30  30.55', 12.508333],
     ]
     for value in values:
-        angle = function.formatDEC(value[0])
+        angle = function.convertDecToAngle(value[0])
 
         if angle is None:
             assert value[1] is None
         else:
             assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
+
+
+def test_formatHSTR(function):
+    values = [
+        [Angle(hours=12), '12 00 00'],
+        [Angle(hours=12.000001), '12 00 00'],
+        [Angle(hours=6), '06 00 00'],
+    ]
+    for value in values:
+        text = function.formatHstrToText(value[0])
+        assert text == value[1]
+
+
+def test_formatDSTR(function):
+    values = [
+        [Angle(degrees=12), '+12 00 00'],
+        [Angle(degrees=12.000001), '+12 00 00'],
+        [Angle(degrees=6), '+06 00 00'],
+        [Angle(degrees=-6), '-06 00 00'],
+    ]
+    for value in values:
+        text = function.formatDstrToText(value[0])
+        print(text)
+        assert text == value[1]

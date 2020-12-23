@@ -92,6 +92,7 @@ class Tools(object):
         self.ui.slewSpeedMed.clicked.connect(self.setSlewSpeed)
         self.ui.slewSpeedLow.clicked.connect(self.setSlewSpeed)
         self.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
+        self.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
 
     def initConfig(self):
         """
@@ -523,7 +524,8 @@ class Tools(object):
         if value is None:
             return False
 
-        self.ui.moveCoordinateRa.setText(value.hstr())
+        text = self.formatHSTR(value)
+        self.ui.moveCoordinateRa.setText(text)
         return True
 
     def setDEC(self):

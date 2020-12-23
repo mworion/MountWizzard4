@@ -575,7 +575,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         return driver
 
     @staticmethod
-    def formatLatLon(value, pf):
+    def formatLatLonToAngle(value, pf):
         """
         :param value:
         :param pf: double character, first indicates the negative sign
@@ -617,12 +617,12 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         angle = Angle(degrees=angle)
         return angle
 
-    def formatLat(self, value):
+    def convertLatToAngle(self, value):
         """
         :param value:
         :return:
         """
-        angle = self.formatLatLon(value, 'SN')
+        angle = self.formatLatLonToAngle(value, 'SN')
         return angle
 
     def formatLon(self, value):
@@ -630,11 +630,11 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param value:
         :return:
         """
-        angle = self.formatLatLon(value, 'WE')
+        angle = self.formatLatLonToAngle(value, 'WE')
         return angle
 
     @staticmethod
-    def formatRA(value):
+    def convertRaToAngle(value):
         """
         :param value:
         :return:
@@ -681,7 +681,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         return angle
 
     @staticmethod
-    def formatDEC(value):
+    def convertDecToAngle(value):
         """
         :param value:
         :return:
@@ -727,19 +727,43 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         return angle
 
     @staticmethod
-    def formatHSTR(angle):
+    def formatHstrToText(angle):
         """
         :param angle:
         :return:
         """
-        text = '{1} {2} {3}'.format(angle.signed_hms())
+        text = '{0:02.0f} {1:02.0f} {2:02.0f}'.format(*angle.hms())
         return text
 
     @staticmethod
-    def formatDSTR(angle):
+    def formatDstrToText(angle):
         """
         :param angle:
         :return:
         """
-        text = '{1} {2} {3}'.format(angle.signed_hms())
+        dstrFormat = '{sign}{1:02.0f} {2:02.0f} {3:02.0f}'
+        values = angle.signed_dms()
+        text = dstrFormat.format(*values, sign='+' if angle.degrees > 0 else '-')
+        return text
+
+    @staticmethod
+    def formatLatToText(angle):
+        """
+        :param angle:
+        :return:
+        """
+        latFormat = '{1:02.0f}{sign} {2:02.0f} {3:02.0f}'
+        values = angle.signed_dms()
+        text = latFormat.format(*values, sign='E' if angle.degrees > 0 else 'W')
+        return text
+
+    @staticmethod
+    def formatLonToText(angle):
+        """
+        :param angle:
+        :return:
+        """
+        lonFormat = '{1:02.0f}{sign} {2:02.0f} {3:02.0f}'
+        values = angle.signed_dms()
+        text = lonFormat.format(*values, sign='N' if angle.degrees > 0 else 'S')
         return text

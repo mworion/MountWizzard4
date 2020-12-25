@@ -517,7 +517,7 @@ class Tools(object):
 
         text = self.formatHstrToText(value)
         self.ui.moveCoordinateRa.setText(text)
-        self.ui.moveCoordinateRaFloat.setText(f'{value.hours:2.5f}')
+        self.ui.moveCoordinateRaFloat.setText(f'{value.hours:2.4f}')
         return True
 
     def setDEC(self):
@@ -540,7 +540,7 @@ class Tools(object):
 
         text = self.formatDstrToText(value)
         self.ui.moveCoordinateDec.setText(text)
-        self.ui.moveCoordinateDecFloat.setText(f'{value.degrees:2.5f}')
+        self.ui.moveCoordinateDecFloat.setText(f'{value.degrees:2.4f}')
         return True
 
     def checkAlt(self, alt):

@@ -20,7 +20,6 @@ import datetime
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-from mountcontrol.convert import stringToAngle
 from skyfield.toposlib import Topos
 
 # local import

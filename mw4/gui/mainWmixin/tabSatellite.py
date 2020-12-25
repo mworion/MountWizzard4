@@ -418,7 +418,7 @@ class Satellite(object):
 
         # now we prepare the selection of the data in the gui
         self.ui.satelliteName.setText(self.satellite.name)
-        epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M:%S')
+        epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M')
         self.ui.satelliteEpoch.setText(epochText)
 
         # the epoch should be not too old

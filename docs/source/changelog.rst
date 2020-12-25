@@ -25,6 +25,18 @@ Unreleased Betas
 
 Released betas
 --------------
+0.220.7
+
+- cleanup and fine tuning
+
+0.220.6
+
+- added absolute move for Alt/Az for an improved horizon generating process.
+
+0.220.5
+
+- adding horizon generating by adding (add point to horizon map)
+
 0.220.4
 
 - improved logging

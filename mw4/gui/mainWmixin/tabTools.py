@@ -96,8 +96,6 @@ class Tools(object):
         self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
         self.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
         self.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
-        self.clickable(self.ui.moveCoordinateAlt).connect(self.setALT)
-        self.clickable(self.ui.moveCoordinateAz).connect(self.setAZ)
 
     def initConfig(self):
         """
@@ -545,77 +543,64 @@ class Tools(object):
         self.ui.moveCoordinateDecFloat.setText(f'{value.degrees:2.5f}')
         return True
 
-    def setALT(self):
+    def checkAlt(self, alt):
         """
-        :return:    success as bool if value could be changed
+        :param alt:
+        :return:
         """
-        dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getText(self,
-                                'Set telescope Altitude',
-                                'Format: <[+-]d.d> in degrees',
-                                PyQt5.QtWidgets.QLineEdit.Normal,
-                                self.ui.moveCoordinateAlt.text(),
-                                )
-        if not ok:
-            return False
+        if not alt:
+            return None
 
         try:
-            value = float(value)
+            alt = float(alt)
+
         except Exception:
-            return False
+            return None
 
         if self.app.mount.setting.horizonLimitLow is None:
-            return False
+            return None
 
         if self.app.mount.setting.horizonLimitHigh is None:
-            return False
+            return None
 
-        if value > self.app.mount.setting.horizonLimitHigh:
-            return False
+        if alt > self.app.mount.setting.horizonLimitHigh:
+            return None
 
-        if value < self.app.mount.setting.horizonLimitLow:
-            return False
+        if alt < self.app.mount.setting.horizonLimitLow:
+            return None
 
-        value = Angle(degrees=value)
-        text = str(value.degrees)
-        self.ui.moveCoordinateAlt.setText(text)
-        return True
+        return alt
 
-    def setAZ(self):
+    @staticmethod
+    def checkAz(az):
         """
-        :return:    success as bool if value could be changed
+        :param az:
+        :return:
         """
-        dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getText(self,
-                                'Set telescope Azimuth',
-                                'Format: <[+-]d.d> in degrees',
-                                PyQt5.QtWidgets.QLineEdit.Normal,
-                                self.ui.moveCoordinateAz.text(),
-                                )
-        if not ok:
-            return False
+        if not az:
+            return None
 
         try:
-            value = float(value)
-        except Exception:
-            return False
+            az = float(az)
 
-        value = (value + 360) % 360
-        value = Angle(degrees=value)
-        text = str(value.degrees)
-        self.ui.moveCoordinateAz.setText(text)
-        return True
+        except Exception:
+            return None
+
+        az = (az + 360) % 360
+        return az
 
     def moveAltAzAbsolute(self):
         """
         :return:
         """
         alt = self.ui.moveCoordinateAlt.text()
-        if not alt:
+        alt = self.checkAlt(alt)
+        if alt is None:
             return False
 
         az = self.ui.moveCoordinateAz.text()
-        if not az:
+        az = self.checkAz(az)
+        if az is None:
             return False
 
         suc = self.slewTargetAltAz(float(alt), float(az))

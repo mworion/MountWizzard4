@@ -16066,7 +16066,7 @@ Hint if mount will need a flip when following satellite.</string>
      </widget>
      <widget class="QWidget" name="tab_6">
       <attribute name="title">
-       <string>Slew coordinate</string>
+       <string>Move Absolute</string>
       </attribute>
       <widget class="QLineEdit" name="filterMinorPlanet_5">
        <property name="geometry">
@@ -16140,7 +16140,7 @@ Hint if mount will need a flip when following satellite.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for azimuth direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for azimuth direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;p&gt;Format is: &amp;lt;[+-]d.d&amp;gt; in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -16209,7 +16209,7 @@ Hint if mount will need a flip when following satellite.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for alitude direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for alitude direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;p&gt;Format is: &amp;lt;[+-]d.d&amp;gt; in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -16260,6 +16260,44 @@ Hint if mount will need a flip when following satellite.</string>
         </property>
         <property name="text">
          <string>AZ</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_325">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>90</y>
+          <width>106</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>[+ -] d.d degrees</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_326">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>45</y>
+          <width>106</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>[+ -] d.d degrees</string>
         </property>
        </widget>
       </widget>
@@ -26385,16 +26423,16 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   </widget>
  </widget>
  <tabstops>
-  <tabstop>cameraDevice</tabstop>
-  <tabstop>cameraSetup</tabstop>
-  <tabstop>filterDevice</tabstop>
-  <tabstop>filterSetup</tabstop>
   <tabstop>astrometryDevice</tabstop>
   <tabstop>domeDevice</tabstop>
-  <tabstop>domeSetup</tabstop>
   <tabstop>telescopeDevice</tabstop>
   <tabstop>telescopeSetup</tabstop>
-  <tabstop>focuserDevice</tabstop>
+  <tabstop>moveCoordinateAlt</tabstop>
+  <tabstop>moveCoordinateAz</tabstop>
+  <tabstop>moveAltAzAbsolute</tabstop>
+  <tabstop>moveCoordinateRa</tabstop>
+  <tabstop>moveCoordinateDec</tabstop>
+  <tabstop>moveRaDecAbsolute</tabstop>
   <tabstop>focuserSetup</tabstop>
   <tabstop>skymeterDevice</tabstop>
   <tabstop>skymeterSetup</tabstop>
@@ -26647,6 +26685,131 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>textEdit</tabstop>
   <tabstop>powerCurrent2</tabstop>
   <tabstop>dewCurrentC</tabstop>
+  <tabstop>twilightEvents</tabstop>
+  <tabstop>genBuildSpiralNorm</tabstop>
+  <tabstop>genBuildSpiralMed</tabstop>
+  <tabstop>genBuildSpiralMax</tabstop>
+  <tabstop>checkAvoidFlip</tabstop>
+  <tabstop>checkAutoDeleteMeridian</tabstop>
+  <tabstop>clearHorizonMask</tabstop>
+  <tabstop>safetyMarginHorizon</tabstop>
+  <tabstop>checkSafetyMarginHorizon</tabstop>
+  <tabstop>keepGeneratedPoints</tabstop>
+  <tabstop>pauseModel</tabstop>
+  <tabstop>checkDisableDAT</tabstop>
+  <tabstop>parkMountAfterModel</tabstop>
+  <tabstop>excludeDonePoints</tabstop>
+  <tabstop>endModel</tabstop>
+  <tabstop>numberBuildRetries</tabstop>
+  <tabstop>optimizeOverall</tabstop>
+  <tabstop>optimizeSingle</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>showErrorValues</tabstop>
+  <tabstop>showNumbers</tabstop>
+  <tabstop>showNoAnnotation</tabstop>
+  <tabstop>openAnalyseW</tabstop>
+  <tabstop>showOriginalModelAnalyse</tabstop>
+  <tabstop>autoUpdateActualAnalyse</tabstop>
+  <tabstop>showActualModelAnalyse</tabstop>
+  <tabstop>satTransitStartUTC_1</tabstop>
+  <tabstop>satTransitEndUTC_1</tabstop>
+  <tabstop>satTransitEndUTC_2</tabstop>
+  <tabstop>satTransitStartUTC_2</tabstop>
+  <tabstop>satTransitEndUTC_3</tabstop>
+  <tabstop>satTransitStartUTC_3</tabstop>
+  <tabstop>satTransitStartUTC</tabstop>
+  <tabstop>satTransitEndUTC</tabstop>
+  <tabstop>satNeedFlip</tabstop>
+  <tabstop>filterSatellite</tabstop>
+  <tabstop>progSatellitesFiltered</tabstop>
+  <tabstop>progSatellitesFull</tabstop>
+  <tabstop>minorPlanetSource</tabstop>
+  <tabstop>filterMinorPlanet</tabstop>
+  <tabstop>listMinorPlanetNames</tabstop>
+  <tabstop>progMinorPlanetsFull</tabstop>
+  <tabstop>progEarthRotationData</tabstop>
+  <tabstop>progMinorPlanetsFiltered</tabstop>
+  <tabstop>rebootUPB</tabstop>
+  <tabstop>parkMountAfterSlew</tabstop>
+  <tabstop>tabMoving</tabstop>
+  <tabstop>moveNorth</tabstop>
+  <tabstop>moveNorthWest</tabstop>
+  <tabstop>moveWest</tabstop>
+  <tabstop>moveSouthEast</tabstop>
+  <tabstop>moveSouth</tabstop>
+  <tabstop>moveNorthEast</tabstop>
+  <tabstop>moveSouthWest</tabstop>
+  <tabstop>stopMoveAll</tabstop>
+  <tabstop>moveEast</tabstop>
+  <tabstop>slewSpeedMax</tabstop>
+  <tabstop>slewSpeedMed</tabstop>
+  <tabstop>slewSpeedLow</tabstop>
+  <tabstop>slewSpeedHigh</tabstop>
+  <tabstop>moveDuration</tabstop>
+  <tabstop>moveWestAltAz</tabstop>
+  <tabstop>moveEastAltAz</tabstop>
+  <tabstop>moveSouthWestAltAz</tabstop>
+  <tabstop>moveSouthAltAz</tabstop>
+  <tabstop>moveNorthWestAltAz</tabstop>
+  <tabstop>moveNorthAltAz</tabstop>
+  <tabstop>moveNorthEastAltAz</tabstop>
+  <tabstop>moveSouthEastAltAz</tabstop>
+  <tabstop>moveStepSizeAltAz</tabstop>
+  <tabstop>relaySetup</tabstop>
+  <tabstop>astrometrySetup</tabstop>
+  <tabstop>powerWeatherDevice</tabstop>
+  <tabstop>powerWeatherSetup</tabstop>
+  <tabstop>onlineWeatherSetup</tabstop>
+  <tabstop>ascomConnect</tabstop>
+  <tabstop>ascomDisconnect</tabstop>
+  <tabstop>checkASCOMAutoConnect</tabstop>
+  <tabstop>expTimeN</tabstop>
+  <tabstop>binningN</tabstop>
+  <tabstop>copyFromTelescopeDriver</tabstop>
+  <tabstop>focalLength</tabstop>
+  <tabstop>aperture</tabstop>
+  <tabstop>checkAutomaticTelescope</tabstop>
+  <tabstop>coverPark</tabstop>
+  <tabstop>coverUnpark</tabstop>
+  <tabstop>moveFocuserIn</tabstop>
+  <tabstop>focuserStepsize</tabstop>
+  <tabstop>moveFocuserOut</tabstop>
+  <tabstop>haltFocuser</tabstop>
+  <tabstop>domeRadius</tabstop>
+  <tabstop>domeNorthOffset</tabstop>
+  <tabstop>domeEastOffset</tabstop>
+  <tabstop>domeVerticalOffset</tabstop>
+  <tabstop>offGEM</tabstop>
+  <tabstop>copyFromDomeDriver</tabstop>
+  <tabstop>checkAutomaticDome</tabstop>
+  <tabstop>offLAT</tabstop>
+  <tabstop>domeShutterWidth</tabstop>
+  <tabstop>relayButtonText2</tabstop>
+  <tabstop>relayButtonText5</tabstop>
+  <tabstop>relayButtonText7</tabstop>
+  <tabstop>relayFun6</tabstop>
+  <tabstop>relayFun3</tabstop>
+  <tabstop>relayFun5</tabstop>
+  <tabstop>relayButtonText4</tabstop>
+  <tabstop>relayButtonText1</tabstop>
+  <tabstop>relayButtonText6</tabstop>
+  <tabstop>relayFun1</tabstop>
+  <tabstop>relayFun4</tabstop>
+  <tabstop>relayFun2</tabstop>
+  <tabstop>relayButtonText3</tabstop>
+  <tabstop>relayButtonText0</tabstop>
+  <tabstop>relayFun0</tabstop>
+  <tabstop>relayFun7</tabstop>
+  <tabstop>versionAvailable</tabstop>
+  <tabstop>filterMinorPlanet_5</tabstop>
+  <tabstop>cameraSetup</tabstop>
+  <tabstop>domeSetup</tabstop>
+  <tabstop>cameraDevice</tabstop>
+  <tabstop>filterSetup</tabstop>
+  <tabstop>filterDevice</tabstop>
+  <tabstop>focuserDevice</tabstop>
+  <tabstop>moveCoordinateRaFloat</tabstop>
+  <tabstop>moveCoordinateDecFloat</tabstop>
  </tabstops>
  <resources/>
  <connections/>

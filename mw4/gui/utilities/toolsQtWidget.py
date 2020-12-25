@@ -664,9 +664,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
         elif isSexagesimal:
             angle = float(elements[2])
-            if len(elements) > 2:
+            if elements[3] is not None:
                 angle += float(elements[3]) / 60
-            if len(elements) > 3:
+            if elements[4] is not None:
                 angle += float(elements[4]) / 3600
 
         else:
@@ -709,17 +709,14 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         elif isP2:
             elements = p2.split(value)
 
-        print(isFloat, isSexagesimal, isP1, isP2)
-
         if isFloat:
             angle = float(value.replace(',', '.'))
 
         elif isSexagesimal:
-            print(elements)
             angle = float(elements[2])
-            if len(elements) > 2:
+            if elements[3] is not None:
                 angle += float(elements[3]) / 60
-            if len(elements) > 3:
+            if elements[4] is not None:
                 angle += float(elements[4]) / 3600
             if elements[1].startswith('-'):
                 angle = -angle

@@ -183,6 +183,7 @@ class Dome:
         """
 
         if not self.data:
+            self.log.error('No data dict available')
             return False
 
         mount = self.app.mount

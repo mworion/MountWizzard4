@@ -402,7 +402,7 @@ def test_setSlewSpeed_2():
 
 
 def test_slewSelectedTarget_1():
-    suc = app.slewSelectedTarget()
+    suc = app.slewSelectedTargetWithDome()
     assert not suc
 
 
@@ -413,7 +413,7 @@ def test_slewSelectedTarget_2():
     with mock.patch.object(app.app.mount.obsSite,
                            'startSlewing',
                            return_value=True):
-        suc = app.slewSelectedTarget()
+        suc = app.slewSelectedTargetWithDome()
         assert suc
 
 
@@ -424,7 +424,7 @@ def test_slewSelectedTarget_3():
     with mock.patch.object(app.app.mount.obsSite,
                            'startSlewing',
                            return_value=False):
-        suc = app.slewSelectedTarget()
+        suc = app.slewSelectedTargetWithDome()
         assert not suc
 
 
@@ -434,7 +434,7 @@ def test_slewTargetAltAz_1():
     app.app.mount.obsSite.status = 0
 
     with mock.patch.object(app,
-                           'slewSelectedTarget',
+                           'slewSelectedTargetWithDome',
                            return_value=True):
         suc = app.slewTargetAltAz(100, 10)
         assert suc
@@ -446,7 +446,7 @@ def test_slewTargetAltAz_2():
     app.app.mount.obsSite.status = 1
 
     with mock.patch.object(app,
-                           'slewSelectedTarget',
+                           'slewSelectedTargetWithDome',
                            return_value=False):
         suc = app.slewTargetAltAz(-10, 10)
         assert not suc

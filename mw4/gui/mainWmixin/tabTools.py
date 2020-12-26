@@ -420,7 +420,7 @@ class Tools(object):
         self.slewSpeeds[ui]()
         return True
 
-    def slewSelectedTarget(self, slewType='normal'):
+    def slewSelectedTargetWithDome(self, slewType='normal'):
         """
         :param slewType:
         :return: success
@@ -438,7 +438,8 @@ class Tools(object):
             delta = self.app.dome.slewDome(altitude=altitudeT,
                                            azimuth=azimuthT)
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
-            text = f'Slewing dome:        {geoStat}, az: {azimuthT:3.1f} delta: {delta:3.1f}'
+            text = f'Slewing dome:        {geoStat}'
+            text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
             self.app.message.emit(text, 0)
 
         suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
@@ -446,7 +447,7 @@ class Tools(object):
             self.app.message.emit('Slewing mount', 0)
 
         else:
-            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuthT, altitudeT), 2)
+            self.app.message.emit('Cannot slew to: {azimuthT}, {altitudeT}', 2)
         return suc
 
     def slewTargetAltAz(self, alt, az):
@@ -466,7 +467,7 @@ class Tools(object):
 
         self.app.mount.obsSite.setTargetAltAz(alt_degrees=alt,
                                               az_degrees=az)
-        suc = self.slewSelectedTarget(slewType='keep')
+        suc = self.slewSelectedTargetWithDome(slewType='keep')
         return suc
 
     def moveAltAz(self):
@@ -606,8 +607,31 @@ class Tools(object):
         suc = self.slewTargetAltAz(float(alt), float(az))
         return suc
 
+    def slewTargetRaDecJ2000(self, ra, dec):
+        """
+        :param ra:
+        :param decd:
+        :return:
+        """
+
+        self.app.mount.obsSite.setTargetAltAz(alt_degrees=ra,
+                                              az_degrees=dec)
+        suc = self.slewSelectedTargetWithDome(slewType='keep')
+        return suc
+
     def moveRaDecAbsolute(self):
         """
         :return:
         """
-        return True
+        ra = self.ui.moveCoordinateRa.text()
+        ra = self.checkRa(ra)
+        if ra is None:
+            return False
+
+        dec = self.ui.moveCoordinateDec.text()
+        dec = self.checkDec(dec)
+        if dec is None:
+            return False
+
+        suc = self.slewTargetAltAz(float(ra), float(dec))
+        return suc

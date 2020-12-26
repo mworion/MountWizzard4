@@ -22,7 +22,7 @@ from pathlib import Path
 import PyQt5
 from PyQt5.QtTest import QTest
 from astropy.io import fits
-from skyfield.api import Angle
+from base.transform import J2000ToJNow
 
 # local import
 
@@ -610,7 +610,7 @@ class Tools(object):
     def slewTargetRaDecJ2000(self, ra, dec):
         """
         :param ra:
-        :param decd:
+        :param dec:
         :return:
         """
 
@@ -623,15 +623,22 @@ class Tools(object):
         """
         :return:
         """
-        ra = self.ui.moveCoordinateRa.text()
-        ra = self.checkRa(ra)
+        value = self.ui.moveCoordinateRa.text()
+        ra = self.convertRaToAngle(value)
         if ra is None:
             return False
 
-        dec = self.ui.moveCoordinateDec.text()
-        dec = self.checkDec(dec)
+        value = self.ui.moveCoordinateDec.text()
+        dec = self.convertDecToAngle(value)
         if dec is None:
             return False
 
-        suc = self.slewTargetAltAz(float(ra), float(dec))
+        timeJD = self.app.mount.obsSite.timeJD
+        if timeJD is None:
+            return False
+
+        raJNow, decJNow = J2000ToJNow(ra, dec, timeJD)
+        self.app.mount.obsSite.setTargetRaDec(ra=raJNow,
+                                              dec=decJNow)
+        suc = self.slewSelectedTargetWithDome(slewType='keep')
         return suc

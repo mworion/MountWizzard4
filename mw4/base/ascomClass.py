@@ -107,7 +107,7 @@ class AscomClass(object):
         :return: success of reconnecting to server
         """
 
-        for retry in range(0, 6):
+        for retry in range(0, 10):
             try:
                 self.connectClient()
 
@@ -122,7 +122,7 @@ class AscomClass(object):
                     break
 
             finally:
-                QTest.qWait(200)
+                QTest.qWait(500)
 
         else:
             suc = False

@@ -738,7 +738,8 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param angle:
         :return:
         """
-        text = '{0:02.0f} {1:02.0f} {2:02.0f}'.format(*angle.hms())
+        v = angle.hms()
+        text = f'{v[0]:02.0f} {v[1]:02.0f} {int(v[2]):02.0f}'
         return text
 
     @staticmethod
@@ -747,9 +748,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param angle:
         :return:
         """
-        dstrFormat = '{sign}{1:02.0f} {2:02.0f} {3:02.0f}'
-        values = angle.signed_dms()
-        text = dstrFormat.format(*values, sign='+' if angle.degrees >= 0 else '-')
+        sign = '+' if angle.degrees >= 0 else '-'
+        v = angle.signed_dms()
+        text = f'{sign}{v[1]:02.0f} {v[2]:02.0f} {int(v[3]):02.0f}'
         return text
 
     @staticmethod
@@ -758,9 +759,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param angle:
         :return:
         """
-        latFormat = '{1:02.0f}{sign} {2:02.0f} {3:02.0f}'
-        values = angle.signed_dms()
-        text = latFormat.format(*values, sign='N' if angle.degrees >= 0 else 'S')
+        sign = 'N' if angle.degrees >= 0 else 'S'
+        v = angle.signed_dms()
+        text = f'{v[1]:02.0f}{sign} {v[2]:02.0f} {int(v[3]):02.0f}'
         return text
 
     @staticmethod
@@ -769,7 +770,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param angle:
         :return:
         """
-        lonFormat = '{1:02.0f}{sign} {2:02.0f} {3:02.0f}'
-        values = angle.signed_dms()
-        text = lonFormat.format(*values, sign='E' if angle.degrees >= 0 else 'W')
+        sign = 'E' if angle.degrees >= 0 else 'W'
+        v = angle.signed_dms()
+        text = f'{v[1]:02.0f}{sign} {v[2]:02.0f} {int(v[3]):02.0f}'
         return text

@@ -27,15 +27,18 @@ from mountcontrol.convert import valueToFloat
 
 class Geometry(object):
     """
-    The class Geometry contains all necessary geometric calculations and parameters
-    for mount orientation, dome slit correction or 3D animation of telescope.
+    The class Geometry contains all necessary geometric calculations and
+    parameters for mount orientation, dome slit correction or 3D animation of
+    telescope.
 
         >>> geometry = Geometry()
 
     transformations are defined as homogeneous matrices to be able to calculate
-    translations and rotation in the same manner. therefore the system has 4 dimensions
+    translations and rotation in the same manner. therefore the system has 4
+    dimensions
 
-    for the transformation between homogeneous vectors (vh) and kartesian vectors (vk):
+    for the transformation between homogeneous vectors (vh) and kartesian vectors
+    (vk):
     vk = vh[0:2]/vh[3]
     vh = [vk, 1]
 
@@ -157,9 +160,9 @@ class Geometry(object):
 
     def initializeGeometry(self, mountType):
         """
-        initializeGeometry takes the mount type as string and searches for the right
-        parameters in his database. If found it populates the parameters for geometry
-        calculation and returns True otherwise false
+        initializeGeometry takes the mount type as string and searches for the
+        right parameters in his database. If found it populates the parameters
+        for geometry calculation and returns True otherwise false
 
         :param mountType: string from mount
         :return: success
@@ -183,12 +186,10 @@ class Geometry(object):
     @staticmethod
     def transformRotX(rotX, degrees=False):
         """
-
         :param rotX: rotation angle
         :param degrees:
         :return: homogeneous transformation matrix
         """
-
         if isinstance(rotX, Angle):
             rot = rotX.radians
         else:
@@ -209,12 +210,10 @@ class Geometry(object):
     @staticmethod
     def transformRotY(rotY, degrees=False):
         """
-
         :param rotY: rotation angle
         :param degrees:
         :return: homogeneous transformation matrix
         """
-
         if isinstance(rotY, Angle):
             rot = rotY.radians
         else:
@@ -235,12 +234,10 @@ class Geometry(object):
     @staticmethod
     def transformRotZ(rotZ, degrees=False):
         """
-
         :param rotZ: rotation angle
         :param degrees:
         :return: homogeneous transformation matrix
         """
-
         if isinstance(rotZ, Angle):
             rot = rotZ.radians
         else:
@@ -261,11 +258,9 @@ class Geometry(object):
     @staticmethod
     def transformTranslate(vector):
         """
-
         :param vector: translation
         :return: homogeneous transformation matrix
         """
-
         T = np.array([[1, 0, 0, vector[0]],
                       [0, 1, 0, vector[1]],
                       [0, 0, 1, vector[2]],
@@ -274,14 +269,12 @@ class Geometry(object):
 
     def calcTransformationMatrices(self, ha=None, dec=None, lat=None, pierside='W'):
         """
-
         :param ha: hour angle in radians
         :param dec: declination in radians
         :param lat: latitude of observation site in radians
         :param pierside: 'W' or 'E' for setting the right HA
         :return: altDome, azDome: the real pointing angles for OTA in dome
         """
-
         if not isinstance(ha, Angle):
             return None, None, None, None, None
         if not isinstance(dec, Angle):
@@ -302,13 +295,14 @@ class Geometry(object):
         dec = dec.radians
         lat = lat.radians
 
-        # the equator of the dome and it's middle point of the hemisphere is zero point
-        # for coordinate system.
+        # the equator of the dome and it's middle point of the hemisphere is
+        # zero point for coordinate system.
         P0 = np.array([0, 0, 0, 1])
 
-        # next adjustment if the position of the base of mount in relation to the
-        # the offset in north is x and the offset in east is -y. in vertical direction
-        # up is positive, which means the mount is above the middle point of dome
+        # next adjustment if the position of the base of mount in relation to
+        # the offset in north is x and the offset in east is -y. in vertical
+        # direction up is positive, which means the mount is above the middle
+        # point of dome
         vec0 = [self.offNorth,
                 -self.offEast,
                 self.offVert]
@@ -316,41 +310,43 @@ class Geometry(object):
         P1 = np.dot(T0, P0)
 
         # the rotation around z axis (polar direction) to adjust the orientation
-        # of the mount to true north, if the fixed pier does not make it. turning
-        # counterclockwise is positive
+        # of the mount to true north, if the fixed pier does not make it.
+        # turning counterclockwise is positive
         T1 = np.dot(T0, self.transformRotZ(self.azAdj))
         P2 = np.dot(T1, P0)
 
-        # next we have the translation between the base plate and the rotation axis
-        # for the altitude adjustment. the axis is normally above the plate (positive z)
-        # and sometime shifted. shift north mean positive x
+        # next we have the translation between the base plate and the rotation
+        # axis for the altitude adjustment. the axis is normally above the plate (
+        # positive z) and sometime shifted. shift north mean positive x
         vec2 = [self.offBaseAltAxisX,
                 0,
                 self.offBaseAltAxisZ]
         T2 = np.dot(T1, self.transformTranslate(vec2))
         P3 = np.dot(T2, P0)
 
-        # next step is the rotation around y axis for compensation of latitude. the
-        # adjustment angle compensates the latitude. for lat = 0 we have 0 degree correction
-        # an below north pole there is 90 deg correction needed. so phi = -lat because it's
-        # a turn counterclockwise around Y, all angles are in radians
+        # next step is the rotation around y axis for compensation of latitude.
+        # the adjustment angle compensates the latitude. for lat = 0 we have 0
+        # degree correction an below north pole there is 90 deg correction needed.
+        # so phi = -lat because it's a turn counterclockwise around Y, all angles
+        # are in radians
         self.altAdj = -abs(lat)
         T3 = np.dot(T2, self.transformRotY(self.altAdj))
         P4 = np.dot(T3, P0)
 
-        # next is the translation fom the rotation axis of the lat compensation of the mount
-        # to the GEM point of the mount. GEM means the crossing of the ra and dec axis of the
-        # german equatorial mount
-        # basically there should be a translation in x/z plane up and forward (to north)
+        # next is the translation fom the rotation axis of the lat compensation of
+        # the mount to the GEM point of the mount. GEM means the crossing of the
+        # ra and dec axis of the german equatorial mount basically there should be
+        # a translation in x/z plane up and forward (to north)
         vec4 = [self.offAltAxisGemX,
                 0,
                 self.offAltAxisGemZ]
         T4 = np.dot(T3, self.transformTranslate(vec4))
         P5 = np.dot(T4, P0)
 
-        # next is the rotation around the ra axis of the mount, this is rotation around x
-        # this should be (as we don't track) measured in HA, where HA = 6 / 18 h is North
-        # depending of the pierside the direction is clockwise, turning to west over time
+        # next is the rotation around the ra axis of the mount, this is rotation
+        # around x this should be (as we don't track) measured in HA, where HA = 6
+        # / 18 h is North depending of the pierside the direction is clockwise,
+        # turning to west over time
         if pierside == 'E':
             value = - ha + np.radians(6 / 24 * 360)
 
@@ -360,9 +356,9 @@ class Geometry(object):
         T5 = np.dot(T4, self.transformRotX(value))
         P6 = np.dot(T5, P0)
 
-        # the rotation around dec axis of the mount is next step. this rotation is around
-        # z axis. dec = 0 means rectangular directing scope. direction changes due to
-        # position of the mount and pierside
+        # the rotation around dec axis of the mount is next step. this rotation is
+        # around z axis. dec = 0 means rectangular directing scope. direction
+        # changes due to position of the mount and pierside
         value = dec - np.radians(90)
         if pierside == 'E':
             value = -value
@@ -372,18 +368,19 @@ class Geometry(object):
 
         # the translation from GEM to the center of the ota, this should be a
         # translation in z. it consists of two parts: the user OTA measures and the
-        # distance from GEM to base plate, which is depending on mount type and is fixed
-        # and secondly the distance between the mount plate and the OTA line of sight axis
+        # distance from GEM to base plate, which is depending on mount type and is
+        # fixed and secondly the distance between the mount plate and the OTA line
+        # of sight axis
         vec6 = [0,
                 0,
                 self.offPlateOTA + self.offGemPlate]
         T7 = np.dot(T6, self.transformTranslate(vec6))
         P8 = np.dot(T7, P0)
 
-        # the translation from center of the ota, to the side if a second ota is installed
-        # but not centered should be a translation in y. if the ota is de-centered looking in
-        # the direction of the ota (out of the hemisphere) to the right it's a negative y
-        # otherwise a positive one
+        # the translation from center of the ota, to the side if a second ota is
+        # installed but not centered should be a translation in y. if the ota is
+        # de-centered looking in the direction of the ota (out of the hemisphere)
+        # to the right it's a negative y otherwise a positive one
 
         vec7 = [0,
                 - self.offLAT,
@@ -392,22 +389,22 @@ class Geometry(object):
         P9 = np.dot(T8, P0)
 
         # calculating the direction of OTA for dome geometry. pointing direction is
-        # in x axis, length is standard 1. P10 would be the head of the vector, P9 is the
-        # base of the vector. subtracting gives the resulting direction of the vector which
-        # is in PD
+        # in x axis, length is standard 1. P10 would be the head of the vector,
+        # P9 is the base of the vector. subtracting gives the resulting direction
+        # of the vector which is in PD
         vec9 = [1, 0, 0]
         T9 = np.dot(T8, self.transformTranslate(vec9))
         P10 = np.dot(T9, P0)
         PD = (P10 - P9)[:-1]
 
-        # calculating the crossing point between view of sight of the OTA and the dome
-        # hemisphere using the traditional p-q formula
+        # calculating the crossing point between view of sight of the OTA and the
+        # dome hemisphere using the traditional p-q formula
         # if you have g: v = v0 + t * tDir and hem: x^2 + y^2 + z^2 = r^2
         # with v0 = PB and tDir = PD you get t1 and t2 from p-q formula as
         # t1 = -p/2 + sqr (p^2/4 - q), t2 = -p/2 - sqr (p^2/4 - q)
-        # for the right point whe have to choose the one, which crosses the hemisphere
-        # above the OTA point as we normally are looking upward.
-        # and we have to use scalar product on a kartesian system
+        # for the right point whe have to choose the one, which crosses the
+        # hemisphere above the OTA point as we normally are looking upward.
+        # and we have to use scalar product on a cartesian system
         PB = P9[:-1]
 
         p = 2 * np.dot(PD, PB)
@@ -423,17 +420,18 @@ class Geometry(object):
         t1 = - p / 2 + np.sqrt(p * p / 4 - q)
         t2 = - p / 2 - np.sqrt(p * p / 4 - q)
 
-        # we choose the positive solution as we look in the positive direction and can omit
-        # the view to the back
+        # we choose the positive solution as we look in the positive direction and
+        # can omit the view to the back
 
         self.log.debug(f'Solutions: [{t1}], [{t2}]')
 
         intersect = PB + np.dot(t1, PD)
 
-        # simplify the names and calculate the geometry angles based on the coordinates of
-        # the intersection between line of sight and dome hemisphere. as we have y to the
-        # left because of the right turning homogeneous coordinate system, we have to negate
-        # the angle of azimuth. we use arctan2 for getting the full quadrants and shifting
+        # simplify the names and calculate the geometry angles based on the
+        # coordinates of the intersection between line of sight and dome
+        # hemisphere. as we have y to the left because of the right turning
+        # homogeneous coordinate system, we have to negate the angle of azimuth.
+        # we use arctan2 for getting the full quadrants and shifting
         # the angle in an value range from 0 .. 2pi
 
         x = intersect[0]

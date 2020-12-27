@@ -671,23 +671,23 @@ class Model(object):
             if not aPoint.sCoord or not aPoint.mCoord:
                 continue
             sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.mCoord.ra.hours, 1)
-            ra = f'{h:02d}:{m:02d}:{s:02d}.{frac:1d}#'
+            ra = f'{h:02d}:{m:02d}:{s:02d}.{frac:1d}'
 
             sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.mCoord.dec.degrees, 1)
             sign = '+' if sgn >= 0 else '-'
-            dec = f'{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
+            dec = f'{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}'
 
             pierside = aPoint.pierside
 
             sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.sCoord.ra.hours, 1)
-            raSolve = f'{h:02d}:{m:02d}:{s:02d}.{frac:1d}#'
+            raSolve = f'{h:02d}:{m:02d}:{s:02d}.{frac:1d}'
 
             sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.sCoord.dec.degrees, 1)
             sign = '+' if sgn >= 0 else '-'
-            decSolve = f'{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
+            decSolve = f'{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}'
 
             sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.sidereal.hours, 2)
-            sidereal = f'{h:02d}:{m:02d}:{s:02d}.{frac:02d}#'
+            sidereal = f'{h:02d}:{m:02d}:{s:02d}.{frac:02d}'
 
             comFormat = ':newalpt{0},{1},{2},{3},{4},{5}#'
             value = comFormat.format(ra,

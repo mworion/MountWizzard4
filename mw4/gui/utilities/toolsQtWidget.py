@@ -30,6 +30,7 @@ from skyfield.api import Angle
 # local imports
 from gui.utilities.stylesQtCss import Styles
 from gui.utilities.toolsMatplotlib import ToolsMatplotlib
+from mountcontrol.convert import sexagesimalizeToInt
 
 __all__ = [
     'MWidget',
@@ -739,8 +740,8 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param angle:
         :return:
         """
-        v = angle.hms()
-        text = f'{v[0]:02.0f} {v[1]:02.0f} {int(v[2]):02.0f}'
+        sgn, h, m, s, frac = sexagesimalizeToInt(angle.hours, 0)
+        text = f'{h:02d} {m:02d} {s:02d}'
         return text
 
     @staticmethod
@@ -749,9 +750,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param angle:
         :return:
         """
-        sign = '+' if angle.degrees >= 0 else '-'
-        v = angle.signed_dms()
-        text = f'{sign}{v[1]:02.0f} {v[2]:02.0f} {int(v[3]):02.0f}'
+        sgn, h, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
+        sign = '+' if sgn >= 0 else '-'
+        text = f'{sign}{h:02d} {m:02d} {s:02d}'
         return text
 
     @staticmethod
@@ -760,9 +761,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param angle:
         :return:
         """
-        sign = 'N' if angle.degrees >= 0 else 'S'
-        v = angle.signed_dms()
-        text = f'{v[1]:02.0f}{sign} {v[2]:02.0f} {int(v[3]):02.0f}'
+        sgn, h, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
+        sign = 'N' if sgn >= 0 else 'S'
+        text = f'{h:02d}{sign} {m:02d} {s:02d}'
         return text
 
     @staticmethod
@@ -771,7 +772,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param angle:
         :return:
         """
-        sign = 'E' if angle.degrees >= 0 else 'W'
-        v = angle.signed_dms()
-        text = f'{v[1]:02.0f}{sign} {v[2]:02.0f} {int(v[3]):02.0f}'
+        sgn, h, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
+        sign = 'E' if sgn >= 0 else 'W'
+        text = f'{h:03d}{sign} {m:02d} {s:02d}'
         return text

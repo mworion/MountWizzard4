@@ -80,7 +80,9 @@ class Geometry(object):
         },
     }
 
-    def __init__(self):
+    def __init__(self, latitude=None):
+
+        self.latitude = latitude
         self.offBaseAltAxisX = 0
         self.offBaseAltAxisZ = 0
         self.offAltAxisGemX = 0
@@ -92,6 +94,7 @@ class Geometry(object):
         self._offNorth = 0
         self._offEast = 0
         self._offVert = 0
+        self._offVertGEM = 0
         self._domeRadius = 1
         self._offGEM = 0
         self._offLAT = 0
@@ -131,6 +134,20 @@ class Geometry(object):
     @offVert.setter
     def offVert(self, value):
         self._offVert = valueToFloat(value)
+        self._offVertGEM = self._offVert
+        self._offVertGEM += self.offBaseAltAxisZ
+        self._offVertGEM += np.sin(abs(self.latitude)) * self.offAltAxisGemX
+
+    @property
+    def offVertGEM(self):
+        return self._offVertGEM
+
+    @offVertGEM.setter
+    def offVertGEM(self, value):
+        self._offVertGEM = valueToFloat(value)
+        self._offVert = self._offVertGEM
+        self._offVert -= self.offBaseAltAxisZ
+        self._offVert -= np.sin(abs(self.latitude)) * self.offAltAxisGemX
 
     @property
     def offGEM(self):
@@ -286,15 +303,11 @@ class Geometry(object):
         dec = dec.radians
         lat = lat.radians
 
-        offVertGEM = self.offVert
-        offVertGEM -= self.offBaseAltAxisZ
-        offVertGEM -= np.sin(abs(lat)) * self.offAltAxisGemX
-
         text = f'HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, '
         text += f'pierside:{pierside} ,'
         text += f'offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, '
         text += f'offNorth:{self.offNorth}, offEast:{self.offEast}, '
-        text += f'offVertGEM:{offVertGEM}, offLAT:{self.offLAT}, '
+        text += f'offVert:{self.offVert}, offLAT:{self.offLAT}, '
         text += f'domeRadius:{self.domeRadius}'
 
         self.log.debug(text)

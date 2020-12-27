@@ -78,14 +78,13 @@ class ObsSite(object):
                  host=None,
                  pathToData=None,
                  verbose=False,
-                 location=None,
                  ):
 
         self.host = host
         self.pathToData = pathToData
         self.verbose = verbose
-        self._location = location
         self.loader = None
+        self._location = None
         self.ts = None
         self._timeJD = None
         self._utc_ut1 = None
@@ -159,24 +158,30 @@ class ObsSite(object):
         if isinstance(value, api.Topos):
             self._location = value
             return
+
         if not isinstance(value, (list, tuple)):
             self._location = None
             self.log.info(f'Malformed value: {value}')
             return
+
         if len(value) != 3:
             self._location = None
             self.log.info(f'Malformed value: {value}')
             return
+
         lat, lon, elev = value
         if not isinstance(lat, api.Angle):
             lat = stringToAngle(lat, preference='degrees')
+
         if not isinstance(lon, api.Angle):
             lon = stringToAngle(lon, preference='degrees')
+
         elev = valueToFloat(elev)
         if lat is None or lon is None or elev is None:
             self._location = None
             self.log.info(f'Malformed value: {value}')
             return
+
         self._location = api.Topos(longitude=lon,
                                    latitude=lat,
                                    elevation_m=elev)

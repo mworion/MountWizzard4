@@ -73,11 +73,11 @@ class Mount(object):
         self.firmware = Firmware(self.host)
         self.setting = Setting(self.host)
         self.satellite = Satellite(self.host)
-        self.geometry = Geometry()
         self.obsSite = ObsSite(self.host,
                                pathToData=self.pathToData,
                                verbose=self.verbose,
                                )
+        self.geometry = Geometry(latitude=self.obsSite.location.latitude)
         self.model = Model(self.host, self.obsSite)
         self.host = host
 
@@ -176,6 +176,7 @@ class Mount(object):
                                pathToData=self.pathToData,
                                verbose=self.verbose,
                                )
+        self.geometry = Geometry(latitude=self.obsSite.location.latitude)
 
     def calcTransformationMatrices(self):
         """

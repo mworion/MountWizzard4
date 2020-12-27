@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>12</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -15353,7 +15353,7 @@ Hint if mount will need a flip when following satellite.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_4">
       <attribute name="title">
@@ -16596,7 +16596,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -20917,7 +20917,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_134">
         <property name="geometry">
          <rect>
-          <x>320</x>
+          <x>330</x>
           <y>120</y>
           <width>21</width>
           <height>21</height>
@@ -20938,7 +20938,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_122">
         <property name="geometry">
          <rect>
-          <x>320</x>
+          <x>330</x>
           <y>70</y>
           <width>21</width>
           <height>21</height>
@@ -20982,7 +20982,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>15</x>
           <y>95</y>
-          <width>121</width>
+          <width>216</width>
           <height>21</height>
          </rect>
         </property>
@@ -20995,13 +20995,13 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>Vertical offset</string>
+         <string>Vertical offset (Dome center to GEM)</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_116">
         <property name="geometry">
          <rect>
-          <x>320</x>
+          <x>330</x>
           <y>20</y>
           <width>21</width>
           <height>21</height>
@@ -21052,7 +21052,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_118">
         <property name="geometry">
          <rect>
-          <x>320</x>
+          <x>330</x>
           <y>45</y>
           <width>21</width>
           <height>21</height>
@@ -21073,7 +21073,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_123">
         <property name="geometry">
          <rect>
-          <x>320</x>
+          <x>330</x>
           <y>95</y>
           <width>21</width>
           <height>21</height>
@@ -21136,9 +21136,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QDoubleSpinBox" name="domeRadius">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>250</x>
           <y>20</y>
-          <width>86</width>
+          <width>76</width>
           <height>22</height>
          </rect>
         </property>
@@ -21161,9 +21161,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QDoubleSpinBox" name="domeNorthOffset">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>250</x>
           <y>45</y>
-          <width>86</width>
+          <width>76</width>
           <height>22</height>
          </rect>
         </property>
@@ -21183,9 +21183,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QDoubleSpinBox" name="domeEastOffset">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>250</x>
           <y>70</y>
-          <width>86</width>
+          <width>76</width>
           <height>22</height>
          </rect>
         </property>
@@ -21205,9 +21205,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QDoubleSpinBox" name="domeVerticalOffset">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>250</x>
           <y>95</y>
-          <width>86</width>
+          <width>76</width>
           <height>22</height>
          </rect>
         </property>
@@ -21227,9 +21227,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QDoubleSpinBox" name="offGEM">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>250</x>
           <y>120</y>
-          <width>86</width>
+          <width>76</width>
           <height>22</height>
          </rect>
         </property>
@@ -21286,9 +21286,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QDoubleSpinBox" name="offLAT">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>250</x>
           <y>145</y>
-          <width>86</width>
+          <width>76</width>
           <height>22</height>
          </rect>
         </property>
@@ -21308,7 +21308,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_136">
         <property name="geometry">
          <rect>
-          <x>320</x>
+          <x>330</x>
           <y>145</y>
           <width>21</width>
           <height>21</height>
@@ -21371,9 +21371,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QDoubleSpinBox" name="domeShutterWidth">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>250</x>
           <y>170</y>
-          <width>86</width>
+          <width>76</width>
           <height>22</height>
          </rect>
         </property>
@@ -21393,7 +21393,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_140">
         <property name="geometry">
          <rect>
-          <x>320</x>
+          <x>330</x>
           <y>170</y>
           <width>21</width>
           <height>21</height>

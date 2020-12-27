@@ -282,18 +282,22 @@ class Geometry(object):
         if not isinstance(lat, Angle):
             return None, None, None, None, None
 
+        ha = ha.radians
+        dec = dec.radians
+        lat = lat.radians
+
+        offVertGEM = self.offVert
+        offVertGEM -= self.offBaseAltAxisZ
+        offVertGEM -= np.sin(abs(lat)) * self.offAltAxisGemX
+
         text = f'HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, '
         text += f'pierside:{pierside} ,'
         text += f'offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, '
         text += f'offNorth:{self.offNorth}, offEast:{self.offEast}, '
-        text += f'offVert:{self.offVert}, offLAT:{self.offLAT}, '
+        text += f'offVertGEM:{offVertGEM}, offLAT:{self.offLAT}, '
         text += f'domeRadius:{self.domeRadius}'
 
         self.log.debug(text)
-
-        ha = ha.radians
-        dec = dec.radians
-        lat = lat.radians
 
         # the equator of the dome and it's middle point of the hemisphere is
         # zero point for coordinate system.

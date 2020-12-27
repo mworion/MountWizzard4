@@ -113,9 +113,11 @@ echo installing mountwizzard4 - takes some time
 echo ---------------------------------------------
 echo.
 
-echo. >> install.log
-echo Installing mountwizzard4 - take a minute >> install.log 2>&1
-venv\Scripts\activate venv && python -m pip install mountwizzard4.tar.gz --disable-pip-version-check >> install.log 2>&1
+call venv\Scripts\activate venv >> install.log 2>&1
+python -m pip install pip --upgrade >> install.log 2>&1
+python -m pip install setuptools --upgrade >> install.log 2>&1
+python -m pip install wheel --upgrade >> install.log 2>&1
+python -m pip install mountwizzard4.tar.gz >> install.log 2>&1
 
 echo.
 echo ---------------------------------------------

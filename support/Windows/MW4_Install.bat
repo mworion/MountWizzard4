@@ -108,12 +108,15 @@ exit
 :proceedInstallMW4
 echo.
 echo ---------------------------------------------
-echo Installing mountwizzard4 - takes some time
+echo installing mountwizzard4 - takes some time
 echo ---------------------------------------------
 echo.
 
-echo Installing mountwizzard4 - take a minute >> install.log 2>&1
-venv\Scripts\activate venv && python -m pip install mountwizzard4 --upgrade --no-cache-dir --disable-pip-version-check >> install.log 2>&1
+call venv\Scripts\activate venv >> install.log 2>&1
+python -m pip install pip --upgrade >> install.log 2>&1
+python -m pip install setuptools --upgrade >> install.log 2>&1
+python -m pip install wheel --upgrade >> install.log 2>&1
+python -m pip install mountwizzard4 --upgrade --no-cache-dir >> install.log 2>&1
 
 echo.
 echo ---------------------------------------------

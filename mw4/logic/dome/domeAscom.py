@@ -98,5 +98,4 @@ class DomeAscom(AscomClass):
             return False
 
         self.callMethodThreaded(self.client.SlewToAzimuth, azimuth)
-        # self.client.SlewToAzimuth(azimuth)
         return True

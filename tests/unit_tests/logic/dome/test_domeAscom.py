@@ -112,11 +112,15 @@ def test_workerPollData_5():
 
 def test_slewToAltAz_1():
     app.deviceConnected = False
-    suc = app.slewToAltAz()
-    assert not suc
+    with mock.patch.object(app,
+                           'callMethodThreaded'):
+        suc = app.slewToAltAz()
+        assert not suc
 
 
 def test_slewToAltAz_2():
     app.deviceConnected = True
-    suc = app.slewToAltAz()
-    assert suc
+    with mock.patch.object(app,
+                           'callMethodThreaded'):
+        suc = app.slewToAltAz()
+        assert suc

@@ -131,11 +131,12 @@ def test_updateNumber_1():
 def test_updateNumber_2():
     app.device = Device()
     app.deviceName = 'test'
+    setattr(app.device, 'ABS_DOME_POSITION', {'state': 'Busy'})
     with mock.patch.object(app.device,
                            'getNumber',
                            return_value={'TEST': 1,
                                          'DOME_ABSOLUTE_POSITION': 2}):
-        suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
+        suc = app.updateNumber('test', 'ABS_DOME_POSITION')
         assert suc
 
 

@@ -78,15 +78,8 @@ def test_waitSettlingAndEmit():
     assert suc
 
 
-def test_diffModulus_1():
-    val = app.diffModulus(1, 359, 360)
-    assert val == 2
-
-
 def test_checkSlewingDome_1():
     app.data['Slewing'] = False
-    app.data['AzimuthTarget'] = 0
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 0
     with mock.patch.object(app.settlingWait,
                            'start'):
         suc = app.checkSlewingDome()
@@ -94,9 +87,8 @@ def test_checkSlewingDome_1():
 
 
 def test_checkSlewingDome_2():
-    app.data['Slewing'] = True
-    app.data['AzimuthTarget'] = 0
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 0
+    app.isSlewing = True
+    app.data['Slewing'] = False
     with mock.patch.object(app.settlingWait,
                            'start'):
         suc = app.checkSlewingDome()
@@ -105,8 +97,16 @@ def test_checkSlewingDome_2():
 
 def test_checkSlewingDome_3():
     app.data['Slewing'] = True
-    app.data['AzimuthTarget'] = 5
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 0
+    with mock.patch.object(app.settlingWait,
+                           'start'):
+        suc = app.checkSlewingDome()
+        assert suc
+
+
+def test_checkSlewingDome_4():
+    app.counterStartSlewing = 0
+    app.isSlewing = False
+    app.data['Slewing'] = False
     with mock.patch.object(app.settlingWait,
                            'start'):
         suc = app.checkSlewingDome()

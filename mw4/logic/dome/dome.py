@@ -142,16 +142,21 @@ class Dome:
         """
         :return:
         """
-        if self.data.get('Slewing', False):
+        if self.data.get('Slewing', False) and not self.isSlewing:
+            self.log.debug('Slewing start by signal')
             self.isSlewing = True
-            self.signals.message.emit('slewing')
 
         if self.isSlewing:
-            if self.data.get('Slewing', False):
+            self.signals.message.emit('slewing')
+            self.counterStartSlewing = -1
+            if not self.data.get('Slewing', True):
+                self.isSlewing = False
                 self.signals.message.emit('wait settle')
                 self.settlingWait.start(self.settlingTime * 1000)
+
         else:
             if self.counterStartSlewing == 0:
+                self.log.debug('Slewing start by counter')
                 self.isSlewing = True
             self.counterStartSlewing -= 1
         return True

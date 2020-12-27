@@ -25,8 +25,9 @@ from base.indiClass import IndiClass
 
 class DomeIndi(IndiClass):
     """
-    the class Dome inherits all information and handling of the Dome device. there will be
-    some parameters who will define the slewing position of the dome relating to the mount.
+    the class Dome inherits all information and handling of the Dome device.
+    There will be some parameters who will define the slewing position of the
+    dome relating to the mount.
 
         >>> dome = DomeIndi(app=None)
     """
@@ -46,8 +47,8 @@ class DomeIndi(IndiClass):
 
     def setUpdateConfig(self, deviceName):
         """
-        _setUpdateRate corrects the update rate of dome devices to get an defined
-        setting regardless, what is setup in server side.
+        setUpdateRate corrects the update rate of dome devices to get an
+        defined setting regardless, what is setup in server side.
 
         :param deviceName:
         :return: success
@@ -76,9 +77,9 @@ class DomeIndi(IndiClass):
 
     def updateStatus(self):
         """
-        updateStatus emits the actual azimuth status every 3 second in case of opening a
-        window and get the signals late connected as INDI does nt repeat any signal of it's
-        own
+        updateStatus emits the actual azimuth status every 3 second in case of
+        opening a window and get the signals late connected as INDI does not
+        repeat any signal of it's own
 
         :return: true for test purpose
         """
@@ -91,8 +92,9 @@ class DomeIndi(IndiClass):
 
     def updateNumber(self, deviceName, propertyName):
         """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
+        updateNumber is called whenever a new number is received in client. it
+        runs through the device list and writes the number data to the according
+        locations.
 
         :param deviceName:
         :param propertyName:
@@ -109,12 +111,15 @@ class DomeIndi(IndiClass):
             azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
             self.signals.azimuth.emit(azimuth)
 
+            slewing = self.device.ABS_DOME_POSITION['state'] == 'Busy'
+            self.data['Slewing'] = slewing
+
         return True
 
     def slewToAltAz(self, altitude=0, azimuth=0):
         """
-        slewToAltAz sends a command to the dome to move to azimuth / altitude. if a dome
-        does support this
+        slewToAltAz sends a command to the dome to move to azimuth / altitude.
+        if a dome does support this
 
         :param altitude:
         :param azimuth:

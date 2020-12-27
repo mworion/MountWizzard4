@@ -64,7 +64,6 @@ class Dome:
 
         self.data = {
             'Slewing': False,
-            'AzimuthTarget': 0,
         }
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
@@ -100,6 +99,8 @@ class Dome:
 
         self.app.update1s.connect(self.checkSlewingDome)
         self.useGeometry = False
+        self.isSlewing = False
+        self.counterStartSlewing = -1
         self.settlingTime = 0
         self.settlingWait = PyQt5.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
@@ -137,57 +138,35 @@ class Dome:
 
         return True
 
-    @staticmethod
-    def diffModulus(x, y, m):
-        """
-        :param x:
-        :param y:
-        :param m:
-        :return:
-        """
-        diff = abs(x - y)
-        diff = abs(diff % m)
-        return min(diff, abs(diff - m))
-
     def checkSlewingDome(self):
         """
         :return:
         """
-        azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
-        if 'AzimuthTarget' not in self.data:
-            hasToMove = False
-
-        else:
-            hasToMove = self.diffModulus(azimuth, self.data['AzimuthTarget'], 360) > 1
-
-        isSlewing = self.data.get('Slewing', False) and hasToMove
-
-        if isSlewing:
+        if self.data.get('Slewing', False):
+            self.isSlewing = True
             self.signals.message.emit('slewing')
 
-        if self.data.get('Slewing', False) and not isSlewing:
-            self.signals.message.emit('wait settle')
-            self.settlingWait.start(self.settlingTime * 1000)
-
-        self.data['Slewing'] = isSlewing
-        self.signals.azimuth.emit(azimuth)
-
+        if self.isSlewing:
+            if self.data.get('Slewing', False):
+                self.signals.message.emit('wait settle')
+                self.settlingWait.start(self.settlingTime * 1000)
+        else:
+            if self.counterStartSlewing == 0:
+                self.isSlewing = True
+            self.counterStartSlewing -= 1
         return True
 
     def slewDome(self, altitude=0, azimuth=0):
         """
-
         :param altitude:
         :param azimuth:
         :return: success
         """
-
         if not self.data:
             self.log.error('No data dict available')
             return False
 
         mount = self.app.mount
-
         if self.useGeometry:
             alt, az, _, _, _ = mount.calcTransformationMatrices()
 
@@ -204,10 +183,8 @@ class Dome:
             alt = altitude
             az = azimuth
 
-        delta = azimuth - az
-
-        self.data['AzimuthTarget'] = azimuth
-        self.data['Slewing'] = True
+        self.signals.message.emit('slewing')
+        self.counterStartSlewing = 3
         self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
-
+        delta = azimuth - az
         return delta

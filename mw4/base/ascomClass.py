@@ -33,12 +33,12 @@ from base.tpool import Worker
 class AscomSignals(QObject):
 
     """
-    The AscomSignals class offers a list of signals to be used and instantiated by
-    the Ascom class to get signals for triggers for finished tasks to
+    The AscomSignals class offers a list of signals to be used and instantiated
+    by the Ascom class to get signals for triggers for finished tasks to
     enable a gui to update their values transferred to the caller back.
 
-    This has to be done in a separate class as the signals have to be subclassed from
-    QObject and the Mount class itself is subclassed from object
+    This has to be done in a separate class as the signals have to be subclassed
+    from QObject and the Mount class itself is subclassed from object
     """
 
     __all__ = ['AscomSignals']
@@ -101,8 +101,8 @@ class AscomClass(object):
 
     def getInitialConfig(self):
         """
-        getInitialConfig starts connecting the ascom device with retry and send the
-        corresponding signals. basis information will be collected, too.
+        getInitialConfig starts connecting the ascom device with retry and send
+        the corresponding signals. basis information will be collected, too.
 
         :return: success of reconnecting to server
         """
@@ -118,7 +118,8 @@ class AscomClass(object):
             else:
                 suc = self.isClientConnected()
                 if suc:
-                    self.log.debug(f'[{self.deviceName}] connected, [{retry}] retries needed')
+                    text = f'[{self.deviceName}] connected, [{retry}] retries'
+                    self.log.debug(text)
                     break
 
             finally:
@@ -307,7 +308,8 @@ class AscomClass(object):
                 self.disconnectClient()
 
             except Exception as e:
-                self.log.debug(f'Connection to [{self.deviceName}]:  could not be closed, {e}')
+                text = f'Connection to [{self.deviceName}] could not be closed, {e}'
+                self.log.debug(text)
 
         self.deviceConnected = False
         self.serverConnected = False

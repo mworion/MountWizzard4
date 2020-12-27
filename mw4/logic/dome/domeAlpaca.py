@@ -59,8 +59,10 @@ class DomeAlpaca(AlpacaClass):
 
         :return: true for test purpose
         """
-        self.dataEntry(self.client.azimuth(), 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
-
+        azimuth = self.client.azimuth()
+        self.dataEntry(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
+        self.signals.azimuth.emit(azimuth)
+        self.dataEntry(self.client.slewing(), 'Slewing')
         val = self.client.shutterstatus()
 
         if val == 0:
@@ -84,7 +86,5 @@ class DomeAlpaca(AlpacaClass):
         :param azimuth:
         :return: success
         """
-        self.signals.message.emit('slewing')
         self.client.slewtoazimuth(Azimuth=azimuth)
-
         return True

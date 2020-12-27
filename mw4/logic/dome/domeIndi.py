@@ -72,7 +72,6 @@ class DomeIndi(IndiClass):
                                         propertyName='POLLING_PERIOD',
                                         elements=update,
                                         )
-
         return suc
 
     def updateStatus(self):
@@ -83,13 +82,11 @@ class DomeIndi(IndiClass):
 
         :return: true for test purpose
         """
-
         if not self.client.connected:
             return False
 
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
         self.signals.azimuth.emit(azimuth)
-
         return True
 
     def updateNumber(self, deviceName, propertyName):
@@ -140,6 +137,4 @@ class DomeIndi(IndiClass):
                                         propertyName='ABS_DOME_POSITION',
                                         elements=position,
                                         )
-        self.signals.message.emit('slewing')
-
         return suc

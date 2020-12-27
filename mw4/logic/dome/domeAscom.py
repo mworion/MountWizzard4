@@ -59,10 +59,10 @@ class DomeAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.dataEntry(self.client.Azimuth,
-                       'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
-        print(self.data)
-
+        azimuth = self.client.azimuth
+        self.dataEntry(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
+        self.signals.azimuth.emit(azimuth)
+        self.dataEntry(self.client.Slewing, 'Slewing')
         # unfortunately we cannot simply know, which properties are implemented,
         # so we need to test
         try:
@@ -97,8 +97,6 @@ class DomeAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.signals.message.emit('slewing')
         self.callMethodThreaded(self.client.SlewToAzimuth, azimuth)
         # self.client.SlewToAzimuth(azimuth)
-
         return True

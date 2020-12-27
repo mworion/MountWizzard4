@@ -63,7 +63,7 @@ def module_setup_teardown(qtbot):
     ui.setupUi(widget)
 
     app = SettDome(app=Test(), ui=ui,
-                      clickable=MWidget().clickable)
+                   clickable=MWidget().clickable)
     app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
@@ -94,19 +94,31 @@ def test_storeConfig_1():
     assert suc
 
 
-def test_toggleUseGeometry_1():
+def test_setZoffGEMInMount():
+    suc = app.setZoffGEMInMount()
+    assert suc
+
+
+def test_setZoff10micronInMount():
+    suc = app.setZoff10micronInMount()
+    assert suc
+
+
+def test_setUseGeometryInMounty_1():
+    app.ui.checkAutomaticDome.setChecked(False)
     suc = app.setUseGeometryInMount()
     assert suc
 
 
-def test_toggleUseGeometry_2():
-    app.ui.domeRadius.setValue(1.1)
+def test_setUseGeometryInMount_2():
+    app.ui.checkAutomaticDome.setChecked(False)
+    app.ui.domeRadius.setValue(0.9)
     suc = app.setUseGeometryInMount()
     assert suc
 
 
-def test_toggleUseGeometry_3():
-    app.ui.domeRadius.setValue(1.1)
+def test_setUseGeometryInMount_3():
+    app.ui.domeRadius.setValue(0.8)
     app.ui.checkAutomaticDome.setChecked(True)
     with mock.patch.object(app,
                            'updateDomeGeometryToGui'):

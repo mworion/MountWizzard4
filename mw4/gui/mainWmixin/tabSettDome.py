@@ -161,7 +161,7 @@ class SettDome(object):
         self.ui.domeEastOffset.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
-        self.ui.domeVerticalOffset.setValue(value)
+        self.ui.domeZoffGEM.setValue(value)
         return True
 
     def setDomeSettlingTime(self):

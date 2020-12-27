@@ -43,6 +43,7 @@ class SettDome(object):
         self.ui.checkUseDomeGeometry.clicked.connect(self.setUseDomeGeometry)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
         self.app.mount.signals.firmwareDone.connect(self.setUseGeometryInMount)
+        self.app.mount.signals.firmwareDone.connect(self.setZoffGEMInMount)
 
     def initConfig(self):
         """
@@ -57,7 +58,6 @@ class SettDome(object):
         self.ui.domeShutterWidth.setValue(config.get('domeShutterWidth', 0.2))
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
-        self.ui.domeZoff10micron.setValue(config.get('domeZoff10micron', 0))
         self.ui.domeZoffGEM.setValue(config.get('domeZoffGEM', 0))
         self.ui.offGEM.setValue(config.get('offGEM', 0))
         self.ui.offLAT.setValue(config.get('offLAT', 0))
@@ -80,7 +80,6 @@ class SettDome(object):
         config['domeShutterWidth'] = self.ui.domeShutterWidth.value()
         config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
         config['domeEastOffset'] = self.ui.domeEastOffset.value()
-        config['domeZoff10micron'] = self.ui.domeZoff10micron.value()
         config['domeZoffGEM'] = self.ui.domeZoffGEM.value()
         config['offGEM'] = self.ui.offGEM.value()
         config['offLAT'] = self.ui.offLAT.value()

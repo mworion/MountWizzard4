@@ -28,7 +28,7 @@ from mountcontrol.connection import Connection
 from mountcontrol.convert import valueToFloat
 from mountcontrol.convert import valueToInt
 from mountcontrol.convert import valueToAngle
-from mountcontrol.convert import convertWithoutRounding
+from mountcontrol.convert import sexagesimalizeToInt
 from mountcontrol.alignStar import AlignStar
 from mountcontrol.modelStar import ModelStar
 
@@ -670,25 +670,24 @@ class Model(object):
         for aPoint in build:
             if not aPoint.sCoord or not aPoint.mCoord:
                 continue
-            val = convertWithoutRounding(aPoint.mCoord.ra.hms(), 1)
-            ra = raFormat.format(*val)
+            sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.mCoord.ra.hours, 1)
+            ra = f'{h:02d}:{m:02d}:{s:02d}.{frac:1d}#'
 
-            val = convertWithoutRounding(aPoint.mCoord.dec.signed_dms()[1:4], 1)
-            dec = decFormat.format(*val,
-                                   sign='+' if aPoint.mCoord.dec.degrees > 0 else '-')
+            sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.mCoord.dec.degrees, 1)
+            sign = '+' if sgn >= 0 else '-'
+            dec = f'{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
 
             pierside = aPoint.pierside
 
-            val = convertWithoutRounding(aPoint.sCoord.ra.hms(), 1)
-            raSolve = raFormat.format(*val)
+            sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.sCoord.ra.hours, 1)
+            raSolve = f'{h:02d}:{m:02d}:{s:02d}.{frac:1d}#'
 
-            val = convertWithoutRounding(aPoint.sCoord.dec.signed_dms()[1:4], 2)
-            decSolve = decFormat.format(*val,
-                                        sign='+' if aPoint.sCoord.dec.degrees > 0 else '-')
+            sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.sCoord.dec.degrees, 1)
+            sign = '+' if sgn >= 0 else '-'
+            decSolve = f'{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
 
-            siderealFormat = '{0:02.0f}:{1:02.0f}:{2:02.2f}'
-            val = convertWithoutRounding(aPoint.sidereal.hms(), 2)
-            sidereal = siderealFormat.format(*val)
+            sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.sidereal.hours, 2)
+            sidereal = f'{h:02d}:{m:02d}:{s:02d}.{frac:02d}#'
 
             comFormat = ':newalpt{0},{1},{2},{3},{4},{5}#'
             value = comFormat.format(ra,

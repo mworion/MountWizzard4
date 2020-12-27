@@ -27,7 +27,7 @@ from .convert import stringToAngle
 from .convert import valueToFloat
 from .convert import valueToInt
 from .convert import valueToAngle
-from .convert import convertWithoutRounding
+from .convert import sexagesimalizeToInt
 
 
 class ObsSite(object):
@@ -639,13 +639,15 @@ class ObsSite(object):
             return False
 
         conn = Connection(self.host)
-        # conversion, as we only have positive alt, we set the '+' as standard.
-        altFormat = ':Sa{sign}{0:02.0f}*{1:02.0f}:{2:04.1f}#'
-        val = convertWithoutRounding(alt.signed_dms()[1:4], 1)
-        setAlt = altFormat.format(*val, sign='+' if alt.degrees > 0 else '-')
-        azFormat = ':Sz{0:03.0f}*{1:02.0f}:{2:04.1f}#'
-        val = convertWithoutRounding(az.dms(), 1)
-        setAz = azFormat.format(*val)
+
+        sgn, h, m, s, frac = sexagesimalizeToInt(alt.degrees, 1)
+        sign = '+' if sgn >= 0 else '-'
+        setAlt = f':Sa{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
+
+        sgn, h, m, s, frac = sexagesimalizeToInt(az.degrees, 1)
+        sign = '+' if sgn >= 0 else '-'
+        setAz = f':Sz{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
+
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
         commandString = setAlt + setAz + getTargetStatus
         # set coordinates
@@ -718,14 +720,14 @@ class ObsSite(object):
             return False
 
         conn = Connection(self.host)
-        # conversion, we have to find out the sign
-        raFormat = ':Sr{0:02.0f}:{1:02.0f}:{2:05.2f}#'
-        val = convertWithoutRounding(ra.hms(), 2)
-        setRa = raFormat.format(*val)
 
-        decFormat = ':Sd{sign}{0:02.0f}*{1:02.0f}:{2:04.1f}#'
-        val = convertWithoutRounding(dec.signed_dms()[1:4], 1)
-        setDec = decFormat.format(*val, sign='+' if dec.degrees > 0 else '-')
+        sgn, h, m, s, frac = sexagesimalizeToInt(ra.hours, 2)
+        setRa = f':Sr{h:02d}:{m:02d}:{s:02d}.{frac:02d}#'
+
+        sgn, h, m, s, frac = sexagesimalizeToInt(dec.degrees, 1)
+        sign = '+' if sgn >= 0 else '-'
+        setDec = f':Sd{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
+
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
         commandString = setRa + setDec + getTargetStatus
         # set coordinates
@@ -882,19 +884,17 @@ class ObsSite(object):
             return False
 
         conn = Connection(self.host)
-        # conversion, we have to find out the sign
-        lonFormat = ':Sg{sign}{0:03.0f}*{1:02.0f}:{2:04.1f}#'
-        val = convertWithoutRounding(obs.longitude.signed_dms()[1:4], 1)
-        setLon = lonFormat.format(*val,
-                                  sign='+' if obs.longitude.degrees < 0 else '-')
 
-        latFormat = ':St{sign}{0:02.0f}*{1:02.0f}:{2:04.1f}#'
-        val = convertWithoutRounding(obs.latitude.signed_dms()[1:4], 1)
-        setLat = latFormat.format(*val,
-                                  sign='+' if obs.latitude.degrees > 0 else '-')
+        sgn, h, m, s, frac = sexagesimalizeToInt(obs.longitude.degrees, 1)
+        sign = '+' if sgn < 0 else '-'
+        setLon = f':Sg{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#'
 
-        setElev = ':Sev{sign}{0:06.1f}#'.format(obs.elevation.m,
-                                                sign='+' if obs.elevation.m > 0 else '-')
+        sgn, h, m, s, frac = sexagesimalizeToInt(obs.latitude.degrees, 1)
+        sign = '+' if sgn >= 0 else '-'
+        setLat = f':St{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
+
+        sign = '+' if obs.elevation.m > 0 else '-'
+        setElev = f':Sev{sign}{obs.elevation.m:06.1f}#'
 
         commandString = setLon + setLat + setElev
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -940,10 +940,9 @@ class ObsSite(object):
 
         conn = Connection(self.host)
 
-        latFormat = ':St{sign}{0:02.0f}*{1:02.0f}:{2:04.1f}#'
-        val = convertWithoutRounding(lat.signed_dms()[1:4], 1)
-        setLat = latFormat.format(*val,
-                                  sign='+' if lat.degrees > 0 else '-')
+        sgn, h, m, s, frac = sexagesimalizeToInt(lat.degrees, 1)
+        sign = '+' if sgn >= 0 else '-'
+        setLat = f':St{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
 
         commandString = setLat
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -993,10 +992,9 @@ class ObsSite(object):
 
         conn = Connection(self.host)
 
-        lonFormat = ':Sg{sign}{0:03.0f}*{1:02.0f}:{2:04.1f}#'
-        val = convertWithoutRounding(lon.signed_dms()[1:4], 1)
-        setLon = lonFormat.format(*val,
-                                  sign='+' if lon.degrees < 0 else '-')
+        sgn, h, m, s, frac = sexagesimalizeToInt(lon.degrees, 1)
+        sign = '+' if sgn < 0 else '-'
+        setLon = f':Sg{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#'
 
         commandString = setLon
         suc, response, numberOfChunks = conn.communicate(commandString)

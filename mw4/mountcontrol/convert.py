@@ -30,7 +30,7 @@ __all__ = [
     'valueToFloat',
     'valueToInt',
     'topoToAltAz',
-    'convertWithoutRounding',
+    'sexagesimalizeToInt',
     'checkIsHours',
     'convertToDMS',
     'convertToHMS',
@@ -201,17 +201,16 @@ def topoToAltAz(ha, dec, lat):
     return alt, az
 
 
-def convertWithoutRounding(value, decimals=0):
-    """
-    :param value:
-    :param decimals:
-    :return:
-    """
-    output = list()
-    output.append(int(value[0]))
-    output.append(int(value[1]))
-    output.append(int(value[2] * 10 ** decimals) / 10 ** decimals)
-    return output
+def sexagesimalizeToInt(value, decimals=0):
+    sign = int(np.sign(value))
+    value = abs(value)
+    power = 10 ** decimals
+    n = int(7200 * power * value + 1) // 2
+    n, fraction = divmod(n, power)
+    n, seconds = divmod(n, 60)
+    n, minutes = divmod(n, 60)
+
+    return sign, n, minutes, seconds, fraction
 
 
 def checkIsHours(value):

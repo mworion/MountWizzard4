@@ -550,7 +550,7 @@ def test_updateLocGUI_1(function):
                                                 latitude_degrees=49,
                                                 elevation_m=500)
     function.updateLocGUI(function.app.mount.obsSite)
-    assert '11E 00 00' == function.ui.siteLongitude.text()
+    assert '011E 00 00' == function.ui.siteLongitude.text()
     assert '49N 00 00' == function.ui.siteLatitude.text()
     assert '500.0' == function.ui.siteElevation.text()
 

@@ -59,7 +59,7 @@ class DomeAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        azimuth = self.client.azimuth
+        azimuth = self.client.Azimuth
         self.dataEntry(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
         self.dataEntry(self.client.Slewing, 'Slewing')

@@ -95,7 +95,11 @@ class Tools(object):
         self.ui.moveAltAzAbsolute.clicked.connect(self.moveAltAzAbsolute)
         self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
         self.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
+        self.ui.moveCoordinateRa.textEdited.connect(self.setRA)
+        self.ui.moveCoordinateRa.returnPressed.connect(self.setRA)
         self.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
+        self.ui.moveCoordinateDec.textEdited.connect(self.setDEC)
+        self.ui.moveCoordinateDec.returnPressed.connect(self.setDEC)
 
     def initConfig(self):
         """
@@ -514,6 +518,7 @@ class Tools(object):
 
         value = self.convertRaToAngle(value)
         if value is None:
+            self.ui.moveCoordinateRaFloat.setText('')
             return False
 
         text = self.formatHstrToText(value)
@@ -537,6 +542,7 @@ class Tools(object):
 
         value = self.convertDecToAngle(value)
         if value is None:
+            self.ui.moveCoordinateDecFloat.setText('')
             return False
 
         text = self.formatDstrToText(value)

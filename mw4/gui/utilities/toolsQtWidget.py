@@ -495,7 +495,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param widget:      widget for what the event filter works
         :return:            filtered event
         """
-
         if not widget:
             return None
 
@@ -506,12 +505,14 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
                 if obj != widget:
                     return False
 
-                if event.type() != QEvent.MouseButtonRelease:
+                if event.type() not in [QEvent.MouseButtonRelease,
+                                        QEvent.FocusIn]:
                     return False
 
-                if obj.rect().contains(event.pos()):
-                    self.clicked.emit(widget)
-                    return True
+                if event.type() == QEvent.MouseButtonRelease:
+                    if obj.rect().contains(event.pos()):
+                        self.clicked.emit(widget)
+                        return True
 
                 return False
 

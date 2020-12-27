@@ -223,6 +223,19 @@ class AscomClass(object):
 
         return suc
 
+    def callMethodThreaded(self, fn, *args, **kwargs):
+        """
+        :param fn:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        if not self.deviceConnected:
+            return False
+
+        worker = Worker(fn, *args, **kwargs)
+        self.threadPool.start(worker)
+
     def processPolledData(self):
         pass
 

@@ -54,16 +54,17 @@ class DomeAscom(AscomClass):
 
     def workerPollData(self):
         """
-
         :return: true for test purpose
         """
-
         if not self.deviceConnected:
             return False
 
-        self.dataEntry(self.client.Azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
+        self.dataEntry(self.client.Azimuth,
+                       'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
+        print(self.data)
 
-        # unfortunately we cannot simply know, which properties are implemented, so we need to test
+        # unfortunately we cannot simply know, which properties are implemented,
+        # so we need to test
         try:
             val = self.client.shutterstatus
 
@@ -97,6 +98,7 @@ class DomeAscom(AscomClass):
             return False
 
         self.signals.message.emit('slewing')
-        self.client.SlewToAzimuth(azimuth)
+        self.callMethodThreaded(self.client.SlewToAzimuth, azimuth)
+        # self.client.SlewToAzimuth(azimuth)
 
         return True

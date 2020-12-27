@@ -206,8 +206,8 @@ class Dome:
 
         delta = azimuth - az
 
-        self.data['Slewing'] = True
         self.data['AzimuthTarget'] = azimuth
+        self.data['Slewing'] = True
         self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
 
         return delta

@@ -27,7 +27,7 @@ from mountcontrol.convert import valueToFloat
 from mountcontrol.convert import valueToAngle
 from mountcontrol.convert import valueToInt
 from mountcontrol.convert import topoToAltAz
-from mountcontrol.convert import avoidRound
+from mountcontrol.convert import convertWithoutRounding
 from mountcontrol.convert import checkIsHours
 from mountcontrol.convert import convertToAngle
 from mountcontrol.convert import convertToHMS
@@ -220,19 +220,33 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(-90, alt)
         self.assertEqual(270, az)
 
-    def test_avoidRound_1(self):
+    def test_convertWithoutRounding_1(self):
         parameter = [12, 45.6, 47.17]
-        output = avoidRound(parameter)
+        output = convertWithoutRounding(parameter)
         self.assertEqual(output[0], 12)
         self.assertEqual(output[1], 45)
-        self.assertEqual(output[2], 47.17)
+        self.assertEqual(output[2], 47)
 
-    def test_avoidRound_2(self):
+    def test_convertWithoutRounding_2(self):
         parameter = [12, 45.1, 47.9]
-        output = avoidRound(parameter)
+        output = convertWithoutRounding(parameter)
+        self.assertEqual(output[0], 12)
+        self.assertEqual(output[1], 45)
+        self.assertEqual(output[2], 47)
+
+    def test_convertWithoutRounding_3(self):
+        parameter = [12, 45.1, 47.999999]
+        output = convertWithoutRounding(parameter, 1)
         self.assertEqual(output[0], 12)
         self.assertEqual(output[1], 45)
         self.assertEqual(output[2], 47.9)
+
+    def test_convertWithoutRounding_4(self):
+        parameter = [12, 45.1, 47.99999999]
+        output = convertWithoutRounding(parameter, 3)
+        self.assertEqual(output[0], 12)
+        self.assertEqual(output[1], 45)
+        self.assertEqual(output[2], 47.999)
 
     def test_checkIsHours_1(self):
         assert not checkIsHours(180)

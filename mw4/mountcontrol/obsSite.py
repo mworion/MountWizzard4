@@ -27,7 +27,7 @@ from .convert import stringToAngle
 from .convert import valueToFloat
 from .convert import valueToInt
 from .convert import valueToAngle
-from .convert import avoidRound
+from .convert import convertWithoutRounding
 
 
 class ObsSite(object):
@@ -636,10 +636,10 @@ class ObsSite(object):
         conn = Connection(self.host)
         # conversion, as we only have positive alt, we set the '+' as standard.
         altFormat = ':Sa{sign}{0:02.0f}*{1:02.0f}:{2:04.1f}#'
-        val = avoidRound(alt.signed_dms()[1:4])
+        val = convertWithoutRounding(alt.signed_dms()[1:4], 1)
         setAlt = altFormat.format(*val, sign='+' if alt.degrees > 0 else '-')
         azFormat = ':Sz{0:03.0f}*{1:02.0f}:{2:04.1f}#'
-        val = avoidRound(az.dms())
+        val = convertWithoutRounding(az.dms(), 1)
         setAz = azFormat.format(*val)
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
         commandString = setAlt + setAz + getTargetStatus
@@ -715,11 +715,11 @@ class ObsSite(object):
         conn = Connection(self.host)
         # conversion, we have to find out the sign
         raFormat = ':Sr{0:02.0f}:{1:02.0f}:{2:05.2f}#'
-        val = avoidRound(ra.hms())
+        val = convertWithoutRounding(ra.hms(), 2)
         setRa = raFormat.format(*val)
 
         decFormat = ':Sd{sign}{0:02.0f}*{1:02.0f}:{2:04.1f}#'
-        val = avoidRound(dec.signed_dms()[1:4])
+        val = convertWithoutRounding(dec.signed_dms()[1:4], 1)
         setDec = decFormat.format(*val, sign='+' if dec.degrees > 0 else '-')
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
         commandString = setRa + setDec + getTargetStatus
@@ -879,12 +879,12 @@ class ObsSite(object):
         conn = Connection(self.host)
         # conversion, we have to find out the sign
         lonFormat = ':Sg{sign}{0:03.0f}*{1:02.0f}:{2:04.1f}#'
-        val = avoidRound(obs.longitude.signed_dms()[1:4])
+        val = convertWithoutRounding(obs.longitude.signed_dms()[1:4], 1)
         setLon = lonFormat.format(*val,
                                   sign='+' if obs.longitude.degrees < 0 else '-')
 
         latFormat = ':St{sign}{0:02.0f}*{1:02.0f}:{2:04.1f}#'
-        val = avoidRound(obs.latitude.signed_dms()[1:4])
+        val = convertWithoutRounding(obs.latitude.signed_dms()[1:4], 1)
         setLat = latFormat.format(*val,
                                   sign='+' if obs.latitude.degrees > 0 else '-')
 
@@ -936,7 +936,7 @@ class ObsSite(object):
         conn = Connection(self.host)
 
         latFormat = ':St{sign}{0:02.0f}*{1:02.0f}:{2:04.1f}#'
-        val = avoidRound(lat.signed_dms()[1:4])
+        val = convertWithoutRounding(lat.signed_dms()[1:4], 1)
         setLat = latFormat.format(*val,
                                   sign='+' if lat.degrees > 0 else '-')
 
@@ -989,7 +989,7 @@ class ObsSite(object):
         conn = Connection(self.host)
 
         lonFormat = ':Sg{sign}{0:03.0f}*{1:02.0f}:{2:04.1f}#'
-        val = avoidRound(lon.signed_dms()[1:4])
+        val = convertWithoutRounding(lon.signed_dms()[1:4], 1)
         setLon = lonFormat.format(*val,
                                   sign='+' if lon.degrees < 0 else '-')
 

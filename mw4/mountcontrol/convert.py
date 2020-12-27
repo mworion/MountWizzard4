@@ -30,7 +30,7 @@ __all__ = [
     'valueToFloat',
     'valueToInt',
     'topoToAltAz',
-    'avoidRound',
+    'convertWithoutRounding',
     'checkIsHours',
     'convertToDMS',
     'convertToHMS',
@@ -201,16 +201,16 @@ def topoToAltAz(ha, dec, lat):
     return alt, az
 
 
-def avoidRound(value):
+def convertWithoutRounding(value, decimals=0):
     """
-
     :param value:
+    :param decimals:
     :return:
     """
     output = list()
     output.append(int(value[0]))
     output.append(int(value[1]))
-    output.append(value[2])
+    output.append(int(value[2] * 10 ** decimals) / 10 ** decimals)
     return output
 
 

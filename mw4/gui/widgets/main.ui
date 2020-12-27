@@ -21202,7 +21202,7 @@ When clicking the button, you could change the value.</string>
          <double>0.010000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="domeVerticalOffsetGEM">
+       <widget class="QDoubleSpinBox" name="domeZoffGEM">
         <property name="geometry">
          <rect>
           <x>250</x>
@@ -21453,7 +21453,7 @@ When clicking the button, you could change the value.</string>
          <string>Vertical offset defined in 10micron</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="domeVerticalOffset10micron">
+       <widget class="QDoubleSpinBox" name="domeZoff10micron">
         <property name="geometry">
          <rect>
           <x>250</x>
@@ -26842,7 +26842,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>domeRadius</tabstop>
   <tabstop>domeNorthOffset</tabstop>
   <tabstop>domeEastOffset</tabstop>
-  <tabstop>domeVerticalOffsetGEM</tabstop>
+  <tabstop>domeZoffGEM</tabstop>
   <tabstop>offGEM</tabstop>
   <tabstop>copyFromDomeDriver</tabstop>
   <tabstop>checkAutomaticDome</tabstop>

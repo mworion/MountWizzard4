@@ -463,7 +463,7 @@ class ObsSite(object):
         if '+' in response[1]:
             lon = response[1].replace('+', '-')
         lat = response[2]
-        # storing it to the skyfield Topos unit
+
         self.location = [lat, lon, elev]
         self.trackingRate = response[3]
         return True

@@ -36,7 +36,8 @@ class SettDome(object):
         self.ui.offLAT.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeEastOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeZoffGEM.valueChanged.connect(self.setZoffGEMInMount)
+        self.ui.domeZoff10micron.valueChanged.connect(self.setZoff10micronInMount)
         self.ui.domeShutterWidth.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
         self.ui.checkUseDomeGeometry.clicked.connect(self.setUseDomeGeometry)
@@ -51,21 +52,19 @@ class SettDome(object):
 
         :return: True for test purpose
         """
-
         config = self.app.config['mainW']
-
         self.ui.domeRadius.setValue(config.get('domeRadius', 1.5))
         self.ui.domeShutterWidth.setValue(config.get('domeShutterWidth', 0.2))
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
-        self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
+        self.ui.domeZoff10micron.setValue(config.get('domeZoff10micron', 0))
+        self.ui.domeZoffGEM.setValue(config.get('domeZoffGEM', 0))
         self.ui.offGEM.setValue(config.get('offGEM', 0))
         self.ui.offLAT.setValue(config.get('offLAT', 0))
         self.ui.checkUseDomeGeometry.setChecked(config.get('checkUseDomeGeometry', False))
         self.ui.checkAutomaticDome.setChecked(config.get('checkAutomaticDome', False))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
         self.setUseDomeGeometry()
-
         return True
 
     def storeConfig(self):
@@ -76,29 +75,45 @@ class SettDome(object):
 
         :return: True for test purpose
         """
-
         config = self.app.config['mainW']
         config['domeRadius'] = self.ui.domeRadius.value()
         config['domeShutterWidth'] = self.ui.domeShutterWidth.value()
         config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
         config['domeEastOffset'] = self.ui.domeEastOffset.value()
-        config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
+        config['domeZoff10micron'] = self.ui.domeZoff10micron.value()
+        config['domeZoffGEM'] = self.ui.domeZoffGEM.value()
         config['offGEM'] = self.ui.offGEM.value()
         config['offLAT'] = self.ui.offLAT.value()
         config['checkUseDomeGeometry'] = self.ui.checkUseDomeGeometry.isChecked()
         config['checkAutomaticDome'] = self.ui.checkAutomaticDome.isChecked()
         config['settleTimeDome'] = self.ui.settleTimeDome.value()
+        return True
 
+    def setZoffGEMInMount(self):
+        """
+        :return:
+        """
+        self.app.mount.geometry.offVertGEM = self.ui.domeZoffGEM.value()
+        self.ui.domeZoff10micron.setValue(self.app.mount.geometry.offVert)
+        self.app.updateDomeSettings.emit()
+        return True
+
+    def setZoff10micronInMount(self):
+        """
+        :return:
+        """
+        self.app.mount.geometry.offVert = self.ui.domeZoff10micron.value()
+        self.ui.domeZoffGEM.setValue(self.app.mount.geometry.offVertGEM)
+        self.app.updateDomeSettings.emit()
         return True
 
     def setUseGeometryInMount(self):
         """
-        setUseGeometryInMount updates the mount class with the new setting if use geometry for
-        dome calculation should be used or not.
+        setUseGeometryInMount updates the mount class with the new setting if use
+        geometry for dome calculation should be used or not.
 
         :return: true for test purpose
         """
-
         if self.ui.checkAutomaticDome.isChecked():
             self.updateDomeGeometryToGui()
 
@@ -112,32 +127,25 @@ class SettDome(object):
         self.app.mount.geometry.offLAT = self.ui.offLAT.value()
         self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
         self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
-        self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
         self.app.dome.domeShutterWidth = self.ui.domeShutterWidth.value()
-
         self.app.updateDomeSettings.emit()
-
         return True
 
     def setUseDomeGeometry(self):
         """
-
         :return: True for test purpose
         """
-
         useGeometry = self.ui.checkUseDomeGeometry.isChecked()
         self.app.dome.useGeometry = useGeometry
-
         return True
 
     def updateDomeGeometryToGui(self):
         """
-        updateDomeGeometryToGui takes the information gathered from the driver and programs
-        them into the mount class and gui for later use.
+        updateDomeGeometryToGui takes the information gathered from the driver
+        and programs them into the mount class and gui for later use.
 
         :return: true for test purpose
         """
-
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_OTA_OFFSET', 0))
         self.ui.offGEM.setValue(value)
 
@@ -155,15 +163,11 @@ class SettDome(object):
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
         self.ui.domeVerticalOffset.setValue(value)
-
         return True
 
     def setDomeSettlingTime(self):
         """
-
         :return: true for test purpose
         """
-
         self.app.dome.settlingTime = self.ui.settleTimeDome.value()
-
         return True

@@ -263,7 +263,6 @@ class Model(object):
         :param value: name as str
         :return: nothing
         """
-
         if not isinstance(value, str):
             self.log.warning('malformed value: {0}'.format(value))
             return
@@ -277,7 +276,6 @@ class Model(object):
         :param value: position as int
         :return: nothing
         """
-
         value = valueToInt(value)
         if value < 0 or value > len(self._nameList) - 1:
             self.log.warning('invalid value: {0}'.format(value))
@@ -309,7 +307,6 @@ class Model(object):
         :param numberOfChunks:  amount of parts
         :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
             return False
@@ -328,7 +325,6 @@ class Model(object):
         :param numberOfChunks:  amount of parts
         :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
             return False
@@ -340,13 +336,12 @@ class Model(object):
 
     def pollNames(self):
         """
-        Sending the polling ModelNames command. It collects for all the known names
-        the string. The number of names have to be collected first, than it gathers
-        all name at once.
+        Sending the polling ModelNames command. It collects for all the known
+        names the string. The number of names have to be collected first, than it
+        gathers all name at once.
 
         :return: success:   True if ok, False if not
         """
-
         conn = Connection(self.host)
         commandString = ':modelcnt#'
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -377,28 +372,27 @@ class Model(object):
             - otherwise a string formatted as follows
                 "HH:MM:SS.SS,+dd*mm:ss.s,eeee.e,ppp#"
         where
-        -   HH:MM:SS.SS is the hour angle of the alignment star in hours, minutes, seconds
-            and hundredths of second (from 0h to 23h59m59.99s),
-        -   +dd*mm:ss.s is the declination of the alignment star in degrees, arcminutes,
-            arcseconds and tenths of arcsecond, eeee.e is the error between the star and
-            the alignment model in arcseconds,
-        -   ppp is the polar angle of the measured star with respect to the modeled star
-            in the equatorial system in degrees from 0 to 359 (0 towards the north pole,
-            90 towards east)
+        -   HH:MM:SS.SS is the hour angle of the alignment star in hours,
+            minutes, seconds and hundredths of second (from 0h to 23h59m59.99s),
+        -   +dd*mm:ss.s is the declination of the alignment star in degrees,
+            arcminutes, arcseconds and tenths of arcsec, eeee.e is the error
+            between the star and the alignment model in arcseconds,
+        -   ppp is the polar angle of the measured star with respect to the
+            modeled star in the equatorial system in degrees from 0 to 359 (0
+            towards the north pole, 90 towards east)
 
         :param response:        data load from mount
         :param numberOfChunks:  amount of parts
         :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('Wrong number of chunks')
             return False
         for number, starData in enumerate(response):
             if not starData:
                 continue
-            # mount counts stars from 1 beginning and adding the number (which is not
-            # provided by the response, but counted in the mount computer
+            # mount counts stars from 1 beginning and adding the number (which
+            # is not provided by the response, but counted in the mount computer
             # for reference reasons
             modelStar = '{0:s}, {1}'.format(starData, number + 1)
             self.addStar(modelStar)
@@ -413,7 +407,6 @@ class Model(object):
         :param numberOfChunks:  amount of parts
         :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks or len(response) == 0:
             self.log.warning('Wrong number of chunks')
             return False
@@ -445,13 +438,12 @@ class Model(object):
 
     def pollStars(self):
         """
-        Sending the polling ModelNames command. It collects for all the known names
-        the string. The number of names have to be collected first, than it gathers
-        all name at once.
+        Sending the polling ModelNames command. It collects for all the known
+        names the string. The number of names have to be collected first, than it
+        gathers all name at once.
 
         :return:    success:    True if ok, False if not
         """
-
         conn = Connection(self.host)
         commandString = ':getalst#:getain#'
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -479,12 +471,11 @@ class Model(object):
 
     def pollCount(self):
         """
-        pollSetting counts collects the data of number of alignment stars and number of model
-        names and updates them in the model class
+        pollSetting counts collects the data of number of alignment stars and
+        number of model names and updates them in the model class
 
         :return:    success
         """
-
         conn = Connection(self.host)
         commandString = ':modelcnt#:getalst#'
 
@@ -505,12 +496,11 @@ class Model(object):
 
     def clearAlign(self):
         """
-        clear model sends the clear command to the mount and deletes the current alignment
-        model and alignment stars
+        clear model sends the clear command to the mount and deletes the current
+        alignment model and alignment stars
 
         :return:    success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':delalig#')
         if not suc:
@@ -522,14 +512,14 @@ class Model(object):
 
     def deletePoint(self, number):
         """
-        deletePoint deletes the point with number from the actual alignment model. the
-        model will be recalculated by the mount computer afterwards. number has to be an
-        existing point in the database. the counting is from 1 to N.
+        deletePoint deletes the point with number from the actual alignment
+        model. the model will be recalculated by the mount computer afterwards.
+        number has to be an existing point in the database. the counting is
+        from 1 to N.
 
         :param      number: number of point in int / float
         :return:    success
         """
-
         if not isinstance(number, (int, float)):
             return False
         number = int(number)
@@ -548,21 +538,19 @@ class Model(object):
 
     def storeName(self, name):
         """
-        storeName saves the actual alignment model to the database of the mount computer
-        under the given name. the name is context sensitive and does contain maximum 15
-        characters.
+        storeName saves the actual alignment model to the database of the mount
+        computer under the given name. the name is context sensitive and does
+        contain maximum 15 characters.
 
         :param      name: name of model as string
         :return:    success
         """
-
         if not isinstance(name, str):
             return False
         if len(name) > 15:
             return False
 
         conn = Connection(self.host)
-        # mount does raise an error if name already exists: we delete it before saving
         commandString = ':modeldel0{0}#:modelsv0{1}#'.format(name, name)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -577,14 +565,13 @@ class Model(object):
 
     def loadName(self, name):
         """
-        loadName loads from the database of the mount computer the model under the given
-        name as the actual alignment model . the name is context sensitive and does contain
-        maximum 15 characters.
+        loadName loads from the database of the mount computer the model under
+        the given name as the actual alignment model . the name is context
+        sensitive and does contain maximum 15 characters.
 
         :param      name: name of model as string
         :return:    success
         """
-
         if not isinstance(name, str):
             return False
         if len(name) > 15:
@@ -603,13 +590,13 @@ class Model(object):
 
     def deleteName(self, name):
         """
-        deleteName deletes the model from the database of the mount computer under the
-        given name. the name is context sensitive and does contain maximum 15 characters.
+        deleteName deletes the model from the database of the mount computer under
+        the given name. the name is context sensitive and does contain maximum 15
+        characters.
 
         :param      name: name of model as string
         :return:    success
         """
-
         if not isinstance(name, str):
             return False
         if len(name) > 15:
@@ -628,45 +615,42 @@ class Model(object):
 
     def programAlign(self, build):
         """
-        programAlign builds a new alignment model in the mount computer by transferring
-        the necessary data to the mount. the command is:
+        programAlign builds a new alignment model in the mount computer by
+        transferring the necessary data to the mount. the command is:
 
             :newalptMRA,MDEC,MSIDE,PRA,PDEC,SIDTIME#
 
         where the parameters are
             MRA     – the mount-reported right ascension, expressed as HH:MM:SS.S
             MDEC    – the mount-reported declination, expressed as sDD:MM:SS
-            MSIDE   – the mount-reported pier side (the letter 'E' or 'W'), as reported
-                        by the :pS# command)
-            PRA     – the plate-solved right ascension (i.e. the right ascension the
-                        telescope was effectively pointing to), expressed as HH:MM:SS.S
-            PDEC    – the plate-solved declination (i.e. the declination the telescope
-                        was effectively pointing to), expressed as sDD:MM:SS
-            SIDTIME – the local sidereal time at the time of the measurement of the
-                        point, expressed as HH:MM:SS.S derived from Angle in hours
+            MSIDE   – the mount-reported pier side (the letter 'E' or 'W'),
+                      as reported by the :pS# command)
+            PRA     – the plate-solved right ascension (i.e. the right ascension
+                      the telescope was effectively pointing to), expressed as
+                      HH:MM:SS.S
+            PDEC    – the plate-solved declination (i.e. the declination the
+                      telescope was effectively pointing to), expressed
+                      as sDD:MM:SS
+            SIDTIME – the local sidereal time at the time of the measurement
+                      of the point, expressed as HH:MM:SS.S derived from Angle in
+                      hours
             Returns:
-                the string "nnn#" if the point is valid, where nnn is the current number
-                    of points in the alignment specification (including this one)
-                the string "E#" if the point is not valid
+                the string "nnn#" if the point is valid, where nnn is the
+                current number of points in the alignment specification
+                (including this one) the string "E#" if the point is not valid
 
         :param      build: list of aPoint
         :return:    success
         """
-
         if not isinstance(build, list):
             return False
+
         if not all([isinstance(x, AlignStar) for x in build]):
             return False
 
         conn = Connection(self.host)
-        # formatting:
-        # conversion, we have to find out the sign
-        raFormat = '{0:02d}:{1:02d}:{2:03.1f}'
-        decFormat = '{sign}{0:02d}*{1:02d}:{2:03.1f}'
-
-        # writing new model
         commandString = ':newalig#'
-        # getting star info in
+
         for aPoint in build:
             if not aPoint.sCoord or not aPoint.mCoord:
                 continue
@@ -698,12 +682,14 @@ class Model(object):
                                      sidereal,
                                      )
             commandString += value
-        # closing command
+
         commandString += ':endalig#'
 
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
+
         if 'E' in response:
             return False
+
         return True

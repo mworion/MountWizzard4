@@ -24,7 +24,7 @@ import glob
 
 # external packages
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QInputDialog
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtTest import QTest
@@ -65,6 +65,10 @@ def module_setup_teardown(qtbot):
     app.close = MWidget().close
     app.openDir = MWidget().openDir
     app.deleteLater = MWidget().deleteLater
+    app.convertRaToAngle = MWidget().convertRaToAngle
+    app.formatHstrToText = MWidget().formatHstrToText
+    app.convertDecToAngle = MWidget().convertDecToAngle
+    app.formatDstrToText = MWidget().formatDstrToText
     qtbot.addWidget(app)
 
     yield
@@ -401,12 +405,12 @@ def test_setSlewSpeed_2():
     assert suc
 
 
-def test_slewSelectedTarget_1():
+def test_slewSelectedTargetWithDome_1():
     suc = app.slewSelectedTargetWithDome()
     assert not suc
 
 
-def test_slewSelectedTarget_2():
+def test_slewSelectedTargetWithDome_2():
     app.app.mount.obsSite.AltTarget = Angle(degrees=10)
     app.app.mount.obsSite.AzTarget = Angle(degrees=10)
     app.app.deviceStat['dome'] = False
@@ -417,7 +421,7 @@ def test_slewSelectedTarget_2():
         assert suc
 
 
-def test_slewSelectedTarget_3():
+def test_slewSelectedTargetWithDome_3():
     app.app.mount.obsSite.AltTarget = Angle(degrees=10)
     app.app.mount.obsSite.AzTarget = Angle(degrees=10)
     app.app.deviceStat['dome'] = False
@@ -524,3 +528,187 @@ def test_moveAltAz_5():
                            return_value=True):
         suc = app.moveAltAz()
         assert suc
+
+
+def test_setRA_1():
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('', False)):
+        suc = app.setRA()
+        assert not suc
+
+
+def test_setRA_2():
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('', True)):
+        suc = app.setRA()
+        assert not suc
+
+
+def test_setRA_3():
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('12H', True)):
+        suc = app.setRA()
+        assert suc
+
+
+def test_setDEC_1():
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('', False)):
+        suc = app.setDEC()
+        assert not suc
+
+
+def test_setDEC_2():
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('', True)):
+        suc = app.setDEC()
+        assert not suc
+
+
+def test_setDEC_3():
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('12', True)):
+        suc = app.setDEC()
+        assert suc
+
+
+def test_checkAlt_1():
+    val = app.checkAlt('')
+    assert val is None
+
+
+def test_checkAlt_2():
+    val = app.checkAlt('12H')
+    assert val is None
+
+
+def test_checkAlt_3():
+    app.app.mount.setting.horizonLimitLow = None
+    app.app.mount.setting.horizonLimitHigh = 70
+    val = app.checkAlt('5')
+    assert val is None
+
+
+def test_checkAlt_4():
+    app.app.mount.setting.horizonLimitLow = 10
+    app.app.mount.setting.horizonLimitHigh = None
+    val = app.checkAlt('5')
+    assert val is None
+
+
+def test_checkAlt_5():
+    app.app.mount.setting.horizonLimitLow = 10
+    app.app.mount.setting.horizonLimitHigh = 70
+    val = app.checkAlt('85')
+    assert val is None
+
+
+def test_checkAlt_6():
+    app.app.mount.setting.horizonLimitLow = 10
+    app.app.mount.setting.horizonLimitHigh = 70
+    val = app.checkAlt('5')
+    assert val is None
+
+
+def test_checkAlt_7():
+    app.app.mount.setting.horizonLimitLow = 10
+    app.app.mount.setting.horizonLimitHigh = 70
+    val = app.checkAlt('50')
+    assert val == 50
+
+
+def test_checkAz_1():
+    val = app.checkAz('')
+    assert val is None
+
+
+def test_checkAz_2():
+    val = app.checkAz('12H')
+    assert val is None
+
+
+def test_checkAz_3():
+    val = app.checkAz('400')
+    assert val == 40
+
+
+def test_moveAltAzAbsolute_1():
+    app.ui.moveCoordinateAlt.setText('50h')
+    app.ui.moveCoordinateAz.setText('50h')
+    suc = app.moveAltAzAbsolute()
+    assert not suc
+
+
+def test_moveAltAzAbsolute_2():
+    app.ui.moveCoordinateAlt.setText('50')
+    app.ui.moveCoordinateAz.setText('50h')
+    suc = app.moveAltAzAbsolute()
+    assert not suc
+
+
+def test_moveAltAzAbsolute_3():
+    app.app.mount.setting.horizonLimitLow = 10
+    app.app.mount.setting.horizonLimitHigh = 70
+    app.ui.moveCoordinateAlt.setText('50')
+    app.ui.moveCoordinateAz.setText('50')
+    with mock.patch.object(app,
+                           'slewTargetAltAz',
+                           return_value=False):
+        suc = app.moveAltAzAbsolute()
+        assert not suc
+
+
+def test_moveAltAzAbsolute_4():
+    app.app.mount.setting.horizonLimitLow = 10
+    app.app.mount.setting.horizonLimitHigh = 70
+    app.ui.moveCoordinateAlt.setText('50')
+    app.ui.moveCoordinateAz.setText('50')
+    with mock.patch.object(app,
+                           'slewTargetAltAz',
+                           return_value=True):
+        suc = app.moveAltAzAbsolute()
+        assert suc
+
+
+def test_moveRaDecAbsolute_1():
+    app.ui.moveCoordinateRa.setText('asd')
+    app.ui.moveCoordinateDec.setText('asd')
+    suc = app.moveRaDecAbsolute()
+    assert not suc
+
+
+def test_moveRaDecAbsolute_2():
+    app.ui.moveCoordinateRa.setText('12H')
+    app.ui.moveCoordinateDec.setText('asd')
+    suc = app.moveRaDecAbsolute()
+    assert not suc
+
+
+def test_moveRaDecAbsolute_3():
+    app.ui.moveCoordinateRa.setText('12H')
+    app.ui.moveCoordinateDec.setText('30 30')
+    with mock.patch.object(app.app.mount.obsSite,
+                           'setTargetRaDec'):
+        with mock.patch.object(app,
+                               'slewSelectedTargetWithDome',
+                               return_value=False):
+            suc = app.moveRaDecAbsolute()
+            assert not suc
+
+
+def test_moveRaDecAbsolute_4():
+    app.ui.moveCoordinateRa.setText('12H')
+    app.ui.moveCoordinateDec.setText('30 30')
+    with mock.patch.object(app.app.mount.obsSite,
+                           'setTargetRaDec'):
+        with mock.patch.object(app,
+                               'slewSelectedTargetWithDome',
+                               return_value=True):
+            suc = app.moveRaDecAbsolute()
+            assert suc

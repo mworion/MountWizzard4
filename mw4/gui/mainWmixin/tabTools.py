@@ -284,9 +284,11 @@ class Tools(object):
             newObjectName = self.ui.newObjectName.text().upper()
             if newObjectName:
                 newFilename = newObjectName
+
             else:
                 if 'OBJECT' in fitsHeader:
                     newFilename = fitsHeader['OBJECT'].upper()
+
                 else:
                     newFilename = 'UNKNOWN'
 
@@ -615,18 +617,6 @@ class Tools(object):
             return False
 
         suc = self.slewTargetAltAz(float(alt), float(az))
-        return suc
-
-    def slewTargetRaDecJ2000(self, ra, dec):
-        """
-        :param ra:
-        :param dec:
-        :return:
-        """
-
-        self.app.mount.obsSite.setTargetAltAz(alt_degrees=ra,
-                                              az_degrees=dec)
-        suc = self.slewSelectedTargetWithDome(slewType='keep')
         return suc
 
     def moveRaDecAbsolute(self):

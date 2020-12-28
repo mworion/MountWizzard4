@@ -133,3 +133,35 @@ def test_move_3():
                                return_value=True):
             suc = app.move()
             assert suc
+
+
+def test_halt_1():
+    app.deviceName = 'test'
+    app.device = None
+    suc = app.halt()
+    assert not suc
+
+
+def test_halt_2():
+    app.deviceName = 'test'
+    app.device = Device()
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'Test': 1}):
+        suc = app.halt()
+        assert not suc
+
+
+def test_halt_3():
+    app.deviceName = 'test'
+    app.device = Device()
+    app.client = Client()
+    app.UPDATE_RATE = 0
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'ABS_FOCUS_POSITION': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewNumber',
+                               return_value=True):
+            suc = app.halt()
+            assert suc

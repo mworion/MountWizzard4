@@ -31,6 +31,7 @@ def module_setup_teardown():
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
+
     global app
     app = Focuser(app=Test())
 
@@ -56,7 +57,7 @@ def test_startCommunication_1():
 
 def test_startCommunication_2():
     app.framework = 'indi'
-    with mock.patch.object(app,
+    with mock.patch.object(app.run['indi'],
                            'startCommunication',
                            return_value=True):
         suc = app.startCommunication()
@@ -71,7 +72,7 @@ def test_stopCommunication_1():
 
 def test_stopCommunication_2():
     app.framework = 'indi'
-    with mock.patch.object(app,
+    with mock.patch.object(app.run['indi'],
                            'stopCommunication',
                            return_value=True):
         suc = app.stopCommunication()
@@ -86,7 +87,7 @@ def test_move_1():
 
 def test_move_2():
     app.framework = 'indi'
-    with mock.patch.object(app,
+    with mock.patch.object(app.run['indi'],
                            'move',
                            return_value=True):
         suc = app.move()
@@ -101,7 +102,7 @@ def test_halt_1():
 
 def test_halt_2():
     app.framework = 'indi'
-    with mock.patch.object(app,
+    with mock.patch.object(app.run['indi'],
                            'halt',
                            return_value=True):
         suc = app.halt()

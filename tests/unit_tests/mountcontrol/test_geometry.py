@@ -19,7 +19,7 @@ import pytest
 import os
 
 # external packages
-from skyfield.api import Angle
+from skyfield.api import Angle, Topos
 
 # local imports
 from mountcontrol.mount import Mount
@@ -32,6 +32,62 @@ def module_setup_teardown():
               pathToData=os.getcwd() + '/data',
               verbose=True)
     yield
+
+
+def test_properties_1():
+    m.obsSite.location = Topos(latitude_degrees=90,
+                               longitude_degrees=11,
+                               elevation_m=500)
+    m.geometry.initializeGeometry('10micron GM1000HPS')
+    m.geometry.offVert = 0.10
+    val = m.geometry.offVertGEM
+    assert val == m.geometry.offAltAxisGemX + m.geometry.offBaseAltAxisZ + 0.1
+
+
+def test_properties_2():
+    m.obsSite.location = Topos(latitude_degrees=90,
+                               longitude_degrees=11,
+                               elevation_m=500)
+    m.geometry.initializeGeometry('10micron GM1000HPS')
+    m.geometry.offVertGEM = 0.10
+    val = m.geometry.offVert
+    assert val == 0.1 - m.geometry.offAltAxisGemX - m.geometry.offBaseAltAxisZ
+
+
+def test_properties_3():
+    m.obsSite.location = None
+    m.geometry.initializeGeometry('10micron GM1000HPS')
+    m.geometry.offVert = 0.10
+    val = m.geometry.offVertGEM
+    assert val == 0
+
+
+def test_properties_4():
+    m.obsSite.location = None
+    m.geometry.initializeGeometry('10micron GM1000HPS')
+    m.geometry.offVertGEM = 0.10
+    val = m.geometry.offVert
+    assert val == 0
+
+
+def test_properties_5():
+    m.obsSite.location = Topos(latitude_degrees=90,
+                               longitude_degrees=11,
+                               elevation_m=500)
+    m.geometry.initializeGeometry('10micron GM1000HPS')
+    m.geometry.offGEM = 0.10
+    val = m.geometry.offPlateOTA
+    assert val == 0.1 - m.geometry.offGemPlate
+
+
+def test_properties_6():
+    m.obsSite.location = Topos(latitude_degrees=90,
+                               longitude_degrees=11,
+                               elevation_m=500)
+    m.geometry.initializeGeometry('10micron GM1000HPS')
+    m.geometry.offPlateOTA = 0.10
+    val = m.geometry.offGEM
+    assert val == 0.1 + m.geometry.offGemPlate
 
 
 def test_geometry_1():
@@ -274,9 +330,9 @@ def test_geometry_4():
         assert pytest.approx(z, 0.001) == r[4]
 
 
-def make_geometry_():
-
-    suc = m.geometry.initializeGeometry('10micron GM4000HPS')
+def test_geometry_5():
+    suc = m.geometry.initializeGeometry('10micron GM1000HPS')
+    assert suc
     m.geometry.offNorth = 0.1
     m.geometry.offEast = 0.2
     m.geometry.offVert = 0.3
@@ -284,50 +340,39 @@ def make_geometry_():
     m.geometry.offLAT = 0.2
     m.geometry.domeRadius = 1.5
 
+    val = m.geometry.calcTransformationMatrices(ha=None, dec=None, lat=None,
+                                                pierside='E')
+    assert val == (None, None, None, None, None)
+
+
+def test_geometry_6():
+    suc = m.geometry.initializeGeometry('10micron GM1000HPS')
     assert suc
+    m.geometry.offNorth = 0.1
+    m.geometry.offEast = 0.2
+    m.geometry.offVert = 0.3
+    m.geometry.offGEM = 0.1
+    m.geometry.offLAT = 0.2
+    m.geometry.domeRadius = 1.5
 
-    testValues = [[0, 0, 'E'],
-                  [0, 6, 'E'],
-                  [0, 12, 'E'],
-                  [0, 18, 'E'],
-                  [45, 0, 'E'],
-                  [45, 6, 'E'],
-                  [45, 12, 'E'],
-                  [45, 18, 'E'],
-                  [0, 0, 'W'],
-                  [0, 6, 'W'],
-                  [0, 12, 'W'],
-                  [0, 18, 'W'],
-                  [45, 0, 'W'],
-                  [45, 6, 'W'],
-                  [45, 12, 'W'],
-                  [45, 18, 'W']]
+    val = m.geometry.calcTransformationMatrices(ha=Angle(hours=1), dec=None,
+                                                lat=None,
+                                                pierside='E')
+    assert val == (None, None, None, None, None)
 
-    results = [
-        [75.59719357876492, 126.48032637101706, -0.22182894929142927, -0.3, 1.4528564682226046],
-        [43.045270444108475, 285.3087209857523, 0.2894243604259508, 1.057324945168361, 1.0238640046005874],
-        [0.41650100408347557, 3.82265487908081, 1.4966232343229562, -0.09999999999999992, 0.010903874755982312],
-        [36.64612586348536, 68.42082786427862, 0.44263324904974655, -1.1191524064830367, 0.8953064826632795],
-        [71.02090485989088, 37.94918597871115, 0.38468522470121863, -0.3, 1.418455948521692],
-        [66.15773077679029, 343.55914910920643, 0.5815389052306246, 0.1716068450504954, 1.3719925628205796],
-        [45.90410281420002, 5.497626792904525, 1.0389907885851333, -0.09999999999999999, 1.0772641928678603],
-        [53.871943266219844, 36.81756964307354, 0.7079946637269241, -0.5299863630680525, 1.211551901940688],
-        [62.15838578538358, 171.79320515195923, -0.69336944011709, -0.09999999999999981, 1.3263630044266592],
-        [23.115906949699934, 277.72829170216954, 0.18551820517513087, 1.3670380712264134, 0.5888887054156884],
-        [-16.807489928723086, 12.059357022209353, 1.404234166859495, -0.30000000000000016, -0.4337354085435261],
-        [28.574266989393426, 88.59456646054936, 0.032309316551335086, -1.3169005349383598, 0.7174462273529962],
-        [86.07167175411232, 103.31604137399296, -0.0236685622417237, -0.0999999999999999, 1.4964757930422428],
-        [51.45714234351279, 316.3092094592861, 0.6758248734232669, 0.645624478736788, 1.1732134387733018],
-        [27.73143506329075, 13.058944892717603, 1.2933706763434056, -0.3000000000000001, 0.6979916142583672],
-        [50.66457675260098, 64.86826067011935, 0.40380094402567956, -0.8607810888156088, 1.1601727090142162],
-    ]
 
-    print('\n[')
-    for t in testValues:
-        alt, az, x, y, z = m.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
-                                                                 ha=Angle(hours=t[1]),
-                                                                 lat=Angle(degrees=50),
-                                                                 pierside=t[2])
-        print(f'[{alt.degrees}, {az.degrees}, {x}, {y}, {z}],')
-    print(']')
+def test_geometry_7():
+    suc = m.geometry.initializeGeometry('10micron GM1000HPS')
+    assert suc
+    m.geometry.offNorth = 0.1
+    m.geometry.offEast = 0.2
+    m.geometry.offVert = 0.3
+    m.geometry.offGEM = 0.1
+    m.geometry.offLAT = 0.2
+    m.geometry.domeRadius = 1.5
 
+    val = m.geometry.calcTransformationMatrices(ha=Angle(hours=1),
+                                                dec=Angle(degrees=1),
+                                                lat=None,
+                                                pierside='E')
+    assert val == (None, None, None, None, None)

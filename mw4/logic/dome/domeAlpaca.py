@@ -59,7 +59,7 @@ class DomeAlpaca(AlpacaClass):
 
         :return: true for test purpose
         """
-        azimuth = self.client.Azimuth()
+        azimuth = self.client.azimuth()
         self.dataEntry(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
         self.dataEntry(self.client.slewing(), 'Slewing')

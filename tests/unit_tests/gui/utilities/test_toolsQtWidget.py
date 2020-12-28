@@ -665,10 +665,10 @@ def test_formatLatToText(function):
 
 def test_formatLonToText(function):
     values = [
-        [Angle(degrees=12), '12E 00 00'],
-        [Angle(degrees=12.000001), '12E 00 00'],
-        [Angle(degrees=6), '06E 00 00'],
-        [Angle(degrees=-6), '06W 00 00'],
+        [Angle(degrees=12), '012E 00 00'],
+        [Angle(degrees=12.000001), '012E 00 00'],
+        [Angle(degrees=6), '006E 00 00'],
+        [Angle(degrees=-6), '006W 00 00'],
     ]
     for value in values:
         text = function.formatLonToText(value[0])

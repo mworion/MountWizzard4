@@ -251,6 +251,70 @@ def test_onMouseNormal_6(function):
                 assert suc
 
 
+def test_addHorizonPointManual_0(function):
+    function.app.mount.obsSite.Alt = None
+    function.app.mount.obsSite.Az = None
+    function.app.data.horizonP = [(0, 0), (0, 360)]
+    with mock.patch.object(function,
+                           'getIndexPointX',
+                           return_value=None):
+        with mock.patch.object(function.app.data,
+                               'addHorizonP',
+                               return_value=False):
+            with mock.patch.object(function,
+                                   'drawHemisphere'):
+                suc = function.addHorizonPointManual()
+                assert not suc
+
+
+def test_addHorizonPointManual_1(function):
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+    function.app.data.horizonP = [(0, 0), (0, 360)]
+    with mock.patch.object(function,
+                           'getIndexPointX',
+                           return_value=None):
+        with mock.patch.object(function.app.data,
+                               'addHorizonP',
+                               return_value=False):
+            with mock.patch.object(function,
+                                   'drawHemisphere'):
+                suc = function.addHorizonPointManual()
+                assert not suc
+
+
+def test_addHorizonPointManual_2(function):
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+    function.app.data.horizonP = [(0, 0), (0, 360)]
+    with mock.patch.object(function,
+                           'getIndexPointX',
+                           return_value=1):
+        with mock.patch.object(function.app.data,
+                               'addHorizonP',
+                               return_value=False):
+            with mock.patch.object(function,
+                                   'drawHemisphere'):
+                suc = function.addHorizonPointManual()
+                assert not suc
+
+
+def test_addHorizonPointManual_3(function):
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+    function.app.data.horizonP = [(0, 0), (0, 360)]
+    with mock.patch.object(function,
+                           'getIndexPointX',
+                           return_value=1):
+        with mock.patch.object(function.app.data,
+                               'addHorizonP',
+                               return_value=True):
+            with mock.patch.object(function,
+                                   'drawHemisphere'):
+                suc = function.addHorizonPointManual()
+                assert suc
+
+
 def test_addHorizonPoint_1(function):
     class Event:
         xdata = 10

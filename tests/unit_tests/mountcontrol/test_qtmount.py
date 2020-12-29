@@ -60,10 +60,9 @@ def test_settlingTime_2():
     assert m.settlingTime == 2
 
 
-def test_waitSettlingTime(qtbot):
-    with qtbot.waitSignal(m.signals.slewFinished):
-        suc = m.waitSettlingAndEmit()
-        assert suc
+def test_waitSettlingTime():
+    suc = m.waitSettlingAndEmit()
+    assert suc
 
 
 def test_startTimers():
@@ -80,34 +79,9 @@ def test_stopTimers():
             m.stopTimers()
 
 
-def test_resetData_1(qtbot):
-    with qtbot.waitSignal(m.signals.pointDone):
-        m.resetData()
-
-
-def test_resetData_2(qtbot):
-    with qtbot.waitSignal(m.signals.settingDone):
-        m.resetData()
-
-
-def test_resetData_3(qtbot):
-    with qtbot.waitSignal(m.signals.alignDone):
-        m.resetData()
-
-
-def test_resetData_4(qtbot):
-    with qtbot.waitSignal(m.signals.namesDone):
-        m.resetData()
-
-
-def test_resetData_5(qtbot):
-    with qtbot.waitSignal(m.signals.firmwareDone):
-        m.resetData()
-
-
-def test_resetData_6(qtbot):
-    with qtbot.waitSignal(m.signals.locationDone):
-        m.resetData()
+def test_resetData_1():
+    suc = m.resetData()
+    assert suc
 
 
 def test_checkMountUp_1():
@@ -133,18 +107,18 @@ def test_errorCycleCheckMountUp():
     m.errorCycleCheckMountUp('test')
 
 
-def test_clearCycleCheckMountUp_1(qtbot):
+def test_clearCycleCheckMountUp_1():
     suc = m.cycleCheckMountUp()
     assert suc
 
 
-def test_cycleCheckMountUp_1(qtbot):
+def test_cycleCheckMountUp_1():
     m.host = ()
     suc = m.cycleCheckMountUp()
     assert not suc
 
 
-def test_cycleCheckMountUp_2(qtbot):
+def test_cycleCheckMountUp_2():
     m.host = ('localhost', 80)
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -157,11 +131,12 @@ def test_errorCyclePointing_1():
     assert suc
 
 
-def test_clearCyclePointing_1(qtbot):
+def test_clearCyclePointing_1():
     suc = m.clearCyclePointing()
     assert suc
 
-def test_clearCyclePointing_2(qtbot):
+
+def test_clearCyclePointing_2():
     m.obsSite.status = 1
     m.statusAlert = False
     suc = m.clearCyclePointing()
@@ -169,7 +144,7 @@ def test_clearCyclePointing_2(qtbot):
     assert m.statusAlert
 
 
-def test_clearCyclePointing_3(qtbot):
+def test_clearCyclePointing_3():
     m.obsSite.status = 0
     m.statusAlert = False
     suc = m.clearCyclePointing()
@@ -177,7 +152,7 @@ def test_clearCyclePointing_3(qtbot):
     assert not m.statusAlert
 
 
-def test_clearCyclePointing_4(qtbot):
+def test_clearCyclePointing_4():
     m.obsSite.status = 0
     m.statusSlew = False
     suc = m.clearCyclePointing()
@@ -185,7 +160,7 @@ def test_clearCyclePointing_4(qtbot):
     assert m.statusSlew
 
 
-def test_clearCyclePointing_5(qtbot):
+def test_clearCyclePointing_5():
     m.obsSite.status = 2
     m.statusSlew = False
     suc = m.clearCyclePointing()
@@ -193,7 +168,7 @@ def test_clearCyclePointing_5(qtbot):
     assert not m.statusSlew
 
 
-def test_cyclePointing_1(qtbot):
+def test_cyclePointing_1():
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -201,7 +176,7 @@ def test_cyclePointing_1(qtbot):
         assert suc
 
 
-def test_cyclePointing_2(qtbot):
+def test_cyclePointing_2():
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -209,7 +184,7 @@ def test_cyclePointing_2(qtbot):
         assert suc
 
 
-def test_cyclePointing_3(qtbot):
+def test_cyclePointing_3():
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -221,12 +196,12 @@ def test_errorCycleSetting():
     m.errorCycleSetting('test')
 
 
-def test_clearCycleSetting_1(qtbot):
+def test_clearCycleSetting_1():
     suc = m.clearCycleSetting()
     assert suc
 
 
-def test_cycleSetting_1(qtbot):
+def test_cycleSetting_1():
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -234,7 +209,7 @@ def test_cycleSetting_1(qtbot):
         assert suc
 
 
-def test_cycleSetting_2(qtbot):
+def test_cycleSetting_2():
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -246,12 +221,12 @@ def test_errorGetAlign():
     m.errorGetAlign('test')
 
 
-def test_clearGetAlign_1(qtbot):
+def test_clearGetAlign_1():
     suc = m.clearGetAlign()
     assert suc
 
 
-def test_GetAlign_1(qtbot):
+def test_GetAlign_1():
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -259,7 +234,7 @@ def test_GetAlign_1(qtbot):
         assert suc
 
 
-def test_GetAlign_2(qtbot):
+def test_GetAlign_2():
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -268,22 +243,22 @@ def test_GetAlign_2(qtbot):
 
 
 def test_errorGetNames():
-    m.errorGetNames('test')
+    suc = m.errorGetNames('test')
+    assert suc
 
 
-def test_clearGetNames_1(qtbot):
+def test_clearGetNames_1():
     suc = m.clearGetNames()
     assert suc
 
 
-def test_GetNames_1(qtbot):
+def test_GetNames_1():
     m.mountUp = True
-    with qtbot.assertNotEmitted(m.signals.namesDone):
-        suc = m.getNames()
-        assert suc
+    suc = m.getNames()
+    assert suc
 
 
-def test_GetNames_2(qtbot):
+def test_GetNames_2():
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -295,12 +270,12 @@ def test_errorGetFW():
     m.errorGetFW('test')
 
 
-def test_clearGetFW_1(qtbot):
+def test_clearGetFW_1():
     suc = m.clearGetFW()
     assert suc
 
 
-def test_GetFW_1(qtbot):
+def test_GetFW_1():
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -308,7 +283,7 @@ def test_GetFW_1(qtbot):
         assert suc
 
 
-def test_GetFW_2(qtbot):
+def test_GetFW_2():
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -320,12 +295,12 @@ def test_errorGetLocation():
     m.errorGetLocation('test')
 
 
-def test_clearGetLocation_1(qtbot):
+def test_clearGetLocation_1():
     suc = m.clearGetLocation()
     assert suc
 
 
-def test_GetLocation_1(qtbot):
+def test_GetLocation_1():
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -333,7 +308,7 @@ def test_GetLocation_1(qtbot):
         assert suc
 
 
-def test_GetLocation_2(qtbot):
+def test_GetLocation_2():
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -345,12 +320,12 @@ def test_errorCalcTLE():
     m.errorCalcTLE('test')
 
 
-def test_clearCalcTLE_1(qtbot):
+def test_clearCalcTLE_1():
     suc = m.clearCalcTLE()
     assert suc
 
 
-def test_CalcTLE_1(qtbot):
+def test_CalcTLE_1():
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -358,7 +333,7 @@ def test_CalcTLE_1(qtbot):
         assert suc
 
 
-def test_CalcTLE_2(qtbot):
+def test_CalcTLE_2():
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -370,12 +345,12 @@ def test_errorStatTLE():
     m.errorStatTLE('test')
 
 
-def test_clearStatTLE_1(qtbot):
+def test_clearStatTLE_1():
     suc = m.clearStatTLE()
     assert suc
 
 
-def test_StatTLE_1(qtbot):
+def test_StatTLE_1():
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -383,7 +358,7 @@ def test_StatTLE_1(qtbot):
         assert suc
 
 
-def test_StatTLE_2(qtbot):
+def test_StatTLE_2():
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -395,12 +370,12 @@ def test_errorGetTLE():
     m.errorGetTLE('test')
 
 
-def test_clearGetTLE_1(qtbot):
+def test_clearGetTLE_1():
     suc = m.clearGetTLE()
     assert suc
 
 
-def test_GetTLE_1(qtbot):
+def test_GetTLE_1():
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -408,7 +383,7 @@ def test_GetTLE_1(qtbot):
         assert suc
 
 
-def test_GetTLE_2(qtbot):
+def test_GetTLE_2():
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):

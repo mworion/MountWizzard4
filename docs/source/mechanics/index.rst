@@ -7,5 +7,6 @@ Mechanical Ideas
 
     cables
     flipflat_sqr
+    qsi_cables
 
 

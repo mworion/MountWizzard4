@@ -40,6 +40,7 @@ def module_setup_teardown():
         DriverVersion = '1'
         DriverInfo = 'test1'
         shutterstatus = '4'
+        slewing = False
 
         @staticmethod
         def SlewToAzimuth(azimuth):
@@ -77,7 +78,7 @@ def test_workerPollData_2():
 def test_workerPollData_3():
     class Test:
         shutterstatus = 0
-        Slewing = False
+        slewing = False
         Azimuth = 0
 
     app.deviceConnected = True
@@ -89,7 +90,7 @@ def test_workerPollData_3():
 def test_workerPollData_4():
     class Test:
         shutterstatus = 1
-        Slewing = False
+        slewing = False
         Azimuth = 0
 
     app.deviceConnected = True
@@ -101,7 +102,7 @@ def test_workerPollData_4():
 def test_workerPollData_5():
     class Test:
         shutterstatus = mock.PropertyMock(side_effect=Exception)
-        Slewing = False
+        slewing = False
         Azimuth = 0
 
     app.deviceConnected = True

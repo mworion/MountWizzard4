@@ -134,8 +134,8 @@ def test_errorCycleCheckMountUp():
 
 
 def test_clearCycleCheckMountUp_1(qtbot):
-    with qtbot.waitSignal(m.signals.mountUp):
-        m.cycleCheckMountUp()
+    suc = m.cycleCheckMountUp()
+    assert suc
 
 
 def test_cycleCheckMountUp_1(qtbot):
@@ -158,9 +158,8 @@ def test_errorCyclePointing_1():
 
 
 def test_clearCyclePointing_1(qtbot):
-    with qtbot.waitSignal(m.signals.pointDone):
-        m.clearCyclePointing()
-
+    suc = m.clearCyclePointing()
+    assert suc
 
 def test_clearCyclePointing_2(qtbot):
     m.obsSite.status = 1
@@ -198,18 +197,16 @@ def test_cyclePointing_1(qtbot):
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.assertNotEmitted(m.signals.pointDone):
-            suc = m.cyclePointing()
-            assert suc
+        suc = m.cyclePointing()
+        assert suc
 
 
 def test_cyclePointing_2(qtbot):
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.assertNotEmitted(m.signals.pointDone):
-            suc = m.cyclePointing()
-            assert suc
+        suc = m.cyclePointing()
+        assert suc
 
 
 def test_cyclePointing_3(qtbot):
@@ -225,26 +222,24 @@ def test_errorCycleSetting():
 
 
 def test_clearCycleSetting_1(qtbot):
-    with qtbot.waitSignal(m.signals.settingDone):
-        m.clearCycleSetting()
+    suc = m.clearCycleSetting()
+    assert suc
 
 
 def test_cycleSetting_1(qtbot):
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.assertNotEmitted(m.signals.settingDone):
-            suc = m.cycleSetting()
-            assert suc
+        suc = m.cycleSetting()
+        assert suc
 
 
 def test_cycleSetting_2(qtbot):
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.waitSignal(m.signals.settingDone):
-            suc = m.cycleSetting()
-            assert not suc
+        suc = m.cycleSetting()
+        assert not suc
 
 
 def test_errorGetAlign():
@@ -252,26 +247,24 @@ def test_errorGetAlign():
 
 
 def test_clearGetAlign_1(qtbot):
-    with qtbot.waitSignal(m.signals.alignDone):
-        m.clearGetAlign()
+    suc = m.clearGetAlign()
+    assert suc
 
 
 def test_GetAlign_1(qtbot):
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.assertNotEmitted(m.signals.alignDone):
-            suc = m.getAlign()
-            assert suc
+        suc = m.getAlign()
+        assert suc
 
 
 def test_GetAlign_2(qtbot):
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.waitSignal(m.signals.alignDone):
-            suc = m.getAlign()
-            assert not suc
+        suc = m.getAlign()
+        assert not suc
 
 
 def test_errorGetNames():
@@ -279,8 +272,8 @@ def test_errorGetNames():
 
 
 def test_clearGetNames_1(qtbot):
-    with qtbot.waitSignal(m.signals.namesDone):
-        m.clearGetNames()
+    suc = m.clearGetNames()
+    assert suc
 
 
 def test_GetNames_1(qtbot):
@@ -294,9 +287,8 @@ def test_GetNames_2(qtbot):
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.waitSignal(m.signals.namesDone):
-            suc = m.getNames()
-            assert not suc
+        suc = m.getNames()
+        assert not suc
 
 
 def test_errorGetFW():
@@ -304,26 +296,24 @@ def test_errorGetFW():
 
 
 def test_clearGetFW_1(qtbot):
-    with qtbot.waitSignal(m.signals.firmwareDone):
-        m.clearGetFW()
+    suc = m.clearGetFW()
+    assert suc
 
 
 def test_GetFW_1(qtbot):
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.assertNotEmitted(m.signals.firmwareDone):
-            suc = m.getFW()
-            assert suc
+        suc = m.getFW()
+        assert suc
 
 
 def test_GetFW_2(qtbot):
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.waitSignal(m.signals.firmwareDone):
-            suc = m.getFW()
-            assert not suc
+        suc = m.getFW()
+        assert not suc
 
 
 def test_errorGetLocation():
@@ -331,26 +321,24 @@ def test_errorGetLocation():
 
 
 def test_clearGetLocation_1(qtbot):
-    with qtbot.waitSignal(m.signals.locationDone):
-        m.clearGetLocation()
+    suc = m.clearGetLocation()
+    assert suc
 
 
 def test_GetLocation_1(qtbot):
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.assertNotEmitted(m.signals.locationDone):
-            suc = m.getLocation()
-            assert suc
+        suc = m.getLocation()
+        assert suc
 
 
 def test_GetLocation_2(qtbot):
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.waitSignal(m.signals.locationDone):
-            suc = m.getLocation()
-            assert not suc
+        suc = m.getLocation()
+        assert not suc
 
 
 def test_errorCalcTLE():
@@ -358,26 +346,24 @@ def test_errorCalcTLE():
 
 
 def test_clearCalcTLE_1(qtbot):
-    with qtbot.waitSignal(m.signals.calcTLEdone):
-        m.clearCalcTLE()
+    suc = m.clearCalcTLE()
+    assert suc
 
 
 def test_CalcTLE_1(qtbot):
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.assertNotEmitted(m.signals.calcTLEdone):
-            suc = m.calcTLE()
-            assert suc
+        suc = m.calcTLE()
+        assert suc
 
 
 def test_CalcTLE_2(qtbot):
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.waitSignal(m.signals.calcTLEdone):
-            suc = m.calcTLE()
-            assert not suc
+        suc = m.calcTLE()
+        assert not suc
 
 
 def test_errorStatTLE():
@@ -385,26 +371,24 @@ def test_errorStatTLE():
 
 
 def test_clearStatTLE_1(qtbot):
-    with qtbot.waitSignal(m.signals.statTLEdone):
-        m.clearStatTLE()
+    suc = m.clearStatTLE()
+    assert suc
 
 
 def test_StatTLE_1(qtbot):
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.assertNotEmitted(m.signals.statTLEdone):
-            suc = m.statTLE()
-            assert suc
+        suc = m.statTLE()
+        assert suc
 
 
 def test_StatTLE_2(qtbot):
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.waitSignal(m.signals.statTLEdone):
-            suc = m.statTLE()
-            assert not suc
+        suc = m.statTLE()
+        assert not suc
 
 
 def test_errorGetTLE():
@@ -412,26 +396,24 @@ def test_errorGetTLE():
 
 
 def test_clearGetTLE_1(qtbot):
-    with qtbot.waitSignal(m.signals.getTLEdone):
-        m.clearGetTLE()
+    suc = m.clearGetTLE()
+    assert suc
 
 
 def test_GetTLE_1(qtbot):
     m.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.assertNotEmitted(m.signals.getTLEdone):
-            suc = m.getTLE()
-            assert suc
+        suc = m.getTLE()
+        assert suc
 
 
 def test_GetTLE_2(qtbot):
     m.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        with qtbot.waitSignal(m.signals.getTLEdone):
-            suc = m.getTLE()
-            assert not suc
+        suc = m.getTLE()
+        assert not suc
 
 
 def test_bootMount_1():

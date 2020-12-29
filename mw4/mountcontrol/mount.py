@@ -54,8 +54,6 @@ class Mount(object):
                ]
 
     log = logging.getLogger(__name__)
-
-    # 10 microns have 3492 as default port
     DEFAULT_PORT = 3492
 
     def __init__(self,
@@ -81,27 +79,6 @@ class Mount(object):
         self.model = Model(self.host, self.obsSite)
         self.host = host
 
-    def checkFormatHost(self, value):
-        """
-        checkFormatHost ensures that the host ip and port is in correct format
-        to enable socket connection later on. if no port is given, the default
-        port for the mount will be added automatically
-
-        :param      value: host value
-        :return:    host value as tuple including port
-        """
-
-        if not value:
-            self.log.info('Wrong host value: {0}'.format(value))
-            return None
-        if not isinstance(value, (tuple, str)):
-            self.log.info('Wrong host value: {0}'.format(value))
-            return None
-        # now we got the right format
-        if isinstance(value, str):
-            value = (value, self.DEFAULT_PORT)
-        return value
-
     @property
     def host(self):
         return self._host
@@ -125,6 +102,29 @@ class Mount(object):
         value = self.checkFormatMAC(value)
         self._MAC = value
 
+    def checkFormatHost(self, value):
+        """
+        checkFormatHost ensures that the host ip and port is in correct format
+        to enable socket connection later on. if no port is given, the default
+        port for the mount will be added automatically
+
+        :param      value: host value
+        :return:    host value as tuple including port
+        """
+
+        if not value:
+            self.log.info('Wrong host value: {0}'.format(value))
+            return None
+
+        if not isinstance(value, (tuple, str)):
+            self.log.info('Wrong host value: {0}'.format(value))
+            return None
+
+        if isinstance(value, str):
+            value = (value, self.DEFAULT_PORT)
+
+        return value
+
     def checkFormatMAC(self, value):
         """
         checkFormatMAC makes some checks to ensure that the format of the
@@ -137,26 +137,30 @@ class Mount(object):
         if not value:
             self.log.info('wrong MAC value: {0}'.format(value))
             return None
+
         if not isinstance(value, str):
             self.log.info('wrong MAC value: {0}'.format(value))
             return None
+
         value = value.upper()
         value = value.replace('.', ':')
         value = value.split(':')
         if len(value) != 6:
             self.log.info('wrong MAC value: {0}'.format(value))
             return None
+
         for chunk in value:
             if len(chunk) != 2:
                 self.log.info('wrong MAC value: {0}'.format(value))
                 return None
+
             for char in chunk:
                 if char not in ['0', '1', '2', '3', '4',
                                 '5', '6', '7', '8', '9',
                                 'A', 'B', 'C', 'D', 'E', 'F']:
                     self.log.info('wrong MAC value: {0}'.format(value))
                     return None
-        # now we build the right format
+
         value = '{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}'.format(*value)
         return value
 
@@ -180,7 +184,6 @@ class Mount(object):
 
     def calcTransformationMatrices(self):
         """
-
         :return: alt az
         """
         ha = self.obsSite.haJNowTarget

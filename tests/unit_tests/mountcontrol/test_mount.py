@@ -17,7 +17,10 @@
 # standard libraries
 import pytest
 import os
+
 # external packages
+from skyfield.api import Topos
+
 # local imports
 from mountcontrol.mount import Mount
 
@@ -31,9 +34,75 @@ def module_setup_teardown():
     yield
 
 
-def test_mount():
-    pass
+def test_properties():
+    m.host = 'localhost'
+    assert m.host == ('localhost', 3492)
+
+    m.MAC = '00:00:00:00:00:00'
+    assert m.MAC == '00:00:00:00:00:00'
+
+
+def test_checkFormatHost_1():
+    val = m.checkFormatHost(None)
+    assert val is None
+
+
+def test_checkFormatHost_2():
+    val = m.checkFormatHost(123)
+    assert val is None
+
+
+def test_checkFormatHost_3():
+    val = m.checkFormatHost('localhost')
+    assert val == ('localhost', 3492)
+
+
+def test_checkFormatHost_4():
+    val = m.checkFormatHost(('localhost', 3492))
+    assert val == ('localhost', 3492)
+
+
+def test_checkFormatMAC_1():
+    val = m.checkFormatMAC('')
+    assert val is None
+
+
+def test_checkFormatMAC_2():
+    val = m.checkFormatMAC(1234)
+    assert val is None
+
+
+def test_checkFormatMAC_3():
+    val = m.checkFormatMAC('00:00:00')
+    assert val is None
+
+
+def test_checkFormatMAC_4():
+    val = m.checkFormatMAC('00:00:00:123:00:00')
+    assert val is None
+
+
+def test_checkFormatMAC_5():
+    val = m.checkFormatMAC('00:00:00:12K:00:00')
+    assert val is None
+
+
+def test_checkFormatMAC_6():
+    val = m.checkFormatMAC('00:00:00:12:00:00')
+    assert val == '00:00:00:12:00:00'
 
 
 def test_resetData():
     m.resetData()
+
+
+def test_calcTransformationMatrices():
+    m.obsSite.raJNowTarget = 12
+    m.obsSite.timeSidereal = 12
+    m.obsSite.decJNowTarget = 10
+    m.obsSite.location = Topos(latitude_degrees=49,
+                               longitude_degrees=11,
+                               elevation_m=500)
+    m.obsSite.piersideTarget = 'E'
+    val = m.calcTransformationMatrices()
+    assert val == (None, None, None, None, None)

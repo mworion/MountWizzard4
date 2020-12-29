@@ -13,4 +13,4 @@ Security updates will be supported for version
 
 ## Reporting a Vulnerability
 
-No issues knowns 
+No issues known

@@ -39,22 +39,18 @@ class SimulatorDome:
 
     def create(self, rEntity, show):
         """
-
         :param rEntity:
-        :param show: root of the 3D models
+        :param show:
         :return:
         """
-
         if self.model:
             self.modelRoot.setParent(None)
 
         self.model.clear()
-
         if not show:
             return False
 
         self.modelRoot = QEntity(rEntity)
-
         self.model = {
             'domeFloor': {
                 'parent': 'ref',
@@ -66,7 +62,7 @@ class SimulatorDome:
                 'parent': 'ref',
                 'source': 'dome-wall.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome1,
+                'mat': Materials().dome3,
             },
             'domeSphere': {
                 'parent': 'ref',
@@ -99,18 +95,14 @@ class SimulatorDome:
                 'mat': Materials().dome2,
             },
         }
-
         for name in self.model:
             tools.linkModel(self.model, name, self.modelRoot)
-
         return True
 
     def setTransparency(self, transparent):
         """
-
         :return: True for test purpose
         """
-
         if not self.model:
             return False
 
@@ -140,13 +132,12 @@ class SimulatorDome:
                 'solid': Materials().dome2
             },
         }
-
         for entity in entities:
             if transparent:
                 self.model[entity]['e'].addComponent(entities[entity]['trans'])
+
             else:
                 self.model[entity]['e'].addComponent(entities[entity]['solid'])
-
         return True
 
     def updateSettings(self):
@@ -156,7 +147,6 @@ class SimulatorDome:
 
         :return:
         """
-
         if not self.model:
             return False
 
@@ -167,20 +157,18 @@ class SimulatorDome:
         self.model['domeWall']['t'].setScale3D(QVector3D(scale, scale, 1))
         self.model['domeSphere']['t'].setScale3D(QVector3D(scale, scale, scale))
         self.model['domeSphere']['t'].setTranslation(QVector3D(0, 0, corrZ))
-
         return True
 
     def updatePositions(self):
         """
         updateDome moves dome components
-        you normally have to revert your transformation in linked entities if they have
-        fixed sizes because they propagate transformations.
-        for the shutter i would like to keep the width setting unscaled with increasing dome
-        radius
+        you normally have to revert your transformation in linked entities if
+        they have fixed sizes because they propagate transformations.
+        for the shutter i would like to keep the width setting unscaled with
+        increasing dome radius
 
         :return: success
         """
-
         if not self.model:
             return False
 
@@ -190,7 +178,7 @@ class SimulatorDome:
 
         if 'DOME_SHUTTER.SHUTTER_OPEN' in self.app.dome.data:
             radius = self.app.mount.geometry.domeRadius * 1000
-            scale = 1 + (radius - 1250) / 1250
+            scale = 1.1 + (radius - 1250) / 1250
 
             self.model['domeDoor1']['t'].setScale3D(QVector3D(1, scale, 1))
             self.model['domeDoor2']['t'].setScale3D(QVector3D(1, scale, 1))

@@ -91,13 +91,12 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
+        initConfig read the key out of the configuration dict and stores it to
+        the gui elements. if some initialisations have to be proceeded with the
+        loaded persistent data, they will be launched as well in this method.
 
         :return: True for test purpose
         """
-
         if 'simulatorW' not in self.app.config:
             self.app.config['simulatorW'] = {}
         config = self.app.config['simulatorW']
@@ -163,8 +162,9 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def closeEvent(self, closeEvent):
         """
-        closeEvent is overloaded to be able to store the data before the windows is close
-        and all it's data is garbage collected. all signals are disconnected before closing.
+        closeEvent is overloaded to be able to store the data before the windows
+        is close and all it's data is garbage collected. all signals are
+        disconnected before closing.
 
         :param closeEvent:
         :return:
@@ -190,6 +190,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.update1s.disconnect(self.dome.updatePositions)
         self.app.updateDomeSettings.disconnect(self.updateSettings)
         self.app.updateDomeSettings.disconnect(self.telescope.updateSettings)
+        self.app.updateDomeSettings.disconnect(self.dome.updateSettings)
         self.app.mount.signals.pointDone.disconnect(self.telescope.updatePositions)
         self.app.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
         self.app.updateDomeSettings.disconnect(self.domeCreate)
@@ -205,7 +206,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         :return: True for test purpose
         """
-
         self.createScene(self.rootEntity)
 
         self.ui.checkDomeTransparent.clicked.connect(self.setDomeTransparency)
@@ -223,10 +223,10 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.westView.clicked.connect(self.westView)
         self.ui.checkPL.clicked.connect(self.setPL)
 
-        # connect functional signals
         self.app.update1s.connect(self.dome.updatePositions)
         self.app.updateDomeSettings.connect(self.updateSettings)
         self.app.updateDomeSettings.connect(self.telescope.updateSettings)
+        self.app.updateDomeSettings.connect(self.dome.updateSettings)
         self.app.mount.signals.pointDone.connect(self.telescope.updatePositions)
         self.app.mount.signals.pointDone.connect(self.pointer.updatePositions)
         self.app.updateDomeSettings.connect(self.domeCreate)
@@ -258,7 +258,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.dome.create(self.world['ref']['e'],
                          self.ui.checkDomeEnable.isChecked())
         self.setDomeTransparency()
-
         return True
 
     def horizonCreate(self):
@@ -268,7 +267,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         self.horizon.create(self.world['ref1000']['e'],
                             self.ui.checkShowHorizon.isChecked())
-
         return True
 
     def pointerCreate(self):
@@ -278,7 +276,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         self.pointer.create(self.world['ref']['e'],
                             self.ui.checkShowPointer.isChecked())
-
         return True
 
     def setDomeTransparency(self):
@@ -287,7 +284,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.dome.setTransparency(self.ui.checkDomeTransparent.isChecked())
-
         return True
 
     def setPL(self):
@@ -296,10 +292,8 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         :return: True for test purpose
         """
-
         self.pL0E.setEnabled(self.ui.checkPL.isChecked())
         self.pL1E.setEnabled(not self.ui.checkPL.isChecked())
-
         return True
 
     def topView(self):
@@ -308,11 +302,9 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         :return: True for test purpose
         """
-
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(0.0, 10.0, 0.0))
-
         return True
 
     def topEastView(self):
@@ -321,12 +313,10 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         :return: True for test purpose
         """
-
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
-
         return True
 
     def topWestView(self):
@@ -335,12 +325,10 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         :return: True for test purpose
         """
-
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
-
         return True
 
     def eastView(self):
@@ -349,12 +337,10 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         :return: True for test purpose
         """
-
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
-
         return True
 
     def westView(self):
@@ -363,12 +349,10 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         :return: True for test purpose
         """
-
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
-
         return True
 
     def createWorld(self, rEntity):
@@ -393,7 +377,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         :param rEntity:
         :return:
         """
-
         self.world = {
             'ref1000': {
                 'parent': None,
@@ -406,6 +389,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
             'environ': {
                 'parent': 'ref',
                 'source': 'dome-environ.stl',
+                'scale': [1.5, 1.5, 1],
                 'mat': Materials().environ1,
             },
             'domeColumn': {
@@ -439,7 +423,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         :param rEntity:
         :return:
         """
-
         numbers = self.ui.checkShowNumbers.isChecked()
         path = self.ui.checkShowSlewPath.isChecked()
         pointer = self.ui.checkShowPointer.isChecked()
@@ -469,7 +452,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         :return:
         """
-
         if not self.world:
             return False
 
@@ -482,5 +464,4 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.world['domeColumn']['t'].setScale3D(QVector3D(1, 1, scale))
         self.world['domeCompassRose']['t'].setTranslation(QVector3D(north, -east, 0))
         self.world['domeCompassRoseChar']['t'].setTranslation(QVector3D(north, -east, 0))
-
         return True

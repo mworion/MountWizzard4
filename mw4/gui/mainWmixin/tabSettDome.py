@@ -45,6 +45,55 @@ class SettDome(object):
         self.app.mount.signals.firmwareDone.connect(self.setUseGeometryInMount)
         self.app.mount.signals.firmwareDone.connect(self.setZoffGEMInMount)
 
+        self.ui.domeRadius.valueChanged.connect(self.tab1)
+        self.ui.domeNorthOffset.valueChanged.connect(self.tab2)
+        self.ui.domeEastOffset.valueChanged.connect(self.tab3)
+        self.ui.domeZoffGEM.valueChanged.connect(self.tab4)
+        self.ui.domeZoff10micron.valueChanged.connect(self.tab5)
+        self.ui.offGEM.valueChanged.connect(self.tab6)
+        self.ui.offLAT.valueChanged.connect(self.tab7)
+        self.ui.domeShutterWidth.valueChanged.connect(self.tab8)
+
+    def tab1(self):
+        self.ui.tabDomeExplain.setCurrentIndex(0)
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+
+    def tab2(self):
+        self.ui.tabDomeExplain.setCurrentIndex(1)
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+
+    def tab3(self):
+        self.ui.tabDomeExplain.setCurrentIndex(2)
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+
+    def tab4(self):
+        self.ui.tabDomeExplain.setCurrentIndex(3)
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+
+    def tab5(self):
+        self.ui.tabDomeExplain.setCurrentIndex(4)
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+
+    def tab6(self):
+        self.ui.tabDomeExplain.setCurrentIndex(5)
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+
+    def tab7(self):
+        self.ui.tabDomeExplain.setCurrentIndex(6)
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+
+    def tab8(self):
+        self.ui.tabDomeExplain.setCurrentIndex(7)
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -118,7 +167,6 @@ class SettDome(object):
 
         value = self.ui.domeRadius.value()
         self.app.mount.geometry.domeRadius = value
-
         if value < 1.0:
             self.app.message.emit('Critical dome radius, please check', 2)
 

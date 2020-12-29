@@ -57,8 +57,8 @@ class Materials(Styles):
         self.aluminiumR.setDiffuse(QColor(192, 64, 64))
 
         self.environ1 = QMetalRoughMaterial()
-        self.environ1.setBaseColor(QColor(192, 164, 64))
-        self.environ1.setMetalness(0.5)
+        self.environ1.setBaseColor(QColor(64, 128, 32))
+        self.environ1.setMetalness(0.8)
         self.environ1.setRoughness(1)
 
         self.aluminium = QDiffuseSpecularMaterial()

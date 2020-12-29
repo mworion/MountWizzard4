@@ -35,6 +35,14 @@ if not platform.system() == 'Windows':
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     class Test1:
+        @staticmethod
+        def move(a):
+            return True
+
+        @staticmethod
+        def halt():
+            return True
+
         Position = 1
         Name = 'test'
         DriverVersion = '1'

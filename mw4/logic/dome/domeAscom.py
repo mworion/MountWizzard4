@@ -62,7 +62,7 @@ class DomeAscom(AscomClass):
         azimuth = self.client.Azimuth
         self.dataEntry(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
-        self.dataEntry(self.client.Slewing, 'Slewing')
+        self.dataEntry(self.client.slewing, 'Slewing')
         # unfortunately we cannot simply know, which properties are implemented,
         # so we need to test
         try:

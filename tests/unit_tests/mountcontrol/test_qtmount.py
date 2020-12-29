@@ -18,12 +18,13 @@
 from unittest import mock
 import pytest
 import os
+import socket
 
 # external packages
 import wakeonlan
+from PyQt5.QtCore import QThreadPool, QTimer
 
 # local imports
-from base.tpool import Worker
 from mountcontrol.qtmount import MountSignals
 from mountcontrol.qtmount import Mount
 
@@ -35,6 +36,14 @@ def module_setup_teardown():
               pathToData=os.getcwd() + '/data',
               verbose=True)
     yield
+
+
+def test_mountClass():
+    test = Mount(host='127.0.0.1',
+                 pathToData=os.getcwd() + '/data',
+                 verbose=True,
+                 threadPool=QThreadPool())
+    del test
 
 
 def test_mountSignals():
@@ -52,34 +61,23 @@ def test_settlingTime_2():
 
 
 def test_waitSettlingTime(qtbot):
-
     with qtbot.waitSignal(m.signals.slewFinished):
-        m.waitSettlingAndEmit()
-
-
-def test_startStopTimers():
-    m.startTimers()
-    m.stopTimers()
-
-
-def test_shutdown_1():
-    m.mountUp = True
-    with mock.patch.object(m.obsSite,
-                           'shutdown',
-                           return_value=True):
-        suc = m.shutdown()
+        suc = m.waitSettlingAndEmit()
         assert suc
-        assert not m.mountUp
 
 
-def test_shutdown_2():
-    m.mountUp = True
-    with mock.patch.object(m.obsSite,
-                           'shutdown',
-                           return_value=False):
-        suc = m.shutdown()
-        assert not suc
-        assert m.mountUp
+def test_startTimers():
+    with mock.patch.object(QTimer,
+                           'start'):
+        m.startTimers()
+
+
+def test_stopTimers():
+    with mock.patch.object(QTimer,
+                           'stop'):
+        with mock.patch.object(QThreadPool,
+                               'waitForDone'):
+            m.stopTimers()
 
 
 def test_resetData_1(qtbot):
@@ -112,8 +110,23 @@ def test_resetData_6(qtbot):
         m.resetData()
 
 
-def test_checkMountUp():
-    m.checkMountUp()
+def test_checkMountUp_1():
+    with mock.patch.object(socket.socket,
+                           'connect',
+                           side_effect=Exception):
+        m.checkMountUp()
+        assert not m.mountUp
+
+
+def test_checkMountUp_2():
+    with mock.patch.object(socket.socket,
+                           'connect'):
+        with mock.patch.object(socket.socket,
+                               'shutdown'):
+            with mock.patch.object(socket.socket,
+                                   'close'):
+                m.checkMountUp()
+                assert m.mountUp
 
 
 def test_errorCycleCheckMountUp():
@@ -126,18 +139,59 @@ def test_clearCycleCheckMountUp_1(qtbot):
 
 
 def test_cycleCheckMountUp_1(qtbot):
-    with qtbot.assertNotEmitted(m.signals.mountUp):
+    m.host = ()
+    suc = m.cycleCheckMountUp()
+    assert not suc
+
+
+def test_cycleCheckMountUp_2(qtbot):
+    m.host = ('localhost', 80)
+    with mock.patch.object(QThreadPool,
+                           'start'):
         suc = m.cycleCheckMountUp()
         assert suc
 
 
-def test_errorCyclePointing():
-    m.errorCyclePointing('test')
+def test_errorCyclePointing_1():
+    suc = m.errorCyclePointing('test')
+    assert suc
 
 
 def test_clearCyclePointing_1(qtbot):
     with qtbot.waitSignal(m.signals.pointDone):
         m.clearCyclePointing()
+
+
+def test_clearCyclePointing_2(qtbot):
+    m.obsSite.status = 1
+    m.statusAlert = False
+    suc = m.clearCyclePointing()
+    assert suc
+    assert m.statusAlert
+
+
+def test_clearCyclePointing_3(qtbot):
+    m.obsSite.status = 0
+    m.statusAlert = False
+    suc = m.clearCyclePointing()
+    assert suc
+    assert not m.statusAlert
+
+
+def test_clearCyclePointing_4(qtbot):
+    m.obsSite.status = 0
+    m.statusSlew = False
+    suc = m.clearCyclePointing()
+    assert suc
+    assert m.statusSlew
+
+
+def test_clearCyclePointing_5(qtbot):
+    m.obsSite.status = 2
+    m.statusSlew = False
+    suc = m.clearCyclePointing()
+    assert suc
+    assert not m.statusSlew
 
 
 def test_cyclePointing_1(qtbot):
@@ -363,17 +417,7 @@ def test_bootMount_2():
         assert suc
 
 
-def test_shutdownMount_1():
-    m.mountUp = True
-    with mock.patch.object(m.obsSite,
-                           'shutdown',
-                           return_value=False):
-        suc = m.shutdown()
-        assert not suc
-        assert m.mountUp
-
-
-def test_shutdownMount_2():
+def test_shutdown_1():
     m.mountUp = True
     with mock.patch.object(m.obsSite,
                            'shutdown',
@@ -381,3 +425,13 @@ def test_shutdownMount_2():
         suc = m.shutdown()
         assert suc
         assert not m.mountUp
+
+
+def test_shutdown_2():
+    m.mountUp = True
+    with mock.patch.object(m.obsSite,
+                           'shutdown',
+                           return_value=False):
+        suc = m.shutdown()
+        assert not suc
+        assert m.mountUp

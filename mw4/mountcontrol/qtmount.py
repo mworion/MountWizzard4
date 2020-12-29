@@ -101,18 +101,16 @@ class Mount(mountcontrol.mount.Mount):
 
         if threadPool is None:
             self.threadPool = PyQt5.QtCore.QThreadPool()
+
         else:
             self.threadPool = threadPool
 
-        # signal handling
         self.mountUp = False
         self._settlingTime = 0
         self.statusAlert = False
         self.statusSlew = True
-
-        # signal handling
         self.signals = MountSignals()
-        # timers
+
         self.timerPointing = PyQt5.QtCore.QTimer()
         self.timerPointing.setSingleShot(False)
         self.timerPointing.timeout.connect(self.cyclePointing)
@@ -162,9 +160,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def resetData(self):
         """
-        resetData deletes all data already stored in classes just by redefining the
-        classes. it send as well a signal, when the data is cleared.
-
         :return: true for test purpose
         """
         super().resetData()
@@ -178,12 +173,8 @@ class Mount(mountcontrol.mount.Mount):
 
     def checkMountUp(self):
         """
-        checkMountUp polls the host/port of the mount computer and set the state and
-        signals for the status accordingly.
-
         :return: true for test purpose
         """
-
         client = socket.socket()
         client.settimeout(self.SOCKET_TIMEOUT)
         try:
@@ -215,14 +206,8 @@ class Mount(mountcontrol.mount.Mount):
 
     def cycleCheckMountUp(self):
         """
-        cycleCheckMountUp prepares the worker thread and the signals for getting the settings
-        data.
-        status None means that no chance to connect due to missing host entry
-
         :return: success
         """
-
-        # if not host entry, don't poll for mount, because it does not make sense
         if not self.host:
             self.signals.mountUp.emit(False)
             return False
@@ -256,7 +241,7 @@ class Mount(mountcontrol.mount.Mount):
         else:
             self.statusAlert = False
 
-        if self.obsSite.status not in [2, 6, 6]:
+        if self.obsSite.status not in [2, 6]:
             if not self.statusSlew:
                 self.settlingWait.start(self._settlingTime)
 

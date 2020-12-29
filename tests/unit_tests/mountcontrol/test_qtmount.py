@@ -114,8 +114,10 @@ def test_clearCycleCheckMountUp_1():
 
 def test_cycleCheckMountUp_1():
     m.host = ()
-    suc = m.cycleCheckMountUp()
-    assert not suc
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = m.cycleCheckMountUp()
+        assert not suc
 
 
 def test_cycleCheckMountUp_2():
@@ -254,8 +256,10 @@ def test_clearGetNames_1():
 
 def test_GetNames_1():
     m.mountUp = True
-    suc = m.getNames()
-    assert suc
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = m.getNames()
+        assert suc
 
 
 def test_GetNames_2():

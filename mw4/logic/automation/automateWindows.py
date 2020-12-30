@@ -25,15 +25,18 @@ from PyQt5.QtCore import QObject
 global hasAutomation
 try:
     from pywinauto import timings
+
 except Exception as e:
     log = logging.getLogger(__name__)
     log.error(f'Problem loading automation: {e}')
     hasAutomation = False
+
 else:
     hasAutomation = True
 
 from pywinauto.findwindows import find_windows
 from pywinauto import application
+import pywinauto
 import pywinauto.controls.win32_controls as controls
 from winreg import HKEY_LOCAL_MACHINE
 import winreg
@@ -386,8 +389,10 @@ class AutomateWindows(QObject):
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()
+
         else:
             filedialog['OpenButton4'].click()
+
         popup['Close'].click()
         return True
 
@@ -432,8 +437,10 @@ class AutomateWindows(QObject):
         controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()
+
         else:
             filedialog['OpenButton4'].click()
+
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
         return True
@@ -474,8 +481,10 @@ class AutomateWindows(QObject):
         controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()
+
         else:
             filedialog['OpenButton4'].click()
+
         popup['Close'].click()
 
         return True

@@ -91,8 +91,6 @@ class MeasureData(PyQt5.QtCore.QObject):
 
     def startCommunication(self, loadConfig=False):
         """
-        startCommunication starts cycling of the polling.
-
         :param loadConfig:
         :return: True for test purpose
         """
@@ -105,7 +103,6 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         name = self.run[self.framework].deviceName
         suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
-
         if suc:
             self.signals.deviceConnected.emit(name)
             self.app.message.emit(f'MEASURE found:       [{name}]', 0)
@@ -114,11 +111,8 @@ class MeasureData(PyQt5.QtCore.QObject):
 
     def stopCommunication(self):
         """
-        stopCommunication stop the devices in selected frameworks
-
         :return: true for test purpose
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -131,41 +125,31 @@ class MeasureData(PyQt5.QtCore.QObject):
 
     def setEmptyData(self):
         """
-
         :return: True for test purpose
         """
-
         self.data.clear()
-
         self.data['time'] = np.empty(shape=[0, 1], dtype='datetime64')
         self.data['deltaRaJNow'] = np.empty(shape=[0, 1])
         self.data['deltaDecJNow'] = np.empty(shape=[0, 1])
         self.data['deltaAngularPosRA'] = np.empty(shape=[0, 1])
         self.data['deltaAngularPosDEC'] = np.empty(shape=[0, 1])
         self.data['status'] = np.empty(shape=[0, 1])
-
         self.data['sensorWeatherTemp'] = np.empty(shape=[0, 1])
         self.data['sensorWeatherHum'] = np.empty(shape=[0, 1])
         self.data['sensorWeatherPress'] = np.empty(shape=[0, 1])
         self.data['sensorWeatherDew'] = np.empty(shape=[0, 1])
-
         self.data['onlineWeatherTemp'] = np.empty(shape=[0, 1])
         self.data['onlineWeatherHum'] = np.empty(shape=[0, 1])
         self.data['onlineWeatherPress'] = np.empty(shape=[0, 1])
         self.data['onlineWeatherDew'] = np.empty(shape=[0, 1])
-
         self.data['directWeatherTemp'] = np.empty(shape=[0, 1])
         self.data['directWeatherHum'] = np.empty(shape=[0, 1])
         self.data['directWeatherPress'] = np.empty(shape=[0, 1])
         self.data['directWeatherDew'] = np.empty(shape=[0, 1])
-
         self.data['skyTemp'] = np.empty(shape=[0, 1])
         self.data['skySQR'] = np.empty(shape=[0, 1])
-
         self.data['filterNumber'] = np.empty(shape=[0, 1])
-
         self.data['focusPosition'] = np.empty(shape=[0, 1])
-
         self.data['powCurr1'] = np.empty(shape=[0, 1])
         self.data['powCurr2'] = np.empty(shape=[0, 1])
         self.data['powCurr3'] = np.empty(shape=[0, 1])
@@ -175,21 +159,19 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.data['powHum'] = np.empty(shape=[0, 1])
         self.data['powTemp'] = np.empty(shape=[0, 1])
         self.data['powDew'] = np.empty(shape=[0, 1])
-
         return True
 
     def calculateReference(self):
         """
-        calculateReference run the states to get the calculation with references for
-        RaDec deviations better stable. it takes into account, when the mount is tracking
-        and when we calculate the offset (ref) to make the deviations balanced to zero
+        calculateReference run the states to get the calculation with references
+        for RaDec deviations better stable. it takes into account, when the mount
+        is tracking and when we calculate the offset (ref) to make the deviations
+        balanced to zero
 
         :return: raJNow, decJNow
         """
-
         dat = self.data
         obs = self.app.mount.obsSite
-
         raJNow = 0
         decJNow = 0
         angPosRa = 0
@@ -199,7 +181,7 @@ class MeasureData(PyQt5.QtCore.QObject):
             return raJNow, decJNow, angPosRa, angPosDec
 
         length = len(dat['status'])
-        period = min(length, 10)
+        period = min(length, 1)
         hasMean = length > 0 and period > 0
 
         if not hasMean:

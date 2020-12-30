@@ -27,7 +27,7 @@ try:
     from pywinauto import timings
 
 except Exception as e:
-    log = logging.getLogger(__name__)
+    log = logging.getLogger()
     log.error(f'Problem loading automation: {e}')
     hasAutomation = False
 
@@ -117,8 +117,8 @@ class AutomateWindows(QObject):
             self.available = False
             return
 
-        val = self.getAppSettings(['10micron QCI control box updater',
-                                   '10micron control box updater'])
+        val = self.getAppSettings(['10micron QCI control',
+                                   '10micron control'])
         self.log.debug(f'QCI Updater settings: [{val}]')
         self.available, self.name, self.installPath = val
         self.updaterRunnable = self.installPath + self.UPDATER_EXE
@@ -203,11 +203,12 @@ class AutomateWindows(QObject):
             return False, '', ''
 
         values = self.getValuesForNameKeyFromRegistry(nameKey)
-        if not 'InstallLocation' in values:
+        print(values)
+        if 'InstallLocation' not in values:
             self.log.warning('QCI updater not found.')
             return False, '', ''
 
-        if values.get('DisplayName', '') in appName:
+        if appName in values.get('DisplayName', ''):
             available = True
             name = values['DisplayName']
             installPath = values['InstallLocation']
@@ -220,13 +221,26 @@ class AutomateWindows(QObject):
 
         return available, installPath, name
 
-    def getAppSettings(self, appName):
+    def cycleThroughAppNames(self, appNames):
         """
-        :param appName:
+        :param appNames:
+        :return:
+        """
+        for appName in appNames:
+            val = self.extractPropertiesFromRegistry(appName)
+            if val[0]:
+                return val
+
+        else:
+            return False, '', ''
+
+    def getAppSettings(self, appNames):
+        """
+        :param appNames:
         :return:
         """
         try:
-            val = self.extractPropertiesFromRegistry(appName)
+            val = self.cycleThroughAppNames(appNames)
             available, installPath, displayName = val
 
         except Exception as e:

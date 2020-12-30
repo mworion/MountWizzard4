@@ -178,13 +178,11 @@ class AutomateWindows(QObject):
         :param appName:
         :return:
         """
-
         nameKey = self.getNameKeyFromRegistry(appName)
         if not appName:
             return False, '', ''
 
         values = self.getValuesForNameKeyFromRegistry(nameKey)
-
         if appName in values.get('DisplayName', '') and 'InstallLocation' in values:
             available = True
             name = values['DisplayName']
@@ -194,6 +192,7 @@ class AutomateWindows(QObject):
             available = False
             installPath = ''
             name = ''
+            self.log.warning('QCI updater not found.')
 
         return available, installPath, name
 
@@ -237,14 +236,15 @@ class AutomateWindows(QObject):
         """
         :return:
         """
-        self.log.debug(f'Found QCI updater: [{self.installPath}]')
         if platform.architecture()[0] == '32bit':
             self.updater = pywinauto.Application(backend='win32')
             timings.Timings.fast()
+            self.log.info('Using 32Bit backend win32')
 
         else:
             self.updater = pywinauto.Application(backend='uia')
             timings.Timings.slow()
+            self.log.info('Using 64Bit backend uia')
 
         try:
             self.updater.start(self.installPath + self.UPDATER_EXE)
@@ -292,6 +292,10 @@ class AutomateWindows(QObject):
         """
         :return:
         """
+        if not self.installPath:
+            self.log.error(f'No updater found: {self.installPath}')
+            return False
+
         self.updater = None
         os.chdir(os.path.dirname(self.installPath))
 

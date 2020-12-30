@@ -185,7 +185,7 @@ class Styles:
     }
     QLabel[iconpicture='true'] {
         border-width: 1px;
-        border-color: red;
+        border-color: #404040;
         border-style: plain;
         border-radius: 0px;
     }

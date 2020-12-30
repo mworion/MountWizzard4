@@ -21,12 +21,22 @@ import platform
 
 # external packages
 from PyQt5.QtCore import QObject
-from pywinauto import timings, application
+
+global hasAutomation
+try:
+    from pywinauto import timings
+except Exception as e:
+    log = logging.getLogger(__name__)
+    log.error(f'Problem loading automation: {e}')
+    hasAutomation = False
+else:
+    hasAutomation = True
+
 from pywinauto.findwindows import find_windows
+from pywinauto import application
+import pywinauto.controls.win32_controls as controls
 from winreg import HKEY_LOCAL_MACHINE
 import winreg
-import pywinauto
-import pywinauto.controls.win32_controls as controls
 
 # local imports
 
@@ -97,6 +107,12 @@ class AutomateWindows(QObject):
         super().__init__()
         self.app = app
         self.threadPool = app.threadPool
+
+        if not hasAutomation:
+            self.installPath = ''
+            self.name = ''
+            self.available = False
+            return
 
         val = self.getAppSettings('10micron QCI')
         self.log.debug(f'QCI Updater settings: [{val}]')

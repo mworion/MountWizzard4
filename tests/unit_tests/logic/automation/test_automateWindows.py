@@ -169,28 +169,17 @@ def test_extractPropertiesFromRegistry_3(function):
             assert name == 'test'
 
 
-def test_getAppSettings_1(function):
+def test_cycleThroughAppNames_1(function):
     with mock.patch.object(function,
                            'extractPropertiesFromRegistry',
-                           return_value='test'):
+                           return_value=(False, 'test', 'test')):
         avail, path, name = function.getAppSettings('test')
         assert not avail
         assert path == ''
         assert name == ''
 
 
-def test_getAppSettings_2(function):
-    with mock.patch.object(function,
-                           'extractPropertiesFromRegistry',
-                           return_value='test',
-                           side_effect=Exception()):
-        avail, path, name = function.getAppSettings('test')
-        assert not avail
-        assert path == ''
-        assert name == ''
-
-
-def test_getAppSettings_3(function):
+def test_cycleThroughAppNames_2(function):
     with mock.patch.object(function,
                            'extractPropertiesFromRegistry',
                            return_value=(True, 'test', 'test')):
@@ -198,6 +187,27 @@ def test_getAppSettings_3(function):
         assert avail
         assert path == 'test'
         assert name == 'test'
+
+
+def test_getAppSettings_1(function):
+    with mock.patch.object(function,
+                           'cycleThroughAppNames',
+                           return_value=(False, 'test', 'test')):
+        avail, path, name = function.getAppSettings(['test'])
+        assert not avail
+        assert path == 'test'
+        assert name == 'test'
+
+
+def test_getAppSettings_2(function):
+    with mock.patch.object(function,
+                           'cycleThroughAppNames',
+                           return_value=(False, 'test', 'test'),
+                           side_effect=Exception()):
+        avail, path, name = function.getAppSettings(['test'])
+        assert not avail
+        assert path == ''
+        assert name == ''
 
 
 def test_checkFloatingPointErrorWindow_1(function):

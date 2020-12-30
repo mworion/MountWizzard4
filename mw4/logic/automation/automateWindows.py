@@ -25,15 +25,18 @@ from PyQt5.QtCore import QObject
 global hasAutomation
 try:
     from pywinauto import timings
+
 except Exception as e:
     log = logging.getLogger(__name__)
     log.error(f'Problem loading automation: {e}')
     hasAutomation = False
+
 else:
     hasAutomation = True
 
 from pywinauto.findwindows import find_windows
 from pywinauto import application
+import pywinauto
 import pywinauto.controls.win32_controls as controls
 from winreg import HKEY_LOCAL_MACHINE
 import winreg

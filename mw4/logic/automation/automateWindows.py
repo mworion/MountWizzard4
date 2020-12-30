@@ -117,7 +117,8 @@ class AutomateWindows(QObject):
             self.available = False
             return
 
-        val = self.getAppSettings('10micron QCI')
+        val = self.getAppSettings(['10micron QCI control box updater',
+                                   '10micron control box updater'])
         self.log.debug(f'QCI Updater settings: [{val}]')
         self.available, self.name, self.installPath = val
         self.updaterRunnable = self.installPath + self.UPDATER_EXE
@@ -202,7 +203,11 @@ class AutomateWindows(QObject):
             return False, '', ''
 
         values = self.getValuesForNameKeyFromRegistry(nameKey)
-        if appName in values.get('DisplayName', '') and 'InstallLocation' in values:
+        if not 'InstallLocation' in values:
+            self.log.warning('QCI updater not found.')
+            return False, '', ''
+
+        if values.get('DisplayName', '') in appName:
             available = True
             name = values['DisplayName']
             installPath = values['InstallLocation']
@@ -221,7 +226,8 @@ class AutomateWindows(QObject):
         :return:
         """
         try:
-            available, installPath, displayName = self.extractPropertiesFromRegistry(appName)
+            val = self.extractPropertiesFromRegistry(appName)
+            available, installPath, displayName = val
 
         except Exception as e:
             self.log.debug(f'{e}')

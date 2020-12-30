@@ -366,8 +366,10 @@ class AutomateWindows(QObject):
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()
+
         else:
             filedialog['OpenButton4'].click()
+
         popup['Close'].click()
         return True
 
@@ -412,8 +414,10 @@ class AutomateWindows(QObject):
         controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()
+
         else:
             filedialog['OpenButton4'].click()
+
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
         return True
@@ -454,8 +458,10 @@ class AutomateWindows(QObject):
         controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()
+
         else:
             filedialog['OpenButton4'].click()
+
         popup['Close'].click()
 
         return True

@@ -20,7 +20,7 @@
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
-from PyQt5.Qt3DExtras import Qt3DWindow
+from PyQt5.Qt3DExtras import Qt3DWindow, QSphereMesh
 from PyQt5.Qt3DExtras import QOrbitCameraController
 from PyQt5.Qt3DRender import QPointLight
 from PyQt5.Qt3DCore import QEntity, QTransform
@@ -207,7 +207,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.createScene(self.rootEntity)
-
         self.ui.checkDomeTransparent.clicked.connect(self.setDomeTransparency)
         self.ui.checkDomeEnable.clicked.connect(self.domeCreate)
         self.ui.checkShowBuildPoints.clicked.connect(self.buildPointsCreate)
@@ -385,6 +384,12 @@ class SimulatorWindow(toolsQtWidget.MWidget):
             'ref': {
                 'parent': 'ref1000',
                 'scale': [0.001, 0.001, 0.001],
+            },
+            'centerPoint': {
+                'parent': 'ref',
+                'source': [QSphereMesh(), 10, 30, 30],
+                'trans': [0, 0, 1000],
+                'mat': Materials().pointer,
             },
             'environ': {
                 'parent': 'ref',

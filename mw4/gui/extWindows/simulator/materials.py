@@ -57,8 +57,8 @@ class Materials(Styles):
         self.aluminiumR.setDiffuse(QColor(192, 64, 64))
 
         self.environ1 = QMetalRoughMaterial()
-        self.environ1.setBaseColor(QColor(192, 164, 64))
-        self.environ1.setMetalness(0.5)
+        self.environ1.setBaseColor(QColor(64, 128, 32))
+        self.environ1.setMetalness(0.8)
         self.environ1.setRoughness(1)
 
         self.aluminium = QDiffuseSpecularMaterial()
@@ -103,21 +103,21 @@ class Materials(Styles):
         self.dome1t.setDiffuse(QColor(16, 72, 96))
         self.dome1t.setSpecular(QColor(16, 72, 96))
         self.dome1t.setShininess(0.5)
-        self.dome1t.setAlpha(0.8)
+        self.dome1t.setAlpha(0.5)
 
         self.dome2t = QPhongAlphaMaterial()
         self.dome2t.setAmbient(QColor(12, 54, 72))
         self.dome2t.setDiffuse(QColor(12, 54, 72))
         self.dome2t.setSpecular(QColor(12, 54, 72))
         self.dome2t.setShininess(0.7)
-        self.dome2t.setAlpha(0.8)
+        self.dome2t.setAlpha(0.5)
 
         self.dome3t = QPhongAlphaMaterial()
         self.dome3t.setAmbient(QColor(8, 36, 48))
         self.dome3t.setDiffuse(QColor(8, 36, 48))
         self.dome3t.setSpecular(QColor(8, 36, 48))
         self.dome3t.setShininess(0.3)
-        self.dome3t.setAlpha(0.8)
+        self.dome3t.setAlpha(0.5)
 
         self.points = QPhongMaterial()
         self.points.setAmbient(QColor(16, 128, 16))

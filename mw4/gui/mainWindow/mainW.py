@@ -496,8 +496,22 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.moveFocuserOut, QIcon(':/icon/exit-up.svg'))
 
         # dome setting
-        pixmap = QPixmap(':/pics/offset.png').scaled(301, 301)
+        pixmap = QPixmap(':/dome/radius.png').scaled(300, 300)
         self.ui.picDome1.setPixmap(pixmap)
+        pixmap = QPixmap(':/dome/north.png').scaled(300, 300)
+        self.ui.picDome2.setPixmap(pixmap)
+        pixmap = QPixmap(':/dome/east.png').scaled(300, 300)
+        self.ui.picDome3.setPixmap(pixmap)
+        pixmap = QPixmap(':/dome/z_gem.png').scaled(300, 300)
+        self.ui.picDome4.setPixmap(pixmap)
+        pixmap = QPixmap(':/dome/z_10micron.png').scaled(300, 300)
+        self.ui.picDome5.setPixmap(pixmap)
+        pixmap = QPixmap(':/dome/gem.png').scaled(300, 300)
+        self.ui.picDome6.setPixmap(pixmap)
+        pixmap = QPixmap(':/dome/lat.png').scaled(300, 300)
+        self.ui.picDome7.setPixmap(pixmap)
+        pixmap = QPixmap(':/dome/shutter.png').scaled(300, 300)
+        self.ui.picDome8.setPixmap(pixmap)
         self.wIcon(self.ui.copyFromDomeDriver, QIcon(':/icon/copy.svg'))
         self.wIcon(self.ui.coverPark, QIcon(':/icon/exit-down.svg'))
         self.wIcon(self.ui.coverUnpark, QIcon(':/icon/exit-up.svg'))
@@ -648,7 +662,6 @@ class MainWindow(MWidget,
 
         :return: true for test purpose
         """
-
         environ = {
             'directWeather': self.ui.directWeatherGroup,
             'sensorWeather': self.ui.sensorWeatherGroup,
@@ -671,15 +684,12 @@ class MainWindow(MWidget,
             else:
                 group.setMinimumSize(75, 0)
                 group.setEnabled(False)
-
         return True
 
     def updateWindowsStats(self):
         """
-
         :return: True for test purpose
         """
-
         for win in self.app.uiWindows:
             winObj = self.app.uiWindows[win]
 
@@ -688,7 +698,6 @@ class MainWindow(MWidget,
 
             else:
                 self.changeStyleDynamic(winObj['button'], 'running', False)
-
         return True
 
     def updateDeviceStats(self):
@@ -702,7 +711,6 @@ class MainWindow(MWidget,
 
         :return: True for test purpose
         """
-
         if self.refractionSource in self.deviceStat:
             self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
 
@@ -718,30 +726,20 @@ class MainWindow(MWidget,
 
             else:
                 self.changeStyleDynamic(ui, 'color', 'red')
-
         return True
 
     def updateOnlineWeatherStat(self, stat):
         """
-        updateOnlineWeatherStat receives a signal when online weather changes the status
-        and stores it
-
         :param stat:
         :return: True for test purpose
         """
-
         self.deviceStat['onlineWeather'] = stat
-
         return True
 
     def updateTime(self):
         """
-        updateTime updates the time display in gui, show the actual thread count an the
-        online status set
-
         :return: True for test purpose
         """
-
         self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
         if self.ui.isOnline.isChecked():
             text = 'Internet Online Mode'
@@ -751,48 +749,36 @@ class MainWindow(MWidget,
 
         text = f'{self.threadPool.activeThreadCount():2d} - {text}'
         self.ui.statusOnline.setTitle(text)
-
         return True
 
     def updateAstrometryStatus(self, text):
         """
-
         :param text:
         :return: true for test purpose
         """
-
         self.ui.astrometryText.setText(text)
         return True
 
     def updateDomeStatus(self, text):
         """
-
         :param text:
         :return: true for test purpose
         """
-
         self.ui.domeText.setText(text)
         return True
 
     def updateCameraStatus(self, text):
         """
-
         :param text:
         :return: true for test purpose
         """
-
         self.ui.cameraText.setText(text)
         return True
 
     def updateStatusGUI(self, obs):
         """
-        updateStatusGUI update the gui upon events triggered be the reception of new data
-        from the mount. the mount data is polled, so we use this signal as well for the
-        update process.
-
         :return:    True if ok for testing
         """
-
         if obs.statusText() is not None:
             self.ui.statusText.setText(obs.statusText())
 

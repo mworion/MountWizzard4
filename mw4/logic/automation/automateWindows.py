@@ -21,12 +21,22 @@ import platform
 
 # external packages
 from PyQt5.QtCore import QObject
-from pywinauto import timings, application
+
+global hasAutomation
+try:
+    from pywinauto import timings
+except Exception as e:
+    log = logging.getLogger(__name__)
+    log.error(f'Problem loading automation: {e}')
+    hasAutomation = False
+else:
+    hasAutomation = True
+
 from pywinauto.findwindows import find_windows
+from pywinauto import application
+import pywinauto.controls.win32_controls as controls
 from winreg import HKEY_LOCAL_MACHINE
 import winreg
-import pywinauto
-import pywinauto.controls.win32_controls as controls
 
 # local imports
 
@@ -97,6 +107,12 @@ class AutomateWindows(QObject):
         super().__init__()
         self.app = app
         self.threadPool = app.threadPool
+
+        if not hasAutomation:
+            self.installPath = ''
+            self.name = ''
+            self.available = False
+            return
 
         val = self.getAppSettings('10micron QCI')
         self.log.debug(f'QCI Updater settings: [{val}]')
@@ -178,13 +194,11 @@ class AutomateWindows(QObject):
         :param appName:
         :return:
         """
-
         nameKey = self.getNameKeyFromRegistry(appName)
         if not appName:
             return False, '', ''
 
         values = self.getValuesForNameKeyFromRegistry(nameKey)
-
         if appName in values.get('DisplayName', '') and 'InstallLocation' in values:
             available = True
             name = values['DisplayName']
@@ -194,6 +208,7 @@ class AutomateWindows(QObject):
             available = False
             installPath = ''
             name = ''
+            self.log.warning('QCI updater not found.')
 
         return available, installPath, name
 
@@ -237,14 +252,15 @@ class AutomateWindows(QObject):
         """
         :return:
         """
-        self.log.debug(f'Found QCI updater: [{self.installPath}]')
         if platform.architecture()[0] == '32bit':
             self.updater = pywinauto.Application(backend='win32')
             timings.Timings.fast()
+            self.log.info('Using 32Bit backend win32')
 
         else:
             self.updater = pywinauto.Application(backend='uia')
             timings.Timings.slow()
+            self.log.info('Using 64Bit backend uia')
 
         try:
             self.updater.start(self.installPath + self.UPDATER_EXE)
@@ -292,6 +308,10 @@ class AutomateWindows(QObject):
         """
         :return:
         """
+        if not self.installPath:
+            self.log.error(f'No updater found: {self.installPath}')
+            return False
+
         self.updater = None
         os.chdir(os.path.dirname(self.installPath))
 

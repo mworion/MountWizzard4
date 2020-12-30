@@ -106,10 +106,10 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>12</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
-    <enum>Qt::ElideRight</enum>
+    <enum>Qt::ElideNone</enum>
    </property>
    <property name="tabsClosable">
     <bool>false</bool>
@@ -9688,7 +9688,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -16596,7 +16596,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -21344,7 +21344,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>LAT offset</string>
+         <string>Lateral offset</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_139">
@@ -21476,94 +21476,6 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QLabel" name="picDome1">
-       <property name="geometry">
-        <rect>
-         <x>425</x>
-         <y>25</y>
-         <width>301</width>
-         <height>301</height>
-        </rect>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="midLineWidth">
-        <number>0</number>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-       <property name="iconpicture" stdset="0">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_138">
-       <property name="geometry">
-        <rect>
-         <x>590</x>
-         <y>330</y>
-         <width>171</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string> GEM Offset: distance B to A</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_145">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>330</y>
-         <width>181</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>A: crosspoint RA/DEC axis</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_147">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>350</y>
-         <width>181</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>B: crosspoint DEC/OTA axis</string>
-       </property>
-      </widget>
       <widget class="QGroupBox" name="groupBox_66">
        <property name="geometry">
         <rect>
@@ -21661,26 +21573,435 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QLabel" name="label_150">
+      <widget class="QTabWidget" name="tabDomeExplain">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>370</y>
-         <width>356</width>
-         <height>21</height>
+         <x>395</x>
+         <y>20</y>
+         <width>366</width>
+         <height>361</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
+       <property name="tabPosition">
+        <enum>QTabWidget::West</enum>
        </property>
-       <property name="text">
-        <string>C: crosspoint OTA axis/Lateral offset (pos if right of center)</string>
+       <property name="currentIndex">
+        <number>0</number>
        </property>
+       <property name="elideMode">
+        <enum>Qt::ElideNone</enum>
+       </property>
+       <widget class="QWidget" name="tab_9">
+        <attribute name="title">
+         <string>1</string>
+        </attribute>
+        <widget class="QLabel" name="picDome1">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>10</y>
+           <width>301</width>
+           <height>301</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="midLineWidth">
+          <number>0</number>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="iconpicture" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_125">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>320</y>
+           <width>296</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: Dome radius in [m]</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_10">
+        <attribute name="title">
+         <string>2</string>
+        </attribute>
+        <widget class="QLabel" name="picDome2">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>10</y>
+           <width>301</width>
+           <height>301</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="midLineWidth">
+          <number>0</number>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="iconpicture" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_126">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>320</y>
+           <width>296</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: North offset in [m], north is positive!</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_11">
+        <attribute name="title">
+         <string>3</string>
+        </attribute>
+        <widget class="QLabel" name="picDome3">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>10</y>
+           <width>301</width>
+           <height>301</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="midLineWidth">
+          <number>0</number>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="iconpicture" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_138">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>320</y>
+           <width>296</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: East offset in [m], east is positive!</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_12">
+        <attribute name="title">
+         <string>4</string>
+        </attribute>
+        <widget class="QLabel" name="picDome4">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>10</y>
+           <width>301</width>
+           <height>301</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="midLineWidth">
+          <number>0</number>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="iconpicture" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_141">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>315</y>
+           <width>296</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: Vertical offset in [m], up is positive.
+ASCOM definition!</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_13">
+        <attribute name="title">
+         <string>5</string>
+        </attribute>
+        <widget class="QLabel" name="picDome5">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>10</y>
+           <width>301</width>
+           <height>301</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="midLineWidth">
+          <number>0</number>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="iconpicture" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_145">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>315</y>
+           <width>296</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: Vertical offset in [m], up is positive.
+10micron definition!</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_14">
+        <attribute name="title">
+         <string>6</string>
+        </attribute>
+        <widget class="QLabel" name="picDome6">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>10</y>
+           <width>301</width>
+           <height>301</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="midLineWidth">
+          <number>0</number>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="iconpicture" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_147">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>315</y>
+           <width>296</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: GEM offset in [m], 
+distance GEM point to OTA axis</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_15">
+        <attribute name="title">
+         <string>7</string>
+        </attribute>
+        <widget class="QLabel" name="picDome7">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>10</y>
+           <width>301</width>
+           <height>301</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="midLineWidth">
+          <number>0</number>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="iconpicture" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_150">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>315</y>
+           <width>296</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: Lateral offset in [m], right is positive</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_16">
+        <attribute name="title">
+         <string>8</string>
+        </attribute>
+        <widget class="QLabel" name="picDome8">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>10</y>
+           <width>301</width>
+           <height>301</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="midLineWidth">
+          <number>0</number>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="iconpicture" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_163">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>315</y>
+           <width>296</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: Dome shutter width in [m], overall!</string>
+         </property>
+        </widget>
+       </widget>
       </widget>
      </widget>
      <widget class="QWidget" name="ParkPos">
@@ -26478,7 +26799,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <string>-</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
     <property name="readOnly">
      <bool>true</bool>

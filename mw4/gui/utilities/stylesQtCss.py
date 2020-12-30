@@ -184,10 +184,10 @@ class Styles:
         background-color: rgb(9, 36, 48);
     }
     QLabel[iconpicture='true'] {
-        border-width: 2px;
-        border-color: #404040;
-        border-style: outset;
-        border-radius: 2px;
+        border-width: 1px;
+        border-color: red;
+        border-style: plain;
+        border-radius: 0px;
     }
     /* QLine Edit*/
     QLineEdit {

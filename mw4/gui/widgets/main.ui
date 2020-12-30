@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>12</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -16596,7 +16596,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -21344,7 +21344,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>LAT offset</string>
+         <string>Lateral offset</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_139">
@@ -21620,6 +21620,27 @@ When clicking the button, you could change the value.</string>
           <bool>true</bool>
          </property>
         </widget>
+        <widget class="QLabel" name="label_125">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>320</y>
+           <width>296</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: Dome radius in [m]</string>
+         </property>
+        </widget>
        </widget>
        <widget class="QWidget" name="tab_10">
         <attribute name="title">
@@ -21648,6 +21669,27 @@ When clicking the button, you could change the value.</string>
          </property>
          <property name="iconpicture" stdset="0">
           <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_126">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>320</y>
+           <width>296</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: North offset in [m], north is positive!</string>
          </property>
         </widget>
        </widget>
@@ -21680,6 +21722,27 @@ When clicking the button, you could change the value.</string>
           <bool>true</bool>
          </property>
         </widget>
+        <widget class="QLabel" name="label_138">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>320</y>
+           <width>296</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: East offset in [m], east is positive!</string>
+         </property>
+        </widget>
        </widget>
        <widget class="QWidget" name="tab_12">
         <attribute name="title">
@@ -21708,6 +21771,28 @@ When clicking the button, you could change the value.</string>
          </property>
          <property name="iconpicture" stdset="0">
           <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_141">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>315</y>
+           <width>296</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: Vertical offset in [m], up is positive.
+ASCOM definition!</string>
          </property>
         </widget>
        </widget>
@@ -21740,6 +21825,28 @@ When clicking the button, you could change the value.</string>
           <bool>true</bool>
          </property>
         </widget>
+        <widget class="QLabel" name="label_145">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>315</y>
+           <width>296</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: Vertical offset in [m], up is positive.
+10micron definition!</string>
+         </property>
+        </widget>
        </widget>
        <widget class="QWidget" name="tab_14">
         <attribute name="title">
@@ -21768,6 +21875,28 @@ When clicking the button, you could change the value.</string>
          </property>
          <property name="iconpicture" stdset="0">
           <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_147">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>315</y>
+           <width>296</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: GEM offset in [m], 
+distance GEM point to OTA axis</string>
          </property>
         </widget>
        </widget>
@@ -21800,6 +21929,27 @@ When clicking the button, you could change the value.</string>
           <bool>true</bool>
          </property>
         </widget>
+        <widget class="QLabel" name="label_150">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>315</y>
+           <width>296</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: Lateral offset in [m], right is positive</string>
+         </property>
+        </widget>
        </widget>
        <widget class="QWidget" name="tab_16">
         <attribute name="title">
@@ -21828,6 +21978,27 @@ When clicking the button, you could change the value.</string>
          </property>
          <property name="iconpicture" stdset="0">
           <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_163">
+         <property name="geometry">
+          <rect>
+           <x>25</x>
+           <y>315</y>
+           <width>296</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Red: Dome shutter width in [m], overall!</string>
          </property>
         </widget>
        </widget>

@@ -68,6 +68,8 @@ def module_setup_teardown(qtbot):
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
     app.deviceStat = dict()
+    app.getStyle = MWidget().getStyle
+
     app.log = logging.getLogger(__name__)
     app.threadPool = QThreadPool()
 
@@ -76,6 +78,38 @@ def module_setup_teardown(qtbot):
     yield
 
     app.threadPool.waitForDone(1000)
+
+
+def test_tab1():
+    app.tab1()
+
+
+def test_tab2():
+    app.tab2()
+
+
+def test_tab3():
+    app.tab3()
+
+
+def test_tab4():
+    app.tab4()
+
+
+def test_tab5():
+    app.tab5()
+
+
+def test_tab6():
+    app.tab6()
+
+
+def test_tab7():
+    app.tab7()
+
+
+def test_tab8():
+    app.tab8()
 
 
 def test_initConfig_1():

@@ -109,44 +109,18 @@ class ObsSite(object):
         self._status = None
         self._statusSlew = None
         self._trackingRate = None
-        self.setLoader()
+        self.setLoaderAndTimescale()
 
-    def loadTimescale(self):
+    def setLoaderAndTimescale(self):
         """
-        loadTimescale tries to get timescale with the appropriate parameters. if something
-        is happening on the way, it uses the built-in files of skyfield package instead.
-
-        :return: success
-        """
-
-        try:
-            self.ts = self.loader.timescale()
-
-        except Exception as e:
-            self.ts = self.loader.timescale(builtin=True)
-            self.log.debug(f'Used built-in as degradation because of : {e}')
-
-        return True
-
-    def setLoader(self):
-        """
-
         :return:
         """
-        # generate timescale data
         if self.pathToData:
-            # normally there should be a path given
-            self.loader = api.Loader(self.pathToData,
-                                     verbose=self.verbose,
-                                     )
-            self.loadTimescale()
-
+            self.loader = api.Loader(self.pathToData, verbose=self.verbose)
         else:
             self.loader = api.load
-            self.log.debug('No path for timescale given, using default')
-            self.loadTimescale()
-
-        self.log.debug(f'Loader dir:[{self.loader.directory}]')
+        self.ts = self.loader.timescale(builtin=True)
+        self.log.debug('Timescale is using built-in')
         return True
 
     @property
@@ -580,6 +554,7 @@ class ObsSite(object):
         if slewType == 'keep':
             if self.status == 0:
                 slewTypes['keep'] = ':MS#'
+
             else:
                 slewTypes['keep'] = ':MA#'
 
@@ -589,9 +564,11 @@ class ObsSite(object):
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
+
         if not response[0].startswith('0'):
             self.log.debug(f'Slew could not be done: {response}')
             return False
+
         return True
 
     def setTargetAltAz(self,
@@ -623,18 +600,21 @@ class ObsSite(object):
         :param az_degrees:      azimuth in degrees float
         :return:        success
         """
-
         hasAngles = isinstance(alt, api.Angle) and isinstance(az, api.Angle)
         hasFloats = isinstance(alt_degrees, (float, int)) and isinstance(az_degrees, (float, int))
         if hasAngles:
             pass
+
         elif hasFloats:
             alt = api.Angle(degrees=alt_degrees)
             az = api.Angle(degrees=az_degrees)
+
         else:
             return False
+
         if alt.preference != 'degrees':
             return False
+
         if az.preference != 'degrees':
             return False
 
@@ -650,17 +630,19 @@ class ObsSite(object):
 
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
         commandString = setAlt + setAz + getTargetStatus
-        # set coordinates
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
+
         result = response[0][0:2]
         if result.count('0') > 0:
             self.log.debug(f'Coordinates could not be set, {response}')
             return False
+
         if len(response) != 4:
             self.log.debug(f'Missing return values, {response}')
             return False
+
         self.piersideTarget = response[0][2]
         self.AltTarget = response[0][3:]
         self.AzTarget = response[1]
@@ -700,22 +682,26 @@ class ObsSite(object):
         :param target:  star in type skyfield.Star
         :return:       success
         """
-
         hasTarget = isinstance(target, starlib.Star)
         hasAngles = isinstance(ra, api.Angle) and isinstance(dec, api.Angle)
         hasFloats = isinstance(ra_hours, (float, int)) and isinstance(dec_degrees, (float, int))
         if hasTarget:
             ra = target.ra
             dec = target.dec
+
         elif hasAngles:
             pass
+
         elif hasFloats:
             ra = api.Angle(hours=ra_hours, preference='hours')
             dec = api.Angle(degrees=dec_degrees)
+
         else:
             return False
+
         if ra.preference != 'hours':
             return False
+
         if dec.preference != 'degrees':
             return False
 
@@ -730,17 +716,19 @@ class ObsSite(object):
 
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
         commandString = setRa + setDec + getTargetStatus
-        # set coordinates
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
+
         result = response[0][0:2]
         if result.count('0') > 0:
             self.log.debug(f'Coordinates could not be set, {response}')
             return False
+
         if len(response) != 4:
             self.log.debug(f'Missing return values, {response}')
             return False
+
         self.piersideTarget = response[0][2]
         self.AltTarget = response[0][3:]
         self.AzTarget = response[1]
@@ -773,7 +761,6 @@ class ObsSite(object):
         :param target:  star in type skyfield.Star
         :return:       success
         """
-
         hasTarget = isinstance(target, starlib.Star)
         hasAngles = isinstance(ra, api.Angle) and isinstance(dec, api.Angle)
         hasDecFloats = isinstance(ra_degrees, (float, int))
@@ -782,15 +769,20 @@ class ObsSite(object):
         if hasTarget:
             ra = target.ra
             dec = target.dec
+
         elif hasAngles:
             pass
+
         elif hasFloats:
             ra = api.Angle(hours=ra_degrees)
             dec = api.Angle(degrees=dec_degrees)
+
         else:
             return False
+
         if ra.preference != 'degrees':
             return False
+
         if dec.preference != 'degrees':
             return False
 
@@ -799,22 +791,25 @@ class ObsSite(object):
         decCommand = f':SaXb{dec.degrees:+03.4f}#'
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
         commandString = raCommand + decCommand + getTargetStatus
-        # set coordinates
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
+
         result = response[0][0:2]
         if result.count('0') > 0:
             self.log.debug(f'Coordinates could not be set, {response}')
             return False
+
         if len(response) != 4:
             self.log.debug(f'Missing return values, {response}')
             return False
-        self.piersideTarget = response[0][2]
-        self.AltTarget = response[0][3:]
-        self.AzTarget = response[1]
-        self.raJNowTarget = response[2]
-        self.decJNowTarget = response[3]
+
+        # todo: actually SaXa and SaXb commands seem no to set other targets
+        # self.piersideTarget = response[0][2]
+        # self.AltTarget = response[0][3:]
+        # self.AzTarget = response[1]
+        # self.raJNowTarget = response[2]
+        # self.decJNowTarget = response[3]
         return suc
 
     def shutdown(self):
@@ -879,7 +874,6 @@ class ObsSite(object):
         :param      obs:        skyfield.api.Topos of site
         :return:    success
         """
-
         if not isinstance(obs, api.Topos):
             return False
 
@@ -900,8 +894,10 @@ class ObsSite(object):
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
+
         if '0' in response[0]:
             return False
+
         return True
 
     def setLatitude(self, lat=None, lat_degrees=None):
@@ -924,17 +920,19 @@ class ObsSite(object):
         :param      lat_degrees:  coordinates as float
         :return:    success
         """
-
         hasAngle = isinstance(lat, api.Angle)
         hasFloat = isinstance(lat_degrees, (float, int))
         hasStr = isinstance(lat, str)
         if hasAngle:
             pass
+
         elif hasFloat:
             lat = valueToAngle(lat_degrees, preference='degrees')
+
         elif hasStr:
             lat = lat.replace('deg', '')
             lat = stringToAngle(lat, preference='degrees')
+
         else:
             return False
 
@@ -948,8 +946,10 @@ class ObsSite(object):
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
+
         if '0' in response[0]:
             return False
+
         return True
 
     def setLongitude(self, lon=None, lon_degrees=None):
@@ -976,17 +976,19 @@ class ObsSite(object):
         :param      lon_degrees:  coordinates as float
         :return:    success
         """
-
         hasAngle = isinstance(lon, api.Angle)
         hasFloat = isinstance(lon_degrees, (float, int))
         hasStr = isinstance(lon, str)
         if hasAngle:
             pass
+
         elif hasFloat:
             lon = valueToAngle(lon_degrees, preference='degrees')
+
         elif hasStr:
             lon = lon.replace('deg', '')
             lon = stringToAngle(lon, preference='degrees')
+
         else:
             return False
 
@@ -1000,8 +1002,10 @@ class ObsSite(object):
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
+
         if '0' in response[0]:
             return False
+
         return True
 
     def setElevation(self, elev):
@@ -1021,9 +1025,9 @@ class ObsSite(object):
         :param      elev:        string with elevation in meters
         :return:    success
         """
-
         if not isinstance(elev, (str, int, float)):
             return False
+
         elev = valueToFloat(elev)
         if elev is None:
             return False
@@ -1037,8 +1041,10 @@ class ObsSite(object):
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
+
         if '0' in response[0]:
             return False
+
         return True
 
     def startTracking(self):
@@ -1048,7 +1054,6 @@ class ObsSite(object):
 
         :return:    success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':PO#:AP#')
         return suc
@@ -1059,198 +1064,180 @@ class ObsSite(object):
 
         :return:    success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':RT9#')
         return suc
 
     def checkRateLunar(self):
+        """
+        :return:
+        """
         if self._trackingRate == 62.4:
             return True
+
         else:
             return False
 
     def checkRateSidereal(self):
+        """
+        :return:
+        """
         if self._trackingRate == 60.2:
             return True
+
         else:
             return False
 
     def checkRateSolar(self):
+        """
+        :return:
+        """
         if self._trackingRate == 60.3:
             return True
+
         else:
             return False
 
     def setLunarTracking(self):
         """
-        setLunar sends the command for lunar tracking speed to the mount. the command
-        returns nothing.
-
         :return:    success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':RT0#')
         return suc
 
     def setSiderealTracking(self):
         """
-        setLunar sends the command for sidereal tracking speed to the mount. the command
-        returns nothing.
-
         :return:    success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':RT2#')
         return suc
 
     def setSolarTracking(self):
         """
-        setLunar sends the command for solar tracking speed to the mount. the command
-        returns nothing.
-
         :return:    success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':RT1#')
         return suc
 
     def park(self):
         """
-        park sends the park command to the mount. the command returns nothing.
-
         :return:    success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':hP#')
         return suc
 
     def unpark(self):
         """
-        unpark sends the unpark command to the mount.
-
         :return:    success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':PO#')
         return suc
 
     def parkOnActualPosition(self):
         """
-        parkOnActualPosition sends the appropriate command to the mount.
-
         :return:    success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':PiP#')
         if not suc:
             return False
+
         if '0' in response[0]:
             return False
+
         return True
 
     def stop(self):
         """
-        stop sends the stop command to the mount. the command returns nothing.
-
         :return:    success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':STOP#')
         return suc
 
     def flip(self):
         """
-        flip sends the flip command to the mount.
-
         :return:    success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':FLIP#')
         if not suc:
             return False
+
         if response[0] != '1':
             return False
+
         return True
 
     def moveNorth(self):
         """
-        moveNorth sends the flip command to the mount.
-
         :return:    success
         """
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':PO#:Mn#')
         if not suc:
             return False
+
         return True
 
     def moveEast(self):
         """
-        moveEast sends the flip command to the mount.
-
         :return:    success
         """
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':PO#:Me#')
         if not suc:
             return False
+
         return True
 
     def moveSouth(self):
         """
-        moveSouth sends the flip command to the mount.
-
         :return:    success
         """
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':PO#:Ms#')
         if not suc:
             return False
+
         return True
 
     def moveWest(self):
         """
-        moveWest sends the flip command to the mount.
-
         :return:    success
         """
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':PO#:Mw#')
         if not suc:
             return False
+
         return True
 
     def stopMoveNorth(self):
         """
-        stopMoveNorth sends the flip command to the mount.
-
         :return:    success
         """
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':Qn#')
         if not suc:
             return False
+
         return True
 
     def stopMoveAll(self):
         """
-        stopMoveAll sends the flip command to the mount.
-
         :return:    success
         """
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':Q#')
         if not suc:
             return False
+
         return True
 
     def stopMoveEast(self):
@@ -1267,24 +1254,22 @@ class ObsSite(object):
 
     def stopMoveSouth(self):
         """
-        stopMoveSouth sends the flip command to the mount.
-
         :return:    success
         """
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':Qs#')
         if not suc:
             return False
+
         return True
 
     def stopMoveWest(self):
         """
-        stopMoveWest sends the flip command to the mount.
-
         :return:    success
         """
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':Ww#')
         if not suc:
             return False
+
         return True

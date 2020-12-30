@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 from unittest import mock
+
 # external packages
 import PyQt5
 import pytest

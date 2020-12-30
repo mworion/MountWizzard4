@@ -18,10 +18,14 @@
 import unittest
 import unittest.mock as mock
 import os
+
 # external packages
 import skyfield.api
+
 # local imports
 from mountcontrol.obsSite import ObsSite
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 class TestConfigData(unittest.TestCase):
@@ -716,6 +720,128 @@ class TestConfigData(unittest.TestCase):
         ra = skyfield.api.Angle(degrees=30)
         dec = skyfield.api.Angle(hours=5, preference='hours')
         suc = obsSite.setTargetRaDec(ra, dec)
+        self.assertEqual(False, suc)
+
+    #
+    #
+    # testing setTargetAngular
+    #
+    #
+
+    def test_ObsSite_setTargetAngular_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['112+45:00:00.0', '180:00:00.0', '12:30:00.00', '+45:30:00.0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            ra = skyfield.api.Angle(hours=5, preference='degrees')
+            dec = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetAngular(ra, dec)
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setTargetAngular_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['112+45:00:00.0', '180:00:00.0', '12:30:00.00', '+45:30:00.0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            ra = skyfield.api.Angle(hours=5, preference='degrees')
+            dec = skyfield.api.Angle(degrees=30)
+            target = skyfield.starlib.Star(ra=ra, dec=dec)
+            suc = obsSite.setTargetAngular(target=target)
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setTargetAngular_not_ok1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        ra = 0
+        dec = 0
+        suc = obsSite.setTargetAngular(ra, dec)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_setTargetAngular_not_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        ra = None
+        dec = None
+        suc = obsSite.setTargetAngular(ra, dec)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_setTargetAngular_not_ok3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        ra = None
+        dec = None
+        target = None
+        suc = obsSite.setTargetAngular(ra, dec, target)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_setTargetAngular_not_ok4(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        ra = skyfield.api.Angle(hours=30, preference='hours')
+        dec = None
+        suc = obsSite.setTargetAngular(ra, dec)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_setTargetAngular_not_ok5(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        ra = skyfield.api.Angle(hours=30, preference='hours')
+        dec = skyfield.api.Angle(degrees=30)
+        suc = obsSite.setTargetAngular(ra, dec)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_setTargetAngular_not_ok6(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['00']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            ra = skyfield.api.Angle(hours=5, preference='hours')
+            dec = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetAngular(ra, dec)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setTargetAngular_not_ok7(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['0']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            ra = skyfield.api.Angle(hours=5, preference='hours')
+            dec = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetAngular(ra, dec)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setTargetAngular_not_ok8(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1#']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            ra = skyfield.api.Angle(hours=5, preference='hours')
+            dec = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetAngular(ra, dec)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setTargetAngular_not_ok9(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1#']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            ra = skyfield.api.Angle(hours=5, preference='hours')
+            dec = skyfield.api.Angle(degrees=30)
+            suc = obsSite.setTargetAngular(ra, dec)
+            self.assertEqual(False, suc)
+
+    def test_ObsSite_setTargetAngular_not_ok10(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        ra = skyfield.api.Angle(degrees=30)
+        dec = skyfield.api.Angle(degrees=30)
+        suc = obsSite.setTargetAngular(ra, dec)
+        self.assertEqual(False, suc)
+
+    def test_ObsSite_setTargetAngular_not_ok11(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        ra = skyfield.api.Angle(degrees=30)
+        dec = skyfield.api.Angle(hours=5, preference='hours')
+        suc = obsSite.setTargetAngular(ra, dec)
         self.assertEqual(False, suc)
 
     #

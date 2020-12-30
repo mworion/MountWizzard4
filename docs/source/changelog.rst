@@ -26,10 +26,12 @@ Unreleased Betas
 (0.230.0)
 
 - adding threading for blocking ASCOM drivers (ScopeDome)
-- adding Ra / Dec input for slew, make tabs persistent
 - adding support for dome vert adjustment 10micron vs. ScopeDome and others
+- improved setup explanations for dome settings
 - improved rounding for higher precision
+- adding Ra / Dec input for slew, make tabs persistent
 - improved input handling of angle inputs
+- additional logging for windows automation
 
 Released betas
 --------------

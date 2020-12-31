@@ -203,7 +203,6 @@ class AutomateWindows(QObject):
             return False, '', ''
 
         values = self.getValuesForNameKeyFromRegistry(nameKey)
-        print(values)
         if 'InstallLocation' not in values:
             self.log.warning('QCI updater not found.')
             return False, '', ''

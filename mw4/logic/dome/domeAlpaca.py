@@ -59,25 +59,30 @@ class DomeAlpaca(AlpacaClass):
 
         :return: true for test purpose
         """
+        shutterStates = ['Open', 'Closed', 'Opening', 'Closing', 'Error']
+
         azimuth = self.client.azimuth()
         self.dataEntry(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
         self.dataEntry(self.client.slewing(), 'Slewing')
-        self.dataEntry(self.cansetaltitude, 'CanSetAltitude')
-        self.dataEntry(self.cansetazimuth, 'CanSetAzimuth')
-        self.dataEntry(self.cansetshutter, 'CanSetShutter')
+        self.dataEntry(self.client.cansetaltitude(), 'CanSetAltitude')
+        self.dataEntry(self.client.cansetazimuth(), 'CanSetAzimuth')
+        self.dataEntry(self.client.cansetshutter(), 'CanSetShutter')
 
-        val = self.client.shutterstatus()
-
-        if val == 0:
-            val = True
-
+        state = self.client.shutterstatus()
+        stateText = shutterStates[state]
+        self.dataEntry(stateText, 'Status.Shutter')
+        if state == 0:
+            self.dataEntry(True,
+                           'DOME_SHUTTER.SHUTTER_OPEN',
+                           elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
+        elif state == 1:
+            self.dataEntry(False,
+                           'DOME_SHUTTER.SHUTTER_OPEN',
+                           elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         else:
-            val = False
-
-        self.dataEntry(val,
-                       'DOME_SHUTTER.SHUTTER_OPEN',
-                       elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
+            self.data['DOME_SHUTTER.SHUTTER_OPEN'] = None
+            self.data['DOME_SHUTTER.SHUTTER_CLOSED'] = None
 
         return True
 

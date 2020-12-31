@@ -58,13 +58,13 @@ class CoverAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        states = ['NotPresent', 'Closed', 'Moving', 'Open', 'Unknown', 'Error']
+        coverStates = ['NotPresent', 'Closed', 'Moving', 'Open', 'Unknown', 'Error']
 
         if not self.deviceConnected:
             return False
 
         state = self.client.coverstate
-        stateText = states[state]
+        stateText = coverStates[state]
         self.dataEntry(stateText, 'Status.Cover')
 
         return True

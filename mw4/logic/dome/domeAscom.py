@@ -63,8 +63,9 @@ class DomeAscom(AscomClass):
         self.dataEntry(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
         self.dataEntry(self.client.slewing, 'Slewing')
-        # unfortunately we cannot simply know, which properties are implemented,
-        # so we need to test
+        self.dataEntry(self.CanSetAltitude, 'CanSetAltitude')
+        self.dataEntry(self.CanSetAzimuth, 'CanSetAzimuth')
+        self.dataEntry(self.CanSetShutter, 'CanSetShutter')
         try:
             val = self.client.shutterstatus
 
@@ -74,7 +75,6 @@ class DomeAscom(AscomClass):
         else:
             if val == 0:
                 val = True
-
             else:
                 val = False
 
@@ -87,9 +87,6 @@ class DomeAscom(AscomClass):
 
     def slewToAltAz(self, altitude=0, azimuth=0):
         """
-        slewToAltAz sends a command to the dome to move to azimuth / altitude. if a dome
-        does support this
-
         :param altitude:
         :param azimuth:
         :return: success
@@ -97,5 +94,40 @@ class DomeAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.callMethodThreaded(self.client.SlewToAzimuth, azimuth)
+        if self.data.get('CanSetAzimuth'):
+            self.callMethodThreaded(self.client.SlewToAzimuth, azimuth)
+        if self.data.get('CanSetAltitude'):
+            self.callMethodThreaded(self.client.SlewToAltitude, altitude)
+        return True
+
+    def openShutter(self):
+        """
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+
+        if self.data.get('CanSetShutter'):
+            self.callMethodThreaded(self.client.OpenShutter)
+        return True
+
+    def closeShutter(self):
+        """
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+
+        if self.data.get('CanSetShutter'):
+            self.callMethodThreaded(self.client.CloseShutter)
+        return True
+
+    def abortSlew(self):
+        """
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.callMethodThreaded(self.client.AbortSlew)
         return True

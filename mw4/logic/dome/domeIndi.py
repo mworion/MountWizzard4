@@ -118,9 +118,6 @@ class DomeIndi(IndiClass):
 
     def slewToAltAz(self, altitude=0, azimuth=0):
         """
-        slewToAltAz sends a command to the dome to move to azimuth / altitude.
-        if a dome does support this
-
         :param altitude:
         :param azimuth:
         :return: success
@@ -140,6 +137,77 @@ class DomeIndi(IndiClass):
 
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='ABS_DOME_POSITION',
+                                        elements=position,
+                                        )
+        return suc
+
+    def openShutter(self):
+        """
+        :return: success
+        """
+        if self.device is None:
+            return False
+
+        if self.deviceName is None or not self.deviceName:
+            return False
+
+        position = self.device.getSwitch('DOME_SHUTTER')
+
+        if 'SHUTTER_OPEN' not in position:
+            return False
+
+        position['SHUTTER_OPEN'] = 'On'
+        position['SHUTTER_CLOSE'] = 'Off'
+
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
+                                        propertyName='DOME_SHUTTER',
+                                        elements=position,
+                                        )
+        return suc
+
+    def closeShutter(self):
+        """
+        :return: success
+        """
+        if self.device is None:
+            return False
+
+        if self.deviceName is None or not self.deviceName:
+            return False
+
+        position = self.device.getSwitch('DOME_SHUTTER')
+
+        if 'SHUTTER_CLOSE' not in position:
+            return False
+
+        position['SHUTTER_OPEN'] = 'Off'
+        position['SHUTTER_CLOSE'] = 'On'
+
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
+                                        propertyName='DOME_SHUTTER',
+                                        elements=position,
+                                        )
+        return suc
+
+    def abortSlew(self):
+        """
+        :return: success
+        """
+        if self.device is None:
+            return False
+
+        if self.deviceName is None or not self.deviceName:
+            return False
+
+        position = self.device.getSwitch('DOME_ABORT_MOTION')
+
+        if 'ABORT' not in position:
+            return False
+
+        position['ABORT'] = 'On'
+
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
+                                        propertyName='DOME_ABORT_MOTION',
                                         elements=position,
                                         )
         return suc

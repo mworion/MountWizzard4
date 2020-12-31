@@ -63,6 +63,10 @@ class DomeAlpaca(AlpacaClass):
         self.dataEntry(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
         self.dataEntry(self.client.slewing(), 'Slewing')
+        self.dataEntry(self.cansetaltitude, 'CanSetAltitude')
+        self.dataEntry(self.cansetazimuth, 'CanSetAzimuth')
+        self.dataEntry(self.cansetshutter, 'CanSetShutter')
+
         val = self.client.shutterstatus()
 
         if val == 0:
@@ -86,5 +90,31 @@ class DomeAlpaca(AlpacaClass):
         :param azimuth:
         :return: success
         """
-        self.client.slewtoazimuth(Azimuth=azimuth)
+        if self.data.get('CanSetAzimuth'):
+            self.client.slewtoazimuth(Azimuth=azimuth)
+        if self.data.get('CanSetAltitude'):
+            self.client.slewtoaltitude(Altitude=altitude)
+        return True
+
+    def openShutter(self):
+        """
+        :return: success
+        """
+        if self.data.get('CanSetShutter'):
+            self.client.openShutter()
+        return True
+
+    def closeShutter(self):
+        """
+        :return: success
+        """
+        if self.data.get('CanSetShutter'):
+            self.client.closeShutter()
+        return True
+
+    def abortSlew(self):
+        """
+        :return: success
+        """
+        self.client.abortslew()
         return True

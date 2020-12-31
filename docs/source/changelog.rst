@@ -15,23 +15,28 @@ Unreleased Betas
 
 (1.0)
 
-- First production release
+- first official release
 
 (0.250.0)
 
 - full integration testing
 
-(0.2xxx)
+(0.240.0)
+
+- not planned yet
 
 (0.230.0)
 
 - adding threading for blocking ASCOM drivers (ScopeDome)
 - adding support for dome vert adjustment 10micron vs. ScopeDome and others
-- improved setup explanations for dome settings
-- improved rounding for higher precision
+- added dome shutter open / close
+- improved interactive explanations for dome geometry settings
+- improved rounding for higher precision in modeling
 - adding Ra / Dec input for slew, make tabs persistent
 - improved input handling of angle inputs
 - additional logging for windows automation
+- support for new QCIUpdater naming
+
 
 Released betas
 --------------

@@ -419,7 +419,7 @@ class IndiClass:
             if propertyName == 'PROFILE':
                 self.isINDIGO = True
 
-            # print('switch', self.deviceName, key, value)
+            print('switch', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = value == 'On'

@@ -193,3 +193,36 @@ class Dome:
         self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
         delta = azimuth - az
         return delta
+
+    def openShutter(self):
+        """
+        :return: success
+        """
+        if not self.data:
+            self.log.error('No data dict available')
+            return False
+
+        suc = self.run[self.framework].openShutter()
+        return suc
+
+    def closeShutter(self):
+        """
+        :return: success
+        """
+        if not self.data:
+            self.log.error('No data dict available')
+            return False
+
+        suc = self.run[self.framework].closeShutter()
+        return suc
+
+    def abortSlew(self):
+        """
+        :return: success
+        """
+        if not self.data:
+            self.log.error('No data dict available')
+            return False
+
+        suc = self.run[self.framework].abortSlew()
+        return suc

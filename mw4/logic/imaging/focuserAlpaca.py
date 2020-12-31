@@ -56,6 +56,9 @@ class FocuserAlpaca(AlpacaClass):
         """
         :return: true for test purpose
         """
+        if not self.deviceConnected:
+            return False
+
         self.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] = self.client.position()
         return True
 
@@ -64,6 +67,9 @@ class FocuserAlpaca(AlpacaClass):
         :param position:
         :return:
         """
+        if not self.deviceConnected:
+            return False
+
         self.client.move(Position=position)
         return True
 
@@ -71,5 +77,8 @@ class FocuserAlpaca(AlpacaClass):
         """
         :return:
         """
+        if not self.deviceConnected:
+            return False
+
         self.client.halt()
         return True

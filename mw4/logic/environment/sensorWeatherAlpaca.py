@@ -62,6 +62,8 @@ class SensorWeatherAlpaca(AlpacaClass):
 
         :return: true for test purpose
         """
+        if not self.deviceConnected:
+            return False
 
         self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = self.client.temperature()
         self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = self.client.pressure()

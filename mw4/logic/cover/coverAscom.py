@@ -60,7 +60,7 @@ class CoverAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        state = self.client.coverstate
+        state = self.client.CoverState
         stateText = coverStates[state]
         self.dataEntry(stateText, 'Status.Cover')
 

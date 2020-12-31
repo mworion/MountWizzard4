@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import unittest.mock as mock
 
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
@@ -70,14 +71,73 @@ def test_stopCommunication_2():
     assert suc
 
 
-def test_sendCoverPark_1():
+def test_closeCover_1():
     app.framework = ''
-    suc = app.sendCoverPark()
+    suc = app.closeCover()
     assert not suc
 
 
-def test_sendCoverPark_2():
+def test_closeCover_2():
     app.framework = 'indi'
-    suc = app.sendCoverPark()
+    with mock.patch.object(app.run['indi'],
+                           'closeCover',
+                           return_value=False):
+        suc = app.closeCover()
+        assert not suc
+
+
+def test_closeCover_3():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'closeCover',
+                           return_value=True):
+        suc = app.closeCover()
+        assert suc
+
+
+def test_openCover_1():
+    app.framework = ''
+    suc = app.openCover()
     assert not suc
 
+
+def test_openCover_2():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'openCover',
+                           return_value=False):
+        suc = app.openCover()
+        assert not suc
+
+
+def test_openCover_3():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'openCover',
+                           return_value=True):
+        suc = app.openCover()
+        assert suc
+
+
+def test_haltCover_1():
+    app.framework = ''
+    suc = app.haltCover()
+    assert not suc
+
+
+def test_haltCover_2():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'haltCover',
+                           return_value=False):
+        suc = app.haltCover()
+        assert not suc
+
+
+def test_haltCover_3():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'haltCover',
+                           return_value=True):
+        suc = app.haltCover()
+        assert suc

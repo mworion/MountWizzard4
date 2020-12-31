@@ -102,24 +102,60 @@ def test_setUpdateConfig_6():
             assert suc
 
 
-def test_sendCoverPark_1():
-    app.deviceName = 'test'
+def test_updateText_1():
     app.device = None
-    suc = app.sendCoverPark()
+    suc = app.updateText('test', 'test')
     assert not suc
 
 
-def test_sendCoverPark_2():
+def test_updateText_2():
+    app.device = Device()
+    app.deviceName = 'test'
+    with mock.patch.object(app.device,
+                           'getText',
+                           return_value={'Cover': 'OPEN'}):
+        suc = app.updateText('test', 'CAP_PARK')
+        assert suc
+
+
+def test_updateText_3():
+    app.device = Device()
+    app.deviceName = 'test'
+    with mock.patch.object(app.device,
+                           'getText',
+                           return_value={'Cover': 'CLOSED'}):
+        suc = app.updateText('test', 'CAP_PARK')
+        assert suc
+
+
+def test_updateText_4():
+    app.device = Device()
+    app.deviceName = 'test'
+    with mock.patch.object(app.device,
+                           'getText',
+                           return_value={'Cover': 'test'}):
+        suc = app.updateText('test', 'CAP_PARK')
+        assert suc
+
+
+def test_closeCover_1():
+    app.deviceName = 'test'
+    app.device = None
+    suc = app.closeCover()
+    assert not suc
+
+
+def test_closeCover_2():
     app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',
                            return_value={'Test': 1}):
-        suc = app.sendCoverPark()
+        suc = app.closeCover()
         assert not suc
 
 
-def test_sendCoverPark_3():
+def test_closeCover_3():
     app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
@@ -131,11 +167,11 @@ def test_sendCoverPark_3():
         with mock.patch.object(app.client,
                                'sendNewSwitch',
                                return_value=False):
-            suc = app.sendCoverPark()
+            suc = app.closeCover()
             assert not suc
 
 
-def test_sendCoverPark_4():
+def test_closeCover_4():
     app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
@@ -147,11 +183,11 @@ def test_sendCoverPark_4():
         with mock.patch.object(app.client,
                                'sendNewSwitch',
                                return_value=False):
-            suc = app.sendCoverPark()
+            suc = app.closeCover()
             assert not suc
 
 
-def test_sendCoverPark_5():
+def test_closeCover_5():
     app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
@@ -163,5 +199,77 @@ def test_sendCoverPark_5():
         with mock.patch.object(app.client,
                                'sendNewSwitch',
                                return_value=True):
-            suc = app.sendCoverPark(park=False)
+            suc = app.closeCover()
             assert suc
+
+
+def test_openCover_1():
+    app.deviceName = 'test'
+    app.device = None
+    suc = app.openCover()
+    assert not suc
+
+
+def test_openCover_2():
+    app.deviceName = 'test'
+    app.device = Device()
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'Test': 1}):
+        suc = app.openCover()
+        assert not suc
+
+
+def test_openCover_3():
+    app.deviceName = 'test'
+    app.device = Device()
+    app.client = Client()
+    app.UPDATE_RATE = 0
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'PARK': 'On',
+                                         'UNPARK': 'Off'}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=False):
+            suc = app.openCover()
+            assert not suc
+
+
+def test_openCover_4():
+    app.deviceName = 'test'
+    app.device = Device()
+    app.client = Client()
+    app.UPDATE_RATE = 0
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'PARK': 'On',
+                                         '': 'Off'}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=False):
+            suc = app.openCover()
+            assert not suc
+
+
+def test_openCover_5():
+    app.deviceName = 'test'
+    app.device = Device()
+    app.client = Client()
+    app.UPDATE_RATE = 0
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'PARK': 'Off',
+                                         'UNPARK': 'On'}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=True):
+            suc = app.openCover()
+            assert suc
+
+
+def test_haltCover_1():
+    app.deviceName = 'test'
+    app.device = None
+    suc = app.haltCover()
+    assert suc

@@ -65,6 +65,9 @@ class FilterAlpaca(AlpacaClass):
         """
         :return: true for test purpose
         """
+        if not self.deviceConnected:
+            return False
+
         position = self.client.position()
         if position == -1 or position is None:
             return False
@@ -76,5 +79,8 @@ class FilterAlpaca(AlpacaClass):
         """
         :return: true for test purpose
         """
+        if not self.deviceConnected:
+            return False
+
         self.client.position(Position=filterNumber)
         return True

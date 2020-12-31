@@ -59,6 +59,9 @@ class DomeAlpaca(AlpacaClass):
 
         :return: true for test purpose
         """
+        if not self.deviceConnected:
+            return False
+
         shutterStates = ['Open', 'Closed', 'Opening', 'Closing', 'Error']
 
         azimuth = self.client.azimuth()
@@ -95,6 +98,9 @@ class DomeAlpaca(AlpacaClass):
         :param azimuth:
         :return: success
         """
+        if not self.deviceConnected:
+            return False
+
         if self.data.get('CanSetAzimuth'):
             self.client.slewtoazimuth(Azimuth=azimuth)
         if self.data.get('CanSetAltitude'):
@@ -105,6 +111,9 @@ class DomeAlpaca(AlpacaClass):
         """
         :return: success
         """
+        if not self.deviceConnected:
+            return False
+
         if self.data.get('CanSetShutter'):
             self.client.openShutter()
         return True
@@ -113,6 +122,9 @@ class DomeAlpaca(AlpacaClass):
         """
         :return: success
         """
+        if not self.deviceConnected:
+            return False
+
         if self.data.get('CanSetShutter'):
             self.client.closeShutter()
         return True
@@ -121,5 +133,8 @@ class DomeAlpaca(AlpacaClass):
         """
         :return: success
         """
+        if not self.deviceConnected:
+            return False
+
         self.client.abortslew()
         return True

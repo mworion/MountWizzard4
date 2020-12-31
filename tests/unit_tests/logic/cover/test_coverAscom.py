@@ -37,12 +37,18 @@ def module_setup_teardown():
         Name = 'test'
         DriverVersion = '1'
         DriverInfo = 'test1'
-        coverstate = 1
-        opencover = 0
-        closecover = 0
+        CoverState = 1
 
         @staticmethod
-        def sendCoverPark():
+        def CloseCover():
+            return True
+
+        @staticmethod
+        def OpenCover():
+            return True
+
+        @staticmethod
+        def HaltCover():
             return True
 
     class Test(QObject):
@@ -88,19 +94,55 @@ def test_workerPollData_4():
     assert suc
 
 
-def test_sendCoverPark_1():
+def test_closeCover_1():
     app.deviceConnected = False
-    suc = app.sendCoverPark(park=True)
+    suc = app.closeCover()
     assert not suc
 
 
-def test_sendCoverPark_2():
+def test_closeCover_2():
     app.deviceConnected = True
-    suc = app.sendCoverPark(park=True)
+    suc = app.closeCover()
     assert suc
 
 
-def test_sendCoverPark_3():
+def test_closeCover_3():
     app.deviceConnected = True
-    suc = app.sendCoverPark(park=False)
+    suc = app.closeCover()
+    assert suc
+
+
+def test_openCover_1():
+    app.deviceConnected = False
+    suc = app.openCover()
+    assert not suc
+
+
+def test_openCover_2():
+    app.deviceConnected = True
+    suc = app.openCover()
+    assert suc
+
+
+def test_openCover_3():
+    app.deviceConnected = True
+    suc = app.openCover()
+    assert suc
+
+
+def test_haltCover_1():
+    app.deviceConnected = False
+    suc = app.haltCover()
+    assert not suc
+
+
+def test_haltCover_2():
+    app.deviceConnected = True
+    suc = app.haltCover()
+    assert suc
+
+
+def test_haltCover_3():
+    app.deviceConnected = True
+    suc = app.haltCover()
     assert suc

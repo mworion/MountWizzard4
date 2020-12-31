@@ -67,16 +67,47 @@ def test_workerPollData_2():
         assert suc
 
 
-def test_sendCoverPark_1():
+def test_closeCover_1():
     with mock.patch.object(AlpacaBase,
                            'put'):
-        suc = app.sendCoverPark(park=True)
+        suc = app.closeCover()
+        assert not suc
+
+
+def test_closeCover_2():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.closeCover()
         assert suc
 
 
-def test_sendCoverPark_2():
+def test_openCover_1():
     with mock.patch.object(AlpacaBase,
                            'put'):
-        suc = app.sendCoverPark(park=False)
+        suc = app.openCover()
+        assert not suc
+
+
+def test_openCover_2():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.openCover()
+        assert suc
+
+
+def test_haltCover_1():
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.haltCover()
+        assert not suc
+
+
+def test_haltCover_2():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.haltCover()
         assert suc
 

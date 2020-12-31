@@ -81,6 +81,8 @@ class CameraAlpaca(AlpacaClass):
 
         :return: true for test purpose
         """
+        if not self.deviceConnected:
+            return False
 
         self.dataEntry(self.client.camerastate(),
                        'CAMERA.STATE')
@@ -145,7 +147,6 @@ class CameraAlpaca(AlpacaClass):
         :param focalLength:
         :return: success
         """
-
         binning = int(binning)
         posX = int(posX)
         posY = int(posY)
@@ -242,7 +243,6 @@ class CameraAlpaca(AlpacaClass):
 
         :return: success
         """
-
         if not self.deviceConnected:
             return False
 
@@ -268,7 +268,6 @@ class CameraAlpaca(AlpacaClass):
 
         :return: success
         """
-
         if not self.deviceConnected:
             return False
 

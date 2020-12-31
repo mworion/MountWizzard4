@@ -49,7 +49,6 @@ class CoverIndi(IndiClass):
         :param deviceName:
         :return: success
         """
-
         if deviceName != self.deviceName:
             return False
 
@@ -138,7 +137,8 @@ class CoverIndi(IndiClass):
                                         )
         return suc
 
-    def haltCover(self):
+    @staticmethod
+    def haltCover():
         """
         :return: success
         """

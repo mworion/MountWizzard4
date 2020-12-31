@@ -53,6 +53,10 @@ class SettDome(object):
         self.ui.offGEM.valueChanged.connect(self.tab6)
         self.ui.offLAT.valueChanged.connect(self.tab7)
         self.ui.domeShutterWidth.valueChanged.connect(self.tab8)
+        self.app.update1s.connect(self.updateShutterStatGui)
+        self.ui.domeAbortSlew.clicked.connect(self.domeAbortSlew)
+        self.ui.domeOpenShutter.clicked.connect(self.domeOpenShutter)
+        self.ui.domeCloseShutter.clicked.connect(self.domeCloseShutter)
 
     def tab1(self):
         self.ui.tabDomeExplain.setCurrentIndex(0)
@@ -210,3 +214,36 @@ class SettDome(object):
         """
         self.app.dome.settlingTime = self.ui.settleTimeDome.value()
         return True
+
+    def updateShutterStatGui(self):
+        """
+        :return: True for test purpose
+        """
+        value = self.app.dome.data.get('DOME_SHUTTER.SHUTTER_OPEN', None)
+        if value is True:
+            self.changeStyleDynamic(self.ui.domeOpenShutter, 'running', True)
+            self.changeStyleDynamic(self.ui.domeCloseShutter, 'running', False)
+        elif value is False:
+            self.changeStyleDynamic(self.ui.domeOpenShutter, 'running', False)
+            self.changeStyleDynamic(self.ui.domeCloseShutter, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.domeOpenShutter, 'running', False)
+            self.changeStyleDynamic(self.ui.domeCloseShutter, 'running', False)
+
+    def domeAbortSlew(self):
+        """
+        :return:
+        """
+        suc = self.app.dome.abortSlew()
+
+    def domeOpenShutter(self):
+        """
+        :return:
+        """
+        suc = self.app.dome.openShutter()
+
+    def domeCloseShutter(self):
+        """
+        :return:
+        """
+        suc = self.app.dome.closeShutter()

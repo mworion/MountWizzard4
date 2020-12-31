@@ -494,6 +494,8 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.haltFocuser, QIcon(':/icon/bolt-alt.svg'))
         self.wIcon(self.ui.moveFocuserIn, QIcon(':/icon/exit-down.svg'))
         self.wIcon(self.ui.moveFocuserOut, QIcon(':/icon/exit-up.svg'))
+        self.wIcon(self.ui.coverPark, QIcon(':/icon/exit-down.svg'))
+        self.wIcon(self.ui.coverUnpark, QIcon(':/icon/exit-up.svg'))
 
         # dome setting
         pixmap = QPixmap(':/dome/radius.png')
@@ -513,8 +515,9 @@ class MainWindow(MWidget,
         pixmap = QPixmap(':/dome/shutter.png')
         self.ui.picDome8.setPixmap(pixmap)
         self.wIcon(self.ui.copyFromDomeDriver, QIcon(':/icon/copy.svg'))
-        self.wIcon(self.ui.coverPark, QIcon(':/icon/exit-down.svg'))
-        self.wIcon(self.ui.coverUnpark, QIcon(':/icon/exit-up.svg'))
+        self.wIcon(self.ui.domeCloseShutter, QIcon(':/icon/exit-down.svg'))
+        self.wIcon(self.ui.domeOpenShutter, QIcon(':/icon/exit-up.svg'))
+        self.wIcon(self.ui.domeAbortSlew, QIcon(':/icon/bolt-alt.svg'))
 
         # park positions
         self.wIcon(self.ui.posSave0, QIcon(':/icon/download.svg'))

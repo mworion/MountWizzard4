@@ -16596,7 +16596,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -19680,7 +19680,7 @@ Hint if mount will need a flip when following satellite.</string>
          <string>-</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -19725,26 +19725,13 @@ Hint if mount will need a flip when following satellite.</string>
          <string>-</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
        </widget>
        <widget class="QPushButton" name="coverPark">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>76</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Park</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="coverUnpark">
         <property name="geometry">
          <rect>
           <x>95</x>
@@ -19754,7 +19741,20 @@ Hint if mount will need a flip when following satellite.</string>
          </rect>
         </property>
         <property name="text">
-         <string>Unpark</string>
+         <string>Close</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="coverUnpark">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Open</string>
         </property>
        </widget>
       </widget>
@@ -21927,7 +21927,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>250</x>
           <y>20</y>
-          <width>111</width>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -21945,6 +21945,9 @@ When clicking the button, you could change the value.</string>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::PreventContextMenu</enum>
+        </property>
         <property name="acceptDrops">
          <bool>false</bool>
         </property>
@@ -21958,7 +21961,7 @@ When clicking the button, you could change the value.</string>
          <string>-</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>true</bool>

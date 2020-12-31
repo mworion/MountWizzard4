@@ -230,6 +230,10 @@ class SettDome(object):
             self.changeStyleDynamic(self.ui.domeOpenShutter, 'running', False)
             self.changeStyleDynamic(self.ui.domeCloseShutter, 'running', False)
 
+        value = self.app.dome.data.get('Status.Shutter', None)
+        if value:
+            self.ui.domeShutterStatusText.setText(value)
+
     def domeAbortSlew(self):
         """
         :return:

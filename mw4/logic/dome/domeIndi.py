@@ -105,14 +105,19 @@ class DomeIndi(IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
 
-            if element != 'DOME_ABSOLUTE_POSITION':
-                continue
+            if element == 'DOME_ABSOLUTE_POSITION':
+                azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
+                self.signals.azimuth.emit(azimuth)
 
-            azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
-            self.signals.azimuth.emit(azimuth)
+                slewing = self.device.ABS_DOME_POSITION['state'] == 'Busy'
+                self.data['Slewing'] = slewing
 
-            slewing = self.device.ABS_DOME_POSITION['state'] == 'Busy'
-            self.data['Slewing'] = slewing
+            if element == 'SHUTTER_OPEN':
+                moving = self.device.DOME_SHUTTER['state'] == 'Busy'
+                if moving:
+                    self.data['Shutter.Status'] = 'Moving'
+                else:
+                    self.data['Shutter.Status'] = '-'
 
         return True
 

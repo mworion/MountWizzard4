@@ -70,6 +70,32 @@ class CoverIndi(IndiClass):
                                         elements=update)
         return suc
 
+    def updateText(self, deviceName, propertyName):
+        """
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+        if not super().updateText(deviceName, propertyName):
+            return False
+
+        for element, value in self.device.getText(propertyName).items():
+            if element == 'Cover':
+                value = value.strip().upper()
+                if value == 'OPEN':
+                    self.data['CAP_PARK.UNPARK'] = 'On'
+                    self.data['CAP_PARK.PARK'] = 'Off'
+
+                elif value == 'CLOSED':
+                    self.data['CAP_PARK.UNPARK'] = 'Off'
+                    self.data['CAP_PARK.PARK'] = 'On'
+
+                else:
+                    self.data['CAP_PARK.UNPARK'] = None
+                    self.data['CAP_PARK.PARK'] = None
+
+        return True
+
     def closeCover(self):
         """
         :return: success

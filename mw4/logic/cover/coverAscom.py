@@ -73,7 +73,7 @@ class CoverAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.CloseCover
+        self.client.CloseCover()
         return True
 
     def openCover(self):
@@ -83,7 +83,7 @@ class CoverAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.OpenCover
+        self.client.OpenCover()
         return True
 
     def haltCover(self):
@@ -93,5 +93,5 @@ class CoverAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.HaltCover
+        self.client.HaltCover()
         return True

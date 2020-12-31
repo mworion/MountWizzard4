@@ -42,6 +42,7 @@ class SettImaging(object):
         self.clickable(self.ui.filterName).connect(self.setFilterName)
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
+        self.ui.coverHalt.clicked.connect(self.setCoverHalt)
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
         self.ui.aperture.valueChanged.connect(self.updateParameters)
         self.ui.focalLength.valueChanged.connect(self.updateParameters)
@@ -383,12 +384,11 @@ class SettImaging(object):
 
         :return: True for test purpose
         """
-
-        value = self.app.cover.data.get('Status.Cover', '-').strip().upper()
-        if value == 'OPEN':
+        value = self.app.cover.data.get('CAP_PARK.UNPARK', None)
+        if value == 'On':
             self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
             self.changeStyleDynamic(self.ui.coverPark, 'running', False)
-        elif value == 'CLOSED':
+        elif value == 'Off':
             self.changeStyleDynamic(self.ui.coverPark, 'running', True)
             self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
         else:
@@ -397,24 +397,27 @@ class SettImaging(object):
 
         value = self.app.cover.data.get('Status.Cover', '-')
         self.ui.coverStatusText.setText(value)
-
-        value = self.app.cover.data.get('Status.Motor', '-')
-        self.ui.coverMotorText.setText(value)
-
         return True
 
     def setCoverPark(self):
         """
         :return: success
         """
-        self.app.cover.sendCoverPark(park=True)
+        self.app.cover.closeCover()
         return True
 
     def setCoverUnpark(self):
         """
         :return: success
         """
-        self.app.cover.sendCoverPark(park=False)
+        self.app.cover.openCover()
+        return True
+
+    def setCoverHalt(self):
+        """
+        :return: success
+        """
+        self.app.cover.haltCover()
         return True
 
     def moveFocuserIn(self):

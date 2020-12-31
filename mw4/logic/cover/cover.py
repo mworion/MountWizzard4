@@ -95,9 +95,9 @@ class Cover:
 
     def startCommunication(self, loadConfig=False):
         """
-
+        :param loadConfig:
+        :return:
         """
-
         if self.framework not in self.run.keys():
             return False
         suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
@@ -105,24 +105,40 @@ class Cover:
 
     def stopCommunication(self):
         """
-
+        :return:
         """
-
         if self.framework not in self.run.keys():
             return False
 
         suc = self.run[self.framework].stopCommunication()
         return suc
 
-    def sendCoverPark(self, park=True):
+    def closeCover(self):
         """
-
-        :param park:
         :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 
-        suc = self.run[self.framework].sendCoverPark(park=park)
+        suc = self.run[self.framework].closeCover()
+        return suc
+
+    def openCover(self):
+        """
+        :return: success
+        """
+        if self.framework not in self.run.keys():
+            return False
+
+        suc = self.run[self.framework].openCover()
+        return suc
+
+    def haltCover(self):
+        """
+        :return: success
+        """
+        if self.framework not in self.run.keys():
+            return False
+
+        suc = self.run[self.framework].haltCover()
         return suc

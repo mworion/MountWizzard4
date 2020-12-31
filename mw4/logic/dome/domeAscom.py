@@ -33,7 +33,6 @@ class DomeAscom(AscomClass):
     __all__ = ['DomeAscom',
                ]
 
-    # specific timing for device
     CYCLE_DEVICE = 3000
     CYCLE_DATA = 1000
 

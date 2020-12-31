@@ -70,13 +70,10 @@ class CoverIndi(IndiClass):
                                         elements=update)
         return suc
 
-    def sendCoverPark(self, park=True):
+    def closeCover(self):
         """
-
-        :param park:
         :return: success
         """
-
         if self.device is None:
             return False
 
@@ -85,16 +82,38 @@ class CoverIndi(IndiClass):
         if 'PARK' not in cover:
             return False
 
-        if park:
-            cover['UNPARK'] = 'Off'
-            cover['PARK'] = 'On'
-
-        else:
-            cover['UNPARK'] = 'On'
-            cover['PARK'] = 'Off'
+        cover['UNPARK'] = 'Off'
+        cover['PARK'] = 'On'
 
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='CAP_PARK',
                                         elements=cover,
                                         )
         return suc
+
+    def openCover(self):
+        """
+        :return: success
+        """
+        if self.device is None:
+            return False
+
+        cover = self.device.getSwitch('CAP_PARK')
+
+        if 'UNPARK' not in cover:
+            return False
+
+        cover['UNPARK'] = 'On'
+        cover['PARK'] = 'Off'
+
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
+                                        propertyName='CAP_PARK',
+                                        elements=cover,
+                                        )
+        return suc
+
+    def haltCover(self):
+        """
+        :return: success
+        """
+        return True

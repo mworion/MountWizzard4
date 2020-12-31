@@ -32,15 +32,12 @@ class CoverAscom(AscomClass):
     __all__ = ['CoverAscom',
                ]
 
-    # specific timing for device
     CYCLE_DEVICE = 3000
     CYCLE_DATA = 1000
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
-        # as we have in the base class only the base client there, we will get more
-        # specialized with Dome (which is derived from the base class)
         self.signals = signals
         self.data = data
 
@@ -69,18 +66,32 @@ class CoverAscom(AscomClass):
 
         return True
 
-    def sendCoverPark(self, park=True):
+    def closeCover(self):
         """
         :return: true for test purpose
         """
-
         if not self.deviceConnected:
             return False
 
-        if park:
-            self.client.closecover
+        self.client.CloseCover
+        return True
 
-        else:
-            self.client.opencover
+    def openCover(self):
+        """
+        :return: true for test purpose
+        """
+        if not self.deviceConnected:
+            return False
 
+        self.client.OpenCover
+        return True
+
+    def haltCover(self):
+        """
+        :return: true for test purpose
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.client.HaltCover
         return True

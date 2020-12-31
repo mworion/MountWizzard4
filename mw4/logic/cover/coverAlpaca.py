@@ -71,15 +71,32 @@ class CoverAlpaca(AlpacaClass):
 
         return True
 
-    def sendCoverPark(self, park=True):
+    def closeCover(self):
         """
         :return: true for test purpose
         """
+        if not self.deviceConnected:
+            return False
 
-        if park:
-            self.client.closecover()
+        self.client.closecover()
+        return True
 
-        else:
-            self.client.opencover()
+    def openCover(self):
+        """
+        :return: true for test purpose
+        """
+        if not self.deviceConnected:
+            return False
 
+        self.client.opencover()
+        return True
+
+    def haltCover(self):
+        """
+        :return: true for test purpose
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.client.haltcover()
         return True

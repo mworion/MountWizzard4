@@ -115,7 +115,7 @@ class DomeAlpaca(AlpacaClass):
             return False
 
         if self.data.get('CanSetShutter'):
-            self.client.openShutter()
+            self.client.openshutter()
         return True
 
     def closeShutter(self):
@@ -126,7 +126,7 @@ class DomeAlpaca(AlpacaClass):
             return False
 
         if self.data.get('CanSetShutter'):
-            self.client.closeShutter()
+            self.client.closeshutter()
         return True
 
     def abortSlew(self):

@@ -361,6 +361,7 @@ class MinorPlanetTime:
         if not self.app.automation:
             self.app.message.emit('Not running windows - upload not possible', 2)
             return False
+
         else:
             if not self.app.automation.installPath:
                 self.app.message.emit('No 10micron updater found.', 2)
@@ -411,6 +412,7 @@ class MinorPlanetTime:
         if not self.app.automation:
             self.app.message.emit('Not running windows - upload not possible', 2)
             return False
+
         else:
             if not self.app.automation.installPath:
                 self.app.message.emit('No 10micron updater found.', 2)

@@ -48,6 +48,17 @@ def test_getInitialConfig_1():
 
 
 def test_workerPollData_1():
+    app.deviceConnected = False
+    with mock.patch.object(app.client,
+                           'position',
+                           return_value=1):
+        suc = app.workerPollData()
+        assert not suc
+        assert app.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] == 1
+
+
+def test_workerPollData_2():
+    app.deviceConnected = True
     with mock.patch.object(app.client,
                            'position',
                            return_value=1):
@@ -57,6 +68,15 @@ def test_workerPollData_1():
 
 
 def test_move_1():
+    app.deviceConnected = False
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.move(position=0)
+        assert not suc
+
+
+def test_move_2():
+    app.deviceConnected = True
     with mock.patch.object(AlpacaBase,
                            'put'):
         suc = app.move(position=0)
@@ -64,6 +84,15 @@ def test_move_1():
 
 
 def test_halt_1():
+    app.deviceConnected = False
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.halt()
+        assert not suc
+
+
+def test_halt_2():
+    app.deviceConnected = True
     with mock.patch.object(AlpacaBase,
                            'put'):
         suc = app.halt()

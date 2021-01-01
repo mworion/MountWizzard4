@@ -181,7 +181,7 @@ class MeasureData(PyQt5.QtCore.QObject):
             return raJNow, decJNow, angPosRa, angPosDec
 
         length = len(dat['status'])
-        period = min(length, 3)
+        period = min(length, 10)
         hasMean = length > 0 and period > 0
 
         if not hasMean:

@@ -74,6 +74,7 @@ def test_getInitialConfig_4():
 
 
 def test_workerPollData_1():
+    app.deviceConnected = False
     with mock.patch.object(AlpacaBase,
                            'get',
                            return_value=-1):
@@ -82,6 +83,16 @@ def test_workerPollData_1():
 
 
 def test_workerPollData_2():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'get',
+                           return_value=-1):
+        suc = app.workerPollData()
+        assert not suc
+
+
+def test_workerPollData_3():
+    app.deviceConnected = True
     with mock.patch.object(AlpacaBase,
                            'get',
                            return_value=1):
@@ -91,6 +102,15 @@ def test_workerPollData_2():
 
 
 def test_sendFilterNumber_1():
+    app.deviceConnected = False
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.sendFilterNumber()
+        assert not suc
+
+
+def test_sendFilterNumber_2():
+    app.deviceConnected = True
     with mock.patch.object(AlpacaBase,
                            'put'):
         suc = app.sendFilterNumber()

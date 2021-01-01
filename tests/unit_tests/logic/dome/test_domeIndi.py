@@ -197,3 +197,180 @@ def test_slewToAltAz_6():
                                return_value=True):
             suc = app.slewToAltAz()
             assert suc
+
+
+def test_openShutter_1():
+    suc = app.openShutter()
+    assert not suc
+
+
+def test_openShutter_2():
+    app.device = Device()
+    suc = app.openShutter()
+    assert not suc
+
+
+def test_openShutter_3():
+    app.device = Device()
+    app.deviceName = 'test'
+    suc = app.openShutter()
+    assert not suc
+
+
+def test_openShutter_4():
+    app.device = Device()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'SHUTTER_OPEN': 1}):
+        suc = app.openShutter()
+        assert not suc
+
+
+def test_openShutter_5():
+    app.device = Device()
+    app.client = Client()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'SHUTTER_OPEN': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=False):
+            suc = app.openShutter()
+            assert not suc
+
+
+def test_openShutter_6():
+    app.device = Device()
+    app.client = Client()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'SHUTTER_OPEN': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=True):
+            suc = app.openShutter()
+            assert suc
+
+
+def test_closeShutter_1():
+    suc = app.closeShutter()
+    assert not suc
+
+
+def test_closeShutter_2():
+    app.device = Device()
+    suc = app.closeShutter()
+    assert not suc
+
+
+def test_closeShutter_3():
+    app.device = Device()
+    app.deviceName = 'test'
+    suc = app.closeShutter()
+    assert not suc
+
+
+def test_closeShutter_4():
+    app.device = Device()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'SHUTTER_CLOSE': 1}):
+        suc = app.closeShutter()
+        assert not suc
+
+
+def test_closeShutter_5():
+    app.device = Device()
+    app.client = Client()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'SHUTTER_CLOSE': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=False):
+            suc = app.closeShutter()
+            assert not suc
+
+
+def test_closeShutter_6():
+    app.device = Device()
+    app.client = Client()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'SHUTTER_CLOSE': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=True):
+            suc = app.closeShutter()
+            assert suc
+
+
+def test_abortSlew_1():
+    suc = app.abortSlew()
+    assert not suc
+
+
+def test_abortSlew_2():
+    app.device = Device()
+    suc = app.abortSlew()
+    assert not suc
+
+
+def test_abortSlew_3():
+    app.device = Device()
+    app.deviceName = 'test'
+    suc = app.abortSlew()
+    assert not suc
+
+
+def test_abortSlew_4():
+    app.device = Device()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'ABORT': 1}):
+        suc = app.abortSlew()
+        assert not suc
+
+
+def test_abortSlew_5():
+    app.device = Device()
+    app.client = Client()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'ABORT': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=False):
+            suc = app.abortSlew()
+            assert not suc
+
+
+def test_abortSlew_6():
+    app.device = Device()
+    app.client = Client()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'ABORT': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=True):
+            suc = app.abortSlew()
+            assert suc

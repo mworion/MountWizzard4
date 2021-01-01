@@ -166,3 +166,81 @@ def test_slewDome_5():
                            return_value=(Angle(degrees=10), None, 0, 0, 0)):
         val = app.slewDome(altitude=0, azimuth=0)
         assert val == 0
+
+
+def test_openShutter_1():
+    app.data = {}
+    suc = app.openShutter()
+    assert not suc
+
+
+def test_openShutter_2():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'openShutter',
+                           return_value=False):
+        suc = app.openShutter()
+        assert not suc
+
+
+def test_openShutter_3():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'openShutter',
+                           return_value=True):
+        suc = app.openShutter()
+        assert suc
+
+
+def test_closeShutter_1():
+    app.data = {}
+    suc = app.closeShutter()
+    assert not suc
+
+
+def test_closeShutter_2():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'closeShutter',
+                           return_value=False):
+        suc = app.closeShutter()
+        assert not suc
+
+
+def test_closeShutter_3():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'closeShutter',
+                           return_value=True):
+        suc = app.closeShutter()
+        assert suc
+
+
+def test_abortSlew_1():
+    app.data = {}
+    suc = app.abortSlew()
+    assert not suc
+
+
+def test_abortSlew_2():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'abortSlew',
+                           return_value=False):
+        suc = app.abortSlew()
+        assert not suc
+
+
+def test_abortSlew_3():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'abortSlew',
+                           return_value=True):
+        suc = app.abortSlew()
+        assert suc

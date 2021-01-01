@@ -140,6 +140,30 @@ def test_updateNumber_2():
         assert suc
 
 
+def test_updateNumber_3():
+    app.device = Device()
+    app.deviceName = 'test'
+    setattr(app.device, 'DOME_SHUTTER', {'state': 'Busy'})
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'TEST': 1,
+                                         'SHUTTER_OPEN': 2}):
+        suc = app.updateNumber('test', 'SHUTTER_OPEN')
+        assert suc
+
+
+def test_updateNumber_4():
+    app.device = Device()
+    app.deviceName = 'test'
+    setattr(app.device, 'DOME_SHUTTER', {'state': 'test'})
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'TEST': 1,
+                                         'SHUTTER_OPEN': 2}):
+        suc = app.updateNumber('test', 'SHUTTER_OPEN')
+        assert suc
+
+
 def test_slewToAltAz_1():
     suc = app.slewToAltAz()
     assert not suc

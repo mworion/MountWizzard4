@@ -45,9 +45,16 @@ def module_setup_teardown():
         CanSetAzimuth = True
         CanSetShutter = True
         AbortSlew = False
+        OpenShutter = None
+        CloseShutter = None
+        AbortSlew = None
 
         @staticmethod
         def SlewToAzimuth(azimuth):
+            return True
+
+        @staticmethod
+        def SlewToAltitude(altitude):
             return True
 
     class Test(QObject):
@@ -110,6 +117,8 @@ def test_workerPollData_4():
 
 
 def test_slewToAltAz_1():
+    app.data['CanSetAzimuth'] = True
+    app.data['CanSetAltitude'] = True
     app.deviceConnected = False
     with mock.patch.object(app,
                            'callMethodThreaded'):
@@ -118,6 +127,8 @@ def test_slewToAltAz_1():
 
 
 def test_slewToAltAz_2():
+    app.data['CanSetAzimuth'] = True
+    app.data['CanSetAltitude'] = True
     app.deviceConnected = True
     with mock.patch.object(app,
                            'callMethodThreaded'):
@@ -126,6 +137,7 @@ def test_slewToAltAz_2():
 
 
 def test_openShutter_1():
+    app.data['CanSetShutter'] = True
     app.deviceConnected = False
     with mock.patch.object(app,
                            'callMethodThreaded'):
@@ -134,6 +146,7 @@ def test_openShutter_1():
 
 
 def test_openShutter_2():
+    app.data['CanSetShutter'] = True
     app.deviceConnected = True
     with mock.patch.object(app,
                            'callMethodThreaded'):
@@ -142,6 +155,7 @@ def test_openShutter_2():
 
 
 def test_closeShutter_1():
+    app.data['CanSetShutter'] = True
     app.deviceConnected = False
     with mock.patch.object(app,
                            'callMethodThreaded'):
@@ -150,6 +164,7 @@ def test_closeShutter_1():
 
 
 def test_closeShutter_2():
+    app.data['CanSetShutter'] = True
     app.deviceConnected = True
     with mock.patch.object(app,
                            'callMethodThreaded'):

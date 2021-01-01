@@ -169,6 +169,20 @@ def test_extractPropertiesFromRegistry_3(function):
             assert name == 'test'
 
 
+def test_extractPropertiesFromRegistry_4(function):
+    with mock.patch.object(function,
+                           'getNameKeyFromRegistry',
+                           return_value='test'):
+        with mock.patch.object(function,
+                               'getValuesForNameKeyFromRegistry',
+                               return_value={'DisplayName': 'none',
+                                             'InstallLocation': 'test'}):
+            avail, path, name = function.extractPropertiesFromRegistry('test')
+            assert not avail
+            assert path == ''
+            assert name == ''
+
+
 def test_cycleThroughAppNames_1(function):
     with mock.patch.object(function,
                            'extractPropertiesFromRegistry',
@@ -358,6 +372,17 @@ def test_clearUploadMenu_2(function):
         assert not suc
 
 
+def test_prepareUpdater_0(function):
+    function.installPath = ''
+    with mock.patch.object(os,
+                           'chdir'):
+        with mock.patch.object(function,
+                               'startUpdater',
+                               return_value=False):
+            suc = function.prepareUpdater()
+            assert not suc
+
+
 def test_prepareUpdater_1(function):
     with mock.patch.object(os,
                            'chdir'):
@@ -544,6 +569,17 @@ def test_uploadMPCData_2(function):
     with mock.patch.object(function,
                            'prepareUpdater'):
         with mock.patch.object(function,
+                               'uploadMPCDataCommands',
+                               side_effect=Exception()):
+            suc = function.uploadMPCData()
+            assert not suc
+
+
+def test_uploadMPCData_3(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
                                'uploadMPCDataCommands'):
             with mock.patch.object(function,
                                    'doUploadAndCloseInstaller',
@@ -552,15 +588,20 @@ def test_uploadMPCData_2(function):
                 assert suc
 
 
-def test_uploadMPCData_3(function):
+def test_uploadMPCData_4(function):
     function.actualWorkDir = os.getcwd()
     with mock.patch.object(function,
                            'prepareUpdater'):
         with mock.patch.object(function,
-                               'uploadMPCDataCommands',
-                               side_effect=Exception()):
-            suc = function.uploadMPCData()
-            assert not suc
+                               'uploadMPCDataCommands'):
+            with mock.patch.object(function,
+                                   'doUploadAndCloseInstaller',
+                                   return_value=True):
+                with mock.patch.object(platform,
+                                       'architecture',
+                                       return_value=['64bit']):
+                    suc = function.uploadMPCData()
+                    assert suc
 
 
 def test_uploadEarthRotationDataCommands(function):
@@ -639,6 +680,22 @@ def test_uploadEarthRotationData_3(function):
                 assert suc
 
 
+def test_uploadEarthRotationData_4(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'uploadEarthRotationDataCommands'):
+            with mock.patch.object(function,
+                                   'doUploadAndCloseInstaller',
+                                   return_value=True):
+                with mock.patch.object(platform,
+                                       'architecture',
+                                       return_value=['64bit']):
+                    suc = function.uploadEarthRotationData()
+                    assert suc
+
+
 def test_uploadTLEDataCommands(function):
     class Test:
         @staticmethod
@@ -711,3 +768,19 @@ def test_uploadTLEData_3(function):
                                    return_value=True):
                 suc = function.uploadTLEData()
                 assert suc
+
+
+def test_uploadTLEData_4(function):
+    function.actualWorkDir = os.getcwd()
+    with mock.patch.object(function,
+                           'prepareUpdater'):
+        with mock.patch.object(function,
+                               'uploadTLEDataCommands'):
+            with mock.patch.object(function,
+                                   'doUploadAndCloseInstaller',
+                                   return_value=True):
+                with mock.patch.object(platform,
+                                       'architecture',
+                                       return_value=['64bit']):
+                    suc = function.uploadTLEData()
+                    assert suc

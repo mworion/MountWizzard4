@@ -54,7 +54,6 @@ def test_workerPollData_1():
                            return_value=1):
         suc = app.workerPollData()
         assert not suc
-        assert app.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] == 1
 
 
 def test_workerPollData_2():

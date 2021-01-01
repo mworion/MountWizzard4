@@ -63,6 +63,16 @@ def test_getInitialConfig_1():
 
 
 def test_workerPollData_1():
+    app.deviceConnected = False
+    app.data['CAN_FAST'] = True
+    with mock.patch.object(AlpacaBase,
+                           'get'):
+        suc = app.workerPollData()
+        assert not suc
+
+
+def test_workerPollData_2():
+    app.deviceConnected = True
     app.data['CAN_FAST'] = True
     with mock.patch.object(AlpacaBase,
                            'get'):
@@ -70,7 +80,7 @@ def test_workerPollData_1():
         assert suc
 
 
-def test_workerPollData_2():
+def test_workerPollData_3():
     with mock.patch.object(AlpacaBase,
                            'get'):
         suc = app.workerPollData()

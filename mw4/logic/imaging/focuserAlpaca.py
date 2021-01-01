@@ -59,7 +59,8 @@ class FocuserAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] = self.client.position()
+        val = self.client.position()
+        self.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] = val
         return True
 
     def move(self, position=None):

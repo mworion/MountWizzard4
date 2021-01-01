@@ -1,7 +1,8 @@
-# Security Policy
+Security Policy
+===============
 
-## Supported Versions
-
+Supported Versions
+------------------
 Security updates will be supported for version
 
 +----------+--------------------+
@@ -11,6 +12,6 @@ Security updates will be supported for version
 | < 0.220  | :x:                |
 +----------+--------------------+
 
-## Reporting a Vulnerability
-
+Reporting a Vulnerability
+-------------------------
 No issues known

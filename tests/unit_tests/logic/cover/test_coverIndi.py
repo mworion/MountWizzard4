@@ -272,4 +272,4 @@ def test_haltCover_1():
     app.deviceName = 'test'
     app.device = None
     suc = app.haltCover()
-    assert suc
+    assert not suc

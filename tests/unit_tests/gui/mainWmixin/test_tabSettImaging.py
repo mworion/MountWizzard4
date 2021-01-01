@@ -261,31 +261,96 @@ def test_updateCoverStatGui_3():
 
 
 def test_setCoverPark_1():
-    suc = app.setCoverPark()
-    assert suc
+    with mock.patch.object(app.app.cover,
+                           'closeCover',
+                           return_value=False):
+        suc = app.setCoverPark()
+        assert not suc
+
+
+def test_setCoverPark_2():
+    with mock.patch.object(app.app.cover,
+                           'closeCover',
+                           return_value=True):
+        suc = app.setCoverPark()
+        assert suc
 
 
 def test_setCoverUnpark_1():
-    suc = app.setCoverUnpark()
-    assert suc
+    with mock.patch.object(app.app.cover,
+                           'openCover',
+                           return_value=False):
+        suc = app.setCoverUnpark()
+        assert not suc
+
+
+def test_setCoverUnpark_2():
+    with mock.patch.object(app.app.cover,
+                           'openCover',
+                           return_value=True):
+        suc = app.setCoverUnpark()
+        assert suc
+
+
+def test_setCoverHalt_1():
+    with mock.patch.object(app.app.cover,
+                           'haltCover',
+                           return_value=False):
+        suc = app.setCoverHalt()
+        assert not suc
+
+
+def test_setCoverHalt_2():
+    with mock.patch.object(app.app.cover,
+                           'haltCover',
+                           return_value=True):
+        suc = app.setCoverHalt()
+        assert suc
 
 
 def test_moveFocuserIn_1():
     with mock.patch.object(app.app.focuser,
-                           'move'):
+                           'move',
+                           return_value=False):
+        suc = app.moveFocuserIn()
+        assert not suc
+
+
+def test_moveFocuserIn_2():
+    with mock.patch.object(app.app.focuser,
+                           'move',
+                           return_value=True):
         suc = app.moveFocuserIn()
         assert suc
 
 
 def test_moveFocuserOut_1():
     with mock.patch.object(app.app.focuser,
-                           'move'):
+                           'move',
+                           return_value=False):
+        suc = app.moveFocuserOut()
+        assert not suc
+
+
+def test_moveFocuserOut_2():
+    with mock.patch.object(app.app.focuser,
+                           'move',
+                           return_value=True):
         suc = app.moveFocuserOut()
         assert suc
 
 
 def test_haltFocuser_1():
     with mock.patch.object(app.app.focuser,
-                           'halt'):
+                           'halt',
+                           return_value=False):
+        suc = app.haltFocuser()
+        assert not suc
+
+
+def test_haltFocuser_2():
+    with mock.patch.object(app.app.focuser,
+                           'halt',
+                           return_value=True):
         suc = app.haltFocuser()
         assert suc

@@ -239,15 +239,21 @@ class SettDome(object):
         :return:
         """
         suc = self.app.dome.abortSlew()
+        if not suc:
+            self.app.message.emit('Dome slew abort could not be executed', 2)
 
     def domeOpenShutter(self):
         """
         :return:
         """
         suc = self.app.dome.openShutter()
+        if not suc:
+            self.app.message.emit('Dome open shutter could not be executed', 2)
 
     def domeCloseShutter(self):
         """
         :return:
         """
         suc = self.app.dome.closeShutter()
+        if not suc:
+            self.app.message.emit('Dome close shutter could not be executed', 2)

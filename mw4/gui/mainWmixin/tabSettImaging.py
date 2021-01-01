@@ -403,22 +403,28 @@ class SettImaging(object):
         """
         :return: success
         """
-        self.app.cover.closeCover()
-        return True
+        suc = self.app.cover.closeCover()
+        if not suc:
+            self.app.message.emit('Cover close could not be executed', 2)
+        return suc
 
     def setCoverUnpark(self):
         """
         :return: success
         """
-        self.app.cover.openCover()
-        return True
+        suc = self.app.cover.openCover()
+        if not suc:
+            self.app.message.emit('Cover open could not be executed', 2)
+        return suc
 
     def setCoverHalt(self):
         """
         :return: success
         """
-        self.app.cover.haltCover()
-        return True
+        suc = self.app.cover.haltCover()
+        if not suc:
+            self.app.message.emit('Cover stop could not be executed', 2)
+        return suc
 
     def moveFocuserIn(self):
         """
@@ -427,8 +433,10 @@ class SettImaging(object):
         pos = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         step = self.ui.focuserStepsize.value()
         newPos = pos - step
-        self.app.focuser.move(position=newPos)
-        return True
+        suc = self.app.focuser.move(position=newPos)
+        if not suc:
+            self.app.message.emit('Focuser move in could not be executed', 2)
+        return suc
 
     def moveFocuserOut(self):
         """
@@ -437,12 +445,16 @@ class SettImaging(object):
         pos = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         step = self.ui.focuserStepsize.value()
         newPos = pos + step
-        self.app.focuser.move(position=newPos)
-        return True
+        suc = self.app.focuser.move(position=newPos)
+        if not suc:
+            self.app.message.emit('Focuser move out could not be executed', 2)
+        return suc
 
     def haltFocuser(self):
         """
         :return: success
         """
-        self.app.focuser.halt()
-        return True
+        suc = self.app.focuser.halt()
+        if not suc:
+            self.app.message.emit('Focuser halt could not be executed', 2)
+        return suc

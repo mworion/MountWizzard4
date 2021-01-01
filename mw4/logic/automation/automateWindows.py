@@ -22,7 +22,6 @@ import platform
 # external packages
 from PyQt5.QtCore import QObject
 
-global hasAutomation
 try:
     from pywinauto import timings
 
@@ -228,10 +227,11 @@ class AutomateWindows(QObject):
         for appName in appNames:
             val = self.extractPropertiesFromRegistry(appName)
             if val[0]:
-                return val
-
+                break
         else:
             return False, '', ''
+
+        return val
 
     def getAppSettings(self, appNames):
         """

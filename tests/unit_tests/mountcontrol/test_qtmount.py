@@ -30,15 +30,14 @@ from mountcontrol.qtmount import Mount
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global m
+def function():
     m = Mount(host='127.0.0.1',
               pathToData=os.getcwd() + '/data',
               verbose=True)
-    yield
+    yield m
 
 
-def test_mountClass():
+def test_mountClass(function):
     test = Mount(host='127.0.0.1',
                  pathToData=os.getcwd() + '/data',
                  verbose=True,
@@ -46,388 +45,389 @@ def test_mountClass():
     del test
 
 
-def test_mountSignals():
+def test_mountSignals(function):
     MountSignals()
 
 
-def test_settlingTime_1():
-    m.settlingTime = 1
-    assert m._settlingTime == 1000
+def test_settlingTime_1(function):
+    function.settlingTime = 1
+    assert function._settlingTime == 1000
 
 
-def test_settlingTime_2():
-    m._settlingTime = 2000
-    assert m.settlingTime == 2
+def test_settlingTime_2(function):
+    function._settlingTime = 2000
+    assert function.settlingTime == 2
 
 
-def test_waitSettlingTime():
-    suc = m.waitSettlingAndEmit()
+def test_waitSettlingTime(function):
+    suc = function.waitSettlingAndEmit()
     assert suc
 
 
-def test_startTimers():
+def test_startTimers(function):
     with mock.patch.object(QTimer,
                            'start'):
-        m.startTimers()
+        suc = function.startTimers()
+        assert suc
 
 
-def test_stopTimers():
+def test_stopTimers(function):
     with mock.patch.object(QTimer,
                            'stop'):
         with mock.patch.object(QThreadPool,
                                'waitForDone'):
-            m.stopTimers()
+            suc = function.stopTimers()
+            assert suc
 
-
-def test_resetData_1():
-    suc = m.resetData()
+def test_resetData_1(function):
+    suc = function.resetData()
     assert suc
 
 
-def test_checkMountUp_1():
+def test_checkMountUp_1(function):
     with mock.patch.object(socket.socket,
                            'connect',
                            side_effect=Exception):
-        m.checkMountUp()
-        assert not m.mountUp
+        function.checkMountUp()
+        assert not function.mountUp
 
 
-def test_checkMountUp_2():
+def test_checkMountUp_2(function):
     with mock.patch.object(socket.socket,
                            'connect'):
         with mock.patch.object(socket.socket,
                                'shutdown'):
             with mock.patch.object(socket.socket,
                                    'close'):
-                m.checkMountUp()
-                assert m.mountUp
+                function.checkMountUp()
+                assert function.mountUp
 
 
-def test_errorCycleCheckMountUp():
-    m.errorCycleCheckMountUp('test')
+def test_errorCycleCheckMountUp(function):
+    function.errorCycleCheckMountUp('test')
 
 
-def test_clearCycleCheckMountUp_1():
-    suc = m.cycleCheckMountUp()
+def test_clearCycleCheckMountUp_1(function):
+    suc = function.cycleCheckMountUp()
     assert suc
 
 
-def test_cycleCheckMountUp_1():
-    m.host = ()
+def test_cycleCheckMountUp_1(function):
+    function.host = ()
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.cycleCheckMountUp()
+        suc = function.cycleCheckMountUp()
         assert not suc
 
 
-def test_cycleCheckMountUp_2():
-    m.host = ('localhost', 80)
+def test_cycleCheckMountUp_2(function):
+    function.host = ('localhost', 80)
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.cycleCheckMountUp()
+        suc = function.cycleCheckMountUp()
         assert suc
 
 
-def test_errorCyclePointing_1():
-    suc = m.errorCyclePointing('test')
+def test_errorCyclePointing_1(function):
+    suc = function.errorCyclePointing('test')
     assert suc
 
 
-def test_clearCyclePointing_1():
-    suc = m.clearCyclePointing()
+def test_clearCyclePointing_1(function):
+    suc = function.clearCyclePointing()
     assert suc
 
 
-def test_clearCyclePointing_2():
-    m.obsSite.status = 1
-    m.statusAlert = False
-    suc = m.clearCyclePointing()
+def test_clearCyclePointing_2(function):
+    function.obsSite.status = 1
+    function.statusAlert = False
+    suc = function.clearCyclePointing()
     assert suc
-    assert m.statusAlert
+    assert function.statusAlert
 
 
-def test_clearCyclePointing_3():
-    m.obsSite.status = 0
-    m.statusAlert = False
-    suc = m.clearCyclePointing()
+def test_clearCyclePointing_3(function):
+    function.obsSite.status = 0
+    function.statusAlert = False
+    suc = function.clearCyclePointing()
     assert suc
-    assert not m.statusAlert
+    assert not function.statusAlert
 
 
-def test_clearCyclePointing_4():
-    m.obsSite.status = 0
-    m.statusSlew = False
-    suc = m.clearCyclePointing()
+def test_clearCyclePointing_4(function):
+    function.obsSite.status = 0
+    function.statusSlew = False
+    suc = function.clearCyclePointing()
     assert suc
-    assert m.statusSlew
+    assert function.statusSlew
 
 
-def test_clearCyclePointing_5():
-    m.obsSite.status = 2
-    m.statusSlew = False
-    suc = m.clearCyclePointing()
+def test_clearCyclePointing_5(function):
+    function.obsSite.status = 2
+    function.statusSlew = False
+    suc = function.clearCyclePointing()
     assert suc
-    assert not m.statusSlew
+    assert not function.statusSlew
 
 
-def test_cyclePointing_1():
-    m.mountUp = True
+def test_cyclePointing_1(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.cyclePointing()
+        suc = function.cyclePointing()
         assert suc
 
 
-def test_cyclePointing_2():
-    m.mountUp = True
+def test_cyclePointing_2(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.cyclePointing()
+        suc = function.cyclePointing()
         assert suc
 
 
-def test_cyclePointing_3():
-    m.mountUp = False
+def test_cyclePointing_3(function):
+    function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-            suc = m.cyclePointing()
+            suc = function.cyclePointing()
             assert not suc
 
 
-def test_errorCycleSetting():
-    m.errorCycleSetting('test')
+def test_errorCycleSetting(function):
+    function.errorCycleSetting('test')
 
 
-def test_clearCycleSetting_1():
-    suc = m.clearCycleSetting()
+def test_clearCycleSetting_1(function):
+    suc = function.clearCycleSetting()
     assert suc
 
 
-def test_cycleSetting_1():
-    m.mountUp = True
+def test_cycleSetting_1(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.cycleSetting()
+        suc = function.cycleSetting()
         assert suc
 
 
-def test_cycleSetting_2():
-    m.mountUp = False
+def test_cycleSetting_2(function):
+    function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.cycleSetting()
+        suc = function.cycleSetting()
         assert not suc
 
 
-def test_errorGetAlign():
-    m.errorGetAlign('test')
+def test_errorGetAlign(function):
+    function.errorGetAlign('test')
 
 
-def test_clearGetAlign_1():
-    suc = m.clearGetAlign()
+def test_clearGetAlign_1(function):
+    suc = function.clearGetAlign()
     assert suc
 
 
-def test_GetAlign_1():
-    m.mountUp = True
+def test_GetAlign_1(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.getAlign()
+        suc = function.getAlign()
         assert suc
 
 
-def test_GetAlign_2():
-    m.mountUp = False
+def test_GetAlign_2(function):
+    function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.getAlign()
+        suc = function.getAlign()
         assert not suc
 
 
-def test_errorGetNames():
-    suc = m.errorGetNames('test')
+def test_errorGetNames(function):
+    suc = function.errorGetNames('test')
     assert suc
 
 
-def test_clearGetNames_1():
-    suc = m.clearGetNames()
+def test_clearGetNames_1(function):
+    suc = function.clearGetNames()
     assert suc
 
 
-def test_GetNames_1():
-    m.mountUp = True
+def test_GetNames_1(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.getNames()
+        suc = function.getNames()
         assert suc
 
 
-def test_GetNames_2():
-    m.mountUp = False
+def test_GetNames_2(function):
+    function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.getNames()
+        suc = function.getNames()
         assert not suc
 
 
-def test_errorGetFW():
-    m.errorGetFW('test')
+def test_errorGetFW(function):
+    function.errorGetFW('test')
 
 
-def test_clearGetFW_1():
-    suc = m.clearGetFW()
+def test_clearGetFW_1(function):
+    suc = function.clearGetFW()
     assert suc
 
 
-def test_GetFW_1():
-    m.mountUp = True
+def test_GetFW_1(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.getFW()
+        suc = function.getFW()
         assert suc
 
 
-def test_GetFW_2():
-    m.mountUp = False
+def test_GetFW_2(function):
+    function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.getFW()
+        suc = function.getFW()
         assert not suc
 
 
-def test_errorGetLocation():
-    m.errorGetLocation('test')
+def test_errorGetLocation(function):
+    function.errorGetLocation('test')
 
 
-def test_clearGetLocation_1():
-    suc = m.clearGetLocation()
+def test_clearGetLocation_1(function):
+    suc = function.clearGetLocation()
     assert suc
 
 
-def test_GetLocation_1():
-    m.mountUp = True
+def test_GetLocation_1(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.getLocation()
+        suc = function.getLocation()
         assert suc
 
 
-def test_GetLocation_2():
-    m.mountUp = False
+def test_GetLocation_2(function):
+    function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.getLocation()
+        suc = function.getLocation()
         assert not suc
 
 
-def test_errorCalcTLE():
-    m.errorCalcTLE('test')
+def test_errorCalcTLE(function):
+    function.errorCalcTLE('test')
 
 
-def test_clearCalcTLE_1():
-    suc = m.clearCalcTLE()
+def test_clearCalcTLE_1(function):
+    suc = function.clearCalcTLE()
     assert suc
 
 
-def test_CalcTLE_1():
-    m.mountUp = True
+def test_CalcTLE_1(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.calcTLE()
+        suc = function.calcTLE()
         assert suc
 
 
-def test_CalcTLE_2():
-    m.mountUp = False
+def test_CalcTLE_2(function):
+    function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.calcTLE()
+        suc = function.calcTLE()
         assert not suc
 
 
-def test_errorStatTLE():
-    m.errorStatTLE('test')
+def test_errorStatTLE(function):
+    function.errorStatTLE('test')
 
 
-def test_clearStatTLE_1():
-    suc = m.clearStatTLE()
+def test_clearStatTLE_1(function):
+    suc = function.clearStatTLE()
     assert suc
 
 
-def test_StatTLE_1():
-    m.mountUp = True
+def test_StatTLE_1(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.statTLE()
+        suc = function.statTLE()
         assert suc
 
 
-def test_StatTLE_2():
-    m.mountUp = False
+def test_StatTLE_2(function):
+    function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.statTLE()
+        suc = function.statTLE()
         assert not suc
 
 
-def test_errorGetTLE():
-    m.errorGetTLE('test')
+def test_errorGetTLE(function):
+    function.errorGetTLE('test')
 
 
-def test_clearGetTLE_1():
-    suc = m.clearGetTLE()
+def test_clearGetTLE_1(function):
+    suc = function.clearGetTLE()
     assert suc
 
 
-def test_GetTLE_1():
-    m.mountUp = True
+def test_GetTLE_1(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.getTLE()
+        suc = function.getTLE()
         assert suc
 
 
-def test_GetTLE_2():
-    m.mountUp = False
+def test_GetTLE_2(function):
+    function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = m.getTLE()
+        suc = function.getTLE()
         assert not suc
 
 
-def test_bootMount_1():
+def test_bootMount_1(function):
 
-    m._MAC = None
+    function._MAC = None
     with mock.patch.object(wakeonlan,
                            'send_magic_packet'):
-        suc = m.bootMount()
+        suc = function.bootMount()
         assert not suc
 
 
-def test_bootMount_2():
+def test_bootMount_2(function):
 
-    m._MAC = '00:00:00:00:00:00'
+    function._MAC = '00:00:00:00:00:00'
     with mock.patch.object(wakeonlan,
                            'send_magic_packet'):
-        suc = m.bootMount()
+        suc = function.bootMount()
         assert suc
 
 
-def test_shutdown_1():
-    m.mountUp = True
-    with mock.patch.object(m.obsSite,
+def test_shutdown_1(function):
+    function.mountUp = True
+    with mock.patch.object(function.obsSite,
                            'shutdown',
                            return_value=True):
-        suc = m.shutdown()
+        suc = function.shutdown()
         assert suc
-        assert not m.mountUp
+        assert not function.mountUp
 
 
-def test_shutdown_2():
-    m.mountUp = True
-    with mock.patch.object(m.obsSite,
+def test_shutdown_2(function):
+    function.mountUp = True
+    with mock.patch.object(function.obsSite,
                            'shutdown',
                            return_value=False):
-        suc = m.shutdown()
+        suc = function.shutdown()
         assert not suc
-        assert m.mountUp
+        assert function.mountUp

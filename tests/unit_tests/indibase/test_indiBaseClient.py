@@ -26,7 +26,7 @@ from indibase.indiBase import Client
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    function = Client(app=Test())
+    function = Client()
     yield function
 
 

@@ -83,9 +83,7 @@ class Device(object):
 
     log = logging.getLogger(__name__)
 
-    def __init__(self,
-                 name='',
-                 ):
+    def __init__(self, name=''):
         super().__init__()
 
         self.name = name
@@ -254,7 +252,6 @@ class Client(QObject):
 
     log = logging.getLogger(__name__)
 
-    # INDI device types
     GENERAL_INTERFACE = 0
     TELESCOPE_INTERFACE = (1 << 0)
     CCD_INTERFACE = (1 << 1)
@@ -270,10 +267,7 @@ class Client(QObject):
     DETECTOR_INTERFACE = (1 << 11)
     AUX_INTERFACE = (1 << 15)
 
-    # default port indi servers
     DEFAULT_PORT = 7624
-
-    # timeout for client to server
     CONNECTION_TIMEOUT = 3000
 
     def __init__(self,
@@ -282,16 +276,12 @@ class Client(QObject):
         super().__init__()
 
         self.host = host
-
-        # instance variables
         self.signals = INDISignals()
         self.connected = False
         self.blobMode = 'Never'
         self.devices = dict()
         self.curDepth = 0
         self.parser = None
-
-        # tcp handling
         self.socket = QTcpSocket()
         self.socket.readyRead.connect(self._handleReadyRead)
         self.socket.error.connect(self._handleError)
@@ -302,32 +292,34 @@ class Client(QObject):
     def host(self):
         return self._host
 
-    def checkFormat(self, value):
-        # checking format
-        if not value:
-            return None
-        if not isinstance(value, (tuple, str)):
-            self.log.info('wrong host value: {0}'.format(value))
-            return None
-        # now we got the right format
-        if isinstance(value, str):
-            value = (value, self.DEFAULT_PORT)
-        return value
-
     @host.setter
     def host(self, value):
         value = self.checkFormat(value)
         self._host = value
 
+    def checkFormat(self, value):
+        """
+        :param value:
+        :return:
+        """
+        if not value:
+            return None
+
+        if not isinstance(value, (tuple, str)):
+            self.log.info('wrong host value: {0}'.format(value))
+            return None
+
+        if isinstance(value, str):
+            value = (value, self.DEFAULT_PORT)
+
+        return value
+
     def clearParser(self):
         """
-
         :return: success for test purpose
         """
-        # XML parser
         self.parser = ETree.XMLPullParser(['start', 'end'])
         self.parser.feed('<root>')
-        # clear the event queue of parser
         for _, _ in self.parser.read_events():
             pass
 
@@ -349,8 +341,8 @@ class Client(QObject):
     def watchDevice(self, deviceName=''):
         """
         Part of BASE CLIENT API of EKOS
-        adds a device to the watchlist. if the device name is empty, all traffic for all
-        devices will be watched and therefore received
+        adds a device to the watchlist. if the device name is empty, all traffic
+        for all devices will be watched and therefore received
 
         :param deviceName: name string of INDI device
         :return: success for test purpose
@@ -374,34 +366,37 @@ class Client(QObject):
 
         if self._host is None:
             return False
+
         if len(self._host) != 2:
             return False
+
         if self.connected:
-            # self.signals.serverConnected.emit()
             return True
+
         self.socket.connectToHost(*self._host)
         if not self.socket.waitForConnected(self.CONNECTION_TIMEOUT):
             self.connected = False
             return False
+
         self.connected = True
         self.signals.serverConnected.emit()
         return True
 
     def clearDevices(self, deviceName):
         """
-        clearDevices deletes all the actual knows devices and sens out the appropriate
-        qt signals
+        clearDevices deletes all the actual knows devices and sens out the
+        appropriate qt signals
 
         :param deviceName: name string of INDI device
         :return: success for test purpose
         """
-
         for device in self.devices:
             if not device == deviceName and deviceName:
                 continue
+
             self.signals.removeDevice.emit(device)
-            # self.signals.deviceDisconnected.emit(device)
             self.log.info(f'Remove device [{device}]')
+
         self.devices = {}
         return True
 
@@ -413,23 +408,18 @@ class Client(QObject):
         :param deviceName: name string of INDI device
         :return: success
         """
-
         self.connected = False
         self.clearParser()
         self.signals.serverDisconnected.emit(self.devices)
         self.clearDevices(deviceName)
         self.socket.abort()
-
         return True
 
     @pyqtSlot()
     def _handleDisconnected(self):
         """
-        _handleDisconnected log all network errors in case of problems.
-
         :return: nothing
         """
-
         self.connected = False
         self.log.info('INDI client disconnected')
 
@@ -439,7 +429,6 @@ class Client(QObject):
 
         :return: true if server connected
         """
-
         return self.connected
 
     def connectDevice(self, deviceName=''):
@@ -449,13 +438,13 @@ class Client(QObject):
         :param deviceName: name string of INDI device
         :return: success
         """
-
         # todo: do connected state for each device
-
         if not self.connected:
             return False
+
         if not deviceName:
             return False
+
         if deviceName not in self.devices:
             return False
 
@@ -463,6 +452,7 @@ class Client(QObject):
         if con['CONNECT'] == 'On':
             self.log.info(f'Device [{deviceName}] was connected at startup')
             return False
+
         else:
             self.log.info(f'Device [{deviceName}] unconnected - connect it now')
 
@@ -481,13 +471,13 @@ class Client(QObject):
         :param deviceName: name string of INDI device
         :return: success
         """
-
         # todo: do connected state for each device
-
         if not self.connected:
             return False
+
         if not deviceName:
             return False
+
         if deviceName not in self.devices:
             return False
 
@@ -512,7 +502,6 @@ class Client(QObject):
         :param deviceName: name of device
         :return: dict with data of that give device
         """
-
         value = self.devices.get(deviceName, None)
         return value
 
@@ -525,7 +514,6 @@ class Client(QObject):
         :param driverInterface: binary value of driver interface type
         :return: list of knows devices of this type
         """
-
         deviceList = list()
         for deviceName in self.devices:
             typeCheck = self._getDriverInterface(deviceName) & driverInterface

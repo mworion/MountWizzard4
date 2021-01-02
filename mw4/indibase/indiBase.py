@@ -306,11 +306,14 @@ class Client(QObject):
             return None
 
         if not isinstance(value, (tuple, str)):
-            self.log.info('wrong host value: {0}'.format(value))
+            self.log.info(f'wrong host value: {value}')
             return None
 
         if isinstance(value, str):
             value = (value, self.DEFAULT_PORT)
+
+        if not value[0]:
+            return None
 
         return value
 
@@ -325,7 +328,7 @@ class Client(QObject):
 
         return True
 
-    def setServer(self, host='', port=7624):
+    def setServer(self, host=None, port=7624):
         """
         Part of BASE CLIENT API of EKOS
         setServer sets the server address of the indi server
@@ -335,6 +338,10 @@ class Client(QObject):
         :return: success for test purpose
         """
         self.host = (host, port)
+        self.host = self.checkFormat((host, port))
+        if self.host is None:
+            return False
+
         self.connected = False
         return True
 
@@ -363,11 +370,7 @@ class Client(QObject):
 
         :return: success
         """
-
         if self._host is None:
-            return False
-
-        if len(self._host) != 2:
             return False
 
         if self.connected:
@@ -382,7 +385,7 @@ class Client(QObject):
         self.signals.serverConnected.emit()
         return True
 
-    def clearDevices(self, deviceName):
+    def clearDevices(self, deviceName=''):
         """
         clearDevices deletes all the actual knows devices and sens out the
         appropriate qt signals

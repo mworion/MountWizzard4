@@ -53,7 +53,7 @@ Version, build and code coverage status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 |PYPI_VERSION| |DownLoadsAbs| |DownLoadsMonth|
 
-|PYTEST MacOS| |PYTEST Win38| |PYTEST Win39|
+|PYTEST MacOS| |PYTEST Win38|
 
 |CODE_QUALITY_PYTHON| |CODECOV| |CODE_QUALITY_ALERTS|
 

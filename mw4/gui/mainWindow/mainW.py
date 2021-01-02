@@ -479,6 +479,8 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.moveSouthEastAltAz, QIcon(':/icon/southEast.svg'))
         self.wIcon(self.ui.moveSouthWestAltAz, QIcon(':/icon/southWest.svg'))
         self.wIcon(self.ui.stopMoveAll, QIcon(':/icon/stop_m.svg'))
+        self.wIcon(self.ui.moveAltAzAbsolute, QIcon(':/icon/target.svg'))
+        self.wIcon(self.ui.moveRaDecAbsolute, QIcon(':/icon/target.svg'))
 
         # driver setting
         for driver in self.drivers:

@@ -31,12 +31,7 @@ class Tools(object):
     """
     """
 
-    def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
-
+    def __init__(self):
         self.selectorsDropDowns = {'rename1': self.ui.rename1,
                                    'rename2': self.ui.rename2,
                                    'rename3': self.ui.rename3,

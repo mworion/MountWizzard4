@@ -33,682 +33,697 @@ from mountcontrol.qtmount import Mount
 from skyfield.api import Angle
 
 # local import
-from gui.mainWmixin.tabTools import Tools
-from gui.widgets.main_ui import Ui_MainWindow
+from tests.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
-from base.loggerMW import setupLogging
-setupLogging()
+from gui.widgets.main_ui import Ui_MainWindow
+from gui.mainWmixin.tabSettDome import SettDome
+from gui.mainWmixin.tabTools import Tools
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
+    yield
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global ui, widget, Test, app
+def function(module):
 
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        update1s = pyqtSignal()
-        message = pyqtSignal(str, int)
-        mwGlob = {'imageDir': 'tests/image'}
-        deviceStat = {}
+    class Mixin(MWidget, Tools):
+        def __init__(self):
+            super().__init__()
+            self.app = App()
+            self.deviceStat = self.app.deviceStat
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            Tools.__init__(self)
 
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
-    app = Tools(app=Test(), ui=ui,
-                clickable=MWidget().clickable)
-
-    app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.close = MWidget().close
-    app.openDir = MWidget().openDir
-    app.deleteLater = MWidget().deleteLater
-    app.convertRaToAngle = MWidget().convertRaToAngle
-    app.formatHstrToText = MWidget().formatHstrToText
-    app.convertDecToAngle = MWidget().convertDecToAngle
-    app.formatDstrToText = MWidget().formatDstrToText
-    qtbot.addWidget(app)
-
-    yield
+    window = Mixin()
+    yield window
 
     files = glob.glob('tests/image/*.fit*')
     for f in files:
         os.remove(f)
 
 
-def test_initConfig_1():
-    app.app.config['mainW'] = {}
-    suc = app.initConfig()
+def test_initConfig_1(function):
+    function.app.config['mainW'] = {}
+    suc = function.initConfig()
     assert suc
 
 
-def test_storeConfig_1():
-    suc = app.storeConfig()
+def test_storeConfig_1(function):
+    suc = function.storeConfig()
     assert suc
 
 
-def test_setupGui():
-    suc = app.setupGui()
+def test_setupGui(function):
+    suc = function.setupGui()
     assert suc
-    for _, ui in app.selectorsDropDowns.items():
+    for _, ui in function.selectorsDropDowns.items():
         assert ui.count() == 7
 
 
-def test_getNumberFiles_1():
-    number = app.getNumberFiles()
+def test_getNumberFiles_1(function):
+    number = function.getNumberFiles()
     assert number == 0
 
 
-def test_getNumberFiles_2():
-    number = app.getNumberFiles(pathDir='/Users')
+def test_getNumberFiles_2(function):
+    number = function.getNumberFiles(pathDir='/Users')
     assert number == 0
 
 
-def test_getNumberFiles_3():
-    number = app.getNumberFiles(pathDir='.', search='**/*.fit*')
+def test_getNumberFiles_3(function):
+    number = function.getNumberFiles(pathDir='.', search='**/*.fit*')
     assert number > 0
 
 
-def test_getNumberFiles_4():
-    number = app.getNumberFiles(pathDir='/xxx', search='**/*.fit*')
+def test_getNumberFiles_4(function):
+    number = function.getNumberFiles(pathDir='/xxx', search='**/*.fit*')
     assert number == 0
 
 
-def test_getNumberFiles_5():
-    number = app.getNumberFiles(pathDir='tests/testData', search='**/*.fit*')
+def test_getNumberFiles_5(function):
+    number = function.getNumberFiles(pathDir='tests/testData', search='**/*.fit*')
     assert number == 2
 
 
-def test_getNumberFiles_6():
-    number = app.getNumberFiles(pathDir='tests/testData', search='*.fit*')
+def test_getNumberFiles_6(function):
+    number = function.getNumberFiles(pathDir='tests/testData', search='*.fit*')
     assert number == 2
 
 
-def test_convertHeaderEntry_1():
-    chunk = app.convertHeaderEntry(entry='', fitsKey='1')
+def test_convertHeaderEntry_1(function):
+    chunk = function.convertHeaderEntry(entry='', fitsKey='1')
     assert not chunk
 
 
-def test_convertHeaderEntry_2():
-    chunk = app.convertHeaderEntry(entry='1', fitsKey='')
+def test_convertHeaderEntry_2(function):
+    chunk = function.convertHeaderEntry(entry='1', fitsKey='')
     assert not chunk
 
 
-def test_convertHeaderEntry_3():
-    chunk = app.convertHeaderEntry(entry='2019-05-26T17:02:18.843', fitsKey='DATE-OBS')
+def test_convertHeaderEntry_3(function):
+    chunk = function.convertHeaderEntry(entry='2019-05-26T17:02:18.843', fitsKey='DATE-OBS')
     assert chunk == '2019-05-26_17-02-18'
 
 
-def test_convertHeaderEntry_4():
-    chunk = app.convertHeaderEntry(entry='2019-05-26T17:02:18', fitsKey='DATE-OBS')
+def test_convertHeaderEntry_4(function):
+    chunk = function.convertHeaderEntry(entry='2019-05-26T17:02:18', fitsKey='DATE-OBS')
     assert chunk == '2019-05-26_17-02-18'
 
 
-def test_convertHeaderEntry_5():
-    chunk = app.convertHeaderEntry(entry=1, fitsKey='XBINNING')
+def test_convertHeaderEntry_5(function):
+    chunk = function.convertHeaderEntry(entry=1, fitsKey='XBINNING')
     assert chunk == 'Bin-1'
 
 
-def test_convertHeaderEntry_6():
-    chunk = app.convertHeaderEntry(entry=25, fitsKey='CCD-TEMP')
+def test_convertHeaderEntry_6(function):
+    chunk = function.convertHeaderEntry(entry=25, fitsKey='CCD-TEMP')
     assert chunk == 'Temp025'
 
 
-def test_convertHeaderEntry_7():
-    chunk = app.convertHeaderEntry(entry='Light', fitsKey='FRAME')
+def test_convertHeaderEntry_7(function):
+    chunk = function.convertHeaderEntry(entry='Light', fitsKey='FRAME')
     assert chunk == 'Frame-Light'
 
 
-def test_convertHeaderEntry_8():
-    chunk = app.convertHeaderEntry(entry='red', fitsKey='FILTER')
+def test_convertHeaderEntry_8(function):
+    chunk = function.convertHeaderEntry(entry='red', fitsKey='FILTER')
     assert chunk == 'Filter-red'
 
 
-def test_convertHeaderEntry_9():
-    chunk = app.convertHeaderEntry(entry=14, fitsKey='EXPTIME')
+def test_convertHeaderEntry_9(function):
+    chunk = function.convertHeaderEntry(entry=14, fitsKey='EXPTIME')
     assert chunk == 'Exp-0014s'
 
 
-def test_convertHeaderEntry_10():
-    app.ui.renameText.setText('test')
-    chunk = app.convertHeaderEntry(entry='test', fitsKey='RenameText')
+def test_convertHeaderEntry_10(function):
+    function.ui.renameText.setText('test')
+    chunk = function.convertHeaderEntry(entry='test', fitsKey='RenameText')
     assert chunk == 'TEST'
 
 
-def test_convertHeaderEntry_11():
-    chunk = app.convertHeaderEntry(entry='12354', fitsKey='XXX')
+def test_convertHeaderEntry_11(function):
+    chunk = function.convertHeaderEntry(entry='12354', fitsKey='XXX')
     assert not chunk
 
 
-def test_processSelectors_1():
+def test_processSelectors_1(function):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
     header.set('DATE-OBS', '2019-05-26T17:02:18.843')
-    name = app.processSelectors(fitsHeader=header)
+    name = function.processSelectors(fitsHeader=header)
     assert not name
 
 
-def test_processSelectors_2():
+def test_processSelectors_2(function):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
     header.set('DATE-OBS', '2019-05-26T17:02:18.843')
-    name = app.processSelectors(fitsHeader=header, selection='Frame')
+    name = function.processSelectors(fitsHeader=header, selection='Frame')
     assert not name
 
 
-def test_processSelectors_3():
+def test_processSelectors_3(function):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
     header.set('DATE-OBS', '2019-05-26T17:02:18.843')
-    name = app.processSelectors(fitsHeader=header, selection='Datetime')
+    name = function.processSelectors(fitsHeader=header, selection='Datetime')
     assert name == '2019-05-26_17-02-18'
 
 
-def test_processSelectors_4():
+def test_processSelectors_4(function):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
     header.set('DATE-OBS', '2019-05-26T17:02:18.843')
-    name = app.processSelectors(selection='Datetime')
+    name = function.processSelectors(selection='Datetime')
     assert not name
 
 
-def test_renameFile_1():
-    suc = app.renameFile()
+def test_renameFile_1(function):
+    suc = function.renameFile()
     assert not suc
 
 
-def test_renameFile_2():
-    suc = app.renameFile('tests/image/m51.fit')
+def test_renameFile_2(function):
+    suc = function.renameFile('tests/image/m51.fit')
     assert not suc
 
 
-def test_renameFile_3():
+def test_renameFile_3(function):
     shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
 
     with mock.patch.object(os,
                            'rename'):
-        suc = app.renameFile('tests/image/m51.fit')
+        suc = function.renameFile('tests/image/m51.fit')
         assert suc
 
 
-def test_renameRunGUI_1(qtbot):
+def test_renameRunGUI_1(function, qtbot):
     shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-    app.ui.renameDir.setText('')
-    with qtbot.waitSignal(app.app.message) as blocker:
-        suc = app.renameRunGUI()
+    function.ui.renameDir.setText('')
+    with qtbot.waitSignal(function.app.message) as blocker:
+        suc = function.renameRunGUI()
         assert not suc
     assert ['No valid input directory given', 2] == blocker.args
 
 
-def test_renameRunGUI_2(qtbot):
-    app.ui.renameDir.setText('tests/image')
-    with qtbot.waitSignal(app.app.message) as blocker:
-        suc = app.renameRunGUI()
+def test_renameRunGUI_2(function, qtbot):
+    function.ui.renameDir.setText('tests/image')
+    with qtbot.waitSignal(function.app.message) as blocker:
+        suc = function.renameRunGUI()
         assert not suc
     assert ['No files to rename', 0] == blocker.args
 
 
-def test_renameRunGUI_3(qtbot):
-    app.ui.checkIncludeSubdirs.setChecked(True)
-    app.ui.renameDir.setText('tests/image')
-    with qtbot.waitSignal(app.app.message) as blocker:
-        suc = app.renameRunGUI()
+def test_renameRunGUI_3(function, qtbot):
+    function.ui.checkIncludeSubdirs.setChecked(True)
+    function.ui.renameDir.setText('tests/image')
+    with qtbot.waitSignal(function.app.message) as blocker:
+        suc = function.renameRunGUI()
         assert not suc
     assert ['No files to rename', 0] == blocker.args
 
 
-def test_renameRunGUI_4(qtbot):
+def test_renameRunGUI_4(function, qtbot):
     shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-    app.ui.renameDir.setText('tests/image')
-    with mock.patch.object(app,
+    function.ui.renameDir.setText('tests/image')
+    with mock.patch.object(function,
                            'renameFile',
                            return_value=True):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            suc = app.renameRunGUI()
+        with qtbot.waitSignal(function.app.message) as blocker:
+            suc = function.renameRunGUI()
             assert suc
         assert ['1 images were renamed', 0] == blocker.args
 
 
-def test_chooseDir_1():
+def test_chooseDir_1(function):
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('', '', '')):
-        suc = app.chooseDir()
+        suc = function.chooseDir()
         assert suc
 
 
-def test_chooseDir_2():
+def test_chooseDir_2(function):
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('test', '', '')):
-        suc = app.chooseDir()
+        suc = function.chooseDir()
         assert suc
 
 
-def test_moveDuration_1():
-    app.ui.moveDuration.setCurrentIndex(1)
+def test_moveDuration_1(function):
+    function.ui.moveDuration.setCurrentIndex(1)
     with mock.patch.object(QTest,
                            'qWait'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'stopMoveAll'):
-            suc = app.moveDuration()
+            suc = function.moveDuration()
             assert suc
 
 
-def test_moveDuration_2():
-    app.ui.moveDuration.setCurrentIndex(2)
+def test_moveDuration_2(function):
+    function.ui.moveDuration.setCurrentIndex(2)
     with mock.patch.object(QTest,
                            'qWait'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'stopMoveAll'):
-            suc = app.moveDuration()
+            suc = function.moveDuration()
             assert suc
 
 
-def test_moveDuration_3():
-    app.ui.moveDuration.setCurrentIndex(3)
+def test_moveDuration_3(function):
+    function.ui.moveDuration.setCurrentIndex(3)
     with mock.patch.object(QTest,
                            'qWait'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'stopMoveAll'):
-            suc = app.moveDuration()
+            suc = function.moveDuration()
             assert suc
 
 
-def test_moveDuration_4():
-    app.ui.moveDuration.setCurrentIndex(4)
+def test_moveDuration_4(function):
+    function.ui.moveDuration.setCurrentIndex(4)
     with mock.patch.object(QTest,
                            'qWait'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'stopMoveAll'):
-            suc = app.moveDuration()
+            suc = function.moveDuration()
             assert suc
 
 
-def test_moveDuration_5():
-    app.ui.moveDuration.setCurrentIndex(0)
+def test_moveDuration_5(function):
+    function.ui.moveDuration.setCurrentIndex(0)
     with mock.patch.object(QTest,
                            'qWait'):
-        suc = app.moveDuration()
+        suc = function.moveDuration()
         assert not suc
 
 
-def test_moveClassic_1():
-    def sender():
+def test_moveClassic_1(function):
+    def Sender():
         return 0
 
-    app.sender = sender
-    with mock.patch.object(app,
+    function.sender = Sender
+    with mock.patch.object(function,
                            'moveDuration'):
-        suc = app.moveClassic()
+        suc = function.moveClassic()
         assert not suc
 
 
-def test_moveClassic_2():
-    def sender():
-        return app.ui.moveNorthEast
+def test_moveClassic_2(function):
+    def Sender():
+        return function.ui.moveNorthEast
 
-    app.sender = sender
-    with mock.patch.object(app,
+    function.sender = Sender
+    with mock.patch.object(function,
                            'moveDuration'):
-        suc = app.moveClassic()
+        suc = function.moveClassic()
         assert suc
 
 
-def test_moveClassic_3():
-    def sender():
-        return app.ui.moveSouthWest
+def test_moveClassic_3(function):
+    def Sender():
+        return function.ui.moveSouthWest
 
-    app.sender = sender
-    with mock.patch.object(app,
+    function.sender = Sender
+    with mock.patch.object(function,
                            'moveDuration'):
-        suc = app.moveClassic()
+        suc = function.moveClassic()
         assert suc
 
 
-def test_stopMoveAll():
-    with mock.patch.object(app.app.mount.obsSite,
+def test_stopMoveAll(function):
+    with mock.patch.object(function.app.mount.obsSite,
                            'stopMoveAll',
                            return_value=True):
-        suc = app.stopMoveAll()
+        suc = function.stopMoveAll()
         assert suc
 
 
-def test_setSlewSpeed_1():
+def test_setSlewSpeed_1(function):
     def Sender():
-        return ui.slewSpeedHigh
+        return function.ui.renameStart
 
-    app.sender = Sender
+    function.sender = Sender
 
-    suc = app.setSlewSpeed()
-    assert suc
+    suc = function.setSlewSpeed()
+    assert not suc
 
 
-def test_setSlewSpeed_2():
+def test_setSlewSpeed_2(function):
     def Sender():
-        return ui.slewSpeedMax
+        return function.ui.slewSpeedMax
 
-    app.sender = Sender
+    function.sender = Sender
 
     def test():
         return
 
-    app.slewSpeeds = {app.ui.slewSpeedMax: test}
+    function.slewSpeeds = {function.ui.slewSpeedMax: test}
 
-    suc = app.setSlewSpeed()
+    suc = function.setSlewSpeed()
     assert suc
 
 
-def test_slewSelectedTargetWithDome_1():
-    suc = app.slewSelectedTargetWithDome()
+def test_slewSelectedTargetWithDome_1(function):
+    suc = function.slewSelectedTargetWithDome()
     assert not suc
 
 
-def test_slewSelectedTargetWithDome_2():
-    app.app.mount.obsSite.AltTarget = Angle(degrees=10)
-    app.app.mount.obsSite.AzTarget = Angle(degrees=10)
-    app.app.deviceStat['dome'] = False
-    with mock.patch.object(app.app.mount.obsSite,
+def test_slewSelectedTargetWithDome_2(function):
+    function.app.mount.obsSite.AltTarget = Angle(degrees=10)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=10)
+    function.app.deviceStat['dome'] = False
+    with mock.patch.object(function.app.mount.obsSite,
                            'startSlewing',
                            return_value=True):
-        suc = app.slewSelectedTargetWithDome()
+        suc = function.slewSelectedTargetWithDome()
         assert suc
 
 
-def test_slewSelectedTargetWithDome_3():
-    app.app.mount.obsSite.AltTarget = Angle(degrees=10)
-    app.app.mount.obsSite.AzTarget = Angle(degrees=10)
-    app.app.deviceStat['dome'] = False
-    with mock.patch.object(app.app.mount.obsSite,
+def test_slewSelectedTargetWithDome_3(function):
+    function.app.mount.obsSite.AltTarget = Angle(degrees=10)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=10)
+    function.app.deviceStat['dome'] = False
+    with mock.patch.object(function.app.mount.obsSite,
                            'startSlewing',
                            return_value=False):
-        suc = app.slewSelectedTargetWithDome()
+        suc = function.slewSelectedTargetWithDome()
         assert not suc
 
 
-def test_slewTargetAltAz_1():
-    app.app.mount.setting.horizonLimitHigh = 80
-    app.app.mount.setting.horizonLimitLow = 10
-    app.app.mount.obsSite.status = 0
-
-    with mock.patch.object(app,
-                           'slewSelectedTargetWithDome',
-                           return_value=True):
-        suc = app.slewTargetAltAz(100, 10)
-        assert suc
-
-
-def test_slewTargetAltAz_2():
-    app.app.mount.setting.horizonLimitHigh = 80
-    app.app.mount.setting.horizonLimitLow = 10
-    app.app.mount.obsSite.status = 1
-
-    with mock.patch.object(app,
-                           'slewSelectedTargetWithDome',
+def test_slewSelectedTargetWithDome_4(function):
+    function.app.mount.obsSite.AltTarget = Angle(degrees=10)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=10)
+    function.app.deviceStat['dome'] = True
+    with mock.patch.object(function.app.mount.obsSite,
+                           'startSlewing',
                            return_value=False):
-        suc = app.slewTargetAltAz(-10, 10)
-        assert not suc
-
-
-def test_moveAltAz_1():
-    def sender():
-        return 0
-
-    app.sender = sender
-
-    suc = app.moveAltAz()
-    assert not suc
-
-
-def test_moveAltAz_2():
-    def sender():
-        return app.ui.moveNorthEastAltAz
-
-    app.sender = sender
-    app.app.mount.obsSite.status = None
-    app.app.mount.obsSite.Alt = 10
-    app.app.mount.obsSite.Az = 10
-
-    with mock.patch.object(app,
-                           'slewTargetAltAz',
-                           return_value=False):
-        suc = app.moveAltAz()
-        assert not suc
-
-
-def test_moveAltAz_3():
-    def sender():
-        return app.ui.moveNorthEastAltAz
-
-    app.sender = sender
-    app.app.mount.obsSite.status = 0
-    app.app.mount.obsSite.Alt = 10
-    app.app.mount.obsSite.Az = 10
-
-    with mock.patch.object(app,
-                           'slewTargetAltAz',
-                           return_value=False):
-        suc = app.moveAltAz()
-        assert not suc
-
-
-def test_moveAltAz_4():
-    def sender():
-        return app.ui.moveNorthEastAltAz
-
-    app.sender = sender
-    app.app.mount.obsSite.status = 1
-    app.app.mount.obsSite.Alt = 10
-    app.app.mount.obsSite.Az = 10
-
-    with mock.patch.object(app,
-                           'slewTargetAltAz',
-                           return_value=False):
-        suc = app.moveAltAz()
-        assert not suc
-
-
-def test_moveAltAz_5():
-    def sender():
-        return app.ui.moveNorthEastAltAz
-
-    app.sender = sender
-    app.app.mount.obsSite.status = 0
-    app.app.mount.obsSite.Alt = 10
-    app.app.mount.obsSite.Az = 10
-
-    with mock.patch.object(app,
-                           'slewTargetAltAz',
-                           return_value=True):
-        suc = app.moveAltAz()
-        assert suc
-
-
-def test_setRA_1():
-    with mock.patch.object(QInputDialog,
-                           'getText',
-                           return_value=('', False)):
-        suc = app.setRA()
-        assert not suc
-
-
-def test_setRA_2():
-    with mock.patch.object(QInputDialog,
-                           'getText',
-                           return_value=('', True)):
-        suc = app.setRA()
-        assert not suc
-
-
-def test_setRA_3():
-    with mock.patch.object(QInputDialog,
-                           'getText',
-                           return_value=('12H', True)):
-        suc = app.setRA()
-        assert suc
-
-
-def test_setDEC_1():
-    with mock.patch.object(QInputDialog,
-                           'getText',
-                           return_value=('', False)):
-        suc = app.setDEC()
-        assert not suc
-
-
-def test_setDEC_2():
-    with mock.patch.object(QInputDialog,
-                           'getText',
-                           return_value=('', True)):
-        suc = app.setDEC()
-        assert not suc
-
-
-def test_setDEC_3():
-    with mock.patch.object(QInputDialog,
-                           'getText',
-                           return_value=('12', True)):
-        suc = app.setDEC()
-        assert suc
-
-
-def test_checkAlt_1():
-    val = app.checkAlt('')
-    assert val is None
-
-
-def test_checkAlt_2():
-    val = app.checkAlt('12H')
-    assert val is None
-
-
-def test_checkAlt_3():
-    app.app.mount.setting.horizonLimitLow = None
-    app.app.mount.setting.horizonLimitHigh = 70
-    val = app.checkAlt('5')
-    assert val is None
-
-
-def test_checkAlt_4():
-    app.app.mount.setting.horizonLimitLow = 10
-    app.app.mount.setting.horizonLimitHigh = None
-    val = app.checkAlt('5')
-    assert val is None
-
-
-def test_checkAlt_5():
-    app.app.mount.setting.horizonLimitLow = 10
-    app.app.mount.setting.horizonLimitHigh = 70
-    val = app.checkAlt('85')
-    assert val is None
-
-
-def test_checkAlt_6():
-    app.app.mount.setting.horizonLimitLow = 10
-    app.app.mount.setting.horizonLimitHigh = 70
-    val = app.checkAlt('5')
-    assert val is None
-
-
-def test_checkAlt_7():
-    app.app.mount.setting.horizonLimitLow = 10
-    app.app.mount.setting.horizonLimitHigh = 70
-    val = app.checkAlt('50')
-    assert val == 50
-
-
-def test_checkAz_1():
-    val = app.checkAz('')
-    assert val is None
-
-
-def test_checkAz_2():
-    val = app.checkAz('12H')
-    assert val is None
-
-
-def test_checkAz_3():
-    val = app.checkAz('400')
-    assert val == 40
-
-
-def test_moveAltAzAbsolute_1():
-    app.ui.moveCoordinateAlt.setText('50h')
-    app.ui.moveCoordinateAz.setText('50h')
-    suc = app.moveAltAzAbsolute()
-    assert not suc
-
-
-def test_moveAltAzAbsolute_2():
-    app.ui.moveCoordinateAlt.setText('50')
-    app.ui.moveCoordinateAz.setText('50h')
-    suc = app.moveAltAzAbsolute()
-    assert not suc
-
-
-def test_moveAltAzAbsolute_3():
-    app.app.mount.setting.horizonLimitLow = 10
-    app.app.mount.setting.horizonLimitHigh = 70
-    app.ui.moveCoordinateAlt.setText('50')
-    app.ui.moveCoordinateAz.setText('50')
-    with mock.patch.object(app,
-                           'slewTargetAltAz',
-                           return_value=False):
-        suc = app.moveAltAzAbsolute()
-        assert not suc
-
-
-def test_moveAltAzAbsolute_4():
-    app.app.mount.setting.horizonLimitLow = 10
-    app.app.mount.setting.horizonLimitHigh = 70
-    app.ui.moveCoordinateAlt.setText('50')
-    app.ui.moveCoordinateAz.setText('50')
-    with mock.patch.object(app,
-                           'slewTargetAltAz',
-                           return_value=True):
-        suc = app.moveAltAzAbsolute()
-        assert suc
-
-
-def test_moveRaDecAbsolute_1():
-    app.ui.moveCoordinateRa.setText('asd')
-    app.ui.moveCoordinateDec.setText('asd')
-    suc = app.moveRaDecAbsolute()
-    assert not suc
-
-
-def test_moveRaDecAbsolute_2():
-    app.ui.moveCoordinateRa.setText('12H')
-    app.ui.moveCoordinateDec.setText('asd')
-    suc = app.moveRaDecAbsolute()
-    assert not suc
-
-
-def test_moveRaDecAbsolute_3():
-    app.ui.moveCoordinateRa.setText('12H')
-    app.ui.moveCoordinateDec.setText('30 30')
-    with mock.patch.object(app.app.mount.obsSite,
-                           'setTargetRaDec'):
-        with mock.patch.object(app,
-                               'slewSelectedTargetWithDome',
-                               return_value=False):
-            suc = app.moveRaDecAbsolute()
+        with mock.patch.object(function.app.dome,
+                               'slewDome',
+                               return_value=10):
+            suc = function.slewSelectedTargetWithDome()
             assert not suc
 
 
-def test_moveRaDecAbsolute_4():
-    app.ui.moveCoordinateRa.setText('12H')
-    app.ui.moveCoordinateDec.setText('30 30')
-    with mock.patch.object(app.app.mount.obsSite,
+def test_slewTargetAltAz_1(function):
+    function.app.mount.setting.horizonLimitHigh = 80
+    function.app.mount.setting.horizonLimitLow = 10
+    function.app.mount.obsSite.status = 0
+
+    with mock.patch.object(function,
+                           'slewSelectedTargetWithDome',
+                           return_value=True):
+        suc = function.slewTargetAltAz(100, 10)
+        assert suc
+
+
+def test_slewTargetAltAz_2(function):
+    function.app.mount.setting.horizonLimitHigh = 80
+    function.app.mount.setting.horizonLimitLow = 10
+    function.app.mount.obsSite.status = 1
+
+    with mock.patch.object(function,
+                           'slewSelectedTargetWithDome',
+                           return_value=False):
+        suc = function.slewTargetAltAz(-10, 10)
+        assert not suc
+
+
+def test_moveAltAz_1(function):
+    def Sender():
+        return 0
+
+    function.sender = Sender
+
+    suc = function.moveAltAz()
+    assert not suc
+
+
+def test_moveAltAz_2(function):
+    def Sender():
+        return function.ui.moveNorthEastAltAz
+
+    function.sender = Sender
+    function.app.mount.obsSite.status = None
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+
+    with mock.patch.object(function,
+                           'slewTargetAltAz',
+                           return_value=False):
+        suc = function.moveAltAz()
+        assert not suc
+
+
+def test_moveAltAz_3(function):
+    def Sender():
+        return function.ui.moveNorthEastAltAz
+
+    function.sender = Sender
+    function.app.mount.obsSite.status = 0
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+
+    with mock.patch.object(function,
+                           'slewTargetAltAz',
+                           return_value=False):
+        suc = function.moveAltAz()
+        assert not suc
+
+
+def test_moveAltAz_4(function):
+    def Sender():
+        return function.ui.moveNorthEastAltAz
+
+    function.sender = Sender
+    function.app.mount.obsSite.status = 1
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+
+    with mock.patch.object(function,
+                           'slewTargetAltAz',
+                           return_value=False):
+        suc = function.moveAltAz()
+        assert not suc
+
+
+def test_moveAltAz_5(function):
+    def Sender():
+        return function.ui.moveNorthEastAltAz
+
+    function.sender = Sender
+    function.app.mount.obsSite.status = 0
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+
+    with mock.patch.object(function,
+                           'slewTargetAltAz',
+                           return_value=True):
+        suc = function.moveAltAz()
+        assert suc
+
+
+def test_setRA_1(function):
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('', False)):
+        suc = function.setRA()
+        assert not suc
+
+
+def test_setRA_2(function):
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('', True)):
+        suc = function.setRA()
+        assert not suc
+
+
+def test_setRA_3(function):
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('12H', True)):
+        suc = function.setRA()
+        assert suc
+
+
+def test_setDEC_1(function):
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('', False)):
+        suc = function.setDEC()
+        assert not suc
+
+
+def test_setDEC_2(function):
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('', True)):
+        suc = function.setDEC()
+        assert not suc
+
+
+def test_setDEC_3(function):
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('12', True)):
+        suc = function.setDEC()
+        assert suc
+
+
+def test_checkAlt_1(function):
+    val = function.checkAlt('')
+    assert val is None
+
+
+def test_checkAlt_2(function):
+    val = function.checkAlt('12H')
+    assert val is None
+
+
+def test_checkAlt_3(function):
+    function.app.mount.setting.horizonLimitLow = None
+    function.app.mount.setting.horizonLimitHigh = 70
+    val = function.checkAlt('5')
+    assert val is None
+
+
+def test_checkAlt_4(function):
+    function.app.mount.setting.horizonLimitLow = 10
+    function.app.mount.setting.horizonLimitHigh = None
+    val = function.checkAlt('5')
+    assert val is None
+
+
+def test_checkAlt_5(function):
+    function.app.mount.setting.horizonLimitLow = 10
+    function.app.mount.setting.horizonLimitHigh = 70
+    val = function.checkAlt('85')
+    assert val is None
+
+
+def test_checkAlt_6(function):
+    function.app.mount.setting.horizonLimitLow = 10
+    function.app.mount.setting.horizonLimitHigh = 70
+    val = function.checkAlt('5')
+    assert val is None
+
+
+def test_checkAlt_7(function):
+    function.app.mount.setting.horizonLimitLow = 10
+    function.app.mount.setting.horizonLimitHigh = 70
+    val = function.checkAlt('50')
+    assert val == 50
+
+
+def test_checkAz_1(function):
+    val = function.checkAz('')
+    assert val is None
+
+
+def test_checkAz_2(function):
+    val = function.checkAz('12H')
+    assert val is None
+
+
+def test_checkAz_3(function):
+    val = function.checkAz('400')
+    assert val == 40
+
+
+def test_moveAltAzAbsolute_1(function):
+    function.ui.moveCoordinateAlt.setText('50h')
+    function.ui.moveCoordinateAz.setText('50h')
+    suc = function.moveAltAzAbsolute()
+    assert not suc
+
+
+def test_moveAltAzAbsolute_2(function):
+    function.ui.moveCoordinateAlt.setText('50')
+    function.ui.moveCoordinateAz.setText('50h')
+    suc = function.moveAltAzAbsolute()
+    assert not suc
+
+
+def test_moveAltAzAbsolute_3(function):
+    function.app.mount.setting.horizonLimitLow = 10
+    function.app.mount.setting.horizonLimitHigh = 70
+    function.ui.moveCoordinateAlt.setText('50')
+    function.ui.moveCoordinateAz.setText('50')
+    with mock.patch.object(function,
+                           'slewTargetAltAz',
+                           return_value=False):
+        suc = function.moveAltAzAbsolute()
+        assert not suc
+
+
+def test_moveAltAzAbsolute_4(function):
+    function.app.mount.setting.horizonLimitLow = 10
+    function.app.mount.setting.horizonLimitHigh = 70
+    function.ui.moveCoordinateAlt.setText('50')
+    function.ui.moveCoordinateAz.setText('50')
+    with mock.patch.object(function,
+                           'slewTargetAltAz',
+                           return_value=True):
+        suc = function.moveAltAzAbsolute()
+        assert suc
+
+
+def test_moveRaDecAbsolute_1(function):
+    function.ui.moveCoordinateRa.setText('asd')
+    function.ui.moveCoordinateDec.setText('asd')
+    suc = function.moveRaDecAbsolute()
+    assert not suc
+
+
+def test_moveRaDecAbsolute_2(function):
+    function.ui.moveCoordinateRa.setText('12H')
+    function.ui.moveCoordinateDec.setText('asd')
+    suc = function.moveRaDecAbsolute()
+    assert not suc
+
+
+def test_moveRaDecAbsolute_3(function):
+    function.ui.moveCoordinateRa.setText('12H')
+    function.ui.moveCoordinateDec.setText('30 30')
+    with mock.patch.object(function.app.mount.obsSite,
                            'setTargetRaDec'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
+                               'slewSelectedTargetWithDome',
+                               return_value=False):
+            suc = function.moveRaDecAbsolute()
+            assert not suc
+
+
+def test_moveRaDecAbsolute_4(function):
+    function.ui.moveCoordinateRa.setText('12H')
+    function.ui.moveCoordinateDec.setText('30 30')
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetRaDec'):
+        with mock.patch.object(function,
                                'slewSelectedTargetWithDome',
                                return_value=True):
-            suc = app.moveRaDecAbsolute()
+            suc = function.moveRaDecAbsolute()
             assert suc
+
+
+def test_moveRaDecAbsolute_5(function):
+    function.ui.moveCoordinateRa.setText('12H')
+    function.ui.moveCoordinateDec.setText('30 30')
+    function.app.mount.obsSite.timeJD = None
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetRaDec'):
+        with mock.patch.object(function,
+                               'slewSelectedTargetWithDome',
+                               return_value=False):
+            suc = function.moveRaDecAbsolute()
+            assert not suc
+

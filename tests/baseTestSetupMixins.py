@@ -150,6 +150,22 @@ class Mount(QObject):
         def setWOL():
             return True
 
+        @staticmethod
+        def setSlewSpeedMax():
+            return True
+
+        @staticmethod
+        def setSlewSpeedHigh():
+            return True
+
+        @staticmethod
+        def setSlewSpeedMed():
+            return True
+
+        @staticmethod
+        def setSlewSpeedLow():
+            return True
+
     class MountSignals(QObject):
         locationDone = pyqtSignal()
         settingDone = pyqtSignal()
@@ -244,6 +260,40 @@ class Mount(QObject):
         def stop():
             return True
 
+        @staticmethod
+        def stopMoveAll():
+            return True
+
+        @staticmethod
+        def moveNorth():
+            return True
+
+        @staticmethod
+        def moveEast():
+            return True
+
+        @staticmethod
+        def moveWest():
+            return True
+
+        @staticmethod
+        def moveSouth():
+            return True
+
+        @staticmethod
+        def startSlewing():
+            return True
+
+        @staticmethod
+        def setTargetAltAz(alt_degrees=0,
+                           az_degrees=0):
+            return True
+
+        @staticmethod
+        def setTargetRaDec(ra_hours=0,
+                           dec_degrees=0):
+            return True
+
     signals = MountSignals()
     obsSite = MountObsSite()
     geometry = MountGeometry()
@@ -299,6 +349,11 @@ class Dome:
 
     @staticmethod
     def closeShutter():
+        return
+
+    @staticmethod
+    def slewDome(azimuth=0,
+                 altitude=0):
         return
 
 

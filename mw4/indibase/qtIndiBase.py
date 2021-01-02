@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import socket
 
 # external packages

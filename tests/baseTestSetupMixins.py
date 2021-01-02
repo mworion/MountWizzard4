@@ -357,6 +357,13 @@ class Dome:
         return
 
 
+class Relay:
+    class RelaySignals(QObject):
+        statusReady = pyqtSignal()
+
+    signals = RelaySignals()
+
+
 class App(QObject):
     config = {'mainW': {}}
     deviceStat = {}
@@ -371,6 +378,7 @@ class App(QObject):
     mount = Mount()
     power = Power()
     dome = Dome()
+    relay = Relay()
     automation = Automation()
     ephemeris = load('tests/testData/de421_23.bsp')
     mwGlob = {'modelDir': 'tests/model',

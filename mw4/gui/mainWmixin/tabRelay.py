@@ -25,12 +25,7 @@ class Relay(object):
     """
     """
 
-    def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
-
+    def __init__(self):
         self.app.relay.signals.statusReady.connect(self.updateRelayGui)
 
     def initConfig(self):

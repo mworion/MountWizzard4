@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import pytest
+
 # external packages
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
@@ -26,54 +27,48 @@ from PyQt5.QtCore import pyqtSignal
 from logic.powerswitch.kmRelay import KMRelay
 from gui.mainWmixin.tabSettRelay import SettRelay
 from gui.mainWmixin.tabRelay import Relay
-from gui.widgets.main_ui import Ui_MainWindow
+from tests.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global ui, widget, Test, app
-
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        update1s = pyqtSignal()
-        message = pyqtSignal(str, int)
-        relay = KMRelay()
-
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
-    app = Relay(app=Test(), ui=ui,
-                clickable=MWidget().clickable)
-
-    app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.close = MWidget().close
-    app.relayButtons = SettRelay(app=Test(), ui=ui,
-                                 clickable=MWidget().clickable).relayButtons
-    app.deleteLater = MWidget().deleteLater
-    qtbot.addWidget(app)
-
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
     yield
 
 
-def test_initConfig_1():
-    app.app.config['mainW'] = {}
-    suc = app.initConfig()
+@pytest.fixture(autouse=True, scope='function')
+def function(module):
+
+    class Mixin(MWidget, Relay, SettRelay):
+        def __init__(self):
+            super().__init__()
+            self.app = App()
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            Relay.__init__(self)
+            SettRelay.__init__(self)
+
+    window = Mixin()
+    yield window
+
+
+def test_initConfig_1(function):
+    function.app.config['mainW'] = {}
+    suc = function.initConfig()
     assert suc
 
 
-def test_storeConfig_1():
-    suc = app.storeConfig()
+def test_storeConfig_1(function):
+    suc = function.storeConfig()
     assert suc
 
 
-def test_updateRelayGui(qtbot):
-    app.relayButton = list()
-    app.relayDropDown = list()
-    app.relayText = list()
-    app.app.relay.status = [0, 1, 0, 1, 0, 1, 0, 1]
-    suc = app.updateRelayGui()
+def test_updateRelayGui(function, qtbot):
+    function.relayButton = list()
+    function.relayDropDown = list()
+    function.relayText = list()
+    function.app.relay.status = [0, 1, 0, 1, 0, 1, 0, 1]
+    suc = function.updateRelayGui()
     assert suc
 

@@ -364,6 +364,16 @@ class Relay:
     signals = RelaySignals()
 
 
+class Data:
+    @staticmethod
+    def loadHorizonP(fileName=''):
+        return
+
+    @staticmethod
+    def saveHorizonP(fileName=''):
+        return
+
+
 class App(QObject):
     config = {'mainW': {}}
     deviceStat = {}
@@ -373,16 +383,20 @@ class App(QObject):
     update30m = pyqtSignal()
     sendSatelliteData = pyqtSignal()
     updateDomeSettings = pyqtSignal()
+    drawHorizonPoints = pyqtSignal()
+    redrawHemisphere = pyqtSignal()
     message = pyqtSignal(str, int)
     messageQueue = Queue()
     mount = Mount()
     power = Power()
     dome = Dome()
     relay = Relay()
+    data = Data()
     automation = Automation()
     ephemeris = load('tests/testData/de421_23.bsp')
     mwGlob = {'modelDir': 'tests/model',
               'imageDir': 'tests/image',
               'dataDir': 'tests/data',
+              'configDir': 'tests/config',
               }
     uiWindows = {}

@@ -533,11 +533,12 @@ class Client(QObject):
         :param propertyName: name string of device property
         :return: true if server connected
         """
-
         if not deviceName:
             return False
+
         if deviceName not in self.devices:
             return False
+
         cmd = indiXML.enableBLOB(blobHandling,
                                  indi_attr={'name': propertyName,
                                             'device': deviceName})
@@ -561,7 +562,6 @@ class Client(QObject):
 
         :return: host name as str
         """
-
         if self._host is None:
             return ''
         if len(self._host) != 2:
@@ -574,11 +574,12 @@ class Client(QObject):
 
         :return: port number as int
         """
-
         if self._host is None:
             return 0
+
         if len(self._host) != 2:
             return 0
+
         return self._host[1]
 
     def sendNewText(self, deviceName='', propertyName='', elements='', text=''):
@@ -591,13 +592,15 @@ class Client(QObject):
         :param text: string in case of having only one element in elements
         :return: success for test
         """
-
         if deviceName not in self.devices:
             return False
+
         if not hasattr(self.devices[deviceName], propertyName):
             return False
+
         if not isinstance(elements, dict):
             elements = {elements: text}
+
         elementList = []
         for element in elements:
             text = elements[element]
@@ -622,13 +625,15 @@ class Client(QObject):
         :param number: value in case of having only one element in elements
         :return: success for test
         """
-
         if deviceName not in self.devices:
             return False
+
         if not hasattr(self.devices[deviceName], propertyName):
             return False
+
         if not isinstance(elements, dict):
             elements = {elements: number}
+
         elementList = []
         for element in elements:
             number = float(elements[element])
@@ -652,13 +657,15 @@ class Client(QObject):
         :param elements: element name or dict of element name / values
         :return: success for test
         """
-
         if deviceName not in self.devices:
             return False
+
         if not hasattr(self.devices[deviceName], propertyName):
             return False
+
         if not isinstance(elements, dict):
             elements = {elements: 'On'}
+
         elementList = []
         for element in elements:
             switch = elements[element]
@@ -676,7 +683,6 @@ class Client(QObject):
     def startBlob(self, deviceName='', propertyName='', timestamp=''):
         """
         Part of BASE CLIENT API of EKOS
-
         :return:
         """
         pass
@@ -684,7 +690,6 @@ class Client(QObject):
     def sendOneBlob(self, blobName='', blobSize=0, blobFormat='', blobBuffer=None):
         """
         Part of BASE CLIENT API of EKOS
-
         :return:
         """
         pass
@@ -692,7 +697,6 @@ class Client(QObject):
     def finishBlob(self):
         """
         Part of BASE CLIENT API of EKOS
-
         :return:
         """
         pass
@@ -700,41 +704,34 @@ class Client(QObject):
     def setVerbose(self, status):
         """
         Part of BASE CLIENT API of EKOS
-
         :return:
         """
-
         pass
 
     @staticmethod
     def isVerbose():
         """
         Part of BASE CLIENT API of EKOS
-
         :return: status of verbose
         """
-
         return False
 
     def setConnectionTimeout(self, seconds=2, microseconds=0):
         """
         Part of BASE CLIENT API of EKOS
-
         :return: success for test purpose
         """
-
         self.CONNECTION_TIMEOUT = seconds + microseconds / 1000000
         return True
 
     def _sendCmd(self, indiCommand):
         """
-        sendCmd take an XML indi command, converts it and sends it over the network and
-        flushes the buffer
+        sendCmd take an XML indi command, converts it and sends it over the
+        network and flushes the buffer
 
         :param indiCommand: XML command to send
         :return: success of sending
         """
-
         if self.connected:
             cmd = indiCommand.toXML()
             self.log.trace(f"SendCmd: [{cmd.decode().lstrip('<').rstrip('/>')}]")
@@ -749,8 +746,8 @@ class Client(QObject):
 
     def _getDriverInterface(self, deviceName):
         """
-        _getDriverInterface look the type of the device's driver interface up and gives
-        it back as binary value.
+        _getDriverInterface look the type of the device's driver interface up
+        and gives it back as binary value.
 
         :param deviceName: device name
         :return: binary value of type of device drivers interface
@@ -770,23 +767,22 @@ class Client(QObject):
         else:
             return -1
 
-    def _fillAttributes(self, deviceName=None, chunk=None, elementList=None, defVector=None):
+    def _fillAttributes(self, deviceName=None, chunk=None, elementList=None,
+                        defVector=None):
         """
-
         :param deviceName: device name
         :param chunk:   xml element from INDI
         :param elementList:
         :param defVector:
         :return: True for test purpose
         """
-
-        # now running through all atomic elements
         for elt in chunk.elt_list:
             name = elt.attr.get('name', '')
             elementList[name] = {}
             elementList[name]['elementType'] = elt.etype
 
-            # as a new blob vector does not  contain an initial value, we have to separate this
+            # as a new blob vector does not contain an initial value, we have to
+            # separate this
             if not isinstance(elt, indiXML.DefBLOB):
                 elementList[name]['value'] = elt.getValue()
 
@@ -807,12 +803,10 @@ class Client(QObject):
     @staticmethod
     def _setupPropertyStructure(chunk=None, device=None):
         """
-
         :param chunk:   xml element from INDI
         :param device:  device class
         :return:
         """
-
         iProperty = chunk.attr.get('name', '')
         if not hasattr(device, iProperty):
             setattr(device, iProperty, {})
@@ -838,9 +832,7 @@ class Client(QObject):
         :param chunk:   xml element from INDI
         :return: device and device name
         """
-
         deviceName = chunk.attr.get('device', '')
-
         if deviceName not in self.devices:
             self.devices[deviceName] = Device(deviceName)
             self.signals.newDevice.emit(deviceName)
@@ -858,11 +850,12 @@ class Client(QObject):
         :param deviceName: device name
         :return: success
         """
-
         if deviceName not in self.devices:
             return False
+
         if 'name' not in chunk.attr:
             return False
+
         iProperty = chunk.attr['name']
         if hasattr(device, iProperty):
             delattr(device, iProperty)
@@ -879,9 +872,7 @@ class Client(QObject):
         :param deviceName: device name
         :return: success
         """
-
         iProperty, elementList = self._setupPropertyStructure(chunk=chunk, device=device)
-
         self._fillAttributes(deviceName=deviceName,
                              chunk=chunk,
                              elementList=elementList,
@@ -889,15 +880,18 @@ class Client(QObject):
 
         if isinstance(chunk, indiXML.SetBLOBVector):
             self.signals.newBLOB.emit(deviceName, iProperty)
+
         elif isinstance(chunk, indiXML.SetSwitchVector):
             self.signals.newSwitch.emit(deviceName, iProperty)
+
         elif isinstance(chunk, indiXML.SetNumberVector):
             self.signals.newNumber.emit(deviceName, iProperty)
+
         elif isinstance(chunk, indiXML.SetTextVector):
             self.signals.newText.emit(deviceName, iProperty)
+
         elif isinstance(chunk, indiXML.SetLightVector):
             self.signals.newLight.emit(deviceName, iProperty)
-
         return True
 
     def _defProperty(self, chunk=None, device=None, deviceName=None):
@@ -909,50 +903,45 @@ class Client(QObject):
         :param deviceName: device name
         :return: success
         """
-
         iProperty, elementList = self._setupPropertyStructure(chunk=chunk, device=device)
-
         self._fillAttributes(deviceName=deviceName,
                              chunk=chunk,
                              elementList=elementList,
                              defVector=True)
-
         self.signals.newProperty.emit(deviceName, iProperty)
-
         if isinstance(chunk, indiXML.DefBLOBVector):
             self.signals.defBLOB.emit(deviceName, iProperty)
+
         elif isinstance(chunk, indiXML.DefSwitchVector):
             self.signals.defSwitch.emit(deviceName, iProperty)
+
         elif isinstance(chunk, indiXML.DefNumberVector):
             self.signals.defNumber.emit(deviceName, iProperty)
+
         elif isinstance(chunk, indiXML.DefTextVector):
             self.signals.defText.emit(deviceName, iProperty)
+
         elif isinstance(chunk, indiXML.DefLightVector):
             self.signals.defLight.emit(deviceName, iProperty)
-
         return True
 
     def _getProperty(self, chunk=None, device=None, deviceName=None):
         """
-
         :param chunk:   xml element from INDI
         :param device:  device class
         :param deviceName: device name
         :return: success
         """
-
         # todo: there is actually no implementation for this type. check if it is relevant
         # get property is for snooping other devices
         pass
 
     def _message(self, chunk=None, deviceName=None):
         """
-
         :param chunk:   xml element from INDI
         :param deviceName: device name
         :return: success
         """
-
         message = chunk.attr.get('message', '-')
         self.signals.newMessage.emit(deviceName, message)
         return True
@@ -1043,7 +1032,6 @@ class Client(QObject):
 
         :return: nothing
         """
-
         buf = self.socket.readAll()
         self.parser.feed(buf)
         try:
@@ -1060,8 +1048,11 @@ class Client(QObject):
                 elemParsed = indiXML.parseETree(elem)
                 elem.clear()
                 self._parseCmd(elemParsed)
+
         except Exception as e:
             self.log.warning(f'{e}: {buf}')
+
+        return True
 
     @pyqtSlot(QAbstractSocket.SocketError)
     def _handleError(self, socketError):
@@ -1071,8 +1062,8 @@ class Client(QObject):
         :param socketError: the error from socket library
         :return: nothing
         """
-
         if not self.connected:
             return
+
         self.log.error('INDI client connection fault, error: {0}'.format(socketError))
         self.disconnectServer()

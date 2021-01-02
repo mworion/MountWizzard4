@@ -274,7 +274,7 @@ class CameraIndi(IndiClass):
                                         elements=indiCmd,
                                         )
         if not suc:
-            return False
+            self.log.debug('Binning could not be set')
 
         indiCmd = self.device.getNumber('CCD_FRAME')
         indiCmd['X'] = posX
@@ -286,7 +286,7 @@ class CameraIndi(IndiClass):
                                         elements=indiCmd,
                                         )
         if not suc:
-            return False
+            self.log.debug('Frame could not be set')
 
         indiCmd = self.device.getNumber('CCD_EXPOSURE')
         indiCmd['CCD_EXPOSURE_VALUE'] = expTime

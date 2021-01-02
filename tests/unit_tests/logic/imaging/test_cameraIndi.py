@@ -138,6 +138,17 @@ def test_setExposureState_5():
     setattr(app.device, 'CCD_EXPOSURE', {'state': 'Busy'})
     suc = app.setExposureState()
     assert suc
+    assert not app.isDownloading
+
+
+def test_setExposureState_6():
+    app.device = Device()
+    app.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': 1}
+    app.isDownloading = True
+    setattr(app.device, 'CCD_EXPOSURE', {'state': 'Ok'})
+    suc = app.setExposureState()
+    assert suc
+    assert not app.isDownloading
 
 
 def test_sendDownloadMode_1():

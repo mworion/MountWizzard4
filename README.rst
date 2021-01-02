@@ -53,7 +53,7 @@ Version, build and code coverage status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 |PYPI_VERSION| |DownLoadsAbs| |DownLoadsMonth|
 
-|PYTEST MacOS| |PYTEST Win| 
+|PYTEST MacOS| |PYTEST Win38| |PYTEST Win39|
 
 |CODE_QUALITY_PYTHON| |CODECOV| |CODE_QUALITY_ALERTS|
 
@@ -83,7 +83,8 @@ CS Michel
     :alt: Documentation Status
 
 .. |PYTEST MacOS| image:: https://github.com/mworion/MountWizzard4/workflows/UnitTest%20MacOS/badge.svg
-.. |PYTEST WIN| image:: https://github.com/mworion/MountWizzard4/workflows/UnitTest%20Win/badge.svg
+.. |PYTEST WIN38| image:: https://github.com/mworion/MountWizzard4/workflows/UnitTestWin38/badge.svg
+.. |PYTEST WIN39| image:: https://github.com/mworion/MountWizzard4/workflows/UnitTestWin38/badge.svg
 .. |CODECOV| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
 .. |CODECOV_CHART| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/icicle.svg

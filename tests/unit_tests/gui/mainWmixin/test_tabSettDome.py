@@ -28,143 +28,197 @@ from mountcontrol.qtmount import Mount
 from skyfield.toposlib import Topos
 
 # local import
-from gui.mainWmixin.tabSettDome import SettDome
-from gui.widgets.main_ui import Ui_MainWindow
+from tests.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
+from gui.mainWmixin.tabSettDome import SettDome
 from logic.dome.dome import Dome
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global ui, widget, Test, Test1, app
-
-    class Test1(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        update1s = pyqtSignal()
-        threadPool = QThreadPool()
-
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        update1s = pyqtSignal()
-        update30m = pyqtSignal()
-        updateDomeSettings = pyqtSignal()
-        message = pyqtSignal(str, int)
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        mount.obsSite.location = Topos(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
-        dome = Dome(app=Test1())
-
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
-    app = SettDome(app=Test(), ui=ui,
-                   clickable=MWidget().clickable)
-    app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.close = MWidget().close
-    app.deleteLater = MWidget().deleteLater
-    app.deviceStat = dict()
-    app.getStyle = MWidget().getStyle
-
-    app.log = logging.getLogger(__name__)
-    app.threadPool = QThreadPool()
-
-    qtbot.addWidget(app)
-
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
     yield
 
-    app.threadPool.waitForDone(1000)
+
+@pytest.fixture(autouse=True, scope='function')
+def function(module):
+
+    class Mixin(MWidget, SettDome):
+        def __init__(self):
+            super().__init__()
+            self.app = App()
+            self.deviceStat = self.app.deviceStat
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            SettDome.__init__(self)
+
+    window = Mixin()
+    yield window
 
 
-def test_tab1():
-    app.tab1()
+def test_tab1(function):
+    function.tab1()
 
 
-def test_tab2():
-    app.tab2()
+def test_tab2(function):
+    function.tab2()
 
 
-def test_tab3():
-    app.tab3()
+def test_tab3(function):
+    function.tab3()
 
 
-def test_tab4():
-    app.tab4()
+def test_tab4(function):
+    function.tab4()
 
 
-def test_tab5():
-    app.tab5()
+def test_tab5(function):
+    function.tab5()
 
 
-def test_tab6():
-    app.tab6()
+def test_tab6(function):
+    function.tab6()
 
 
-def test_tab7():
-    app.tab7()
+def test_tab7(function):
+    function.tab7()
 
 
-def test_tab8():
-    app.tab8()
+def test_tab8(function):
+    function.tab8()
 
 
-def test_initConfig_1():
-    app.app.config['mainW'] = {}
-    suc = app.initConfig()
+def test_initConfig_1(function):
+    function.app.config['mainW'] = {}
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_2():
-    suc = app.initConfig()
+def test_initConfig_2(function):
+    suc = function.initConfig()
     assert suc
 
 
-def test_storeConfig_1():
-    suc = app.storeConfig()
+def test_storeConfig_1(function):
+    suc = function.storeConfig()
     assert suc
 
 
-def test_setZoffGEMInMount():
-    suc = app.setZoffGEMInMount()
+def test_setZoffGEMInMount(function):
+    suc = function.setZoffGEMInMount()
     assert suc
 
 
-def test_setZoff10micronInMount():
-    suc = app.setZoff10micronInMount()
+def test_setZoff10micronInMount(function):
+    suc = function.setZoff10micronInMount()
     assert suc
 
 
-def test_setUseGeometryInMounty_1():
-    app.ui.checkAutomaticDome.setChecked(False)
-    suc = app.setUseGeometryInMount()
+def test_setUseGeometryInMount_1(function):
+    function.ui.checkAutomaticDome.setChecked(False)
+    suc = function.setUseGeometryInMount()
     assert suc
 
 
-def test_setUseGeometryInMount_2():
-    app.ui.checkAutomaticDome.setChecked(False)
-    app.ui.domeRadius.setValue(0.9)
-    suc = app.setUseGeometryInMount()
-    assert suc
-
-
-def test_setUseGeometryInMount_3():
-    app.ui.domeRadius.setValue(0.8)
-    app.ui.checkAutomaticDome.setChecked(True)
-    with mock.patch.object(app,
+def test_setUseGeometryInMount_2(function):
+    function.ui.checkAutomaticDome.setChecked(True)
+    with mock.patch.object(function,
                            'updateDomeGeometryToGui'):
-        suc = app.setUseGeometryInMount()
+        suc = function.setUseGeometryInMount()
         assert suc
 
 
-def test_updateDomeGeometry_1():
-    suc = app.updateDomeGeometryToGui()
+def test_setUseDomeGeometry_1(function):
+    function.ui.checkUseDomeGeometry.setChecked(True)
+    suc = function.setUseDomeGeometry()
+    assert suc
+    assert function.app.dome.useGeometry
+
+
+def test_setUseDomeGeometry_2(function):
+    function.ui.checkUseDomeGeometry.setChecked(False)
+    suc = function.setUseDomeGeometry()
+    assert suc
+    assert not function.app.dome.useGeometry
+
+
+def test_updateDomeGeometry_1(function):
+    suc = function.updateDomeGeometryToGui()
     assert suc
 
 
-def test_setDomeSettlingTime_1():
-    suc = app.setDomeSettlingTime()
+def test_setDomeSettlingTime_1(function):
+    suc = function.setDomeSettlingTime()
     assert suc
+
+
+def test_updateShutterStatGui_1(function):
+    function.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN'] = True
+    function.app.dome.data['Status.Shutter'] = 'test'
+    suc = function.updateShutterStatGui()
+    assert suc
+    assert function.ui.domeShutterStatusText.text() == 'test'
+
+
+def test_updateShutterStatGui_2(function):
+    function.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN'] = False
+    function.app.dome.data['Status.Shutter'] = 'test'
+    suc = function.updateShutterStatGui()
+    assert suc
+    assert function.ui.domeShutterStatusText.text() == 'test'
+
+
+def test_updateShutterStatGui_3(function):
+    function.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN'] = None
+    function.app.dome.data['Status.Shutter'] = 'test'
+    suc = function.updateShutterStatGui()
+    assert suc
+    assert function.ui.domeShutterStatusText.text() == 'test'
+
+
+def test_domeAbortSlew_1(function):
+    with mock.patch.object(function.app.dome,
+                           'abortSlew',
+                           return_value=False):
+        suc = function.domeAbortSlew()
+        assert not suc
+
+
+def test_domeAbortSlew_2(function):
+    with mock.patch.object(function.app.dome,
+                           'abortSlew',
+                           return_value=True):
+        suc = function.domeAbortSlew()
+        assert suc
+
+
+def test_domeOpenShutter_1(function):
+    with mock.patch.object(function.app.dome,
+                           'openShutter',
+                           return_value=False):
+        suc = function.domeOpenShutter()
+        assert not suc
+
+
+def test_domeOpenShutter_2(function):
+    with mock.patch.object(function.app.dome,
+                           'openShutter',
+                           return_value=True):
+        suc = function.domeOpenShutter()
+        assert suc
+
+
+def test_domeCloseShutter_1(function):
+    with mock.patch.object(function.app.dome,
+                           'closeShutter',
+                           return_value=False):
+        suc = function.domeCloseShutter()
+        assert not suc
+
+
+def test_domeCloseShutter_2(function):
+    with mock.patch.object(function.app.dome,
+                           'closeShutter',
+                           return_value=True):
+        suc = function.domeCloseShutter()
+        assert suc

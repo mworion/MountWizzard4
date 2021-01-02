@@ -25,12 +25,7 @@ class SettDome(object):
     """
     """
 
-    def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
-
+    def __init__(self):
         self.ui.domeRadius.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.offGEM.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.offLAT.valueChanged.connect(self.setUseGeometryInMount)
@@ -161,11 +156,7 @@ class SettDome(object):
         if self.ui.checkAutomaticDome.isChecked():
             self.updateDomeGeometryToGui()
 
-        value = self.ui.domeRadius.value()
-        self.app.mount.geometry.domeRadius = value
-        if value < 1.0:
-            self.app.message.emit('Critical dome radius, please check', 2)
-
+        self.app.mount.geometry.domeRadius = self.ui.domeRadius.value()
         self.app.mount.geometry.offGEM = self.ui.offGEM.value()
         self.app.mount.geometry.offLAT = self.ui.offLAT.value()
         self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
@@ -184,9 +175,6 @@ class SettDome(object):
 
     def updateDomeGeometryToGui(self):
         """
-        updateDomeGeometryToGui takes the information gathered from the driver
-        and programs them into the mount class and gui for later use.
-
         :return: true for test purpose
         """
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_OTA_OFFSET', 0))
@@ -233,6 +221,7 @@ class SettDome(object):
         value = self.app.dome.data.get('Status.Shutter', None)
         if value:
             self.ui.domeShutterStatusText.setText(value)
+        return True
 
     def domeAbortSlew(self):
         """
@@ -242,6 +231,8 @@ class SettDome(object):
         if not suc:
             self.app.message.emit('Dome slew abort could not be executed', 2)
 
+        return suc
+
     def domeOpenShutter(self):
         """
         :return:
@@ -250,6 +241,8 @@ class SettDome(object):
         if not suc:
             self.app.message.emit('Dome open shutter could not be executed', 2)
 
+        return suc
+
     def domeCloseShutter(self):
         """
         :return:
@@ -257,3 +250,5 @@ class SettDome(object):
         suc = self.app.dome.closeShutter()
         if not suc:
             self.app.message.emit('Dome close shutter could not be executed', 2)
+
+        return suc

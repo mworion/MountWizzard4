@@ -280,6 +280,28 @@ class Automation:
         return
 
 
+class Dome:
+    domeShutterWidth = 0.6
+    offGEM = 0
+    offLAT = 0
+    offNorth = 0
+    offEast = 0
+    domeRadius = 1.0
+    data = {}
+
+    @staticmethod
+    def abortSlew():
+        return
+
+    @staticmethod
+    def openShutter():
+        return
+
+    @staticmethod
+    def closeShutter():
+        return
+
+
 class App(QObject):
     config = {'mainW': {}}
     deviceStat = {}
@@ -288,10 +310,12 @@ class App(QObject):
     update3s = pyqtSignal()
     update30m = pyqtSignal()
     sendSatelliteData = pyqtSignal()
+    updateDomeSettings = pyqtSignal()
     message = pyqtSignal(str, int)
     messageQueue = Queue()
     mount = Mount()
     power = Power()
+    dome = Dome()
     automation = Automation()
     ephemeris = load('tests/testData/de421_23.bsp')
     mwGlob = {'modelDir': 'tests/model',

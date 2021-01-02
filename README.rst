@@ -82,9 +82,12 @@ CS Michel
     :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. |PYTEST MacOS| image:: https://github.com/mworion/MountWizzard4/workflows/UnitTest%20MacOS/badge.svg
-.. |PYTEST WIN38| image:: https://github.com/mworion/MountWizzard4/workflows/UnitTestWin38/badge.svg
-.. |PYTEST WIN39| image:: https://github.com/mworion/MountWizzard4/workflows/UnitTestWin38/badge.svg
+.. |PYTEST MacOS| image::
+    https://github.com/mworion/MountWizzard4/workflows/UnitTest%20MacOS/badge.svg
+.. |PYTEST WIN38| image::
+    https://github.com/mworion/MountWizzard4/workflows/UnitTest%20Win%203.8/badge.svg
+.. |PYTEST WIN39| image::
+    https://github.com/mworion/MountWizzard4/workflows/UnitTest%20Win%203.9/badge.svg
 .. |CODECOV| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
 .. |CODECOV_CHART| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/icicle.svg
@@ -98,16 +101,23 @@ CS Michel
     :target: https://lgtm.com/projects/g/mworion/MountWizzard4/?mode=list
 
 .. |7U| image::
-https://github.com/mworion/MountWizzard4/workflows/Py3.7%20Ubuntu%20Package/badge.svg
+    https://github.com/mworion/MountWizzard4/workflows/Py3.7%20Ubuntu%20Package/badge.svg
 .. |7W| image::
-https://github.com/mworion/MountWizzard4/workflows/Py3.7%20Windows%20Package/badge.svg
-.. |7M| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.7%20MacOS%20Package/badge.svg
-.. |8U| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.8%20Ubuntu%20Package/badge.svg
-.. |8W| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.8%20Windows%20Package/badge.svg
-.. |8M| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.8%20MacOS%20Package/badge.svg
-.. |9U| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.9%20Ubuntu%20Package/badge.svg
-.. |9W| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.9%20Windows%20Package/badge.svg
-.. |9M| image:: https://github.com/mworion/MountWizzard4/workflows/Py3.9%20MacOS%20Package/badge.svg
+    https://github.com/mworion/MountWizzard4/workflows/Py3.7%20Windows%20Package/badge.svg
+.. |7M| image::
+    https://github.com/mworion/MountWizzard4/workflows/Py3.7%20MacOS%20Package/badge.svg
+.. |8U| image::
+    https://github.com/mworion/MountWizzard4/workflows/Py3.8%20Ubuntu%20Package/badge.svg
+.. |8W| image::
+    https://github.com/mworion/MountWizzard4/workflows/Py3.8%20Windows%20Package/badge.svg
+.. |8M| image::
+    https://github.com/mworion/MountWizzard4/workflows/Py3.8%20MacOS%20Package/badge.svg
+.. |9U| image::
+    https://github.com/mworion/MountWizzard4/workflows/Py3.9%20Ubuntu%20Package/badge.svg
+.. |9W| image::
+    https://github.com/mworion/MountWizzard4/workflows/Py3.9%20Windows%20Package/badge.svg
+.. |9M| image::
+    https://github.com/mworion/MountWizzard4/workflows/Py3.9%20MacOS%20Package/badge.svg
 
 .. |PYPI_VERSION| image:: https://img.shields.io/pypi/v/mountwizzard4.svg
     :target: https://pypi.python.org/pypi/mountwizzard4

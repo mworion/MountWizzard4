@@ -18,15 +18,15 @@
 import logging
 
 # external packages
-import PyQt5.QtCore
-import PyQt5.QtNetwork
+from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot
+from PyQt5.QtNetwork import QTcpSocket, QAbstractSocket
 import xml.etree.ElementTree as ETree
 
 # local import
 from indibase import indiXML
 
 
-class INDISignals(PyQt5.QtCore.QObject):
+class INDISignals(QObject):
     """
     The INDISignals class offers a list of signals to be used and instantiated by the
     IndiBase class to get signals for indi events.
@@ -34,30 +34,30 @@ class INDISignals(PyQt5.QtCore.QObject):
 
     __all__ = ['INDISignals']
 
-    newDevice = PyQt5.QtCore.pyqtSignal(str)
-    removeDevice = PyQt5.QtCore.pyqtSignal(str)
-    newProperty = PyQt5.QtCore.pyqtSignal(str, str)
-    removeProperty = PyQt5.QtCore.pyqtSignal(str, str)
+    newDevice = pyqtSignal(str)
+    removeDevice = pyqtSignal(str)
+    newProperty = pyqtSignal(str, str)
+    removeProperty = pyqtSignal(str, str)
 
-    newBLOB = PyQt5.QtCore.pyqtSignal(str, str)
-    newSwitch = PyQt5.QtCore.pyqtSignal(str, str)
-    newNumber = PyQt5.QtCore.pyqtSignal(str, str)
-    newText = PyQt5.QtCore.pyqtSignal(str, str)
-    newLight = PyQt5.QtCore.pyqtSignal(str, str)
+    newBLOB = pyqtSignal(str, str)
+    newSwitch = pyqtSignal(str, str)
+    newNumber = pyqtSignal(str, str)
+    newText = pyqtSignal(str, str)
+    newLight = pyqtSignal(str, str)
 
-    defBLOB = PyQt5.QtCore.pyqtSignal(str, str)
-    defSwitch = PyQt5.QtCore.pyqtSignal(str, str)
-    defNumber = PyQt5.QtCore.pyqtSignal(str, str)
-    defText = PyQt5.QtCore.pyqtSignal(str, str)
-    defLight = PyQt5.QtCore.pyqtSignal(str, str)
+    defBLOB = pyqtSignal(str, str)
+    defSwitch = pyqtSignal(str, str)
+    defNumber = pyqtSignal(str, str)
+    defText = pyqtSignal(str, str)
+    defLight = pyqtSignal(str, str)
 
-    newMessage = PyQt5.QtCore.pyqtSignal(str, str)
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
+    newMessage = pyqtSignal(str, str)
+    serverConnected = pyqtSignal()
+    serverDisconnected = pyqtSignal(object)
+    deviceConnected = pyqtSignal(str)
+    deviceDisconnected = pyqtSignal(str)
 
-    serverAlive = PyQt5.QtCore.pyqtSignal(bool)
+    serverAlive = pyqtSignal(bool)
 
 
 class Device(object):
@@ -93,123 +93,126 @@ class Device(object):
 
     def getNumber(self, propertyName):
         """
-        getNumber extracts from the device dictionary the relevant property subset for
-        number or list of number elements. the return dict could be used later on for
-        setting an element list (number vector) in indi client.
+        getNumber extracts from the device dictionary the relevant property
+        subset for number or list of number elements. the return dict could be
+        used later on for setting an element list (number vector) in indi client.
 
         :param propertyName: string with name
         :return: dict with number / number vector
         """
-
         if not hasattr(self, propertyName):
             return {}
+
         iProperty = getattr(self, propertyName)
         if iProperty['propertyType'] not in ['defNumberVector',
                                              'setNumberVector']:
-            self.log.warning('Property: {0} is not Number'.format(iProperty['propertyType']))
-            return
+            self.log.warning(f'Property: {iProperty["propertyType"]} is not Number')
+            return {}
+
         elementList = iProperty['elementList']
         retDict = {}
         for prop in elementList:
             retDict[prop] = elementList[prop]['value']
-        # self.log.debug(f'Get number [{self.name}]: {retDict}')
+
         return retDict
 
     def getText(self, propertyName):
         """
-        getNumber extracts from the device dictionary the relevant property subset for
-        text or list of text elements. the return dict could be used later on for
-        setting an element list (text vector) in indi client.
+        getNumber extracts from the device dictionary the relevant property
+        subset for text or list of text elements. the return dict could be used
+        later on for setting an element list (text vector) in indi client.
 
         :param propertyName: string with name
         :return: dict with text or text vector
         """
-
         if not hasattr(self, propertyName):
             return {}
+
         iProperty = getattr(self, propertyName)
         if iProperty['propertyType'] not in ['defTextVector',
                                              'setTextVector']:
-            self.log.warning('Property: {0} is not Text'.format(iProperty['propertyType']))
-            return
+            self.log.warning(f'Property: {iProperty["propertyType"]} is not Text')
+            return {}
+
         elementList = iProperty['elementList']
         retDict = {}
         for prop in elementList:
             retDict[prop] = elementList[prop]['value']
-        # self.log.debug(f'Get text   [{self.name}]: {retDict}')
+
         return retDict
 
     def getSwitch(self, propertyName):
         """
-        getSwitch extracts from the device dictionary the relevant property subset for
-        switch or list of switch elements. the return dict could be used later on for
-        setting an element list (switch vector) in indi client.
+        getSwitch extracts from the device dictionary the relevant property
+        subset for switch or list of switch elements. the return dict could be
+        used later on for setting an element list (switch vector) in indi client.
 
         :param propertyName: string with name
         :return: dict with switch or switch vector
         """
-
         if not hasattr(self, propertyName):
             return {}
+
         iProperty = getattr(self, propertyName)
         if iProperty['propertyType'] not in ['defSwitchVector',
                                              'setSwitchVector']:
-            self.log.warning('Property: {0} is not Switch'.format(iProperty['propertyType']))
-            return
+            self.log.warning(f'Property: {iProperty["propertyType"]} is not Switch')
+            return {}
+
         elementList = iProperty['elementList']
         retDict = {}
         for prop in elementList:
             retDict[prop] = elementList[prop]['value']
-        # self.log.debug(f'Get switch [{self.name}]: {retDict}')
+
         return retDict
 
     def getLight(self, propertyName):
         """
-        getLight extracts from the device dictionary the relevant property subset for
-        light or list of light elements. the return dict could be used later on for
-        setting an element list (light vector) in indi client.
+        getLight extracts from the device dictionary the relevant property
+        subset for light or list of light elements. the return dict could be used
+        later on for setting an element list (light vector) in indi client.
 
         :param propertyName: string with name
         :return: dict with light or light vector
         """
-
         if not hasattr(self, propertyName):
             return {}
+
         iProperty = getattr(self, propertyName)
         if iProperty['propertyType'] not in ['defLightVector',
                                              'setLightVector']:
-            self.log.warning('Property: {0} is not Light'.format(iProperty['propertyType']))
-            return
+            self.log.warning(f'Property: {iProperty["propertyType"]} is not Light')
+            return {}
+
         elementList = iProperty['elementList']
         retDict = {}
         for prop in elementList:
             retDict[prop] = elementList[prop]['value']
-        # self.log.debug(f'Get light  [{self.name}]: {retDict}')
+
         return retDict
 
     def getBlob(self, propertyName):
         """
-        getBlob extracts from the device dictionary the relevant property value for
-        blob.
+        getBlob extracts from the device dictionary the relevant property
+        value for blob.
 
         :param propertyName: string with name
         :return: return blob
         """
-
-        # blob return different, because it's binary data
         if not hasattr(self, propertyName):
             return {}
+
         iProperty = getattr(self, propertyName)
         if iProperty['propertyType'] not in ['defBLOBVector',
                                              'setBLOBVector']:
-            self.log.warning('Property: {0} is not Blob'.format(iProperty['propertyType']))
-            return
+            self.log.warning(f'Property: {iProperty["propertyType"]} is not Blob')
+            return {}
+
         elementList = iProperty['elementList']
-        # self.log.debug(f'Get blob   [{self.name}]')
         return elementList[propertyName]
 
 
-class Client(PyQt5.QtCore.QObject):
+class Client(QObject):
     """
     Client implements an INDI Base Client for INDI servers. it rely on PyQt5 and it's
     signalling scheme. there might be not all capabilities implemented right now. all
@@ -289,7 +292,7 @@ class Client(PyQt5.QtCore.QObject):
         self.parser = None
 
         # tcp handling
-        self.socket = PyQt5.QtNetwork.QTcpSocket()
+        self.socket = QTcpSocket()
         self.socket.readyRead.connect(self._handleReadyRead)
         self.socket.error.connect(self._handleError)
         self.socket.disconnected.connect(self._handleDisconnected)
@@ -419,7 +422,7 @@ class Client(PyQt5.QtCore.QObject):
 
         return True
 
-    @PyQt5.QtCore.pyqtSlot()
+    @pyqtSlot()
     def _handleDisconnected(self):
         """
         _handleDisconnected log all network errors in case of problems.
@@ -1039,7 +1042,7 @@ class Client(PyQt5.QtCore.QObject):
         self.log.error('Unknown vectors: {0}'.format(chunk))
         return False
 
-    @PyQt5.QtCore.pyqtSlot()
+    @pyqtSlot()
     def _handleReadyRead(self):
         """
         _handleReadyRead gets the date in buffer signal and starts to read data from the
@@ -1069,7 +1072,7 @@ class Client(PyQt5.QtCore.QObject):
         except Exception as e:
             self.log.warning(f'{e}: {buf}')
 
-    @PyQt5.QtCore.pyqtSlot(PyQt5.QtNetwork.QAbstractSocket.SocketError)
+    @pyqtSlot(QAbstractSocket.SocketError)
     def _handleError(self, socketError):
         """
         _handleError log all network errors in case of problems.

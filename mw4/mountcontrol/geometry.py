@@ -315,7 +315,7 @@ class Geometry(object):
         text += f'offNorth:{self.offNorth}, offEast:{self.offEast}, '
         text += f'offVert:{self.offVert}, offLAT:{self.offLAT}, '
         text += f'domeRadius:{self.domeRadius}'
-        self.log.debug(text)
+        self.log.trace(text)
 
         ha = ha.radians
         dec = dec.radians
@@ -436,7 +436,7 @@ class Geometry(object):
         p = 2 * np.dot(PD, PB)
         q = (np.dot(PB, PB) - self.domeRadius**2)
 
-        self.log.debug(f'Geometry calc p:[{p}], q:[{q}]')
+        self.log.trace(f'Geometry calc p:[{p}], q:[{q}]')
 
         # there should be always a reasonable solution
         if (p * p / 4 - q) < 0:
@@ -475,6 +475,6 @@ class Geometry(object):
                             P5[:-1], P6[:-1], P7[:-1], P8[:-1], P9[:-1],
                             P10[:-1]]
 
-        self.log.debug(f'az:{azDome}, alt:{altDome}')
+        self.log.trace(f'az:{azDome}, alt:{altDome}')
 
         return altDome, azDome, x, y, z

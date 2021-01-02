@@ -81,6 +81,8 @@ def test_workerPollData_2():
 
 
 def test_workerPollData_3():
+    app.deviceConnected = True
+    app.data['CAN_FAST'] = False
     with mock.patch.object(AlpacaBase,
                            'get'):
         suc = app.workerPollData()

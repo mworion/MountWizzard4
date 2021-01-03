@@ -113,7 +113,7 @@ class AscomClass(object):
 
             except Exception as e:
                 suc = False
-                self.log.info(f'Connection error [{self.deviceName}]: [{e}]')
+                self.log.warning(f'Connection error [{self.deviceName}]: [{e}]')
 
             else:
                 suc = self.isClientConnected()

@@ -18,8 +18,8 @@
 import logging
 
 # external packages
-from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot
-from PyQt5.QtNetwork import QTcpSocket, QAbstractSocket
+from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtNetwork import QTcpSocket
 import xml.etree.ElementTree as ETree
 
 # local import
@@ -758,12 +758,14 @@ class Client(QObject):
         device = self.devices[deviceName]
         if not hasattr(device, 'DRIVER_INFO'):
             return -1
+
         val = getattr(device, 'DRIVER_INFO')
         if val:
             val = val['elementList'].get('DRIVER_INTERFACE', '')
             if val:
                 interface = val['value']
                 return int(interface)
+
             else:
                 return -1
         else:
@@ -796,6 +798,7 @@ class Client(QObject):
             if name == 'CONNECT' and elt.getValue() == 'On' and chunk.attr['state'] == 'Ok':
                 self.signals.deviceConnected.emit(deviceName)
                 self.log.info(f'Device [{deviceName}] connected')
+
             if name == 'DISCONNECT' and elt.getValue() == 'On':
                 self.signals.deviceDisconnected.emit(deviceName)
                 self.log.info(f'Device [{deviceName}] disconnected')
@@ -1024,7 +1027,6 @@ class Client(QObject):
         self.log.error('Unknown vectors: {0}'.format(chunk))
         return False
 
-    @pyqtSlot()
     def _handleReadyRead(self):
         """
         _handleReadyRead gets the date in buffer signal and starts to read data from the
@@ -1040,23 +1042,31 @@ class Client(QObject):
             for event, elem in self.parser.read_events():
                 if event == 'start':
                     self.curDepth += 1
+
                 elif event == 'end':
                     self.curDepth -= 1
+
                 else:
                     self.log.critical('Problem parsing event: {0}'.format(event))
+                    continue
+
                 if self.curDepth > 0:
                     continue
-                # print('Depth: ', self.curDepth, '  Parsed: ', elem.items())
-                elemParsed = indiXML.parseETree(elem)
+
+                if self.curDepth < 0:
+                    self.log.critical('Problem parsing event: {0}'.format(event))
+                    continue
+
+                elementToParse = indiXML.parseETree(elem)
                 elem.clear()
-                self._parseCmd(elemParsed)
+                self._parseCmd(elementToParse)
 
         except Exception as e:
-            self.log.warning(f'{e}: {buf}')
+            self.log.error(f'{e}: {buf}')
+            return False
 
         return True
 
-    @pyqtSlot(QAbstractSocket.SocketError)
     def _handleError(self, socketError):
         """
         _handleError log all network errors in case of problems.
@@ -1065,7 +1075,8 @@ class Client(QObject):
         :return: nothing
         """
         if not self.connected:
-            return
+            return False
 
         self.log.error('INDI client connection fault, error: {0}'.format(socketError))
         self.disconnectServer()
+        return True

@@ -602,3 +602,136 @@ def test__sendCmd_3(function):
                                    'flush'):
                 suc = function._sendCmd(cmd)
                 assert suc
+
+
+def test_getDriverInterface_1(function):
+    function.devices = {'test': Device()}
+    val = function._getDriverInterface('test')
+    assert val == -1
+
+
+def test_getDriverInterface_2(function):
+    function.devices = {'test': Device()}
+    function.devices['test'].DRIVER_INFO = None
+    val = function._getDriverInterface('test')
+    assert val == -1
+
+
+def test_getDriverInterface_3(function):
+    function.devices = {'test': Device()}
+    elemList = {'elementList': {}}
+    function.devices['test'].DRIVER_INFO = elemList
+    val = function._getDriverInterface('test')
+    assert val == -1
+
+
+def test_getDriverInterface_4(function):
+    function.devices = {'test': Device()}
+    elemList = {'elementList': {'DRIVER_INTERFACE': {'value': 0x0001}}}
+    function.devices['test'].DRIVER_INFO = elemList
+    val = function._getDriverInterface('test')
+    assert val == 1
+
+
+def test_fillAttributes_1(function):
+    # suc = function._fillAttributes('')
+    suc = True
+    assert suc
+
+
+def test_handleReadyRead_1(function):
+    function.curDepth = 0
+    elem = ''
+    with mock.patch.object(function.socket,
+                           'readAll'):
+        with mock.patch.object(function.parser,
+                               'feed'):
+            with mock.patch.object(function.parser,
+                                   'read_events',
+                                   side_effect=Exception):
+                suc = function._handleReadyRead()
+                assert not suc
+                assert function.curDepth == 0
+
+
+def test_handleReadyRead_2(function):
+    function.curDepth = 0
+    elem = ''
+    with mock.patch.object(function.socket,
+                           'readAll'):
+        with mock.patch.object(function.parser,
+                               'feed'):
+            with mock.patch.object(function.parser,
+                                   'read_events',
+                                   return_value=[('end', elem)]):
+                suc = function._handleReadyRead()
+                assert suc
+                assert function.curDepth == -1
+
+
+def test_handleReadyRead_3(function):
+    function.curDepth = 0
+    elem = ''
+    with mock.patch.object(function.socket,
+                           'readAll'):
+        with mock.patch.object(function.parser,
+                               'feed'):
+            with mock.patch.object(function.parser,
+                                   'read_events',
+                                   return_value=[('start', elem)]):
+                suc = function._handleReadyRead()
+                assert suc
+                assert function.curDepth == 1
+
+
+def test_handleReadyRead_4(function):
+    function.curDepth = 0
+    elem = ''
+    with mock.patch.object(function.socket,
+                           'readAll'):
+        with mock.patch.object(function.parser,
+                               'feed'):
+            with mock.patch.object(function.parser,
+                                   'read_events',
+                                   return_value=[('test', elem)]):
+                suc = function._handleReadyRead()
+                assert suc
+                assert function.curDepth == 0
+
+
+def test_handleReadyRead_5(function):
+    class Test:
+        @staticmethod
+        def clear():
+            return
+
+    function.curDepth = -1
+    elem = Test()
+    with mock.patch.object(function.socket,
+                           'readAll'):
+        with mock.patch.object(function.parser,
+                               'feed'):
+            with mock.patch.object(function.parser,
+                                   'read_events',
+                                   return_value=[('start', elem)]):
+                with mock.patch.object(function,
+                                       '_parseCmd'):
+                    with mock.patch.object(indiXML,
+                                           'parseETree'):
+                        suc = function._handleReadyRead()
+                        assert suc
+                        assert function.curDepth == 0
+
+
+def test_handleError_1(function):
+    function.connected = False
+    suc = function._handleError('')
+    assert not suc
+
+
+def test_handleError_2(function):
+    function.connected = True
+    with mock.patch.object(function,
+                           'disconnectServer'):
+        suc = function._handleError('')
+        assert suc

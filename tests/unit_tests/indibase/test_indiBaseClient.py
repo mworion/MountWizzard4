@@ -634,8 +634,232 @@ def test_getDriverInterface_4(function):
 
 
 def test_fillAttributes_1(function):
-    # suc = function._fillAttributes('')
-    suc = True
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'test'}, None)
+    chunk = indiXML.DefSwitchVector('defSwitch', [elem], {}, None)
+    suc = function._fillAttributes(deviceName='test',
+                                   chunk=chunk,
+                                   elementList={})
+    assert suc
+
+
+def test_fillAttributes_2(function):
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'CONNECT'}, None)
+    chunk = indiXML.DefSwitchVector('defSwitch', [elem], {'state': 'Ok'}, None)
+    suc = function._fillAttributes(deviceName='test',
+                                   chunk=chunk,
+                                   elementList={})
+    assert suc
+
+
+def test_fillAttributes_3(function):
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefSwitchVector('defSwitch', [elem], {'state': 'Ok'}, None)
+    suc = function._fillAttributes(deviceName='test',
+                                   chunk=chunk,
+                                   elementList={})
+    assert suc
+
+
+def test_setupPropertyStructure(function):
+    device = Device()
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefSwitchVector('defSwitch', [elem], {'state': 'Ok'}, None)
+    ip, el = function._setupPropertyStructure(chunk=chunk, device=device)
+    assert ip == ''
+    assert el == {}
+
+
+def test_getDeviceReference_1(function):
+    function.devices = {'test': Device()}
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefSwitchVector('defSwitch', [elem], {'device': 'test'}, None)
+    dev, name = function._getDeviceReference(chunk=chunk)
+    assert dev == function.devices['test']
+    assert name == 'test'
+
+
+def test_getDeviceReference_2(function):
+    function.devices = {}
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefSwitchVector('defSwitch', [elem], {'device': 'test'}, None)
+    dev, name = function._getDeviceReference(chunk=chunk)
+    assert dev == function.devices['test']
+    assert name == 'test'
+
+
+def test_delProperty_1(function):
+    function.devices = {}
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefSwitchVector('defSwitch', [elem], {'device': 'test'}, None)
+    suc = function._delProperty(chunk=chunk, deviceName='test')
+    assert not suc
+
+
+def test_delProperty_2(function):
+    function.devices = {'test': Device()}
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefSwitchVector('defSwitch', [elem], {'test': 'test'}, None)
+    suc = function._delProperty(chunk=chunk, deviceName='test')
+    assert not suc
+
+
+def test_delProperty_3(function):
+    function.devices = {'test': Device(name='test')}
+    function.devices['test'].test = None
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefSwitchVector('defSwitch', [elem], {'name': 'test'}, None)
+    suc = function._delProperty(chunk=chunk,
+                                device=function.devices['test'],
+                                deviceName='test')
+    assert suc
+
+
+def test_setProperty_1(function):
+    function.devices = {'test': Device(name='test')}
+    function.devices['test'].test = None
+    elem = indiXML.DefBLOB('defBLOB', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.SetBLOBVector('defBLOB', [elem], {'name': 'test'}, None)
+    with mock.patch.object(function,
+                           '_setupPropertyStructure',
+                           return_value=('test', 'test')):
+        with mock.patch.object(function,
+                               '_fillAttributes'):
+            suc = function._setProperty(chunk=chunk,
+                                        device=function.devices['test'],
+                                        deviceName='test')
+            assert suc
+
+
+def test_setProperty_2(function):
+    function.devices = {'test': Device(name='test')}
+    function.devices['test'].test = None
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.SetSwitchVector('defSwitch', [elem], {'name': 'test'}, None)
+    with mock.patch.object(function,
+                           '_setupPropertyStructure',
+                           return_value=('test', 'test')):
+        with mock.patch.object(function,
+                               '_fillAttributes'):
+            suc = function._setProperty(chunk=chunk,
+                                        device=function.devices['test'],
+                                        deviceName='test')
+            assert suc
+
+
+def test_setProperty_3(function):
+    function.devices = {'test': Device(name='test')}
+    function.devices['test'].test = None
+    elem = indiXML.DefNumber('defNumber', 1, {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.SetNumberVector('defNumber', [elem], {'name': 'test'}, None)
+    with mock.patch.object(function,
+                           '_setupPropertyStructure',
+                           return_value=('test', 'test')):
+        with mock.patch.object(function,
+                               '_fillAttributes'):
+            suc = function._setProperty(chunk=chunk,
+                                        device=function.devices['test'],
+                                        deviceName='test')
+            assert suc
+
+
+def test_setProperty_4(function):
+    function.devices = {'test': Device(name='test')}
+    function.devices['test'].test = None
+    elem = indiXML.DefText('defText', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.SetTextVector('defText', [elem], {'name': 'test'}, None)
+    with mock.patch.object(function,
+                           '_setupPropertyStructure',
+                           return_value=('test', 'test')):
+        with mock.patch.object(function,
+                               '_fillAttributes'):
+            suc = function._setProperty(chunk=chunk,
+                                        device=function.devices['test'],
+                                        deviceName='test')
+            assert suc
+
+
+def test_defProperty_1(function):
+    function.devices = {'test': Device(name='test')}
+    function.devices['test'].test = None
+    elem = indiXML.DefBLOB('defBLOB', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefBLOBVector('defBLOB', [elem], {'name': 'test'}, None)
+    with mock.patch.object(function,
+                           '_setupPropertyStructure',
+                           return_value=('test', 'test')):
+        with mock.patch.object(function,
+                               '_fillAttributes'):
+            suc = function._defProperty(chunk=chunk,
+                                        device=function.devices['test'],
+                                        deviceName='test')
+            assert suc
+
+
+def test_defProperty_2(function):
+    function.devices = {'test': Device(name='test')}
+    function.devices['test'].test = None
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefSwitchVector('defSwitch', [elem], {'name': 'test'}, None)
+    with mock.patch.object(function,
+                           '_setupPropertyStructure',
+                           return_value=('test', 'test')):
+        with mock.patch.object(function,
+                               '_fillAttributes'):
+            suc = function._defProperty(chunk=chunk,
+                                        device=function.devices['test'],
+                                        deviceName='test')
+            assert suc
+
+
+def test_defProperty_3(function):
+    function.devices = {'test': Device(name='test')}
+    function.devices['test'].test = None
+    elem = indiXML.DefNumber('defNumber', 1, {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefNumberVector('defNumber', [elem], {'name': 'test'}, None)
+    with mock.patch.object(function,
+                           '_setupPropertyStructure',
+                           return_value=('test', 'test')):
+        with mock.patch.object(function,
+                               '_fillAttributes'):
+            suc = function._defProperty(chunk=chunk,
+                                        device=function.devices['test'],
+                                        deviceName='test')
+            assert suc
+
+
+def test_defProperty_4(function):
+    function.devices = {'test': Device(name='test')}
+    function.devices['test'].test = None
+    elem = indiXML.DefText('defText', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefTextVector('defText', [elem], {'name': 'test'}, None)
+    with mock.patch.object(function,
+                           '_setupPropertyStructure',
+                           return_value=('test', 'test')):
+        with mock.patch.object(function,
+                               '_fillAttributes'):
+            suc = function._defProperty(chunk=chunk,
+                                        device=function.devices['test'],
+                                        deviceName='test')
+            assert suc
+
+
+def test_defProperty_5(function):
+    function.devices = {'test': Device(name='test')}
+    function.devices['test'].test = None
+    elem = indiXML.DefLight('defLight', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefLightVector('defLight', [elem], {'name': 'test'}, None)
+    with mock.patch.object(function,
+                           '_setupPropertyStructure',
+                           return_value=('test', 'test')):
+        with mock.patch.object(function,
+                               '_fillAttributes'):
+            suc = function._defProperty(chunk=chunk,
+                                        device=function.devices['test'],
+                                        deviceName='test')
+            assert suc
+
+
+def test_getProperty(function):
+    suc = function._getProperty()
     assert suc
 
 

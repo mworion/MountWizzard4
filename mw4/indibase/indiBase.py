@@ -831,8 +831,9 @@ class Client(QObject):
 
     def _getDeviceReference(self, chunk=None):
         """
-        _getDeviceReference extracts the device name from INDI chunk and looks device
-        presence in INDi base class up. if not present, a new device will be generated
+        _getDeviceReference extracts the device name from INDI chunk and looks
+        device presence in INDi base class up. if not present, a new device will
+        be generated
 
         :param chunk:   xml element from INDI
         :return: device and device name
@@ -866,6 +867,7 @@ class Client(QObject):
             delattr(device, iProperty)
             self.signals.removeProperty.emit(deviceName, iProperty)
             self.log.info(f'Device [{deviceName}] del property [{iProperty}]')
+
         return True
 
     def _setProperty(self, chunk=None, device=None, deviceName=None):
@@ -897,6 +899,7 @@ class Client(QObject):
 
         elif isinstance(chunk, indiXML.SetLightVector):
             self.signals.newLight.emit(deviceName, iProperty)
+
         return True
 
     def _defProperty(self, chunk=None, device=None, deviceName=None):
@@ -939,7 +942,7 @@ class Client(QObject):
         """
         # todo: there is actually no implementation for this type. check if it is relevant
         # get property is for snooping other devices
-        pass
+        return True
 
     def _message(self, chunk=None, deviceName=None):
         """

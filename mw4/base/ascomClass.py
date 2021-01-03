@@ -91,28 +91,36 @@ class AscomClass(object):
         self.cyclePollData.timeout.connect(self.pollData)
 
     def connectClient(self):
+        """
+        :return:
+        """
         self.client.connected = True
+        return True
 
     def disconnectClient(self):
+        """
+        :return:
+        """
         self.client.connected = False
+        return True
 
     def isClientConnected(self):
+        """
+        :return:
+        """
         return self.client.connected
 
     def getInitialConfig(self):
         """
-        getInitialConfig starts connecting the ascom device with retry and send
-        the corresponding signals. basis information will be collected, too.
-
         :return: success of reconnecting to server
         """
-
         for retry in range(0, 10):
             try:
                 self.connectClient()
 
             except Exception as e:
                 suc = False
+                print(e)
                 self.log.warning(f'Connection error [{self.deviceName}]: [{e}]')
 
             else:
@@ -123,7 +131,7 @@ class AscomClass(object):
                     break
 
             finally:
-                QTest.qWait(500)
+                QTest.qWait(250)
 
         else:
             suc = False
@@ -144,29 +152,22 @@ class AscomClass(object):
         self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.Name
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.DriverVersion
         self.data['DRIVER_INFO.DRIVER_EXEC'] = self.client.DriverInfo
-
         return True
 
     def startTimer(self):
         """
-        startTimer enables the cyclic timer for polling information
-
         :return: true for test purpose
         """
         self.cyclePollData.start(self.CYCLE_POLL_DATA)
         self.cyclePollStatus.start(self.CYCLE_POLL_STATUS)
-
         return True
 
     def stopTimer(self):
         """
-        stopTimer disables the cyclic timer for polling information
-
         :return: true for test purpose
         """
         self.cyclePollData.stop()
         self.cyclePollStatus.stop()
-
         return True
 
     def dataEntry(self, value, element, elementInv=None):
@@ -197,11 +198,8 @@ class AscomClass(object):
 
     def pollStatusWorker(self):
         """
-        pollStatusWorker is the thread method to be called for collecting data
-
         :return: success
         """
-
         try:
             suc = self.isClientConnected()
 
@@ -238,49 +236,47 @@ class AscomClass(object):
         self.threadPool.start(worker)
 
     def processPolledData(self):
+        """
+        :return:
+        """
         pass
 
     def workerPollData(self):
+        """
+        :return:
+        """
         pass
 
     def pollData(self):
         """
-
         :return: success
         """
-
         if not self.deviceConnected:
             return False
 
         worker = Worker(self.workerPollData)
         worker.signals.result.connect(self.processPolledData)
         self.threadPool.start(worker)
-
         return True
 
     def pollStatus(self):
         """
-        workerPollStatus starts a thread every 1 second for polling.
-
         :return: success
         """
         worker = Worker(self.pollStatusWorker)
         self.threadPool.start(worker)
-
         return True
 
     def startCommunication(self, loadConfig=False):
         """
-        startCommunication starts cycling of the polling.
-
         :param loadConfig:
         :return: True for test purpose
         """
         if not self.deviceName:
             return False
 
+        # clsctx = pythoncom.CLSCTX_LOCAL_SERVER
         pythoncom.CoInitialize()
-
         try:
             self.client = win32com.client.Dispatch(self.deviceName)
 
@@ -297,11 +293,8 @@ class AscomClass(object):
 
     def stopCommunication(self):
         """
-        stopCommunication stops cycling of the server.
-
         :return: true for test purpose
         """
-
         self.stopTimer()
         if self.client:
             try:
@@ -315,9 +308,7 @@ class AscomClass(object):
         self.serverConnected = False
         self.client = None
         pythoncom.CoUninitialize()
-
         self.ascomSignals.deviceDisconnected.emit(f'{self.deviceName}')
         self.ascomSignals.serverDisconnected.emit({f'{self.deviceName}': 0})
         self.app.message.emit(f'ASCOM device remove: [{self.deviceName}]', 0)
-
         return True

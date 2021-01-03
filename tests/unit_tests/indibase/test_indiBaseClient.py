@@ -21,7 +21,7 @@ import unittest.mock as mock
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
-from indibase.indiBase import Client
+from indibase.indiBase import Client, Device
 from indibase import indiXML
 
 
@@ -136,3 +136,235 @@ def test_clearDevices_2(function):
     suc = function.clearDevices('test1')
     assert suc
     assert function.devices == {}
+
+
+def test_disconnectServer(function):
+    with mock.patch.object(function,
+                           'clearParser'):
+        with mock.patch.object(function,
+                               'clearDevices'):
+            with mock.patch.object(function.socket,
+                                   'abort'):
+                suc = function.disconnectServer()
+                assert suc
+
+
+def test_handleDisconnected(function):
+    function.connected = True
+    suc = function.handleDisconnected()
+    assert suc
+    assert not function.connected
+
+
+def test_isServerConnected_1(function):
+    function.connected = True
+    suc = function.isServerConnected()
+    assert suc
+
+
+def test_isServerConnected_2(function):
+    function.connected = False
+    suc = function.isServerConnected()
+    assert not suc
+
+
+def test_connectDevice_1(function):
+    function.connected = False
+    suc = function.connectDevice()
+    assert not suc
+
+
+def test_connectDevice_2(function):
+    function.connected = True
+    suc = function.connectDevice()
+    assert not suc
+
+
+def test_connectDevice_3(function):
+    function.connected = True
+    suc = function.connectDevice('test')
+    assert not suc
+
+
+def test_connectDevice_4(function):
+    function.connected = True
+    function.devices = {'test': Device()}
+    with mock.patch.object(function.devices['test'],
+                           'getSwitch',
+                           return_value={'CONNECT': 'On'}):
+        suc = function.connectDevice('test')
+        assert not suc
+
+
+def test_connectDevice_5(function):
+    function.connected = True
+    function.devices = {'test': Device()}
+    with mock.patch.object(function.devices['test'],
+                           'getSwitch',
+                           return_value={'CONNECT': 'Off'}):
+        with mock.patch.object(function,
+                               'sendNewSwitch',
+                               return_value=False):
+            suc = function.connectDevice('test')
+            assert not suc
+
+
+def test_connectDevice_6(function):
+    function.connected = True
+    function.devices = {'test': Device()}
+    with mock.patch.object(function.devices['test'],
+                           'getSwitch',
+                           return_value={'CONNECT': 'Off'}):
+        with mock.patch.object(function,
+                               'sendNewSwitch',
+                               return_value=True):
+            suc = function.connectDevice('test')
+            assert suc
+
+
+def test_disconnectDevice_1(function):
+    function.connected = False
+    suc = function.disconnectDevice()
+    assert not suc
+
+
+def test_disconnectDevice_2(function):
+    function.connected = True
+    suc = function.disconnectDevice()
+    assert not suc
+
+
+def test_disconnectDevice_3(function):
+    function.connected = True
+    suc = function.disconnectDevice('test')
+    assert not suc
+
+
+def test_disconnectDevice_4(function):
+    function.connected = True
+    function.devices = {'test': Device()}
+    with mock.patch.object(function.devices['test'],
+                           'getSwitch',
+                           return_value={'DISCONNECT': 'On'}):
+        suc = function.disconnectDevice('test')
+        assert not suc
+
+
+def test_disconnectDevice_5(function):
+    function.connected = True
+    function.devices = {'test': Device()}
+    with mock.patch.object(function.devices['test'],
+                           'getSwitch',
+                           return_value={'DISCONNECT': 'Off'}):
+        with mock.patch.object(function,
+                               'sendNewSwitch',
+                               return_value=False):
+            suc = function.disconnectDevice('test')
+            assert not suc
+
+
+def test_disconnectDevice_6(function):
+    function.connected = True
+    function.devices = {'test': Device()}
+    with mock.patch.object(function.devices['test'],
+                           'getSwitch',
+                           return_value={'DISCONNECT': 'Off'}):
+        with mock.patch.object(function,
+                               'sendNewSwitch',
+                               return_value=True):
+            suc = function.disconnectDevice('test')
+            assert suc
+
+
+def test_getDevice_1(function):
+    val = function.getDevice()
+    assert val is None
+
+
+def test_getDevice_2(function):
+    function.devices = {'test': 1}
+    val = function.getDevice('test')
+    assert val == 1
+
+
+def test_getDevices_1(function):
+    val = function.getDevices()
+    assert val == []
+
+
+def test_getDevices_2(function):
+    function.devices = {'test': 1}
+    with mock.patch.object(function,
+                           '_getDriverInterface',
+                           return_value=0x0001):
+        val = function.getDevices()
+        assert val == ['test']
+
+
+def test_getDevices_3(function):
+    function.devices = {'test': 1}
+    with mock.patch.object(function,
+                           '_getDriverInterface',
+                           return_value=0x0003):
+        val = function.getDevices(0x00f0)
+        assert val == []
+
+
+def test_setBlobMode_1(function):
+    suc = function.setBlobMode()
+    assert not suc
+
+
+def test_setBlobMode_2(function):
+    suc = function.setBlobMode(deviceName='test')
+    assert not suc
+
+
+def test_setBlobMode_3(function):
+    function.devices = {'test': Device()}
+    with mock.patch.object(indiXML,
+                           'enableBLOB'):
+        with mock.patch.object(function,
+                               '_sendCmd',
+                               return_value=False):
+            suc = function.setBlobMode(deviceName='test')
+            assert not suc
+
+
+def test_setBlobMode_4(function):
+    function.devices = {'test': Device()}
+    with mock.patch.object(indiXML,
+                           'enableBLOB'):
+        with mock.patch.object(function,
+                               '_sendCmd',
+                               return_value=True):
+            suc = function.setBlobMode(deviceName='test')
+            assert suc
+
+
+def test_getBlobMode(function):
+    function.getBlobMode()
+
+
+def test_getHost_1(function):
+    function._host = None
+    val = function.getHost()
+    assert val == ''
+
+
+def test_getHost_2(function):
+    function._host = ('localhost', 7624)
+    val = function.getHost()
+    assert val == 'localhost'
+
+
+def test_getPort_1(function):
+    function._host = None
+    val = function.getPort()
+    assert val == 0
+
+
+def test_getPort_2(function):
+    function._host = ('localhost', 7624)
+    val = function.getPort()
+    assert val == 7624

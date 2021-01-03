@@ -285,7 +285,7 @@ class Client(QObject):
         self.socket = QTcpSocket()
         self.socket.readyRead.connect(self._handleReadyRead)
         self.socket.error.connect(self._handleError)
-        self.socket.disconnected.connect(self._handleDisconnected)
+        self.socket.disconnected.connect(self.handleDisconnected)
         self.clearParser()
 
     @property
@@ -418,13 +418,13 @@ class Client(QObject):
         self.socket.abort()
         return True
 
-    @pyqtSlot()
-    def _handleDisconnected(self):
+    def handleDisconnected(self):
         """
         :return: nothing
         """
         self.connected = False
         self.log.info('INDI client disconnected')
+        return True
 
     def isServerConnected(self):
         """
@@ -564,8 +564,7 @@ class Client(QObject):
         """
         if self._host is None:
             return ''
-        if len(self._host) != 2:
-            return 0
+
         return self._host[0]
 
     def getPort(self):
@@ -575,9 +574,6 @@ class Client(QObject):
         :return: port number as int
         """
         if self._host is None:
-            return 0
-
-        if len(self._host) != 2:
             return 0
 
         return self._host[1]

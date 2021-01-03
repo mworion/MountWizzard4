@@ -260,13 +260,20 @@ def test_discoverIndiDevices_2(function):
 
 
 def test_updateAlpacaDeviceNameList_1(function):
-    suc = function.updateAlpacaDeviceNameList(['test1', 'test2'])
-    assert suc
+    with mock.patch.object(function.ui.alpacaDeviceList,
+                           'clear'):
+        with mock.patch.object(function.ui.alpacaDeviceList,
+                               'setView'):
+            suc = function.updateAlpacaDeviceNameList(['test1', 'test2'])
+            assert suc
 
 
 def test_discoverAlpacaDevices_1(function):
-    suc = function.discoverAlpacaDevices()
-    assert not suc
+    with mock.patch.object(AlpacaClass,
+                           'discoverDevices',
+                           return_value=()):
+        suc = function.discoverAlpacaDevices()
+        assert not suc
 
 
 def test_discoverAlpacaDevices_2(function):

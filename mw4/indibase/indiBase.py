@@ -676,33 +676,37 @@ class Client(QObject):
         suc = self._sendCmd(cmd)
         return suc
 
-    def startBlob(self, deviceName='', propertyName='', timestamp=''):
+    @staticmethod
+    def startBlob(deviceName='', propertyName='', timestamp=''):
         """
         Part of BASE CLIENT API of EKOS
         :return:
         """
-        pass
+        return True
 
-    def sendOneBlob(self, blobName='', blobSize=0, blobFormat='', blobBuffer=None):
+    @staticmethod
+    def sendOneBlob(blobName='', blobSize=0, blobFormat='', blobBuffer=None):
         """
         Part of BASE CLIENT API of EKOS
         :return:
         """
-        pass
+        return True
 
-    def finishBlob(self):
+    @staticmethod
+    def finishBlob():
         """
         Part of BASE CLIENT API of EKOS
         :return:
         """
-        pass
+        return True
 
-    def setVerbose(self, status):
+    @staticmethod
+    def setVerbose(status):
         """
         Part of BASE CLIENT API of EKOS
         :return:
         """
-        pass
+        return True
 
     @staticmethod
     def isVerbose():
@@ -735,8 +739,10 @@ class Client(QObject):
             self.socket.flush()
             if number > 0:
                 return True
+
             else:
                 return False
+
         else:
             return False
 

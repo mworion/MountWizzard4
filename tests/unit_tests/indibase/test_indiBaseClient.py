@@ -23,6 +23,9 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 # local import
 from indibase.indiBase import Client, Device
 from indibase import indiXML
+from indibase.indiXML import INDIBase
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -368,3 +371,234 @@ def test_getPort_2(function):
     function._host = ('localhost', 7624)
     val = function.getPort()
     assert val == 7624
+
+
+def test_sendNewText_1(function):
+    function.devices = {'test': Device()}
+    suc = function.sendNewText('')
+    assert not suc
+
+
+def test_sendNewText_2(function):
+    function.devices = {'test': Device()}
+    suc = function.sendNewText(deviceName='test',
+                               propertyName='prop')
+    assert not suc
+
+
+def test_sendNewText_3(function):
+    function.devices = {'test': Device()}
+    function.devices['test'].prop = None
+    suc = function.sendNewText(deviceName='test',
+                               propertyName='prop',
+                               text='test')
+    assert not suc
+
+
+def test_sendNewText_4(function):
+    function.devices = {'test': Device()}
+    function.devices['test'].prop = None
+    with mock.patch.object(indiXML,
+                           'oneText',
+                           return_value='test'):
+        with mock.patch.object(indiXML,
+                               'newTextVector'):
+            with mock.patch.object(function,
+                                   '_sendCmd',
+                                   return_value=False):
+                suc = function.sendNewText(deviceName='test',
+                                           propertyName='prop',
+                                           text='test')
+                assert not suc
+
+
+def test_sendNewText_5(function):
+    function.devices = {'test': Device()}
+    function.devices['test'].prop = None
+    with mock.patch.object(indiXML,
+                           'oneText',
+                           return_value='test'):
+        with mock.patch.object(indiXML,
+                               'newTextVector'):
+            with mock.patch.object(function,
+                                   '_sendCmd',
+                                   return_value=True):
+                suc = function.sendNewText(deviceName='test',
+                                           propertyName='prop',
+                                           text='test')
+                assert suc
+
+
+def test_sendNewNumber_1(function):
+    function.devices = {'test': Device()}
+    suc = function.sendNewNumber('')
+    assert not suc
+
+
+def test_sendNewNumber_2(function):
+    function.devices = {'test': Device()}
+    suc = function.sendNewNumber(deviceName='test',
+                                 propertyName='prop')
+    assert not suc
+
+
+def test_sendNewNumber_3(function):
+    function.devices = {'test': Device()}
+    function.devices['test'].prop = None
+    suc = function.sendNewNumber(deviceName='test',
+                                 propertyName='prop',
+                                 number=1)
+    assert not suc
+
+
+def test_sendNewNumber_4(function):
+    function.devices = {'test': Device()}
+    function.devices['test'].prop = None
+    with mock.patch.object(indiXML,
+                           'oneNumber',
+                           return_value='test'):
+        with mock.patch.object(indiXML,
+                               'newNumberVector'):
+            with mock.patch.object(function,
+                                   '_sendCmd',
+                                   return_value=False):
+                suc = function.sendNewNumber(deviceName='test',
+                                             propertyName='prop',
+                                             number=1)
+                assert not suc
+
+
+def test_sendNewNumber_5(function):
+    function.devices = {'test': Device()}
+    function.devices['test'].prop = None
+    with mock.patch.object(indiXML,
+                           'oneNumber',
+                           return_value='test'):
+        with mock.patch.object(indiXML,
+                               'newNumberVector'):
+            with mock.patch.object(function,
+                                   '_sendCmd',
+                                   return_value=True):
+                suc = function.sendNewNumber(deviceName='test',
+                                             propertyName='prop',
+                                             number=1)
+                assert suc
+
+
+def test_sendNewSwitch_1(function):
+    function.devices = {'test': Device()}
+    suc = function.sendNewSwitch('')
+    assert not suc
+
+
+def test_sendNewSwitch_2(function):
+    function.devices = {'test': Device()}
+    suc = function.sendNewSwitch(deviceName='test',
+                                 propertyName='prop')
+    assert not suc
+
+
+def test_sendNewSwitch_3(function):
+    function.devices = {'test': Device()}
+    function.devices['test'].prop = None
+    suc = function.sendNewSwitch(deviceName='test',
+                                 propertyName='prop')
+    assert not suc
+
+
+def test_sendNewSwitch_4(function):
+    function.devices = {'test': Device()}
+    function.devices['test'].prop = None
+    with mock.patch.object(indiXML,
+                           'oneSwitch',
+                           return_value='test'):
+        with mock.patch.object(indiXML,
+                               'newSwitchVector'):
+            with mock.patch.object(function,
+                                   '_sendCmd',
+                                   return_value=False):
+                suc = function.sendNewSwitch(deviceName='test',
+                                             propertyName='prop')
+                assert not suc
+
+
+def test_sendNewSwitch_5(function):
+    function.devices = {'test': Device()}
+    function.devices['test'].prop = None
+    with mock.patch.object(indiXML,
+                           'oneSwitch',
+                           return_value='test'):
+        with mock.patch.object(indiXML,
+                               'newSwitchVector'):
+            with mock.patch.object(function,
+                                   '_sendCmd',
+                                   return_value=True):
+                suc = function.sendNewSwitch(deviceName='test',
+                                             propertyName='prop')
+                assert suc
+
+
+def test_startBlob(function):
+    suc = function.startBlob()
+    assert suc
+
+
+def test_sendOneBlob(function):
+    suc = function.sendOneBlob()
+    assert suc
+
+
+def test_finishBlob(function):
+    suc = function.finishBlob()
+    assert suc
+
+
+def test_setVerbose(function):
+    suc = function.setVerbose(True)
+    assert suc
+
+
+def test_isVerbose(function):
+    suc = function.isVerbose()
+    assert not suc
+
+
+def test_setConnectionTimeout(function):
+    suc = function.setConnectionTimeout()
+    assert suc
+
+
+def test__sendCmd_1(function):
+    function.connected = False
+    suc = function._sendCmd('')
+    assert not suc
+
+
+def test__sendCmd_2(function):
+    function.connected = True
+    cmd = INDIBase('<begin><end>'.encode(encoding='UTF-8'), 0, {}, {})
+    with mock.patch.object(INDIBase,
+                           'toXML',
+                           return_value='test'.encode()):
+        with mock.patch.object(function.socket,
+                               'write',
+                               return_value=0):
+            with mock.patch.object(function.socket,
+                                   'flush'):
+                suc = function._sendCmd(cmd)
+                assert not suc
+
+
+def test__sendCmd_3(function):
+    function.connected = True
+    cmd = INDIBase('<begin><end>'.encode(encoding='UTF-8'), 0, {}, {})
+    with mock.patch.object(INDIBase,
+                           'toXML',
+                           return_value='test'.encode()):
+        with mock.patch.object(function.socket,
+                               'write',
+                               return_value=256):
+            with mock.patch.object(function.socket,
+                                   'flush'):
+                suc = function._sendCmd(cmd)
+                assert suc

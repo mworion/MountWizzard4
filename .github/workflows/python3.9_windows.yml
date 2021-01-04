@@ -62,6 +62,6 @@ jobs:
 
     - name: Download generated wheels
       uses: actions/download-artifact@v2
-        with:
-          name: packages
-          path: whl/artifact
+      with:
+        name: packages
+        path: whl/artifact

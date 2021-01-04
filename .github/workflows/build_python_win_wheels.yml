@@ -45,6 +45,7 @@ jobs:
         git config --local user.name "github-actions[bot]"
         git add whl
         git commit -m "Using WHL" -a
+        git fetch
 
     - name: Push changes
       uses: ad-m/github-push-action@master

@@ -67,12 +67,15 @@ Version, build and code coverage status
 
 Feedback and issue reports
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Please report your issues: https://github.com/mworion/MountWizzard4/issues. Please have a good description (maybe a screenshot if it‘s related to GUI) and add the log file(s) to the issue. Any feedback welcome!
+Please report your issues: https://github.com/mworion/MountWizzard4/issues.
+Please have a good description (maybe a screenshot if it‘s related to GUI) and add
+the log file(s) to the issue. Any feedback welcome!
 
 Finally
 ^^^^^^^
-MountWizzard4 is still in beta development. The use this software is at your own risk! No
-responsibility for damages to your mount or other equipment or your environment, please take care yourself!
+MountWizzard4 is always in development. The use this software is at your own
+risk! No responsibility for damages to your mount or other equipment or your
+environment, please take care yourself!
 
 Hope this tool makes fun and helps for your hobby,
 

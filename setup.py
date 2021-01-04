@@ -57,7 +57,7 @@ setup(
         'scipy==1.5.4',
         'requests==2.24.0',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.34',
+        'skyfield==1.35',
         'sgp4>=2.1',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==2.0.0',
@@ -65,7 +65,7 @@ setup(
         'colour_demosaicing==0.1.5',
         'wakeonlan==1.1.6'
     ]
-    + (['pywin32==228'] if "Windows" == platform.system() else [])
+    + (['pywin32==300'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
     + (['PyQt5==5.15.2'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.2'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
@@ -86,7 +86,7 @@ setup(
     },
     zip_safe=True,
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: MacOS X',
         'Environment :: Other Environment',
         'Programming Language :: Python :: 3.7',
@@ -96,6 +96,7 @@ setup(
         'Programming Language :: Python :: 3 :: Only',
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: Microsoft :: Windows :: Windows 10',
+        'Operating System :: Microsoft :: Windows :: Windows 7',
         'Operating System :: POSIX :: Linux',
         'Intended Audience :: Education',
         'Intended Audience :: Science/Research',

@@ -11,21 +11,16 @@ Unreleased Betas
 - retrofit model based on hashed coordinates
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
 - optimizing dome for less movements on small changes
-- implementing Baader dome control
+- implementing Baader dome control e.g. 10micron dome interface
 
 (1.0)
 
 - first official release
 
-(0.250.0)
 
-- full integration testing
-
-(0.240.0)
-
-- not planned yet
-
-(0.230.0)
+Released betas
+--------------
+0.230.0
 
 - adding threading for blocking ASCOM drivers (ScopeDome)
 - adding support for dome vert adjustment 10micron vs. ScopeDome and others
@@ -35,11 +30,12 @@ Unreleased Betas
 - adding Ra / Dec input for slew, make tabs persistent
 - improved input handling of angle inputs
 - additional logging for windows automation
-- support for new QCIUpdater naming
+- support for new QCIUpdater naming from 2.16.12 on
+- automatic testing
+- skyfield upgrade to 1.35
+- pywin32 upgrade to 300
+- split pyerfa and astropy
 
-
-Released betas
---------------
 0.220.8
 
 - bugfix

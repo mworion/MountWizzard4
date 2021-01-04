@@ -4,7 +4,7 @@ Before starting
 Overview
 --------
 
-.. note:: Please remember that MountWizzard4 is still beta and under development!
+.. note:: Please remember that MountWizzard4 is under development!
 
 Welcome to MountWizzard4! MW4 is a utility for 10micron users for improving the
 workflow for astronomy work and imaging runs on Windows10, Mac OSX (beginning from

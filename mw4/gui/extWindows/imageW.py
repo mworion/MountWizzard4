@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 import os
+import time
 
 # external packages
 import PyQt5.QtWidgets
@@ -27,7 +28,8 @@ from astropy.visualization import MinMaxInterval
 from astropy.visualization import AsinhStretch
 from astropy.visualization import imshow_norm
 from astropy.stats import sigma_clipped_stats
-from photutils import CircularAperture, DAOStarFinder
+from matplotlib.patches import Ellipse
+import sep
 
 import matplotlib.pyplot as plt
 from skyfield.api import Angle
@@ -81,30 +83,30 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.imageFileNameOld = ''
         self.expTime = 1
         self.binning = 1
-
         self.image = None
+        self.folder = ''
         self.header = None
         self.imageStack = None
         self.numberStack = 0
         self.colorMap = None
         self.stretch = None
-        self.sources = None
-        self.mean = None
-        self.median = None
-        self.std = None
-        self.folder = ''
+        self.objs = None
+        self.bk_back = None
+        self.bk_rms = None
+        self.flux = None
+        self.radius = None
 
         self.deviceStat = {
             'expose': False,
             'exposeN': False,
             'solve': False,
         }
-        self.view = {0: 'Image',
-                     1: 'Image & WCS coordinates',
-                     2: 'Image & detected sources',
-                     3: 'Photometry - Sharpness',
-                     4: 'Photometry - Roundness',
-                     5: 'Photometry - Flux',
+        self.view = {0: 'Image Raw',
+                     1: 'Image with Sources',
+                     2: 'Photometry: HFD value',
+                     3: 'Photometry: Background level',
+                     4: 'Photometry: Background noise',
+                     5: 'Photometry: Flux',
                      }
 
         self.colorMaps = {'Grey': 'gray',
@@ -113,12 +115,14 @@ class ImageWindow(toolsQtWidget.MWidget):
                           'Spectral': 'nipy_spectral',
                           }
 
-        self.stretchValues = {'Low X': 0.2,
-                              'Low': 0.1,
-                              'Mid': 0.5,
-                              'High': 0.025,
-                              'Super': 0.005,
-                              'Super X': 0.0025,
+        self.stretchValues = {'Low XX': 0.2,
+                              'Low X': 0.1,
+                              'Low': 0.05,
+                              'Mid': 0.025,
+                              'High': 0.005,
+                              'Super ': 0.0025,
+                              'Super X': 0.001,
+                              'Super XX': 0.0005,
                               }
 
         self.zoomLevel = {' 1x Zoom': 1,
@@ -134,7 +138,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.axe = None
         self.axeCB = None
 
-        # cyclic updates
         self.app.update1s.connect(self.updateWindowsStats)
 
     def initConfig(self):
@@ -226,6 +229,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.stretch.currentIndexChanged.connect(self.preparePlot)
         self.ui.zoom.currentIndexChanged.connect(self.showCurrent)
         self.ui.view.currentIndexChanged.connect(self.preparePlot)
+        self.ui.checkUseWCS.clicked.connect(self.preparePlot)
         self.ui.checkShowGrid.clicked.connect(self.preparePlot)
         self.ui.checkShowCrosshair.clicked.connect(self.preparePlot)
         self.ui.solve.clicked.connect(self.solveCurrent)
@@ -258,6 +262,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.stretch.currentIndexChanged.disconnect(self.preparePlot)
         self.ui.zoom.currentIndexChanged.disconnect(self.showCurrent)
         self.ui.view.currentIndexChanged.disconnect(self.preparePlot)
+        self.ui.checkUseWCS.clicked.disconnect(self.preparePlot)
         self.ui.checkShowGrid.clicked.disconnect(self.preparePlot)
         self.ui.checkShowCrosshair.clicked.disconnect(self.preparePlot)
         self.ui.solve.clicked.disconnect(self.solveCurrent)
@@ -402,7 +407,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.fig.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
         self.axeCB = None
-
         self.axe.coords.frame.set_color(self.M_BLUE)
 
         axe0 = self.axe.coords[0]
@@ -447,6 +451,10 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.fig.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
         self.axeCB = self.fig.add_axes([0.88, 0.1, 0.02, 0.8])
+        self.axe.spines['bottom'].set_color(self.M_BLUE)
+        self.axe.spines['top'].set_color(self.M_BLUE)
+        self.axe.spines['left'].set_color(self.M_BLUE)
+        self.axe.spines['right'].set_color(self.M_BLUE)
 
         factor = self.zoomLevel[self.ui.zoom.currentText()]
         sizeX = self.header.get('NAXIS1', 1) / factor
@@ -515,26 +523,12 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def imagePlot(self):
         """
-        different image views
-
-        The object centers are in pixels and the magnitude estimate measures the ratio of
-        the maximum density enhancement to the detection threshold. Sharpness is
-        typically around .5 to .8 for a star with a fwhm psf similar to the pattern star.
-        Both s-round and g-round are close to zero for a truly round star. Id is the
-        sequence number of the star in the list.
-
         :return:
         """
-
-        if self.sources:
-            positions = np.transpose((self.sources['xcentroid'],
-                                      self.sources['ycentroid']))
-            x = self.sources['xcentroid']
-            y = self.sources['ycentroid']
-            imageDisp = self.image - self.mean
+        if self.objs is not None:
+            imageDisp = self.image - self.bk_back
 
         else:
-            positions = None
             imageDisp = self.image
 
         if self.ui.view.currentIndex() in [0, 1, 2]:
@@ -549,46 +543,76 @@ class ImageWindow(toolsQtWidget.MWidget):
 
             if self.axeCB:
                 colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
-                colorbar.set_label('Value [pixel value]', color=self.M_BLUE, fontsize=12)
+                colorbar.set_label('Value [pixel value]',
+                                   color=self.M_BLUE,
+                                   fontsize=12)
                 yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
                 plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        if self.ui.view.currentIndex() == 2 and positions is not None:
-            apertures = CircularAperture(positions, r=10.0)
-            apertures.plot(axes=self.axe, color=self.M_BLUE, lw=1.0, alpha=0.8)
+        if self.ui.view.currentIndex() == 1 and self.objs is not None:
+            for i in range(len(self.objs)):
+                e = Ellipse(xy=(self.objs['x'][i], self.objs['y'][i]),
+                            width=6 * self.objs['a'][i],
+                            height=6 * self.objs['b'][i],
+                            angle=self.objs['theta'][i] * 180. / np.pi)
+                e.set_facecolor('none')
+                e.set_edgecolor(self.M_BLUE)
+                self.axe.add_artist(e)
 
-        if self.ui.view.currentIndex() == 3 and self.sources:
-            sharpness = self.sources['sharpness']
-            area = 50 * (1 - sharpness) + 3
-            scatter = self.axe.scatter(x, y, c=sharpness,
-                                       vmin=0, vmax=1,
-                                       s=area,
-                                       cmap='RdYlGn')
+        if self.ui.view.currentIndex() == 2 and self.radius is not None:
+            draw = self.radius.argsort()[-50:][::-1]
+            for i in draw:
+                e = Ellipse(xy=(self.objs['x'][i], self.objs['y'][i]),
+                            width=6 * self.objs['a'][i],
+                            height=6 * self.objs['b'][i],
+                            angle=self.objs['theta'][i] * 180.0 / np.pi)
+                e.set_facecolor('none')
+                e.set_edgecolor(self.M_BLUE)
+                self.axe.add_artist(e)
+                size = self.objs['a'][i] + self.objs['b'][i]
+                self.axe.annotate(f'{self.radius[i]:2.1f}',
+                                  xy=(self.objs['x'][i] + 2 * size,
+                                      self.objs['y'][i] + 2 * size),
+                                  color=self.M_PINK,
+                                  fontweight='bold')
 
-            colorbar = self.fig.colorbar(scatter, cax=self.axeCB)
-            colorbar.set_label('Sharpness [target -> 0.5 - 0.8]', color=self.M_BLUE, fontsize=12)
-            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+        if self.ui.view.currentIndex() == 3 and self.bk_back is not None:
+            img = imshow_norm(self.bk_back,
+                              ax=self.axe,
+                              origin='lower',
+                              interval=MinMaxInterval(),
+                              stretch=self.stretch,
+                              cmap=self.colorMap,
+                              aspect='auto')
+            if self.axeCB:
+                colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
+                colorbar.set_label('Background level [adu]',
+                                   color=self.M_BLUE,
+                                   fontsize=12)
+                yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+                plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        if self.ui.view.currentIndex() == 4 and self.sources:
-            r1 = self.sources['roundness1']
-            r2 = self.sources['roundness2']
-            rg = np.sqrt(r1 * r1 + r2 * r2)
-            area = 50 * rg + 3
-            scatter = self.axe.scatter(x, y, c=rg,
-                                       vmin=0, vmax=1,
-                                       s=area,
-                                       cmap='RdYlGn_r')
+        if self.ui.view.currentIndex() == 4 and self.bk_rms is not None:
+            img = imshow_norm(self.bk_rms,
+                              ax=self.axe,
+                              origin='lower',
+                              interval=MinMaxInterval(),
+                              stretch=self.stretch,
+                              cmap=self.colorMap,
+                              aspect='auto')
+            if self.axeCB:
+                colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
+                colorbar.set_label('Background noise [adu]',
+                                   color=self.M_BLUE,
+                                   fontsize=12)
+                yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+                plt.setp(yTicks, color=self.M_BLUE,
+                         fontweight='bold')
 
-            colorbar = self.fig.colorbar(scatter, cax=self.axeCB)
-            colorbar.set_label('Roundness [target -> 0]', color=self.M_BLUE, fontsize=12)
-            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
-
-        if self.ui.view.currentIndex() == 5 and self.sources:
-            flux = np.log(self.sources['flux'])
+        if self.ui.view.currentIndex() == 5 and self.flux is not None:
+            flux = np.log(self.flux)
             area = 3 * flux
-            scatter = self.axe.scatter(x, y, c=flux,
+            scatter = self.axe.scatter(self.objs['x'], self.objs['y'], c=flux,
                                        s=area,
                                        cmap='viridis')
 
@@ -603,12 +627,8 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def writeHeaderDataToGUI(self):
         """
-        writeHeaderDataToGUI tries to read relevant values from FITS header and possible
-        replace values and write them to the imageW gui
-
         :return: True for test purpose
         """
-
         name = self.header.get('OBJECT', '').upper()
         self.ui.object.setText(f'{name}')
 
@@ -657,7 +677,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         :return:
         """
-
         if self.image is None:
             return False
 
@@ -665,8 +684,6 @@ class ImageWindow(toolsQtWidget.MWidget):
             return False
 
         self.updateWindowsStats()
-
-        # check if distortion is in header
         if 'CTYPE1' in self.header:
             wcsObject = wcs.WCS(self.header, relax=True)
             hasCelestial = wcsObject.has_celestial
@@ -677,17 +694,13 @@ class ImageWindow(toolsQtWidget.MWidget):
             hasDistortion = False
 
         self.ui.hasDistortion.setEnabled(hasDistortion)
+        self.ui.checkUseWCS.setEnabled(hasDistortion)
         self.ui.hasWCS.setEnabled(hasCelestial)
 
-        if hasDistortion:
-            self.ui.view.view().setRowHidden(1, False)
+        canWCS = self.ui.view.currentIndex() in [0, 1, 2]
+        useWCS = self.ui.checkUseWCS.isChecked()
 
-        else:
-            self.ui.view.view().setRowHidden(1, True)
-
-        useWCS = (self.ui.view.currentIndex() == 1)
-
-        if hasDistortion and useWCS:
+        if hasDistortion and useWCS and canWCS:
             self.setupDistorted()
 
         else:
@@ -702,38 +715,44 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def workerPhotometry(self):
         """
-
         :return:
         """
-
-        self.mean, self.median, self.std = sigma_clipped_stats(self.image, sigma=3.0)
-        daoFind = DAOStarFinder(fwhm=2.5, threshold=5.0 * self.std)
-        self.sources = daoFind(self.image - self.median)
-
+        bkg = sep.Background(self.image)
+        self.bk_back = bkg.back()
+        self.bk_rms = bkg.rms()
+        image_sub = self.image - bkg
+        self.objs = sep.extract(image_sub, 1.5, err=bkg.globalrms)
+        self.flux, fluxerr, flag = sep.sum_circle(image_sub,
+                                                  self.objs['x'],
+                                                  self.objs['y'],
+                                                  3.0,
+                                                  err=bkg.globalrms,
+                                                  gain=1.0)
+        self.radius, flag = sep.flux_radius(image_sub,
+                                            self.objs['x'],
+                                            self.objs['y'],
+                                            6.0 * self.objs['a'],
+                                            0.5,
+                                            normflux=self.flux,
+                                            subpix=5)
         return True
 
-    def prepareImage(self):
+    def prepareImageForPhotometry(self):
         """
-        background, source extraction
-
         :return:
         """
-
-        if not self.sources:
+        if not self.objs:
             worker = Worker(self.workerPhotometry)
             worker.signals.finished.connect(self.preparePlot)
             self.threadPool.start(worker)
 
         self.preparePlot()
-
         return True
 
     def stackImages(self):
         """
-
         :return:
         """
-
         if not self.ui.checkStackImages.isChecked():
             self.imageStack = None
             self.ui.numberStacks.setText('single')
@@ -753,46 +772,37 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.numberStack += 1
 
         self.image = self.imageStack / self.numberStack
-
         return True
 
     def zoomImage(self):
         """
-        zoomImage cutouts a portion of the original image to zoom in the image itself.
-        it returns a copy of the image with an updated wcs content. we have to be careful
-        about the use of Cutout2D, because they are mixing x and y coordinates. so position
-        is in (x, y), but size ind in (y, x)
-
         :return: true
         """
-
         sizeY, sizeX = self.image.shape
-
         fallback = list(self.zoomLevel.keys())[0]
         factor = self.zoomLevel.get(self.ui.zoom.currentText(), fallback)
-
         if factor == 1:
             return
 
         position = (int(sizeX / 2), int(sizeY / 2))
         size = (int(sizeY / factor), int(sizeX / factor))
-
         self.image = Cutout2D(self.image,
                               position=position,
                               size=size,
                               wcs=wcs.WCS(self.header, relax=True),
                               copy=True).data
-
         return True
 
     def showImage(self, imagePath=''):
         """
-        tho idea of processing the image data until it is shown on screen is to split the
-        pipeline in several atomic steps, which follow each other. each step is calling the
-        next one and depending which user interaction is done and how the use case for
-        changing the view is the entrance of the pipeline is chosen adequately.
+        tho idea of processing the image data until it is shown on screen is
+        to split the pipeline in several atomic steps, which follow each other.
+        each step is calling the next one and depending which user interaction is
+        done and how the use case for changing the view is the entrance of the
+        pipeline is chosen adequately.
 
-        so we have step 1 loading data and processing if to final monochrome and sized format
+        so we have step 1 loading data and processing if to final monochrome and
+        sized format
         - loading data
         - debayer if necessary
         - getting header data and cleaning it up
@@ -801,7 +811,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param imagePath:
         :return:
         """
-
         if not imagePath:
             return False
 
@@ -813,7 +822,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.imageFileName.setText(short)
 
         with fits.open(imagePath, mode='update') as fitsHandle:
-            self.image = fitsHandle[0].data
+            self.image = fitsHandle[0].data.astype('float32')
             self.header = fitsHandle[0].header
 
         if self.image is None:
@@ -828,7 +837,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         # correct faulty headers, because some imaging programs did not
         # interpret the Keywords in the right manner (SGPro)
-
         if self.header.get('CTYPE1', '').endswith('DEF'):
             self.header['CTYPE1'] = self.header['CTYPE1'].replace('DEF', 'TAN')
 
@@ -837,28 +845,21 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.zoomImage()
         self.stackImages()
-        self.sources = None
-        self.prepareImage()
-
+        self.objs = None
+        self.prepareImageForPhotometry()
         return True
 
     def showCurrent(self):
         """
-
         :return: true for test purpose
         """
-
         self.showImage(self.imageFileName)
-
         return True
 
     def exposeRaw(self):
         """
-        exposeImage gathers all necessary parameters and starts exposing
-
         :return: True for test purpose
         """
-
         subFrame = self.app.camera.subFrame
         fastReadout = self.app.camera.checkFastDownload
 
@@ -885,10 +886,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def exposeImageDone(self, imagePath=''):
         """
-        exposeImageDone is the partner method to exposeImage. it resets the gui elements
-        to it's default state and disconnects the signal for the callback. finally when
-        all elements are done it emits the showContent signal.
-
         :param imagePath:
         :return: True for test purpose
         """
@@ -907,35 +904,22 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def exposeImage(self):
         """
-        exposeImage disables all gui elements which could interfere when having a running
-        exposure. it connects the callback for downloaded image and presets all necessary
-        parameters for imaging
-
         :return: success
         """
-
         self.expTime = self.app.camera.expTime
         self.binning = self.app.camera.binning
-
         self.imageStack = None
         self.deviceStat['expose'] = True
         self.ui.checkStackImages.setChecked(False)
         self.app.camera.signals.saved.connect(self.exposeImageDone)
-
         self.exposeRaw()
-
         return True
 
     def exposeImageNDone(self, imagePath=''):
         """
-        exposeImageNDone is the partner method to exposeImage. it resets the gui elements
-        to it's default state and disconnects the signal for the callback. finally when
-        all elements are done it emits the showContent signal.
-
         :param imagePath:
         :return: True for test purpose
         """
-
         self.app.message.emit(f'Exposed:            [{os.path.basename(imagePath)}]', 0)
 
         if self.ui.checkAutoSolve.isChecked():
@@ -945,39 +929,25 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.app.showImage.emit(imagePath)
 
         self.exposeRaw()
-
         return True
 
     def exposeImageN(self):
         """
-        exposeImageN disables all gui elements which could interfere when having a running
-        exposure. it connects the callback for downloaded image and presets all necessary
-        parameters for imaging
-
         :return: success
         """
-
         self.expTime = self.app.camera.expTimeN
         self.binning = self.app.camera.binningN
-
         self.imageStack = None
         self.deviceStat['exposeN'] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
-
         self.exposeRaw()
-
         return True
 
     def abortImage(self):
         """
-        abortImage stops the exposure and resets the gui and the callback signals to default
-        values
-
         :return: True for test purpose
         """
-
         self.app.camera.abort()
-
         # for disconnection we have to split which slots were connected to disable the
         # right ones
         if self.deviceStat['expose']:
@@ -991,20 +961,13 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.deviceStat['expose'] = False
         self.deviceStat['exposeN'] = False
         self.app.message.emit('Exposing aborted', 2)
-
         return True
 
     def solveDone(self, result=None):
         """
-        solveDone is the partner method for solveImage. it enables the gui elements back
-        removes the signal / slot connection for receiving solving results, checks the
-        solving result itself and emits messages about the result. if solving succeeded,
-        solveDone will redraw the image in the image window.
-
         :param result: result (named tuple)
         :return: success
         """
-
         self.deviceStat['solve'] = False
         self.app.astrometry.signals.done.disconnect(self.solveDone)
 
@@ -1035,25 +998,13 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if not isStack or isAutoSolve:
             self.app.showImage.emit(result['solvedPath'])
-
         return True
 
     def solveImage(self, imagePath=''):
         """
-        solveImage calls astrometry for solving th actual image in a threading manner.
-        as result the gui will be active while the solving process takes part a
-        background task. if the check update fits is selected the solution will be
-        stored in the image header as well.
-        solveImage will disable gui elements which might interfere when doing solve
-        in background and sets the signal / slot connection for receiving the signal
-        for finishing. this is linked to a second method solveDone, which is basically
-        the partner method for handling this async behaviour of the gui.
-        finally it emit a message about the start of solving
-
         :param imagePath:
         :return:
         """
-
         if not imagePath:
             return False
 
@@ -1067,27 +1018,18 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.deviceStat['solve'] = True
         self.app.astrometry.signals.done.connect(self.solveDone)
         self.app.message.emit(f'Solving:             [{os.path.basename(imagePath)}]', 0)
-
         return True
 
     def solveCurrent(self):
         """
-
         :return: true for test purpose
         """
-
         self.signals.solveImage.emit(self.imageFileName)
-
         return True
 
     def abortSolve(self):
         """
-        abortSolve stops the exposure and resets the gui and the callback signals to default
-        values
-
         :return: success
         """
-
         suc = self.app.astrometry.abort()
-
         return suc

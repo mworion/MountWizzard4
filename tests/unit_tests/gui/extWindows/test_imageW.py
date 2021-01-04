@@ -477,16 +477,16 @@ def test_workerPhotometry_1(function):
     assert function.sources
 
 
-def test_prepareImage_1(function):
-    suc = function.prepareImage()
+def test_prepareImageForPhotometry_1(function):
+    suc = function.prepareImageForPhotometry()
     assert suc
 
 
-def test_prepareImage_2(function):
+def test_prepareImageForPhotometry_2(function):
     function.sources = None
     with mock.patch.object(function,
                            'workerPhotometry'):
-        suc = function.prepareImage()
+        suc = function.prepareImageForPhotometry()
         assert suc
 
 
@@ -609,7 +609,7 @@ def test_showImage_5(function):
         with mock.patch.object(function,
                                'stackImages'):
             with mock.patch.object(function,
-                                   'prepareImage'):
+                                   'prepareImageForPhotometry'):
                 suc = function.showImage(imagePath='tests/image/m51.fit')
                 assert suc
 
@@ -641,7 +641,7 @@ def test_showImage_6(function):
             with mock.patch.object(function,
                                    'stackImages'):
                 with mock.patch.object(function,
-                                       'prepareImage'):
+                                       'prepareImageForPhotometry'):
                     suc = function.showImage(imagePath='tests/image/m51.fit')
                     assert suc
 

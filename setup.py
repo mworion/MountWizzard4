@@ -53,7 +53,6 @@ setup(
         'matplotlib==3.3.3',
         'pyerfa==1.7.1.1',
         'astropy==4.2',
-        'sep==1.1.0',
         'scipy==1.5.4',
         'requests==2.24.0',
         'requests_toolbelt==0.9.1',
@@ -67,6 +66,7 @@ setup(
     ]
     + (['pywin32==300'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
+    + (['sep==1.1.0'] if "Windows" not in platform.system() else [])
     + (['PyQt5==5.15.2'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.2'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
     + (['PyQtWebEngine==5.15.2'] if platform.machine() not in ['armv7l', 'aarch64'] else []),

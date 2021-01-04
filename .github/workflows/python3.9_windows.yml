@@ -53,6 +53,7 @@ jobs:
       shell: bash
       run: |
         python -m pip install cython
+        python -m pip -vvv install sep
         python -m pip install dist/mountwizzard*.tar.gz
 
     - name: Check depedencies explicitly

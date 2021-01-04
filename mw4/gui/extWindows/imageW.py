@@ -29,7 +29,11 @@ from astropy.visualization import AsinhStretch
 from astropy.visualization import imshow_norm
 from astropy.stats import sigma_clipped_stats
 from matplotlib.patches import Ellipse
-import sep
+try:
+    import sep
+    hasSEP = True
+except Exception:
+    hasSEP = False
 
 import matplotlib.pyplot as plt
 from skyfield.api import Angle
@@ -302,8 +306,11 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.ui.view.clear()
         self.ui.view.setView(PyQt5.QtWidgets.QListView())
-        for text in self.view:
-            self.ui.view.addItem(self.view[text])
+        if hasSEP:
+            for menuNumber in self.view:
+                self.ui.view.addItem(self.view[menuNumber])
+        else:
+            self.ui.view.addItem(self.view[0])
 
         return True
 
@@ -717,6 +724,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
+        if not hasSEP:
+            return False
+
         bkg = sep.Background(self.image)
         self.bk_back = bkg.back()
         self.bk_rms = bkg.rms()

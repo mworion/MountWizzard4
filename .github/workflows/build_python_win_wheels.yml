@@ -1,8 +1,9 @@
-name: Py3.9 Win Wheels
+name: Build Win Wheels
 on:
   push:
     paths:
-      - '.github/workflows/python3.9_win_whl.yml'
+      - 'setup.py'
+      - '.github/workflows/build_python_win_wheels.yml'
 
 jobs:
   build:
@@ -12,7 +13,7 @@ jobs:
       max-parallel: 4
       matrix:
         os: [windows-latest]
-        python-version: [3.9]
+        python-version: [3.7, 3.8, 3.9]
 
     steps:
     - uses: actions/checkout@v2

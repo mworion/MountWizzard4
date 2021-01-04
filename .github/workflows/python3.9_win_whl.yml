@@ -1,5 +1,4 @@
-name: Py3.9 Windows Package
-
+name: Py3.9 Win Wheels
 on:
   push:
     paths:

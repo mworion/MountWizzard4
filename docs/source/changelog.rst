@@ -17,7 +17,6 @@ Unreleased version of MW4
 
 - first official release
 
-
 Released beta version of MW4
 ----------------------------
 0.230.0
@@ -35,6 +34,8 @@ Released beta version of MW4
 - skyfield upgrade to 1.35
 - pywin32 upgrade to 300
 - split pyerfa and astropy
+- delete photutils dependency and moving to sep package
+- adding photometry HFD calculation
 
 0.220.8
 

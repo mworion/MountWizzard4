@@ -12,7 +12,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, macos-lastest, ubuntu-latest]
         python-version: [3.7, 3.8, 3.9]
 
     steps:
@@ -44,7 +44,7 @@ jobs:
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git pull
-        git add whl
+        git add whl/sep*.*
         git commit -m "Using WHL" -a
 
     - name: Push changes

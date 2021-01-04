@@ -251,3 +251,98 @@ def test_OneBLOB_1(function):
 
     test = OneBLOB("defBLOB", val, a, ET())
     f'{test}'
+
+
+def test_BLOBEnable(function):
+    val = BLOBEnable(10)
+    assert val == 10
+
+
+def test_BLOBFormat(function):
+    val = BLOBFormat(10)
+    assert val == 10
+
+
+def test_BLOBLength(function):
+    val = BLOBLength(10)
+    assert val == 10
+
+
+def test_BLOBValue(function):
+    val = BLOBValue(10)
+    assert val == 10
+
+
+def test_groupTag(function):
+    val = groupTag(10)
+    assert val == 10
+
+
+def test_labelValue(function):
+    val = labelValue(10)
+    assert val == 10
+
+
+def test_listValue(function):
+    val = listValue(10)
+    assert val == 10
+
+
+def test_nameValue(function):
+    val = nameValue(10)
+    assert val == 10
+
+
+def test_numberFormat(function):
+    val = numberFormat(10)
+    assert val == 10
+
+
+def test_numberValue_1(function):
+    val = numberValue(10)
+    assert val == 10
+
+
+def test_numberValue_2(function):
+    val = numberValue('a')
+    assert val is None
+
+
+def test_propertyPerm(function):
+    val = propertyPerm(10)
+    assert val == 10
+
+
+def test_propertyState(function):
+    val = propertyState(10)
+    assert val == 10
+
+
+def test_switchRule(function):
+    val = switchRule(10)
+    assert val == 10
+
+
+def test_switchState_1(function):
+    val = switchState(True)
+    assert val == 'On'
+
+
+def test_switchState_2(function):
+    val = switchState(False)
+    assert val == 'Off'
+
+
+def test_switchState_3(function):
+    val = switchState('test')
+    assert val is None
+
+
+def test_timeValue(function):
+    val = timeValue(10)
+    assert val == 10
+
+
+def test_textValue(function):
+    val = textValue(10)
+    assert val == 10

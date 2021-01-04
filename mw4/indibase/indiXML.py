@@ -33,12 +33,15 @@
 import logging
 import base64
 import numbers
+import logging
 
 # external packages
-
 import xml.etree.ElementTree as ETree
-# local imports
 
+# local imports
+from base.loggerMW import setupLogging
+setupLogging()
+log = logging.getLogger()
 """
 
 An implementation of the INDI protocol - Copyright 2003-2007 Elwood Charles Downey
@@ -372,7 +375,8 @@ def numberFormat(value):
 def numberValue(value):
     # Check if value is a number.
     if not isinstance(value, numbers.Number):
-        raise IndiXMLException(str(value) + " is not a valid number.")
+        log.error(str(value) + " is not a valid number.")
+        return None
     return value
 
 
@@ -392,10 +396,14 @@ def switchState(value):
     if isinstance(value, bool):
         if value:
             value = "On"
+
         else:
             value = "Off"
+
     if not value.lower() in ["on", "off"]:
-        raise IndiXMLException(value + " is not a valid switch state.")
+        log.error(value + " is not a valid switch state.")
+        return None
+
     return value
 
 

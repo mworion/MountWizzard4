@@ -832,7 +832,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.imageFileName.setText(short)
 
         with fits.open(imagePath, mode='update') as fitsHandle:
-            self.image = fitsHandle[0].data.astype('float32')
+            self.image = fitsHandle[0].data
             self.header = fitsHandle[0].header
 
         if self.image is None:
@@ -840,6 +840,8 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if self.header is None:
             return False
+
+        self.image = self.image.astype('float32')
 
         if 'BAYERPAT' in self.header:
             self.image = demosaicing_CFA_Bayer_bilinear(self.image)

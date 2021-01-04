@@ -33,5 +33,5 @@ jobs:
       with:
         path: whl
 
-    - name: Echo download path
+    - name: Showing download path
       run: echo ${{steps.download.outputs.download-path}}

@@ -3,14 +3,14 @@ Changelog for Scripts
 The changelog contains the user related function or environment updates. For a
 detailed changes list, please refer to the commit list on GitHub.
 
-Unreleased Betas
-----------------
+Unreleased versions of scripts
+------------------------------
 (0.4)
 
 - further improvements
 
-Released versions
------------------
+Released versions of scripts
+----------------------------
 0.3
 
 - adding more error log support

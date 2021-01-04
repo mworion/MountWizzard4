@@ -3,8 +3,8 @@ Changelog
 The changelog contains the user related function or environment updates. For a
 detailed changes list, please refer to the commit list on GitHub.
 
-Unreleased Betas
-----------------
+Unreleased version of MW4
+-------------------------
 (1.1)
 
 - 3d Simulator (mount, dome, build points etc)
@@ -18,8 +18,8 @@ Unreleased Betas
 - first official release
 
 
-Released betas
---------------
+Released beta version of MW4
+----------------------------
 0.230.0
 
 - adding threading for blocking ASCOM drivers (ScopeDome)

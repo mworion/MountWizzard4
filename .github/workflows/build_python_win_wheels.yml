@@ -34,11 +34,6 @@ jobs:
       with:
         path: whl
 
-    - name: Check build wheels
-      run: |
-        cd whl
-        dir
-
     - name: Commit files
       run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"

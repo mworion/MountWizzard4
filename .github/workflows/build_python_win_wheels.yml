@@ -10,7 +10,7 @@ jobs:
     name: build
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 1
+      max-parallel: 4
       matrix:
         os: [windows-latest]
         python-version: [3.7, 3.8, 3.9]
@@ -43,9 +43,9 @@ jobs:
       run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
+        git pull
         git add whl
         git commit -m "Using WHL" -a
-        git fetch
 
     - name: Push changes
       uses: ad-m/github-push-action@master

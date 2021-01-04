@@ -20,6 +20,9 @@ import sys
 import unittest.mock as mock
 import glob
 import os
+import warnings
+warnings.simplefilter("ignore", UserWarning)
+sys.coinit_flags = 2
 
 # external packages
 import pytest

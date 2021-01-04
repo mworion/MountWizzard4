@@ -35,6 +35,6 @@ jobs:
 
     - name: check wheel
       run: |
-        ls -la
+        dir
         cd whl
-        ls -la
+        dir

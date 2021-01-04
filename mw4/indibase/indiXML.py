@@ -92,7 +92,7 @@ class INDIBase(object):
             for key in etree.attrib:
                 self.addAttr(key, etree.attrib[key])
         else:
-            raise IndiXMLException("Dictionary of arguments or XML ETree required.")
+            self.log.critical("Dictionary of arguments or XML ETree required.")
 
     def __str__(self):
         if "name" in self.attr:
@@ -323,7 +323,7 @@ class OneBLOB(INDIElement):
         # was created from XML from the indi server.
         #
         if etree is not None:
-            self.value = base64.standard_b64decode(self.value)
+            self.value = base64.standard_b64decode(value)
 
     def __str__(self):
         return INDIBase.__str__(self) + " - " + self.attr["size"] + " - " + self.attr["format"]

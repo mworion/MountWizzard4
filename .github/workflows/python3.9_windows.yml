@@ -55,6 +55,7 @@ jobs:
         python -m pip install cython
         python -m pip -vvv install sep
         python -m pip install dist/mountwizzard*.tar.gz
+        python -m pip list
 
     - name: Check depedencies explicitly
       run: |

@@ -242,6 +242,7 @@ jobs:
           ls -lh mw4/resource
   
       - name: make_test_run
+        if: matrix.os != 'ubuntu-latest'
         run: |
           python mw4/loader.py test
 

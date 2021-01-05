@@ -59,11 +59,7 @@ Version, build and code coverage status
 
 |CODECOV_CHART|
 
-|7U| |7W| |7M|
-
-|8U| |8W| |8M|
-
-|9U| |9W| |9M|
+Status: Python3 (3.7-3.9) packages: |python_package|
 
 Feedback and issue reports
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -103,24 +99,8 @@ CS Michel
 .. |CODE_QUALITY_PYTHON| image:: https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
     :target: https://lgtm.com/projects/g/mworion/MountWizzard4/?mode=list
 
-.. |7U| image::
-    https://github.com/mworion/MountWizzard4/workflows/Py3.7%20Ubuntu%20Package/badge.svg
-.. |7W| image::
-    https://github.com/mworion/MountWizzard4/workflows/Py3.7%20Windows%20Package/badge.svg
-.. |7M| image::
-    https://github.com/mworion/MountWizzard4/workflows/Py3.7%20MacOS%20Package/badge.svg
-.. |8U| image::
-    https://github.com/mworion/MountWizzard4/workflows/Py3.8%20Ubuntu%20Package/badge.svg
-.. |8W| image::
-    https://github.com/mworion/MountWizzard4/workflows/Py3.8%20Windows%20Package/badge.svg
-.. |8M| image::
-    https://github.com/mworion/MountWizzard4/workflows/Py3.8%20MacOS%20Package/badge.svg
-.. |9U| image::
-    https://github.com/mworion/MountWizzard4/workflows/Py3.9%20Ubuntu%20Package/badge.svg
-.. |9W| image::
-    https://github.com/mworion/MountWizzard4/workflows/Py3.9%20Windows%20Package/badge.svg
-.. |9M| image::
-    https://github.com/mworion/MountWizzard4/workflows/Py3.9%20MacOS%20Package/badge.svg
+.. |python_package| image::
+    https://github.com/mworion/MountWizzard4/workflows/python3_package/badge.svg
 
 .. |PYPI_VERSION| image:: https://img.shields.io/pypi/v/mountwizzard4.svg
     :target: https://pypi.python.org/pypi/mountwizzard4

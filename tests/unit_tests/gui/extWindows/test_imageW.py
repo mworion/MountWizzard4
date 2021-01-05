@@ -99,7 +99,7 @@ def test_setupDropDownGui(function):
     function.setupDropDownGui()
     assert function.ui.color.count() == 4
     assert function.ui.zoom.count() == 5
-    assert function.ui.stretch.count() == 6
+    assert function.ui.stretch.count() == 8
 
 
 def test_updateWindowsStats_1(function):
@@ -471,10 +471,11 @@ def test_workerPhotometry_1(function):
     function.image[49][50] = 50
     suc = function.workerPhotometry()
     assert suc
-    assert function.mean is not None
-    assert function.std is not None
-    assert function.median is not None
-    assert function.sources
+    assert function.bk_back is not None
+    assert function.bk_rms is not None
+    assert function.flux is not None
+    assert function.radius is not None
+    assert function.objs is not None
 
 
 def test_prepareImageForPhotometry_1(function):

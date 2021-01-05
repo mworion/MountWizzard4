@@ -1,4 +1,5 @@
 name: Build_Wheels
+
 on:
   push:
     paths:
@@ -9,7 +10,7 @@ jobs:
   building_wheels:
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 4
+      max-parallel: 10
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
         python-version: [3.7, 3.8, 3.9]
@@ -39,6 +40,9 @@ jobs:
     runs-on: [ubuntu-latest]
     needs: building_wheels
     steps:
+      - name: use_repo
+        uses: actions/checkout@v2
+
       - name: collect_wheels
         uses: actions/download-artifact@v2
         with:

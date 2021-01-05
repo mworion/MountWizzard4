@@ -235,7 +235,7 @@ def test_OneBLOB_1(function):
     class ET:
         tag = 'defLight'
         attrib = {'testtag': 'testattrib'}
-        text = '  test value  '
+        text = base64.standard_b64encode(b'AAAA')
 
     a = {'name': 'test',
          'device': 'test',
@@ -247,9 +247,7 @@ def test_OneBLOB_1(function):
          'format': 'b64',
          'message': 'testmessage'}
 
-    val = base64.standard_b64encode(b'1234567890')
-
-    test = OneBLOB("defBLOB", val, a, ET())
+    test = OneBLOB("defBLOB", None, a, ET())
     f'{test}'
 
 

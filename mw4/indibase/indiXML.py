@@ -31,7 +31,7 @@
 ###########################################################
 # standard libraries
 import logging
-import pybase64 as base64
+import base64
 import numbers
 
 # external packages

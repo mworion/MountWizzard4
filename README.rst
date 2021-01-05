@@ -59,7 +59,7 @@ Version, build and code coverage status
 
 |CODECOV_CHART|
 
-Status: Python3 (3.7-3.9) packages: |python_package|
+Status python3 (3.7-3.9) packages: |python_package|
 
 Feedback and issue reports
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

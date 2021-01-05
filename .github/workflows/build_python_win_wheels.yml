@@ -40,7 +40,7 @@ jobs:
   bollecting_push_wheels:
     runs-on: [ubuntu-latest]
     needs: building_wheels
-      steps:
+    steps:
       - name: collect_wheels
         uses: actions/download-artifact@v2
           with:

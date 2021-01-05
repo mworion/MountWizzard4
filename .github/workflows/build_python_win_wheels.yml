@@ -43,9 +43,9 @@ jobs:
     steps:
       - name: collect_wheels
         uses: actions/download-artifact@v2
-          with:
-            name: wheels
-            path: wheelhouse
+        with:
+          name: wheels
+          path: wheelhouse
 
       - name: commit_repo
         run: |

@@ -42,6 +42,10 @@ jobs:
         python -m pip install setuptools wheel
         python setup.py sdist
 
+    - name: show_files
+      run: ls -lh dist
+      shell: bash
+
     - name: upload_kpackage
       uses: actions/upload-artifact@v2
       with:
@@ -71,6 +75,10 @@ jobs:
       with:
         name: package
         path: dist
+
+    - name: show_files
+      run: ls -lh dist
+      shell: bash
 
     - name: install_package
       run: |

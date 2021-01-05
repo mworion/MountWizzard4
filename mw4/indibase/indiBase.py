@@ -18,8 +18,9 @@
 import logging
 
 # external packages
-from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtNetwork import QTcpSocket
+import PyQt5
+from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot
+from PyQt5.QtNetwork import QTcpSocket, QAbstractSocket
 import xml.etree.ElementTree as ETree
 
 # local import
@@ -418,6 +419,7 @@ class Client(QObject):
         self.socket.abort()
         return True
 
+    @PyQt5.QtCore.pyqtSlot()
     def handleDisconnected(self):
         """
         :return: nothing
@@ -1030,6 +1032,7 @@ class Client(QObject):
         self.log.error('Unknown vectors: {0}'.format(chunk))
         return False
 
+    @PyQt5.QtCore.pyqtSlot()
     def _handleReadyRead(self):
         """
         _handleReadyRead gets the date in buffer signal and starts to read data from the
@@ -1060,9 +1063,9 @@ class Client(QObject):
                     self.log.critical('Problem parsing event: {0}'.format(event))
                     continue
 
-                elementToParse = indiXML.parseETree(elem)
+                elemParsed = indiXML.parseETree(elem)
                 elem.clear()
-                self._parseCmd(elementToParse)
+                self._parseCmd(elemParsed)
 
         except Exception as e:
             self.log.error(f'{e}: {buf}')
@@ -1070,16 +1073,15 @@ class Client(QObject):
 
         return True
 
+    @PyQt5.QtCore.pyqtSlot(QAbstractSocket.SocketError)
     def _handleError(self, socketError):
         """
-        _handleError log all network errors in case of problems.
-
         :param socketError: the error from socket library
         :return: nothing
         """
         if not self.connected:
             return False
 
-        self.log.error('INDI client connection fault, error: {0}'.format(socketError))
+        self.log.error('INDI connection fault, error: {0}'.format(socketError))
         self.disconnectServer()
         return True

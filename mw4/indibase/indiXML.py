@@ -31,7 +31,7 @@
 ###########################################################
 # standard libraries
 import logging
-import base64
+import pybase64 as base64
 import numbers
 
 # external packages
@@ -325,7 +325,7 @@ class OneBLOB(INDIElement):
         # was created from XML from the indi server.
         #
         if etree is not None:
-            self.value = base64.standard_b64decode(value)
+            self.value = base64.standard_b64decode(self.value)
 
     def __str__(self):
         return INDIBase.__str__(self) + " - " + self.attr["size"] + " - " + self.attr["format"]

@@ -45,8 +45,8 @@ jobs:
     - name: upload_kpackage
       uses: actions/upload-artifact@v2
       with:
-        name: dist
-        path: package
+        name: package
+        path: dist
 
 
   install_package:

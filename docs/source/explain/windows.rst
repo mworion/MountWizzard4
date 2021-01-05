@@ -225,6 +225,6 @@ This should help in finding problems in your setup.
 
 .. image:: image/window_analyse.png
     :align: center
-    :scale: 71%
+    :scale: 25%
 
 There is a video on youtube with some explanations: https://youtu.be/6jiCOqKgzZY

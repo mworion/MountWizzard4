@@ -53,18 +53,23 @@ For the image you have different options to alter the main view of the image:
 
     *   - Drop down entry
         - Explanation
-    *   - Image
-        - standard visualization of the image in greyscale. MW4 does not support colors
-    *   - Image & WCS coordinates
-        - if distortion parameters are included, MW4 will show the RA / DEC coordinates
-    *   - Image & detected sources
-        - an overlay of the image with the extracted sources (stars) as circles
-    *   - Photometry - Sharpness
-        - sextractor based algorithm: value for referencing the sharpness (s.below)
-    *   - Photometry - Roundness
-        - sextractor based algorithm: value for roundness of the sources
-    *   - Photometry - Flux
-        - sextractor based algorithm: value for flux of the sources
+    *   - Image Raw
+        - Standard visualization of the image in greyscale. MW4 does not support
+          colors
+    *   - Image with Sources
+        - An overlay of the image with the extracted sources (stars) as circles
+    *   - Photometry: HFD Value
+        - SEP: 50 top Sources with HFD values
+    *   - Photometry: Background level
+        - SEP: Image of the background level
+    *   - Photometry: Background noise
+        - SEP: Image of the background oise level
+    *   - Photometry: Flux
+        - SEP: Value for flux of the detected sources
+
+If distortion parameters are included, you could check "UseWCS" and MW4 will show
+the RA / DEC coordinates for the first threed image view options.
+
 
 Some examples for the windows
 -----------------------------
@@ -81,15 +86,21 @@ View Image with sources:
     :align: center
     :scale: 71%
 
-View image with photometry sharpness
+View image with HFD values
 
-.. image:: image/show_sharpness.png
+.. image:: image/show_hfd.png
     :align: center
     :scale: 71%
 
-View image with photometry roundness
+View image with background level
 
-.. image:: image/show_roundness.png
+.. image:: image/show_bk.png
+    :align: center
+    :scale: 71%
+
+View image with background noise
+
+.. image:: image/show_bk_noise.png
     :align: center
     :scale: 71%
 

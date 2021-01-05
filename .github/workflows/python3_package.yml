@@ -44,6 +44,7 @@ jobs:
       run: |
         python -m pip install PyQt5
         python -m PyQt5.uic.pyuic mw4/gui/widgets/devicePopup.ui -o mw4/gui/widgets/devicePopup_ui.py
+        python -m PyQt5.uic.pyuic mw4/gui/widgets/downloadPopup.ui -o mw4/gui/widgets/downloadPopup_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/hemisphere.ui -o mw4/gui/widgets/hemisphere_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/image.ui -o mw4/gui/widgets/image_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/keypad.ui -o mw4/gui/widgets/keypad_ui.py

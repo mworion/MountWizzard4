@@ -69,7 +69,7 @@ jobs:
     - name: upload_package
       uses: actions/upload-artifact@v2
       with:
-        name: package
+        name: dist
         path: dist
 
   run_tests_macos:
@@ -87,7 +87,7 @@ jobs:
   
       - uses: actions/download-artifact@v2
         with:
-          name: package
+          name: dist
           path: dist
           
       - name: install_package
@@ -141,7 +141,7 @@ jobs:
 
     - uses: actions/download-artifact@v2
       with:
-        name: package
+        name: dist
         path: dist
 
     - name: show_files

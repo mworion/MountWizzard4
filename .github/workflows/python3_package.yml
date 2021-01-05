@@ -46,7 +46,7 @@ jobs:
       run: ls -lh dist
       shell: bash
 
-    - name: upload_kpackage
+    - name: upload_package
       uses: actions/upload-artifact@v2
       with:
         name: package
@@ -60,7 +60,7 @@ jobs:
     strategy:
       max-parallel: 9
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [macos-latest, ubuntu-latest]
         python-version: [3.7, 3.8, 3.9]
 
     steps:
@@ -80,11 +80,11 @@ jobs:
       run: ls -lh dist
       shell: bash
 
-    - name: install_package
-      run: |
-        python -m pip install cython
-        python -m pip install dist/mountwizzard*.tar.gz
+    #- name: install_package
+    #  run: |
+    #    python -m pip install cython
+    #    python -m pip install dist/mountwizzard*.tar.gz
 
-    - name: check_depedencies_explicit
-      run: |
-        python -m pip check mountwizzard4
+    #- name: check_depedencies_explicit
+    #  run: |
+    #    python -m pip check mountwizzard4

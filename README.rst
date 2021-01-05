@@ -53,7 +53,7 @@ Version, build and code coverage status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 |PYPI_VERSION| |DownLoadsAbs| |DownLoadsMonth|
 
-|PYTEST MacOS| |PYTEST Win38|
+|PYTEST macOS| |PYTEST Windows|
 
 |CODE_QUALITY_PYTHON| |CODECOV| |CODE_QUALITY_ALERTS|
 
@@ -77,37 +77,43 @@ Hope this tool makes fun and helps for your hobby,
 
 CS Michel
 
-.. |DOCS| image:: https://readthedocs.org/projects/mountwizzard4/badge/?version=latest
+.. |DOCS| image::
+    https://readthedocs.org/projects/mountwizzard4/badge/?version=latest
     :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. |PYTEST MacOS| image::
-    https://github.com/mworion/MountWizzard4/workflows/UnitTest%20MacOS/badge.svg
-.. |PYTEST WIN38| image::
-    https://github.com/mworion/MountWizzard4/workflows/UnitTest%20Win%203.8/badge.svg
-.. |PYTEST WIN39| image::
-    https://github.com/mworion/MountWizzard4/workflows/UnitTest%20Win%203.9/badge.svg
-.. |CODECOV| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
+.. |PYTEST macOS| image::
+    https://github.com/mworion/MountWizzard4/workflows/python3_macOS_unit/badge.svg
+.. |PYTEST Windows| image::
+    https://github.com/mworion/MountWizzard4/workflows/python3_win_unit/badge.svg
+.. |CODECOV| image::
+    https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
-.. |CODECOV_CHART| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/icicle.svg
+.. |CODECOV_CHART| image::
+    https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/icicle.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
     :width: 80%
     :align: top
 
-.. |CODE_QUALITY_ALERTS| image:: https://img.shields.io/lgtm/alerts/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
+.. |CODE_QUALITY_ALERTS| image::
+    https://img.shields.io/lgtm/alerts/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
     :target: https://lgtm.com/projects/g/mworion/MountWizzard4/latest/files/?sort=name&dir=ASC&mode=heatmap&showExcluded=false
-.. |CODE_QUALITY_PYTHON| image:: https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
+.. |CODE_QUALITY_PYTHON| image::
+    https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
     :target: https://lgtm.com/projects/g/mworion/MountWizzard4/?mode=list
 
 .. |python_package| image::
     https://github.com/mworion/MountWizzard4/workflows/python3_package/badge.svg
 
-.. |PYPI_VERSION| image:: https://img.shields.io/pypi/v/mountwizzard4.svg
+.. |PYPI_VERSION| image::
+    https://img.shields.io/pypi/v/mountwizzard4.svg
     :target: https://pypi.python.org/pypi/mountwizzard4
     :alt: MountWizzard4's PyPI Status
     
-.. |DownLoadsAbs| image:: https://pepy.tech/badge/mountwizzard4
+.. |DownLoadsAbs| image::
+    https://pepy.tech/badge/mountwizzard4
     :target: https://pepy.tech/project/mountwizzard4
-.. |DownLoadsMonth| image:: https://pepy.tech/badge/mountwizzard4/month
+.. |DownLoadsMonth| image::
+    https://pepy.tech/badge/mountwizzard4/month
     :target: https://pepy.tech/project/mountwizzard4
 

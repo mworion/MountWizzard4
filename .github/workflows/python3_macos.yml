@@ -1,23 +1,24 @@
-name: Py3.8 Windows Package
+name: Python3_MacOS
 
 on:
   push:
     paths:
       - 'mw4/**'
-      - '!mw4/test/**'
       - 'setup.py'
       - 'tox.ini'
-      - '.github/workflows/python3.8_windows.yml'
+      - '.github/workflows/python3_macos.yml'
 
 jobs:
+
   build:
+
     name: build
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
       matrix:
-        os: [windows-latest]
-        python-version: [3.8]
+        os: [macos-latest]
+        python-version: [3.7, 3.8, 3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -27,7 +28,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Build widgets and resource
+    - name: build_widgets_resource
       run: |
         python -m pip install --upgrade pip
         python -m pip install PyQt5
@@ -41,21 +42,19 @@ jobs:
         python -m PyQt5.uic.pyuic mw4/gui/widgets/satellite.ui -o mw4/gui/widgets/satellite_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/analyse.ui -o mw4/gui/widgets/analyse_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/mount3D.ui -o mw4/gui/widgets/mount3D_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/simulator.ui -o mw4/gui/widgets/simulator_ui.py        
+        python -m PyQt5.uic.pyuic mw4/gui/widgets/simulator.ui -o mw4/gui/widgets/simulator_ui.py
         python -m PyQt5.pyrcc_main mw4/resource/resources.qrc -o mw4/resource/resources.py
 
-
-    - name: Build package
+    - name: build_package
       run: |
-        python -m pip install setuptools wheel
+        pip install setuptools wheel
         python setup.py sdist
 
-    - name: Install package
-      shell: bash
+    - name: install_package
       run: |
         python -m pip install cython
         python -m pip install dist/mountwizzard*.tar.gz
 
-    - name: Check depedencies explicitly
+    - name: check_depedencies_explicit
       run: |
         python -m pip check mountwizzard4

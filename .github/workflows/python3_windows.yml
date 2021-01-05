@@ -1,23 +1,23 @@
-name: Py3.8 MacOS Package
+name: Python3_Windows
 
 on:
   push:
     paths:
       - 'mw4/**'
-      - '!mw4/test/**'
       - 'setup.py'
       - 'tox.ini'
-      - '.github/workflows/python3.8_macos.yml'
+      - '.github/workflows/python3_windows.yml'
 
 jobs:
+
   build:
-    name: build
+
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
       matrix:
-        os: [macos-latest]
-        python-version: [3.8]
+        os: [windows-latest]
+        python-version: [3.7, 3.8, 3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -27,7 +27,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Build widgets and resource
+    - name: build_widgets_resource
       run: |
         python -m pip install --upgrade pip
         python -m pip install PyQt5
@@ -44,16 +44,17 @@ jobs:
         python -m PyQt5.uic.pyuic mw4/gui/widgets/simulator.ui -o mw4/gui/widgets/simulator_ui.py        
         python -m PyQt5.pyrcc_main mw4/resource/resources.qrc -o mw4/resource/resources.py
 
-    - name: Build package
+    - name: build_package
       run: |
         pip install setuptools wheel
         python setup.py sdist
 
-    - name: Install package
+    - name: install_package
+      shell: bash
       run: |
         python -m pip install cython
         python -m pip install dist/mountwizzard*.tar.gz
 
-    - name: Check depedencies explicitly
+    - name: check_depedencies_explicit
       run: |
         python -m pip check mountwizzard4

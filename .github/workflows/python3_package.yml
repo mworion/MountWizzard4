@@ -120,7 +120,13 @@ jobs:
         run: |
           python -m pip install cython wheel
           python -m pip install dist/mountwizzard4.tar.gz
-  
+
+      - name: show_files
+        shell: bash
+        run: |
+          ls -lh /usr/lib/python${{ matrix.python-version }}
+          ls -lh /usr/lib/python${{ matrix.python-version }}/dist-packages
+
       - name: install_pytest
         run: |
           python -m pip install pytest
@@ -234,8 +240,7 @@ jobs:
   
       - name: make_test_run
         run: |
-          sudo apt-get install xvfb
-          xvfb-run python /usr/lib/python${{ matrix.python-version }}/dist-packages/mw4/loader.py test
+          python /usr/lib/python${{ matrix.python-version }}/dist-packages/mw4/loader.py test
 
   upload_to_pypi:
 

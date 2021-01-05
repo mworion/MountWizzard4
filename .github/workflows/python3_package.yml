@@ -249,7 +249,7 @@ jobs:
       - name: make_test_run_ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: |
-          sudo apt-get install pulseaudio
+          sudo apt-get install libpulse-dev
           sudo apt-get install xvfb
           xvfb-run python mw4/loader.py test
 

@@ -1,6 +1,4 @@
-name: Build Wheels
-author: michael wuertenberger
-
+name: Build_Wheels
 on:
   push:
     paths:

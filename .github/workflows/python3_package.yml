@@ -72,6 +72,18 @@ jobs:
         name: dist
         path: dist
 
+    - name: upload_package
+      uses: actions/upload-artifact@v2
+      with:
+        name: widgets
+        path: mw4/gui/widgets/*.py
+
+    - name: upload_package
+      uses: actions/upload-artifact@v2
+      with:
+        name: resource
+        path: mw4/resource/*.py
+
   run_tests_macos_1:
   
     # The package has 3000+ unit tests, which will be tested on macOS as
@@ -93,6 +105,16 @@ jobs:
         with:
           name: dist
           path: dist
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: widgets
+          path: mw4/gui/widgets
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: resource
+          path: mw4/resource
           
       - name: install_package
         run: |
@@ -137,6 +159,16 @@ jobs:
         with:
           name: dist
           path: dist
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: widgets
+          path: mw4/gui/widgets
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: resource
+          path: mw4/resource
           
       - name: install_package
         run: |
@@ -199,6 +231,11 @@ jobs:
       - name: check_dependencies_explicit
         run: |
           python -m pip check mountwizzard4
+  
+      - name: make_test_run
+        run: |
+          sudo apt-get install xvfb
+          xvfb-run python /usr/lib/python${{ matrix.python-version }}/dist-packages/mw4/loader.py test
 
   upload_to_pypi:
 

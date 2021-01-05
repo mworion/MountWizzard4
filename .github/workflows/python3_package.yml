@@ -85,7 +85,7 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.9'
   
       - uses: actions/download-artifact@v2
         with:
@@ -127,7 +127,7 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.9'
   
       - uses: actions/download-artifact@v2
         with:
@@ -170,30 +170,31 @@ jobs:
         python-version: [3.7, 3.8, 3.9]
 
     steps:
-    - uses: actions/checkout@v2
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-
-    - uses: actions/download-artifact@v2
-      with:
-        name: dist
-        path: dist
-
-    - name: show_files
-      run: ls -lh dist
-      shell: bash
-
-    - name: install_package
-      run: |
-        python -m pip install cython
-        python -m pip install dist/mountwizzard4.tar.gz
-
-    - name: check_dependencies_explicit
-      run: |
-        python -m pip check mountwizzard4
+      - uses: actions/checkout@v2
+  
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+  
+      - name: show_files
+        run: ls -lh dist
+        shell: bash
+  
+      - name: install_package
+        run: |
+          python -m pip install cython
+          python -m pip install dist/mountwizzard4.tar.gz
+  
+      - name: check_dependencies_explicit
+        run: |
+          python -m pip check mountwizzard4
 
   upload_to_pypi:
 

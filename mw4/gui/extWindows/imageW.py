@@ -17,7 +17,6 @@
 ###########################################################
 # standard libraries
 import os
-import time
 
 # external packages
 import PyQt5.QtWidgets
@@ -27,7 +26,6 @@ from astropy.nddata import Cutout2D
 from astropy.visualization import MinMaxInterval
 from astropy.visualization import AsinhStretch
 from astropy.visualization import imshow_norm
-from astropy.stats import sigma_clipped_stats
 from matplotlib.patches import Ellipse
 try:
     import sep
@@ -146,14 +144,15 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method. if not entry is already in the
-        config dict, it will be created first.
+        initConfig read the key out of the configuration dict and stores it to
+        the gui elements. if some initialisations have to be proceeded with the
+        loaded persistent data, they will be launched as well in this method. if
+        not entry is already in the config dict, it will be created first.
         default values will be set in case of missing parameters.
-        screen size will be set as well as the window position. if the window position is
-        out of the current screen size (because of copy configs or just because the screen
-        resolution was changed) the window will be repositioned so that it will be visible.
+        screen size will be set as well as the window position. if the window
+        position is out of the current screen size (because of copy configs or
+        just because the screen resolution was changed) the window will be
+        repositioned so that it will be visible.
 
         :return: True for test purpose
         """
@@ -213,21 +212,19 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['checkShowGrid'] = self.ui.checkShowGrid.isChecked()
         config['checkAutoSolve'] = self.ui.checkAutoSolve.isChecked()
         config['checkEmbedData'] = self.ui.checkEmbedData.isChecked()
-
         return True
 
     def showWindow(self):
         """
-        showWindow prepares all data for showing the window, plots the image and show it.
-        afterwards all necessary signal / slot connections will be established.
+        showWindow prepares all data for showing the window, plots the image and
+        show it. afterwards all necessary signal / slot connections will be
+        established.
 
         :return: true for test purpose
         """
-
         self.show()
         self.showCurrent()
 
-        # gui signals
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.preparePlot)
         self.ui.stretch.currentIndexChanged.connect(self.preparePlot)
@@ -244,23 +241,20 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.signals.showCurrent.connect(self.showCurrent)
         self.signals.solveImage.connect(self.solveImage)
         self.app.showImage.connect(self.showImage)
-
         return True
 
     def closeEvent(self, closeEvent):
         """
-        closeEvent overlays the window close event of qt. first it stores all persistent
-        data for the windows and its functions, than removes al signal / slot connections
-        removes the matplotlib embedding and finally calls the parent calls for handling
-        the framework close event.
+        closeEvent overlays the window close event of qt. first it stores all
+        persistent data for the windows and its functions, than removes al signal
+        / slot connections removes the matplotlib embedding and finally calls the
+        parent calls for handling the framework close event.
 
         :param closeEvent:
         :return: True for test purpose
         """
-
         self.storeConfig()
 
-        # gui signals
         self.ui.load.clicked.disconnect(self.selectImage)
         self.ui.color.currentIndexChanged.disconnect(self.preparePlot)
         self.ui.stretch.currentIndexChanged.disconnect(self.preparePlot)
@@ -284,11 +278,8 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def setupDropDownGui(self):
         """
-        setupDropDownGui handles the population of list for image handling.
-
         :return: success for test
         """
-
         self.ui.color.clear()
         self.ui.color.setView(PyQt5.QtWidgets.QListView())
         for text in self.colorMaps:
@@ -316,13 +307,8 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def updateWindowsStats(self):
         """
-        updateWindowsStats changes dynamically the enable and disable of user gui elements
-        depending of the actual state of processing
-
         :return: true for test purpose
-
         """
-
         if self.deviceStat['expose']:
             self.ui.exposeN.setEnabled(False)
             self.ui.load.setEnabled(False)
@@ -368,18 +354,12 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         else:
             self.changeStyleDynamic(self.ui.solve, 'running', 'false')
-
         return True
 
     def selectImage(self):
         """
-        selectImage does a dialog to choose a FITS file for viewing. The file will not
-        be loaded, just the full filepath will be stored. if succeeding, the signal for
-        displaying the image will be emitted.
-
         :return: success
         """
-
         loadFilePath, name, ext = self.openFile(self,
                                                 'Select image file',
                                                 self.folder,
@@ -400,13 +380,13 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def setupDistorted(self):
         """
-        setupDistorted tries to setup all necessary context for displaying the image with
-        wcs distorted coordinates.
-        still plenty of work to be done, because very often the labels are not shown
+        setupDistorted tries to setup all necessary context for displaying the
+        image with wcs distorted coordinates.
+        still plenty of work to be done, because very often the labels are not
+        shown
 
         :return: true for test purpose
         """
-
         self.fig.clf()
         self.axe = self.fig.add_subplot(1, 1, 1,
                                         projection=wcs.WCS(self.header, relax=True),
@@ -446,12 +426,8 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def setupNormal(self):
         """
-        setupNormal build the image widget to show it with pixels as axes. the center of
-        the image will have coordinates 0,0.
-
         :return: True for test purpose
         """
-
         self.fig.clf()
         self.axe = self.fig.add_subplot(1, 1, 1,
                                         facecolor=self.M_GREY_LIGHT)
@@ -497,35 +473,24 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.axe.set_xlim(0, sizeX)
         self.axe.set_ylim(0, sizeY)
-
         return True
 
     def colorImage(self):
         """
-        colorImage take the index from gui and generates the colormap for image show
-        command from matplotlib
-
         :return: True
         """
-
         fallback = list(self.colorMaps.keys())[0]
         self.colorMap = self.colorMaps.get(self.ui.color.currentText(), fallback)
-
         return True
 
     def stretchImage(self):
         """
-        stretchImage take the actual image and calculated norm based on the min, max
-        derived from interval which is calculated with AsymmetricPercentileInterval.
-
         :return: True
         """
-
         fallback = list(self.stretchValues.keys())[0]
         value = self.stretchValues.get(self.ui.stretch.currentText(),
                                        self.stretchValues[fallback])
         self.stretch = AsinhStretch(a=value)
-
         return True
 
     def imagePlot(self):
@@ -680,8 +645,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def preparePlot(self):
         """
-        wcs header, stretch, color, distortion, select plot mode
-
         :return:
         """
         if self.image is None:
@@ -717,7 +680,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.stretchImage()
         self.colorImage()
         self.imagePlot()
-
         return True
 
     def workerPhotometry(self):
@@ -732,19 +694,19 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.bk_rms = bkg.rms()
         image_sub = self.image - bkg
         self.objs = sep.extract(image_sub, 1.5, err=bkg.globalrms)
-        self.flux, fluxerr, flag = sep.sum_circle(image_sub,
-                                                  self.objs['x'],
-                                                  self.objs['y'],
-                                                  3.0,
-                                                  err=bkg.globalrms,
-                                                  gain=1.0)
-        self.radius, flag = sep.flux_radius(image_sub,
-                                            self.objs['x'],
-                                            self.objs['y'],
-                                            6.0 * self.objs['a'],
-                                            0.5,
-                                            normflux=self.flux,
-                                            subpix=5)
+        self.flux, _, _ = sep.sum_circle(image_sub,
+                                         self.objs['x'],
+                                         self.objs['y'],
+                                         3.0,
+                                         err=bkg.globalrms,
+                                         gain=1.0)
+        self.radius, _ = sep.flux_radius(image_sub,
+                                         self.objs['x'],
+                                         self.objs['y'],
+                                         6.0 * self.objs['a'],
+                                         0.5,
+                                         normflux=self.flux,
+                                         subpix=5)
         return True
 
     def prepareImageForPhotometry(self):

@@ -247,7 +247,7 @@ jobs:
           python mw4/loader.py test
   
       - name: make_test_run_ubuntu
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-test'
         run: |
           sudo apt-get install libpulse-dev
           sudo apt-get install xvfb

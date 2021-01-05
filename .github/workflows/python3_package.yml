@@ -251,6 +251,7 @@ jobs:
         run: |
           sudo apt-get install libpulse-dev
           sudo apt-get install xvfb
+          sudo apt-get install libx11-xcb1
           xvfb-run python mw4/loader.py test
 
   upload_to_pypi:

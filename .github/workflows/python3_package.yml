@@ -63,8 +63,8 @@ jobs:
         mv dist/mountwizzard4*.* dist/mountwizzard4.tar.gz
 
     - name: show_files
-      run: ls -lh dist
       shell: bash
+      run: ls -lh dist
 
     - name: upload_package
       uses: actions/upload-artifact@v2
@@ -220,8 +220,8 @@ jobs:
           path: dist
   
       - name: show_files
-        run: ls -lh dist
         shell: bash
+        run: ls -lh dist
   
       - name: install_package
         run: |
@@ -231,6 +231,22 @@ jobs:
       - name: check_dependencies_explicit
         run: |
           python -m pip check mountwizzard4
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: widgets
+          path: mw4/gui/widgets
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: resource
+          path: mw4/resource
+
+      - name: show_files
+        shell: bash
+        run: |
+          ls -lh mw4/gui/widgets
+          ls -lh mw4/resource
   
       - name: make_test_run
         run: |

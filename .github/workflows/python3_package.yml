@@ -22,8 +22,8 @@ jobs:
   # 3 Running the unit tests on Windows
   # 4 Installing the distribution in a multiple os and python versions
   # 5 Uploading the distribution to PyPI
-  # Job 2+3 need Job 1 to be finished without error.
-  # Job 5 needs Jobs 2+3+4 to be finished without error.
+  # Job 2 + 3 need Job 1 to be finished without error.
+  # Job 5 needs Jobs 2 + 3 + 4 to be finished without error.
 
   build_widgets_resource:
 
@@ -45,7 +45,7 @@ jobs:
         python -m pip install PyQt5
         python -m PyQt5.uic.pyuic mw4/gui/widgets/devicePopup.ui -o mw4/gui/widgets/devicePopup_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/hemisphere.ui -o mw4/gui/widgets/hemisphere_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/image.ui -o mw4/gui/widgets/devicePopup_ui.py
+        python -m PyQt5.uic.pyuic mw4/gui/widgets/image.ui -o mw4/gui/widgets/image_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/keypad.ui -o mw4/gui/widgets/keypad_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/main.ui -o mw4/gui/widgets/main_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/measure.ui -o mw4/gui/widgets/measure_ui.py
@@ -61,10 +61,6 @@ jobs:
         python -m pip install setuptools wheel
         python setup.py sdist
         mv dist/mountwizzard4*.* dist/mountwizzard4.tar.gz
-
-    - name: show_files
-      shell: bash
-      run: ls -lh dist
 
     - name: upload_package
       uses: actions/upload-artifact@v2
@@ -218,10 +214,6 @@ jobs:
         with:
           name: dist
           path: dist
-  
-      - name: show_files
-        shell: bash
-        run: ls -lh dist
   
       - name: install_package
         run: |

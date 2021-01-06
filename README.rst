@@ -36,8 +36,8 @@ Please feel free to start any discussion:
 https://github.com/mworion/MountWizzard4/discussions
 
 
-Hints:
-^^^^^^
+Overall:
+^^^^^^^^
 
 For being fully operational, MW4 needs either:
 

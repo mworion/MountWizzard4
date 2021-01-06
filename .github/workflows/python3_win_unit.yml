@@ -54,7 +54,7 @@ jobs:
         python -m PyQt5.uic.pyuic mw4/gui/widgets/mount3D.ui -o mw4/gui/widgets/mount3D_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/simulator.ui -o mw4/gui/widgets/simulator_ui.py
         python -m PyQt5.pyrcc_main mw4/resource/resources.qrc -o mw4/resource/resources.py
-
+        
     - name: build_package
       run: |
         python -m pip install setuptools wheel
@@ -95,6 +95,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
+          architecture: 'x86'
   
       - uses: actions/download-artifact@v2
         with:
@@ -121,25 +122,27 @@ jobs:
           python -m pip install pytest
           python -m pip install pytest-qt
           python -m pip install pytest-cov
-          python -m pip install pytest-flake8
           python -m pip install pytest-pythonpath
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/zLoader --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/gui/extWindows --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/base --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/logic --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/indibase --cov-append --cov=mw4/ --cov-report=xml
+          pytest tests/unit_tests/zLoader --cov=mw4/
+          pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/
+          pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/
+          pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/
+          pytest tests/unit_tests/base --cov-append --cov=mw4/
+          pytest tests/unit_tests/logic --cov-append --cov=mw4/
+          pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/
+          pytest tests/unit_tests/indibase --cov-append --cov=mw4/
           
+      - name: rename_coveragefile
+        run: mv .coverage coverage1.dat
+        
       - name: upload_coverage
         uses: actions/upload-artifact@v2
         with:
           name: coverage
-          path: ./coverage*.xml
+          path: ./coverage1.dat
 
   run_tests_windows_2:
   
@@ -157,7 +160,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-  
+          architecture: 'x86'
+          
       - uses: actions/download-artifact@v2
         with:
           name: dist
@@ -177,26 +181,27 @@ jobs:
         run: |
           python -m pip install cython wheel
           python -m pip install dist/mountwizzard4.tar.gz
-  
+ 
       - name: install_pytest
         run: |
           python -m pip install pytest
           python -m pip install pytest-qt
           python -m pip install pytest-cov
-          python -m pip install pytest-flake8
           python -m pip install pytest-pythonpath
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWindow --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/ --cov-report=xml
+          pytest tests/unit_tests/gui/mainWindow --cov=mw4/
+          pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/
           
+      - name: rename_coveragefile
+        run: mv .coverage coverage2.dat
+        
       - name: upload_coverage
         uses: actions/upload-artifact@v2
         with:
           name: coverage
-          path: ./coverage*.xml
-
+          path: ./coverage2.dat
 
   coverage:
 
@@ -206,22 +211,35 @@ jobs:
     runs-on: [ windows-latest ]
     
     steps:
-  
+
+    - uses: actions/checkout@v2
+    
     - name: collecting_data
       uses: actions/download-artifact@v2
       with:
         name: coverage
         path: .
-
+        
+    - name: show_files
+      shell: bash
+      run: |
+        ls -lh .
+        
     - name: combining_data
       run: |
         python -m pip install coverage
-        python -m coverage combine
+        python -m coverage combine coverage1.dat coverage2.dat
+        python -m coverage xml
+
+    - name: show_files
+      shell: bash
+      run: |
+        ls -lh .
 
     - name: upload
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
+        file: coverage.xml
         flags: unittests
         name: codecov-umbrella

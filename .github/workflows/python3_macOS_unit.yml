@@ -11,7 +11,6 @@ on:
     paths:
       - 'mw4/**'
       - 'setup.py'
-      - 'tox.ini'
       - '.github/workflows/python3_macOS_unit.yml'
 
 jobs:

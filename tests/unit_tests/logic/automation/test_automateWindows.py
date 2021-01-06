@@ -30,8 +30,8 @@ if not platform.system() == 'Windows':
 
 from logic.automation.automateWindows import AutomateWindows
 import winreg
-from pywinauto import timings
 import pywinauto
+from pywinauto import timings
 import pywinauto.controls.win32_controls as controls
 # todo: https://github.com/pywinauto/pywinauto/issues/858
 

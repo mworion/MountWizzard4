@@ -77,7 +77,7 @@ jobs:
         name: resource
         path: mw4/resource/*.py
 
-  install_package:
+  install_package_windows:
 
     # The wheels are build for different OS and python versions.
     # The wheels are build for Windows, Linux and macOS and the python versions
@@ -89,7 +89,7 @@ jobs:
     strategy:
       max-parallel: 9
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [windows-latest]
         python-version: [3.7, 3.8, 3.9]
 
     steps:
@@ -97,14 +97,107 @@ jobs:
       - uses: actions/checkout@v2
   
       - name: setup_python_windows ${{ matrix.python-version }}
-        if: runner.os == 'Windows'
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
           architecture: 'x86'
   
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: widgets
+          path: mw4/gui/widgets
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: resource
+          path: mw4/resource
+  
+      - name: install_package
+        run: |
+          python -m pip install cython
+          python -m pip install dist/mountwizzard4.tar.gz
+  
+      - name: check_dependencies_explicit
+        run: |
+          python -m pip check mountwizzard4
+  
+      - name: make_test_run
+        run: |
+          python mw4/loader.py test
+
+  install_package_ubuntu:
+
+    # The wheels are build for different OS and python versions.
+    # The wheels are build for Windows, Linux and macOS and the python versions
+    # 3.7 - 3.9
+    # The three operating system could be done in parallel.
+
+    needs: [build_widgets_resource]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 9
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.7, 3.8, 3.9]
+
+    steps:
+
+      - uses: actions/checkout@v2
+  
       - name: setup_python ${{ matrix.python-version }}
-        if: runner.os != 'Windows'
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: widgets
+          path: mw4/gui/widgets
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: resource
+          path: mw4/resource
+  
+      - name: install_package
+        run: |
+          python -m pip install cython
+          python -m pip install dist/mountwizzard4.tar.gz
+  
+      - name: check_dependencies_explicit
+        run: |
+          python -m pip check mountwizzard4
+
+
+  install_package_macOS:
+
+    # The wheels are build for different OS and python versions.
+    # The wheels are build for Windows, Linux and macOS and the python versions
+    # 3.7 - 3.9
+    # The three operating system could be done in parallel.
+
+    needs: [build_widgets_resource]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 9
+      matrix:
+        os: [macos-latest]
+        python-version: [3.7, 3.8, 3.9]
+
+    steps:
+
+      - uses: actions/checkout@v2
+      - name: setup_python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
@@ -134,14 +227,5 @@ jobs:
           python -m pip check mountwizzard4
   
       - name: make_test_run
-        if: matrix.os != 'ubuntu-latest'
         run: |
           python mw4/loader.py test
-  
-      - name: make_test_run_ubuntu
-        if: matrix.os == 'ubuntu-test'
-        run: |
-          sudo apt-get install libpulse-dev
-          sudo apt-get install xvfb
-          sudo apt-get install libx11-xcb1
-          xvfb-run python mw4/loader.py test

@@ -76,12 +76,9 @@ jobs:
       with:
         name: resource
         path: mw4/resource/*.py
-
+        
+        
   install_package_windows:
-
-    # The wheels are build for different OS and python versions.
-    # The wheels are build for Windows, Linux and macOS and the python versions
-    # 3.7 - 3.9
 
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
@@ -92,7 +89,8 @@ jobs:
         python-version: [3.7, 3.8, 3.9]
 
     steps:
-
+    if: always()
+      -
       - uses: actions/checkout@v2
   
       - name: setup_python_windows ${{ matrix.python-version }}
@@ -128,12 +126,17 @@ jobs:
       - name: make_test_run
         run: |
           python mw4/loader.py test
+      
+    - name: upload_log
+      uses: actions/upload-artifact@v2
+      if: always()
+      with:
+        name: log
+        path: '*.log'
+      
+
 
   install_package_ubuntu:
-
-    # The wheels are build for different OS and python versions.
-    # The wheels are build for Windows, Linux and macOS and the python versions
-    # 3.7 - 3.9
 
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
@@ -144,7 +147,8 @@ jobs:
         python-version: [3.7, 3.8, 3.9]
 
     steps:
-
+    if: always()
+      
       - uses: actions/checkout@v2
   
       - name: setup_python ${{ matrix.python-version }}
@@ -179,10 +183,6 @@ jobs:
 
   install_package_macOS:
 
-    # The wheels are build for different OS and python versions.
-    # The wheels are build for Windows, Linux and macOS and the python versions
-    # 3.7 - 3.9
-
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -192,7 +192,8 @@ jobs:
         python-version: [3.7, 3.8, 3.9]
 
     steps:
-
+    if: always()
+      -
       - uses: actions/checkout@v2
       - name: setup_python ${{ matrix.python-version }}
         uses: actions/setup-python@v2

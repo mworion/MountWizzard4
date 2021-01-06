@@ -65,9 +65,7 @@ problem using older versions. A HW pre2012 might also have some issues.
 
 Version, build and code coverage status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|PYPI_VERSION|  |DOCS|
-
-|DownLoadsAbs| |DownLoadsMonth|
+|PYPI_VERSION|  |DOCS| |DownLoadsAbs| |DownLoadsMonth|
 
 |PYTEST macOS| |PYTEST Windows| |PYTHON3_PACKAGE|
 

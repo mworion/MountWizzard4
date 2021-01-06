@@ -182,9 +182,9 @@ jobs:
     
     steps:
 
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
     
-      - name: collecting_data
+    - name: collecting_data
       uses: actions/download-artifact@v2
       with:
         name: coverage

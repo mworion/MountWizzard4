@@ -57,9 +57,9 @@ Version, build and code coverage status
 
 |PYTEST macOS| |PYTEST Windows| |python_package|
 
-|CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS|
+|CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV|
 
-|CODECOV| |CODECOV_CHART|
+|CODECOV_CHART|
 
 Feedback and issue reports
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

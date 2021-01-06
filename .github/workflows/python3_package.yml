@@ -126,13 +126,12 @@ jobs:
         run: |
           python mw4/loader.py test
       
-    - name: upload_log
-      uses: actions/upload-artifact@v2
-      if: always()
-      with:
-        name: log
-        path: '*.log'
-      
+      - name: upload_log
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: log
+          path: '*.log'
 
 
   install_package_ubuntu:

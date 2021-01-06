@@ -51,15 +51,15 @@ https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/
 
 Version, build and code coverage status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|PYPI_VERSION| |DownLoadsAbs| |DownLoadsMonth|
+|PYPI_VERSION|
 
-|PYTEST macOS| |PYTEST Windows|
+|DownLoadsAbs| |DownLoadsMonth|
 
-|CODE_QUALITY_PYTHON| |CODECOV| |CODE_QUALITY_ALERTS|
+|PYTEST macOS| |PYTEST Windows| |python_package|
 
-|CODECOV_CHART|
+|CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS|
 
-Status python3 (3.7-3.9) packages: |python_package|
+|CODECOV| |CODECOV_CHART|
 
 Feedback and issue reports
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -84,11 +84,14 @@ CS Michel
 
 .. |PYTEST macOS| image::
     https://github.com/mworion/MountWizzard4/workflows/python3_macOS_unit/badge.svg
+
 .. |PYTEST Windows| image::
     https://github.com/mworion/MountWizzard4/workflows/python3_win_unit/badge.svg
+
 .. |CODECOV| image::
     https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
+
 .. |CODECOV_CHART| image::
     https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/icicle.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
@@ -98,6 +101,7 @@ CS Michel
 .. |CODE_QUALITY_ALERTS| image::
     https://img.shields.io/lgtm/alerts/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
     :target: https://lgtm.com/projects/g/mworion/MountWizzard4/latest/files/?sort=name&dir=ASC&mode=heatmap&showExcluded=false
+
 .. |CODE_QUALITY_PYTHON| image::
     https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
     :target: https://lgtm.com/projects/g/mworion/MountWizzard4/?mode=list
@@ -113,6 +117,7 @@ CS Michel
 .. |DownLoadsAbs| image::
     https://pepy.tech/badge/mountwizzard4
     :target: https://pepy.tech/project/mountwizzard4
+
 .. |DownLoadsMonth| image::
     https://pepy.tech/badge/mountwizzard4/month
     :target: https://pepy.tech/project/mountwizzard4

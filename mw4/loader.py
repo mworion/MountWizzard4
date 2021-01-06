@@ -26,6 +26,7 @@ import locale
 import html
 import warnings
 
+
 # external packages
 from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
 from PyQt5.QtGui import QMouseEvent, QIcon
@@ -48,7 +49,6 @@ sys.coinit_flags = 2
 resource.resources.qInitResources()
 matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False
-
 log = logging.getLogger()
 
 
@@ -135,29 +135,27 @@ class QAwesomeTooltipEventFilter(QObject):
 
 class MyApp(QApplication):
     """
-    MyApp implements a custom notify handler to log errors, when C++ classes and python
-    wrapper in PyQt5 environment mismatch. mostly this relates to the situation when a
-    C++ object is already deleted, but the python wrapper still exists. so far I know
-    that's the only chance to log this issues.
+    MyApp implements a custom notify handler to log errors, when C++ classes
+    and python wrapper in PyQt5 environment mismatch. mostly this relates to the
+    situation when a C++ object is already deleted, but the python wrapper still
+    exists. so far I know that's the only chance to log this issues.
 
-    in addition it writes mouse pressed and key pressed events in debug level to log
-    including event and object name to be analyse the input methods.
+    in addition it writes mouse pressed and key pressed events in debug level
+    to log including event and object name to be analyse the input methods.
     """
 
     log = logging.getLogger(__name__)
-    last = None
 
     def __init__(self, *argv):
         super().__init__(*argv)
+        self.last = None
 
     def handleButtons(self, obj, returnValue):
         """
-
         :param obj:
         :param returnValue:
         :return:
         """
-
         if obj.objectName() == 'MainWindowWindow':
             return returnValue
 
@@ -188,9 +186,9 @@ class MyApp(QApplication):
 
     def notify(self, obj, event):
         """
-        notify is the replacement for the original notify method. This is done to catch all
-        undefined exception (object already deleted in C++) before the app crashes and stores
-        it to the app log file.
+        notify is the replacement for the original notify method. This is done to
+        catch all undefined exception (object already deleted in C++) before the
+        app crashes and stores it to the app log file.
 
         :param obj:
         :param event:
@@ -200,11 +198,11 @@ class MyApp(QApplication):
         try:
             returnValue = QApplication.notify(self, obj, event)
         except Exception as e:
-            self.log.critical('----------------------------------------------------')
+            self.log.critical('-' * 100)
             self.log.critical('Event: {0}'.format(event))
             self.log.critical('EventType: {0}'.format(event.type()))
             self.log.critical('Exception error in event loop: {0}'.format(e))
-            self.log.critical('----------------------------------------------------')
+            self.log.critical('-' * 100)
             returnValue = False
 
         if not isinstance(event, QMouseEvent):
@@ -214,21 +212,20 @@ class MyApp(QApplication):
             return returnValue
 
         returnValue = self.handleButtons(obj, returnValue)
-
         return returnValue
 
 
 def except_hook(typeException, valueException, tbackException):
     """
-    except_hook implements a wrapper around except hook to log uncatched exceptions to the
-    log file. so during user phase I get all the exceptions and logs catched in the file.
+    except_hook implements a wrapper around except hook to log uncatched exceptions
+    to the log file. so during user phase I get all the exceptions and logs
+    catched in the file.
 
     :param typeException:
     :param valueException:
     :param tbackException:
     :return: nothing
     """
-
     result = traceback.format_exception(typeException, valueException, tbackException)
     log.critical('')
     log.critical('Logging an uncatched Exception')
@@ -247,7 +244,6 @@ def setupWorkDirs(mwGlob):
     :param mwGlob:
     :return: mwGlob
     """
-
     mwGlob['modeldata'] = '4.0'
     mwGlob['workDir'] = os.getcwd()
     mwGlob['configDir'] = mwGlob['workDir'] + '/config'
@@ -257,8 +253,8 @@ def setupWorkDirs(mwGlob):
     mwGlob['modelDir'] = mwGlob['workDir'] + '/model'
     mwGlob['measureDir'] = mwGlob['workDir'] + '/measure'
 
-    for dirPath in ['workDir', 'configDir', 'imageDir', 'dataDir', 'tempDir', 'modelDir',
-                    'measureDir']:
+    for dirPath in ['workDir', 'configDir', 'imageDir', 'dataDir',
+                    'tempDir', 'modelDir', 'measureDir']:
         if not os.path.isdir(mwGlob[dirPath]):
             os.makedirs(mwGlob[dirPath])
 
@@ -270,7 +266,8 @@ def setupWorkDirs(mwGlob):
 
 def writeSystemInfo(mwGlob=None):
     """
-    writeSystemInfo print overview data to the log file at the beginning of the start
+    writeSystemInfo print overview data to the log file at the beginning of
+    the start
 
     :return: true for test purpose
     """
@@ -293,13 +290,12 @@ def writeSystemInfo(mwGlob=None):
 
 def extractDataFiles(mwGlob=None, splashW=None):
     """
-    we have the necessary files for leap second, ephemeris and satellite already stored
-    in the files system of the app. we bring them to the file system of the user, if they
-    do not exist.
+    we have the necessary files for leap second, ephemeris and satellite already
+    stored in the files system of the app. we bring them to the file system of
+    the user, if they do not exist.
 
     :return: True fpr test purpose
     """
-
     if mwGlob is None:
         return False
 
@@ -323,16 +319,15 @@ def extractDataFiles(mwGlob=None, splashW=None):
             log.debug(f'Already existing file: [{file}]')
 
         os.chmod(filePath, 0o666)
-
     return True
 
 
 def main():
     """
-    main prepares the loading of mountwizzard application. it prepares a splash screen
-    and handler the setup of the logger, bundle handling etc. in addition some information
-    about the system are written into the logfile to be able to debug in different conditions
-    the system environment.
+    main prepares the loading of mountwizzard application. it prepares a
+    splash screen and handler the setup of the logger, bundle handling etc. in
+    addition some information about the system are written into the logfile to be
+    able to debug in different conditions the system environment.
 
     :return: nothing
     """

@@ -20,9 +20,6 @@ import sys
 import unittest.mock as mock
 import glob
 import os
-import warnings
-warnings.simplefilter("ignore", UserWarning)
-sys.coinit_flags = 2
 
 # external packages
 import pytest
@@ -32,22 +29,10 @@ from PyQt5.QtCore import pyqtSignal
 
 # local import
 from mw4 import loader
-from mw4 import mainApp
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    files = glob.glob('tests/config/*.cfg')
-    for f in files:
-        os.remove(f)
-
-    yield
-
-
-def test_main_1(qtbot):
-    class Test(QObject):
-
-        aboutToQuit = pyqtSignal()
+def test_main_1():
+    class App:
 
         @staticmethod
         def installEventFilter(a):
@@ -60,6 +45,24 @@ def test_main_1(qtbot):
         @staticmethod
         def setWindowIcon(a):
             return 0
+
+    class Splash:
+
+        @staticmethod
+        def showMessage(a):
+            return
+
+        @staticmethod
+        def setValue(a):
+            return
+
+        @staticmethod
+        def close():
+            return
+
+    files = glob.glob('tests/config/*.cfg')
+    for f in files:
+        os.remove(f)
 
     mwGlob = {'configDir': 'tests/config',
               'dataDir': 'tests/data',
@@ -75,14 +78,21 @@ def test_main_1(qtbot):
                                'start'):
             with mock.patch.object(loader,
                                    'MyApp',
-                                   return_value=Test()):
-                with mock.patch.object(mainApp,
-                                       'MountWizzard4'):
+                                   return_value=App()):
+                with mock.patch.object(loader,
+                                       'SplashScreen',
+                                       return_value=Splash()):
                     with mock.patch.object(loader,
-                                           'setupWorkDirs',
-                                           return_value=mwGlob):
-                        with mock.patch.object(sys,
-                                               'exit'):
-                            with mock.patch.object(PyQt5.QtWidgets.QWidget,
-                                                   'show'):
-                                loader.main()
+                                           'MountWizzard4'):
+                        with mock.patch.object(loader,
+                                               'setupWorkDirs',
+                                               return_value=mwGlob):
+                            with mock.patch.object(sys,
+                                                   'exit'):
+                                with mock.patch.object(sys,
+                                                       'excepthook'):
+                                    with mock.patch.object(loader,
+                                                           'QAwesomeTooltipEventFilter'):
+                                        with mock.patch.object(PyQt5.QtWidgets.QWidget,
+                                                               'show'):
+                                            loader.main()

@@ -174,9 +174,10 @@ def upload_cov(c):
 @task()
 def test_mw(c):
     printMW('testing mountwizzard')
-    runMW(c, 'flake8')
-    runMW(c, 'pytest tests/unit_tests/zLoader')
-    runMW(c, 'pytest tests/unit_tests/zMainApp')
+    # runMW(c, 'flake8')
+    runMW(c, 'pytest  tests/unit_tests/zLoader')
+    runMW(c, 'pytest  tests/unit_tests/zMainApp')
+    """
     runMW(c, 'pytest tests/unit_tests/base')
     runMW(c, 'pytest tests/unit_tests/logic/astrometry')
     runMW(c, 'pytest tests/unit_tests/logic/cover')
@@ -196,7 +197,7 @@ def test_mw(c):
     runMW(c, 'pytest tests/unit_tests/mountcontrol')
     runMW(c, 'pytest tests/unit_tests/indibase')
     runMW(c, 'pytest tests/unit_tests/logic/automation')
-
+    """
 
 @task(pre=[build_resource, build_widgets, version_doc])
 def build_mw(c):

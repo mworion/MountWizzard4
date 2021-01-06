@@ -67,7 +67,7 @@ setup(
     ]
     + (['pywin32==300'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
-    + (['sep==1.1.0'] if "test" not in platform.system() else [])
+    + (['sep==1.1.0rc1'] if "test" not in platform.system() else [])
     + (['PyQt5==5.15.2'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.2'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
     + (['PyQtWebEngine==5.15.2'] if platform.machine() not in ['armv7l', 'aarch64'] else []),

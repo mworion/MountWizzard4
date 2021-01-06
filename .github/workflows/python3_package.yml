@@ -65,18 +65,6 @@ jobs:
         name: dist
         path: dist
 
-    - name: upload_package
-      uses: actions/upload-artifact@v2
-      with:
-        name: widgets
-        path: mw4/gui/widgets/*.py
-
-    - name: upload_package
-      uses: actions/upload-artifact@v2
-      with:
-        name: resource
-        path: mw4/resource/*.py
-
   install_package:
 
     # The wheels are build for different OS and python versions.
@@ -122,16 +110,6 @@ jobs:
       - name: check_dependencies_explicit
         run: |
           python -m pip check mountwizzard4
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: widgets
-          path: mw4/gui/widgets
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: resource
-          path: mw4/resource
 
       - name: show_files
         shell: bash

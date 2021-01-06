@@ -289,7 +289,7 @@ def test_startUpdater_1(function):
     with mock.patch.object(platform,
                            'architecture',
                            return_value=['32bit']):
-        with mock.patch.object(pywinauto,
+        with mock.patch.object(pywinauto.application,
                                'Application',
                                return_value=Test()):
             with mock.patch.object(Test,
@@ -308,7 +308,7 @@ def test_startUpdater_2(function):
     with mock.patch.object(platform,
                            'architecture',
                            return_value=['64bit']):
-        with mock.patch.object(pywinauto,
+        with mock.patch.object(pywinauto.application,
                                'Application',
                                return_value=Test()):
             with mock.patch.object(Test,
@@ -324,7 +324,7 @@ def test_startUpdater_3(function):
         def start(a):
             pass
 
-    with mock.patch.object(pywinauto,
+    with mock.patch.object(pywinauto.application,
                            'Application',
                            return_value=Test()):
         with mock.patch.object(function,

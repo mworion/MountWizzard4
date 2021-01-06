@@ -21,7 +21,6 @@ import platform
 
 # external packages
 from PyQt5.QtCore import QObject
-import pywinauto
 from pywinauto.findwindows import find_windows
 from pywinauto import application, timings
 import pywinauto.controls.win32_controls as controls
@@ -256,12 +255,12 @@ class AutomateWindows(QObject):
         :return:
         """
         if platform.architecture()[0] == '32bit':
-            self.updater = pywinauto.Application(backend='win32')
+            self.updater = application.Application(backend='win32')
             timings.Timings.fast()
             self.log.info('Using 32Bit backend win32')
 
         else:
-            self.updater = pywinauto.Application(backend='uia')
+            self.updater = application.Application(backend='uia')
             timings.Timings.slow()
             self.log.info('Using 64Bit backend uia')
 

@@ -95,6 +95,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
+          architecture: 'x86'
   
       - uses: actions/download-artifact@v2
         with:
@@ -126,14 +127,15 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/zLoader --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/base --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/logic --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/indibase --cov-append --cov=mw4/ --cov-report=xml
+          #pytest tests/unit_tests/zLoader --cov=mw4/
+          #pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/
+          #pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/
+          #pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/
+          #pytest tests/unit_tests/base --cov-append --cov=mw4/
+          #pytest tests/unit_tests/logic --cov-append --cov=mw4/
+          #pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/
+          #pytest tests/unit_tests/indibase --cov-append --cov=mw4/
+          pytest tests/unit_tests/base --cov=mw4/
           
       - name: upload_coverage
         uses: actions/upload-artifact@v2
@@ -157,6 +159,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
+          architecture: 'x86'
   
       - uses: actions/download-artifact@v2
         with:
@@ -188,15 +191,16 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWindow --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/ --cov-report=xml
-          
+          #pytest tests/unit_tests/gui/mainWindow --cov=mw4/
+          #pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/
+          pytest tests/unit_tests/indibase --cov=mw4/
+
+
       - name: upload_coverage
         uses: actions/upload-artifact@v2
         with:
           name: coverage
           path: ./coverage*.xml
-
 
   coverage:
 
@@ -211,17 +215,17 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: coverage
-        path: .
+        path: coverage
 
     - name: combining_data
       run: |
         python -m pip install coverage
-        python -m coverage combine
+        python -m coverage combine ./coverage
 
     - name: upload
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
+        file: ./coverage/coverage.xml
         flags: unittests
         name: codecov-umbrella

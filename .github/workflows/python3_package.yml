@@ -96,8 +96,16 @@ jobs:
 
       - uses: actions/checkout@v2
   
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+      - name: setup_python_windows ${{ matrix.python-version }}
+        if: os.runner == 'Windows
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: 'x86'
+  
+      - name: setup_python ${{ matrix.python-version }}
+        if: os.runner != 'Windows
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
   

@@ -99,7 +99,7 @@ jobs:
           architecture: 'x86'
   
       - name: show_python_version
-        run: python -c 'import patform; print(platform.architecture()[0])'
+        run: python -c 'import platform; print(platform.architecture()[0])'
   
       - uses: actions/download-artifact@v2
         with:

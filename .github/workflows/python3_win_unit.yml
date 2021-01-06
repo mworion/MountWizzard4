@@ -12,7 +12,7 @@ on:
       - 'mw4/**'
       - 'setup.py'
       - 'tox.ini'
-      - '.github/workflows/python3_macOS_unit.yml'
+      - '.github/workflows/python3_win_unit.yml'
 
 jobs:
 

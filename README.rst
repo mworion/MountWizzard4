@@ -1,57 +1,71 @@
 MountWizzard4
 =============
 
-Welcome to MountWizzard4 is a utility for 10micron users for improving the workflow for
-astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu 18.04 tested). As a 
-python application, it should run in all environments supporting python 3.7-3.9 and PyQt5
-as a GUI framework.
+Welcome to MountWizzard4 is a utility for 10micron users for improving the
+workflow for astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu 18
+.04 tested). As a python application, it should run in all environments supporting
+python 3.7-3.9 and PyQt5 as a GUI framework.
 
-.. note:: Please check these pages for some hints to your installation:
-          https://mountwizzard4.readthedocs.io/en/latest/issues.html
+Note:
+^^^^^
+Please check these pages for some hints to your installation:
+https://mountwizzard4.readthedocs.io/en/latest/overview.html
+
+Documentation
+^^^^^^^^^^^^^
+There is an online documentation available for MW4 which could be search for
+entries:
+
+Web based:
+https://mountwizzard4.readthedocs.io
+
+PDF format:
+https://mountwizzard4.readthedocs.io/_/downloads/en/latest/pdf/
+
+Installing procedures:
+https://mountwizzard4.readthedocs.io/en/latest/install/index.html
+
+Changelog:
+https://mountwizzard4.readthedocs.io/en/latest/changelog.html
+
+And there are some videos available for explanation in Youtube channel:
+
+https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/
+
+Please feel free to start any discussion:
+https://github.com/mworion/MountWizzard4/discussions
+
+
+Hints:
+^^^^^^
 
 For being fully operational, MW4 needs either:
 
 INDI server(s) (see: https://indilib.org) where your devices are connected to.
 
-INDIGO server(s) (see: http://www.indigo-astronomy.org) where your devices are connected to.
+INDIGO server(s) (see: http://www.indigo-astronomy.org) where your devices are
+connected to.
 
 ASCOM Alpaca remote server (see: https://ascom-standards.org/Developer/Alpaca.htm)
-abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if you want to
-connect over IP with your environment.
+abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if
+you want to connect over IP with your environment.
 
-For the core devices there is fom 0.150.16 on native ASCOM support (Windows platform only).
-Please be reminded, that ASCOM has 32bit and 64bit driver implementations and MW4 could also
-be installed in 32bit or 64 bit python environment. They could be not be mixed! 32bit python 
-supports only 32bit drivers and vice versa. Normally this should not be an issue...
+For the core devices there is native ASCOM support (Windows platform only).
+Please be reminded, that ASCOM has 32bit and 64bit driver implementations and
+MW4 could also be installed in 32bit or 64 bit python environment. They could be
+not be mixed! 32bit python supports only 32bit drivers and vice versa. Normally
+this should not be an issue...
 
-In addition an online connection is used for some services which might be very helpful.
+In addition an online connection is used for some services which might be
+very helpful.
 
-It is recommended to use mount firmware 2.16 (ideally 2.16.11) or later as some of the
-functions don't work with older firmware versions. It should not be a problem using older
-versions. A HW pre2012 might also have some issues.
-
-Documentation
-^^^^^^^^^^^^^
-There is an online documentation available for MW4 which could be search for entries:
-
-Web based: https://mountwizzard4.readthedocs.io
-
-PDF format: https://mountwizzard4.readthedocs.io/_/downloads/en/latest/pdf/
-
-Installing procedures: https://mountwizzard4.readthedocs.io/en/latest/install/index.html
-
-Changelog: https://mountwizzard4.readthedocs.io/en/latest/changelog.html
-
-Status: |DOCS|
-
-And there are some videos available for explanation in Youtube channel: 
-
-https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/
-
+It is recommended to use mount firmware 2.16 (ideally 2.16.11) or later as some
+of the functions don't work with older firmware versions. It should not be a
+problem using older versions. A HW pre2012 might also have some issues.
 
 Version, build and code coverage status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|PYPI_VERSION|
+|PYPI_VERSION|  |DOCS|
 
 |DownLoadsAbs| |DownLoadsMonth|
 

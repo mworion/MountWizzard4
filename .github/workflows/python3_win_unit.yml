@@ -186,18 +186,22 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: coverage
-        path: coverage
-
-    - name: combining_data
-      run: |
-        python -m pip install coverage
-        python -m coverage combine ./coverage
+        path: .
         
     - name: show_files
       shell: bash
       run: |
         ls -lh .
-        ls -lh ./coverage
+        
+    - name: combining_data
+      run: |
+        python -m pip install coverage
+        python -m coverage combine coverage1.xml coverage2.xml
+        
+    - name: show_files
+      shell: bash
+      run: |
+        ls -lh .
 
     - name: upload
       uses: codecov/codecov-action@v1

@@ -1,27 +1,28 @@
 #
-# GitHub actions for running the unit test of the mountwizzard4 package
+# GitHub actions for building the distribution of the mountwizzard4 package
 #
 # v0.1, Michael Wuertenberger
 #
-name: python3_win_unit
+name: python3_deploy
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - 'mw4/**'
-      - 'setup.py'
-      - 'tox.ini'
-      - '.github/workflows/python3_win_unit.yml'
-
+      - '.github/workflows/python3_deploy.yml'
+    tags:
+       - 'v*'
+       -
 jobs:
 
-  # This action is split into four jobs:
+  # This action is split into five jobs:
   # 1 Building the distribution
-  # 2 Running the unit tests on macOS part 1
-  # 3 Running the unit tests on macOS part 2
-  # 4 Combining the coverage and uploading it
-  # Job 2 + 3 need 1, Job 4 needs 2 + 3 to be finished without error.
+  # 2 Running the unit tests on macOS
+  # 3 Running the unit tests on Windows
+  # 4 Installing the distribution in a multiple os and python versions
+  # 5 Uploading the distribution to PyPI
+  # Job 2 + 3 need Job 1 to be finished without error.
+  # Job 5 needs 2 + 3 + 4 to be finished without error.
 
   build_widgets_resource:
 
@@ -79,13 +80,13 @@ jobs:
         name: resource
         path: mw4/resource/*.py
 
-  run_tests_windows_1:
+  run_tests_macos_1:
   
     # The package has 3000+ unit tests, which will be tested on macOS as
     # the ubuntu version does not have a headless Qt5
   
     needs: [build_widgets_resource]
-    runs-on: [windows-latest]
+    runs-on: [macos-latest]
     
     steps:
 
@@ -126,28 +127,21 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/zLoader --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/gui/extWindows --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/base --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/logic --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/indibase --cov-append --cov=mw4/ --cov-report=xml
-          
-      - name: upload_coverage
-        uses: actions/upload-artifact@v2
-        with:
-          name: coverage
-          path: ./coverage*.xml
+          pytest tests/unit_tests/zLoader
+          pytest tests/unit_tests/zMainApp
+          pytest tests/unit_tests/gui/utilities
+          pytest tests/unit_tests/base
+          pytest tests/unit_tests/logic
+          pytest tests/unit_tests/mountcontrol
+          pytest tests/unit_tests/indibase
 
-  run_tests_windows_2:
+  run_tests_macos_2:
   
     # The package has 3000+ unit tests, which will be tested on macOS as
     # the ubuntu version does not have a headless Qt5
   
     needs: [build_widgets_resource]
-    runs-on: [windows-latest]
+    runs-on: [macos-latest]
     
     steps:
   
@@ -188,40 +182,119 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWindow --cov-append --cov=mw4/ --cov-report=xml
-          pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/ --cov-report=xml
-          
-      - name: upload_coverage
-        uses: actions/upload-artifact@v2
-        with:
-          name: coverage
-          path: ./coverage*.xml
+          pytest tests/unit_tests/gui/extWindows
+          pytest tests/unit_tests/gui/mainWindow
+          pytest tests/unit_tests/gui/mainWmixin
 
+  install_package:
 
-  coverage:
+    # The wheels are build for different OS and python versions.
+    # The wheels are build for Windows, Linux and macOS and the python versions
+    # 3.7 - 3.9
+    # The three operating system could be done in parallel.
 
-    # Combining all results and uploading the coverage data.
-    
-    needs: [ run_tests_windows_1, run_tests_windows_2 ]
-    runs-on: [ windows-latest ]
-    
+    needs: [build_widgets_resource]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 9
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        python-version: [3.7, 3.8, 3.9]
+
     steps:
+
+      - uses: actions/checkout@v2
   
-    - name: collecting_data
-      uses: actions/download-artifact@v2
-      with:
-        name: coverage
-        path: .
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+  
+      - name: install_package
+        run: |
+          python -m pip install cython
+          python -m pip install dist/mountwizzard4.tar.gz
+  
+      - name: check_dependencies_explicit
+        run: |
+          python -m pip check mountwizzard4
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: widgets
+          path: mw4/gui/widgets
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: resource
+          path: mw4/resource
 
-    - name: combining_data
-      run: |
-        python -m pip install coverage
-        python -m coverage combine
+      - name: show_files
+        shell: bash
+        run: |
+          ls -lh mw4/gui/widgets
+          ls -lh mw4/resource
+  
+      - name: make_test_run
+        if: matrix.os != 'ubuntu-latest'
+        run: |
+          python mw4/loader.py test
+  
+      - name: make_test_run_ubuntu
+        if: matrix.os == 'ubuntu-test'
+        run: |
+          sudo apt-get install libpulse-dev
+          sudo apt-get install xvfb
+          sudo apt-get install libx11-xcb1
+          xvfb-run python mw4/loader.py test
 
-    - name: upload
-      uses: codecov/codecov-action@v1
+  upload_to_pypi:
+
+    # Finally, we collect all out data from the artifacts and put them back to
+    # dist directory for an upload. The final step waits for the other jobs to be
+    # finished and starts only if the trigger event of the action was a push
+    # of a tag starting with <v> as version separation. All other jobs run
+    # without heading <v>
+
+    runs-on: [ubuntu-latest]
+    needs: [install_package, run_tests_macos_1, run_tests_macos_2]
+
+    # upload to PyPI on every tag starting with 'v'
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+
+    steps:
+    - uses: actions/setup-python@v2
+
+    - uses: actions/download-artifact@v2
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
+        name: dist
+        path: dist
+
+    # Actually I only have the test version of PyPI running. The secret token
+    # name I have chosen from my test repo is <PYPI_TEST>. This will not work
+    # in your repo. Please take care of it.
+    #
+    # For the activation of the real index, please add a secret token from PyPI to
+    # the GitHub repo, give it a name and replace in the password reference the
+    # <pypi_password> with the name of the secret's name you have chosen for the
+    # PyPI token.
+
+    - name: upload_to_test_PyPI
+      uses: pypa/gh-action-pypi-publish@v1.4.1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_TEST }}
+        skip_existing: true
+        repository_url: https://test.pypi.org/legacy/
+
+    # - name: upload_to_PyPI
+    #   uses: pypa/gh-action-pypi-publish@v1.4.1
+    #   with:
+    #     user: __token__
+    #     password: ${{ secrets.pypi_password }}
+    #     skip_existing: true

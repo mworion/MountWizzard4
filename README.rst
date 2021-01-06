@@ -55,7 +55,7 @@ Version, build and code coverage status
 
 |DownLoadsAbs| |DownLoadsMonth|
 
-|PYTEST macOS| |PYTEST Windows| |python_package|
+|PYTEST macOS| |PYTEST Windows| |PYTHON3_PACKAGE|
 
 |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV|
 
@@ -106,7 +106,7 @@ CS Michel
     https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
     :target: https://lgtm.com/projects/g/mworion/MountWizzard4/?mode=list
 
-.. |python_package| image::
+.. |PYTHON3_PACKAGE| image::
     https://github.com/mworion/MountWizzard4/workflows/python3_package/badge.svg
 
 .. |PYPI_VERSION| image::

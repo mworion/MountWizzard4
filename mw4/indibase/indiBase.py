@@ -18,7 +18,8 @@
 import logging
 
 # external packages
-from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot
+import PyQt5
+from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtNetwork import QTcpSocket, QAbstractSocket
 import xml.etree.ElementTree as ETree
 
@@ -418,7 +419,7 @@ class Client(QObject):
         self.socket.abort()
         return True
 
-    @pyqtSlot()
+    @PyQt5.QtCore.pyqtSlot()
     def handleDisconnected(self):
         """
         :return: nothing
@@ -1031,7 +1032,7 @@ class Client(QObject):
         self.log.error('Unknown vectors: {0}'.format(chunk))
         return False
 
-    @pyqtSlot()
+    @PyQt5.QtCore.pyqtSlot()
     def _handleReadyRead(self):
         """
         _handleReadyRead gets the date in buffer signal and starts to read data from the
@@ -1072,7 +1073,7 @@ class Client(QObject):
 
         return True
 
-    @pyqtSlot(QAbstractSocket.SocketError)
+    @PyQt5.QtCore.pyqtSlot(QAbstractSocket.SocketError)
     def _handleError(self, socketError):
         """
         :param socketError: the error from socket library

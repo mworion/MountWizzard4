@@ -234,30 +234,6 @@
          <number>4</number>
         </property>
         <item>
-         <widget class="QCheckBox" name="checkDomeEnable">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>25</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Dome enable</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QCheckBox" name="checkDomeTransparent">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -273,6 +249,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -291,6 +268,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -309,6 +287,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -327,6 +306,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -345,6 +325,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -363,6 +344,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -381,6 +363,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>

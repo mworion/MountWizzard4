@@ -144,8 +144,8 @@ class Materials(Styles):
         self.pointer.setShininess(1)
 
         self.walls = QPhongAlphaMaterial()
-        self.walls.setAmbient(QColor(64, 128, 64))
-        self.walls.setDiffuse(QColor(64, 64, 64))
-        self.walls.setSpecular(QColor(64, 64, 64))
-        self.walls.setShininess(0.1)
-        self.walls.setAlpha(0.5)
+        self.walls.setAmbient(QColor(32, 128, 32))
+        self.walls.setDiffuse(QColor(32, 128, 32))
+        self.walls.setSpecular(QColor(32, 128, 32))
+        self.walls.setShininess(0.8)
+        self.walls.setAlpha(0.3)

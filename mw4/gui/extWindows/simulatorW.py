@@ -17,6 +17,7 @@
 # standard libraries
 
 # external packages
+from PyQt5.QtCore import QMutex
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
@@ -48,6 +49,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui = simulator_ui.Ui_SimulatorDialog()
         self.ui.setupUi(self)
         self.initUI()
+        self.createMutex = QMutex()
 
         self.view = Qt3DWindow()
         container = QWidget.createWindowContainer(self.view)
@@ -119,7 +121,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
             self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
         self.ui.checkDomeTransparent.setChecked(config.get('checkDomeTransparent', False))
-        self.ui.checkDomeEnable.setChecked(config.get('checkDomeEnable', False))
         self.ui.checkShowPointer.setChecked(config.get('checkShowPointer', False))
         self.ui.checkShowBuildPoints.setChecked(config.get('checkShowBuildPoints', False))
         self.ui.checkShowNumbers.setChecked(config.get('checkShowNumbers', False))
@@ -151,7 +152,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         config['cameraPositionZ'] = pos.z()
 
         config['checkDomeTransparent'] = self.ui.checkDomeTransparent.isChecked()
-        config['checkDomeEnable'] = self.ui.checkDomeEnable.isChecked()
         config['checkShowPointer'] = self.ui.checkShowPointer.isChecked()
         config['checkShowBuildPoints'] = self.ui.checkShowBuildPoints.isChecked()
         config['checkShowNumbers'] = self.ui.checkShowNumbers.isChecked()
@@ -172,7 +172,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.storeConfig()
 
         self.ui.checkDomeTransparent.clicked.disconnect(self.setDomeTransparency)
-        self.ui.checkDomeEnable.clicked.disconnect(self.domeCreate)
         self.ui.checkShowBuildPoints.clicked.disconnect(self.buildPointsCreate)
         self.ui.checkShowNumbers.clicked.disconnect(self.buildPointsCreate)
         self.ui.checkShowSlewPath.clicked.disconnect(self.buildPointsCreate)
@@ -193,7 +192,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.updateDomeSettings.disconnect(self.dome.updateSettings)
         self.app.mount.signals.pointDone.disconnect(self.telescope.updatePositions)
         self.app.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
-        self.app.updateDomeSettings.disconnect(self.domeCreate)
         self.app.drawBuildPoints.disconnect(self.buildPointsCreate)
         self.app.drawHorizonPoints.disconnect(self.horizonCreate)
 
@@ -208,7 +206,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         self.createScene(self.rootEntity)
         self.ui.checkDomeTransparent.clicked.connect(self.setDomeTransparency)
-        self.ui.checkDomeEnable.clicked.connect(self.domeCreate)
         self.ui.checkShowBuildPoints.clicked.connect(self.buildPointsCreate)
         self.ui.checkShowNumbers.clicked.connect(self.buildPointsCreate)
         self.ui.checkShowSlewPath.clicked.connect(self.buildPointsCreate)
@@ -228,7 +225,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.updateDomeSettings.connect(self.dome.updateSettings)
         self.app.mount.signals.pointDone.connect(self.telescope.updatePositions)
         self.app.mount.signals.pointDone.connect(self.pointer.updatePositions)
-        self.app.updateDomeSettings.connect(self.domeCreate)
         self.app.drawBuildPoints.connect(self.buildPointsCreate)
         self.app.drawHorizonPoints.connect(self.horizonCreate)
 
@@ -247,16 +243,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
                                 self.ui.checkShowNumbers.isChecked(),
                                 self.ui.checkShowSlewPath.isChecked())
 
-        return True
-
-    def domeCreate(self):
-        """
-        transfer function needed, because lambda function in signal connection cannot be used
-        :return: True for test purpose
-        """
-        self.dome.create(self.world['ref']['e'],
-                         self.ui.checkDomeEnable.isChecked())
-        self.setDomeTransparency()
         return True
 
     def horizonCreate(self):
@@ -428,10 +414,13 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         :param rEntity:
         :return:
         """
+        if not self.createMutex.tryLock():
+            return False
+
         numbers = self.ui.checkShowNumbers.isChecked()
         path = self.ui.checkShowSlewPath.isChecked()
         pointer = self.ui.checkShowPointer.isChecked()
-        dome = self.ui.checkDomeEnable.isChecked()
+        dome = self.app.deviceStat.get('dome', False)
         horizon = self.ui.checkShowHorizon.isChecked()
         points = self.ui.checkShowBuildPoints.isChecked()
         isDomeTransparent = self.ui.checkDomeTransparent.isChecked()
@@ -449,6 +438,8 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.dome.setTransparency(isDomeTransparent)
         self.telescope.updateSettings()
         self.telescope.updatePositions()
+        self.createMutex.unlock()
+        return True
 
     def updateSettings(self):
         """

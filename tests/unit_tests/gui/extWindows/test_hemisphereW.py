@@ -479,12 +479,21 @@ def test_drawAlignmentStars_1(function):
 
 
 def test_drawHemisphere_1(function):
+    function.closingWindow = False
     function.ui.checkShowAlignStar.setChecked(True)
     suc = function.drawHemisphere()
     assert suc
 
 
 def test_drawHemisphere_2(function):
+    function.closingWindow = False
     function.ui.checkShowAlignStar.setChecked(False)
     suc = function.drawHemisphere()
     assert suc
+
+
+def test_drawHemisphere_3(function):
+    function.closingWindow = True
+    function.ui.checkShowAlignStar.setChecked(False)
+    suc = function.drawHemisphere()
+    assert not suc

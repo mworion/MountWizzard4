@@ -116,6 +116,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.pointsBuildAnnotate = None
         self.pointsPolarBuild = None
         self.pointsPolarBuildAnnotate = None
+        self.closingWindow = False
 
         self.ui.hemisphereMove.stackUnder(self.ui.hemisphere)
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
@@ -187,10 +188,10 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
     def closeEvent(self, closeEvent):
         """
-
         :param closeEvent:
         :return:
         """
+        self.closingWindow = True
         self.app.update10s.disconnect(self.updateAlignStar)
         self.app.update1s.disconnect(self.hemisphereMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.disconnect(self.drawHemisphere)
@@ -199,11 +200,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.app.mount.signals.settingDone.disconnect(self.updateOnChangedParams)
         self.storeConfig()
 
-        # restore DAT status
         self.ui.checkEditNone.setChecked(True)
         self.setOperationMode()
 
-        # signals for gui
         self.ui.checkShowSlewPath.clicked.disconnect(self.drawHemisphere)
         self.ui.checkShowMeridian.clicked.disconnect(self.drawHemisphere)
         self.ui.checkShowCelestial.clicked.disconnect(self.drawHemisphere)
@@ -919,6 +918,8 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
         :return: True for test purpose
         """
+        if self.closingWindow:
+            return False
 
         hasPolar = self.ui.showPolar.isChecked()
 

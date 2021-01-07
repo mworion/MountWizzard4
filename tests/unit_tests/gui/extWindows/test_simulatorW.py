@@ -122,23 +122,6 @@ def test_buildPointsCreate_1(function):
     assert suc
 
 
-def test_domeCreate_1(function):
-    function.world = {
-        'ref1000': {
-            'parent': None,
-            'rot': [-90, 90, 0],
-            'e': QEntity(),
-        },
-        'ref': {
-            'parent': 'ref1000',
-            'scale': [0.001, 0.001, 0.001],
-            'e': QEntity(),
-        }
-    }
-    suc = function.domeCreate()
-    assert suc
-
-
 def test_horizonCreate_1(function):
     function.world = {
         'ref1000': {
@@ -220,11 +203,23 @@ def test_createScene_1(function):
     function.ui.checkShowNumbers.setChecked(True)
     function.ui.checkShowSlewPath.setChecked(True)
     function.ui.checkShowPointer.setChecked(True)
-    function.ui.checkDomeEnable.setChecked(True)
     function.ui.checkShowHorizon.setChecked(True)
     function.ui.checkShowBuildPoints.setChecked(True)
+    suc = function.createScene(QEntity())
+    assert suc
 
-    function.createScene(QEntity())
+
+def test_createScene_2(function):
+    function.createMutex.lock()
+    function.app.mount.obsSite.location.latitude = Angle(degrees=10)
+    function.ui.checkShowNumbers.setChecked(True)
+    function.ui.checkShowSlewPath.setChecked(True)
+    function.ui.checkShowPointer.setChecked(True)
+    function.ui.checkShowHorizon.setChecked(True)
+    function.ui.checkShowBuildPoints.setChecked(True)
+    suc = function.createScene(QEntity())
+    assert not suc
+    function.createMutex.unlock()
 
 
 def test_updateSettings_1(function):

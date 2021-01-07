@@ -177,17 +177,23 @@ class SimulatorDome:
             self.model['domeSphere']['t'].setRotationZ(-az)
 
         if 'DOME_SHUTTER.SHUTTER_OPEN' in self.app.dome.data:
+            isOpen = self.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN']
             radius = self.app.mount.geometry.domeRadius * 1000
-            scale = 1.1 + (radius - 1250) / 1250
+            scale = 1 + (radius - 1250) / 1250
+            width = self.app.dome.domeShutterWidth * 1000
+            scaleSlit = (1 + (width - 600) / 600 / 2) * 0.9
+            shiftShutter = width / 2 / scale
 
-            self.model['domeDoor1']['t'].setScale3D(QVector3D(1, scale, 1))
-            self.model['domeDoor2']['t'].setScale3D(QVector3D(1, scale, 1))
+            self.model['domeSlit1']['t'].setScale3D(QVector3D(1, scaleSlit, 1))
+            self.model['domeSlit2']['t'].setScale3D(QVector3D(1, scaleSlit, 1))
 
-            stat = self.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN']
-            width = self.app.dome.domeShutterWidth * 1000 / 2 / scale
-            if stat:
-                self.model['domeDoor1']['t'].setTranslation(QVector3D(0, width, 0))
-                self.model['domeDoor2']['t'].setTranslation(QVector3D(0, -width, 0))
+            if isOpen:
+                self.model['domeDoor1']['t'].setTranslation(QVector3D(0,
+                                                                      shiftShutter,
+                                                                      0))
+                self.model['domeDoor2']['t'].setTranslation(QVector3D(0,
+                                                                      -shiftShutter,
+                                                                      0))
             else:
                 self.model['domeDoor1']['t'].setTranslation(QVector3D(0, 0, 0))
                 self.model['domeDoor2']['t'].setTranslation(QVector3D(0, 0, 0))

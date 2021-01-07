@@ -832,22 +832,16 @@ class MainWindow(MWidget,
 
         :return: true for test purpose
         """
-
         self.uiWindows[window]['classObj'] = self.uiWindows[window]['class'](self.app)
         self.uiWindows[window]['classObj'].destroyed.connect(self.deleteWindowResource)
         self.uiWindows[window]['classObj'].initConfig()
         self.uiWindows[window]['classObj'].showWindow()
-
         return True
 
     def toggleWindow(self):
         """
-        toggleWindow constructs or destruct an extended window when called.
-
-
         :return: true for test purpose
         """
-
         for window in self.uiWindows:
             if self.uiWindows[window]['button'] != self.sender():
                 continue
@@ -857,23 +851,21 @@ class MainWindow(MWidget,
 
             else:
                 self.uiWindows[window]['classObj'].close()
-
         return True
 
     def showExtendedWindows(self):
         """
         showExtendedWindows opens all extended windows depending on their opening status
         stored in the configuration dict.
-
         :return: true for test purpose
         """
-
         for window in self.uiWindows:
             if not self.app.config.get(window, False):
                 continue
+            if window == 'showSimulatorW':
+                continue
 
             self.buildWindow(window)
-
         return True
 
     def closeExtendedWindows(self):

@@ -10,8 +10,13 @@ Unreleased version of MW4
 - 3d Simulator (mount, dome, build points etc)
 - retrofit model based on hashed coordinates
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
-- optimizing dome for less movements on small changes
 - implementing Baader dome control e.g. 10micron dome interface
+- adding ascom Pegasus (might have to split Pegasus into three devices - env,
+  switch, focuser)
+- optimizing dome for less movements on small changes
+  I see quite a few times the dome being moved by only a very small amount. But it
+  does affect the observatory, so even this small move needs another 10s settle
+  time for the mount So avoiding them would be great.
 
 (1.0)
 
@@ -30,7 +35,7 @@ Released beta version of MW4
 - improved input handling of angle inputs
 - additional logging for windows automation
 - support for new QCIUpdater naming from 2.16.12 on
-- automatic testing
+- automatic unit testing for all parts
 - skyfield upgrade to 1.35
 - pywin32 upgrade to 300
 - split pyerfa and astropy

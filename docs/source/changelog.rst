@@ -36,6 +36,7 @@ Released beta version of MW4
 - split pyerfa and astropy
 - delete photutils dependency and moving to sep package for non windows install
 - adding photometry HFD calculation
+- adding IERS download for time data to get newer on as in mw4 distro
 
 0.220.8
 

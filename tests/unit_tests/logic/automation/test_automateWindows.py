@@ -29,10 +29,8 @@ if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 from logic.automation.automateWindows import AutomateWindows
+from logic.automation import automateWindows
 import winreg
-import pywinauto
-from pywinauto import timings
-import pywinauto.controls.win32_controls as controls
 # todo: https://github.com/pywinauto/pywinauto/issues/858
 
 
@@ -236,7 +234,7 @@ def test_checkFloatingPointErrorWindow_1(function):
             return {'OK': Test1()}
 
     function.updater = Test()
-    with mock.patch.object(timings,
+    with mock.patch.object(automateWindows.timings,
                            'wait_until_passes'):
         suc = function.checkFloatingPointErrorWindow()
         assert suc
@@ -254,7 +252,7 @@ def test_checkFloatingPointErrorWindow_2(function):
             return {'OK': Test1()}
 
     function.updater = Test()
-    with mock.patch.object(timings,
+    with mock.patch.object(automateWindows.timings,
                            'wait_until_passes',
                            side_effect=Exception()):
         suc = function.checkFloatingPointErrorWindow()
@@ -273,9 +271,9 @@ def test_checkFloatingPointErrorWindow_3(function):
             return {'OK': Test1()}
 
     function.updater = Test()
-    with mock.patch.object(timings,
+    with mock.patch.object(automateWindows.timings,
                            'wait_until_passes',
-                           side_effect=timings.TimeoutError):
+                           side_effect=automateWindows.timings.TimeoutError):
         suc = function.checkFloatingPointErrorWindow()
         assert suc
 
@@ -289,12 +287,12 @@ def test_startUpdater_1(function):
     with mock.patch.object(platform,
                            'architecture',
                            return_value=['32bit']):
-        with mock.patch.object(pywinauto.application,
+        with mock.patch.object(automateWindows,
                                'Application',
                                return_value=Test()):
             with mock.patch.object(Test,
                                    'start',
-                                   side_effect=pywinauto.application.AppStartError()):
+                                   side_effect=automateWindows.AppStartError()):
                 suc = function.startUpdater()
                 assert not suc
 
@@ -308,7 +306,7 @@ def test_startUpdater_2(function):
     with mock.patch.object(platform,
                            'architecture',
                            return_value=['64bit']):
-        with mock.patch.object(pywinauto.application,
+        with mock.patch.object(automateWindows,
                                'Application',
                                return_value=Test()):
             with mock.patch.object(Test,
@@ -324,7 +322,7 @@ def test_startUpdater_3(function):
         def start(a):
             pass
 
-    with mock.patch.object(pywinauto.application,
+    with mock.patch.object(automateWindows,
                            'Application',
                            return_value=Test()):
         with mock.patch.object(function,
@@ -351,7 +349,7 @@ def test_clearUploadMenuCommands(function):
            'UTC / Earth rotation data': Test()
            }
     function.updater = {'10 micron control box update': win}
-    with mock.patch.object(controls,
+    with mock.patch.object(automateWindows.controls,
                            'ButtonWrapper'):
         suc = function.clearUploadMenuCommands()
         assert suc
@@ -384,6 +382,7 @@ def test_prepareUpdater_0(function):
 
 
 def test_prepareUpdater_1(function):
+    function.installPath = 'test'
     with mock.patch.object(os,
                            'chdir'):
         with mock.patch.object(function,
@@ -394,6 +393,7 @@ def test_prepareUpdater_1(function):
 
 
 def test_prepareUpdater_2(function):
+    function.installPath = 'test'
     with mock.patch.object(os,
                            'chdir'):
         with mock.patch.object(function,
@@ -407,6 +407,7 @@ def test_prepareUpdater_2(function):
 
 
 def test_prepareUpdater_3(function):
+    function.installPath = 'test'
     with mock.patch.object(os,
                            'chdir'):
         with mock.patch.object(function,
@@ -430,7 +431,7 @@ def test_doUploadAndCloseInstallerCommands(function):
            'OK': Test()
            }
     function.updater = {'10 micron control box update': win}
-    with mock.patch.object(timings,
+    with mock.patch.object(automateWindows.timings,
                            'wait_until_passes'):
         suc = function.doUploadAndCloseInstallerCommands()
         assert suc
@@ -448,7 +449,7 @@ def test_pressOK(function):
             return {'OK': Test1()}
 
     function.updater = Test()
-    with mock.patch.object(timings,
+    with mock.patch.object(automateWindows.timings,
                            'wait_until_passes'):
         suc = function.pressOK()
         assert suc
@@ -504,9 +505,9 @@ def test_uploadMPCDataCommands_1(function):
                         'Comet orbits': popup,
                         'Dialog': dialog,
                         }
-    with mock.patch.object(controls,
+    with mock.patch.object(automateWindows.controls,
                            'ButtonWrapper'):
-        with mock.patch.object(controls,
+        with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
             suc = function.uploadMPCDataCommands()
             assert suc
@@ -543,9 +544,9 @@ def test_uploadMPCDataCommands_2(function):
                         'Comet orbits': popup,
                         'Dialog': dialog,
                         }
-    with mock.patch.object(controls,
+    with mock.patch.object(automateWindows.controls,
                            'ButtonWrapper'):
-        with mock.patch.object(controls,
+        with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
             suc = function.uploadMPCDataCommands(comets=True)
             assert suc
@@ -635,9 +636,9 @@ def test_uploadEarthRotationDataCommands(function):
                         'Open tai-utc.dat': dialog,
                         'UTC data': ok
                         }
-    with mock.patch.object(controls,
+    with mock.patch.object(automateWindows.controls,
                            'ButtonWrapper'):
-        with mock.patch.object(controls,
+        with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
             suc = function.uploadEarthRotationDataCommands()
             assert suc
@@ -725,9 +726,9 @@ def test_uploadTLEDataCommands(function):
                         'Dialog': dialog,
                         }
 
-    with mock.patch.object(controls,
+    with mock.patch.object(automateWindows.controls,
                            'ButtonWrapper'):
-        with mock.patch.object(controls,
+        with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
             suc = function.uploadTLEDataCommands()
             assert suc

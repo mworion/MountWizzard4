@@ -218,7 +218,7 @@ def test_loadDataFromSourceURLs_1(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('xxx')
     function.ui.minorPlanetSource.setCurrentIndex(0)
-    suc = function.loadDataFromSourceURLs()
+    suc = function.loadMPCDataFromSourceURLs()
     assert not suc
 
 
@@ -227,7 +227,7 @@ def test_loadDataFromSourceURLs_2(function):
     function.minorPlanetSourceURLs['test'] = 'test.json.gz'
     function.ui.minorPlanetSource.addItem('Please select')
     function.ui.minorPlanetSource.setCurrentIndex(0)
-    suc = function.loadDataFromSourceURLs()
+    suc = function.loadMPCDataFromSourceURLs()
     assert not suc
 
 

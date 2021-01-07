@@ -185,3 +185,11 @@ def test_downloadFile_1(function):
                            'start'):
         suc = function.downloadFile('', '')
         assert suc
+
+
+def test_downloadFile_2(function):
+    function.callBack = None
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        suc = function.downloadFile('', '')
+        assert suc

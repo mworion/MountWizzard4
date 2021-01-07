@@ -162,7 +162,6 @@ class DownloadPopup(toolsQtWidget.MWidget):
         except Exception as e:
             self.log.warning(f'Error in unzip [{url}], {e}')
             return False
-
         return True
 
     def processResult(self, result):
@@ -185,6 +184,9 @@ class DownloadPopup(toolsQtWidget.MWidget):
 
         if self.callBack:
             self.worker.signals.result.connect(self.processResult)
+
+        else:
+            self.worker.signals.result.connect(self.close)
 
         self.threadPool.start(self.worker)
 

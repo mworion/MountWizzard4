@@ -436,6 +436,7 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.progMinorPlanetsFull, QIcon(':/icon/run.svg'))
         self.wIcon(self.ui.progMinorPlanetsFiltered, QIcon(':/icon/run.svg'))
         self.wIcon(self.ui.progEarthRotationData, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.downloadIERSa, QIcon(':/icon/run.svg'))
 
         # satellite
         self.wIcon(self.ui.stopSatelliteTracking, QIcon(':/icon/cross-circle.svg'))
@@ -546,7 +547,6 @@ class MainWindow(MWidget,
         :param status:
         :return: true for test purpose
         """
-
         self.deviceStat['mount'] = status
         return True
 
@@ -558,7 +558,6 @@ class MainWindow(MWidget,
 
         :return: true for test purpose
         """
-
         if setting.weatherTemperature is None and setting.weatherPressure is None:
             self.deviceStat['directWeather'] = None
 
@@ -568,7 +567,6 @@ class MainWindow(MWidget,
 
             else:
                 self.deviceStat['directWeather'] = True
-
         return True
 
     def smartFunctionGui(self):
@@ -581,7 +579,6 @@ class MainWindow(MWidget,
 
         :return: true for test purpose
         """
-
         isModelingReady = all(self.deviceStat[x] for x in ['mount', 'camera', 'astrometry'])
 
         if isModelingReady and self.app.data.buildP:
@@ -615,7 +612,6 @@ class MainWindow(MWidget,
         else:
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
-
         return True
 
     def smartTabGui(self):
@@ -624,7 +620,6 @@ class MainWindow(MWidget,
         different devices.
         :return: true for test purpose
         """
-
         smartTabs = {
             'Power': {'statID': 'power',
                       'tab': self.ui.mainTabWidget,
@@ -636,7 +631,6 @@ class MainWindow(MWidget,
             #            'tab': self.ui.settingsTabWidget,
             #            },
         }
-
         tabChanged = False
 
         for key, tab in smartTabs.items():
@@ -655,7 +649,6 @@ class MainWindow(MWidget,
         if tabChanged:
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
-
         return True
 
     def smartEnvironGui(self):

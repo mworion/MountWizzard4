@@ -129,14 +129,11 @@ class SettMisc(object):
 
         :return: success
         """
-
         weather = self.app.onlineWeather
-
         if not weather:
             return False
 
         weather.online = self.ui.isOnline.isChecked()
-
         return True
 
     def setupIERS(self):
@@ -146,9 +143,7 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
-
         isOnline = self.ui.isOnline.isChecked()
-
         if isOnline:
             iers.conf.auto_download = True
             iers.conf.auto_max_age = 30
@@ -156,21 +151,18 @@ class SettMisc(object):
         else:
             iers.conf.auto_download = False
             iers.conf.auto_max_age = 99999
-
         return True
 
     def versionPackage(self, packageName):
         """
-        versionPackage will look the package up in pypi.org website and parses the
-        resulting versions. if you have an alpa or beta release found it returns the newest
-        version for download and install.
+        versionPackage will look the package up in pypi.org website and parses
+        the resulting versions. if you have an alpa or beta release found it
+        returns the newest version for download and install.
 
         :param packageName:
         :return: None or the newest possible package
         """
-
         url = f'https://pypi.python.org/pypi/{packageName}/json'
-
         try:
             response = requests.get(url).json()
 
@@ -199,12 +191,12 @@ class SettMisc(object):
 
     def showUpdates(self):
         """
-        showUpdates compares the actual installed and running package with the one on the
-        server. if you have a newer version available, mw4 will inform the user about it.
+        showUpdates compares the actual installed and running package with the
+        one on the server. if you have a newer version available, mw4 will inform
+        the user about it.
 
         :return: success
         """
-
         packageName = 'mountwizzard4'
         actPackage = version(packageName)
         self.ui.versionActual.setText(actPackage)
@@ -230,34 +222,30 @@ class SettMisc(object):
 
     def isVenv(self):
         """
-        detects if the actual package is running in a virtual environment. this should be the
-        case in any situation as mw4 should be installed in a venv.
+        detects if the actual package is running in a virtual environment. this
+        should be the case in any situation as mw4 should be installed in a venv.
 
         :return: status
         """
-
         hasReal = hasattr(sys, 'real_prefix')
         hasBase = hasattr(sys, 'base_prefix')
 
         status = hasReal or hasBase and sys.base_prefix != sys.prefix
         self.log.debug(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
-
         return status
 
     @staticmethod
     def formatPIP(line=''):
         """
-        formatPIP shortens the stdout line for presenting it to the user. as the lines are
-        really long, mw4 concentrates on package names and action.
+        formatPIP shortens the stdout line for presenting it to the user. as the
+        lines are really long, mw4 concentrates on package names and action.
 
         :param line:
         :return: formatted line
         """
-        # lines with additional information are deleted
         if line.startswith(' '):
             return ''
 
-        # shorten the string for packages
         elif line.startswith('Requirement'):
             val = line.split(':')
             prefix = val[0]
@@ -271,21 +259,16 @@ class SettMisc(object):
             line = line.split(':')[0]
 
         else:
-            # line.startswith('Successfully'):
             line = line.split('\n')[0]
 
         return line
 
     def runInstall(self, versionPackage='', timeout=60):
         """
-        runInstall enables the virtual environment and install via pip the desired
-        package version
-
         :param versionPackage:   package version to install
         :param timeout:
         :return: success
         """
-
         runnable = ['pip',
                     'install',
                     f'mountwizzard4=={versionPackage}',
@@ -293,7 +276,6 @@ class SettMisc(object):
                     ]
 
         timeStart = time.time()
-
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
@@ -322,18 +304,16 @@ class SettMisc(object):
             self.log.debug(f'pip install took {delta}s [{retCode}] [{output}]')
 
         success = (self.process.returncode == 0)
-
         return success, versionPackage
 
     def installFinished(self, result):
         """
-        installFinished is called when the installation thread is finished. It writes the
-        final messages to the user and resets the gui to default.
+        installFinished is called when the installation thread is finished. It
+        writes the final messages to the user and resets the gui to default.
 
         :param result:
         :return: success
         """
-
         if isinstance(result, tuple):
             success, versionPackage = result
         else:
@@ -350,22 +330,22 @@ class SettMisc(object):
 
         self.mutexInstall.unlock()
         self.changeStyleDynamic(self.ui.installVersion, 'running', False)
-
         return success
 
     def installVersion(self):
         """
-        installVersion updates mw4 with the standard pip package installer. this is
-        actually only tested and ok for running in a virtual environment. updates have to run
-        only once at a time, so a mutex ensures this. If everything is ok, a thread it
-        started doing the install work and a callback is defined when finished.
+        installVersion updates mw4 with the standard pip package installer.
+        this is actually only tested and ok for running in a virtual environment.
+        updates have to run only once at a time, so a mutex ensures this. If
+        everything is ok, a thread it started doing the install work and a
+        callback is defined when finished.
 
-        as observation, installation on windows side takes for some reasons longer than
-        in linux or osx environment. therefore an extended timeout is chosen.
+        as observation, installation on windows side takes for some reasons
+        longer than in linux or osx environment. therefore an extended timeout is
+        chosen.
 
         :return: True for test purpose
         """
-
         if pConf.isWindows:
             timeout = 180
         else:
@@ -392,13 +372,10 @@ class SettMisc(object):
 
         worker.signals.result.connect(self.installFinished)
         self.threadPool.start(worker)
-
         return True
 
     def setLoggingLevel(self):
         """
-        Setting the log level according to the setting in the gui.
-
         :return: nothing
         """
         if self.ui.loglevelDebugTrace.isChecked():
@@ -412,11 +389,8 @@ class SettMisc(object):
 
     def setupAudioGui(self):
         """
-        setupAudioGui populates the audio selection gui
-
         :return: True for test purpose
         """
-
         self.guiAudioList['MountSlew'] = self.ui.soundMountSlewFinished
         self.guiAudioList['DomeSlew'] = self.ui.soundDomeSlewFinished
         self.guiAudioList['MountAlert'] = self.ui.soundMountAlert
@@ -435,16 +409,12 @@ class SettMisc(object):
             self.guiAudioList[itemKey].addItem('Horn')
             self.guiAudioList[itemKey].addItem('Alarm')
             self.guiAudioList[itemKey].addItem('Alert')
-
         return True
 
     def setupAudioSignals(self):
         """
-        setupAudioSignals pre loads all know audio signals for events handling
-
         :return: True for test purpose
         """
-
         if not pConf.isAvailable:
             return False
 
@@ -457,12 +427,10 @@ class SettMisc(object):
         self.audioSignalsSet['Pan2'] = ':/sound/Pan2.wav'
         self.audioSignalsSet['Alert'] = ':/sound/alert.wav'
         self.audioSignalsSet['Alarm'] = ':/sound/alarm.wav'
-
         return True
 
     def playSound(self, value=''):
         """
-
         :param value:
         :return: success
         """
@@ -476,5 +444,4 @@ class SettMisc(object):
             PyQt5.QtMultimedia.QSound.play(self.audioSignalsSet[sound])
         else:
             return False
-
         return True

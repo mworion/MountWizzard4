@@ -57,24 +57,22 @@ class MinorPlanetTime:
         self.ui.progMinorPlanetsFull.clicked.connect(self.progMinorPlanetsFull)
         self.ui.progMinorPlanetsFiltered.clicked.connect(self.progMinorPlanetsFiltered)
         self.ui.progEarthRotationData.clicked.connect(self.progEarthRotationDataToMount)
+        self.ui.downloadIERS.clicked.connect(self.loadTimeDataFromSourceURLs)
         self.ui.filterMinorPlanet.textChanged.connect(self.filterMinorPlanetNamesList)
-        self.ui.minorPlanetSource.currentIndexChanged.connect(self.loadDataFromSourceURLs)
-        self.ui.isOnline.stateChanged.connect(self.loadDataFromSourceURLs)
+        self.ui.minorPlanetSource.currentIndexChanged.connect(self.loadMPCDataFromSourceURLs)
+        self.ui.isOnline.stateChanged.connect(self.loadMPCDataFromSourceURLs)
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
+        initConfig read the key out of the configuration dict and stores it to
+        the gui elements. if some initialisations have to be proceeded with the
+        loaded persistent data, they will be launched as well in this method.
 
         :return: True for test purpose
         """
-
         config = self.app.config['mainW']
-
         self.ui.filterMinorPlanet.setText(config.get('filterMinorPlanet'))
         self.setupMinorPlanetSourceURLsDropDown()
-
         if not self.app.automation:
             self.installPath = self.app.mwGlob['dataDir']
 
@@ -83,21 +81,14 @@ class MinorPlanetTime:
 
         else:
             self.installPath = self.app.mwGlob['dataDir']
-
         return True
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
-
         config = self.app.config['mainW']
         config['filterMinorPlanet'] = self.ui.filterMinorPlanet.text()
-
         return True
 
     def setupMinorPlanetSourceURLsDropDown(self):
@@ -107,37 +98,36 @@ class MinorPlanetTime:
 
         :return: success for test
         """
-
         self.ui.minorPlanetSource.clear()
         self.ui.minorPlanetSource.setView(QListView())
         for name in self.minorPlanetSourceURLs.keys():
             self.ui.minorPlanetSource.addItem(name)
-
         return True
 
     def filterMinorPlanetNamesList(self):
         """
-
         :return: true for test purpose
         """
         listMinorPlanet = self.ui.listMinorPlanetNames
         filterStr = self.ui.filterMinorPlanet.text()
-
         for row in range(listMinorPlanet.model().rowCount()):
-            isFound = filterStr.lower() in listMinorPlanet.model().index(row).data().lower()
+            listItemText = listMinorPlanet.model().index(row).data().lower()
+            isFound = filterStr.lower() in listItemText
             isVisible = isFound or not filterStr
-
             if isVisible:
                 listMinorPlanet.setRowHidden(row, False)
 
             else:
                 listMinorPlanet.setRowHidden(row, True)
-
         return True
 
     @staticmethod
     def generateName(index, mp):
-
+        """
+        :param index:
+        :param mp:
+        :return:
+        """
         if 'Designation_and_name' in mp:
             name = f'{index:5d}: {mp["Designation_and_name"]}'
 
@@ -157,14 +147,12 @@ class MinorPlanetTime:
 
     def setupMinorPlanetNameList(self):
         """
-
         :return: success for test
         """
 
         self.ui.listMinorPlanetNames.clear()
         for index, mp in enumerate(self.minorPlanets):
             text = self.generateName(index, mp)
-
             if not text:
                 continue
 
@@ -173,7 +161,6 @@ class MinorPlanetTime:
         self.ui.listMinorPlanetNames.sortItems()
         self.ui.listMinorPlanetNames.update()
         self.filterMinorPlanetNamesList()
-
         return True
 
     def processSourceData(self):
@@ -198,14 +185,12 @@ class MinorPlanetTime:
             self.app.message.emit(f'Data loaded for:     [{source}]', 1)
 
         self.setupMinorPlanetNameList()
-
         return True
 
-    def loadDataFromSourceURLs(self):
+    def loadMPCDataFromSourceURLs(self):
         """
         :return: success
         """
-
         source = self.ui.minorPlanetSource.currentText()
 
         if source not in self.minorPlanetSourceURLs:
@@ -223,15 +208,12 @@ class MinorPlanetTime:
         if isOnline:
             self.app.message.emit(f'Download data for:   [{source}]', 1)
             DownloadPopup(self, url=url, dest=dest, callBack=self.processSourceData)
-
         return True
 
     def progEarthRotationDataToMount(self):
         """
-
         :return: success
         """
-
         text = 'Should \n\n[Earth Rotation Data]\n\nbe programmed to mount ?'
         suc = self.messageDialog(self, 'Program with QCI Updater', text)
 
@@ -263,15 +245,25 @@ class MinorPlanetTime:
             return False
 
         self.app.message.emit('Programming success', 1)
+        return True
 
+    def loadTimeDataFromSourceURLs(self):
+        """
+        :return: success
+        """
+        source = 'finals2000A.all'
+        url = 'https://datacenter.iers.org/data/9/' + source
+        dest = self.app.mwGlob['dataDir'] + '/' + source
+        isOnline = self.ui.isOnline.isChecked()
+        if isOnline:
+            self.app.message.emit(f'Download data for:   [{source}]', 1)
+            DownloadPopup(self, url=url, dest=dest)
         return True
 
     def progMinorPlanetToMount(self):
         """
-
         :return: success
         """
-
         source = self.ui.listMinorPlanetNames.currentItem().text()
         number = int(source.split(':')[0])
         mpc = [self.minorPlanets[number]]
@@ -312,15 +304,12 @@ class MinorPlanetTime:
             self.app.message.emit('Uploading error', 2)
 
         self.app.message.emit('Programming success', 1)
-
         return suc
 
     def progMinorPlanetsFiltered(self):
         """
-
         :return: success
         """
-
         source = self.ui.minorPlanetSource.currentText()
         isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
         isAsteroid = not isComet
@@ -349,10 +338,12 @@ class MinorPlanetTime:
             filtered.append(mp)
 
         if isComet:
-            suc = self.databaseProcessing.writeCometMPC(filtered, self.installPath)
+            suc = self.databaseProcessing.writeCometMPC(filtered,
+                                                        self.installPath)
 
         if isAsteroid:
-            suc = self.databaseProcessing.writeAsteroidMPC(filtered, self.installPath)
+            suc = self.databaseProcessing.writeAsteroidMPC(filtered,
+                                                           self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
@@ -374,15 +365,12 @@ class MinorPlanetTime:
             self.app.message.emit('Uploading error', 2)
 
         self.app.message.emit('Programming success', 1)
-
         return suc
 
     def progMinorPlanetsFull(self):
         """
-
         :return: success
         """
-
         source = self.ui.minorPlanetSource.currentText()
         isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
         isAsteroid = not isComet
@@ -400,10 +388,12 @@ class MinorPlanetTime:
         self.app.message.emit('Exporting MPC data', 0)
 
         if isComet:
-            suc = self.databaseProcessing.writeCometMPC(self.minorPlanets, self.installPath)
+            suc = self.databaseProcessing.writeCometMPC(self.minorPlanets,
+                                                        self.installPath)
 
         if isAsteroid:
-            suc = self.databaseProcessing.writeAsteroidMPC(self.minorPlanets, self.installPath)
+            suc = self.databaseProcessing.writeAsteroidMPC(self.minorPlanets,
+                                                           self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)

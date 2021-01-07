@@ -41,9 +41,10 @@ class SimulatorHorizon:
     @staticmethod
     def createLine(rEntity, dx, dy, dz):
         """
-        create line draw a line between two point or better along dx, dy, dz. Therefore three
-        transformations are made and the resulting vector has to be translated half the
-        length, because is will be drawn symmetrically to the starting point.
+        create line draw a line between two point or better along dx, dy, dz.
+        Therefore three transformations are made and the resulting vector has to
+        be translated half the length, because is will be drawn symmetrically to
+        the starting point.
 
         :param rEntity:
         :param dx:
@@ -79,8 +80,8 @@ class SimulatorHorizon:
     @staticmethod
     def createWall(rEntity, alt, az, space):
         """
-        createWall draw a plane in radius distance to show the horizon. spacing is the
-        angular spacing between this planes
+        createWall draw a plane in radius distance to show the horizon. spacing
+        is the angular spacing between this planes
 
         :param rEntity:
         :param alt:
@@ -88,7 +89,6 @@ class SimulatorHorizon:
         :param space:
         :return: entity
         """
-
         radius = 4
         e1 = QEntity(rEntity)
         trans1 = QTransform()
@@ -111,7 +111,6 @@ class SimulatorHorizon:
         e3.addComponent(mesh)
         e3. addComponent(trans3)
         e3.addComponent(Materials().walls)
-
         return e3
 
     def create(self, rEntity, show):

@@ -436,7 +436,7 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.progMinorPlanetsFull, QIcon(':/icon/run.svg'))
         self.wIcon(self.ui.progMinorPlanetsFiltered, QIcon(':/icon/run.svg'))
         self.wIcon(self.ui.progEarthRotationData, QIcon(':/icon/run.svg'))
-        self.wIcon(self.ui.downloadIERSa, QIcon(':/icon/run.svg'))
+        self.wIcon(self.ui.downloadIERS, QIcon(':/icon/run.svg'))
 
         # satellite
         self.wIcon(self.ui.stopSatelliteTracking, QIcon(':/icon/cross-circle.svg'))

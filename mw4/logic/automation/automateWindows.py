@@ -29,7 +29,7 @@ else:
 
 from PyQt5.QtCore import QObject
 from pywinauto.findwindows import find_windows
-from pywinauto import application
+from pywinauto.application import AppStartError, Application
 import pywinauto.controls.win32_controls as controls
 import winreg
 from winreg import HKEY_LOCAL_MACHINE
@@ -269,19 +269,19 @@ class AutomateWindows(QObject):
         :return:
         """
         if platform.architecture()[0] == '32bit':
-            self.updater = application.Application(backend='win32')
+            self.updater = Application(backend='win32')
             timings.Timings.fast()
             self.log.info('Using 32Bit backend win32')
 
         else:
-            self.updater = application.Application(backend='uia')
+            self.updater = Application(backend='uia')
             timings.Timings.slow()
             self.log.info('Using 64Bit backend uia')
 
         try:
             self.updater.start(self.installPath + self.UPDATER_EXE)
 
-        except application.AppStartError:
+        except AppStartError:
             self.log.error('Failed to start updater, please check!')
             return False
 

@@ -213,6 +213,16 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
+  
+    - uses: actions/download-artifact@v2
+      with:
+        name: widgets
+        path: mw4/gui/widgets
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: resource
+        path: mw4/resource
     
     - name: collecting_data
       uses: actions/download-artifact@v2

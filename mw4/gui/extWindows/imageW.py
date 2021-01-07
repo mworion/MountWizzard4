@@ -541,11 +541,11 @@ class ImageWindow(toolsQtWidget.MWidget):
                 e.set_facecolor('none')
                 e.set_edgecolor(self.M_BLUE)
                 self.axe.add_artist(e)
-                size = self.objs['a'][i] + self.objs['b'][i]
+                posX = self.objs['x'][i] + self.objs['a'][i] + 5
+                posY = self.objs['b'][i] + self.objs['y'][i] + 5
                 self.axe.annotate(f'{self.radius[i]:2.1f}',
-                                  xy=(self.objs['x'][i] + 2 * size,
-                                      self.objs['y'][i] + 2 * size),
-                                  color=self.M_PINK,
+                                  xy=(posX, posY),
+                                  color=self.M_BLUE,
                                   fontweight='bold')
 
         if self.ui.view.currentIndex() == 3 and self.bk_back is not None:

@@ -70,9 +70,9 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         self.pL0E = QEntity(self.rootEntity)
         self.pL0 = QPointLight(self.pL0E)
-        self.pL0.setIntensity(0.8)
+        self.pL0.setIntensity(1)
         self.pL0ETransform = QTransform()
-        self.pL0ETransform.setTranslation(QVector3D(3, 20, 3))
+        self.pL0ETransform.setTranslation(QVector3D(5, 20, 5))
         self.pL0E.addComponent(self.pL0)
         self.pL0E.addComponent(self.pL0ETransform)
 
@@ -268,7 +268,8 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
-        self.camera.setPosition(QVector3D(0.0, 10.0, 0.0))
+        self.camera.setPosition(QVector3D(0.0, 5.0, 0.0))
+        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
         return True
 
     def topEastView(self):
@@ -278,7 +279,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
-        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setViewCenter(QVector3D(0.1, 1.5, 0.1))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
         return True

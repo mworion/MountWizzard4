@@ -76,14 +76,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.pL0E.addComponent(self.pL0)
         self.pL0E.addComponent(self.pL0ETransform)
 
-        self.pL1E = QEntity(self.rootEntity)
-        self.pL1 = QPointLight(self.pL1E)
-        self.pL1.setIntensity(0.5)
-        self.pL1ETransform = QTransform()
-        self.pL1ETransform.setTranslation(QVector3D(-5, 20, -5))
-        self.pL1E.addComponent(self.pL1)
-        self.pL1E.addComponent(self.pL1ETransform)
-
         self.dome = SimulatorDome(self.app)
         self.telescope = SimulatorTelescope(self.app)
         self.horizon = SimulatorHorizon(self.app)
@@ -183,7 +175,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.topWestView.clicked.disconnect(self.topWestView)
         self.ui.eastView.clicked.disconnect(self.eastView)
         self.ui.westView.clicked.disconnect(self.westView)
-        self.ui.checkPL.clicked.disconnect(self.setPL)
 
         # connect functional signals
         self.app.update1s.disconnect(self.dome.updatePositions)
@@ -217,7 +208,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.topWestView.clicked.connect(self.topWestView)
         self.ui.eastView.clicked.connect(self.eastView)
         self.ui.westView.clicked.connect(self.westView)
-        self.ui.checkPL.clicked.connect(self.setPL)
 
         self.app.update1s.connect(self.dome.updatePositions)
         self.app.updateDomeSettings.connect(self.updateSettings)
@@ -228,7 +218,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.drawBuildPoints.connect(self.buildPointsCreate)
         self.app.drawHorizonPoints.connect(self.horizonCreate)
 
-        self.setPL()
         self.show()
 
         return True
@@ -269,16 +258,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.dome.setTransparency(self.ui.checkDomeTransparent.isChecked())
-        return True
-
-    def setPL(self):
-        """
-        setPL enables point light and therefore changes the light conditions
-
-        :return: True for test purpose
-        """
-        self.pL0E.setEnabled(self.ui.checkPL.isChecked())
-        self.pL1E.setEnabled(not self.ui.checkPL.isChecked())
         return True
 
     def topView(self):

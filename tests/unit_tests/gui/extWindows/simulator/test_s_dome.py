@@ -182,6 +182,14 @@ def test_updatePositions_2(qtbot):
             'e': QEntity(),
             't': QTransform()
         },
+        'domeSlit1': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'domeSlit2': {
+            'e': QEntity(),
+            't': QTransform()
+        },
     }
 
     app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
@@ -202,6 +210,14 @@ def test_updatePositions_4(qtbot):
             't': QTransform()
         },
         'domeDoor2': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'domeSlit1': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'domeSlit2': {
             'e': QEntity(),
             't': QTransform()
         },

@@ -161,11 +161,6 @@ def test_setDomeTransparency_1(function):
     assert suc
 
 
-def test_setPL_1(function):
-    suc = function.setPL()
-    assert suc
-
-
 def test_topView_1(function):
     suc = function.topView()
     assert suc

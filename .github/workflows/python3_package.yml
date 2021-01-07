@@ -96,7 +96,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-          architecture: 'x86'
   
       - name: show_python_version
         run: python -c 'import platform; print(platform.architecture()[0])'
@@ -124,17 +123,6 @@ jobs:
       - name: check_dependencies_explicit
         run: |
           python -m pip check mountwizzard4
-  
-      - name: make_test_run
-        run: |
-          python mw4/loader.py test
-      
-      - name: upload_log
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: log
-          path: '*.log'
 
 
   install_package_ubuntu:

@@ -51,9 +51,7 @@ class SimulatorHorizon:
         :param dz:
         :return:
         """
-
         radius, alt, az = functions.to_spherical(np.array((dx, dy, dz)))
-
         az = np.degrees(az)
         alt = np.degrees(alt)
 
@@ -76,7 +74,6 @@ class SimulatorHorizon:
         e3.addComponent(mesh)
         e3.addComponent(trans3)
         e3.addComponent(Materials().lines)
-
         return e3
 
     @staticmethod
@@ -119,14 +116,12 @@ class SimulatorHorizon:
 
     def create(self, rEntity, show):
         """
-        createHorizon draws a horizon "wall" by circling over the horizon points and putting
-        cuboid meshed around a circle with defined radius
-
-        the space is the angle width of a plane in degrees
+        createHorizon draws a horizon "wall" by circling over the horizon points
+        and putting cuboid meshed around a circle with defined radius. the space
+        is the angle width of a plane in degrees
 
         :return: success
         """
-
         if self.horizon:
             self.horizonRoot.setParent(None)
 
@@ -150,5 +145,4 @@ class SimulatorHorizon:
             e = self.createWall(self.horizonRoot, alt, az, space)
             element = {'e': e}
             self.horizon.append(element)
-
         return True

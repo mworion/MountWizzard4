@@ -382,6 +382,7 @@ def test_prepareUpdater_0(function):
 
 
 def test_prepareUpdater_1(function):
+    function.installPath = 'test'
     with mock.patch.object(os,
                            'chdir'):
         with mock.patch.object(function,
@@ -392,6 +393,7 @@ def test_prepareUpdater_1(function):
 
 
 def test_prepareUpdater_2(function):
+    function.installPath = 'test'
     with mock.patch.object(os,
                            'chdir'):
         with mock.patch.object(function,
@@ -405,6 +407,7 @@ def test_prepareUpdater_2(function):
 
 
 def test_prepareUpdater_3(function):
+    function.installPath = 'test'
     with mock.patch.object(os,
                            'chdir'):
         with mock.patch.object(function,

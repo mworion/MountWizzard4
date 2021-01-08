@@ -119,6 +119,7 @@ class ObsSite(object):
             self.loader = api.Loader(self.pathToData, verbose=self.verbose)
         else:
             self.loader = api.load
+
         self.ts = self.loader.timescale(builtin=True)
         self.log.debug('Timescale is using built-in')
         return True
@@ -183,7 +184,6 @@ class ObsSite(object):
     def utc_ut1(self, value):
         value = valueToFloat(value)
         if value is not None:
-            # delta is stored based on day, because of calculation of julian date
             self._utc_ut1 = value / 86400
         else:
             self._utc_ut1 = None
@@ -194,7 +194,6 @@ class ObsSite(object):
 
     @timeSidereal.setter
     def timeSidereal(self, value):
-        # testing the format
         if isinstance(value, str):
             self._timeSidereal = stringToAngle(value, preference='hours')
         elif isinstance(value, float):
@@ -397,8 +396,6 @@ class ObsSite(object):
         reference = f'{self._status:d}'
         if reference in self.STAT:
             return self.STAT[reference]
-        else:
-            return None
 
     @property
     def statusSlew(self):
@@ -601,11 +598,13 @@ class ObsSite(object):
         :return:        success
         """
         hasAngles = isinstance(alt, api.Angle) and isinstance(az, api.Angle)
-        hasFloats = isinstance(alt_degrees, (float, int)) and isinstance(az_degrees, (float, int))
+        altHasFloat = isinstance(alt_degrees, (float, int))
+        azHasFloat = isinstance(az_degrees, (float, int))
+
         if hasAngles:
             pass
 
-        elif hasFloats:
+        elif altHasFloat and azHasFloat:
             alt = api.Angle(degrees=alt_degrees)
             az = api.Angle(degrees=az_degrees)
 
@@ -684,7 +683,8 @@ class ObsSite(object):
         """
         hasTarget = isinstance(target, starlib.Star)
         hasAngles = isinstance(ra, api.Angle) and isinstance(dec, api.Angle)
-        hasFloats = isinstance(ra_hours, (float, int)) and isinstance(dec_degrees, (float, int))
+        raHasFloat = isinstance(ra_hours, (float, int))
+        decHasFloat = isinstance(dec_degrees, (float, int))
         if hasTarget:
             ra = target.ra
             dec = target.dec
@@ -692,7 +692,7 @@ class ObsSite(object):
         elif hasAngles:
             pass
 
-        elif hasFloats:
+        elif raHasFloat and decHasFloat:
             ra = api.Angle(hours=ra_hours, preference='hours')
             dec = api.Angle(degrees=dec_degrees)
 
@@ -763,9 +763,8 @@ class ObsSite(object):
         """
         hasTarget = isinstance(target, starlib.Star)
         hasAngles = isinstance(ra, api.Angle) and isinstance(dec, api.Angle)
-        hasDecFloats = isinstance(ra_degrees, (float, int))
-        hasRaFloats = isinstance(dec_degrees, (float, int))
-        hasFloats = hasRaFloats and hasDecFloats
+        decHasFloat = isinstance(ra_degrees, (float, int))
+        raHasFloat = isinstance(dec_degrees, (float, int))
         if hasTarget:
             ra = target.ra
             dec = target.dec
@@ -773,7 +772,7 @@ class ObsSite(object):
         elif hasAngles:
             pass
 
-        elif hasFloats:
+        elif raHasFloat and decHasFloat:
             ra = api.Angle(hours=ra_degrees)
             dec = api.Angle(degrees=dec_degrees)
 

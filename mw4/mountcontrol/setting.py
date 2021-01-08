@@ -253,11 +253,11 @@ class Setting(object):
     @wakeOnLan.setter
     def wakeOnLan(self, value):
         if value == 'N':
-            self._wakeOnLan = 'NONE'
+            self._wakeOnLan = 'None'
         elif value == '0':
-            self._wakeOnLan = 'OFF'
+            self._wakeOnLan = 'Off'
         elif value == '1':
-            self._wakeOnLan = 'ON'
+            self._wakeOnLan = 'On'
         else:
             self._wakeOnLan = None
 
@@ -315,10 +315,10 @@ class Setting(object):
         :param numberOfChunks:
         :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
             return False
+
         self.slewRate = response[0]
         self.slewRateMin = response[1]
         self.slewRateMax = response[2]
@@ -356,7 +356,6 @@ class Setting(object):
 
         :return:    success:    True if ok, False if not
         """
-
         conn = Connection(self.host)
         cs1 = ':U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#:GREF#:Guaf#'
         cs2 = ':Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#:WSG#:WSP#:WST#:WSH#:WSD#'
@@ -374,7 +373,6 @@ class Setting(object):
         :param value:   float for max slew rate in degrees per second
         :return:        success
         """
-
         if value is None:
             return False
         if not isinstance(value, (int, float)):
@@ -398,83 +396,65 @@ class Setting(object):
 
         :return: success
         """
-
         conn = Connection(self.host)
         commandString = ':RS#'
         suc, response, numberOfChunks = conn.communicate(commandString)
-
-        if not suc:
-            return False
-
-        return True
+        return suc
 
     def setSlewSpeedHigh(self):
         """
-        setSlewSpeedHigh set the slewing speed to centering rate. the different speeds are
-        set through setting different centering rates, because setting different slew speeds
-        leads to a scenario, that we get a different setup in max slew speed as well.
+        setSlewSpeedHigh set the slewing speed to centering rate. the different
+        speeds are set through setting different centering rates, because setting
+        different slew speeds leads to a scenario, that we get a different setup
+        in max slew speed as well.
 
         :return: success
         """
-
         conn = Connection(self.host)
         commandString = ':RC2#:RC#'
         suc, response, numberOfChunks = conn.communicate(commandString)
-
-        if not suc:
-            return False
-
-        return True
+        return suc
 
     def setSlewSpeedMed(self):
         """
-        setSlewSpeedMed set the slewing speed to centering rate. the different speeds are
-        set through setting different centering rates, because setting different slew speeds
-        leads to a scenario, that we get a different setup in max slew speed as well.
+        setSlewSpeedMed set the slewing speed to centering rate. the different
+        speeds are set through setting different centering rates, because setting
+        different slew speeds leads to a scenario, that we get a different setup
+        in max slew speed as well.
 
         :return: success
         """
-
         conn = Connection(self.host)
         centerSpeed = 255
         commandString = f':Rc{centerSpeed:02.0f}#:RC#'
         suc, response, numberOfChunks = conn.communicate(commandString)
-
-        if not suc:
-            return False
-
-        return True
+        return suc
 
     def setSlewSpeedLow(self):
         """
-        setSlewSpeedLow set the slewing speed to centering rate. the different speeds are
-        set through setting different centering rates, because setting different slew speeds
-        leads to a scenario, that we get a different setup in max slew speed as well.
+        setSlewSpeedLow set the slewing speed to centering rate. the different
+        speeds are set through setting different centering rates, because setting
+        different slew speeds leads to a scenario, that we get a different setup
+        in max slew speed as well.
 
         :return: success
         """
-
         conn = Connection(self.host)
         centerSpeed = 128
         commandString = f':Rc{centerSpeed:02.0f}#:RC#'
         suc, response, numberOfChunks = conn.communicate(commandString)
-
-        if not suc:
-            return False
-
-        return True
+        return suc
 
     def setRefractionParam(self, temperature=None, pressure=None):
         """
-        setRefractionParam sends the command for setting the temperature and pressure
-        to the mount. the limits are set to -40 to +75 for temp and 500 to 1300 hPa for
-        pressure, but there is not real documented limit.
+        setRefractionParam sends the command for setting the temperature and
+        pressure to the mount. the limits are set to -40 to +75 for temp and 500
+        to 1300 hPa for pressure, but there is not real documented limit.
 
         :param          temperature:    float for temperature correction in Celsius
         :param          pressure:       float for pressure correction in hPa
         :return:        success
         """
-
         if temperature is None:
             return False
         if pressure is None:
@@ -498,13 +478,13 @@ class Setting(object):
 
     def setRefractionTemp(self, value):
         """
-        setRefractionTemp sends the command for setting the temperature to the mount. the
-        limit is set to -40 to +75, but there is not real documented limit.
+        setRefractionTemp sends the command for setting the temperature to the
+        mount. the limit is set to -40 to +75, but there is not real documented
+        limit.
 
         :param value:   float for temperature correction in Celsius
         :return:        success
         """
-
         if value is None:
             return False
         if value < -40:
@@ -522,14 +502,13 @@ class Setting(object):
 
     def setRefractionPress(self, value):
         """
-        setRefractionPress sends the command for setting the pressure to the mount. the
-        limit is set from 500 to 1300 hPa. no limit give from the mount. limits here are
-        relevant over 5000m height
+        setRefractionPress sends the command for setting the pressure to the
+        mount. the limit is set from 500 to 1300 hPa. no limit give from the
+        mount. limits here are relevant over 5000m height
 
         :param value:   float for pressure correction
         :return:        success
         """
-
         if value is None:
             return False
         if value < 500:
@@ -617,7 +596,6 @@ class Setting(object):
         :param value:   float for degrees
         :return:        success
         """
-
         if value < 1:
             return False
         elif value > 30:
@@ -640,7 +618,6 @@ class Setting(object):
         :param value:   float / int for degrees
         :return:        success
         """
-
         if value < 0:
             return False
         elif value > 30:
@@ -663,7 +640,6 @@ class Setting(object):
         :param value:   float / int for degrees
         :return:        success
         """
-
         if value < 0:
             return False
         elif value > 90:
@@ -686,7 +662,6 @@ class Setting(object):
         :param value:   float / int for degrees
         :return:        success
         """
-
         if value < -5:
             return False
         elif value > 45:

@@ -39,6 +39,18 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(67, sett.slewRate)
         self.assertEqual(67, sett._slewRate)
 
+    def test_Setting_slewRateMin(self):
+        sett = Setting()
+        sett.slewRateMin = '67'
+        self.assertEqual(67, sett.slewRateMin)
+        self.assertEqual(67, sett._slewRateMin)
+
+    def test_Setting_slewRateMax(self):
+        sett = Setting()
+        sett.slewRateMax = '67'
+        self.assertEqual(67, sett.slewRateMax)
+        self.assertEqual(67, sett._slewRateMax)
+
     def test_Setting_timeToFlip(self):
         sett = Setting()
         sett.timeToFlip = '67'
@@ -57,11 +69,17 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(67, sett.meridianLimitSlew)
         self.assertEqual(67, sett._meridianLimitSlew)
 
-    def test_Setting_timeToMeridian(self):
+    def test_Setting_timeToMeridian1(self):
         sett = Setting()
         sett.timeToFlip = '10'
         sett.meridianLimitTrack = '5'
         self.assertEqual(-10, sett.timeToMeridian())
+
+    def test_Setting_timeToMeridian2(self):
+        sett = Setting()
+        sett.timeToFlip = None
+        sett.meridianLimitTrack = '5'
+        self.assertEqual(None, sett.timeToMeridian())
 
     def test_Setting_refractionTemp(self):
         sett = Setting()
@@ -140,6 +158,12 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(3, sett.typeConnection)
         self.assertEqual(3, sett._typeConnection)
 
+    def test_Setting_typeConnection_3(self):
+        sett = Setting()
+        sett.typeConnection = None
+        self.assertEqual(None, sett.typeConnection)
+        self.assertEqual(None, sett._typeConnection)
+
     def test_Setting_gpsSynced_1(self):
         sett = Setting()
         sett.gpsSynced = 5
@@ -166,6 +190,72 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(value, sett.addressWirelessMAC)
         self.assertEqual(value, sett._addressWirelessMAC)
 
+    def test_Setting_wakeOnLan_1(self):
+        sett = Setting()
+        sett.wakeOnLan = 'N'
+        self.assertEqual('None', sett.wakeOnLan)
+        self.assertEqual('None', sett._wakeOnLan)
+
+    def test_Setting_wakeOnLan_2(self):
+        sett = Setting()
+        sett.wakeOnLan = '0'
+        self.assertEqual('Off', sett.wakeOnLan)
+        self.assertEqual('Off', sett._wakeOnLan)
+
+    def test_Setting_wakeOnLan_3(self):
+        sett = Setting()
+        sett.wakeOnLan = '1'
+        self.assertEqual('On', sett.wakeOnLan)
+        self.assertEqual('On', sett._wakeOnLan)
+
+    def test_Setting_wakeOnLan_4(self):
+        sett = Setting()
+        sett.wakeOnLan = 'E'
+        assert sett.wakeOnLan is None
+        assert sett._wakeOnLan is None
+
+    def test_Setting_weatherStatus_1(self):
+        sett = Setting()
+        sett.weatherStatus = None
+        assert sett.weatherStatus is None
+        assert sett._weatherStatus is None
+
+    def test_Setting_weatherStatus_2(self):
+        sett = Setting()
+        sett.weatherStatus = 0
+        self.assertEqual(0, sett.weatherStatus)
+        self.assertEqual(0, sett._weatherStatus)
+
+    def test_Setting_weatherStatus_3(self):
+        sett = Setting()
+        sett.weatherStatus = 5
+        assert sett.weatherStatus is None
+        assert sett._weatherStatus is None
+
+    def test_Setting_weatherTemperature(self):
+        sett = Setting()
+        sett.weatherTemperature = 1
+        self.assertEqual(1, sett.weatherTemperature)
+        self.assertEqual(1, sett._weatherTemperature)
+
+    def test_Setting_weatherPressure(self):
+        sett = Setting()
+        sett.weatherPressure = 1
+        self.assertEqual(1, sett.weatherPressure)
+        self.assertEqual(1, sett._weatherPressure)
+
+    def test_Setting_weatherHumidity(self):
+        sett = Setting()
+        sett.weatherHumidity = 1
+        self.assertEqual(1, sett.weatherHumidity)
+        self.assertEqual(1, sett._weatherHumidity)
+
+    def test_Setting_weatherDewPoint(self):
+        sett = Setting()
+        sett.weatherDewPoint = 1
+        self.assertEqual(1, sett.weatherDewPoint)
+        self.assertEqual(1, sett._weatherDewPoint)
+
     #
     #
     # testing pollSetting med
@@ -180,6 +270,15 @@ class TestConfigData(unittest.TestCase):
                     '0', '987.0', '+20,5', '90.4', '-13,5']
         suc = sett.parseSetting(response,  21)
         self.assertEqual(True, suc)
+
+    def test_Setting_parse_not_ok0(self):
+        sett = Setting()
+        response = ['15', '1', '20', '0426', '05', '+010.0', '0EEE.0', '60.2', '+033.0',
+                    '101+90*',
+                    '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
+                    '0', '987.0', '+20,5']
+        suc = sett.parseSetting(response,  21)
+        self.assertEqual(False, suc)
 
     def test_Setting_parse_not_ok1(self):
         sett = Setting()
@@ -302,6 +401,33 @@ class TestConfigData(unittest.TestCase):
             suc = setting.setDualAxisTracking(1)
             self.assertEqual(False, suc)
 
+    def test_Setting_setWOL_ok(self):
+        setting = Setting()
+
+        response = ['1']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = setting.setWOL(True)
+            self.assertEqual(True, suc)
+
+    def test_Setting_setWOL_not_ok1(self):
+        setting = Setting()
+
+        response = ['1']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = setting.setWOL(True)
+            self.assertEqual(False, suc)
+
+    def test_Setting_setWOL_not_ok2(self):
+        setting = Setting()
+
+        response = ['0']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = setting.setWOL(True)
+            self.assertEqual(False, suc)
+
     #
     #
     # testing setMeridianLimitTrack
@@ -332,7 +458,7 @@ class TestConfigData(unittest.TestCase):
         response = ['1']
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
-            suc = setting.setMeridianLimitTrack(0)
+            suc = setting.setMeridianLimitTrack(40)
             self.assertEqual(False, suc)
 
     def test_Setting_setMeridianLimitTrack_not_ok3(self):
@@ -340,17 +466,17 @@ class TestConfigData(unittest.TestCase):
 
         response = ['1']
         with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 1
-            suc = setting.setMeridianLimitTrack(40)
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = setting.setMeridianLimitTrack(20)
             self.assertEqual(False, suc)
 
     def test_Setting_setMeridianLimitTrack_not_ok4(self):
         setting = Setting()
 
-        response = ['1']
+        response = ['0']
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
-            suc = setting.setMeridianLimitTrack(-30)
+            suc = setting.setMeridianLimitTrack(20)
             self.assertEqual(False, suc)
 
     #
@@ -365,7 +491,7 @@ class TestConfigData(unittest.TestCase):
         response = ['1']
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
-            suc = setting.setMeridianLimitSlew(0)
+            suc = setting.setMeridianLimitSlew(5)
             self.assertEqual(True, suc)
 
     def test_Setting_setMeridianLimitSlew_not_ok1(self):
@@ -374,7 +500,7 @@ class TestConfigData(unittest.TestCase):
         response = ['0']
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
-            suc = setting.setMeridianLimitSlew(0)
+            suc = setting.setMeridianLimitSlew(-10)
             self.assertEqual(False, suc)
 
     def test_Setting_setMeridianLimitSlew_not_ok2(self):
@@ -383,7 +509,7 @@ class TestConfigData(unittest.TestCase):
         response = ['1']
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
-            suc = setting.setMeridianLimitSlew(0)
+            suc = setting.setMeridianLimitSlew(50)
             self.assertEqual(False, suc)
 
     def test_Setting_setMeridianLimitSlew_not_ok3(self):
@@ -391,17 +517,17 @@ class TestConfigData(unittest.TestCase):
 
         response = ['1']
         with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 1
-            suc = setting.setMeridianLimitSlew(40)
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = setting.setMeridianLimitSlew(5)
             self.assertEqual(False, suc)
 
     def test_Setting_setMeridianLimitSlew_not_ok4(self):
         setting = Setting()
 
-        response = ['1']
+        response = ['0']
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
-            suc = setting.setMeridianLimitSlew(-30)
+            suc = setting.setMeridianLimitSlew(5)
             self.assertEqual(False, suc)
 
     #
@@ -521,6 +647,15 @@ class TestConfigData(unittest.TestCase):
             suc = setting.setRefractionTemp(5)
             self.assertEqual(True, suc)
 
+    def test_Setting_setRefractionTemp_not_ok0(self):
+        setting = Setting()
+
+        response = ['0']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = setting.setRefractionTemp(None)
+            self.assertEqual(False, suc)
+
     def test_Setting_setRefractionTemp_not_ok1(self):
         setting = Setting()
 
@@ -580,6 +715,15 @@ class TestConfigData(unittest.TestCase):
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefractionPress(1000)
             self.assertEqual(True, suc)
+
+    def test_Setting_setRefractionPress_not_ok0(self):
+        setting = Setting()
+
+        response = ['0']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = setting.setRefractionPress(None)
+            self.assertEqual(False, suc)
 
     def test_Setting_setRefractionPress_not_ok1(self):
         setting = Setting()
@@ -666,6 +810,26 @@ class TestConfigData(unittest.TestCase):
                                              pressure=800)
             self.assertEqual(True, suc)
 
+    def test_Setting_setRefractionParam_not_ok(self):
+        setting = Setting()
+
+        response = ['01']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            suc = setting.setRefractionParam(temperature=None,
+                                             pressure=800)
+            self.assertEqual(False, suc)
+
+    def test_Setting_setRefractionParam_not_ok0(self):
+        setting = Setting()
+
+        response = ['01']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            suc = setting.setRefractionParam(temperature=5,
+                                             pressure=None)
+            self.assertEqual(False, suc)
+
     def test_Setting_setRefractionParam_not_ok1(self):
         setting = Setting()
 
@@ -751,6 +915,24 @@ class TestConfigData(unittest.TestCase):
             suc = setting.setSlewRate(5)
             self.assertEqual(True, suc)
 
+    def test_Setting_setSlewRate_not_ok(self):
+        setting = Setting()
+
+        response = ['0']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = setting.setSlewRate('E')
+            self.assertEqual(False, suc)
+
+    def test_Setting_setSlewRate_not_ok0(self):
+        setting = Setting()
+
+        response = ['0']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = setting.setSlewRate(None)
+            self.assertEqual(False, suc)
+
     def test_Setting_setSlewRate_not_ok1(self):
         setting = Setting()
 
@@ -787,7 +969,7 @@ class TestConfigData(unittest.TestCase):
             suc = setting.setSlewRate(25)
             self.assertEqual(False, suc)
 
-    def test_setSlewSpeedMax(self):
+    def test_setSlewSpeedMax_1(self):
         setting = Setting()
         response = []
         with mock.patch('mountcontrol.setting.Connection') as mConn:
@@ -795,7 +977,15 @@ class TestConfigData(unittest.TestCase):
             suc = setting.setSlewSpeedMax()
             self.assertEqual(suc, True)
 
-    def test_setSlewSpeedHigh(self):
+    def test_setSlewSpeedMax_2(self):
+        setting = Setting()
+        response = []
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = setting.setSlewSpeedMax()
+            self.assertEqual(suc, False)
+
+    def test_setSlewSpeedHigh_1(self):
         setting = Setting()
         response = []
         with mock.patch('mountcontrol.setting.Connection') as mConn:
@@ -803,7 +993,15 @@ class TestConfigData(unittest.TestCase):
             suc = setting.setSlewSpeedHigh()
             self.assertEqual(suc, True)
 
-    def test_setSlewSpeedMed(self):
+    def test_setSlewSpeedHigh_2(self):
+        setting = Setting()
+        response = []
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = setting.setSlewSpeedHigh()
+            self.assertEqual(suc, False)
+
+    def test_setSlewSpeedMed_1(self):
         setting = Setting()
         response = []
         with mock.patch('mountcontrol.setting.Connection') as mConn:
@@ -811,13 +1009,29 @@ class TestConfigData(unittest.TestCase):
             suc = setting.setSlewSpeedMed()
             self.assertEqual(suc, True)
 
-    def test_setSlewSpeedLow(self):
+    def test_setSlewSpeedMed_2(self):
+        setting = Setting()
+        response = []
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = setting.setSlewSpeedMed()
+            self.assertEqual(suc, False)
+
+    def test_setSlewSpeedLow_1(self):
         setting = Setting()
         response = []
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setSlewSpeedLow()
             self.assertEqual(suc, True)
+
+    def test_setSlewSpeedLow_2(self):
+        setting = Setting()
+        response = []
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = setting.setSlewSpeedLow()
+            self.assertEqual(suc, False)
 
     #
     #

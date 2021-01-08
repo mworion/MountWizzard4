@@ -73,7 +73,7 @@ class TLEParams(object):
     @altitude.setter
     def altitude(self, value):
         if isinstance(value, Angle):
-            self._azimuth = value
+            self._altitude = value
             return
         self._altitude = valueToAngle(value, preference='degrees')
 

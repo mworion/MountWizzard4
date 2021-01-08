@@ -1024,6 +1024,7 @@ class Client(QObject):
                               indiXML.OneSwitch,
                               indiXML.OneText,
                               indiXML.OneNumber,
+                              indiXML.OneLight,
                               )
                       ):
             # todo: what to do with the "One" vector ?

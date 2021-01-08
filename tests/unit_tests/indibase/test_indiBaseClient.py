@@ -863,6 +863,106 @@ def test_getProperty(function):
     assert suc
 
 
+def test_message(function):
+    elem = indiXML.DefLight('defLight', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefLightVector('defLight', [elem], {'name': 'test'}, None)
+    suc = function._message(chunk=chunk)
+    assert suc
+
+
+def test_parseCmd_1(function):
+    elem = indiXML.DefLight('defLight', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefLightVector('defLight', [elem], {'name': 'test'}, None)
+
+    function.connected = False
+    suc = function._parseCmd(chunk=chunk)
+    assert not suc
+
+
+def test_parseCmd_2(function):
+    elem = indiXML.DefLight('defLight', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefLightVector('defLight', [elem], {'test': 'test'}, None)
+
+    function.connected = True
+    suc = function._parseCmd(chunk=chunk)
+    assert not suc
+
+
+def test_parseCmd_3(function):
+    elem = indiXML.DefLight('defLight', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.Message('defLight', [elem], {'device': 'test'}, None)
+
+    function.connected = True
+    suc = function._parseCmd(chunk=chunk)
+    assert suc
+
+
+def test_parseCmd_40(function):
+    elem = indiXML.DefLight('defLight', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.SetLightVector('defLight', [elem], {'device': 'test'}, None)
+
+    function.connected = True
+    with mock.patch.object(function,
+                           '_setProperty'):
+        suc = function._parseCmd(chunk=chunk)
+        assert not suc
+
+
+def test_parseCmd_4(function):
+    elem = indiXML.DefLight('defLight', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.SetLightVector('defLight', [elem], {'device': 'test',
+                                                        'name': 'test'}, None)
+
+    function.connected = True
+    with mock.patch.object(function,
+                           '_setProperty'):
+        suc = function._parseCmd(chunk=chunk)
+        assert suc
+
+
+def test_parseCmd_5(function):
+    elem = indiXML.DefLight('defLight', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DefLightVector('defLight', [elem], {'device': 'test',
+                                                        'name': 'test'}, None)
+
+    function.connected = True
+    with mock.patch.object(function,
+                           '_defProperty'):
+        suc = function._parseCmd(chunk=chunk)
+        assert suc
+
+
+def test_parseCmd_6(function):
+    elem = indiXML.DefLight('defLight', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.GetProperties('defLight', [elem], {'device': 'test',
+                                                        'name': 'test'}, None)
+
+    function.connected = True
+    with mock.patch.object(function,
+                           '_getProperty'):
+        suc = function._parseCmd(chunk=chunk)
+        assert suc
+
+
+def test_parseCmd_7(function):
+    elem = indiXML.DefLight('defLight', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.NewSwitchVector('defLight', [elem], {'device': 'test',
+                                                         'name': 'test'}, None)
+
+    function.connected = True
+    suc = function._parseCmd(chunk=chunk)
+    assert suc
+
+
+def test_parseCmd_8(function):
+    chunk = indiXML.OneText('defLight', 'On', {'device': 'test',
+                                               'name': 'DISCONNECT'}, None)
+
+    function.connected = True
+    suc = function._parseCmd(chunk=chunk)
+    assert suc
+
+
 def test_handleReadyRead_1(function):
     function.curDepth = 0
     elem = ''

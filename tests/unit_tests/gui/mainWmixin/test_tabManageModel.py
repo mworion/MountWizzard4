@@ -153,7 +153,7 @@ def test_findFittingModel_1(function):
 def test_findFittingModel_2(function):
     function.app.mwGlob['modelDir'] = 'tests/testData'
     function.app.mount.model.starList = list()
-    a = ModelStar()
+    a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
     a.az = 0
     a.coord = Star(ra_hours=0, dec_degrees=0)
@@ -174,7 +174,7 @@ def test_findFittingModel_2(function):
 def test_findFittingModel_3(function):
     function.app.mwGlob['modelDir'] = 'tests/testData'
     function.app.mount.model.starList = list()
-    a = ModelStar()
+    a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
     a.az = 0
     a.coord = Star(ra_hours=0, dec_degrees=0)
@@ -199,7 +199,7 @@ def test_findFittingModel_3(function):
 def test_findFittingModel_4(function):
     function.app.mwGlob['modelDir'] = 'tests/testData'
     function.app.mount.model.starList = list()
-    a = ModelStar()
+    a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
     a.az = 0
     a.coord = Star(ra_hours=0, dec_degrees=0)
@@ -925,7 +925,7 @@ def test_onMouseEdit_5(function):
 
     function.plane = [(0, 0), (0, 360)]
     function.app.mount.model.starList = list()
-    a = ModelStar()
+    a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
     a.az = 0
     a.coord = Star(ra_hours=0, dec_degrees=0)
@@ -953,7 +953,7 @@ def test_onMouseEdit_5b(function):
 
     function.plane = [(0, 0), (0, 360)]
     function.app.mount.model.starList = list()
-    a = ModelStar()
+    a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
     a.az = 0
     a.coord = Star(ra_hours=0, dec_degrees=0)
@@ -981,7 +981,7 @@ def test_onMouseEdit_6(function):
 
     function.plane = [(0, 0), (0, 360)]
     function.app.mount.model.starList = list()
-    a = ModelStar()
+    a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
     a.az = 0
     a.coord = Star(ra_hours=0, dec_degrees=0)
@@ -1012,7 +1012,7 @@ def test_onMouseEdit_7(function):
 
     function.plane = [(0, 0), (0, 360)]
     function.app.mount.model.starList = list()
-    a = ModelStar()
+    a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
     a.az = 0
     a.coord = Star(ra_hours=0, dec_degrees=0)

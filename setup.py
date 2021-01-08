@@ -67,7 +67,6 @@ setup(
         'pybase64==1.1.1'
     ]
     + (['pywin32==300'] if "Windows" == platform.system() else [])
-    + (['comtypes==1.1.7'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
     + (['PyQt5==5.15.2'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.2'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
@@ -77,13 +76,15 @@ setup(
     license='APL 2.0',
     author='mworion',
     author_email='michael@wuertenberger.org',
-    description='tool for a 10micron mount',
+    description='Tool for managing a 10micron mount',
     long_description=Path("README.rst").read_text(encoding="utf-8"),
     long_description_content_type="text/x-rst",
     project_urls={
         'Documentation': 'https://mountwizzard4.readthedocs.io',
         'Source Code': 'https://github.com/mworion/mountwizzard4',
         'Bug Tracker': 'https://github.com/mworion/mountwizzard4/issues',
+        'Discussions': 'https://github.com/mworion/MountWizzard4/discussions',
+        'Channel': 'https://www.youtube.com/user/orion49m/featured',
         'Forum': 'https://www.10micron.eu/forum/',
     },
     zip_safe=True,

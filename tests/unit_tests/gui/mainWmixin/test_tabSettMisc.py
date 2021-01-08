@@ -20,6 +20,8 @@ import pytest
 from unittest import mock
 import logging
 import subprocess
+import builtins
+
 # external packages
 from PyQt5.QtMultimedia import QSound
 from PyQt5.QtCore import QObject
@@ -32,103 +34,75 @@ import importlib_metadata
 
 # local import
 from gui.mainWmixin.tabSettMisc import SettMisc
+from tests.baseTestSetupMixins import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
-from logic.dome.dome import Dome
-from logic.imaging.camera import Camera
-from logic.astrometry.astrometry import Astrometry
-from logic.environment.onlineWeather import OnlineWeather
-from base.loggerMW import addLoggingLevel
+from base import packageConfig
+from base.loggerMW import setupLogging
+setupLogging()
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module(qapp):
+    yield
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global ui, widget, Test, Test1, app
+def function(module):
 
-    class Test1(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        update1s = pyqtSignal()
-        update10s = pyqtSignal()
-        threadPool = QThreadPool()
-        mwGlob = {'modelDir': 'tests/model',
-                  'imageDir': 'tests/image',
-                  'configDir': 'tests/config',
-                  'tempDir': 'tests/temp'}
+    class Mixin(MWidget, SettMisc):
+        def __init__(self):
+            super().__init__()
+            self.app = App()
+            self.threadPool = self.app.threadPool
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            SettMisc.__init__(self)
 
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        update1s = pyqtSignal()
-        message = pyqtSignal(str, int)
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
-        dome = Dome(app=Test1())
-        camera = Camera(app=Test1())
-        astrometry = Astrometry(app=Test1())
-        onlineWeather = OnlineWeather(app=Test1())
-
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
-    app = SettMisc(app=Test(), ui=ui,
-                   clickable=MWidget().clickable)
-    app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.close = MWidget().close
-    app.deleteLater = MWidget().deleteLater
-    app.deviceStat = dict()
-    app.log = logging.getLogger(__name__)
-    addLoggingLevel('TRACE', 5)
-    app.threadPool = QThreadPool()
-
-    qtbot.addWidget(app)
-
-    yield
-
-    app.threadPool.waitForDone(1000)
+    window = Mixin()
+    yield window
 
 
-def test_initConfig_1():
-    app.app.config['mainW'] = {}
-    suc = app.initConfig()
+def test_initConfig_1(function):
+    function.app.config['mainW'] = {}
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_2():
-    suc = app.initConfig()
+def test_initConfig_2(function):
+    suc = function.initConfig()
     assert suc
 
 
-def test_storeConfig_1():
-    suc = app.storeConfig()
+def test_storeConfig_1(function):
+    suc = function.storeConfig()
     assert suc
 
 
-def test_setWeatherOnline_1():
-    app.app.onlineWeather = None
-    suc = app.setWeatherOnline()
+def test_setWeatherOnline_1(function):
+    function.app.onlineWeather = None
+    suc = function.setWeatherOnline()
     assert not suc
 
 
-def test_setWeatherOnline_2():
-    suc = app.setWeatherOnline()
+def test_setWeatherOnline_2(function):
+    suc = function.setWeatherOnline()
     assert suc
 
 
-def test_setupIERS_1():
-    app.ui.isOnline.setChecked(False)
-    suc = app.setupIERS()
+def test_setupIERS_1(function):
+    function.ui.isOnline.setChecked(False)
+    suc = function.setupIERS()
     assert suc
 
 
-def test_setupIERS_2():
-    app.ui.isOnline.setChecked(True)
-    suc = app.setupIERS()
+def test_setupIERS_2(function):
+    function.ui.isOnline.setChecked(True)
+    suc = function.setupIERS()
     assert suc
 
 
-def test_versionPackage_1():
+def test_versionPackage_1(function):
     class Test:
         status_code = 300
 
@@ -140,11 +114,11 @@ def test_versionPackage_1():
                            'get',
                            return_value=Test(),
                            side_effect=Exception()):
-        val = app.versionPackage('matplotlib')
+        val = function.versionPackage('matplotlib')
         assert val is None
 
 
-def test_versionPackage_2():
+def test_versionPackage_2(function):
     class Test:
         status_code = 200
 
@@ -153,14 +127,15 @@ def test_versionPackage_2():
             return {'releases': {'1.0.0': 1,
                                  '1.1.0b1': 2}}
 
+    function.ui.versionBeta.setChecked(False)
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = app.versionPackage('matplotlib')
+        val = function.versionPackage('matplotlib')
         assert val == '1.0.0'
 
 
-def test_versionPackage_3():
+def test_versionPackage_3(function):
     class Test:
         status_code = 200
 
@@ -169,81 +144,81 @@ def test_versionPackage_3():
             return {'releases': {'1.0.0': 1,
                                  '1.0.0b1': 2}}
 
-    app.ui.versionBeta.setChecked(True)
+    function.ui.versionBeta.setChecked(True)
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = app.versionPackage('matplotlib')
+        val = function.versionPackage('matplotlib')
         assert val == '1.0.0b1'
 
 
-def test_showUpdates_1():
+def test_showUpdates_1(function):
     with mock.patch.object(importlib_metadata,
                            'version',
                            return_value='0.148.8'):
-        suc = app.showUpdates()
+        suc = function.showUpdates()
         assert not suc
 
 
-def test_showUpdates_2():
-    app.ui.isOnline.setChecked(True)
+def test_showUpdates_2(function):
+    function.ui.isOnline.setChecked(True)
     with mock.patch.object(importlib_metadata,
                            'version',
                            return_value='0.148.8'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'versionPackage',
                                return_value=None):
-            suc = app.showUpdates()
+            suc = function.showUpdates()
             assert not suc
 
 
-def test_showUpdates_3():
-    app.ui.isOnline.setChecked(True)
+def test_showUpdates_3(function):
+    function.ui.isOnline.setChecked(True)
     with mock.patch.object(importlib_metadata,
                            'version',
                            return_value='0.148.8'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'versionPackage',
                                return_value='0.148.9'):
-            suc = app.showUpdates()
+            suc = function.showUpdates()
             assert suc
 
 
-def test_isVenv_1():
-    app.isVenv()
+def test_isVenv_1(function):
+    function.isVenv()
 
 
-def test_formatPIP_1():
-    line = app.formatPIP()
+def test_formatPIP_1(function):
+    line = function.formatPIP()
     assert line == ''
 
 
-def test_formatPIP_2():
-    line = app.formatPIP('   ')
+def test_formatPIP_2(function):
+    line = function.formatPIP('   ')
     assert line == ''
 
 
-def test_formatPIP_3():
-    line = app.formatPIP('Requirement already satisfied: mountcontrol in /Users (0.157)')
+def test_formatPIP_3(function):
+    line = function.formatPIP('Requirement already satisfied: mountcontrol in /Users (0.157)')
     assert line == 'Requirement already satisfied : mountcontrol'
 
 
-def test_formatPIP_4():
-    line = app.formatPIP('Collecting mountcontrol==0.157')
+def test_formatPIP_4(function):
+    line = function.formatPIP('Collecting mountcontrol==0.157')
     assert line == 'Collecting mountcontrol'
 
 
-def test_formatPIP_5():
-    line = app.formatPIP('Installing collected packages: mountcontrol')
+def test_formatPIP_5(function):
+    line = function.formatPIP('Installing collected packages: mountcontrol')
     assert line == 'Installing collected packages'
 
 
-def test_formatPIP_6():
-    line = app.formatPIP('Successfully installed mountcontrol-0.156')
+def test_formatPIP_6(function):
+    line = function.formatPIP('Successfully installed mountcontrol-0.156')
     assert line == 'Successfully installed mountcontrol-0.156'
 
 
-def test_runInstall_1():
+def test_runInstall_1(function):
     class Test1:
         @staticmethod
         def decode():
@@ -269,14 +244,14 @@ def test_runInstall_1():
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test()):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'formatPIP',
-                               return_value=''):
-            suc, val = app.runInstall()
+                               return_value='test'):
+            suc, val = function.runInstall()
             assert suc
 
 
-def test_runInstall_2():
+def test_runInstall_2(function):
     class Test1:
         @staticmethod
         def decode():
@@ -284,7 +259,7 @@ def test_runInstall_2():
 
         @staticmethod
         def readline():
-            return ['test1', 'test2']
+            return
 
         @staticmethod
         def replace(a, b):
@@ -303,14 +278,14 @@ def test_runInstall_2():
                            'Popen',
                            return_value=Test(),
                            side_effect=Exception()):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'formatPIP',
                                return_value=''):
-            suc, val = app.runInstall()
+            suc, val = function.runInstall()
             assert not suc
 
 
-def test_runInstall_3():
+def test_runInstall_3(function):
     class Test1:
         @staticmethod
         def decode():
@@ -318,7 +293,7 @@ def test_runInstall_3():
 
         @staticmethod
         def readline():
-            return ''
+            return
 
         @staticmethod
         def replace(a, b):
@@ -336,130 +311,139 @@ def test_runInstall_3():
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test(),
-                           side_effect=Exception('TimeoutExpired')):
-        with mock.patch.object(app,
+                           side_effect=subprocess.TimeoutExpired('res', 2)):
+        with mock.patch.object(function,
                                'formatPIP',
                                return_value=''):
-            suc, val = app.runInstall()
+            suc, val = function.runInstall()
             assert not suc
 
 
-def test_installFinished_1():
-    app.mutexInstall.lock()
-    suc = app.installFinished(None)
+def test_installFinished_1(function):
+    function.mutexInstall.lock()
+    suc = function.installFinished(None)
     assert not suc
 
 
-def test_installFinished_2():
-    app.mutexInstall.lock()
-    suc = app.installFinished((False, '0.148.8'))
+def test_installFinished_2(function):
+    function.mutexInstall.lock()
+    suc = function.installFinished((False, '0.148.8'))
     assert not suc
 
 
-def test_installFinished_3():
-    app.mutexInstall.lock()
-    suc = app.installFinished((True, '0.148.8'))
+def test_installFinished_3(function):
+    function.mutexInstall.lock()
+    suc = function.installFinished((True, '0.148.8'))
     assert suc
 
 
-def test_installVersion_1():
-    with mock.patch.object(app,
+def test_installVersion_1(function):
+    packageConfig.isWindows = True
+    with mock.patch.object(function,
                            'isVenv',
                            return_value=False):
-        suc = app.installVersion()
+        suc = function.installVersion()
         assert not suc
 
 
-def test_installVersion_2():
-    app.mutexInstall.lock()
-    with mock.patch.object(app,
+def test_installVersion_2(function):
+    function.mutexInstall.lock()
+    packageConfig.isWindows = False
+    with mock.patch.object(function,
                            'isVenv',
                            return_value=True):
-        suc = app.installVersion()
+        suc = function.installVersion()
         assert not suc
 
 
-def test_installVersion_3():
-    with mock.patch.object(app,
+def test_installVersion_3(function):
+    with mock.patch.object(function,
                            'isVenv',
                            return_value=True):
-        with mock.patch.object(app.threadPool,
+        with mock.patch.object(function.threadPool,
                                'start',
                                return_value=True):
-            suc = app.installVersion()
+            suc = function.installVersion()
             assert suc
 
 
-def test_setLoggingLevel1(qtbot):
-    app.ui.loglevelDebug.setChecked(True)
-    app.setLoggingLevel()
+def test_setLoggingLevel1(function, qtbot):
+    function.ui.loglevelDebug.setChecked(True)
+    function.setLoggingLevel()
     val = logging.getLogger().getEffectiveLevel()
     assert val == 10
 
 
-def test_setLoggingLevel2(qtbot):
-    app.ui.loglevelStandard.setChecked(True)
-    app.setLoggingLevel()
+def test_setLoggingLevel2(function, qtbot):
+    function.ui.loglevelStandard.setChecked(True)
+    function.setLoggingLevel()
     val = logging.getLogger().getEffectiveLevel()
     assert val == 30
 
 
-def test_setLoggingLevel3(qtbot):
-    app.ui.loglevelDebugTrace.setChecked(True)
-    app.setLoggingLevel()
+def test_setLoggingLevel3(function, qtbot):
+    function.ui.loglevelDebugTrace.setChecked(True)
+    function.setLoggingLevel()
     val = logging.getLogger().getEffectiveLevel()
     assert val == 5
 
 
-def test_playAudioDomeSlewFinished_1():
+def test_playAudioDomeSlewFinished_1(function):
     with mock.patch.object(QSound,
                            'play'):
-        suc = app.playSound('DomeSlew')
+        suc = function.playSound('DomeSlew')
         # todo not suc is wrong, just workaround
         assert not suc
 
 
-def test_playAudioMountSlewFinished_1():
+def test_playAudioMountSlewFinished_1(function):
     with mock.patch.object(QSound,
                            'play'):
-        suc = app.playSound('MountSlew')
+        suc = function.playSound('MountSlew')
         assert not suc
 
 
-def test_playAudioMountAlert_1():
+def test_playAudioMountAlert_1(function):
     with mock.patch.object(QSound,
                            'play'):
-        suc = app.playSound('MountAlert')
+        suc = function.playSound('MountAlert')
         assert not suc
 
 
-def test_playAudioModelFinished_1():
+def test_playAudioModelFinished_1(function):
     with mock.patch.object(QSound,
                            'play'):
-        suc = app.playSound('ModelFinished')
+        suc = function.playSound('ModelFinished')
         assert not suc
 
 
-def test_setupAudioSignals_1():
-    suc = app.setupAudioSignals()
+def test_setupAudioSignals_1(function):
+    packageConfig.isAvailable = False
+    suc = function.setupAudioSignals()
+    assert not suc
+
+
+def test_setupAudioSignals_2(function):
+    packageConfig.isAvailable = True
+    suc = function.setupAudioSignals()
     assert suc
 
 
-def test_playSound_1():
-    suc = app.playSound()
+def test_playSound_1(function):
+    suc = function.playSound()
     assert not suc
 
 
-def test_playSound_2():
-    suc = app.playSound('test')
+def test_playSound_2(function):
+    suc = function.playSound('test')
     assert not suc
 
 
-def test_playSound_3():
-    app.audioSignalsSet['Pan1'] = 'test'
-    app.guiAudioList['MountSlew'] = app.ui.soundMountSlewFinished
-    app.guiAudioList['MountSlew'].addItem('Pan1')
+def test_playSound_3(function):
+    function.audioSignalsSet['Pan1'] = 'test'
+    function.guiAudioList['MountSlew'] = function.ui.soundMountSlewFinished
+    function.guiAudioList['MountSlew'].addItem('Pan1')
     with mock.patch.object(QSound,
                            'play'):
-        suc = app.playSound('MountSlew')
+        suc = function.playSound('MountSlew')
         assert suc

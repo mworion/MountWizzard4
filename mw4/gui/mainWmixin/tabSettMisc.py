@@ -27,7 +27,7 @@ import PyQt5
 if pConf.isAvailable:
     import PyQt5.QtMultimedia
 import requests
-from importlib_metadata import version
+import importlib_metadata
 from astropy.utils import iers
 
 # local import
@@ -39,12 +39,7 @@ class SettMisc(object):
     """
     """
 
-    def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
-
+    def __init__(self):
         self.audioSignalsSet = dict()
         self.guiAudioList = dict()
         self.process = None
@@ -70,15 +65,9 @@ class SettMisc(object):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
-
         config = self.app.config['mainW']
-
         self.setupAudioGui()
         self.ui.loglevelDebugTrace.setChecked(config.get('loglevelDebugTrace', True))
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
@@ -101,15 +90,9 @@ class SettMisc(object):
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
-
         config = self.app.config['mainW']
-
         config['loglevelDebugTrace'] = self.ui.loglevelDebugTrace.isChecked()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
@@ -125,8 +108,6 @@ class SettMisc(object):
 
     def setWeatherOnline(self):
         """
-        setWeatherOnline set the flag inside the online weather class to the gui accordingly
-
         :return: success
         """
         weather = self.app.onlineWeather
@@ -198,7 +179,7 @@ class SettMisc(object):
         :return: success
         """
         packageName = 'mountwizzard4'
-        actPackage = version(packageName)
+        actPackage = importlib_metadata.version(packageName)
         self.ui.versionActual.setText(actPackage)
 
         if not self.ui.isOnline.isChecked():
@@ -217,7 +198,6 @@ class SettMisc(object):
 
         if StrictVersion(availPackage) > StrictVersion(actPackage):
             self.app.message.emit('A new version of MountWizzard is available', 1)
-
         return True
 
     def isVenv(self):
@@ -283,7 +263,6 @@ class SettMisc(object):
                                             text=True,
                                             )
             for stdout_line in iter(self.process.stdout.readline, ""):
-                # nicely format text
                 line = self.formatPIP(line=stdout_line)
                 if line:
                     self.app.message.emit(line, 0)
@@ -348,6 +327,7 @@ class SettMisc(object):
         """
         if pConf.isWindows:
             timeout = 180
+
         else:
             timeout = 90
 
@@ -442,6 +422,7 @@ class SettMisc(object):
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
             PyQt5.QtMultimedia.QSound.play(self.audioSignalsSet[sound])
+
         else:
             return False
         return True

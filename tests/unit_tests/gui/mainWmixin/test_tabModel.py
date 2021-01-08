@@ -761,7 +761,8 @@ def test_retrofitModel_1(function):
     point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
                       errorRMS=10,
-                      errorAngle=skyfield.api.Angle(degrees=0))
+                      errorAngle=skyfield.api.Angle(degrees=0),
+                      obsSite=function.app.mount.obsSite)
     stars = list()
     stars.append(point)
     mPoint = {}

@@ -24,6 +24,11 @@ Unreleased version of MW4
 
 Released beta version of MW4
 ----------------------------
+0.230.1
+
+- adding check delete model first
+- adding workaround for 2.16.12 firmware when deleting model points
+
 0.230.0
 
 - adding threading for blocking ASCOM drivers (ScopeDome)

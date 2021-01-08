@@ -101,17 +101,22 @@ class Firmware(object):
     def number(self):
         if not self._vString:
             return None
+
         parts = self._vString.split('.')
         try:
             if len(parts) == 3:
                 value = int(parts[0]) * 10000 + int(parts[1]) * 100 + int(parts[2])
+
             elif len(parts) == 2:
                 value = int(parts[0]) * 10000 + int(parts[1]) * 100
+
             else:
                 value = None
+
         except Exception as e:
             self.log.warning(f'error: {e}, malformed value: {parts}')
             return None
+
         else:
             return value
 

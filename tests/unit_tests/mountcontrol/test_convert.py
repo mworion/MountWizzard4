@@ -125,6 +125,11 @@ class TestConfigData(unittest.TestCase):
         value = stringToDegree(parameter)
         self.assertAlmostEqual(None, value)
 
+    def test_stringToDegree_bad7(self):
+        parameter = 'E'
+        value = stringToDegree(parameter)
+        self.assertAlmostEqual(None, value)
+
     def test_stringToAngle_ok(self):
         parameter = '+50*30:00.0'
         value = stringToAngle(parameter)
@@ -190,8 +195,13 @@ class TestConfigData(unittest.TestCase):
         value = valueToFloat(parameter)
         self.assertEqual(156, value)
 
-    def test_valueToFloat_not_ok(self):
+    def test_valueToFloat_not_ok_1(self):
         parameter = 'df'
+        value = valueToFloat(parameter)
+        self.assertEqual(None, value)
+
+    def test_valueToFloat_not_ok_2(self):
+        parameter = 'E'
         value = valueToFloat(parameter)
         self.assertEqual(None, value)
 
@@ -219,6 +229,11 @@ class TestConfigData(unittest.TestCase):
         alt, az = topoToAltAz(-12, 0, 0)
         self.assertEqual(-90, alt)
         self.assertEqual(270, az)
+
+    def test_topoToAltAz_ok6(self):
+        alt, az = topoToAltAz(23, 0, 0)
+        self.assertEqual(75, alt)
+        self.assertEqual(90, az)
 
     def test_sexagesimalizeToInt_1(self):
         output = sexagesimalizeToInt(45/60 + 59.99999/3600)
@@ -273,6 +288,18 @@ class TestConfigData(unittest.TestCase):
     def test_checkIsHours_9(self):
         suc = checkIsHours('')
         assert suc
+
+    def test_checkIsHours_10(self):
+        suc = checkIsHours('+12 00:00.0')
+        assert not suc
+
+    def test_checkIsHours_11(self):
+        suc = checkIsHours('-12 00:00.0')
+        assert not suc
+
+    def test_convertToAngle(self):
+        val = convertToAngle('E')
+        assert val is None
 
     def test_convertToDMS_1(self):
         parameter = Angle(degrees=60)

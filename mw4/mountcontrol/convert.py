@@ -47,8 +47,8 @@ log = logging.getLogger()
 
 def stringToDegree(value):
     """
-    stringToDegree takes any form of HMS / DMS string format and tries to convert it
-    to a decimal number.
+    stringToDegree takes any form of HMS / DMS string format and tries to
+    convert it to a decimal number.
 
     :param value:
     :return: value as decimal in degrees or None if not succeeded
@@ -65,7 +65,6 @@ def stringToDegree(value):
     if value == 'E':
         return None
 
-    # managing different coding
     value = value.replace('*', ' ')
     value = value.replace(':', ' ')
     value = value.replace('deg', ' ')
@@ -132,7 +131,6 @@ def valueToAngle(value, preference='degrees'):
 
 def valueToFloat(value):
     """
-
     :param value:
     :return:
     """
@@ -150,7 +148,6 @@ def valueToFloat(value):
 
 def valueToInt(value):
     """
-
     :param value:
     :return:
     """
@@ -165,7 +162,6 @@ def valueToInt(value):
 
 def topoToAltAz(ha, dec, lat):
     """
-
     :param ha:
     :param dec:
     :param lat:
@@ -182,11 +178,7 @@ def topoToAltAz(ha, dec, lat):
     alt = np.arcsin(np.sin(dec) * np.sin(lat) + np.cos(dec) * np.cos(lat) * np.cos(ha))
     value = (np.sin(dec) - np.sin(alt) * np.sin(lat)) / (np.cos(alt) * np.cos(lat))
 
-    if value > 1:
-        value = 1
-
-    elif value < -1:
-        value = -1
+    value = np.clip(value, -1, 1)
 
     A = np.arccos(value)
     A = np.degrees(A)
@@ -220,21 +212,19 @@ def checkIsHours(value):
     :param value: string
     :return:
     """
-
     if not isinstance(value, str):
         return False
 
     if '*' in value:
         return False
 
-    elif '+' in value:
+    if '+' in value:
         return False
 
-    elif '-' in value:
+    if '-' in value:
         return False
 
-    else:
-        return True
+    return True
 
 
 def convertToAngle(value, isHours=None):
@@ -249,7 +239,6 @@ def convertToAngle(value, isHours=None):
     :param isHours:
     :return: angle as skyfield angle
     """
-
     if isinstance(value, str):
         value = stringToDegree(value)
         if value is None:
@@ -276,7 +265,6 @@ def convertToDMS(dec):
     :param dec: declination as Angle
     :return: converted value as string
     """
-
     if isinstance(dec, (float, int)):
         dec = Angle(degrees=dec)
 
@@ -286,7 +274,6 @@ def convertToDMS(dec):
     t = Angle.signed_dms(dec)
     sign = '+' if dec.degrees > 0 else '-'
     value = f'{sign}{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
-
     return value
 
 
@@ -298,7 +285,6 @@ def convertToHMS(ra):
     :param ra: right ascension as Angle
     :return: converted value as string
     """
-
     if isinstance(ra, (float, int)):
         ra = Angle(hours=ra)
 

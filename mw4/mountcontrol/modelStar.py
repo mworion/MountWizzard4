@@ -18,7 +18,7 @@
 import logging
 
 # external packages
-import skyfield.api
+from skyfield.api import Star, Angle
 import numpy
 
 # local imports
@@ -32,8 +32,8 @@ from mountcontrol.convert import topoToAltAz
 class ModelStar(object):
     """
     The class ModelStar inherits all information and handling of one star in
-    the alignment model used by the mount and the data in the mount and provides the
-    abstracted interface to a 10 micron mount.
+    the alignment model used by the mount and the data in the mount and provides
+    the abstracted interface to a 10 micron mount.
     The coordinates are in JNow topocentric
 
         >>> settings = ModelStar(
@@ -48,13 +48,14 @@ class ModelStar(object):
     the format should be float or the 10micron string format.
 
     Command protocol (from2.8.15 onwards):
-    "HH:MM:SS.SS,+dd*mm:ss.s,eeee.e,ppp#" where HH:MM:SS.SS is the hour angle of the
-    alignment star in hours, minutes, seconds and hundredths of second (from 0h to
-    23h59m59.99s), +dd*mm:ss.s is the declination of the alignment star in degrees,
-    arcminutes, arcseconds and tenths of arcsecond, eeee.e is the error between the star
-    and the alignment model in arcseconds, ppp is the polar angle of the measured star
-    with respect to the modeled star in the equatorial system in degrees from 0 to 359
-    (0 towards the north pole, 90 towards east).
+    "HH:MM:SS.SS,+dd*mm:ss.s,eeee.e,ppp#" where HH:MM:SS.SS is the hour angle
+    of the alignment star in hours, minutes, seconds and hundredths of second
+    (from 0h to 23h59m59.99s), +dd*mm:ss.s is the declination of the alignment
+    star in degrees, arcminutes, arcseconds and tenths of arcsecond, eeee.e is
+    the error between the star and the alignment model in arcseconds, ppp is the
+    polar angle of the measured star with respect to the modeled star in the
+    equatorial system in degrees from 0 to 359 (0 towards the north pole,
+    90 towards east).
     """
 
     __all__ = ['ModelStar',
@@ -75,6 +76,8 @@ class ModelStar(object):
         self.errorRMS = errorRMS
         self.errorAngle = errorAngle
         self.number = number
+        self._az = None
+        self._alt = None
 
     @property
     def coord(self):
@@ -82,28 +85,34 @@ class ModelStar(object):
 
     @coord.setter
     def coord(self, value):
-        if isinstance(value, skyfield.api.Star):
+        if not isinstance(value, (tuple, list, Star)):
+            self._coord = None
+            return
+
+        if isinstance(value, Star):
             self._coord = value
-            return
-        if not isinstance(value, (tuple, list)):
-            self._coord = None
-            return
-        if len(value) != 2:
-            self._coord = None
-            return
-        ha, dec = value
-        ha = stringToDegree(ha)
-        dec = stringToDegree(dec)
-        if not ha or not dec:
-            self._coord = None
-            self.log.warning('Malformed value: {0}'.format(value))
-            return
-        self._coord = skyfield.api.Star(ra_hours=ha,
-                                        dec_degrees=dec)
+            ha = self._coord.ra.hours
+            dec = self._coord.dec.degrees
+
+        else:
+            if len(value) != 2:
+                self._coord = None
+                return
+
+            ha, dec = value
+            ha = stringToDegree(ha)
+            dec = stringToDegree(dec)
+
+            if not ha or not dec:
+                self._coord = None
+                self.log.warning('Malformed value: {0}'.format(value))
+                return
+
+        self._coord = Star(ra_hours=ha, dec_degrees=dec)
         lat = self.obsSite.location.latitude.degrees
         alt, az = topoToAltAz(ha, dec, lat)
-        self._alt = skyfield.api.Angle(degrees=alt)
-        self._az = skyfield.api.Angle(degrees=az)
+        self._alt = Angle(degrees=alt)
+        self._az = Angle(degrees=az)
 
     @property
     def number(self):
@@ -127,10 +136,11 @@ class ModelStar(object):
 
     @errorAngle.setter
     def errorAngle(self, value):
-        if isinstance(value, skyfield.api.Angle):
+        if isinstance(value, Angle):
             self._errorAngle = value
-            return
-        self._errorAngle = valueToAngle(value)
+
+        else:
+            self._errorAngle = valueToAngle(value)
 
     @property
     def alt(self):
@@ -159,27 +169,3 @@ class ModelStar(object):
             return self._errorRMS * numpy.cos(self._errorAngle.radians)
         else:
             return None
-
-    def __gt__(self, other):
-        if other > self._errorRMS:
-            return True
-        else:
-            return False
-
-    def __ge__(self, other):
-        if other >= self._errorRMS:
-            return True
-        else:
-            return False
-
-    def __lt__(self, other):
-        if other < self._errorRMS:
-            return True
-        else:
-            return False
-
-    def __le__(self, other):
-        if other <= self._errorRMS:
-            return True
-        else:
-            return False

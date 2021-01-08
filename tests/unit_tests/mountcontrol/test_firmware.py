@@ -68,6 +68,8 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(None, fw.vString)
         fw._vString = '2.ee.15'
         self.assertEqual(None, fw.number())
+        fw._vString = '2.16.16.15'
+        self.assertEqual(None, fw.number())
 
     def test_Firmware_checkNewer(self):
         fw = Firmware()

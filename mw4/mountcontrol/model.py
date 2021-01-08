@@ -334,13 +334,9 @@ class Model(object):
         self.numberNames = response[0]
         return True
 
-    def pollNames(self):
+    def getNameCount(self):
         """
-        Sending the polling ModelNames command. It collects for all the known
-        names the string. The number of names have to be collected first, than it
-        gathers all name at once.
-
-        :return: success:   True if ok, False if not
+        :return:
         """
         conn = Connection(self.host)
         commandString = ':modelcnt#'
@@ -349,9 +345,13 @@ class Model(object):
             return False
 
         suc = self.parseNumberNames(response, numberOfChunks)
-        if not suc:
-            return False
+        return suc
 
+    def getNames(self):
+        """
+        :return:
+        """
+        conn = Connection(self.host)
         commandString = ''
         for i in range(1, self.numberNames + 1):
             commandString += (':modelnam{0:d}#'.format(i))
@@ -362,7 +362,19 @@ class Model(object):
 
         self._nameList = list()
         suc = self.parseNames(response, numberOfChunks)
+        return suc
 
+    def pollNames(self):
+        """
+        Sending the polling ModelNames command. It collects for all the known
+        names the string. The number of names have to be collected first, than it
+        gathers all name at once.
+
+        :return: success:   True if ok, False if not
+        """
+        suc = self.getNameCount()
+        if suc:
+            suc = self.getNames()
         return suc
 
     def parseStars(self, response, numberOfChunks):
@@ -436,13 +448,9 @@ class Model(object):
 
         return True
 
-    def pollStars(self):
+    def getStarCount(self):
         """
-        Sending the polling ModelNames command. It collects for all the known
-        names the string. The number of names have to be collected first, than it
-        gathers all name at once.
-
-        :return:    success:    True if ok, False if not
+        :return:
         """
         conn = Connection(self.host)
         commandString = ':getalst#:getain#'
@@ -451,9 +459,13 @@ class Model(object):
             return False
 
         suc = self.parseNumberStars(response, numberOfChunks)
-        if not suc:
-            return False
+        return suc
 
+    def getStars(self):
+        """
+        :return:
+        """
+        conn = Connection(self.host)
         self._starList = list()
         if self.numberNames == 0:
             return True
@@ -466,7 +478,19 @@ class Model(object):
             return False
 
         suc = self.parseStars(response, numberOfChunks)
+        return suc
 
+    def pollStars(self):
+        """
+        Sending the polling ModelNames command. It collects for all the known
+        names the string. The number of names have to be collected first, than it
+        gathers all name at once.
+
+        :return:    success:    True if ok, False if not
+        """
+        suc = self.getStarCount()
+        if suc:
+            suc = self.getStars()
         return suc
 
     def pollCount(self):
@@ -482,9 +506,11 @@ class Model(object):
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
+
         if len(response) != numberOfChunks:
             self.log.warning('Wrong number of chunks')
             return False
+
         if len(response) != 2:
             self.log.warning('Wrong number of chunks')
             return False
@@ -523,7 +549,7 @@ class Model(object):
         if not isinstance(number, (int, float)):
             return False
         number = int(number)
-        if 0 > number < self._numberStars:
+        if number < 1 or number > self._numberStars:
             return False
 
         conn = Connection(self.host)
@@ -531,6 +557,7 @@ class Model(object):
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
+
         if response[0] != '1':
             return False
 

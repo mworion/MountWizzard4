@@ -548,6 +548,7 @@ class Model(object):
         """
         if not isinstance(number, (int, float)):
             return False
+
         number = int(number)
         if number < 1 or number > self._numberStars:
             return False
@@ -558,7 +559,8 @@ class Model(object):
         if not suc:
             return False
 
-        if response[0] != '1':
+        # todo: changing this is a workaround '2' is not defined, but handled
+        if response[0] not in ['1', '2']:
             return False
 
         return True

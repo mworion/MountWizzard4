@@ -42,16 +42,12 @@ def test_properties_1(function):
     function.coord = ('12:30:00.00', '+30*30:00.0', '+30*30:00.0')
     assert function.coord is None
     assert function.coord is None
-    assert function.az is None
-    assert function.alt is None
 
 
 def test_properties_2(function):
     function.coord = ('EE', 'EE')
     assert function.coord is None
     assert function.coord is None
-    assert function.az is None
-    assert function.alt is None
 
 
 def test_properties_3(function):

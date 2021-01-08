@@ -27,17 +27,12 @@ from astropy.visualization import MinMaxInterval
 from astropy.visualization import AsinhStretch
 from astropy.visualization import imshow_norm
 from matplotlib.patches import Ellipse
-try:
-    import sep
-    hasSEP = True
-except Exception:
-    hasSEP = False
-
 import matplotlib.pyplot as plt
 from skyfield.api import Angle
 import numpy as np
 from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
 from mountcontrol.convert import convertToDMS, convertToHMS
+import sep
 
 # local import
 from gui.utilities import toolsQtWidget
@@ -47,29 +42,16 @@ from base.tpool import Worker
 
 class ImageWindowSignals(PyQt5.QtCore.QObject):
     """
-    The CameraSignals class offers a list of signals to be used and instantiated by
-    the Mount class to get signals for triggers for finished tasks to
-    enable a gui to update their values transferred to the caller back.
-
-    This has to be done in a separate class as the signals have to be subclassed from
-    QObject and the Mount class itself is subclassed from object
     """
-
     __all__ = ['ImageWindowSignals']
-
     showCurrent = PyQt5.QtCore.pyqtSignal()
     solveImage = PyQt5.QtCore.pyqtSignal(object)
 
 
 class ImageWindow(toolsQtWidget.MWidget):
     """
-    the image window class handles fits image loading, stretching, zooming and handles
-    the gui interface for display. both wcs and pixel coordinates will be used.
-
     """
-
-    __all__ = ['ImageWindow',
-               ]
+    __all__ = ['ImageWindow']
 
     def __init__(self, app):
         super().__init__()
@@ -144,19 +126,8 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to
-        the gui elements. if some initialisations have to be proceeded with the
-        loaded persistent data, they will be launched as well in this method. if
-        not entry is already in the config dict, it will be created first.
-        default values will be set in case of missing parameters.
-        screen size will be set as well as the window position. if the window
-        position is out of the current screen size (because of copy configs or
-        just because the screen resolution was changed) the window will be
-        repositioned so that it will be visible.
-
         :return: True for test purpose
         """
-
         if 'imageW' not in self.app.config:
             self.app.config['imageW'] = {}
         config = self.app.config['imageW']
@@ -184,15 +155,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.checkShowGrid.setChecked(config.get('checkShowGrid', True))
         self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
         self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
-
         return True
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         if 'imageW' not in self.app.config:
@@ -297,11 +263,8 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.ui.view.clear()
         self.ui.view.setView(PyQt5.QtWidgets.QListView())
-        if hasSEP:
-            for menuNumber in self.view:
-                self.ui.view.addItem(self.view[menuNumber])
-        else:
-            self.ui.view.addItem(self.view[0])
+        for menuNumber in self.view:
+            self.ui.view.addItem(self.view[menuNumber])
 
         return True
 
@@ -360,13 +323,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return: success
         """
-        loadFilePath, name, ext = self.openFile(self,
-                                                'Select image file',
-                                                self.folder,
-                                                'FITS files (*.fit*)',
-                                                enableDir=True,
-                                                )
-
+        val = self.openFile(self, 'Select image file', self.folder,
+                            'FITS files (*.fit*)', enableDir=True)
+        loadFilePath, name, ext = val
         if not name:
             return False
 
@@ -375,15 +334,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.message.emit(f'Image [{name}] selected', 0)
         self.folder = os.path.dirname(loadFilePath)
         self.app.showImage.emit(self.imageFileName)
-
         return True
 
     def setupDistorted(self):
         """
         setupDistorted tries to setup all necessary context for displaying the
         image with wcs distorted coordinates.
-        still plenty of work to be done, because very often the labels are not
-        shown
 
         :return: true for test purpose
         """
@@ -421,7 +377,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         axe1.set_ticks_position('tb')
         axe1.set_ticklabel_position('tb')
         axe1.set_axislabel_position('tb')
-
         return True
 
     def setupNormal(self):
@@ -453,8 +408,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         if self.ui.checkShowGrid.isChecked():
             self.axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
 
-        self.axe.tick_params(axis='x', which='major', colors=self.M_BLUE, labelsize=12)
-        self.axe.tick_params(axis='y', which='major', colors=self.M_BLUE, labelsize=12)
+        self.axe.tick_params(axis='x', which='major',
+                             colors=self.M_BLUE, labelsize=12)
+        self.axe.tick_params(axis='y', which='major',
+                             colors=self.M_BLUE, labelsize=12)
 
         valueX, _ = np.linspace(-midX, midX, num=number, retstep=True)
         textX = list((str(int(x)) for x in valueX))
@@ -468,8 +425,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.axe.set_yticks(ticksY)
         self.axe.set_yticklabels(textY)
 
-        self.axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
-        self.axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
+        self.axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE,
+                            fontsize=12, fontweight='bold')
+        self.axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE,
+                            fontsize=12, fontweight='bold')
 
         self.axe.set_xlim(0, sizeX)
         self.axe.set_ylim(0, sizeY)
@@ -584,9 +543,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         if self.ui.view.currentIndex() == 5 and self.flux is not None:
             flux = np.log(self.flux)
             area = 3 * flux
-            scatter = self.axe.scatter(self.objs['x'], self.objs['y'], c=flux,
-                                       s=area,
-                                       cmap='viridis')
+            scatter = self.axe.scatter(self.objs['x'], self.objs['y'],
+                                       c=flux, s=area, cmap=self.colorMap)
 
             colorbar = self.fig.colorbar(scatter, cax=self.axeCB)
             colorbar.set_label('Flux [log(x)]', color=self.M_BLUE, fontsize=12)
@@ -686,9 +644,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        if not hasSEP:
-            return False
-
         bkg = sep.Background(self.image)
         self.bk_back = bkg.back()
         self.bk_rms = bkg.rms()
@@ -852,8 +807,10 @@ class ImageWindow(toolsQtWidget.MWidget):
                                focalLength=focalLength
                                )
 
-        self.app.message.emit(f'Exposing:            [{os.path.basename(imagePath)}]', 0)
-        text = f'Duration:{self.expTime:3.0f}s  Bin:{self.binning:1.0f}  Sub:{subFrame:3.0f}%'
+        text = f'Exposing:            [{os.path.basename(imagePath)}]'
+        self.app.message.emit(text, 0)
+        text = f'Duration:{self.expTime:3.0f}s  '
+        text += f'Bin:{self.binning:1.0f}  Sub:{subFrame:3.0f}%'
         self.app.message.emit(f'                     {text}', 0)
 
         return True
@@ -866,7 +823,8 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.deviceStat['expose'] = False
         self.app.camera.signals.saved.disconnect(self.exposeImageDone)
-        self.app.message.emit(f'Exposed:             [{os.path.basename(imagePath)}]', 0)
+        text = f'Exposed:             [{os.path.basename(imagePath)}]'
+        self.app.message.emit(text, 0)
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -894,7 +852,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param imagePath:
         :return: True for test purpose
         """
-        self.app.message.emit(f'Exposed:            [{os.path.basename(imagePath)}]', 0)
+        text = f'Exposed:            [{os.path.basename(imagePath)}]'
+        self.app.message.emit(text, 0)
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -922,15 +881,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.app.camera.abort()
-        # for disconnection we have to split which slots were connected to disable the
-        # right ones
+        # for disconnection we have to split which slots were connected to
+        # disable the right ones
         if self.deviceStat['expose']:
             self.app.camera.signals.saved.disconnect(self.exposeImageDone)
 
         if self.deviceStat['exposeN']:
             self.app.camera.signals.saved.disconnect(self.exposeImageNDone)
 
-        # last image file was nor stored, so getting last valid it back
+        # last image file was not stored, so getting last valid it back
         self.imageFileName = self.imageFileNameOld
         self.deviceStat['expose'] = False
         self.deviceStat['exposeN'] = False
@@ -991,7 +950,8 @@ class ImageWindow(toolsQtWidget.MWidget):
                                            )
         self.deviceStat['solve'] = True
         self.app.astrometry.signals.done.connect(self.solveDone)
-        self.app.message.emit(f'Solving:             [{os.path.basename(imagePath)}]', 0)
+        text = f'Solving:             [{os.path.basename(imagePath)}]'
+        self.app.message.emit(text, 0)
         return True
 
     def solveCurrent(self):

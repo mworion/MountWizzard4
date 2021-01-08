@@ -260,7 +260,7 @@ def test_stretchImage_2(function):
     assert isinstance(function.stretch, astropy.visualization.AsinhStretch)
 
 
-def test_imagePlot_1(function):
+def test_imagePlot_0(function):
     function.ui.view.addItem('test')
     function.image = np.random.rand(100, 100)
     function.axe = function.fig.add_subplot(label=0)
@@ -272,7 +272,7 @@ def test_imagePlot_1(function):
     assert suc
 
 
-def test_imagePlot_2(function):
+def test_imagePlot_1(function):
     function.ui.view.addItem('test')
     function.ui.view.addItem('test')
     function.image = np.random.rand(100, 100)
@@ -281,15 +281,35 @@ def test_imagePlot_2(function):
     function.axeCB = function.fig.add_subplot(label=1)
     function.stretch = AsinhStretch()
     function.colorMap = 'rainbow'
-    function.sources = {'xcentroid': 50 * np.ones([1]),
-                        'ycentroid': 50 * np.ones([1]),
-                        'sharpness': 0.5 * np.ones([1]),
-                        'roundness1': 0.5 * np.ones([1]),
-                        'roundness2': 0.5 * np.ones([1]),
-                        'flux': 5 * np.ones([1]),
-                        }
-    function.mean = np.zeros([100, 100])
+    function.objs = np.ones(
+        10,
+        dtype=[('x', '<f8'), ('y', '<f8'),
+               ('a', '<f8'), ('b', '<f8'),
+               ('theta', '<f8'), ('flux', '<f8')])
+    function.bk_back = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(1)
+    suc = function.imagePlot()
+    assert suc
+
+
+def test_imagePlot_2(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.axe = function.fig.add_subplot(label=0)
+    function.axeCB = function.fig.add_subplot(label=1)
+    function.stretch = AsinhStretch()
+    function.colorMap = 'rainbow'
+    function.objs = np.ones(
+        10,
+        dtype=[('x', '<f8'), ('y', '<f8'),
+               ('a', '<f8'), ('b', '<f8'),
+               ('theta', '<f8'), ('flux', '<f8')])
+    function.bk_back = np.zeros([100, 100])
+    function.ui.view.setCurrentIndex(2)
+    function.radius = np.array([5, 3, 2])
     suc = function.imagePlot()
     assert suc
 
@@ -298,29 +318,6 @@ def test_imagePlot_3(function):
     function.ui.view.addItem('test')
     function.ui.view.addItem('test')
     function.ui.view.addItem('test')
-    function.image = np.random.rand(100, 100)
-    function.header = fits.PrimaryHDU().header
-    function.axe = function.fig.add_subplot(label=0)
-    function.axeCB = function.fig.add_subplot(label=1)
-    function.stretch = AsinhStretch()
-    function.colorMap = 'rainbow'
-    function.sources = {'xcentroid': 50 * np.ones([1]),
-                        'ycentroid': 50 * np.ones([1]),
-                        'sharpness': 0.5 * np.ones([1]),
-                        'roundness1': 0.5 * np.ones([1]),
-                        'roundness2': 0.5 * np.ones([1]),
-                        'flux': 5 * np.ones([1]),
-                        }
-    function.mean = np.zeros([100, 100])
-    function.ui.view.setCurrentIndex(2)
-    suc = function.imagePlot()
-    assert suc
-
-
-def test_imagePlot_3a(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
     function.ui.view.addItem('test')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
@@ -328,14 +325,12 @@ def test_imagePlot_3a(function):
     function.axeCB = function.fig.add_subplot(label=1)
     function.stretch = AsinhStretch()
     function.colorMap = 'rainbow'
-    function.sources = {'xcentroid': 50 * np.ones([1]),
-                        'ycentroid': 50 * np.ones([1]),
-                        'sharpness': 0.5 * np.ones([1]),
-                        'roundness1': 0.5 * np.ones([1]),
-                        'roundness2': 0.5 * np.ones([1]),
-                        'flux': 5 * np.ones([1]),
-                        }
-    function.mean = np.zeros([100, 100])
+    function.objs = np.ones(
+        10,
+        dtype=[('x', '<f8'), ('y', '<f8'),
+               ('a', '<f8'), ('b', '<f8'),
+               ('theta', '<f8'), ('flux', '<f8')])
+    function.bk_back = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(3)
     suc = function.imagePlot()
     assert suc
@@ -353,14 +348,13 @@ def test_imagePlot_4(function):
     function.axeCB = function.fig.add_subplot(label=1)
     function.stretch = AsinhStretch()
     function.colorMap = 'rainbow'
-    function.sources = {'xcentroid': 50 * np.ones([1]),
-                        'ycentroid': 50 * np.ones([1]),
-                        'sharpness': 0.5 * np.ones([1]),
-                        'roundness1': 0.5 * np.ones([1]),
-                        'roundness2': 0.5 * np.ones([1]),
-                        'flux': 5 * np.ones([1]),
-                        }
-    function.mean = np.zeros([100, 100])
+    function.objs = np.ones(
+        10,
+        dtype=[('x', '<f8'), ('y', '<f8'),
+               ('a', '<f8'), ('b', '<f8'),
+               ('theta', '<f8'), ('flux', '<f8')])
+    function.bk_back = np.zeros([100, 100])
+    function.bk_rms = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(4)
     suc = function.imagePlot()
     assert suc
@@ -379,14 +373,13 @@ def test_imagePlot_5(function):
     function.axeCB = function.fig.add_subplot(label=1)
     function.stretch = AsinhStretch()
     function.colorMap = 'rainbow'
-    function.sources = {'xcentroid': 50 * np.ones([1]),
-                        'ycentroid': 50 * np.ones([1]),
-                        'sharpness': 0.5 * np.ones([1]),
-                        'roundness1': 0.5 * np.ones([1]),
-                        'roundness2': 0.5 * np.ones([1]),
-                        'flux': 5 * np.ones([1]),
-                        }
-    function.mean = np.zeros([100, 100])
+    function.objs = np.ones(
+        10,
+        dtype=[('x', '<f8'), ('y', '<f8'),
+               ('a', '<f8'), ('b', '<f8'),
+               ('theta', '<f8'), ('flux', '<f8')])
+    function.bk_back = np.zeros([100, 100])
+    function.flux = np.random.rand(10)
     function.ui.view.setCurrentIndex(5)
     suc = function.imagePlot()
     assert suc
@@ -450,6 +443,7 @@ def test_preparePlot_5(function):
     function.header['CTYPE1'] = '2'
     function.header['NAXIS'] = 2
     function.ui.view.setCurrentIndex(1)
+    function.ui.checkUseWCS.setChecked(True)
     with mock.patch.object(wcs.WCS,
                            'has_distortion',
                            return_value=True):

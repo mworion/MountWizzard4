@@ -233,6 +233,16 @@ def test_checkFloatingPointErrorWindow_1(function):
         def window(handle=None):
             return {'OK': Test1()}
 
+    class Timings:
+        TimeoutError = TimeoutError
+
+        @staticmethod
+        def wait_until_passes():
+            return
+
+    if not hasattr(automateWindows, 'timings'):
+        automateWindows.timings = Timings()
+
     function.updater = Test()
     with mock.patch.object(automateWindows.timings,
                            'wait_until_passes'):
@@ -251,10 +261,20 @@ def test_checkFloatingPointErrorWindow_2(function):
         def window(handle=None):
             return {'OK': Test1()}
 
+    class Timings:
+        TimeoutError = TimeoutError
+
+        @staticmethod
+        def wait_until_passes():
+            return
+
+    if not hasattr(automateWindows, 'timings'):
+        automateWindows.timings = Timings()
+
     function.updater = Test()
     with mock.patch.object(automateWindows.timings,
                            'wait_until_passes',
-                           side_effect=Exception()):
+                           side_effect=Exception):
         suc = function.checkFloatingPointErrorWindow()
         assert not suc
 
@@ -269,6 +289,16 @@ def test_checkFloatingPointErrorWindow_3(function):
         @staticmethod
         def window(handle=None):
             return {'OK': Test1()}
+
+    class Timings:
+        TimeoutError = Exception
+
+        @staticmethod
+        def wait_until_passes():
+            return
+
+    if not hasattr(automateWindows, 'timings'):
+        automateWindows.timings = Timings()
 
     function.updater = Test()
     with mock.patch.object(automateWindows.timings,
@@ -430,6 +460,15 @@ def test_doUploadAndCloseInstallerCommands(function):
            'Update Now': Test(),
            'OK': Test()
            }
+
+    class Timings:
+        @staticmethod
+        def wait_until_passes():
+            return
+
+    if not hasattr(automateWindows, 'timings'):
+        automateWindows.timings = Timings()
+
     function.updater = {'10 micron control box update': win}
     with mock.patch.object(automateWindows.timings,
                            'wait_until_passes'):
@@ -447,6 +486,14 @@ def test_pressOK(function):
         @staticmethod
         def window(handle=None):
             return {'OK': Test1()}
+
+    class Timings:
+        @staticmethod
+        def wait_until_passes():
+            return
+
+    if not hasattr(automateWindows, 'timings'):
+        automateWindows.timings = Timings()
 
     function.updater = Test()
     with mock.patch.object(automateWindows.timings,

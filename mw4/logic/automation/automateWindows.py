@@ -270,12 +270,10 @@ class AutomateWindows(QObject):
         """
         if platform.architecture()[0] == '32bit':
             self.updater = Application(backend='win32')
-            timings.Timings.fast()
             self.log.info('Using 32Bit backend win32')
 
         else:
             self.updater = Application(backend='uia')
-            timings.Timings.slow()
             self.log.info('Using 64Bit backend uia')
 
         try:

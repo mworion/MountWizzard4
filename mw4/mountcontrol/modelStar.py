@@ -76,8 +76,6 @@ class ModelStar(object):
         self.errorRMS = errorRMS
         self.errorAngle = errorAngle
         self.number = number
-        self._az = None
-        self._alt = None
 
     @property
     def coord(self):
@@ -107,8 +105,8 @@ class ModelStar(object):
                 self._coord = None
                 self.log.warning('Malformed value: {0}'.format(value))
                 return
+            self._coord = Star(ra_hours=ha, dec_degrees=dec)
 
-        self._coord = Star(ra_hours=ha, dec_degrees=dec)
         lat = self.obsSite.location.latitude.degrees
         alt, az = topoToAltAz(ha, dec, lat)
         self._alt = Angle(degrees=alt)

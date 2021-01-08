@@ -76,6 +76,7 @@ class Model:
         self.ui.checkDisableDAT.setChecked(config.get('checkDisableDAT', False))
         self.ui.parkMountAfterModel.setChecked(config.get('parkMountAfterModel', False))
         self.ui.numberBuildRetries.setValue(config.get('numberBuildRetries', 0))
+        self.ui.checkDeleteOldOnStart.setChecked(config.get('checkDeleteOldOnStart', False))
 
         return True
 
@@ -91,6 +92,7 @@ class Model:
         config['checkDisableDAT'] = self.ui.checkDisableDAT.isChecked()
         config['parkMountAfterModel'] = self.ui.parkMountAfterModel.isChecked()
         config['numberBuildRetries'] = self.ui.numberBuildRetries.value()
+        config['checkDeleteOldOnStart'] = self.ui.checkDeleteOldOnStart.isChecked()
 
         return True
 
@@ -804,12 +806,13 @@ class Model:
 
     def modelCycleThroughBuildPointsFinished(self):
         """
-        modelCycleThroughBuildPointsFinished is called when tha last point was processed.
-        it empties the solution queue restores the default gui elements an signals. after
-        that it programs the resulting model to the mount and saves it to disk.
+        modelCycleThroughBuildPointsFinished is called when tha last point was
+        processed. it empties the solution queue restores the default gui elements
+        an signals. after that it programs the resulting model to the mount and
+        saves it to disk.
 
-        is the flag delete images after modeling is set, the entire directory will be
-        deleted
+        is the flag delete images after modeling is set, the entire directory
+        will be deleted
 
         :return: true for test purpose
         """
@@ -841,10 +844,8 @@ class Model:
 
     def checkModelRunConditions(self):
         """
-
         :return:
         """
-
         if len(self.app.data.buildP) < 2:
             self.app.message.emit('No modeling start because less than 3 points', 2)
             return False
@@ -872,21 +873,21 @@ class Model:
 
     def clearAlignAndBackup(self):
         """
-
         :return:
         """
-        suc = self.app.mount.model.clearAlign()
+        if self.ui.checkDeleteOldOnStart.isChecked():
+            suc = self.app.mount.model.clearAlign()
 
-        if not suc:
-            self.app.message.emit('Actual model cannot be cleared', 2)
-            self.app.message.emit('Model build cancelled', 2)
-            return False
+            if not suc:
+                self.app.message.emit('Actual model cannot be cleared', 2)
+                self.app.message.emit('Model build cancelled', 2)
+                return False
 
-        else:
-            self.app.message.emit('Actual model clearing, waiting 1s', 0)
-            QTest.qWait(1000)
-            self.app.message.emit('Actual model cleared', 0)
-            self.refreshModel()
+            else:
+                self.app.message.emit('Actual model clearing, waiting 1s', 0)
+                QTest.qWait(1000)
+                self.app.message.emit('Actual model cleared', 0)
+                self.refreshModel()
 
         suc = self.app.mount.model.deleteName('backup')
         if not suc:

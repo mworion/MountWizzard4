@@ -1196,6 +1196,7 @@ def test_checkModelRunConditions_6(function):
 
 
 def test_clearAlignAndBackup_1(function):
+    function.ui.checkDeleteOldOnStart.setChecked(True)
     with mock.patch.object(function.app.mount.model,
                            'clearAlign',
                            return_value=False):
@@ -1204,6 +1205,7 @@ def test_clearAlignAndBackup_1(function):
 
 
 def test_clearAlignAndBackup_2(function):
+    function.ui.checkDeleteOldOnStart.setChecked(True)
     with mock.patch.object(function.app.mount.model,
                            'clearAlign',
                            return_value=True):
@@ -1217,6 +1219,7 @@ def test_clearAlignAndBackup_2(function):
 
 
 def test_clearAlignAndBackup_3(function):
+    function.ui.checkDeleteOldOnStart.setChecked(True)
     with mock.patch.object(function.app.mount.model,
                            'clearAlign',
                            return_value=True):
@@ -1233,6 +1236,7 @@ def test_clearAlignAndBackup_3(function):
 
 
 def test_clearAlignAndBackup_4(function):
+    function.ui.checkDeleteOldOnStart.setChecked(True)
     with mock.patch.object(function.app.mount.model,
                            'clearAlign',
                            return_value=True):

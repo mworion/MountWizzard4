@@ -289,6 +289,7 @@ class SettImaging(object):
         if isAlpaca:
             start = 0
             end = numberFilter - 1
+
         else:
             start = 1
             end = numberFilter

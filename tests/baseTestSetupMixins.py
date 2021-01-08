@@ -19,7 +19,7 @@
 from queue import Queue
 
 # external packages
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
 from skyfield.api import Topos, load, Loader
 
 # local import
@@ -173,6 +173,8 @@ class Mount(QObject):
         firmwareDone = pyqtSignal()
         calcTLEdone = pyqtSignal()
         getTLEdone = pyqtSignal()
+        alert = pyqtSignal()
+        slewFinished = pyqtSignal()
 
     class MountObsSite:
 
@@ -331,6 +333,9 @@ class Automation:
 
 
 class Dome:
+    class DomeSignals(QObject):
+        slewFinished = pyqtSignal()
+
     domeShutterWidth = 0.6
     offGEM = 0
     offLAT = 0
@@ -338,6 +343,7 @@ class Dome:
     offEast = 0
     domeRadius = 1.0
     data = {}
+    signals = DomeSignals()
 
     @staticmethod
     def abortSlew():
@@ -362,6 +368,27 @@ class Relay:
         statusReady = pyqtSignal()
 
     signals = RelaySignals()
+
+
+class Camera:
+    class CameraSignals(QObject):
+        saved = pyqtSignal()
+
+    signals = CameraSignals()
+
+
+class Astrometry:
+    class AstrometrySignals(QObject):
+        done = pyqtSignal()
+
+    signals = AstrometrySignals()
+
+
+class OnlineWeather:
+    class OnlineWeatherSignals(QObject):
+        done = pyqtSignal()
+
+    signals = OnlineWeatherSignals()
 
 
 class Data:
@@ -392,7 +419,10 @@ class App(QObject):
     dome = Dome()
     relay = Relay()
     data = Data()
+    camera = Camera()
     automation = Automation()
+    astrometry = Astrometry()
+    onlineWeather = OnlineWeather()
     ephemeris = load('tests/testData/de421_23.bsp')
     mwGlob = {'modelDir': 'tests/model',
               'imageDir': 'tests/image',
@@ -400,3 +430,4 @@ class App(QObject):
               'configDir': 'tests/config',
               }
     uiWindows = {}
+    threadPool = QThreadPool()

@@ -171,6 +171,7 @@ def test_setFilterNumber_1():
 
 def test_setFilterNumber_2():
     app.app.filter.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 10
+    app.app.filter.data['FILTER_NAME.FILTER_SLOT_NAME_0'] = 'test'
     with mock.patch.object(QMessageBox,
                            'critical'):
         with mock.patch.object(QInputDialog,
@@ -211,6 +212,19 @@ def test_setFilterName_2():
 
 def test_setFilterName_3():
     app.app.filter.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 1
+    app.app.filter.data['FILTER_NAME.FILTER_SLOT_NAME_0'] = 'test1'
+    app.app.filter.data['FILTER_NAME.FILTER_SLOT_NAME_1'] = 'test2'
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getItem',
+                               return_value=('test1', True)):
+            suc = app.setFilterName()
+            assert suc
+
+
+def test_setFilterName_4():
+    app.app.filter.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 1
     app.app.filter.data['FILTER_NAME.FILTER_SLOT_NAME_1'] = 'test1'
     app.app.filter.data['FILTER_NAME.FILTER_SLOT_NAME_2'] = 'test2'
     with mock.patch.object(QMessageBox,
@@ -243,19 +257,19 @@ def test_setCoolerOff():
 
 
 def test_updateCoverStatGui_1():
-    app.app.cover.data['Status.Cover'] = 'OPEN'
+    app.app.cover.data['CAP_PARK.UNPARK'] = 'On'
     suc = app.updateCoverStatGui()
     assert suc
 
 
 def test_updateCoverStatGui_2():
-    app.app.cover.data['Status.Cover'] = 'CLOSED'
+    app.app.cover.data['CAP_PARK.UNPARK'] = 'Off'
     suc = app.updateCoverStatGui()
     assert suc
 
 
 def test_updateCoverStatGui_3():
-    app.app.cover.data['Status.Cover'] = '...'
+    app.app.cover.data['CAP_PARK.UNPARK'] = '.'
     suc = app.updateCoverStatGui()
     assert suc
 

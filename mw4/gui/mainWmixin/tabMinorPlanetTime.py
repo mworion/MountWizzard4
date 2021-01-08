@@ -255,9 +255,11 @@ class MinorPlanetTime:
         url = 'https://datacenter.iers.org/data/9/' + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
         isOnline = self.ui.isOnline.isChecked()
-        if isOnline:
-            self.app.message.emit(f'Download data for:   [{source}]', 1)
-            DownloadPopup(self, url=url, dest=dest)
+        if not isOnline:
+            return False
+
+        self.app.message.emit(f'Download data for:   [{source}]', 1)
+        DownloadPopup(self, url=url, dest=dest)
         return True
 
     def progMinorPlanetToMount(self):

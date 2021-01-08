@@ -214,7 +214,7 @@ def test_processSourceData_3(function):
                     assert suc
 
 
-def test_loadDataFromSourceURLs_1(function):
+def test_loadMPCDataFromSourceURLs_1(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('xxx')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -222,7 +222,7 @@ def test_loadDataFromSourceURLs_1(function):
     assert not suc
 
 
-def test_loadDataFromSourceURLs_2(function):
+def test_loadMPCDataFromSourceURLs_2(function):
     function.ui.minorPlanetSource.clear()
     function.minorPlanetSourceURLs['test'] = 'test.json.gz'
     function.ui.minorPlanetSource.addItem('Please select')
@@ -231,7 +231,7 @@ def test_loadDataFromSourceURLs_2(function):
     assert not suc
 
 
-def test_loadDataFromSourceURLs_3(function):
+def test_loadMPCDataFromSourceURLss_3(function):
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
@@ -329,6 +329,18 @@ def test_progEarthRotationDataToMount_7(function):
                                return_value=True):
             suc = function.progEarthRotationDataToMount()
             assert suc
+
+
+def test_loadTimeDataFromSourceURLs_1(function):
+    function.ui.isOnline.setChecked(False)
+    suc = function.loadTimeDataFromSourceURLs()
+    assert not suc
+
+
+def test_loadTimeDataFromSourceURLs_2(function):
+    function.ui.isOnline.setChecked(True)
+    suc = function.loadTimeDataFromSourceURLs()
+    assert suc
 
 
 def test_progMinorPlanetToMount_1(function):

@@ -908,7 +908,19 @@ def test_parseCmd_40(function):
         assert not suc
 
 
-def test_parseCmd_4(function):
+def test_parseCmd_4_0(function):
+    elem = indiXML.DefLight('defLight', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.DelProperty('defLight', [elem], {'device': 'test',
+                                                      'name': 'test'}, None)
+
+    function.connected = True
+    with mock.patch.object(function,
+                           '_setProperty'):
+        suc = function._parseCmd(chunk=chunk)
+        assert suc
+
+
+def test_parseCmd_4_1(function):
     elem = indiXML.DefLight('defLight', 'On', {'name': 'DISCONNECT'}, None)
     chunk = indiXML.SetLightVector('defLight', [elem], {'device': 'test',
                                                         'name': 'test'}, None)

@@ -71,7 +71,7 @@ def test_addLoggingLevel_4():
     loggerMW.addLoggingLevel('Test', 65)
     loggerTest = logging.getLogger('test')
     loggerTest.setLevel(60)
-    loggerTest.testRoot('test')
+    loggerTest.test('test')
 
 
 

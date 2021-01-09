@@ -36,7 +36,7 @@ jobs:
           echo %PATH%
           echo .
           echo .
-          echo %PAYTHONPATH%
+          echo %PYTHONPATH%
           echo .
 
       - name: test python path
@@ -50,4 +50,4 @@ jobs:
           echo .
           python -c 'import sys; print(sys.path)'
           python -m pip install pywinauto
-          python -c 'import sys; sys.path.append("/Windows/System32"); import pywinauto.timings'
+          python -c "import sys; sys.path.append(""c:/Windows/System32""); import pywinauto.timings"

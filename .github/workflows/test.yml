@@ -49,7 +49,6 @@ jobs:
           echo %PYTHONPATH%
           echo .
           
-          python -c 'import sys; print(sys.path)'
+          python -c "import sys; print(sys.path)"
           #python -m pip install pywinauto
-          #python -c "import sys; sys.path.append(""c:/Windows/System32""); import
-          pywinauto.timings"
+  

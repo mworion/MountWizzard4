@@ -135,15 +135,14 @@ class DevicePopup(toolsQtWidget.MWidget):
 
     def selectTabs(self):
         """
-        show only the tabs needed for available frameworks and properties to be entered
-        as there might be differences in tab text and framework name internally there is a
-        translation table (self.framework2tabs) in between.
+        show only the tabs needed for available frameworks and properties to be
+        entered as there might be differences in tab text and framework name
+        internally there is a translation table (self.framework2tabs) in between.
         - it selects the tab for the actual framework
         - it hides all tabs, which are not relevant for the available frameworks
 
         :return: True for test purpose
         """
-
         firstFramework = next(iter(self.data['frameworks']))
         framework = self.data.get('framework')
 
@@ -165,21 +164,18 @@ class DevicePopup(toolsQtWidget.MWidget):
                 self.ui.tab.setTabEnabled(index, False)
 
             self.ui.tab.setStyleSheet(self.getStyle())
-
         return True
 
     def populateTabs(self):
         """
-        populateTabs takes all the data coming from driver data dict and puts it onto the
-        corresponding gui elements in the tabs. as we need to have unique names in the gui,
-        there is a translation table (self.framework2gui) for all framework entries to be
-        used.
+        populateTabs takes all the data coming from driver data dict and puts
+        it onto the corresponding gui elements in the tabs. as we need to have
+        unique names in the gui, there is a translation table (self.framework2gui)
+        for all framework entries to be used.
 
         :return: True for test purpose
         """
-
         frameworks = self.data['frameworks']
-
         for fw in frameworks:
             frameworkElements = frameworks[fw]
             for element in frameworkElements:
@@ -202,30 +198,26 @@ class DevicePopup(toolsQtWidget.MWidget):
 
                 elif isinstance(ui, QDoubleSpinBox):
                     ui.setValue(frameworks[fw][element])
-
         return True
 
     def initConfig(self):
         """
-
         :return: True for test purpose
         """
-
         self.setWindowTitle(f'Setup for: {self.deviceType}')
         self.selectTabs()
         self.populateTabs()
-
         return True
 
     def readTabs(self):
         """
-        readTabs takes all the gui information and puts it onto the data dictionary and
-        properties as we need to have unique names in the gui, there is a translation table
-        (self.framework2gui) for all framework entries to be used.
+        readTabs takes all the gui information and puts it onto the data
+        dictionary and properties as we need to have unique names in the gui,
+        there is a translation table (self.framework2gui) for all framework
+        entries to be used.
 
         :return: True for test purpose
         """
-
         framework = self.data['framework']
         frameworkData = self.data['frameworks'][framework]
 
@@ -257,34 +249,27 @@ class DevicePopup(toolsQtWidget.MWidget):
 
             else:
                 self.log.debug(f'Element {element} in gui for framework {framework} not found')
-
         return True
 
     def readFramework(self):
         """
-        readFramework determines, which tab was selected when leaving and writes the
-        adequate selection into the dict. as the headline might be different from the
-        keywords, a translation table (self.framework2gui) in a reverse index is used.
+        readFramework determines, which tab was selected when leaving and writes
+        the adequate selection into the dict. as the headline might be different
+        from the keywords, a translation table (self.framework2gui) in a reverse
+        index is used.
 
         :return: True for test purpose
         """
-
         reversedDict = dict([(value, key) for key, value in self.framework2tabs.items()])
-
         index = self.ui.tab.currentIndex()
         currentSelectionText = self.ui.tab.tabText(index)
-
         self.data['framework'] = reversedDict[currentSelectionText]
-
         return True
 
     def storeConfig(self):
         """
-        storeConfig collects all the data changed
-
         :return: true for test purpose
         """
-
         self.readFramework()
         self.readTabs()
         self.returnValues['indiCopyConfig'] = self.ui.indiCopyConfig.isChecked()
@@ -292,35 +277,31 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.returnValues['close'] = 'ok'
         self.returnValues['driver'] = self.driver
         self.close()
-
         return True
 
     def updateIndiDeviceNameList(self, deviceNames=[]):
         """
-        updateIndiDeviceNameList updates the indi device name selectors combobox with the
-        discovered entries. therefore it deletes the old list and rebuild it new.
+        updateIndiDeviceNameList updates the indi device name selectors combobox
+        with the discovered entries. therefore it deletes the old list and
+        rebuild it new.
 
         :return: True for test purpose
         """
-
         self.ui.indiDeviceList.clear()
         self.ui.indiDeviceList.setView(QListView())
-
         for deviceName in deviceNames:
             self.ui.indiDeviceList.addItem(deviceName)
-
         return True
 
     def discoverIndiDevices(self):
         """
-        discoverIndiDevices looks all possible indi devices up from the actual server and
-        the selected device type. The search time is defined in indi class and should be
-        about 2-3 seconds. if the search was successful, the gui and the device list will
-         be updated
+        discoverIndiDevices looks all possible indi devices up from the actual
+        server and the selected device type. The search time is defined in indi
+        class and should be about 2-3 seconds. if the search was successful,
+        the gui and the device list will be updated
 
         :return: success
         """
-
         indi = IndiClass()
         indi.hostaddress = self.ui.indiHostAddress.text()
         indi.port = self.ui.indiPort.text()
@@ -337,33 +318,29 @@ class DevicePopup(toolsQtWidget.MWidget):
             self.message.emit(f'Indi discovered:     [{deviceName}]', 0)
 
         self.updateIndiDeviceNameList(deviceNames=deviceNames)
-
         return True
 
     def updateAlpacaDeviceNameList(self, deviceNames=[]):
         """
-        updateAlpacaDeviceNameList updates the indi device name selectors combobox with the
-        discovered entries. therefore it deletes the old list and rebuild it new.
+        updateAlpacaDeviceNameList updates the indi device name selectors
+        combobox with the discovered entries. therefore it deletes the old list
+        and rebuild it new.
 
         :return: True for test purpose
         """
-
         self.ui.alpacaDeviceList.clear()
         self.ui.alpacaDeviceList.setView(QListView())
-
         for deviceName in deviceNames:
             self.ui.alpacaDeviceList.addItem(deviceName)
-
         return True
 
     def discoverAlpacaDevices(self):
         """
-        discoverAlpacaDevices looks all possible alpaca devices up from the actual server and
-        the selected device type.
+        discoverAlpacaDevices looks all possible alpaca devices up from the
+        actual server and the selected device type.
 
         :return: success
         """
-
         alpaca = AlpacaClass()
         alpaca.hostaddress = self.ui.alpacaHostAddress.text()
         alpaca.port = self.ui.alpacaPort.text()
@@ -381,19 +358,16 @@ class DevicePopup(toolsQtWidget.MWidget):
             self.message.emit(f'Alpaca discovered:   [{deviceName}]', 0)
 
         self.updateAlpacaDeviceNameList(deviceNames=deviceNames)
-
         return True
 
     def checkAstrometryAvailability(self, framework):
         """
-        checkAvailability looks the presence of the binaries and indexes up and reports the
-        result back to the gui.
+        checkAvailability looks the presence of the binaries and indexes up and
+        reports the result back to the gui.
 
         :return: success
         """
-
         sucApp, sucIndex = self.app.astrometry.run[framework].checkAvailability()
-
         if framework == 'astap':
             color = 'green' if sucApp else 'red'
             self.changeStyleDynamic(self.ui.astapAppPath, 'color', color)
@@ -405,15 +379,12 @@ class DevicePopup(toolsQtWidget.MWidget):
             self.changeStyleDynamic(self.ui.astrometryAppPath, 'color', color)
             color = 'green' if sucIndex else 'red'
             self.changeStyleDynamic(self.ui.astrometryIndexPath, 'color', color)
-
         return True
 
     def selectAstrometryAppPath(self):
         """
-
         :return:
         """
-
         folder = self.ui.astrometryAppPath.text()
         saveFilePath, name, ext = self.openDir(self,
                                                'Select Astrometry App Path',
@@ -431,15 +402,12 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         if self.checkAstrometryAvailability('astrometry'):
             self.ui.astrometryAppPath.setText(saveFilePath)
-
         return True
 
     def selectAstrometryIndexPath(self):
         """
-
         :return:
         """
-
         folder = self.ui.astrometryIndexPath.text()
         saveFilePath, name, ext = self.openDir(self,
                                                'Select Astrometry Index Path',
@@ -450,15 +418,12 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         if self.checkAstrometryAvailability('astrometry'):
             self.ui.astrometryIndexPath.setText(saveFilePath)
-
         return True
 
     def selectAstapAppPath(self):
         """
-
         :return:
         """
-
         folder = self.ui.astapAppPath.text()
         saveFilePath, name, ext = self.openDir(self,
                                                'Select ASTAP App Path',
@@ -472,15 +437,12 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         if self.checkAstrometryAvailability('astap'):
             self.ui.astapAppPath.setText(saveFilePath)
-
         return True
 
     def selectAstapIndexPath(self):
         """
-
         :return:
         """
-
         folder = self.ui.astapIndexPath.text()
         saveFilePath, name, ext = self.openDir(self,
                                                'Select ASTAP Index Path',
@@ -491,17 +453,13 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         if self.checkAstrometryAvailability('astap'):
             self.ui.astapIndexPath.setText(saveFilePath)
-
         return True
 
     def selectAscomDriver(self):
         """
-
         :return: success
         """
-
         deviceName = self.ui.ascomDevice.text()
-
         try:
             chooser = win32com.client.Dispatch('ASCOM.Utilities.Chooser')
             chooser.DeviceType = self.deviceType
@@ -513,5 +471,4 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         finally:
             self.ui.ascomDevice.setText(deviceName)
-
         return True

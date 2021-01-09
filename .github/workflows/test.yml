@@ -21,11 +21,9 @@ jobs:
         with:
           python-version: '3.9'
             
-      - name: find dll
+      - name: check path
         shell: cmd
         run: |
-          dir c:\Windows\System32\UI*.dll
-          dir c:\Windows\SysWOW64\UI*.dll
           echo %PATH%
           echo .
           echo .
@@ -35,4 +33,4 @@ jobs:
         run: |
           python -c 'import sys; print(sys.path)'
           python -m pip install pywinauto
-          python -c 'import sys; sys.path.insert(0, "c:\\Windows\\System32"); import pywinauto.timings'
+          python -c 'import sys; sys.path.insert(0, "\\Windows\\System32"); import  pywinauto.timings'

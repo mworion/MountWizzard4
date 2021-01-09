@@ -21,6 +21,7 @@ import glob
 import json
 import unittest.mock as mock
 import logging
+import platform
 
 # external packages
 import pytest
@@ -51,14 +52,11 @@ def app(qapp):
                                'start'):
             with mock.patch.object(PyQt5.QtCore.QBasicTimer,
                                    'start'):
-                with mock.patch.object(MountWizzard4,
-                                       'checkAndSetAutomation',
-                                       return_value=None):
-                    app = MountWizzard4(mwGlob=mwGlob, application=qapp)
-                    app.log = logging.getLogger()
-                    addLoggingLevel('TRACE', 5)
-                    addLoggingLevel('UI', 35)
-                    yield app
+                app = MountWizzard4(mwGlob=mwGlob, application=qapp)
+                app.log = logging.getLogger()
+                addLoggingLevel('TRACE', 5)
+                addLoggingLevel('UI', 35)
+                yield app
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -72,6 +70,25 @@ def module_setup_teardown_func(app):
         os.remove('tests/config/profile')
 
     yield
+
+
+def test_checkAndSetAutomation_1(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='test'):
+        val = app.checkAndSetAutomation()
+        assert val is None
+
+
+def test_checkAndSetAutomation_2(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        with mock.patch.object(platform,
+                               'python_version',
+                               return_value='3.8.1'):
+            val = app.checkAndSetAutomation()
+            assert val is None
 
 
 def test_initConfig_1(app):

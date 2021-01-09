@@ -54,9 +54,9 @@ from logic.astrometry.astrometry import Astrometry
 
 class MountWizzard4(QObject):
     """
-    MountWizzard4 class is the main class for the application. it loads all windows and
-    classes needed to fulfil the work of mountwizzard. any gui work should be handled
-    through the window classes. main class is for setup, config, start, persist and
+    MountWizzard4 class is the main class for the application. it loads all
+    windows and classes needed to fulfil the work of mountwizzard. any gui work
+    should be handled through the window classes. main class is for setup, config, start, persist and
     shutdown the application.
     """
 
@@ -176,21 +176,15 @@ class MountWizzard4(QObject):
         self.automation = self.checkAndSetAutomation()
 
         self.uiWindows = {}
-
-        # get the window widgets up
         self.mainW = MainWindow(self)
 
-        # starting mount communication and timers
         self.mount.startTimers()
         self.timer0_1s = QTimer()
         self.timer0_1s.setSingleShot(False)
         self.timer0_1s.timeout.connect(self.sendUpdate)
         self.timer0_1s.start(100)
-
-        # link for shutdown
         self.application.aboutToQuit.connect(self.aboutToQuit)
 
-        # finishing for test: MW4 runs with keyword 'test' for 10 seconds an terminates
         if not hasattr(sys, 'argv'):
             return
         if not len(sys.argv) > 1:
@@ -200,20 +194,15 @@ class MountWizzard4(QObject):
 
     def checkAndSetAutomation(self):
         """
-        the windows automation with pywinauto has a serious bug in python lib. the bugfix is
-        done from python3.8.2 onwards. so to enable this work, we have to check the python
-        version used and set the topic adequately.
+        the windows automation with pywinauto has a serious bug in python lib.
+        the bugfix is done from python 3.8.2 onwards. so to enable this work,
+        we have to check the python version used and set the topic adequately.
 
         :return:
         """
         if platform.system() != 'Windows':
             return None
-
-        if sys.version_info.major != 3:
-            return None
-        if sys.version_info.minor < 8:
-            return None
-        if sys.version_info.micro < 2:
+        if platform.python_version() < '3.8.2':
             return None
 
         from logic.automation.automateWindows import AutomateWindows
@@ -223,14 +212,8 @@ class MountWizzard4(QObject):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
-        :return:
+        :return: topo object with location
         """
-
-        # set observer position to last one first, to greenwich if not known
         lat = self.config.get('topoLat', 51.47)
         lon = self.config.get('topoLon', 0)
         elev = self.config.get('topoElev', 46)
@@ -246,33 +229,26 @@ class MountWizzard4(QObject):
         else:
             level = 'WARN'
         setCustomLoggingLevel(level)
-
         return topo
 
     def storeConfig(self):
         """
-        storeConfig collects all persistent data from mainApp and it's submodules and stores
-        it in the persistence dictionary for later saving
-
         :return: success for test purpose
         """
-
         location = self.mount.obsSite.location
         if location is not None:
             self.config['topoLat'] = location.latitude.degrees
             self.config['topoLon'] = location.longitude.degrees
             self.config['topoElev'] = location.elevation.m
-
         return True
 
     def sendUpdate(self):
         """
-        sendUpdate send regular signals in 1 and 10 seconds to enable regular tasks.
-        it tries to avoid sending the signals at the same time.
+        sendUpdate send regular signals in 1 and 10 seconds to enable regular
+        tasks. it tries to avoid sending the signals at the same time.
 
         :return: true for test purpose
         """
-
         self.timerCounter += 1
         if self.timerCounter % 1 == 0:
             self.update0_1s.emit()
@@ -296,20 +272,14 @@ class MountWizzard4(QObject):
 
     def aboutToQuit(self):
         """
-        called when the application is about to close
-
         :return:    True for test purpose
         """
-
         self.timer0_1s.stop()
         self.mount.stopTimers()
-
         return True
 
     def quit(self):
         """
-        quit without saving persistence data
-
         :return:    True for test purpose
         """
         self.aboutToQuit()
@@ -322,32 +292,27 @@ class MountWizzard4(QObject):
     @staticmethod
     def defaultConfig(config=None):
         """
-
         :param config:
         :return:
         """
-
         if config is None:
             config = dict()
 
         config['profileName'] = 'config'
         config['version'] = '4.0'
-
         return config
 
     def loadConfig(self, name=None):
         """
-        loadConfig loads a json file from disk and stores it to the config dicts for
-        persistent data. if a file path is given, that's the relevant file, otherwise
-        loadConfig loads from th default file, which is config.cfg
+        loadConfig loads a json file from disk and stores it to the config
+        dicts for persistent data. if a file path is given, that's the relevant
+        file, otherwise loadConfig loads from th default file, which is
+        config.cfg
 
         :param      name:   name of the config file
         :return:    success if file could be loaded
         """
-
-        configDir = self.mwGlob['configDir']
-
-        # looking for file existence and creating new config if necessary
+        configDir = self.mwGlob['configDir']y
         if name is None:
             profileFile = f'{configDir}/profile'
             if os.path.isfile(profileFile):
@@ -380,26 +345,20 @@ class MountWizzard4(QObject):
     @staticmethod
     def convertData(data):
         """
-        convertDate tries to convert data from an older or newer version of the config
-        file to the actual needed one.
+        convertDate tries to convert data from an older or newer version of the
+        config file to the actual needed one.
 
         :param      data: config data as dict
         :return:    data: config data as dict
         """
-
         return data
 
     def saveConfig(self, name=None):
         """
-        saveConfig saves a json file to disk from the config dicts for
-        persistent data.
-
         :param      name:   name of the config file
         :return:    success
         """
-
         configDir = self.mwGlob['configDir']
-
         if name is None:
             name = self.config['profileName']
 
@@ -413,18 +372,13 @@ class MountWizzard4(QObject):
                       outfile,
                       sort_keys=True,
                       indent=4)
-
         return True
 
     def loadMountData(self, status):
         """
-        loadMountData polls data from mount if connected otherwise clears all entries
-        in attributes.
-
         :param      status: connection status to mount computer
         :return:    status how it was called
         """
-
         if status and not self.mountUp:
             self.mount.getFW()
             self.mount.getLocation()
@@ -441,21 +395,14 @@ class MountWizzard4(QObject):
             self.mount.obsSite.location = location
             self.mountUp = False
             return False
-
         return status
 
     def writeMessageQueue(self, message, mType):
         """
-        writeMessageQueue receives all signals handling the message sending and puts them in
-        a queue. the queue enables the print of messages event when the message window is not
-        open.
-
         :param message:
         :param mType:
         :return: True for test purpose
         """
-
         self.log.ui(f'Message window: [{message}]')
         self.messageQueue.put((message, mType))
-
         return True

@@ -1061,6 +1061,22 @@ class TestConfigData(unittest.TestCase):
             suc = obsSite.setLatitude(lat_degrees=50)
             self.assertEqual(True, suc)
 
+    def test_ObsSite_setLatitude_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setLatitude(lat=Angle(degrees=50))
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setLatitude_ok3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setLatitude(lat='12 50 00.0')
+            self.assertEqual(True, suc)
+
     def test_ObsSite_setLatitude_not_ok1(self):
         obsSite = ObsSite(pathToData=pathToData)
         response = ['1']
@@ -1091,6 +1107,22 @@ class TestConfigData(unittest.TestCase):
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = obsSite.setLongitude(lon_degrees=50)
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setLongitude_ok2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setLongitude(lon=Angle(degrees=50))
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setLongitude_ok3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setLongitude(lon='12 50 50.00')
             self.assertEqual(True, suc)
 
     def test_ObsSite_setLongitude_not_ok1(self):
@@ -1126,6 +1158,15 @@ class TestConfigData(unittest.TestCase):
             mConn.return_value.communicate.return_value = True, response, 1
             suc = obsSite.setElevation('500')
             self.assertEqual(True, suc)
+
+    def test_ObsSite_setElevation_not_ok0(self):
+        obsSite = ObsSite(pathToData=pathToData)
+
+        response = ['1']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = obsSite.setElevation(['test'])
+            self.assertEqual(False, suc)
 
     def test_ObsSite_setElevation_not_ok1(self):
         obsSite = ObsSite(pathToData=pathToData)
@@ -1349,9 +1390,9 @@ class TestConfigData(unittest.TestCase):
     def test_ObsSite_parkOnActualPosition_not_ok2(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        response = ['1']
+        response = ['0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, response, 1
+            mConn.return_value.communicate.return_value = True, response, 1
             suc = obsSite.parkOnActualPosition()
             self.assertEqual(False, suc)
 

@@ -699,10 +699,7 @@ class ObsSite(object):
         else:
             return False
 
-        if ra.preference != 'hours':
-            return False
-
-        if dec.preference != 'degrees':
+        if ra.preference != 'hours' or dec.preference != 'degrees':
             return False
 
         conn = Connection(self.host)
@@ -779,10 +776,7 @@ class ObsSite(object):
         else:
             return False
 
-        if ra.preference != 'degrees':
-            return False
-
-        if dec.preference != 'degrees':
+        if dec.preference != 'degrees' or ra.preference != 'degrees':
             return False
 
         conn = Connection(self.host)

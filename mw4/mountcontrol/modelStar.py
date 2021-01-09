@@ -191,3 +191,9 @@ class ModelStar(object):
             return True
         else:
             return False
+
+    def __eq__(self, other):
+        if other == self._errorRMS:
+            return True
+        else:
+            return False

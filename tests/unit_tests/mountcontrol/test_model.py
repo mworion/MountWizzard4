@@ -722,6 +722,12 @@ class TestConfigData(unittest.TestCase):
                 suc = model.getStarCount()
                 assert suc
 
+    def test_getStars_0(self):
+        model = Model(host=None, obsSite=obsSite)
+        model.numberStars = 0
+        suc = model.getStars()
+        assert suc
+
     def test_getStars_1(self):
         model = Model(host=None, obsSite=obsSite)
         model.numberStars = 1
@@ -776,85 +782,39 @@ class TestConfigData(unittest.TestCase):
     #
     #
 
-    def test_Model_pollCount_ok(self):
+    def test_Model_pollCount_1(self):
         model = Model(host=None, obsSite=obsSite)
-        response = ['5', '6']
-        with mock.patch('mountcontrol.model.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 2
+        with mock.patch.object(mountcontrol.model.Connection,
+                               'communicate',
+                               return_value=(True, ['5', '6'], 2)):
             suc = model.pollCount()
-            self.assertEqual(True, suc)
-            self.assertEqual(5, model.numberNames)
-            self.assertEqual(6, model.numberStars)
+            assert suc
+            assert model.numberNames == 5
+            assert model.numberStars == 6
 
-    def test_Model_pollCount_not_ok1(self):
+    def test_Model_pollCount_2(self):
         model = Model(host=None, obsSite=obsSite)
-        response = ['', '45']
-        with mock.patch('mountcontrol.model.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 2
+        with mock.patch.object(mountcontrol.model.Connection,
+                               'communicate',
+                               return_value=(False, ['5', '6'], 2)):
             suc = model.pollCount()
-            self.assertEqual(True, suc)
-            self.assertEqual(None, model.numberNames)
-            self.assertEqual(45, model.numberStars)
+            assert not suc
 
-    def test_Model_pollCount_not_ok2(self):
+    def test_Model_pollCount_3(self):
         model = Model(host=None, obsSite=obsSite)
-        response = ['']
-        with mock.patch('mountcontrol.model.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 2
+        with mock.patch.object(mountcontrol.model.Connection,
+                               'communicate',
+                               return_value=(True, ['5', '6'], 3)):
             suc = model.pollCount()
-            self.assertEqual(False, suc)
-            self.assertEqual(None, model.numberNames)
-            self.assertEqual(None, model.numberStars)
+            assert not suc
 
-    def test_Model_pollCount_not_ok3(self):
+    def test_Model_pollCount_4(self):
         model = Model(host=None, obsSite=obsSite)
-        response = ['4t']
-        with mock.patch('mountcontrol.model.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 2
+        with mock.patch.object(mountcontrol.model.Connection,
+                               'communicate',
+                               return_value=(True, ['5', '6', '7'], 3)):
             suc = model.pollCount()
-            self.assertEqual(False, suc)
-            self.assertEqual(None, model.numberNames)
-            self.assertEqual(None, model.numberStars)
-
-    def test_Model_pollCount_not_ok4(self):
-        model = Model(host=None, obsSite=obsSite)
-        response = ['4', '5', '5']
-        with mock.patch('mountcontrol.model.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 2
-            suc = model.pollCount()
-            self.assertEqual(False, suc)
-            self.assertEqual(None, model.numberNames)
-            self.assertEqual(None, model.numberStars)
-
-    def test_Model_pollCount_not_ok5(self):
-        model = Model(host=None, obsSite=obsSite)
-        response = ['4', 'r']
-        with mock.patch('mountcontrol.model.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 2
-            suc = model.pollCount()
-            self.assertEqual(True, suc)
-            self.assertEqual(4, model.numberNames)
-            self.assertEqual(None, model.numberStars)
-
-    def test_Model_pollCount_not_ok6(self):
-        model = Model(host=None, obsSite=obsSite)
-        response = ['4', '5']
-        with mock.patch('mountcontrol.model.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, response, 2
-            suc = model.pollCount()
-            self.assertEqual(False, suc)
-            self.assertEqual(None, model.numberNames)
-            self.assertEqual(None, model.numberStars)
-
-    def test_Model_pollCount_not_ok7(self):
-        model = Model(host=None, obsSite=obsSite)
-        response = ['4', '5', '6']
-        with mock.patch('mountcontrol.model.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 2
-            suc = model.pollCount()
-            self.assertEqual(False, suc)
-            self.assertEqual(None, model.numberNames)
-            self.assertEqual(None, model.numberStars)
+            assert not suc
 
     #
     #
@@ -1150,6 +1110,19 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
             mConn.return_value.communicate.assert_called_with(v1)
 
+    def test_Model_programAlign_not_ok0(self):
+        model = Model(host=None, obsSite=obsSite)
+        v1 = ':newalig#:newalpt19:35:15.6,-15*02:43.1,W,19:35:45.3,-15*03:41.8,' \
+             '17:35:31.75#:endalig#'
+
+        build = self.gatherData(2)
+        build[1].mCoord = None
+        with mock.patch('mountcontrol.model.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, ['E'], 1
+            suc = model.programAlign(build)
+            self.assertEqual(False, suc)
+            mConn.return_value.communicate.assert_called_with(v1)
+
     def test_Model_programAlign_not_ok1(self):
         model = Model(host=None, obsSite=obsSite)
 
@@ -1188,6 +1161,17 @@ class TestConfigData(unittest.TestCase):
             mConn.return_value.communicate.return_value = True, ['E'], 1
             suc = model.programAlign(build)
             self.assertEqual(False, suc)
+
+    def test_Model_programAlign_not_ok5(self):
+        model = Model(host=None, obsSite=obsSite)
+
+        aPoint = AlignStar()
+        build = [aPoint]
+        with mock.patch('mountcontrol.model.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, ['1'], 1
+            suc = model.programAlign(build)
+            self.assertEqual(False, suc)
+            mConn.return_value.communicate.assert_called_with(':newalig#:endalig#')
 
     @staticmethod
     def gatherData(number):

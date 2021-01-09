@@ -467,7 +467,7 @@ class Model(object):
         """
         conn = Connection(self.host)
         self._starList = list()
-        if self.numberNames == 0:
+        if self.numberStars == 0:
             return True
 
         commandString = ''

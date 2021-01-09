@@ -104,3 +104,40 @@ def test_properties_9(function):
     assert function.errorRA() is None
     assert function.errorDEC() is None
 
+
+def test_compare_1():
+    star1 = ModelStar()
+    star2 = ModelStar()
+    star1.errorRMS = 1
+    star2.errorRMS = 2
+    assert star1 < star2
+    assert star1 <= star2
+    assert not star2 < star1
+    assert not star2 <= star1
+
+
+def test_compare_2():
+    star1 = ModelStar()
+    star2 = ModelStar()
+    star1.errorRMS = 2
+    star2.errorRMS = 1
+    assert star1 > star2
+    assert star1 >= star2
+    assert not star2 > star1
+    assert not star2 >= star1
+
+
+def test_compare_3():
+    star1 = ModelStar()
+    star2 = ModelStar()
+    star1.errorRMS = 1
+    star2.errorRMS = 1
+    assert star1 == star2
+
+
+def test_compare_4():
+    star1 = ModelStar()
+    star2 = ModelStar()
+    star1.errorRMS = 1
+    star2.errorRMS = 2
+    assert not star1 == star2

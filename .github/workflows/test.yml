@@ -29,9 +29,10 @@ jobs:
           echo .
           echo %PAYTHONPATH%
           set PYTHONPATH=%PYTHONPATH%;c:\Windows\System32
+          set PATH=%PATH%;c:\Windows\System32
 
       - name: test python path
         run: |
           python -c 'import sys; print(sys.path)'
           python -m pip install pywinauto
-          python -c 'import sys; sys.path.insert(0, "\\Windows\\System32"); import pywinauto.timings'
+          python -c 'import pywinauto.timings'

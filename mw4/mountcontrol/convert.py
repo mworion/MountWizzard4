@@ -53,7 +53,6 @@ def stringToDegree(value):
     :param value:
     :return: value as decimal in degrees or None if not succeeded
     """
-
     if not isinstance(value, str):
         return None
     if not len(value):
@@ -95,7 +94,6 @@ def stringToDegree(value):
 
 def stringToAngle(value, preference='degrees'):
     """
-
     :param value:
     :param preference:
     :return:
@@ -194,6 +192,11 @@ def topoToAltAz(ha, dec, lat):
 
 
 def sexagesimalizeToInt(value, decimals=0):
+    """
+    :param value:
+    :param decimals:
+    :return:
+    """
     sign = int(np.sign(value))
     value = abs(value)
     power = 10 ** decimals
@@ -229,11 +232,11 @@ def checkIsHours(value):
 
 def convertToAngle(value, isHours=None):
     """
-    convertToAngle ties to take any value and converts is to the right form in skyfield
-    angles. if the value is a string, we convert it to float value. in case of isHours,
-    we should have already a string, which represents hours inside. if the value is float
-    and we expect to have hours, the float value is normally given in degrees, so we have
-    to calculate the numbers in hours.
+    convertToAngle ties to take any value and converts is to the right form in
+    skyfield angles. if the value is a string, we convert it to float value. in
+    case of isHours, we should have already a string, which represents hours
+    inside. if the value is float and we expect to have hours, the float value is
+    normally given in degrees, so we have to calculate the numbers in hours.
 
     :param value:
     :param isHours:
@@ -259,8 +262,8 @@ def convertToAngle(value, isHours=None):
 
 def convertToDMS(dec):
     """
-    takes the given DEC value, which should be in DMS format (but different types) and
-    convert it to solve-field readable string in sDD:MM:SS
+    takes the given DEC value, which should be in DMS format (but different
+    types) and convert it to solve-field readable string in sDD:MM:SS
 
     :param dec: declination as Angle
     :return: converted value as string
@@ -279,8 +282,8 @@ def convertToDMS(dec):
 
 def convertToHMS(ra):
     """
-    takes the given RA value, which should be in HMS format (but different types) and
-    convert it to solve-field readable string in HH:MM:SS
+    takes the given RA value, which should be in HMS format (but different
+    types) and convert it to solve-field readable string in HH:MM:SS
 
     :param ra: right ascension as Angle
     :return: converted value as string

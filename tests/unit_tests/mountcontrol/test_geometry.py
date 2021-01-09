@@ -182,9 +182,9 @@ def test_geometry_1(function):
 
     for t, r in zip(testValues, results):
         alt, az, x, y, z = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
-                                                                 ha=Angle(hours=t[1]),
-                                                                 lat=Angle(degrees=50),
-                                                                 pierside=t[2])
+                                                                        ha=Angle(hours=t[1]),
+                                                                        lat=Angle(degrees=50),
+                                                                        pierside=t[2])
         assert pytest.approx(alt.degrees, 0.001) == r[0]
         assert pytest.approx(az.degrees, 0.001) == r[1]
         assert pytest.approx(x, 0.001) == r[2]
@@ -241,9 +241,9 @@ def test_geometry_2(function):
 
     for t, r in zip(testValues, results):
         alt, az, x, y, z = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
-                                                                 ha=Angle(hours=t[1]),
-                                                                 lat=Angle(degrees=50),
-                                                                 pierside=t[2])
+                                                                        ha=Angle(hours=t[1]),
+                                                                        lat=Angle(degrees=50),
+                                                                        pierside=t[2])
         assert pytest.approx(alt.degrees, 0.001) == r[0]
         assert pytest.approx(az.degrees, 0.001) == r[1]
         assert pytest.approx(x, 0.001) == r[2]
@@ -300,9 +300,9 @@ def test_geometry_3(function):
 
     for t, r in zip(testValues, results):
         alt, az, x, y, z = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
-                                                                 ha=Angle(hours=t[1]),
-                                                                 lat=Angle(degrees=50),
-                                                                 pierside=t[2])
+                                                                        ha=Angle(hours=t[1]),
+                                                                        lat=Angle(degrees=50),
+                                                                        pierside=t[2])
         assert pytest.approx(alt.degrees, 0.001) == r[0]
         assert pytest.approx(az.degrees, 0.001) == r[1]
         assert pytest.approx(x, 0.001) == r[2]
@@ -359,9 +359,9 @@ def test_geometry_4(function):
 
     for t, r in zip(testValues, results):
         alt, az, x, y, z = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
-                                                                 ha=Angle(hours=t[1]),
-                                                                 lat=Angle(degrees=50),
-                                                                 pierside=t[2])
+                                                                        ha=Angle(hours=t[1]),
+                                                                        lat=Angle(degrees=50),
+                                                                        pierside=t[2])
         assert pytest.approx(alt.degrees, 0.001) == r[0]
         assert pytest.approx(az.degrees, 0.001) == r[1]
         assert pytest.approx(x, 0.001) == r[2]
@@ -379,8 +379,10 @@ def test_geometry_5(function):
     function.geometry.offLAT = 0.2
     function.geometry.domeRadius = 1.5
 
-    val = function.geometry.calcTransformationMatrices(ha=None, dec=None, lat=None,
-                                                pierside='E')
+    val = function.geometry.calcTransformationMatrices(ha=None,
+                                                       dec=None,
+                                                       lat=None,
+                                                       pierside='E')
     assert val == (None, None, None, None, None)
 
 
@@ -394,9 +396,10 @@ def test_geometry_6(function):
     function.geometry.offLAT = 0.2
     function.geometry.domeRadius = 1.5
 
-    val = function.geometry.calcTransformationMatrices(ha=Angle(hours=1), dec=None,
-                                                lat=None,
-                                                pierside='E')
+    val = function.geometry.calcTransformationMatrices(ha=Angle(hours=1),
+                                                       dec=None,
+                                                       lat=None,
+                                                       pierside='E')
     assert val == (None, None, None, None, None)
 
 
@@ -411,7 +414,24 @@ def test_geometry_7(function):
     function.geometry.domeRadius = 1.5
 
     val = function.geometry.calcTransformationMatrices(ha=Angle(hours=1),
-                                                dec=Angle(degrees=1),
-                                                lat=None,
-                                                pierside='E')
+                                                       dec=Angle(degrees=1),
+                                                       lat=None,
+                                                       pierside='E')
+    assert val == (None, None, None, None, None)
+
+
+def test_geometry_8(function):
+    suc = function.geometry.initializeGeometry('10micron GM1000HPS')
+    assert suc
+    function.geometry.offNorth = 0
+    function.geometry.offEast = 0
+    function.geometry.offVert = 0
+    function.geometry.offGEM = 0
+    function.geometry.offLAT = 0.5
+    function.geometry.domeRadius = 0.25
+
+    val = function.geometry.calcTransformationMatrices(ha=Angle(hours=1),
+                                                       dec=Angle(degrees=1),
+                                                       lat=Angle(degrees=49),
+                                                       pierside='E')
     assert val == (None, None, None, None, None)

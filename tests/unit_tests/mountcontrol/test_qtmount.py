@@ -108,7 +108,7 @@ def test_errorCycleCheckMountUp(function):
 
 
 def test_clearCycleCheckMountUp_1(function):
-    suc = function.cycleCheckMountUp()
+    suc = function.clearCycleCheckMountUp()
     assert suc
 
 

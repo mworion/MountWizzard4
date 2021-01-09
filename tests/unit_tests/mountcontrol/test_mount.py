@@ -92,6 +92,11 @@ def test_checkFormatMAC_6():
     assert val == '00:00:00:12:00:00'
 
 
+def test_checkFormatMAC_7():
+    val = m.checkFormatMAC('00:L0:00:12:00:00')
+    assert val is None
+
+
 def test_resetData():
     m.resetData()
 

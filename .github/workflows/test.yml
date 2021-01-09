@@ -30,5 +30,6 @@ jobs:
 
       - name: test python path
         run: |
+          python -c 'import sys; print(sys.path)'
           python -m pip install pywinauto
           python -c 'import pywinauto.timings'

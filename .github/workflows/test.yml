@@ -26,6 +26,7 @@ jobs:
         run: |
           dir c:\Windows\System32\UI*.dll
           dir c:\Windows\SysWOW64\UI*.dll
+          echo %PATH%
 
       - name: test python path
         run: python -c 'import os; print(os.environ["PATH"])'

@@ -27,6 +27,7 @@ jobs:
           dir c:\Windows\System32\UI*.dll
           dir c:\Windows\SysWOW64\UI*.dll
           echo %PATH%
+          echo %PAYTHONPATH%
 
       - name: test python path
         run: |

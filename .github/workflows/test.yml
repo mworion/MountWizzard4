@@ -42,13 +42,6 @@ jobs:
       - name: test python path
         shell: cmd
         run: |
-          echo .
-          echo %PATH%
-          echo .
-          echo .
-          echo %PYTHONPATH%
-          echo .
-          
+          set PYTHONPATH=%PYTHONPATH%;c:\Windows\System32
           python -c "import sys; print(sys.path)"
-          #python -m pip install pywinauto
   

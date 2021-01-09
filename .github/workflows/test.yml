@@ -12,7 +12,7 @@ on:
       - '.github/workflows/test.yml'
 
 jobs:
-  find dll:
+  find:
     runs-on: [windows-latest]
     
     steps:

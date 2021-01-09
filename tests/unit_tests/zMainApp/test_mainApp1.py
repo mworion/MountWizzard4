@@ -29,7 +29,8 @@ from base.loggerMW import addLoggingLevel
 
 addLoggingLevel('TRACE', 5)
 
-def test_start_parameters(qapp):
+
+def test_start_parameters_1(qapp):
     mwGlob = {'configDir': 'tests/config',
               'dataDir': 'tests/data',
               'tempDir': 'tests/temp',
@@ -48,5 +49,5 @@ def test_start_parameters(qapp):
                                        return_value=None):
                     with mock.patch.object(sys,
                                            'argv',
-                                           ['test']):
+                                           return_value=['test']):
                         MountWizzard4(mwGlob=mwGlob, application=qapp)

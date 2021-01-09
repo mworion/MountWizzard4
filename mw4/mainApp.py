@@ -185,11 +185,7 @@ class MountWizzard4(QObject):
         self.timer0_1s.start(100)
         self.application.aboutToQuit.connect(self.aboutToQuit)
 
-        if not hasattr(sys, 'argv'):
-            return
-        if not len(sys.argv) > 1:
-            return
-        if sys.argv[1] == 'test':
+        if len(sys.argv) > 1:
             self.update3s.connect(self.quit)
 
     def checkAndSetAutomation(self):
@@ -312,7 +308,7 @@ class MountWizzard4(QObject):
         :param      name:   name of the config file
         :return:    success if file could be loaded
         """
-        configDir = self.mwGlob['configDir']y
+        configDir = self.mwGlob['configDir']
         if name is None:
             profileFile = f'{configDir}/profile'
             if os.path.isfile(profileFile):

@@ -28,4 +28,4 @@ jobs:
           dir c:\Windows\SysWOW64\UI*.dll
 
       - name: test python path
-        run: python -c 'import os; print(os.environ["PATH"] '
+        run: python -c 'import os; print(os.environ["PATH"])'

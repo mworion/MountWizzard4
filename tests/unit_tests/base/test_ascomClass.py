@@ -103,14 +103,16 @@ def test_getInitialConfig_2():
     app.client = Test()
     with mock.patch.object(app,
                            'connectClient',
-                           side_effect=Exception()):
+                           side_effect=Exception):
         suc = app.getInitialConfig()
         assert not suc
 
 
 def test_startTimer():
-    suc = app.startTimer()
-    assert suc
+    with mock.patch.object(PyQt5.QtCore.QTimer,
+                           'start'):
+        suc = app.startTimer()
+        assert suc
 
 
 def test_stopTimer():
@@ -211,6 +213,24 @@ def test_pollStatus_4():
                            side_effect=Exception()):
         suc = app.pollStatusWorker()
         assert not suc
+
+
+def test_callMethodThreaded_1():
+    def test():
+        return
+
+    app.deviceConnected = False
+    suc = app.callMethodThreaded(test)
+    assert not suc
+
+
+def test_callMethodThreaded_2():
+    def test():
+        return
+
+    app.deviceConnected = True
+    suc = app.callMethodThreaded(test)
+    assert suc
 
 
 def test_processPolledData():

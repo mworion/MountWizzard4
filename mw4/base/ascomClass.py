@@ -120,7 +120,6 @@ class AscomClass(object):
 
             except Exception as e:
                 suc = False
-                print(e)
                 self.log.warning(f'Connection error [{self.deviceName}]: [{e}]')
 
             else:
@@ -234,6 +233,7 @@ class AscomClass(object):
 
         worker = Worker(fn, *args, **kwargs)
         self.threadPool.start(worker)
+        return True
 
     def processPolledData(self):
         """

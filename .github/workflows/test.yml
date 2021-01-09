@@ -18,5 +18,7 @@ jobs:
     steps:
       - name: find dll
         shell: cmd
-        run: where /r c:\ UIAutomationCore.dll
+        run: |
+          dir c:\Windows\System32\UI*.dll
+          dir c:\Windows\SysWOW64\UI*.dll
   

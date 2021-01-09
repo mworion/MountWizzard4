@@ -16,9 +16,16 @@ jobs:
     runs-on: [windows-latest]
     
     steps:
+      - name: Set up Python ${{ matrix.python-version }}
+          uses: actions/setup-python@v2
+          with:
+            python-version: '3.9'
+            
       - name: find dll
         shell: cmd
         run: |
           dir c:\Windows\System32\UI*.dll
           dir c:\Windows\SysWOW64\UI*.dll
-  
+
+      - name: test python path
+        run: python -c 'import os; print(os.environ["PATH"] '

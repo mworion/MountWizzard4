@@ -1,0 +1,22 @@
+#
+# GitHub actions for running the unit test of the mountwizzard4 package
+#
+# v0.1, Michael Wuertenberger
+#
+name: test
+
+on:
+  push:
+    # Run this action on the trigger event when specific files are touched
+    paths:
+      - '.github/workflows/test.yml'
+
+jobs:
+  find dll:
+      runs-on: [windows-latest]
+    
+    steps:
+      - name: find dll
+        shell: cmd
+        run: where /r c:\ UIAutomationCore.dll
+  

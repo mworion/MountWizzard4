@@ -28,7 +28,7 @@ jobs:
           echo %PATH%
           echo .
           echo .
-          echo %PAYTHONPATH%
+          echo %PYTHONPATH%
           echo .
           set PYTHONPATH=%PYTHONPATH%;c:\Windows\System32
           set PATH=%PATH%;c:\Windows\System32
@@ -40,8 +40,8 @@ jobs:
           echo .
 
       - name: test python path
-        run: |
         shell: cmd
+        run: |
           echo .
           echo %PATH%
           echo .

@@ -24,15 +24,23 @@ jobs:
       - name: check path
         shell: cmd
         run: |
+          echo .
           echo %PATH%
           echo .
           echo .
           echo %PAYTHONPATH%
+          echo .
           set PYTHONPATH=%PYTHONPATH%;c:\Windows\System32
           set PATH=%PATH%;c:\Windows\System32
 
       - name: test python path
         run: |
+          echo .
+          echo %PATH%
+          echo .
+          echo .
+          echo %PAYTHONPATH%
+          echo .
           python -c 'import sys; print(sys.path)'
           python -m pip install pywinauto
           python -c 'import sys; sys.path.append("/Windows/System32"); import pywinauto.timings'

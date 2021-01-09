@@ -52,10 +52,6 @@ def runMW(c, param):
     c.run(param)
 
 
-def printMW_alt(param):
-    print('\n\033[95m\033[1m' + param + '\033[0m')
-
-
 def printMW(param):
     print(param)
 
@@ -207,14 +203,6 @@ def build_mw(c):
         runMW(c, 'cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz')
 
 
-@task(pre=[build_resource, build_widgets])
-def install_mw(c):
-    printMW('installing in work dir')
-    with c.cd('./dist'):
-        runMW(c, 'pip install indibase.tar.gz')
-        runMW(c, 'pip install mountcontrol.tar.gz')
-
-
 @task(pre=[build_mw])
 def upload_mw(c):
     printMW('uploading dist mountwizzard4')
@@ -247,75 +235,6 @@ def test_win(c):
         runMWd(c, f'scp -r MW4_Run.bat {wWinSCP}')
         printMW('...run MountWizzard4 for 3 seconds')
         runMWd(c, f'ssh {uWin} "cd {wWin} && MW4_RunTest.bat"')
-
-
-@task()
-def unittest_win(c):
-
-    test = 'pytest tests/unit_tests/'
-    wWinInst = 'venv\\Scripts\\activate && python -m pip install'
-    cmd = f'cd test && venv\\Scripts\\activate && cd MountWizzard4 && {test}'
-    flake = 'cd test && venv\\Scripts\\activate && cd MountWizzard4'
-
-    printMW('unit testing mountwizzard4')
-    printMW('test windows install')
-    printMW('...delete test dir')
-    runMW(c, f'ssh {uWin} "if exist {wWin} rd /s /q {wWin}"')
-    time.sleep(1)
-    printMW('...make test dir')
-    runMW(c, f'ssh {uWin} "if not exist {wWin} mkdir {wWin}"')
-    time.sleep(1)
-
-    printMW('..install pytest')
-    runMW(c, f'ssh {uWin} "cd {wWin} && python -m pip install wheel"')
-    runMW(c, f'ssh {uWin} "cd {wWin} && python -m venv venv"')
-    runMW(c, f'ssh {uWin} "cd {wWin} && {wWinInst} pytest"')
-    runMW(c, f'ssh {uWin} "cd {wWin} && {wWinInst} pytest-qt"')
-    runMW(c, f'ssh {uWin} "cd {wWin} && {wWinInst} pytest-cov"')
-    runMW(c, f'ssh {uWin} "cd {wWin} && {wWinInst} pytest-pythonpath"')
-    runMW(c, f'ssh {uWin} "cd {wWin} && {wWinInst} flake8"')
-
-    printMW('..install mountwizzard4')
-    with c.cd('dist'):
-        printMW('...copy *.tar.gz to test dir')
-        runMWd(c, f'scp -r mountwizzard4.tar.gz {wWinSCP}')
-    runMW(c, f'ssh {uWin} "cd {wWin} && {wWinInst} mountwizzard4.tar.gz"')
-
-    printMW('..clone MountWizzard4')
-    runMW(c, f'ssh {uWin} "cd {wWin} && git clone https://github.com/mworion/MountWizzard4.git"')
-
-    printMW('..run flake8')
-    runMW(c, f'ssh {uWin} "{flake} && flake8"')
-
-    printMW('..run unittests')
-    runMW(c, f'ssh {uWin} "{cmd}zLoader --cov=mw4"')
-    runMW(c, f'ssh {uWin} "{cmd}base --cov=mw4 --cov-append"')
-    runMW(c, f'ssh {uWin} "{cmd}logic --cov=mw4 --cov-append"')
-    runMW(c, f'ssh {uWin} "{cmd}gui/extWindows --cov=mw4 --cov-append"')
-    runMW(c, f'ssh {uWin} "{cmd}gui/mainWindow --cov=mw4 --cov-append"')
-    runMW(c, f'ssh {uWin} "{cmd}gui/mainWmixin --cov=mw4 --cov-append"')
-    runMW(c, f'ssh {uWin} "{cmd}gui/utilities --cov=mw4 --cov-append"')
-
-
-@task(pre=[])
-def unittest_win_old(c):
-    printMW('unittest windows install')
-    printMW('...delete test dir')
-    runMW(c, f'ssh {uWin} "if exist {wWin} rd /s /q {wWin}"')
-    time.sleep(1)
-    printMW('...make test dir')
-    runMW(c, f'ssh {uWin} "if not exist {wWin} mkdir {wWin}"')
-    time.sleep(1)
-
-    with c.cd('dist'):
-        printMW('...copy *.tar.gz to test dir')
-        runMWd(c, f'scp -r mountwizzard4.tar.gz {wWinSCP}')
-
-    with c.cd('support/Windows'):
-        printMW('...copy install script to test dir')
-        runMWd(c, f'scp -r MW4_InstallUnitTests.bat {wWinSCP}')
-        printMW('...run install script in test dir')
-        runMWd(c, f'ssh {uWin} "cd {wWin} && MW4_InstallUnitTests.bat"')
 
 
 @task(pre=[])

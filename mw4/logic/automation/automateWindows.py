@@ -22,7 +22,7 @@ import platform
 # external packages
 try:
     from pywinauto import timings
-except Exception as e:
+except Exception:
     hasAutomation = False
 else:
     hasAutomation = True

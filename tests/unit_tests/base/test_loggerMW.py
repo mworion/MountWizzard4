@@ -16,6 +16,8 @@
 ###########################################################
 # standard libraries
 import pytest
+import logging
+from unittest import mock
 
 # external packages
 
@@ -43,5 +45,33 @@ def test_setupLogging():
 def test_setCustomLoggingLevel():
     suc = loggerMW.setCustomLoggingLevel()
     assert suc
+
+
+def test_addLoggingLevel_1():
+    setattr(logging, 'T1', None)
+    loggerMW.addLoggingLevel('T1', 31)
+
+
+def test_addLoggingLevel_2():
+    setattr(logging, 'M1', None)
+    loggerMW.addLoggingLevel('T2', 32, 'M1')
+
+
+def test_addLoggingLevel_3():
+    class Test:
+        M2 = None
+
+    with mock.patch.object(logging,
+                           'getLoggerClass',
+                           return_value=Test()):
+        loggerMW.addLoggingLevel('T3', 33, 'M2')
+
+
+def test_addLoggingLevel_4():
+    loggerMW.addLoggingLevel('Test', 65)
+    loggerTest = logging.getLogger('test')
+    loggerTest.setLevel(60)
+    loggerTest.testRoot('test')
+
 
 

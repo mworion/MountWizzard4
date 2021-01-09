@@ -101,7 +101,6 @@ class QAwesomeTooltipEventFilter(QObject):
         """
         Tooltip-specific event filter handling the passed Qt object and event.
         """
-
         if event.type() == QEvent.ToolTipChange:
             if not isinstance(widget, QWidget):
                 self.log.warning('QObject "{}" not a widget.'.format(widget))
@@ -156,7 +155,7 @@ class MyApp(QApplication):
         :param returnValue:
         :return:
         """
-        if obj.objectName() == 'MainWindowWindow':
+        if obj.objectName() == 'MainWindow':
             return returnValue
 
         if obj == self.last:
@@ -194,9 +193,9 @@ class MyApp(QApplication):
         :param event:
         :return:
         """
-
         try:
             returnValue = QApplication.notify(self, obj, event)
+
         except Exception as e:
             self.log.critical('-' * 100)
             self.log.critical('Event: {0}'.format(event))

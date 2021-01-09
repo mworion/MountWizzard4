@@ -34,6 +34,7 @@ from base.loggerMW import addLoggingLevel
 
 @pytest.fixture(autouse=True, scope='module')
 def app(qapp):
+    global mwGlob
     mwGlob = {'configDir': 'tests/config',
               'dataDir': 'tests/data',
               'tempDir': 'tests/temp',

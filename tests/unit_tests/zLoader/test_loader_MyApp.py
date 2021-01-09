@@ -23,7 +23,8 @@ import os
 # external packages
 import pytest
 import PyQt5
-from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QEvent, QPoint, Qt
+from PyQt5.QtGui import QMouseEvent
 from PyQt5 import QtWidgets
 
 # local import
@@ -90,6 +91,26 @@ def test_handleButtons_7():
     assert val == 10
 
 
+def test_handleButtons_8():
+    ui = QtWidgets.QLCDNumber()
+    val = app.handleButtons(obj=ui, returnValue=10)
+    assert val == 10
+
+
+def test_handleButtons_9():
+    ui = QtWidgets.QLineEdit()
+    app.last = ui
+    val = app.handleButtons(obj=ui, returnValue=10)
+    assert val == 10
+
+
+def test_handleButtons_10():
+    ui = QtWidgets.QLineEdit()
+    ui.setObjectName('MainWindow')
+    val = app.handleButtons(obj=ui, returnValue=10)
+    assert val == 10
+
+
 def test_notify_1():
     ui = QtWidgets.QLineEdit()
     event = QEvent(QEvent.ToolTipChange)
@@ -101,18 +122,41 @@ def test_notify_2():
     ui = QtWidgets.QLineEdit()
     event = QEvent(QEvent.MouseButtonPress)
     with mock.patch.object(PyQt5.QtWidgets.QApplication,
-                           'beep',
-                           return_value=False):
+                           'notify',
+                           return_value=True):
         suc = app.notify(obj=ui, event=event)
         assert suc
 
 
 def test_notify_3():
     ui = QtWidgets.QLineEdit()
-    event = QEvent(QEvent.MouseMove)
+    event = QMouseEvent(QEvent.MouseMove,
+                        QPoint(100, 100),
+                        Qt.NoButton,
+                        Qt.NoButton,
+                        Qt.NoModifier,
+                        )
     with mock.patch.object(PyQt5.QtWidgets.QApplication,
                            'notify',
-                           return_value=False,
+                           return_value=True,
                            side_effect=Exception()):
         suc = app.notify(obj=ui, event=event)
         assert not suc
+
+
+def test_notify_4():
+    ui = QtWidgets.QLineEdit()
+    event = QMouseEvent(QEvent.MouseMove,
+                        QPoint(100, 100),
+                        Qt.LeftButton,
+                        Qt.LeftButton,
+                        Qt.NoModifier,
+                        )
+    with mock.patch.object(PyQt5.QtWidgets.QApplication,
+                           'notify',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'handleButtons',
+                               return_value=True):
+            suc = app.notify(obj=ui, event=event)
+            assert suc

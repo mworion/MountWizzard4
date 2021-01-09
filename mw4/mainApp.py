@@ -56,8 +56,8 @@ class MountWizzard4(QObject):
     """
     MountWizzard4 class is the main class for the application. it loads all
     windows and classes needed to fulfil the work of mountwizzard. any gui work
-    should be handled through the window classes. main class is for setup, config, start, persist and
-    shutdown the application.
+    should be handled through the window classes. main class is for setup,
+    config, start, persist and shutdown the application.
     """
 
     __all__ = ['MountWizzard4']
@@ -146,15 +146,7 @@ class MountWizzard4(QObject):
         topo = self.initConfig()
         self.mount.obsSite.location = topo
         self.mount.signals.mountUp.connect(self.loadMountData)
-
-        # get all planets for calculation
-        try:
-            self.ephemeris = self.mount.obsSite.loader('de421_23.bsp')
-
-        except Exception as e:
-            self.log.critical(f'Failed loading planets: {e}')
-            self.ephemeris = None
-
+        self.ephemeris = self.mount.obsSite.loader('de421_23.bsp')
         self.relay = KMRelay()
         self.sensorWeather = SensorWeather(self)
         self.onlineWeather = OnlineWeather(self)

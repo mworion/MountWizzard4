@@ -874,14 +874,16 @@ class Client(QObject):
 
     def _setProperty(self, chunk=None, device=None, deviceName=None):
         """
-        _sefProperty generate and write all data to device class for SefVector chunks
+        _sefProperty generate and write all data to device class for SefVector
+        chunks
 
         :param chunk:   xml element from INDI
         :param device:  device class
         :param deviceName: device name
         :return: success
         """
-        iProperty, elementList = self._setupPropertyStructure(chunk=chunk, device=device)
+        iProperty, elementList = self._setupPropertyStructure(chunk=chunk,
+                                                              device=device)
         self._fillAttributes(deviceName=deviceName,
                              chunk=chunk,
                              elementList=elementList,
@@ -906,14 +908,16 @@ class Client(QObject):
 
     def _defProperty(self, chunk=None, device=None, deviceName=None):
         """
-        _defProperty generate and write all data to device class for DefVector chunks
+        _defProperty generate and write all data to device class for DefVector
+        chunks
 
         :param chunk:   xml element from INDI
         :param device:  device class
         :param deviceName: device name
         :return: success
         """
-        iProperty, elementList = self._setupPropertyStructure(chunk=chunk, device=device)
+        iProperty, elementList = self._setupPropertyStructure(chunk=chunk,
+                                                              device=device)
         self._fillAttributes(deviceName=deviceName,
                              chunk=chunk,
                              elementList=elementList,
@@ -935,15 +939,16 @@ class Client(QObject):
             self.signals.defLight.emit(deviceName, iProperty)
         return True
 
-    def _getProperty(self, chunk=None, device=None, deviceName=None):
+    @staticmethod
+    def _getProperty(chunk=None, device=None, deviceName=None):
         """
         :param chunk:   xml element from INDI
         :param device:  device class
         :param deviceName: device name
         :return: success
         """
-        # todo: there is actually no implementation for this type. check if it is relevant
-        # get property is for snooping other devices
+        # todo: there is actually no implementation for this type. check if it
+        #  is relevant get property is for snooping other devices
         return True
 
     def _message(self, chunk=None, deviceName=None):
@@ -958,8 +963,9 @@ class Client(QObject):
 
     def _parseCmd(self, chunk):
         """
-        _parseCmd parses the incoming indi XL data and builds up a dictionary of devices
-        in device class which holds all the data transferred through INDI protocol.
+        _parseCmd parses the incoming indi XL data and builds up a dictionary
+        of devices in device class which holds all the data transferred through
+        INDI protocol.
 
         :param chunk: raw indi XML element
         :return: success if it could be parsed
@@ -1036,10 +1042,10 @@ class Client(QObject):
     @PyQt5.QtCore.pyqtSlot()
     def _handleReadyRead(self):
         """
-        _handleReadyRead gets the date in buffer signal and starts to read data from the
-        network. as long as data is streaming, it feeds to the xml parser. with this
-        construct you don't have to put the whole data set into the parser at once, but
-        doing the work step be step.
+        _handleReadyRead gets the date in buffer signal and starts to read data
+        from the network. as long as data is streaming, it feeds to the xml
+        parser. with this construct you don't have to put the whole data set into
+        the parser at once, but doing the work step be step.
 
         :return: nothing
         """

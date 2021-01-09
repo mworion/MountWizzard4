@@ -66,13 +66,12 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
 
     if hasattr(logging, levelName):
         return
-        # raise AttributeError('{} already defined in logging module'.format(levelName))
+
     if hasattr(logging, methodName):
         return
-        # raise AttributeError('{} already defined in logging module'.format(methodName))
+
     if hasattr(logging.getLoggerClass(), methodName):
         return
-        # raise AttributeError('{} already defined in logger class'.format(methodName))
 
     def logForLevel(self, message, *args, **kwargs):
         if self.isEnabledFor(levelNum):

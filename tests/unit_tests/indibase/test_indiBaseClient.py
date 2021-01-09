@@ -778,6 +778,22 @@ def test_setProperty_4(function):
             assert suc
 
 
+def test_setProperty_5(function):
+    function.devices = {'test': Device(name='test')}
+    function.devices['test'].test = None
+    elem = indiXML.DefText('defText', 'On', {'name': 'DISCONNECT'}, None)
+    chunk = indiXML.SetLightVector('defText', [elem], {'name': 'test'}, None)
+    with mock.patch.object(function,
+                           '_setupPropertyStructure',
+                           return_value=('test', 'test')):
+        with mock.patch.object(function,
+                               '_fillAttributes'):
+            suc = function._setProperty(chunk=chunk,
+                                        device=function.devices['test'],
+                                        deviceName='test')
+            assert suc
+
+
 def test_defProperty_1(function):
     function.devices = {'test': Device(name='test')}
     function.devices['test'].test = None
@@ -973,6 +989,15 @@ def test_parseCmd_8(function):
     function.connected = True
     suc = function._parseCmd(chunk=chunk)
     assert suc
+
+
+def test_parseCmd_9(function):
+    class Test:
+        attr = {'name': 'test'}
+
+    function.connected = True
+    suc = function._parseCmd(chunk=Test())
+    assert not suc
 
 
 def test_handleReadyRead_1(function):

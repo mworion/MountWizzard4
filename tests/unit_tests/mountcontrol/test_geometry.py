@@ -20,85 +20,127 @@ import os
 
 # external packages
 from skyfield.api import Angle, Topos
+import numpy as np
 
 # local imports
 from mountcontrol.mount import Mount
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global m
+def function():
     m = Mount(host='192.168.2.15',
               pathToData=os.getcwd() + '/data',
               verbose=True)
-    yield
-
-
-def test_properties_1():
     m.obsSite.location = Topos(latitude_degrees=90,
                                longitude_degrees=11,
                                elevation_m=500)
-    m.geometry.initializeGeometry('10micron GM1000HPS')
-    m.geometry.offVert = 0.10
-    val = m.geometry.offVertGEM
-    assert val == m.geometry.offAltAxisGemX + m.geometry.offBaseAltAxisZ + 0.1
+    yield m
 
 
-def test_properties_2():
-    m.obsSite.location = Topos(latitude_degrees=90,
-                               longitude_degrees=11,
-                               elevation_m=500)
-    m.geometry.initializeGeometry('10micron GM1000HPS')
-    m.geometry.offVertGEM = 0.10
-    val = m.geometry.offVert
-    assert val == 0.1 - m.geometry.offAltAxisGemX - m.geometry.offBaseAltAxisZ
+def test_properties_1(function):
+    function.geometry.initializeGeometry('10micron GM1000HPS')
+    function.geometry.offVert = 0.10
+    val = function.geometry.offVertGEM
+    assert val == function.geometry.offAltAxisGemX + function.geometry.offBaseAltAxisZ + 0.1
 
 
-def test_properties_3():
-    m.obsSite.location = None
-    m.geometry.initializeGeometry('10micron GM1000HPS')
-    m.geometry.offVert = 0.10
-    val = m.geometry.offVertGEM
+def test_properties_2(function):
+    function.geometry.initializeGeometry('10micron GM1000HPS')
+    function.geometry.offVertGEM = 0.10
+    val = function.geometry.offVert
+    assert val == 0.1 - function.geometry.offAltAxisGemX - function.geometry.offBaseAltAxisZ
+
+
+def test_properties_3(function):
+    function.obsSite.location = None
+    function.geometry.initializeGeometry('10micron GM1000HPS')
+    function.geometry.offVert = 0.10
+    val = function.geometry.offVertGEM
     assert val == 0
 
 
-def test_properties_4():
-    m.obsSite.location = None
-    m.geometry.initializeGeometry('10micron GM1000HPS')
-    m.geometry.offVertGEM = 0.10
-    val = m.geometry.offVert
+def test_properties_4(function):
+    function.obsSite.location = None
+    function.geometry.initializeGeometry('10micron GM1000HPS')
+    function.geometry.offVertGEM = 0.10
+    val = function.geometry.offVert
     assert val == 0
 
 
-def test_properties_5():
-    m.obsSite.location = Topos(latitude_degrees=90,
-                               longitude_degrees=11,
-                               elevation_m=500)
-    m.geometry.initializeGeometry('10micron GM1000HPS')
-    m.geometry.offGEM = 0.10
-    val = m.geometry.offPlateOTA
-    assert val == 0.1 - m.geometry.offGemPlate
+def test_properties_5(function):
+    function.geometry.initializeGeometry('10micron GM1000HPS')
+    function.geometry.offGEM = 0.10
+    val = function.geometry.offPlateOTA
+    assert val == 0.1 - function.geometry.offGemPlate
 
 
-def test_properties_6():
-    m.obsSite.location = Topos(latitude_degrees=90,
-                               longitude_degrees=11,
-                               elevation_m=500)
-    m.geometry.initializeGeometry('10micron GM1000HPS')
-    m.geometry.offPlateOTA = 0.10
-    val = m.geometry.offGEM
-    assert val == 0.1 + m.geometry.offGemPlate
+def test_properties_6(function):
+    function.geometry.initializeGeometry('10micron GM1000HPS')
+    function.geometry.offPlateOTA = 0.10
+    val = function.geometry.offGEM
+    assert val == 0.1 + function.geometry.offGemPlate
 
 
-def test_geometry_1():
+def test_initializeGeometry_1(function):
+    suc = function.geometry.initializeGeometry('')
+    assert not suc
 
-    suc = m.geometry.initializeGeometry('10micron GM1000HPS')
-    m.geometry.offNorth = 0.1
-    m.geometry.offEast = 0.2
-    m.geometry.offVert = 0.3
-    m.geometry.offGEM = 0.1
-    m.geometry.offLAT = 0.2
-    m.geometry.domeRadius = 1.5
+
+def test_initializeGeometry_2(function):
+    suc = function.geometry.initializeGeometry('10micron GM1000HPS')
+    assert suc
+
+
+def test_transformRotX_1(function):
+    function.geometry.transformRotX(90, degrees=True)
+
+
+def test_transformRotX_2(function):
+    function.geometry.transformRotX(np.pi)
+
+
+def test_transformRotX_3(function):
+    function.geometry.transformRotX(Angle(degrees=90))
+
+
+def test_transformRotY_1(function):
+    function.geometry.transformRotY(90, degrees=True)
+
+
+def test_transformRotY_2(function):
+    function.geometry.transformRotY(np.pi)
+
+
+def test_transformRotY_3(function):
+    function.geometry.transformRotY(Angle(degrees=90))
+
+
+def test_transformRotZ_1(function):
+    function.geometry.transformRotZ(90, degrees=True)
+
+
+def test_transformRotZ_2(function):
+    function.geometry.transformRotZ(np.pi)
+
+
+def test_transformRotZ_3(function):
+    function.geometry.transformRotZ(Angle(degrees=90))
+
+
+def test_transformTranslate(function):
+    function.geometry.transformTranslate([1, 2, 3])
+
+
+def test_geometry_1(function):
+    suc = function.geometry.initializeGeometry('10micron GM1000HPS')
+    function.geometry.offNorth = 0.1
+    function.geometry.offEast = 0.2
+    function.geometry.offVert = 0.3
+    function.geometry.offGEM = 0.1
+    function.geometry.offLAT = 0.2
+    function.geometry.domeRadius = 1.5
 
     assert suc
 
@@ -139,7 +181,7 @@ def test_geometry_1():
     ]
 
     for t, r in zip(testValues, results):
-        alt, az, x, y, z = m.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
+        alt, az, x, y, z = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
                                                                  ha=Angle(hours=t[1]),
                                                                  lat=Angle(degrees=50),
                                                                  pierside=t[2])
@@ -150,15 +192,14 @@ def test_geometry_1():
         assert pytest.approx(z, 0.001) == r[4]
 
 
-def test_geometry_2():
-
-    suc = m.geometry.initializeGeometry('10micron GM2000HPS')
-    m.geometry.offNorth = 0.1
-    m.geometry.offEast = 0.2
-    m.geometry.offVert = 0.3
-    m.geometry.offGEM = 0.1
-    m.geometry.offLAT = 0.2
-    m.geometry.domeRadius = 1.5
+def test_geometry_2(function):
+    suc = function.geometry.initializeGeometry('10micron GM2000HPS')
+    function.geometry.offNorth = 0.1
+    function.geometry.offEast = 0.2
+    function.geometry.offVert = 0.3
+    function.geometry.offGEM = 0.1
+    function.geometry.offLAT = 0.2
+    function.geometry.domeRadius = 1.5
 
     assert suc
 
@@ -199,7 +240,7 @@ def test_geometry_2():
     ]
 
     for t, r in zip(testValues, results):
-        alt, az, x, y, z = m.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
+        alt, az, x, y, z = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
                                                                  ha=Angle(hours=t[1]),
                                                                  lat=Angle(degrees=50),
                                                                  pierside=t[2])
@@ -210,15 +251,14 @@ def test_geometry_2():
         assert pytest.approx(z, 0.001) == r[4]
 
 
-def test_geometry_3():
-
-    suc = m.geometry.initializeGeometry('10micron GM3000HPS')
-    m.geometry.offNorth = 0.1
-    m.geometry.offEast = 0.2
-    m.geometry.offVert = 0.3
-    m.geometry.offGEM = 0.1
-    m.geometry.offLAT = 0.2
-    m.geometry.domeRadius = 1.5
+def test_geometry_3(function):
+    suc = function.geometry.initializeGeometry('10micron GM3000HPS')
+    function.geometry.offNorth = 0.1
+    function.geometry.offEast = 0.2
+    function.geometry.offVert = 0.3
+    function.geometry.offGEM = 0.1
+    function.geometry.offLAT = 0.2
+    function.geometry.domeRadius = 1.5
 
     assert suc
 
@@ -259,7 +299,7 @@ def test_geometry_3():
     ]
 
     for t, r in zip(testValues, results):
-        alt, az, x, y, z = m.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
+        alt, az, x, y, z = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
                                                                  ha=Angle(hours=t[1]),
                                                                  lat=Angle(degrees=50),
                                                                  pierside=t[2])
@@ -270,15 +310,14 @@ def test_geometry_3():
         assert pytest.approx(z, 0.001) == r[4]
 
 
-def test_geometry_4():
-
-    suc = m.geometry.initializeGeometry('10micron GM4000HPS')
-    m.geometry.offNorth = 0.1
-    m.geometry.offEast = 0.2
-    m.geometry.offVert = 0.3
-    m.geometry.offGEM = 0.1
-    m.geometry.offLAT = 0.2
-    m.geometry.domeRadius = 1.5
+def test_geometry_4(function):
+    suc = function.geometry.initializeGeometry('10micron GM4000HPS')
+    function.geometry.offNorth = 0.1
+    function.geometry.offEast = 0.2
+    function.geometry.offVert = 0.3
+    function.geometry.offGEM = 0.1
+    function.geometry.offLAT = 0.2
+    function.geometry.domeRadius = 1.5
 
     assert suc
 
@@ -319,7 +358,7 @@ def test_geometry_4():
     ]
 
     for t, r in zip(testValues, results):
-        alt, az, x, y, z = m.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
+        alt, az, x, y, z = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
                                                                  ha=Angle(hours=t[1]),
                                                                  lat=Angle(degrees=50),
                                                                  pierside=t[2])
@@ -330,48 +369,48 @@ def test_geometry_4():
         assert pytest.approx(z, 0.001) == r[4]
 
 
-def test_geometry_5():
-    suc = m.geometry.initializeGeometry('10micron GM1000HPS')
+def test_geometry_5(function):
+    suc = function.geometry.initializeGeometry('10micron GM1000HPS')
     assert suc
-    m.geometry.offNorth = 0.1
-    m.geometry.offEast = 0.2
-    m.geometry.offVert = 0.3
-    m.geometry.offGEM = 0.1
-    m.geometry.offLAT = 0.2
-    m.geometry.domeRadius = 1.5
+    function.geometry.offNorth = 0.1
+    function.geometry.offEast = 0.2
+    function.geometry.offVert = 0.3
+    function.geometry.offGEM = 0.1
+    function.geometry.offLAT = 0.2
+    function.geometry.domeRadius = 1.5
 
-    val = m.geometry.calcTransformationMatrices(ha=None, dec=None, lat=None,
+    val = function.geometry.calcTransformationMatrices(ha=None, dec=None, lat=None,
                                                 pierside='E')
     assert val == (None, None, None, None, None)
 
 
-def test_geometry_6():
-    suc = m.geometry.initializeGeometry('10micron GM1000HPS')
+def test_geometry_6(function):
+    suc = function.geometry.initializeGeometry('10micron GM1000HPS')
     assert suc
-    m.geometry.offNorth = 0.1
-    m.geometry.offEast = 0.2
-    m.geometry.offVert = 0.3
-    m.geometry.offGEM = 0.1
-    m.geometry.offLAT = 0.2
-    m.geometry.domeRadius = 1.5
+    function.geometry.offNorth = 0.1
+    function.geometry.offEast = 0.2
+    function.geometry.offVert = 0.3
+    function.geometry.offGEM = 0.1
+    function.geometry.offLAT = 0.2
+    function.geometry.domeRadius = 1.5
 
-    val = m.geometry.calcTransformationMatrices(ha=Angle(hours=1), dec=None,
+    val = function.geometry.calcTransformationMatrices(ha=Angle(hours=1), dec=None,
                                                 lat=None,
                                                 pierside='E')
     assert val == (None, None, None, None, None)
 
 
-def test_geometry_7():
-    suc = m.geometry.initializeGeometry('10micron GM1000HPS')
+def test_geometry_7(function):
+    suc = function.geometry.initializeGeometry('10micron GM1000HPS')
     assert suc
-    m.geometry.offNorth = 0.1
-    m.geometry.offEast = 0.2
-    m.geometry.offVert = 0.3
-    m.geometry.offGEM = 0.1
-    m.geometry.offLAT = 0.2
-    m.geometry.domeRadius = 1.5
+    function.geometry.offNorth = 0.1
+    function.geometry.offEast = 0.2
+    function.geometry.offVert = 0.3
+    function.geometry.offGEM = 0.1
+    function.geometry.offLAT = 0.2
+    function.geometry.domeRadius = 1.5
 
-    val = m.geometry.calcTransformationMatrices(ha=Angle(hours=1),
+    val = function.geometry.calcTransformationMatrices(ha=Angle(hours=1),
                                                 dec=Angle(degrees=1),
                                                 lat=None,
                                                 pierside='E')

@@ -594,8 +594,53 @@ def test_uploadMPCDataCommands_2(function):
                            'ButtonWrapper'):
         with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
-            suc = function.uploadMPCDataCommands(comets=True)
-            assert suc
+            with mock.patch.object(platform,
+                                   'architecture',
+                                   return_value=['64bit']):
+                suc = function.uploadMPCDataCommands(comets=True)
+                assert suc
+
+
+def test_uploadMPCDataCommands_3(function):
+    class Test:
+        @staticmethod
+        def click():
+            pass
+
+        @staticmethod
+        def check_by_click():
+            pass
+
+        @staticmethod
+        def set_text(a):
+            pass
+
+    win = {'Orbital parameters of comets': Test(),
+           'Orbital parameters of asteroids': Test(),
+           'Edit...4': Test(),
+           'Edit...3': Test(),
+           }
+    popup = {'MPC file': Test(),
+             'Close': Test(),
+             }
+    dialog = {'OpenButton4': Test(),
+              'Button16': Test(),
+              'File &name:Edit': Test(),
+              }
+    function.updater = {'10 micron control box update': win,
+                        'Asteroid orbits': popup,
+                        'Comet orbits': popup,
+                        'Dialog': dialog,
+                        }
+    with mock.patch.object(automateWindows.controls,
+                           'ButtonWrapper'):
+        with mock.patch.object(automateWindows.controls,
+                               'EditWrapper'):
+            with mock.patch.object(platform,
+                                   'architecture',
+                                   return_value=['32bit']):
+                suc = function.uploadMPCDataCommands(comets=True)
+                assert suc
 
 
 def test_uploadMPCData_1(function):
@@ -651,7 +696,7 @@ def test_uploadMPCData_4(function):
                     assert suc
 
 
-def test_uploadEarthRotationDataCommands(function):
+def test_uploadEarthRotationDataCommands_1(function):
     class Test:
         @staticmethod
         def click():
@@ -686,8 +731,53 @@ def test_uploadEarthRotationDataCommands(function):
                            'ButtonWrapper'):
         with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
-            suc = function.uploadEarthRotationDataCommands()
-            assert suc
+            with mock.patch.object(platform,
+                                   'architecture',
+                                   return_value=['32bit']):
+                suc = function.uploadEarthRotationDataCommands()
+                assert suc
+
+
+def test_uploadEarthRotationDataCommands_2(function):
+    class Test:
+        @staticmethod
+        def click():
+            pass
+
+        @staticmethod
+        def check_by_click():
+            pass
+
+        @staticmethod
+        def set_text(a):
+            pass
+
+    win = {'UTC / Earth rotation data': Test(),
+           'Edit...1': Test(),
+           }
+    popup = {'Import files...': Test()
+             }
+    dialog = {'OpenButton4': Test(),
+              'Button16': Test(),
+              'File &name:Edit': Test(),
+              }
+    ok = {'OK': Test()
+          }
+    function.updater = {'10 micron control box update': win,
+                        'UTC / Earth rotation data': popup,
+                        'Open finals data': dialog,
+                        'Open tai-utc.dat': dialog,
+                        'UTC data': ok
+                        }
+    with mock.patch.object(automateWindows.controls,
+                           'ButtonWrapper'):
+        with mock.patch.object(automateWindows.controls,
+                               'EditWrapper'):
+            with mock.patch.object(platform,
+                                   'architecture',
+                                   return_value=['64bit']):
+                suc = function.uploadEarthRotationDataCommands()
+                assert suc
 
 
 def test_uploadEarthRotationData_1(function):
@@ -743,7 +833,7 @@ def test_uploadEarthRotationData_4(function):
                     assert suc
 
 
-def test_uploadTLEDataCommands(function):
+def test_uploadTLEDataCommands_1(function):
     class Test:
         @staticmethod
         def click():
@@ -776,8 +866,51 @@ def test_uploadTLEDataCommands(function):
                            'ButtonWrapper'):
         with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
-            suc = function.uploadTLEDataCommands()
-            assert suc
+            with mock.patch.object(platform,
+                                   'architecture',
+                                   return_value=['64bit']):
+                suc = function.uploadTLEDataCommands()
+                assert suc
+
+
+def test_uploadTLEDataCommands_2(function):
+    class Test:
+        @staticmethod
+        def click():
+            pass
+
+        @staticmethod
+        def check_by_click():
+            pass
+
+        @staticmethod
+        def set_text(a):
+            pass
+
+    win = {'Orbital parameters of satellites': Test(),
+           'Edit...2': Test(),
+           }
+    popup = {'Load from file': Test(),
+             'Close': Test(),
+             }
+    dialog = {'OpenButton4': Test(),
+              'Button16': Test(),
+              'File &name:Edit': Test(),
+              }
+    function.updater = {'10 micron control box update': win,
+                        'Satellites orbits': popup,
+                        'Dialog': dialog,
+                        }
+
+    with mock.patch.object(automateWindows.controls,
+                           'ButtonWrapper'):
+        with mock.patch.object(automateWindows.controls,
+                               'EditWrapper'):
+            with mock.patch.object(platform,
+                                   'architecture',
+                                   return_value=['32bit']):
+                suc = function.uploadTLEDataCommands()
+                assert suc
 
 
 def test_uploadTLEData_1(function):

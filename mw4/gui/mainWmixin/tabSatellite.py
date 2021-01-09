@@ -73,15 +73,9 @@ class Satellite(object):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
-
         self.setupSatelliteSourceURLsDropDown()
-
         if not self.app.automation:
             self.installPath = self.app.mwGlob['dataDir']
 
@@ -90,27 +84,24 @@ class Satellite(object):
 
         else:
             self.installPath = self.app.mwGlob['dataDir']
-
         return True
 
     def setupSatelliteSourceURLsDropDown(self):
         """
-        setupSatelliteSourceURLsDropDown handles the dropdown list for the satellite data
-        online sources. therefore we add the necessary entries to populate the list.
+        setupSatelliteSourceURLsDropDown handles the dropdown list for the
+        satellite data online sources. therefore we add the necessary entries to
+        populate the list.
 
         :return: success for test
         """
-
         self.ui.satelliteSource.clear()
         self.ui.satelliteSource.setView(PyQt5.QtWidgets.QListView())
         for name in self.satelliteSourceURLs.keys():
             self.ui.satelliteSource.addItem(name)
-
         return True
 
     def filterSatelliteNamesList(self):
         """
-
         :return: true for test purpose
         """
         listSat = self.ui.listSatelliteNames
@@ -125,17 +116,16 @@ class Satellite(object):
 
             else:
                 listSat.setRowHidden(row, True)
-
         return True
 
     def setupSatelliteNameList(self):
         """
-        setupSatelliteNameList clears the list view of satellite names deriving from the
-        selected source file on disk. after that it populated the list with actual data.
+        setupSatelliteNameList clears the list view of satellite names deriving
+        from the selected source file on disk. after that it populated the list
+        with actual data.
 
         :return: success for test
         """
-
         self.ui.listSatelliteNames.clear()
         for name, _ in self.satellites.items():
             if not isinstance(name, str):
@@ -145,20 +135,19 @@ class Satellite(object):
         self.ui.listSatelliteNames.sortItems()
         self.ui.listSatelliteNames.update()
         self.filterSatelliteNamesList()
-
         return True
 
     def loadTLEDataFromSourceURLsWorker(self, source='', isOnline=False):
         """
-        loadTLEDataFromSourceURLsWorker selects from a drop down list of possible satellite
-        data sources on the web and once selected downloads the data. depending of the
-        setting of reload is true setting, it takes an already loaded file from local disk.
-        after loading or opening the source file, it updates the satellite list in the list
-        view widget for the selection of satellites.
+        loadTLEDataFromSourceURLsWorker selects from a drop down list of
+        possible satellite data sources on the web and once selected downloads
+        the data. depending of the setting of reload is true setting, it takes an
+        already loaded file from local disk. after loading or opening the source
+        file, it updates the satellite list in the list view widget for the
+        selection of satellites.
 
         :return: success
         """
-
         if not source:
             return False
 
@@ -172,22 +161,20 @@ class Satellite(object):
 
         if not os.path.isfile(filePath):
             return False
-
         return True
 
     def loadTLEDataFromSourceURLs(self):
         """
-        loadTLEDataFromSourceURLs selects from a drop down list of possible satellite
-        data sources on the web and once selected downloads the data. depending of the
-        setting of reload is true setting, it takes an already loaded file from local disk.
-        after loading or opening the source file, it updates the satellite list in the list
-        view widget for the selection of satellites.
+        loadTLEDataFromSourceURLs selects from a drop down list of possible
+        satellite data sources on the web and once selected downloads the data.
+        depending of the setting of reload is true setting, it takes an already
+        loaded file from local disk. after loading or opening the source file,
+        it updates the satellite list in the list view widget for the selection
+        of satellites.
 
         :return: success
         """
-
         key = self.ui.satelliteSource.currentText()
-
         if key not in self.satelliteSourceURLs:
             return False
 
@@ -204,19 +191,19 @@ class Satellite(object):
     def updateOrbit(self):
         """
         updateOrbit calculates the actual satellite orbits, sub point etc. and
-        updates the data in the gui. in addition when satellite window is open it signals
-        this update data as well for matplotlib drawings in satellite window.
-        this method is called cyclic every 3 seconds for updates
+        updates the data in the gui. in addition when satellite window is open
+        it signals this update data as well for matplotlib drawings in satellite
+        window. this method is called cyclic every 3 seconds for updates
 
         :return: success
         """
-
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
             return False
 
         # check if calculation is necessary to optimize cpu time
-        # get index for satellite tab and check if it's visible. if not, no calculation
+        # get index for satellite tab and check if it's visible. i
+        # f not, no calculation
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Satellite')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         satTabVisible = self.ui.mainTabWidget.currentIndex() == tabIndex
@@ -258,7 +245,6 @@ class Satellite(object):
         self.ui.satAltitude.setText(f'{alt:3.2f}')
         self.ui.satAzimuth.setText(f'{az:3.2f}')
 
-        # if the satellite window is not visible, there is no need for sending the data
         if not winObj.get('classObj'):
             return True
 
@@ -268,13 +254,12 @@ class Satellite(object):
 
     def programTLEDataToMount(self):
         """
-        programTLEDataToMount get the satellite data and programs this TLE data into the mount.
-        after programming the parameters it forces the mount to calculate the satellite
-        orbits immediately
+        programTLEDataToMount get the satellite data and programs this TLE data
+        into the mount. after programming the parameters it forces the mount to
+        calculate the satellite orbits immediately
 
         :return: success
         """
-
         if not self.app.mount.mountUp:
             self.app.message.emit('Mount is not online', 2)
             return False
@@ -293,36 +278,29 @@ class Satellite(object):
             if not suc:
                 self.app.message.emit('Error program TLE', 2)
                 return False
-
         return True
 
     def calcOrbitFromTLEInMount(self):
         """
-        calcOrbitFromTLEInMount is called cyclic to update the orbit parameters in the
-        mount computer
-
         :return: success
         """
-
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
             self.ui.stopSatelliteTracking.setEnabled(False)
             return False
 
-        # starting thread for calculation of parameters
         self.app.mount.calcTLE()
-
         return True
 
     def showRises(self):
         """
-        showRises calculated the next three satellite passes for the presentation in the gui.
-        the times shown might differ from the calculation of the mount as we dont know, how
-        the mount calculates is timings.
+        showRises calculated the next three satellite passes for the
+        presentation in the gui. the times shown might differ from the
+        calculation of the mount as we dont know, how the mount calculates is
+        timings.
 
         :return: True for test purpose
         """
-
         minAlt = self.app.mount.setting.horizonLimitLow
         if minAlt is None:
             minAlt = 0
@@ -392,18 +370,18 @@ class Satellite(object):
 
     def extractSatelliteData(self, satName=''):
         """
-        extractSatelliteData is called when a satellite is selected via mouse click in the
-        list menu. it collects the data and writes basic stuff to the gui. depending on the
-        age of the satellite data is colors the frame
+        extractSatelliteData is called when a satellite is selected via mouse
+        click in the list menu. it collects the data and writes basic stuff to
+        the gui. depending on the age of the satellite data is colors the frame
 
         :param satName: additional parameter for calling this method
         :return: success
         """
-
         if satName not in self.satellites:
             return False
 
-        index = self.findIndexValue(self.ui.listSatelliteNames, satName, relaxed=True)
+        index = self.findIndexValue(self.ui.listSatelliteNames, satName,
+                                    relaxed=True)
         item = self.ui.listSatelliteNames.item(index)
 
         if item is None:
@@ -460,7 +438,6 @@ class Satellite(object):
         """
         :return:
         """
-
         if not self.satellite or not self.satOrbits:
             return False
 
@@ -470,30 +447,26 @@ class Satellite(object):
             return False
 
         winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits)
-
         return True
 
     def signalExtractSatelliteData(self):
         """
         :return: True for test purpose
         """
-
         satName = self.ui.listSatelliteNames.currentItem().text()[8:]
         self.extractSatelliteData(satName=satName)
-
         return True
 
     def getSatelliteDataFromDatabase(self, tleParams=None):
         """
-        getSatelliteDataFromDatabase gets called, when the TLE setup is read from the mount.
-        we use the name to retrieve the data from the "active.txt" database to be able to
-        work with external database. it calls extraction method for getting the specific
-        satellite data read and stored.
+        getSatelliteDataFromDatabase gets called, when the TLE setup is read
+        from the mount. we use the name to retrieve the data from the
+        "active.txt" database to be able to work with external database. it calls
+        extraction method for getting the specific satellite data read and stored.
 
         :param tleParams:
         :return: True for test purpose
         """
-
         if not tleParams:
             return False
 
@@ -502,9 +475,9 @@ class Satellite(object):
 
     def updateSatelliteTrackGui(self, tleParams=None):
         """
-        updateSatelliteTrackGui is called, when the mount has finished its calculations
-        based on programmed TLE data. It writes the data to the gui and enables the start
-        track button.
+        updateSatelliteTrackGui is called, when the mount has finished its
+        calculations based on programmed TLE data. It writes the data to the gui
+        and enables the start track button.
 
         :return: success for test purpose
         """
@@ -545,13 +518,8 @@ class Satellite(object):
 
     def startTrack(self):
         """
-        startTrack un parks the mount if the mount has this state, because tracking could not
-        start with mount parked. if unparked, slewing is initiated.
-
-
         :return: success
         """
-
         if not self.app.mount.mountUp:
             self.app.message.emit('Mount is not online', 2)
             return False
@@ -575,14 +543,8 @@ class Satellite(object):
 
     def stopTrack(self):
         """
-        stopTrack just sends the command stop tracking. this is also valid for satellite
-        tracking
-
         :return: success
         """
-
-        # todo: what is the right stop command for satellite tracking as it fails sometimes
-
         if not self.app.mount.mountUp:
             self.app.message.emit('Mount is not online', 2)
             return False
@@ -592,15 +554,12 @@ class Satellite(object):
             self.app.message.emit('Cannot stop tracking', 2)
         else:
             self.app.message.emit('Stopped tracking', 0)
-
         return suc
 
     def progSatellitesFiltered(self):
         """
-
         :return: success
         """
-
         source = self.ui.satelliteSource.currentText()
         text = f'Should filtered database\n\n[{source}]\n\nbe programmed to mount ?'
         suc = self.messageDialog(self, 'Program with QCI Updater', text)
@@ -624,7 +583,8 @@ class Satellite(object):
 
             filtered[name] = self.satellites[name]
 
-        suc = self.databaseProcessing.writeSatelliteTLE(filtered, self.installPath)
+        suc = self.databaseProcessing.writeSatelliteTLE(filtered,
+                                                        self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
@@ -646,10 +606,8 @@ class Satellite(object):
 
     def progSatellitesFull(self):
         """
-
         :return: success
         """
-
         source = self.ui.satelliteSource.currentText()
         text = f'Should full database\n\n[{source}]\n\nbe programmed to mount ?'
         suc = self.messageDialog(self, 'Program with QCI Updater', text)
@@ -660,7 +618,8 @@ class Satellite(object):
         self.app.message.emit(f'Program database:    [{source}]', 1)
         self.app.message.emit('Exporting TLE data', 0)
 
-        suc = self.databaseProcessing.writeSatelliteTLE(self.satellites, self.installPath)
+        suc = self.databaseProcessing.writeSatelliteTLE(self.satellites,
+                                                        self.installPath)
 
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
@@ -677,5 +636,4 @@ class Satellite(object):
             self.app.message.emit('Uploading error', 2)
 
         self.app.message.emit('Programming success', 1)
-
         return suc

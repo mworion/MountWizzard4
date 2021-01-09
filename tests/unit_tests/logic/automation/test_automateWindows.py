@@ -31,7 +31,6 @@ if not platform.system() == 'Windows':
 from logic.automation.automateWindows import AutomateWindows
 from logic.automation import automateWindows
 import winreg
-# todo: https://github.com/pywinauto/pywinauto/issues/858
 
 
 @pytest.fixture(autouse=True, scope='module')

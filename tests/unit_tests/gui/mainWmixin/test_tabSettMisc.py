@@ -392,7 +392,6 @@ def test_playAudioDomeSlewFinished_1(function):
     with mock.patch.object(QSound,
                            'play'):
         suc = function.playSound('DomeSlew')
-        # todo not suc is wrong, just workaround
         assert not suc
 
 

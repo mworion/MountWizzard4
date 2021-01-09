@@ -150,7 +150,6 @@ class MainWindow(MWidget,
                 'name': 'SimulatorDialog',
                 'class': SimulatorWindow,
             }
-        # todo: we can only add keypad on arm when we have compiled version
         if pConf.isAvailable:
             self.uiWindows['showKeypadW'] = {
                 'button': self.ui.openKeypadW,

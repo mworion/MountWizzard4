@@ -122,8 +122,6 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         self.ui.cancel.clicked.connect(self.close)
         self.ui.ok.clicked.connect(self.storeConfig)
-
-        # todo: naming equally to indiSelector, astapIndexPathSelector etc.
         self.ui.indiDiscover.clicked.connect(self.discoverIndiDevices)
         self.ui.alpacaDiscover.clicked.connect(self.discoverAlpacaDevices)
         self.ui.selectAstrometryIndexPath.clicked.connect(self.selectAstrometryIndexPath)

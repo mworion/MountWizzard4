@@ -214,4 +214,5 @@ jobs:
   
       - name: make_test_run
         run: |
-          python mw4/loader.py test
+          touch test.txt
+          python mw4/loader.py

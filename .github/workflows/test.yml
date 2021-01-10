@@ -58,6 +58,7 @@ jobs:
           # publicly in your project's package repository, so it is vital that
           # no secrets are present in the container state or logs.
           install: |
+            apt-get install wget
             cd ~
             mkdir tmp
             cd tmp

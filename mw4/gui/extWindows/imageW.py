@@ -33,6 +33,7 @@ import numpy as np
 from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
 from mountcontrol.convert import convertToDMS, convertToHMS
 import sep
+from scipy.interpolate import griddata
 
 # local import
 from gui.utilities import toolsQtWidget
@@ -91,6 +92,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                      3: 'Photometry: Background level',
                      4: 'Photometry: Background noise',
                      5: 'Photometry: Flux',
+                     6: 'Photometry: HFD Plane',
                      }
 
         self.colorMaps = {'Grey': 'gray',
@@ -550,6 +552,31 @@ class ImageWindow(toolsQtWidget.MWidget):
             colorbar.set_label('Flux [log(x)]', color=self.M_BLUE, fontsize=12)
             yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
             plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+
+        if self.ui.view.currentIndex() == 6 and self.radius is not None:
+            y, x = imageDisp.shape
+            grid_y, grid_x = np.mgrid[0:y, 0:x]
+            a = zip(self.objs['y'], self.objs['x'])
+            b = list(a)
+            points = np.array(b)
+            values = self.radius
+
+            hfdPlane = griddata(points, values, (grid_y, grid_x),
+                                method='cubic', fill_value=0)
+            img = imshow_norm(hfdPlane,
+                              ax=self.axe,
+                              origin='lower',
+                              interval=MinMaxInterval(),
+                              stretch=self.stretch,
+                              cmap=self.colorMap,
+                              aspect='auto')
+            if self.axeCB:
+                colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
+                colorbar.set_label('Value [pixel value]',
+                                   color=self.M_BLUE,
+                                   fontsize=12)
+                yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+                plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
         self.axe.figure.canvas.draw()
 

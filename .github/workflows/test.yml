@@ -68,7 +68,7 @@ jobs:
             make
             make install
             cd ~
-            export PATH=$HOME/opt/python-3.8.1/bin:$PATH
+            export PATH=$HOME/opt/python-3.8.7/bin:$PATH
             
           # Produce a binary artifact and place it in the mounted volume
           run: |

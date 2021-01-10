@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -8390,7 +8390,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>410</x>
        <y>25</y>
        <width>366</width>
-       <height>276</height>
+       <height>271</height>
       </rect>
      </property>
      <property name="title">
@@ -8953,7 +8953,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>185</y>
+        <y>170</y>
         <width>356</width>
         <height>20</height>
        </rect>
@@ -8980,7 +8980,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>205</y>
+        <y>195</y>
         <width>266</width>
         <height>20</height>
        </rect>
@@ -9010,7 +9010,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>225</y>
+        <y>220</y>
         <width>296</width>
         <height>20</height>
        </rect>
@@ -9059,7 +9059,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>155</x>
-        <y>250</y>
+        <y>245</y>
         <width>41</width>
         <height>21</height>
        </rect>
@@ -9095,7 +9095,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>200</x>
-        <y>250</y>
+        <y>245</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -9116,7 +9116,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>250</y>
+        <y>245</y>
         <width>151</width>
         <height>21</height>
        </rect>
@@ -9131,33 +9131,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="text">
        <string>If model point(s) fails use</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="checkDeleteOldOnStart">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>165</y>
-        <width>356</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>Disables dual axis tracking and restores the status after model build. In case of automatic disabling a yellow frame shown around DAT setting.</string>
-      </property>
-      <property name="text">
-       <string>Delete old model when starting model run</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
       </property>
      </widget>
     </widget>

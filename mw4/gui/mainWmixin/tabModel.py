@@ -76,7 +76,6 @@ class Model:
         self.ui.checkDisableDAT.setChecked(config.get('checkDisableDAT', False))
         self.ui.parkMountAfterModel.setChecked(config.get('parkMountAfterModel', False))
         self.ui.numberBuildRetries.setValue(config.get('numberBuildRetries', 0))
-        self.ui.checkDeleteOldOnStart.setChecked(config.get('checkDeleteOldOnStart', False))
 
         return True
 
@@ -92,7 +91,6 @@ class Model:
         config['checkDisableDAT'] = self.ui.checkDisableDAT.isChecked()
         config['parkMountAfterModel'] = self.ui.parkMountAfterModel.isChecked()
         config['numberBuildRetries'] = self.ui.numberBuildRetries.value()
-        config['checkDeleteOldOnStart'] = self.ui.checkDeleteOldOnStart.isChecked()
 
         return True
 
@@ -604,7 +602,6 @@ class Model:
         :return: True for test purpose
         """
         mountModel = self.app.mount.model
-
         if len(mountModel.starList) != len(self.model):
             text = f'length starList [{len(mountModel.starList)}] and length '
             text += f'model [{len(self.model)}] is different'
@@ -612,7 +609,6 @@ class Model:
             self.model = []
 
         self.model = self.writeRetrofitData(mountModel, self.model)
-
         return True
 
     def generateSaveModel(self):
@@ -623,7 +619,6 @@ class Model:
         :return: save model format
         """
         modelDataForSave = list()
-
         for mPoint in self.model:
             sPoint = dict()
             sPoint.update(mPoint)
@@ -641,7 +636,6 @@ class Model:
             sPoint['profile'] = self.ui.profile.text()
             sPoint['firmware'] = self.ui.vString.text()
             sPoint['latitude'] = self.app.mount.obsSite.location.latitude.degrees
-
             modelDataForSave.append(sPoint)
 
         return modelDataForSave
@@ -662,10 +656,8 @@ class Model:
         self.app.mount.signals.alignDone.disconnect(self.saveModelFinish)
         self.retrofitModel()
         self.app.message.emit(f'Writing model:       [{self.modelName}]', 0)
-
         saveData = self.generateSaveModel()
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
-
         with open(modelPath, 'w') as outfile:
             json.dump(saveData, outfile, sort_keys=True, indent=4)
 
@@ -686,7 +678,6 @@ class Model:
             return False
 
         self.app.mount.signals.alignDone.connect(self.saveModelFinish)
-
         return True
 
     @staticmethod
@@ -702,7 +693,6 @@ class Model:
             model = []
 
         build = list()
-
         for mPoint in model:
             programmingPoint = AlignStar(mCoord=(mPoint['raJNowM'], mPoint['decJNowM']),
                                          sCoord=(mPoint['raJNowS'], mPoint['decJNowS']),
@@ -710,7 +700,6 @@ class Model:
                                          pierside=mPoint['pierside'],
                                          )
             build.append(programmingPoint)
-
         return build
 
     def collectingModelRunOutput(self):
@@ -718,7 +707,6 @@ class Model:
         :return:
         """
         self.model = list()
-
         while not self.modelQueue.empty():
             point = self.modelQueue.get()
             self.model.append(point)
@@ -727,7 +715,6 @@ class Model:
         self.clearQueues()
         self.restoreModelDefaultContextAndGuiStatus()
         self.restoreStatusDAT()
-
         if len(self.model) < 3:
             return False
 
@@ -740,7 +727,6 @@ class Model:
         """
         build = self.generateBuildData(model=model)
         suc = self.app.mount.model.programAlign(build)
-
         if not suc:
             return False
 
@@ -748,7 +734,6 @@ class Model:
         self.app.mount.model.storeName('actual')
         self.refreshName()
         self.refreshModel()
-
         return True
 
     def renewHemisphereView(self):
@@ -767,16 +752,13 @@ class Model:
         :return:
         """
         suc = self.collectingModelRunOutput()
-
         if not suc:
             self.app.message.emit(f'Modeling finished:    {self.modelName}', 2)
             self.app.message.emit('Model not enough valid model points available', 2)
             return False
 
         self.app.message.emit('Programming model to mount', 0)
-
         suc = self.programModelToMount(self.model)
-
         if suc:
             self.app.message.emit('Model programmed with success', 0)
 
@@ -789,9 +771,7 @@ class Model:
 
         self.app.message.emit(f'Modeling finished:    {self.modelName}', 1)
         self.playSound('ModelingFinished')
-
         self.renewHemisphereView()
-
         if self.ui.parkMountAfterModel.isChecked():
             self.app.message.emit('Parking mount after model run', 0)
             suc = self.app.mount.obsSite.park()
@@ -826,7 +806,6 @@ class Model:
 
         self.app.message.emit('Starting retry failed points', 1)
         self.log.debug('Retry started')
-
         numberPointsRetry = self.retryQueue.qsize()
         countPointsRetry = 0
 
@@ -839,7 +818,6 @@ class Model:
 
         self.modelBuildRetryCounter -= 1
         self.modelSlew()
-
         return True
 
     def checkModelRunConditions(self):
@@ -855,7 +833,6 @@ class Model:
             return False
 
         excludeDonePoints = self.ui.excludeDonePoints.isChecked()
-
         if len([x for x in self.app.data.buildP if x[2]]) < 3 and excludeDonePoints:
             self.app.message.emit('No modeling start because less than 3 points left over', 2)
             return False
@@ -875,19 +852,17 @@ class Model:
         """
         :return:
         """
-        if self.ui.checkDeleteOldOnStart.isChecked():
-            suc = self.app.mount.model.clearAlign()
+        suc = self.app.mount.model.clearAlign()
+        if not suc:
+            self.app.message.emit('Actual model cannot be cleared', 2)
+            self.app.message.emit('Model build cancelled', 2)
+            return False
 
-            if not suc:
-                self.app.message.emit('Actual model cannot be cleared', 2)
-                self.app.message.emit('Model build cancelled', 2)
-                return False
-
-            else:
-                self.app.message.emit('Actual model clearing, waiting 1s', 0)
-                QTest.qWait(1000)
-                self.app.message.emit('Actual model cleared', 0)
-                self.refreshModel()
+        else:
+            self.app.message.emit('Actual model clearing, waiting 1s', 0)
+            QTest.qWait(1000)
+            self.app.message.emit('Actual model cleared', 0)
+            self.refreshModel()
 
         suc = self.app.mount.model.deleteName('backup')
         if not suc:
@@ -901,10 +876,8 @@ class Model:
 
     def setupModelPointsAndContextData(self):
         """
-
         :return:
         """
-
         astrometryApp = self.ui.astrometryDevice.currentText()
         exposureTime = self.ui.expTime.value()
         binning = self.ui.binning.value()
@@ -912,11 +885,9 @@ class Model:
         fastReadout = self.ui.checkFastDownload.isChecked()
         focalLength = self.ui.focalLength.value()
         lenSequence = len(self.app.data.buildP)
-
         framework = self.app.astrometry.framework
         solveTimeout = self.app.astrometry.run[framework].timeout
         searchRadius = self.app.astrometry.run[framework].searchRadius
-
         modelPoints = list()
         for index, point in enumerate(self.app.data.buildP):
             if self.ui.excludeDonePoints.isChecked() and not point[2]:
@@ -939,9 +910,7 @@ class Model:
             m['focalLength'] = focalLength
             m['altitude'] = point[0]
             m['azimuth'] = point[1]
-
             modelPoints.append(m)
-
         return modelPoints
 
     def modelCycleThroughBuildPoints(self, modelPoints=None):
@@ -955,24 +924,19 @@ class Model:
         :param modelPoints:
         :return: true for test purpose
         """
-
         self.clearQueues()
         self.setupSignalsForModelRun()
         self.startModeling = time.time()
-
         for point in modelPoints:
             self.slewQueue.put(point)
 
         self.modelSlew()
-
         return True
 
     def setupModelFilenamesAndDirectories(self):
         """
-
         :return:
         """
-
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         self.modelName = f'm-{nameTime}-{self.lastGenerator}'
         self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
@@ -984,12 +948,11 @@ class Model:
 
     def modelBuild(self):
         """
-        modelBuild sets the adequate gui elements, selects the model points and calls the
-        core modeling method.
+        modelBuild sets the adequate gui elements, selects the model points and
+        calls the core modeling method.
 
         :return: true for test purpose
         """
-
         if not self.checkModelRunConditions():
             return False
 
@@ -997,9 +960,7 @@ class Model:
             return False
 
         self.setupModelFilenamesAndDirectories()
-
         modelPoints = self.setupModelPointsAndContextData()
-
         if not modelPoints:
             self.app.message.emit('Modeling cancelled, no valid points', 2)
             return False
@@ -1009,23 +970,20 @@ class Model:
         self.app.message.emit(f'Modeling start:      {self.modelName}', 1)
         self.modelBuildRetryCounter = self.ui.numberBuildRetries.value()
         self.modelCycleThroughBuildPoints(modelPoints=modelPoints)
-
         return True
 
     def loadProgramModel(self):
         """
-        loadProgramModel selects one or more models from the files system, combines them
-        if more than one was selected and programs them into the mount computer.
+        loadProgramModel selects one or more models from the files system,
+        combines them if more than one was selected and programs them into the
+        mount computer.
 
         :return: success
         """
-
         folder = self.app.mwGlob['modelDir']
-
         ret = self.openFile(self, 'Open model file', folder, 'Model files (*.model)',
                             multiple=True)
         loadFilePath, _, _ = ret
-
         if not loadFilePath:
             return False
 
@@ -1036,9 +994,7 @@ class Model:
             return False
 
         self.app.message.emit('Programing models', 1)
-
         modelJSON = list()
-
         for index, file in enumerate(loadFilePath):
             self.app.message.emit(f'Loading model [{os.path.basename(file)}]', 0)
             with open(file, 'r') as infile:

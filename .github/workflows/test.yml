@@ -58,16 +58,9 @@ jobs:
           # publicly in your project's package repository, so it is vital that
           # no secrets are present in the container state or logs.
           install: |
-            case "${{ matrix.distro }}" in
-              ubuntu*|jessie|stretch|buster)
-                apt-get update -q -y
-                apt-get install python3
-                ;;
-              fedora*)
-                ;;
-              alpine*)
-                ;;
-            esac
+              apt-get update -q -y
+              apt-get install -y python3
+            
           # Produce a binary artifact and place it in the mounted volume
           run: |
             cp $(python3 --version) "/artifacts/${artifact_name}/python.txt"

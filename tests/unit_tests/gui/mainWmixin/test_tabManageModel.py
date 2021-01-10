@@ -82,7 +82,7 @@ def test_initConfig_1(function):
     with mock.patch.object(function,
                            'showModelPosition'):
         function.initConfig()
-        assert function.ui.targetRMS.value() == 99
+        assert function.ui.targetRMS.value() == 10
         assert not function.ui.showErrorValues.isChecked()
 
 

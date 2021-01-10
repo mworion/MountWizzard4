@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideLeft</enum>
@@ -3894,6 +3894,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="checkable">
          <bool>true</bool>
         </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
         <widget class="QLineEdit" name="sensorWeatherTemp">
          <property name="enabled">
           <bool>false</bool>
@@ -6794,7 +6797,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <double>1.000000000000000</double>
       </property>
       <property name="value">
-       <double>10.000000000000000</double>
+       <double>15.000000000000000</double>
       </property>
      </widget>
      <widget class="QDoubleSpinBox" name="durationDSO">
@@ -6833,7 +6836,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <double>1.000000000000000</double>
       </property>
       <property name="value">
-       <double>10.000000000000000</double>
+       <double>7.000000000000000</double>
       </property>
      </widget>
      <widget class="QDoubleSpinBox" name="timeShiftDSO">
@@ -7142,6 +7145,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="text">
        <string>Default</string>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QCheckBox" name="checkAvoidFlip">
       <property name="geometry">
@@ -7334,6 +7340,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="text">
        <string>Auto delete points below horizon</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="checkAutoDeleteMeridian">
@@ -9058,7 +9067,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>155</x>
+        <x>145</x>
         <y>245</y>
         <width>41</width>
         <height>21</height>
@@ -9094,7 +9103,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_36">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>195</x>
         <y>245</y>
         <width>141</width>
         <height>21</height>
@@ -9117,7 +9126,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>5</x>
         <y>245</y>
-        <width>151</width>
+        <width>141</width>
         <height>21</height>
        </rect>
       </property>
@@ -9130,7 +9139,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </font>
       </property>
       <property name="text">
-       <string>If model point(s) fails use</string>
+       <string>If model points fail use</string>
       </property>
      </widget>
     </widget>
@@ -16628,7 +16637,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>

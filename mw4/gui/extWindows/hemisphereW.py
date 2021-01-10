@@ -156,7 +156,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.checkShowMeridian.setChecked(config.get('checkShowMeridian', False))
         self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
-        self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
+        self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', True))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
 
         return True

@@ -60,7 +60,7 @@ jobs:
           install: |
             apt-get update -y
             apt-get upgrade -y
-            apt-get install -y wget gcc build-essential zlib
+            apt-get install -y wget gcc build-essential
             apt-get install -y software-properties-common
             add-apt-repository ppa:deadsnakes/ppa
             

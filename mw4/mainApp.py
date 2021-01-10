@@ -103,11 +103,8 @@ class MountWizzard4(QObject):
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(20)
         self.message.connect(self.writeMessageQueue)
-
-        # persistence management through dict
         self.config = {}
         self.loadConfig()
-
         self.deviceStat = {
             'dome': None,
             'mount': None,
@@ -126,8 +123,6 @@ class MountWizzard4(QObject):
             'relay': None,
             'measure': None,
         }
-
-        # write basic data to message window
         profile = self.config.get('profileName', '-')
         self.messageQueue.put(('MountWizzard4 started', 1))
         self.messageQueue.put((f'Workdir is: [{self.mwGlob["workDir"]}]', 1))

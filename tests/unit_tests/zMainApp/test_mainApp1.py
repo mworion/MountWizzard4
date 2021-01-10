@@ -19,6 +19,7 @@
 import sys
 import unittest.mock as mock
 import logging
+import os
 
 # external packages
 import PyQt5
@@ -36,8 +37,11 @@ def test_start_parameters_1(qapp):
               'tempDir': 'tests/temp',
               'imageDir': 'tests/image',
               'modelDir': 'tests/model',
-              'workDir': 'mw4/test',
+              'workDir': 'tests/temp',
               }
+    with open(mwGlob['workDir'] + '/test.txt', 'w+') as test:
+        test.write('test')
+
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):
         with mock.patch.object(PyQt5.QtCore.QTimer,
@@ -47,7 +51,4 @@ def test_start_parameters_1(qapp):
                 with mock.patch.object(MountWizzard4,
                                        'checkAndSetAutomation',
                                        return_value=None):
-                    with mock.patch.object(sys,
-                                           'argv',
-                                           return_value=['test']):
-                        MountWizzard4(mwGlob=mwGlob, application=qapp)
+                    MountWizzard4(mwGlob=mwGlob, application=qapp)

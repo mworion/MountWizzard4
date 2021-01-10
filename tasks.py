@@ -253,7 +253,7 @@ def test_mac(c):
         printMW('...run install script in test dir')
         runMWd(c, f'ssh {userMac} "cd {workMac} && ./MW4_InstallTest.command"')
         printMW('...copy run script and environ to test dir')
-        runMWd(c, f'scp -r text.txt {workMacSCP}')
+        runMWd(c, f'scp -r test.txt {workMacSCP}')
         runMWd(c, f'scp -r MW4_Run.command {workMacSCP}')
         printMW('...run MountWizzard4 for 3 seconds')
         runMWd(c, f'ssh {userMac} "cd {workMac} && ./MW4_Run.command"')

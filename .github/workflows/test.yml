@@ -70,7 +70,7 @@ jobs:
             esac
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            cp $(python3 --version) "/artifacts/${artifact_name}"
+            cp $(python3 --version) "/artifacts/${artifact_name}/python.txt"
             echo "Produced artifact at /artifacts/${artifact_name}"
 
       - name: Show the artifact

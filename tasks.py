@@ -134,40 +134,6 @@ def build_widgets(c):
 
 
 @task()
-def test_mw_cov(c):
-    printMW('unit testing mountwizzard with coverage and upload')
-    # runMW(c, 'flake8')
-    runMW(c, 'pytest tests/unit_tests/zLoader --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/base --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/astrometry --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/databaseProcessing --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/cover --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/dome --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/environment --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/imaging --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/measure --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/modeldata --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/powerswitch --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/remote --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/telescope --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/gui/mainWindow --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/indibase --cov-append --cov=mw4/')
-    runMW(c, 'pytest tests/unit_tests/logic/automation --cov-append --cov=mw4/')
-    runMW(c, 'bash <(curl -s https://codecov.io/bash) -t e1965db7-af35-4a93-9f3d-ed12a528607b')
-
-
-@task(pre=[])
-def upload_cov(c):
-    printMW('upload coverage')
-    runMW(c, 'bash <(curl -s https://codecov.io/bash) -t e1965db7-af35-4a93-9f3d-ed12a528607b')
-
-
-@task()
 def test_mw(c):
     printMW('testing mountwizzard')
     runMW(c, 'flake8')
@@ -231,10 +197,10 @@ def test_win(c):
         printMW('...run install script in test dir')
         runMWd(c, f'ssh {uWin} "cd {wWin} && MW4_InstallTest.bat"')
         printMW('...copy run script to test dir')
-        runMWd(c, f'scp -r MW4_RunTest.bat {wWinSCP}')
+        runMWd(c, f'scp -r test.txt {wWinSCP}')
         runMWd(c, f'scp -r MW4_Run.bat {wWinSCP}')
         printMW('...run MountWizzard4 for 3 seconds')
-        runMWd(c, f'ssh {uWin} "cd {wWin} && MW4_RunTest.bat"')
+        runMWd(c, f'ssh {uWin} "cd {wWin} && MW4_Run.bat"')
 
 
 @task(pre=[])
@@ -258,12 +224,12 @@ def test_ubuntu(c):
         printMW('...run install script in test dir')
         runMWd(c, f'ssh {userUbuntu} "cd {workUbuntu} && ./MW4_InstallTest.sh"')
         printMW('...copy run script and environ to test dir')
-        runMWd(c, f'scp -r MW4_RunTest.sh {workUbuntuSCP}')
+        runMWd(c, f'scp -r test.txt {workUbuntuSCP}')
         runMWd(c, f'scp -r MW4_Run.sh {workUbuntuSCP}')
         runMWd(c, f'scp -r MountWizzard4.desktop {workUbuntuSCP}')
         runMWd(c, f'scp -r mw4.png {workUbuntuSCP}')
         printMW('...run MountWizzard4 for 3 seconds')
-        runMWd(c, f'ssh {userUbuntu} "cd {workUbuntu} && xvfb-run ./MW4_RunTest.sh"')
+        runMWd(c, f'ssh {userUbuntu} "cd {workUbuntu} && xvfb-run ./MW4_Run.sh"')
 
 
 @task(pre=[])
@@ -287,7 +253,7 @@ def test_mac(c):
         printMW('...run install script in test dir')
         runMWd(c, f'ssh {userMac} "cd {workMac} && ./MW4_InstallTest.command"')
         printMW('...copy run script and environ to test dir')
-        runMWd(c, f'scp -r MW4_RunTest.command {workMacSCP}')
+        runMWd(c, f'scp -r text.txt {workMacSCP}')
         runMWd(c, f'scp -r MW4_Run.command {workMacSCP}')
         printMW('...run MountWizzard4 for 3 seconds')
-        runMWd(c, f'ssh {userMac} "cd {workMac} && ./MW4_RunTest.command"')
+        runMWd(c, f'ssh {userMac} "cd {workMac} && ./MW4_Run.command"')

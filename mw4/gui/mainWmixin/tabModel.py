@@ -66,43 +66,33 @@ class Model:
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.checkDisableDAT.setChecked(config.get('checkDisableDAT', False))
+        self.ui.checkDisableDAT.setChecked(config.get('checkDisableDAT', True))
         self.ui.parkMountAfterModel.setChecked(config.get('parkMountAfterModel', False))
         self.ui.numberBuildRetries.setValue(config.get('numberBuildRetries', 0))
-
         return True
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config['mainW']
         config['checkDisableDAT'] = self.ui.checkDisableDAT.isChecked()
         config['parkMountAfterModel'] = self.ui.parkMountAfterModel.isChecked()
         config['numberBuildRetries'] = self.ui.numberBuildRetries.value()
-
         return True
 
     def updateAlignGUI(self, model):
         """
-        updateAlignGUI shows the data which is received through the getain command. this is
-        mainly polar and ortho errors as well as basic model data.
+        updateAlignGUI shows the data which is received through the getain
+        command. this is mainly polar and ortho errors as well as basic model
+        data.
 
         :param model:
         :return:    True if ok for testing
         """
-
         self.guiSetText(self.ui.numberStars, '2.0f', model.numberStars)
         self.guiSetText(self.ui.numberStars1, '2.0f', model.numberStars)
         self.guiSetText(self.ui.errorRMS, '5.1f', model.errorRMS)
@@ -123,8 +113,9 @@ class Model:
 
     def updateTurnKnobsGUI(self, model):
         """
-        updateTurnKnobsGUI shows the data which is received through the getain command.
-        this is mainly polar and ortho errors as well as basic model data.
+        updateTurnKnobsGUI shows the data which is received through the getain
+        command. this is mainly polar and ortho errors as well as basic model
+        data.
 
         :param model:
         :return:    True if ok for testing
@@ -157,9 +148,9 @@ class Model:
 
     def updateProgress(self, number=0, count=0):
         """
-        updateProgress calculated from the elapsed time and number of point with taking
-        actual processing time into account a estimation of duration and finishing time
-        of the modeling process and updates this in the gui
+        updateProgress calculated from the elapsed time and number of point
+        with taking actual processing time into account a estimation of duration
+        and finishing time of the modeling process and updates this in the gui
 
         :param number: total number of model points
         :param count: index of the actual processed point
@@ -189,10 +180,10 @@ class Model:
 
     def modelSolveDone(self, result):
         """
-        modelSolveDone is called when a point is solved by astrometry. if called it takes
-        the model point out of the queue and adds the solving data for later model build.
-        as the solving takes place in J2000 epoch, but we need fpr die model build JNow
-        epoch, the transformation is done as well.
+        modelSolveDone is called when a point is solved by astrometry. if called
+        it takes the model point out of the queue and adds the solving data for
+        later model build. as the solving takes place in J2000 epoch, but we need
+        fpr die model build JNow epoch, the transformation is done as well.
 
         in addition as it is the last step before a model point could be used, the
         it checks for the end of the modeling process.
@@ -262,18 +253,15 @@ class Model:
 
     def modelSolve(self):
         """
-        modelSolve is the method called from the signal image saved and starts the solving
-        process for this image. therefore it takes the model point from the queue and uses
-        the parameters stored. if the queue is empty (which should be to the case), it
-        just returns.
-
-        after starting the solving process in a threaded way (should run in parallel to gui)
-        it puts the model point to the next queue, the result queue.
-
-        in addition if the image window is present, it send a signal for displaying the
-        actual captured image.
-
-        it shows the actual processed point index in GUI
+        modelSolve is the method called from the signal image saved and starts
+        the solving process for this image. therefore it takes the model point
+        from the queue and uses the parameters stored. if the queue is empty (
+        which should be to the case), it just returns. after starting the solving
+        process in a threaded way (should run in parallel to gui) it puts the
+        model point to the next queue, the result queue. in addition if the image
+        window is present, it send a signal for displaying the actual captured
+        image. it shows the actual processed point
+        index in GUI
 
         :return: success
         """

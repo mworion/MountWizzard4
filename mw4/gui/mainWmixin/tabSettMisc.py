@@ -69,9 +69,9 @@ class SettMisc(object):
         """
         config = self.app.config['mainW']
         self.setupAudioGui()
-        self.ui.loglevelDebugTrace.setChecked(config.get('loglevelDebugTrace', True))
-        self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
-        self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', False))
+        self.ui.loglevelDebugTrace.setChecked(config.get('loglevelDebugTrace', False))
+        self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', False))
+        self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', True))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))

@@ -11721,7 +11721,7 @@ Hint if mount will need a flip when following satellite.</string>
    </widget>
    <widget class="QWidget" name="MPC">
     <attribute name="title">
-     <string>Comet/Asteroid</string>
+     <string>Comet/Asteroid/EarthR.</string>
     </attribute>
     <widget class="QGroupBox" name="groupBox_30">
      <property name="geometry">

@@ -61,7 +61,7 @@ jobs:
             case "${{ matrix.distro }}" in
               ubuntu*|jessie|stretch|buster)
                 apt-get update -q -y
-                apt-get install -q -y git
+                apt-get install python3
                 ;;
               fedora*)
                 ;;
@@ -70,8 +70,7 @@ jobs:
             esac
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            cp $(which git) "/artifacts/${artifact_name}"
-            cp $(python --version) "/artifacts/${artifact_name}"
+            cp $(python3 --version) "/artifacts/${artifact_name}"
             echo "Produced artifact at /artifacts/${artifact_name}"
 
       - name: Show the artifact

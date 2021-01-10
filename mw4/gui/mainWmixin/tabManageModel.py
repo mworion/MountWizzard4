@@ -65,37 +65,26 @@ class ManageModel(object):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-
         self.ui.showErrorValues.setChecked(config.get('showErrorValues', False))
         self.ui.showNumbers.setChecked(config.get('showNumbers', False))
         self.ui.showNoAnnotation.setChecked(config.get('showNoAnnotation', True))
-        self.ui.targetRMS.setValue(config.get('targetRMS', 99))
+        self.ui.targetRMS.setValue(config.get('targetRMS', 10))
         self.ui.optimizeOverall.setChecked(config.get('optimizeOverall', True))
         self.ui.optimizeSingle.setChecked(config.get('optimizeSingle', True))
         self.ui.autoUpdateActualAnalyse.setChecked(config.get('autoUpdateActualAnalyse', False))
         self.showModelPosition()
         self.showErrorAscending()
         self.showErrorDistribution()
-
         return True
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-
         config['showErrorValues'] = self.ui.showErrorValues.isChecked()
         config['showNumbers'] = self.ui.showNumbers.isChecked()
         config['showNoAnnotation'] = self.ui.showNoAnnotation.isChecked()
@@ -103,17 +92,15 @@ class ManageModel(object):
         config['optimizeOverall'] = self.ui.optimizeOverall.isChecked()
         config['optimizeSingle'] = self.ui.optimizeSingle.isChecked()
         config['autoUpdateActualAnalyse'] = self.ui.autoUpdateActualAnalyse.isChecked()
-
         return True
 
     def setNameList(self, model):
         """
-        setNameList populates the list of model names in the main window. before adding the
-        data, the existent list will be deleted.
+        setNameList populates the list of model names in the main window. before
+        adding the data, the existent list will be deleted.
 
         :return:    True if ok for testing
         """
-
         self.ui.nameList.clear()
         for name in model.nameList:
             self.ui.nameList.addItem(name)
@@ -124,15 +111,12 @@ class ManageModel(object):
     @staticmethod
     def findKeysFromSourceInDest(buildModel, mountModel):
         """
-
         :param buildModel:
         :param mountModel:
         :return: success
         """
-
         pointsIn = []
         pointsOut = []
-
         for buildPoint in buildModel:
             for mountPoint in mountModel:
                 if mountModel[mountPoint] == buildModel[buildPoint]:
@@ -141,36 +125,31 @@ class ManageModel(object):
 
             else:
                 pointsOut.append(buildPoint)
-
         return pointsIn, pointsOut
 
     def compareModel(self, buildModelData, mountModel):
         """
-
         :param buildModelData:
         :param mountModel:
         :return:
         """
-
         buildModel = {}
-
         for star in buildModelData:
             buildModel[star['errorIndex']] = {'ha': star.get('haMountModel', 0),
                                               'dec': star.get('decMountModel', 0)}
 
         pointsIn, pointsOut = self.findKeysFromSourceInDest(buildModel, mountModel)
-
         return pointsIn, pointsOut
 
     def findFittingModel(self):
         """
-        findFittingModel takes the actual loaded model from the mount and tries to find
-        the fitting model run data. therefore it compares up to 5 points to find out.
-        all optimized model files (containing opt in filename) are ignored.
+        findFittingModel takes the actual loaded model from the mount and tries
+        to find the fitting model run data. therefore it compares up to 5 points
+        to find out. all optimized model files (containing opt in filename) are
+        ignored.
 
         :return: success
         """
-
         mountModel = {}
         for star in self.app.mount.model.starList:
             mountModel[star.number] = {'ha': star.coord.ra.hours,
@@ -208,15 +187,15 @@ class ManageModel(object):
 
     def showModelPosition(self):
         """
-        showModelPosition draws a polar plot of the align model stars and their errors in
-        color. the basic setup of the plot is taking place in the central widget class.
-        which is instantiated from there. important: the coordinate in model is in HA and
-        DEC  and not in RA and DEC. using skyfield is a little bit misleading, because you
-        address the hour angle as .ra.hours
+        showModelPosition draws a polar plot of the align model stars and their
+        errors in color. the basic setup of the plot is taking place in the
+        central widget class. which is instantiated from there. important: the
+        coordinate in model is in HA and DEC  and not in RA and DEC. using
+        skyfield is a little bit misleading, because you address the hour angle
+         as .ra.hours
 
         :return:    True if ok for testing
         """
-
         model = self.app.mount.model
         if model is None:
             hasNoStars = True
@@ -295,8 +274,8 @@ class ManageModel(object):
 
     def showErrorAscending(self):
         """
-        showErrorAscending draws a plot of the align model stars and their errors in ascending
-        order.
+        showErrorAscending draws a plot of the align model stars and their
+        errors in ascending order.
 
         :return:    True if ok for testing
         """
@@ -345,11 +324,12 @@ class ManageModel(object):
 
     def showErrorDistribution(self):
         """
-        showErrorDistribution draws a polar plot of the align model stars and their errors in
-        color. the basic setup of the plot is taking place in the central widget class.
-        which is instantiated from there. important: the coordinate in model is in HA and
-        DEC  and not in RA and DEC. using skyfield is a little bit misleading, because you
-        address the hour angle as .ra.hours
+        showErrorDistribution draws a polar plot of the align model stars and
+        their errors in color. the basic setup of the plot is taking place in the
+        central widget class. which is instantiated from there. important: the
+        coordinate in model is in HA and DEC  and not in RA and DEC. using
+        skyfield is a little bit misleading, because you address the hour
+        angle as ra.hours
 
         :return:    True if ok for testing
         """
@@ -391,11 +371,8 @@ class ManageModel(object):
 
     def clearRefreshName(self):
         """
-        clearRefreshName is the buddy function for refreshName
-
         :return: True for test purpose
         """
-
         self.changeStyleDynamic(self.ui.refreshName, 'running', 'false')
         self.ui.deleteName.setEnabled(True)
         self.ui.saveName.setEnabled(True)
@@ -414,7 +391,6 @@ class ManageModel(object):
 
         :return: True for test purpose
         """
-
         self.app.mount.signals.namesDone.connect(self.clearRefreshName)
         self.ui.deleteName.setEnabled(False)
         self.ui.saveName.setEnabled(False)
@@ -431,7 +407,6 @@ class ManageModel(object):
 
         :return: success
         """
-
         if self.ui.nameList.currentItem() is None:
             self.app.message.emit('No model name selected', 2)
             return False
@@ -453,7 +428,6 @@ class ManageModel(object):
 
         :return: success
         """
-
         dlg = QInputDialog()
         modelName, ok = dlg.getText(self,
                                     'Save model',
@@ -484,7 +458,6 @@ class ManageModel(object):
 
         :return: success
         """
-
         if self.ui.nameList.currentItem() is None:
             self.app.message.emit('No model name selected', 2)
             return False
@@ -511,13 +484,11 @@ class ManageModel(object):
 
     def writeBuildModelOptimized(self, foundModel, pointsIn, pointsOut):
         """
-
         :param foundModel:
         :param pointsIn:
         :param pointsOut:
         :return: true for test purpose
         """
-
         actPath = self.app.mwGlob['modelDir'] + '/' + foundModel + '.model'
         newPath = self.app.mwGlob['modelDir'] + '/' + foundModel + '-opt.model'
 
@@ -540,11 +511,8 @@ class ManageModel(object):
 
     def clearRefreshModel(self):
         """
-        clearRefreshModel is the buddy function for refreshModel
-
         :return: True for test purpose
         """
-
         self.changeStyleDynamic(self.ui.refreshModel, 'running', 'false')
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.runOptimize.setEnabled(True)
@@ -578,7 +546,6 @@ class ManageModel(object):
 
         :return: True for test purpose
         """
-
         self.changeStyleDynamic(self.ui.refreshModel, 'running', 'true')
         self.app.mount.signals.alignDone.connect(self.clearRefreshModel)
         self.ui.deleteWorstPoint.setEnabled(False)
@@ -591,11 +558,8 @@ class ManageModel(object):
 
     def clearModel(self):
         """
-        clearModel removes the actual alignment model.
-
         :return:
         """
-
         msg = QMessageBox
         reply = msg.question(self,
                              'Clear model',
@@ -618,24 +582,16 @@ class ManageModel(object):
 
     def deleteWorstPoint(self):
         """
-        deleteWorstPoint selects from the actual model stored in the mount the highest
-        value of error, get it's index and deletes the point. afterward it refreshes the
-        gui
-
         :return:
         """
-
         model = self.app.mount.model
-
         if not model.numberStars:
             return False
 
         wIndex = model.starList.index(max(model.starList))
         wStar = model.starList[wIndex]
         error = wStar.errorRMS
-
         suc = model.deletePoint(wStar.number)
-
         if not suc:
             self.app.message.emit('Worst point cannot be deleted', 2)
             return False
@@ -650,11 +606,8 @@ class ManageModel(object):
 
     def runTargetRMS(self):
         """
-        runTargetRMS is the buddy function for runTargetRMS
-
         :return: True for test purpose
         """
-
         mount = self.app.mount
         if mount.model.errorRMS < self.ui.targetRMS.value():
             self.runningOptimize = False
@@ -669,7 +622,6 @@ class ManageModel(object):
             wIndex = mount.model.starList.index(max(mount.model.starList))
             wStar = mount.model.starList[wIndex]
             suc = mount.model.deletePoint(wStar.number)
-
             if not suc:
                 self.runningOptimize = False
                 self.app.message.emit(f'Star [{wStar.number + 1:3.0f}] cannot be deleted', 2)
@@ -683,15 +635,12 @@ class ManageModel(object):
 
         else:
             self.finishOptimize()
-
         return True
 
     def runSingleRMS(self):
         """
-
         :return: True for test purpose
         """
-
         mount = self.app.mount
         if all([star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList]):
             self.runningOptimize = False
@@ -706,7 +655,6 @@ class ManageModel(object):
             wIndex = mount.model.starList.index(max(mount.model.starList))
             wStar = mount.model.starList[wIndex]
             suc = mount.model.deletePoint(wStar.number)
-
             if not suc:
                 self.runningOptimize = False
                 self.app.message.emit(f'Point {wStar.number + 1:3.0f} cannot be deleted', 2)
@@ -720,17 +668,12 @@ class ManageModel(object):
 
         else:
             self.finishOptimize()
-
         return True
 
     def runOptimize(self):
         """
-        runOptimize dispatches the optimization method. depending which method was
-        chosen i the gui, the appropriate method is called
-
         :return: true for test purpose
         """
-
         self.app.message.emit('Start optimizing model', 2)
         self.runningOptimize = True
         self.ui.deleteWorstPoint.setEnabled(False)
@@ -746,15 +689,12 @@ class ManageModel(object):
         else:
             self.app.mount.signals.alignDone.connect(self.runSingleRMS)
             self.runSingleRMS()
-
         return True
 
     def finishOptimize(self):
         """
-
         :return:
         """
-
         if self.ui.optimizeOverall.isChecked():
             self.app.mount.signals.alignDone.disconnect(self.runTargetRMS)
 
@@ -772,22 +712,15 @@ class ManageModel(object):
 
     def cancelOptimize(self):
         """
-        cancelOptimize dispatches the optimization method. depending which method was
-        chosen i the gui, the appropriate method is called
-
         :return: true for test purpose
         """
-
         self.runningOptimize = False
-
         return True
 
     def showOriginalModelAnalyse(self):
         """
-
         :return: True for test purpose
         """
-
         if not self.fittedModelPath:
             return False
 
@@ -795,38 +728,30 @@ class ManageModel(object):
             return False
 
         self.app.showAnalyse.emit(self.fittedModelPath)
-
         return True
 
     def showActualModelAnalyse(self):
         """
-
         :return: True for test purpose
         """
-
         if not self.fittedModelPath:
             return False
 
         temp = os.path.splitext(self.fittedModelPath)
         actualPath = temp[0] + '-opt' + temp[1]
-
         if not os.path.isfile(actualPath):
             return False
 
         self.app.showAnalyse.emit(actualPath)
-
         return True
 
     def deleteDialog(self, question):
         """
-
         :param question:
         :return: OK
         """
-
         msg = QMessageBox
         reply = msg.question(self, 'Deleting point', question, msg.Yes | msg.No, msg.No)
-
         if reply != msg.Yes:
             return False
 
@@ -842,7 +767,6 @@ class ManageModel(object):
         :param event: mouse events
         :return: success
         """
-
         if not event.inaxes:
             return False
 
@@ -854,7 +778,6 @@ class ManageModel(object):
 
         event.xdata = (np.degrees(event.xdata) + 360) % 360
         event.ydata = 90 - event.ydata
-
         index = self.getIndexPoint(event=event, plane=self.plane, epsilon=5)
         if index is None:
             return False
@@ -862,14 +785,11 @@ class ManageModel(object):
         error = self.app.mount.model.starList[index].errorRMS
         text = f'Do you want to delete \npoint {index + 1:3.0f}'
         text += f'\nRMS of {error:5.1f} arcsec'
-
         isYes = self.deleteDialog(text)
-
         if not isYes:
             return False
 
         suc = self.app.mount.model.deletePoint(index)
-
         if not suc:
             self.app.message.emit(f'Point {index + 1:3.0f} cannot be deleted', 2)
             return False

@@ -109,7 +109,7 @@
     <number>4</number>
    </property>
    <property name="elideMode">
-    <enum>Qt::ElideNone</enum>
+    <enum>Qt::ElideLeft</enum>
    </property>
    <property name="tabsClosable">
     <bool>false</bool>
@@ -8973,7 +8973,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Disable dual axis tracking during model build</string>
       </property>
       <property name="checked">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="parkMountAfterModel">
@@ -9011,7 +9011,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>5</x>
         <y>220</y>
-        <width>296</width>
+        <width>336</width>
         <height>20</height>
        </rect>
       </property>
@@ -9027,7 +9027,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;During the model run leave out already successful used build points&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string>Exclude successful points for model build run</string>
+       <string>Exclude successful points for next model build run</string>
       </property>
       <property name="checked">
        <bool>false</bool>
@@ -11881,22 +11881,6 @@ Hint if mount will need a flip when following satellite.</string>
       <string>Program complete database</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="progEarthRotationData">
-     <property name="geometry">
-      <rect>
-       <x>430</x>
-       <y>395</y>
-       <width>341</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual in /data existing earth rotation data to the mount computer. Therefore MW4 uses the built in databases from IERS service finals2000a.all and the actual tai-utc.dat.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Program earth rotation data</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="progMinorPlanetsFiltered">
      <property name="geometry">
       <rect>
@@ -11913,21 +11897,53 @@ Hint if mount will need a flip when following satellite.</string>
       <string>Program filtered database</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="downloadIERS">
+    <widget class="QGroupBox" name="groupBox_36">
      <property name="geometry">
       <rect>
        <x>430</x>
-       <y>360</y>
-       <width>341</width>
-       <height>26</height>
+       <y>15</y>
+       <width>351</width>
+       <height>96</height>
       </rect>
      </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Downloads new databases from IERS service finals2000a.all to update the buildin ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <property name="title">
+      <string>Earth rotation data</string>
      </property>
-     <property name="text">
-      <string>Update IERS finals2000A.all </string>
+     <property name="large" stdset="0">
+      <bool>true</bool>
      </property>
+     <widget class="QPushButton" name="downloadIERS">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>25</y>
+        <width>331</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Downloads new databases from IERS service finals2000a.all to update the buildin ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Update IERS finals2000A.all </string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="progEarthRotationData">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>331</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual in /data existing earth rotation data to the mount computer. Therefore MW4 uses the built in databases from IERS service finals2000a.all and the actual tai-utc.dat.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Program earth rotation data</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="Analyse">
@@ -16612,7 +16628,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -20470,7 +20486,7 @@ When clicking the button, you could change the value.</string>
          <double>1.000000000000000</double>
         </property>
         <property name="value">
-         <double>1.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
        </widget>
       </widget>
@@ -21447,7 +21463,7 @@ When clicking the button, you could change the value.</string>
          <double>1.000000000000000</double>
         </property>
         <property name="value">
-         <double>1.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="label_100">
@@ -21864,6 +21880,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="singleStep">
          <double>0.010000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.400000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="label_140">
@@ -24252,7 +24271,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>free</string>
+         <string>relais 3</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -24291,7 +24310,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>free</string>
+         <string>relais 6</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -24330,7 +24349,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>free</string>
+         <string>relais 8</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -24462,7 +24481,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>free</string>
+         <string>relais 5</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -24501,7 +24520,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>free</string>
+         <string>relais 2</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -24540,7 +24559,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>free</string>
+         <string>relais 7</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -24735,7 +24754,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>free</string>
+         <string>relais 4</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -24774,7 +24793,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>free</string>
+         <string>relais 1</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -27061,7 +27080,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>filterMinorPlanet</tabstop>
   <tabstop>listMinorPlanetNames</tabstop>
   <tabstop>progMinorPlanetsFull</tabstop>
-  <tabstop>progEarthRotationData</tabstop>
   <tabstop>progMinorPlanetsFiltered</tabstop>
   <tabstop>rebootUPB</tabstop>
   <tabstop>parkMountAfterSlew</tabstop>

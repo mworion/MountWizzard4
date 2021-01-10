@@ -84,12 +84,12 @@ class BuildPoints:
         self.ui.numberGridPointsCol.setValue(config.get('numberGridPointsCol', 6))
         self.ui.altitudeMin.setValue(config.get('altitudeMin', 30))
         self.ui.altitudeMax.setValue(config.get('altitudeMax', 75))
-        self.ui.numberDSOPoints.setValue(config.get('numberDSOPoints', 20))
-        self.ui.durationDSO.setValue(config.get('durationDSO', 5))
+        self.ui.numberDSOPoints.setValue(config.get('numberDSOPoints', 15))
+        self.ui.durationDSO.setValue(config.get('durationDSO', 7))
         self.ui.timeShiftDSO.setValue(config.get('timeShiftDSO', 0))
 
         self.ui.checkAutoDeleteMeridian.setChecked(config.get('checkAutoDeleteMeridian', False))
-        self.ui.checkAutoDeleteHorizon.setChecked(config.get('checkAutoDeleteHorizon', False))
+        self.ui.checkAutoDeleteHorizon.setChecked(config.get('checkAutoDeleteHorizon', True))
         self.ui.checkSafetyMarginHorizon.setChecked(config.get('checkSafetyMarginHorizon',
                                                                False))
         self.ui.safetyMarginHorizon.setValue(config.get('safetyMarginHorizon', 0))
@@ -99,9 +99,6 @@ class BuildPoints:
         self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
         self.ui.keepGeneratedPoints.setChecked(config.get('keepGeneratedPoints', False))
 
-        # initialising the signal slot connections after the value are set, because
-        # otherwise we get a first value changed signal just when populating
-        # the initial data. this should not happen.
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
         self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)
         self.ui.altitudeMin.valueChanged.connect(self.genBuildGrid)

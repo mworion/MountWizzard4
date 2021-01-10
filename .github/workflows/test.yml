@@ -61,21 +61,11 @@ jobs:
             apt-get update -y
             apt-get upgrade -y
             apt-get install -y wget gcc build-essential
-            cd ~
-            mkdir tmp
-            cd tmp
-            wget https://www.python.org/ftp/python/3.8.7/Python-3.8.7.tgz
-            tar zxvf Python-3.8.7.tgz
-            cd Python-3.8.7
-            ./configure --prefix=$HOME/opt/python-3.8.7
-            make
-            make install
-            cd ~
-            export PATH=$HOME/opt/python-3.8.7/bin:$PATH
+            add-apt-repository ppa:deadsnakes/ppa
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            cp $(python3 --version) "/artifacts/${artifact_name}/python.txt"
+            apt-get install python3.8
             python3 -m pip install wheel
             python3 -m pip wheel pyqt5==5.15.2 -w "/artifacts/${artifact_name}/whl"
 

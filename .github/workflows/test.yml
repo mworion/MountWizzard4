@@ -59,7 +59,8 @@ jobs:
           # no secrets are present in the container state or logs.
           install: |
             apt-get update -y
-            apt-get install -y wget
+            apt-get upgrade -y
+            apt-get install -y wget gcc
             cd ~
             mkdir tmp
             cd tmp

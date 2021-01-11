@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - arch: aarch64
+          - arch: armv7
             distro: ubuntu18.04
 
     steps:
@@ -77,7 +77,7 @@ jobs:
             python -m pip install pip --upgrade
             python -m pip install setuptools --upgrade
             python -m pip install wheel
-            python -m pip wheel pillow -w /artifacts/whl
+            python -m pip wheel pyqt5==5.15.2 -w /artifacts/whl
 
       - name: show_artifact
         # Items placed in /artifacts in the container will be in

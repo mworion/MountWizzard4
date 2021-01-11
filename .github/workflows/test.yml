@@ -74,6 +74,8 @@ jobs:
             source venv/bin/activate
             python --version
             pip install wheel
+            pip install sip==5.5.0
+            pip install pyqt-builder==1.6.0
             pip wheel pyqt5==5.15.2 -w "/artifacts/${artifact_name}/whl"
 
       - name: Show the artifact

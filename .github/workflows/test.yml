@@ -71,7 +71,7 @@ jobs:
             ls -la
             ls -la venv
             ls -la venv/bin
-            source venv/bin/activate
+            . venv/bin/activate
             python --version
             pip install wheel
             pip wheel pyqt5==5.15.2 -w "/artifacts/${artifact_name}/whl"

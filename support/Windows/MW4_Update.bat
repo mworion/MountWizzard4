@@ -16,9 +16,9 @@ echo ##     ## ##  ##  ##       ##
 echo ##     ##  ###  ###        ##
 echo.
 echo ---------------------------------------------
-echo update script version 0.3
+echo update script version 0.4
 echo ---------------------------------------------
-echo update script version 0.3 > update.log 2>&1
+echo update script version 0.4 > update.log 2>&1
 echo.
 
 

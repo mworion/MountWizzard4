@@ -17,9 +17,9 @@ echo " ██║ ╚═╝ ██║ ╚███╔███╔╝      ██�
 echo " ╚═╝     ╚═╝  ╚══╝╚══╝       ╚═╝"
 echo
 echo ---------------------------------------------
-echo install script version 0.3
+echo install script version 0.4
 echo ---------------------------------------------
-echo install script version 0.3 > install.log 2>&1
+echo install script version 0.4 > install.log 2>&1
 echo
 
 echo

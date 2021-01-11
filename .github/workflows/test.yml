@@ -49,7 +49,7 @@ jobs:
             artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
 
           # The shell to run commands with in the container
-          shell: /bin/sh
+          shell: /bin/bash
 
           # Install some dependencies in the container. This speeds up builds if
           # you are also using githubToken. Any dependencies installed here will
@@ -71,7 +71,7 @@ jobs:
             ls -la
             ls -la venv
             ls -la venv/bin
-            . venv/bin/activate
+            source venv/bin/activate
             python --version
             pip install wheel
             pip wheel pyqt5==5.15.2 -w "/artifacts/${artifact_name}/whl"

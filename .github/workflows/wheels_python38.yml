@@ -21,13 +21,13 @@ jobs:
     strategy:
       matrix:
         include:
-          - arch: aarch64
+          - arch: [aarch64, arm7]
             distro: ubuntu18.04
 
     steps:
       - uses: actions/checkout@v2.1.0
       - uses: uraimo/run-on-arch-action@v2.0.5
-        name: Build artifact
+        name: build_artifact
         id: build
         with:
           arch: ${{ matrix.arch }}
@@ -77,13 +77,15 @@ jobs:
             python -m pip install pip --upgrade
             python -m pip install setuptools --upgrade
             python -m pip install wheel
-            python -m pip wheel pillow -w "/artifacts/whl"
+            python -m pip wheel pillow -w /artifacts/whl
 
-      - name: Show the artifact
+      - name: show_artifact
         # Items placed in /artifacts in the container will be in
         # ${PWD}/artifacts on the host.
         run: |
           ls -al "${PWD}/artifacts"
+          ls -al "${PWD}/artifacts/whl"
+          echo "${PWD}/artifacts/whl"
 
       - name: upload_wheels
         uses: actions/upload-artifact@v2

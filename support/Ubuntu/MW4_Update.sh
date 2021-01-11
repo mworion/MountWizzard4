@@ -42,12 +42,12 @@ echo Checking environment and start script >> update.log 2>&1
 T=`python3 --version`
 P_VER=""
 
-if [ "${T:0:10}" == "Python 3.8" ]; then
+if [ "${T:0:10}" == "Python 3.9" ]; then
+  P_VER="python3.9"
+elif [ "${T:0:10}" == "Python 3.8" ]; then
   P_VER="python3.8"
 elif [ "${T:0:10}" == "Python 3.7" ]; then
   P_VER="python3.7"
-elif [ "${T:0:10}" == "Python 3.6" ]; then
-  P_VER="python3.6"
 fi
 
 echo variable P_VER has value of $P_VER >> update.log 2>&1

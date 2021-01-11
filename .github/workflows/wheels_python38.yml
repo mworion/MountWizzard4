@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - arch: armv7
+          - arch: aarch64
             distro: ubuntu18.04
 
     steps:
@@ -91,4 +91,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: wheelhouse
-          path: "${PWD}/artifacts/whl"
+          path: /home/runner/work/MountWizzard4/MountWizzard4/artifacts/whl

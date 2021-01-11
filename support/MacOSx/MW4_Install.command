@@ -37,14 +37,14 @@ python3 --version >> install.log 2>&1
 T=$(python3 --version)
 
 # check which valid version is installed
-if [[ $T == *"3.8"* ]]; then
-  P_VER="python3.8"
+if [[ $T == *"3.9"* ]]; then
+  P_VER="python3.9"
 
+elif [[ $T == *"3.8"* ]]; then
+  P_VER="python3.8"
+	
 elif [[ $T == *"3.7"* ]]; then
   P_VER="python3.7"
-	
-elif [[ $T == *"3.6"* ]]; then
-  P_VER="python3.6"
 fi
 
 if [ "${P_VER:0:6}" == "python" ]; then

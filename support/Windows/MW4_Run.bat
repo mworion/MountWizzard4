@@ -47,14 +47,14 @@ for /f "delims=" %%a in ('python --version') do @set T=%%a
 
 echo variable T has value of %T% >> run.log
 
+echo %T% | find "3.9" > nul
+if not errorlevel 1 SET P_VER='python3.9'
+
 echo %T% | find "3.8" > nul
 if not errorlevel 1 SET P_VER='python3.8'
 
 echo %T% | find "3.7" > nul
 if not errorlevel 1 SET P_VER='python3.7'
-
-echo %T% | find "3.6" > nul
-if not errorlevel 1 SET P_VER='python3.6'
 
 echo variable P_VER has value of %P_VER% >> run.log 2>&1
 

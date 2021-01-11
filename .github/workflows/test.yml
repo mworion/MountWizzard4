@@ -74,11 +74,10 @@ jobs:
             source venv/bin/activate
             python --version
             python -m pip install pip --upgrade
-            pip install setuptools --upgrade
-            pip install wheel
-            pip install sip==5.5.0
-            pip install pyqt-builder==1.6.0
-            pip wheel pyqt5==5.15.2 -w "/artifacts/${artifact_name}/whl"
+            python -m pip install setuptools --upgrade
+            python -m pip install wheel
+            # python -m pip wheel pyqt5==5.15.2 -w "/artifacts/${artifact_name}/whl"
+            python -m pip wheel astropy==4.2 -w "/artifacts/${artifact_name}/whl"
 
       - name: Show the artifact
         # Items placed in /artifacts in the container will be in

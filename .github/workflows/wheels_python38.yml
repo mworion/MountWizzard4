@@ -83,11 +83,14 @@ jobs:
             # pip wheel mountwizzard4 -w "support/wheels/${{ matrix.distro}}"
             pip wheel pillow -w "support/wheels/${{ matrix.distro}}"
 
-      - name: show_artifact
+      - name: show_artifact_and_commit
         # Items placed in /artifacts in the container will be in
         # ${PWD}/artifacts on the host.
         run: |
           ls -al "support/wheels/${{ matrix.distro }}"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "adding wheels" -a
 
       - name: upload_wheels
         uses: actions/upload-artifact@v2

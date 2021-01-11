@@ -3,13 +3,13 @@
 #
 # v0.1, Michael Wuertenberger
 #
-name: test
+name: build-wheels-python38
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/test.yml'
+      - '.github/workflows/wheels_python38.yml'
 
 jobs:
   build_job:
@@ -78,11 +78,15 @@ jobs:
             python -m pip install setuptools --upgrade
             python -m pip install wheel
             python -m pip wheel pillow -w "/artifacts/whl"
-            # python -m pip wheel pyqt5==5.15.2 -w "/artifacts/${artifact_name}/whl"
-            # python -m pip wheel astropy==4.2 -w "/artifacts/${artifact_name}/whl"
 
       - name: Show the artifact
         # Items placed in /artifacts in the container will be in
         # ${PWD}/artifacts on the host.
         run: |
           ls -al "${PWD}/artifacts"
+
+      - name: upload_wheels
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheelhouse
+          path: "${PWD}/artifacts"

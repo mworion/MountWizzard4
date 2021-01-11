@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - arch: armv7
+          - arch: aarch64
             distro: ubuntu18.04
 
     steps:
@@ -77,18 +77,22 @@ jobs:
             python -m pip install pip --upgrade
             python -m pip install setuptools --upgrade
             python -m pip install wheel
-            python -m pip wheel pyqt5==5.15.2 -w /artifacts/whl
+            python -m pip wheel pyqt5==5.15.2 -w "support/wheels/${{ matrix.distro}}"
 
       - name: show_artifact
         # Items placed in /artifacts in the container will be in
         # ${PWD}/artifacts on the host.
         run: |
-          ls -al "${PWD}/artifacts"
-          ls -al "${PWD}/artifacts/whl"
-          echo "${PWD}/artifacts/whl"
+          ls -al "support/wheels/${{ matrix.distro }}"
 
       - name: upload_wheels
         uses: actions/upload-artifact@v2
         with:
           name: wheelhouse
-          path: /home/runner/work/MountWizzard4/MountWizzard4/artifacts/whl
+          path: "support/wheels/${{ matrix.distro }}"
+          
+      - name: push_changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

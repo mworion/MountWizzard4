@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - arch: [aarch64, arm7]
+          - arch: aarch64
             distro: ubuntu18.04
 
     steps:

@@ -41,8 +41,8 @@ able to compile necessary packages:
 
 .. code-block:: python
 
-    sudo apt-get install python3-virtualenv     # for generating a virtual environment
-    sudo apt-get install python3-pip            # compile setup for packages
+    sudo apt-get install python3-virtualenv
+    sudo apt-get install python3-pip
 
 .. note::
     You need to have both packages installed as otherwise the install script does

@@ -22,7 +22,7 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu18.04
+            distro: ubuntu20.04
 
     steps:
       - uses: actions/checkout@v2.1.0
@@ -84,14 +84,25 @@ jobs:
             pip wheel sgp4==2.15 -w "support/wheels/${{ matrix.distro}}"
             pip wheel pyqt5==5.15.2 -w "support/wheels/${{ matrix.distro}}"
             
-      - name: Show the artifact
+      - name: show_artifact_and_commit
         # Items placed in /artifacts in the container will be in
         # ${PWD}/artifacts on the host.
         run: |
-          ls -al artifacts
+          ls -al "support/wheels/${{ matrix.distro }}"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add "support/wheels/${{ matrix.distro}}"
+          git commit -m "adding wheels" -a
+          git pull
 
       - name: upload_wheels
         uses: actions/upload-artifact@v2
         with:
           name: wheelhouse
-          path: artifacts
+          path: "support/wheels/${{ matrix.distro }}"
+          
+      - name: push_changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

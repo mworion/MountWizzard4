@@ -2,7 +2,7 @@
 cd $(dirname "$0")
 
 #
-# Installer for Ubuntu Mate 18.04 for aarch64 (RPi4)
+# Installer for Ubuntu Mate 20.04 for aarch64 (RPi4)
 # (c) 2021 mworion
 #
 
@@ -18,7 +18,7 @@ echo " ╚═╝     ╚═╝  ╚══╝╚══╝       ╚═╝"
 echo
 echo ---------------------------------------------
 echo install script version 0.4
-echo install for aarch64 architecture (RPi4)
+echo install for aarch64 and ubuntu 20.04
 echo ---------------------------------------------
 echo install script version 0.4 > install.log 2>&1
 echo
@@ -109,7 +109,7 @@ echo installing precompiled packages
 echo ---------------------------------------------
 echo
 
-WHL="https://github.com/mworion/mountwizzard4/raw/master/support/wheels/ubuntu18.04"
+WHL="https://github.com/mworion/mountwizzard4/raw/master/support/wheels/ubuntu20.04"
 ARCH="_aarch64.whl"
 
 if [ "${P_VER:0:9}" == "python3.9" ]; then

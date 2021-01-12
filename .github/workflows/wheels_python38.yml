@@ -7,7 +7,7 @@ name: build-wheels-python38
 
 on:
   push:
-    # Run this action on the trigger event when specific files are touched
+    # Run this action on the trigger event when s pecific files are touched
     paths:
       - '.github/workflows/wheels_python38.yml'
 

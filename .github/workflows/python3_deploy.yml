@@ -8,11 +8,11 @@ name: python3_deploy
 on:
   push:
     # Run this action on the trigger event when specific files are touched
-    paths:
-      - '.github/workflows/python3_deploy.yml'
+    # paths:
+    #   - '.github/workflows/python3_deploy.yml'
     tags:
        - 'v*'
-       -
+
 jobs:
 
   # This action is split into five jobs:

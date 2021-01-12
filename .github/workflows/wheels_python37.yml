@@ -8,10 +8,8 @@ name: build-wheels-python37
 on:
   push:
     # Run this action on the trigger event when specific files are touched
-    # paths:
-    #   - '.github/workflows/wheels_python37.yml'
-    tags:
-      - 'd37*'
+    paths:
+      - '.github/workflows/wheels_python37.yml'
 
 jobs:
   build_job:
@@ -24,7 +22,7 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu18.04
+            distro: ubuntu20.04
 
     steps:
       - uses: actions/checkout@v2.1.0

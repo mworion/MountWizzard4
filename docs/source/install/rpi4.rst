@@ -34,10 +34,6 @@ After you have finished the setup and got the desktop up and running, the comman
 should give you the following result 3.8.5: Please take care, that a python
 version 3.8.5 or later is installed.
 
-.. warning::
-    MW4 does not support python 3.9 right now because there are many precompiled
-    packages missing for that version.
-
 The actual Ubuntu mate 20.04.1LTS distribution comes with python 3.8.5, so
 everything should be OK. Next we have to do is to install a virtual environment
 capability, the packet manager pip and the development headers for python to be
@@ -46,47 +42,29 @@ able to compile necessary packages:
 .. code-block:: python
 
     sudo apt-get install python3-virtualenv     # for generating a virtual environment
-    sudo apt-get install python3-dev            # python headers for compile packages
     sudo apt-get install python3-pip            # compile setup for packages
-    sudo apt-get install qt5-default            # sources for PyQt5 package build
 
 .. note::
     You need to have both packages installed as otherwise the install script does
     not run.
 
-If everything went fine, you could proceed like installing in Ubuntu.
 
 Using the precompiled wheels from Ubuntu_Mate_Scripts.zip
 ---------------------------------------------------------
-
-There is also a possible shortcut as with the script for Ubuntu Mate 20.04.1 there
-are precompiled packages included which might speedup the installation process.
-Please download the ZIP folder and extract it to your work folder and run
+Please choose the script fitting to you ubuntu mate version (18.04.x or 20.04.x)
+The scripts will use precompiled wheels as much as possible to improved the
+installation speed on your RPi4.
 
 .. code-block:: python
 
-    ./MW4_Install_Mate.sh
+    ./MW4_Install_Mate_18_04.sh
 
-After a short while MW4 is installed and should be ready to run.
+    or
 
+    ./MW4_Install_Mate_20_04.sh
 
-Picture of RPi4 process
------------------------
+After a short while MW4 is installed and should be ready to run like in ubuntu
+installation.
 
-Attached some images during installation:
+.. note:: The install scripts only support python 3.7-3.9 versions"
 
-
-.. image:: image/rpi4_scripts.png
-    :align: center
-
-
-.. image:: image/rpi4_scripts_extracted.png
-    :align: center
-
-
-.. image:: image/rpi4_terminal.png
-    :align: center
-
-
-.. image:: image/rpi4_running_install.png
-    :align: center

@@ -5,12 +5,18 @@ detailed changes list, please refer to the commit list on GitHub.
 
 Unreleased versions of scripts
 ------------------------------
-(0.4)
+(0.5)
 
 - further improvements
 
 Released versions of scripts
 ----------------------------
+0.4
+
+- support for python 3.7 - 3.9, removing support 3.6
+- added prebuild wheels for ubuntu mate 18.04 aarch64 for python 3.7 - 3.9
+- added prebuild wheels for ubuntu mate 20.04 aarch64 for python 3.7 - 3.9
+
 0.3
 
 - adding more error log support

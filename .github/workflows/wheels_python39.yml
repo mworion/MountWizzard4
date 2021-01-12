@@ -1,0 +1,99 @@
+#
+# GitHub actions for running the unit test of the mountwizzard4 package
+#
+# v0.1, Michael Wuertenberger
+#
+name: build-wheels-python39
+
+on:
+  push:
+    # Run this action on the trigger event when specific files are touched
+    # paths:
+    #   - '.github/workflows/wheels_python39.yml'
+    tags:
+      - 'd39*'
+
+jobs:
+  build_job:
+    # The host should always be linux
+    runs-on: ubuntu-18.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    # Run steps on a matrix of 3 arch/distro combinations
+    strategy:
+      matrix:
+        include:
+          - arch: aarch64
+            distro: ubuntu18.04
+
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - uses: uraimo/run-on-arch-action@v2.0.5
+        name: Build artifact
+        id: build
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
+
+          # Not required, but speeds up builds
+          githubToken: ${{ github.token }}
+
+          # Create an artifacts directory
+          setup: |
+            mkdir -p "${PWD}/artifacts"
+
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}/artifacts:/artifacts"
+
+          # Pass some environment variables to the container
+          env: | # YAML, but pipe character is necessary
+            artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
+
+          # The shell to run commands with in the container
+          shell: /bin/bash
+
+          # Install some dependencies in the container. This speeds up builds if
+          # you are also using githubToken. Any dependencies installed here will
+          # be part of the container image that gets cached, so subsequent
+          # builds don't have to re-install them. The image layer is cached
+          # publicly in your project's package repository, so it is vital that
+          # no secrets are present in the container state or logs.
+          install: |
+            apt-get update -y
+            apt-get upgrade -y
+            apt-get install -y wget gcc build-essential zlib1g-dev libjpeg-dev
+            apt-get install -y software-properties-common
+            add-apt-repository ppa:deadsnakes/ppa
+            
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
+            apt-get -y install python3.9 python3-pip python3.9-venv python3.9-dev
+            apt-get -y install qt5-default pyqt5-dev pyqt5-dev-tools
+            python3.9 -m venv venv
+            source venv/bin/activate
+            
+            python --version
+            python -m pip install pip --upgrade
+            pip install setuptools --upgrade
+            pip install wheel
+            pip wheel numpy==1.19.3 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel astropy==4.2 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel pyerfa==1.7.1.1 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel matplotlib==3.3.3 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel scipy=1.5.4 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel sep=1.1.1 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel sgp4=2.15 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel pyqt5==5.15.2 -w "support/wheels/${{ matrix.distro}}"
+
+      - name: Show the artifact
+        # Items placed in /artifacts in the container will be in
+        # ${PWD}/artifacts on the host.
+        run: |
+          ls -al artifacts
+
+      - name: upload_wheels
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheelhouse
+          path: artifacts

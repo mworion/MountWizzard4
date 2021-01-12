@@ -81,9 +81,9 @@ jobs:
             pip wheel astropy==4.2 -w "support/wheels/${{ matrix.distro}}"
             pip wheel pyerfa==1.7.1.1 -w "support/wheels/${{ matrix.distro}}"
             pip wheel matplotlib==3.3.3 -w "support/wheels/${{ matrix.distro}}"
-            pip wheel scipy=1.5.4 -w "support/wheels/${{ matrix.distro}}"
-            pip wheel sep=1.1.1 -w "support/wheels/${{ matrix.distro}}"
-            pip wheel sgp4=2.15 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel scipy==1.5.4 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel sep==1.1.1 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel sgp4==2.15 -w "support/wheels/${{ matrix.distro}}"
             pip wheel pyqt5==5.15.2 -w "support/wheels/${{ matrix.distro}}"
             
       - name: Show the artifact

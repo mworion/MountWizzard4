@@ -10,8 +10,8 @@ on:
     # Run this action on the trigger event when specific files are touched
     # paths:
     #   - '.github/workflows/wheels_python37.yml'
-  tags:
-    - 'd37*'
+    tags:
+      - 'd37*'
 
 jobs:
   build_job:

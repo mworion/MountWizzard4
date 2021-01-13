@@ -82,7 +82,7 @@ jobs:
             pip wheel scipy==1.5.4 -w "support/wheels/${{ matrix.distro}}"
             pip wheel sep==1.1.1 -w "support/wheels/${{ matrix.distro}}"
             pip wheel sgp4==2.15 -w "support/wheels/${{ matrix.distro}}"
-            pip wheel pyqt5==5.15.2 -w "support/wheels/${{ matrix.distro}}"
+            # pip wheel pyqt5==5.15.2 -w "support/wheels/${{ matrix.distro}}"
 
       - name: show_artifact_and_commit
         # Items placed in /artifacts in the container will be in

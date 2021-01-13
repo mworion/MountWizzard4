@@ -94,13 +94,13 @@ class SettDome(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.domeRadius.setValue(config.get('domeRadius', 1.5))
         self.ui.domeShutterWidth.setValue(config.get('domeShutterWidth', 0.2))
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
         self.ui.domeZoffGEM.setValue(config.get('domeZoffGEM', 0))
         self.ui.offGEM.setValue(config.get('offGEM', 0))
         self.ui.offLAT.setValue(config.get('offLAT', 0))
+        self.ui.domeRadius.setValue(config.get('domeRadius', 1.5))
         self.ui.checkUseDomeGeometry.setChecked(config.get('checkUseDomeGeometry', False))
         self.ui.checkAutomaticDome.setChecked(config.get('checkAutomaticDome', False))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))

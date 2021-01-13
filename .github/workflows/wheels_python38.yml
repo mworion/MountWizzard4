@@ -22,7 +22,7 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu18.04
+            distro: ubuntu20.04
 
     steps:
       - uses: actions/checkout@v2.1.0
@@ -82,8 +82,8 @@ jobs:
             # pip wheel scipy==1.5.4 -w "support/wheels/${{ matrix.distro}}"
             # pip wheel sep==1.1.1 -w "support/wheels/${{ matrix.distro}}"
             # pip wheel sgp4==2.15 -w "support/wheels/${{ matrix.distro}}"
-            # pip wheel pybase64==1.1.1 -w "support/wheels/${{ matrix.distro}}"
-            # pip wheel pyqt5_sip==12.8.1 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel pybase64==1.1.1 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel pyqt5_sip==12.8.1 -w "support/wheels/${{ matrix.distro}}"
             # pip wheel pyqt5==5.15.2 -w "support/wheels/${{ matrix.distro}}"
 
       - name: show_artifact_and_commit

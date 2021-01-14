@@ -75,7 +75,7 @@ exit
 :proceedOK
 echo.
 echo ---------------------------------------------
-echo python version ok
+echo python version ok: %P_VER%
 echo ---------------------------------------------
 
 pip install mountwizzard4 --upgrade --no-cache-dir >> update.log 2>&1

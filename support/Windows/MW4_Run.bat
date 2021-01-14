@@ -70,7 +70,7 @@ exit
 :proceedOK
 echo.
 echo ---------------------------------------------
-echo python version ok
+echo python version ok: %P_VER%
 echo ---------------------------------------------
 
 SET QT_SCALE_FACTOR=1 >> run.log 2>&1

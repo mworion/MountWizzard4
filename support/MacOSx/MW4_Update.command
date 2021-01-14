@@ -64,7 +64,7 @@ echo variable P_VER has value of $P_VER >> update.log 2>&1
 if [ "${P_VER:0:6}" == "python" ]; then
   echo
   echo ----------------------------------------
-  echo python version ok
+  echo python version ok: ${P_VER}
   echo ----------------------------------------
 
 else

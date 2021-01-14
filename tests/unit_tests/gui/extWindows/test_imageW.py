@@ -379,8 +379,34 @@ def test_imagePlot_5(function):
                ('a', '<f8'), ('b', '<f8'),
                ('theta', '<f8'), ('flux', '<f8')])
     function.bk_back = np.zeros([100, 100])
-    function.flux = np.random.rand(10)
+    function.bk_rms = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(5)
+    suc = function.imagePlot()
+    assert suc
+
+
+def test_imagePlot_6(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.axe = function.fig.add_subplot(label=0)
+    function.axeCB = function.fig.add_subplot(label=1)
+    function.stretch = AsinhStretch()
+    function.colorMap = 'rainbow'
+    function.objs = np.ones(
+        10,
+        dtype=[('x', '<f8'), ('y', '<f8'),
+               ('a', '<f8'), ('b', '<f8'),
+               ('theta', '<f8'), ('flux', '<f8')])
+    function.bk_back = np.zeros([100, 100])
+    function.flux = np.random.rand(10)
+    function.ui.view.setCurrentIndex(6)
     suc = function.imagePlot()
     assert suc
 

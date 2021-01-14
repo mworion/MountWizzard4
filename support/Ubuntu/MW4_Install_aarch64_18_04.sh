@@ -2,11 +2,10 @@
 cd $(dirname "$0")
 
 #
-# Installer for Ubuntu Mate 18.04 for aarch64 (RPi4)
+# Installer for Ubuntu 18.04 for aarch64
 # (c) 2021 mworion
 #
 
-echo
 echo --------------------------------------------------------
 echo
 echo "         ███╗   ███╗██╗    ██╗██╗  ██╗"
@@ -93,7 +92,7 @@ virtualenv venv >> install.log 2>&1
   echo install virtualenv with
   echo sudo apt-get install python3-virtualenv
   echo --------------------------------------------------------
-  echo
+  
   echo no valid virtual environment installed >> install.log 2>&1
   exit
 }
@@ -120,46 +119,29 @@ echo --------------------------------------------------------
 
 WHL="https://github.com/mworion/mountwizzard4/raw/master/support/wheels/ubuntu18.04"
 ARCH="_aarch64.whl"
+PY37="-cp37-37m-"
+PY38="-cp38-38-"
+PY39="-cp39-39-"
 
 if [ "${P_VER:0:9}" == "python3.9" ]; then
-  pip install "${WHL}"/numpy-1.19.3-cp39-cp39-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/kiwisolver-1.3.1-cp39-cp39-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/pyerfa-1.7.1.1-cp39-cp39-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/Pillow-8.1.0-cp39-cp39-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/matplotlib-3.3.3-cp39-cp39-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/astropy-4.2-cp39-cp39-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/pybase64-1.1.1-cp39-cp39-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/scipy-1.5.4-cp39-cp39-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/sep-1.1.1-cp39-cp39-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/sgp4-2.15-cp39-cp39-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/PyQt5_sip-12.8.1-cp39-cp39-linux"${ARCH}" >> install.log 2>&1
-
+  PY=PY39
 elif [ "${P_VER:0:9}" == "python3.8" ]; then
-  pip install "${WHL}"/numpy-1.19.3-cp38-cp38-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/kiwisolver-1.3.1-cp38-cp38-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/pyerfa-1.7.1.1-cp38-cp38-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/Pillow-8.1.0-cp38-cp38-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/matplotlib-3.3.3-cp38-cp38-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/astropy-4.2-cp38-cp38-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/pybase64-1.1.1-cp38-cp38-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/scipy-1.5.4-cp38-cp38-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/sep-1.1.1-cp38-cp38-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/sgp4-2.15-cp38-cp38-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/PyQt5_sip-12.8.1-cp38-cp38-linux"${ARCH}" >> install.log 2>&1
-
+  PY=PY38
 elif [ "${P_VER:0:9}" == "python3.7" ]; then
-  pip install "${WHL}"/numpy-1.19.3-cp37-cp37m-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/kiwisolver-1.3.1-cp37-cp37m-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/pyerfa-1.7.1.1-cp37-cp37m-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/Pillow-8.1.0-cp37-cp37m-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/matplotlib-3.3.3-cp37m-cp37-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/astropy-4.2-cp37-cp37m-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/pybase64-1.1.1-cp37-cp37m-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/scipy-1.5.4-cp37-cp37m-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/sep-1.1.1-cp37-cp37m-linux"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/sgp4-2.15-cp37-cp37m-manylinux2014"${ARCH}" >> install.log 2>&1
-  pip install "${WHL}"/PyQt5_sip-12.8.1-cp37-cp37m-linux"${ARCH}" >> install.log 2>&1
+  PY=PY37
 fi
+  
+pip install "${WHL}"/numpy-1.19.3"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/kiwisolver-1.3.1"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/pyerfa-1.7.1.1"${PY}"linux"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/Pillow-8.1.0"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/matplotlib-3.3.3"${PY}"linux"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/astropy-4.2"${PY}"linux"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/pybase64-1.1.1"${PY}"linux"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/scipy-1.5.4"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/sep-1.1.1"${PY}"linux"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/sgp4-2.15"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/PyQt5_sip-12.8.1"${PY}"linux"${ARCH}" >> install.log 2>&1
 
 pip install "${WHL}"/PyQt5-5.15.2-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}" >> install.log 2>&1
 

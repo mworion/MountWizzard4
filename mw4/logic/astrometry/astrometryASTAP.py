@@ -166,6 +166,8 @@ class AstrometryASTAP(object):
         for line in wcsTextFile:
             if line.startswith('END'):
                 continue
+            if line.startswith('COMMENT'):
+                continue
             tempString += line
 
         wcsHeader = fits.PrimaryHDU().header.fromstring(tempString,

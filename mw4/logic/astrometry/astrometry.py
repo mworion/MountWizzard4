@@ -17,6 +17,7 @@
 # standard libraries
 import logging
 import os
+import warnings
 
 # external packages
 import PyQt5
@@ -195,8 +196,9 @@ class Astrometry:
                           unique=True,
                           update=True)
 
-        # remove polynomial coefficients keys if '-SIP' is not selected in CTYPE1 and CTYPE2
-        # this might occur, if you solve a fits file a second time with another solver
+        # remove polynomial coefficients keys if '-SIP' is not selected in
+        # CTYPE1 and CTYPE2 this might occur, if you solve a fits file a second
+        # time with another solver
 
         if 'CTYPE1' not in fitsHeader or 'CTYPE2' not in fitsHeader:
             return solve, fitsHeader

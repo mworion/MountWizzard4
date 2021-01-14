@@ -30,14 +30,16 @@ userUbuntu = 'mw@' + clientUbuntu
 workUbuntu = '/home/mw/test'
 workUbuntuSCP = userUbuntu + ':/home/mw/test'
 
-# same for windows10 with cmd.exe as shell
+# same for windows1 with cmd.exe as shell
 clientWindows = 'astro-windows.fritz.box'
 uWin = 'mw@' + clientWindows
 wWin = 'test'
 wWinSCP = uWin + ':/Users/mw/test'
 
-
+# same for macOS
 clientMac = 'astro-mac-bigsur.fritz.box'
+# clientMac = 'astro-mac-catalina.fritz.box'
+# clientMac = 'astro-mac-mojave.fritz.box'
 userMac = 'mw@' + clientMac
 workMac = 'test'
 workMacSCP = userMac + ':/Users/mw/test'

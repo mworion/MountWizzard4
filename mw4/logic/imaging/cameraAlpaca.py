@@ -72,7 +72,7 @@ class CameraAlpaca(AlpacaClass):
         self.dataEntry(self.client.startx(), 'CCD_FRAME.X')
         self.dataEntry(self.client.starty(), 'CCD_FRAME.Y')
 
-        self.log.trace(f'Initial data: {self.data}')
+        self.log.debug(f'Initial data: {self.data}')
 
         return True
 

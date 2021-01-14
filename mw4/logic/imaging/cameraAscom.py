@@ -57,7 +57,7 @@ class CameraAscom(AscomClass):
 
         self.dataEntry(self.client.CameraXSize, 'CCD_INFO.CCD_MAX_X')
         self.dataEntry(self.client.CameraYSize, 'CCD_INFO.CCD_MAX_Y')
-        # self.dataEntry(self.client.CanFastReadout, 'CAN_FAST')
+        self.dataEntry(self.client.CanFastReadout, 'CAN_FAST')
         self.dataEntry(self.client.CanAbortExposure, 'CAN_ABORT')
         self.dataEntry(self.client.PixelSizeX, 'CCD_INFO.CCD_PIXEL_SIZE_X')
         self.dataEntry(self.client.PixelSizeY, 'CCD_INFO.CCD_PIXEL_SIZE_Y')
@@ -67,8 +67,7 @@ class CameraAscom(AscomClass):
         self.dataEntry(self.client.BinY, 'CCD_BINNING.VERT_BIN')
         self.dataEntry(self.client.StartX, 'CCD_FRAME.X')
         self.dataEntry(self.client.StartY, 'CCD_FRAME.Y')
-
-        self.log.trace(f'Initial data: {self.data}')
+        self.log.debug(f'Initial data: {self.data}')
 
         return True
 
@@ -258,7 +257,6 @@ class CameraAscom(AscomClass):
                         focalLength=focalLength)
 
         self.threadPool.start(worker)
-
         return True
 
     def abort(self):

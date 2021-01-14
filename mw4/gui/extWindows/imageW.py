@@ -88,9 +88,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.view = {0: 'Image Raw',
                      1: 'Image with Sources',
                      2: 'Photometry: HFD value',
-                     3: 'Photometry: Background level',
-                     4: 'Photometry: Background noise',
-                     5: 'Photometry: Flux',
+                     3: 'Photometry: Eccentricity',
+                     4: 'Photometry: Background level',
+                     5: 'Photometry: Background noise',
+                     6: 'Photometry: Flux',
                      }
 
         self.colorMaps = {'Grey': 'gray',
@@ -462,7 +463,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         else:
             imageDisp = self.image
 
-        if self.ui.view.currentIndex() in [0, 1, 2]:
+        if self.ui.view.currentIndex() in [0, 1, 2, 3]:
             imageDisp[imageDisp < 0] = 0
             img = imshow_norm(imageDisp,
                               ax=self.axe,
@@ -507,7 +508,21 @@ class ImageWindow(toolsQtWidget.MWidget):
                                   color=self.M_BLUE,
                                   fontweight='bold')
 
-        if self.ui.view.currentIndex() == 3 and self.bk_back is not None:
+        if self.ui.view.currentIndex() == 3 and self.objs is not None:
+            a = self.objs['a']
+            b = self.objs['b']
+            eccentricity = np.sqrt(1 - b ** 2 / a ** 2)
+            area = 5
+            scatter = self.axe.scatter(self.objs['x'], self.objs['y'],
+                                       c=eccentricity, s=area, cmap='gnuplot2')
+
+            colorbar = self.fig.colorbar(scatter, cax=self.axeCB)
+            colorbar.set_label('Eccentricity []', color=self.M_BLUE,
+                               fontsize=12)
+            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+
+        if self.ui.view.currentIndex() == 4 and self.bk_back is not None:
             img = imshow_norm(self.bk_back,
                               ax=self.axe,
                               origin='lower',
@@ -523,7 +538,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                 yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
                 plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        if self.ui.view.currentIndex() == 4 and self.bk_rms is not None:
+        if self.ui.view.currentIndex() == 5 and self.bk_rms is not None:
             img = imshow_norm(self.bk_rms,
                               ax=self.axe,
                               origin='lower',
@@ -540,7 +555,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                 plt.setp(yTicks, color=self.M_BLUE,
                          fontweight='bold')
 
-        if self.ui.view.currentIndex() == 5 and self.flux is not None:
+        if self.ui.view.currentIndex() == 6 and self.flux is not None:
             flux = np.log(self.flux)
             area = 3 * flux
             scatter = self.axe.scatter(self.objs['x'], self.objs['y'],

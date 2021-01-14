@@ -250,8 +250,11 @@ class Camera:
 
         # this protects against overrun
         while self.exposing:
-            QTest.qWait(200)
+            QTest.qWait(250)
 
+        text = f'Image bin:{binning}, posX:{posX}, posY:{posY}'
+        text += f', width:{width}, height:{height}, fast:{fastReadout}'
+        self.log.debug(text)
         self.exposing = True
         suc = self.run[self.framework].expose(imagePath=imagePath,
                                               expTime=expTime,

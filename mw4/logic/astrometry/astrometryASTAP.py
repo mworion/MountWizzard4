@@ -279,11 +279,6 @@ class AstrometryASTAP(object):
 
     def checkAvailability(self):
         """
-        checkAvailability searches for the existence of the core runtime modules from
-        all applications. to this family belong:
-            astrometry.net namely image2xy and solve-field
-            ASTP files
-
         :return: working environment found
         """
 

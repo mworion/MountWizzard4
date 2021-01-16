@@ -82,10 +82,6 @@ class Environ(object):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config['mainW']
@@ -96,15 +92,10 @@ class Environ(object):
         self.refractionSource = config.get('refractionSource', '')
         self.setRefractionSourceGui()
         self.updateClearOutside()
-
         return True
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config['mainW']
@@ -112,16 +103,13 @@ class Environ(object):
         config['checkRefracCont'] = self.ui.checkRefracCont.isChecked()
         config['checkRefracNoTrack'] = self.ui.checkRefracNoTrack.isChecked()
         config['refractionSource'] = self.refractionSource
-
         return True
 
     def updateRefractionUpdateType(self, setting):
         """
-
         :param setting:
         :return: success
         """
-
         if self.refractionSource != 'directWeather':
             return False
 
@@ -138,10 +126,8 @@ class Environ(object):
 
     def setRefractionUpdateType(self):
         """
-
         :return: success
         """
-
         if self.refractionSource != 'directWeather':
             suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
             return suc
@@ -158,12 +144,11 @@ class Environ(object):
 
     def setRefractionSourceGui(self):
         """
-        setRefractionSourceGui sets the gui elements to a recognizable setting and disables
-        all others
+        setRefractionSourceGui sets the gui elements to a recognizable setting
+        and disables all others
 
         :return: success
         """
-
         for source, group in self.refractionSources.items():
             if self.refractionSource == source:
                 self.changeStyleDynamic(group, 'refraction', True)
@@ -175,13 +160,12 @@ class Environ(object):
 
     def selectRefractionSource(self):
         """
-        selectRefractionSource receives all button presses on groups and checks which of the
-        groups was clicked on. whit that information is detects the index in the list of
-        groups.
+        selectRefractionSource receives all button presses on groups and checks
+        which of the groups was clicked on. whit that information is detects the
+        index in the list of groups.
 
         :return: success
         """
-
         old = self.refractionSource
 
         for source, group in self.refractionSources.items():
@@ -203,12 +187,11 @@ class Environ(object):
 
     def updateFilterRefractionParameters(self):
         """
-        updateFilter initializes the filter with the first values or is rolling the
-        moving average
+        updateFilter initializes the filter with the first values or is rolling
+        the moving average
 
         :return:
         """
-
         if self.refractionSource == 'onlineWeather':
             if not self.app.onlineWeather.data:
                 return False
@@ -248,29 +231,26 @@ class Environ(object):
 
     def movingAverageRefractionParameters(self):
         """
-        getFilteredRefracParams filters local temperature and pressure with and moving
-        average filter over 100 seconds and returns the filtered values.
+        getFilteredRefracParams filters local temperature and pressure with and
+        moving average filter over 100 seconds and returns the filtered values.
 
         :return:  temperature and pressure
         """
-
-        if self.filteredTemperature is not None and self.filteredPressure is not None:
-            temp = np.mean(self.filteredTemperature)
-            press = np.mean(self.filteredPressure)
-            return temp, press
-
-        else:
+        if self.filteredTemperature is None or self.filteredPressure is None:
             return None, None
+
+        temp = np.mean(self.filteredTemperature)
+        press = np.mean(self.filteredPressure)
+        return temp, press
 
     def updateRefractionParameters(self):
         """
-        updateRefractionParameters takes the actual conditions for update into account and
-        does the update of the refraction parameters. this could be done during when mount
-        is not in tracking state or continuously
+        updateRefractionParameters takes the actual conditions for update into
+        account and does the update of the refraction parameters. this could be
+        done during when mount is not in tracking state or continuously
 
         :return: success if update happened
         """
-
         if self.refractionSource == 'directWeather':
             return False
 
@@ -300,12 +280,9 @@ class Environ(object):
 
     def clearSensorWeatherGui(self, deviceName):
         """
-        clearSensorWeatherGui clears the gui data
-
         :param deviceName:
         :return: true for test purpose
         """
-
         self.ui.sensorWeatherTemp.setText('-')
         self.ui.sensorWeatherPress.setText('-')
         self.ui.sensorWeatherDewPoint.setText('-')
@@ -315,16 +292,12 @@ class Environ(object):
         self.ui.sensorWeatherWindSpeed.setText('-')
         self.ui.sensorWeatherWindDir.setText('-')
         self.ui.sensorWeatherSQR.setText('-')
-
         return True
 
     def updateSensorWeatherGui(self):
         """
-        updateSensorWeatherGui shows the data which is received through client
-
         :return:    True if ok for testing
         """
-
         value = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
         self.guiSetText(self.ui.sensorWeatherTemp, '4.1f', value)
 
@@ -351,35 +324,26 @@ class Environ(object):
 
         value = self.app.sensorWeather.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
         self.guiSetText(self.ui.sensorWeatherSQR, '4.2f', value)
-
         return True
 
     def clearSkymeterGui(self, deviceName=''):
         """
-        clearSensorWeatherGui clears the gui data
-
         :param deviceName:
         :return: true for test purpose
         """
-
         self.ui.skymeterSQR.setText('-')
         self.ui.skymeterTemp.setText('-')
-
         return True
 
     def updateSkymeterGui(self):
         """
-        updateSkymeterGui shows the data which is received through client
-
         :return:    True if ok for testing
         """
-
         value = self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
         self.guiSetText(self.ui.skymeterSQR, '5.2f', value)
 
         value = self.app.skymeter.data.get('SKY_QUALITY.SKY_TEMPERATURE', 0)
         self.guiSetText(self.ui.skymeterTemp, '4.1f', value)
-
         return True
 
     def clearPowerWeatherGui(self):
@@ -397,7 +361,8 @@ class Environ(object):
 
     def updatePowerWeatherGui(self):
         """
-        updatePowerGui changes the style of the button related to the state of the Pegasus
+        updatePowerGui changes the style of the button related to the state of
+        the Pegasus UPB device
 
         :return: success for test
         """
@@ -413,12 +378,9 @@ class Environ(object):
 
     def getWebDataWorker(self, url=''):
         """
-        getOpenWeatherMapDataWorker fetches a given url and does the error handling.
-
         :param url:
         :return: data
         """
-
         if not url:
             return None
 
@@ -434,21 +396,19 @@ class Environ(object):
             return None
 
         self.log.trace(f'{url}: {data.status_code}')
-
         return data
 
     @staticmethod
     def processClearOutsideImage(image=None):
         """
         processClearOutsideImage takes the image, split it and puts the image
-        to the Gui. for the transformation qimage2ndarray is used because of the speed
-        for the calculations. dim is a factor which reduces the lightness of the overall
-        image
+        to the Gui. for the transformation qimage2ndarray is used because of
+        the speed for the calculations. dim is a factor which reduces the
+        lightness of the overall image
 
         :param image:
         :return: success
         """
-
         dim = 0.85
         image.convertToFormat(PyQt5.QtGui.QImage.Format_RGB32)
         imageBase = image.copy(0, 84, 624, 141)
@@ -491,28 +451,24 @@ class Environ(object):
 
     def updateClearOutsideImage(self, data=None):
         """
-        updateClearOutsideImage takes the returned data from a web fetch and makes an image
-        out of it
+        updateClearOutsideImage takes the returned data from a web fetch and
+        makes an image out of it
 
         :param data:
         :return: success
         """
-
         if data is None:
             return False
 
         image = PyQt5.QtGui.QImage()
-
         if not hasattr(data, 'content'):
             return False
         if not isinstance(data.content, bytes):
             return False
 
         image.loadFromData(data.content)
-
         pixmapBase = self.processClearOutsideImage(image=image)
         self.ui.picClearOutside.setPixmap(pixmapBase)
-
         return True
 
     def getClearOutside(self, url=''):
@@ -528,9 +484,9 @@ class Environ(object):
 
     def updateClearOutside(self):
         """
-        updateClearOutside downloads the actual clear outside image and displays it in
-        environment tab. it checks first if online is set, otherwise not download will take
-        place. it will be updated every 30 minutes.
+        updateClearOutside downloads the actual clear outside image and displays
+        it in environment tab. it checks first if online is set, otherwise not
+        download will take place. it will be updated every 30 minutes.
 
         confirmation for using the service :
 
@@ -543,7 +499,6 @@ class Environ(object):
 
         :return: success
         """
-
         if not self.ui.isOnline.isChecked():
             pixmap = PyQt5.QtGui.QPixmap(':/pics/offlineMode.png')
             self.ui.picClearOutside.setPixmap(pixmap)
@@ -557,13 +512,10 @@ class Environ(object):
         webSite = 'http://clearoutside.com/forecast_image_medium/'
         url = f'{webSite}{lat:4.2f}/{lon:4.2f}/forecast.png'
         self.getClearOutside(url=url)
-
         return True
 
     def clearOnlineWeatherGui(self):
         """
-        clearOnlineWeatherGui removes al entries from gui
-
         :return: true for test purpose
         """
         self.ui.onlineWeatherTemp.setText('-')
@@ -574,16 +526,12 @@ class Environ(object):
         self.ui.onlineWeatherWindSpeed.setText('-')
         self.ui.onlineWeatherWindDir.setText('-')
         self.ui.onlineWeatherRainVol.setText('-')
-
         return True
 
     def updateOnlineWeatherGui(self, data=None):
         """
-        updateOnlineWeatherGui takes the returned data from the dict to the Gui
-
         :return: success
         """
-
         if not data:
             self.clearOnlineWeatherGui()
             return False
@@ -604,7 +552,6 @@ class Environ(object):
             self.ui.onlineWeatherWindDir.setText(f'{data["windDir"]:3.0f}')
         if 'rain' in data:
             self.ui.onlineWeatherRainVol.setText(f'{data["rain"]:5.2f}')
-
         return True
 
     def clearDirectWeatherGui(self):
@@ -617,18 +564,13 @@ class Environ(object):
         self.ui.directWeatherPress.setText('-')
         self.ui.directWeatherHumidity.setText('-')
         self.ui.directWeatherDewPoint.setText('-')
-
         return True
 
     def updateDirectWeatherGui(self, setting=None):
         """
-        updateOnlineWeatherGui takes the returned data from the dict to the Gui
-
-
         :param setting:
         :return: success
         """
-
         if not self.deviceStat['directWeather']:
             self.clearDirectWeatherGui()
             return False
@@ -644,5 +586,4 @@ class Environ(object):
             self.ui.directWeatherHumidity.setText(f'{setting.weatherHumidity:3.0f}')
         if setting.weatherDewPoint is not None:
             self.ui.directWeatherDewPoint.setText(f'{setting.weatherDewPoint:4.1f}')
-
         return True

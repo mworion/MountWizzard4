@@ -109,7 +109,7 @@
     <number>0</number>
    </property>
    <property name="elideMode">
-    <enum>Qt::ElideLeft</enum>
+    <enum>Qt::ElideNone</enum>
    </property>
    <property name="tabsClosable">
     <bool>false</bool>

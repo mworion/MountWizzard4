@@ -17,7 +17,6 @@
 # standard libraries
 import logging
 import os
-import warnings
 
 # external packages
 import PyQt5
@@ -33,9 +32,6 @@ from logic.astrometry.astrometryASTAP import AstrometryASTAP
 
 class AstrometrySignals(PyQt5.QtCore.QObject):
     """
-    The AstrometrySignals class offers a list of signals to be used and instantiated by the
-    Worker class to get signals for error, finished and result to be transferred to the
-    caller back
     """
 
     __all__ = ['AstrometrySignals']
@@ -52,14 +48,13 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
 
 class Astrometry:
     """
-    the class Astrometry inherits all information and handling of astrometry.net handling
+    the class Astrometry inherits all information and handling of astrometry.net
+    handling
 
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
 
-        >>> astrometry = Astrometry(app=app,
-        >>>                         )
-
+        >>> astrometry = Astrometry(app=None)
     """
 
     __all__ = ['Astrometry',
@@ -68,7 +63,6 @@ class Astrometry:
     log = logging.getLogger(__name__)
 
     def __init__(self, app):
-
         self.app = app
         self.tempDir = app.mwGlob['tempDir']
         self.threadPool = app.threadPool
@@ -89,15 +83,14 @@ class Astrometry:
 
     def readFitsData(self, fitsPath):
         """
-        readFitsData reads the fits file with the image and tries to get some key
-        fields out of the header for preparing the solver.
-        if there is the need for understanding more FITS header data, it should be integrated
+        readFitsData reads the fits file with the image and tries to get some
+        key fields out of the header for preparing the solver. if there is the
+        need for understanding more FITS header data, it should be integrated
         in this method.
 
         :param fitsPath: fits file with image data
         :return: raHint, decHint, scaleHint
         """
-
         with fits.open(fitsPath) as fitsHDU:
             fitsHeader = fitsHDU[0].header
             scaleHint = float(fitsHeader.get('SCALE', 0))
@@ -106,22 +99,22 @@ class Astrometry:
             raHint = convertToAngle(ra, isHours=True)
             decHint = convertToAngle(dec, isHours=False)
 
-        self.log.debug(f'Header RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale:'
-                       f' {scaleHint}')
+        self.log.debug(f'Header RA: {raHint} ({ra}), DEC: {decHint} ({dec})'
+                       f', Scale: {scaleHint}')
 
         return raHint, decHint, scaleHint, ra, dec
 
     @staticmethod
     def calcAngleScaleFromWCS(wcsHeader=None):
         """
-        calcAngleScaleFromWCS as the name says. important is to use the numpy arctan2
-        function, because it handles the zero points and extend the calculation back
-        to the full range from -pi to pi
+        calcAngleScaleFromWCS as the name says. important is to use the numpy
+        arctan2 function, because it handles the zero points and extend the
+        calculation back to the full range from -pi to pi
 
-        :return: angle in degrees and scale in arc second per pixel (app) and status if
-                 image is mirrored (not rotated for 180 degrees because of the mount flip)
+        :return: angle in degrees and scale in arc second per pixel (app) and
+                 status if image is mirrored (not rotated for 180 degrees because
+                 of the mount flip)
         """
-
         CD11 = wcsHeader.get('CD1_1', 0)
         CD12 = wcsHeader.get('CD1_2', 0)
         CD21 = wcsHeader.get('CD2_1', 0)
@@ -137,26 +130,29 @@ class Astrometry:
 
     def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None, updateFits=False):
         """
-        getSolutionFromWCS reads the wcs fits file and uses the data in the header
-        containing the wcs data and returns the basic data needed.
-        in addition it embeds it to the given fits file with image. it removes all
-        entries starting with some keywords given in selection. we starting with
-        HISTORY
+        getSolutionFromWCS reads the wcs fits file and uses the data in the
+        header containing the wcs data and returns the basic data needed.
+        in addition it embeds it to the given fits file with image. it removes
+        all entries starting with some keywords given in selection. we starting
+        with HISTORY
 
-        CRVAL1 and CRVAL2 give the center coordinate as right ascension and declination or
-        longitude and latitude in decimal degrees.
+        CRVAL1 and CRVAL2 give the center coordinate as right ascension and
+        declination or longitude and latitude in decimal degrees.
 
-        the difference is calculated as real coordinate (= plate solved coordinate) and mount
-        reported coordinate (= including the errors) and set positive in this case.
+        the difference is calculated as real coordinate (= plate solved
+        coordinate) and mount reported coordinate (= including the errors) and
+        set positive in this case.
 
-        we have to take into account if the mount is on the other pierside, the image taken
-        will be upside down and the angle will reference a 180 degrees turned image. this
-        will lead to the negative error value (sign will change)
+        we have to take into account if the mount is on the other pierside, the
+        image taken will be upside down and the angle will reference a 180
+        degrees turned image. this will lead to the negative error value (sign
+        will change)
 
         :param fitsHeader:
         :param wcsHeader:
         :param updateFits:
-        :return: ra in hours, dec in degrees, angle in degrees, scale in arcsec/pixel
+        :return: ra in hours, dec in degrees, angle in degrees,
+                 scale in arcsec/pixel
                  error in arcsec and flag if image is flipped
         """
 
@@ -220,36 +216,34 @@ class Astrometry:
     def solveClear(self):
         """
         the cyclic or long lasting tasks for solving the image should not run
-        twice for the same data at the same time. so there is a mutex to prevent this
-        behaviour.
+        twice for the same data at the same time. so there is a mutex to prevent
+        his behaviour.
 
         :return: true for test purpose
         """
-
         if self.framework not in self.run:
             return False
 
         solver = self.run[self.framework]
-
         self.mutexSolve.unlock()
         self.signals.done.emit(solver.result)
         self.signals.message.emit('')
-
         return True
 
     def solveThreading(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
                        updateFits=False):
         """
-        solveThreading is the wrapper for doing the solve process in a threadpool
-        environment of Qt. Otherwise the HMI would be stuck all the time during solving.
-        it is done with an securing mutex to avoid starting solving twice. to solveClear
-        is the partner of solve Threading
+        solveThreading is the wrapper for doing the solve process in a
+        threadpool environment of Qt. Otherwise the HMI would be stuck all the
+        time during solving. it is done with an securing mutex to avoid starting
+        solving twice. to solveClear is the partner of solve Threading
 
         :param fitsPath: full path to the fits image file to be solved
         :param raHint:  ra dest to look for solve in J2000
         :param decHint:  dec dest to look for solve in J2000
         :param scaleHint:  scale to look for solve in J2000
-        :param updateFits: flag, if the results should be written to the original file
+        :param updateFits: flag, if the results should be written to the
+                           original file
         :return: success
         """
 
@@ -277,15 +271,12 @@ class Astrometry:
                               )
         worker.signals.finished.connect(self.solveClear)
         self.threadPool.start(worker)
-
         return True
 
     def abort(self):
         """
-
         :return:
         """
-
         if self.framework not in self.run:
             return False
 
@@ -295,28 +286,22 @@ class Astrometry:
 
     def checkAvailability(self):
         """
-
         :return: list of available solutions
         """
-
         if self.framework not in self.run:
-            return (False, False)
+            return False, False
 
         val = self.run[self.framework].checkAvailability()
         return val
 
     def startCommunication(self, loadConfig=False):
         """
-        startCommunication starts cycling of the polling.
-
         :param loadConfig:
         :return: True for test purpose
         """
-
         self.signals.serverConnected.emit()
         sucApp, sucIndex = self.checkAvailability()
         name = self.run[self.framework].deviceName
-
         if sucApp and sucIndex:
             self.signals.deviceConnected.emit(name)
             self.app.message.emit(f'ASTROMETRY found:    [{name}]', 0)
@@ -325,14 +310,10 @@ class Astrometry:
 
     def stopCommunication(self):
         """
-        stopCommunication stops cycling of the server.
-
         :return: true for test purpose
         """
-
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
         self.app.message.emit(f'ASTROMETRY remove:   [{name}]', 0)
-
         return True

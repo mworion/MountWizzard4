@@ -991,6 +991,36 @@ def test_setLongitude_6(function, qtbot):
             assert not suc
 
 
+def test_setLongitude_7(function, qtbot):
+    function.app.deviceStat['mount'] = True
+    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
+                                                latitude_degrees=49,
+                                                elevation_m=500)
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('11E 30 45.5', True)):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setLongitude',
+                               return_value=False):
+            suc = function.setLongitude()
+            assert not suc
+
+
+def test_setLongitude_8(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
+                                                latitude_degrees=49,
+                                                elevation_m=500)
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('11E 30 45.5', True)):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setLongitude',
+                               return_value=True):
+            suc = function.setLongitude()
+            assert not suc
+
+
 def test_setLatitude_1(function, qtbot):
     function.app.mount.obsSite.location = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -1063,6 +1093,36 @@ def test_setLatitude_6(function, qtbot):
                            return_value=(None, True)):
         suc = function.setLatitude()
         assert not suc
+
+
+def test_setLatitude_7(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
+                                                latitude_degrees=49,
+                                                elevation_m=500)
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('45N 30 45.5', True)):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setLatitude',
+                               return_value=True):
+            suc = function.setLatitude()
+            assert not suc
+
+
+def test_setLatitude_8(function, qtbot):
+    function.app.deviceStat['mount'] = True
+    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
+                                                latitude_degrees=49,
+                                                elevation_m=500)
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('45N 30 45.5', True)):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setLatitude',
+                               return_value=False):
+            suc = function.setLatitude()
+            assert not suc
 
 
 def test_setElevation_1(function, qtbot):

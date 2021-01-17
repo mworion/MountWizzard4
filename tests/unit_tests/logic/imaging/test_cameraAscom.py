@@ -44,6 +44,7 @@ def module_setup_teardown():
         CameraXSize = 1000
         CameraYSize = 500
         CanAbortExposure = True
+        CanFastReadout = True
         FastReadout = True
         PixelSizeX = 4
         PixelSizeY = 4

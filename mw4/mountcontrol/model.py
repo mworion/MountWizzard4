@@ -559,8 +559,7 @@ class Model(object):
         if not suc:
             return False
 
-        # todo: changing this is a workaround '2' is not defined, but handled
-        if response[0] not in ['1', '2']:
+        if response[0] not in ['1']:
             return False
 
         return True

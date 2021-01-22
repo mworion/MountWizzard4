@@ -22,8 +22,18 @@ Unreleased version of MW4
 
 - first official release
 
+(0.250)
+
+- remove workaround as 10micron offered a fix
+
+
 Released beta version of MW4
 ----------------------------
+
+0.240.1
+
+- bugfix
+
 0.240.0
 
 - adding workaround for 2.16.12 firmware when deleting model points

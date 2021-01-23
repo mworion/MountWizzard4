@@ -176,13 +176,11 @@ class Connection(object):
                     if key == ':Q':
                         continue
                     foundCOMMAND_A = True
-                    print('A:', command)
                     break
             if not foundCOMMAND_A:
                 getData = True
                 for keyBad in sorted(self.COMMAND_B, reverse=True):
                     if command.startswith(keyBad):
-                        print('B:', command)
                         minBytes += 1
                         break
                 else:

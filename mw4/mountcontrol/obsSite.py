@@ -627,7 +627,7 @@ class ObsSite(object):
         sign = '+' if sgn >= 0 else '-'
         setAz = f':Sz{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
 
-        getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#:QaXa#:QaXb#'
+        getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
         commandString = setAlt + setAz + getTargetStatus
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -638,7 +638,7 @@ class ObsSite(object):
             self.log.debug(f'Coordinates could not be set: [{response}]')
             return False
 
-        if len(response) != 6:
+        if len(response) != 4:
             self.log.debug(f'Missing return values: [{response}]')
             return False
 
@@ -647,10 +647,6 @@ class ObsSite(object):
         self.AzTarget = response[1]
         self.raJNowTarget = response[2]
         self.decJNowTarget = response[3]
-
-        self.angularPosRATarget = response[4]
-        self.angularPosDECTarget = response[5]
-        print(response[4], response[5])
         return suc
 
     def setTargetRaDec(self,
@@ -715,7 +711,7 @@ class ObsSite(object):
         sign = '+' if sgn >= 0 else '-'
         setDec = f':Sd{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
 
-        getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#:QaXa#:QaXb#'
+        getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
         commandString = setRa + setDec + getTargetStatus
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -726,7 +722,7 @@ class ObsSite(object):
             self.log.debug(f'Coordinates could not be set: [{response}]')
             return False
 
-        if len(response) != 6:
+        if len(response) != 4:
             self.log.debug(f'Missing return values: [{response}]')
             return False
 
@@ -735,10 +731,6 @@ class ObsSite(object):
         self.AzTarget = response[1]
         self.raJNowTarget = response[2]
         self.decJNowTarget = response[3]
-        self.angularPosRATarget = response[4]
-        self.angularPosDECTarget = response[5]
-
-        print(response[4], response[5])
         return suc
 
     def setTargetAngular(self,

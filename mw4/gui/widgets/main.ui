@@ -13136,6 +13136,9 @@ Hint if mount will need a flip when following satellite.</string>
      </widget>
     </widget>
     <widget class="QGroupBox" name="groupAutoDew">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>15</x>
@@ -13151,6 +13154,9 @@ Hint if mount will need a flip when following satellite.</string>
       <bool>true</bool>
      </property>
      <widget class="QPushButton" name="autoDew">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>

@@ -24,8 +24,8 @@ Unreleased version of MW4
 
 (0.250)
 
-- remove workaround as 10micron offered a fix
-
+- remove workaround as 10micron offered a fix in fw 2.16.13
+- remove autodew button for pegasus as provided indi driver has bugs
 
 Released beta version of MW4
 ----------------------------

@@ -61,10 +61,10 @@ class Connection(object):
     # these are the commands, which were used in mountcontrol so far
     COMMANDS = [':AP',
                 ':FLIP',
-                ':GDUT', ':GDUTV', ':GMs', ':GMsa', ':GMsb', ':GMACW', ':GMAC', ':GREF',
-                ':GRPRS', ':GRTMP',
-                ':GS', ':GT', ':GTMP1', ':GVD', ':GVN', ':GVP', ':GVT', ':GVZ', ':GWOL',
-                ':Ga', ':GaXa', ':GaXb',
+                ':GDUT', ':GDUTV', ':GMs', ':GMsa', ':GMsb', ':GMACW', ':GMAC',
+                ':GREF', ':GRPRS', ':GRTMP',
+                ':GS', ':GT', ':GTMP1', ':GVD', ':GVN', ':GVP', ':GVT', ':GVZ',
+                ':GWOL', ':Ga', ':GaXa', ':GaXb',
                 ':Gd', ':Gdat', ':Gev', ':Gg', ':Gh', ':GINQ', ':Ginfo', ':Glms',
                 ':Glmt', ':Gmte', ':Go', ':Gr', ':Gt', ':gtg', ':GTsid',
                 ':Guaf', ':Gz',
@@ -76,9 +76,10 @@ class Connection(object):
                 ':RT0', ':RT1', ':RT2', ':RT9',
                 ':SREF', ':SRPRS', ':SRTMP', ':STOP', ':SWOL',
                 ':Sa', ':SaXa', ':SaXb', ':Sd',
-                ':Sdat', ':Sev', ':Sev', ':Sg', ':Sg', ':Sh', ':Slms', ':Slmt', ':So',
-                ':Sr', ':St', ':Suaf', ':Sw', ':Sz',
-                ':TLEG', ':TLEL0', ':TLEGAZ', ':TLEGEQ', ':TLEP', ':TLES', ':TLESCK',
+                ':Sdat', ':Sev', ':Sev', ':Sg', ':Sg', ':Sh', ':Slms', ':Slmt',
+                ':So', ':Sr', ':St', ':Suaf', ':Sw', ':Sz',
+                ':TLEG', ':TLEL0', ':TLEGAZ', ':TLEGEQ', ':TLEP', ':TLES',
+                ':TLESCK',
                 ':U2',
                 ':delalig', ':delalst',
                 ':endalig',
@@ -96,7 +97,8 @@ class Connection(object):
                  ':Me', ':Mn', ':Ms', ':Mw',
                  ':PO',
                  ':Q', ':Qe', ':Qn', ':Qs', ':Qw',
-                 ':RC', ':Rc', ':RG', ':RM', ':RS', ':RT0', ':RT1', ':RT2', ':RT9',
+                 ':RC', ':Rc', ':RG', ':RM', ':RS', ':RT0', ':RT1', ':RT2',
+                 ':RT9',
                  ':STOP',
                  ':U2',
                  ':hP', ':Suaf',
@@ -108,7 +110,8 @@ class Connection(object):
                  ':MA',
                  ':RMs',
                  ':SREF', ':SRPRS', ':Sa', ':Sev', ':Sr',
-                 ':SRTMP', ':Slmt', ':Slms', ':St', ':Sg', ':Sw', ':Sz', ':Sdat', ':Gdat',
+                 ':SRTMP', ':Slmt', ':Slms', ':St', ':Sg', ':Sw', ':Sz',
+                 ':Sdat', ':Gdat',
                  ':GTsid', ':So', ':Sh', ':Sd', ':MSap', ':MSao', ':MS',
                  ':WSS', ':SWOL'
                  ]
@@ -170,12 +173,16 @@ class Connection(object):
             foundCOMMAND_A = False
             for key in sorted(self.COMMAND_A, reverse=True):
                 if command.startswith(key):
+                    if key == ':Q':
+                        continue
                     foundCOMMAND_A = True
+                    print('A:', command)
                     break
             if not foundCOMMAND_A:
                 getData = True
                 for keyBad in sorted(self.COMMAND_B, reverse=True):
                     if command.startswith(keyBad):
+                        print('B:', command)
                         minBytes += 1
                         break
                 else:

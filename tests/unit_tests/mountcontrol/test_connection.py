@@ -117,6 +117,14 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(3, minBytes)
         self.assertEqual(3, chunksToReceive)
 
+    def test_responses_real_analyseCommand(self):
+        conn = Connection()
+        command = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#:QaXa#:QaXb#'
+        chunksToReceive, getData, minBytes = conn.analyseCommand(command)
+        self.assertEqual(True, getData)
+        self.assertEqual(1, minBytes)
+        self.assertEqual(6, chunksToReceive)
+
     def test_closeClientHard_1(self):
         conn = Connection()
         val = conn.closeClientHard('')

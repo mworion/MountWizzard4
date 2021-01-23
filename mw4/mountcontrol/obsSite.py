@@ -563,7 +563,7 @@ class ObsSite(object):
             return False
 
         if not response[0].startswith('0'):
-            self.log.debug(f'Slew could not be done: {response}')
+            self.log.debug(f'Slew could not be done: [{response}]')
             return False
 
         return True
@@ -627,7 +627,7 @@ class ObsSite(object):
         sign = '+' if sgn >= 0 else '-'
         setAz = f':Sz{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
 
-        getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
+        getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#:QaXa#:QaXb#'
         commandString = setAlt + setAz + getTargetStatus
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -635,11 +635,11 @@ class ObsSite(object):
 
         result = response[0][0:2]
         if result.count('0') > 0:
-            self.log.debug(f'Coordinates could not be set, {response}')
+            self.log.debug(f'Coordinates could not be set: [{response}]')
             return False
 
-        if len(response) != 4:
-            self.log.debug(f'Missing return values, {response}')
+        if len(response) != 6:
+            self.log.debug(f'Missing return values: [{response}]')
             return False
 
         self.piersideTarget = response[0][2]
@@ -647,6 +647,10 @@ class ObsSite(object):
         self.AzTarget = response[1]
         self.raJNowTarget = response[2]
         self.decJNowTarget = response[3]
+
+        self.angularPosRATarget = response[4]
+        self.angularPosDECTarget = response[5]
+        print(response[4], response[5])
         return suc
 
     def setTargetRaDec(self,
@@ -711,7 +715,7 @@ class ObsSite(object):
         sign = '+' if sgn >= 0 else '-'
         setDec = f':Sd{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
 
-        getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
+        getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#:QaXa#:QaXb#'
         commandString = setRa + setDec + getTargetStatus
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -719,11 +723,11 @@ class ObsSite(object):
 
         result = response[0][0:2]
         if result.count('0') > 0:
-            self.log.debug(f'Coordinates could not be set, {response}')
+            self.log.debug(f'Coordinates could not be set: [{response}]')
             return False
 
-        if len(response) != 4:
-            self.log.debug(f'Missing return values, {response}')
+        if len(response) != 6:
+            self.log.debug(f'Missing return values: [{response}]')
             return False
 
         self.piersideTarget = response[0][2]
@@ -731,6 +735,10 @@ class ObsSite(object):
         self.AzTarget = response[1]
         self.raJNowTarget = response[2]
         self.decJNowTarget = response[3]
+        self.angularPosRATarget = response[4]
+        self.angularPosDECTarget = response[5]
+
+        print(response[4], response[5])
         return suc
 
     def setTargetAngular(self,
@@ -790,11 +798,11 @@ class ObsSite(object):
 
         result = response[0][0:2]
         if result.count('0') > 0:
-            self.log.debug(f'Coordinates could not be set, {response}')
+            self.log.debug(f'Coordinates could not be set: [{response}]')
             return False
 
         if len(response) != 4:
-            self.log.debug(f'Missing return values, {response}')
+            self.log.debug(f'Missing return values: [{response}]')
             return False
 
         # todo: actually SaXa and SaXb commands seem no to set other targets

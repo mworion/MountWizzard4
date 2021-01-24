@@ -26791,104 +26791,45 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   </widget>
  </widget>
  <tabstops>
-  <tabstop>astrometryDevice</tabstop>
-  <tabstop>domeDevice</tabstop>
-  <tabstop>telescopeDevice</tabstop>
-  <tabstop>telescopeSetup</tabstop>
-  <tabstop>moveCoordinateAlt</tabstop>
-  <tabstop>moveCoordinateAz</tabstop>
-  <tabstop>moveAltAzAbsolute</tabstop>
-  <tabstop>moveCoordinateRa</tabstop>
-  <tabstop>moveCoordinateDec</tabstop>
-  <tabstop>moveRaDecAbsolute</tabstop>
-  <tabstop>focuserSetup</tabstop>
-  <tabstop>skymeterDevice</tabstop>
-  <tabstop>skymeterSetup</tabstop>
-  <tabstop>sensorWeatherDevice</tabstop>
-  <tabstop>sensorWeatherSetup</tabstop>
-  <tabstop>onlineWeatherDevice</tabstop>
-  <tabstop>directWeatherDevice</tabstop>
-  <tabstop>measureDevice</tabstop>
-  <tabstop>powerDevice</tabstop>
-  <tabstop>powerSetup</tabstop>
-  <tabstop>relayDevice</tabstop>
-  <tabstop>coverDevice</tabstop>
-  <tabstop>coverSetup</tabstop>
-  <tabstop>remoteDevice</tabstop>
-  <tabstop>expTime</tabstop>
-  <tabstop>binning</tabstop>
-  <tabstop>subFrame</tabstop>
-  <tabstop>coolerOn</tabstop>
-  <tabstop>coolerOff</tabstop>
-  <tabstop>downloadFast</tabstop>
-  <tabstop>downloadSlow</tabstop>
-  <tabstop>checkFastDownload</tabstop>
-  <tabstop>checkKeepImages</tabstop>
-  <tabstop>mountHost</tabstop>
-  <tabstop>settleTimeMount</tabstop>
-  <tabstop>rackCompMAC</tabstop>
-  <tabstop>settleTimeDome</tabstop>
-  <tabstop>posText0</tabstop>
-  <tabstop>posAlt0</tabstop>
-  <tabstop>posAz0</tabstop>
-  <tabstop>posSave0</tabstop>
-  <tabstop>posText1</tabstop>
-  <tabstop>posAlt1</tabstop>
-  <tabstop>posAz1</tabstop>
-  <tabstop>posSave1</tabstop>
-  <tabstop>posText2</tabstop>
-  <tabstop>posAlt2</tabstop>
-  <tabstop>posAz2</tabstop>
-  <tabstop>posSave2</tabstop>
-  <tabstop>posText3</tabstop>
-  <tabstop>posAlt3</tabstop>
-  <tabstop>posAz3</tabstop>
-  <tabstop>posSave3</tabstop>
-  <tabstop>posText4</tabstop>
-  <tabstop>posAlt4</tabstop>
-  <tabstop>posAz4</tabstop>
-  <tabstop>posSave4</tabstop>
-  <tabstop>posText5</tabstop>
-  <tabstop>posAlt5</tabstop>
-  <tabstop>posAz5</tabstop>
-  <tabstop>posSave5</tabstop>
-  <tabstop>posText6</tabstop>
-  <tabstop>posAlt6</tabstop>
-  <tabstop>posAz6</tabstop>
-  <tabstop>posSave6</tabstop>
-  <tabstop>posText7</tabstop>
-  <tabstop>posAlt7</tabstop>
-  <tabstop>posAz7</tabstop>
-  <tabstop>posSave7</tabstop>
-  <tabstop>posText8</tabstop>
-  <tabstop>posAlt8</tabstop>
-  <tabstop>posAz8</tabstop>
-  <tabstop>posSave8</tabstop>
-  <tabstop>posText9</tabstop>
-  <tabstop>posAlt9</tabstop>
-  <tabstop>posAz9</tabstop>
-  <tabstop>posSave9</tabstop>
-  <tabstop>isOnline</tabstop>
-  <tabstop>versionRelease</tabstop>
-  <tabstop>versionBeta</tabstop>
-  <tabstop>installVersion</tabstop>
-  <tabstop>loglevelStandard</tabstop>
-  <tabstop>loglevelDebug</tabstop>
-  <tabstop>loglevelDebugTrace</tabstop>
-  <tabstop>soundMountSlewFinished</tabstop>
-  <tabstop>soundDomeSlewFinished</tabstop>
-  <tabstop>soundMountAlert</tabstop>
-  <tabstop>soundModelingFinished</tabstop>
-  <tabstop>soundImageSaved</tabstop>
-  <tabstop>soundImageSolved</tabstop>
+  <tabstop>openMessageW</tabstop>
+  <tabstop>openMeasureW</tabstop>
+  <tabstop>openHemisphereW</tabstop>
+  <tabstop>openImageW</tabstop>
+  <tabstop>openSatelliteW</tabstop>
+  <tabstop>openKeypadW</tabstop>
+  <tabstop>mountConnected</tabstop>
+  <tabstop>environConnected</tabstop>
+  <tabstop>domeConnected</tabstop>
+  <tabstop>cameraConnected</tabstop>
+  <tabstop>astrometryConnected</tabstop>
+  <tabstop>loadFrom</tabstop>
+  <tabstop>saveConfig</tabstop>
+  <tabstop>mountOn</tabstop>
+  <tabstop>saveConfigQuit</tabstop>
+  <tabstop>saveConfigAs</tabstop>
+  <tabstop>mountOff</tabstop>
+  <tabstop>mainTabWidget</tabstop>
+  <tabstop>checkJ2000</tabstop>
+  <tabstop>checkJNow</tabstop>
+  <tabstop>tracking</tabstop>
+  <tabstop>flipMount</tabstop>
+  <tabstop>setLunarTracking</tabstop>
+  <tabstop>setSolarTracking</tabstop>
+  <tabstop>setSiderealTracking</tabstop>
+  <tabstop>park</tabstop>
+  <tabstop>stop</tabstop>
+  <tabstop>mountTypeConnection</tabstop>
   <tabstop>onlineWeatherGroup</tabstop>
   <tabstop>sensorWeatherGroup</tabstop>
   <tabstop>directWeatherGroup</tabstop>
-  <tabstop>cameraConnected</tabstop>
   <tabstop>checkRefracNone</tabstop>
+  <tabstop>posAlt7</tabstop>
+  <tabstop>posAz7</tabstop>
+  <tabstop>checkRefracCont</tabstop>
   <tabstop>checkRefracNoTrack</tabstop>
   <tabstop>setRefractionManual</tabstop>
-  <tabstop>checkRefracCont</tabstop>
+  <tabstop>twilightEvents</tabstop>
+  <tabstop>buildPFileName</tabstop>
   <tabstop>genBuildFile</tabstop>
   <tabstop>loadBuildPoints</tabstop>
   <tabstop>saveBuildPoints</tabstop>
@@ -26905,79 +26846,125 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>genBuildMed</tabstop>
   <tabstop>genBuildNorm</tabstop>
   <tabstop>genBuildMin</tabstop>
+  <tabstop>keepGeneratedPoints</tabstop>
   <tabstop>clearBuildP</tabstop>
+  <tabstop>genBuildSpiralMax</tabstop>
+  <tabstop>genBuildSpiralMed</tabstop>
+  <tabstop>genBuildSpiralNorm</tabstop>
   <tabstop>genBuildSpiralMin</tabstop>
   <tabstop>numberDSOPoints</tabstop>
   <tabstop>durationDSO</tabstop>
   <tabstop>timeShiftDSO</tabstop>
   <tabstop>genBuildDSO</tabstop>
-  <tabstop>loadHorizonMask</tabstop>
-  <tabstop>saveHorizonMask</tabstop>
-  <tabstop>saveHorizonMaskAs</tabstop>
-  <tabstop>checkAutoDeleteHorizon</tabstop>
   <tabstop>checkSortNothing</tabstop>
   <tabstop>checkSortEW</tabstop>
   <tabstop>checkSortHL</tabstop>
+  <tabstop>checkAvoidFlip</tabstop>
+  <tabstop>loadHorizonMask</tabstop>
+  <tabstop>saveHorizonMask</tabstop>
+  <tabstop>saveHorizonMaskAs</tabstop>
+  <tabstop>clearHorizonMask</tabstop>
+  <tabstop>checkAutoDeleteHorizon</tabstop>
+  <tabstop>checkSafetyMarginHorizon</tabstop>
+  <tabstop>checkAutoDeleteMeridian</tabstop>
+  <tabstop>safetyMarginHorizon</tabstop>
   <tabstop>runModel</tabstop>
+  <tabstop>pauseModel</tabstop>
+  <tabstop>endModel</tabstop>
   <tabstop>cancelModel</tabstop>
+  <tabstop>checkDisableDAT</tabstop>
+  <tabstop>parkMountAfterModel</tabstop>
+  <tabstop>excludeDonePoints</tabstop>
+  <tabstop>numberBuildRetries</tabstop>
   <tabstop>plateSolveSync</tabstop>
   <tabstop>batchModel</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>showNoAnnotation</tabstop>
+  <tabstop>showNumbers</tabstop>
+  <tabstop>showErrorValues</tabstop>
   <tabstop>deleteWorstPoint</tabstop>
   <tabstop>clearModel</tabstop>
   <tabstop>refreshModel</tabstop>
   <tabstop>runOptimize</tabstop>
   <tabstop>cancelOptimize</tabstop>
   <tabstop>targetRMS</tabstop>
+  <tabstop>optimizeOverall</tabstop>
+  <tabstop>optimizeSingle</tabstop>
+  <tabstop>openAnalyseW</tabstop>
+  <tabstop>showOriginalModelAnalyse</tabstop>
+  <tabstop>showActualModelAnalyse</tabstop>
+  <tabstop>autoUpdateActualAnalyse</tabstop>
+  <tabstop>nameList</tabstop>
   <tabstop>loadName</tabstop>
   <tabstop>saveName</tabstop>
   <tabstop>deleteName</tabstop>
   <tabstop>refreshName</tabstop>
   <tabstop>satelliteSource</tabstop>
+  <tabstop>filterSatellite</tabstop>
   <tabstop>listSatelliteNames</tabstop>
+  <tabstop>progSatellitesFull</tabstop>
+  <tabstop>progSatellitesFiltered</tabstop>
+  <tabstop>satelliteName</tabstop>
+  <tabstop>satelliteEpoch</tabstop>
+  <tabstop>satAzimuth</tabstop>
+  <tabstop>satAltitude</tabstop>
+  <tabstop>satLatitude</tabstop>
+  <tabstop>satelliteNumber</tabstop>
+  <tabstop>satelliteDataAge</tabstop>
+  <tabstop>satRa</tabstop>
+  <tabstop>satDec</tabstop>
+  <tabstop>satLongitude</tabstop>
+  <tabstop>satTransitStartUTC_1</tabstop>
+  <tabstop>satTransitEndUTC_1</tabstop>
+  <tabstop>satTransitStartUTC_2</tabstop>
+  <tabstop>satTransitEndUTC_2</tabstop>
+  <tabstop>satTransitStartUTC_3</tabstop>
+  <tabstop>satTransitEndUTC_3</tabstop>
+  <tabstop>satTransitStartUTC</tabstop>
+  <tabstop>satTransitEndUTC</tabstop>
+  <tabstop>satNeedFlip</tabstop>
   <tabstop>startSatelliteTracking</tabstop>
   <tabstop>stopSatelliteTracking</tabstop>
-  <tabstop>altitudeTimeChange</tabstop>
-  <tabstop>azimuthTimeChange</tabstop>
-  <tabstop>numberRunsTimeChange</tabstop>
-  <tabstop>delayTimeFlexure</tabstop>
-  <tabstop>runFlexure</tabstop>
-  <tabstop>altitudeHysterese1</tabstop>
-  <tabstop>azimuthHysterese1</tabstop>
-  <tabstop>altitudeHysterese2</tabstop>
-  <tabstop>azimuthHysterese2</tabstop>
-  <tabstop>numberRunsHysterese</tabstop>
-  <tabstop>delayTimeHysterese</tabstop>
-  <tabstop>runHysteresis</tabstop>
-  <tabstop>le_analyseFileName</tabstop>
-  <tabstop>loadAnalyseData</tabstop>
-  <tabstop>cancelAnalyse</tabstop>
-  <tabstop>relayButton0</tabstop>
-  <tabstop>relayButton1</tabstop>
-  <tabstop>relayButton2</tabstop>
-  <tabstop>relayButton3</tabstop>
-  <tabstop>relayButton4</tabstop>
-  <tabstop>relayButton5</tabstop>
-  <tabstop>relayButton6</tabstop>
-  <tabstop>relayButton7</tabstop>
+  <tabstop>minorPlanetSource</tabstop>
+  <tabstop>filterMinorPlanet</tabstop>
+  <tabstop>listMinorPlanetNames</tabstop>
+  <tabstop>progMinorPlanetsFull</tabstop>
+  <tabstop>progMinorPlanetsFiltered</tabstop>
+  <tabstop>downloadIERS</tabstop>
+  <tabstop>progEarthRotationData</tabstop>
+  <tabstop>sensorVoltage</tabstop>
+  <tabstop>sensorCurrent</tabstop>
+  <tabstop>sensorPower</tabstop>
+  <tabstop>consumptionAvgAmps</tabstop>
+  <tabstop>consumptionAmpHours</tabstop>
+  <tabstop>consumptionWattHours</tabstop>
+  <tabstop>rebootUPB</tabstop>
   <tabstop>autoDew</tabstop>
+  <tabstop>dewCurrentA</tabstop>
+  <tabstop>dewCurrentB</tabstop>
+  <tabstop>dewCurrentC</tabstop>
+  <tabstop>powerCurrent1</tabstop>
   <tabstop>powerPort1</tabstop>
   <tabstop>powerBootPort1</tabstop>
+  <tabstop>powerCurrent2</tabstop>
   <tabstop>powerPort2</tabstop>
   <tabstop>powerBootPort2</tabstop>
+  <tabstop>powerCurrent3</tabstop>
   <tabstop>powerPort3</tabstop>
   <tabstop>powerBootPort3</tabstop>
+  <tabstop>powerCurrent4</tabstop>
   <tabstop>powerPort4</tabstop>
   <tabstop>powerBootPort4</tabstop>
-  <tabstop>hubUSB</tabstop>
   <tabstop>portUSB1</tabstop>
   <tabstop>portUSB2</tabstop>
   <tabstop>portUSB3</tabstop>
   <tabstop>portUSB4</tabstop>
   <tabstop>portUSB5</tabstop>
   <tabstop>portUSB6</tabstop>
+  <tabstop>hubUSB</tabstop>
   <tabstop>renameDir</tabstop>
-  <tabstop>renameInputSelect</tabstop>
   <tabstop>checkIncludeSubdirs</tabstop>
+  <tabstop>renameInputSelect</tabstop>
   <tabstop>newObjectName</tabstop>
   <tabstop>renameText</tabstop>
   <tabstop>rename1</tabstop>
@@ -26996,160 +26983,173 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>posButton7</tabstop>
   <tabstop>posButton8</tabstop>
   <tabstop>posButton9</tabstop>
-  <tabstop>openMessageW</tabstop>
-  <tabstop>openMeasureW</tabstop>
-  <tabstop>openHemisphereW</tabstop>
-  <tabstop>openImageW</tabstop>
-  <tabstop>openSatelliteW</tabstop>
-  <tabstop>openKeypadW</tabstop>
-  <tabstop>loadFrom</tabstop>
-  <tabstop>saveConfigQuit</tabstop>
-  <tabstop>saveConfig</tabstop>
-  <tabstop>saveConfigAs</tabstop>
-  <tabstop>mountOn</tabstop>
-  <tabstop>mountOff</tabstop>
-  <tabstop>dewCurrentB</tabstop>
-  <tabstop>setSiderealTracking</tabstop>
-  <tabstop>sensorPower</tabstop>
-  <tabstop>domeConnected</tabstop>
-  <tabstop>park</tabstop>
-  <tabstop>setSolarTracking</tabstop>
-  <tabstop>sensorVoltage</tabstop>
-  <tabstop>sensorCurrent</tabstop>
-  <tabstop>consumptionAvgAmps</tabstop>
-  <tabstop>checkJ2000</tabstop>
-  <tabstop>setLunarTracking</tabstop>
-  <tabstop>powerCurrent1</tabstop>
-  <tabstop>consumptionAmpHours</tabstop>
-  <tabstop>stop</tabstop>
-  <tabstop>mountMAC</tabstop>
-  <tabstop>bootRackComp</tabstop>
-  <tabstop>mountTypeConnection</tabstop>
-  <tabstop>consumptionWattHours</tabstop>
-  <tabstop>astrometryConnected</tabstop>
-  <tabstop>checkUseDomeGeometry</tabstop>
-  <tabstop>checkJNow</tabstop>
-  <tabstop>tracking</tabstop>
-  <tabstop>flipMount</tabstop>
-  <tabstop>nameList</tabstop>
-  <tabstop>settingsTabWidget</tabstop>
-  <tabstop>environConnected</tabstop>
-  <tabstop>mainTabWidget</tabstop>
-  <tabstop>satAzimuth</tabstop>
-  <tabstop>satLatitude</tabstop>
-  <tabstop>satDec</tabstop>
-  <tabstop>satelliteNumber</tabstop>
-  <tabstop>satAltitude</tabstop>
-  <tabstop>satelliteEpoch</tabstop>
-  <tabstop>powerCurrent3</tabstop>
-  <tabstop>satRa</tabstop>
-  <tabstop>dewCurrentA</tabstop>
-  <tabstop>satelliteDataAge</tabstop>
-  <tabstop>mountConnected</tabstop>
-  <tabstop>satelliteName</tabstop>
-  <tabstop>powerCurrent4</tabstop>
-  <tabstop>buildPFileName</tabstop>
-  <tabstop>satLongitude</tabstop>
-  <tabstop>textEdit</tabstop>
-  <tabstop>powerCurrent2</tabstop>
-  <tabstop>dewCurrentC</tabstop>
-  <tabstop>twilightEvents</tabstop>
-  <tabstop>genBuildSpiralNorm</tabstop>
-  <tabstop>genBuildSpiralMed</tabstop>
-  <tabstop>genBuildSpiralMax</tabstop>
-  <tabstop>checkAvoidFlip</tabstop>
-  <tabstop>checkAutoDeleteMeridian</tabstop>
-  <tabstop>clearHorizonMask</tabstop>
-  <tabstop>safetyMarginHorizon</tabstop>
-  <tabstop>checkSafetyMarginHorizon</tabstop>
-  <tabstop>keepGeneratedPoints</tabstop>
-  <tabstop>pauseModel</tabstop>
-  <tabstop>checkDisableDAT</tabstop>
-  <tabstop>parkMountAfterModel</tabstop>
-  <tabstop>excludeDonePoints</tabstop>
-  <tabstop>endModel</tabstop>
-  <tabstop>numberBuildRetries</tabstop>
-  <tabstop>optimizeOverall</tabstop>
-  <tabstop>optimizeSingle</tabstop>
-  <tabstop>tabWidget</tabstop>
-  <tabstop>showErrorValues</tabstop>
-  <tabstop>showNumbers</tabstop>
-  <tabstop>showNoAnnotation</tabstop>
-  <tabstop>openAnalyseW</tabstop>
-  <tabstop>showOriginalModelAnalyse</tabstop>
-  <tabstop>autoUpdateActualAnalyse</tabstop>
-  <tabstop>showActualModelAnalyse</tabstop>
-  <tabstop>satTransitStartUTC_1</tabstop>
-  <tabstop>satTransitEndUTC_1</tabstop>
-  <tabstop>satTransitEndUTC_2</tabstop>
-  <tabstop>satTransitStartUTC_2</tabstop>
-  <tabstop>satTransitEndUTC_3</tabstop>
-  <tabstop>satTransitStartUTC_3</tabstop>
-  <tabstop>satTransitStartUTC</tabstop>
-  <tabstop>satTransitEndUTC</tabstop>
-  <tabstop>satNeedFlip</tabstop>
-  <tabstop>filterSatellite</tabstop>
-  <tabstop>progSatellitesFiltered</tabstop>
-  <tabstop>progSatellitesFull</tabstop>
-  <tabstop>minorPlanetSource</tabstop>
-  <tabstop>filterMinorPlanet</tabstop>
-  <tabstop>listMinorPlanetNames</tabstop>
-  <tabstop>progMinorPlanetsFull</tabstop>
-  <tabstop>progMinorPlanetsFiltered</tabstop>
-  <tabstop>rebootUPB</tabstop>
   <tabstop>parkMountAfterSlew</tabstop>
   <tabstop>tabMoving</tabstop>
-  <tabstop>moveNorth</tabstop>
   <tabstop>moveNorthWest</tabstop>
-  <tabstop>moveWest</tabstop>
-  <tabstop>moveSouthEast</tabstop>
-  <tabstop>moveSouth</tabstop>
+  <tabstop>moveNorth</tabstop>
   <tabstop>moveNorthEast</tabstop>
-  <tabstop>moveSouthWest</tabstop>
+  <tabstop>moveWest</tabstop>
   <tabstop>stopMoveAll</tabstop>
   <tabstop>moveEast</tabstop>
+  <tabstop>moveSouthWest</tabstop>
+  <tabstop>moveSouth</tabstop>
+  <tabstop>moveSouthEast</tabstop>
+  <tabstop>moveDuration</tabstop>
   <tabstop>slewSpeedMax</tabstop>
+  <tabstop>slewSpeedHigh</tabstop>
   <tabstop>slewSpeedMed</tabstop>
   <tabstop>slewSpeedLow</tabstop>
-  <tabstop>slewSpeedHigh</tabstop>
-  <tabstop>moveDuration</tabstop>
+  <tabstop>moveNorthWestAltAz</tabstop>
+  <tabstop>moveNorthAltAz</tabstop>
+  <tabstop>moveNorthEastAltAz</tabstop>
   <tabstop>moveWestAltAz</tabstop>
   <tabstop>moveEastAltAz</tabstop>
   <tabstop>moveSouthWestAltAz</tabstop>
   <tabstop>moveSouthAltAz</tabstop>
-  <tabstop>moveNorthWestAltAz</tabstop>
-  <tabstop>moveNorthAltAz</tabstop>
-  <tabstop>moveNorthEastAltAz</tabstop>
   <tabstop>moveSouthEastAltAz</tabstop>
   <tabstop>moveStepSizeAltAz</tabstop>
-  <tabstop>relaySetup</tabstop>
+  <tabstop>moveCoordinateAlt</tabstop>
+  <tabstop>moveCoordinateAz</tabstop>
+  <tabstop>moveAltAzAbsolute</tabstop>
+  <tabstop>posAz9</tabstop>
+  <tabstop>moveCoordinateRa</tabstop>
+  <tabstop>moveCoordinateRaFloat</tabstop>
+  <tabstop>moveCoordinateDec</tabstop>
+  <tabstop>moveCoordinateDecFloat</tabstop>
+  <tabstop>moveRaDecAbsolute</tabstop>
+  <tabstop>relayButton0</tabstop>
+  <tabstop>relayButton1</tabstop>
+  <tabstop>relayButton2</tabstop>
+  <tabstop>relayButton3</tabstop>
+  <tabstop>relayButton4</tabstop>
+  <tabstop>relayButton5</tabstop>
+  <tabstop>relayButton6</tabstop>
+  <tabstop>relayButton7</tabstop>
+  <tabstop>cameraDevice</tabstop>
+  <tabstop>cameraSetup</tabstop>
+  <tabstop>filterDevice</tabstop>
+  <tabstop>filterSetup</tabstop>
+  <tabstop>focuserDevice</tabstop>
+  <tabstop>focuserSetup</tabstop>
+  <tabstop>astrometryDevice</tabstop>
   <tabstop>astrometrySetup</tabstop>
+  <tabstop>telescopeDevice</tabstop>
+  <tabstop>telescopeSetup</tabstop>
+  <tabstop>domeDevice</tabstop>
+  <tabstop>domeSetup</tabstop>
+  <tabstop>sensorWeatherDevice</tabstop>
+  <tabstop>sensorWeatherSetup</tabstop>
+  <tabstop>skymeterDevice</tabstop>
+  <tabstop>skymeterSetup</tabstop>
   <tabstop>powerWeatherDevice</tabstop>
   <tabstop>powerWeatherSetup</tabstop>
+  <tabstop>onlineWeatherDevice</tabstop>
   <tabstop>onlineWeatherSetup</tabstop>
+  <tabstop>directWeatherDevice</tabstop>
+  <tabstop>measureDevice</tabstop>
+  <tabstop>remoteDevice</tabstop>
+  <tabstop>relayDevice</tabstop>
+  <tabstop>relaySetup</tabstop>
+  <tabstop>powerDevice</tabstop>
+  <tabstop>powerSetup</tabstop>
+  <tabstop>coverDevice</tabstop>
+  <tabstop>coverSetup</tabstop>
   <tabstop>ascomConnect</tabstop>
   <tabstop>ascomDisconnect</tabstop>
   <tabstop>checkASCOMAutoConnect</tabstop>
+  <tabstop>expTime</tabstop>
+  <tabstop>binning</tabstop>
   <tabstop>expTimeN</tabstop>
   <tabstop>binningN</tabstop>
-  <tabstop>copyFromTelescopeDriver</tabstop>
+  <tabstop>subFrame</tabstop>
+  <tabstop>coolerOn</tabstop>
+  <tabstop>coolerOff</tabstop>
+  <tabstop>downloadFast</tabstop>
+  <tabstop>downloadSlow</tabstop>
+  <tabstop>checkFastDownload</tabstop>
+  <tabstop>checkKeepImages</tabstop>
+  <tabstop>focuserStepsize</tabstop>
+  <tabstop>moveFocuserIn</tabstop>
+  <tabstop>moveFocuserOut</tabstop>
+  <tabstop>haltFocuser</tabstop>
   <tabstop>focalLength</tabstop>
   <tabstop>aperture</tabstop>
   <tabstop>checkAutomaticTelescope</tabstop>
-  <tabstop>coverPark</tabstop>
+  <tabstop>copyFromTelescopeDriver</tabstop>
   <tabstop>coverUnpark</tabstop>
-  <tabstop>moveFocuserIn</tabstop>
-  <tabstop>focuserStepsize</tabstop>
-  <tabstop>moveFocuserOut</tabstop>
-  <tabstop>haltFocuser</tabstop>
+  <tabstop>coverPark</tabstop>
+  <tabstop>coverHalt</tabstop>
+  <tabstop>mountHost</tabstop>
+  <tabstop>mountMAC</tabstop>
+  <tabstop>settleTimeMount</tabstop>
+  <tabstop>rackCompMAC</tabstop>
+  <tabstop>bootRackComp</tabstop>
   <tabstop>domeRadius</tabstop>
   <tabstop>domeNorthOffset</tabstop>
   <tabstop>domeEastOffset</tabstop>
   <tabstop>domeZoffGEM</tabstop>
+  <tabstop>domeZoff10micron</tabstop>
   <tabstop>offGEM</tabstop>
-  <tabstop>copyFromDomeDriver</tabstop>
-  <tabstop>checkAutomaticDome</tabstop>
   <tabstop>offLAT</tabstop>
+  <tabstop>checkUseDomeGeometry</tabstop>
+  <tabstop>checkAutomaticDome</tabstop>
+  <tabstop>copyFromDomeDriver</tabstop>
+  <tabstop>domeOpenShutter</tabstop>
+  <tabstop>domeCloseShutter</tabstop>
+  <tabstop>domeAbortSlew</tabstop>
+  <tabstop>domeShutterWidth</tabstop>
+  <tabstop>tabDomeExplain</tabstop>
+  <tabstop>settleTimeDome</tabstop>
+  <tabstop>isOnline</tabstop>
+  <tabstop>versionAvailable</tabstop>
+  <tabstop>versionRelease</tabstop>
+  <tabstop>versionBeta</tabstop>
+  <tabstop>installVersion</tabstop>
+  <tabstop>loglevelStandard</tabstop>
+  <tabstop>loglevelDebug</tabstop>
+  <tabstop>loglevelDebugTrace</tabstop>
+  <tabstop>soundMountSlewFinished</tabstop>
+  <tabstop>soundDomeSlewFinished</tabstop>
+  <tabstop>soundMountAlert</tabstop>
+  <tabstop>soundModelingFinished</tabstop>
+  <tabstop>soundImageSaved</tabstop>
+  <tabstop>soundImageSolved</tabstop>
+  <tabstop>textEdit</tabstop>
+  <tabstop>posSave4</tabstop>
+  <tabstop>runFlexure</tabstop>
+  <tabstop>posAlt4</tabstop>
+  <tabstop>altitudeHysterese1</tabstop>
+  <tabstop>posSave7</tabstop>
+  <tabstop>posAlt8</tabstop>
+  <tabstop>cancelAnalyse</tabstop>
+  <tabstop>posAz8</tabstop>
+  <tabstop>settingsTabWidget</tabstop>
+  <tabstop>loadAnalyseData</tabstop>
+  <tabstop>posText8</tabstop>
+  <tabstop>posSave6</tabstop>
+  <tabstop>posAz5</tabstop>
+  <tabstop>posAlt5</tabstop>
+  <tabstop>posText5</tabstop>
+  <tabstop>posSave8</tabstop>
+  <tabstop>posSave9</tabstop>
+  <tabstop>posSave0</tabstop>
+  <tabstop>altitudeTimeChange</tabstop>
+  <tabstop>posText6</tabstop>
+  <tabstop>numberRunsHysterese</tabstop>
+  <tabstop>posAz1</tabstop>
+  <tabstop>posText1</tabstop>
+  <tabstop>posText9</tabstop>
+  <tabstop>posAlt9</tabstop>
+  <tabstop>posAz0</tabstop>
+  <tabstop>posSave1</tabstop>
+  <tabstop>posAz4</tabstop>
+  <tabstop>posSave5</tabstop>
+  <tabstop>posText3</tabstop>
+  <tabstop>posAz6</tabstop>
+  <tabstop>posText4</tabstop>
+  <tabstop>delayTimeFlexure</tabstop>
+  <tabstop>altitudeHysterese2</tabstop>
+  <tabstop>posSave3</tabstop>
   <tabstop>relayButtonText2</tabstop>
   <tabstop>relayButtonText5</tabstop>
   <tabstop>relayButtonText7</tabstop>
@@ -27166,16 +27166,25 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>relayButtonText0</tabstop>
   <tabstop>relayFun0</tabstop>
   <tabstop>relayFun7</tabstop>
-  <tabstop>versionAvailable</tabstop>
+  <tabstop>runHysteresis</tabstop>
   <tabstop>filterMinorPlanet_5</tabstop>
-  <tabstop>cameraSetup</tabstop>
-  <tabstop>domeSetup</tabstop>
-  <tabstop>cameraDevice</tabstop>
-  <tabstop>filterSetup</tabstop>
-  <tabstop>filterDevice</tabstop>
-  <tabstop>focuserDevice</tabstop>
-  <tabstop>moveCoordinateRaFloat</tabstop>
-  <tabstop>moveCoordinateDecFloat</tabstop>
+  <tabstop>azimuthHysterese1</tabstop>
+  <tabstop>posAlt6</tabstop>
+  <tabstop>azimuthTimeChange</tabstop>
+  <tabstop>delayTimeHysterese</tabstop>
+  <tabstop>le_analyseFileName</tabstop>
+  <tabstop>posAlt0</tabstop>
+  <tabstop>posText0</tabstop>
+  <tabstop>posAz3</tabstop>
+  <tabstop>posAz2</tabstop>
+  <tabstop>posSave2</tabstop>
+  <tabstop>posAlt1</tabstop>
+  <tabstop>posAlt3</tabstop>
+  <tabstop>azimuthHysterese2</tabstop>
+  <tabstop>posText2</tabstop>
+  <tabstop>posAlt2</tabstop>
+  <tabstop>posText7</tabstop>
+  <tabstop>numberRunsTimeChange</tabstop>
  </tabstops>
  <resources/>
  <connections/>

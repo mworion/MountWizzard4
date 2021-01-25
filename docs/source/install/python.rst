@@ -104,10 +104,9 @@ standard procedure.
 
 Update python version on your windows computer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Please go to the python website an download the appropriate python version. Please be
-reminded that right now python 3.9 is not supported! On windows please check the
-selection of the 32bit or 64bit correctly. It should be the version you have
-already chosen.
+Please go to the python website an download the appropriate python version. On
+windows please check the selection of the 32bit or 64bit correctly. It should be
+the version you have already chosen.
 
 Start the python installer. If everything went right, it will show an update offer
 . If so, please chose that and you get the upgrade. If you would like to switch

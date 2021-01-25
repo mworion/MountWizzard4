@@ -371,9 +371,9 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.stop, QIcon(':/icon/bolt-alt.svg'))
         self.wIcon(self.ui.tracking, QIcon(':/icon/target.svg'))
         self.wIcon(self.ui.flipMount, QIcon(':/icon/flip.svg'))
-        self.wIcon(self.ui.setSiderealTracking, QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.setSiderealTracking, QIcon(':/icon/siderealTrack.svg'))
         self.wIcon(self.ui.setLunarTracking, QIcon(':/icon/speed.svg'))
-        self.wIcon(self.ui.setSolarTracking, QIcon(':/icon/speed.svg'))
+        self.wIcon(self.ui.setSolarTracking, QIcon(':/icon/solarTrack.svg'))
         self.wIcon(self.ui.park, QIcon(':/icon/park.svg'))
 
         # model points

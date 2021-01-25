@@ -166,6 +166,30 @@ class Mount(QObject):
         def setSlewSpeedLow():
             return True
 
+        @staticmethod
+        def checkRateSidereal():
+            return False
+
+        @staticmethod
+        def checkRateLunar():
+            return False
+
+        @staticmethod
+        def checkRateSolar():
+            return False
+
+        @staticmethod
+        def setLunarTracking():
+            return True
+
+        @staticmethod
+        def setSolarTracking():
+            return True
+
+        @staticmethod
+        def setSiderealTracking():
+            return True
+
     class MountSignals(QObject):
         locationDone = pyqtSignal()
         settingDone = pyqtSignal()
@@ -201,30 +225,6 @@ class Mount(QObject):
         timeJD = ts.now()
         loader = Loader('tests/temp', verbose=False)
         status = 0
-
-        @staticmethod
-        def checkRateSidereal():
-            return False
-
-        @staticmethod
-        def checkRateLunar():
-            return False
-
-        @staticmethod
-        def checkRateSolar():
-            return False
-
-        @staticmethod
-        def setLunarTracking():
-            return True
-
-        @staticmethod
-        def setSolarTracking():
-            return True
-
-        @staticmethod
-        def setSiderealTracking():
-            return True
 
         @staticmethod
         def setLongitude(a):

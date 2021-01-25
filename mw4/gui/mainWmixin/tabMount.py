@@ -44,7 +44,7 @@ class Mount(object):
         ms.settingDone.connect(self.updateSettingGUI)
         ms.settingDone.connect(self.updateSetStatGUI)
         ms.settingDone.connect(self.updateSetSyncGUI)
-        ms.locationDone.connect(self.updateTrackingGui)
+        ms.settingDone.connect(self.updateTrackingGui)
 
         self.ui.park.clicked.connect(self.changePark)
         self.ui.flipMount.clicked.connect(self.flipMount)
@@ -75,7 +75,6 @@ class Mount(object):
         :return: True for test purpose
         """
         config = self.app.config.get('mainW', {})
-
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
         self.updateLocGUI(self.app.mount.obsSite)
@@ -323,25 +322,25 @@ class Mount(object):
 
         return True
 
-    def updateTrackingGui(self, obs):
+    def updateTrackingGui(self, sett):
         """
-        :param obs:
+        :param sett:
         :return:    True if ok for testing
         """
-        if obs is None:
+        if sett is None:
             return False
 
-        if obs.checkRateLunar():
+        if sett.checkRateLunar():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
 
-        elif obs.checkRateSidereal():
+        elif sett.checkRateSidereal():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
 
-        elif obs.checkRateSolar():
+        elif sett.checkRateSolar():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')
@@ -394,8 +393,8 @@ class Mount(object):
         """
         :return:
         """
-        obs = self.app.mount.obsSite
-        suc = obs.setLunarTracking()
+        sett = self.app.mount.setting
+        suc = sett.setLunarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Lunar', 2)
             return False
@@ -408,8 +407,8 @@ class Mount(object):
         """
         :return:
         """
-        obs = self.app.mount.obsSite
-        suc = obs.setSiderealTracking()
+        sett = self.app.mount.setting
+        suc = sett.setSiderealTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Sidereal', 2)
             return False
@@ -422,8 +421,8 @@ class Mount(object):
         """
         :return:
         """
-        obs = self.app.mount.obsSite
-        suc = obs.setSolarTracking()
+        sett = self.app.mount.setting
+        suc = sett.setSolarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Solar', 2)
             return False

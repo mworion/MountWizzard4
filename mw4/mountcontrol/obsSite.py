@@ -108,7 +108,6 @@ class ObsSite(object):
         self._AzTarget = None
         self._status = None
         self._statusSlew = None
-        self._trackingRate = None
         self.setLoaderAndTimescale()
 
     def setLoaderAndTimescale(self):
@@ -405,14 +404,6 @@ class ObsSite(object):
     def statusSlew(self, value):
         self._statusSlew = bool(value)
 
-    @property
-    def trackingRate(self):
-        return self._trackingRate
-
-    @trackingRate.setter
-    def trackingRate(self, value):
-        self._trackingRate = valueToFloat(value)
-
     def parseLocation(self, response, numberOfChunks):
         """
         Parsing the polling slow command.
@@ -436,7 +427,6 @@ class ObsSite(object):
         lat = response[2]
 
         self.location = [lat, lon, elev]
-        self.trackingRate = response[3]
         return True
 
     def getLocation(self):
@@ -448,7 +438,7 @@ class ObsSite(object):
         """
 
         conn = Connection(self.host)
-        commandString = ':U2#:Gev#:Gg#:Gt#:GT#'
+        commandString = ':U2#:Gev#:Gg#:Gt#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
@@ -1059,60 +1049,6 @@ class ObsSite(object):
         """
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':RT9#')
-        return suc
-
-    def checkRateLunar(self):
-        """
-        :return:
-        """
-        if self._trackingRate == 62.4:
-            return True
-
-        else:
-            return False
-
-    def checkRateSidereal(self):
-        """
-        :return:
-        """
-        if self._trackingRate == 60.2:
-            return True
-
-        else:
-            return False
-
-    def checkRateSolar(self):
-        """
-        :return:
-        """
-        if self._trackingRate == 60.3:
-            return True
-
-        else:
-            return False
-
-    def setLunarTracking(self):
-        """
-        :return:    success
-        """
-        conn = Connection(self.host)
-        suc, response, numberOfChunks = conn.communicate(':RT0#')
-        return suc
-
-    def setSiderealTracking(self):
-        """
-        :return:    success
-        """
-        conn = Connection(self.host)
-        suc, response, numberOfChunks = conn.communicate(':RT2#')
-        return suc
-
-    def setSolarTracking(self):
-        """
-        :return:    success
-        """
-        conn = Connection(self.host)
-        suc, response, numberOfChunks = conn.communicate(':RT1#')
         return suc
 
     def park(self):

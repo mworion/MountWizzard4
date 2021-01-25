@@ -303,31 +303,31 @@ def test_updateSetSyncGUI_6(function):
 
 
 def test_tracking_speed1(function):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'checkRateLunar',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.obsSite)
+        suc = function.updateTrackingGui(function.app.mount.setting)
         assert suc
 
 
 def test_tracking_speed2(function):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'checkRateSidereal',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.obsSite)
+        suc = function.updateTrackingGui(function.app.mount.setting)
         assert suc
 
 
 def test_tracking_speed3(function):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.obsSite)
+        suc = function.updateTrackingGui(function.app.mount.setting)
         assert suc
 
 
 def test_setLunarTracking1(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'setLunarTracking',
                            return_value=True):
         with qtbot.waitSignal(function.app.message) as blocker:
@@ -337,7 +337,7 @@ def test_setLunarTracking1(function, qtbot):
 
 
 def test_setLunarTracking2(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'setLunarTracking',
                            return_value=False):
         with qtbot.waitSignal(function.app.message) as blocker:
@@ -347,7 +347,7 @@ def test_setLunarTracking2(function, qtbot):
 
 
 def test_setSiderealTracking1(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'setSiderealTracking',
                            return_value=True):
         with qtbot.waitSignal(function.app.message) as blocker:
@@ -357,7 +357,7 @@ def test_setSiderealTracking1(function, qtbot):
 
 
 def test_setSiderealTracking2(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'setSiderealTracking',
                            return_value=False):
         with qtbot.waitSignal(function.app.message) as blocker:
@@ -367,7 +367,7 @@ def test_setSiderealTracking2(function, qtbot):
 
 
 def test_setSolarTracking1(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'setSolarTracking',
                            return_value=True):
         with qtbot.waitSignal(function.app.message) as blocker:
@@ -377,7 +377,7 @@ def test_setSolarTracking1(function, qtbot):
 
 
 def test_setSolarTracking2(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'setSolarTracking',
                            return_value=False):
         with qtbot.waitSignal(function.app.message) as blocker:
@@ -573,26 +573,26 @@ def test_updateTrackingGui_1(function):
 
 
 def test_updateTrackingGui_2(function):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'checkRateLunar',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.obsSite)
+        suc = function.updateTrackingGui(function.app.mount.setting)
         assert suc
 
 
 def test_updateTrackingGui_3(function):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.obsSite)
+        suc = function.updateTrackingGui(function.app.mount.setting)
         assert suc
 
 
 def test_updateTrackingGui_4(function):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'checkRateSidereal',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.obsSite)
+        suc = function.updateTrackingGui(function.app.mount.setting)
         assert suc
 
 

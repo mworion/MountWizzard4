@@ -123,30 +123,27 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         self.setWindowFlags(self.windowFlags() | newFlag)
 
     @staticmethod
-    def wIcon(gui=None, icon=None):
+    def wIcon(gui=None, name=''):
         """
         widget icon adds an icon to a gui element like an button.
 
         :param      gui:        gui element, which will be expanded by an icon
-        :param      icon:       icon to be added
+        :param      name:       icon to be added
         :return:    true for test purpose
         """
 
         if not gui:
             return False
 
-        if not icon:
+        if not name:
             return False
 
-        if not isinstance(icon, QIcon):
-            iconset = qApp.style().standardIcon(icon)
-            icon = QIcon(iconset)
-
+        icon = QIcon(f':/icon/{name}.svg')
         gui.setIcon(icon)
+        gui.setIconSize(QSize(16, 16))
         gui.setProperty('iconset', True)
         gui.style().unpolish(gui)
         gui.style().polish(gui)
-        gui.setIconSize(QSize(16, 16))
 
         return True
 

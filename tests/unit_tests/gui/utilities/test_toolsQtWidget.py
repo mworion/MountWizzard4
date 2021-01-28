@@ -94,7 +94,7 @@ def test_wIcon_1(function):
 
 def test_wIcon_2(function):
     icon = QStyle.SP_DialogApplyButton
-    suc = function.wIcon(icon=icon)
+    suc = function.wIcon()
     assert not suc
 
 
@@ -107,7 +107,7 @@ def test_wIcon_3(function):
 def test_wIcon_4(function):
     icon = QStyle.SP_DialogApplyButton
     ui = QPushButton()
-    suc = function.wIcon(gui=ui, icon=icon)
+    suc = function.wIcon(gui=ui, name='load')
     assert suc
 
 

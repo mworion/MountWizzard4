@@ -195,7 +195,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
             return False
         if value is None:
             return False
-
         if widget.property(widgetProperty) == value:
             return True
 

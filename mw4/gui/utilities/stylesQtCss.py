@@ -416,7 +416,7 @@ class Styles:
         height: 16px;
     }
     /* Push Buttons */
-    QPushButton[iconset='true'] {
+    QPushButton[alignLeft='true'] {
         text-align: left;
         padding-left: 3px;
         padding-right: 3px;
@@ -461,6 +461,9 @@ class Styles:
         border-width: 2px;
         border-style: inset;
         border-radius: 2px;
+        /*
+        border-image: url(:/icon/check-circle.svg)
+        */
     }
     QPushButton[running='false'] {
         background-color: #202020;

@@ -371,9 +371,9 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.stop, 'bolt-alt')
         self.wIcon(self.ui.tracking, 'target')
         self.wIcon(self.ui.flipMount, 'flip')
-        self.wIcon(self.ui.setSiderealTracking, 'siderealTrack')
-        self.wIcon(self.ui.setLunarTracking, 'lunarTrack')
-        self.wIcon(self.ui.setSolarTracking, 'solarTrack')
+        self.wIcon(self.ui.setSiderealTracking, 'sidereal')
+        self.wIcon(self.ui.setLunarTracking, 'lunar')
+        self.wIcon(self.ui.setSolarTracking, 'solar')
         self.wIcon(self.ui.park, 'park')
 
         # model points

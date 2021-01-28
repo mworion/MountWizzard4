@@ -372,7 +372,7 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.tracking, 'target')
         self.wIcon(self.ui.flipMount, 'flip')
         self.wIcon(self.ui.setSiderealTracking, 'siderealTrack')
-        self.wIcon(self.ui.setLunarTracking, 'speed')
+        self.wIcon(self.ui.setLunarTracking, 'lunarTrack')
         self.wIcon(self.ui.setSolarTracking, 'solarTrack')
         self.wIcon(self.ui.park, 'park')
 

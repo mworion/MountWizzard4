@@ -22,9 +22,9 @@ import re
 
 # external packages
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
-from PyQt5.QtGui import QPalette, QIcon, QPixmap
-from PyQt5.QtCore import Qt, QSortFilterProxyModel, QDir, QObject, pyqtSignal, QEvent
-from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QPalette, QIcon, QPixmap, QColor
+from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal, QEvent
+from PyQt5.QtCore import Qt, QSize
 from skyfield.api import Angle
 
 # local imports
@@ -196,15 +196,13 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         if value is None:
             return False
 
+        if widget.property(widgetProperty) == value:
+            return True
+
         widget.style().unpolish(widget)
         widget.setProperty(widgetProperty, value)
-        if widgetProperty == 'running':
-            if bool(value):
-                widget.setIcon(widget.icon())
-            else:
-                widget.setIcon(widget.icon())
-
         widget.style().polish(widget)
+
         return True
 
     @staticmethod

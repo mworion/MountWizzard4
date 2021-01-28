@@ -5,8 +5,8 @@
 <g>
 
 	<circle
-			stroke="#2090C0"
-			fill="#2090C0"
+			stroke="#D0D0D0"
+			fill="#D0D0D0"
 			fill-opacity="0"
 			stroke-linecap="round"
 			stroke-width="7"
@@ -15,8 +15,8 @@
 			r="28"
 	/>
 	<circle
-			stroke="#2090C0"
-			fill="#2090C0"
+			stroke="#D0D0D0"
+			fill="#D0D0D0"
 			stroke-linecap="round"
 			cx="32"
 			cy="32"

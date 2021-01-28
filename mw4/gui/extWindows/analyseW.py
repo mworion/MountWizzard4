@@ -70,7 +70,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.angularPosRA = None
         self.angularPosDEC = None
 
-        self.wIcon(self.ui.load, QIcon(':/icon/load.svg'))
+        self.wIcon(self.ui.load, 'load')
 
         self.raPointErrorsRaw = self.embedMatplot(self.ui.raPointErrorsRaw)
         self.decPointErrorsRaw = self.embedMatplot(self.ui.decPointErrorsRaw)

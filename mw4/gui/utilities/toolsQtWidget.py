@@ -22,9 +22,9 @@ import re
 
 # external packages
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
-from PyQt5.QtGui import QPalette, QIcon, QPixmap, QColor
-from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal, QEvent
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtGui import QPalette, QIcon, QPixmap
+from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
+from PyQt5.QtCore import Qt, QSize, QEvent
 from skyfield.api import Angle
 
 # local imports

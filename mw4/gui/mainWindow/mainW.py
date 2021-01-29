@@ -20,7 +20,6 @@ from datetime import datetime
 import gc
 
 # external packages
-from PyQt5.QtGui import QIcon
 from PyQt5.QtGui import QPixmap
 import PyQt5.QtCore
 import PyQt5.QtWidgets

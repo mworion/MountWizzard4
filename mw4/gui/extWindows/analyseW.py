@@ -20,7 +20,6 @@ import os
 from threading import Lock
 
 # external packages
-from PyQt5.QtGui import QIcon
 from matplotlib import pyplot as plt
 from matplotlib import ticker
 from matplotlib.colors import Normalize

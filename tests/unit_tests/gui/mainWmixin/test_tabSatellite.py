@@ -382,30 +382,37 @@ def test_showRises_3(function):
         assert isinstance(val, dict)
 
 
-def test_signalExtractSatelliteData_1a(function):
-    widget = function.ui.listSatelliteNames
-    widget.addItem('test12345')
-
-
 def test_extractSatelliteData_1(function):
-    suc = function.extractSatelliteData(satName='')
-    assert not suc
-
-
-def test_extractSatelliteData_2(function):
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
     function.satellites = {'NOAA 8': sat,
-                      'Test1': sat}
+                           'Test1': sat}
+
+    suc = function.extractSatelliteData(satName='Tjan')
+    assert not suc
+
+
+def test_extractSatelliteData_2(function):
+    function.ui.listSatelliteNames.clear()
+    function.satellites = {'NOAA 8': '',
+                           'Test1': ''}
 
     suc = function.extractSatelliteData(satName='NOAA 8')
     assert not suc
 
 
 def test_extractSatelliteData_3(function):
+    class Test1(QObject):
+        update = pyqtSignal(object, object, object)
+        show = pyqtSignal(object, object)
+
+    class Test(QObject):
+        signals = Test1()
+
+    function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
     function.ui.listSatelliteNames.clear()
     function.ui.listSatelliteNames.addItem('NOAA 8')
     function.ui.listSatelliteNames.addItem('Test1')
@@ -416,13 +423,72 @@ def test_extractSatelliteData_3(function):
     sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
     function.satellites = {'NOAA 8': sat,
-                      'Test1': sat}
-
-    suc = function.extractSatelliteData(satName='TIANGONG 1')
-    assert not suc
+                           'Test1': sat}
+    ts = function.app.mount.obsSite.ts
+    with mock.patch.object(function.app.mount.obsSite.ts,
+                           'now',
+                           return_value=ts.tt_jd(2458925.404976551)):
+        suc = function.extractSatelliteData(satName='NOAA 8')
+        assert not suc
 
 
 def test_extractSatelliteData_4(function):
+    class Test1(QObject):
+        update = pyqtSignal(object, object, object)
+        show = pyqtSignal(object, object)
+
+    class Test(QObject):
+        signals = Test1()
+
+    function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
+    function.ui.listSatelliteNames.clear()
+    function.ui.listSatelliteNames.addItem('NOAA 8')
+    function.ui.listSatelliteNames.addItem('Test1')
+
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    function.satellites = {'NOAA 8': sat,
+                           'Test1': sat}
+    ts = function.app.mount.obsSite.ts
+    with mock.patch.object(function.app.mount.obsSite.ts,
+                           'now',
+                           return_value=ts.tt_jd(2458930.404976551)):
+        suc = function.extractSatelliteData(satName='NOAA 8')
+        assert not suc
+
+
+def test_extractSatelliteData_5(function):
+    class Test1(QObject):
+        update = pyqtSignal(object, object, object)
+        show = pyqtSignal(object, object)
+
+    class Test(QObject):
+        signals = Test1()
+
+    function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
+    function.ui.listSatelliteNames.clear()
+    function.ui.listSatelliteNames.addItem('NOAA 8')
+    function.ui.listSatelliteNames.addItem('Test1')
+
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    function.satellites = {'NOAA 8': sat,
+                           'Test1': sat}
+    ts = function.app.mount.obsSite.ts
+    with mock.patch.object(function.app.mount.obsSite.ts,
+                           'now',
+                           return_value=ts.tt_jd(2458950.404976551)):
+        suc = function.extractSatelliteData(satName='NOAA 8')
+        assert not suc
+
+
+def test_extractSatelliteData_6(function):
     class Test1(QObject):
         update = pyqtSignal(object, object, object)
         show = pyqtSignal(object, object)
@@ -441,7 +507,7 @@ def test_extractSatelliteData_4(function):
     sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
     function.satellites = {'NOAA 8': sat,
-                      'Test1': sat}
+                           'Test1': sat}
 
     with mock.patch.object(function,
                            'showRises'):
@@ -501,12 +567,12 @@ def test_getSatelliteDataFromDatabase_2(function):
     assert suc
 
 
-def test_enableTrack_1(function):
+def test_updateSatelliteTrackGui_1(function):
     suc = function.updateSatelliteTrackGui()
     assert not suc
 
 
-def test_enableTrack_2(function):
+def test_updateSatelliteTrackGui_2(function):
     class Test:
         jdStart = None
         jdEnd = None
@@ -518,11 +584,11 @@ def test_enableTrack_2(function):
     assert suc
 
 
-def test_enableTrack_3(function):
+def test_updateSatelliteTrackGui_3(function):
     class Test:
         jdStart = 2458715.14771
         jdEnd = 2458715.15
-        flip = False
+        flip = True
         message = 'test'
         altitude = Angle(degrees=50)
 
@@ -583,6 +649,19 @@ def test_startTrack_6(function):
         with mock.patch.object(function.app.mount.obsSite,
                                'unpark',
                                return_value=True):
+            suc = function.startTrack()
+            assert suc
+
+
+def test_startTrack_7(function):
+    function.app.mount.mountUp = True
+    function.app.mount.obsSite.status = 5
+    with mock.patch.object(function.app.mount.satellite,
+                           'slewTLE',
+                           return_value=(True, 'test')):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'unpark',
+                               return_value=False):
             suc = function.startTrack()
             assert suc
 

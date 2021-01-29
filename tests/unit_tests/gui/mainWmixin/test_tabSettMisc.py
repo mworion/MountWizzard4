@@ -434,11 +434,6 @@ def test_playSound_1(function):
 
 
 def test_playSound_2(function):
-    suc = function.playSound('test')
-    assert not suc
-
-
-def test_playSound_3(function):
     function.audioSignalsSet['Pan1'] = 'test'
     function.guiAudioList['MountSlew'] = function.ui.soundMountSlewFinished
     function.guiAudioList['MountSlew'].addItem('Pan1')
@@ -446,3 +441,14 @@ def test_playSound_3(function):
                            'play'):
         suc = function.playSound('MountSlew')
         assert suc
+
+
+def test_playSound_3(function):
+    function.audioSignalsSet['Pan1'] = 'test'
+    function.guiAudioList['MountSlew'] = function.ui.soundMountSlewFinished
+    function.guiAudioList['MountSlew'].addItem('Pan5')
+
+    with mock.patch.object(QSound,
+                           'play'):
+        suc = function.playSound('MountSlew')
+        assert not suc

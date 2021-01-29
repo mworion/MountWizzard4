@@ -23,20 +23,16 @@ import shutil
 import glob
 
 # external packages
-from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget, QInputDialog
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtTest import QTest
 from astropy.io import fits
-from mountcontrol.qtmount import Mount
 from skyfield.api import Angle
+import numpy as np
 
 # local import
 from tests.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabSettDome import SettDome
 from gui.mainWmixin.tabTools import Tools
 
 
@@ -217,6 +213,42 @@ def test_renameFile_2(function):
 
 def test_renameFile_3(function):
     shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+
+    with mock.patch.object(os,
+                           'rename'):
+        suc = function.renameFile('tests/image/m51.fit')
+        assert suc
+
+
+def test_renameFile_4(function):
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    function.ui.newObjectName.setText('test')
+
+    with mock.patch.object(os,
+                           'rename'):
+        suc = function.renameFile('tests/image/m51.fit')
+        assert suc
+
+
+def test_renameFile_5(function):
+    hdu = fits.PrimaryHDU(np.arange(100.0))
+    hduList = fits.HDUList([hdu])
+    hduList.writeto('tests/image/m51.fit')
+
+    with mock.patch.object(os,
+                           'rename'):
+        suc = function.renameFile('tests/image/m51.fit')
+        assert suc
+
+
+def test_renameFile_6(function):
+    hdu = fits.PrimaryHDU(np.arange(100.0))
+    hdu.header['FILTER'] = 'test'
+    hduList = fits.HDUList([hdu])
+    hduList.writeto('tests/image/m51.fit')
+
+    function.ui.rename1.clear()
+    function.ui.rename1.addItem('Filter')
 
     with mock.patch.object(os,
                            'rename'):

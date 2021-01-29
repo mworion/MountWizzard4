@@ -121,6 +121,11 @@ def test_checkFormatMAC_6(function):
     assert val == '00:11:22:AB:44:55'
 
 
+def test_checkFormatMAC_7(function):
+    val = function.checkFormatMAC('00.11.2:ab:44:55')
+    assert val is None
+
+
 def test_bootRackComp_1(function):
     with mock.patch.object(wakeonlan,
                            'send_magic_packet',
@@ -161,7 +166,7 @@ def test_setMountMAC_2(function):
     class Test:
         addressLanMAC = None
         typeConnection = 0
-    suc = function.setMountMAC(Test())
+    suc = function.setMountMAC(sett=Test())
     assert not suc
 
 
@@ -169,7 +174,7 @@ def test_setMountMAC_3(function):
     class Test:
         addressLanMAC = ''
         typeConnection = 0
-    suc = function.setMountMAC(Test())
+    suc = function.setMountMAC(sett=Test())
     assert not suc
 
 
@@ -178,8 +183,16 @@ def test_setMountMAC_4(function):
         addressLanMAC = None
         typeConnection = 0
     function.app.mount.MAC = None
-    suc = function.setMountMAC(Test())
+    suc = function.setMountMAC(sett=Test())
     assert not suc
+
+
+def test_setMountMAC_5(function):
+    class Test:
+        addressLanMAC = '00:00:0xx:00:00:00'
+        typeConnection = 3
+    suc = function.setMountMAC(sett=Test())
+    assert suc
 
 
 def test_setMountMAC_6(function):

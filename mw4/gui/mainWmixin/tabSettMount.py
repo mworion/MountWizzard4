@@ -169,10 +169,8 @@ class SettMount(object):
             return False
         if not sett.addressLanMAC:
             return False
-        self.app.mount.MAC = sett.addressLanMAC
 
-        if self.app.mount.MAC is None:
-            return False
+        self.app.mount.MAC = sett.addressLanMAC
         self.ui.mountMAC.setText(self.app.mount.MAC)
 
         return True

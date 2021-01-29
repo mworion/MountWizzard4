@@ -240,7 +240,6 @@ class Tools(object):
         :param selection: str entry from the drop down selector
         :return: nameChunk: part of the entry
         """
-
         if fitsHeader is None:
             return ''
         if not selection:

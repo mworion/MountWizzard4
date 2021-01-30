@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>11</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -15663,7 +15663,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -19193,7 +19193,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>86</height>
+         <height>106</height>
         </rect>
        </property>
        <property name="title">
@@ -19278,7 +19278,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>55</y>
+          <y>75</y>
           <width>106</width>
           <height>21</height>
          </rect>
@@ -19302,7 +19302,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>115</x>
-          <y>55</y>
+          <y>75</y>
           <width>116</width>
           <height>21</height>
          </rect>
@@ -19347,6 +19347,81 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="readOnly">
          <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="port3492">
+        <property name="geometry">
+         <rect>
+          <x>115</x>
+          <y>50</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Minimum logging will be stored in log file.</string>
+        </property>
+        <property name="text">
+         <string>3492</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="port3494">
+        <property name="geometry">
+         <rect>
+          <x>175</x>
+          <y>50</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Debug logging will be stored in log file.</string>
+        </property>
+        <property name="text">
+         <string>3494</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_mountMAC_3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>106</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Port</string>
         </property>
        </widget>
       </widget>
@@ -19432,7 +19507,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>115</y>
+         <y>135</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -19529,7 +19604,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>180</y>
+         <y>200</y>
          <width>366</width>
          <height>101</height>
         </rect>

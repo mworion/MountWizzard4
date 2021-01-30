@@ -330,7 +330,15 @@ class Mount(object):
         if sett is None:
             return False
 
-        if sett.checkRateLunar():
+        if self.app.mount.obsSite is None:
+            return False
+
+        if self.app.mount.obsSite.status == 10:
+            self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
+
+        elif sett.checkRateLunar():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')

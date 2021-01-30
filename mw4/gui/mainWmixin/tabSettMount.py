@@ -144,6 +144,7 @@ class SettMount(object):
             port = 3492
         else:
             port = 3490
+
         self.app.mount.host = (self.ui.mountHost.text(), port)
         return True
 

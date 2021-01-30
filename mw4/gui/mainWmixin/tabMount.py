@@ -272,7 +272,7 @@ class Mount(object):
         if sett.wakeOnLan is None:
             text = '-'
             self.changeStyleDynamic(ui, 'status', '')
-        elif sett.wakeOnLan == 'ON':
+        elif sett.wakeOnLan == 'On':
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
         else:

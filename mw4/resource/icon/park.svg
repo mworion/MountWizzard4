@@ -4,7 +4,8 @@
 <title>PARKING</title>
 <rect x="60" y="60" width="400" height="400" rx="50" ry="50" stroke="#D0D0D0"
       stroke-width="20"
-      fill="#2090C0" />
+      fill-opacity="0"
+ />
 <path
         d="M 130,98 V 402 H 194 V 306 H 286 A 84 84 0 0 0 370,222 V 174 A 84 84 0 0 0 286,98 Z M 194,162 H 258 A 48 32 0 0 1 306,194 V 210 A 48 32 0 0 1 258,242 H 194 Z" stroke="none" fill="#D0D0D0" fill-rule="evenodd" />
 </svg>

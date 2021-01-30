@@ -302,7 +302,7 @@ def test_updateSetSyncGUI_6(function):
     assert suc
 
 
-def test_tracking_speed1(function):
+def test_updateTrackingGui_1(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
                            'checkRateLunar',
@@ -311,7 +311,7 @@ def test_tracking_speed1(function):
         assert suc
 
 
-def test_tracking_speed2(function):
+def test_updateTrackingGui_2(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSidereal',
@@ -320,7 +320,7 @@ def test_tracking_speed2(function):
         assert suc
 
 
-def test_tracking_speed3(function):
+def test_updateTrackingGui_3(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
@@ -329,7 +329,7 @@ def test_tracking_speed3(function):
         assert suc
 
 
-def test_tracking_speed4(function):
+def test_updateTrackingGui_4(function):
     function.app.mount.obsSite.status = 10
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
@@ -338,12 +338,21 @@ def test_tracking_speed4(function):
         assert suc
 
 
-def test_tracking_speed5(function):
+def test_updateTrackingGui_5(function):
     function.app.mount.obsSite.status = None
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
         suc = function.updateTrackingGui(function.app.mount.setting)
+        assert not suc
+
+
+def test_updateTrackingGui_6(function):
+    function.app.mount.obsSite.status = None
+    with mock.patch.object(function.app.mount.setting,
+                           'checkRateSolar',
+                           return_value=True):
+        suc = function.updateTrackingGui(None)
         assert not suc
 
 
@@ -586,35 +595,6 @@ def test_updateLocGUI_3(function):
     function.app.mount.obsSite.location = ['49:00:00', '11:00:00', '500']
     suc = function.updateLocGUI(None)
     assert not suc
-
-
-def test_updateTrackingGui_1(function):
-    suc = function.updateTrackingGui(None)
-    assert not suc
-
-
-def test_updateTrackingGui_2(function):
-    with mock.patch.object(function.app.mount.setting,
-                           'checkRateLunar',
-                           return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.setting)
-        assert suc
-
-
-def test_updateTrackingGui_3(function):
-    with mock.patch.object(function.app.mount.setting,
-                           'checkRateSolar',
-                           return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.setting)
-        assert suc
-
-
-def test_updateTrackingGui_4(function):
-    with mock.patch.object(function.app.mount.setting,
-                           'checkRateSidereal',
-                           return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.setting)
-        assert suc
 
 
 def test_changeTracking_ok1(function, qtbot):

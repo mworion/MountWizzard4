@@ -19352,7 +19352,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QRadioButton" name="port3492">
         <property name="geometry">
          <rect>
-          <x>115</x>
+          <x>180</x>
           <y>50</y>
           <width>56</width>
           <height>21</height>
@@ -19376,10 +19376,10 @@ When clicking the button, you could change the value.</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="port3494">
+       <widget class="QRadioButton" name="port3490">
         <property name="geometry">
          <rect>
-          <x>175</x>
+          <x>115</x>
           <y>50</y>
           <width>66</width>
           <height>21</height>
@@ -19397,7 +19397,7 @@ When clicking the button, you could change the value.</string>
          <string>Debug logging will be stored in log file.</string>
         </property>
         <property name="text">
-         <string>3494</string>
+         <string>3490</string>
         </property>
         <property name="checked">
          <bool>false</bool>

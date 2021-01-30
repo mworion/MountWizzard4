@@ -303,6 +303,7 @@ def test_updateSetSyncGUI_6(function):
 
 
 def test_tracking_speed1(function):
+    function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
                            'checkRateLunar',
                            return_value=True):
@@ -311,6 +312,7 @@ def test_tracking_speed1(function):
 
 
 def test_tracking_speed2(function):
+    function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSidereal',
                            return_value=True):
@@ -319,11 +321,30 @@ def test_tracking_speed2(function):
 
 
 def test_tracking_speed3(function):
+    function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
         suc = function.updateTrackingGui(function.app.mount.setting)
         assert suc
+
+
+def test_tracking_speed4(function):
+    function.app.mount.obsSite.status = 10
+    with mock.patch.object(function.app.mount.setting,
+                           'checkRateSolar',
+                           return_value=True):
+        suc = function.updateTrackingGui(function.app.mount.setting)
+        assert suc
+
+
+def test_tracking_speed5(function):
+    function.app.mount.obsSite.status = None
+    with mock.patch.object(function.app.mount.setting,
+                           'checkRateSolar',
+                           return_value=True):
+        suc = function.updateTrackingGui(function.app.mount.setting)
+        assert not suc
 
 
 def test_setLunarTracking1(function, qtbot):

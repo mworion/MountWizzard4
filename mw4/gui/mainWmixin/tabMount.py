@@ -329,7 +329,6 @@ class Mount(object):
         """
         if sett is None:
             return False
-
         if self.app.mount.obsSite is None:
             return False
 

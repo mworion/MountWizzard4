@@ -29,6 +29,11 @@ Unreleased version of MW4
 
 Released beta version of MW4
 ----------------------------
+0.240.4
+
+- adding choice of mount port 3490 or 3492
+- improving gui for sat tracking and displayed tracking rate
+
 0.240.3
 
 - icons, gui improvements
@@ -38,6 +43,7 @@ Released beta version of MW4
 0.240.2
 
 - cleanup
+- skyfield 1.36
 
 0.240.1
 

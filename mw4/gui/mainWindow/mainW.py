@@ -375,7 +375,7 @@ class MainWindow(
         self.wIcon(self.ui.saveConfigQuit, "save")
         self.wIcon(self.ui.mountOn, "power-on")
         self.wIcon(self.ui.mountOff, "power-off")
-        self.wIcon(self.ui.stop, "bolt-alt")
+        self.wIcon(self.ui.stop, "hand")
         self.wIcon(self.ui.tracking, "target")
         self.wIcon(self.ui.flipMount, "flip")
         self.wIcon(self.ui.setSiderealTracking, "sidereal")

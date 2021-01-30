@@ -29,6 +29,15 @@ Unreleased version of MW4
 
 Released beta version of MW4
 ----------------------------
+0.240.3
+
+- icons, gui improvements
+- checking tracking
+- minor bugfixes fpr corner cases
+
+0.240.2
+
+- cleanup
 
 0.240.1
 

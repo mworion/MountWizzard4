@@ -296,7 +296,7 @@
        <string>Stops all mount movements immediatly</string>
       </property>
       <property name="text">
-       <string>STOP MOUNT</string>
+       <string>Mount Stop</string>
       </property>
      </widget>
      <widget class="QPushButton" name="park">

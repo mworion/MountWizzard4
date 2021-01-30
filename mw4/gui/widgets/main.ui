@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>11</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -214,9 +214,9 @@
      <widget class="QPushButton" name="flipMount">
       <property name="geometry">
        <rect>
-        <x>140</x>
+        <x>180</x>
         <y>20</y>
-        <width>126</width>
+        <width>86</width>
         <height>31</height>
        </rect>
       </property>
@@ -240,7 +240,7 @@
        <rect>
         <x>5</x>
         <y>20</y>
-        <width>126</width>
+        <width>86</width>
         <height>31</height>
        </rect>
       </property>
@@ -257,6 +257,30 @@
       </property>
       <property name="text">
        <string>Tracking</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="followSat">
+      <property name="geometry">
+       <rect>
+        <x>95</x>
+        <y>20</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Flips the mount if possible</string>
+      </property>
+      <property name="text">
+       <string>Follow</string>
       </property>
      </widget>
     </widget>
@@ -15663,7 +15687,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>

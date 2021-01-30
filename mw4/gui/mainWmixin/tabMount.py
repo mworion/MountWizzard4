@@ -334,21 +334,25 @@ class Mount(object):
             return False
 
         if self.app.mount.obsSite.status == 10:
+            self.changeStyleDynamic(self.ui.followSat, 'running', 'true')
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
 
         elif sett.checkRateLunar():
+            self.changeStyleDynamic(self.ui.followSat, 'running', 'false')
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
 
         elif sett.checkRateSidereal():
+            self.changeStyleDynamic(self.ui.followSat, 'running', 'false')
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
 
         elif sett.checkRateSolar():
+            self.changeStyleDynamic(self.ui.followSat, 'running', 'false')
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')

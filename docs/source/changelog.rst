@@ -22,11 +22,6 @@ Unreleased version of MW4
 
 - first official release
 
-(0.250)
-
-- remove workaround as 10micron offered a fix in fw 2.16.13
-- remove autodew button for pegasus as provided indi driver has bugs
-
 Released beta version of MW4
 ----------------------------
 0.240.4
@@ -44,6 +39,9 @@ Released beta version of MW4
 
 - cleanup
 - skyfield 1.36
+- remove workaround as 10micron offered a fix in fw 2.16.13
+- remove autodew button for pegasus as provided indi driver has bugs
+
 
 0.240.1
 

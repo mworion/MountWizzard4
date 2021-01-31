@@ -13,7 +13,7 @@ https://mountwizzard4.readthedocs.io/en/latest/overview.html
 
 Documentation
 ^^^^^^^^^^^^^
-There is an online documentation available for MW4 which could be search for
+There is an online documentation available for MW4 which could be searched for
 entries:
 
 Web based:

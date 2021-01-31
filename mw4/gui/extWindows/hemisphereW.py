@@ -921,17 +921,18 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         if self.closingWindow:
             return False
 
-        hasPolar = self.ui.showPolar.isChecked()
-
-        axe, _ = self.generateFlat(widget=self.hemisphereMat, horizon=True)
-        axeMove, _ = self.generateFlat(widget=self.hemisphereMatMove, horizon=True,
+        axe, _ = self.generateFlat(widget=self.hemisphereMat,
+                                   horizon=True)
+        axeMove, _ = self.generateFlat(widget=self.hemisphereMatMove,
+                                       horizon=True,
                                        showAxes=False)
-
+        hasPolar = self.ui.showPolar.isChecked()
         if hasPolar:
-            axePolar, _ = self.generatePolar(widget=self.polarMat, horizon=True)
-            axePolarMove, _ = self.generatePolar(widget=self.polarMatMove, horizon=True,
+            axePolar, _ = self.generatePolar(widget=self.polarMat,
+                                             horizon=True)
+            axePolarMove, _ = self.generatePolar(widget=self.polarMatMove,
+                                                 horizon=True,
                                                  showAxes=False)
-
         else:
             self.pointerPolarAltAz = None
             self.pointsBuildAnnotate = None

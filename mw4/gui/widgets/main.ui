@@ -157,7 +157,7 @@
        </font>
       </property>
       <property name="toolTip">
-       <string>Set tracking speed to solar</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set tracking speed to solar. Shows the status in blue if solar tracking is on.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>Solar</string>
@@ -181,7 +181,7 @@
        </font>
       </property>
       <property name="toolTip">
-       <string>Set tracking speed to sideral</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set tracking speed to sideral. Shows the status in blue if sidereal tracking is on.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>Sidereal</string>
@@ -205,7 +205,7 @@
        </font>
       </property>
       <property name="toolTip">
-       <string>Set tracking speed to lunar</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set tracking speed to lunar. Shows the status in blue if lunar tracking is on.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>Lunar</string>
@@ -277,7 +277,7 @@
        </font>
       </property>
       <property name="toolTip">
-       <string>Flips the mount if possible</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the status of satellite tracking. Blue if sat tracking is running.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>Follow</string>
@@ -19391,7 +19391,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>Minimum logging will be stored in log file.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Changing to an alternative port. 10micron only allows 10 connections at the same time on one port. If you have other equipment, it might be helpful changing the port.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>3492</string>
@@ -19418,7 +19418,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>Debug logging will be stored in log file.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Changing to an alternative port. 10micron only allows 10 connections at the same time on one port. If you have other equipment, it might be helpful changing the port.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>3490</string>

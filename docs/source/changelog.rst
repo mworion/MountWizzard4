@@ -16,6 +16,8 @@ Backlog and ideas
   does affect the observatory, so even this small move needs another 10s settle
   time for the mount So avoiding them would be great.
 - if indi UPD Driver is fixed and officially available, bring back auto dew
+- adding cover light on / off
+- adding cover light intensity
 
 
 Released version of MW4

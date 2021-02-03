@@ -3,10 +3,8 @@ Changelog
 The changelog contains the user related function or environment updates. For a
 detailed changes list, please refer to the commit list on GitHub.
 
-Unreleased version of MW4
--------------------------
-(1.1)
-
+Backlog and ideas
+-----------------
 - 3d Simulator (mount, dome, build points etc)
 - retrofit model based on hashed coordinates
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
@@ -17,8 +15,12 @@ Unreleased version of MW4
   I see quite a few times the dome being moved by only a very small amount. But it
   does affect the observatory, so even this small move needs another 10s settle
   time for the mount So avoiding them would be great.
+- if indi UPD Driver is fixed and officially available, bring back auto dew
 
-(1.0)
+
+Released version of MW4
+-----------------------
+1.0.0
 
 - first official release
 

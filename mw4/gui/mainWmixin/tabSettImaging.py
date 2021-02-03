@@ -43,6 +43,9 @@ class SettImaging(object):
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
         self.ui.coverHalt.clicked.connect(self.setCoverHalt)
+        self.ui.coverLightOn.clicked.connect(self.switchLightOn)
+        self.ui.coverLightOff.clicked.connect(self.switchLightOff)
+        self.ui.coverLightIntensity.valueChanged.connect(self.setLightIntensity)
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
         self.ui.aperture.valueChanged.connect(self.updateParameters)
         self.ui.focalLength.valueChanged.connect(self.updateParameters)
@@ -385,19 +388,34 @@ class SettImaging(object):
 
         :return: True for test purpose
         """
-        value = self.app.cover.data.get('CAP_PARK.UNPARK', None)
-        if value == 'On':
-            self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
-            self.changeStyleDynamic(self.ui.coverPark, 'running', False)
-        elif value == 'Off':
+        value = self.app.cover.data.get('CAP_PARK.PARK', None)
+        if value:
             self.changeStyleDynamic(self.ui.coverPark, 'running', True)
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
+        elif value is None:
+            self.changeStyleDynamic(self.ui.coverPark, 'running', False)
             self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
         else:
             self.changeStyleDynamic(self.ui.coverPark, 'running', False)
-            self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
 
         value = self.app.cover.data.get('Status.Cover', '-')
         self.ui.coverStatusText.setText(value)
+
+        value = self.app.cover.data.get('FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON', None)
+        if value:
+            self.changeStyleDynamic(self.ui.coverLightOn, 'running', True)
+            self.changeStyleDynamic(self.ui.coverLightOff, 'running', False)
+        elif value is None:
+            self.changeStyleDynamic(self.ui.coverLightOn, 'running', False)
+            self.changeStyleDynamic(self.ui.coverLightOff, 'running', False)
+        else:
+            self.changeStyleDynamic(self.ui.coverLightOn, 'running', False)
+            self.changeStyleDynamic(self.ui.coverLightOff, 'running', True)
+
+        value = self.app.cover.data.get('FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE', '-')
+        self.ui.coverLightIntensity.setValue(value)
+
         return True
 
     def setCoverPark(self):
@@ -455,7 +473,35 @@ class SettImaging(object):
         """
         :return: success
         """
-        suc = self.app.focuser.halt()
+        suc = self.app.cover.lightOn()
         if not suc:
-            self.app.message.emit('Focuser halt could not be executed', 2)
+            self.app.message.emit('Light could not be switched on', 2)
+        return suc
+
+    def switchLightOn(self):
+        """
+        :return:
+        """
+        suc = self.app.cover.lightOn()
+        if not suc:
+            self.app.message.emit('Light could not be switched on', 2)
+        return suc
+
+    def switchLightOff(self):
+        """
+        :return:
+        """
+        suc = self.app.cover.lightOff()
+        if not suc:
+            self.app.message.emit('Light could not be switched off', 2)
+        return suc
+
+    def setLightIntensity(self):
+        """
+        :return:
+        """
+        value = self.ui.coverLightIntensity.value()
+        suc = self.app.cover.lightIntensity(value)
+        if not suc:
+            self.app.message.emit('Light intensity could not be set', 2)
         return suc

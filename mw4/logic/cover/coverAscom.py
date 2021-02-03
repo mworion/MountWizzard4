@@ -95,3 +95,22 @@ class CoverAscom(AscomClass):
 
         self.client.HaltCover()
         return True
+
+    def lightOn(self):
+        """
+        :return:
+        """
+        pass
+
+    def lightOff(self):
+        """
+        :return:
+        """
+        pass
+
+    def lightIntensity(self, value):
+        """
+        :param value:
+        :return:
+        """
+        pass

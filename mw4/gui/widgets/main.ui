@@ -24490,7 +24490,7 @@ p, li { white-space: pre-wrap; }
          <x>5</x>
          <y>85</y>
          <width>366</width>
-         <height>96</height>
+         <height>116</height>
         </rect>
        </property>
        <property name="title">
@@ -24547,9 +24547,9 @@ p, li { white-space: pre-wrap; }
        <widget class="QRadioButton" name="versionBeta">
         <property name="geometry">
          <rect>
-          <x>135</x>
+          <x>180</x>
           <y>70</y>
-          <width>91</width>
+          <width>171</width>
           <height>21</height>
          </rect>
         </property>
@@ -24565,7 +24565,7 @@ p, li { white-space: pre-wrap; }
          <string>Show only beta versions of MountWizzard4</string>
         </property>
         <property name="text">
-         <string>Show betas</string>
+         <string>Show beta versions</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -24576,7 +24576,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>10</x>
           <y>70</y>
-          <width>106</width>
+          <width>146</width>
           <height>21</height>
          </rect>
         </property>
@@ -24691,9 +24691,9 @@ p, li { white-space: pre-wrap; }
        <widget class="QRadioButton" name="versionAlpha">
         <property name="geometry">
          <rect>
-          <x>260</x>
-          <y>70</y>
-          <width>91</width>
+          <x>180</x>
+          <y>90</y>
+          <width>171</width>
           <height>21</height>
          </rect>
         </property>
@@ -24709,7 +24709,34 @@ p, li { white-space: pre-wrap; }
          <string>Show only beta versions of MountWizzard4</string>
         </property>
         <property name="text">
-         <string>Show alphas</string>
+         <string>Show alpha versions</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="versionReleaseNotes">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>146</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Show only beta versions of MountWizzard4</string>
+        </property>
+        <property name="text">
+         <string>Show release notes</string>
         </property>
         <property name="checked">
          <bool>false</bool>

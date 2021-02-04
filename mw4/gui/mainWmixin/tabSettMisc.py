@@ -74,6 +74,7 @@ class SettMisc(object):
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', False))
         self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', True))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
+        self.ui.versionReleaseNotes.setChecked(config.get('versionReleaseNotes', True))
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
         self.ui.soundMountAlert.setCurrentIndex(config.get('soundMountAlert', 0))
@@ -98,6 +99,7 @@ class SettMisc(object):
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
+        config['versionReleaseNotes'] = self.ui.versionReleaseNotes.isChecked()
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
         config['soundMountAlert'] = self.ui.soundMountAlert.currentIndex()
@@ -208,7 +210,7 @@ class SettMisc(object):
         if StrictVersion(availPackage) > StrictVersion(actPackage):
             t = 'A new version of MountWizzard is available:'
             self.app.message.emit(t, 1)
-            self.app.message.emit(comment, 1)
+            self.app.message.emit(comment, 0x100)
         return True
 
     def isVenv(self):

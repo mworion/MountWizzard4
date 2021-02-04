@@ -18,6 +18,9 @@ Backlog and ideas
 - if indi UPD Driver is fixed and officially available, bring back auto dew
 - adding cover light on / off
 - adding cover light intensity
+- adding release notes
+- adding alphas version selection
+
 
 
 Released version of MW4
@@ -45,7 +48,6 @@ Released beta version of MW4
 - skyfield 1.36
 - remove workaround as 10micron offered a fix in fw 2.16.13
 - remove autodew button for pegasus as provided indi driver has bugs
-
 
 0.240.1
 

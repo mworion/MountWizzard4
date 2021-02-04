@@ -154,7 +154,7 @@ class MessageWindow(toolsQtWidget.MWidget):
             self.ui.message.setTextColor(self.messColor[mType])
             self.ui.message.setFontWeight(self.messFont[mType])
 
-            for line in self.splitByN(message, 90):
+            for line in self.splitByN(message, 87):
                 self.ui.message.insertPlainText(prefix + line + '\n')
             self.ui.message.moveCursor(QTextCursor.End)
 

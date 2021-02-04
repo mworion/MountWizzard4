@@ -18,9 +18,20 @@ from setuptools import setup
 from pathlib import Path
 import platform
 
+releaseNotes = """
+- Bugfixing
+- adding cover light on / off
+- adding cover light intensity
+- adding release notes show capabilities
+- adding alphas version selection in installer
+"""
+
+with open('notes.txt', 'w') as f:
+    f.writelines(releaseNotes)
+
 setup(
     name='mountwizzard4',
-    version='1.1.0a1',
+    version='1.1.0a3',
     packages=[
         'mw4',
         'mw4.base',

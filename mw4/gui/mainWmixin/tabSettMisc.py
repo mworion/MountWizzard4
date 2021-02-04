@@ -50,7 +50,6 @@ class SettMisc(object):
         self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
         self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
         self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
-
         self.ui.loglevelDebugTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelStandard.clicked.connect(self.setLoggingLevel)
@@ -59,6 +58,7 @@ class SettMisc(object):
         self.ui.versionBeta.clicked.connect(self.showUpdates)
         self.ui.versionAlpha.clicked.connect(self.showUpdates)
         self.ui.versionRelease.clicked.connect(self.showUpdates)
+        self.ui.versionReleaseNotes.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
 
@@ -174,11 +174,7 @@ class SettMisc(object):
         else:
             finalPackage = verRelease[0]
 
-        commentRaw = response['releases'][finalPackage][0]['comment_text']
-        comment = ''
-        for line in commentRaw.split('\n'):
-            comment += line.strip()
-
+        comment = response['releases'][finalPackage][0]['comment_text']
         return finalPackage, comment
 
     def showUpdates(self):
@@ -207,10 +203,21 @@ class SettMisc(object):
         self.ui.versionAvailable.setText(availPackage)
         self.ui.installVersion.setEnabled(True)
 
-        if StrictVersion(availPackage) > StrictVersion(actPackage):
-            t = 'A new version of MountWizzard is available:'
-            self.app.message.emit(t, 1)
-            self.app.message.emit(comment, 0x100)
+        if StrictVersion(availPackage) < StrictVersion(actPackage):
+            return True
+
+        t = 'A new version of MountWizzard is available!'
+        self.app.message.emit(t, 1)
+
+        if not self.ui.versionReleaseNotes.isChecked():
+            return True
+
+        if not comment:
+            return True
+
+        self.app.message.emit(f'Release notes for {availPackage}:', 1)
+        for line in comment.split('\n'):
+            self.app.message.emit(line, 0x100)
         return True
 
     def isVenv(self):

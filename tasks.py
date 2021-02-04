@@ -174,8 +174,16 @@ def build_mw(c):
 @task(pre=[build_mw])
 def upload_mw(c):
     printMW('uploading dist mountwizzard4')
+    t = """This is a test to check some info
+           but this might be over 3 lines or
+           even more and we try to check how many
+           line we really could provide in the comment
+           field. skjfdgsjdfg sjfg sdkjf skjfg 
+           skfg sdjfhg skjfg asf jksdf sdf jksgf
+           sjfg sdf kjsfg sf jksf sdf lksdfg 
+    """
     with c.cd('./dist'):
-        runMW(c, 'twine upload mountwizzard4-*.tar.gz -r pypi')
+        runMW(c, f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{t}"')
 
 
 @task(pre=[])

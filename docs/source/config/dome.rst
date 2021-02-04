@@ -71,5 +71,6 @@ Area 4: dome settle time
 ^^^^^^^^^^^^^^^^^^^^^^^^
 With the dome settle time you define the waiting time from reaching the target
 azimuth until the dome emits slew finished. This could be used for avoiding
-mechanical influence on the mount.
+mechanical influence on the mount. This settle time in handled in MW4 only. If
+you could enter a settle time in your dome driver etc. the times will add up.
 

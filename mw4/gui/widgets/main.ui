@@ -15687,7 +15687,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -24547,9 +24547,9 @@ p, li { white-space: pre-wrap; }
        <widget class="QRadioButton" name="versionBeta">
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>135</x>
           <y>70</y>
-          <width>141</width>
+          <width>91</width>
           <height>21</height>
          </rect>
         </property>
@@ -24565,7 +24565,7 @@ p, li { white-space: pre-wrap; }
          <string>Show only beta versions of MountWizzard4</string>
         </property>
         <property name="text">
-         <string>Show beta releases</string>
+         <string>Show betas</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -24685,6 +24685,33 @@ p, li { white-space: pre-wrap; }
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="versionAlpha">
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>70</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Show only beta versions of MountWizzard4</string>
+        </property>
+        <property name="text">
+         <string>Show alphas</string>
+        </property>
+        <property name="checked">
          <bool>false</bool>
         </property>
        </widget>

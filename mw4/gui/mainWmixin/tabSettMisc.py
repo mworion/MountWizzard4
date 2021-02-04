@@ -57,6 +57,7 @@ class SettMisc(object):
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
         self.ui.isOnline.clicked.connect(self.setupIERS)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
+        self.ui.versionAlpha.clicked.connect(self.showUpdates)
         self.ui.versionRelease.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
@@ -163,12 +164,20 @@ class SettMisc(object):
         self.log.debug(f'Package Release: {verRelease[:10]}')
 
         if self.ui.versionBeta.isChecked():
-            vPackage = verBeta
+            finalPackage = verBeta[0]
+
+        elif self.ui.versionAlpha.isChecked():
+            finalPackage = verAlpha[0]
 
         else:
-            vPackage = verRelease
+            finalPackage = verRelease[0]
 
-        return vPackage[0]
+        commentRaw = response['releases'][finalPackage][0]['comment_text']
+        comment = ''
+        for line in commentRaw.split('\n'):
+            comment += line.strip()
+
+        return finalPackage, comment
 
     def showUpdates(self):
         """
@@ -187,7 +196,7 @@ class SettMisc(object):
             self.ui.installVersion.setEnabled(False)
             return False
 
-        availPackage = self.versionPackage(packageName)
+        availPackage, comment = self.versionPackage(packageName)
 
         if availPackage is None:
             self.app.message.emit('Failed get actual package from server', 2)
@@ -197,7 +206,9 @@ class SettMisc(object):
         self.ui.installVersion.setEnabled(True)
 
         if StrictVersion(availPackage) > StrictVersion(actPackage):
-            self.app.message.emit('A new version of MountWizzard is available', 1)
+            t = 'A new version of MountWizzard is available:'
+            self.app.message.emit(t, 1)
+            self.app.message.emit(comment, 1)
         return True
 
     def isVenv(self):

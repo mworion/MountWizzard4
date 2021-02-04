@@ -132,17 +132,24 @@ class MessageWindow(toolsQtWidget.MWidget):
             2: warning text
             3: error text
 
+        setting bit8 means without prefix
         :return: true for test purpose
         """
         while not self.app.messageQueue.empty():
             message, mType = self.app.messageQueue.get()
+
+            withoutPrefix = mType & 0x100
+            mType = mType % 256
 
             if mType < 0:
                 continue
             if mType > len(self.messColor):
                 continue
 
-            prefix = time.strftime('%H:%M:%S ', time.localtime())
+            if withoutPrefix:
+                prefix = ' ' * 9
+            else:
+                prefix = time.strftime('%H:%M:%S ', time.localtime())
 
             self.ui.message.setTextColor(self.messColor[mType])
             self.ui.message.setFontWeight(self.messFont[mType])

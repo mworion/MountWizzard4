@@ -59,13 +59,8 @@ class MessageWindow(toolsQtWidget.MWidget):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
-
         if 'messageW' not in self.app.config:
             self.app.config['messageW'] = {}
         config = self.app.config['messageW']
@@ -78,15 +73,10 @@ class MessageWindow(toolsQtWidget.MWidget):
         self.move(x, y)
         height = config.get('height', 600)
         self.resize(800, height)
-
         return True
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         if 'messageW' not in self.app.config:
@@ -95,39 +85,48 @@ class MessageWindow(toolsQtWidget.MWidget):
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
-
         return True
 
     def closeEvent(self, closeEvent):
+        """
+        :param closeEvent:
+        :return:
+        """
         self.storeConfig()
-
-        # gui signals
         self.ui.clear.clicked.disconnect(self.clearWindow)
         self.app.update1s.disconnect(self.writeMessage)
-
         super().closeEvent(closeEvent)
 
     def showWindow(self):
+        """
+        :return: true for test purpose
+        """
         self.show()
-
-        # gui signals
         self.ui.clear.clicked.connect(self.clearWindow)
         self.app.update1s.connect(self.writeMessage)
+        return True
 
     def clearWindow(self):
         """
-        clearWindow resets the window and shows empty text.
-
         :return: true for test purpose
         """
-
         self.ui.message.clear()
         return True
 
+    def splitByN(self, seq, n):
+        """
+        A generator to divide a sequence into chunks of n units.
+        :param n:
+        :return:
+        """
+        while seq:
+            yield seq[:n]
+            seq = seq[n:]
+
     def writeMessage(self):
         """
-        writeMessage takes singles with message and writes them to the text browser window.
-        types:
+        writeMessage takes singles with message and writes them to the text
+        browser window. types:
             0: normal text
             1: highlighted text
             2: warning text
@@ -135,13 +134,11 @@ class MessageWindow(toolsQtWidget.MWidget):
 
         :return: true for test purpose
         """
-
         while not self.app.messageQueue.empty():
             message, mType = self.app.messageQueue.get()
 
             if mType < 0:
                 continue
-
             if mType > len(self.messColor):
                 continue
 
@@ -149,7 +146,9 @@ class MessageWindow(toolsQtWidget.MWidget):
 
             self.ui.message.setTextColor(self.messColor[mType])
             self.ui.message.setFontWeight(self.messFont[mType])
-            self.ui.message.insertPlainText(prefix + message + '\n')
+
+            for line in self.splitByN(message, 90):
+                self.ui.message.insertPlainText(prefix + line + '\n')
             self.ui.message.moveCursor(QTextCursor.End)
 
         return True

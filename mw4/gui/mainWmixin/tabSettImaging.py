@@ -413,7 +413,9 @@ class SettImaging(object):
             self.changeStyleDynamic(self.ui.coverLightOn, 'running', False)
             self.changeStyleDynamic(self.ui.coverLightOff, 'running', True)
 
-        value = self.app.cover.data.get('FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE', '-')
+        value = self.app.cover.data.get(
+            'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE', '0')
+        value = float(value)
         self.ui.coverLightIntensity.setValue(value)
 
         return True
@@ -473,7 +475,7 @@ class SettImaging(object):
         """
         :return: success
         """
-        suc = self.app.cover.lightOn()
+        suc = self.app.focuser.halt()
         if not suc:
             self.app.message.emit('Light could not be switched on', 2)
         return suc

@@ -257,19 +257,19 @@ def test_setCoolerOff():
 
 
 def test_updateCoverStatGui_1():
-    app.app.cover.data['CAP_PARK.UNPARK'] = 'On'
+    app.app.cover.data['CAP_PARK.UNPARK'] = True
     suc = app.updateCoverStatGui()
     assert suc
 
 
 def test_updateCoverStatGui_2():
-    app.app.cover.data['CAP_PARK.UNPARK'] = 'Off'
+    app.app.cover.data['CAP_PARK.UNPARK'] = False
     suc = app.updateCoverStatGui()
     assert suc
 
 
 def test_updateCoverStatGui_3():
-    app.app.cover.data['CAP_PARK.UNPARK'] = '.'
+    app.app.cover.data['CAP_PARK.UNPARK'] = None
     suc = app.updateCoverStatGui()
     assert suc
 

@@ -124,15 +124,16 @@ def test_versionPackage_2(function):
 
         @staticmethod
         def json():
-            return {'releases': {'1.0.0': 1,
-                                 '1.1.0b1': 2}}
+            return {'releases': {'1.0.0': [{'comment_text': 'test'}],
+                                 '1.0.0b1': [{'comment_text': 'test'}]}}
 
     function.ui.versionBeta.setChecked(False)
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = function.versionPackage('matplotlib')
-        assert val == '1.0.0'
+        pack, comm = function.versionPackage('matplotlib')
+        assert pack == '1.0.0'
+        assert comm == 'test'
 
 
 def test_versionPackage_3(function):
@@ -141,15 +142,34 @@ def test_versionPackage_3(function):
 
         @staticmethod
         def json():
-            return {'releases': {'1.0.0': 1,
-                                 '1.0.0b1': 2}}
+            return {'releases': {'1.0.0': [{'comment_text': 'test'}],
+                                 '1.0.0b1': [{'comment_text': 'test'}]}}
 
     function.ui.versionBeta.setChecked(True)
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = function.versionPackage('matplotlib')
-        assert val == '1.0.0b1'
+        pack, comm = function.versionPackage('matplotlib')
+        assert pack == '1.0.0b1'
+        assert comm == 'test'
+
+
+def test_versionPackage_4(function):
+    class Test:
+        status_code = 200
+
+        @staticmethod
+        def json():
+            return {'releases': {'1.0.0': [{'comment_text': 'test'}],
+                                 '1.0.0a1': [{'comment_text': 'test'}]}}
+
+    function.ui.versionAlpha.setChecked(True)
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        pack, comm = function.versionPackage('matplotlib')
+        assert pack == '1.0.0a1'
+        assert comm == 'test'
 
 
 def test_showUpdates_1(function):
@@ -167,7 +187,7 @@ def test_showUpdates_2(function):
                            return_value='0.148.8'):
         with mock.patch.object(function,
                                'versionPackage',
-                               return_value=None):
+                               return_value=(None, None)):
             suc = function.showUpdates()
             assert not suc
 
@@ -176,10 +196,48 @@ def test_showUpdates_3(function):
     function.ui.isOnline.setChecked(True)
     with mock.patch.object(importlib_metadata,
                            'version',
+                           return_value='0.148.10'):
+        with mock.patch.object(function,
+                               'versionPackage',
+                               return_value=('0.148.9', 'test')):
+            suc = function.showUpdates()
+            assert suc
+
+
+def test_showUpdates_4(function):
+    function.ui.isOnline.setChecked(True)
+    with mock.patch.object(importlib_metadata,
+                           'version',
                            return_value='0.148.8'):
         with mock.patch.object(function,
                                'versionPackage',
-                               return_value='0.148.9'):
+                               return_value=('0.148.9', 'test')):
+            suc = function.showUpdates()
+            assert suc
+
+
+def test_showUpdates_5(function):
+    function.ui.isOnline.setChecked(True)
+    function.ui.versionReleaseNotes.setChecked(True)
+    with mock.patch.object(importlib_metadata,
+                           'version',
+                           return_value='0.148.8'):
+        with mock.patch.object(function,
+                               'versionPackage',
+                               return_value=('0.148.9', '')):
+            suc = function.showUpdates()
+            assert suc
+
+
+def test_showUpdates_6(function):
+    function.ui.isOnline.setChecked(True)
+    function.ui.versionReleaseNotes.setChecked(True)
+    with mock.patch.object(importlib_metadata,
+                           'version',
+                           return_value='0.148.8'):
+        with mock.patch.object(function,
+                               'versionPackage',
+                               return_value=('0.148.9', 'test')):
             suc = function.showUpdates()
             assert suc
 

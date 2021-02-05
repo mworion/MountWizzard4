@@ -211,7 +211,6 @@ class SettMisc(object):
 
         if not self.ui.versionReleaseNotes.isChecked():
             return True
-
         if not comment:
             return True
 

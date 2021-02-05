@@ -58,6 +58,7 @@ class SettImaging(object):
         self.ui.moveFocuserIn.clicked.connect(self.moveFocuserIn)
         self.ui.moveFocuserOut.clicked.connect(self.moveFocuserOut)
         self.app.update1s.connect(self.updateCoverStatGui)
+        self.app.update1s.connect(self.updateCoverLightGui)
         self.app.update1s.connect(self.updateParameters)
 
     def initConfig(self):
@@ -216,8 +217,8 @@ class SettImaging(object):
 
     def updateTelescopeParametersToGui(self):
         """
-        updateTelescopeParametersToGui takes the information gathered from the driver and
-        programs them into gui for later use.
+        updateTelescopeParametersToGui takes the information gathered from the
+        driver and programs them into gui for later use.
 
         :return: true for test purpose
         """
@@ -235,15 +236,10 @@ class SettImaging(object):
 
     def setCoolerTemp(self):
         """
-        setCoolerTemp sends the desired cooler temp and switches the cooler on.
-        setting
-
         :return: success
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-
         if actValue is None:
             msg.critical(self,
                          'Error Message',
@@ -258,22 +254,16 @@ class SettImaging(object):
                                20,
                                1,
                                )
-
         if not ok:
             return False
 
         self.app.camera.sendCoolerTemp(temperature=value)
-
         return True
 
     def setFilterNumber(self):
         """
-        setFilterNumber sends the desired filter number.
-        setting
-
         :return: success
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         data = self.app.filter.data
 
@@ -284,11 +274,9 @@ class SettImaging(object):
                          'Value cannot be set when not connected !')
             return False
 
-        isAlpaca = 'FILTER_NAME.FILTER_SLOT_NAME_0' in data
-
         availNames = list(data[key] for key in data if 'FILTER_NAME.FILTER_SLOT_NAME_' in key)
         numberFilter = len(availNames)
-
+        isAlpaca = 'FILTER_NAME.FILTER_SLOT_NAME_0' in data
         if isAlpaca:
             start = 0
             end = numberFilter - 1
@@ -315,9 +303,6 @@ class SettImaging(object):
 
     def setFilterName(self):
         """
-        setFilterName sends the desired filter name
-        setting
-
         :return: success
         """
         msg = PyQt5.QtWidgets.QMessageBox
@@ -383,9 +368,6 @@ class SettImaging(object):
 
     def updateCoverStatGui(self):
         """
-        updateCoverStatGui changes the style of the button related to the state of the
-        FlipFlat cover
-
         :return: True for test purpose
         """
         value = self.app.cover.data.get('CAP_PARK.PARK', None)
@@ -401,7 +383,12 @@ class SettImaging(object):
 
         value = self.app.cover.data.get('Status.Cover', '-')
         self.ui.coverStatusText.setText(value)
+        return True
 
+    def updateCoverLightGui(self):
+        """
+        :return: True for test purpose
+        """
         value = self.app.cover.data.get('FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON', None)
         if value:
             self.changeStyleDynamic(self.ui.coverLightOn, 'running', True)
@@ -417,7 +404,6 @@ class SettImaging(object):
             'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE', '0')
         value = float(value)
         self.ui.coverLightIntensity.setValue(value)
-
         return True
 
     def setCoverPark(self):

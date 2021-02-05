@@ -257,20 +257,38 @@ def test_setCoolerOff():
 
 
 def test_updateCoverStatGui_1():
-    app.app.cover.data['CAP_PARK.UNPARK'] = True
+    app.app.cover.data['CAP_PARK.PARK'] = True
     suc = app.updateCoverStatGui()
     assert suc
 
 
 def test_updateCoverStatGui_2():
-    app.app.cover.data['CAP_PARK.UNPARK'] = False
+    app.app.cover.data['CAP_PARK.PARK'] = False
     suc = app.updateCoverStatGui()
     assert suc
 
 
 def test_updateCoverStatGui_3():
-    app.app.cover.data['CAP_PARK.UNPARK'] = None
+    app.app.cover.data['CAP_PARK.PARK'] = None
     suc = app.updateCoverStatGui()
+    assert suc
+
+
+def test_updateCoverLightGui_1():
+    app.app.cover.data['FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON'] = True
+    suc = app.updateCoverLightGui()
+    assert suc
+
+
+def test_updateCoverLightGui_2():
+    app.app.cover.data['FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON'] = False
+    suc = app.updateCoverLightGui()
+    assert suc
+
+
+def test_updateCoverLightGui_3():
+    app.app.cover.data['FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON'] = None
+    suc = app.updateCoverLightGui()
     assert suc
 
 
@@ -367,4 +385,52 @@ def test_haltFocuser_2():
                            'halt',
                            return_value=True):
         suc = app.haltFocuser()
+        assert suc
+
+
+def test_switchLightOn_1():
+    with mock.patch.object(app.app.cover,
+                           'lightOn',
+                           return_value=False):
+        suc = app.switchLightOn()
+        assert not suc
+
+
+def test_switchLightOn_2():
+    with mock.patch.object(app.app.cover,
+                           'lightOn',
+                           return_value=True):
+        suc = app.switchLightOn()
+        assert suc
+
+
+def test_switchLightOff_1():
+    with mock.patch.object(app.app.cover,
+                           'lightOff',
+                           return_value=False):
+        suc = app.switchLightOff()
+        assert not suc
+
+
+def test_switchLightOff_2():
+    with mock.patch.object(app.app.cover,
+                           'lightOff',
+                           return_value=True):
+        suc = app.switchLightOff()
+        assert suc
+
+
+def test_setLightIntensity_1():
+    with mock.patch.object(app.app.cover,
+                           'lightIntensity',
+                           return_value=False):
+        suc = app.setLightIntensity()
+        assert not suc
+
+
+def test_setLightIntensity_2():
+    with mock.patch.object(app.app.cover,
+                           'lightIntensity',
+                           return_value=True):
+        suc = app.setLightIntensity()
         assert suc

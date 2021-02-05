@@ -51,6 +51,18 @@ def module_setup_teardown():
         def HaltCover():
             return True
 
+        @staticmethod
+        def CalibratorOn():
+            return True
+
+        @staticmethod
+        def CalibratorOff():
+            return True
+
+        @staticmethod
+        def Brightness(a):
+            return True
+
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
@@ -145,4 +157,58 @@ def test_haltCover_2():
 def test_haltCover_3():
     app.deviceConnected = True
     suc = app.haltCover()
+    assert suc
+
+
+def test_lightOn_1():
+    app.deviceConnected = False
+    suc = app.lightOn()
+    assert not suc
+
+
+def test_lightOn_2():
+    app.deviceConnected = True
+    suc = app.lightOn()
+    assert suc
+
+
+def test_lightOn_3():
+    app.deviceConnected = True
+    suc = app.lightOn()
+    assert suc
+
+
+def test_lightOff_1():
+    app.deviceConnected = False
+    suc = app.lightOff()
+    assert not suc
+
+
+def test_lightOff_2():
+    app.deviceConnected = True
+    suc = app.lightOff()
+    assert suc
+
+
+def test_lightOff_3():
+    app.deviceConnected = True
+    suc = app.lightOff()
+    assert suc
+
+
+def test_lightIntensity_1():
+    app.deviceConnected = False
+    suc = app.lightIntensity(0)
+    assert not suc
+
+
+def test_lightIntensity_2():
+    app.deviceConnected = True
+    suc = app.lightIntensity(0)
+    assert suc
+
+
+def test_lightIntensity_3():
+    app.deviceConnected = True
+    suc = app.lightIntensity(0)
     assert suc

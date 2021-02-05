@@ -103,7 +103,8 @@ class CoverAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.client.calibratoron()
+        brightness = self.client.brightness()
+        self.client.calibratoron(Brightness=brightness)
         return True
 
     def lightOff(self):
@@ -124,5 +125,5 @@ class CoverAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.client.brightness(Brightness=value)
+        self.client.calibratoron(Brightness=value)
         return True

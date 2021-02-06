@@ -119,5 +119,5 @@ class CoverAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.callMethodThreaded(self.client.brightness, value)
+        self.callMethodThreaded(self.client.Brightness, value)
         return True

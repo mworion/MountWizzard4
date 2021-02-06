@@ -111,3 +111,48 @@ def test_haltCover_2():
         suc = app.haltCover()
         assert suc
 
+
+def test_lightOn_1():
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.lightOn()
+        assert not suc
+
+
+def test_lightOn_2():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.lightOn()
+        assert suc
+
+
+def test_lightOff_1():
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.lightOff()
+        assert not suc
+
+
+def test_lightOff_2():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.lightOff()
+        assert suc
+
+
+def test_lightIntensity_1():
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.lightIntensity(0)
+        assert not suc
+
+
+def test_lightIntensity_2():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.lightIntensity(0)
+        assert suc
+

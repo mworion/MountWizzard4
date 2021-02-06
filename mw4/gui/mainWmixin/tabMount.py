@@ -68,10 +68,6 @@ class Mount(object):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config.get('mainW', {})
@@ -82,10 +78,6 @@ class Mount(object):
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config['mainW']
@@ -181,8 +173,6 @@ class Mount(object):
         if sett.UTCExpire is not None:
             ui = self.ui.UTCExpire
             ui.setText(sett.UTCExpire)
-
-            # coloring if close to end:
             now = datetime.datetime.now()
             expire = datetime.datetime.strptime(sett.UTCExpire, '%Y-%m-%d')
             deltaYellow = datetime.timedelta(days=30)
@@ -319,7 +309,6 @@ class Mount(object):
         self.ui.siteLongitude.setText(self.formatLonToText(location.longitude))
         self.ui.siteLatitude.setText(self.formatLatToText(location.latitude))
         self.ui.siteElevation.setText(str(location.elevation.m))
-
         return True
 
     def updateTrackingGui(self, sett):
@@ -330,6 +319,10 @@ class Mount(object):
         if sett is None:
             return False
         if self.app.mount.obsSite.status is None:
+            self.changeStyleDynamic(self.ui.followSat, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
             return False
 
         if self.app.mount.obsSite.status == 10:

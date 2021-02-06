@@ -83,10 +83,10 @@ class MainWindow(
     SettRelay,
 ):
     """
-    the main window class handles the main menu as well as the show and no show part of
-    any other window. all necessary processing for functions of that gui will be linked
-    to this class. therefore window classes will have a threadpool for managing async
-    processing if needed.
+    the main window class handles the main menu as well as the show and no show
+    part of any other window. all necessary processing for functions of that gui
+    will be linked to this class. therefore window classes will have a threadpool
+    for managing async processing if needed.
     """
 
     __all__ = [
@@ -216,14 +216,13 @@ class MainWindow(
 
     def mwSuper(self, func):
         """
-        mwSuper is a replacement for super() to manage the mixin style of implementation
-        it's not an ideal way to do it, but mwSuper() call the method of every ! parent
-        class if they exist.
+        mwSuper is a replacement for super() to manage the mixin style of
+        implementation it's not an ideal way to do it, but mwSuper() call the
+        method of every ! parent class if they exist.
 
         :param func:
         :return: true for test purpose
         """
-
         for base in self.__class__.__bases__:
             if base.__name__ == "MWidget":
                 continue
@@ -236,13 +235,8 @@ class MainWindow(
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
-
         config = self.app.config
         self.ui.profile.setText(config.get("profileName"))
         if "mainW" not in config:
@@ -276,30 +270,20 @@ class MainWindow(
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, "Relay")
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
-
         self.mwSuper("initConfig")
         self.changeStyleDynamic(self.ui.mountConnected, "color", "gray")
         self.setupIcons()
         self.show()
-
         return True
 
     def storeConfigExtendedWindows(self):
         """
-
         :return: True for test purpose
         """
-
         config = self.app.config
-
-        # storing extended windows data
         for window in self.uiWindows:
-
-            # check if the window state and store it is open
             config[window] = bool(self.uiWindows[window]["classObj"])
-
             if config[window]:
                 self.uiWindows[window]["classObj"].storeConfig()
 
@@ -313,10 +297,8 @@ class MainWindow(
 
         :return: True for test purpose
         """
-
         config = self.app.config
         config["profileName"] = self.ui.profile.text()
-
         if "mainW" not in config:
             config["mainW"] = {}
 
@@ -325,21 +307,18 @@ class MainWindow(
         config["winPosY"] = self.pos().y()
         config["mainTabWidget"] = self.ui.mainTabWidget.currentIndex()
         config["settingsTabWidget"] = self.ui.settingsTabWidget.currentIndex()
-
         self.mwSuper("storeConfig")
         self.storeConfigExtendedWindows()
-
         return True
 
     def closeEvent(self, closeEvent):
         """
-        we overwrite the close event of the window just for the main window to close the
-        application as well. because it does not make sense to have child windows open if
-        main is already closed.
+        we overwrite the close event of the window just for the main window to
+        close the application as well. because it does not make sense to have
+        child windows open if main is already closed.
 
         :return:    nothing
         """
-
         self.app.timer0_1s.stop()
         self.changeStyleDynamic(self.ui.pauseModel, "pause", False)
         self.closeExtendedWindows()
@@ -348,16 +327,14 @@ class MainWindow(
 
     def quitSave(self):
         """
-        quitSave finished up and calls the quit save function in main for saving the parameters
-
+        quitSave finished up and calls the quit save function in main for
+        saving the parameters
 
         :return:    true for test purpose
         """
-
         self.saveProfile()
         self.app.saveConfig()
         self.close()
-
         return True
 
     def setupIcons(self):
@@ -548,8 +525,9 @@ class MainWindow(
 
     def updateMountConnStat(self, status):
         """
-        updateMountConnStat show the connection status of the mount. if status is None,
-        which means there is no valid host entry for connection, the status is grey
+        updateMountConnStat show the connection status of the mount. if status
+        is None, which means there is no valid host entry for connection,
+        the status is grey
 
         :param status:
         :return: true for test purpose
@@ -559,9 +537,9 @@ class MainWindow(
 
     def updateMountWeatherStat(self, setting):
         """
-        updateMountWeatherStat show the connection status of the mount weather station
-        connected. if the data values are None there is no station attached to the
-        GPS port,
+        updateMountWeatherStat show the connection status of the mount weather
+        station connected. if the data values are None there is no station
+        attached to the GPS port.
 
         :return: true for test purpose
         """
@@ -578,11 +556,12 @@ class MainWindow(
 
     def smartFunctionGui(self):
         """
-        smartFunctionGui enables and disables gui actions depending on the actual state of the
-        different devices. this should be the core of avoiding user misused during running
-        operations. smartGui is run every 1 second synchronously, because it can't be
-        simpler done with dynamic approach. all different situations in a running
-        environment is done locally.
+        smartFunctionGui enables and disables gui actions depending on the
+        actual state of the different devices. this should be the core of
+        avoiding user misused during running operations. smartGui is run every
+        1 second synchronously, because it can't be simpler done with dynamic
+        approach. all different situations in a running environment is done
+        locally.
 
         :return: true for test purpose
         """
@@ -625,8 +604,8 @@ class MainWindow(
 
     def smartTabGui(self):
         """
-        smartTabGui enables and disables tab visibility depending on the actual state of the
-        different devices.
+        smartTabGui enables and disables tab visibility depending on the actual
+        state of the different devices.
         :return: true for test purpose
         """
         smartTabs = {
@@ -638,9 +617,6 @@ class MainWindow(
                 "statID": "relay",
                 "tab": self.ui.mainTabWidget,
             },
-            # 'RelayS': {'statID': 'relay',
-            #            'tab': self.ui.settingsTabWidget,
-            #            },
         }
         tabChanged = False
 
@@ -664,10 +640,10 @@ class MainWindow(
 
     def smartEnvironGui(self):
         """
-        smartEnvironGui enables and disables gui actions depending on the actual state
-        of the different environment devices. it is run every 1 second synchronously,
-        because it can't be simpler done with dynamic approach. all different situations
-        in a running environment is done locally.
+        smartEnvironGui enables and disables gui actions depending on the actual
+        state of the different environment devices. it is run every 1 second
+        synchronously, because it can't be simpler done with dynamic approach.
+        all different situations in a running environment is done locally.
 
         :return: true for test purpose
         """
@@ -813,26 +789,23 @@ class MainWindow(
 
     def deleteWindowResource(self, widget=None):
         """
-
         :return: success
         """
-
         if not widget:
             return False
 
         for window in self.uiWindows:
             if self.uiWindows[window]["name"] != widget.objectName():
                 continue
-
             self.uiWindows[window]["classObj"] = None
-        gc.collect()
 
+        gc.collect()
         return True
 
     def buildWindow(self, window):
         """
-        buildWindow makes new object instance from window class. both are stored in the
-        uiWindows dict for usage.
+        buildWindow makes new object instance from window class. both are
+        stored in the uiWindows dict for usage.
 
         :return: true for test purpose
         """
@@ -859,8 +832,9 @@ class MainWindow(
 
     def showExtendedWindows(self):
         """
-        showExtendedWindows opens all extended windows depending on their opening status
-        stored in the configuration dict.
+        showExtendedWindows opens all extended windows depending on their
+        opening status stored in the configuration dict.
+
         :return: true for test purpose
         """
         for window in self.uiWindows:
@@ -874,12 +848,11 @@ class MainWindow(
 
     def closeExtendedWindows(self):
         """
-        closeExtendedWindows closes all open extended windows by calling close and
-        waits until the window class is deleted.
+        closeExtendedWindows closes all open extended windows by calling
+        close and waits until the window class is deleted.
 
         :return: true for test purpose
         """
-
         for window in self.uiWindows:
             if not self.uiWindows[window]["classObj"]:
                 continue
@@ -895,7 +868,6 @@ class MainWindow(
                 waitDeleted = False
 
             QTest.qWait(100)
-
         return True
 
     @staticmethod
@@ -907,7 +879,6 @@ class MainWindow(
         :param ext:
         :return:
         """
-
         if not filePath.endswith(ext):
             filePath += ext
 
@@ -915,16 +886,15 @@ class MainWindow(
 
     def loadProfile(self):
         """
-        loadProfile interacts to get a new profile name. if a valid is received, it closes
-        all extended windows to be sure to have all setup saved, than load the new profile
-        and initializes all classes and opens the necessary extended windows with their
-        setups stored.
-
-        loadProfile does not save the actual configuration before loading another one.
+        loadProfile interacts to get a new profile name. if a valid is received,
+        it closes all extended windows to be sure to have all setup saved,
+        than load the new profile and initializes all classes and opens the
+        necessary extended windows with their setups stored.
+        loadProfile does not save the actual configuration before loading
+        another one.
 
         :return:
         """
-
         folder = self.app.mwGlob["configDir"]
         loadFilePath, name, ext = self.openFile(
             self,
@@ -965,10 +935,8 @@ class MainWindow(
 
     def saveProfileAs(self):
         """
-
         :return:
         """
-
         folder = self.app.mwGlob["configDir"]
         saveFilePath, name, ext = self.saveFile(
             self,
@@ -991,28 +959,23 @@ class MainWindow(
             self.app.message.emit(
                 f"Profile              [{name}] cannot no be saved", 2
             )
-
         return True
 
     def saveProfile(self):
         """
-        saveProfile calls save profile in main and sends a message to the user about
-        success.
+        saveProfile calls save profile in main and sends a message to the user
+        about success.
 
         :return: nothing
         """
-
-        # self.app.config = {}
         self.storeConfig()
         self.app.storeConfig()
-
         suc = self.app.saveConfig(name=self.ui.profile.text())
         if suc:
             self.app.message.emit("Actual profile saved", 0)
 
         else:
             self.app.message.emit("Actual profile cannot not be saved", 2)
-
         return suc
 
     def remoteCommand(self, command):
@@ -1022,7 +985,6 @@ class MainWindow(
         :param command:
         :return: True for test purpose
         """
-
         if command == "shutdown":
             self.quitSave()
             self.app.message.emit("Shutdown MW remotely", 2)

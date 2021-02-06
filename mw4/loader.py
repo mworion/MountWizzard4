@@ -16,37 +16,35 @@
 #
 ###########################################################
 # standard libraries
+import html
+import locale
 import logging
 import os
-import sys
 import platform
 import socket
+import sys
 import traceback
-import locale
-import html
 import warnings
 
-
 # external packages
-from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
-from PyQt5.QtGui import QMouseEvent, QIcon
-from PyQt5.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButton
-from PyQt5.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
 import astropy
 import matplotlib
+from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
+from PyQt5.QtGui import QMouseEvent, QIcon
+from PyQt5.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
+from PyQt5.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButton
 from importlib_metadata import version
 
 # local import
 from base.loggerMW import setupLogging
-from mainApp import MountWizzard4
 from gui.utilities.splashScreen import SplashScreen
+from mainApp import MountWizzard4
 import resource.resources
 
 setupLogging()
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 warnings.simplefilter("ignore", UserWarning)
 sys.coinit_flags = 2
-resource.resources.qInitResources()
 matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False
 log = logging.getLogger()

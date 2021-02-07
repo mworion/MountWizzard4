@@ -131,7 +131,7 @@ def test_convertHeaderEntry_4(function):
 
 def test_convertHeaderEntry_5(function):
     chunk = function.convertHeaderEntry(entry=1, fitsKey='XBINNING')
-    assert chunk == 'Bin-1'
+    assert chunk == 'Bin1'
 
 
 def test_convertHeaderEntry_6(function):
@@ -141,23 +141,17 @@ def test_convertHeaderEntry_6(function):
 
 def test_convertHeaderEntry_7(function):
     chunk = function.convertHeaderEntry(entry='Light', fitsKey='FRAME')
-    assert chunk == 'Frame-Light'
+    assert chunk == 'Light'
 
 
 def test_convertHeaderEntry_8(function):
     chunk = function.convertHeaderEntry(entry='red', fitsKey='FILTER')
-    assert chunk == 'Filter-red'
+    assert chunk == 'red'
 
 
 def test_convertHeaderEntry_9(function):
     chunk = function.convertHeaderEntry(entry=14, fitsKey='EXPTIME')
-    assert chunk == 'Exp-0014s'
-
-
-def test_convertHeaderEntry_10(function):
-    function.ui.renameText.setText('test')
-    chunk = function.convertHeaderEntry(entry='test', fitsKey='RenameText')
-    assert chunk == 'TEST'
+    assert chunk == 'Exp14s'
 
 
 def test_convertHeaderEntry_11(function):

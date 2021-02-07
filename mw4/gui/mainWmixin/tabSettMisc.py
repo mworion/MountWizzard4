@@ -29,6 +29,7 @@ if pConf.isAvailable:
 import requests
 import importlib_metadata
 from astropy.utils import iers
+from astropy.utils import data
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
@@ -131,10 +132,12 @@ class SettMisc(object):
         if isOnline:
             iers.conf.auto_download = True
             iers.conf.auto_max_age = 30
+            data.conf.allow_internet = True
 
         else:
             iers.conf.auto_download = False
             iers.conf.auto_max_age = 99999
+            data.conf.allow_internet = False
         return True
 
     def versionPackage(self, packageName):

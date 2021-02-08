@@ -42,7 +42,7 @@ class Client(Client):
     __all__ = ['Client',
                ]
 
-    SOCKET_TIMEOUT = 1
+    SOCKET_TIMEOUT = 3
     CYCLE_SERVER_UP = 5000
 
     def __init__(self, host=None, threadPool=None):
@@ -77,7 +77,7 @@ class Client(Client):
             return True
 
         finally:
-            client.shutdown(socket.SHUT_RDWR)
+            # client.shutdown(socket.SHUT_RDWR)
             client.close()
 
     def checkServerUpResult(self, result):

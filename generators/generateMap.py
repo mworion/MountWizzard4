@@ -28,7 +28,7 @@ import numpy as np
 import shapefile
 # local import
 
-shapeFile = '/Users/mw/Downloads/ne_110m_land/ne_110m_land.shp'
+shapeFile = 'ne_110m_land.shp'
 shape = shapefile.Reader(shapeFile)
 worldmap = {}
 

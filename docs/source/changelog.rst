@@ -3,8 +3,10 @@ Changelog
 The changelog contains the user related function or environment updates. For a
 detailed changes list, please refer to the commit list on GitHub.
 
-Backlog and ideas
------------------
+Unreleased version of MW4
+-------------------------
+(1.1)
+
 - 3d Simulator (mount, dome, build points etc)
 - retrofit model based on hashed coordinates
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
@@ -22,15 +24,15 @@ Backlog and ideas
 - adding alphas version selection
 
 
-
 Released version of MW4
 -----------------------
+1.0.1
+- bugfix: fields index and app in device popup for astrometry and astap were wrong
+
 1.0.0
 
 - first official release
 
-Released beta version of MW4
-----------------------------
 0.240.4
 
 - adding choice of mount port 3490 or 3492
@@ -48,6 +50,7 @@ Released beta version of MW4
 - skyfield 1.36
 - remove workaround as 10micron offered a fix in fw 2.16.13
 - remove autodew button for pegasus as provided indi driver has bugs
+
 
 0.240.1
 

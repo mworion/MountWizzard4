@@ -185,7 +185,7 @@ class Mount(mountcontrol.mount.Mount):
 
         else:
             self.mountUp = True
-            client.shutdown(socket.SHUT_RDWR)
+            # client.shutdown(socket.SHUT_RDWR)
             client.close()
 
         return self.mountUp

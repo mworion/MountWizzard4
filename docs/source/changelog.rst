@@ -18,12 +18,15 @@ Unreleased version of MW4
   does affect the observatory, so even this small move needs another 10s settle
   time for the mount So avoiding them would be great.
 
-(1.0)
+Released version of MW4
+-----------------------
+1.0.1
+- bugfix: fields index and app in device popup for astrometry and astap were wrong
+
+1.0.0
 
 - first official release
 
-Released beta version of MW4
-----------------------------
 0.240.4
 
 - adding choice of mount port 3490 or 3492

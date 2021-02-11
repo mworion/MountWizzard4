@@ -198,7 +198,7 @@ class Connection(object):
             return False
 
         try:
-            # client.shutdown(socket.SHUT_RDWR)
+            client.shutdown(socket.SHUT_RDWR)
             client.close()
 
         except Exception as e:

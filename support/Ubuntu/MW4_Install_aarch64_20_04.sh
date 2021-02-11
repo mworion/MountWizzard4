@@ -116,14 +116,12 @@ elif [ "${P_VER:0:9}" == "python3.7" ]; then
   PY=PY37
 fi
   
-pip install "${WHL}"/numpy-1.19.3"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/kiwisolver-1.3.1"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/pyerfa-1.7.1.1"${PY}"linux"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/Pillow-8.1.0"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/matplotlib-3.3.3"${PY}"linux"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/matplotlib-3.3.4"${PY}"linux"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/astropy-4.2"${PY}"linux"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/pybase64-1.1.1"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/scipy-1.5.4"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/sep-1.1.1"${PY}"linux"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/sgp4-2.15"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/PyQt5_sip-12.8.1"${PY}"linux"${ARCH}" >> install.log 2>&1

@@ -22,8 +22,8 @@ import gc
 
 # external packages
 from PyQt5.QtGui import QPixmap
-import PyQt5.QtCore
-import PyQt5.QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget
 from PyQt5.QtTest import QTest
 
 # local import
@@ -100,7 +100,7 @@ class MainWindow(
         self.threadPool = app.threadPool
         self.deviceStat = app.deviceStat
         self.uiWindows = app.uiWindows
-        self.setAttribute(PyQt5.QtCore.Qt.WA_DeleteOnClose)
+        self.setAttribute(Qt.WA_DeleteOnClose)
 
         # load and init the gui
         self.ui = Ui_MainWindow()
@@ -167,10 +167,8 @@ class MainWindow(
             "astrometry": self.ui.astrometryConnected,
             "mount": self.ui.mountConnected,
         }
-
         self.mwSuper("__init__")
 
-        # polarPlot ui instance has to be defined central, not in the mixins
         self.modelPositionPlot = self.embedMatplot(self.ui.modelPosition)
         self.errorAscendingPlot = self.embedMatplot(self.ui.errorAscending)
         self.errorDistributionPlot = self.embedMatplot(self.ui.errorDistribution)
@@ -179,7 +177,6 @@ class MainWindow(
             "button_press_event", self.onMouseEdit
         )
 
-        # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.mount.signals.settingDone.connect(self.updateMountWeatherStat)
@@ -188,24 +185,17 @@ class MainWindow(
         self.app.dome.signals.message.connect(self.updateDomeStatus)
         self.app.camera.signals.message.connect(self.updateCameraStatus)
         self.app.onlineWeather.signals.connected.connect(self.updateOnlineWeatherStat)
-
-        # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
 
-        # connect switching of other windows
         for window in self.uiWindows:
             self.uiWindows[window]["button"].clicked.connect(self.toggleWindow)
 
-        # initial call for writing the gui
         self.initConfig()
-
-        # show other extended windows
         self.showExtendedWindows()
 
-        # cyclic updates
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update1s.connect(self.smartFunctionGui)
@@ -241,36 +231,32 @@ class MainWindow(
         self.ui.profile.setText(config.get("profileName"))
         if "mainW" not in config:
             config["mainW"] = {}
-
         config = config["mainW"]
         x = config.get("winPosX", 20)
         y = config.get("winPosY", 20)
 
         if x > self.screenSizeX:
             x = 0
-
         if y > self.screenSizeY:
             y = 0
 
         self.move(x, y)
         self.ui.mainTabWidget.setCurrentIndex(config.get("mainTabWidget", 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get("settingsTabWidget", 0))
-
+        self.ui.toolsTabWidget.setCurrentIndex(config.get("toolsTabWidget", 0))
         if not pConf.isAnalyse:
-            tabWidget = self.ui.mainTabWidget.findChild(
-                PyQt5.QtWidgets.QWidget, "Analyse"
-            )
-            tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+            tabWidget = self.ui.toolsTabWidget.findChild(QWidget, "Analyse")
+            tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
+            self.ui.toolsTabWidget.setTabEnabled(tabIndex, False)
 
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, "Power")
+        tabWidget = self.ui.mainTabWidget.findChild(QWidget, "Power")
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
 
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, "Relay")
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+        tabWidget = self.ui.toolsTabWidget.findChild(QWidget, "Relay")
+        tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
+        self.ui.toolsTabWidget.setTabEnabled(tabIndex, False)
+        self.ui.toolsTabWidget.setStyleSheet(self.getStyle())
         self.mwSuper("initConfig")
         self.changeStyleDynamic(self.ui.mountConnected, "color", "gray")
         self.setupIcons()
@@ -307,6 +293,7 @@ class MainWindow(
         config["winPosY"] = self.pos().y()
         config["mainTabWidget"] = self.ui.mainTabWidget.currentIndex()
         config["settingsTabWidget"] = self.ui.settingsTabWidget.currentIndex()
+        config["toolsTabWidget"] = self.ui.toolsTabWidget.currentIndex()
         self.mwSuper("storeConfig")
         self.storeConfigExtendedWindows()
         return True
@@ -615,18 +602,16 @@ class MainWindow(
             },
             "Relay": {
                 "statID": "relay",
-                "tab": self.ui.mainTabWidget,
+                "tab": self.ui.toolsTabWidget,
             },
         }
         tabChanged = False
 
         for key, tab in smartTabs.items():
-            # finding the right tab and get the status
-            tabWidget = smartTabs[key]["tab"].findChild(PyQt5.QtWidgets.QWidget, key)
+            tabWidget = smartTabs[key]["tab"].findChild(QWidget, key)
             tabIndex = smartTabs[key]["tab"].indexOf(tabWidget)
             tabStatus = smartTabs[key]["tab"].isTabEnabled(tabIndex)
 
-            # determine the new stat, set it and check if changed
             stat = bool(self.deviceStat.get(smartTabs[key]["statID"]))
             smartTabs[key]["tab"].setTabEnabled(tabIndex, stat)
             tabChanged = tabChanged or (tabStatus != stat)

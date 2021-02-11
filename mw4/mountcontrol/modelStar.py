@@ -107,7 +107,11 @@ class ModelStar(object):
                 return
             self._coord = Star(ra_hours=ha, dec_degrees=dec)
 
-        lat = self.obsSite.location.latitude.degrees
+        loc = self.obsSite.location
+        if loc is None:
+            return
+
+        lat = loc.latitude.degrees
         alt, az = topoToAltAz(ha, dec, lat)
         self._alt = Angle(degrees=alt)
         self._az = Angle(degrees=az)

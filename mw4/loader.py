@@ -45,6 +45,7 @@ setupLogging()
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 warnings.simplefilter("ignore", UserWarning)
 sys.coinit_flags = 2
+
 matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False
 astropy.utils.data.conf.allow_internet = False

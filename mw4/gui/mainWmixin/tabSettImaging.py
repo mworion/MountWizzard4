@@ -130,9 +130,10 @@ class SettImaging(object):
         focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         filterNumber = self.app.filter.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
 
-        maxBin = min(maxBinX, maxBinY)
-        self.ui.binning.setMaximum(maxBin)
-        self.ui.binningN.setMaximum(maxBin)
+        if maxBinX and maxBinY:
+            maxBin = min(maxBinX, maxBinY)
+            self.ui.binning.setMaximum(maxBin)
+            self.ui.binningN.setMaximum(maxBin)
 
         self.app.camera.expTime = self.ui.expTime.value()
         self.app.camera.expTimeN = self.ui.expTimeN.value()

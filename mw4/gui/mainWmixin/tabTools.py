@@ -120,8 +120,6 @@ class Tools(object):
         self.ui.slewSpeedLow.setChecked(config.get('slewSpeedLow', False))
         self.ui.moveDuration.setCurrentIndex(config.get('moveDuration', 0))
         self.ui.moveStepSizeAltAz.setCurrentIndex(config.get('moveStepSizeAltAz', 0))
-        self.ui.tabMoving.setCurrentIndex(config.get('tabMoving', 0))
-
         return True
 
     def storeConfig(self):
@@ -145,9 +143,6 @@ class Tools(object):
         config['slewSpeedLow'] = self.ui.slewSpeedLow.isChecked()
         config['moveDuration'] = self.ui.moveDuration.currentIndex()
         config['moveStepSizeAltAz'] = self.ui.moveStepSizeAltAz.currentIndex()
-
-        config['tabMoving'] = self.ui.tabMoving.currentIndex()
-
         return True
 
     def setupGui(self):

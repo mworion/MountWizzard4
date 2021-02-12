@@ -1,5 +1,6 @@
 import time
-import skyfield.named_stars
+from skyfield.data import hipparcos
+from skyfield.api import Star, load
 import skyfield.api
 import numpy as np
 import erfa
@@ -16,11 +17,9 @@ HEADER = '''
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
-# Python  v3.7.4
 #
-# Michael Würtenberger
+# written in python3, (c) 2019-2021 by mworion
 #
-# written in python3 , (c) 2019, 2020 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -35,18 +34,16 @@ HEADER = '''
 
 def generateAlignStars():
     """
-    generateAlignStars is the function where the alignment stars which were present in the
-    mount computer from hipparcos catalogue are stored. for a correct calculation we need
-    beside the J2000 coordinated the proper motion in ra and dec, the parallax and the
-    radial velocity as the stars move over time. the data is calculated from the hipparcos
-    catalogue using skyfield library
+    generateAlignStars is the function where the alignment stars which were 
+    present in the mount computer from hipparcos catalogue are stored. for a 
+    correct calculation we need beside the J2000 coordinated the proper motion in 
+    ra and dec, the parallax and the radial velocity as the stars move over time. 
+    the data is calculated from the hipparcos catalogue using skyfield library
 
     the data is written in
-    [name, hip no, ra, dec, ra proper motion, dec proper motion, parallax, radial velocity]
-    based on J2000 epoch.
-    the units are fitting erfa needs:
+    [name, hip no, ra, dec, ra proper motion, dec proper motion, parallax, 
+    radial velocity] based on J2000 epoch. the units are fitting erfa needs:
     [str, int, radians, radians, radians / year, radians/year, arc sec, km /s]
-
 
     """
 
@@ -180,135 +177,14 @@ named_star_dict = {
 }
 
 
-def loadStars(path):
-    fileName = path + '/hip_main.dat.gz'
-    with skyfield.api.load.open(fileName) as f:
-        df = skyfield.data.hipparcos.load_dataframe(f)
-
-    if len(df) > 0:
-        df = df[df['magnitude'] <= 3.5]
-        print(len(df))
-        starsDict = list()
-        for index, row in df.iterrows():
-            starsDict.append({row.name: skyfield.api.Star.from_dataframe(row)})
-
-        starsDF = skyfield.api.Star.from_dataframe(df)
-
-    return starsDF, starsDict
-
-
-def make_test():
-
-    ts = skyfield.api.load.timescale()
-    planets = skyfield.api.load('de421.bsp')
-    starsDF, starsDict = loadStars('')
-    earth = planets['earth']
-    location = skyfield.api.Topos(latitude_degrees=50,
-                                  longitude_degrees=11,
-                                  elevation_m=500)
-    observer = earth + location
-    t = ts.now()
-
-    # standard version plus
-    """
-    timeStart = time.time()
-    alt = list()
-    az = list()
-    obs = observer.at(t)
-    for value in starsDict:
-        name, coord = list(value.items())[0]
-        altE, azE, d = obs.observe(coord).apparent().altaz()
-        alt.append(altE.degrees)
-        az.append(azE.degrees)
-    az_SKY = az
-    alt_SKY = alt
-    print('standard opt: ', time.time() - timeStart)
-    """
-    # standard version plus
-    timeStart = time.time()
-    alt, az, dist = observer.at(t).observe(starsDF).apparent().altaz()
-    az_SKY_new = az.degrees
-    alt_SKY_new = alt.hours
-    print('skyfield master: ', time.time() - timeStart)
-
-    # mas / year to radians / year
-    # mas * 3600000 = degrees / year
-    # mas * 3600000 / 360 * 2 * np.pi
-    # mas/year  * 20000 * np.pi is radians / year
-    # version with astropy and erfa and vector
-    ra = starsDF.ra.radians
-    dec = starsDF.dec.radians
-    PR = starsDF.ra_mas_per_year / 3600000 * 2 * np.pi / 360
-    PD = starsDF.dec_mas_per_year / 3600000 * 2 * np.pi / 360
-    PX = starsDF.parallax_mas / 1000
-    RV = starsDF.radial_km_per_s
-
-    # J2000             = 2451544.5
-    # HIP = J1991,25    = 2448347.5
-
-    print('preparation')
-    ra2, dec2, pr2, pd2, px2, rv2 = erfa.pmsafe(ra, dec, PR, PD, PX, RV,
-                                                2448347.5, 0.0, 2452544.5, 0.0)
-    timeStart = time.time()
-    print('calculation')
-    aob, zob, hob, dob, rob, eo = erfa.atco13(ra2,
-                                              dec2,
-                                              pr2,
-                                              pd2,
-                                              px2,
-                                              rv2,
-                                              t.ut1,
-                                              0.0,
-                                              t.dut1,
-                                              location.longitude.radians,
-                                              location.latitude.radians,
-                                              location.elevation.m,
-                                              0.0,
-                                              0.0,
-                                              0.0,
-                                              0.0,
-                                              0.0,
-                                              0.0)
-    az_ERFA = aob * 360 / 2 / np.pi
-    alt_ERFA = 90.0 - zob * 360 / 2 / np.pi
-    print('astropy scalar: ', time.time() - timeStart)
-    print('error skyfield standard')
-    print(np.max(abs(alt_ERFA - alt_SKY)), np.max(abs(az_ERFA - az_SKY)))
-    print('error skyfield_new')
-    print(np.max(abs(alt_ERFA - alt_SKY_new)), np.max(abs(az_ERFA - az_SKY_new)))
-
-
-def testBrandon():
-    ts = skyfield.api.load.timescale()
-    planets = skyfield.api.load('de421.bsp')
-    fileName = './hip_main.dat.gz'
-
-    with skyfield.api.load.open(fileName) as f:
-        df = skyfield.data.hipparcos.load_dataframe(f)
-
-    starsDF = skyfield.api.Star.from_dataframe(df)
-
-    earth = planets['earth']
-    location = skyfield.api.Topos(latitude_degrees=50,
-                                  longitude_degrees=11,
-                                  elevation_m=500)
-    observer = earth + location
-    t = ts.now()
-
-    # this calculation works
-    ra, dec, dist = observer.at(t).observe(starsDF).radec()
-    print(ra, dec, dist)
-
-    # this calculation throws the named error
-    alt, az, dist = observer.at(t).observe(starsDF).apparent().altaz()
-    print(alt, au, dist)
-
-
 def make_file():
+    with load.open(hipparcos.URL) as f:
+        df = hipparcos.load_dataframe(f)
+
     with open('alignstars.py', 'w') as f:
         f.write(HEADER)
         for name in named_star_dict:
-            starH = skyfield.named_stars.NamedStar(name)
+            starH = Star.from_dataframe(df.loc[named_star_dict[name]])
             ra = starH.ra.radians
             dec = starH.dec.radians
             ra_mas_per_year = starH.ra_mas_per_year
@@ -316,8 +192,8 @@ def make_file():
             parallax_mas = starH.parallax_mas
             radial_km_per_s = starH.radial_km_per_s
 
-            # convert it for erfa routine in astropy as skyfield calculation is not performant
-            # enough
+            # convert it for erfa routine in astropy as skyfield calculation
+            # is not performant enough
 
             # convert mas / year to radians / year
             PR = ra_mas_per_year / 3600000 * 2 * np.pi / 360
@@ -325,7 +201,8 @@ def make_file():
             PX = parallax_mas / 1000
             RV = radial_km_per_s
 
-            # and convert the epoch of hipparcos (J1991,25) to the epoch erfa needs (J2000)
+            # and convert the epoch of hipparcos (J1991,25) to the epoch
+            # erfa needs (J2000)
             # J2000             = 2451544.5
             # HIP = J1991,25    = 2448347.5
 
@@ -337,19 +214,21 @@ def make_file():
                                                         RV,
                                                         2448347.5,
                                                         0.0,
-                                                        2452544.5,
+                                                        2451544.5,
                                                         0.0,
                                                         )
 
             if name.startswith('Hersch'):
                 name = 'Herschel Star'
 
-            lineA = "star['{0}'] = [{1}, {2}, {3},\n".format(name, ra2, dec2, pr2)
-            lineB = "               {0}, {1}, {2}]\n".format(pd2, px2, rv2)
+            lineA = f"star['{name}'] = [{ra2}, {dec2},\n"
+            lineB = f"               {pr2}, {pd2},\n"
+            lineC = f"               {px2}, {rv2}]\n"
             print(name)
             f.write('    ' + lineA)
             spacer = ' ' * (len(name) - 3)
             f.write('    ' + spacer + lineB)
+            f.write('    ' + spacer + lineC)
         f.write(FOOTER)
 
 

@@ -117,7 +117,7 @@ class Hipparcos(object):
 
         if name not in self.alignStars:
             return None, None
-        t = self.app.mount.obsSite.ts.now()
+        timeJD = self.app.mount.obsSite.timeJD
         values = self.alignStars[name]
 
         ra, dec, eo = erfa.atci13(values[0],
@@ -126,7 +126,7 @@ class Hipparcos(object):
                                   values[3],
                                   values[4],
                                   values[5],
-                                  t.ut1,
+                                  timeJD.ut1,
                                   0.0,
                                   )
         ra = erfa.anp(ra - eo) * 24 / 2 / np.pi

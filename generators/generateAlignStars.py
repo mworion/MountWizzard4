@@ -203,7 +203,7 @@ def make_file():
 
             # and convert the epoch of hipparcos (J1991,25) to the epoch
             # erfa needs (J2000)
-            # J2000             = 2451544.5
+            # J2000             = 2451545
             # HIP = J1991,25    = 2448347.5
 
             ra2, dec2, pr2, pd2, px2, rv2 = erfa.pmsafe(ra,
@@ -214,7 +214,7 @@ def make_file():
                                                         RV,
                                                         2448347.5,
                                                         0.0,
-                                                        2451544.5,
+                                                        2451545,
                                                         0.0,
                                                         )
 

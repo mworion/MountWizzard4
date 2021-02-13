@@ -867,7 +867,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param imagePath:
         :return: True for test purpose
         """
-        text = f'Exposed:            [{os.path.basename(imagePath)}]'
+        text = f'Exposed:             [{os.path.basename(imagePath)}]'
         self.app.message.emit(text, 0)
 
         if self.ui.checkAutoSolve.isChecked():

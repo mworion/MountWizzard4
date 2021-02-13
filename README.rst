@@ -39,7 +39,7 @@ Version, build and code coverage status
 
 |DOCS|
 
-|BUILD STATUS| |PYTEST macOS| |PYTEST Windows| |PYTHON3_PACKAGE|
+|PYTEST macOS| |PYTEST Windows| |PYTHON3_PACKAGE|
 
 |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES| |COMMITS|
 
@@ -95,9 +95,6 @@ CS Michel
     https://readthedocs.org/projects/mountwizzard4/badge/?version=latest
     :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
-
-.. |BUILD STATUS| image::
-    https://img.shields.io/github/checks-status/mworion/mountwizzard4/master
 
 .. |PYTEST macOS| image::
     https://github.com/mworion/MountWizzard4/workflows/python3_macOS_unit/badge.svg

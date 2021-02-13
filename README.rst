@@ -15,10 +15,29 @@ https://mountwizzard4.readthedocs.io/en/latest/overview.html
     https://img.shields.io/pypi/pyversions/mountwizzard4.svg
 
 .. image::
-    https://img.shields.io/github/downloads/mworion/mountwizzard4/total
+    https://img.shields.io/coveralls/:vcsType/mworion/mountwizzard4
 
 .. image::
     https://img.shields.io/github/issues-raw/mworion/mountwizzard4
+
+.. image::
+    https://img.shields.io/github/last-commit/mworion/mountwizzard4
+.. image::
+    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.0.0/master
+
+status checks
+.. image::
+    https://img.shields.io/github/checks-status/mworion/mountwizzard4/master
+
+running workflows:
+.. image::
+    https://img.shields.io/github/workflow/status/mworion/mountwizzard4/python3_win_unit
+.. image::
+    https://img.shields.io/github/workflow/status/mworion/mountwizzard4/python3_macOS_unit
+.. image::
+    https://img.shields.io/github/workflow/status/mworion/mountwizzard4/python3_package
+.. image::
+    https://img.shields.io/github/workflow/status/mworion/mountwizzard4/codeql-analyses
 
 Documentation
 ^^^^^^^^^^^^^

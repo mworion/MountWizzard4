@@ -11,14 +11,14 @@ https://mountwizzard4.readthedocs.io/en/latest/overview.html
 
 For being fully operational, MW4 needs either:
 
-INDI server(s) (see: https://indilib.org) where your devices are connected to.
+-   INDI server(s) (see: https://indilib.org) where your devices are connected to.
 
-INDIGO server(s) (see: http://www.indigo-astronomy.org) where your devices are
-connected to.
+-   INDIGO server(s) (see: http://www.indigo-astronomy.org) where your devices
+    are connected to.
 
-ASCOM Alpaca remote server (see: https://ascom-standards.org/Developer/Alpaca.htm)
-abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if
-you want to connect over IP with your environment.
+-   ASCOM Alpaca remote server (see: https://ascom-standards.org/Developer/Alpaca.htm)
+    abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if
+    you want to connect over IP with your environment.
 
 For the core devices there is native ASCOM support (Windows platform only).
 Please be reminded, that ASCOM has 32bit and 64bit driver implementations and

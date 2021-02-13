@@ -471,6 +471,8 @@ class SettMisc(object):
             runnable = ['date', '-s', f'"{timeText}"']
 
         else:
+            timeText = ''
+            dateText = ''
             runnable = ''
 
         self.log.info(f'Set computer time to {timeText} {dateText}')

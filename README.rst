@@ -6,39 +6,12 @@ workflow for astronomy work and imaging runs on Windows, OSx and Linux
 (Ubuntu 18.04 and 20.04 tested). As a python application, it should run in all
 environments supporting python 3.7-3.9 and PyQt5 as a GUI framework.
 
-Note:
-^^^^^
-Please check these pages for some hints to your installation:
-https://mountwizzard4.readthedocs.io/en/latest/overview.html
-
-
-Documentation
-^^^^^^^^^^^^^
-There is an online documentation available for MW4 which could be searched for
-entries:
-
-Web based:
-https://mountwizzard4.readthedocs.io
-
-PDF format:
-https://mountwizzard4.readthedocs.io/_/downloads/en/latest/pdf/
-
-Installing procedures:
-https://mountwizzard4.readthedocs.io/en/latest/install/index.html
-
-Changelog:
-https://mountwizzard4.readthedocs.io/en/latest/changelog.html
-
-And there are some videos available for explanation in Youtube channel:
-
-https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/
-
-Please feel free to start any discussion:
-https://github.com/mworion/MountWizzard4/discussions
-
 
 Overall:
 ^^^^^^^^
+
+Please check these pages for some hints to your installation:
+https://mountwizzard4.readthedocs.io/en/latest/overview.html
 
 For being fully operational, MW4 needs either:
 
@@ -66,7 +39,9 @@ problem using older versions. A HW pre2012 might also have some issues.
 
 Version, build and code coverage status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|PYPI_VERSION| |PY_VERSIONS| |DOCS| |DownLoadsAbs| |DownLoadsMonth|
+|PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth|
+
+|DOCS|
 
 |BUILD STATUS| |PYTEST macOS| |PYTEST Windows| |PYTHON3_PACKAGE|
 
@@ -74,11 +49,38 @@ Version, build and code coverage status
 
 |CODECOV_CHART|
 
+
+Documentation
+^^^^^^^^^^^^^
+There is an online documentation available for MW4 which could be searched for
+entries:
+
+Web based:
+https://mountwizzard4.readthedocs.io
+
+PDF format:
+https://mountwizzard4.readthedocs.io/_/downloads/en/latest/pdf/
+
+Installing procedures:
+https://mountwizzard4.readthedocs.io/en/latest/install/index.html
+
+Changelog:
+https://mountwizzard4.readthedocs.io/en/latest/changelog.html
+
+And there are some videos available for explanation in Youtube channel:
+
+https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/
+
+Please feel free to start any discussion:
+https://github.com/mworion/MountWizzard4/discussions
+
+
 Feedback and issue reports
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 Please report your issues: https://github.com/mworion/MountWizzard4/issues.
 Please have a good description (maybe a screenshot if it‘s related to GUI) and add
 the log file(s) to the issue. Any feedback welcome!
+
 
 Finally
 ^^^^^^^

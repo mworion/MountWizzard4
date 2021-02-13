@@ -601,6 +601,8 @@ def test_pushTimeToComputer_4(function):
 
 
 def test_pushTimeToComputer_5(function):
-    function.app.mount.obsSite.timeJD = None
-    suc = function.pushTimeToComputer()
-    assert not suc
+    with mock.patch.object(function.app.mount.obsSite,
+                           'timeJD',
+                           return_value=None):
+        suc = function.pushTimeToComputer()
+        assert not suc

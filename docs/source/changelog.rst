@@ -21,7 +21,6 @@ Unreleased version of MW4
 - adding cover light on / off
 - adding cover light intensity
 - adding release notes
-- adding alphas version selection
 - reversing E/W for polar diagram in hemisphere window
 - adding simple push mount time to computer function
 

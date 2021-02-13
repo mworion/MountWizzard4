@@ -154,24 +154,6 @@ def test_versionPackage_3(function):
         assert comm == 'test'
 
 
-def test_versionPackage_4(function):
-    class Test:
-        status_code = 200
-
-        @staticmethod
-        def json():
-            return {'releases': {'1.0.0': [{'comment_text': 'test'}],
-                                 '1.0.0a1': [{'comment_text': 'test'}]}}
-
-    function.ui.versionAlpha.setChecked(True)
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=Test()):
-        pack, comm = function.versionPackage('matplotlib')
-        assert pack == '1.0.0a1'
-        assert comm == 'test'
-
-
 def test_showUpdates_1(function):
     with mock.patch.object(importlib_metadata,
                            'version',

@@ -58,7 +58,6 @@ class SettMisc(object):
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
         self.ui.isOnline.clicked.connect(self.setupIERS)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
-        self.ui.versionAlpha.clicked.connect(self.showUpdates)
         self.ui.versionRelease.clicked.connect(self.showUpdates)
         self.ui.versionReleaseNotes.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.showUpdates)
@@ -172,9 +171,6 @@ class SettMisc(object):
 
         if self.ui.versionBeta.isChecked():
             finalPackage = verBeta[0]
-
-        elif self.ui.versionAlpha.isChecked():
-            finalPackage = verAlpha[0]
 
         else:
             finalPackage = verRelease[0]

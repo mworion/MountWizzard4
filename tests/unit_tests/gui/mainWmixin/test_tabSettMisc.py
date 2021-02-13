@@ -20,16 +20,10 @@ import pytest
 from unittest import mock
 import logging
 import subprocess
-import builtins
 import platform
 
 # external packages
 from PyQt5.QtMultimedia import QSound
-from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from mountcontrol.qtmount import Mount
 import requests
 import importlib_metadata
 
@@ -692,8 +686,8 @@ def test_pushTimeToComputer_4(function):
 
 
 def test_pushTimeToComputer_5(function):
-    with mock.patch.object(function.app.mount.obsSite,
-                           'timeJD',
-                           return_value=None):
-        suc = function.pushTimeToComputer()
-        assert not suc
+    a = function.app.mount.obsSite.timeJD
+    function.app.mount.obsSite.timeJD = None
+    suc = function.pushTimeToComputer()
+    assert not suc
+    function.app.mount.obsSite.timeJD = a

@@ -462,16 +462,18 @@ class SettMisc(object):
 
         elif platform.system() == 'Darwin':
             timeText = timeJD.astimezone(tzlocal()).strftime('%m%d%H%M%y')
+            dateText = ''
             runnable = ['date',  f'{timeText}']
 
         elif platform.system() == 'Linux':
             timeText = timeJD.astimezone(tzlocal()).strftime('%d-%b-%Y %H:%M:%S')
+            dateText = ''
             runnable = ['date', '-s', f'"{timeText}"']
 
         else:
             runnable = ''
 
-        self.log.info(f'Set computer time to {timeText}')
+        self.log.info(f'Set computer time to {timeText} {dateText}')
 
         try:
             self.process = subprocess.Popen(args=runnable,

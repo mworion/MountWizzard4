@@ -23,6 +23,7 @@ releaseNotes = """
 - adding cover light intensity
 - adding release notes show capabilities
 - adding alpha version selection in installer
+- reversing E/W for polar diagram in hemisphere window
 """
 
 with open('notes.txt', 'w') as f:

@@ -127,9 +127,11 @@ CS Michel
 
 .. |OPEN_ISSUES| image::
     https://img.shields.io/github/issues-raw/mworion/mountwizzard4
+    :target: https://github.com/mworion/MountWizzard4/issues
 
 .. |COMMITS| image::
     https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.0.0/master
+    :target: https://github.com/mworion/MountWizzard4/commits/master
 
 .. |PYTHON3_PACKAGE| image::
     https://github.com/mworion/MountWizzard4/workflows/python3_package/badge.svg

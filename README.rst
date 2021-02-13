@@ -11,6 +11,12 @@ Note:
 Please check these pages for some hints to your installation:
 https://mountwizzard4.readthedocs.io/en/latest/overview.html
 
+https://img.shields.io/pypi/pyversions/mountwizzard4.svg
+
+https://img.shields.io/github/downloads/:mworion/:mountwizzard4/total
+
+https://img.shields.io/github/issues-raw/:mworion/:mountwizzard4
+
 Documentation
 ^^^^^^^^^^^^^
 There is an online documentation available for MW4 which could be searched for

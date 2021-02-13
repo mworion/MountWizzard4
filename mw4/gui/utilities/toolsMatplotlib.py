@@ -98,14 +98,14 @@ class ToolsMatplotlib:
         staticCanvas.setParent(widget)
         return staticCanvas
 
-    def generatePolar(self, widget=None, title='', horizon=False, showAxes=True,
-                      reversed=False):
+    def generatePolar(self, widget=None, title='', horizon=False,
+                      showAxes=True, reversed=False):
         """
         :param widget:
         :param title:
         :param horizon:
         :param showAxes:
-        :param reversed:
+        :param reversed: does change E/W setting
         :return:
         """
         if widget is None:

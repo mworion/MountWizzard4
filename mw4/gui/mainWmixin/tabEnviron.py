@@ -298,31 +298,35 @@ class Environ(object):
         """
         :return:    True if ok for testing
         """
-        value = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
+        value = self.app.sensorWeather.data.get(
+            'WEATHER_PARAMETERS.WEATHER_TEMPERATURE', None)
         self.guiSetText(self.ui.sensorWeatherTemp, '4.1f', value)
 
-        value = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_PRESSURE', 0)
+        value = self.app.sensorWeather.data.get(
+            'WEATHER_PARAMETERS.WEATHER_PRESSURE', None)
         self.guiSetText(self.ui.sensorWeatherPress, '4.1f', value)
 
-        value = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
+        value = self.app.sensorWeather.data.get(
+            'WEATHER_PARAMETERS.WEATHER_DEWPOINT', None)
         self.guiSetText(self.ui.sensorWeatherDewPoint, '4.1f', value)
 
-        value = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
+        value = self.app.sensorWeather.data.get(
+            'WEATHER_PARAMETERS.WEATHER_HUMIDITY', None)
         self.guiSetText(self.ui.sensorWeatherHumidity, '3.0f', value)
 
-        value = self.app.sensorWeather.data.get('cloudCover', 0)
+        value = self.app.sensorWeather.data.get('cloudCover', None)
         self.guiSetText(self.ui.sensorWeatherCloudCover, '3.0f', value)
 
-        value = self.app.sensorWeather.data.get('rain', 0)
+        value = self.app.sensorWeather.data.get('rain', None)
         self.guiSetText(self.ui.sensorWeatherRainVol, '5.2f', value)
 
-        value = self.app.sensorWeather.data.get('windDir', 0)
+        value = self.app.sensorWeather.data.get('windDir', None)
         self.guiSetText(self.ui.sensorWeatherWindDir, '3.0f', value)
 
-        value = self.app.sensorWeather.data.get('windSpeed', 0)
+        value = self.app.sensorWeather.data.get('windSpeed', None)
         self.guiSetText(self.ui.sensorWeatherWindSpeed, '3.0f', value)
 
-        value = self.app.sensorWeather.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
+        value = self.app.sensorWeather.data.get('SKY_QUALITY.SKY_BRIGHTNESS', None)
         self.guiSetText(self.ui.sensorWeatherSQR, '4.2f', value)
         return True
 
@@ -368,11 +372,13 @@ class Environ(object):
         """
 
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
-        self.ui.powerTemp.setText('{0:4.1f}'.format(value))
+        self.guiSetText(self.ui.powerTemp, '4.1f', value)
+
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
-        self.ui.powerHumidity.setText('{0:3.0f}'.format(value))
+        self.guiSetText(self.ui.powerHumidity, '3.0f', value)
+
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
-        self.ui.powerDewPoint.setText('{0:4.1f}'.format(value))
+        self.guiSetText(self.ui.powerDewPoint, '4.1f', value)
 
         return True
 
@@ -536,22 +542,29 @@ class Environ(object):
             self.clearOnlineWeatherGui()
             return False
 
-        if 'temperature' in data:
-            self.ui.onlineWeatherTemp.setText(f'{data["temperature"]:4.1f}')
-        if 'pressure' in data:
-            self.ui.onlineWeatherPress.setText(f'{data["pressure"]:5.1f}')
-        if 'humidity' in data:
-            self.ui.onlineWeatherHumidity.setText(f'{data["humidity"]:3.0f}')
-        if 'dewPoint' in data:
-            self.ui.onlineWeatherDewPoint.setText(f'{data["dewPoint"]:4.1f}')
-        if 'cloudCover' in data:
-            self.ui.onlineWeatherCloudCover.setText(f'{data["cloudCover"]:3.0f}')
-        if 'windSpeed' in data:
-            self.ui.onlineWeatherWindSpeed.setText(f'{data["windSpeed"]:3.0f}')
-        if 'windDir' in data:
-            self.ui.onlineWeatherWindDir.setText(f'{data["windDir"]:3.0f}')
-        if 'rain' in data:
-            self.ui.onlineWeatherRainVol.setText(f'{data["rain"]:5.2f}')
+        value = self.app.onlineWeather.data.get('temperature', None)
+        self.guiSetText(self.ui.onlineWeatherTemp, '4.1f', value)
+
+        value = self.app.onlineWeather.data.get('pressure', None)
+        self.guiSetText(self.ui.onlineWeatherPress, '5.1f', value)
+
+        value = self.app.onlineWeather.data.get('humidity', None)
+        self.guiSetText(self.ui.onlineWeatherHumidity, '3.0f', value)
+
+        value = self.app.onlineWeather.data.get('dewPoint', None)
+        self.guiSetText(self.ui.onlineWeatherDewPoint, '4.1f', value)
+
+        value = self.app.onlineWeather.data.get('cloudCover', None)
+        self.guiSetText(self.ui.onlineWeatherCloudCover, '3.0f', value)
+
+        value = self.app.onlineWeather.data.get('windSpeed', None)
+        self.guiSetText(self.ui.onlineWeatherWindSpeed, '3.0f', value)
+
+        value = self.app.onlineWeather.data.get('windDir', None)
+        self.guiSetText(self.ui.onlineWeatherWindDir, '3.0f', value)
+
+        value = self.app.onlineWeather.data.get('rain', None)
+        self.guiSetText(self.ui.onlineWeatherRainVol, '5.2f', value)
         return True
 
     def clearDirectWeatherGui(self):
@@ -578,12 +591,15 @@ class Environ(object):
         if setting is None:
             return False
 
-        if setting.weatherTemperature is not None:
-            self.ui.directWeatherTemp.setText(f'{setting.weatherTemperature:4.1f}')
-        if setting.weatherPressure is not None:
-            self.ui.directWeatherPress.setText(f'{setting.weatherPressure:5.1f}')
-        if setting.weatherHumidity is not None:
-            self.ui.directWeatherHumidity.setText(f'{setting.weatherHumidity:3.0f}')
-        if setting.weatherDewPoint is not None:
-            self.ui.directWeatherDewPoint.setText(f'{setting.weatherDewPoint:4.1f}')
+        value = setting.weatherTemperature
+        self.guiSetText(self.ui.directWeatherTemp, '4.1f', value)
+
+        value = setting.weatherPressure
+        self.guiSetText(self.ui.directWeatherPress, '5.1f', value)
+
+        value = setting.weatherHumidity
+        self.guiSetText(self.ui.directWeatherHumidity, '3.0f', value)
+
+        value = setting.weatherDewPoint
+        self.guiSetText(self.ui.directWeatherDewPoint, '4.1f', value)
         return True

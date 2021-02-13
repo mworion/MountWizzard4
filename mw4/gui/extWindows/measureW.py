@@ -44,13 +44,10 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def __init__(self, app):
         super().__init__()
-
         self.app = app
-
         self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self)
         self.initUI()
-
         self.refreshCounter = 1
         self.measureIndex = 0
         self.timeIndex = 0
@@ -83,29 +80,25 @@ class MeasureWindow(toolsQtWidget.MWidget):
                           '128s Ticks  -  9 hours': 128,
                           }
 
-        # doing the matplotlib embedding
         self.measureMat = self.embedMatplot(self.ui.measure, constrainedLayout=False)
         self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
-
         if 'measureW' not in self.app.config:
             self.app.config['measureW'] = {}
         config = self.app.config['measureW']
         x = config.get('winPosX', 120)
         y = config.get('winPosY', 120)
+
         if x > self.screenSizeX:
             x = 0
         if y > self.screenSizeY:
             y = 0
         self.move(x, y)
+
         height = config.get('height', 600)
         width = config.get('width', 800)
         self.resize(width, height)
@@ -115,15 +108,10 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.ui.measureSet3.setCurrentIndex(config.get('measureSet3', 0))
         self.ui.timeSet.setCurrentIndex(config.get('timeSet', 0))
         self.setCycleRefresh()
-
         return True
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         if 'measureW' not in self.app.config:
@@ -137,57 +125,42 @@ class MeasureWindow(toolsQtWidget.MWidget):
         config['measureSet2'] = self.ui.measureSet2.currentIndex()
         config['measureSet3'] = self.ui.measureSet3.currentIndex()
         config['timeSet'] = self.ui.timeSet.currentIndex()
-
         return True
 
     def showWindow(self):
         """
-
         :return:
         """
         self.show()
-
-        # signals for gui
         self.ui.timeSet.currentIndexChanged.connect(self.setCycleRefresh)
         self.ui.measureSet1.currentIndexChanged.connect(self.setCycleRefresh)
         self.ui.measureSet2.currentIndexChanged.connect(self.setCycleRefresh)
         self.ui.measureSet3.currentIndexChanged.connect(self.setCycleRefresh)
         self.app.update1s.connect(self.cycleRefresh)
-
         return True
 
     def closeEvent(self, closeEvent):
         """
-
         :param closeEvent:
         :return:
         """
-
-        # stop cyclic tasks
         self.app.update1s.disconnect(self.cycleRefresh)
-
-        # save config
         self.storeConfig()
-
-        # signals for gui
         self.ui.timeSet.currentIndexChanged.disconnect(self.setCycleRefresh)
         self.ui.measureSet1.currentIndexChanged.disconnect(self.setCycleRefresh)
         self.ui.measureSet2.currentIndexChanged.disconnect(self.setCycleRefresh)
         self.ui.measureSet3.currentIndexChanged.disconnect(self.setCycleRefresh)
-
-        # remove big object
         plt.close(self.measureMat.figure)
-
         super().closeEvent(closeEvent)
 
     def setupButtons(self):
         """
-        setupButtons prepares the dynamic content od the buttons in measurement window. it
-        write the bottom texts and number as well as the coloring for the actual setting
+        setupButtons prepares the dynamic content od the buttons in measurement
+        window. it write the bottom texts and number as well as the coloring for
+        the actual setting
 
         :return: success for test purpose
         """
-
         for mSet in self.mSetUI:
             mSet.clear()
             mSet.setView(PyQt5.QtWidgets.QListView())
@@ -204,45 +177,35 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def setCycleRefresh(self):
         """
-
         :return: True for test purpose
         """
-
         fallback = list(self.timeScale.keys())[0]
-        self.refreshCounter = self.timeScale.get(self.ui.timeSet.currentText(), fallback)
+        self.refreshCounter = self.timeScale.get(self.ui.timeSet.currentText(),
+                                                 fallback)
         self.cycleRefresh()
-
         return True
 
     def cycleRefresh(self):
         """
-
         :return: True for test purpose
         """
-
         cycle = self.timeScale.get(self.ui.timeSet.currentText(), 1)
         if not self.refreshCounter % cycle:
             self.drawMeasure(cycle=cycle)
-        self.refreshCounter += 1
 
+        self.refreshCounter += 1
         return True
 
     def setupAxes(self, figure=None, numberPlots=3):
         """
-        setupAxes cleans up the axes object in figure an setup a new plotting. it draws
-        grid, ticks etc.
-
         :param numberPlots:
         :param figure: axes object of figure
         :return:
         """
-
         if figure is None:
             return None
-
         if numberPlots > 3:
             return None
-
         if numberPlots < 0:
             return None
 
@@ -269,11 +232,6 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def plotRa(self, axe=None, title='', data=None, cycle=None):
         """
-        drawRaDec show the specific graph for plotting the ra dec deviations. this
-        is done with two color and axes to distinguish the values for ra and dec.
-        ideally the values are around zero, but the scales of ra and dec axis have to be
-        different.
-
         :param axe: axe for plotting
         :param title: title text
         :param data: data location
@@ -309,11 +267,6 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def plotDec(self, axe=None, title='', data=None, cycle=None):
         """
-        drawRaDec show the specific graph for plotting the ra dec deviations. this
-        is done with two color and axes to distinguish the values for ra and dec.
-        ideally the values are around zero, but the scales of ra and dec axis have to be
-        different.
-
         :param axe: axe for plotting
         :param title: title text
         :param data: data location
@@ -349,8 +302,6 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def plotAngularPosRa(self, axe=None, title='', data=None, cycle=None):
         """
-        plotAngularPosRa show the specific graph for plotting the ra absolute positions.
-
         :param axe: axe for plotting
         :param title: title text
         :param data: data location
@@ -386,11 +337,6 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def plotAngularPosDec(self, axe=None, title='', data=None, cycle=None):
         """
-        drawRaDec show the specific graph for plotting the ra dec deviations. this
-        is done with two color and axes to distinguish the values for ra and dec.
-        ideally the values are around zero, but the scales of ra and dec axis have to be
-        different.
-
         :param axe: axe for plotting
         :param title: title text
         :param data: data location
@@ -426,18 +372,12 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def plotTemperature(self, axe=None, title='', data=None, cycle=None):
         """
-        drawRaDec show the specific graph for plotting the ra dec deviations. this
-        is done with two color and axes to distinguish the values for ra and dec.
-        ideally the values are around zero, but the scales of ra and dec axis have to be
-        different.
-
         :param axe: axe for plotting
         :param title: title text
         :param data: data location
         :param cycle: cycle time for measurement
         :return: success
         """
-
         ylabel = 'Temperature [deg C]'
         start = -self.NUMBER_POINTS * cycle
 
@@ -463,6 +403,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            data['sensorWeatherDew'][start:-1:cycle],
                            marker=None,
                            markersize=3,
+                           linestyle=':',
                            color=self.M_WHITE,
                            )
             plotList.append(r1)
@@ -481,6 +422,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            data['onlineWeatherDew'][start:-1:cycle],
                            marker=None,
                            markersize=3,
+                           linestyle=':',
                            color=self.M_GREEN,
                            )
             plotList.append(r3)
@@ -499,6 +441,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            data['directWeatherDew'][start:-1:cycle],
                            marker=None,
                            markersize=3,
+                           linestyle=':',
                            color=self.M_RED,
                            )
             plotList.append(r5)
@@ -517,6 +460,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            data['powDew'][start:-1:cycle],
                            marker=None,
                            markersize=3,
+                           linestyle=':',
                            color=self.M_PINK,
                            )
             plotList.append(r7)
@@ -557,18 +501,12 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def plotPressure(self, axe=None, title='', data=None, cycle=None):
         """
-        drawRaDec show the specific graph for plotting the ra dec deviations. this
-        is done with two color and axes to distinguish the values for ra and dec.
-        ideally the values are around zero, but the scales of ra and dec axis have to be
-        different.
-
         :param axe: axe for plotting
         :param title: title text
         :param data: data location
         :param cycle: cycle time for measurement
         :return: success
         """
-
         ylabel = 'Pressure [hPas]'
         start = -self.NUMBER_POINTS * cycle
 
@@ -637,18 +575,12 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def plotHumidity(self, axe=None, title='', data=None, cycle=None):
         """
-        drawRaDec show the specific graph for plotting the ra dec deviations. this
-        is done with two color and axes to distinguish the values for ra and dec.
-        ideally the values are around zero, but the scales of ra and dec axis have to be
-        different.
-
         :param axe: axe for plotting
         :param title: title text
         :param data: data location
         :param cycle: cycle time for measurement
         :return: success
         """
-
         ylabel = 'Humidity [%]'
         start = -self.NUMBER_POINTS * cycle
 
@@ -727,18 +659,12 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def plotSQR(self, axe=None, title='', data=None, cycle=None):
         """
-        drawRaDec show the specific graph for plotting the ra dec deviations. this
-        is done with two color and axes to distinguish the values for ra and dec.
-        ideally the values are around zero, but the scales of ra and dec axis have to be
-        different.
-
         :param axe: axe for plotting
         :param title: title text
         :param data: data location
         :param cycle: cycle time for measurement
         :return: success
         """
-
         ylabel = 'Sky Quality [mpas]'
         start = -self.NUMBER_POINTS * cycle
 
@@ -787,18 +713,12 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def plotVoltage(self, axe=None, title='', data=None, cycle=None):
         """
-        drawRaDec show the specific graph for plotting the ra dec deviations. this
-        is done with two color and axes to distinguish the values for ra and dec.
-        ideally the values are around zero, but the scales of ra and dec axis have to be
-        different.
-
         :param axe: axe for plotting
         :param title: title text
         :param data: data location
         :param cycle: cycle time for measurement
         :return: success
         """
-
         ylabel = 'Power Voltage [V]'
         start = -self.NUMBER_POINTS * cycle
 
@@ -846,18 +766,12 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def plotCurrent(self, axe=None, title='', data=None, cycle=None):
         """
-        drawRaDec show the specific graph for plotting the ra dec deviations. this
-        is done with two color and axes to distinguish the values for ra and dec.
-        ideally the values are around zero, but the scales of ra and dec axis have to be
-        different.
-
         :param axe: axe for plotting
         :param title: title text
         :param data: data location
         :param cycle: cycle time for measurement
         :return: success
         """
-
         ylabel = 'Power Current [A]'
         start = -self.NUMBER_POINTS * cycle
 
@@ -938,19 +852,13 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def drawMeasure(self, cycle=1):
         """
-        drawMeasure does the basic preparation for making the plot. it checks for borders
-        and does finally the content dispatcher. currently there is no chance to implement
-        a basic pattern as the graphs differ heavily.
-
         :param cycle:
         :return: success
         """
-
         data = self.app.measure.data
 
         if 'time' not in data:
             return False
-
         if len(data['time']) < 4:
             return False
 
@@ -964,7 +872,6 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
         if axes is None:
             return False
-
         if not numberPlots:
             self.measureMat.figure.canvas.draw()
             return False
@@ -999,5 +906,4 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                data=data,
                                cycle=cycle)
             axe.figure.canvas.draw()
-
         return True

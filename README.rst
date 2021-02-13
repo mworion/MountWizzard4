@@ -11,35 +11,6 @@ Note:
 Please check these pages for some hints to your installation:
 https://mountwizzard4.readthedocs.io/en/latest/overview.html
 
-.. image::
-    https://img.shields.io/pypi/pyversions/mountwizzard4.svg
-
-.. image::
-    https://img.shields.io/coveralls/:vcsType/mworion/mountwizzard4
-
-.. image::
-    https://img.shields.io/github/issues-raw/mworion/mountwizzard4
-
-.. image::
-    https://img.shields.io/github/last-commit/mworion/mountwizzard4
-.. image::
-    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.0.0/master
-
-status checks
-
-.. image::
-    https://img.shields.io/github/checks-status/mworion/mountwizzard4/master
-
-running workflows:
-
-.. image::
-    https://img.shields.io/github/workflow/status/mworion/mountwizzard4/python3_win_unit
-.. image::
-    https://img.shields.io/github/workflow/status/mworion/mountwizzard4/python3_macOS_unit
-.. image::
-    https://img.shields.io/github/workflow/status/mworion/mountwizzard4/python3_package
-.. image::
-    https://img.shields.io/github/workflow/status/mworion/mountwizzard4/codeql-analyses
 
 Documentation
 ^^^^^^^^^^^^^
@@ -95,11 +66,11 @@ problem using older versions. A HW pre2012 might also have some issues.
 
 Version, build and code coverage status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|PYPI_VERSION|  |DOCS| |DownLoadsAbs| |DownLoadsMonth|
+|PYPI_VERSION| |PY_VERSIONS| |DOCS| |DownLoadsAbs| |DownLoadsMonth|
 
-|PYTEST macOS| |PYTEST Windows| |PYTHON3_PACKAGE|
+|BUILD STATUS| |PYTEST macOS| |PYTEST Windows| |PYTHON3_PACKAGE|
 
-|CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV|
+|CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES| |COMMITS|
 
 |CODECOV_CHART|
 
@@ -119,10 +90,16 @@ Hope this tool makes fun and helps for your hobby,
 
 CS Michel
 
+.. |PY_VERSIONS| image::
+    https://img.shields.io/pypi/pyversions/mountwizzard4.svg
+
 .. |DOCS| image::
     https://readthedocs.org/projects/mountwizzard4/badge/?version=latest
     :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
+
+.. |BUILD STATUS| image::
+    https://img.shields.io/github/checks-status/mworion/mountwizzard4/master
 
 .. |PYTEST macOS| image::
     https://github.com/mworion/MountWizzard4/workflows/python3_macOS_unit/badge.svg
@@ -147,6 +124,12 @@ CS Michel
 .. |CODE_QUALITY_PYTHON| image::
     https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
     :target: https://lgtm.com/projects/g/mworion/MountWizzard4/?mode=list
+
+.. |OPEN_ISSUES| image::
+    https://img.shields.io/github/issues-raw/mworion/mountwizzard4
+
+.. |COMMITS| image::
+    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.0.0/master
 
 .. |PYTHON3_PACKAGE| image::
     https://github.com/mworion/MountWizzard4/workflows/python3_package/badge.svg

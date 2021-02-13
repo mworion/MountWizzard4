@@ -26,10 +26,12 @@ https://mountwizzard4.readthedocs.io/en/latest/overview.html
     https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.0.0/master
 
 status checks
+
 .. image::
     https://img.shields.io/github/checks-status/mworion/mountwizzard4/master
 
 running workflows:
+
 .. image::
     https://img.shields.io/github/workflow/status/mworion/mountwizzard4/python3_win_unit
 .. image::

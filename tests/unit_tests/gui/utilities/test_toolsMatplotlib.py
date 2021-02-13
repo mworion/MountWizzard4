@@ -156,7 +156,7 @@ def test_generatePolar_7(function):
     ui = QWidget()
     widget = function.embedMatplot(ui)
     axe, fig = function.generatePolar(widget=widget, showAxes=False,
-                                      reversed=Trze)
+                                      reversed=True)
     assert axe
     assert fig
 

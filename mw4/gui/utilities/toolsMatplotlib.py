@@ -152,8 +152,8 @@ class ToolsMatplotlib:
             else:
                 axe.set_theta_direction(-1)
 
-            axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
             axe.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))
+            axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
 
             if not horizon:
                 return axe, figure

@@ -20,6 +20,7 @@ import time
 import subprocess
 import sys
 import platform
+from dateutil.tz import tzlocal
 
 # external packages
 from pkg_resources import working_set
@@ -290,11 +291,11 @@ class SettMisc(object):
             output = self.process.communicate(timeout=timeout)[0]
 
         except subprocess.TimeoutExpired as e:
-            self.log.critical(e)
+            self.log.error(e)
             return False, None
 
         except Exception as e:
-            self.log.critical(f'error: {e} happened')
+            self.log.error(f'error: {e} happened')
             return False, None
 
         else:
@@ -455,19 +456,19 @@ class SettMisc(object):
             return False
 
         if platform.system() == 'Windows':
-            timeText = timeJD.utc_strftime('%d %b %Y %H:%M:%S')
-            runnable = ['date',  f'{timeText}']
+            timeText = timeJD.astimezone(tzlocal()).strftime('%H:%M:%S')
+            dateText = timeJD.astimezone(tzlocal()).strftime('%d-%m-%Y')
+            runnable = ['date',  f'{dateText}', ';', 'time', f'{timeText}']
 
         elif platform.system() == 'Darwin':
-            timeText = timeJD.utc_strftime('%m%d%H%M%y')
+            timeText = timeJD.astimezone(tzlocal()).strftime('%m%d%H%M%y')
             runnable = ['date',  f'{timeText}']
 
         elif platform.system() == 'Linux':
-            timeText = timeJD.utc_strftime('%d-%b-%Y %H:%M:%S')
-            runnable = ['date', '-s', f'{timeText}']
+            timeText = timeJD.astimezone(tzlocal()).strftime('%d-%b-%Y %H:%M:%S')
+            runnable = ['date', '-s', f'"{timeText}"']
 
         else:
-            timeText = ''
             runnable = ''
 
         self.log.info(f'Set computer time to {timeText}')
@@ -476,16 +477,17 @@ class SettMisc(object):
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
                                             stderr=subprocess.STDOUT,
-                                            text=True,
+                                            shell=True,
+                                            text=True
                                             )
             output = self.process.communicate(timeout=10)[0].replace('\n', '-')
 
         except subprocess.TimeoutExpired as e:
-            self.log.critical(e)
+            self.log.error(e)
             return False
 
         except Exception as e:
-            self.log.critical(f'Time set error: {e}')
+            self.log.error(f'Time set error: {e}')
             return False
 
         else:

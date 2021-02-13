@@ -24,6 +24,7 @@ releaseNotes = """
 - adding release notes show capabilities
 - adding alpha version selection in installer
 - reversing E/W for polar diagram in hemisphere window
+- adding push mount time to computer
 """
 
 with open('notes.txt', 'w') as f:

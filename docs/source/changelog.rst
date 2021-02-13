@@ -23,6 +23,7 @@ Unreleased version of MW4
 - adding release notes
 - adding alphas version selection
 - reversing E/W for polar diagram in hemisphere window
+- adding simple push mount time to computer function
 
 
 Released version of MW4

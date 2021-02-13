@@ -510,3 +510,115 @@ def test_playSound_3(function):
                            'play'):
         suc = function.playSound('MountSlew')
         assert not suc
+
+
+def test_pushTimeToComputer_1(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = 0
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test()):
+        suc = function.pushTimeToComputer()
+        assert suc
+
+
+def test_pushTimeToComputer_2(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = '1'
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test(),
+                           side_effect=Exception()):
+        suc = function.pushTimeToComputer()
+        assert not suc
+
+
+def test_pushTimeToComputer_3(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = '1'
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test(),
+                           side_effect=subprocess.TimeoutExpired('res', 2)):
+        suc = function.pushTimeToComputer()
+        assert not suc
+
+
+def test_pushTimeToComputer_4(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = 1
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test()):
+        suc = function.pushTimeToComputer()
+        assert not suc
+
+
+def test_pushTimeToComputer_5(function):
+    function.app.mount.obsSite.timeJD = None
+    suc = function.pushTimeToComputer()
+    assert not suc

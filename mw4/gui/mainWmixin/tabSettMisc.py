@@ -458,13 +458,29 @@ class SettMisc(object):
         if timeJD is None:
             return False
 
-        timeText = timeJD.utc_strftime('%d %b %y %H:%M:%S')
+        timeText = timeJD.utc_strftime('%m%d%H%M%y')
         self.log.info(f'Set computer time to {timeText}')
-        cmd = f'date {timeText}'
+        runnable = ['date',  f'{timeText}']
+
         try:
-            os.system(cmd)
-        except Exception as e:
-            self.log.warning(f'Time set error: {e}')
+            self.process = subprocess.Popen(args=runnable,
+                                            stdout=subprocess.PIPE,
+                                            stderr=subprocess.STDOUT,
+                                            text=True,
+                                            )
+            output = self.process.communicate(timeout=10)[0].replace('\n', '-')
+
+        except subprocess.TimeoutExpired as e:
+            self.log.critical(e)
             return False
+
+        except Exception as e:
+            self.log.critical(f'Time set error: {e}')
+            return False
+
         else:
-            return True
+            retCode = str(self.process.returncode)
+            self.log.debug(f'[{retCode}] [{output}]')
+
+        return self.process.returncode == 0
+

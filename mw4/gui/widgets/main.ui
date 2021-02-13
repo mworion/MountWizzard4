@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -16694,7 +16694,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -25783,7 +25783,7 @@ p, li { white-space: pre-wrap; }
          <x>5</x>
          <y>245</y>
          <width>366</width>
-         <height>56</height>
+         <height>51</height>
         </rect>
        </property>
        <property name="title">
@@ -25796,7 +25796,7 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>25</y>
+          <y>20</y>
           <width>75</width>
           <height>21</height>
          </rect>

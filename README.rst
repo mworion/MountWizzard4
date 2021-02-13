@@ -52,10 +52,10 @@ There is an online documentation available for MW4 which could be searched for
 entries:
 
 Web based:
-https://mountwizzard4.readthedocs.io/en/stable/
+https://mountwizzard4.readthedocs.io/en/latest/
 
 PDF format:
-https://mountwizzard4.readthedocs.io/_/downloads/en/stable/pdf/
+https://mountwizzard4.readthedocs.io/_/downloads/en/latest/pdf/
 
 Installing procedures:
 https://mountwizzard4.readthedocs.io/en/latest/install/index.html

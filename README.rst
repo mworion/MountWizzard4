@@ -20,14 +20,14 @@ For being fully operational, MW4 needs either:
     abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if
     you want to connect over IP with your environment.
 
-For the core devices there is native ASCOM support (Windows platform only).
-Please be reminded, that ASCOM has 32bit and 64bit driver implementations and
-MW4 could also be installed in 32bit or 64 bit python environment. They could be
-not be mixed! 32bit python supports only 32bit drivers and vice versa. Normally
-this should not be an issue...
+-   For the core devices there is native ASCOM support (Windows platform only).
+    Please be reminded, that ASCOM has 32bit and 64bit driver implementations
+    and MW4 could also be installed in 32bit or 64 bit python environment. They
+    could be not be mixed! 32bit python supports only 32bit drivers and vice versa
+    . Normally this should not be an issue...
 
-In addition an online connection is used for some services which might be
-very helpful.
+-   In addition an internet connection is used for some services which might be
+    very helpful.
 
 It is recommended to use mount firmware 2.16 (ideally 2.16.11) or later as some
 of the functions don't work with older firmware versions. It should not be a

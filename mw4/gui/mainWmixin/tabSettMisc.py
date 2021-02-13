@@ -19,6 +19,7 @@ import base.packageConfig as pConf
 import time
 import subprocess
 import sys
+import os
 
 # external packages
 from pkg_resources import working_set
@@ -62,6 +63,7 @@ class SettMisc(object):
         self.ui.versionReleaseNotes.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
+        self.ui.pushTimeToComputer.clicked.connect(self.pushTimeToComputer)
 
         self.setupAudioSignals()
 
@@ -436,7 +438,6 @@ class SettMisc(object):
         :param value:
         :return: success
         """
-
         listEntry = self.guiAudioList.get(value, None)
         if listEntry is None:
             return False
@@ -444,7 +445,26 @@ class SettMisc(object):
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
             PyQt5.QtMultimedia.QSound.play(self.audioSignalsSet[sound])
+            return True
 
         else:
             return False
-        return True
+
+    def pushTimeToComputer(self):
+        """
+        :return:
+        """
+        timeJD = self.app.mount.obsSite.timeJD
+        if timeJD is None:
+            return False
+
+        timeText = timeJD.utc_strftime('%d %b %y %H:%M:%S')
+        self.log.info(f'Set computer time to {timeText}')
+        cmd = f'date {timeText}'
+        try:
+            os.system(cmd)
+        except Exception as e:
+            self.log.warning(f'Time set error: {e}')
+            return False
+        else:
+            return True

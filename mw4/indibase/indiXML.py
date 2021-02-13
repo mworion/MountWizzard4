@@ -794,7 +794,7 @@ def makeINDIFn(indi_type):
 
     # Manipulate some properties of the function so that help, etc. is clearer.
     ifunction.__name__ = indi_type
-    ifunction.__doc__ = type_spec["docs"]  # FIXME: Add arguments dictionary.
+    ifunction.__doc__ = type_spec["docs"]  # todo: Add arguments dictionary.
 
     return ifunction
 

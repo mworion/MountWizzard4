@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>9</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -13420,7 +13420,7 @@ Hint if mount will need a flip when following satellite.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_8">
       <attribute name="title">
@@ -16694,7 +16694,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -25774,6 +25774,38 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="checked">
          <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="LoglevelGroup_2">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>245</y>
+         <width>366</width>
+         <height>56</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Set computer clock from mount</string>
+       </property>
+       <widget class="QPushButton" name="pushTimeToComputer">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>25</y>
+          <width>75</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starting process for updating MountWizzard4 to selected version. The button remains blue as long as the installations is running.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Push time</string>
         </property>
        </widget>
       </widget>

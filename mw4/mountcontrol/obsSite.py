@@ -739,7 +739,7 @@ class ObsSite(object):
             :SaXasXXX.XXXX#
 
         setting angular DEC target is the following:
-            ::SaXbsXXX.XXXX#
+            :SaXbsXXX.XXXX#
 
         :param ra:     right ascension in type Angle
         :param dec:    declination in type Angle preference 'hours'

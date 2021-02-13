@@ -203,6 +203,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
+        self.ui.checkStackImages.clicked.connect(self.clearStack)
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.signals.showCurrent.connect(self.showCurrent)
@@ -233,6 +234,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.solve.clicked.disconnect(self.solveCurrent)
         self.ui.expose.clicked.disconnect(self.exposeImage)
         self.ui.exposeN.clicked.disconnect(self.exposeImageN)
+        self.ui.checkStackImages.clicked.disconnect(self.clearStack)
         self.ui.abortImage.clicked.disconnect(self.abortImage)
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
         self.signals.showCurrent.disconnect(self.showCurrent)
@@ -703,8 +705,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         if np.shape(self.image) != np.shape(self.imageStack):
             self.imageStack = None
 
-        self.ui.numberStacks.setText(f'mean of: {self.numberStack:4.0f}')
-
         if self.imageStack is None:
             self.imageStack = self.image
             self.numberStack = 1
@@ -714,6 +714,19 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.numberStack += 1
 
         self.image = self.imageStack / self.numberStack
+        self.ui.numberStacks.setText(f'mean of: {self.numberStack:4.0f}')
+        return True
+
+    def clearStack(self):
+        """
+        :return:
+        """
+        if not self.ui.checkStackImages.isChecked():
+            self.imageStack = None
+            self.numberStack = 0
+            self.ui.numberStacks.setText('single')
+            return False
+
         return True
 
     def zoomImage(self):

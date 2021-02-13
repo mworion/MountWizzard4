@@ -543,6 +543,22 @@ def test_stackImages_3(function):
     assert function.numberStack == 6
 
 
+def test_clearStack_1(function):
+    function.ui.numberStacks.setText('test')
+    function.ui.checkStackImages.setChecked(False)
+    suc = function.clearStack()
+    assert not suc
+    assert function.ui.numberStacks.text() == 'single'
+
+
+def test_clearStack_2(function):
+    function.ui.numberStacks.setText('test')
+    function.ui.checkStackImages.setChecked(True)
+    suc = function.clearStack()
+    assert suc
+    assert function.ui.numberStacks.text() == 'test'
+
+
 def test_zoomImage_1(function):
     function.ui.zoom.addItem(' 1x Zoom')
     function.image = np.random.rand(100, 100)
@@ -717,7 +733,7 @@ def test_exposeImageNDone_1(function, qtbot):
         with qtbot.waitSignal(function.app.showImage):
             suc = function.exposeImageNDone()
             assert suc
-    assert ['Exposed:            []', 0] == blocker.args
+    assert ['Exposed:             []', 0] == blocker.args
 
 
 def test_exposeImageNDone_2(function, qtbot):
@@ -727,7 +743,7 @@ def test_exposeImageNDone_2(function, qtbot):
         with qtbot.waitSignal(function.signals.solveImage):
             suc = function.exposeImageNDone()
             assert suc
-    assert ['Exposed:            []', 0] == blocker.args
+    assert ['Exposed:             []', 0] == blocker.args
 
 
 def test_exposeImageN_1(function):

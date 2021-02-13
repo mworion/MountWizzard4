@@ -19,7 +19,7 @@ import base.packageConfig as pConf
 import time
 import subprocess
 import sys
-import os
+import platform
 
 # external packages
 from pkg_resources import working_set
@@ -454,9 +454,23 @@ class SettMisc(object):
         if timeJD is None:
             return False
 
-        timeText = timeJD.utc_strftime('%m%d%H%M%y')
+        if platform.system() == 'Windows':
+            timeText = timeJD.utc_strftime('%d %b %Y %H:%M:%S')
+            runnable = ['date',  f'{timeText}']
+
+        elif platform.system() == 'Darwin':
+            timeText = timeJD.utc_strftime('%m%d%H%M%y')
+            runnable = ['date',  f'{timeText}']
+
+        elif platform.system() == 'Linux':
+            timeText = timeJD.utc_strftime('%d-%b-%Y %H:%M:%S')
+            runnable = ['date', '-s', f'{timeText}']
+
+        else:
+            timeText = ''
+            runnable = ''
+
         self.log.info(f'Set computer time to {timeText}')
-        runnable = ['date',  f'{timeText}']
 
         try:
             self.process = subprocess.Popen(args=runnable,

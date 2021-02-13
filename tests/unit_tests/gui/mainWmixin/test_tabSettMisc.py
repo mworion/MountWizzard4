@@ -21,6 +21,7 @@ from unittest import mock
 import logging
 import subprocess
 import builtins
+import platform
 
 # external packages
 from PyQt5.QtMultimedia import QSound
@@ -494,7 +495,7 @@ def test_playSound_3(function):
         assert not suc
 
 
-def test_pushTimeToComputer_1(function):
+def test_pushTimeToComputer_1a(function):
     class Test1:
         @staticmethod
         def decode():
@@ -516,8 +517,98 @@ def test_pushTimeToComputer_1(function):
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test()):
-        suc = function.pushTimeToComputer()
-        assert suc
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Windows'):
+            suc = function.pushTimeToComputer()
+            assert suc
+
+
+def test_pushTimeToComputer_1b(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = 0
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test()):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Linux'):
+            suc = function.pushTimeToComputer()
+            assert suc
+
+
+def test_pushTimeToComputer_1c(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = 0
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test()):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Darwin'):
+            suc = function.pushTimeToComputer()
+            assert suc
+
+
+def test_pushTimeToComputer_1d(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = 0
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test()):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='xxx'):
+            suc = function.pushTimeToComputer()
+            assert suc
 
 
 def test_pushTimeToComputer_2(function):

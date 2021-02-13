@@ -39,17 +39,18 @@ from importlib_metadata import version
 from base.loggerMW import setupLogging
 from gui.utilities.splashScreen import SplashScreen
 from mainApp import MountWizzard4
-import resource.resources
+import resource.resources as res
 
 setupLogging()
-# the following lines should avoid errors messages from OLE Automation with PyQt5
-warnings.simplefilter("ignore", UserWarning)
-sys.coinit_flags = 2
-
+res.qInitResources()
 matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False
 astropy.utils.data.conf.allow_internet = False
 log = logging.getLogger()
+
+# the following lines should avoid errors messages from OLE Automation with PyQt5
+warnings.simplefilter("ignore", UserWarning)
+sys.coinit_flags = 2
 
 
 class QAwesomeTooltipEventFilter(QObject):

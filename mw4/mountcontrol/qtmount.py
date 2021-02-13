@@ -175,20 +175,18 @@ class Mount(mountcontrol.mount.Mount):
         """
         :return: true for test purpose
         """
-        client = socket.socket()
-        client.settimeout(self.SOCKET_TIMEOUT)
-        try:
-            client.connect(self.host)
+        with socket.socket() as client:
+            client.settimeout(self.SOCKET_TIMEOUT)
+            try:
+                client.connect(self.host)
 
-        except Exception:
-            self.mountUp = False
+            except Exception:
+                self.mountUp = False
 
-        else:
-            self.mountUp = True
-            client.shutdown(socket.SHUT_RDWR)
-            client.close()
+            else:
+                self.mountUp = True
 
-        return self.mountUp
+            return self.mountUp
 
     def errorCycleCheckMountUp(self, e):
         """

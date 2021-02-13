@@ -1,7 +1,5 @@
-import time
 from skyfield.data import hipparcos
 from skyfield.api import Star, load
-import skyfield.api
 import numpy as np
 import erfa
 

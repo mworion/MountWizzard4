@@ -65,20 +65,16 @@ class Client(Client):
 
         :return: nothing
         """
-        client = socket.socket()
-        client.settimeout(self.SOCKET_TIMEOUT)
-        try:
-            client.connect(self.host)
+        with socket.socket() as client:
+            client.settimeout(self.SOCKET_TIMEOUT)
+            try:
+                client.connect(self.host)
 
-        except Exception:
-            return False
+            except Exception:
+                return False
 
-        else:
-            return True
-
-        finally:
-            # client.shutdown(socket.SHUT_RDWR)
-            client.close()
+            else:
+                return True
 
     def checkServerUpResult(self, result):
         """

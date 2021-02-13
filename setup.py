@@ -19,11 +19,10 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- Bugfixing
 - adding cover light on / off
 - adding cover light intensity
 - adding release notes show capabilities
-- adding alphas version selection in installer
+- adding alpha version selection in installer
 """
 
 with open('notes.txt', 'w') as f:
@@ -31,7 +30,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='1.0.1',
+    version='1.1.0b0',
     packages=[
         'mw4',
         'mw4.base',

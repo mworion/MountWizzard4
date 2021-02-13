@@ -6,10 +6,6 @@ workflow for astronomy work and imaging runs on Windows, OSx and Linux
 (Ubuntu 18.04 and 20.04 tested). As a python application, it should run in all
 environments supporting python 3.7-3.9 and PyQt5 as a GUI framework.
 
-
-Overall:
-^^^^^^^^
-
 Please check these pages for some hints to your installation:
 https://mountwizzard4.readthedocs.io/en/latest/overview.html
 

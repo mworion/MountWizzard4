@@ -43,9 +43,6 @@ class CameraAlpaca(AlpacaClass):
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
-
-        # as we have in the base class only the base client there, we will get more
-        # specialized with Dome (which is derived from the base class)
         self.client = Camera()
         self.signals = signals
         self.data = data
@@ -61,7 +58,7 @@ class CameraAlpaca(AlpacaClass):
 
         self.dataEntry(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
         self.dataEntry(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
-        # self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
+        self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
         self.dataEntry(self.client.canstopexposure(), 'CAN_ABORT')
         self.dataEntry(self.client.pixelsizex(), 'CCD_INFO.CCD_PIXEL_SIZE_X')
         self.dataEntry(self.client.pixelsizey(), 'CCD_INFO.CCD_PIXEL_SIZE_Y')
@@ -147,19 +144,13 @@ class CameraAlpaca(AlpacaClass):
         :param focalLength:
         :return: success
         """
-        binning = int(binning)
-        posX = int(posX)
-        posY = int(posY)
-        width = int(width)
-        height = int(height)
-
         self.sendDownloadMode(fastReadout=fastReadout)
-        self.client.startx(StartX=posX)
-        self.client.starty(StartY=posY)
+        self.client.binx(BinX=int(binning))
+        self.client.biny(BinY=int(binning))
+        self.client.startx(StartX=int(posX / binning))
+        self.client.starty(StartY=int(posY / binning))
         self.client.numx(NumX=int(width / binning))
         self.client.numy(NumY=int(height / binning))
-        self.client.binx(BinX=binning)
-        self.client.biny(BinY=binning)
 
         isMount = self.app.deviceStat['mount']
         if isMount:

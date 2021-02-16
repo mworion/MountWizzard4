@@ -15,6 +15,7 @@
 # Licence APL2.0
 #
 ###########################################################
+from base.packageConfig import isSGPro
 # standard libraries
 import logging
 import platform
@@ -26,6 +27,7 @@ from PyQt5.QtTest import QTest
 # local imports
 from logic.imaging.cameraIndi import CameraIndi
 from logic.imaging.cameraAlpaca import CameraAlpaca
+from logic.imaging.cameraSGPro import CameraSGPro
 if platform.system() == 'Windows':
     from logic.imaging.cameraAscom import CameraAscom
 
@@ -82,6 +84,14 @@ class Camera:
             ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
             ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
             ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
+        if isSGPro:
+            self.run['sgpro'] = CameraSGPro(self.app, self.signals, self.data)
+            signals = self.run['sgpro'].signals
+            signals.serverConnected.connect(self.signals.serverConnected)
+            signals.serverDisconnected.connect(self.signals.serverDisconnected)
+            signals.deviceConnected.connect(self.signals.deviceConnected)
+            signals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)

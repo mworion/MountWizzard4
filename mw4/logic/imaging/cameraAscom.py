@@ -144,19 +144,13 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        binning = int(binning)
-        posX = int(posX)
-        posY = int(posY)
-        width = int(width)
-        height = int(height)
-
         self.sendDownloadMode(fastReadout=fastReadout)
-        self.client.StartX = posX
-        self.client.StartY = posY
+        self.client.BinX = int(binning)
+        self.client.BinY = int(binning)
+        self.client.StartX = int(posX / binning)
+        self.client.StartY = int(posY / binning)
         self.client.NumX = int(width / binning)
         self.client.NumY = int(height / binning)
-        self.client.BinX = binning
-        self.client.BinY = binning
 
         isMount = self.app.deviceStat['mount']
         if isMount:

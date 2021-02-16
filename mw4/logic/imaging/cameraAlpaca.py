@@ -147,19 +147,13 @@ class CameraAlpaca(AlpacaClass):
         :param focalLength:
         :return: success
         """
-        binning = int(binning)
-        posX = int(posX)
-        posY = int(posY)
-        width = int(width)
-        height = int(height)
-
         self.sendDownloadMode(fastReadout=fastReadout)
-        self.client.startx(StartX=posX)
-        self.client.starty(StartY=posY)
+        self.client.binx(BinX=int(binning))
+        self.client.biny(BinY=int(binning))
+        self.client.startx(StartX=int(posX / binning))
+        self.client.starty(StartY=int(posY / binning))
         self.client.numx(NumX=int(width / binning))
         self.client.numy(NumY=int(height / binning))
-        self.client.binx(BinX=binning)
-        self.client.biny(BinY=binning)
 
         isMount = self.app.deviceStat['mount']
         if isMount:

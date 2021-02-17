@@ -513,6 +513,11 @@ class Styles:
         background-color: green;
         color: #000000;
     }
+    QPushButton[stop='true'] {
+        background-color: transparent;
+        color: transparent;
+        border-color: transparent;
+    }
     /* Combo Boxes */
     QComboBox {
         combobox-popup: 0;

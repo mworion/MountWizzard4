@@ -53,6 +53,7 @@ class Mount(object):
         self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
         self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
         self.ui.stop.clicked.connect(self.stop)
+
         self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
         self.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
         self.clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
@@ -65,6 +66,8 @@ class Mount(object):
         self.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
         self.clickable(self.ui.statusWOL).connect(self.setWOL)
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
+        self.ui.virtualStop.raise_()
+        self.ui.virtualStop.clicked.connect(self.virtualStop)
 
     def initConfig(self):
         """
@@ -462,6 +465,13 @@ class Mount(object):
         else:
             self.app.message.emit('Mount stopped', 0)
             return True
+
+    def virtualStop(self):
+        """
+        :return:
+        """
+        if self.ui.activateVirtualStop.isChecked():
+            self.stop()
 
     def setMeridianLimitTrack(self):
         """

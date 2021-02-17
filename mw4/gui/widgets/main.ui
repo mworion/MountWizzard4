@@ -25782,6 +25782,36 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
+      <widget class="QCheckBox" name="activateVirtualStop">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>285</y>
+         <width>201</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, press / click on time / profile simulated pressing mount stop.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Activate virtal stop button</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
      </widget>
     </widget>
    </widget>
@@ -26556,7 +26586,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <x>455</x>
      <y>5</y>
      <width>140</width>
-     <height>66</height>
+     <height>68</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -27093,6 +27123,31 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
    </widget>
   </widget>
+  <widget class="QPushButton" name="virtualStop">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>10</y>
+     <width>131</width>
+     <height>56</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="stop" stdset="0">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <zorder>virtualStop</zorder>
+  <zorder>mainTabWidget</zorder>
+  <zorder>status</zorder>
+  <zorder>statusOnline</zorder>
+  <zorder>main</zorder>
+  <zorder>statusOnline_2</zorder>
  </widget>
  <tabstops>
   <tabstop>openMessageW</tabstop>

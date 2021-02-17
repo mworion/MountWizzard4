@@ -64,6 +64,7 @@ class SettMisc(object):
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
         self.ui.pushTimeToComputer.clicked.connect(self.pushTimeToComputer)
+        self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
 
         self.setupAudioSignals()
 
@@ -77,6 +78,7 @@ class SettMisc(object):
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', False))
         self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', True))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
+        self.ui.activateVirtualStop.setChecked(config.get('activateVirtualStop', False))
         self.ui.versionReleaseNotes.setChecked(config.get('versionReleaseNotes', True))
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
@@ -102,6 +104,7 @@ class SettMisc(object):
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
+        config['activateVirtualStop'] = self.ui.activateVirtualStop.isChecked()
         config['versionReleaseNotes'] = self.ui.versionReleaseNotes.isChecked()
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
@@ -500,3 +503,10 @@ class SettMisc(object):
 
         return self.process.returncode == 0
 
+    def setVirtualStop(self):
+        """
+        :return:
+        """
+        isVirtual = self.ui.activateVirtualStop.isChecked()
+        self.ui.statusOnline.setEnabled(not isVirtual)
+        return True

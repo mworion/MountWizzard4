@@ -282,30 +282,30 @@ class AstrometryASTAP(object):
         :return: working environment found
         """
 
+        g17 = '/g17*.290'
+        h18 = '/h18*.1476'
         if platform.system() == 'Darwin':
             program = self.appPath + '/astap'
-            index = self.indexPath + '/*.290'
         elif platform.system() == 'Linux':
             program = self.appPath + '/astap'
-            index = self.indexPath + '/*.290'
         elif platform.system() == 'Windows':
             program = self.appPath + '/astap.exe'
-            index = self.indexPath + '/*.290'
 
-        # checking binaries
         if not os.path.isfile(program):
             self.log.info(f'[{program}] not found')
             sucProgram = False
         else:
             sucProgram = True
 
-        # checking indexes
-        if not glob.glob(index):
+        isG17 = sum('.290' in s for s in glob.glob(self.indexPath + g17)) == 290
+        isH18 = sum('.1476' in s for s in glob.glob(self.indexPath + h18)) == 1476
+        if not isG17 and not isH18:
             self.log.info('No index files found')
             sucIndex = False
         else:
             sucIndex = True
 
-        self.log.info(f'ASTAP OK, app:{program} index:{index}')
+        t = f'ASTAP OK, app:{program}, G17:{isG17}, H18:{isH18}'
+        self.log.info(t)
 
         return sucProgram, sucIndex

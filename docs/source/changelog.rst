@@ -27,6 +27,9 @@ Unreleased version of MW4
 
 Released version of MW4
 -----------------------
+1.0.3
+- bugfix binning setting on large sensors
+
 1.0.2
 - bugfix: polar alignment command error
 

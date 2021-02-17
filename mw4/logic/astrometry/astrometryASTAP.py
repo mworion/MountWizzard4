@@ -291,14 +291,12 @@ class AstrometryASTAP(object):
         elif platform.system() == 'Windows':
             program = self.appPath + '/astap.exe'
 
-        # checking binaries
         if not os.path.isfile(program):
             self.log.info(f'[{program}] not found')
             sucProgram = False
         else:
             sucProgram = True
 
-        # checking indexes
         isG17 = sum('.290' in s for s in glob.glob(self.indexPath + g17)) == 290
         isH18 = sum('.1476' in s for s in glob.glob(self.indexPath + h18)) == 1476
         if not isG17 and not isH18:

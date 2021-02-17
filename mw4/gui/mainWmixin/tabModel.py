@@ -193,7 +193,7 @@ class Model:
         """
         self.log.debug('Processing astrometry result')
         if self.resultQueue.empty():
-            self.log.info('empty result queue')
+            self.log.info('Empty result queue')
             return False
 
         mPoint = self.resultQueue.get()
@@ -267,7 +267,7 @@ class Model:
         """
         self.log.debug('Solving started')
         if self.solveQueue.empty():
-            self.log.info('empty solve queue')
+            self.log.info('Empty solve queue')
             return False
 
         mPoint = self.solveQueue.get()
@@ -309,7 +309,7 @@ class Model:
         """
         self.log.debug('Imaging started')
         if self.imageQueue.empty():
-            self.log.info('empty image queue')
+            self.log.info('Empty image queue')
             return False
 
         mPoint = self.imageQueue.get()

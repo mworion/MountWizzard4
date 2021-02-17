@@ -189,6 +189,7 @@ class MainWindow(
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
+        self.ui.statusText.inputRejected.connect(self.test)
 
         for window in self.uiWindows:
             self.uiWindows[window]["button"].clicked.connect(self.toggleWindow)
@@ -203,6 +204,9 @@ class MainWindow(
         self.app.update1s.connect(self.smartEnvironGui)
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update1s.connect(self.updateDeviceStats)
+
+    def test(self):
+        print('stop')
 
     def mwSuper(self, func):
         """

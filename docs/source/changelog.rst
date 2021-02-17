@@ -27,6 +27,10 @@ Unreleased version of MW4
 
 Released version of MW4
 -----------------------
+1.0.4
+- adding check for ASTAP H18 database
+- increasing the solve limit from 9999 arcsec to 36000 arcsec
+
 1.0.3
 - bugfix binning setting on large sensors
 

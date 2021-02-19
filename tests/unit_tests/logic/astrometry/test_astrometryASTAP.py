@@ -23,6 +23,7 @@ import subprocess
 import os
 import glob
 import platform
+import builtins
 
 # external packages
 from PyQt5.QtCore import QThreadPool
@@ -208,12 +209,15 @@ def test_checkAvailability_1(app):
                            return_value=True):
         with mock.patch.object(glob,
                                'glob',
-                               return_value=True):
-            with mock.patch.object(platform,
-                                   'system',
-                                   return_value='Darwin'):
-                suc = app.checkAvailability()
-                assert suc == (True, True)
+                               return_value='.290'):
+            with mock.patch.object(builtins,
+                                   'any',
+                                   return_value=True):
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Darwin'):
+                    suc = app.checkAvailability()
+                    assert suc == (True, True)
 
 
 def test_checkAvailability_2(app):
@@ -222,12 +226,15 @@ def test_checkAvailability_2(app):
                            return_value=True):
         with mock.patch.object(glob,
                                'glob',
-                               return_value=True):
-            with mock.patch.object(platform,
-                                   'system',
-                                   return_value='Linux'):
-                suc = app.checkAvailability()
-                assert suc == (True, True)
+                               return_value='.290'):
+            with mock.patch.object(builtins,
+                                   'any',
+                                   return_value=True):
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Linux'):
+                    suc = app.checkAvailability()
+                    assert suc == (True, True)
 
 
 def test_checkAvailability_3(app):
@@ -236,12 +243,15 @@ def test_checkAvailability_3(app):
                            return_value=True):
         with mock.patch.object(glob,
                                'glob',
-                               return_value=True):
-            with mock.patch.object(platform,
-                                   'system',
-                                   return_value='Windows'):
-                suc = app.checkAvailability()
-                assert suc == (True, True)
+                               return_value='.290'):
+            with mock.patch.object(builtins,
+                                   'any',
+                                   return_value=True):
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Windows'):
+                    suc = app.checkAvailability()
+                    assert suc == (True, True)
 
 
 def test_checkAvailability_4(app):
@@ -250,9 +260,12 @@ def test_checkAvailability_4(app):
                            return_value=False):
         with mock.patch.object(glob,
                                'glob',
-                               return_value=False):
-            with mock.patch.object(platform,
-                                   'system',
-                                   return_value='Linux'):
-                suc = app.checkAvailability()
-                assert suc == (False, False)
+                               return_value='.290'):
+            with mock.patch.object(builtins,
+                                   'any',
+                                   return_value=False):
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Linux'):
+                    suc = app.checkAvailability()
+                    assert suc == (False, False)

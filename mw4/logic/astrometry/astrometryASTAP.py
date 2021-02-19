@@ -283,6 +283,8 @@ class AstrometryASTAP(object):
         """
 
         g17 = '/g17*.290'
+        g18 = '/g18*.290'
+        h17 = '/h17*.1476'
         h18 = '/h18*.1476'
         if platform.system() == 'Darwin':
             program = self.appPath + '/astap'
@@ -298,14 +300,17 @@ class AstrometryASTAP(object):
             sucProgram = True
 
         isG17 = sum('.290' in s for s in glob.glob(self.indexPath + g17)) == 290
+        isG18 = sum('.1476' in s for s in glob.glob(self.indexPath + g18)) == 1476
+        isH17 = sum('.290' in s for s in glob.glob(self.indexPath + h17)) == 290
         isH18 = sum('.1476' in s for s in glob.glob(self.indexPath + h18)) == 1476
-        if not isG17 and not isH18:
+        if not any((isG17, isG18, isH17, isH18)):
             self.log.info('No index files found')
             sucIndex = False
         else:
             sucIndex = True
 
-        t = f'ASTAP OK, app:{program}, G17:{isG17}, H18:{isH18}'
+        t = f'ASTAP OK, app:{program}, '
+        t = t + f'G17:{isG17}, G18:{isG18}, H17:{isH17}, H18:{isH18}'
         self.log.info(t)
 
         return sucProgram, sucIndex

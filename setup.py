@@ -18,6 +18,17 @@ from setuptools import setup
 from pathlib import Path
 import platform
 
+releaseNotes = """
+ - adding release notes show capabilities
+ - adding cover light on / off
+ - adding cover light intensity
+ - reversing E/W for polar diagram in hemisphere window
+ - adding push mount time to computer
+ """
+
+with open('notes.txt', 'w') as f:
+    f.writelines(releaseNotes)
+
 setup(
     name='mountwizzard4',
     version='1.1.0b0',

@@ -15,7 +15,6 @@
 # Licence APL2.0
 #
 ###########################################################
-from base.packageConfig import isSGPro
 # standard libraries
 import logging
 import platform

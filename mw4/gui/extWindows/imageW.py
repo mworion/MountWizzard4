@@ -20,6 +20,9 @@ import os
 
 # external packages
 import PyQt5.QtWidgets
+import numpy as np
+from scipy.interpolate import griddata
+from scipy.ndimage import uniform_filter
 from astropy.io import fits
 from astropy import wcs
 from astropy.nddata import Cutout2D
@@ -29,12 +32,11 @@ from astropy.visualization import imshow_norm
 from matplotlib.patches import Ellipse
 import matplotlib.pyplot as plt
 from skyfield.api import Angle
-import numpy as np
 from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
-from mountcontrol.convert import convertToDMS, convertToHMS
 import sep
 
 # local import
+from mountcontrol.convert import convertToDMS, convertToHMS
 from gui.utilities import toolsQtWidget
 from gui.widgets import image_ui
 from base.tpool import Worker
@@ -92,6 +94,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                      4: 'Photometry: Background level',
                      5: 'Photometry: Background noise',
                      6: 'Photometry: Flux',
+                     7: 'Photometry: HFD Contour',
                      }
 
         self.colorMaps = {'Grey': 'gray',
@@ -568,8 +571,25 @@ class ImageWindow(toolsQtWidget.MWidget):
             yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
             plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        self.axe.figure.canvas.draw()
+        if self.ui.view.currentIndex() == 7:
+            if self.radius is None or self.objs is None:
+                return False
 
+            x = self.objs['x']
+            y = self.objs['y']
+            z = self.radius
+            width = imageDisp.shape[1]
+            height = imageDisp.shape[0]
+            X, Y = np.meshgrid(range(0, width, int(width / 250)),
+                               range(0, height, int(height / 250)))
+            Z = griddata((x, y), z, (X, Y), method='linear', fill_value=np.mean(z))
+            Z = uniform_filter(Z, size=25)
+            self.axe.contourf(X, Y, Z, 20)
+
+            if self.axeCB:
+                self.axeCB.axis('off')
+
+        self.axe.figure.canvas.draw()
         return True
 
     def writeHeaderDataToGUI(self):
@@ -582,7 +602,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         ra = Angle(degrees=self.header.get('RA', 0))
         dec = Angle(degrees=self.header.get('DEC', 0))
 
-        # ra will be in hours
         self.ui.ra.setText(f'{ra.hstr(warn=False)}')
         self.ui.dec.setText(f'{dec.dstr()}')
 

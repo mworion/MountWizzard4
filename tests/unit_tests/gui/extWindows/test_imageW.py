@@ -411,6 +411,35 @@ def test_imagePlot_6(function):
     assert suc
 
 
+def test_imagePlot_7(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.image = np.random.rand(300, 300)
+    function.header = fits.PrimaryHDU().header
+    function.axe = function.fig.add_subplot(label=0)
+    function.axeCB = function.fig.add_subplot(label=1)
+    function.stretch = AsinhStretch()
+    function.colorMap = 'rainbow'
+    function.objs = np.ones(
+        100,
+        dtype=[('x', '<f8'), ('y', '<f8'),
+               ('a', '<f8'), ('b', '<f8'),
+               ('theta', '<f8'), ('flux', '<f8')])
+    function.objs['x'] = np.random.rand(100)
+    function.objs['y'] = np.random.rand(100)
+    function.bk_back = np.zeros([300, 300])
+    function.radius = np.random.rand(100)
+    function.ui.view.setCurrentIndex(7)
+    suc = function.imagePlot()
+    assert suc
+
+
 def test_writeHeaderDataToGUI_1(function):
     function.header = fits.PrimaryHDU().header
     suc = function.writeHeaderDataToGUI()

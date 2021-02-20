@@ -65,7 +65,7 @@ setup(
         'matplotlib==3.3.4',
         'pyerfa==1.7.1.1',
         'astropy==4.2',
-        'scipy==1.6.0',
+        'scipy==1.6.1',
         'sep==1.1.1',
         'requests==2.24.0',
         'requests_toolbelt==0.9.1',

@@ -104,6 +104,7 @@ def function_setup_teardown(qtbot):
         config = {'mainW': {},
                   'showImageW': True}
         update1s = pyqtSignal()
+        update1h = pyqtSignal()
         redrawSimulator = pyqtSignal()
         drawHorizonPoints = pyqtSignal()
         drawBuildPoints = pyqtSignal()

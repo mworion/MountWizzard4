@@ -300,8 +300,8 @@ class AstrometryASTAP(object):
             sucProgram = True
 
         isG17 = sum('.290' in s for s in glob.glob(self.indexPath + g17)) == 290
-        isG18 = sum('.1476' in s for s in glob.glob(self.indexPath + g18)) == 1476
-        isH17 = sum('.290' in s for s in glob.glob(self.indexPath + h17)) == 290
+        isG18 = sum('.290' in s for s in glob.glob(self.indexPath + g18)) == 290
+        isH17 = sum('.1476' in s for s in glob.glob(self.indexPath + h17)) == 1476
         isH18 = sum('.1476' in s for s in glob.glob(self.indexPath + h18)) == 1476
         if not any((isG17, isG18, isH17, isH18)):
             self.log.info('No index files found')

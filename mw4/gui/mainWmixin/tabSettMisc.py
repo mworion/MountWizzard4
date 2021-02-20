@@ -465,12 +465,12 @@ class SettMisc(object):
         if platform.system() == 'Windows':
             timeText = timeJD.astimezone(tzlocal()).strftime('%H:%M:%S')
             dateText = timeJD.astimezone(tzlocal()).strftime('%d-%m-%Y')
-            runnable = ['date',  f'{dateText}', ';', 'time', f'{timeText}']
+            runnable = ['date', f'{dateText}', ';', 'time', f'{timeText}']
 
         elif platform.system() == 'Darwin':
             timeText = timeJD.astimezone(tzlocal()).strftime('%m%d%H%M%y')
             dateText = ''
-            runnable = ['date',  f'{timeText}']
+            runnable = ['date', f'{timeText}']
 
         elif platform.system() == 'Linux':
             timeText = timeJD.astimezone(tzlocal()).strftime('%d-%b-%Y %H:%M:%S')

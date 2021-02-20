@@ -421,16 +421,46 @@ def test_switchLightOff_2():
 
 
 def test_setLightIntensity_1():
-    with mock.patch.object(app.app.cover,
-                           'lightIntensity',
-                           return_value=False):
+    with mock.patch.object(QMessageBox,
+                           'critical'):
         suc = app.setLightIntensity()
         assert not suc
 
 
 def test_setLightIntensity_2():
-    with mock.patch.object(app.app.cover,
-                           'lightIntensity',
-                           return_value=True):
-        suc = app.setLightIntensity()
-        assert suc
+    app.app.cover.data['FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = app.setLightIntensity()
+            assert not suc
+
+
+def test_setLightIntensity_3():
+    app.app.cover.data['FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(app.app.cover,
+                                   'lightIntensity',
+                                   return_value=False):
+                suc = app.setLightIntensity()
+                assert not suc
+
+
+def test_setLightIntensity_4():
+    app.app.cover.data['FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(app.app.cover,
+                                   'lightIntensity',
+                                   return_value=True):
+                suc = app.setLightIntensity()
+                assert suc

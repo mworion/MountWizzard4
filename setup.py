@@ -25,6 +25,7 @@ releaseNotes = """
  - reversing E/W for polar diagram in hemisphere window
  - adding push mount time to computer manual / hourly
  - adding contour HFD plot to image windows
+ - adding virtual emergency stop key
  """
 
 with open('notes.txt', 'w') as f:

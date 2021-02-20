@@ -30,7 +30,8 @@ Released version of MW4
 - adding release notes
 - reversing E/W for polar diagram in hemisphere window
 - adding simple push mount time to computer function
- - adding contour HFD plot to image windows
+- adding contour HFD plot to image windows
+- adding virtual emergency stop key
 
 1.0.4
 

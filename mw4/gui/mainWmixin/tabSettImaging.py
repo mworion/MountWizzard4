@@ -45,7 +45,7 @@ class SettImaging(object):
         self.ui.coverHalt.clicked.connect(self.setCoverHalt)
         self.ui.coverLightOn.clicked.connect(self.switchLightOn)
         self.ui.coverLightOff.clicked.connect(self.switchLightOff)
-        self.ui.coverLightIntensity.valueChanged.connect(self.setLightIntensity)
+        self.clickable(self.ui.coverLightIntensity).connect(self.setLightIntensity)
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
         self.ui.aperture.valueChanged.connect(self.updateParameters)
         self.ui.focalLength.valueChanged.connect(self.updateParameters)
@@ -402,9 +402,8 @@ class SettImaging(object):
             self.changeStyleDynamic(self.ui.coverLightOff, 'running', True)
 
         value = self.app.cover.data.get(
-            'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE', '0')
-        value = float(value)
-        self.ui.coverLightIntensity.setValue(value)
+            'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE')
+        self.guiSetText(self.ui.coverLightIntensity, '3.0f', value)
         return True
 
     def setCoverPark(self):
@@ -487,10 +486,31 @@ class SettImaging(object):
 
     def setLightIntensity(self):
         """
-        :return:
+        :return: success
         """
-        value = self.ui.coverLightIntensity.value()
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = self.app.cover.data.get(
+            'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE')
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set light intensity',
+                               'Value (0..255):',
+                               float(actValue),
+                               0,
+                               255,
+                               1,
+                               )
+        if not ok:
+            return False
+
+        self.ui.coverLightIntensity.setText(f'{value}')
         suc = self.app.cover.lightIntensity(value)
         if not suc:
             self.app.message.emit('Light intensity could not be set', 2)
+
         return suc

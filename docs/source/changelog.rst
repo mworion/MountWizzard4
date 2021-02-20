@@ -18,26 +18,35 @@ Unreleased version of MW4
   does affect the observatory, so even this small move needs another 10s settle
   time for the mount So avoiding them would be great.
 - if indi UPD Driver is fixed and officially available, bring back auto dew
+
+
+
+Released version of MW4
+-----------------------
+1.1.0b0
+
 - adding cover light on / off
 - adding cover light intensity
 - adding release notes
 - reversing E/W for polar diagram in hemisphere window
 - adding simple push mount time to computer function
+ - adding contour HFD plot to image windows
 
-
-Released version of MW4
------------------------
 1.0.4
+
 - adding check for ASTAP H17, H18, G17, G18 database
 - increasing the solve limit from 9999 arcsec to 36000 arcsec
 
 1.0.3
+
 - bugfix binning setting on large sensors
 
 1.0.2
+
 - bugfix: polar alignment command error
 
 1.0.1
+
 - bugfix: fields index and app in device popup for astrometry and astap were wrong
 
 1.0.0

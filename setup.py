@@ -24,6 +24,7 @@ releaseNotes = """
  - adding cover light intensity
  - reversing E/W for polar diagram in hemisphere window
  - adding push mount time to computer manual / hourly
+ - adding contour HFD plot to image windows
  """
 
 with open('notes.txt', 'w') as f:

@@ -63,8 +63,10 @@ class SettMisc(object):
         self.ui.versionReleaseNotes.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
-        self.ui.pushTimeToComputer.clicked.connect(self.pushTimeToComputer)
+        self.ui.pushTime.clicked.connect(self.pushTime)
         self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
+        self.app.update1h.connect(self.pushTimeHourly)
+        self.ui.autoPushTime.stateChanged.connect(self.pushTimeHourly)
 
         self.setupAudioSignals()
 
@@ -78,6 +80,7 @@ class SettMisc(object):
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', False))
         self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', True))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
+        self.ui.autoPushTime.setChecked(config.get('autoPushTime', False))
         self.ui.activateVirtualStop.setChecked(config.get('activateVirtualStop', False))
         self.ui.versionReleaseNotes.setChecked(config.get('versionReleaseNotes', True))
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
@@ -104,6 +107,7 @@ class SettMisc(object):
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
+        config['autoPushTime'] = self.ui.autoPushTime.isChecked()
         config['activateVirtualStop'] = self.ui.activateVirtualStop.isChecked()
         config['versionReleaseNotes'] = self.ui.versionReleaseNotes.isChecked()
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
@@ -450,7 +454,7 @@ class SettMisc(object):
         else:
             return False
 
-    def pushTimeToComputer(self):
+    def pushTime(self):
         """
         :return:
         """
@@ -502,6 +506,18 @@ class SettMisc(object):
             self.log.debug(f'[{retCode}] [{output}]')
 
         return self.process.returncode == 0
+
+    def pushTimeHourly(self):
+        """
+        :return:
+        """
+        isAuto = self.ui.autoPushTime.isChecked()
+        if isAuto:
+            self.pushTime()
+            return True
+
+        else:
+            return False
 
     def setVirtualStop(self):
         """

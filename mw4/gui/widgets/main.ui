@@ -25762,7 +25762,7 @@ p, li { white-space: pre-wrap; }
        <property name="title">
         <string>Set computer clock from mount</string>
        </property>
-       <widget class="QPushButton" name="pushTimeToComputer">
+       <widget class="QPushButton" name="pushTime">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -25779,6 +25779,36 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="text">
          <string>Push time</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="autoPushTime">
+        <property name="geometry">
+         <rect>
+          <x>155</x>
+          <y>20</y>
+          <width>201</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will push the mount time to the compuzer every minute.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Auto update every hour</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </widget>

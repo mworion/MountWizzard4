@@ -489,7 +489,7 @@ def test_playSound_3(function):
         assert not suc
 
 
-def test_pushTimeToComputer_1a(function):
+def test_pushTime_1a(function):
     class Test1:
         @staticmethod
         def decode():
@@ -514,11 +514,11 @@ def test_pushTimeToComputer_1a(function):
         with mock.patch.object(platform,
                                'system',
                                return_value='Windows'):
-            suc = function.pushTimeToComputer()
+            suc = function.pushTime()
             assert suc
 
 
-def test_pushTimeToComputer_1b(function):
+def test_pushTime_1b(function):
     class Test1:
         @staticmethod
         def decode():
@@ -543,11 +543,11 @@ def test_pushTimeToComputer_1b(function):
         with mock.patch.object(platform,
                                'system',
                                return_value='Linux'):
-            suc = function.pushTimeToComputer()
+            suc = function.pushTime()
             assert suc
 
 
-def test_pushTimeToComputer_1c(function):
+def test_pushTime_1c(function):
     class Test1:
         @staticmethod
         def decode():
@@ -572,11 +572,11 @@ def test_pushTimeToComputer_1c(function):
         with mock.patch.object(platform,
                                'system',
                                return_value='Darwin'):
-            suc = function.pushTimeToComputer()
+            suc = function.pushTime()
             assert suc
 
 
-def test_pushTimeToComputer_1d(function):
+def test_pushTime_1d(function):
     class Test1:
         @staticmethod
         def decode():
@@ -601,11 +601,11 @@ def test_pushTimeToComputer_1d(function):
         with mock.patch.object(platform,
                                'system',
                                return_value='xxx'):
-            suc = function.pushTimeToComputer()
+            suc = function.pushTime()
             assert suc
 
 
-def test_pushTimeToComputer_2(function):
+def test_pushTime_2(function):
     class Test1:
         @staticmethod
         def decode():
@@ -628,11 +628,11 @@ def test_pushTimeToComputer_2(function):
                            'Popen',
                            return_value=Test(),
                            side_effect=Exception()):
-        suc = function.pushTimeToComputer()
+        suc = function.pushTime()
         assert not suc
 
 
-def test_pushTimeToComputer_3(function):
+def test_pushTime_3(function):
     class Test1:
         @staticmethod
         def decode():
@@ -655,11 +655,11 @@ def test_pushTimeToComputer_3(function):
                            'Popen',
                            return_value=Test(),
                            side_effect=subprocess.TimeoutExpired('res', 2)):
-        suc = function.pushTimeToComputer()
+        suc = function.pushTime()
         assert not suc
 
 
-def test_pushTimeToComputer_4(function):
+def test_pushTime_4(function):
     class Test1:
         @staticmethod
         def decode():
@@ -681,13 +681,30 @@ def test_pushTimeToComputer_4(function):
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test()):
-        suc = function.pushTimeToComputer()
+        suc = function.pushTime()
         assert not suc
 
 
-def test_pushTimeToComputer_5(function):
+def test_pushTime_5(function):
     a = function.app.mount.obsSite.timeJD
     function.app.mount.obsSite.timeJD = None
-    suc = function.pushTimeToComputer()
+    suc = function.pushTime()
     assert not suc
     function.app.mount.obsSite.timeJD = a
+
+
+def test_pushTimeHourly_1(function):
+    function.ui.autoPushTime.setChecked(False)
+    suc = function.pushTimeHourly()
+    assert not suc
+
+
+def test_pushTimeHourly_2(function):
+    function.ui.autoPushTime.setChecked(True)
+    suc = function.pushTimeHourly()
+    assert suc
+
+
+def test_setVirtualStop(function):
+    suc = function.setVirtualStop()
+    assert suc

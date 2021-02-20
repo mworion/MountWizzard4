@@ -19,11 +19,11 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
- - adding release notes show capabilities
+ - adding release notes showing new capabilities in message window
  - adding cover light on / off
  - adding cover light intensity
  - reversing E/W for polar diagram in hemisphere window
- - adding push mount time to computer
+ - adding push mount time to computer manual / hourly
  """
 
 with open('notes.txt', 'w') as f:

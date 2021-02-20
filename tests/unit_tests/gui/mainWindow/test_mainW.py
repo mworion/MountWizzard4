@@ -72,6 +72,7 @@ def function_setup_teardown(qtbot):
                       pathToData='tests/data')
         update10s = pyqtSignal()
         update1s = pyqtSignal()
+        update1h = pyqtSignal()
         mwGlob = {'imageDir': 'tests/image',
                   'dataDir': 'tests/data',
                   'modelDir': 'tests/model',

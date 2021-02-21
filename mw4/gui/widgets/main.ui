@@ -17373,7 +17373,7 @@ Hint if mount will need a flip when following satellite.</string>
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the filter device. A popup will open and ask for the parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the plate solver device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>

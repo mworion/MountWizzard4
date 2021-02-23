@@ -387,16 +387,16 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         if active:
             marker = self.markerPoint()
             color = self.MODE[self.operationMode]['buildPColor']
-            markersize = 9
+            mSize = 9
             annotationText = f'{index + 1:2d}'
 
         else:
             marker = '$\u2714$'
             color = self.M_YELLOW
-            markersize = 11
+            mSize = 11
             annotationText = f'{index + 1:2d}'
 
-        return marker, markersize, color, annotationText
+        return marker, mSize, color, annotationText
 
     def updatePointMarker(self):
         """
@@ -404,9 +404,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         """
         for index, point in enumerate(self.app.data.buildP):
             active = point[2]
-            marker, markersize, color, _ = self.getMarkerStatusParams(active, index)
+            marker, mSize, color, _ = self.getMarkerStatusParams(active, index)
             self.pointsBuild[index].set_marker(marker)
-            self.pointsBuild[index].set_markersize(markersize)
+            self.pointsBuild[index].set_markersize(mSize)
             self.pointsBuild[index].set_color(color)
             self.pointsBuildAnnotate[index].set_color(color)
 
@@ -422,9 +422,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
         for index, point in enumerate(self.app.data.buildP):
             active = point[2]
-            marker, markersize, color, _ = self.getMarkerStatusParams(active, index)
+            marker, mSize, color, _ = self.getMarkerStatusParams(active, index)
             self.pointsPolarBuild[index].set_marker(marker)
-            self.pointsPolarBuild[index].set_markersize(markersize)
+            self.pointsPolarBuild[index].set_markersize(mSize)
             self.pointsPolarBuild[index].set_color(color)
             self.pointsPolarBuildAnnotate[index].set_color(color)
 
@@ -576,7 +576,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             alt = point[0]
             active = point[2]
 
-            marker, markersize, color, text = self.getMarkerStatusParams(active, index)
+            marker, mSize, color, text = self.getMarkerStatusParams(active, index)
 
             if self.ui.checkShowSlewPath.isChecked() and index > 0:
                 if polar:
@@ -592,7 +592,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             if polar:
                 p, = axes.plot(np.radians(az), 90 - alt,
                                marker=marker,
-                               markersize=markersize,
+                               markersize=mSize,
                                fillstyle='none',
                                color=self.MODE['normal']['buildPColor'],
                                zorder=40,
@@ -602,7 +602,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             else:
                 p, = axes.plot(az, alt,
                                marker=marker,
-                               markersize=markersize,
+                               markersize=mSize,
                                fillstyle='none',
                                color=self.MODE[self.operationMode]['buildPColor'],
                                zorder=40,
@@ -847,7 +847,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                        clip_on=True,
                                        )
             self.starsAlignAnnotate.append(annotation)
-
         return True
 
     def drawHemisphere(self):

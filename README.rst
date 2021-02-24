@@ -42,7 +42,8 @@ Version, build and code coverage status
 |PYTEST macOS| |PYTEST Windows| |PYTHON3_PACKAGE|
 
 |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES|
-|COMMITS_RELEASE| |COMMITS_MASTER|
+
+|COMMITS_WEEK| |COMMITS_RELEASE| |COMMITS_MASTER|
 
 |CODECOV_CHART|
 
@@ -132,6 +133,9 @@ CS Michel
 .. |COMMITS_MASTER| image::
     https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.0.5/master
     :target: https://github.com/mworion/MountWizzard4/commits/master
+
+.. |COMMITS_WEEK| image::
+    https://img.shields.io/github/commit-activity/w/mworion/mountwizzard4
 
 .. |PYTHON3_PACKAGE| image::
     https://github.com/mworion/MountWizzard4/workflows/python3_package/badge.svg

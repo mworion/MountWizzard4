@@ -446,6 +446,8 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             return False
         if self.starsAlignAnnotate is None:
             return False
+        if not self.mutexDraw.tryLock():
+            return False
 
         axes = self.hemisphereMat.figure.axes[0]
         hip = self.app.hipparcos
@@ -470,6 +472,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             self.starsAlignAnnotate.append(annotation)
 
         self.hemisphereMat.figure.canvas.draw()
+        self.mutexDraw.unlock()
         return True
 
     def clearHemisphere(self):
@@ -822,6 +825,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         :param axes: matplotlib axes object
         :return: true for test purpose
         """
+        if not self.mutexDraw.tryLock():
+            return False
+
         self.starsAlignAnnotate = list()
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()
@@ -847,6 +853,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                        clip_on=True,
                                        )
             self.starsAlignAnnotate.append(annotation)
+        self.mutexDraw.unlock()
         return True
 
     def drawHemisphere(self):

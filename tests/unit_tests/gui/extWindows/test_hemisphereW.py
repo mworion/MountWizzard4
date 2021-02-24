@@ -298,6 +298,20 @@ def test_updateAlignStar_4(function):
     function.app.hipparcos.alt = [1]
     function.app.hipparcos.az = [1]
     function.app.hipparcos.name = ['test']
+    function.mutexDraw.lock()
+    suc = function.updateAlignStar()
+    assert not suc
+    function.mutexDraw.unlock()
+
+
+def test_updateAlignStar_5(function):
+    function.ui.checkShowAlignStar.setChecked(True)
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.starsAlign, = axe.plot(0, 0)
+    function.starsAlignAnnotate = [axe.annotate('test', (0, 0))]
+    function.app.hipparcos.alt = [1]
+    function.app.hipparcos.az = [1]
+    function.app.hipparcos.name = ['test']
 
     suc = function.updateAlignStar()
     assert suc
@@ -469,6 +483,17 @@ def test_drawHemisphereMoving_1(function):
 
 
 def test_drawAlignmentStars_1(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.app.hipparcos.alt = [1]
+    function.app.hipparcos.az = [1]
+    function.app.hipparcos.name = ['test']
+    function.mutexDraw.lock()
+    suc = function.drawAlignmentStars(axe)
+    assert not suc
+    function.mutexDraw.unlock()
+
+
+def test_drawAlignmentStars_2(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.app.hipparcos.alt = [1]
     function.app.hipparcos.az = [1]

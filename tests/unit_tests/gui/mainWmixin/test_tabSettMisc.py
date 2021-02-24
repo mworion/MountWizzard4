@@ -110,7 +110,8 @@ def test_versionPackage_1(function):
                            return_value=Test(),
                            side_effect=Exception()):
         val = function.versionPackage('matplotlib')
-        assert val is None
+        assert val[0] is None
+        assert val[1] is None
 
 
 def test_versionPackage_2(function):

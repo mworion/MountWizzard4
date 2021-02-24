@@ -23,7 +23,7 @@ Unreleased version of MW4
 
 Released version of MW4
 -----------------------
-1.1.0b0
+1.1.0b1
 
 - adding cover light on / off
 - adding cover light intensity
@@ -32,6 +32,10 @@ Released version of MW4
 - adding simple push mount time to computer function
 - adding contour HFD plot to image windows
 - adding virtual emergency stop key
+
+1.0.5
+
+- bugfix check for H18 database
 
 1.0.4
 

@@ -375,7 +375,7 @@ def test_modelSolveDone_1(function, qtbot):
                                    'modelCycleThroughBuildPointsFinished'):
                 suc = function.modelSolveDone(result)
                 assert suc
-    assert ['Solving  image-003:  test', 2] == blocker.args
+    assert blocker.args == ['Solving failed for image-003', 2]
 
 
 def test_modelSolveDone_2(function):
@@ -802,6 +802,7 @@ def test_generateSaveModel_1(function):
 
 
 def test_saveModelFinish_1(function):
+    shutil.copy('tests/testData/test.model', 'tests/model/test.model')
     function.modelName = 'test'
     function.app.mount.signals.alignDone.connect(function.saveModelFinish)
     suc = function.saveModelFinish()

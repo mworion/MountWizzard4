@@ -61,8 +61,9 @@ class CameraAlpaca(AlpacaClass):
 
         self.dataEntry(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
         self.dataEntry(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
-        # self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
+        self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
         self.dataEntry(self.client.canstopexposure(), 'CAN_ABORT')
+        self.dataEntry(self.client.cansetccdtemperature(), 'CAN_SET_CCD_TEMPERATURE')
         self.dataEntry(self.client.pixelsizex(), 'CCD_INFO.CCD_PIXEL_SIZE_X')
         self.dataEntry(self.client.pixelsizey(), 'CCD_INFO.CCD_PIXEL_SIZE_Y')
         self.dataEntry(self.client.maxbinx(), 'CCD_BINNING.HOR_BIN_MAX')
@@ -86,20 +87,21 @@ class CameraAlpaca(AlpacaClass):
 
         self.dataEntry(self.client.camerastate(),
                        'CAMERA.STATE')
-        self.dataEntry(self.client.ccdtemperature(),
-                       'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-        self.dataEntry(self.client.cooleron(),
-                       'CCD_COOLER.COOLER_ON')
-        self.dataEntry(self.client.coolerpower(),
-                       'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         canFast = self.data.get('CAN_FAST', False)
-        if not canFast:
-            return False
+        if canFast:
+            self.dataEntry(self.client.fastreadout(),
+                           'READOUT_QUALITY.QUALITY_LOW',
+                           'READOUT_QUALITY.QUALITY_HIGH')
 
-        self.dataEntry(self.client.fastreadout(),
-                       'READOUT_QUALITY.QUALITY_LOW',
-                       'READOUT_QUALITY.QUALITY_HIGH')
+        canCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
+        if canCCDTemp:
+            self.dataEntry(self.client.ccdtemperature(),
+                           'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+            self.dataEntry(self.client.cooleron(),
+                           'CCD_COOLER.COOLER_ON')
+            self.dataEntry(self.client.coolerpower(),
+                           'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         return True
 

@@ -59,6 +59,7 @@ class CameraAscom(AscomClass):
         self.dataEntry(self.client.CameraYSize, 'CCD_INFO.CCD_MAX_Y')
         self.dataEntry(self.client.CanFastReadout, 'CAN_FAST')
         self.dataEntry(self.client.CanAbortExposure, 'CAN_ABORT')
+        self.dataEntry(self.client.CanSetCCDTemperature, 'CAN_SET_CCD_TEMPERATURE')
         self.dataEntry(self.client.PixelSizeX, 'CCD_INFO.CCD_PIXEL_SIZE_X')
         self.dataEntry(self.client.PixelSizeY, 'CCD_INFO.CCD_PIXEL_SIZE_Y')
         self.dataEntry(self.client.MaxBinX, 'CCD_BINNING.HOR_BIN_MAX')
@@ -80,20 +81,21 @@ class CameraAscom(AscomClass):
 
         self.dataEntry(self.client.CameraState,
                        'CAMERA.STATE')
-        self.dataEntry(self.client.CCDTemperature,
-                       'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-        self.dataEntry(self.client.CoolerOn,
-                       'CCD_COOLER.COOLER_ON')
-        self.dataEntry(self.client.CoolerPower,
-                       'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         canFast = self.data.get('CAN_FAST', False)
-        if not canFast:
-            return False
+        if canFast:
+            self.dataEntry(self.client.FastReadout,
+                           'READOUT_QUALITY.QUALITY_LOW',
+                           'READOUT_QUALITY.QUALITY_HIGH')
 
-        self.dataEntry(self.client.FastReadout,
-                       'READOUT_QUALITY.QUALITY_LOW',
-                       'READOUT_QUALITY.QUALITY_HIGH')
+        canCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
+        if canCCDTemp:
+            self.dataEntry(self.client.CCDTemperature,
+                           'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+            self.dataEntry(self.client.CoolerOn,
+                           'CCD_COOLER.COOLER_ON')
+            self.dataEntry(self.client.CoolerPower,
+                           'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         return True
 

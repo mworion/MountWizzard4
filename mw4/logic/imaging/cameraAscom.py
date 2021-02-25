@@ -60,6 +60,7 @@ class CameraAscom(AscomClass):
         self.dataEntry(self.client.CanFastReadout, 'CAN_FAST')
         self.dataEntry(self.client.CanAbortExposure, 'CAN_ABORT')
         self.dataEntry(self.client.CanSetCCDTemperature, 'CAN_SET_CCD_TEMPERATURE')
+        self.dataEntry(self.client.CanGetCoolerPower, 'CAN_GET_COOLER_POWER')
         self.dataEntry(self.client.PixelSizeX, 'CCD_INFO.CCD_PIXEL_SIZE_X')
         self.dataEntry(self.client.PixelSizeY, 'CCD_INFO.CCD_PIXEL_SIZE_Y')
         self.dataEntry(self.client.MaxBinX, 'CCD_BINNING.HOR_BIN_MAX')
@@ -88,12 +89,15 @@ class CameraAscom(AscomClass):
                            'READOUT_QUALITY.QUALITY_LOW',
                            'READOUT_QUALITY.QUALITY_HIGH')
 
-        canCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
-        if canCCDTemp:
+        canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
+        if canSetCCDTemp:
             self.dataEntry(self.client.CCDTemperature,
                            'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
             self.dataEntry(self.client.CoolerOn,
                            'CCD_COOLER.COOLER_ON')
+
+        canGetCoolerPower = self.data.get('CAN_GET_COOLER_POWER', False)
+        if canGetCoolerPower:
             self.dataEntry(self.client.CoolerPower,
                            'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
@@ -280,8 +284,11 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.CoolerOn = coolerOn
+        canGetCoolerPower = self.data.get('CAN_GET_COOLER_POWER', False)
+        if not canGetCoolerPower:
+            return False
 
+        self.client.CoolerOn = coolerOn
         return True
 
     def sendCoolerTemp(self, temperature=0):
@@ -292,6 +299,9 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.SetCCDTemperature = temperature
+        canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
+        if canSetCCDTemp:
+            return False
 
+        self.client.SetCCDTemperature = temperature
         return True

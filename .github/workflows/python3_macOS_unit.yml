@@ -10,6 +10,7 @@ on:
     # Run this action on the trigger event when specific files are touched
     paths:
       - 'mw4/**'
+      - 'tests/unit_tests/**'
       - 'setup.py'
       - '.github/workflows/python3_macOS_unit.yml'
 

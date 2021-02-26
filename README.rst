@@ -43,7 +43,7 @@ Version, build and code coverage status
 
 |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES|
 
-|COMMITS_WEEK| |COMMITS_RELEASE| |COMMITS_MASTER|
+|COMMITS_WEEK| |COMMITS_MASTER|
 
 |CODECOV_CHART|
 
@@ -126,12 +126,8 @@ CS Michel
     https://img.shields.io/github/issues-raw/mworion/mountwizzard4
     :target: https://github.com/mworion/MountWizzard4/issues
 
-.. |COMMITS_RELEASE| image::
-    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.0.3/1.0.0
-    :target: https://github.com/mworion/MountWizzard4/commits/1.0.0
-
 .. |COMMITS_MASTER| image::
-    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.0.5/master
+    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.0.6/master
     :target: https://github.com/mworion/MountWizzard4/commits/master
 
 .. |COMMITS_WEEK| image::

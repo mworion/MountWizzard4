@@ -5,7 +5,6 @@ detailed changes list, please refer to the commit list on GitHub.
 
 Unreleased version of MW4
 -------------------------
-(1.1)
 
 - 3d Simulator (mount, dome, build points etc)
 - retrofit model based on hashed coordinates
@@ -23,7 +22,7 @@ Unreleased version of MW4
 
 Released version of MW4
 -----------------------
-1.1.0b1
+1.1.0b2
 
 - adding cover light on / off
 - adding cover light intensity

@@ -269,6 +269,7 @@ def test_sendCoolerSwitch_2():
 
 def test_sendCoolerTemp_1():
     app.deviceConnected = False
+    app.data['CAN_SET_CCD_TEMPERATURE'] = True
     with mock.patch.object(AlpacaBase,
                            'get',
                            return_value=True):
@@ -278,7 +279,17 @@ def test_sendCoolerTemp_1():
 
 def test_sendCoolerTemp_2():
     app.deviceConnected = True
-    app.data['CAN_ABORT'] = False
+    app.data['CAN_SET_CCD_TEMPERATURE'] = False
+    with mock.patch.object(AlpacaBase,
+                           'put',
+                           return_value=True):
+        suc = app.sendCoolerTemp(temperature=-10)
+        assert not suc
+
+
+def test_sendCoolerTemp_3():
+    app.deviceConnected = True
+    app.data['CAN_SET_CCD_TEMPERATURE'] = True
     with mock.patch.object(AlpacaBase,
                            'put',
                            return_value=True):

@@ -677,6 +677,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         for satOrbit in satOrbits:
             if satOrbit > 2:
                 break
+            if 'rise' not in satOrbits[satOrbit]:
+                break
+            if 'settle' not in satOrbits[satOrbit]:
+                break
             timeRise = satOrbits[satOrbit]['rise']
             timeSettle = satOrbits[satOrbit]['settle']
             showTime = timeSettle.tt - timeRise.tt

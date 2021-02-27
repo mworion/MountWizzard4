@@ -107,8 +107,11 @@ class ModelStar(object):
                 return
             self._coord = Star(ra_hours=ha, dec_degrees=dec)
 
+        if not self.obsSite:
+            return
+
         loc = self.obsSite.location
-        if loc is None:
+        if not loc:
             return
 
         lat = loc.latitude.degrees

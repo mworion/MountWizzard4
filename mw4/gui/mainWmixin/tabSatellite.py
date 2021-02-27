@@ -331,8 +331,6 @@ class Satellite(object):
         }
 
         fString = "%Y-%m-%d  %H:%M"
-
-        # collecting the events
         index = 0
         satOrbits = dict()
         for ti, event in zip(t, events):
@@ -356,6 +354,11 @@ class Satellite(object):
         for satOrbit in satOrbits:
             if satOrbit > 2:
                 break
+            if 'rise' not in satOrbits[satOrbit]:
+                break
+            if 'settle' not in satOrbits[satOrbit]:
+                break
+
             timeRise = satOrbits[satOrbit]['rise'].utc_strftime(fString)
             timeSettle = satOrbits[satOrbit]['settle'].utc_strftime(fString)
             passUI[satOrbit]['rise'].setText(f'{timeRise}')

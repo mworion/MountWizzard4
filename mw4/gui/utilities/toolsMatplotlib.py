@@ -114,7 +114,6 @@ class ToolsMatplotlib:
             return None, None
 
         lock = Lock()
-
         if showAxes:
             color = self.M_BLUE
             colorGrid = self.M_GREY
@@ -161,7 +160,6 @@ class ToolsMatplotlib:
             axe.set_ylim(0, 90)
             axe.set_yticks(range(0, 91, 15))
             axe.set_yticklabels(['', '75', '60', '45', '30', '15', ''])
-
             return axe, figure
 
     def generateFlat(self, widget=None, title='', horizon=False, showAxes=True):
@@ -220,7 +218,6 @@ class ToolsMatplotlib:
 
             axe.set_xlim(0, 360)
             axe.set_ylim(0, 90)
-
             axe.set_xticks(np.arange(0, 361, 45))
             axe.set_xticklabels(['0 N', '45 NE', '90 E', '135 SE', '180 S',
                                  '225 SW', '270 W', '315 NW', '360 N'])

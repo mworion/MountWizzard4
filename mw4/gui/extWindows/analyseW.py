@@ -102,13 +102,12 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
+        initConfig read the key out of the configuration dict and stores it to
+        the gui elements. if some initialisations have to be proceeded with the
+        loaded persistent data, they will be launched as well in this method.
 
         :return: True for test purpose
         """
-
         if 'analyseW' not in self.app.config:
             self.app.config['analyseW'] = {}
         config = self.app.config['analyseW']
@@ -117,7 +116,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         if x > self.screenSizeX:
             x = 0
-
         if y > self.screenSizeY:
             y = 0
 
@@ -126,7 +124,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         width = config.get('width', 800)
         self.resize(width, height)
         self.ui.winsorizedLimit.setChecked(config.get('winsorizedLimit', False))
-
         return True
 
     def storeConfig(self):
@@ -146,21 +143,18 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         config['height'] = self.height()
         config['width'] = self.width()
         config['winsorizedLimit'] = self.ui.winsorizedLimit.isChecked()
-
         return True
 
     def closeEvent(self, closeEvent):
         """
-        closeEvent is overloaded to be able to store the data before the windows is close
-        and all it's data is garbage collected
+        closeEvent is overloaded to be able to store the data before the windows
+        is close and all it's data is garbage collected
 
         :param closeEvent:
         :return:
         """
         self.storeConfig()
         self.app.showAnalyse.disconnect(self.showAnalyse)
-
-        # gui signals
         super().closeEvent(closeEvent)
 
     def resizeEvent(self, event):
@@ -172,20 +166,17 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         :param event:
         :return:
         """
-
         super().resizeEvent(event)
 
     def showWindow(self):
         """
-        showWindow starts constructing the main window for satellite view and shows the
-        window content
+        showWindow starts constructing the main window for satellite view and
+        shows the window content
 
         :return: True for test purpose
         """
-
         self.show()
         self.app.showAnalyse.connect(self.showAnalyse)
-
         return True
 
     def writeGui(self, data, loadFilePath):
@@ -223,7 +214,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
     def generateDataSets(self, modelJSON):
         """
-
         :param modelJSON:
         :return:
         """
@@ -258,14 +248,12 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         :return: success
         """
-
         with open(loadFilePath, 'r') as infile:
             modelJSON = json.load(infile)
 
         self.writeGui(modelJSON, loadFilePath)
         self.generateDataSets(modelJSON)
         self.drawAll()
-
         return True
 
     def loadModel(self):
@@ -274,7 +262,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         :return: success
         """
-
         folder = self.app.mwGlob['modelDir']
         val = self.openFile(self, 'Open model file', folder, 'Model files (*.model)',
                             multiple=False,
@@ -288,11 +275,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
     def showAnalyse(self, path):
         """
-
         :param path:
         :return: True for test purpose
         """
-
         if path:
             self.processModel(path)
 
@@ -300,7 +285,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
     def plotFigureFlat(self, axe, x, y, p, xLabel, yLabel, sort=False, poly=0):
         """
-
         :param axe:
         :param x:
         :param y:
@@ -311,7 +295,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         :param poly:
         :return: True for test purpose
         """
-
         axe.set_xlabel(xLabel)
         axe.set_ylabel(yLabel)
 
@@ -358,11 +341,11 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                     meanE = np.poly1d(polynomE)(xE)
                     axe.plot(xE, meanE, color=self.M_YELLOW, alpha=0.4, lw=4)
 
-        axe.plot(xW, yW, marker='.', markersize=7, linestyle='none', color=self.M_GREEN)
-        axe.plot(xE, yE, marker='.', markersize=7, linestyle='none', color=self.M_YELLOW)
-
+        axe.plot(xW, yW, marker='.', markersize=7, linestyle='none',
+                 color=self.M_GREEN)
+        axe.plot(xE, yE, marker='.', markersize=7, linestyle='none',
+                 color=self.M_YELLOW)
         axe.figure.canvas.draw()
-
         return True
 
     def draw_raPointErrorsRaw(self):
@@ -371,38 +354,30 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         :return:    True if ok for testing
         """
-
         axe, _ = self.generateFlat(widget=self.raPointErrorsRaw)
-
         x = self.index
         y = self.errorRA_S
         p = self.pierside
         xLabel = 'Star Number'
         yLabel = 'Error per Star [arcsec]'
-
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
-
         return True
 
     def draw_decPointErrorsRaw(self):
         """
-        draw_decPointErrorsRaw draws a plot of raw errors in dec. Please watch the inverse sign
-        for pierside east.
+        draw_decPointErrorsRaw draws a plot of raw errors in dec. Please watch
+        the inverse sign for pierside east.
 
         :return:    True if ok for testing
         """
-
         axe, _ = self.generateFlat(widget=self.decPointErrorsRaw)
-
         x = self.index
         y = self.errorDEC_S
         p = self.pierside
         y = [y if p == 'W' else -y for y, p in zip(y, p)]
         xLabel = 'Star Number'
         yLabel = 'Error per Star [arcsec]'
-
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
-
         return True
 
     def draw_raModelErrors(self):
@@ -411,17 +386,13 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         :return:    True if ok for testing
         """
-
         axe, _ = self.generateFlat(widget=self.raModelErrors)
-
         x = self.index
         y = self.errorRA
         p = self.pierside
         xLabel = 'Star Number'
         yLabel = 'Error per Star [arcsec]'
-
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
-
         return True
 
     def draw_decModelErrors(self):
@@ -430,17 +401,13 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         :return:    True if ok for testing
         """
-
         axe, _ = self.generateFlat(widget=self.decModelErrors)
-
         x = self.index
         y = self.errorDEC
         p = self.pierside
         xLabel = 'Star Number'
         yLabel = 'Error per Star [arcsec]'
-
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
-
         return True
 
     def draw_raModelErrorsRef(self):
@@ -449,17 +416,13 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         :return:    True if ok for testing
         """
-
         axe, _ = self.generateFlat(widget=self.raModelErrorsRef)
-
         x = self.angularPosRA
         y = self.errorRA
         p = self.pierside
         xLabel = 'RA Encoder Abs [deg]'
         yLabel = 'Error per Star [arcsec]'
-
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
-
         return True
 
     def draw_decModelErrorsRef(self):
@@ -468,18 +431,14 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         :return:    True if ok for testing
         """
-
         axe, _ = self.generateFlat(widget=self.decModelErrorsRef)
-
         x = self.angularPosDEC
         y = self.errorDEC
         p = self.pierside
         y = [x if p == 'W' else -x for x, p in zip(y, p)]
         xLabel = 'DEC Encoder Abs [deg]'
         yLabel = 'Error per Star [arcsec]'
-
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
-
         return True
 
     def draw_raPointErrorsRawRef(self):
@@ -488,17 +447,13 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         :return:    True if ok for testing
         """
-
         axe, _ = self.generateFlat(widget=self.raPointErrorsRawRef)
-
         x = self.angularPosRA
         y = self.errorRA_S
         p = self.pierside
         xLabel = 'RA Encoder Abs [deg]'
         yLabel = 'Error per Star [arcsec]'
-
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
-
         return True
 
     def draw_decPointErrorsRawRef(self):
@@ -507,18 +462,14 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         :return:    True if ok for testing
         """
-
         axe, _ = self.generateFlat(widget=self.decPointErrorsRawRef)
-
         x = self.angularPosDEC
         y = self.errorDEC_S
         p = self.pierside
         y = [y if p == 'W' else -y for y, p in zip(y, p)]
         xLabel = 'DEC Encoder Abs [deg]'
         yLabel = 'Error per Star [arcsec]'
-
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
-
         return True
 
     def draw_scaleImage(self):
@@ -527,30 +478,24 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         :return:    True if ok for testing
         """
-
         axe, _ = self.generateFlat(widget=self.scaleImage)
         axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.3f',))
-
         x = self.index
         y = self.scaleS
         p = self.pierside
         xLabel = 'Star Number'
         yLabel = 'Image Scale [arcsec/pix]'
-
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
-
         return True
 
     def draw_errorAscending(self):
         """
-        showErrorAscending draws a plot of the align model stars and their errors in ascending
-        order.
+        showErrorAscending draws a plot of the align model stars and their
+        errors in ascending order.
 
         :return:    True if ok for testing
         """
-
         axe, fig = self.generateFlat(widget=self.errorAscending)
-
         xLabel = 'Star Number'
         yLabel = 'Error per Star [arcsec]'
 
@@ -559,32 +504,29 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         x = self.index
 
         temp = sorted(zip(y, pierside))
-
         y = [x[0] for x in temp]
         p = [x[1] for x in temp]
 
         self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
-
         return True
 
     def draw_modelPositions(self):
         """
-        showModelPosition draws a polar plot of the align model stars and their errors in
-        color. the basic setup of the plot is taking place in the central widget class.
-        which is instantiated from there. important: the coordinate in model is in HA and
-        DEC  and not in RA and DEC. using skyfield is a little bit misleading, because you
-        address the hour angle as .ra.hours
+        showModelPosition draws a polar plot of the align model stars and their
+        errors in color. the basic setup of the plot is taking place in the
+        central widget class. which is instantiated from there. important: the
+        coordinate in model is in HA and DEC  and not in RA and DEC. using
+        skyfield is a little bit misleading, because you address the hour angle
+        as .ra.hours
 
         the vectors displayed are derived from the spec of 10micron:
-            ppp is the polar angle of the measured star with respect to the modeled star
-            in the equatorial system in degrees from 0 to 359 (0 towards the north pole,
-            90 towards east)
+            ppp is the polar angle of the measured star with respect to the
+            modeled star in the equatorial system in degrees from 0 to 359 (0
+            towards the north pole, 90 towards east)
 
         :return:    True if ok for testing
         """
-
         axe, fig = self.generatePolar(widget=self.modelPositions)
-
         axe.set_ylim(0, 90)
         axe.set_yticklabels('')
 
@@ -593,7 +535,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         error = self.errorRMS
         ang = self.errorAngle
 
-        # and plot it
         cm = plt.cm.get_cmap('RdYlGn_r')
         sMax = max(error)
         sMin = min(error)
@@ -650,36 +591,23 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                        zorder=-10,
                        )
 
-        formatString = ticker.FormatStrFormatter('%1.0f')
-        colorbar = fig.colorbar(scatter,
-                                pad=0.1,
-                                fraction=0.12,
-                                aspect=25,
-                                shrink=0.9,
-                                format=formatString,
-                                )
-
-        colorbar.set_label('Error [arcsec]', color=self.M_BLUE)
-        yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-        plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
-
+        self.generateColorbar(figure=fig, scatter=scatter, label='Error [arcsec]')
         axe.figure.canvas.draw()
 
         return True
 
     def draw_errorDistribution(self):
         """
-        showErrorDistribution draws a polar plot of the align model stars and their errors in
-        color. the basic setup of the plot is taking place in the central widget class.
-        which is instantiated from there. important: the coordinate in model is in HA and
-        DEC  and not in RA and DEC. using skyfield is a little bit misleading, because you
-        address the hour angle as .ra.hours
+        showErrorDistribution draws a polar plot of the align model stars and
+        their errors in color. the basic setup of the plot is taking place in the
+        central widget class. which is instantiated from there. important: the
+        coordinate in model is in HA and DEC  and not in RA and DEC. using
+        skyfield is a little bit misleading, because you address the hour angle
+        as .ra.hours
 
         :return:    True if ok for testing
         """
-
         axe, fig = self.generatePolar(widget=self.errorDistribution)
-
         x = [val / 180.0 * np.pi for val in self.errorAngle]
         y = self.errorRMS
 
@@ -691,31 +619,24 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                 color = self.M_YELLOW
 
             axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
-
         axe.figure.canvas.draw()
-
         return True
 
     def workerDrawAll(self):
         """
-
         :return:
         """
         for chart in self.charts:
             chart()
-
         return True
 
     def drawAll(self):
         """
-
         :return: true for test purpose
         """
-
         if self.countSequence is None:
             return False
 
         worker = Worker(self.workerDrawAll)
         self.threadPool.start(worker)
-
         return True

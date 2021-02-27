@@ -74,19 +74,12 @@ def test_workerPollData_1():
 def test_workerPollData_2():
     app.deviceConnected = True
     app.data['CAN_FAST'] = True
+    app.data['CAN_SET_CCD_TEMPERATURE'] = True
+    app.data['CAN_GET_COOLER_POWER'] = True
     with mock.patch.object(AlpacaBase,
                            'get'):
         suc = app.workerPollData()
         assert suc
-
-
-def test_workerPollData_3():
-    app.deviceConnected = True
-    app.data['CAN_FAST'] = False
-    with mock.patch.object(AlpacaBase,
-                           'get'):
-        suc = app.workerPollData()
-        assert not suc
 
 
 def test_pollData_1():
@@ -256,7 +249,17 @@ def test_sendCoolerSwitch_1():
 
 def test_sendCoolerSwitch_2():
     app.deviceConnected = True
-    app.data['CAN_ABORT'] = False
+    app.data['CAN_GET_COOLER_POWER'] = False
+    with mock.patch.object(AlpacaBase,
+                           'put',
+                           return_value=True):
+        suc = app.sendCoolerSwitch(coolerOn=True)
+        assert not suc
+
+
+def test_sendCoolerSwitch_2():
+    app.deviceConnected = True
+    app.data['CAN_GET_COOLER_POWER'] = True
     with mock.patch.object(AlpacaBase,
                            'put',
                            return_value=True):
@@ -266,6 +269,7 @@ def test_sendCoolerSwitch_2():
 
 def test_sendCoolerTemp_1():
     app.deviceConnected = False
+    app.data['CAN_SET_CCD_TEMPERATURE'] = True
     with mock.patch.object(AlpacaBase,
                            'get',
                            return_value=True):
@@ -275,7 +279,17 @@ def test_sendCoolerTemp_1():
 
 def test_sendCoolerTemp_2():
     app.deviceConnected = True
-    app.data['CAN_ABORT'] = False
+    app.data['CAN_SET_CCD_TEMPERATURE'] = False
+    with mock.patch.object(AlpacaBase,
+                           'put',
+                           return_value=True):
+        suc = app.sendCoolerTemp(temperature=-10)
+        assert not suc
+
+
+def test_sendCoolerTemp_3():
+    app.deviceConnected = True
+    app.data['CAN_SET_CCD_TEMPERATURE'] = True
     with mock.patch.object(AlpacaBase,
                            'put',
                            return_value=True):

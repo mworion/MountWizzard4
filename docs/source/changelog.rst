@@ -5,7 +5,6 @@ detailed changes list, please refer to the commit list on GitHub.
 
 Unreleased version of MW4
 -------------------------
-(1.1)
 
 - 3d Simulator (mount, dome, build points etc)
 - retrofit model based on hashed coordinates
@@ -23,7 +22,7 @@ Unreleased version of MW4
 
 Released version of MW4
 -----------------------
-1.1.0b1
+1.1.0b2
 
 - adding cover light on / off
 - adding cover light intensity
@@ -33,25 +32,28 @@ Released version of MW4
 - adding contour HFD plot to image windows
 - adding virtual emergency stop key
 
+Released version of MW4
+-----------------------
+1.0.6
+
+- checking if camera has cooler
+- fixing retry model points
+
 1.0.5
 
 - bugfix check for H18 database
 
 1.0.4
-
 - adding check for ASTAP H17, H18, G17, G18 database
 - increasing the solve limit from 9999 arcsec to 36000 arcsec
 
 1.0.3
-
 - bugfix binning setting on large sensors
 
 1.0.2
-
 - bugfix: polar alignment command error
 
 1.0.1
-
 - bugfix: fields index and app in device popup for astrometry and astap were wrong
 
 1.0.0

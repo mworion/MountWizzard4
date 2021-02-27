@@ -207,25 +207,18 @@ class Model:
             return False
 
         mPoint.update(result)
-
-        if mPoint['success']:
+        isSuccess = mPoint['success']
+        isInRange = mPoint['errorRMS_S'] < self.MAX_ERROR_MODEL_POINT
+        if isSuccess and isInRange:
             raJNowS, decJNowS = transform.J2000ToJNow(mPoint['raJ2000S'],
                                                       mPoint['decJ2000S'],
                                                       mPoint['julianDate'])
             mPoint['raJNowS'] = raJNowS
             mPoint['decJNowS'] = decJNowS
-
-            if mPoint['errorRMS_S'] < self.MAX_ERROR_MODEL_POINT:
-                self.log.debug(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-                self.modelQueue.put(mPoint)
-
-                self.app.data.setStatusBuildP(count - 1, False)
-                self.app.updatePointMarker.emit()
-
-            else:
-                text = f'Solving failed for image-{count:03d}'
-                self.app.message.emit(text, 2)
-                self.retryQueue.put(mPoint)
+            self.log.debug(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+            self.modelQueue.put(mPoint)
+            self.app.data.setStatusBuildP(count - 1, False)
+            self.app.updatePointMarker.emit()
 
             text = f'Solved   image-{count:03d}:  '
             text += f'Ra: {convertToHMS(mPoint["raJ2000S"])} '
@@ -241,11 +234,11 @@ class Model:
             self.app.message.emit(text, 0)
 
         else:
-            text = f'Solving  image-{count:03d}:  {mPoint.get("message")}'
+            text = f'Solving failed for image-{count:03d}'
             self.app.message.emit(text, 2)
+            self.retryQueue.put(mPoint)
 
         self.updateProgress(number=number, count=count)
-
         if number == count:
             self.modelCycleThroughBuildPointsFinished()
 

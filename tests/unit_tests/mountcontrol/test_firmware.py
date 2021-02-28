@@ -46,6 +46,10 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual('2.16', fw.vString)
         self.assertEqual('2.16', fw._vString)
         self.assertEqual(fw.number(), 21600)
+        fw.vString = '3.0'
+        self.assertEqual('3.0', fw.vString)
+        self.assertEqual('3.0', fw._vString)
+        self.assertEqual(fw.number(), 30000)
         fw.hardware = '4.5'
         self.assertEqual('4.5', fw.hardware)
         self.assertEqual('4.5', fw._hardware)
@@ -55,7 +59,7 @@ class TestConfigData(unittest.TestCase):
         fw.time = '14:50'
         self.assertEqual('14:50', fw.time)
         self.assertEqual('14:50', fw._time)
-        self.assertEqual(True, fw.checkNewer(26000))
+        self.assertEqual(True, fw.checkNewer(36000))
 
     def test_Firmware_not_ok_vString(self):
         fw = Firmware()

@@ -239,7 +239,9 @@ class SettImaging(object):
         """
         :return: success
         """
-        canSetCCDTemp = self.app.camera.data.get('CAN_SET_CCD_TEMPERATURE', False)
+        c1 = self.app.camera.data.get('CAN_SET_CCD_TEMPERATURE', False)
+        c2 = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', False)
+        canSetCCDTemp = c1 or c2
         if not canSetCCDTemp:
             return False
 

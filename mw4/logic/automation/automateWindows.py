@@ -258,7 +258,7 @@ class AutomateWindows(QObject):
             return True
 
         except Exception as e:
-            self.log.error(f'error{e}')
+            self.log.error(f'Error: {e}')
             return False
 
         else:
@@ -313,7 +313,7 @@ class AutomateWindows(QObject):
             self.clearUploadMenuCommands()
 
         except Exception as e:
-            self.log.error('error{0}'.format(e))
+            self.log.error('Error: {0}'.format(e))
             return False
 
         return True
@@ -373,7 +373,7 @@ class AutomateWindows(QObject):
             self.pressOK()
 
         except Exception as e:
-            self.log.error('error{0}'.format(e))
+            self.log.error('Error: {0}'.format(e))
             return False
 
         return True
@@ -417,7 +417,7 @@ class AutomateWindows(QObject):
             self.uploadMPCDataCommands(comets=comets)
 
         except Exception as e:
-            self.log.error(f'error{e}')
+            self.log.error(f'Error: {e}')
             return False
 
         else:
@@ -466,7 +466,7 @@ class AutomateWindows(QObject):
             self.uploadEarthRotationDataCommands()
 
         except Exception as e:
-            self.log.error(f'error{e}')
+            self.log.error(f'Error: {e}')
             os.chdir(self.actualWorkDir)
             return False
 
@@ -510,7 +510,7 @@ class AutomateWindows(QObject):
             self.uploadTLEDataCommands()
 
         except Exception as e:
-            self.log.error(f'error{e}')
+            self.log.error(f'Error: {e}')
             os.chdir(self.actualWorkDir)
             return False
 

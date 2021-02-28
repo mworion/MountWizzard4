@@ -69,7 +69,7 @@ class Firmware(object):
         if not value.count('.') > 0:
             self._vString = None
             return
-        if not all(valueToInt(x) for x in value.split('.')):
+        if any(valueToInt(x) for x in value.split('.')) is None:
             self._vString = None
             return
         self._vString = value

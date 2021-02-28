@@ -489,7 +489,7 @@ class AutomateWindows(QObject):
         popup['Load from file'].click()
         filedialog = self.updater['Dialog']
         text = self.installPath + 'satellites.tle'
-        controls.EditWrapper(filedialog['File name']).set_text(text)
+        controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()
 

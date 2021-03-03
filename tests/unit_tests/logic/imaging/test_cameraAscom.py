@@ -285,6 +285,6 @@ def test_sendCoolerTemp_1():
 
 def test_sendCoolerTemp_2():
     app.deviceConnected = True
-    app.data['CAN_ABORT'] = False
+    app.data['CAN_SET_CCD_TEMPERATURE'] = False
     suc = app.sendCoolerTemp(temperature=-10)
     assert suc

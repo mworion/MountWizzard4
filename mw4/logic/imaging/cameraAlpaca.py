@@ -309,7 +309,7 @@ class CameraAlpaca(AlpacaClass):
             return False
 
         canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
-        if canSetCCDTemp:
+        if not canSetCCDTemp:
             return False
 
         self.client.setccdtemperature(SetCCDTemperature=temperature)

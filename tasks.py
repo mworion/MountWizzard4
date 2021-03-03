@@ -19,6 +19,7 @@ from invoke import task
 from PIL import Image
 import glob
 import time
+import os
 
 rn = ''
 #
@@ -121,6 +122,11 @@ def update_builtins(c):
 def build_resource(c):
     printMW('building resources')
     resourceDir = './mw4/resource/'
+    with c.cd(resourceDir + 'data'):
+        with open(resourceDir + 'data/content.txt', 'w') as f:
+            for file in glob.glob(resourceDir + 'data/*.*'):
+                t = os.stat(file).st_mtime
+                f.write(f'{os.path.basename(file)} {t}\n')
     runMW(c, f'pyrcc5 -o {resourceDir}resources.py {resourceDir}resources.qrc')
 
 

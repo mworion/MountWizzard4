@@ -15,6 +15,5 @@
     <file>webif/util.js</file>
     <file>webif/w3.css</file>
     <file>webif/websock.js</file>
-
 </qresource>
 </RCC>

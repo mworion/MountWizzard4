@@ -321,14 +321,16 @@ def extractDataFiles(mwGlob=None, splashW=None):
             splashW.showMessage('Loading {0}'.format(file))
 
         filePath = mwGlob['dataDir'] + '/' + file
-        if os.path.isfile(filePath):
+        fileExist = os.path.isfile(filePath)
+        if fileExist:
             mtime = os.stat(filePath).st_mtime
             doWrite = mtime < files[file]
         else:
             doWrite = True
 
         if doWrite:
-            os.remove(filePath)
+            if fileExist:
+                os.remove(filePath)
             QFile.copy(f':/data/{file}', filePath)
             log.debug(f'Writing file:  [{file}]')
         else:

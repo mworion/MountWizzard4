@@ -25,6 +25,7 @@ import socket
 import sys
 import traceback
 import warnings
+from time import time
 
 # external packages
 import astropy
@@ -299,24 +300,39 @@ def extractDataFiles(mwGlob=None, splashW=None):
     if mwGlob is None:
         return False
 
-    files = [
-        'de421_23.bsp',
-        'active.txt',
-        'tai-utc.dat',
-        'finals2000A.all',
-    ]
+    files = {
+        'de421_23.bsp': 0,
+        'active.txt': 0,
+        'tai-utc.dat': 0,
+        'finals2000A.all': 0,
+    }
+
+    content = QFile(f':/data/content.txt')
+    content.open(QFile.ReadOnly)
+    lines = content.readAll().data().decode().splitlines()
+    content.close()
+    for line in lines:
+        name, date = line.split(' ')
+        if name in files:
+            files[name] = float(date)
 
     for file in files:
         if splashW is not None:
             splashW.showMessage('Loading {0}'.format(file))
 
         filePath = mwGlob['dataDir'] + '/' + file
-
-        if QFile.copy(f':/data/{file}', filePath):
-            log.debug(f'Writing missing file:  [{file}]')
-
+        if os.path.isfile(filePath):
+            mtime = os.stat(filePath).st_mtime
+            doWrite = mtime < files[file]
         else:
-            log.debug(f'Already existing file: [{file}]')
+            doWrite = True
+
+        if doWrite:
+            os.remove(filePath)
+            QFile.copy(f':/data/{file}', filePath)
+            log.debug(f'Writing file:  [{file}]')
+        else:
+            log.debug(f'Using existing file: [{file}]')
 
         os.chmod(filePath, 0o666)
     return True

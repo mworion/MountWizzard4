@@ -25,7 +25,6 @@ import socket
 import sys
 import traceback
 import warnings
-from time import time
 
 # external packages
 import astropy

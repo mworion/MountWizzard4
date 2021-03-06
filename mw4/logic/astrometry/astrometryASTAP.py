@@ -110,18 +110,9 @@ class AstrometryASTAP(object):
         :param options: additional solver options e.g. ra and dec hint
         :return: success
         """
-
-        runnable = [binPath,
-                    '-f',
-                    fitsPath,
-                    '-o',
-                    tempFile,
-                    ]
-
+        runnable = [binPath, '-f', fitsPath, '-o', tempFile]
         runnable += options
-
         timeStart = time.time()
-
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
@@ -130,11 +121,11 @@ class AstrometryASTAP(object):
 
         except subprocess.TimeoutExpired:
             self.log.error('Timeout expired')
-            return False
+            return False, 0
 
         except Exception as e:
             self.log.critical(f'error: {e} happened')
-            return False
+            return False, 0
 
         else:
             delta = time.time() - timeStart
@@ -147,7 +138,7 @@ class AstrometryASTAP(object):
                            + stdout.decode().replace('\n', ' ')
                            )
 
-        return int(self.process.returncode)
+        return True, int(self.process.returncode)
 
     @staticmethod
     def getWCSHeader(wcsTextFile=None):
@@ -179,10 +170,10 @@ class AstrometryASTAP(object):
               updateFits=False):
         """
         Solve uses the astap solver capabilities. The intention is to use an
-        offline solving capability, so we need a installed instance. As we go multi
-        platform and we need to focus on MW function, we use the astap package
-        which could be downloaded for all platforms. Many thanks to them providing such a
-        nice package.
+        offline solving capability, so we need a installed instance. As we go
+        multi platform and we need to focus on MW function, we use the astap
+        package which could be downloaded for all platforms. Many thanks
+        providing such a nice package.
 
         :param fitsPath:  full path to fits file
         :param raHint:  ra dest to look for solve in J2000
@@ -203,12 +194,10 @@ class AstrometryASTAP(object):
 
         tempFile = self.tempDir + '/temp'
         wcsPath = self.tempDir + '/temp.wcs'
-
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
         binPathASTAP = self.appPath + '/astap'
-
         raFITS, decFITS, scaleFITS, _, _ = self.readFitsData(fitsPath=fitsPath)
 
         # if parameters are passed, they have priority
@@ -229,13 +218,13 @@ class AstrometryASTAP(object):
                    '0',
                    ]
 
-        retValue = self.runASTAP(binPath=binPathASTAP,
-                                 fitsPath=fitsPath,
-                                 tempFile=tempFile,
-                                 options=options,
-                                 )
+        suc, retValue = self.runASTAP(binPath=binPathASTAP,
+                                      fitsPath=fitsPath,
+                                      tempFile=tempFile,
+                                      options=options,
+                                      )
 
-        if retValue:
+        if not suc:
             text = self.returnCodes.get(retValue, 'Unknown code')
             self.result['message'] = f'ASTAP error: [{text}]'
             self.log.warning(f'ASTAP error [{text}] in [{fitsPath}]')
@@ -261,7 +250,6 @@ class AstrometryASTAP(object):
             'message': 'Solved',
         }
         self.result.update(solve)
-
         return True
 
     def abort(self):

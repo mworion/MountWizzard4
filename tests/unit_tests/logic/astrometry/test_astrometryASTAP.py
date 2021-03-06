@@ -90,7 +90,7 @@ def test_setDefaultPath_3(app):
 
 
 def test_runASTAP_1(app):
-    suc = app.runASTAP()
+    suc, ret = app.runASTAP()
     assert not suc
 
 
@@ -112,8 +112,9 @@ def test_runASTAP_2(app):
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test()):
-        val = app.runASTAP()
-        assert val == 1
+        suc, ret = app.runASTAP()
+        assert ret == 1
+        assert suc
 
 
 def test_runASTAP_3(app):
@@ -124,7 +125,7 @@ def test_runASTAP_3(app):
                                'communicate',
                                return_value=('', ''),
                                side_effect=Exception()):
-            suc = app.runASTAP()
+            suc, ret = app.runASTAP()
             assert not suc
 
 
@@ -133,7 +134,7 @@ def test_runASTAP_4(app):
                            'communicate',
                            return_value=('', ''),
                            side_effect=subprocess.TimeoutExpired('run', 1)):
-        suc = app.runASTAP(binPath='clear')
+        suc, ret = app.runASTAP(binPath='clear')
         assert not suc
 
 

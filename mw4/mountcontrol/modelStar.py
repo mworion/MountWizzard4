@@ -76,8 +76,6 @@ class ModelStar(object):
         self.errorRMS = errorRMS
         self.errorAngle = errorAngle
         self.number = number
-        self.alt = None
-        self.az = None
 
     @property
     def coord(self):
@@ -105,6 +103,8 @@ class ModelStar(object):
 
             if not ha or not dec:
                 self._coord = None
+                self._az = None
+                self._alt = None
                 self.log.warning('Malformed value: {0}'.format(value))
                 return
             self._coord = Star(ra_hours=ha, dec_degrees=dec)

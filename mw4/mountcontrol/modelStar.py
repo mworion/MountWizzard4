@@ -76,6 +76,8 @@ class ModelStar(object):
         self.errorRMS = errorRMS
         self.errorAngle = errorAngle
         self.number = number
+        self.alt = None
+        self.az = None
 
     @property
     def coord(self):

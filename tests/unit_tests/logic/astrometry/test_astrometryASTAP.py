@@ -162,7 +162,7 @@ def test_solveASTAP_2(app):
 def test_solveASTAP_3(app):
     with mock.patch.object(app,
                            'runASTAP',
-                           return_value=1):
+                           return_value=(False, 1)):
         suc = app.solve(fitsPath='tests/image/m51.fit')
         assert not suc
 
@@ -170,7 +170,7 @@ def test_solveASTAP_3(app):
 def test_solveASTAP_4(app):
     with mock.patch.object(app,
                            'runASTAP',
-                           return_value=0):
+                           return_value=(True, 0)):
         suc = app.solve(fitsPath='tests/image/m51.fit')
         assert not suc
 
@@ -178,7 +178,7 @@ def test_solveASTAP_4(app):
 def test_solveASTAP_5(app):
     with mock.patch.object(app,
                            'runASTAP',
-                           return_value=0):
+                           return_value=(True, 0)):
         with mock.patch.object(os,
                                'remove',
                                return_value=True):

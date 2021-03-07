@@ -22,7 +22,9 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: [ubuntu18.04, ubuntu20.04]
+            distro: ubuntu18.04
+          - arch: aarch64
+            distro: ubuntu20.04
 
     steps:
       - uses: actions/checkout@v2.1.0

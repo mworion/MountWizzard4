@@ -66,7 +66,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.camController.setLinearSpeed(5.0)
         self.camController.setLookSpeed(90)
         self.view.setRootEntity(self.rootEntity)
-        self.view.defaultFrameGraph().setClearColor(QColor(40, 40, 40))
+        self.view.defaultFrameGraph().setClearColor(QColor(24, 24, 24))
 
         self.pL0E = QEntity(self.rootEntity)
         self.pL0 = QPointLight(self.pL0E)

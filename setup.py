@@ -26,6 +26,7 @@ releaseNotes = """
  - adding push mount time to computer manual / hourly
  - adding contour HFD plot to image windows
  - adding virtual emergency stop key
+ - update build-in files if newer provided
  """
 
 with open('notes.txt', 'w') as f:

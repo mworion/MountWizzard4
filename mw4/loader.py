@@ -306,7 +306,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
         'finals2000A.all': 0,
     }
 
-    content = QFile(f':/data/content.txt')
+    content = QFile(':/data/content.txt')
     content.open(QFile.ReadOnly)
     lines = content.readAll().data().decode().splitlines()
     content.close()

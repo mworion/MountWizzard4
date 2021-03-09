@@ -16,6 +16,8 @@
 ###########################################################
 import base.packageConfig as pConf
 # standard libraries
+import os
+import psutil
 import time
 import subprocess
 import sys
@@ -271,13 +273,25 @@ class SettMisc(object):
 
         return line
 
+    def restartProgram(self):
+        try:
+            p = psutil.Process(os.getpid())
+            for handler in p.get_open_files() + p.connections():
+                os.close(handler.fd)
+        except Exception as e:
+            self.log.error(e)
+
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
+
     def runInstall(self, versionPackage='', timeout=60):
         """
         :param versionPackage:   package version to install
         :param timeout:
         :return: success
         """
-        runnable = ['pip',
+        runnable = [
+                    'pip',
                     'install',
                     f'mountwizzard4=={versionPackage}',
                     '--disable-pip-version-check',
@@ -328,7 +342,6 @@ class SettMisc(object):
 
         if success:
             self.app.message.emit(f'MountWizzard4 {versionPackage} installed', 1)
-            self.app.message.emit('Please restart to enable new version', 1)
             packages = sorted(["%s==%s" % (i.key, i.version) for i in working_set])
             self.log.debug(f'After update:   {packages}')
 
@@ -337,6 +350,9 @@ class SettMisc(object):
 
         self.mutexInstall.unlock()
         self.changeStyleDynamic(self.ui.installVersion, 'running', False)
+        if success:
+            self.app.message.emit('...restarting', 1)
+            self.restartProgram()
         return success
 
     def installVersion(self):

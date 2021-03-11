@@ -238,8 +238,9 @@ class SettMisc(object):
         hasReal = hasattr(sys, 'real_prefix')
         hasBase = hasattr(sys, 'base_prefix')
 
-        status = hasReal or hasBase and sys.base_prefix != sys.prefix
+        status = (hasReal or hasBase) and sys.base_prefix != sys.prefix
         self.log.debug(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
+        self.log.debug(f'venv path: [{os.environ.get("VIRTUAL_ENV", "")}]')
         return status
 
     @staticmethod
@@ -271,14 +272,8 @@ class SettMisc(object):
 
         return line
 
-    def restartProgram(self):
-        try:
-            p = psutil.Process(os.getpid())
-            for handler in p.get_open_files() + p.connections():
-                os.close(handler.fd)
-        except Exception as e:
-            self.log.error(e)
-
+    @staticmethod
+    def restartProgram():
         python = sys.executable
         os.execl(python, python, *sys.argv)
 

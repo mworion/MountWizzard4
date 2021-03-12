@@ -101,9 +101,9 @@ class MessageWindow(toolsQtWidget.MWidget):
         """
         :return: true for test purpose
         """
-        self.show()
         self.ui.clear.clicked.connect(self.clearWindow)
         self.app.update1s.connect(self.writeMessage)
+        self.show()
         return True
 
     def clearWindow(self):

@@ -192,9 +192,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         :return: true for test purpose
         """
-        self.show()
-        self.showCurrent()
-
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.preparePlot)
         self.ui.stretch.currentIndexChanged.connect(self.preparePlot)
@@ -212,6 +209,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.signals.showCurrent.connect(self.showCurrent)
         self.signals.solveImage.connect(self.solveImage)
         self.app.showImage.connect(self.showImage)
+        self.show()
+        self.showCurrent()
         return True
 
     def closeEvent(self, closeEvent):
@@ -225,7 +224,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.storeConfig()
-
         self.ui.load.clicked.disconnect(self.selectImage)
         self.ui.color.currentIndexChanged.disconnect(self.preparePlot)
         self.ui.stretch.currentIndexChanged.disconnect(self.preparePlot)
@@ -242,9 +240,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
         self.signals.showCurrent.disconnect(self.showCurrent)
         self.signals.solveImage.disconnect(self.solveImage)
-
         self.app.showImage.disconnect(self.showImage)
-
         plt.close(self.imageMat.figure)
         super().closeEvent(closeEvent)
 

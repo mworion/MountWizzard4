@@ -27,6 +27,7 @@ releaseNotes = """
  - adding contour HFD plot to image windows
  - adding virtual emergency stop key
  - update build-in files if newer provided
+ - auto restart MW4 after update
  """
 
 with open('notes.txt', 'w') as f:
@@ -79,7 +80,7 @@ setup(
         'deepdiff==5.0.2',
         'colour_demosaicing==0.1.5',
         'wakeonlan==1.1.6',
-        'pybase64==1.1.1'
+        'pybase64==1.1.1',
     ]
     + (['pywin32==300'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])

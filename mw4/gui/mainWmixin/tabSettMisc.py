@@ -17,7 +17,6 @@
 import base.packageConfig as pConf
 # standard libraries
 import os
-import psutil
 import time
 import subprocess
 import sys
@@ -95,7 +94,6 @@ class SettMisc(object):
         self.setLoggingLevel()
         self.setWeatherOnline()
         self.setupIERS()
-
         self.showUpdates()
 
         return True
@@ -296,6 +294,7 @@ class SettMisc(object):
                                             stdout=subprocess.PIPE,
                                             stderr=subprocess.STDOUT,
                                             text=True,
+                                            shell=True,
                                             )
             for stdout_line in iter(self.process.stdout.readline, ""):
                 line = self.formatPIP(line=stdout_line)

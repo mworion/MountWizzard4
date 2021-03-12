@@ -306,6 +306,7 @@ class Astrometry:
             self.signals.deviceConnected.emit(name)
             self.app.message.emit(f'ASTROMETRY found:    [{name}]', 0)
 
+        self.log.debug(f'Framework: [{self.framework}], {sucApp}, {sucIndex}')
         return True
 
     def stopCommunication(self):

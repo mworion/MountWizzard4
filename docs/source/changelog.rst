@@ -18,11 +18,6 @@ Unreleased version of MW4
   time for the mount So avoiding them would be great.
 - if indi UPD Driver is fixed and officially available, bring back auto dew
 
-.. image:: test.drawio.svg
-    :align: center
-    :scale: 71%
-
-
 Released beta version of MW4
 ----------------------------
 1.1.0b7

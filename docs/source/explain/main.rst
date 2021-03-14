@@ -53,8 +53,8 @@ as well for other functions or data that use time. You can choose, how the time
 base of the mount if tracked by using an NTP solution, the 10micron tool, or using
 GPS during boot also for time update.
 
-Mount tab
----------
+Mount tab overview
+------------------
 
 .. image:: image/mount_tab.png
     :align: center

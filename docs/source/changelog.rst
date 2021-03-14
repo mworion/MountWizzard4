@@ -18,21 +18,25 @@ Unreleased version of MW4
   time for the mount So avoiding them would be great.
 - if indi UPD Driver is fixed and officially available, bring back auto dew
 
+.. image:: test.drawio.svg
+    :align: center
+    :scale: 71%
 
 
-Released version of MW4
------------------------
-1.1.0b4
+Released beta version of MW4
+----------------------------
+1.1.0b7
 
+- adding release notes showing new capabilities in message window
 - adding cover light on / off
-- adding cover light intensity
-- adding release notes
+- adding cover light intensity settings
 - reversing E/W for polar diagram in hemisphere window
-- adding simple push mount time to computer function
+- adding push mount time to computer manual / hourly
 - adding contour HFD plot to image windows
-- adding virtual emergency stop key
-- update build-in files if newer provided
+- adding virtual emergency stop key on time group
+- update build-in files if newer ones are shipped
 - auto restart MW4 after update
+- adding OBJCTRA / OBJCTDEC keywords when reading FITs
 
 Released version of MW4
 -----------------------

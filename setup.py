@@ -20,14 +20,15 @@ import platform
 
 releaseNotes = """
  - adding release notes showing new capabilities in message window
- - adding cover light on / off
- - adding cover light intensity
+ - adding cover light on / off 
+ - adding cover light intensity settings
  - reversing E/W for polar diagram in hemisphere window
  - adding push mount time to computer manual / hourly
  - adding contour HFD plot to image windows
- - adding virtual emergency stop key
- - update build-in files if newer provided
+ - adding virtual emergency stop key on time group
+ - update build-in files if newer ones are shipped
  - auto restart MW4 after update
+ - adding OBJCTRA / OBJCTDEC keywords when reading FITs
  """
 
 with open('notes.txt', 'w') as f:
@@ -35,7 +36,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='1.1.0b6',
+    version='1.1.0b7',
     packages=[
         'mw4',
         'mw4.base',

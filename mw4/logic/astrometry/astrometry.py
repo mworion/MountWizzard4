@@ -22,9 +22,11 @@ import os
 import PyQt5
 from astropy.io import fits
 import numpy as np
+from skyfield.api import Angle
 
 # local imports
 from mountcontrol.convert import convertToAngle
+from gui.utilities.toolsQtWidget import MWidget
 from base import tpool
 from logic.astrometry.astrometryNET import AstrometryNET
 from logic.astrometry.astrometryASTAP import AstrometryASTAP
@@ -93,11 +95,33 @@ class Astrometry:
         """
         with fits.open(fitsPath) as fitsHDU:
             fitsHeader = fitsHDU[0].header
-            scaleHint = float(fitsHeader.get('SCALE', 0))
-            ra = fitsHeader.get('RA', 0)
-            dec = fitsHeader.get('DEC', 0)
-            raHint = convertToAngle(ra, isHours=True)
-            decHint = convertToAngle(dec, isHours=False)
+            scaleHint = float(fitsHeader.get('SCALE', 1))
+
+            if 'RA' in fitsHeader and 'DEC' in fitsHeader:
+                hasCoordFloat = True
+            else:
+                hasCoordFloat = False
+
+            if 'OBJCTRA' in fitsHeader and 'OBJCTDEC' in fitsHeader:
+                hasCoordDeg = True
+            else:
+                hasCoordDeg = False
+
+            if hasCoordFloat:
+                ra = float(fitsHeader['RA'])
+                raHint = Angle(degrees=ra)
+                dec = float(fitsHeader['DEC'])
+                decHint = Angle(degrees=dec)
+            elif hasCoordDeg:
+                raHint = MWidget.convertRaToAngle(fitsHeader['OBJCTRA'])
+                ra = raHint._degrees
+                decHint = MWidget.convertDecToAngle(fitsHeader['OBJCTDEC'])
+                dec = decHint.degrees
+            else:
+                raHint = Angle(hours=0)
+                ra = 0
+                decHint = Angle(degrees=0)
+                dec = 0
 
         self.log.debug(f'Header RA: {raHint} ({ra}), DEC: {decHint} ({dec})'
                        f', Scale: {scaleHint}')
@@ -162,8 +186,25 @@ class Astrometry:
 
         angle, scale, mirrored = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
-        raMount = convertToAngle(fitsHeader.get('RA'), isHours=True)
-        decMount = convertToAngle(fitsHeader.get('DEC'), isHours=False)
+        if 'RA' in fitsHeader and 'DEC' in fitsHeader:
+            hasCoordFloat = True
+        else:
+            hasCoordFloat = False
+
+        if 'OBJCTRA' in fitsHeader and 'OBJCTDEC' in fitsHeader:
+            hasCoordDeg = True
+        else:
+            hasCoordDeg = False
+
+        if hasCoordFloat:
+            raMount = Angle(degrees=fitsHeader['RA'])
+            decMount = Angle(degrees=fitsHeader['DEC'])
+        elif hasCoordDeg:
+            raMount = MWidget.convertRaToAngle(fitsHeader['OBJCTRA'])
+            decMount = MWidget.convertDecToAngle(fitsHeader['OBJCTDEC'])
+        else:
+            raMount = Angle(hours=0)
+            decMount = Angle(degrees=0)
 
         deltaRA = (raJ2000._degrees - raMount._degrees) * 3600
         deltaDEC = (decJ2000.degrees - decMount.degrees) * 3600

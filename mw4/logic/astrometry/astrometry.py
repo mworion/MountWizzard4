@@ -109,7 +109,7 @@ class Astrometry:
 
             if hasCoordFloat:
                 ra = float(fitsHeader['RA'])
-                raHint = Angle(degrees=ra)
+                raHint = Angle(hours=ra)
                 dec = float(fitsHeader['DEC'])
                 decHint = Angle(degrees=dec)
             elif hasCoordDeg:
@@ -197,7 +197,7 @@ class Astrometry:
             hasCoordDeg = False
 
         if hasCoordFloat:
-            raMount = Angle(degrees=fitsHeader['RA'])
+            raMount = Angle(hours=fitsHeader['RA'])
             decMount = Angle(degrees=fitsHeader['DEC'])
         elif hasCoordDeg:
             raMount = MWidget.convertRaToAngle(fitsHeader['OBJCTRA'])

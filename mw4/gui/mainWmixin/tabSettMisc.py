@@ -281,8 +281,7 @@ class SettMisc(object):
         :param timeout:
         :return: success
         """
-        runnable = [
-                    'pip',
+        runnable = ['pip',
                     'install',
                     f'mountwizzard4=={versionPackage}',
                     '--disable-pip-version-check',

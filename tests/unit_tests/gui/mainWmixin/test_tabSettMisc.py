@@ -21,6 +21,7 @@ from unittest import mock
 import logging
 import subprocess
 import platform
+import os
 
 # external packages
 from PyQt5.QtMultimedia import QSound
@@ -254,6 +255,12 @@ def test_formatPIP_6(function):
     assert line == 'Successfully installed mountcontrol-0.156'
 
 
+def test_restartProgram(function):
+    with mock.patch.object(os,
+                           'execl'):
+        function.restartProgram()
+
+
 def test_runInstall_1(function):
     class Test1:
         @staticmethod
@@ -357,20 +364,26 @@ def test_runInstall_3(function):
 
 def test_installFinished_1(function):
     function.mutexInstall.lock()
-    suc = function.installFinished(None)
-    assert not suc
+    with mock.patch.object(function,
+                           'restartProgram'):
+        suc = function.installFinished(None)
+        assert not suc
 
 
 def test_installFinished_2(function):
     function.mutexInstall.lock()
-    suc = function.installFinished((False, '0.148.8'))
-    assert not suc
+    with mock.patch.object(function,
+                           'restartProgram'):
+        suc = function.installFinished((False, '0.148.8'))
+        assert not suc
 
 
 def test_installFinished_3(function):
     function.mutexInstall.lock()
-    suc = function.installFinished((True, '0.148.8'))
-    assert suc
+    with mock.patch.object(function,
+                           'restartProgram'):
+        suc = function.installFinished((True, '0.148.8'))
+        assert suc
 
 
 def test_installVersion_1(function):

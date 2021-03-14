@@ -380,6 +380,7 @@ def test_installFinished_2(function):
 
 def test_installFinished_3(function):
     function.mutexInstall.lock()
+    function.ui.automaticRestart.setChecked(True)
     with mock.patch.object(function,
                            'restartProgram'):
         suc = function.installFinished((True, '0.148.8'))

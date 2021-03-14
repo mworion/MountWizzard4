@@ -25767,6 +25767,36 @@ p, li { white-space: pre-wrap; }
          <bool>false</bool>
         </property>
        </widget>
+       <widget class="QCheckBox" name="automaticRestart">
+        <property name="geometry">
+         <rect>
+          <x>205</x>
+          <y>90</y>
+          <width>146</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Show only beta versions of MountWizzard4</string>
+        </property>
+        <property name="text">
+         <string>Automatic restart</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="LoglevelGroup_2">
        <property name="geometry">

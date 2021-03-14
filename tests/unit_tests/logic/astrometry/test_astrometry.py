@@ -95,14 +95,48 @@ def test_init_1(app):
 
 
 def test_readFitsData_1(app):
-    os.scandir('tests/image')
-    file = 'tests/image/m51.fit'
+    file = 'tests/image/test1.fit'
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header['RA'] = 8.0
+    header['DEC'] = 45.0
+    hdu.writeto(file)
     ra, dec, sc, ra1, dec1 = app.readFitsData(file)
     assert ra
     assert dec
     assert sc
     assert ra1
     assert dec1
+
+
+def test_readFitsData_2(app):
+    file = 'tests/image/test2.fit'
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header['OBJCTRA'] = '+8 00 00'
+    header['OBJCTDEC'] = '45 00 00'
+    hdu.writeto(file)
+    ra, dec, sc, ra1, dec1 = app.readFitsData(file)
+    assert ra
+    assert dec
+    assert sc
+    assert ra1
+    assert dec1
+
+
+def test_readFitsData_3(app):
+    file = 'tests/image/test3.fit'
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    hdu.writeto(file)
+    ra, dec, sc, ra1, dec1 = app.readFitsData(file)
+    assert ra.hours == 0
+    assert dec.degrees == 0
+    assert sc == 1
+    assert ra1 == 0
+    assert dec1 == 0
 
 
 def test_calcAngleScaleFromWCS_1(app):
@@ -148,6 +182,38 @@ def test_getSolutionFromWCS_1(app):
 
     assert header['RA'] == header['CRVAL1']
     assert header['DEC'] == header['CRVAL2']
+
+
+def test_getSolutionFromWCS_1b(app):
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set('CRVAL1', 180.0)
+    header.set('CRVAL2', 60.0)
+    header.set('OBJCTRA', '12 00 00')
+    header.set('OBJCTDEC', '60 00 00')
+    solve, header = app.getSolutionFromWCS(fitsHeader=header,
+                                           wcsHeader=header)
+    assert solve['raJ2000S'].hours == 12
+    assert solve['decJ2000S'].degrees == 60
+    assert solve['angleS'] == 0
+    assert solve['scaleS'] == 0
+    assert not solve['mirroredS']
+
+
+def test_getSolutionFromWCS_1c(app):
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set('CRVAL1', 180.0)
+    header.set('CRVAL2', 60.0)
+    solve, header = app.getSolutionFromWCS(fitsHeader=header,
+                                           wcsHeader=header)
+    assert solve['raJ2000S'].hours == 12
+    assert solve['decJ2000S'].degrees == 60
+    assert solve['angleS'] == 0
+    assert solve['scaleS'] == 0
+    assert not solve['mirroredS']
 
 
 def test_getSolutionFromWCS_2(app):

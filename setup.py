@@ -27,7 +27,7 @@ releaseNotes = """
  - adding contour HFD plot to image windows
  - adding virtual emergency stop key on time group
  - update build-in files if newer ones are shipped
- - auto restart MW4 after update
+ - auto restart MW4 after update (checkbox available)
  - adding OBJCTRA / OBJCTDEC keywords when reading FITs
  """
 
@@ -36,7 +36,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='1.1.0b8',
+    version='1.1.0b9',
     packages=[
         'mw4',
         'mw4.base',

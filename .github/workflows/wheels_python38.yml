@@ -96,6 +96,7 @@ jobs:
           git add "support/wheels/${{ matrix.distro}}"
           git commit -m "adding wheels" -a
           git pull --rebase
+          if: always()
 
       - name: upload_wheels
         uses: actions/upload-artifact@v2

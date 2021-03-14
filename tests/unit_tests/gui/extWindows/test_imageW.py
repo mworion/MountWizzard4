@@ -453,6 +453,24 @@ def test_writeHeaderDataToGUI_2(function):
     assert suc
 
 
+def test_writeHeaderDataToGUI_3(function):
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
+    function.header['OBJCTRA'] = '+08 00 00'
+    function.header['OBJCTDEC'] = '90 00 00'
+    suc = function.writeHeaderDataToGUI()
+    assert suc
+
+
+def test_writeHeaderDataToGUI_4(function):
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
+    function.header['RA'] = 12.0
+    function.header['DEC'] = 80.0
+    suc = function.writeHeaderDataToGUI()
+    assert suc
+
+
 def test_preparePlot_1(function):
     function.image = None
     function.header = None

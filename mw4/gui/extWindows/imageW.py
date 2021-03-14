@@ -567,9 +567,8 @@ class ImageWindow(toolsQtWidget.MWidget):
             yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
             plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        if self.ui.view.currentIndex() == 7:
-            if self.radius is None or self.objs is None:
-                return False
+        if self.ui.view.currentIndex() == 7 and self.radius is not None and \
+                self.objs is not None:
 
             x = self.objs['x']
             y = self.objs['y']
@@ -595,8 +594,25 @@ class ImageWindow(toolsQtWidget.MWidget):
         name = self.header.get('OBJECT', '').upper()
         self.ui.object.setText(f'{name}')
 
-        ra = Angle(degrees=self.header.get('RA', 0))
-        dec = Angle(degrees=self.header.get('DEC', 0))
+        if 'RA' in self.header and 'DEC' in self.header:
+            hasCoordFloat = True
+        else:
+            hasCoordFloat = False
+
+        if 'OBJCTRA' in self.header and 'OBJCTDEC' in self.header:
+            hasCoordDeg = True
+        else:
+            hasCoordDeg = False
+
+        if hasCoordFloat:
+            ra = Angle(degrees=float(self.header['RA']))
+            dec = Angle(degrees=float(self.header['DEC']))
+        elif hasCoordDeg:
+            ra = self.convertRaToAngle(self.header['OBJCTRA'])
+            dec = self.convertDecToAngle(self.header['OBJCTDEC'])
+        else:
+            ra = Angle(hours=0)
+            dec = Angle(degrees=0)
 
         self.ui.ra.setText(f'{ra.hstr(warn=False)}')
         self.ui.dec.setText(f'{dec.dstr()}')

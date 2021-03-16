@@ -277,9 +277,8 @@ class AstrometryNET(object):
             self.result['message'] = 'image2xy failed'
             return False
 
-        raFITS, decFITS, scaleFITS, _, _ = self.readFitsData(fitsPath=fitsPath)
+        raFITS, decFITS, scaleFITS = self.readFitsData(fitsPath=fitsPath)
 
-        # if parameters are passed, they have priority
         if raHint is None:
             raHint = raFITS
 

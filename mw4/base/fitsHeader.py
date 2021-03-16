@@ -48,7 +48,7 @@ def getCoordinates(header={}):
         hasCoordDeg = False
 
     if hasCoordFloat:
-        ra = Angle(degrees=float(header['RA']))
+        ra = Angle(hours=float(header['RA']))
         dec = Angle(degrees=float(header['DEC']))
     elif hasCoordDeg:
         ra = MWidget.convertRaToAngle(header['OBJCTRA'])
@@ -65,11 +65,10 @@ def getSQM(header={}):
     :param header:
     :return:
     """
-    sqm = max(header.get('SQM', 0),
-              header.get('SKY-QLTY', 0),
-              header.get('MPSAS', 0),
+    sqm = max(float(header.get('SQM', 0)),
+              float(header.get('SKY-QLTY', 0)),
+              float(header.get('MPSAS', 0)),
               )
-    sqm = float(sqm)
     return sqm
 
 
@@ -78,10 +77,9 @@ def getExposure(header={}):
     :param header:
     :return:
     """
-    expTime = max(header.get('EXPOSURE', 0),
-                  header.get('EXPTIME', 0)
+    expTime = max(float(header.get('EXPOSURE', 0)),
+                  float(header.get('EXPTIME', 0)),
                   )
-    expTime = float(expTime)
     return expTime
 
 
@@ -91,19 +89,18 @@ def getScale(header={}):
     :return:
     """
     hasScale = 'SCALE' in header
-    focalLength = header.get('FOCALLEN', 0)
-    binning = header.get('XBINNING', 0)
-    pixelSize = max(header.get('XPIXSZ', 0),
-                    header.get('PIXSIZE1', 0)
+    focalLength = float(header.get('FOCALLEN', 0))
+    binning = float(header.get('XBINNING', 0))
+    pixelSize = max(float(header.get('XPIXSZ', 0)),
+                    float(header.get('PIXSIZE1', 0)),
                     )
     hasAlternatives = focalLength and binning and pixelSize
 
     if hasScale:
-        scale = header.get('SCALE', 0)
+        scale = float(header.get('SCALE', 0))
     elif hasAlternatives:
         scale = pixelSize * binning / focalLength * 206.265
     else:
-        scale = 1
+        scale = 1.0
 
-    scale = float(scale)
     return scale

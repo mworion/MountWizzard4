@@ -20,7 +20,7 @@ Unreleased version of MW4
 
 Released beta version of MW4
 ----------------------------
-1.1.0b7
+1.1.0b9
 
 - adding release notes showing new capabilities in message window
 - adding cover light on / off

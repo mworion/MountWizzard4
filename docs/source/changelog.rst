@@ -32,6 +32,7 @@ Released beta version of MW4
 - update build-in files if newer ones are shipped
 - auto restart MW4 after update
 - adding OBJCTRA / OBJCTDEC keywords when reading FITs
+- upgrade various libraries
 
 Released version of MW4
 -----------------------

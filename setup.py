@@ -29,6 +29,7 @@ releaseNotes = """
  - update build-in files if newer ones are shipped
  - auto restart MW4 after update (checkbox available)
  - adding OBJCTRA / OBJCTDEC keywords when reading FITs
+ - upgrade various libraries
  """
 
 with open('notes.txt', 'w') as f:
@@ -66,22 +67,22 @@ setup(
     python_requires='>=3.7.0, <3.10',
     install_requires=[
         'numpy==1.20.1',
-        'pillow==8.1.0',
+        'pillow==8.1.2',
         'matplotlib==3.3.4',
         'pyerfa==1.7.2',
         'astropy==4.2',
         'scipy==1.6.1',
         'sep==1.1.1',
-        'requests==2.24.0',
+        'requests==2.25.1',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.36',
+        'skyfield==1.37',
         'sgp4>=2.1',
         'qimage2ndarray==1.8.3',
-        'importlib_metadata==3.4.0',
+        'importlib_metadata==3.7.3',
         'deepdiff==5.0.2',
-        'colour_demosaicing==0.1.5',
+        'colour_demosaicing==0.1.6',
         'wakeonlan==1.1.6',
-        'pybase64==1.1.1',
+        'pybase64==1.1.4',
     ]
     + (['pywin32==300'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])

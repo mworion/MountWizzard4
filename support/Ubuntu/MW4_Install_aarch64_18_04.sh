@@ -116,10 +116,10 @@ fi
   
 pip install "${WHL}"/kiwisolver-1.3.1"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/pyerfa-1.7.2"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/Pillow-8.1.0"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/Pillow-8.1.2"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/matplotlib-3.3.4"${PY}"linux"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/astropy-4.2"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/pybase64-1.1.1"${PY}"linux"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/pybase64-1.1.4"${PY}"linux"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/sep-1.1.1"${PY}"linux"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/sgp4-2.17"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/PyQt5_sip-12.8.1"${PY}"linux"${ARCH}" >> install.log 2>&1

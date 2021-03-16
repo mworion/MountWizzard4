@@ -86,6 +86,24 @@ def getExposure(header={}):
 
 
 def getScale(header={}):
-    scale = header.get('SCALE', 1)
+    """
+    :param header:
+    :return:
+    """
+    hasScale = 'SCALE' in header
+    focalLength = header.get('FOCALLEN', 0)
+    binning = header.get('XBINNING', 0)
+    pixelSize = max(header.get('XPIXSZ', 0),
+                    header.get('PIXSIZE1', 0)
+                    )
+    hasAlternatives = focalLength and binning and pixelSize
+
+    if hasScale:
+        scale = header.get('SCALE', 0)
+    elif hasAlternatives:
+        scale = pixelSize * binning / focalLength * 206.265
+    else:
+        scale = 1
+
     scale = float(scale)
     return scale

@@ -119,9 +119,9 @@ class CameraAscom(AscomClass):
         if fastReadout:
             self.client.FastReadout = True
 
-        quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
-        self.log.debug(f'camera has readout quality entry: {quality}')
-
+        isQualityHigh = self.data.get('READOUT_QUALITY.QUALITY_HIGH', True)
+        qualityText = 'High' if isQualityHigh else 'Low'
+        self.log.debug(f'camera has readout quality entry: {qualityText}')
         return True
 
     def workerExpose(self,

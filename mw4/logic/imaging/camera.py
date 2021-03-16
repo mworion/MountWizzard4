@@ -129,8 +129,6 @@ class Camera:
         if 'CCD_FRAME.X' not in self.data or 'CCD_FRAME.Y' not in self.data:
             return False
 
-        # todo: what is the right setting for alpaca as we can ask explicit for subframe
-
         return True
 
     def canBinning(self, binning=1):
@@ -217,12 +215,10 @@ class Camera:
             return False
 
         result = self.calcSubFrame(subFrame=subFrame)
-
         if not result:
             return False
 
         posX, posY, width, height = result
-
         # this protects against overrun
         while self.exposing:
             QTest.qWait(250)

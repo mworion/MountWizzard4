@@ -31,12 +31,12 @@ from astropy.visualization import AsinhStretch
 from astropy.visualization import imshow_norm
 from matplotlib.patches import Ellipse
 import matplotlib.pyplot as plt
-from skyfield.api import Angle
 from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
 import sep
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
+from base.fitsHeader import getCoordinates, getSQM, getExposure
 from gui.utilities import toolsQtWidget
 from gui.widgets import image_ui
 from base.tpool import Worker
@@ -594,25 +594,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         name = self.header.get('OBJECT', '').upper()
         self.ui.object.setText(f'{name}')
 
-        if 'RA' in self.header and 'DEC' in self.header:
-            hasCoordFloat = True
-        else:
-            hasCoordFloat = False
-
-        if 'OBJCTRA' in self.header and 'OBJCTDEC' in self.header:
-            hasCoordDeg = True
-        else:
-            hasCoordDeg = False
-
-        if hasCoordFloat:
-            ra = Angle(degrees=float(self.header['RA']))
-            dec = Angle(degrees=float(self.header['DEC']))
-        elif hasCoordDeg:
-            ra = self.convertRaToAngle(self.header['OBJCTRA'])
-            dec = self.convertDecToAngle(self.header['OBJCTDEC'])
-        else:
-            ra = Angle(hours=0)
-            dec = Angle(degrees=0)
+        ra, dec = getCoordinates(header=self.header)
 
         self.ui.ra.setText(f'{ra.hstr(warn=False)}')
         self.ui.dec.setText(f'{dec.dstr()}')
@@ -625,9 +607,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         ccdTemp = self.header.get('CCD-TEMP', 0)
         self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
 
-        expTime1 = self.header.get('EXPOSURE', 0)
-        expTime2 = self.header.get('EXPTIME', 0)
-        expTime = max(expTime1, expTime2)
+        expTime = getExposure(header=self.header)
         self.ui.expTime.setText(f'{expTime:5.1f}')
 
         filterCCD = self.header.get('FILTER', 0)
@@ -638,10 +618,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.binX.setText(f'{binX:1.0f}')
         self.ui.binY.setText(f'{binY:1.0f}')
 
-        sqm = max(self.header.get('SQM', 0),
-                  self.header.get('SKY-QLTY', 0),
-                  self.header.get('MPSAS', 0),
-                  )
+        sqm = getSQM(header=self.header)
         self.ui.sqm.setText(f'{sqm:5.2f}')
 
         flipped = bool(self.header.get('FLIPPED', False))

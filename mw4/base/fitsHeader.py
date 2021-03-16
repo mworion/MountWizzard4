@@ -26,6 +26,7 @@ from gui.utilities.toolsQtWidget import MWidget
 __all__ = ['getCoordinates',
            'getSQM',
            'getExposure',
+           'getScale',
            ]
 
 log = logging.getLogger()
@@ -68,6 +69,7 @@ def getSQM(header={}):
               header.get('SKY-QLTY', 0),
               header.get('MPSAS', 0),
               )
+    sqm = float(sqm)
     return sqm
 
 
@@ -79,4 +81,11 @@ def getExposure(header={}):
     expTime = max(header.get('EXPOSURE', 0),
                   header.get('EXPTIME', 0)
                   )
+    expTime = float(expTime)
     return expTime
+
+
+def getScale(header={}):
+    scale = header.get('SCALE', 1)
+    scale = float(scale)
+    return scale

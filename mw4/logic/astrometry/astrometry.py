@@ -22,12 +22,10 @@ import os
 import PyQt5
 from astropy.io import fits
 import numpy as np
-from skyfield.api import Angle
 
 # local imports
 from mountcontrol.convert import convertToAngle
-from base.fitsHeader import getCoordinates
-from gui.utilities.toolsQtWidget import MWidget
+from base.fitsHeader import getCoordinates, getScale
 from base import tpool
 from logic.astrometry.astrometryNET import AstrometryNET
 from logic.astrometry.astrometryASTAP import AstrometryASTAP
@@ -98,7 +96,7 @@ class Astrometry:
             fitsHeader = fitsHDU[0].header
 
             raHint, decHint = getCoordinates(header=fitsHeader)
-            scaleHint = float(fitsHeader.get('SCALE', 1))
+            scaleHint = getScale(header=fitsHeader)
 
         self.log.debug(f'Header RA: {raHint}, DEC: {decHint}, scale: {scaleHint}')
 
@@ -155,7 +153,6 @@ class Astrometry:
                  scale in arcsec/pixel
                  error in arcsec and flag if image is flipped
         """
-
         self.log.debug(f'wcs header: [{wcsHeader}]')
         raJ2000 = convertToAngle(wcsHeader.get('CRVAL1'), isHours=True)
         decJ2000 = convertToAngle(wcsHeader.get('CRVAL2'), isHours=False)
@@ -227,8 +224,8 @@ class Astrometry:
         self.signals.message.emit('')
         return True
 
-    def solveThreading(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
-                       updateFits=False):
+    def solveThreading(self, fitsPath='', raHint=None, decHint=None,
+                       scaleHint=None, updateFits=False):
         """
         solveThreading is the wrapper for doing the solve process in a
         threadpool environment of Qt. Otherwise the HMI would be stuck all the
@@ -243,12 +240,10 @@ class Astrometry:
                            original file
         :return: success
         """
-
         if self.framework not in self.run:
             return False
 
         solver = self.run[self.framework]
-
         if not os.path.isfile(fitsPath):
             self.signals.done.emit(solver.result)
             return False

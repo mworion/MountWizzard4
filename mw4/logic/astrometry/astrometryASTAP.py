@@ -149,7 +149,6 @@ class AstrometryASTAP(object):
         :param wcsTextFile: fits file with wcs data
         :return: wcsHeader
         """
-
         if not wcsTextFile:
             return None
 
@@ -163,7 +162,6 @@ class AstrometryASTAP(object):
 
         wcsHeader = fits.PrimaryHDU().header.fromstring(tempString,
                                                         sep='\n')
-
         return wcsHeader
 
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
@@ -242,7 +240,9 @@ class AstrometryASTAP(object):
             solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,
                                                     wcsHeader=wcsHeader,
                                                     updateFits=updateFits)
-            fitsHDU[0].header = header
+            self.log.debug(f'Header: [{header}]')
+            self.log.debug(f'Solve : [{solve}]')
+            fitsHDU[0].header.update(header)
 
         self.result = {
             'success': True,
@@ -250,6 +250,7 @@ class AstrometryASTAP(object):
             'message': 'Solved',
         }
         self.result.update(solve)
+        self.log.debug(f'Result: [{self.result}]')
         return True
 
     def abort(self):

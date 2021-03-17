@@ -22,6 +22,7 @@ from skyfield.api import Angle
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
+from mountcontrol.convert import convertToAngle
 
 __all__ = ['getCoordinates',
            'getSQM',
@@ -48,8 +49,8 @@ def getCoordinates(header={}):
         hasCoordDeg = False
 
     if hasCoordFloat:
-        ra = Angle(hours=float(header['RA']))
-        dec = Angle(degrees=float(header['DEC']))
+        ra = convertToAngle(header['RA'], isHours=True)
+        dec = convertToAngle(header['DEC'], isHours=False)
     elif hasCoordDeg:
         ra = MWidget.convertRaToAngle(header['OBJCTRA'])
         dec = MWidget.convertDecToAngle(header['OBJCTDEC'])

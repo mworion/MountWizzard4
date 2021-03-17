@@ -32,7 +32,7 @@ def module_setup_teardown():
 
 def test_getCoordinates_1():
     header = {
-        'RA': 12,
+        'RA': 180,
         'DEC': 45,
     }
     ra, dec = getCoordinates(header=header)

@@ -200,7 +200,7 @@ def upload_mw(c):
         print(rn)
         print(f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
         runMW(c, f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
-        runMW(c, 'rm notes.txt')
+    runMW(c, 'rm notes.txt')
 
 
 @task(pre=[])

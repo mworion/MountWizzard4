@@ -297,8 +297,7 @@ class AstrometryASTAP(object):
         else:
             sucIndex = True
 
-        t = f'ASTAP OK, app:{program}, '
-        t = t + f'G17:{isG17}, G18:{isG18}, H17:{isH17}, H18:{isH18}'
-        self.log.info(t)
+        self.log.info(f'ASTAP OK, app:{program}, index:{self.indexPath}')
+        self.log.info(f'Index: G17:{isG17}, G18:{isG18}, H17:{isH17}, H18:{isH18}')
 
         return sucProgram, sucIndex

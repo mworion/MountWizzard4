@@ -242,7 +242,7 @@ class AstrometryASTAP(object):
                                                     updateFits=updateFits)
             self.log.debug(f'Header: [{header}]')
             self.log.debug(f'Solve : [{solve}]')
-            fitsHDU[0].header.update(header)
+            fitsHDU[0].header = header
 
         self.result = {
             'success': True,
@@ -259,7 +259,6 @@ class AstrometryASTAP(object):
 
         :return: success
         """
-
         if self.process:
             self.process.kill()
             return True

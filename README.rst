@@ -127,7 +127,7 @@ CS Michel
     :target: https://github.com/mworion/MountWizzard4/issues
 
 .. |COMMITS_MASTER| image::
-    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.0.6/master
+    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.0.7/master
     :target: https://github.com/mworion/MountWizzard4/commits/master
 
 .. |COMMITS_WEEK| image::

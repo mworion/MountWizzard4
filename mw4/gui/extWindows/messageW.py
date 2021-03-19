@@ -142,8 +142,6 @@ class MessageWindow(toolsQtWidget.MWidget):
             withoutPrefix = mType & 0x100
             mType = mType % 256
 
-            if mType < 0:
-                continue
             if mType > len(self.messColor):
                 continue
 

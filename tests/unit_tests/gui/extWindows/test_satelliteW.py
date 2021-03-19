@@ -318,3 +318,61 @@ def test_drawSatellite_3(function, module):
 
     suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)
     assert suc
+
+
+def test_drawSatellite_4(function, module):
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 00.03279710179072"]
+    satellite = EarthSatellite(*tle[1:3], name=tle[0])
+
+    tt = module.now().tt
+
+    t0 = module.tt_jd(tt + 0)
+    t1 = module.tt_jd(tt + 0.1)
+    t2 = module.tt_jd(tt + 0.2)
+    t3 = module.tt_jd(tt + 0.3)
+    t4 = module.tt_jd(tt + 0.4)
+    t5 = module.tt_jd(tt + 0.5)
+
+    satOrbits = {0: {
+                     'settle': t1},
+                 1: {'rise': t2,
+                     'settle': t3},
+                 2: {'rise': t3,
+                     'settle': t4},
+                 3: {'rise': t4,
+                     'settle': t5}
+                 }
+
+    suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)
+    assert suc
+
+
+def test_drawSatellite_5(function, module):
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 00.03279710179072"]
+    satellite = EarthSatellite(*tle[1:3], name=tle[0])
+
+    tt = module.now().tt
+
+    t0 = module.tt_jd(tt + 0)
+    t1 = module.tt_jd(tt + 0.1)
+    t2 = module.tt_jd(tt + 0.2)
+    t3 = module.tt_jd(tt + 0.3)
+    t4 = module.tt_jd(tt + 0.4)
+    t5 = module.tt_jd(tt + 0.5)
+
+    satOrbits = {0: {'rise': t0,
+                     },
+                 1: {'rise': t2,
+                     'settle': t3},
+                 2: {'rise': t3,
+                     'settle': t4},
+                 3: {'rise': t4,
+                     'settle': t5}
+                 }
+
+    suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)
+    assert suc

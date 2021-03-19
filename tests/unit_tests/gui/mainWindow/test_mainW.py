@@ -55,6 +55,8 @@ from logic.measure.measure import MeasureData
 from logic.telescope.telescope import Telescope
 from logic.astrometry.astrometry import Astrometry
 from base.loggerMW import addLoggingLevel
+from base.packageConfig import isAvailable, isSimulator
+
 
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
@@ -164,6 +166,8 @@ def function_setup_teardown(qtbot):
                            'show'):
         with mock.patch.object(ImageWindow,
                                'show'):
+            isSimulator = True
+            isAvailable = True
             app = MainWindow(app=Test())
             app.log = logging.getLogger()
             addLoggingLevel('TRACE', 5)
@@ -349,6 +353,12 @@ def test_smartFunctionGui_7():
 
 
 def test_smartTabGui_1():
+    suc = app.smartTabGui()
+    assert suc
+
+
+def test_smartTabGui_2():
+    app.deviceStat['power'] = True
     suc = app.smartTabGui()
     assert suc
 

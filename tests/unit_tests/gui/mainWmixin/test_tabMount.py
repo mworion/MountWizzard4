@@ -283,7 +283,7 @@ def test_updateSetSyncGUI_3(function):
 
 def test_updateSetSyncGUI_4(function):
     function.app.mount.setting.typeConnection = None
-    function.app.mount.setting.wakeOnLan = 'ON'
+    function.app.mount.setting.wakeOnLan = 'On'
     suc = function.updateSetSyncGUI(function.app.mount.setting)
     assert suc
 
@@ -454,6 +454,22 @@ def test_stop2(function, qtbot):
             suc = function.stop()
             assert not suc
         assert ['Cannot stop mount', 2] == blocker.args
+
+
+def test_virtualStop_1(function):
+    function.ui.activateVirtualStop.setChecked(True)
+    with mock.patch.object(function,
+                           'stop',
+                           return_value=False):
+        function.virtualStop()
+
+
+def test_virtualStop_2(function):
+    function.ui.activateVirtualStop.setChecked(False)
+    with mock.patch.object(function,
+                           'stop',
+                           return_value=False):
+        function.virtualStop()
 
 
 def test_updateSetting_slewRate_1(function):

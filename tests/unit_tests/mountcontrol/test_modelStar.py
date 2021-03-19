@@ -66,6 +66,16 @@ def test_properties_4(function):
     assert round(function.alt.degrees, 2) == -58.68
 
 
+def test_properties_4b(function):
+    function.obsSite = None
+    function.coord = Star(ra_hours=12.5, dec_degrees=30.5)
+
+
+def test_properties_4c(function):
+    function.obsSite.location = None
+    function.coord = Star(ra_hours=12.5, dec_degrees=30.5)
+
+
 def test_properties_5(function):
     function.number = 12.0
     assert function.number == 12

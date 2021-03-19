@@ -257,7 +257,7 @@ def test_sendCoolerSwitch_2():
         assert not suc
 
 
-def test_sendCoolerSwitch_2():
+def test_sendCoolerSwitch_3():
     app.deviceConnected = True
     app.data['CAN_GET_COOLER_POWER'] = True
     with mock.patch.object(AlpacaBase,

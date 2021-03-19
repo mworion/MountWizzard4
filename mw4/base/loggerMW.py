@@ -77,14 +77,9 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
         if self.isEnabledFor(levelNum):
             self._log(levelNum, message, args, **kwargs)
 
-    def logToRoot(message, *args, **kwargs):
-        if logging.root.isEnabledFor(levelNum):
-            logging.root._log(levelNum, message, args, **kwargs)
-
     logging.addLevelName(levelNum, levelName)
     setattr(logging, levelName, levelNum)
     setattr(logging.getLoggerClass(), methodName, logForLevel)
-    setattr(logging, methodName, logToRoot)
 
 
 def setupLogging():

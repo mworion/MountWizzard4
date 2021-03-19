@@ -211,8 +211,11 @@ def test_expose_5():
         with mock.patch.object(app,
                                'canBinning',
                                return_value=True):
-            suc = app.expose(imagePath='tests/image')
-            assert not suc
+            with mock.patch.object(app.run['indi'],
+                                   'expose',
+                                   return_value=True):
+                suc = app.expose(imagePath='tests/image')
+                assert not suc
 
 
 def test_expose_6():
@@ -225,8 +228,28 @@ def test_expose_6():
         with mock.patch.object(app,
                                'canBinning',
                                return_value=True):
-            suc = app.expose(imagePath='tests/image')
-            assert not suc
+            with mock.patch.object(app.run['indi'],
+                                   'expose',
+                                   return_value=False):
+                suc = app.expose(imagePath='tests/image')
+                assert not suc
+
+
+def test_expose_7():
+    app.framework = 'indi'
+    app.data = {'CCD_INFO.CCD_MAX_X': 1000,
+                'CCD_INFO.CCD_MAX_Y': 1000}
+    with mock.patch.object(app,
+                           'canSubFrame',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'canBinning',
+                               return_value=True):
+            with mock.patch.object(app.run['indi'],
+                                   'expose',
+                                   return_value=True):
+                suc = app.expose(imagePath='tests/image')
+                assert suc
 
 
 def test_abort_1():

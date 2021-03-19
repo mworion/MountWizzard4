@@ -113,7 +113,8 @@ class MessageWindow(toolsQtWidget.MWidget):
         self.ui.message.clear()
         return True
 
-    def splitByN(self, seq, n):
+    @staticmethod
+    def splitByN(seq, n):
         """
         A generator to divide a sequence into chunks of n units.
         :param n:

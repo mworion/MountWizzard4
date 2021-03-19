@@ -111,10 +111,9 @@ def test_getInitialConfig_2():
 
 
 def test_workerPollData_1():
-    app.deviceConnected = True
-    app.data['CAN_FAST'] = True
+    app.deviceConnected = False
     suc = app.workerPollData()
-    assert suc
+    assert not suc
 
 
 def test_workerPollData_2():

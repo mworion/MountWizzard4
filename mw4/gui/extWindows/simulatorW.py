@@ -167,6 +167,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.checkShowBuildPoints.clicked.disconnect(self.buildPointsCreate)
         self.ui.checkShowNumbers.clicked.disconnect(self.buildPointsCreate)
         self.ui.checkShowSlewPath.clicked.disconnect(self.buildPointsCreate)
+        self.app.updatePointMarker.disconnect(self.buildPointsCreate)
         self.ui.checkShowHorizon.clicked.disconnect(self.horizonCreate)
         self.ui.checkShowPointer.clicked.disconnect(self.pointerCreate)
 
@@ -200,6 +201,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.checkShowBuildPoints.clicked.connect(self.buildPointsCreate)
         self.ui.checkShowNumbers.clicked.connect(self.buildPointsCreate)
         self.ui.checkShowSlewPath.clicked.connect(self.buildPointsCreate)
+        self.app.updatePointMarker.connect(self.buildPointsCreate)
         self.ui.checkShowHorizon.clicked.connect(self.horizonCreate)
         self.ui.checkShowPointer.clicked.connect(self.pointerCreate)
 
@@ -231,7 +233,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
                                 self.ui.checkShowBuildPoints.isChecked(),
                                 self.ui.checkShowNumbers.isChecked(),
                                 self.ui.checkShowSlewPath.isChecked())
-
         return True
 
     def horizonCreate(self):

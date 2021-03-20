@@ -264,16 +264,11 @@ class Model:
             return False
 
         mPoint = self.solveQueue.get()
-        self.log.debug(f'Solve from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-
         self.app.showImage.emit(mPoint["imagePath"])
-
         self.resultQueue.put(mPoint)
         self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         self.app.astrometry.solveThreading(fitsPath=mPoint["imagePath"],
-                                           updateFits=False,
-                                           )
-
+                                           updateFits=False)
         text = f'Solving  image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
         self.app.message.emit(text, 0)
@@ -305,10 +300,7 @@ class Model:
             return False
 
         mPoint = self.imageQueue.get()
-        self.log.debug(f'Image from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-
         self.collector.resetSignals()
-
         while self.ui.pauseModel.property('pause'):
             QTest.qWait(100)
 
@@ -317,8 +309,7 @@ class Model:
                                binning=mPoint['binning'],
                                subFrame=mPoint['subFrame'],
                                fastReadout=mPoint['fastReadout'],
-                               focalLength=mPoint['focalLength'],
-                               )
+                               focalLength=mPoint['focalLength'])
 
         mPoint['raJNowM'] = self.app.mount.obsSite.raJNow
         mPoint['decJNowM'] = self.app.mount.obsSite.decJNow
@@ -357,21 +348,15 @@ class Model:
             return False
 
         mPoint = self.slewQueue.get()
-        self.log.debug(f'Slew from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
-                                                    az_degrees=mPoint['azimuth'],
-                                                    )
+                                                    az_degrees=mPoint['azimuth'])
         if not suc:
             return False
 
         if self.deviceStat['dome']:
             alt = mPoint['altitude']
             az = mPoint['azimuth']
-
-            delta = self.app.dome.slewDome(altitude=alt,
-                                           azimuth=az)
-
+            delta = self.app.dome.slewDome(altitude=alt, azimuth=az)
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
             text = f'Slewing  dome:       point: {mPoint["countSequence"]:03d}, '
             text += f'{geoStat}, az: {az:3.1f} delta: {delta:3.1f}'
@@ -413,7 +398,6 @@ class Model:
         """
         if not self.ui.checkDisableDAT.isChecked():
             return False
-
         if self.statusDAT is None:
             return False
 

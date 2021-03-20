@@ -81,10 +81,6 @@ class Almanac:
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
         self.updateMoonPhase()
@@ -93,15 +89,10 @@ class Almanac:
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         if self.thread:
             self.thread.join()
-
         return True
 
     def drawTwilight(self, t, e):
@@ -114,24 +105,19 @@ class Almanac:
         midLim = minLim + (maxLim - minLim) / 2
 
         axe, fig = self.generateFlat(widget=self.twilight)
-
         yTicks = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]
         yLabels = ['12', '14', '16', '18', '20', '22', '24',
                    '02', '04', '06', '08', '10', '12']
         color = [self.M_BLUE4, self.M_BLUE3, self.M_BLUE2, self.M_BLUE1,
                  self.M_BACK]
-
         axe.set_yticks(yTicks)
         axe.set_yticklabels(yLabels, fontsize=10)
-
         xTicks = np.arange(minLim, maxLim, (maxLim - minLim) / 11)
         xLabels = ts.tt_jd(xTicks).utc_strftime('%d%b')
         xLabels[0] = ''
         axe.set_xlim(minLim, maxLim)
-
         axe.set_xticks(xTicks)
         axe.set_xticklabels(xLabels, fontsize=10)
-
         axe.grid(color=self.M_GREY, alpha=0.5)
         axe.set_ylim(0, 24)
 
@@ -145,7 +131,6 @@ class Almanac:
         x = [midLim - 1, midLim - 1, midLim + 1, midLim + 1]
         y = [0, 24, 24, 0]
         axe.fill(x, y, self.M_GREY, alpha=0.5)
-
         axe.figure.canvas.draw()
         return True
 
@@ -184,7 +169,8 @@ class Almanac:
 
         :return: true for test purpose
         """
-        self.thread = threading.Thread(target=self.searchTwilightWorker, args=[182])
+        self.thread = threading.Thread(target=self.searchTwilightWorker,
+                                       args=[3])
         self.thread.start()
         return True
 
@@ -195,7 +181,6 @@ class Almanac:
 
         :return: true for test purpose
         """
-
         colors = {
             0: self.COLOR_BLUE4,
             1: self.COLOR_BLUE3,
@@ -205,7 +190,6 @@ class Almanac:
         }
 
         timeEvents, events = self.calcTwilightData()
-
         text = ''
         self.ui.twilightEvents.clear()
 
@@ -216,7 +200,6 @@ class Almanac:
             text += f'{almanac.TWILIGHTS[event]}'
             self.ui.twilightEvents.insertPlainText(text)
             text = '\n'
-
         return True
 
     def calcMoonPhase(self):
@@ -328,7 +311,6 @@ class Almanac:
 
     def lunarNodes(self):
         """
-
         :return: true for test purpose
         """
         ts = self.app.mount.obsSite.ts
@@ -337,7 +319,6 @@ class Almanac:
         t0 = ts.tt_jd(int(timeJD.tt))
         t1 = ts.tt_jd(int(timeJD.tt) + 29)
         t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(self.app.ephemeris))
-
         text = 'descending' if y[0] else 'ascending'
         self.ui.lunarNodes.setText(f'{text}')
 

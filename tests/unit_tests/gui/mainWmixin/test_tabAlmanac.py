@@ -209,16 +209,32 @@ def test_displayTwilightData_2(function):
         assert suc
 
 
-def test_getMoonPhase_1(function):
-    a, b, c = function.getMoonPhase()
+def test_calcMoonPhase_1(function):
+    a, b, c = function.calcMoonPhase()
     assert a is not None
     assert b is not None
     assert c is not None
 
 
+def test_generateMoonMask_1(function):
+    function.generateMoonMask(64, 64, 45)
+
+
+def test_generateMoonMask_2(function):
+    function.generateMoonMask(64, 64, 135)
+
+
+def test_generateMoonMask_3(function):
+    function.generateMoonMask(64, 64, 225)
+
+
+def test_generateMoonMask_4(function):
+    function.generateMoonMask(64, 64, 315)
+
+
 def test_updateMoonPhase_1(function):
     with mock.patch.object(function,
-                           'getMoonPhase',
+                           'calcMoonPhase',
                            return_value=(20, 45, .20)):
         suc = function.updateMoonPhase()
         assert suc
@@ -226,32 +242,8 @@ def test_updateMoonPhase_1(function):
 
 def test_updateMoonPhase_2(function):
     with mock.patch.object(function,
-                           'getMoonPhase',
+                           'calcMoonPhase',
                            return_value=(45, 135, .45)):
-        suc = function.updateMoonPhase()
-        assert suc
-
-
-def test_updateMoonPhase_3(function):
-    with mock.patch.object(function,
-                           'getMoonPhase',
-                           return_value=(70, 225, .70)):
-        suc = function.updateMoonPhase()
-        assert suc
-
-
-def test_updateMoonPhase_4(function):
-    with mock.patch.object(function,
-                           'getMoonPhase',
-                           return_value=(95, 315, .95)):
-        suc = function.updateMoonPhase()
-        assert suc
-
-
-def test_updateMoonPhase_5(function):
-    with mock.patch.object(function,
-                           'getMoonPhase',
-                           return_value=(95, 315, 10)):
         suc = function.updateMoonPhase()
         assert suc
 
@@ -259,3 +251,34 @@ def test_updateMoonPhase_5(function):
 def test_lunarNodes_1(function):
     suc = function.lunarNodes()
     assert suc
+
+
+def test_twilight(function):
+    from matplotlib import pyplot as plt
+    from dateutil.tz import tzlocal
+    from skyfield.api import Topos
+
+    color = ['red', 'blue', 'green', 'yellow', 'white']
+    function.app.mount.obsSite.location = Topos(latitude_degrees=60.0,
+                                                longitude_degrees=11.5,
+                                                elevation_m=500)
+    t, e = function.calcTwilightData(timeWindow=180)
+
+    print()
+    ax = plt.subplot(111)
+    day_old = None
+    for ti, event in zip(t, e):
+        hour = int(ti.astimezone(tzlocal()).strftime('%H'))
+        minute = int(ti.astimezone(tzlocal()).strftime('%M'))
+        y = (hour + 12 + minute / 60) % 24
+        day = round(ti.tt + 0.5, 0)
+        print(day, event, y)
+
+        if day_old != day:
+            day_old = day
+            ax.bar(day, height=24, bottom=0, width=1, color='white')
+
+        ax.bar(day, height=24-y, bottom=y, width=1, color=color[event])
+
+    ax.set_ylim(0, 24)
+    plt.show()

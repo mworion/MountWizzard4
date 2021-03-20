@@ -5703,7 +5703,35 @@ to mount</string>
       <property name="spacing">
        <number>0</number>
       </property>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="almanacAstronomical">
+        <property name="text">
+         <string>Astronomical</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="almanacNautical">
+        <property name="text">
+         <string>Nautical</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
+       <widget class="QPushButton" name="almanacCivil">
+        <property name="text">
+         <string>Civil</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QPushButton" name="almanacDark">
+        <property name="text">
+         <string>Dark</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="4">
        <widget class="QWidget" name="twilight" native="true">
         <property name="enabled">
          <bool>true</bool>

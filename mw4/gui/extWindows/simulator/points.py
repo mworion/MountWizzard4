@@ -52,7 +52,6 @@ class SimulatorBuildPoints:
         :param dz:
         :return:
         """
-
         radius, alt, az = functions.to_spherical(np.array((dx, dy, dz)))
         az = np.degrees(az)
         alt = np.degrees(alt)
@@ -96,14 +95,14 @@ class SimulatorBuildPoints:
         entity = QEntity(rEntity)
         mesh = QSphereMesh()
         if active:
-            mesh.setRadius(0.03)
-        else:
             mesh.setRadius(0.04)
+        else:
+            mesh.setRadius(0.025)
         mesh.setRings(30)
         mesh.setSlices(30)
         trans = QTransform()
         x, y, z = functions.from_spherical(radius, alt, az)
-        trans.setTranslation(QVector3D(x, y, z + 1.35))
+        trans.setTranslation(QVector3D(x, y, z + 1.0))
         entity.addComponent(mesh)
         entity.addComponent(trans)
         if active:

@@ -46,12 +46,10 @@ class SimulatorPointer:
         :param show: root of the 3D models
         :return: success
         """
-
         if self.model:
             self.modelRoot.setParent(None)
 
         self.model.clear()
-
         if not show:
             return False
 
@@ -65,7 +63,6 @@ class SimulatorPointer:
                 'mat': Materials().pointer,
             },
         }
-
         for name in self.model:
             tools.linkModel(self.model, name, self.modelRoot)
 
@@ -78,10 +75,8 @@ class SimulatorPointer:
 
         :return:
         """
-
         if not self.model:
             return False
-
         if not self.app.mount.obsSite.haJNow:
             return False
 
@@ -100,5 +95,4 @@ class SimulatorPointer:
         z = z * 1000 + 1000
 
         self.model['pointer']['t'].setTranslation(QVector3D(x, y, z))
-
         return True

@@ -85,10 +85,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to
-        the gui elements. if some initialisations have to be proceeded with the
-        loaded persistent data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
         if 'simulatorW' not in self.app.config:
@@ -123,10 +119,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         if 'simulatorW' not in self.app.config:
@@ -154,10 +146,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def closeEvent(self, closeEvent):
         """
-        closeEvent is overloaded to be able to store the data before the windows
-        is close and all it's data is garbage collected. all signals are
-        disconnected before closing.
-
         :param closeEvent:
         :return:
         """
@@ -191,9 +179,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def showWindow(self):
         """
-        showWindow starts constructing the main window for the simulator view and shows the
-        window content. all signals are connected there
-
         :return: True for test purpose
         """
         self.createScene(self.rootEntity)
@@ -226,7 +211,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def buildPointsCreate(self):
         """
-        transfer function needed, because lambda function in signal connection cannot be used
         :return: True for test purpose
         """
         self.buildPoints.create(self.world['ref1000']['e'],
@@ -237,7 +221,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def horizonCreate(self):
         """
-        transfer function needed, because lambda function in signal connection cannot be used
         :return: True for test purpose
         """
         self.horizon.create(self.world['ref1000']['e'],
@@ -246,7 +229,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def pointerCreate(self):
         """
-        transfer function needed, because lambda function in signal connection cannot be used
         :return: True for test purpose
         """
         self.pointer.create(self.world['ref']['e'],
@@ -255,7 +237,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def setDomeTransparency(self):
         """
-        transfer function needed, because lambda function in signal connection cannot be used
         :return: True for test purpose
         """
         self.dome.setTransparency(self.ui.checkDomeTransparent.isChecked())
@@ -323,22 +304,20 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def createWorld(self, rEntity):
         """
-        first transformation is from fusion360 to qt3d
-            fusion360 (x is north, y is west, z is up), scale in mm
-            Qt3D (-z is north, x is east, y is up) scale is m
-        and set as reference. from there on we are in the fusion coordinate system
+        first transformation is from fusion360 to qt3d fusion360 (x is north,
+        y is west, z is up), scale in mm Qt3D (-z is north, x is east, y is up)
+        scale is m and set as reference. from there on we are in the fusion
+        coordinate system
 
-            'ref' is the fusion360 coordinate system, please be aware that rotations around the
-            z axis for azimuth is clockwise and not counterclockwise as a right handed
-            coordinate system would propose.
+        'ref' is the fusion360 coordinate system, please be aware that rotations
+        around the z axis for azimuth is clockwise and not counterclockwise as a
+        right handed coordinate system would propose.
 
-        for the sake of simplifying there is another reference, which only has the
-        corrections in coordinates and not for scaling, this is called
+        for the sake of simplifying there is another reference, which only has
+        the corrections in coordinates and not for scaling, this is called 'ref1000'
 
-            'ref1000'
-
-        beside defining the references, createWorld build the foundation for the positioning
-        of a raw telescope column and a compass rose.
+        beside defining the references, createWorld build the foundation for the
+        positioning of a raw telescope column and a compass rose.
 
         :param rEntity:
         :return:

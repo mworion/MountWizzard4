@@ -18,6 +18,7 @@
 # standard libraries
 import threading
 from dateutil.tz import tzlocal
+import time
 
 # external packages
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor, QFont
@@ -86,12 +87,8 @@ class Almanac:
 
         :return: True for test purpose
         """
-
         self.updateMoonPhase()
-        self.searchTwilight()
-        self.displayTwilightData()
         self.lunarNodes()
-
         return True
 
     def storeConfig(self):
@@ -164,6 +161,7 @@ class Almanac:
         t1 = ts.tt_jd(int(timeJD.tt) + timeWindow + 1)
 
         f = almanac.dark_twilight_day(self.app.ephemeris, location)
+        f.step_days = 0.04
         timeEvents, events = almanac.find_discrete(t0, t1, f)
 
         return timeEvents, events

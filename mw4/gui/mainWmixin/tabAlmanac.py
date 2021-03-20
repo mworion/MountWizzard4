@@ -170,7 +170,7 @@ class Almanac:
         :return: true for test purpose
         """
         self.thread = threading.Thread(target=self.searchTwilightWorker,
-                                       args=[3])
+                                       args=[182])
         self.thread.start()
         return True
 

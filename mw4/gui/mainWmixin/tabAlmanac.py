@@ -73,10 +73,10 @@ class Almanac:
         self.app.mount.signals.locationDone.connect(self.searchTwilight)
         self.app.mount.signals.locationDone.connect(self.displayTwilightData)
         self.app.update30m.connect(self.updateMoonPhase)
-        self.ui.almanacCivil.setStyleSheet(self.S_BLUE1)
-        self.ui.almanacNautical.setStyleSheet(self.S_BLUE2)
-        self.ui.almanacAstronomical.setStyleSheet(self.S_BLUE3)
-        self.ui.almanacDark.setStyleSheet(self.S_BLUE4)
+        self.ui.almanacCivil.setStyleSheet(self.BACK_BLUE1)
+        self.ui.almanacNautical.setStyleSheet(self.BACK_BLUE2)
+        self.ui.almanacAstronomical.setStyleSheet(self.BACK_BLUE3)
+        self.ui.almanacDark.setStyleSheet(self.BACK_BLUE4)
 
     def initConfig(self):
         """

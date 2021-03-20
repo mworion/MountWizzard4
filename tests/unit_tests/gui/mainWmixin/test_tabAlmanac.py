@@ -185,34 +185,3 @@ def test_updateMoonPhase_2(function):
 def test_lunarNodes_1(function):
     suc = function.lunarNodes()
     assert suc
-
-
-def test_twilight(function):
-    from matplotlib import pyplot as plt
-    from dateutil.tz import tzlocal
-    from skyfield.api import Topos
-
-    color = ['red', 'blue', 'green', 'yellow', 'white']
-    function.app.mount.obsSite.location = Topos(latitude_degrees=60.0,
-                                                longitude_degrees=11.5,
-                                                elevation_m=500)
-    t, e = function.calcTwilightData(timeWindow=90)
-
-    print()
-    ax = plt.subplot(111)
-    day_old = None
-    for ti, event in zip(t, e):
-        hour = int(ti.astimezone(tzlocal()).strftime('%H'))
-        minute = int(ti.astimezone(tzlocal()).strftime('%M'))
-        y = (hour + 12 + minute / 60) % 24
-        day = round(ti.tt + 0.5, 0)
-        print(day, event, y)
-
-        if day_old != day:
-            day_old = day
-            ax.bar(day, height=24, bottom=0, width=1, color='white')
-
-        ax.bar(day, height=24-y, bottom=y, width=1, color=color[event])
-
-    ax.set_ylim(0, 24)
-    plt.show()

@@ -22,7 +22,6 @@ import json
 import unittest.mock as mock
 import logging
 import platform
-import shutil
 
 # external packages
 import pytest
@@ -47,8 +46,6 @@ def app(qapp):
     files = glob.glob('tests/config/*.cfg')
     for f in files:
         os.remove(f)
-
-    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):
@@ -315,7 +312,7 @@ def test_loadMountData_2(app):
 def test_loadMountData_3(app):
     app.mountUp = True
     with mock.patch.object(app.mainW,
-                           'searchTwilightWorker'):
+                           'searchTwilight'):
         with mock.patch.object(app.mainW,
                                'displayTwilightData'):
             suc = app.loadMountData(False)

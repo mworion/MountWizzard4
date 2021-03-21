@@ -18,7 +18,6 @@
 # standard libraries
 import threading
 from dateutil.tz import tzlocal
-import time
 
 # external packages
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor, QFont

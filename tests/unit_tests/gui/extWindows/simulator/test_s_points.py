@@ -34,7 +34,7 @@ def module_setup_teardown():
     global app
 
     class Test1:
-        buildP = [(45, 45), (50, 50)]
+        buildP = [(45, 45, True), (50, 50, False)]
 
     class Test(QObject):
         data = Test1()
@@ -55,7 +55,7 @@ def test_createAnnotation_1(qtbot):
     e = QEntity()
     with mock.patch.object(QExtrudedTextMesh,
                            'setText'):
-        val = app.createAnnotation(e, 45, 45, 'test')
+        val = app.createAnnotation(e, 45, 45, 'test', True)
         assert isinstance(val, QEntity)
 
 
@@ -63,7 +63,15 @@ def test_createAnnotation_2(qtbot):
     e = QEntity()
     with mock.patch.object(QExtrudedTextMesh,
                            'setText'):
-        val = app.createAnnotation(e, 45, 45, 'test', faceIn=True)
+        val = app.createAnnotation(e, 45, 45, 'test', False)
+        assert isinstance(val, QEntity)
+
+
+def test_createAnnotation_3(qtbot):
+    e = QEntity()
+    with mock.patch.object(QExtrudedTextMesh,
+                           'setText'):
+        val = app.createAnnotation(e, 45, 45, 'test', True, faceIn=True)
         assert isinstance(val, QEntity)
 
 
@@ -95,6 +103,7 @@ def test_create_4():
     app.app.data.buildP = None
     app.points = [{'e': e}]
     suc = app.create(e, True)
+    assert not suc
 
 
 def test_create_5():

@@ -93,5 +93,8 @@ class SimulatorPointer:
         intersect *= 1000
         intersect[2] += 1000
 
-        self.model['pointer']['t'].setTranslation(QVector3D(intersect))
+        self.model['pointer']['t'].setTranslation(
+            QVector3D(intersect[0],
+                      intersect[1],
+                      intersect[2]))
         return True

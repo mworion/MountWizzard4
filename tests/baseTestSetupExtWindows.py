@@ -182,6 +182,7 @@ class Mount(QObject):
 
         Alt = None
         Az = None
+        haJNow = None
         haJNowTarget = None
         decJNowTarget = None
         piersideTarget = None

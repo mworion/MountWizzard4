@@ -156,6 +156,23 @@ def test_pointerCreate_1(function):
     assert suc
 
 
+def test_laserCreate_1(function):
+    function.world = {
+        'ref1000': {
+            'parent': None,
+            'rot': [-90, 90, 0],
+            'e': QEntity(),
+        },
+        'ref': {
+            'parent': 'ref1000',
+            'scale': [0.001, 0.001, 0.001],
+            'e': QEntity(),
+        }
+    }a
+    suc = function.laserCreate()
+    assert suc
+
+
 def test_setDomeTransparency_1(function):
     suc = function.setDomeTransparency()
     assert suc

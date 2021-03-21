@@ -43,6 +43,7 @@
   <property name="font">
    <font>
     <family>Arial</family>
+    <pointsize>10</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -274,6 +275,19 @@
           </property>
           <property name="text">
            <string>Intersect Point</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkShowLaser">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Laser</string>
           </property>
          </widget>
         </item>

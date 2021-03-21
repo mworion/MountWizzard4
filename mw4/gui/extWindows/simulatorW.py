@@ -36,6 +36,7 @@ from gui.extWindows.simulator.telescope import SimulatorTelescope
 from gui.extWindows.simulator.horizon import SimulatorHorizon
 from gui.extWindows.simulator.points import SimulatorBuildPoints
 from gui.extWindows.simulator.pointer import SimulatorPointer
+from gui.extWindows.simulator.laser import SimulatorLaser
 
 
 class SimulatorWindow(toolsQtWidget.MWidget):
@@ -81,6 +82,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.horizon = SimulatorHorizon(self.app)
         self.buildPoints = SimulatorBuildPoints(self.app)
         self.pointer = SimulatorPointer(self.app)
+        self.laser = SimulatorLaser(self.app)
         self.world = None
 
     def initConfig(self):
@@ -110,6 +112,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         self.ui.checkDomeTransparent.setChecked(config.get('checkDomeTransparent', False))
         self.ui.checkShowPointer.setChecked(config.get('checkShowPointer', False))
+        self.ui.checkShowLaser.setChecked(config.get('checkShowLaser', False))
         self.ui.checkShowBuildPoints.setChecked(config.get('checkShowBuildPoints', False))
         self.ui.checkShowNumbers.setChecked(config.get('checkShowNumbers', False))
         self.ui.checkShowSlewPath.setChecked(config.get('checkShowSlewPath', False))
@@ -137,6 +140,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         config['checkDomeTransparent'] = self.ui.checkDomeTransparent.isChecked()
         config['checkShowPointer'] = self.ui.checkShowPointer.isChecked()
+        config['checkShowLaser'] = self.ui.checkShowLaser.isChecked()
         config['checkShowBuildPoints'] = self.ui.checkShowBuildPoints.isChecked()
         config['checkShowNumbers'] = self.ui.checkShowNumbers.isChecked()
         config['checkShowSlewPath'] = self.ui.checkShowSlewPath.isChecked()
@@ -158,6 +162,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.updatePointMarker.disconnect(self.buildPointsCreate)
         self.ui.checkShowHorizon.clicked.disconnect(self.horizonCreate)
         self.ui.checkShowPointer.clicked.disconnect(self.pointerCreate)
+        self.ui.checkShowLaser.clicked.disconnect(self.laserCreate)
 
         self.ui.topView.clicked.disconnect(self.topView)
         self.ui.topEastView.clicked.disconnect(self.topEastView)
@@ -172,6 +177,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.updateDomeSettings.disconnect(self.dome.updateSettings)
         self.app.mount.signals.pointDone.disconnect(self.telescope.updatePositions)
         self.app.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
+        self.app.mount.signals.pointDone.disconnect(self.laser.updatePositions)
         self.app.drawBuildPoints.disconnect(self.buildPointsCreate)
         self.app.drawHorizonPoints.disconnect(self.horizonCreate)
 
@@ -189,6 +195,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.updatePointMarker.connect(self.buildPointsCreate)
         self.ui.checkShowHorizon.clicked.connect(self.horizonCreate)
         self.ui.checkShowPointer.clicked.connect(self.pointerCreate)
+        self.ui.checkShowLaser.clicked.connect(self.laserCreate)
 
         self.ui.topView.clicked.connect(self.topView)
         self.ui.topEastView.clicked.connect(self.topEastView)
@@ -202,6 +209,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.updateDomeSettings.connect(self.dome.updateSettings)
         self.app.mount.signals.pointDone.connect(self.telescope.updatePositions)
         self.app.mount.signals.pointDone.connect(self.pointer.updatePositions)
+        self.app.mount.signals.pointDone.connect(self.laser.updatePositions)
         self.app.drawBuildPoints.connect(self.buildPointsCreate)
         self.app.drawHorizonPoints.connect(self.horizonCreate)
 
@@ -233,6 +241,14 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         self.pointer.create(self.world['ref']['e'],
                             self.ui.checkShowPointer.isChecked())
+        return True
+
+    def laserCreate(self):
+        """
+        :return: True for test purpose
+        """
+        self.laser.create(self.world['ref']['e'],
+                            self.ui.checkShowLaser.isChecked())
         return True
 
     def setDomeTransparency(self):
@@ -380,6 +396,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         numbers = self.ui.checkShowNumbers.isChecked()
         path = self.ui.checkShowSlewPath.isChecked()
         pointer = self.ui.checkShowPointer.isChecked()
+        laser = self.ui.checkShowLaser.isChecked()
         dome = self.app.deviceStat.get('dome', False)
         horizon = self.ui.checkShowHorizon.isChecked()
         points = self.ui.checkShowBuildPoints.isChecked()
@@ -389,6 +406,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.telescope.create(self.world['ref']['e'], True)
         self.dome.create(self.world['ref']['e'], dome)
         self.pointer.create(self.world['ref']['e'], pointer)
+        self.laser.create(self.world['ref']['e'], laser)
         self.buildPoints.create(self.world['ref1000']['e'], points, numbers, path)
         self.horizon.create(self.world['ref1000']['e'], horizon)
 

@@ -23,6 +23,7 @@ from PyQt5.Qt3DCore import QEntity, QTransform
 from PyQt5.QtCore import QObject
 from mountcontrol.mount import Mount
 from skyfield.api import Topos
+import numpy as np
 
 # local import
 from gui.extWindows.simulator.laser import SimulatorLaser
@@ -91,6 +92,18 @@ def test_updatePositions_3(qtbot):
             'e': QEntity(),
             't': QTransform()
         },
+        'ref': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'alt': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'az': {
+            'e': QEntity(),
+            't': QTransform()
+        },
     }
 
     app.app.mount.obsSite.raJNow = 10
@@ -98,6 +111,9 @@ def test_updatePositions_3(qtbot):
 
     with mock.patch.object(app.app.mount.geometry,
                            'calcTransformationMatrices',
-                           return_value=(0, 0, [1, 1, 1], None, None)):
+                           return_value=(0, 0,
+                                         np.array([1, 1, 1]),
+                                         np.array([1, 1, 1]),
+                                         np.array([1, 1, 1]))):
         suc = app.updatePositions()
         assert suc

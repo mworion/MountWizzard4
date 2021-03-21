@@ -86,13 +86,12 @@ class SimulatorPointer:
         pierside = self.app.mount.obsSite.pierside
 
         geometry = self.app.mount.geometry
-        _, _, x, y, z = geometry.calcTransformationMatrices(ha=ha,
-                                                            dec=dec,
-                                                            lat=lat,
-                                                            pierside=pierside)
-        x = x * 1000
-        y = y * 1000
-        z = z * 1000 + 1000
+        _, _, intersect, _, _ = geometry.calcTransformationMatrices(ha=ha,
+                                                                    dec=dec,
+                                                                    lat=lat,
+                                                                    pierside=pierside)
+        intersect *= 1000
+        intersect[2] += 1000
 
-        self.model['pointer']['t'].setTranslation(QVector3D(x, y, z))
+        self.model['pointer']['t'].setTranslation(QVector3D(intersect))
         return True

@@ -181,15 +181,16 @@ def test_geometry_1(function):
     ]
 
     for t, r in zip(testValues, results):
-        alt, az, x, y, z = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
-                                                                        ha=Angle(hours=t[1]),
-                                                                        lat=Angle(degrees=50),
-                                                                        pierside=t[2])
+        val = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
+                                                           ha=Angle(hours=t[1]),
+                                                           lat=Angle(degrees=50),
+                                                           pierside=t[2])
+        alt, az, inter, _, _ = val
         assert pytest.approx(alt.degrees, 0.001) == r[0]
         assert pytest.approx(az.degrees, 0.001) == r[1]
-        assert pytest.approx(x, 0.001) == r[2]
-        assert pytest.approx(y, 0.001) == r[3]
-        assert pytest.approx(z, 0.001) == r[4]
+        assert pytest.approx(inter[0], 0.001) == r[2]
+        assert pytest.approx(inter[1], 0.001) == r[3]
+        assert pytest.approx(inter[2], 0.001) == r[4]
 
 
 def test_geometry_2(function):
@@ -240,15 +241,16 @@ def test_geometry_2(function):
     ]
 
     for t, r in zip(testValues, results):
-        alt, az, x, y, z = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
-                                                                        ha=Angle(hours=t[1]),
-                                                                        lat=Angle(degrees=50),
-                                                                        pierside=t[2])
+        val = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
+                                                           ha=Angle(hours=t[1]),
+                                                           lat=Angle(degrees=50),
+                                                           pierside=t[2])
+        alt, az, inter, _, _ = val
         assert pytest.approx(alt.degrees, 0.001) == r[0]
         assert pytest.approx(az.degrees, 0.001) == r[1]
-        assert pytest.approx(x, 0.001) == r[2]
-        assert pytest.approx(y, 0.001) == r[3]
-        assert pytest.approx(z, 0.001) == r[4]
+        assert pytest.approx(inter[0], 0.001) == r[2]
+        assert pytest.approx(inter[1], 0.001) == r[3]
+        assert pytest.approx(inter[2], 0.001) == r[4]
 
 
 def test_geometry_3(function):
@@ -299,15 +301,16 @@ def test_geometry_3(function):
     ]
 
     for t, r in zip(testValues, results):
-        alt, az, x, y, z = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
-                                                                        ha=Angle(hours=t[1]),
-                                                                        lat=Angle(degrees=50),
-                                                                        pierside=t[2])
+        val = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
+                                                           ha=Angle(hours=t[1]),
+                                                           lat=Angle(degrees=50),
+                                                           pierside=t[2])
+        alt, az, inter, _, _ = val
         assert pytest.approx(alt.degrees, 0.001) == r[0]
         assert pytest.approx(az.degrees, 0.001) == r[1]
-        assert pytest.approx(x, 0.001) == r[2]
-        assert pytest.approx(y, 0.001) == r[3]
-        assert pytest.approx(z, 0.001) == r[4]
+        assert pytest.approx(inter[0], 0.001) == r[2]
+        assert pytest.approx(inter[1], 0.001) == r[3]
+        assert pytest.approx(inter[2], 0.001) == r[4]
 
 
 def test_geometry_4(function):
@@ -358,15 +361,16 @@ def test_geometry_4(function):
     ]
 
     for t, r in zip(testValues, results):
-        alt, az, x, y, z = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
-                                                                        ha=Angle(hours=t[1]),
-                                                                        lat=Angle(degrees=50),
-                                                                        pierside=t[2])
+        val = function.geometry.calcTransformationMatrices(dec=Angle(degrees=t[0]),
+                                                           ha=Angle(hours=t[1]),
+                                                           lat=Angle(degrees=50),
+                                                           pierside=t[2])
+        alt, az, inter, _, _ = val
         assert pytest.approx(alt.degrees, 0.001) == r[0]
         assert pytest.approx(az.degrees, 0.001) == r[1]
-        assert pytest.approx(x, 0.001) == r[2]
-        assert pytest.approx(y, 0.001) == r[3]
-        assert pytest.approx(z, 0.001) == r[4]
+        assert pytest.approx(inter[0], 0.001) == r[2]
+        assert pytest.approx(inter[1], 0.001) == r[3]
+        assert pytest.approx(inter[2], 0.001) == r[4]
 
 
 def test_geometry_5(function):
@@ -383,7 +387,12 @@ def test_geometry_5(function):
                                                        dec=None,
                                                        lat=None,
                                                        pierside='E')
-    assert val == (None, None, None, None, None)
+    alt, az, inter, PB, PD = val
+    assert alt is None
+    assert az is None
+    assert inter is None
+    assert PB is None
+    assert PD is None
 
 
 def test_geometry_6(function):
@@ -400,7 +409,12 @@ def test_geometry_6(function):
                                                        dec=None,
                                                        lat=None,
                                                        pierside='E')
-    assert val == (None, None, None, None, None)
+    alt, az, inter, PB, PD = val
+    assert alt is None
+    assert az is None
+    assert inter is None
+    assert PB is None
+    assert PD is None
 
 
 def test_geometry_7(function):
@@ -417,7 +431,12 @@ def test_geometry_7(function):
                                                        dec=Angle(degrees=1),
                                                        lat=None,
                                                        pierside='E')
-    assert val == (None, None, None, None, None)
+    alt, az, inter, PB, PD = val
+    assert alt is None
+    assert az is None
+    assert inter is None
+    assert PB is None
+    assert PD is None
 
 
 def test_geometry_8(function):
@@ -434,4 +453,9 @@ def test_geometry_8(function):
                                                        dec=Angle(degrees=1),
                                                        lat=Angle(degrees=49),
                                                        pierside='E')
-    assert val == (None, None, None, None, None)
+    alt, az, inter, PB, PD = val
+    assert alt is None
+    assert az is None
+    assert inter is None
+    assert PB is None
+    assert PD is None

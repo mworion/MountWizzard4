@@ -477,4 +477,4 @@ class Geometry(object):
 
         self.log.trace(f'az:{azDome}, alt:{altDome}')
 
-        return altDome, azDome, x, y, z
+        return altDome, azDome, intersect, PB, PD

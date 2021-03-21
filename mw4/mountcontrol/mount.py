@@ -190,9 +190,8 @@ class Mount(object):
         dec = self.obsSite.decJNowTarget
         lat = self.obsSite.location.latitude
         pierside = self.obsSite.piersideTarget
-        alt, az, x, y, z = self.geometry.calcTransformationMatrices(ha=ha,
-                                                                    dec=dec,
-                                                                    lat=lat,
-                                                                    pierside=pierside)
+        return self.geometry.calcTransformationMatrices(ha=ha,
+                                                        dec=dec,
+                                                        lat=lat,
+                                                        pierside=pierside)
 
-        return alt, az, x, y, z

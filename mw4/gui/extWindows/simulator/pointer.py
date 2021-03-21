@@ -66,6 +66,7 @@ class SimulatorPointer:
         for name in self.model:
             tools.linkModel(self.model, name, self.modelRoot)
 
+        self.updatePositions()
         return True
 
     def updatePositions(self):

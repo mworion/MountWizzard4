@@ -178,6 +178,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.mount.signals.pointDone.disconnect(self.telescope.updatePositions)
         self.app.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
         self.app.mount.signals.pointDone.disconnect(self.laser.updatePositions)
+        self.app.mount.signals.pointDone.disconnect(self.buildPoints.updatePositions)
         self.app.drawBuildPoints.disconnect(self.buildPointsCreate)
         self.app.drawHorizonPoints.disconnect(self.horizonCreate)
 
@@ -210,6 +211,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.mount.signals.pointDone.connect(self.telescope.updatePositions)
         self.app.mount.signals.pointDone.connect(self.pointer.updatePositions)
         self.app.mount.signals.pointDone.connect(self.laser.updatePositions)
+        self.app.mount.signals.pointDone.connect(self.buildPoints.updatePositions)
         self.app.drawBuildPoints.connect(self.buildPointsCreate)
         self.app.drawHorizonPoints.connect(self.horizonCreate)
 
@@ -248,7 +250,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.laser.create(self.world['ref']['e'],
-                            self.ui.checkShowLaser.isChecked())
+                          self.ui.checkShowLaser.isChecked())
         return True
 
     def setDomeTransparency(self):

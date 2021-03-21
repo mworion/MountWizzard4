@@ -156,9 +156,9 @@ class Materials(Styles):
         self.pointer.setShininess(1)
 
         self.laser = QPhongMaterial()
-        self.laser.setAmbient(self.COLOR_BLUE2)
-        self.laser.setDiffuse(self.COLOR_BLUE2)
-        self.laser.setSpecular(self.COLOR_BLUE2)
+        self.laser.setAmbient(QColor(255, 192, 0))
+        self.laser.setDiffuse(QColor(255, 192, 0))
+        self.laser.setSpecular(QColor(255, 192, 0))
         self.laser.setShininess(1)
 
         self.walls = QPhongAlphaMaterial()

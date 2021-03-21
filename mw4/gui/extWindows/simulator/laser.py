@@ -19,7 +19,9 @@
 # external packages
 from PyQt5.QtGui import QVector3D
 from PyQt5.Qt3DCore import QEntity
-from PyQt5.Qt3DExtras import QSphereMesh
+from PyQt5.Qt3DExtras import QCylinderMesh
+from skyfield import functions
+import numpy as np
 
 # local import
 from gui.extWindows.simulator.materials import Materials
@@ -56,23 +58,33 @@ class SimulatorLaser:
         self.modelRoot = QEntity(rEntity)
 
         self.model = {
-            'laser': {
+            'ref': {
                 'parent': None,
-                'source': [QSphereMesh(), 50, 30, 30],
                 'scale': [1, 1, 1],
+            },
+            'az': {
+                'parent': 'ref',
+                'scale': [1, 1, 1],
+            },
+            'alt': {
+                'parent': 'az',
+                'scale': [1, 1, 1],
+            },
+            'laser': {
+                'parent': 'alt',
+                'source': [QCylinderMesh(), 4500, 15, 20, 20],
+                'trans': [0, 2250, 0],
                 'mat': Materials().laser,
             },
         }
         for name in self.model:
             tools.linkModel(self.model, name, self.modelRoot)
 
+        self.updatePositions()
         return True
 
     def updatePositions(self):
         """
-        updatePositions calculates the crossing point of the actual telescope view and the
-        dome if present.
-
         :return:
         """
         if not self.model:
@@ -86,15 +98,16 @@ class SimulatorLaser:
         pierside = self.app.mount.obsSite.pierside
 
         geometry = self.app.mount.geometry
-        _, _, intersect, _, _ = geometry.calcTransformationMatrices(ha=ha,
-                                                                    dec=dec,
-                                                                    lat=lat,
-                                                                    pierside=pierside)
-        intersect *= 1000
-        intersect[2] += 1000
-
-        self.model['laser']['t'].setTranslation(
-            QVector3D(intersect[0],
-                      intersect[1],
-                      intersect[2]))
+        _, _, _, PB, PD = geometry.calcTransformationMatrices(ha=ha,
+                                                              dec=dec,
+                                                              lat=lat,
+                                                              pierside=pierside)
+        PB *= 1000
+        PB[2] += 1000
+        radius, alt, az = functions.to_spherical(-PD)
+        az = np.degrees(az)
+        alt = np.degrees(alt)
+        self.model['ref']['t'].setTranslation(QVector3D(PB[0], PB[1], PB[2]))
+        self.model['az']['t'].setRotationZ(az + 90)
+        self.model['alt']['t'].setRotationX(-alt)
         return True

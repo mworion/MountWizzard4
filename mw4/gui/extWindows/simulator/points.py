@@ -37,7 +37,9 @@ class SimulatorBuildPoints:
     def __init__(self, app):
         self.app = app
         self.points = []
+        self.refPoints = None
         self.pointRoot = None
+        self.transformPointRoot = None
 
     @staticmethod
     def createLine(rEntity, dx, dy, dz):
@@ -102,7 +104,7 @@ class SimulatorBuildPoints:
         mesh.setSlices(30)
         trans = QTransform()
         x, y, z = functions.from_spherical(radius, alt, az)
-        trans.setTranslation(QVector3D(x, y, z + 1.0))
+        trans.setTranslation(QVector3D(x, y, z))
         entity.addComponent(mesh)
         entity.addComponent(trans)
         if active:
@@ -179,7 +181,10 @@ class SimulatorBuildPoints:
         if not self.app.data.buildP:
             return False
 
-        self.pointRoot = QEntity(rEntity)
+        self.refPoints = QEntity(rEntity)
+        self.pointRoot = QEntity(self.refPoints)
+        self.transformPointRoot = QTransform()
+        self.pointRoot.addComponent(self.transformPointRoot)
 
         for index, point in enumerate(self.app.data.buildP):
             active = point[2]
@@ -190,7 +195,7 @@ class SimulatorBuildPoints:
 
             if numbers:
                 a = self.createAnnotation(e, point[0], -point[1],
-                                          f'{index:02d}', active)
+                                          f'{index + 1:02d}', active)
             else:
                 a = None
 
@@ -207,4 +212,29 @@ class SimulatorBuildPoints:
 
             element = {'e': e, 'a': a, 'li': li, 'x': x, 'y': y, 'z': z}
             self.points.append(element)
+
+        self.updatePositions()
+        return True
+
+    def updatePositions(self):
+        """
+        :return:
+        """
+        if not self.pointRoot:
+            return False
+        if not self.app.mount.obsSite.haJNow:
+            return False
+
+        lat = self.app.mount.obsSite.location.latitude
+        ha = self.app.mount.obsSite.haJNow
+        dec = self.app.mount.obsSite.decJNow
+        pierside = self.app.mount.obsSite.pierside
+
+        geometry = self.app.mount.geometry
+        _, _, _, PB, PD = geometry.calcTransformationMatrices(ha=ha,
+                                                              dec=dec,
+                                                              lat=lat,
+                                                              pierside=pierside)
+        PB[2] += 1
+        self.transformPointRoot.setTranslation(QVector3D(PB[0], PB[1], PB[2]))
         return True

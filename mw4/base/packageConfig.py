@@ -18,7 +18,7 @@ import platform
 
 excludedPlatforms = ['armv7l', 'aarch64']
 isAvailable = platform.machine() not in excludedPlatforms
-isSimulator = True
+isSimulator = False
 isAnalyse = False
 isWindows = platform.system() == 'Windows'
 isLinux = platform.system() == 'Linux'

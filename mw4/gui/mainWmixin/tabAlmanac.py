@@ -84,7 +84,7 @@ class Almanac:
                 'plot': self.M_BLUE1,
                 },
             4: {'text': self.COLOR_WHITE1,
-                'plot': self.M_BLACK,
+                'plot': self.M_BACK,
                 },
         }
 

@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+from unittest.mock import patch
 import pytest
 import glob
 import os
@@ -28,7 +29,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QThreadPool
-from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton, QWidget
 from PyQt5.QtCore import QTimer
 from mountcontrol.qtmount import Mount
 from skyfield.api import Topos
@@ -55,7 +56,6 @@ from logic.measure.measure import MeasureData
 from logic.telescope.telescope import Telescope
 from logic.astrometry.astrometry import Astrometry
 from base.loggerMW import addLoggingLevel
-from base.packageConfig import isAvailable, isSimulator
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -245,16 +245,39 @@ def test_setupIcons():
     assert suc
 
 
+@patch('base.packageConfig.isSimulator', False)
 def test_updateMountConnStat_1():
     suc = app.updateMountConnStat(True)
     assert suc
     assert app.deviceStat['mount']
 
 
+@patch('base.packageConfig.isSimulator', False)
 def test_updateMountConnStat_2():
     suc = app.updateMountConnStat(False)
     assert suc
     assert not app.deviceStat['mount']
+
+
+@patch('base.packageConfig.isSimulator', True)
+def test_updateMountConnStat_3():
+    app.uiWindows['showSimulatorW']["classObj"] = None
+    suc = app.updateMountConnStat(True)
+    assert suc
+
+
+@patch('base.packageConfig.isSimulator', True)
+def test_updateMountConnStat_4():
+    app.uiWindows['showSimulatorW']["classObj"] = None
+    suc = app.updateMountConnStat(False)
+    assert not suc
+
+
+@patch('base.packageConfig.isSimulator', True)
+def test_updateMountConnStat_5():
+    app.uiWindows['showSimulatorW']["classObj"] = QWidget()
+    suc = app.updateMountConnStat(False)
+    assert suc
 
 
 def test_updateMountWeatherStat_1():

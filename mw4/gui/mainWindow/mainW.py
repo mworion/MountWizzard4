@@ -14,7 +14,7 @@
 # Licence APL2.0
 #
 ###########################################################
-import base.packageConfig as pConf
+from base import packageConfig
 
 # standard libraries
 from datetime import datetime
@@ -27,7 +27,7 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtTest import QTest
 
 # local import
-if pConf.isAvailable:
+if packageConfig.isAvailable:
     from gui.extWindows.simulatorW import SimulatorWindow
     from gui.extWindows.keypadW import KeypadWindow
 
@@ -145,14 +145,14 @@ class MainWindow(
             "name": "AnalyseDialog",
             "class": AnalyseWindow,
         }
-        if pConf.isSimulator and pConf.isAvailable:
+        if packageConfig.isSimulator and packageConfig.isAvailable:
             self.uiWindows["showSimulatorW"] = {
                 "button": self.ui.mountConnected,
                 "classObj": None,
                 "name": "SimulatorDialog",
                 "class": SimulatorWindow,
             }
-        if pConf.isAvailable:
+        if packageConfig.isAvailable:
             self.uiWindows["showKeypadW"] = {
                 "button": self.ui.openKeypadW,
                 "classObj": None,
@@ -244,7 +244,7 @@ class MainWindow(
         self.ui.mainTabWidget.setCurrentIndex(config.get("mainTabWidget", 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get("settingsTabWidget", 0))
         self.ui.toolsTabWidget.setCurrentIndex(config.get("toolsTabWidget", 0))
-        if not pConf.isAnalyse:
+        if not packageConfig.isAnalyse:
             tabWidget = self.ui.toolsTabWidget.findChild(QWidget, "Analyse")
             tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
             self.ui.toolsTabWidget.setTabEnabled(tabIndex, False)
@@ -520,6 +520,14 @@ class MainWindow(
         :return: true for test purpose
         """
         self.deviceStat["mount"] = status
+        if not packageConfig.isSimulator:
+            return True
+        self.ui.mountConnected.setEnabled(status)
+        if status:
+            return True
+        if not self.uiWindows['showSimulatorW']["classObj"]:
+            return False
+        self.uiWindows['showSimulatorW']["classObj"].close()
         return True
 
     def updateMountWeatherStat(self, setting):

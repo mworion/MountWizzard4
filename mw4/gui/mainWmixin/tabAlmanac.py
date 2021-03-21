@@ -71,8 +71,25 @@ class Almanac:
         self.dark = None
         self.thread = None
 
+        self.colors = {
+            0: {'text': self.COLOR_BLUE4,
+                'plot': self.M_BLUE4,
+                },
+            1: {'text': self.COLOR_BLUE3,
+                'plot': self.M_BLUE3,
+                },
+            2: {'text': self.COLOR_BLUE2,
+                'plot': self.M_BLUE2,
+                },
+            3: {'text': self.COLOR_BLUE1,
+                'plot': self.M_BLUE1,
+                },
+            4: {'text': self.COLOR_WHITE1,
+                'plot': self.M_BLACK,
+                },
+        }
+
         self.app.mount.signals.locationDone.connect(self.searchTwilight)
-        self.app.mount.signals.locationDone.connect(self.displayTwilightData)
         self.app.update30m.connect(self.updateMoonPhase)
         self.ui.almanacCivil.setStyleSheet(self.BACK_BLUE1)
         self.ui.almanacNautical.setStyleSheet(self.BACK_BLUE2)
@@ -95,7 +112,7 @@ class Almanac:
             self.thread.join()
         return True
 
-    def drawTwilight(self, t, e):
+    def drawTwilightData(self, t, e):
         """
         :return: true for test purpose
         """
@@ -108,8 +125,6 @@ class Almanac:
         yTicks = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]
         yLabels = ['12', '14', '16', '18', '20', '22', '24',
                    '02', '04', '06', '08', '10', '12']
-        color = [self.M_BLUE4, self.M_BLUE3, self.M_BLUE2, self.M_BLUE1,
-                 self.M_BACK]
         axe.set_yticks(yTicks)
         axe.set_yticklabels(yLabels, fontsize=10)
         xTicks = np.arange(minLim, maxLim, (maxLim - minLim) / 11)
@@ -126,12 +141,31 @@ class Almanac:
             minute = int(ti.astimezone(tzlocal()).strftime('%M'))
             y = (hour + 12 + minute / 60) % 24
             day = round(ti.tt + 0.5, 0)
-            axe.bar(day, height=24 - y, bottom=y, width=1, color=color[event])
+            axe.bar(day, height=24 - y, bottom=y, width=1,
+                    color=self.colors[event]['plot'])
 
         x = [midLim - 1, midLim - 1, midLim + 1, midLim + 1]
         y = [0, 24, 24, 0]
         axe.fill(x, y, self.M_GREY, alpha=0.5)
         axe.figure.canvas.draw()
+        return True
+
+    def displayTwilightData(self, timeEvents, events):
+        """
+        :param timeEvents:
+        :param events:
+        :return:
+        """
+        text = ''
+        self.ui.twilightEvents.clear()
+
+        for timeEvent, event in zip(timeEvents, events):
+            self.ui.twilightEvents.setTextColor(self.colors[event]['text'])
+            self.ui.twilightEvents.setFontWeight(QFont.Bold)
+            text += f'{timeEvent.astimezone(tzlocal()).strftime("%H:%M:%S")} '
+            text += f'{almanac.TWILIGHTS[event]}'
+            self.ui.twilightEvents.insertPlainText(text)
+            text = '\n'
         return True
 
     def calcTwilightData(self, timeWindow=0):
@@ -155,12 +189,8 @@ class Almanac:
         """
         :return: true for test purpose
         """
-        location = self.app.mount.obsSite.location
-        if location is None:
-            return False
-
         t, e = self.calcTwilightData(timeWindow)
-        self.drawTwilight(t, e)
+        self.drawTwilightData(t, e)
         return True
 
     def searchTwilight(self):
@@ -169,37 +199,15 @@ class Almanac:
 
         :return: true for test purpose
         """
+        location = self.app.mount.obsSite.location
+        if location is None:
+            return False
+
+        t, e = self.calcTwilightData()
+        self.displayTwilightData(t, e)
         self.thread = threading.Thread(target=self.searchTwilightWorker,
                                        args=[182])
         self.thread.start()
-        return True
-
-    def displayTwilightData(self):
-        """
-        displayTwilightData populates the readable list of twilight events in the upcoming
-        observation night. the user could choose the timezone local or UTC
-
-        :return: true for test purpose
-        """
-        colors = {
-            0: self.COLOR_BLUE4,
-            1: self.COLOR_BLUE3,
-            2: self.COLOR_BLUE2,
-            3: self.COLOR_BLUE1,
-            4: self.COLOR_WHITE1,
-        }
-
-        timeEvents, events = self.calcTwilightData()
-        text = ''
-        self.ui.twilightEvents.clear()
-
-        for timeEvent, event in zip(timeEvents, events):
-            self.ui.twilightEvents.setTextColor(colors[event])
-            self.ui.twilightEvents.setFontWeight(QFont.Bold)
-            text += f'{timeEvent.astimezone(tzlocal()).strftime("%H:%M:%S")} '
-            text += f'{almanac.TWILIGHTS[event]}'
-            self.ui.twilightEvents.insertPlainText(text)
-            text = '\n'
         return True
 
     def calcMoonPhase(self):

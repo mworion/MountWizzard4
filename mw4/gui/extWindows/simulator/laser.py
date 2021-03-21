@@ -72,7 +72,7 @@ class SimulatorLaser:
             },
             'laser': {
                 'parent': 'alt',
-                'source': [QCylinderMesh(), 4500, 15, 20, 20],
+                'source': [QCylinderMesh(), 4500, 10, 20, 20],
                 'trans': [0, 2250, 0],
                 'mat': Materials().laser,
             },

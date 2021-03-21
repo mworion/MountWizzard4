@@ -131,11 +131,12 @@ class Materials(Styles):
         self.points.setSpecular(QColor(128, 128, 16))
         self.points.setShininess(1)
 
-        self.lines = QPhongMaterial()
+        self.lines = QPhongAlphaMaterial()
         self.lines.setAmbient(QColor(96, 96, 96))
         self.lines.setDiffuse(QColor(96, 96, 96))
         self.lines.setSpecular(QColor(96, 96, 96))
         self.lines.setShininess(1.0)
+        self.lines.setAlpha(0.5)
 
         self.numbers = QPhongMaterial()
         self.numbers.setAmbient(QColor(192, 192, 16))

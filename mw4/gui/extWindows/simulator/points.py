@@ -70,7 +70,7 @@ class SimulatorBuildPoints:
 
         e3 = QEntity(e2)
         mesh = QCylinderMesh()
-        mesh.setRadius(0.008)
+        mesh.setRadius(0.03)
         mesh.setLength(radius)
         trans3 = QTransform()
         trans3.setTranslation(QVector3D(0, radius / 2, 0))
@@ -97,9 +97,9 @@ class SimulatorBuildPoints:
         entity = QEntity(rEntity)
         mesh = QSphereMesh()
         if active:
-            mesh.setRadius(0.05)
+            mesh.setRadius(0.07)
         else:
-            mesh.setRadius(0.03)
+            mesh.setRadius(0.05)
         mesh.setRings(30)
         mesh.setSlices(30)
         trans = QTransform()
@@ -150,13 +150,13 @@ class SimulatorBuildPoints:
         mesh = QExtrudedTextMesh()
         mesh.setText(text)
         mesh.setDepth(0.05)
-        mesh.setFont(QFont('Arial', 48))
+        mesh.setFont(QFont('Arial', 36))
         trans2 = QTransform()
         if faceIn:
             trans2.setRotationX(90 + alt)
         else:
             trans2.setRotationX(90 - alt)
-        trans2.setScale(0.12)
+        trans2.setScale(0.15)
         e2.addComponent(mesh)
         e2.addComponent(trans2)
         if active:

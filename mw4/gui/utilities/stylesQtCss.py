@@ -31,7 +31,7 @@ class Styles:
     COLOR_BLUE2 = QColor(80, 140, 176)
     COLOR_BLUE3 = QColor(48, 104, 128)
     COLOR_BLUE4 = QColor(44, 80, 112)
-    COLOR_YELLOW = QColor(192, 192, 0)
+    COLOR_YELLOW = QColor(255, 255, 0)
     COLOR_GREEN = QColor(0, 255, 0)
     COLOR_WHITE = QColor(255, 255, 255)
     COLOR_WHITE1 = QColor(224, 224, 224)

@@ -168,7 +168,7 @@ def test_laserCreate_1(function):
             'scale': [0.001, 0.001, 0.001],
             'e': QEntity(),
         }
-    }a
+    }
     suc = function.laserCreate()
     assert suc
 

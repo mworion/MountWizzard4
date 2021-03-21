@@ -97,9 +97,9 @@ class SimulatorBuildPoints:
         entity = QEntity(rEntity)
         mesh = QSphereMesh()
         if active:
-            mesh.setRadius(0.04)
+            mesh.setRadius(0.05)
         else:
-            mesh.setRadius(0.025)
+            mesh.setRadius(0.03)
         mesh.setRings(30)
         mesh.setSlices(30)
         trans = QTransform()
@@ -141,7 +141,12 @@ class SimulatorBuildPoints:
             trans1.setRotationZ(az + 90)
         e1.addComponent(trans1)
 
-        e2 = QEntity(e1)
+        e3 = QEntity(e1)
+        trans3 = QTransform()
+        trans3.setTranslation(QVector3D(0.05, 0.0, 0.05))
+        e3.addComponent(trans3)
+
+        e2 = QEntity(e3)
         mesh = QExtrudedTextMesh()
         mesh.setText(text)
         mesh.setDepth(0.05)

@@ -261,21 +261,36 @@ def test_updateMountConnStat_2():
 
 @patch('base.packageConfig.isSimulator', True)
 def test_updateMountConnStat_3():
-    app.uiWindows['showSimulatorW']["classObj"] = None
+    app.uiWindows = {
+                "button": self.ui.mountConnected,
+                "classObj": None,
+                "name": "SimulatorDialog",
+                "class": None,
+            }
     suc = app.updateMountConnStat(True)
     assert suc
 
 
 @patch('base.packageConfig.isSimulator', True)
 def test_updateMountConnStat_4():
-    app.uiWindows['showSimulatorW']["classObj"] = None
+    app.uiWindows = {
+                "button": self.ui.mountConnected,
+                "classObj": None,
+                "name": "SimulatorDialog",
+                "class": None,
+            }
     suc = app.updateMountConnStat(False)
     assert not suc
 
 
 @patch('base.packageConfig.isSimulator', True)
 def test_updateMountConnStat_5():
-    app.uiWindows['showSimulatorW']["classObj"] = QWidget()
+    app.uiWindows = {
+                "button": self.ui.mountConnected,
+                "classObj": None,
+                "name": "SimulatorDialog",
+                "class": QWidget(),
+            }
     suc = app.updateMountConnStat(False)
     assert suc
 

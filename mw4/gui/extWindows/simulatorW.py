@@ -58,7 +58,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         self.rootEntity = QEntity()
         self.camera = self.view.camera()
-        self.camera.lens().setPerspectiveProjection(45.0, 16.0 / 9.0, 0.1, 1000.0)
+        self.camera.lens().setPerspectiveProjection(60.0, 16.0 / 9.0, 0.1, 1000.0)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 15.0, 3.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -71,7 +71,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         self.pL0E = QEntity(self.rootEntity)
         self.pL0 = QPointLight(self.pL0E)
-        self.pL0.setIntensity(1)
+        self.pL0.setIntensity(1.5)
         self.pL0ETransform = QTransform()
         self.pL0ETransform.setTranslation(QVector3D(5, 20, 5))
         self.pL0E.addComponent(self.pL0)
@@ -349,16 +349,10 @@ class SimulatorWindow(toolsQtWidget.MWidget):
                 'parent': 'ref1000',
                 'scale': [0.001, 0.001, 0.001],
             },
-            'centerPoint': {
-                'parent': 'ref',
-                'source': [QSphereMesh(), 10, 30, 30],
-                'trans': [0, 0, 1000],
-                'mat': Materials().pointer,
-            },
             'environ': {
                 'parent': 'ref',
                 'source': 'dome-environ.stl',
-                'scale': [1.5, 1.5, 1],
+                'scale': [2, 2, 1],
                 'mat': Materials().environ1,
             },
             'domeColumn': {
@@ -404,6 +398,15 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         points = self.ui.checkShowBuildPoints.isChecked()
         isDomeTransparent = self.ui.checkDomeTransparent.isChecked()
 
+        if dome:
+            self.ui.checkDomeTransparent.setEnabled(True)
+            self.ui.checkShowPointer.setEnabled(True)
+        else:
+            self.ui.checkDomeTransparent.setEnabled(False)
+            self.ui.checkDomeTransparent.setChecked(False)
+            self.ui.checkShowPointer.setEnabled(False)
+            self.ui.checkShowPointer.setChecked(False)
+
         self.createWorld(rEntity)
         self.telescope.create(self.world['ref']['e'], True)
         self.dome.create(self.world['ref']['e'], dome)
@@ -411,13 +414,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.laser.create(self.world['ref']['e'], laser)
         self.buildPoints.create(self.world['ref1000']['e'], points, numbers, path)
         self.horizon.create(self.world['ref1000']['e'], horizon)
-
-        if dome:
-            self.ui.checkDomeTransparent.setEnabled(True)
-            self.ui.checkShowPointer.setEnabled(True)
-        else:
-            self.ui.checkDomeTransparent.setEnabled(False)
-            self.ui.checkShowPointer.setEnabled(False)
 
         self.updateSettings()
         self.dome.updateSettings()

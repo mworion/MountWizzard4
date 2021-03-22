@@ -57,8 +57,8 @@ class Materials(Styles):
         self.aluminiumR.setDiffuse(QColor(192, 64, 64))
 
         self.environ1 = QMetalRoughMaterial()
-        self.environ1.setBaseColor(QColor(64, 128, 32))
-        self.environ1.setMetalness(0.8)
+        self.environ1.setBaseColor(QColor(64, 164, 0))
+        self.environ1.setMetalness(0.3)
         self.environ1.setRoughness(1)
 
         self.aluminium = QDiffuseSpecularMaterial()
@@ -131,12 +131,11 @@ class Materials(Styles):
         self.points.setSpecular(QColor(128, 128, 16))
         self.points.setShininess(1)
 
-        self.lines = QPhongAlphaMaterial()
-        self.lines.setAmbient(QColor(96, 96, 96))
-        self.lines.setDiffuse(QColor(96, 96, 96))
-        self.lines.setSpecular(QColor(96, 96, 96))
+        self.lines = QPhongMaterial()
+        self.lines.setAmbient(QColor(64, 64, 64))
+        self.lines.setDiffuse(QColor(64, 64, 64))
+        self.lines.setSpecular(QColor(64, 64, 64))
         self.lines.setShininess(1.0)
-        self.lines.setAlpha(0.5)
 
         self.numbers = QPhongMaterial()
         self.numbers.setAmbient(QColor(192, 192, 16))

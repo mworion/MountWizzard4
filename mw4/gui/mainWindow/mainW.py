@@ -612,6 +612,10 @@ class MainWindow(
                 "statID": "relay",
                 "tab": self.ui.toolsTabWidget,
             },
+            "Dome": {
+                "statID": "dome",
+                "tab": self.ui.settingsTabWidget,
+            },
         }
         tabChanged = False
 

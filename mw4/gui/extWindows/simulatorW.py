@@ -412,6 +412,13 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.buildPoints.create(self.world['ref1000']['e'], points, numbers, path)
         self.horizon.create(self.world['ref1000']['e'], horizon)
 
+        if dome:
+            self.ui.checkDomeTransparent.setEnabled(True)
+            self.ui.checkShowPointer.setEnabled(True)
+        else:
+            self.ui.checkDomeTransparent.setEnabled(False)
+            self.ui.checkShowPointer.setEnabled(False)
+
         self.updateSettings()
         self.dome.updateSettings()
         self.dome.updatePositions()

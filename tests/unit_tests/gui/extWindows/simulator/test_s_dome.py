@@ -62,12 +62,16 @@ def module_setup_teardown():
 
 
 def test_create_1(qtbot):
+    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
+                         'DOME_SHUTTER.SHUTTER_OPEN': True}
     app.modelRoot = QEntity()
     suc = app.create(QEntity(), False)
     assert not suc
 
 
 def test_create_2(qtbot):
+    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
+                         'DOME_SHUTTER.SHUTTER_OPEN': True}
     app.modelRoot = QEntity()
     app.model = {'test': {'e': QEntity()}}
     suc = app.create(QEntity(), False)
@@ -75,6 +79,8 @@ def test_create_2(qtbot):
 
 
 def test_create_3(qtbot):
+    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
+                         'DOME_SHUTTER.SHUTTER_OPEN': True}
     app.modelRoot = QEntity()
     app.model = {'test': {'e': QEntity()}}
     suc = app.create(app.modelRoot, True)

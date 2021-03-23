@@ -21,7 +21,7 @@ from PyQt5.QtCore import QMutex
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
-from PyQt5.Qt3DExtras import Qt3DWindow, QSphereMesh
+from PyQt5.Qt3DExtras import Qt3DWindow
 from PyQt5.Qt3DExtras import QOrbitCameraController
 from PyQt5.Qt3DRender import QPointLight
 from PyQt5.Qt3DCore import QEntity, QTransform

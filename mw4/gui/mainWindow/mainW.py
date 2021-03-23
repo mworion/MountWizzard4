@@ -106,72 +106,72 @@ class MainWindow(
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.initUI()
-        self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
+        self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
 
         # link cross widget gui signals as all ui widgets have to be present
-        self.uiWindows["showMessageW"] = {
-            "button": self.ui.openMessageW,
-            "classObj": None,
-            "name": "MessageDialog",
-            "class": MessageWindow,
+        self.uiWindows['showMessageW'] = {
+            'button': self.ui.openMessageW,
+            'classObj': None,
+            'name': 'MessageDialog',
+            'class': MessageWindow,
         }
-        self.uiWindows["showHemisphereW"] = {
-            "button": self.ui.openHemisphereW,
-            "classObj": None,
-            "name": "HemisphereDialog",
-            "class": HemisphereWindow,
+        self.uiWindows['showHemisphereW'] = {
+            'button': self.ui.openHemisphereW,
+            'classObj': None,
+            'name': 'HemisphereDialog',
+            'class': HemisphereWindow,
         }
-        self.uiWindows["showImageW"] = {
-            "button": self.ui.openImageW,
-            "classObj": None,
-            "name": "ImageDialog",
-            "class": ImageWindow,
+        self.uiWindows['showImageW'] = {
+            'button': self.ui.openImageW,
+            'classObj': None,
+            'name': 'ImageDialog',
+            'class': ImageWindow,
         }
-        self.uiWindows["showMeasureW"] = {
-            "button": self.ui.openMeasureW,
-            "classObj": None,
-            "name": "MeasureDialog",
-            "class": MeasureWindow,
+        self.uiWindows['showMeasureW'] = {
+            'button': self.ui.openMeasureW,
+            'classObj': None,
+            'name': 'MeasureDialog',
+            'class': MeasureWindow,
         }
-        self.uiWindows["showSatelliteW"] = {
-            "button": self.ui.openSatelliteW,
-            "classObj": None,
-            "name": "SatelliteDialog",
-            "class": SatelliteWindow,
+        self.uiWindows['showSatelliteW'] = {
+            'button': self.ui.openSatelliteW,
+            'classObj': None,
+            'name': 'SatelliteDialog',
+            'class': SatelliteWindow,
         }
-        self.uiWindows["showAnalyseW"] = {
-            "button": self.ui.openAnalyseW,
-            "classObj": None,
-            "name": "AnalyseDialog",
-            "class": AnalyseWindow,
+        self.uiWindows['showAnalyseW'] = {
+            'button': self.ui.openAnalyseW,
+            'classObj': None,
+            'name': 'AnalyseDialog',
+            'class': AnalyseWindow,
         }
         if packageConfig.isSimulator and packageConfig.isAvailable:
-            self.uiWindows["showSimulatorW"] = {
-                "button": self.ui.mountConnected,
-                "classObj": None,
-                "name": "SimulatorDialog",
-                "class": SimulatorWindow,
+            self.uiWindows['showSimulatorW'] = {
+                'button': self.ui.mountConnected,
+                'classObj': None,
+                'name': 'SimulatorDialog',
+                'class': SimulatorWindow,
             }
         if packageConfig.isAvailable:
-            self.uiWindows["showKeypadW"] = {
-                "button": self.ui.openKeypadW,
-                "classObj": None,
-                "name": "KeypadDialog",
-                "class": KeypadWindow,
+            self.uiWindows['showKeypadW'] = {
+                'button': self.ui.openKeypadW,
+                'classObj': None,
+                'name': 'KeypadDialog',
+                'class': KeypadWindow,
             }
 
         self.deviceStatGui = {
-            "dome": self.ui.domeConnected,
-            "camera": self.ui.cameraConnected,
-            "environOverall": self.ui.environConnected,
-            "astrometry": self.ui.astrometryConnected,
-            "mount": self.ui.mountConnected,
+            'dome': self.ui.domeConnected,
+            'camera': self.ui.cameraConnected,
+            'environOverall': self.ui.environConnected,
+            'astrometry': self.ui.astrometryConnected,
+            'mount': self.ui.mountConnected,
         }
-        self.mwSuper("__init__")
+        self.mwSuper('__init__')
 
         self.modelPositionPlot = self.embedMatplot(self.ui.modelPosition)
         self.modelPositionPlot.figure.canvas.mpl_connect(
-            "button_press_event", self.onMouseEdit
+            'button_press_event', self.onMouseEdit
         )
         self.errorAscendingPlot = self.embedMatplot(self.ui.errorAscending)
         self.errorDistributionPlot = self.embedMatplot(self.ui.errorDistribution)
@@ -191,7 +191,7 @@ class MainWindow(
         self.ui.saveConfig.clicked.connect(self.saveProfile)
 
         for window in self.uiWindows:
-            self.uiWindows[window]["button"].clicked.connect(self.toggleWindow)
+            self.uiWindows[window]['button'].clicked.connect(self.toggleWindow)
 
         self.initConfig()
         self.showExtendedWindows()
@@ -228,12 +228,12 @@ class MainWindow(
         :return: True for test purpose
         """
         config = self.app.config
-        self.ui.profile.setText(config.get("profileName"))
-        if "mainW" not in config:
-            config["mainW"] = {}
-        config = config["mainW"]
-        x = config.get("winPosX", 20)
-        y = config.get("winPosY", 20)
+        self.ui.profile.setText(config.get('profileName'))
+        if 'mainW' not in config:
+            config['mainW'] = {}
+        config = config['mainW']
+        x = config.get('winPosX', 20)
+        y = config.get('winPosY', 20)
 
         if x > self.screenSizeX:
             x = 0
@@ -241,24 +241,24 @@ class MainWindow(
             y = 0
 
         self.move(x, y)
-        self.ui.mainTabWidget.setCurrentIndex(config.get("mainTabWidget", 0))
-        self.ui.settingsTabWidget.setCurrentIndex(config.get("settingsTabWidget", 0))
-        self.ui.toolsTabWidget.setCurrentIndex(config.get("toolsTabWidget", 0))
+        self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
+        self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
+        self.ui.toolsTabWidget.setCurrentIndex(config.get('toolsTabWidget', 0))
         if not packageConfig.isAnalyse:
-            tabWidget = self.ui.toolsTabWidget.findChild(QWidget, "Analyse")
+            tabWidget = self.ui.toolsTabWidget.findChild(QWidget, 'Analyse')
             tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
             self.ui.toolsTabWidget.setTabEnabled(tabIndex, False)
 
-        tabWidget = self.ui.mainTabWidget.findChild(QWidget, "Power")
+        tabWidget = self.ui.mainTabWidget.findChild(QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
 
-        tabWidget = self.ui.toolsTabWidget.findChild(QWidget, "Relay")
+        tabWidget = self.ui.toolsTabWidget.findChild(QWidget, 'Relay')
         tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
         self.ui.toolsTabWidget.setTabEnabled(tabIndex, False)
         self.ui.toolsTabWidget.setStyleSheet(self.getStyle())
-        self.mwSuper("initConfig")
-        self.changeStyleDynamic(self.ui.mountConnected, "color", "gray")
+        self.mwSuper('initConfig')
+        self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
         self.setupIcons()
         self.show()
         return True
@@ -269,9 +269,9 @@ class MainWindow(
         """
         config = self.app.config
         for window in self.uiWindows:
-            config[window] = bool(self.uiWindows[window]["classObj"])
+            config[window] = bool(self.uiWindows[window]['classObj'])
             if config[window]:
-                self.uiWindows[window]["classObj"].storeConfig()
+                self.uiWindows[window]['classObj'].storeConfig()
 
         return True
 
@@ -284,17 +284,17 @@ class MainWindow(
         :return: True for test purpose
         """
         config = self.app.config
-        config["profileName"] = self.ui.profile.text()
-        if "mainW" not in config:
-            config["mainW"] = {}
+        config['profileName'] = self.ui.profile.text()
+        if 'mainW' not in config:
+            config['mainW'] = {}
 
-        config = config["mainW"]
-        config["winPosX"] = self.pos().x()
-        config["winPosY"] = self.pos().y()
-        config["mainTabWidget"] = self.ui.mainTabWidget.currentIndex()
-        config["settingsTabWidget"] = self.ui.settingsTabWidget.currentIndex()
-        config["toolsTabWidget"] = self.ui.toolsTabWidget.currentIndex()
-        self.mwSuper("storeConfig")
+        config = config['mainW']
+        config['winPosX'] = self.pos().x()
+        config['winPosY'] = self.pos().y()
+        config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
+        config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
+        config['toolsTabWidget'] = self.ui.toolsTabWidget.currentIndex()
+        self.mwSuper('storeConfig')
         self.storeConfigExtendedWindows()
         return True
 
@@ -307,7 +307,7 @@ class MainWindow(
         :return:    nothing
         """
         self.app.timer0_1s.stop()
-        self.changeStyleDynamic(self.ui.pauseModel, "pause", False)
+        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.closeExtendedWindows()
         super().closeEvent(closeEvent)
         self.app.quit()
@@ -333,180 +333,180 @@ class MainWindow(
         """
 
         # main window
-        self.wIcon(self.ui.saveConfigAs, "save")
-        self.wIcon(self.ui.loadFrom, "load")
-        self.wIcon(self.ui.saveConfig, "save")
-        self.wIcon(self.ui.saveConfigQuit, "save")
-        self.wIcon(self.ui.mountOn, "power-on")
-        self.wIcon(self.ui.mountOff, "power-off")
-        self.wIcon(self.ui.stop, "hand")
-        self.wIcon(self.ui.tracking, "target")
-        self.wIcon(self.ui.followSat, "satellite")
-        self.wIcon(self.ui.flipMount, "flip")
-        self.wIcon(self.ui.setSiderealTracking, "sidereal")
-        self.wIcon(self.ui.setLunarTracking, "lunar")
-        self.wIcon(self.ui.setSolarTracking, "solar")
-        self.wIcon(self.ui.park, "park")
+        self.wIcon(self.ui.saveConfigAs, 'save')
+        self.wIcon(self.ui.loadFrom, 'load')
+        self.wIcon(self.ui.saveConfig, 'save')
+        self.wIcon(self.ui.saveConfigQuit, 'save')
+        self.wIcon(self.ui.mountOn, 'power-on')
+        self.wIcon(self.ui.mountOff, 'power-off')
+        self.wIcon(self.ui.stop, 'hand')
+        self.wIcon(self.ui.tracking, 'target')
+        self.wIcon(self.ui.followSat, 'satellite')
+        self.wIcon(self.ui.flipMount, 'flip')
+        self.wIcon(self.ui.setSiderealTracking, 'sidereal')
+        self.wIcon(self.ui.setLunarTracking, 'lunar')
+        self.wIcon(self.ui.setSolarTracking, 'solar')
+        self.wIcon(self.ui.park, 'park')
 
         # model points
-        self.wIcon(self.ui.loadBuildPoints, "load")
-        self.wIcon(self.ui.saveBuildPoints, "save")
-        self.wIcon(self.ui.saveBuildPointsAs, "save")
-        self.wIcon(self.ui.clearBuildP, "trash")
-        self.wIcon(self.ui.genBuildGrid, "run")
-        self.wIcon(self.ui.genBuildMax, "run")
-        self.wIcon(self.ui.genBuildMed, "run")
-        self.wIcon(self.ui.genBuildNorm, "run")
-        self.wIcon(self.ui.genBuildMin, "run")
-        self.wIcon(self.ui.genBuildFile, "show")
-        self.wIcon(self.ui.genBuildAlign3, "run")
-        self.wIcon(self.ui.genBuildAlign6, "run")
-        self.wIcon(self.ui.genBuildAlign9, "run")
-        self.wIcon(self.ui.genBuildGrid, "run")
-        self.wIcon(self.ui.genBuildSpiralMax, "run")
-        self.wIcon(self.ui.genBuildSpiralMed, "run")
-        self.wIcon(self.ui.genBuildSpiralNorm, "run")
-        self.wIcon(self.ui.genBuildSpiralMin, "run")
-        self.wIcon(self.ui.genBuildDSO, "run")
+        self.wIcon(self.ui.loadBuildPoints, 'load')
+        self.wIcon(self.ui.saveBuildPoints, 'save')
+        self.wIcon(self.ui.saveBuildPointsAs, 'save')
+        self.wIcon(self.ui.clearBuildP, 'trash')
+        self.wIcon(self.ui.genBuildGrid, 'run')
+        self.wIcon(self.ui.genBuildMax, 'run')
+        self.wIcon(self.ui.genBuildMed, 'run')
+        self.wIcon(self.ui.genBuildNorm, 'run')
+        self.wIcon(self.ui.genBuildMin, 'run')
+        self.wIcon(self.ui.genBuildFile, 'show')
+        self.wIcon(self.ui.genBuildAlign3, 'run')
+        self.wIcon(self.ui.genBuildAlign6, 'run')
+        self.wIcon(self.ui.genBuildAlign9, 'run')
+        self.wIcon(self.ui.genBuildGrid, 'run')
+        self.wIcon(self.ui.genBuildSpiralMax, 'run')
+        self.wIcon(self.ui.genBuildSpiralMed, 'run')
+        self.wIcon(self.ui.genBuildSpiralNorm, 'run')
+        self.wIcon(self.ui.genBuildSpiralMin, 'run')
+        self.wIcon(self.ui.genBuildDSO, 'run')
 
         # horizon
-        self.wIcon(self.ui.loadHorizonMask, "load")
-        self.wIcon(self.ui.saveHorizonMask, "save")
-        self.wIcon(self.ui.saveHorizonMaskAs, "save")
-        self.wIcon(self.ui.clearHorizonMask, "trash")
+        self.wIcon(self.ui.loadHorizonMask, 'load')
+        self.wIcon(self.ui.saveHorizonMask, 'save')
+        self.wIcon(self.ui.saveHorizonMaskAs, 'save')
+        self.wIcon(self.ui.clearHorizonMask, 'trash')
 
         # model
-        self.wIcon(self.ui.plateSolveSync, "start")
-        pixmap = QPixmap(":/pics/azimuth.png")
+        self.wIcon(self.ui.plateSolveSync, 'start')
+        pixmap = QPixmap(':/pics/azimuth.png')
         self.ui.picAZ.setPixmap(pixmap)
-        pixmap = QPixmap(":/pics/altitude.png")
+        pixmap = QPixmap(':/pics/altitude.png')
         self.ui.picALT.setPixmap(pixmap)
 
-        self.wIcon(self.ui.cancelModel, "cross-circle")
-        self.wIcon(self.ui.runModel, "start")
-        self.wIcon(self.ui.pauseModel, "pause")
-        self.wIcon(self.ui.endModel, "stop_m")
-        self.wIcon(self.ui.batchModel, "choose")
+        self.wIcon(self.ui.cancelModel, 'cross-circle')
+        self.wIcon(self.ui.runModel, 'start')
+        self.wIcon(self.ui.pauseModel, 'pause')
+        self.wIcon(self.ui.endModel, 'stop_m')
+        self.wIcon(self.ui.batchModel, 'choose')
 
         # manage model
-        self.wIcon(self.ui.runOptimize, "start")
-        self.wIcon(self.ui.cancelOptimize, "cross-circle")
-        self.wIcon(self.ui.deleteWorstPoint, "circle-minus")
-        self.wIcon(self.ui.clearModel, "trash")
-        self.wIcon(self.ui.openAnalyseW, "bar-chart")
-        self.wIcon(self.ui.showActualModelAnalyse, "copy")
-        self.wIcon(self.ui.showOriginalModelAnalyse, "copy")
+        self.wIcon(self.ui.runOptimize, 'start')
+        self.wIcon(self.ui.cancelOptimize, 'cross-circle')
+        self.wIcon(self.ui.deleteWorstPoint, 'circle-minus')
+        self.wIcon(self.ui.clearModel, 'trash')
+        self.wIcon(self.ui.openAnalyseW, 'bar-chart')
+        self.wIcon(self.ui.showActualModelAnalyse, 'copy')
+        self.wIcon(self.ui.showOriginalModelAnalyse, 'copy')
 
-        self.wIcon(self.ui.loadName, "load")
-        self.wIcon(self.ui.saveName, "save")
-        self.wIcon(self.ui.deleteName, "trash")
-        self.wIcon(self.ui.refreshName, "reload")
-        self.wIcon(self.ui.refreshModel, "reload")
+        self.wIcon(self.ui.loadName, 'load')
+        self.wIcon(self.ui.saveName, 'save')
+        self.wIcon(self.ui.deleteName, 'trash')
+        self.wIcon(self.ui.refreshName, 'reload')
+        self.wIcon(self.ui.refreshModel, 'reload')
 
         # minor planets
-        self.wIcon(self.ui.progMinorPlanetsFull, "run")
-        self.wIcon(self.ui.progMinorPlanetsFiltered, "run")
-        self.wIcon(self.ui.progEarthRotationData, "run")
-        self.wIcon(self.ui.downloadIERS, "run")
+        self.wIcon(self.ui.progMinorPlanetsFull, 'run')
+        self.wIcon(self.ui.progMinorPlanetsFiltered, 'run')
+        self.wIcon(self.ui.progEarthRotationData, 'run')
+        self.wIcon(self.ui.downloadIERS, 'run')
 
         # satellite
-        self.wIcon(self.ui.stopSatelliteTracking, "cross-circle")
-        self.wIcon(self.ui.startSatelliteTracking, "start")
-        self.wIcon(self.ui.progSatellitesFull, "run")
-        self.wIcon(self.ui.progSatellitesFiltered, "run")
+        self.wIcon(self.ui.stopSatelliteTracking, 'cross-circle')
+        self.wIcon(self.ui.startSatelliteTracking, 'start')
+        self.wIcon(self.ui.progSatellitesFull, 'run')
+        self.wIcon(self.ui.progSatellitesFiltered, 'run')
 
         # analyse
-        self.wIcon(self.ui.runFlexure, "start")
-        self.wIcon(self.ui.runHysteresis, "check-circle")
-        self.wIcon(self.ui.cancelAnalyse, "cross-circle")
+        self.wIcon(self.ui.runFlexure, 'start')
+        self.wIcon(self.ui.runHysteresis, 'check-circle')
+        self.wIcon(self.ui.cancelAnalyse, 'cross-circle')
 
         # tools
-        self.wIcon(self.ui.renameStart, "start")
-        self.wIcon(self.ui.renameInputSelect, "folder")
-        self.wIcon(self.ui.posButton0, "target")
-        self.wIcon(self.ui.posButton1, "target")
-        self.wIcon(self.ui.posButton2, "target")
-        self.wIcon(self.ui.posButton3, "target")
-        self.wIcon(self.ui.posButton4, "target")
-        self.wIcon(self.ui.posButton5, "target")
-        self.wIcon(self.ui.posButton6, "target")
-        self.wIcon(self.ui.posButton7, "target")
-        self.wIcon(self.ui.posButton8, "target")
-        self.wIcon(self.ui.posButton9, "target")
+        self.wIcon(self.ui.renameStart, 'start')
+        self.wIcon(self.ui.renameInputSelect, 'folder')
+        self.wIcon(self.ui.posButton0, 'target')
+        self.wIcon(self.ui.posButton1, 'target')
+        self.wIcon(self.ui.posButton2, 'target')
+        self.wIcon(self.ui.posButton3, 'target')
+        self.wIcon(self.ui.posButton4, 'target')
+        self.wIcon(self.ui.posButton5, 'target')
+        self.wIcon(self.ui.posButton6, 'target')
+        self.wIcon(self.ui.posButton7, 'target')
+        self.wIcon(self.ui.posButton8, 'target')
+        self.wIcon(self.ui.posButton9, 'target')
 
-        self.wIcon(self.ui.moveNorth, "north")
-        self.wIcon(self.ui.moveEast, "east")
-        self.wIcon(self.ui.moveSouth, "south")
-        self.wIcon(self.ui.moveWest, "west")
-        self.wIcon(self.ui.moveNorthEast, "northEast")
-        self.wIcon(self.ui.moveNorthWest, "northWest")
-        self.wIcon(self.ui.moveSouthEast, "southEast")
-        self.wIcon(self.ui.moveSouthWest, "southWest")
-        self.wIcon(self.ui.moveNorthAltAz, "north")
-        self.wIcon(self.ui.moveEastAltAz, "east")
-        self.wIcon(self.ui.moveSouthAltAz, "south")
-        self.wIcon(self.ui.moveWestAltAz, "west")
-        self.wIcon(self.ui.moveNorthEastAltAz, "northEast")
-        self.wIcon(self.ui.moveNorthWestAltAz, "northWest")
-        self.wIcon(self.ui.moveSouthEastAltAz, "southEast")
-        self.wIcon(self.ui.moveSouthWestAltAz, "southWest")
-        self.wIcon(self.ui.stopMoveAll, "stop_m")
-        self.wIcon(self.ui.moveAltAzAbsolute, "target")
-        self.wIcon(self.ui.moveRaDecAbsolute, "target")
+        self.wIcon(self.ui.moveNorth, 'north')
+        self.wIcon(self.ui.moveEast, 'east')
+        self.wIcon(self.ui.moveSouth, 'south')
+        self.wIcon(self.ui.moveWest, 'west')
+        self.wIcon(self.ui.moveNorthEast, 'northEast')
+        self.wIcon(self.ui.moveNorthWest, 'northWest')
+        self.wIcon(self.ui.moveSouthEast, 'southEast')
+        self.wIcon(self.ui.moveSouthWest, 'southWest')
+        self.wIcon(self.ui.moveNorthAltAz, 'north')
+        self.wIcon(self.ui.moveEastAltAz, 'east')
+        self.wIcon(self.ui.moveSouthAltAz, 'south')
+        self.wIcon(self.ui.moveWestAltAz, 'west')
+        self.wIcon(self.ui.moveNorthEastAltAz, 'northEast')
+        self.wIcon(self.ui.moveNorthWestAltAz, 'northWest')
+        self.wIcon(self.ui.moveSouthEastAltAz, 'southEast')
+        self.wIcon(self.ui.moveSouthWestAltAz, 'southWest')
+        self.wIcon(self.ui.stopMoveAll, 'stop_m')
+        self.wIcon(self.ui.moveAltAzAbsolute, 'target')
+        self.wIcon(self.ui.moveRaDecAbsolute, 'target')
 
         # driver setting
         for driver in self.drivers:
-            if self.drivers[driver]["uiSetup"] is not None:
-                ui = self.drivers[driver]["uiSetup"]
-                self.wIcon(ui, "cogs")
+            if self.drivers[driver]['uiSetup'] is not None:
+                ui = self.drivers[driver]['uiSetup']
+                self.wIcon(ui, 'cogs')
 
-        self.wIcon(self.ui.ascomConnect, "link")
-        self.wIcon(self.ui.ascomDisconnect, "unlink")
+        self.wIcon(self.ui.ascomConnect, 'link')
+        self.wIcon(self.ui.ascomDisconnect, 'unlink')
 
         # imaging
-        self.wIcon(self.ui.copyFromTelescopeDriver, "copy")
-        self.wIcon(self.ui.haltFocuser, "bolt-alt")
-        self.wIcon(self.ui.moveFocuserIn, "exit-down")
-        self.wIcon(self.ui.moveFocuserOut, "exit-up")
-        self.wIcon(self.ui.coverPark, "exit-down")
-        self.wIcon(self.ui.coverUnpark, "exit-up")
+        self.wIcon(self.ui.copyFromTelescopeDriver, 'copy')
+        self.wIcon(self.ui.haltFocuser, 'bolt-alt')
+        self.wIcon(self.ui.moveFocuserIn, 'exit-down')
+        self.wIcon(self.ui.moveFocuserOut, 'exit-up')
+        self.wIcon(self.ui.coverPark, 'exit-down')
+        self.wIcon(self.ui.coverUnpark, 'exit-up')
 
         # dome setting
-        pixmap = QPixmap(":/dome/radius.png")
+        pixmap = QPixmap(':/dome/radius.png')
         self.ui.picDome1.setPixmap(pixmap)
-        pixmap = QPixmap(":/dome/north.png")
+        pixmap = QPixmap(':/dome/north.png')
         self.ui.picDome2.setPixmap(pixmap)
-        pixmap = QPixmap(":/dome/east.png")
+        pixmap = QPixmap(':/dome/east.png')
         self.ui.picDome3.setPixmap(pixmap)
-        pixmap = QPixmap(":/dome/z_gem.png")
+        pixmap = QPixmap(':/dome/z_gem.png')
         self.ui.picDome4.setPixmap(pixmap)
-        pixmap = QPixmap(":/dome/z_10micron.png")
+        pixmap = QPixmap(':/dome/z_10micron.png')
         self.ui.picDome5.setPixmap(pixmap)
-        pixmap = QPixmap(":/dome/gem.png")
+        pixmap = QPixmap(':/dome/gem.png')
         self.ui.picDome6.setPixmap(pixmap)
-        pixmap = QPixmap(":/dome/lat.png")
+        pixmap = QPixmap(':/dome/lat.png')
         self.ui.picDome7.setPixmap(pixmap)
-        pixmap = QPixmap(":/dome/shutter.png")
+        pixmap = QPixmap(':/dome/shutter.png')
         self.ui.picDome8.setPixmap(pixmap)
-        self.wIcon(self.ui.copyFromDomeDriver, "copy")
-        self.wIcon(self.ui.domeCloseShutter, "exit-down")
-        self.wIcon(self.ui.domeOpenShutter, "exit-up")
-        self.wIcon(self.ui.domeAbortSlew, "bolt-alt")
+        self.wIcon(self.ui.copyFromDomeDriver, 'copy')
+        self.wIcon(self.ui.domeCloseShutter, 'exit-down')
+        self.wIcon(self.ui.domeOpenShutter, 'exit-up')
+        self.wIcon(self.ui.domeAbortSlew, 'bolt-alt')
 
         # park positions
-        self.wIcon(self.ui.posSave0, "download")
-        self.wIcon(self.ui.posSave1, "download")
-        self.wIcon(self.ui.posSave2, "download")
-        self.wIcon(self.ui.posSave3, "download")
-        self.wIcon(self.ui.posSave4, "download")
-        self.wIcon(self.ui.posSave5, "download")
-        self.wIcon(self.ui.posSave6, "download")
-        self.wIcon(self.ui.posSave7, "download")
-        self.wIcon(self.ui.posSave8, "download")
-        self.wIcon(self.ui.posSave9, "download")
+        self.wIcon(self.ui.posSave0, 'download')
+        self.wIcon(self.ui.posSave1, 'download')
+        self.wIcon(self.ui.posSave2, 'download')
+        self.wIcon(self.ui.posSave3, 'download')
+        self.wIcon(self.ui.posSave4, 'download')
+        self.wIcon(self.ui.posSave5, 'download')
+        self.wIcon(self.ui.posSave6, 'download')
+        self.wIcon(self.ui.posSave7, 'download')
+        self.wIcon(self.ui.posSave8, 'download')
+        self.wIcon(self.ui.posSave9, 'download')
 
         # misc setting
-        self.wIcon(self.ui.installVersion, "world")
+        self.wIcon(self.ui.installVersion, 'world')
 
         return True
 
@@ -519,15 +519,15 @@ class MainWindow(
         :param status:
         :return: true for test purpose
         """
-        self.deviceStat["mount"] = status
+        self.deviceStat['mount'] = status
         if not packageConfig.isSimulator:
             return True
         self.ui.mountConnected.setEnabled(status)
         if status:
             return True
-        if not self.uiWindows['showSimulatorW']["classObj"]:
+        if not self.uiWindows['showSimulatorW']['classObj']:
             return False
-        self.uiWindows['showSimulatorW']["classObj"].close()
+        self.uiWindows['showSimulatorW']['classObj'].close()
         return True
 
     def updateMountWeatherStat(self, setting):
@@ -539,14 +539,14 @@ class MainWindow(
         :return: true for test purpose
         """
         if setting.weatherTemperature is None and setting.weatherPressure is None:
-            self.deviceStat["directWeather"] = None
+            self.deviceStat['directWeather'] = None
 
         else:
             if setting.weatherStatus is None:
-                self.deviceStat["directWeather"] = False
+                self.deviceStat['directWeather'] = False
 
             else:
-                self.deviceStat["directWeather"] = True
+                self.deviceStat['directWeather'] = True
         return True
 
     def smartFunctionGui(self):
@@ -561,7 +561,7 @@ class MainWindow(
         :return: true for test purpose
         """
         isModelingReady = all(
-            self.deviceStat[x] for x in ["mount", "camera", "astrometry"]
+            self.deviceStat[x] for x in ['mount', 'camera', 'astrometry']
         )
 
         if isModelingReady and self.app.data.buildP:
@@ -576,19 +576,19 @@ class MainWindow(
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
 
-        if self.deviceStat.get("mount", False):
+        if self.deviceStat.get('mount', False):
             self.ui.batchModel.setEnabled(True)
 
         else:
             self.ui.batchModel.setEnabled(False)
 
-        stat = self.deviceStat.get("environOverall", None)
+        stat = self.deviceStat.get('environOverall', None)
 
         if stat is None:
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
 
-        elif stat and self.deviceStat.get("mount", None):
+        elif stat and self.deviceStat.get('mount', None):
             self.ui.refractionGroup.setEnabled(True)
             self.ui.setRefractionManual.setEnabled(True)
 
@@ -604,28 +604,28 @@ class MainWindow(
         :return: true for test purpose
         """
         smartTabs = {
-            "Power": {
-                "statID": "power",
-                "tab": self.ui.mainTabWidget,
+            'Power': {
+                'statID': 'power',
+                'tab': self.ui.mainTabWidget,
             },
-            "Relay": {
-                "statID": "relay",
-                "tab": self.ui.toolsTabWidget,
+            'Relay': {
+                'statID': 'relay',
+                'tab': self.ui.toolsTabWidget,
             },
-            "Dome": {
-                "statID": "dome",
-                "tab": self.ui.settingsTabWidget,
+            'Dome': {
+                'statID': 'dome',
+                'tab': self.ui.settingsTabWidget,
             },
         }
         tabChanged = False
 
         for key, tab in smartTabs.items():
-            tabWidget = smartTabs[key]["tab"].findChild(QWidget, key)
-            tabIndex = smartTabs[key]["tab"].indexOf(tabWidget)
-            tabStatus = smartTabs[key]["tab"].isTabEnabled(tabIndex)
+            tabWidget = smartTabs[key]['tab'].findChild(QWidget, key)
+            tabIndex = smartTabs[key]['tab'].indexOf(tabWidget)
+            tabStatus = smartTabs[key]['tab'].isTabEnabled(tabIndex)
 
-            stat = bool(self.deviceStat.get(smartTabs[key]["statID"]))
-            smartTabs[key]["tab"].setTabEnabled(tabIndex, stat)
+            stat = bool(self.deviceStat.get(smartTabs[key]['statID']))
+            smartTabs[key]['tab'].setTabEnabled(tabIndex, stat)
             tabChanged = tabChanged or (tabStatus != stat)
 
         # redraw tabs only when a change occurred. this is necessary, because
@@ -645,11 +645,11 @@ class MainWindow(
         :return: true for test purpose
         """
         environ = {
-            "directWeather": self.ui.directWeatherGroup,
-            "sensorWeather": self.ui.sensorWeatherGroup,
-            "onlineWeather": self.ui.onlineWeatherGroup,
-            "skymeter": self.ui.skymeterGroup,
-            "powerWeather": self.ui.powerGroup,
+            'directWeather': self.ui.directWeatherGroup,
+            'sensorWeather': self.ui.sensorWeatherGroup,
+            'onlineWeather': self.ui.onlineWeatherGroup,
+            'skymeter': self.ui.skymeterGroup,
+            'powerWeather': self.ui.powerGroup,
         }
 
         for key, group in environ.items():
@@ -675,11 +675,11 @@ class MainWindow(
         for win in self.app.uiWindows:
             winObj = self.app.uiWindows[win]
 
-            if winObj["classObj"]:
-                self.changeStyleDynamic(winObj["button"], "running", True)
+            if winObj['classObj']:
+                self.changeStyleDynamic(winObj['button'], 'running', True)
 
             else:
-                self.changeStyleDynamic(winObj["button"], "running", False)
+                self.changeStyleDynamic(winObj['button'], 'running', False)
         return True
 
     def updateDeviceStats(self):
@@ -694,20 +694,20 @@ class MainWindow(
         :return: True for test purpose
         """
         if self.refractionSource in self.deviceStat:
-            self.deviceStat["environOverall"] = self.deviceStat[self.refractionSource]
+            self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
 
         else:
-            self.deviceStat["environOverall"] = None
+            self.deviceStat['environOverall'] = None
 
         for device, ui in self.deviceStatGui.items():
             if self.deviceStat.get(device, None) is None:
-                self.changeStyleDynamic(ui, "color", "gray")
+                self.changeStyleDynamic(ui, 'color', 'gray')
 
             elif self.deviceStat[device]:
-                self.changeStyleDynamic(ui, "color", "green")
+                self.changeStyleDynamic(ui, 'color', 'green')
 
             else:
-                self.changeStyleDynamic(ui, "color", "red")
+                self.changeStyleDynamic(ui, 'color', 'red')
         return True
 
     def updateOnlineWeatherStat(self, stat):
@@ -715,21 +715,21 @@ class MainWindow(
         :param stat:
         :return: True for test purpose
         """
-        self.deviceStat["onlineWeather"] = stat
+        self.deviceStat['onlineWeather'] = stat
         return True
 
     def updateTime(self):
         """
         :return: True for test purpose
         """
-        self.ui.timeComputer.setText(datetime.now().strftime("%H:%M:%S"))
+        self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
         if self.ui.isOnline.isChecked():
-            text = "Internet Online Mode"
+            text = 'Internet Online Mode'
 
         else:
-            text = "Offline Mode"
+            text = 'Offline Mode'
 
-        text = f"{self.threadPool.activeThreadCount():2d} - {text}"
+        text = f'{self.threadPool.activeThreadCount():2d} - {text}'
         self.ui.statusOnline.setTitle(text)
         return True
 
@@ -765,22 +765,22 @@ class MainWindow(
             self.ui.statusText.setText(obs.statusText())
 
         else:
-            self.ui.statusText.setText("-")
+            self.ui.statusText.setText('-')
 
         if self.app.mount.obsSite.status == 0:
-            self.changeStyleDynamic(self.ui.tracking, "running", "true")
+            self.changeStyleDynamic(self.ui.tracking, 'running', 'true')
         else:
-            self.changeStyleDynamic(self.ui.tracking, "running", "false")
+            self.changeStyleDynamic(self.ui.tracking, 'running', 'false')
 
         if self.app.mount.obsSite.status == 5:
-            self.changeStyleDynamic(self.ui.park, "running", "true")
+            self.changeStyleDynamic(self.ui.park, 'running', 'true')
         else:
-            self.changeStyleDynamic(self.ui.park, "running", "false")
+            self.changeStyleDynamic(self.ui.park, 'running', 'false')
 
         if self.app.mount.obsSite.status == 1:
-            self.changeStyleDynamic(self.ui.stop, "running", "true")
+            self.changeStyleDynamic(self.ui.stop, 'running', 'true')
         else:
-            self.changeStyleDynamic(self.ui.stop, "running", "false")
+            self.changeStyleDynamic(self.ui.stop, 'running', 'false')
 
         return True
 
@@ -792,9 +792,9 @@ class MainWindow(
             return False
 
         for window in self.uiWindows:
-            if self.uiWindows[window]["name"] != widget.objectName():
+            if self.uiWindows[window]['name'] != widget.objectName():
                 continue
-            self.uiWindows[window]["classObj"] = None
+            self.uiWindows[window]['classObj'] = None
 
         gc.collect()
         return True
@@ -806,10 +806,10 @@ class MainWindow(
 
         :return: true for test purpose
         """
-        self.uiWindows[window]["classObj"] = self.uiWindows[window]["class"](self.app)
-        self.uiWindows[window]["classObj"].destroyed.connect(self.deleteWindowResource)
-        self.uiWindows[window]["classObj"].initConfig()
-        self.uiWindows[window]["classObj"].showWindow()
+        self.uiWindows[window]['classObj'] = self.uiWindows[window]['class'](self.app)
+        self.uiWindows[window]['classObj'].destroyed.connect(self.deleteWindowResource)
+        self.uiWindows[window]['classObj'].initConfig()
+        self.uiWindows[window]['classObj'].showWindow()
         return True
 
     def toggleWindow(self):
@@ -817,14 +817,14 @@ class MainWindow(
         :return: true for test purpose
         """
         for window in self.uiWindows:
-            if self.uiWindows[window]["button"] != self.sender():
+            if self.uiWindows[window]['button'] != self.sender():
                 continue
 
-            if not self.uiWindows[window]["classObj"]:
+            if not self.uiWindows[window]['classObj']:
                 self.buildWindow(window)
 
             else:
-                self.uiWindows[window]["classObj"].close()
+                self.uiWindows[window]['classObj'].close()
         return True
 
     def showExtendedWindows(self):
@@ -837,7 +837,7 @@ class MainWindow(
         for window in self.uiWindows:
             if not self.app.config.get(window, False):
                 continue
-            if window == "showSimulatorW":
+            if window == 'showSimulatorW':
                 continue
 
             self.buildWindow(window)
@@ -851,15 +851,15 @@ class MainWindow(
         :return: true for test purpose
         """
         for window in self.uiWindows:
-            if not self.uiWindows[window]["classObj"]:
+            if not self.uiWindows[window]['classObj']:
                 continue
 
-            self.uiWindows[window]["classObj"].close()
+            self.uiWindows[window]['classObj'].close()
 
         waitDeleted = True
         while waitDeleted:
             for window in self.uiWindows:
-                if self.uiWindows[window]["classObj"]:
+                if self.uiWindows[window]['classObj']:
                     continue
 
                 waitDeleted = False
@@ -892,12 +892,12 @@ class MainWindow(
 
         :return:
         """
-        folder = self.app.mwGlob["configDir"]
+        folder = self.app.mwGlob['configDir']
         loadFilePath, name, ext = self.openFile(
             self,
-            "Open config file",
+            'Open config file',
             folder,
-            "Config files (*.cfg)",
+            'Config files (*.cfg)',
             enableDir=False,
         )
         if not name:
@@ -909,13 +909,13 @@ class MainWindow(
         suc = self.app.loadConfig(name=name)
 
         if suc:
-            self.app.config["profileName"] = name
+            self.app.config['profileName'] = name
             self.ui.profile.setText(name)
-            self.app.message.emit(f"Profile              [{name}] loaded", 0)
+            self.app.message.emit(f'Profile              [{name}] loaded', 0)
 
         else:
             self.app.message.emit(
-                f"Profile              [{name}] cannot no be loaded", 2
+                f'Profile              [{name}] cannot no be loaded', 2
             )
 
         # configure mainApp
@@ -934,12 +934,12 @@ class MainWindow(
         """
         :return:
         """
-        folder = self.app.mwGlob["configDir"]
+        folder = self.app.mwGlob['configDir']
         saveFilePath, name, ext = self.saveFile(
             self,
-            "Save config file",
+            'Save config file',
             folder,
-            "Config files (*.cfg)",
+            'Config files (*.cfg)',
             enableDir=False,
         )
         if not name:
@@ -950,11 +950,11 @@ class MainWindow(
         suc = self.app.saveConfig(name=name)
         if suc:
             self.ui.profile.setText(name)
-            self.app.message.emit(f"Profile              [{name}] saved", 0)
+            self.app.message.emit(f'Profile              [{name}] saved', 0)
 
         else:
             self.app.message.emit(
-                f"Profile              [{name}] cannot no be saved", 2
+                f'Profile              [{name}] cannot no be saved', 2
             )
         return True
 
@@ -969,10 +969,10 @@ class MainWindow(
         self.app.storeConfig()
         suc = self.app.saveConfig(name=self.ui.profile.text())
         if suc:
-            self.app.message.emit("Actual profile saved", 0)
+            self.app.message.emit('Actual profile saved', 0)
 
         else:
-            self.app.message.emit("Actual profile cannot not be saved", 2)
+            self.app.message.emit('Actual profile cannot not be saved', 2)
         return suc
 
     def remoteCommand(self, command):
@@ -982,16 +982,16 @@ class MainWindow(
         :param command:
         :return: True for test purpose
         """
-        if command == "shutdown":
+        if command == 'shutdown':
             self.quitSave()
-            self.app.message.emit("Shutdown MW remotely", 2)
+            self.app.message.emit('Shutdown MW remotely', 2)
 
-        elif command == "shutdown mount":
+        elif command == 'shutdown mount':
             self.mountShutdown()
-            self.app.message.emit("Shutdown mount remotely", 2)
+            self.app.message.emit('Shutdown mount remotely', 2)
 
-        elif command == "boot mount":
+        elif command == 'boot mount':
             self.mountBoot()
-            self.app.message.emit("Boot mount remotely", 2)
+            self.app.message.emit('Boot mount remotely', 2)
 
         return True

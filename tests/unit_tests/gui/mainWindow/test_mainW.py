@@ -56,6 +56,9 @@ from logic.measure.measure import MeasureData
 from logic.telescope.telescope import Telescope
 from logic.astrometry.astrometry import Astrometry
 from base.loggerMW import addLoggingLevel
+from base import packageConfig
+from resource import resources
+resources.qInitResources()
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -166,8 +169,8 @@ def function_setup_teardown(qtbot):
                            'show'):
         with mock.patch.object(ImageWindow,
                                'show'):
-            isSimulator = True
-            isAvailable = True
+            packageConfig.isSimulator = True
+            packageConfig.isAvailable = True
             app = MainWindow(app=Test())
             app.log = logging.getLogger()
             addLoggingLevel('TRACE', 5)
@@ -247,50 +250,40 @@ def test_setupIcons():
 
 @patch('base.packageConfig.isSimulator', False)
 def test_updateMountConnStat_1():
-    suc = app.updateMountConnStat(True)
-    assert suc
-    assert app.deviceStat['mount']
-
-
-@patch('base.packageConfig.isSimulator', False)
-def test_updateMountConnStat_2():
     suc = app.updateMountConnStat(False)
     assert suc
     assert not app.deviceStat['mount']
 
 
 @patch('base.packageConfig.isSimulator', True)
-def test_updateMountConnStat_3():
-    app.uiWindows = {
-                "button": self.ui.mountConnected,
-                "classObj": None,
-                "name": "SimulatorDialog",
-                "class": None,
-            }
+def test_updateMountConnStat_2():
     suc = app.updateMountConnStat(True)
     assert suc
+    assert app.deviceStat['mount']
 
 
 @patch('base.packageConfig.isSimulator', True)
-def test_updateMountConnStat_4():
-    app.uiWindows = {
-                "button": self.ui.mountConnected,
-                "classObj": None,
-                "name": "SimulatorDialog",
-                "class": None,
-            }
+def test_updateMountConnStat_3():
+    app.uiWindows = {'showSimulatorW': {
+        'button': app.ui.mountConnected,
+        'classObj': None,
+        'name': 'SimulatorDialog',
+        'class': None,
+        }
+    }
     suc = app.updateMountConnStat(False)
     assert not suc
 
 
 @patch('base.packageConfig.isSimulator', True)
-def test_updateMountConnStat_5():
-    app.uiWindows = {
-                "button": self.ui.mountConnected,
-                "classObj": None,
-                "name": "SimulatorDialog",
-                "class": QWidget(),
-            }
+def test_updateMountConnStat_4():
+    app.uiWindows = {'showSimulatorW': {
+        'button': app.ui.mountConnected,
+        'classObj': QWidget(),
+        'name': 'SimulatorDialog',
+        'class': None,
+        }
+    }
     suc = app.updateMountConnStat(False)
     assert suc
 

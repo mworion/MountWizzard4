@@ -358,6 +358,11 @@ class Mount(object):
         """
         :return:
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount and not isData:
+            return False
+
         obs = self.app.mount.obsSite
         if obs.status == 0:
             suc = obs.stopTracking()
@@ -379,6 +384,11 @@ class Mount(object):
         """
         :return:
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount and not isData:
+            return False
+
         obs = self.app.mount.obsSite
         if obs.status == 5:
             suc = obs.unpark()
@@ -400,6 +410,11 @@ class Mount(object):
         """
         :return:
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
+            return False
+
         sett = self.app.mount.setting
         suc = sett.setLunarTracking()
         if not suc:
@@ -414,6 +429,11 @@ class Mount(object):
         """
         :return:
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
+            return False
+
         sett = self.app.mount.setting
         suc = sett.setSiderealTracking()
         if not suc:
@@ -428,6 +448,11 @@ class Mount(object):
         """
         :return:
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
+            return False
+
         sett = self.app.mount.setting
         suc = sett.setSolarTracking()
         if not suc:
@@ -442,6 +467,11 @@ class Mount(object):
         """
         :return:
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount and not isData:
+            return False
+
         obs = self.app.mount.obsSite
         suc = obs.flip()
         if not suc:
@@ -456,6 +486,11 @@ class Mount(object):
         """
         :return:
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount and not isData:
+            return False
+
         obs = self.app.mount.obsSite
         suc = obs.stop()
         if not suc:
@@ -478,7 +513,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -513,7 +550,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -548,7 +587,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -583,7 +624,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -618,7 +661,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -654,6 +699,11 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount and not isData:
+            return False
+
         obs = self.app.mount.obsSite
         if obs.location is None:
             return False
@@ -697,6 +747,11 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount and not isData:
+            return False
+
         obs = self.app.mount.obsSite
         if obs.location is None:
             return False
@@ -738,6 +793,11 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount and not isData:
+            return False
+
         obs = self.app.mount.obsSite
 
         if obs.location is None:
@@ -777,7 +837,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -809,7 +871,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -841,7 +905,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -873,7 +939,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')

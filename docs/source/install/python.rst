@@ -24,9 +24,9 @@ this has to be done only once for as many MW4 installations you might want.
 There is a video on youtube with the install process python: https://youtu.be/xJxpx_SmrVc.
 
 .. note::
-    On windows there are some new features from 0.170.4 on which supports comet,
+    On windows there are some new features which supports comet,
     earth rotation and asteroids update for the mount. These functions are
-    available from python 3.8.2 on. Earlier versions run have issues. If you
+    available from python 3.8.2 on. Earlier python versions have issues. If you
     would like to upgrade an older python installation, please see the comments
     below for windows. On other OS there is no need for doing that.
 
@@ -34,9 +34,9 @@ There is a video on youtube with the install process python: https://youtu.be/xJ
 Windows
 -------
 Depending on your Windows version please download or directly run the web
-installer for 3.8.6 from:
+installer from:
 
-https://www.python.org/ftp/python/3.8.6/python-3.8.6-webinstall.exe
+https://www.python.org/ftp/python/3.9.2/python-3.9.2-webinstall.exe
 
 and follow the installation procedure.
 
@@ -48,14 +48,14 @@ and follow the installation procedure.
     :align: center
     :scale: 71%
 
-Depending on your preference you could install python 3.8 for a single user or for
+Depending on your preference you could install python 3.9 for a single user or for
 all users. MW4 does not need admin rights to run, so please choose the variant for
 a single users if you want wo use the installation scripts. They depend on access
 rights as a normal user and you might run into troubles using different modes!
 
 Mac OSx
 -------
-Depending on your OSx version please download the installer for 3.8 from:
+Depending on your OSx version please download the installer for 3.9 from:
 
 https://www.python.org/downloads/mac-osx/
 
@@ -66,11 +66,11 @@ so please feel free to choose the variant you would like to use.
 Ubuntu
 ------
 Referring to Ubuntu 18.04 LTS as it comes with python3.6. This should work, but
-you could upgrade to python 3.8.x. This could be done by adding an appropriate
+you could upgrade to python 3.9.x. This could be done by adding an appropriate
 repo, which enables this version.
 
 .. hint::
-    If you update to a higher python version, please update to python 3.8.x if you
+    If you update to a higher python version, please update to python 3.9.x if you
     want in a way, which fits best to your environment. There are many
     descriptions out, so please search for it in case you don't know exactly.
 

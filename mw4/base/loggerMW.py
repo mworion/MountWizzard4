@@ -112,15 +112,13 @@ def setupLogging():
     logging.getLogger('urllib3').setLevel(logging.WARNING)
     logging.getLogger('matplotlib').setLevel(logging.WARNING)
     # logging.getLogger('astropy').setLevel(logging.WARNING)
+    logging.getLogger().setLevel('DEBUG')
     return True
 
 
 def setCustomLoggingLevel(level='WARN'):
     """
-    Setting the log level according to the setting in the gui.
-
     :return: true for test purpose
     """
     logging.getLogger().setLevel(level)
-
     return True

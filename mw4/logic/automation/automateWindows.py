@@ -197,7 +197,6 @@ class AutomateWindows(QObject):
 
         values = self.getValuesForNameKeyFromRegistry(nameKey)
         if 'InstallLocation' not in values:
-            self.log.warning('QCI updater not found')
             t = f'AppName: [{appName}], values: [{values}]'
             self.log.debug(t)
             return False, '', ''
@@ -211,7 +210,6 @@ class AutomateWindows(QObject):
             available = False
             installPath = ''
             name = ''
-            self.log.warning('QCI updater not found')
             t = f'AppName: [{appName}], values: [{values}]'
             self.log.debug(t)
 
@@ -227,6 +225,7 @@ class AutomateWindows(QObject):
             if val[0]:
                 break
         else:
+            self.log.warning('QCI updater not found')
             return False, '', ''
 
         return val
@@ -285,6 +284,7 @@ class AutomateWindows(QObject):
 
         except AppStartError:
             self.log.error('Failed to start updater, please check!')
+            self.log.info(f'{self.installPath}{self.UPDATER_EXE}')
             return False
 
         except Exception as e:

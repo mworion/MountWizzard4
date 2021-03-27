@@ -401,9 +401,11 @@ class AutomateWindows(QObject):
 
         self.log.debug(f'Updater popup: [{popup}]')
         popup['MPC file'].click()
-        filedialog = self.updater['Dialog']
+        filedialog = self.updater['Open']
         self.log.debug(f'Updater filedialog: [{filedialog}]')
-        text = self.installPath + 'minorPlanets.mpc'
+        text = self.installPath
+        controls.EditWrapper(filedialog['Look in:']).set_text(text)
+        text = 'minorPlanets.mpc'
         controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
 
         if platform.architecture()[0] == '32bit':
@@ -448,7 +450,9 @@ class AutomateWindows(QObject):
         popup['Import files...'].click()
         filedialog = self.updater['Open finals data']
         self.log.debug(f'Updater filedialog: [{filedialog}]')
-        text = self.installPath + self.UTC_1_FILE
+        text = self.installPath
+        controls.EditWrapper(filedialog['Look in:']).set_text(text)
+        text = self.UTC_1_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
 
         if platform.architecture()[0] == '32bit':
@@ -456,8 +460,13 @@ class AutomateWindows(QObject):
         else:
             filedialog['OpenButton4'].click()
 
-        filedialog = self.updater['Open tai-utc.dat']
-        text = self.installPath + self.UTC_2_FILE
+        if self.updaterEXE == 'tenmicron_v2.exe':
+            filedialog = self.updater['Open CDFLeapSeconds.txt or tai-utc.dat']
+        else:
+            filedialog = self.updater['Open tai-utc.dat']
+        text = self.installPath
+        controls.EditWrapper(filedialog['Look in:']).set_text(text)
+        text = self.UTC_2_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
 
         if platform.architecture()[0] == '32bit':
@@ -503,7 +512,9 @@ class AutomateWindows(QObject):
         popup['Load from file'].click()
         filedialog = self.updater['Dialog']
         self.log.debug(f'Updater filedialog: [{filedialog}]')
-        text = self.installPath + 'satellites.tle'
+        text = self.installPath
+        controls.EditWrapper(filedialog['Look in:']).set_text(text)
+        text = 'satellites.tle'
         controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
 
         if platform.architecture()[0] == '32bit':

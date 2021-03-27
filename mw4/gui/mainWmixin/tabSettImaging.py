@@ -331,7 +331,7 @@ class SettImaging(object):
                                 availNames,
                                 actValue - 1,
                                 )
-
+        self.log.debug(f'FilterSelected: [{value}], FilterList: [{availNames}]')
         if not ok:
             return False
 

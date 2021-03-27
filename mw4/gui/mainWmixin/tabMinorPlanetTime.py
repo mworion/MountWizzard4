@@ -93,8 +93,9 @@ class MinorPlanetTime:
 
     def setupMinorPlanetSourceURLsDropDown(self):
         """
-        setupMinorPlanetSourceURLsDropDown handles the dropdown list for the satellite data
-        online sources. therefore we add the necessary entries to populate the list.
+        setupMinorPlanetSourceURLsDropDown handles the dropdown list for the
+        satellite data online sources. therefore we add the necessary entries to
+        populate the list.
 
         :return: success for test
         """
@@ -304,8 +305,8 @@ class MinorPlanetTime:
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
-
-        self.app.message.emit('Programming success', 1)
+        else:
+            self.app.message.emit('Programming success', 1)
         return suc
 
     def progMinorPlanetsFiltered(self):
@@ -365,8 +366,8 @@ class MinorPlanetTime:
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
-
-        self.app.message.emit('Programming success', 1)
+        else:
+            self.app.message.emit('Programming success', 1)
         return suc
 
     def progMinorPlanetsFull(self):
@@ -415,7 +416,6 @@ class MinorPlanetTime:
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
-
-        self.app.message.emit('Programming success', 1)
-
+        else:
+            self.app.message.emit('Programming success', 1)
         return suc

@@ -87,6 +87,13 @@ class ModelStar(object):
             self._coord = None
             return
 
+        if not self.obsSite:
+            return
+
+        loc = self.obsSite.location
+        if not loc:
+            return
+
         if isinstance(value, Star):
             self._coord = value
             ha = self._coord.ra.hours
@@ -108,13 +115,6 @@ class ModelStar(object):
                 self.log.warning('Malformed value: {0}'.format(value))
                 return
             self._coord = Star(ra_hours=ha, dec_degrees=dec)
-
-        if not self.obsSite:
-            return
-
-        loc = self.obsSite.location
-        if not loc:
-            return
 
         lat = loc.latitude.degrees
         alt, az = topoToAltAz(ha, dec, lat)

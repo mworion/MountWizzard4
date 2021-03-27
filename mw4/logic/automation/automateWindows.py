@@ -439,7 +439,7 @@ class AutomateWindows(QObject):
         popup['Import files...'].click()
         filedialog = self.updater['Open finals data']
         text = self.installPath + self.UTC_1_FILE
-        controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
+        controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
 
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()
@@ -448,7 +448,7 @@ class AutomateWindows(QObject):
 
         filedialog = self.updater['Open tai-utc.dat']
         text = self.installPath + self.UTC_2_FILE
-        controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
+        controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
 
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()

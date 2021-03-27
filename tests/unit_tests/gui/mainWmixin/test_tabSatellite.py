@@ -757,6 +757,30 @@ def test_progSatellitesFiltered_3(function):
             assert not suc
 
 
+def test_progSatellitesFiltered_3b(function):
+    class Satnum:
+        satnum = 1
+
+    class Model:
+        model = Satnum()
+
+    function.app.automation.installPath = ''
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterSatellite.setText('test')
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.databaseProcessing,
+                               'writeSatelliteTLE',
+                               return_value=True):
+            suc = function.progSatellitesFiltered()
+            assert not suc
+
+
 def test_progSatellitesFiltered_4(function):
     class Satnum:
         satnum = 1
@@ -764,6 +788,7 @@ def test_progSatellitesFiltered_4(function):
     class Model:
         model = Satnum()
 
+    function.app.automation.installPath = 'test'
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)
@@ -876,6 +901,30 @@ def test_progSatellitesFull_3(function):
             assert not suc
 
 
+def test_progSatellitesFull_3b(function):
+    class Satnum:
+        satnum = 1
+
+    class Model:
+        model = Satnum()
+
+    function.app.automation.installPath = ''
+    function.ui.satelliteSource.clear()
+    function.ui.satelliteSource.addItem('Comet')
+    function.ui.satelliteSource.setCurrentIndex(0)
+    function.ui.filterSatellite.setText('test')
+    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
+
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.databaseProcessing,
+                               'writeSatelliteTLE',
+                               return_value=True):
+            suc = function.progSatellitesFull()
+            assert not suc
+
+
 def test_progSatellitesFull_4(function):
     class Satnum:
         satnum = 1
@@ -883,6 +932,7 @@ def test_progSatellitesFull_4(function):
     class Model:
         model = Satnum()
 
+    function.app.automation.installPath = 'test'
     function.ui.satelliteSource.clear()
     function.ui.satelliteSource.addItem('Comet')
     function.ui.satelliteSource.setCurrentIndex(0)

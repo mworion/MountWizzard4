@@ -231,15 +231,18 @@ def test_loadMPCDataFromSourceURLs_2(function):
     assert not suc
 
 
-def test_loadMPCDataFromSourceURLss_3(function):
-    with mock.patch.object(os.path,
-                           'isfile',
-                           return_value=False):
-        function.minorPlanetSourceURLs['test'] = 'test.json.gz'
-        function.ui.minorPlanetSource.clear()
-        function.ui.minorPlanetSource.addItem('test')
-        function.ui.minorPlanetSource.setCurrentIndex(0)
-        function.ui.isOnline.setChecked(False)
+def test_loadMPCDataFromSourceURLs_3(function):
+    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=False):
+            function.minorPlanetSourceURLs['test'] = 'test.json.gz'
+            function.ui.minorPlanetSource.clear()
+            function.ui.minorPlanetSource.addItem('test')
+            function.ui.minorPlanetSource.setCurrentIndex(0)
+            function.ui.isOnline.setChecked(True)
+            suc = function.loadMPCDataFromSourceURLs()
+            assert suc
 
 
 def test_progEarthRotationDataToMount_1(function):

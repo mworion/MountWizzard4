@@ -131,9 +131,6 @@ Known limitations
 MW4 does only support python 3.7 - 3.9 right now. The reason for that is the
 missing availability of precompiled packages needed.
 
-On Apple MacOSx BigSur you need update to > 0.220.3 at the Qt framework has some
-issues opening the primary display.
-
 Some features are limited to windows version only as they need the original
 10micronQCI updater program to execute.
 
@@ -174,9 +171,11 @@ quality and usability any feedback is highly welcome. To maintain a good
 transparency and a doable work for my, please respect some recommendations how
 to feed back.
 
-Please report back under: https://github.com/mworion/MountWizzard4/issues.
-This is good for any feedback (bug reports, other issues, usability, feature
-requests, etc).
+.. note:: Please report back under: https://github.com/mworion/MountWizzard4/issues.
+          This is good for any feedback (bug reports, other issues, usability, 
+          feature requests, etc).
+          In https://github.com/mworion/MountWizzard4/discussions there is a good
+          place to start discussions for all other topics of interest.
 
 In case of a bug report please have a good description (maybe a screenshot if it‘s
 related to GUI) and add the log file(s) to the issue. Normally you just could drop

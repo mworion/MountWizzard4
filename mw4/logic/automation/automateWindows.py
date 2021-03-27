@@ -398,6 +398,7 @@ class AutomateWindows(QObject):
         filedialog = self.updater['Dialog']
         text = self.installPath + 'minorPlanets.mpc'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
+
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()
 
@@ -464,7 +465,6 @@ class AutomateWindows(QObject):
         :return:
         """
         self.prepareUpdater()
-
         try:
             self.uploadEarthRotationDataCommands()
 
@@ -489,10 +489,11 @@ class AutomateWindows(QObject):
         controls.ButtonWrapper(win['Orbital parameters of satellites']).check_by_click()
         win['Edit...2'].click()
         popup = self.updater['Satellites orbits']
+
         popup['Load from file'].click()
         filedialog = self.updater['Dialog']
         text = self.installPath + 'satellites.tle'
-        controls.EditWrapper(filedialog['File &name:Edit']).set_text(text)
+        controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
 
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()
@@ -500,7 +501,6 @@ class AutomateWindows(QObject):
             filedialog['OpenButton4'].click()
 
         popup['Close'].click()
-
         return True
 
     def uploadTLEData(self):
@@ -508,7 +508,6 @@ class AutomateWindows(QObject):
         :return:
         """
         self.prepareUpdater()
-
         try:
             self.uploadTLEDataCommands()
 

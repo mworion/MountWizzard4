@@ -17,7 +17,6 @@
 # standard libraries
 import json
 import os
-from threading import Lock
 
 # external packages
 from matplotlib import pyplot as plt
@@ -29,7 +28,6 @@ from scipy.stats.mstats import winsorize
 # local import
 from gui.utilities import toolsQtWidget
 from gui.widgets import analyse_ui
-from base.tpool import Worker
 
 
 class AnalyseWindow(toolsQtWidget.MWidget):
@@ -48,10 +46,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui = analyse_ui.Ui_AnalyseDialog()
         self.ui.setupUi(self)
         self.initUI()
-        self.threadPool = app.threadPool
-        self.threadCounter = 0
-        self.threadingLock = Lock()
-        self.workers = []
 
         self.latitude = None
         self.pierside = None
@@ -186,7 +180,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         :param loadFilePath:
         :return: True for test purpose
         """
-
         d = data[0]
         de = data[-1]
 
@@ -622,21 +615,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         axe.figure.canvas.draw()
         return True
 
-    def workerDrawAll(self):
+    def drawAll(self):
         """
         :return:
         """
         for chart in self.charts:
             chart()
-        return True
-
-    def drawAll(self):
-        """
-        :return: true for test purpose
-        """
-        if self.countSequence is None:
-            return False
-
-        worker = Worker(self.workerDrawAll)
-        self.threadPool.start(worker)
         return True

@@ -365,26 +365,10 @@ def test_draw_errorDistribution_1(function):
             assert suc
 
 
-def test_workerDrawAll(function):
+def test_drawAll(function):
     def test():
         pass
 
     function.charts = [test]
-    suc = function.workerDrawAll()
+    suc = function.drawAll()
     assert suc
-
-
-def test_drawAll_1(function):
-    function.countSequence = None
-    with mock.patch.object(function.threadPool,
-                           'start'):
-        suc = function.drawAll()
-        assert not suc
-
-
-def test_drawAll_2(function):
-    function.countSequence = 1
-    with mock.patch.object(function.threadPool,
-                           'start'):
-        suc = function.drawAll()
-        assert suc

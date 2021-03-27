@@ -594,7 +594,11 @@ class Satellite(object):
             return False
 
         if not self.app.automation:
-            self.app.message.emit('Not running windows, no updater available', 2)
+            self.app.message.emit('Not running windows - upload not possible', 2)
+            return False
+
+        if not self.app.automation.installPath:
+            self.app.message.emit('No QCI updater available - upload not possible', 2)
             return False
 
         self.app.message.emit('Uploading TLE data to mount', 0)
@@ -628,7 +632,11 @@ class Satellite(object):
             return False
 
         if not self.app.automation:
-            self.app.message.emit('Not running windows, no updater available', 2)
+            self.app.message.emit('Not running windows - upload not possible', 2)
+            return False
+
+        if not self.app.automation.installPath:
+            self.app.message.emit('No QCI updater available - upload not possible', 2)
             return False
 
         self.app.message.emit('Uploading TLE data to mount', 0)

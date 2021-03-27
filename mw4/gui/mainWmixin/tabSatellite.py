@@ -75,7 +75,9 @@ class Satellite(object):
         """
         :return: True for test purpose
         """
+        config = self.app.config['mainW']
         self.setupSatelliteSourceURLsDropDown()
+        self.ui.filterSatellite.setText(config.get('filterSatellite'))
         if not self.app.automation:
             self.installPath = self.app.mwGlob['dataDir']
 
@@ -84,6 +86,14 @@ class Satellite(object):
 
         else:
             self.installPath = self.app.mwGlob['dataDir']
+        return True
+
+    def storeConfig(self):
+        """
+        :return:
+        """
+        config = self.app.config['mainW']
+        config['filterSatellite'] = self.ui.filterSatellite.text()
         return True
 
     def setupSatelliteSourceURLsDropDown(self):

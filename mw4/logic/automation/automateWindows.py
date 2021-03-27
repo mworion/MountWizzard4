@@ -242,8 +242,11 @@ class AutomateWindows(QObject):
             self.updaterEXE = val[3]
 
         except Exception as e:
+            self.available = False
+            self.installPath = ''
+            self.name = ''
+            self.updaterEXE = ''
             self.log.debug(f'{e}')
-            return False, '', ''
 
     def checkFloatingPointErrorWindow(self):
         """

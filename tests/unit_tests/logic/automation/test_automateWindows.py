@@ -184,41 +184,47 @@ def test_cycleThroughAppNames_1(function):
     with mock.patch.object(function,
                            'extractPropertiesFromRegistry',
                            return_value=(False, 'test', 'test')):
-        avail, path, name = function.getAppSettings('test')
+        avail, path, name, exe = function.cycleThroughAppNames('test')
         assert not avail
         assert path == ''
         assert name == ''
+        assert exe == ''
 
 
 def test_cycleThroughAppNames_2(function):
     with mock.patch.object(function,
                            'extractPropertiesFromRegistry',
                            return_value=(True, 'test', 'test')):
-        avail, path, name = function.getAppSettings('test')
+        appNames = {'10micron control': 'tenmicron_v2.exe'}
+        avail, path, name, exe = function.cycleThroughAppNames(appNames)
         assert avail
         assert path == 'test'
         assert name == 'test'
+        assert exe == 'tenmicron_v2.exe'
 
 
 def test_getAppSettings_1(function):
     with mock.patch.object(function,
                            'cycleThroughAppNames',
-                           return_value=(False, 'test', 'test')):
-        avail, path, name = function.getAppSettings(['test'])
-        assert not avail
-        assert path == 'test'
-        assert name == 'test'
+                           return_value=(True, 'test', 'test', 'test.exe')):
+        function.getAppSettings('test')
+        assert function.available
+        assert function.installPath == 'test'
+        assert function.name == 'test'
+        assert function.updaterEXE == 'test.exe'
 
 
 def test_getAppSettings_2(function):
     with mock.patch.object(function,
                            'cycleThroughAppNames',
-                           return_value=(False, 'test', 'test'),
+                           return_value=(False, 'test', 'test', 'test.exe'),
                            side_effect=Exception()):
-        avail, path, name = function.getAppSettings(['test'])
-        assert not avail
-        assert path == ''
-        assert name == ''
+        appNames = {'10micron control': 'tenmicron_v2.exe'}
+        function.getAppSettings(appNames)
+        assert not function.available
+        assert function.installPath == ''
+        assert function.name == ''
+        assert function.updaterEXE == ''
 
 
 def test_checkFloatingPointErrorWindow_1(function):
@@ -545,11 +551,12 @@ def test_uploadMPCDataCommands_1(function):
     dialog = {'OpenButton4': Test(),
               'Button16': Test(),
               'File &name:Edit': Test(),
+              'Look in:': Test(),
               }
     function.updater = {'10 micron control box update': win,
                         'Asteroid orbits': popup,
                         'Comet orbits': popup,
-                        'Dialog': dialog,
+                        'Open': dialog,
                         }
     with mock.patch.object(automateWindows.controls,
                            'ButtonWrapper'):
@@ -584,11 +591,12 @@ def test_uploadMPCDataCommands_2(function):
     dialog = {'OpenButton4': Test(),
               'Button16': Test(),
               'File &name:Edit': Test(),
+              'Look in:': Test(),
               }
     function.updater = {'10 micron control box update': win,
                         'Asteroid orbits': popup,
                         'Comet orbits': popup,
-                        'Dialog': dialog,
+                        'Open': dialog,
                         }
     with mock.patch.object(automateWindows.controls,
                            'ButtonWrapper'):
@@ -626,11 +634,12 @@ def test_uploadMPCDataCommands_3(function):
     dialog = {'OpenButton4': Test(),
               'Button16': Test(),
               'File &name:Edit': Test(),
+              'Look in:': Test(),
               }
     function.updater = {'10 micron control box update': win,
                         'Asteroid orbits': popup,
                         'Comet orbits': popup,
-                        'Dialog': dialog,
+                        'Open': dialog,
                         }
     with mock.patch.object(automateWindows.controls,
                            'ButtonWrapper'):
@@ -710,6 +719,7 @@ def test_uploadEarthRotationDataCommands_1(function):
         def set_text(a):
             pass
 
+    function.updaterEXE = 'tenmicron.exe'
     win = {'UTC / Earth rotation data': Test(),
            'Edit...1': Test(),
            }
@@ -718,6 +728,7 @@ def test_uploadEarthRotationDataCommands_1(function):
     dialog = {'OpenButton4': Test(),
               'Button16': Test(),
               'File &name:Edit': Test(),
+              'Look in:': Test(),
               }
     ok = {'OK': Test()
           }
@@ -752,6 +763,7 @@ def test_uploadEarthRotationDataCommands_2(function):
         def set_text(a):
             pass
 
+    function.updaterEXE = 'tenmicron_v2.'
     win = {'UTC / Earth rotation data': Test(),
            'Edit...1': Test(),
            }
@@ -760,6 +772,7 @@ def test_uploadEarthRotationDataCommands_2(function):
     dialog = {'OpenButton4': Test(),
               'Button16': Test(),
               'File &name:Edit': Test(),
+              'Look in:': Test(),
               }
     ok = {'OK': Test()
           }
@@ -767,6 +780,50 @@ def test_uploadEarthRotationDataCommands_2(function):
                         'UTC / Earth rotation data': popup,
                         'Open finals data': dialog,
                         'Open tai-utc.dat': dialog,
+                        'UTC data': ok
+                        }
+    with mock.patch.object(automateWindows.controls,
+                           'ButtonWrapper'):
+        with mock.patch.object(automateWindows.controls,
+                               'EditWrapper'):
+            with mock.patch.object(platform,
+                                   'architecture',
+                                   return_value=['64bit']):
+                suc = function.uploadEarthRotationDataCommands()
+                assert suc
+
+
+def test_uploadEarthRotationDataCommands_3(function):
+    class Test:
+        @staticmethod
+        def click():
+            pass
+
+        @staticmethod
+        def check_by_click():
+            pass
+
+        @staticmethod
+        def set_text(a):
+            pass
+
+    function.updaterEXE = 'tenmicron_v2.exe'
+    win = {'UTC / Earth rotation data': Test(),
+           'Edit...1': Test(),
+           }
+    popup = {'Import files...': Test()
+             }
+    dialog = {'OpenButton4': Test(),
+              'Button16': Test(),
+              'File &name:Edit': Test(),
+              'Look in:': Test(),
+              }
+    ok = {'OK': Test()
+          }
+    function.updater = {'10 micron control box update': win,
+                        'UTC / Earth rotation data': popup,
+                        'Open finals data': dialog,
+                        'Open CDFLeapSeconds.txt or tai-utc.dat': dialog,
                         'UTC data': ok
                         }
     with mock.patch.object(automateWindows.controls,
@@ -856,6 +913,7 @@ def test_uploadTLEDataCommands_1(function):
     dialog = {'OpenButton4': Test(),
               'Button16': Test(),
               'File &name:Edit': Test(),
+              'Look in:': Test(),
               }
     function.updater = {'10 micron control box update': win,
                         'Satellites orbits': popup,
@@ -896,6 +954,7 @@ def test_uploadTLEDataCommands_2(function):
     dialog = {'OpenButton4': Test(),
               'Button16': Test(),
               'File &name:Edit': Test(),
+              'Look in:': Test(),
               }
     function.updater = {'10 micron control box update': win,
                         'Satellites orbits': popup,

@@ -387,6 +387,9 @@ In both cases MW4 will generate the programming data needed on all platforms
 (ubuntu, macOS, Windows), only the automation process work on windows due to the
 updater topic.
 
+...note :: Please set your system language to english!
+
+
 3.) You select a satellite from the list: In this case the TLE data from the
 satellite is programmed directly to the mount, track data is calculated in the
 mount, MW4 does some calculations as well and makes some nice drawings and you

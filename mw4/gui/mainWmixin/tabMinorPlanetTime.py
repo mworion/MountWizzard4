@@ -196,7 +196,6 @@ class MinorPlanetTime:
 
         if source not in self.minorPlanetSourceURLs:
             return False
-
         if source == 'Please select':
             return False
 
@@ -238,7 +237,7 @@ class MinorPlanetTime:
                 self.app.message.emit('No 10micron updater found.', 2)
                 return False
 
-        self.app.message.emit('Uploading to mount', 0)
+        self.app.message.emit('Uploading IERS data to mount', 0)
         suc = self.app.automation.uploadEarthRotationData()
 
         if not suc:

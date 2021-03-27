@@ -571,7 +571,7 @@ class Satellite(object):
             return False
 
         self.app.message.emit(f'Program database:    [{source}]', 1)
-        self.app.message.emit('Exporting MPC data', 0)
+        self.app.message.emit('Exporting TLE data', 0)
 
         filterStr = self.ui.filterSatellite.text().lower()
 
@@ -602,9 +602,8 @@ class Satellite(object):
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
-
-        self.app.message.emit('Programming success', 1)
-
+        else:
+            self.app.message.emit('Programming success', 1)
         return suc
 
     def progSatellitesFull(self):
@@ -637,6 +636,6 @@ class Satellite(object):
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
-
-        self.app.message.emit('Programming success', 1)
+        else:
+            self.app.message.emit('Programming success', 1)
         return suc

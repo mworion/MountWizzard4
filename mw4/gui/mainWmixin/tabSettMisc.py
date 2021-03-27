@@ -92,7 +92,6 @@ class SettMisc(object):
         self.ui.soundImageSaved.setCurrentIndex(config.get('soundImageSaved', 0))
         self.ui.soundImageSolved.setCurrentIndex(config.get('soundImageSolved', 0))
 
-        self.setLoggingLevel()
         self.setWeatherOnline()
         self.setupIERS()
         self.showUpdates()

@@ -88,10 +88,6 @@ def setupLogging():
 
     :return: true for test purpose
     """
-    addLoggingLevel('HEADER', 55)
-    addLoggingLevel('UI', 35)
-    addLoggingLevel('TRACE', 5)
-
     logging.Formatter.converter = timeTz
     timeTag = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
     name = f'mw4-{timeTag}.log'
@@ -112,7 +108,9 @@ def setupLogging():
     logging.getLogger('urllib3').setLevel(logging.WARNING)
     logging.getLogger('matplotlib').setLevel(logging.WARNING)
     # logging.getLogger('astropy').setLevel(logging.WARNING)
-    logging.getLogger().setLevel('DEBUG')
+    addLoggingLevel('HEADER', 55)
+    addLoggingLevel('UI', 35)
+    addLoggingLevel('TRACE', 5)
     return True
 
 

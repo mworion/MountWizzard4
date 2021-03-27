@@ -38,8 +38,6 @@ import numbers
 import xml.etree.ElementTree as ETree
 
 # local imports
-from base.loggerMW import setupLogging
-setupLogging()
 log = logging.getLogger()
 """
 

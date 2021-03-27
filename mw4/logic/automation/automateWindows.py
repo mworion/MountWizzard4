@@ -43,7 +43,6 @@ class AutomateWindows(QObject):
 
     log = logging.getLogger(__name__)
 
-    UPDATER_EXE = 'GmQCIv2.exe'
     UTC_1_FILE = 'finals.data'
     UTC_2_FILE = 'tai-utc.dat'
 
@@ -104,17 +103,16 @@ class AutomateWindows(QObject):
         self.app = app
         self.threadPool = app.threadPool
 
-        if not hasAutomation:
-            self.installPath = ''
-            self.name = ''
-            self.available = False
-            return
+        self.installPath = ''
+        self.name = ''
+        self.available = False
+        self.updaterEXE = ''
 
-        val = self.getAppSettings(['10micron QCI control',
-                                   '10micron control'])
-        self.log.debug(f'QCI Updater settings: [{val}]')
-        self.available, self.name, self.installPath = val
-        self.updaterRunnable = self.installPath + self.UPDATER_EXE
+        self.getAppSettings({'10micron control': 'tenmicron_v2.exe',
+                             '10micron QCI control': 'GmQCIv2.exe'
+                             })
+        t = f'Name: [{self.name}], path: [{self.installPath+self.updaterEXE}]'
+        self.log.debug(t)
         self.updater = None
         self.actualWorkDir = os.getcwd()
 
@@ -221,14 +219,15 @@ class AutomateWindows(QObject):
         :return:
         """
         for appName in appNames:
-            val = self.extractPropertiesFromRegistry(appName)
-            if val[0]:
+            avail, path, name = self.extractPropertiesFromRegistry(appName)
+            if avail:
+                exe = appNames[appName]
                 break
         else:
             self.log.warning('QCI updater not found')
-            return False, '', ''
+            return False, '', '', ''
 
-        return val
+        return avail, path, name, exe
 
     def getAppSettings(self, appNames):
         """
@@ -237,13 +236,14 @@ class AutomateWindows(QObject):
         """
         try:
             val = self.cycleThroughAppNames(appNames)
-            available, installPath, displayName = val
+            self.available = val[0]
+            self.installPath = val[1]
+            self.name = val[2]
+            self.updaterEXE = val[3]
 
         except Exception as e:
             self.log.debug(f'{e}')
             return False, '', ''
-
-        return available, displayName, installPath
 
     def checkFloatingPointErrorWindow(self):
         """
@@ -280,11 +280,11 @@ class AutomateWindows(QObject):
             self.log.info('Using 64Bit backend uia')
 
         try:
-            self.updater.start(self.installPath + self.UPDATER_EXE)
+            self.updater.start(self.installPath + self.updaterEXE)
 
         except AppStartError:
             self.log.error('Failed to start updater, please check!')
-            self.log.info(f'{self.installPath}{self.UPDATER_EXE}')
+            self.log.info(f'{self.installPath}{self.updaterEXE}')
             return False
 
         except Exception as e:

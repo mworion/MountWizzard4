@@ -205,9 +205,9 @@ class MountWizzard4(QObject):
 
         config = self.config.get('mainW', {})
         if config.get('loglevelDeepDebug', False):
-            level = 'DEBUG'
+            level = 'TRACE'
         elif config.get('loglevelDebug', False):
-            level = 'INFO'
+            level = 'DEBUG'
         else:
             level = 'WARN'
         setCustomLoggingLevel(level)

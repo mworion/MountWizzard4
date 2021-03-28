@@ -515,7 +515,7 @@ class Mount(object):
         msg = PyQt5.QtWidgets.QMessageBox
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -552,7 +552,7 @@ class Mount(object):
         msg = PyQt5.QtWidgets.QMessageBox
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -589,7 +589,7 @@ class Mount(object):
         msg = PyQt5.QtWidgets.QMessageBox
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -626,7 +626,7 @@ class Mount(object):
         msg = PyQt5.QtWidgets.QMessageBox
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -663,7 +663,7 @@ class Mount(object):
         msg = PyQt5.QtWidgets.QMessageBox
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -701,7 +701,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.obsSite is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         obs = self.app.mount.obsSite
@@ -749,7 +749,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.obsSite is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         obs = self.app.mount.obsSite
@@ -795,7 +795,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.obsSite is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         obs = self.app.mount.obsSite
@@ -839,7 +839,7 @@ class Mount(object):
         msg = PyQt5.QtWidgets.QMessageBox
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -873,7 +873,7 @@ class Mount(object):
         msg = PyQt5.QtWidgets.QMessageBox
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -907,7 +907,7 @@ class Mount(object):
         msg = PyQt5.QtWidgets.QMessageBox
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -941,7 +941,7 @@ class Mount(object):
         msg = PyQt5.QtWidgets.QMessageBox
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')

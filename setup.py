@@ -66,7 +66,7 @@ setup(
     ],
     python_requires='>=3.7.0, <3.10',
     install_requires=[
-        'numpy==1.20.1',
+        'numpy==1.20.2',
         'pillow==8.1.2',
         'matplotlib==3.3.4',
         'pyerfa==1.7.2',

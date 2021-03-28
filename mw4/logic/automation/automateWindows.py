@@ -451,7 +451,7 @@ class AutomateWindows(QObject):
         popup['Import files...'].click()
         filedialog = self.updater['Open finals data']
         self.log.debug(f'Updater filedialog: [{filedialog}]')
-        text = self.installPath + self.UTC_2_FILE
+        text = self.installPath + self.UTC_1_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
 
         if platform.architecture()[0] == '32bit':

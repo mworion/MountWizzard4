@@ -19,17 +19,9 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- adding release notes showing new capabilities in message window
-- adding cover light on / off 
-- adding cover light intensity settings
-- reversing E/W for polar diagram in hemisphere window
-- adding push mount time to computer manual / hourly
-- adding contour HFD plot to image windows
-- adding virtual emergency stop key on time group
-- update build-in files if newer ones are shipped
-- auto restart MW4 after update (checkbox available)
-- adding OBJCTRA / OBJCTDEC keywords when reading FITs
-- upgrade various libraries
+- adding simulator feature
+- bugfix slewing message dome when disconnected
+- 
  """
 
 with open('notes.txt', 'w') as f:
@@ -37,7 +29,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='1.2.0b0',
+    version='2.0.0b0',
     packages=[
         'mw4',
         'mw4.base',
@@ -68,7 +60,7 @@ setup(
     install_requires=[
         'numpy==1.20.2',
         'pillow==8.1.2',
-        'matplotlib==3.3.4',
+        'matplotlib==3.4.0',
         'pyerfa==1.7.2',
         'astropy==4.2',
         'scipy==1.6.1',

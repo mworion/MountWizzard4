@@ -145,7 +145,7 @@ class MainWindow(
             'name': 'AnalyseDialog',
             'class': AnalyseWindow,
         }
-        if packageConfig.isSimulator and packageConfig.isAvailable:
+        if packageConfig.isAvailable:
             self.uiWindows['showSimulatorW'] = {
                 'button': self.ui.mountConnected,
                 'classObj': None,
@@ -520,8 +520,6 @@ class MainWindow(
         :return: true for test purpose
         """
         self.deviceStat['mount'] = status
-        if not packageConfig.isSimulator:
-            return True
         self.ui.mountConnected.setEnabled(status)
         if status:
             return True
@@ -611,10 +609,6 @@ class MainWindow(
             'Relay': {
                 'statID': 'relay',
                 'tab': self.ui.toolsTabWidget,
-            },
-            'Dome': {
-                'statID': 'dome',
-                'tab': self.ui.settingsTabWidget,
             },
         }
         tabChanged = False

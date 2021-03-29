@@ -169,7 +169,6 @@ def function_setup_teardown(qtbot):
                            'show'):
         with mock.patch.object(ImageWindow,
                                'show'):
-            packageConfig.isSimulator = True
             packageConfig.isAvailable = True
             app = MainWindow(app=Test())
             app.log = logging.getLogger()
@@ -248,21 +247,18 @@ def test_setupIcons():
     assert suc
 
 
-@patch('base.packageConfig.isSimulator', False)
 def test_updateMountConnStat_1():
     suc = app.updateMountConnStat(False)
     assert suc
     assert not app.deviceStat['mount']
 
 
-@patch('base.packageConfig.isSimulator', True)
 def test_updateMountConnStat_2():
     suc = app.updateMountConnStat(True)
     assert suc
     assert app.deviceStat['mount']
 
 
-@patch('base.packageConfig.isSimulator', True)
 def test_updateMountConnStat_3():
     app.uiWindows = {'showSimulatorW': {
         'button': app.ui.mountConnected,
@@ -275,7 +271,6 @@ def test_updateMountConnStat_3():
     assert not suc
 
 
-@patch('base.packageConfig.isSimulator', True)
 def test_updateMountConnStat_4():
     app.uiWindows = {'showSimulatorW': {
         'button': app.ui.mountConnected,

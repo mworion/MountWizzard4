@@ -449,8 +449,6 @@ class Geometry(object):
         # we choose the positive solution as we look in the positive direction and
         # can omit the view to the back
 
-        self.log.debug(f'Solutions: [{t1}], [{t2}]')
-
         intersect = PB + np.dot(t1, PD)
 
         # simplify the names and calculate the geometry angles based on the

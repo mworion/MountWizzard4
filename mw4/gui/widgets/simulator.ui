@@ -92,7 +92,34 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Left mouse button :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;While the left mouse button is pressed, mouse movement along x-axis moves the camera left and right and movement along y-axis moves it up and down.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Right mouse button :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;While the right mouse button is pressed, mouse movement along x-axis pans the camera around the camera view center and movement along y-axis tilts it around the camera view center.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Both left and right mouse button &lt;/span&gt;:&lt;/p&gt;&lt;p&gt;While both the left and the right mouse button are pressed, mouse movement along y-axis zooms the camera in and out without changing the view center.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Mouse scroll wheel :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Zooms the camera in and out without changing the view center.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Arrow keys :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Move the camera vertically and horizontally relative to camera viewport.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Page up and page down keys :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Move the camera forwards and backwards.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Shift key : &lt;/span&gt;&lt;/p&gt;&lt;p&gt;Changes the behavior of the up and down arrow keys to zoom the camera in and out without changing the view center. The other movement keys are disabled.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Alt key :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Changes the behovior of the arrow keys to pan and tilt the camera around the view center. Disables the page up and page down keys.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Escape :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Moves the camera so that entire scene is visible in the camera viewport.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;
+Left mouse button
+While the left mouse button is pressed, mouse movement along x-axis moves the camera left and right and movement along y-axis moves it up and down.
+
+Right mouse button
+While the right mouse button is pressed, mouse movement along x-axis pans the camera around the camera view center and movement along y-axis tilts it around the camera view center.
+
+Both left and right mouse button
+While both the left and the right mouse button are pressed, mouse movement along y-axis zooms the camera in and out without changing the view center.
+
+Mouse scroll wheel
+Zooms the camera in and out without changing the view center.
+
+Arrow keys
+Move the camera vertically and horizontally relative to camera viewport.
+
+Page up and page down keys
+Move the camera forwards and backwards.
+
+Shift key
+Changes the behavior of the up and down arrow keys to zoom the camera in and out without changing the view center. The other movement keys are disabled.
+
+Alt key
+Changes the behovior of the arrow keys to pan and tilt the camera around the view center. Disables the page up and page down keys.
+
+Escape
+Moves the camera so that entire scene is visible in the camera viewport.
+&lt;/html&gt;&lt;/head/&gt;&lt;/body&gt;&lt;/p&gt;</string>
        </property>
        <property name="title">
         <string>Select View</string>

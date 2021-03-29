@@ -839,8 +839,6 @@ class MainWindow(
         for window in self.uiWindows:
             if not self.app.config.get(window, False):
                 continue
-            if window == 'showSimulatorW':
-                continue
 
             self.buildWindow(window)
         return True
@@ -865,7 +863,6 @@ class MainWindow(
                     continue
 
                 waitDeleted = False
-
             QTest.qWait(100)
         return True
 

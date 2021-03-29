@@ -520,11 +520,18 @@ class MainWindow(
         :return: true for test purpose
         """
         self.deviceStat['mount'] = status
-        self.ui.mountConnected.setEnabled(status)
+        if not packageConfig.isAvailable:
+            return False
+
         if status:
+            self.ui.mountConnected.setEnabled(status)
+            self.ui.mountConnected.setText('Mount 3D')
             return True
+
+        self.ui.mountConnected.setText('Mount')
         if not self.uiWindows['showSimulatorW']['classObj']:
             return False
+
         self.uiWindows['showSimulatorW']['classObj'].close()
         return True
 

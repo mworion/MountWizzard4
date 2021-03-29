@@ -26,8 +26,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.1.0
-        with:
-          - ref: 'master'
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build artifact
         id: build

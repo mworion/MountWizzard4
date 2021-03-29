@@ -6,7 +6,6 @@ detailed changes list, please refer to the commit list on GitHub.
 Unreleased version of MW4
 -------------------------
 
-- 3d Simulator (mount, dome, build points etc)
 - retrofit model based on hashed coordinates
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
 - implementing Baader dome control e.g. 10micron dome interface
@@ -17,10 +16,20 @@ Unreleased version of MW4
   does affect the observatory, so even this small move needs another 10s settle
   time for the mount So avoiding them would be great.
 - if indi UPD Driver is fixed and officially available, bring back auto dew
+- automation windows 64 bit update
+- split profiles in base and add-on
+
 
 Released beta version of MW4
 ----------------------------
-1.1.0b12
+2.0.0b0
+
+- 3d Simulator (mount, dome, build points etc)
+- bugfix slewing message dome when disconnected
+
+Released version of MW4
+-----------------------
+1.1.0
 
 - adding release notes showing new capabilities in message window
 - adding cover light on / off
@@ -34,8 +43,6 @@ Released beta version of MW4
 - adding OBJCTRA / OBJCTDEC keywords when reading FITs
 - upgrade various libraries
 
-Released version of MW4
------------------------
 1.0.7
 
 - bugfix cooler

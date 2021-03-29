@@ -247,31 +247,24 @@ def test_setupIcons():
     assert suc
 
 
+@patch('base.packageConfig.isAvailable', True)
 def test_updateMountConnStat_1():
-    suc = app.updateMountConnStat(False)
+    suc = app.updateMountConnStat(True)
     assert suc
-    assert not app.deviceStat['mount']
+    assert app.deviceStat['mount']
+    assert app.ui.mountConnected.text() == 'Mount 3D'
 
 
+@patch('base.packageConfig.isAvailable', False)
 def test_updateMountConnStat_2():
     suc = app.updateMountConnStat(True)
     assert suc
     assert app.deviceStat['mount']
+    assert app.ui.mountConnected.text() == 'Mount'
 
 
+@patch('base.packageConfig.isAvailable', True)
 def test_updateMountConnStat_3():
-    app.uiWindows = {'showSimulatorW': {
-        'button': app.ui.mountConnected,
-        'classObj': None,
-        'name': 'SimulatorDialog',
-        'class': None,
-        }
-    }
-    suc = app.updateMountConnStat(False)
-    assert not suc
-
-
-def test_updateMountConnStat_4():
     app.uiWindows = {'showSimulatorW': {
         'button': app.ui.mountConnected,
         'classObj': QWidget(),
@@ -280,6 +273,8 @@ def test_updateMountConnStat_4():
         }
     }
     suc = app.updateMountConnStat(False)
+    assert app.ui.mountConnected.text() == 'Mount'
+    assert not app.deviceStat['mount']
     assert suc
 
 

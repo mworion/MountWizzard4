@@ -519,20 +519,21 @@ class MainWindow(
         :param status:
         :return: true for test purpose
         """
+        hasSim = packageConfig.isAvailable
         self.deviceStat['mount'] = status
-        if not packageConfig.isAvailable:
-            return False
 
-        if status:
+        if status and hasSim:
             self.ui.mountConnected.setEnabled(status)
             self.ui.mountConnected.setText('Mount 3D')
-            return True
 
-        self.ui.mountConnected.setText('Mount')
-        if not self.uiWindows['showSimulatorW']['classObj']:
-            return False
+        elif status:
+            self.ui.mountConnected.setText('Mount')
 
-        self.uiWindows['showSimulatorW']['classObj'].close()
+        elif not status and hasSim:
+            self.ui.mountConnected.setText('Mount')
+            if self.uiWindows['showSimulatorW']['classObj']:
+                self.uiWindows['showSimulatorW']['classObj'].close()
+
         return True
 
     def updateMountWeatherStat(self, setting):

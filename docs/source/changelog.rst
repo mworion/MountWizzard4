@@ -3,8 +3,8 @@ Changelog
 The changelog contains the user related function or environment updates. For a
 detailed changes list, please refer to the commit list on GitHub.
 
-Unreleased version of MW4
--------------------------
+Ideas for the future
+--------------------
 
 - retrofit model based on hashed coordinates
 - adding switch interface Pegasus UPB for ASCOM / ALPACA

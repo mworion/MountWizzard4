@@ -77,14 +77,9 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
         if self.isEnabledFor(levelNum):
             self._log(levelNum, message, args, **kwargs)
 
-    def logToRoot(message, *args, **kwargs):
-        if logging.root.isEnabledFor(levelNum):
-            logging.root._log(levelNum, message, args, **kwargs)
-
     logging.addLevelName(levelNum, levelName)
     setattr(logging, levelName, levelNum)
     setattr(logging.getLoggerClass(), methodName, logForLevel)
-    setattr(logging, methodName, logToRoot)
 
 
 def setupLogging():
@@ -93,10 +88,6 @@ def setupLogging():
 
     :return: true for test purpose
     """
-    addLoggingLevel('HEADER', 55)
-    addLoggingLevel('UI', 35)
-    addLoggingLevel('TRACE', 5)
-
     logging.Formatter.converter = timeTz
     timeTag = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
     name = f'mw4-{timeTag}.log'
@@ -117,15 +108,15 @@ def setupLogging():
     logging.getLogger('urllib3').setLevel(logging.WARNING)
     logging.getLogger('matplotlib').setLevel(logging.WARNING)
     # logging.getLogger('astropy').setLevel(logging.WARNING)
+    addLoggingLevel('HEADER', 55)
+    addLoggingLevel('UI', 35)
+    addLoggingLevel('TRACE', 5)
     return True
 
 
 def setCustomLoggingLevel(level='WARN'):
     """
-    Setting the log level according to the setting in the gui.
-
     :return: true for test purpose
     """
     logging.getLogger().setLevel(level)
-
     return True

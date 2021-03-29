@@ -110,4 +110,8 @@ def test_calcTransformationMatrices():
                                elevation_m=500)
     m.obsSite.piersideTarget = 'E'
     val = m.calcTransformationMatrices()
-    assert val == (None, None, None, None, None)
+    assert val[0] is None
+    assert val[1] is None
+    assert val[2] is None
+    assert val[3] is None
+    assert val[4] is None

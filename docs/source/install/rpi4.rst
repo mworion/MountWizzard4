@@ -20,9 +20,9 @@ https://homenetworkguy.com/how-to/install-ubuntu-mate-20-04-lts-on-raspberry-pi-
 to get Ubuntu Mate 20.04.1 LTS on your RPi4.
 
 .. hint::
-    Some users experience problems with KStars/EKOS on original ubuntu-mate desktop.
-    So the recommendation is to use a KDE bases desktop like kubuntu. The easiest
-    way to install a desktop on top of the server installation is using:
+    Some users experience problems with KStars/EKOS on original ubuntu-mate
+    desktop. So the recommendation is to use a KDE bases desktop like kubuntu. The
+    easiest way to install a desktop on top of the server installation is using:
     https://github.com/wimpysworld/desktopify
 
 After you have finished the setup and got the desktop up and running, the command
@@ -49,19 +49,19 @@ able to compile necessary packages:
     not run.
 
 
-Using the precompiled wheels from Ubuntu_Mate_Scripts.zip
----------------------------------------------------------
-Please choose the script fitting to you ubuntu mate version (18.04.x or 20.04.x)
-The scripts will use precompiled wheels as much as possible to improved the
-installation speed on your RPi4.
+Using the precompiled wheels
+----------------------------
+Please choose the script fitting to you ubuntu version (18.04.x or 20.04.x)
+The scripts will use precompiled wheels for aarch64 as much as possible to improved
+the installation speed e.g. on your RPi4.
 
 .. code-block:: python
 
-    ./MW4_Install_Mate_18_04.sh
+    ./MW4_Install_aarch64_18_04.sh
 
     or
 
-    ./MW4_Install_Mate_20_04.sh
+    ./MW4_Install_aarch64_20_04.sh
 
 After a short while MW4 is installed and should be ready to run like in ubuntu
 installation.

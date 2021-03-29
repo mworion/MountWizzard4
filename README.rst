@@ -2,22 +2,59 @@ MountWizzard4
 =============
 
 Welcome to MountWizzard4 is a utility for 10micron users for improving the
-workflow for astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu 18
-.04 tested). As a python application, it should run in all environments supporting
-python 3.7-3.9 and PyQt5 as a GUI framework.
+workflow for astronomy work and imaging runs on Windows, OSx and Linux
+(Ubuntu 18.04 and 20.04 tested). As a python application, it should run in all
+environments supporting python 3.7-3.9 and PyQt5 as a GUI framework.
 
-Note:
-^^^^^
 Please check these pages for some hints to your installation:
 https://mountwizzard4.readthedocs.io/en/latest/overview.html
 
+For being fully operational, MW4 needs either:
+
+-   INDI server(s) (see: https://indilib.org) where your devices are connected to.
+
+-   INDIGO server(s) (see: http://www.indigo-astronomy.org) where your devices
+    are connected to.
+
+-   ASCOM Alpaca remote server (see: https://ascom-standards.org/Developer/Alpaca.htm)
+    abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if
+    you want to connect over IP with your environment.
+
+-   For the core devices there is native ASCOM support (Windows platform only).
+    Please be reminded, that ASCOM has 32bit and 64bit driver implementations
+    and MW4 could also be installed in 32bit or 64 bit python environment. They
+    could be not be mixed! 32bit python supports only 32bit drivers and vice versa
+    . Normally this should not be an issue...
+
+-   In addition an internet connection is used for some services which might be
+    very helpful.
+
+It is recommended to use mount firmware 2.16 (ideally 2.16.11) or later as some
+of the functions don't work with older firmware versions. It should not be a
+problem using older versions. A HW pre2012 might also have some issues.
+
+Version, build and code coverage status
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+|PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth|
+
+|DOCS|
+
+|PYTEST macOS| |PYTEST Windows| |PYTHON3_PACKAGE|
+
+|CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES|
+
+|COMMITS_WEEK| |COMMITS_MASTER|
+
+|CODECOV_CHART|
+
+
 Documentation
 ^^^^^^^^^^^^^
-There is an online documentation available for MW4 which could be search for
+There is an online documentation available for MW4 which could be searched for
 entries:
 
 Web based:
-https://mountwizzard4.readthedocs.io
+https://mountwizzard4.readthedocs.io/en/latest/
 
 PDF format:
 https://mountwizzard4.readthedocs.io/_/downloads/en/latest/pdf/
@@ -32,62 +69,29 @@ And there are some videos available for explanation in Youtube channel:
 
 https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/
 
+
+Feedback discussions and issue reports
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Please report your issues: https://github.com/mworion/MountWizzard4/issues.
+Please have a good description (maybe a screenshot if it‘s related to GUI) and
+add the log file(s) to the issue. Any feedback welcome!
+
 Please feel free to start any discussion:
 https://github.com/mworion/MountWizzard4/discussions
 
 
-Overall:
-^^^^^^^^
-
-For being fully operational, MW4 needs either:
-
-INDI server(s) (see: https://indilib.org) where your devices are connected to.
-
-INDIGO server(s) (see: http://www.indigo-astronomy.org) where your devices are
-connected to.
-
-ASCOM Alpaca remote server (see: https://ascom-standards.org/Developer/Alpaca.htm)
-abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if
-you want to connect over IP with your environment.
-
-For the core devices there is native ASCOM support (Windows platform only).
-Please be reminded, that ASCOM has 32bit and 64bit driver implementations and
-MW4 could also be installed in 32bit or 64 bit python environment. They could be
-not be mixed! 32bit python supports only 32bit drivers and vice versa. Normally
-this should not be an issue...
-
-In addition an online connection is used for some services which might be
-very helpful.
-
-It is recommended to use mount firmware 2.16 (ideally 2.16.11) or later as some
-of the functions don't work with older firmware versions. It should not be a
-problem using older versions. A HW pre2012 might also have some issues.
-
-Version, build and code coverage status
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|PYPI_VERSION|  |DOCS| |DownLoadsAbs| |DownLoadsMonth|
-
-|PYTEST macOS| |PYTEST Windows| |PYTHON3_PACKAGE|
-
-|CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV|
-
-|CODECOV_CHART|
-
-Feedback and issue reports
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Please report your issues: https://github.com/mworion/MountWizzard4/issues.
-Please have a good description (maybe a screenshot if it‘s related to GUI) and add
-the log file(s) to the issue. Any feedback welcome!
-
 Finally
 ^^^^^^^
-MountWizzard4 is always in development. The use this software is at your own
+MountWizzard4 is 'always' in development. The use this software is at your own
 risk! No responsibility for damages to your mount or other equipment or your
 environment, please take care yourself!
 
 Hope this tool makes fun and helps for your hobby,
 
 CS Michel
+
+.. |PY_VERSIONS| image::
+    https://img.shields.io/pypi/pyversions/mountwizzard4.svg
 
 .. |DOCS| image::
     https://readthedocs.org/projects/mountwizzard4/badge/?version=latest
@@ -117,6 +121,17 @@ CS Michel
 .. |CODE_QUALITY_PYTHON| image::
     https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
     :target: https://lgtm.com/projects/g/mworion/MountWizzard4/?mode=list
+
+.. |OPEN_ISSUES| image::
+    https://img.shields.io/github/issues-raw/mworion/mountwizzard4
+    :target: https://github.com/mworion/MountWizzard4/issues
+
+.. |COMMITS_MASTER| image::
+    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.1.0/master
+    :target: https://github.com/mworion/MountWizzard4/commits/master
+
+.. |COMMITS_WEEK| image::
+    https://img.shields.io/github/commit-activity/w/mworion/mountwizzard4
 
 .. |PYTHON3_PACKAGE| image::
     https://github.com/mworion/MountWizzard4/workflows/python3_package/badge.svg

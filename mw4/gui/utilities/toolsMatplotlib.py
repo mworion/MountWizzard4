@@ -47,13 +47,11 @@ class ToolsMatplotlib:
     @staticmethod
     def findIndexValue(ui, searchString, relaxed=False):
         """
-
         :param ui:
         :param searchString:
         :param relaxed:
         :return:
         """
-
         for index in range(ui.model().rowCount()):
             modelIndex = ui.model().index(index, 0)
             indexValue = ui.model().data(modelIndex)
@@ -74,16 +72,15 @@ class ToolsMatplotlib:
     @staticmethod
     def embedMatplot(widget=None, constrainedLayout=True):
         """
-        embedMatplot provides the wrapper to use matplotlib drawings inside a pyqt5
-        application gui. you call it with the parent widget, which is linked to matplotlib
-        canvas of the same size. the background is set to transparent, so you could layer
-        multiple figures on top.
+        embedMatplot provides the wrapper to use matplotlib drawings inside a
+        pyqt5 application gui. you call it with the parent widget, which is
+        linked to matplotlib canvas of the same size. the background is set to
+        transparent, so you could layer multiple figures on top.
 
-        :param      widget:         parent ui element, which is the reference for embedding
-        :param      constrainedLayout:
-        :return:    staticCanvas:   matplotlib reference as parent for figures
+        :param   widget: parent ui element, which is the reference for embedding
+        :param   constrainedLayout:
+        :return: staticCanvas:   matplotlib reference as parent for figures
         """
-
         if not widget:
             return None
 
@@ -99,27 +96,24 @@ class ToolsMatplotlib:
         FigureCanvasQTAgg.updateGeometry(staticCanvas)
         layout.addWidget(staticCanvas)
         staticCanvas.setParent(widget)
-
         return staticCanvas
 
-    def generatePolar(self, widget=None, title='', horizon=False, showAxes=True):
+    def generatePolar(self, widget=None, title='', horizon=False,
+                      showAxes=True, reversed=False):
         """
-
         :param widget:
         :param title:
         :param horizon:
         :param showAxes:
+        :param reversed: does change E/W setting
         :return:
         """
-
         if widget is None:
             return None, None
-
         if not hasattr(widget, 'figure'):
             return None, None
 
         lock = Lock()
-
         if showAxes:
             color = self.M_BLUE
             colorGrid = self.M_GREY
@@ -150,10 +144,13 @@ class ToolsMatplotlib:
             axe.tick_params(axis='y', colors=color, labelsize=12)
             axe.set_theta_zero_location('N')
             axe.set_rlabel_position(45)
-            axe.set_theta_direction(-1)
             axe.spines['polar'].set_color(color)
 
-            # ticks have to be set before labels to be sure to have them positioned correctly
+            if reversed:
+                axe.set_theta_direction(1)
+            else:
+                axe.set_theta_direction(-1)
+
             axe.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))
             axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
 
@@ -163,22 +160,18 @@ class ToolsMatplotlib:
             axe.set_ylim(0, 90)
             axe.set_yticks(range(0, 91, 15))
             axe.set_yticklabels(['', '75', '60', '45', '30', '15', ''])
-
             return axe, figure
 
     def generateFlat(self, widget=None, title='', horizon=False, showAxes=True):
         """
-
         :param widget:
         :param title:
         :param horizon:
         :param showAxes:
         :return:
         """
-
         if widget is None:
             return None, None
-
         if not hasattr(widget, 'figure'):
             return None, None
 
@@ -225,12 +218,13 @@ class ToolsMatplotlib:
 
             axe.set_xlim(0, 360)
             axe.set_ylim(0, 90)
-
             axe.set_xticks(np.arange(0, 361, 45))
-            axe.set_xticklabels(['0 N', '45 NE', '90 E', '135 SE', '180 S', '225 SW', '270 W',
-                                 '315 NW', '360 N'])
-            axe.set_xlabel('Azimuth [degrees]', color=color, fontweight='bold', fontsize=12)
-            axe.set_ylabel('Altitude [degrees]', color=color, fontweight='bold', fontsize=12)
+            axe.set_xticklabels(['0 N', '45 NE', '90 E', '135 SE', '180 S',
+                                 '225 SW', '270 W', '315 NW', '360 N'])
+            axe.set_xlabel('Azimuth [degrees]', color=color, fontweight='bold',
+                           fontsize=12)
+            axe.set_ylabel('Altitude [degrees]', color=color, fontweight='bold',
+                           fontsize=12)
 
             return axe, figure
 
@@ -253,15 +247,17 @@ class ToolsMatplotlib:
                         format=formatString,
                         )
         figure.axes[1].set_ylabel(label, color=self.M_BLUE)
-        figure.axes[1].tick_params(axis='y', labelcolor=self.M_BLUE, color=self.M_BLUE)
+        figure.axes[1].tick_params(axis='y', labelcolor=self.M_BLUE,
+                                   color=self.M_BLUE)
 
         return True
 
     @staticmethod
     def getIndexPoint(event=None, plane=None, epsilon=2):
         """
-        getIndexPoint returns the index of the point which is nearest to the coordinate
-        of the mouse click when the click is in distance epsilon of the points. otherwise
+        getIndexPoint returns the index of the point which is nearest to the
+        coordinate of the mouse click when the click is in distance epsilon of
+        the points. otherwise
         no index will be returned.
 
         :param event: data of the mouse clicked event
@@ -271,10 +267,8 @@ class ToolsMatplotlib:
         """
         if event is None:
             return None
-
         if plane is None:
             return None
-
         if len(plane) == 0:
             return 0
 
@@ -292,8 +286,9 @@ class ToolsMatplotlib:
     @staticmethod
     def getIndexPointX(x=None, plane=None):
         """
-        getIndexPointX returns the index of the point which has a x coordinate closest to
-        the left of the x coordinate of the mouse click regardless which y coordinate it has
+        getIndexPointX returns the index of the point which has a x coordinate
+        closest to the left of the x coordinate of the mouse click regardless
+        which y coordinate it has
 
         :param x: data of the mouse clicked event
         :param plane: coordinates as tuples (x, y)
@@ -301,7 +296,6 @@ class ToolsMatplotlib:
         """
         if x is None:
             return None
-
         if not plane:
             return None
 
@@ -312,12 +306,10 @@ class ToolsMatplotlib:
     @staticmethod
     def writeRetrofitData(mountModel, buildModel):
         """
-
         :param mountModel:
         :param buildModel:
         :return:
         """
-
         for i, mPoint in enumerate(buildModel):
             mPoint['errorRMS'] = mountModel.starList[i].errorRMS
             mPoint['errorAngle'] = mountModel.starList[i].errorAngle.degrees

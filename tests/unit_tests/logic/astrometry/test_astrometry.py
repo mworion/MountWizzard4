@@ -95,14 +95,17 @@ def test_init_1(app):
 
 
 def test_readFitsData_1(app):
-    os.scandir('tests/image')
-    file = 'tests/image/m51.fit'
-    ra, dec, sc, ra1, dec1 = app.readFitsData(file)
+    file = 'tests/image/test1.fit'
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header['RA'] = 8.0
+    header['DEC'] = 45.0
+    hdu.writeto(file)
+    ra, dec, sc = app.readFitsData(file)
     assert ra
     assert dec
     assert sc
-    assert ra1
-    assert dec1
 
 
 def test_calcAngleScaleFromWCS_1(app):

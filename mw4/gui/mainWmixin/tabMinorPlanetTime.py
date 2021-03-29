@@ -93,8 +93,9 @@ class MinorPlanetTime:
 
     def setupMinorPlanetSourceURLsDropDown(self):
         """
-        setupMinorPlanetSourceURLsDropDown handles the dropdown list for the satellite data
-        online sources. therefore we add the necessary entries to populate the list.
+        setupMinorPlanetSourceURLsDropDown handles the dropdown list for the
+        satellite data online sources. therefore we add the necessary entries to
+        populate the list.
 
         :return: success for test
         """
@@ -195,7 +196,6 @@ class MinorPlanetTime:
 
         if source not in self.minorPlanetSourceURLs:
             return False
-
         if source == 'Please select':
             return False
 
@@ -232,12 +232,12 @@ class MinorPlanetTime:
         if not self.app.automation:
             self.app.message.emit('Not running windows - upload not possible', 2)
             return False
-        else:
-            if not self.app.automation.installPath:
-                self.app.message.emit('No 10micron updater found.', 2)
-                return False
 
-        self.app.message.emit('Uploading to mount', 0)
+        if not self.app.automation.installPath:
+            self.app.message.emit('No QCI updater available - upload not possible', 2)
+            return False
+
+        self.app.message.emit('Uploading IERS data to mount', 0)
         suc = self.app.automation.uploadEarthRotationData()
 
         if not suc:
@@ -294,18 +294,19 @@ class MinorPlanetTime:
         if not self.app.automation:
             self.app.message.emit('Not running windows - upload not possible', 2)
             return False
-        else:
-            if not self.app.automation.installPath:
-                self.app.message.emit('No 10micron updater found.', 2)
-                return False
+
+        if not self.app.automation.installPath:
+            self.app.message.emit(
+                'No QCI updater available - upload not possible', 2)
+            return False
 
         self.app.message.emit('Uploading to mount', 0)
         suc = self.app.automation.uploadMPCData(comets=isComet)
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
-
-        self.app.message.emit('Programming success', 1)
+        else:
+            self.app.message.emit('Programming success', 1)
         return suc
 
     def progMinorPlanetsFiltered(self):
@@ -355,18 +356,17 @@ class MinorPlanetTime:
             self.app.message.emit('Not running windows - upload not possible', 2)
             return False
 
-        else:
-            if not self.app.automation.installPath:
-                self.app.message.emit('No 10micron updater found.', 2)
-                return False
+        if not self.app.automation.installPath:
+            self.app.message.emit('No QCI updater available - upload not possible', 2)
+            return False
 
         self.app.message.emit('Uploading MPC data to mount', 0)
         suc = self.app.automation.uploadMPCData(comets=isComet)
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
-
-        self.app.message.emit('Programming success', 1)
+        else:
+            self.app.message.emit('Programming success', 1)
         return suc
 
     def progMinorPlanetsFull(self):
@@ -405,17 +405,15 @@ class MinorPlanetTime:
             self.app.message.emit('Not running windows - upload not possible', 2)
             return False
 
-        else:
-            if not self.app.automation.installPath:
-                self.app.message.emit('No 10micron updater found.', 2)
-                return False
+        if not self.app.automation.installPath:
+            self.app.message.emit('No QCI updater available - upload not possible', 2)
+            return False
 
         self.app.message.emit('Uploading MPC data to mount', 0)
         suc = self.app.automation.uploadMPCData(comets=isComet)
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
-
-        self.app.message.emit('Programming success', 1)
-
+        else:
+            self.app.message.emit('Programming success', 1)
         return suc

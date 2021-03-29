@@ -19,7 +19,9 @@ from invoke import task
 from PIL import Image
 import glob
 import time
+import os
 
+rn = ''
 #
 # defining all necessary virtual client login for building over all platforms
 #
@@ -30,14 +32,16 @@ userUbuntu = 'mw@' + clientUbuntu
 workUbuntu = '/home/mw/test'
 workUbuntuSCP = userUbuntu + ':/home/mw/test'
 
-# same for windows10 with cmd.exe as shell
+# same for windows1 with cmd.exe as shell
 clientWindows = 'astro-windows.fritz.box'
 uWin = 'mw@' + clientWindows
 wWin = 'test'
 wWinSCP = uWin + ':/Users/mw/test'
 
-
+# same for macOS
 clientMac = 'astro-mac-bigsur.fritz.box'
+# clientMac = 'astro-mac-catalina.fritz.box'
+# clientMac = 'astro-mac-mojave.fritz.box'
 userMac = 'mw@' + clientMac
 workMac = 'test'
 workMacSCP = userMac + ':/Users/mw/test'
@@ -118,6 +122,11 @@ def update_builtins(c):
 def build_resource(c):
     printMW('building resources')
     resourceDir = './mw4/resource/'
+    with c.cd(resourceDir + 'data'):
+        with open(resourceDir + 'data/content.txt', 'w') as f:
+            for file in glob.glob(resourceDir + 'data/*.*'):
+                t = os.stat(file).st_mtime
+                f.write(f'{os.path.basename(file)} {t}\n')
     runMW(c, f'pyrcc5 -o {resourceDir}resources.py {resourceDir}resources.qrc')
 
 
@@ -168,12 +177,30 @@ def build_mw(c):
         runMW(c, 'python setup.py sdist')
         runMW(c, 'cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz')
 
+    with open('notes.txt') as f:
+        tmp = f.readlines()
+    rn = ''
+    for line in tmp:
+        rn += line
+
+    print(rn)
+
 
 @task(pre=[build_mw])
 def upload_mw(c):
     printMW('uploading dist mountwizzard4')
+
+    with open('notes.txt') as f:
+        tmp = f.readlines()
+    rn = ''
+    for line in tmp:
+        rn += line
+
     with c.cd('./dist'):
-        runMW(c, 'twine upload mountwizzard4-*.tar.gz -r pypi')
+        print(rn)
+        print(f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
+        runMW(c, f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
+    runMW(c, 'rm notes.txt')
 
 
 @task(pre=[])

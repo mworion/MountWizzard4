@@ -1,7 +1,7 @@
 @echo off
 rem
 rem run script for Win10
-rem (c) 2020 mworion
+rem (c) 2021 mworion
 rem
 
 echo.
@@ -18,8 +18,8 @@ echo.
 echo ---------------------------------------------
 echo run script version 0.4
 echo ---------------------------------------------
+
 echo run script version 0.4 > run.log 2>&1
-echo.
 
 call venv\Scripts\activate venv >> run.log 2>&1
 
@@ -29,9 +29,8 @@ echo ---------------------------------------------
 echo no valid virtual environment installed
 echo please check the install.log for errors
 echo ---------------------------------------------
-echo.
-echo no valid virtual environment installed >> run.log 2>&1
 
+echo no valid virtual environment installed >> run.log 2>&1
 exit
 
 :proceedRunMW4
@@ -39,7 +38,6 @@ echo.
 echo ---------------------------------------------
 echo checking installed python version
 echo ---------------------------------------------
-echo.
 
 echo Checking environment and start script >> run.log 2>&1
 
@@ -65,16 +63,15 @@ echo.
 echo ---------------------------------------------
 echo no valid python version installed
 echo ---------------------------------------------
-echo.
+
 echo no valid python version installed >> run.log 2>&1
 exit
 
 :proceedOK
 echo.
 echo ---------------------------------------------
-echo python version ok
+echo python version ok: %P_VER%
 echo ---------------------------------------------
-echo.
 
 SET QT_SCALE_FACTOR=1 >> run.log 2>&1
 SET QT_FONT_DPI=96 >> run.log 2>&1

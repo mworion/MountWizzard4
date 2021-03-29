@@ -137,10 +137,10 @@ class HemisphereWindowExt:
 
         return True
 
-    def slewSelectedTarget(self, alignType='normal'):
+    def slewSelectedTarget(self, slewType='normal'):
         """
 
-        :param alignType:
+        :param slewType:
         :return: success
         """
 
@@ -155,7 +155,7 @@ class HemisphereWindowExt:
             text = f'Slewing dome:        {geoStat}, az: {azimuthT:3.1f} delta: {delta:3.1f}'
             self.app.message.emit(text, 0)
 
-        suc = self.app.mount.obsSite.startSlewing(slewType='keep')
+        suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
 
         if suc:
             self.app.message.emit('Slewing mount', 0)
@@ -198,7 +198,7 @@ class HemisphereWindowExt:
             self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
             return False
 
-        suc = self.slewSelectedTarget(alignType='keep')
+        suc = self.slewSelectedTarget(slewType='keep')
 
         return suc
 
@@ -419,7 +419,7 @@ class HemisphereWindowExt:
             self.app.message.emit(f'Cannot slew to: {name}', 2)
             return False
 
-        suc = self.slewSelectedTarget(alignType=alignType)
+        suc = self.slewSelectedTarget(slewType=alignType)
 
         return suc
 

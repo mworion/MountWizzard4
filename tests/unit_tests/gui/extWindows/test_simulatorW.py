@@ -156,6 +156,23 @@ def test_pointerCreate_1(function):
     assert suc
 
 
+def test_laserCreate_1(function):
+    function.world = {
+        'ref1000': {
+            'parent': None,
+            'rot': [-90, 90, 0],
+            'e': QEntity(),
+        },
+        'ref': {
+            'parent': 'ref1000',
+            'scale': [0.001, 0.001, 0.001],
+            'e': QEntity(),
+        }
+    }
+    suc = function.laserCreate()
+    assert suc
+
+
 def test_setDomeTransparency_1(function):
     suc = function.setDomeTransparency()
     assert suc
@@ -194,6 +211,14 @@ def test_createWorld_1(function):
 
 
 def test_createScene_1(function):
+    function.createMutex.lock()
+    suc = function.createScene(QEntity())
+    assert not suc
+    function.createMutex.unlock()
+
+
+def test_createScene_2(function):
+    function.app.deviceStat['dome'] = True
     function.app.mount.obsSite.location.latitude = Angle(degrees=10)
     function.ui.checkShowNumbers.setChecked(True)
     function.ui.checkShowSlewPath.setChecked(True)
@@ -204,8 +229,8 @@ def test_createScene_1(function):
     assert suc
 
 
-def test_createScene_2(function):
-    function.createMutex.lock()
+def test_createScene_3(function):
+    function.app.deviceStat['dome'] = False
     function.app.mount.obsSite.location.latitude = Angle(degrees=10)
     function.ui.checkShowNumbers.setChecked(True)
     function.ui.checkShowSlewPath.setChecked(True)
@@ -213,8 +238,7 @@ def test_createScene_2(function):
     function.ui.checkShowHorizon.setChecked(True)
     function.ui.checkShowBuildPoints.setChecked(True)
     suc = function.createScene(QEntity())
-    assert not suc
-    function.createMutex.unlock()
+    assert suc
 
 
 def test_updateSettings_1(function):

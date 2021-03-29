@@ -43,6 +43,9 @@ class SettImaging(object):
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
         self.ui.coverHalt.clicked.connect(self.setCoverHalt)
+        self.ui.coverLightOn.clicked.connect(self.switchLightOn)
+        self.ui.coverLightOff.clicked.connect(self.switchLightOff)
+        self.clickable(self.ui.coverLightIntensity).connect(self.setLightIntensity)
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
         self.ui.aperture.valueChanged.connect(self.updateParameters)
         self.ui.focalLength.valueChanged.connect(self.updateParameters)
@@ -55,6 +58,7 @@ class SettImaging(object):
         self.ui.moveFocuserIn.clicked.connect(self.moveFocuserIn)
         self.ui.moveFocuserOut.clicked.connect(self.moveFocuserOut)
         self.app.update1s.connect(self.updateCoverStatGui)
+        self.app.update1s.connect(self.updateCoverLightGui)
         self.app.update1s.connect(self.updateParameters)
 
     def initConfig(self):
@@ -126,9 +130,10 @@ class SettImaging(object):
         focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         filterNumber = self.app.filter.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
 
-        maxBin = min(maxBinX, maxBinY)
-        self.ui.binning.setMaximum(maxBin)
-        self.ui.binningN.setMaximum(maxBin)
+        if maxBinX and maxBinY:
+            maxBin = min(maxBinX, maxBinY)
+            self.ui.binning.setMaximum(maxBin)
+            self.ui.binningN.setMaximum(maxBin)
 
         self.app.camera.expTime = self.ui.expTime.value()
         self.app.camera.expTimeN = self.ui.expTimeN.value()
@@ -213,8 +218,8 @@ class SettImaging(object):
 
     def updateTelescopeParametersToGui(self):
         """
-        updateTelescopeParametersToGui takes the information gathered from the driver and
-        programs them into gui for later use.
+        updateTelescopeParametersToGui takes the information gathered from the
+        driver and programs them into gui for later use.
 
         :return: true for test purpose
         """
@@ -232,15 +237,16 @@ class SettImaging(object):
 
     def setCoolerTemp(self):
         """
-        setCoolerTemp sends the desired cooler temp and switches the cooler on.
-        setting
-
         :return: success
         """
+        c1 = self.app.camera.data.get('CAN_SET_CCD_TEMPERATURE', False)
+        c2 = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', False)
+        canSetCCDTemp = c1 or c2
+        if not canSetCCDTemp:
+            return False
 
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-
         if actValue is None:
             msg.critical(self,
                          'Error Message',
@@ -255,22 +261,16 @@ class SettImaging(object):
                                20,
                                1,
                                )
-
         if not ok:
             return False
 
         self.app.camera.sendCoolerTemp(temperature=value)
-
         return True
 
     def setFilterNumber(self):
         """
-        setFilterNumber sends the desired filter number.
-        setting
-
         :return: success
         """
-
         msg = PyQt5.QtWidgets.QMessageBox
         data = self.app.filter.data
 
@@ -281,11 +281,9 @@ class SettImaging(object):
                          'Value cannot be set when not connected !')
             return False
 
-        isAlpaca = 'FILTER_NAME.FILTER_SLOT_NAME_0' in data
-
         availNames = list(data[key] for key in data if 'FILTER_NAME.FILTER_SLOT_NAME_' in key)
         numberFilter = len(availNames)
-
+        isAlpaca = 'FILTER_NAME.FILTER_SLOT_NAME_0' in data
         if isAlpaca:
             start = 0
             end = numberFilter - 1
@@ -312,9 +310,6 @@ class SettImaging(object):
 
     def setFilterName(self):
         """
-        setFilterName sends the desired filter name
-        setting
-
         :return: success
         """
         msg = PyQt5.QtWidgets.QMessageBox
@@ -336,7 +331,7 @@ class SettImaging(object):
                                 availNames,
                                 actValue - 1,
                                 )
-
+        self.log.debug(f'FilterSelected: [{value}], FilterList: [{availNames}]')
         if not ok:
             return False
 
@@ -368,6 +363,10 @@ class SettImaging(object):
         """
         :return:
         """
+        canGetCoolerPower = self.app.camera.data.get('CAN_GET_COOLER_POWER', False)
+        if not canGetCoolerPower:
+            return False
+
         self.app.camera.sendCoolerSwitch(coolerOn=True)
         return True
 
@@ -375,29 +374,50 @@ class SettImaging(object):
         """
         :return:
         """
+        canGetCoolerPower = self.app.camera.data.get('CAN_GET_COOLER_POWER', False)
+        if not canGetCoolerPower:
+            return False
+
         self.app.camera.sendCoolerSwitch(coolerOn=False)
         return True
 
     def updateCoverStatGui(self):
         """
-        updateCoverStatGui changes the style of the button related to the state of the
-        FlipFlat cover
-
         :return: True for test purpose
         """
-        value = self.app.cover.data.get('CAP_PARK.UNPARK', None)
-        if value == 'On':
-            self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
-            self.changeStyleDynamic(self.ui.coverPark, 'running', False)
-        elif value == 'Off':
+        value = self.app.cover.data.get('CAP_PARK.PARK', None)
+        if value:
             self.changeStyleDynamic(self.ui.coverPark, 'running', True)
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
+        elif value is None:
+            self.changeStyleDynamic(self.ui.coverPark, 'running', False)
             self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
         else:
             self.changeStyleDynamic(self.ui.coverPark, 'running', False)
-            self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
 
         value = self.app.cover.data.get('Status.Cover', '-')
         self.ui.coverStatusText.setText(value)
+        return True
+
+    def updateCoverLightGui(self):
+        """
+        :return: True for test purpose
+        """
+        value = self.app.cover.data.get('FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON', None)
+        if value:
+            self.changeStyleDynamic(self.ui.coverLightOn, 'running', True)
+            self.changeStyleDynamic(self.ui.coverLightOff, 'running', False)
+        elif value is None:
+            self.changeStyleDynamic(self.ui.coverLightOn, 'running', False)
+            self.changeStyleDynamic(self.ui.coverLightOff, 'running', False)
+        else:
+            self.changeStyleDynamic(self.ui.coverLightOn, 'running', False)
+            self.changeStyleDynamic(self.ui.coverLightOff, 'running', True)
+
+        value = self.app.cover.data.get(
+            'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE')
+        self.guiSetText(self.ui.coverLightIntensity, '3.0f', value)
         return True
 
     def setCoverPark(self):
@@ -457,5 +477,54 @@ class SettImaging(object):
         """
         suc = self.app.focuser.halt()
         if not suc:
-            self.app.message.emit('Focuser halt could not be executed', 2)
+            self.app.message.emit('Light could not be switched on', 2)
+        return suc
+
+    def switchLightOn(self):
+        """
+        :return:
+        """
+        suc = self.app.cover.lightOn()
+        if not suc:
+            self.app.message.emit('Light could not be switched on', 2)
+        return suc
+
+    def switchLightOff(self):
+        """
+        :return:
+        """
+        suc = self.app.cover.lightOff()
+        if not suc:
+            self.app.message.emit('Light could not be switched off', 2)
+        return suc
+
+    def setLightIntensity(self):
+        """
+        :return: success
+        """
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = self.app.cover.data.get(
+            'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE')
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set light intensity',
+                               'Value (0..255):',
+                               float(actValue),
+                               0,
+                               255,
+                               1,
+                               )
+        if not ok:
+            return False
+
+        self.ui.coverLightIntensity.setText(f'{value}')
+        suc = self.app.cover.lightIntensity(value)
+        if not suc:
+            self.app.message.emit('Light intensity could not be set', 2)
+
         return suc

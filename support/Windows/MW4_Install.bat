@@ -1,7 +1,7 @@
 @echo off
 rem
 rem Installer for Win10
-rem (c) 2020 mworion
+rem (c) 2021 mworion
 rem
 
 echo.
@@ -18,14 +18,14 @@ echo.
 echo ---------------------------------------------
 echo install script version 0.4
 echo ---------------------------------------------
+
 echo install script version 0.4 > install.log 2>&1
-echo.
+
 
 echo.
 echo ---------------------------------------------
 echo checking installed python version
 echo ---------------------------------------------
-echo.
 
 echo checking environment and start script >> install.log 2>&1
 
@@ -51,7 +51,7 @@ echo.
 echo ---------------------------------------------
 echo no valid python version installed
 echo ---------------------------------------------
-echo.
+
 echo no valid python version installed >> install.log 2>&1
 exit
 
@@ -72,7 +72,7 @@ echo.
 echo ---------------------------------------------
 echo python 32Bit installed
 echo ---------------------------------------------
-echo.
+
 goto :proceedVirtualenv
 
 :64bit
@@ -81,7 +81,6 @@ echo.
 echo ---------------------------------------------
 echo python 64Bit installed
 echo ---------------------------------------------
-echo.
 
 :proceedVirtualenv
 echo installing wheel >> install.log 2>&1
@@ -91,7 +90,6 @@ echo.
 echo ---------------------------------------------
 echo installing %P_VER% in virtual environ
 echo ---------------------------------------------
-echo.
 
 echo Installing %P_VER% in virtual environ >> install.log 2>&1
 python -m venv venv >> install.log 2>&1
@@ -102,7 +100,7 @@ echo ---------------------------------------------
 echo no valid virtual environment installed
 echo please check the install.log for errors
 echo ---------------------------------------------
-echo.
+
 exit
 
 :proceedInstallMW4
@@ -110,7 +108,6 @@ echo.
 echo ---------------------------------------------
 echo installing mountwizzard4 - takes some time
 echo ---------------------------------------------
-echo.
 
 call venv\Scripts\activate venv >> install.log 2>&1
 python -m pip install pip --upgrade >> install.log 2>&1
@@ -123,6 +120,5 @@ echo ---------------------------------------------
 echo installed mountwizzard4 successfully
 echo for details see install.log
 echo ---------------------------------------------
-echo.
 
 echo MountWizzard4 successfully installed >> install.log 2>&1

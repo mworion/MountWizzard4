@@ -32,12 +32,6 @@ if platform.system() == 'Windows':
 
 class CameraSignals(PyQt5.QtCore.QObject):
     """
-    The DomeSignals class offers a list of signals to be used and instantiated by
-    the Mount class to get signals for triggers for finished tasks to
-    enable a gui to update their values transferred to the caller back.
-
-    This has to be done in a separate class as the signals have to be subclassed from
-    QObject and the Mount class itself is subclassed from object
     """
 
     __all__ = ['CameraSignals']
@@ -103,12 +97,9 @@ class Camera:
 
     def startCommunication(self, loadConfig=False):
         """
-        startCommunication enables the cyclic polling in framework driver
-
         :param loadConfig:
         :return: success
         """
-
         if self.framework in self.run.keys():
             suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
             return suc
@@ -117,12 +108,9 @@ class Camera:
 
     def stopCommunication(self):
         """
-        stopCommunication disables the cyclic polling in framework driver
-
         :return: success
 
         """
-
         if self.framework in self.run.keys():
             suc = self.run[self.framework].stopCommunication()
             return suc
@@ -131,8 +119,6 @@ class Camera:
 
     def canSubFrame(self, subFrame=100):
         """
-        canSubFrame checks if a camera supports sub framing and reports back
-
         :param subFrame:
         :return: success
         """
@@ -143,14 +129,10 @@ class Camera:
         if 'CCD_FRAME.X' not in self.data or 'CCD_FRAME.Y' not in self.data:
             return False
 
-        # todo: what is the right setting for alpaca as we can ask explicit for subframe
-
         return True
 
     def canBinning(self, binning=1):
         """
-        canBinning checks if the camera supports that type of binning
-
         :param binning:
         :return: success
         """
@@ -165,13 +147,9 @@ class Camera:
 
     def calcSubFrame(self, subFrame=100):
         """
-        calcSubFrame calculates the subFrame parameters depending on the percentage of
-        the reduction. the subFrame will be centered on the image area.
-
         :param subFrame: percentage 0-100 of
         :return: success
         """
-
         if 'CCD_INFO.CCD_MAX_X' not in self.data:
             return False
         if 'CCD_INFO.CCD_MAX_Y' not in self.data:
@@ -196,11 +174,8 @@ class Camera:
 
     def sendDownloadMode(self, fastReadout=False):
         """
-        setDownloadMode sets the readout speed of the camera
-
         :return: success
         """
-
         if self.framework in self.run.keys():
             suc = self.run[self.framework].sendDownloadMode(fastReadout=fastReadout)
             return suc
@@ -222,7 +197,6 @@ class Camera:
                fastReadout=True,
                focalLength=1):
         """
-
         :param imagePath:
         :param expTime:
         :param binning:
@@ -231,7 +205,6 @@ class Camera:
         :param focalLength:
         :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
         if not imagePath:
@@ -242,16 +215,17 @@ class Camera:
             return False
 
         result = self.calcSubFrame(subFrame=subFrame)
-
         if not result:
             return False
 
         posX, posY, width, height = result
-
         # this protects against overrun
         while self.exposing:
-            QTest.qWait(200)
+            QTest.qWait(250)
 
+        text = f'Image bin:{binning}, posX:{posX}, posY:{posY}'
+        text += f', width:{width}, height:{height}, fast:{fastReadout}'
+        self.log.debug(text)
         self.exposing = True
         suc = self.run[self.framework].expose(imagePath=imagePath,
                                               expTime=expTime,
@@ -266,11 +240,8 @@ class Camera:
 
     def abort(self):
         """
-        abort cancels the exposing
-
         :return: success
         """
-
         self.exposing = False
         if self.framework not in self.run.keys():
             return False
@@ -280,12 +251,9 @@ class Camera:
 
     def sendCoolerSwitch(self, coolerOn=False):
         """
-        sendCoolerTemp send the desired cooler temp, but does not switch on / off the cooler
-
         :param coolerOn:
         :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
         suc = self.run[self.framework].sendCoolerSwitch(coolerOn=coolerOn)
@@ -293,12 +261,9 @@ class Camera:
 
     def sendCoolerTemp(self, temperature=0):
         """
-        sendCoolerTemp send the desired cooler temp, indi does automatically start cooler
-
         :param temperature:
         :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 

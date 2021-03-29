@@ -139,7 +139,8 @@ def test_slewDome_3():
 
     with mock.patch.object(app.app.mount,
                            'calcTransformationMatrices',
-                           return_value=(Angle(degrees=10), Angle(degrees=10), 0, 0, 0)):
+                           return_value=(Angle(degrees=10), Angle(degrees=10),
+                                         [0, 0, 0], None, None)):
         val = app.slewDome(altitude=0, azimuth=0)
         assert val == -10
 
@@ -151,7 +152,8 @@ def test_slewDome_4():
 
     with mock.patch.object(app.app.mount,
                            'calcTransformationMatrices',
-                           return_value=(None, Angle(degrees=10), 0, 0, 0)):
+                           return_value=(None, Angle(degrees=10),
+                                         [0, 0, 0], None, None)):
         val = app.slewDome(altitude=0, azimuth=0)
         assert val == 0
 
@@ -163,7 +165,8 @@ def test_slewDome_5():
 
     with mock.patch.object(app.app.mount,
                            'calcTransformationMatrices',
-                           return_value=(Angle(degrees=10), None, 0, 0, 0)):
+                           return_value=(Angle(degrees=10), None,
+                                         [0, 0, 0], None, None)):
         val = app.slewDome(altitude=0, azimuth=0)
         assert val == 0
 

@@ -43,9 +43,6 @@ class CameraAlpaca(AlpacaClass):
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
-
-        # as we have in the base class only the base client there, we will get more
-        # specialized with Dome (which is derived from the base class)
         self.client = Camera()
         self.signals = signals
         self.data = data
@@ -61,8 +58,10 @@ class CameraAlpaca(AlpacaClass):
 
         self.dataEntry(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
         self.dataEntry(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
-        # self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
+        self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
         self.dataEntry(self.client.canstopexposure(), 'CAN_ABORT')
+        self.dataEntry(self.client.cansetccdtemperature(), 'CAN_SET_CCD_TEMPERATURE')
+        self.dataEntry(self.client.cangetcoolerpower(), 'CAN_GET_COOLER_POWER')
         self.dataEntry(self.client.pixelsizex(), 'CCD_INFO.CCD_PIXEL_SIZE_X')
         self.dataEntry(self.client.pixelsizey(), 'CCD_INFO.CCD_PIXEL_SIZE_Y')
         self.dataEntry(self.client.maxbinx(), 'CCD_BINNING.HOR_BIN_MAX')
@@ -72,7 +71,7 @@ class CameraAlpaca(AlpacaClass):
         self.dataEntry(self.client.startx(), 'CCD_FRAME.X')
         self.dataEntry(self.client.starty(), 'CCD_FRAME.Y')
 
-        self.log.trace(f'Initial data: {self.data}')
+        self.log.debug(f'Initial data: {self.data}')
 
         return True
 
@@ -86,20 +85,24 @@ class CameraAlpaca(AlpacaClass):
 
         self.dataEntry(self.client.camerastate(),
                        'CAMERA.STATE')
-        self.dataEntry(self.client.ccdtemperature(),
-                       'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-        self.dataEntry(self.client.cooleron(),
-                       'CCD_COOLER.COOLER_ON')
-        self.dataEntry(self.client.coolerpower(),
-                       'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         canFast = self.data.get('CAN_FAST', False)
-        if not canFast:
-            return False
+        if canFast:
+            self.dataEntry(self.client.fastreadout(),
+                           'READOUT_QUALITY.QUALITY_LOW',
+                           'READOUT_QUALITY.QUALITY_HIGH')
 
-        self.dataEntry(self.client.fastreadout(),
-                       'READOUT_QUALITY.QUALITY_LOW',
-                       'READOUT_QUALITY.QUALITY_HIGH')
+        canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
+        if canSetCCDTemp:
+            self.dataEntry(self.client.ccdtemperature(),
+                           'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+            self.dataEntry(self.client.cooleron(),
+                           'CCD_COOLER.COOLER_ON')
+
+        canGetCoolerPower = self.data.get('CAN_GET_COOLER_POWER', False)
+        if canGetCoolerPower:
+            self.dataEntry(self.client.coolerpower(),
+                           'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         return True
 
@@ -147,19 +150,13 @@ class CameraAlpaca(AlpacaClass):
         :param focalLength:
         :return: success
         """
-        binning = int(binning)
-        posX = int(posX)
-        posY = int(posY)
-        width = int(width)
-        height = int(height)
-
         self.sendDownloadMode(fastReadout=fastReadout)
-        self.client.startx(StartX=posX)
-        self.client.starty(StartY=posY)
+        self.client.binx(BinX=int(binning))
+        self.client.biny(BinY=int(binning))
+        self.client.startx(StartX=int(posX / binning))
+        self.client.starty(StartY=int(posY / binning))
         self.client.numx(NumX=int(width / binning))
         self.client.numy(NumY=int(height / binning))
-        self.client.binx(BinX=binning)
-        self.client.biny(BinY=binning)
 
         isMount = self.app.deviceStat['mount']
         if isMount:
@@ -291,8 +288,11 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.client.cooleron(CoolerOn=coolerOn)
+        canGetCoolerPower = self.data.get('CAN_GET_COOLER_POWER', False)
+        if not canGetCoolerPower:
+            return False
 
+        self.client.cooleron(CoolerOn=coolerOn)
         return True
 
     def sendCoolerTemp(self, temperature=0):
@@ -305,6 +305,9 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.client.setccdtemperature(SetCCDTemperature=temperature)
+        canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
+        if not canSetCCDTemp:
+            return False
 
+        self.client.setccdtemperature(SetCCDTemperature=temperature)
         return True

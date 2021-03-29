@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
+   id="svg2">
+  <path
+     d="
+     m  20, 4
+     a  28 28 0 1 1 0, 56
+     a  12 28 0 0 0 0, -56
+     z"
+
+     style="
+     fill:none;
+     stroke:#C0C0C0;
+     stroke-width:6;
+     stroke-linejoin:round"
+  />
+</svg>

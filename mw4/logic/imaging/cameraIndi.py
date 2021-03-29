@@ -356,12 +356,10 @@ class CameraIndi(IndiClass):
         :param temperature:
         :return: success
         """
-
         if not self.device:
             return False
 
         temp = self.device.getNumber('CCD_TEMPERATURE')
-
         if 'CCD_TEMPERATURE_VALUE' not in temp:
             return False
 

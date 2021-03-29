@@ -23,6 +23,7 @@ import subprocess
 import os
 import glob
 import platform
+import builtins
 
 # external packages
 from PyQt5.QtCore import QThreadPool
@@ -89,7 +90,7 @@ def test_setDefaultPath_3(app):
 
 
 def test_runASTAP_1(app):
-    suc = app.runASTAP()
+    suc, ret = app.runASTAP()
     assert not suc
 
 
@@ -111,8 +112,9 @@ def test_runASTAP_2(app):
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test()):
-        val = app.runASTAP()
-        assert val == 1
+        suc, ret = app.runASTAP()
+        assert ret == 1
+        assert suc
 
 
 def test_runASTAP_3(app):
@@ -123,7 +125,7 @@ def test_runASTAP_3(app):
                                'communicate',
                                return_value=('', ''),
                                side_effect=Exception()):
-            suc = app.runASTAP()
+            suc, ret = app.runASTAP()
             assert not suc
 
 
@@ -132,7 +134,7 @@ def test_runASTAP_4(app):
                            'communicate',
                            return_value=('', ''),
                            side_effect=subprocess.TimeoutExpired('run', 1)):
-        suc = app.runASTAP(binPath='clear')
+        suc, ret = app.runASTAP(binPath='clear')
         assert not suc
 
 
@@ -160,7 +162,7 @@ def test_solveASTAP_2(app):
 def test_solveASTAP_3(app):
     with mock.patch.object(app,
                            'runASTAP',
-                           return_value=1):
+                           return_value=(False, 1)):
         suc = app.solve(fitsPath='tests/image/m51.fit')
         assert not suc
 
@@ -168,7 +170,7 @@ def test_solveASTAP_3(app):
 def test_solveASTAP_4(app):
     with mock.patch.object(app,
                            'runASTAP',
-                           return_value=0):
+                           return_value=(True, 0)):
         suc = app.solve(fitsPath='tests/image/m51.fit')
         assert not suc
 
@@ -176,7 +178,7 @@ def test_solveASTAP_4(app):
 def test_solveASTAP_5(app):
     with mock.patch.object(app,
                            'runASTAP',
-                           return_value=0):
+                           return_value=(True, 0)):
         with mock.patch.object(os,
                                'remove',
                                return_value=True):
@@ -208,12 +210,15 @@ def test_checkAvailability_1(app):
                            return_value=True):
         with mock.patch.object(glob,
                                'glob',
-                               return_value=True):
-            with mock.patch.object(platform,
-                                   'system',
-                                   return_value='Darwin'):
-                suc = app.checkAvailability()
-                assert suc == (True, True)
+                               return_value='.290'):
+            with mock.patch.object(builtins,
+                                   'any',
+                                   return_value=True):
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Darwin'):
+                    suc = app.checkAvailability()
+                    assert suc == (True, True)
 
 
 def test_checkAvailability_2(app):
@@ -222,12 +227,15 @@ def test_checkAvailability_2(app):
                            return_value=True):
         with mock.patch.object(glob,
                                'glob',
-                               return_value=True):
-            with mock.patch.object(platform,
-                                   'system',
-                                   return_value='Linux'):
-                suc = app.checkAvailability()
-                assert suc == (True, True)
+                               return_value='.290'):
+            with mock.patch.object(builtins,
+                                   'any',
+                                   return_value=True):
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Linux'):
+                    suc = app.checkAvailability()
+                    assert suc == (True, True)
 
 
 def test_checkAvailability_3(app):
@@ -236,12 +244,15 @@ def test_checkAvailability_3(app):
                            return_value=True):
         with mock.patch.object(glob,
                                'glob',
-                               return_value=True):
-            with mock.patch.object(platform,
-                                   'system',
-                                   return_value='Windows'):
-                suc = app.checkAvailability()
-                assert suc == (True, True)
+                               return_value='.290'):
+            with mock.patch.object(builtins,
+                                   'any',
+                                   return_value=True):
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Windows'):
+                    suc = app.checkAvailability()
+                    assert suc == (True, True)
 
 
 def test_checkAvailability_4(app):
@@ -250,9 +261,12 @@ def test_checkAvailability_4(app):
                            return_value=False):
         with mock.patch.object(glob,
                                'glob',
-                               return_value=False):
-            with mock.patch.object(platform,
-                                   'system',
-                                   return_value='Linux'):
-                suc = app.checkAvailability()
-                assert suc == (False, False)
+                               return_value='.290'):
+            with mock.patch.object(builtins,
+                                   'any',
+                                   return_value=False):
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Linux'):
+                    suc = app.checkAvailability()
+                    assert suc == (False, False)

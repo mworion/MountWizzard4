@@ -82,12 +82,12 @@ class CoverIndi(IndiClass):
             if element == 'Cover':
                 value = value.strip().upper()
                 if value == 'OPEN':
-                    self.data['CAP_PARK.UNPARK'] = 'On'
-                    self.data['CAP_PARK.PARK'] = 'Off'
+                    self.data['CAP_PARK.UNPARK'] = True
+                    self.data['CAP_PARK.PARK'] = False
 
                 elif value == 'CLOSED':
-                    self.data['CAP_PARK.UNPARK'] = 'Off'
-                    self.data['CAP_PARK.PARK'] = 'On'
+                    self.data['CAP_PARK.UNPARK'] = False
+                    self.data['CAP_PARK.PARK'] = True
 
                 else:
                     self.data['CAP_PARK.UNPARK'] = None
@@ -143,3 +143,65 @@ class CoverIndi(IndiClass):
         :return: success
         """
         return False
+
+    def lightOn(self):
+        """
+        :return:
+        """
+        if self.device is None:
+            return False
+
+        light = self.device.getSwitch('FLAT_LIGHT_CONTROL')
+
+        if 'FLAT_LIGHT_ON' not in light:
+            return False
+
+        light['FLAT_LIGHT_ON'] = 'On'
+        light['FLAT_LIGHT_OFF'] = 'Off'
+
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
+                                        propertyName='FLAT_LIGHT_CONTROL',
+                                        elements=light,
+                                        )
+        return suc
+
+    def lightOff(self):
+        """
+        :return:
+        """
+        if self.device is None:
+            return False
+
+        light = self.device.getSwitch('FLAT_LIGHT_CONTROL')
+
+        if 'FLAT_LIGHT_OFF' not in light:
+            return False
+
+        light['FLAT_LIGHT_ON'] = 'Off'
+        light['FLAT_LIGHT_OFF'] = 'On'
+
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
+                                        propertyName='FLAT_LIGHT_CONTROL',
+                                        elements=light,
+                                        )
+        return suc
+
+    def lightIntensity(self, value):
+        """
+        :return:
+        """
+        if self.device is None:
+            return False
+
+        light = self.device.getNumber('FLAT_LIGHT_INTENSITY')
+
+        if 'FLAT_LIGHT_INTENSITY_VALUE' not in light:
+            return False
+
+        light['FLAT_LIGHT_INTENSITY_VALUE'] = value
+
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
+                                        propertyName='FLAT_LIGHT_INTENSITY',
+                                        elements=light,
+                                        )
+        return suc

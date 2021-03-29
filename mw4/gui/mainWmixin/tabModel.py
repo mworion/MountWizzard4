@@ -36,8 +36,9 @@ class Model:
     """
     """
 
-    # define a max error which throws point out of queue in arcsec
-    MAX_ERROR_MODEL_POINT = 99999
+    # define a max error which throws point out of queue in arcsec (this is
+    # 10 degrees
+    MAX_ERROR_MODEL_POINT = 10 * 60 * 60
 
     def __init__(self):
         self.slewQueue = queue.Queue()
@@ -175,7 +176,6 @@ class Model:
 
         modelPercent = int(100 * fraction)
         self.ui.modelProgress.setValue(modelPercent)
-
         return True
 
     def modelSolveDone(self, result):
@@ -193,7 +193,7 @@ class Model:
         """
         self.log.debug('Processing astrometry result')
         if self.resultQueue.empty():
-            self.log.info('empty result queue')
+            self.log.info('Empty result queue')
             return False
 
         mPoint = self.resultQueue.get()
@@ -207,25 +207,18 @@ class Model:
             return False
 
         mPoint.update(result)
-
-        if mPoint['success']:
+        isSuccess = mPoint['success']
+        isInRange = mPoint.get('errorRMS_S', 0) < self.MAX_ERROR_MODEL_POINT
+        if isSuccess and isInRange:
             raJNowS, decJNowS = transform.J2000ToJNow(mPoint['raJ2000S'],
                                                       mPoint['decJ2000S'],
                                                       mPoint['julianDate'])
             mPoint['raJNowS'] = raJNowS
             mPoint['decJNowS'] = decJNowS
-
-            if mPoint['errorRMS_S'] < self.MAX_ERROR_MODEL_POINT:
-                self.log.debug(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-                self.modelQueue.put(mPoint)
-
-                self.app.data.setStatusBuildP(count - 1, False)
-                self.app.updatePointMarker.emit()
-
-            else:
-                text = f'Solving failed for image-{count:03d}'
-                self.app.message.emit(text, 2)
-                self.retryQueue.put(mPoint)
+            self.log.debug(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+            self.modelQueue.put(mPoint)
+            self.app.data.setStatusBuildP(count - 1, False)
+            self.app.updatePointMarker.emit()
 
             text = f'Solved   image-{count:03d}:  '
             text += f'Ra: {convertToHMS(mPoint["raJ2000S"])} '
@@ -241,11 +234,11 @@ class Model:
             self.app.message.emit(text, 0)
 
         else:
-            text = f'Solving  image-{count:03d}:  {mPoint.get("message")}'
+            text = f'Solving failed for image-{count:03d}'
             self.app.message.emit(text, 2)
+            self.retryQueue.put(mPoint)
 
         self.updateProgress(number=number, count=count)
-
         if number == count:
             self.modelCycleThroughBuildPointsFinished()
 
@@ -267,20 +260,15 @@ class Model:
         """
         self.log.debug('Solving started')
         if self.solveQueue.empty():
-            self.log.info('empty solve queue')
+            self.log.info('Empty solve queue')
             return False
 
         mPoint = self.solveQueue.get()
-        self.log.debug(f'Solve from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-
         self.app.showImage.emit(mPoint["imagePath"])
-
         self.resultQueue.put(mPoint)
         self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         self.app.astrometry.solveThreading(fitsPath=mPoint["imagePath"],
-                                           updateFits=False,
-                                           )
-
+                                           updateFits=False)
         text = f'Solving  image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
         self.app.message.emit(text, 0)
@@ -290,18 +278,17 @@ class Model:
 
     def modelImage(self):
         """
-        modelImage is the method called from the signal mount and dome slewed finish and
-        starts the imaging for the model point. therefore it takes the model point from
-        the queue and uses the parameters stored. if the queue is empty (which should be to
-        the case), it just returns.
+        modelImage is the method called from the signal mount and dome slewed
+        finish and starts the imaging for the model point. therefore it takes the
+        model point from the queue and uses the parameters stored. if the queue
+        is empty (which should be to the case), it just returns.
+        as we are combining the reception of multiple signals for detecting that
+        all slew actions are finished, we have to reset the collector Class for
+        preparing a new cycle.
 
-        as we are combining the reception of multiple signals for detecting that all slew
-        actions are finished, we have to reset the collector Class for preparing a new
-        cycle.
-
-        after the imaging with parameters started, the actual mount data (coordinates,
-        time, pierside) is added to the model point as this information is later needed for
-        solving and building the model itself.
+        after the imaging with parameters started, the actual mount data
+        (coordinates, time, pierside) is added to the model point as this
+        information is later needed for solving and building the model itself.
 
         it shows the actual processed point index in GUI
 
@@ -309,14 +296,11 @@ class Model:
         """
         self.log.debug('Imaging started')
         if self.imageQueue.empty():
-            self.log.info('empty image queue')
+            self.log.info('Empty image queue')
             return False
 
         mPoint = self.imageQueue.get()
-        self.log.debug(f'Image from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-
         self.collector.resetSignals()
-
         while self.ui.pauseModel.property('pause'):
             QTest.qWait(100)
 
@@ -325,8 +309,7 @@ class Model:
                                binning=mPoint['binning'],
                                subFrame=mPoint['subFrame'],
                                fastReadout=mPoint['fastReadout'],
-                               focalLength=mPoint['focalLength'],
-                               )
+                               focalLength=mPoint['focalLength'])
 
         mPoint['raJNowM'] = self.app.mount.obsSite.raJNow
         mPoint['decJNowM'] = self.app.mount.obsSite.decJNow
@@ -348,10 +331,11 @@ class Model:
 
     def modelSlew(self):
         """
-        modelSlew is the method called from the model core method and is the beginning of
-        the modeling chain. it starts with taking a first model point from the initial
-        slew queue and starts slewing mount (and dome if present).if the queue is empty
-        (which should be to the case), it just returns.
+        modelSlew is the method called from the model core method and is the
+        beginning of the modeling chain. it starts with taking a first model
+        point from the initial slew queue and starts slewing mount (and dome if
+        present).if the queue is empty (which should be to the case), it just
+        returns.
 
         it shows the actual processed point index in GUI
 
@@ -364,21 +348,15 @@ class Model:
             return False
 
         mPoint = self.slewQueue.get()
-        self.log.debug(f'Slew from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
-                                                    az_degrees=mPoint['azimuth'],
-                                                    )
+                                                    az_degrees=mPoint['azimuth'])
         if not suc:
             return False
 
         if self.deviceStat['dome']:
             alt = mPoint['altitude']
             az = mPoint['azimuth']
-
-            delta = self.app.dome.slewDome(altitude=alt,
-                                           azimuth=az)
-
+            delta = self.app.dome.slewDome(altitude=alt, azimuth=az)
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
             text = f'Slewing  dome:       point: {mPoint["countSequence"]:03d}, '
             text += f'{geoStat}, az: {az:3.1f} delta: {delta:3.1f}'
@@ -420,7 +398,6 @@ class Model:
         """
         if not self.ui.checkDisableDAT.isChecked():
             return False
-
         if self.statusDAT is None:
             return False
 
@@ -431,8 +408,6 @@ class Model:
 
     def clearQueues(self):
         """
-        clearQueues ensures that all used queues will be emptied.
-
         :return: true for test purpose
         """
         self.slewQueue.queue.clear()
@@ -441,7 +416,6 @@ class Model:
         self.resultQueue.queue.clear()
         self.modelQueue.queue.clear()
         self.retryQueue.queue.clear()
-
         return True
 
     def setupModelRunContextAndGuiStatus(self):
@@ -460,7 +434,6 @@ class Model:
         self.ui.batchModel.setEnabled(False)
 
         winImage = self.app.uiWindows['showImageW']['classObj']
-
         if not winImage:
             return False
 
@@ -469,18 +442,16 @@ class Model:
 
         if not winImage.deviceStat['expose']:
             return False
-
         if not winImage.deviceStat['exposeN']:
             return False
 
         winImage.abortImage()
-
         return True
 
     def restoreModelDefaultContextAndGuiStatus(self):
         """
-        restoreModelDefaultContextAndGuiStatus will reset all gui elements to the idle or default
-        state and new actions could be started again
+        restoreModelDefaultContextAndGuiStatus will reset all gui elements to
+        the idle or default state and new actions could be started again
 
         :return: true for test purpose
         """
@@ -503,17 +474,17 @@ class Model:
         self.ui.mImage.setText('-')
         self.ui.mSolve.setText('-')
         self.ui.modelProgress.setValue(0)
-
         return True
 
     def setupSignalsForModelRun(self):
         """
-        setupSignalsForModelRun establishes the signals chain. as we have multiple actions running
-        at the same time, the synchronisation by the right link of the signals.
+        setupSignalsForModelRun establishes the signals chain. as we have
+        multiple actions running at the same time, the synchronisation by the
+        right link of the signals.
 
-        first we link the two slew finished signals to modelImage. that means as soon as
-        both slew finished signals are received, the imaging will be started
-        when download of an image starts, we could slew to another point
+        first we link the two slew finished signals to modelImage. that means
+        as soon as both slew finished signals are received, the imaging will be
+        started when download of an image starts, we could slew to another point
         when image is saved, we could start with solving
 
         :return: true for test purpose
@@ -533,12 +504,12 @@ class Model:
         self.app.camera.signals.integrated.connect(self.modelSlew)
         self.app.camera.signals.saved.connect(self.modelSolve)
         self.app.astrometry.signals.done.connect(self.modelSolveDone)
-
         return True
 
     def restoreSignalsModelDefault(self):
         """
-        restoreSignalsModelDefault clears the signal queue and removes the signal connections
+        restoreSignalsModelDefault clears the signal queue and removes the
+        signal connections
 
         :return: true for test purpose
         """
@@ -547,7 +518,6 @@ class Model:
         self.app.astrometry.signals.done.disconnect(self.modelSolveDone)
         self.collector.ready.disconnect(self.modelImage)
         self.collector.clear()
-
         return True
 
     def pauseBuild(self):
@@ -564,8 +534,8 @@ class Model:
 
     def cancelBuild(self):
         """
-        cancelBuild aborts imaging and stops all modeling queues and actions and restores
-        them to default values.
+        cancelBuild aborts imaging and stops all modeling queues and actions
+        and restores them to default values.
 
         :return: true for test purpose
         """
@@ -581,11 +551,12 @@ class Model:
 
     def retrofitModel(self):
         """
-        retrofitModel reads the actual model points and results out of the mount computer
-        and adds the optimized (recalculated) error values to the point. that's necessary,
-        because when imaging and solving a point the error is related to this old model.
-        when programming a new model, all point will be recalculated be the mount
-        computer an get a new error value which is based on the new model.
+        retrofitModel reads the actual model points and results out of the mount
+        computer and adds the optimized (recalculated) error values to the point.
+        that's necessary, because when imaging and solving a point the error is
+        related to this old model. when programming a new model, all point will
+        be recalculated be the mount computer an get a new error value which is
+        based on the new model.
 
         :return: True for test purpose
         """
@@ -601,8 +572,8 @@ class Model:
 
     def generateSaveModel(self):
         """
-        generateSaveModel builds from the model file a format which could be serialized
-        in json. this format will be used for storing model on file.
+        generateSaveModel builds from the model file a format which could be
+        serialized in json. this format will be used for storing model on file.
 
         :return: save model format
         """
@@ -630,11 +601,12 @@ class Model:
 
     def saveModelFinish(self):
         """
-        saveModelFinish is the callback after the new model data is loaded from the mount
-        computer. first is disables the signals. New we have the original model build data
-        which was programmed to the mount and the retrieved model data after the mount
-        optimized the model. retrofitModel() combines this data to a signal data structure.
-        after that it saves the model data for later use.
+        saveModelFinish is the callback after the new model data is loaded from
+        the mount computer. first is disables the signals. New we have the
+        original model build data which was programmed to the mount and the
+        retrieved model data after the mount optimized the model. retrofitModel()
+        combines this data to a signal data structure. after that it saves the
+        model data for later use.
 
         with this data, the model could be reprogrammed without doing some imaging,
         it could be added with other data to extend the model to a broader base.
@@ -653,11 +625,12 @@ class Model:
 
     def saveModelPrepare(self):
         """
-        saveModelPrepare checks boundaries for model save and prepares the signals.
-        the save a model we need the calculated parameters from the mount after the new
-        points are programmed in an earlier step. the new model data is retrieved from
-        the mount by refreshModel() call. this call needs some time and has a callback
-        which is set here. the calculations and the saving is done in the callback.
+        saveModelPrepare checks boundaries for model save and prepares the
+        signals. the save a model we need the calculated parameters from the
+        mount after the new points are programmed in an earlier step. the new
+        model data is retrieved from the mount by refreshModel() call. this call
+        needs some time and has a callback which is set here. the calculations
+        and the saving is done in the callback.
 
         :return: success
         """
@@ -671,8 +644,8 @@ class Model:
     @staticmethod
     def generateBuildData(model=None):
         """
-        generateBuildData takes the model data and generates from it a data structure
-        needed for programming the model into the mount computer.
+        generateBuildData takes the model data and generates from it a data
+        structure needed for programming the model into the mount computer.
 
         :param model:
         :return: build
@@ -682,8 +655,10 @@ class Model:
 
         build = list()
         for mPoint in model:
-            programmingPoint = AlignStar(mCoord=(mPoint['raJNowM'], mPoint['decJNowM']),
-                                         sCoord=(mPoint['raJNowS'], mPoint['decJNowS']),
+            programmingPoint = AlignStar(mCoord=(mPoint['raJNowM'],
+                                                 mPoint['decJNowM']),
+                                         sCoord=(mPoint['raJNowS'],
+                                                 mPoint['decJNowS']),
                                          sidereal=mPoint['siderealTime'],
                                          pierside=mPoint['pierside'],
                                          )

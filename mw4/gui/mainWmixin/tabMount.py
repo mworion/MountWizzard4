@@ -44,7 +44,7 @@ class Mount(object):
         ms.settingDone.connect(self.updateSettingGUI)
         ms.settingDone.connect(self.updateSetStatGUI)
         ms.settingDone.connect(self.updateSetSyncGUI)
-        ms.locationDone.connect(self.updateTrackingGui)
+        ms.settingDone.connect(self.updateTrackingGui)
 
         self.ui.park.clicked.connect(self.changePark)
         self.ui.flipMount.clicked.connect(self.flipMount)
@@ -53,6 +53,7 @@ class Mount(object):
         self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
         self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
         self.ui.stop.clicked.connect(self.stop)
+
         self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
         self.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
         self.clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
@@ -65,17 +66,14 @@ class Mount(object):
         self.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
         self.clickable(self.ui.statusWOL).connect(self.setWOL)
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
+        self.ui.virtualStop.raise_()
+        self.ui.virtualStop.clicked.connect(self.virtualStop)
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config.get('mainW', {})
-
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
         self.updateLocGUI(self.app.mount.obsSite)
@@ -83,10 +81,6 @@ class Mount(object):
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config['mainW']
@@ -182,8 +176,6 @@ class Mount(object):
         if sett.UTCExpire is not None:
             ui = self.ui.UTCExpire
             ui.setText(sett.UTCExpire)
-
-            # coloring if close to end:
             now = datetime.datetime.now()
             expire = datetime.datetime.strptime(sett.UTCExpire, '%Y-%m-%d')
             deltaYellow = datetime.timedelta(days=30)
@@ -273,7 +265,7 @@ class Mount(object):
         if sett.wakeOnLan is None:
             text = '-'
             self.changeStyleDynamic(ui, 'status', '')
-        elif sett.wakeOnLan == 'ON':
+        elif sett.wakeOnLan == 'On':
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
         else:
@@ -320,28 +312,42 @@ class Mount(object):
         self.ui.siteLongitude.setText(self.formatLonToText(location.longitude))
         self.ui.siteLatitude.setText(self.formatLatToText(location.latitude))
         self.ui.siteElevation.setText(str(location.elevation.m))
-
         return True
 
-    def updateTrackingGui(self, obs):
+    def updateTrackingGui(self, sett):
         """
-        :param obs:
+        :param sett:
         :return:    True if ok for testing
         """
-        if obs is None:
+        if sett is None:
+            return False
+        if self.app.mount.obsSite.status is None:
+            self.changeStyleDynamic(self.ui.followSat, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
             return False
 
-        if obs.checkRateLunar():
+        if self.app.mount.obsSite.status == 10:
+            self.changeStyleDynamic(self.ui.followSat, 'running', 'true')
+            self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
+
+        elif sett.checkRateLunar():
+            self.changeStyleDynamic(self.ui.followSat, 'running', 'false')
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
 
-        elif obs.checkRateSidereal():
+        elif sett.checkRateSidereal():
+            self.changeStyleDynamic(self.ui.followSat, 'running', 'false')
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
 
-        elif obs.checkRateSolar():
+        elif sett.checkRateSolar():
+            self.changeStyleDynamic(self.ui.followSat, 'running', 'false')
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')
@@ -352,6 +358,11 @@ class Mount(object):
         """
         :return:
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount and not isData:
+            return False
+
         obs = self.app.mount.obsSite
         if obs.status == 0:
             suc = obs.stopTracking()
@@ -373,6 +384,11 @@ class Mount(object):
         """
         :return:
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount and not isData:
+            return False
+
         obs = self.app.mount.obsSite
         if obs.status == 5:
             suc = obs.unpark()
@@ -394,8 +410,13 @@ class Mount(object):
         """
         :return:
         """
-        obs = self.app.mount.obsSite
-        suc = obs.setLunarTracking()
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
+            return False
+
+        sett = self.app.mount.setting
+        suc = sett.setLunarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Lunar', 2)
             return False
@@ -408,8 +429,13 @@ class Mount(object):
         """
         :return:
         """
-        obs = self.app.mount.obsSite
-        suc = obs.setSiderealTracking()
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
+            return False
+
+        sett = self.app.mount.setting
+        suc = sett.setSiderealTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Sidereal', 2)
             return False
@@ -422,8 +448,13 @@ class Mount(object):
         """
         :return:
         """
-        obs = self.app.mount.obsSite
-        suc = obs.setSolarTracking()
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount and not isData:
+            return False
+
+        sett = self.app.mount.setting
+        suc = sett.setSolarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Solar', 2)
             return False
@@ -436,6 +467,11 @@ class Mount(object):
         """
         :return:
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount and not isData:
+            return False
+
         obs = self.app.mount.obsSite
         suc = obs.flip()
         if not suc:
@@ -450,6 +486,11 @@ class Mount(object):
         """
         :return:
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount and not isData:
+            return False
+
         obs = self.app.mount.obsSite
         suc = obs.stop()
         if not suc:
@@ -460,12 +501,21 @@ class Mount(object):
             self.app.message.emit('Mount stopped', 0)
             return True
 
+    def virtualStop(self):
+        """
+        :return:
+        """
+        if self.ui.activateVirtualStop.isChecked():
+            self.stop()
+
     def setMeridianLimitTrack(self):
         """
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -500,7 +550,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -535,7 +587,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -570,7 +624,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -605,7 +661,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -641,6 +699,11 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount or not isData:
+            return False
+
         obs = self.app.mount.obsSite
         if obs.location is None:
             return False
@@ -684,6 +747,11 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount or not isData:
+            return False
+
         obs = self.app.mount.obsSite
         if obs.location is None:
             return False
@@ -725,6 +793,11 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.obsSite is not None
+        if not isMount or not isData:
+            return False
+
         obs = self.app.mount.obsSite
 
         if obs.location is None:
@@ -764,7 +837,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -796,7 +871,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -828,7 +905,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -860,7 +939,9 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.deviceStat.get('mount', ''):
+        isMount = self.deviceStat.get('mount', False)
+        isData = self.app.mount.setting is not None
+        if not isMount or not isData:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')

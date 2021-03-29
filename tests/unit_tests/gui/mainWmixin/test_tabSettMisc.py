@@ -20,15 +20,11 @@ import pytest
 from unittest import mock
 import logging
 import subprocess
-import builtins
+import platform
+import os
 
 # external packages
 from PyQt5.QtMultimedia import QSound
-from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from mountcontrol.qtmount import Mount
 import requests
 import importlib_metadata
 
@@ -115,7 +111,8 @@ def test_versionPackage_1(function):
                            return_value=Test(),
                            side_effect=Exception()):
         val = function.versionPackage('matplotlib')
-        assert val is None
+        assert val[0] is None
+        assert val[1] is None
 
 
 def test_versionPackage_2(function):
@@ -124,15 +121,16 @@ def test_versionPackage_2(function):
 
         @staticmethod
         def json():
-            return {'releases': {'1.0.0': 1,
-                                 '1.1.0b1': 2}}
+            return {'releases': {'1.0.0': [{'comment_text': 'test'}],
+                                 '1.0.0b1': [{'comment_text': 'test'}]}}
 
     function.ui.versionBeta.setChecked(False)
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = function.versionPackage('matplotlib')
-        assert val == '1.0.0'
+        pack, comm = function.versionPackage('matplotlib')
+        assert pack == '1.0.0'
+        assert comm == 'test'
 
 
 def test_versionPackage_3(function):
@@ -141,15 +139,16 @@ def test_versionPackage_3(function):
 
         @staticmethod
         def json():
-            return {'releases': {'1.0.0': 1,
-                                 '1.0.0b1': 2}}
+            return {'releases': {'1.0.0': [{'comment_text': 'test'}],
+                                 '1.0.0b1': [{'comment_text': 'test'}]}}
 
     function.ui.versionBeta.setChecked(True)
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = function.versionPackage('matplotlib')
-        assert val == '1.0.0b1'
+        pack, comm = function.versionPackage('matplotlib')
+        assert pack == '1.0.0b1'
+        assert comm == 'test'
 
 
 def test_showUpdates_1(function):
@@ -167,7 +166,7 @@ def test_showUpdates_2(function):
                            return_value='0.148.8'):
         with mock.patch.object(function,
                                'versionPackage',
-                               return_value=None):
+                               return_value=(None, None)):
             suc = function.showUpdates()
             assert not suc
 
@@ -176,10 +175,48 @@ def test_showUpdates_3(function):
     function.ui.isOnline.setChecked(True)
     with mock.patch.object(importlib_metadata,
                            'version',
+                           return_value='0.148.10'):
+        with mock.patch.object(function,
+                               'versionPackage',
+                               return_value=('0.148.9', 'test')):
+            suc = function.showUpdates()
+            assert suc
+
+
+def test_showUpdates_4(function):
+    function.ui.isOnline.setChecked(True)
+    with mock.patch.object(importlib_metadata,
+                           'version',
                            return_value='0.148.8'):
         with mock.patch.object(function,
                                'versionPackage',
-                               return_value='0.148.9'):
+                               return_value=('0.148.9', 'test')):
+            suc = function.showUpdates()
+            assert suc
+
+
+def test_showUpdates_5(function):
+    function.ui.isOnline.setChecked(True)
+    function.ui.versionReleaseNotes.setChecked(True)
+    with mock.patch.object(importlib_metadata,
+                           'version',
+                           return_value='0.148.8'):
+        with mock.patch.object(function,
+                               'versionPackage',
+                               return_value=('0.148.9', '')):
+            suc = function.showUpdates()
+            assert suc
+
+
+def test_showUpdates_6(function):
+    function.ui.isOnline.setChecked(True)
+    function.ui.versionReleaseNotes.setChecked(True)
+    with mock.patch.object(importlib_metadata,
+                           'version',
+                           return_value='0.148.8'):
+        with mock.patch.object(function,
+                               'versionPackage',
+                               return_value=('0.148.9', 'test')):
             suc = function.showUpdates()
             assert suc
 
@@ -216,6 +253,12 @@ def test_formatPIP_5(function):
 def test_formatPIP_6(function):
     line = function.formatPIP('Successfully installed mountcontrol-0.156')
     assert line == 'Successfully installed mountcontrol-0.156'
+
+
+def test_restartProgram(function):
+    with mock.patch.object(os,
+                           'execl'):
+        function.restartProgram()
 
 
 def test_runInstall_1(function):
@@ -321,20 +364,27 @@ def test_runInstall_3(function):
 
 def test_installFinished_1(function):
     function.mutexInstall.lock()
-    suc = function.installFinished(None)
-    assert not suc
+    with mock.patch.object(function,
+                           'restartProgram'):
+        suc = function.installFinished(None)
+        assert not suc
 
 
 def test_installFinished_2(function):
     function.mutexInstall.lock()
-    suc = function.installFinished((False, '0.148.8'))
-    assert not suc
+    with mock.patch.object(function,
+                           'restartProgram'):
+        suc = function.installFinished((False, '0.148.8'))
+        assert not suc
 
 
 def test_installFinished_3(function):
     function.mutexInstall.lock()
-    suc = function.installFinished((True, '0.148.8'))
-    assert suc
+    function.ui.automaticRestart.setChecked(True)
+    with mock.patch.object(function,
+                           'restartProgram'):
+        suc = function.installFinished((True, '0.148.8'))
+        assert suc
 
 
 def test_installVersion_1(function):
@@ -434,11 +484,6 @@ def test_playSound_1(function):
 
 
 def test_playSound_2(function):
-    suc = function.playSound('test')
-    assert not suc
-
-
-def test_playSound_3(function):
     function.audioSignalsSet['Pan1'] = 'test'
     function.guiAudioList['MountSlew'] = function.ui.soundMountSlewFinished
     function.guiAudioList['MountSlew'].addItem('Pan1')
@@ -446,3 +491,235 @@ def test_playSound_3(function):
                            'play'):
         suc = function.playSound('MountSlew')
         assert suc
+
+
+def test_playSound_3(function):
+    function.audioSignalsSet['Pan1'] = 'test'
+    function.guiAudioList['MountSlew'] = function.ui.soundMountSlewFinished
+    function.guiAudioList['MountSlew'].addItem('Pan5')
+
+    with mock.patch.object(QSound,
+                           'play'):
+        suc = function.playSound('MountSlew')
+        assert not suc
+
+
+def test_pushTime_1a(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = 0
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test()):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Windows'):
+            suc = function.pushTime()
+            assert suc
+
+
+def test_pushTime_1b(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = 0
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test()):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Linux'):
+            suc = function.pushTime()
+            assert suc
+
+
+def test_pushTime_1c(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = 0
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test()):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Darwin'):
+            suc = function.pushTime()
+            assert suc
+
+
+def test_pushTime_1d(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = 0
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test()):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='xxx'):
+            suc = function.pushTime()
+            assert suc
+
+
+def test_pushTime_2(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = '1'
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test(),
+                           side_effect=Exception()):
+        suc = function.pushTime()
+        assert not suc
+
+
+def test_pushTime_3(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = '1'
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test(),
+                           side_effect=subprocess.TimeoutExpired('res', 2)):
+        suc = function.pushTime()
+        assert not suc
+
+
+def test_pushTime_4(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+        @staticmethod
+        def replace(a, b):
+            return a + b
+
+    class Test:
+        returncode = 1
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test()):
+        suc = function.pushTime()
+        assert not suc
+
+
+def test_pushTime_5(function):
+    a = function.app.mount.obsSite.timeJD
+    function.app.mount.obsSite.timeJD = None
+    suc = function.pushTime()
+    assert not suc
+    function.app.mount.obsSite.timeJD = a
+
+
+def test_pushTimeHourly_1(function):
+    function.ui.autoPushTime.setChecked(False)
+    suc = function.pushTimeHourly()
+    assert not suc
+
+
+def test_pushTimeHourly_2(function):
+    function.ui.autoPushTime.setChecked(True)
+    suc = function.pushTimeHourly()
+    assert suc
+
+
+def test_setVirtualStop(function):
+    suc = function.setVirtualStop()
+    assert suc

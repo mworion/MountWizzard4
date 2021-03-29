@@ -48,27 +48,22 @@ class CoverAlpaca(AlpacaClass):
 
     def getInitialConfig(self):
         """
-
         :return: true for test purpose
         """
-
         super().getInitialConfig()
-
         return True
 
     def workerPollData(self):
         """
         :return: true for test purpose
         """
+        states = ['NotPresent', 'Closed', 'Moving', 'Open', 'Unknown', 'Error']
         if not self.deviceConnected:
             return False
-
-        states = ['NotPresent', 'Closed', 'Moving', 'Open', 'Unknown', 'Error']
 
         state = self.client.coverstate()
         stateText = states[state]
         self.dataEntry(stateText, 'Status.Cover')
-
         return True
 
     def closeCover(self):
@@ -99,4 +94,36 @@ class CoverAlpaca(AlpacaClass):
             return False
 
         self.client.haltcover()
+        return True
+
+    def lightOn(self):
+        """
+        :return:
+        """
+        if not self.deviceConnected:
+            return False
+
+        brightness = self.client.brightness()
+        self.client.calibratoron(Brightness=brightness)
+        return True
+
+    def lightOff(self):
+        """
+        :return:
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.client.calibratoroff()
+        return True
+
+    def lightIntensity(self, value):
+        """
+        :param value:
+        :return:
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.client.calibratoron(Brightness=value)
         return True

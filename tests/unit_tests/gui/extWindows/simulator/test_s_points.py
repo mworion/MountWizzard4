@@ -19,11 +19,12 @@ import pytest
 from unittest import mock
 
 # external packages
-from PyQt5.Qt3DCore import QEntity
+from PyQt5.Qt3DCore import QEntity, QTransform
 from PyQt5.Qt3DExtras import QExtrudedTextMesh
 from PyQt5.QtCore import QObject
 from mountcontrol.mount import Mount
 from skyfield.api import Topos
+import numpy as np
 
 # local import
 from gui.extWindows.simulator.points import SimulatorBuildPoints
@@ -34,7 +35,7 @@ def module_setup_teardown():
     global app
 
     class Test1:
-        buildP = [(45, 45), (50, 50)]
+        buildP = [(45, 45, True), (50, 50, False)]
 
     class Test(QObject):
         data = Test1()
@@ -55,7 +56,7 @@ def test_createAnnotation_1(qtbot):
     e = QEntity()
     with mock.patch.object(QExtrudedTextMesh,
                            'setText'):
-        val = app.createAnnotation(e, 45, 45, 'test')
+        val = app.createAnnotation(e, 45, 45, 'test', True)
         assert isinstance(val, QEntity)
 
 
@@ -63,7 +64,15 @@ def test_createAnnotation_2(qtbot):
     e = QEntity()
     with mock.patch.object(QExtrudedTextMesh,
                            'setText'):
-        val = app.createAnnotation(e, 45, 45, 'test', faceIn=True)
+        val = app.createAnnotation(e, 45, 45, 'test', False)
+        assert isinstance(val, QEntity)
+
+
+def test_createAnnotation_3(qtbot):
+    e = QEntity()
+    with mock.patch.object(QExtrudedTextMesh,
+                           'setText'):
+        val = app.createAnnotation(e, 45, 45, 'test', True, faceIn=True)
         assert isinstance(val, QEntity)
 
 
@@ -95,6 +104,7 @@ def test_create_4():
     app.app.data.buildP = None
     app.points = [{'e': e}]
     suc = app.create(e, True)
+    assert not suc
 
 
 def test_create_5():
@@ -106,4 +116,58 @@ def test_create_5():
                            'createAnnotation',
                            return_value=(QEntity(), 1, 1, 1)):
         suc = app.create(e, True, numbers=True, path=True)
+        assert suc
+
+
+def test_updatePositions_1(qtbot):
+    app.pointRoot = None
+    suc = app.updatePositions()
+    assert not suc
+
+
+def test_updatePositions_2(qtbot):
+    app.pointRoot = QEntity()
+    app.model = {
+        'laser': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+    }
+
+    suc = app.updatePositions()
+    assert not suc
+
+
+def test_updatePositions_3(qtbot):
+    app.pointRoot = QEntity()
+    app.transformPointRoot = QTransform()
+    app.model = {
+        'laser': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'ref': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'alt': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+        'az': {
+            'e': QEntity(),
+            't': QTransform()
+        },
+    }
+
+    app.app.mount.obsSite.raJNow = 10
+    app.app.mount.obsSite.timeSidereal = '10:10:10'
+
+    with mock.patch.object(app.app.mount.geometry,
+                           'calcTransformationMatrices',
+                           return_value=(0, 0,
+                                         np.array([1, 1, 1]),
+                                         np.array([1, 1, 1]),
+                                         np.array([1, 1, 1]))):
+        suc = app.updatePositions()
         assert suc

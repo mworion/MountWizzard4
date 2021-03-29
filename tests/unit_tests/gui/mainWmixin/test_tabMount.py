@@ -283,7 +283,7 @@ def test_updateSetSyncGUI_3(function):
 
 def test_updateSetSyncGUI_4(function):
     function.app.mount.setting.typeConnection = None
-    function.app.mount.setting.wakeOnLan = 'ON'
+    function.app.mount.setting.wakeOnLan = 'On'
     suc = function.updateSetSyncGUI(function.app.mount.setting)
     assert suc
 
@@ -302,32 +302,62 @@ def test_updateSetSyncGUI_6(function):
     assert suc
 
 
-def test_tracking_speed1(function):
-    with mock.patch.object(function.app.mount.obsSite,
+def test_updateTrackingGui_1(function):
+    function.app.mount.obsSite.status = 1
+    with mock.patch.object(function.app.mount.setting,
                            'checkRateLunar',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.obsSite)
+        suc = function.updateTrackingGui(function.app.mount.setting)
         assert suc
 
 
-def test_tracking_speed2(function):
-    with mock.patch.object(function.app.mount.obsSite,
+def test_updateTrackingGui_2(function):
+    function.app.mount.obsSite.status = 1
+    with mock.patch.object(function.app.mount.setting,
                            'checkRateSidereal',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.obsSite)
+        suc = function.updateTrackingGui(function.app.mount.setting)
         assert suc
 
 
-def test_tracking_speed3(function):
-    with mock.patch.object(function.app.mount.obsSite,
+def test_updateTrackingGui_3(function):
+    function.app.mount.obsSite.status = 1
+    with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.obsSite)
+        suc = function.updateTrackingGui(function.app.mount.setting)
         assert suc
+
+
+def test_updateTrackingGui_4(function):
+    function.app.mount.obsSite.status = 10
+    with mock.patch.object(function.app.mount.setting,
+                           'checkRateSolar',
+                           return_value=True):
+        suc = function.updateTrackingGui(function.app.mount.setting)
+        assert suc
+
+
+def test_updateTrackingGui_5(function):
+    function.app.mount.obsSite.status = None
+    with mock.patch.object(function.app.mount.setting,
+                           'checkRateSolar',
+                           return_value=True):
+        suc = function.updateTrackingGui(function.app.mount.setting)
+        assert not suc
+
+
+def test_updateTrackingGui_6(function):
+    function.app.mount.obsSite.status = None
+    with mock.patch.object(function.app.mount.setting,
+                           'checkRateSolar',
+                           return_value=True):
+        suc = function.updateTrackingGui(None)
+        assert not suc
 
 
 def test_setLunarTracking1(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'setLunarTracking',
                            return_value=True):
         with qtbot.waitSignal(function.app.message) as blocker:
@@ -337,7 +367,7 @@ def test_setLunarTracking1(function, qtbot):
 
 
 def test_setLunarTracking2(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'setLunarTracking',
                            return_value=False):
         with qtbot.waitSignal(function.app.message) as blocker:
@@ -347,7 +377,7 @@ def test_setLunarTracking2(function, qtbot):
 
 
 def test_setSiderealTracking1(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'setSiderealTracking',
                            return_value=True):
         with qtbot.waitSignal(function.app.message) as blocker:
@@ -357,7 +387,7 @@ def test_setSiderealTracking1(function, qtbot):
 
 
 def test_setSiderealTracking2(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'setSiderealTracking',
                            return_value=False):
         with qtbot.waitSignal(function.app.message) as blocker:
@@ -367,7 +397,7 @@ def test_setSiderealTracking2(function, qtbot):
 
 
 def test_setSolarTracking1(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'setSolarTracking',
                            return_value=True):
         with qtbot.waitSignal(function.app.message) as blocker:
@@ -377,7 +407,7 @@ def test_setSolarTracking1(function, qtbot):
 
 
 def test_setSolarTracking2(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
+    with mock.patch.object(function.app.mount.setting,
                            'setSolarTracking',
                            return_value=False):
         with qtbot.waitSignal(function.app.message) as blocker:
@@ -424,6 +454,22 @@ def test_stop2(function, qtbot):
             suc = function.stop()
             assert not suc
         assert ['Cannot stop mount', 2] == blocker.args
+
+
+def test_virtualStop_1(function):
+    function.ui.activateVirtualStop.setChecked(True)
+    with mock.patch.object(function,
+                           'stop',
+                           return_value=False):
+        function.virtualStop()
+
+
+def test_virtualStop_2(function):
+    function.ui.activateVirtualStop.setChecked(False)
+    with mock.patch.object(function,
+                           'stop',
+                           return_value=False):
+        function.virtualStop()
 
 
 def test_updateSetting_slewRate_1(function):
@@ -565,35 +611,6 @@ def test_updateLocGUI_3(function):
     function.app.mount.obsSite.location = ['49:00:00', '11:00:00', '500']
     suc = function.updateLocGUI(None)
     assert not suc
-
-
-def test_updateTrackingGui_1(function):
-    suc = function.updateTrackingGui(None)
-    assert not suc
-
-
-def test_updateTrackingGui_2(function):
-    with mock.patch.object(function.app.mount.obsSite,
-                           'checkRateLunar',
-                           return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.obsSite)
-        assert suc
-
-
-def test_updateTrackingGui_3(function):
-    with mock.patch.object(function.app.mount.obsSite,
-                           'checkRateSolar',
-                           return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.obsSite)
-        assert suc
-
-
-def test_updateTrackingGui_4(function):
-    with mock.patch.object(function.app.mount.obsSite,
-                           'checkRateSidereal',
-                           return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.obsSite)
-        assert suc
 
 
 def test_changeTracking_ok1(function, qtbot):
@@ -991,6 +1008,36 @@ def test_setLongitude_6(function, qtbot):
             assert not suc
 
 
+def test_setLongitude_7(function, qtbot):
+    function.app.deviceStat['mount'] = True
+    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
+                                                latitude_degrees=49,
+                                                elevation_m=500)
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('11E 30 45.5', True)):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setLongitude',
+                               return_value=False):
+            suc = function.setLongitude()
+            assert not suc
+
+
+def test_setLongitude_8(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
+                                                latitude_degrees=49,
+                                                elevation_m=500)
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('11E 30 45.5', True)):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setLongitude',
+                               return_value=True):
+            suc = function.setLongitude()
+            assert not suc
+
+
 def test_setLatitude_1(function, qtbot):
     function.app.mount.obsSite.location = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -1063,6 +1110,36 @@ def test_setLatitude_6(function, qtbot):
                            return_value=(None, True)):
         suc = function.setLatitude()
         assert not suc
+
+
+def test_setLatitude_7(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
+                                                latitude_degrees=49,
+                                                elevation_m=500)
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('45N 30 45.5', True)):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setLatitude',
+                               return_value=True):
+            suc = function.setLatitude()
+            assert not suc
+
+
+def test_setLatitude_8(function, qtbot):
+    function.app.deviceStat['mount'] = True
+    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
+                                                latitude_degrees=49,
+                                                elevation_m=500)
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('45N 30 45.5', True)):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setLatitude',
+                               return_value=False):
+            suc = function.setLatitude()
+            assert not suc
 
 
 def test_setElevation_1(function, qtbot):

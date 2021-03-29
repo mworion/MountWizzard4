@@ -1,13 +1,19 @@
 ############################################################
 # -*- coding: utf-8 -*-
 #
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# (c) 2016, 2017, 2018#
+# written in python3, (c) 2019-2021 by mworion
 # Licence APL2.0
 #
-############################################################
+###########################################################
 # standard libraries
 import logging
 from threading import Lock

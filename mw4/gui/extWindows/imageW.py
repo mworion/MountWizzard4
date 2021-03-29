@@ -20,6 +20,9 @@ import os
 
 # external packages
 import PyQt5.QtWidgets
+import numpy as np
+from scipy.interpolate import griddata
+from scipy.ndimage import uniform_filter
 from astropy.io import fits
 from astropy import wcs
 from astropy.nddata import Cutout2D
@@ -28,13 +31,12 @@ from astropy.visualization import AsinhStretch
 from astropy.visualization import imshow_norm
 from matplotlib.patches import Ellipse
 import matplotlib.pyplot as plt
-from skyfield.api import Angle
-import numpy as np
 from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
-from mountcontrol.convert import convertToDMS, convertToHMS
 import sep
 
 # local import
+from mountcontrol.convert import convertToDMS, convertToHMS
+from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
 from gui.utilities import toolsQtWidget
 from gui.widgets import image_ui
 from base.tpool import Worker
@@ -88,9 +90,11 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.view = {0: 'Image Raw',
                      1: 'Image with Sources',
                      2: 'Photometry: HFD value',
-                     3: 'Photometry: Background level',
-                     4: 'Photometry: Background noise',
-                     5: 'Photometry: Flux',
+                     3: 'Photometry: Eccentricity',
+                     4: 'Photometry: Background level',
+                     5: 'Photometry: Background noise',
+                     6: 'Photometry: Flux',
+                     7: 'Photometry: HFD Contour',
                      }
 
         self.colorMaps = {'Grey': 'gray',
@@ -188,9 +192,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         :return: true for test purpose
         """
-        self.show()
-        self.showCurrent()
-
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.preparePlot)
         self.ui.stretch.currentIndexChanged.connect(self.preparePlot)
@@ -202,11 +203,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
+        self.ui.checkStackImages.clicked.connect(self.clearStack)
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.signals.showCurrent.connect(self.showCurrent)
         self.signals.solveImage.connect(self.solveImage)
         self.app.showImage.connect(self.showImage)
+        self.show()
+        self.showCurrent()
         return True
 
     def closeEvent(self, closeEvent):
@@ -220,7 +224,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.storeConfig()
-
         self.ui.load.clicked.disconnect(self.selectImage)
         self.ui.color.currentIndexChanged.disconnect(self.preparePlot)
         self.ui.stretch.currentIndexChanged.disconnect(self.preparePlot)
@@ -232,13 +235,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.solve.clicked.disconnect(self.solveCurrent)
         self.ui.expose.clicked.disconnect(self.exposeImage)
         self.ui.exposeN.clicked.disconnect(self.exposeImageN)
+        self.ui.checkStackImages.clicked.disconnect(self.clearStack)
         self.ui.abortImage.clicked.disconnect(self.abortImage)
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
         self.signals.showCurrent.disconnect(self.showCurrent)
         self.signals.solveImage.disconnect(self.solveImage)
-
         self.app.showImage.disconnect(self.showImage)
-
         plt.close(self.imageMat.figure)
         super().closeEvent(closeEvent)
 
@@ -462,7 +464,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         else:
             imageDisp = self.image
 
-        if self.ui.view.currentIndex() in [0, 1, 2]:
+        if self.ui.view.currentIndex() in [0, 1, 2, 3]:
             imageDisp[imageDisp < 0] = 0
             img = imshow_norm(imageDisp,
                               ax=self.axe,
@@ -507,7 +509,21 @@ class ImageWindow(toolsQtWidget.MWidget):
                                   color=self.M_BLUE,
                                   fontweight='bold')
 
-        if self.ui.view.currentIndex() == 3 and self.bk_back is not None:
+        if self.ui.view.currentIndex() == 3 and self.objs is not None:
+            a = self.objs['a']
+            b = self.objs['b']
+            eccentricity = np.sqrt(1 - b ** 2 / a ** 2)
+            area = 5
+            scatter = self.axe.scatter(self.objs['x'], self.objs['y'],
+                                       c=eccentricity, s=area, cmap='gnuplot2')
+
+            colorbar = self.fig.colorbar(scatter, cax=self.axeCB)
+            colorbar.set_label('Eccentricity []', color=self.M_BLUE,
+                               fontsize=12)
+            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
+
+        if self.ui.view.currentIndex() == 4 and self.bk_back is not None:
             img = imshow_norm(self.bk_back,
                               ax=self.axe,
                               origin='lower',
@@ -523,7 +539,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                 yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
                 plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        if self.ui.view.currentIndex() == 4 and self.bk_rms is not None:
+        if self.ui.view.currentIndex() == 5 and self.bk_rms is not None:
             img = imshow_norm(self.bk_rms,
                               ax=self.axe,
                               origin='lower',
@@ -540,7 +556,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                 plt.setp(yTicks, color=self.M_BLUE,
                          fontweight='bold')
 
-        if self.ui.view.currentIndex() == 5 and self.flux is not None:
+        if self.ui.view.currentIndex() == 6 and self.flux is not None:
             flux = np.log(self.flux)
             area = 3 * flux
             scatter = self.axe.scatter(self.objs['x'], self.objs['y'],
@@ -551,8 +567,24 @@ class ImageWindow(toolsQtWidget.MWidget):
             yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
             plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        self.axe.figure.canvas.draw()
+        if self.ui.view.currentIndex() == 7 and self.radius is not None and \
+                self.objs is not None:
 
+            x = self.objs['x']
+            y = self.objs['y']
+            z = self.radius
+            width = imageDisp.shape[1]
+            height = imageDisp.shape[0]
+            X, Y = np.meshgrid(range(0, width, int(width / 250)),
+                               range(0, height, int(height / 250)))
+            Z = griddata((x, y), z, (X, Y), method='linear', fill_value=np.mean(z))
+            Z = uniform_filter(Z, size=25)
+            self.axe.contourf(X, Y, Z, 20)
+
+            if self.axeCB:
+                self.axeCB.axis('off')
+
+        self.axe.figure.canvas.draw()
         return True
 
     def writeHeaderDataToGUI(self):
@@ -562,14 +594,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         name = self.header.get('OBJECT', '').upper()
         self.ui.object.setText(f'{name}')
 
-        ra = Angle(degrees=self.header.get('RA', 0))
-        dec = Angle(degrees=self.header.get('DEC', 0))
+        ra, dec = getCoordinates(header=self.header)
 
-        # ra will be in hours
-        self.ui.ra.setText(f'{ra.hstr(warn=False)}')
-        self.ui.dec.setText(f'{dec.dstr()}')
+        self.ui.ra.setText(f'{self.formatHstrToText(ra)}')
+        self.ui.dec.setText(f'{self.formatDstrToText(dec)}')
 
-        scale = self.header.get('SCALE', 0)
+        scale = getScale(header=self.header)
         rotation = self.header.get('ANGLE', 0)
         self.ui.scale.setText(f'{scale:5.3f}')
         self.ui.rotation.setText(f'{rotation:6.3f}')
@@ -577,9 +607,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         ccdTemp = self.header.get('CCD-TEMP', 0)
         self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
 
-        expTime1 = self.header.get('EXPOSURE', 0)
-        expTime2 = self.header.get('EXPTIME', 0)
-        expTime = max(expTime1, expTime2)
+        expTime = getExposure(header=self.header)
         self.ui.expTime.setText(f'{expTime:5.1f}')
 
         filterCCD = self.header.get('FILTER', 0)
@@ -590,10 +618,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.binX.setText(f'{binX:1.0f}')
         self.ui.binY.setText(f'{binY:1.0f}')
 
-        sqm = max(self.header.get('SQM', 0),
-                  self.header.get('SKY-QLTY', 0),
-                  self.header.get('MPSAS', 0),
-                  )
+        sqm = getSQM(header=self.header)
         self.ui.sqm.setText(f'{sqm:5.2f}')
 
         flipped = bool(self.header.get('FLIPPED', False))
@@ -688,8 +713,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         if np.shape(self.image) != np.shape(self.imageStack):
             self.imageStack = None
 
-        self.ui.numberStacks.setText(f'mean of: {self.numberStack:4.0f}')
-
         if self.imageStack is None:
             self.imageStack = self.image
             self.numberStack = 1
@@ -699,6 +722,19 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.numberStack += 1
 
         self.image = self.imageStack / self.numberStack
+        self.ui.numberStacks.setText(f'mean of: {self.numberStack:4.0f}')
+        return True
+
+    def clearStack(self):
+        """
+        :return:
+        """
+        if not self.ui.checkStackImages.isChecked():
+            self.imageStack = None
+            self.numberStack = 0
+            self.ui.numberStacks.setText('single')
+            return False
+
         return True
 
     def zoomImage(self):
@@ -852,7 +888,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param imagePath:
         :return: True for test purpose
         """
-        text = f'Exposed:            [{os.path.basename(imagePath)}]'
+        text = f'Exposed:             [{os.path.basename(imagePath)}]'
         self.app.message.emit(text, 0)
 
         if self.ui.checkAutoSolve.isChecked():

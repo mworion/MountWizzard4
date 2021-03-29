@@ -18,14 +18,12 @@
 # standard libraries
 
 # external packages
+import numpy as np
 from PyQt5.QtCore import QObject, Qt, QRectF
 from PyQt5.QtGui import QPixmap, QColor, QLinearGradient
 from PyQt5.QtWidgets import QApplication, QSplashScreen
-import numpy as np
 
 # local import
-import resource.resources
-resource.resources.qInitResources()
 
 
 class SplashScreen(QObject):

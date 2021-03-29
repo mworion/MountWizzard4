@@ -31,6 +31,8 @@ class SettMount(object):
         self.ui.mountOn.clicked.connect(self.mountBoot)
         self.ui.mountOff.clicked.connect(self.mountShutdown)
         self.ui.mountHost.editingFinished.connect(self.mountHost)
+        self.ui.port3492.clicked.connect(self.mountHost)
+        self.ui.port3490.clicked.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
         self.app.mount.signals.settingDone.connect(self.setMountMAC)
@@ -39,35 +41,34 @@ class SettMount(object):
 
     def initConfig(self):
         """
-
         :return:
         """
-
         config = self.app.config['mainW']
         self.ui.mountHost.setText(config.get('mountHost', ''))
+        self.ui.port3492.setChecked(config.get('port3492', True))
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
         self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
         self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 0))
-
         return True
 
     def storeConfig(self):
         """
-
         :return:
         """
-
         config = self.app.config['mainW']
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
         config['rackCompMAC'] = self.ui.rackCompMAC.text()
         config['settleTimeMount'] = self.ui.settleTimeMount.value()
-
+        config['port3492'] = self.ui.port3492.isChecked()
         return True
 
     def mountBoot(self):
+        """
+        :return:
+        """
         if self.app.mount.bootMount():
             self.app.message.emit('Sent boot command to mount', 0)
             return True
@@ -77,6 +78,9 @@ class SettMount(object):
             return False
 
     def mountShutdown(self):
+        """
+        :return:
+        """
         if self.app.mount.shutdown():
             self.app.message.emit('Shutting mount down', 0)
             return True
@@ -87,17 +91,12 @@ class SettMount(object):
 
     def checkFormatMAC(self, value):
         """
-        checkFormatMAC makes some checks to ensure that the format of the string is ok for
-        WOL package.
-
         :param      value: string with mac address
         :return:    checked string in upper cases
         """
-
         if not value:
             self.log.info('wrong MAC value: {0}'.format(value))
             return None
-
         if not isinstance(value, str):
             self.log.info('wrong MAC value: {0}'.format(value))
             return None
@@ -120,16 +119,13 @@ class SettMount(object):
                     self.log.info('wrong MAC value: {0}'.format(value))
                     return None
 
-        # now we build the right format
         value = '{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}'.format(*value)
         return value
 
     def bootRackComp(self):
         """
-
         :return:
         """
-
         MAC = self.ui.rackCompMAC.text()
         MAC = self.checkFormatMAC(MAC)
         if MAC is not None:
@@ -142,15 +138,18 @@ class SettMount(object):
 
     def mountHost(self):
         """
-
         :return: true for test purpose
         """
-        self.app.mount.host = self.ui.mountHost.text()
+        if self.ui.port3492.isChecked():
+            port = 3492
+        else:
+            port = 3490
+
+        self.app.mount.host = (self.ui.mountHost.text(), port)
         return True
 
     def mountMAC(self):
         """
-
         :return: true for test purpose
         """
         self.app.mount.MAC = self.ui.mountMAC.text()
@@ -158,46 +157,34 @@ class SettMount(object):
 
     def setMountMAC(self, sett=None):
         """
-
         :param sett:
         :return: true for test purpose
         """
         if sett is None:
             return False
-
         if sett.addressLanMAC is None:
             return False
         if not sett.addressLanMAC:
             return False
+
         self.app.mount.MAC = sett.addressLanMAC
-
-        if self.app.mount.MAC is None:
-            return False
         self.ui.mountMAC.setText(self.app.mount.MAC)
-
         return True
 
     def setMountSettlingTime(self):
         """
-
         :return: true for test purpose
         """
-
         self.app.mount.settlingTime = self.ui.settleTimeMount.value()
-
         return True
 
     def updateFwGui(self, fw):
         """
-        updateFwGui write all firmware data to the gui.
-
         :return:    True if ok for testing
         """
-
         self.guiSetText(self.ui.product, 's', fw.product)
         self.guiSetText(self.ui.vString, 's', fw.vString)
         self.guiSetText(self.ui.fwdate, 's', fw.date)
         self.guiSetText(self.ui.fwtime, 's', fw.time)
         self.guiSetText(self.ui.hardware, 's', fw.hardware)
-
         return True

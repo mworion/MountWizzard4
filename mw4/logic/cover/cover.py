@@ -142,3 +142,34 @@ class Cover:
 
         suc = self.run[self.framework].haltCover()
         return suc
+
+    def lightOn(self):
+        """
+        :return:
+        """
+        if self.framework not in self.run.keys():
+            return False
+
+        suc = self.run[self.framework].lightOn()
+        return suc
+
+    def lightOff(self):
+        """
+        :return:
+        """
+        if self.framework not in self.run.keys():
+            return False
+
+        suc = self.run[self.framework].lightOff()
+        return suc
+
+    def lightIntensity(self, value):
+        """
+        :param value:
+        :return:
+        """
+        if self.framework not in self.run.keys():
+            return False
+
+        suc = self.run[self.framework].lightIntensity(value)
+        return suc

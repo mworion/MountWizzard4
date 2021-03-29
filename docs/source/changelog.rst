@@ -5,7 +5,6 @@ detailed changes list, please refer to the commit list on GitHub.
 
 Unreleased version of MW4
 -------------------------
-(1.1)
 
 - 3d Simulator (mount, dome, build points etc)
 - retrofit model based on hashed coordinates
@@ -17,13 +16,79 @@ Unreleased version of MW4
   I see quite a few times the dome being moved by only a very small amount. But it
   does affect the observatory, so even this small move needs another 10s settle
   time for the mount So avoiding them would be great.
-
-(1.0)
-
-- first official release
+- if indi UPD Driver is fixed and officially available, bring back auto dew
 
 Released beta version of MW4
 ----------------------------
+1.1.0b12
+
+- adding release notes showing new capabilities in message window
+- adding cover light on / off
+- adding cover light intensity settings
+- reversing E/W for polar diagram in hemisphere window
+- adding push mount time to computer manual / hourly
+- adding contour HFD plot to image windows
+- adding virtual emergency stop key on time group
+- update build-in files if newer ones are shipped
+- auto restart MW4 after update
+- adding OBJCTRA / OBJCTDEC keywords when reading FITs
+- upgrade various libraries
+
+Released version of MW4
+-----------------------
+1.0.7
+
+- bugfix cooler
+
+1.0.6
+
+- checking if camera has cooler
+- fixing retry model points
+
+1.0.5
+
+- bugfix check for H18 database
+
+1.0.4
+- adding check for ASTAP H17, H18, G17, G18 database
+- increasing the solve limit from 9999 arcsec to 36000 arcsec
+
+1.0.3
+- bugfix binning setting on large sensors
+
+1.0.2
+- bugfix: polar alignment command error
+
+1.0.1
+- bugfix: fields index and app in device popup for astrometry and astap were wrong
+
+1.0.0
+
+- first official release
+
+0.240.4
+
+- adding choice of mount port 3490 or 3492
+- improving gui for sat tracking and displayed tracking rate
+
+0.240.3
+
+- icons, gui improvements
+- checking tracking
+- minor bugfixes fpr corner cases
+
+0.240.2
+
+- cleanup
+- skyfield 1.36
+- remove workaround as 10micron offered a fix in fw 2.16.13
+- remove autodew button for pegasus as provided indi driver has bugs
+
+
+0.240.1
+
+- bugfix
+
 0.240.0
 
 - adding workaround for 2.16.12 firmware when deleting model points

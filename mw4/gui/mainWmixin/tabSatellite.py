@@ -75,7 +75,9 @@ class Satellite(object):
         """
         :return: True for test purpose
         """
+        config = self.app.config['mainW']
         self.setupSatelliteSourceURLsDropDown()
+        self.ui.filterSatellite.setText(config.get('filterSatellite'))
         if not self.app.automation:
             self.installPath = self.app.mwGlob['dataDir']
 
@@ -84,6 +86,14 @@ class Satellite(object):
 
         else:
             self.installPath = self.app.mwGlob['dataDir']
+        return True
+
+    def storeConfig(self):
+        """
+        :return:
+        """
+        config = self.app.config['mainW']
+        config['filterSatellite'] = self.ui.filterSatellite.text()
         return True
 
     def setupSatelliteSourceURLsDropDown(self):
@@ -331,8 +341,6 @@ class Satellite(object):
         }
 
         fString = "%Y-%m-%d  %H:%M"
-
-        # collecting the events
         index = 0
         satOrbits = dict()
         for ti, event in zip(t, events):
@@ -356,6 +364,11 @@ class Satellite(object):
         for satOrbit in satOrbits:
             if satOrbit > 2:
                 break
+            if 'rise' not in satOrbits[satOrbit]:
+                break
+            if 'settle' not in satOrbits[satOrbit]:
+                break
+
             timeRise = satOrbits[satOrbit]['rise'].utc_strftime(fString)
             timeSettle = satOrbits[satOrbit]['settle'].utc_strftime(fString)
             passUI[satOrbit]['rise'].setText(f'{timeRise}')
@@ -568,7 +581,7 @@ class Satellite(object):
             return False
 
         self.app.message.emit(f'Program database:    [{source}]', 1)
-        self.app.message.emit('Exporting MPC data', 0)
+        self.app.message.emit('Exporting TLE data', 0)
 
         filterStr = self.ui.filterSatellite.text().lower()
 
@@ -591,7 +604,11 @@ class Satellite(object):
             return False
 
         if not self.app.automation:
-            self.app.message.emit('Not running windows, no updater available', 2)
+            self.app.message.emit('Not running windows - upload not possible', 2)
+            return False
+
+        if not self.app.automation.installPath:
+            self.app.message.emit('No QCI updater available - upload not possible', 2)
             return False
 
         self.app.message.emit('Uploading TLE data to mount', 0)
@@ -599,9 +616,8 @@ class Satellite(object):
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
-
-        self.app.message.emit('Programming success', 1)
-
+        else:
+            self.app.message.emit('Programming success', 1)
         return suc
 
     def progSatellitesFull(self):
@@ -626,7 +642,11 @@ class Satellite(object):
             return False
 
         if not self.app.automation:
-            self.app.message.emit('Not running windows, no updater available', 2)
+            self.app.message.emit('Not running windows - upload not possible', 2)
+            return False
+
+        if not self.app.automation.installPath:
+            self.app.message.emit('No QCI updater available - upload not possible', 2)
             return False
 
         self.app.message.emit('Uploading TLE data to mount', 0)
@@ -634,6 +654,6 @@ class Satellite(object):
 
         if not suc:
             self.app.message.emit('Uploading error', 2)
-
-        self.app.message.emit('Programming success', 1)
+        else:
+            self.app.message.emit('Programming success', 1)
         return suc

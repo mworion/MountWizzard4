@@ -854,7 +854,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>Path to astrometry.net index files</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astrometry.net index files. Where native installation or e.g. KStars put the files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -1143,7 +1143,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>Path to astrometry.net index files</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astrometry.net binary files. Where native installation or e.g. KStars put the files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -1408,7 +1408,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>Path to astrometry.net index files</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astap star database.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -1462,7 +1462,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>Path to astrometry.net index files</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astap application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>

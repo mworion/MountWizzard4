@@ -42,7 +42,7 @@ class Client(Client):
     __all__ = ['Client',
                ]
 
-    SOCKET_TIMEOUT = 1
+    SOCKET_TIMEOUT = 3
     CYCLE_SERVER_UP = 5000
 
     def __init__(self, host=None, threadPool=None):
@@ -65,20 +65,16 @@ class Client(Client):
 
         :return: nothing
         """
-        client = socket.socket()
-        client.settimeout(self.SOCKET_TIMEOUT)
-        try:
-            client.connect(self.host)
+        with socket.socket() as client:
+            client.settimeout(self.SOCKET_TIMEOUT)
+            try:
+                client.connect(self.host)
 
-        except Exception:
-            return False
+            except Exception:
+                return False
 
-        else:
-            return True
-
-        finally:
-            client.shutdown(socket.SHUT_RDWR)
-            client.close()
+            else:
+                return True
 
     def checkServerUpResult(self, result):
         """

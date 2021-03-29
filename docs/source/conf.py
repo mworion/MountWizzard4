@@ -35,12 +35,12 @@
 # -- Project information -----------------------------------------------------
 
 project = 'MountWizzard4'
-copyright = '2020, mworion'
+copyright = '2021, mworion'
 author = 'mworion'
 
 # The full version, including alpha/beta/rc tags
-version = '0.240.0'
-version = '0.240.0'
+version = '1.1.0'
+release = '1.1.0'
 master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------

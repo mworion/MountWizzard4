@@ -16,40 +16,41 @@
 #
 ###########################################################
 # standard libraries
+import html
+import locale
 import logging
 import os
-import sys
 import platform
 import socket
+import sys
 import traceback
-import locale
-import html
 import warnings
 
-
 # external packages
-from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
-from PyQt5.QtGui import QMouseEvent, QIcon
-from PyQt5.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButton
-from PyQt5.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
 import astropy
 import matplotlib
+from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
+from PyQt5.QtGui import QMouseEvent, QIcon
+from PyQt5.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
+from PyQt5.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButton
 from importlib_metadata import version
 
 # local import
 from base.loggerMW import setupLogging
-from mainApp import MountWizzard4
 from gui.utilities.splashScreen import SplashScreen
-import resource.resources
+from mainApp import MountWizzard4
+import resource.resources as res
 
 setupLogging()
+res.qInitResources()
+matplotlib.use('Qt5Agg')
+astropy.utils.iers.conf.auto_download = False
+astropy.utils.data.conf.allow_internet = False
+log = logging.getLogger()
+
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 warnings.simplefilter("ignore", UserWarning)
 sys.coinit_flags = 2
-resource.resources.qInitResources()
-matplotlib.use('Qt5Agg')
-astropy.utils.iers.conf.auto_download = False
-log = logging.getLogger()
 
 
 class QAwesomeTooltipEventFilter(QObject):
@@ -298,24 +299,41 @@ def extractDataFiles(mwGlob=None, splashW=None):
     if mwGlob is None:
         return False
 
-    files = [
-        'de421_23.bsp',
-        'active.txt',
-        'tai-utc.dat',
-        'finals2000A.all',
-    ]
+    files = {
+        'de421_23.bsp': 0,
+        'active.txt': 0,
+        'tai-utc.dat': 0,
+        'finals2000A.all': 0,
+    }
+
+    content = QFile(':/data/content.txt')
+    content.open(QFile.ReadOnly)
+    lines = content.readAll().data().decode().splitlines()
+    content.close()
+    for line in lines:
+        name, date = line.split(' ')
+        if name in files:
+            files[name] = float(date)
 
     for file in files:
         if splashW is not None:
             splashW.showMessage('Loading {0}'.format(file))
 
         filePath = mwGlob['dataDir'] + '/' + file
-
-        if QFile.copy(f':/data/{file}', filePath):
-            log.debug(f'Writing missing file:  [{file}]')
-
+        fileExist = os.path.isfile(filePath)
+        if fileExist:
+            mtime = os.stat(filePath).st_mtime
+            doWrite = mtime < files[file]
         else:
-            log.debug(f'Already existing file: [{file}]')
+            doWrite = True
+
+        if doWrite:
+            if fileExist:
+                os.remove(filePath)
+            QFile.copy(f':/data/{file}', filePath)
+            log.debug(f'Writing file:  [{file}]')
+        else:
+            log.debug(f'Using existing file: [{file}]')
 
         os.chmod(filePath, 0o666)
     return True

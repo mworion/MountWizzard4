@@ -267,8 +267,8 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*',
                     '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5']
-        suc = sett.parseSetting(response,  21)
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
+        suc = sett.parseSetting(response,  22)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_not_ok0(self):
@@ -277,7 +277,7 @@ class TestConfigData(unittest.TestCase):
                     '101+90*',
                     '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
                     '0', '987.0', '+20,5']
-        suc = sett.parseSetting(response,  21)
+        suc = sett.parseSetting(response,  22)
         self.assertEqual(False, suc)
 
     def test_Setting_parse_not_ok1(self):
@@ -285,8 +285,8 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0EEE.0', '60.2', '+033.0',
                     '101+90*',
                     '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5']
-        suc = sett.parseSetting(response,  21)
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
+        suc = sett.parseSetting(response,  22)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_not_ok2(self):
@@ -294,8 +294,8 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '+90*',
                     '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5']
-        suc = sett.parseSetting(response,  21)
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
+        suc = sett.parseSetting(response,  22)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_not_ok3(self):
@@ -303,9 +303,9 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*',
                     '+00', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5']
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
 
-        suc = sett.parseSetting(response,  21)
+        suc = sett.parseSetting(response,  22)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_not_ok4(self):
@@ -314,9 +314,9 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*',
                     '+00*', ',2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5']
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
 
-        suc = sett.parseSetting(response,  21)
+        suc = sett.parseSetting(response,  22)
 
         self.assertEqual(True, suc)
 
@@ -325,10 +325,10 @@ class TestConfigData(unittest.TestCase):
 
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5']
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
 
         with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response,  21
+            mConn.return_value.communicate.return_value = True, response,  22
             suc = sett.pollSetting()
             self.assertEqual(True, suc)
 
@@ -337,10 +337,10 @@ class TestConfigData(unittest.TestCase):
 
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5']
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
 
         with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response,  21
+            mConn.return_value.communicate.return_value = True, response,  22
             suc = sett.pollSetting()
             self.assertEqual(True, suc)
 
@@ -349,10 +349,10 @@ class TestConfigData(unittest.TestCase):
 
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5']
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
 
         with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, response,  21
+            mConn.return_value.communicate.return_value = False, response,  22
             suc = sett.pollSetting()
             self.assertEqual(False, suc)
 
@@ -361,7 +361,7 @@ class TestConfigData(unittest.TestCase):
 
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5']
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
 
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 6
@@ -1107,3 +1107,102 @@ class TestConfigData(unittest.TestCase):
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setDirectWeatherUpdateType(5)
             self.assertEqual(suc, False)
+
+    #
+    #
+    # testing setLunarTracking
+    #
+    #
+
+    def test_ObsSite_setLunarTracking_ok(self):
+        setting = Setting()
+        response = []
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = setting.setLunarTracking()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setLunarTracking_not_ok1(self):
+        setting = Setting()
+        response = []
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = setting.setLunarTracking()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing setSiderealTracking
+    #
+    #
+
+    def test_ObsSite_setSiderealTracking_ok(self):
+        setting = Setting()
+        response = []
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = setting.setSiderealTracking()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setSiderealTracking_not_ok1(self):
+        setting = Setting()
+        response = []
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = setting.setSiderealTracking()
+            self.assertEqual(False, suc)
+
+    #
+    #
+    # testing setSolarTracking
+    #
+    #
+
+    def test_ObsSite_setSolarTracking_ok(self):
+        setting = Setting()
+        response = []
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = setting.setSolarTracking()
+            self.assertEqual(True, suc)
+
+    def test_ObsSite_setSolarTracking_not_ok1(self):
+        setting = Setting()
+        response = []
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = setting.setSolarTracking()
+            self.assertEqual(False, suc)
+
+    def test_Checking_trackingRate1(self):
+        setting = Setting()
+        setting.trackingRate = '62.4'
+        self.assertEqual(True, setting.checkRateLunar())
+        self.assertEqual(False, setting.checkRateSidereal())
+        self.assertEqual(False, setting.checkRateSolar())
+
+    def test_Checking_trackingRate2(self):
+        setting = Setting()
+        setting.trackingRate = '60.2'
+        self.assertEqual(False, setting.checkRateLunar())
+        self.assertEqual(True, setting.checkRateSidereal())
+        self.assertEqual(False, setting.checkRateSolar())
+
+    def test_Checking_trackingRate3(self):
+        setting = Setting()
+        setting.trackingRate = '60.3'
+        self.assertEqual(False, setting.checkRateLunar())
+        self.assertEqual(False, setting.checkRateSidereal())
+        self.assertEqual(True, setting.checkRateSolar())
+
+    def test_Checking_trackingRate4(self):
+        setting = Setting()
+        setting.trackingRate = '6'
+        self.assertEqual(False, setting.checkRateLunar())
+        self.assertEqual(False, setting.checkRateSidereal())
+        self.assertEqual(False, setting.checkRateSolar())
+
+    def test_ObsSite_trackingRate(self):
+        setting = Setting()
+        setting.trackingRate = '67'
+        self.assertEqual(67, setting.trackingRate)

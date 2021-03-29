@@ -37,6 +37,7 @@ class Tools(object):
                                    'rename3': self.ui.rename3,
                                    'rename4': self.ui.rename4,
                                    'rename5': self.ui.rename5,
+                                   'rename6': self.ui.rename6,
                                    }
         self.fitsHeaderKeywords = {'None': [''],
                                    'Datetime': ['DATE-OBS'],
@@ -107,7 +108,6 @@ class Tools(object):
         config = self.app.config['mainW']
         defaultDir = self.app.mwGlob['imageDir']
         self.ui.renameDir.setText(config.get('renameDir', defaultDir))
-        self.ui.renameText.setText(config.get('renameText', ''))
         self.ui.newObjectName.setText(config.get('newObjectName', ''))
         self.ui.checkIncludeSubdirs.setChecked(config.get('checkIncludeSubdirs', False))
         for name, ui in self.selectorsDropDowns.items():
@@ -120,9 +120,6 @@ class Tools(object):
         self.ui.slewSpeedLow.setChecked(config.get('slewSpeedLow', False))
         self.ui.moveDuration.setCurrentIndex(config.get('moveDuration', 0))
         self.ui.moveStepSizeAltAz.setCurrentIndex(config.get('moveStepSizeAltAz', 0))
-
-        self.ui.tabMoving.setCurrentIndex(config.get('tabMoving', 0))
-
         return True
 
     def storeConfig(self):
@@ -135,7 +132,6 @@ class Tools(object):
         """
         config = self.app.config['mainW']
         config['renameDir'] = self.ui.renameDir.text()
-        config['renameText'] = self.ui.renameText.text()
         config['newObjectName'] = self.ui.newObjectName.text()
         config['checkIncludeSubdirs'] = self.ui.checkIncludeSubdirs.isChecked()
         for name, ui in self.selectorsDropDowns.items():
@@ -147,9 +143,6 @@ class Tools(object):
         config['slewSpeedLow'] = self.ui.slewSpeedLow.isChecked()
         config['moveDuration'] = self.ui.moveDuration.currentIndex()
         config['moveStepSizeAltAz'] = self.ui.moveStepSizeAltAz.currentIndex()
-
-        config['tabMoving'] = self.ui.tabMoving.currentIndex()
-
         return True
 
     def setupGui(self):
@@ -183,7 +176,6 @@ class Tools(object):
         :param search: search string
         :return: number of files found
         """
-
         if not pathDir:
             return 0
         if not os.path.isdir(pathDir):
@@ -196,14 +188,13 @@ class Tools(object):
 
     def convertHeaderEntry(self, entry='', fitsKey=''):
         """
-        convertHeaderEntry takes the fitsHeader entry and reformat it to a reasonable
-        string.
+        convertHeaderEntry takes the fitsHeader entry and reformat it to a
+        reasonable string.
 
         :param entry:
         :param fitsKey:
         :return:
         """
-
         if not fitsKey:
             return ''
         if not entry:
@@ -214,15 +205,15 @@ class Tools(object):
             chunk = chunk.replace('T', '_')
             chunk = chunk.split('.')[0]
         elif fitsKey == 'XBINNING':
-            chunk = f'Bin-{entry:1.0f}'
+            chunk = f'Bin{entry:1.0f}'
         elif fitsKey == 'CCD-TEMP':
             chunk = f'Temp{entry:03.0f}'
         elif fitsKey == 'FRAME':
-            chunk = f'Frame-{entry}'
+            chunk = f'{entry}'
         elif fitsKey == 'FILTER':
-            chunk = f'Filter-{entry}'
+            chunk = f'{entry}'
         elif fitsKey == 'EXPTIME':
-            chunk = f'Exp-{entry:04.0f}s'
+            chunk = f'Exp{entry:1.0f}s'
         elif fitsKey == 'RenameText':
             chunk = self.ui.renameText.text().upper()
         else:
@@ -240,7 +231,6 @@ class Tools(object):
         :param selection: str entry from the drop down selector
         :return: nameChunk: part of the entry
         """
-
         if fitsHeader is None:
             return ''
         if not selection:
@@ -310,7 +300,6 @@ class Tools(object):
 
         :return: True for test purpose
         """
-
         pathDir = self.ui.renameDir.text()
         includeSubdirs = self.ui.checkIncludeSubdirs.isChecked()
 

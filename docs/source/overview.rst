@@ -1,14 +1,21 @@
 Before starting
 ===============
+First let us have a look to the basic architecture: MW4 is an application
+installed on a computer which is connected to the mount computer via an IP
+connection. Ideally it is a wired connection. As the 10micron mounts also support
+a serial line, MW4 does not. The mount computer drives the mount without any help
+from outside, so if you don't request something from it, there is hardly any
+communication.
+
+.. image:: overview.drawio.svg
+    :align: center
+
+The basic idea is that MW4 will try to generate "digital twin" for the mount. All
+parameter changes for the mount will be sent to it and changes of it's state are
+polled to make status visible in MW4.
 
 Overview
 --------
-
-.. note:: Please remember that MountWizzard4 is under development!
-
-Welcome to MountWizzard4! MW4 is a utility for 10micron users for improving the
-workflow for astronomy work and imaging runs on Windows10, Mac OSX (beginning from
-10.12) and Linux (Ubuntu from 16.04.).
 As a python application, it should run in all environments which support python
 3.7, 3.8 or 3.9 including Qt as a Gui framework. Please notice that python 3.9 and
 older python version prior to 3.7 and python 2 is not supported.
@@ -124,9 +131,6 @@ Known limitations
 MW4 does only support python 3.7 - 3.9 right now. The reason for that is the
 missing availability of precompiled packages needed.
 
-On Apple MacOSx BigSur you need update to > 0.220.3 at the Qt framework has some
-issues opening the primary display.
-
 Some features are limited to windows version only as they need the original
 10micronQCI updater program to execute.
 
@@ -167,9 +171,11 @@ quality and usability any feedback is highly welcome. To maintain a good
 transparency and a doable work for my, please respect some recommendations how
 to feed back.
 
-Please report back under: https://github.com/mworion/MountWizzard4/issues.
-This is good for any feedback (bug reports, other issues, usability, feature
-requests, etc).
+.. note:: Please report back under: https://github.com/mworion/MountWizzard4/issues.
+          This is good for any feedback (bug reports, other issues, usability, 
+          feature requests, etc).
+          In https://github.com/mworion/MountWizzard4/discussions there is a good
+          place to start discussions for all other topics of interest.
 
 In case of a bug report please have a good description (maybe a screenshot if it‘s
 related to GUI) and add the log file(s) to the issue. Normally you just could drop

@@ -152,6 +152,15 @@ def test_generatePolar_6(function):
     assert fig
 
 
+def test_generatePolar_7(function):
+    ui = QWidget()
+    widget = function.embedMatplot(ui)
+    axe, fig = function.generatePolar(widget=widget, showAxes=False,
+                                      reversed=True)
+    assert axe
+    assert fig
+
+
 def test_generateFlat_1(function):
     axe, fig = function.generateFlat()
     assert axe is None

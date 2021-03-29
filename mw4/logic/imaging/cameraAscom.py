@@ -57,8 +57,10 @@ class CameraAscom(AscomClass):
 
         self.dataEntry(self.client.CameraXSize, 'CCD_INFO.CCD_MAX_X')
         self.dataEntry(self.client.CameraYSize, 'CCD_INFO.CCD_MAX_Y')
-        # self.dataEntry(self.client.CanFastReadout, 'CAN_FAST')
+        self.dataEntry(self.client.CanFastReadout, 'CAN_FAST')
         self.dataEntry(self.client.CanAbortExposure, 'CAN_ABORT')
+        self.dataEntry(self.client.CanSetCCDTemperature, 'CAN_SET_CCD_TEMPERATURE')
+        self.dataEntry(self.client.CanGetCoolerPower, 'CAN_GET_COOLER_POWER')
         self.dataEntry(self.client.PixelSizeX, 'CCD_INFO.CCD_PIXEL_SIZE_X')
         self.dataEntry(self.client.PixelSizeY, 'CCD_INFO.CCD_PIXEL_SIZE_Y')
         self.dataEntry(self.client.MaxBinX, 'CCD_BINNING.HOR_BIN_MAX')
@@ -67,8 +69,7 @@ class CameraAscom(AscomClass):
         self.dataEntry(self.client.BinY, 'CCD_BINNING.VERT_BIN')
         self.dataEntry(self.client.StartX, 'CCD_FRAME.X')
         self.dataEntry(self.client.StartY, 'CCD_FRAME.Y')
-
-        self.log.trace(f'Initial data: {self.data}')
+        self.log.debug(f'Initial data: {self.data}')
 
         return True
 
@@ -81,20 +82,24 @@ class CameraAscom(AscomClass):
 
         self.dataEntry(self.client.CameraState,
                        'CAMERA.STATE')
-        self.dataEntry(self.client.CCDTemperature,
-                       'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-        self.dataEntry(self.client.CoolerOn,
-                       'CCD_COOLER.COOLER_ON')
-        self.dataEntry(self.client.CoolerPower,
-                       'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         canFast = self.data.get('CAN_FAST', False)
-        if not canFast:
-            return False
+        if canFast:
+            self.dataEntry(self.client.FastReadout,
+                           'READOUT_QUALITY.QUALITY_LOW',
+                           'READOUT_QUALITY.QUALITY_HIGH')
 
-        self.dataEntry(self.client.FastReadout,
-                       'READOUT_QUALITY.QUALITY_LOW',
-                       'READOUT_QUALITY.QUALITY_HIGH')
+        canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
+        if canSetCCDTemp:
+            self.dataEntry(self.client.CCDTemperature,
+                           'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+            self.dataEntry(self.client.CoolerOn,
+                           'CCD_COOLER.COOLER_ON')
+
+        canGetCoolerPower = self.data.get('CAN_GET_COOLER_POWER', False)
+        if canGetCoolerPower:
+            self.dataEntry(self.client.CoolerPower,
+                           'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         return True
 
@@ -114,9 +119,9 @@ class CameraAscom(AscomClass):
         if fastReadout:
             self.client.FastReadout = True
 
-        quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
-        self.log.debug(f'camera has readout quality entry: {quality}')
-
+        isQualityHigh = self.data.get('READOUT_QUALITY.QUALITY_HIGH', True)
+        qualityText = 'High' if isQualityHigh else 'Low'
+        self.log.debug(f'camera has readout quality entry: {qualityText}')
         return True
 
     def workerExpose(self,
@@ -145,19 +150,13 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        binning = int(binning)
-        posX = int(posX)
-        posY = int(posY)
-        width = int(width)
-        height = int(height)
-
         self.sendDownloadMode(fastReadout=fastReadout)
-        self.client.StartX = posX
-        self.client.StartY = posY
+        self.client.BinX = int(binning)
+        self.client.BinY = int(binning)
+        self.client.StartX = int(posX / binning)
+        self.client.StartY = int(posY / binning)
         self.client.NumX = int(width / binning)
         self.client.NumY = int(height / binning)
-        self.client.BinX = binning
-        self.client.BinY = binning
 
         isMount = self.app.deviceStat['mount']
         if isMount:
@@ -258,7 +257,6 @@ class CameraAscom(AscomClass):
                         focalLength=focalLength)
 
         self.threadPool.start(worker)
-
         return True
 
     def abort(self):
@@ -286,8 +284,11 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.CoolerOn = coolerOn
+        canGetCoolerPower = self.data.get('CAN_GET_COOLER_POWER', False)
+        if not canGetCoolerPower:
+            return False
 
+        self.client.CoolerOn = coolerOn
         return True
 
     def sendCoolerTemp(self, temperature=0):
@@ -298,6 +299,9 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.SetCCDTemperature = temperature
+        canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
+        if not canSetCCDTemp:
+            return False
 
+        self.client.SetCCDTemperature = temperature
         return True

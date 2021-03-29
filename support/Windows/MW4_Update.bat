@@ -1,7 +1,7 @@
 @echo off
 rem
 rem updater for Win10
-rem (c) 2020 mworion
+rem (c) 2021 mworion
 rem
 
 echo.
@@ -18,15 +18,13 @@ echo.
 echo ---------------------------------------------
 echo update script version 0.4
 echo ---------------------------------------------
-echo update script version 0.4 > update.log 2>&1
-echo.
 
+echo update script version 0.4 > update.log 2>&1
 
 echo.
 echo ---------------------------------------------
 echo updating MW4 to newest official release
 echo ---------------------------------------------
-echo.
 
 call venv\Scripts\activate venv >> update.log 2>&1
 
@@ -36,7 +34,7 @@ echo ---------------------------------------------
 echo no valid virtual environment installed
 echo please check the install.log for errors
 echo ---------------------------------------------
-echo.
+
 echo no valid virtual environment installed >> update.log 2>&1
 exit
 
@@ -45,7 +43,6 @@ echo.
 echo ---------------------------------------------
 echo checking installed python version
 echo ---------------------------------------------
-echo.
 
 echo Checking environment and start script >> update.log 2>&1
 
@@ -71,16 +68,15 @@ echo.
 echo ---------------------------------------------
 echo no valid python version installed
 echo ---------------------------------------------
-echo.
+
 echo no valid python version installed >> update.log 2>&1
 exit
 
 :proceedOK
 echo.
 echo ---------------------------------------------
-echo python version ok
+echo python version ok: %P_VER%
 echo ---------------------------------------------
-echo.
 
 pip install mountwizzard4 --upgrade --no-cache-dir >> update.log 2>&1
 
@@ -89,4 +85,3 @@ echo ----------------------------------------
 echo updated mountwizzard4 successfully
 echo for details see update.log
 echo ----------------------------------------
-echo.

@@ -1245,78 +1245,6 @@ class TestConfigData(unittest.TestCase):
 
     #
     #
-    # testing setLunarTracking
-    #
-    #
-
-    def test_ObsSite_setLunarTracking_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
-
-        response = []
-        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 0
-            suc = obsSite.setLunarTracking()
-            self.assertEqual(True, suc)
-
-    def test_ObsSite_setLunarTracking_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
-
-        response = []
-        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, response, 0
-            suc = obsSite.setLunarTracking()
-            self.assertEqual(False, suc)
-
-    #
-    #
-    # testing setSiderealTracking
-    #
-    #
-
-    def test_ObsSite_setSiderealTracking_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
-
-        response = []
-        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 0
-            suc = obsSite.setSiderealTracking()
-            self.assertEqual(True, suc)
-
-    def test_ObsSite_setSiderealTracking_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
-
-        response = []
-        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, response, 0
-            suc = obsSite.setSiderealTracking()
-            self.assertEqual(False, suc)
-
-    #
-    #
-    # testing setSolarTracking
-    #
-    #
-
-    def test_ObsSite_setSolarTracking_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
-
-        response = []
-        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 0
-            suc = obsSite.setSolarTracking()
-            self.assertEqual(True, suc)
-
-    def test_ObsSite_setSolarTracking_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
-
-        response = []
-        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, response, 0
-            suc = obsSite.setSolarTracking()
-            self.assertEqual(False, suc)
-
-    #
-    #
     # testing park
     #
     #
@@ -1452,39 +1380,6 @@ class TestConfigData(unittest.TestCase):
             mConn.return_value.communicate.return_value = False, response, 1
             suc = obsSite.flip()
             self.assertEqual(False, suc)
-
-    def test_Checking_trackingRate1(self):
-        obsSite = ObsSite(pathToData=pathToData)
-        obsSite.trackingRate = '62.4'
-        self.assertEqual(True, obsSite.checkRateLunar())
-        self.assertEqual(False, obsSite.checkRateSidereal())
-        self.assertEqual(False, obsSite.checkRateSolar())
-
-    def test_Checking_trackingRate2(self):
-        obsSite = ObsSite(pathToData=pathToData)
-        obsSite.trackingRate = '60.2'
-        self.assertEqual(False, obsSite.checkRateLunar())
-        self.assertEqual(True, obsSite.checkRateSidereal())
-        self.assertEqual(False, obsSite.checkRateSolar())
-
-    def test_Checking_trackingRate3(self):
-        obsSite = ObsSite(pathToData=pathToData)
-        obsSite.trackingRate = '60.3'
-        self.assertEqual(False, obsSite.checkRateLunar())
-        self.assertEqual(False, obsSite.checkRateSidereal())
-        self.assertEqual(True, obsSite.checkRateSolar())
-
-    def test_Checking_trackingRate4(self):
-        obsSite = ObsSite(pathToData=pathToData)
-        obsSite.trackingRate = '6'
-        self.assertEqual(False, obsSite.checkRateLunar())
-        self.assertEqual(False, obsSite.checkRateSidereal())
-        self.assertEqual(False, obsSite.checkRateSolar())
-
-    def test_ObsSite_trackingRate(self):
-        obsSite = ObsSite(pathToData=pathToData)
-        obsSite.trackingRate = '67'
-        self.assertEqual(67, obsSite.trackingRate)
 
     def test_moveNorth_1(self):
         obsSite = ObsSite(pathToData=pathToData)

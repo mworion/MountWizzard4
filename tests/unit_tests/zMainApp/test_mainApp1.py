@@ -16,10 +16,8 @@
 #
 ###########################################################
 # standard libraries
-import sys
 import unittest.mock as mock
-import logging
-import os
+import shutil
 
 # external packages
 import PyQt5
@@ -41,6 +39,8 @@ def test_start_parameters_1(qapp):
               }
     with open(mwGlob['workDir'] + '/test.txt', 'w+') as test:
         test.write('test')
+
+    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):

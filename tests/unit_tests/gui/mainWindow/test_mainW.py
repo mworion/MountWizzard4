@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+from unittest.mock import patch
 import pytest
 import glob
 import os
@@ -28,7 +29,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QThreadPool
-from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton, QWidget
 from PyQt5.QtCore import QTimer
 from mountcontrol.qtmount import Mount
 from skyfield.api import Topos
@@ -55,6 +56,10 @@ from logic.measure.measure import MeasureData
 from logic.telescope.telescope import Telescope
 from logic.astrometry.astrometry import Astrometry
 from base.loggerMW import addLoggingLevel
+from base import packageConfig
+from resource import resources
+resources.qInitResources()
+
 
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
@@ -72,6 +77,7 @@ def function_setup_teardown(qtbot):
                       pathToData='tests/data')
         update10s = pyqtSignal()
         update1s = pyqtSignal()
+        update1h = pyqtSignal()
         mwGlob = {'imageDir': 'tests/image',
                   'dataDir': 'tests/data',
                   'modelDir': 'tests/model',
@@ -103,6 +109,7 @@ def function_setup_teardown(qtbot):
         config = {'mainW': {},
                   'showImageW': True}
         update1s = pyqtSignal()
+        update1h = pyqtSignal()
         redrawSimulator = pyqtSignal()
         drawHorizonPoints = pyqtSignal()
         drawBuildPoints = pyqtSignal()
@@ -162,6 +169,8 @@ def function_setup_teardown(qtbot):
                            'show'):
         with mock.patch.object(ImageWindow,
                                'show'):
+            packageConfig.isSimulator = True
+            packageConfig.isAvailable = True
             app = MainWindow(app=Test())
             app.log = logging.getLogger()
             addLoggingLevel('TRACE', 5)
@@ -239,16 +248,44 @@ def test_setupIcons():
     assert suc
 
 
+@patch('base.packageConfig.isSimulator', False)
 def test_updateMountConnStat_1():
+    suc = app.updateMountConnStat(False)
+    assert suc
+    assert not app.deviceStat['mount']
+
+
+@patch('base.packageConfig.isSimulator', True)
+def test_updateMountConnStat_2():
     suc = app.updateMountConnStat(True)
     assert suc
     assert app.deviceStat['mount']
 
 
-def test_updateMountConnStat_2():
+@patch('base.packageConfig.isSimulator', True)
+def test_updateMountConnStat_3():
+    app.uiWindows = {'showSimulatorW': {
+        'button': app.ui.mountConnected,
+        'classObj': None,
+        'name': 'SimulatorDialog',
+        'class': None,
+        }
+    }
+    suc = app.updateMountConnStat(False)
+    assert not suc
+
+
+@patch('base.packageConfig.isSimulator', True)
+def test_updateMountConnStat_4():
+    app.uiWindows = {'showSimulatorW': {
+        'button': app.ui.mountConnected,
+        'classObj': QWidget(),
+        'name': 'SimulatorDialog',
+        'class': None,
+        }
+    }
     suc = app.updateMountConnStat(False)
     assert suc
-    assert not app.deviceStat['mount']
 
 
 def test_updateMountWeatherStat_1():
@@ -347,6 +384,12 @@ def test_smartFunctionGui_7():
 
 
 def test_smartTabGui_1():
+    suc = app.smartTabGui()
+    assert suc
+
+
+def test_smartTabGui_2():
+    app.deviceStat['power'] = True
     suc = app.smartTabGui()
     assert suc
 

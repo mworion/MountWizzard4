@@ -3,32 +3,32 @@ cd $(dirname "$0")
 
 #
 # run script for osx
-# (c) 2020 mworion
+# (c) 2021 mworion
 #
 
 echo
-echo ---------------------------------------------
+echo --------------------------------------------------------
 echo
-echo " ███╗   ███╗ ██╗    ██╗ ██╗  ██╗"
-echo " ████╗ ████║ ██║    ██║ ██║  ██║"
-echo " ██╔████╔██║ ██║ █╗ ██║ ███████║"
-echo " ██║╚██╔╝██║ ██║███╗██║ ╚════██║"
-echo " ██║ ╚═╝ ██║ ╚███╔███╔╝      ██║"
-echo " ╚═╝     ╚═╝  ╚══╝╚══╝       ╚═╝"
+echo "         ███╗   ███╗██╗    ██╗██╗  ██╗"
+echo "         ████╗ ████║██║    ██║██║  ██║"
+echo "         ██╔████╔██║██║ █╗ ██║███████║"
+echo "         ██║╚██╔╝██║██║███╗██║╚════██║"
+echo "         ██║ ╚═╝ ██║╚███╔███╔╝     ██║"
+echo "         ╚═╝     ╚═╝ ╚══╝╚══╝      ╚═╝"
 echo
-echo ---------------------------------------------
+echo --------------------------------------------------------
 echo run script version 0.4
-echo ---------------------------------------------
+echo --------------------------------------------------------
+
 echo run script version 0.4 >> run.log 2>&1
 echo
 
 if [ ! -f ./venv/bin/activate ]; then
   echo
-  echo ----------------------------------------
+  echo --------------------------------------------------------
   echo no valid virtual environment installed
   echo please run MW4_Install.command first
-  echo ----------------------------------------
-  echo
+  echo --------------------------------------------------------
   exit
 fi
 
@@ -37,10 +37,10 @@ export QT_FONT_DPI=96 >> run.log 2>&1
 source ./venv/bin/activate venv >> run.log 2>&1
 
 echo
-echo ---------------------------------------------
+echo --------------------------------------------------------
 echo checking installed python version
-echo ---------------------------------------------
-echo
+echo --------------------------------------------------------
+
 
 echo Checking environment and start script >> run.log 2>&1
 
@@ -59,17 +59,16 @@ echo variable P_VER has value of $P_VER >> run.log 2>&1
 
 if [ "${P_VER:0:6}" == "python" ]; then
   echo
-  echo ---------------------------------------------
-  echo python version ok
-  echo ---------------------------------------------
-  echo
+  echo --------------------------------------------------------
+  echo python version ok: ${P_VER}
+  echo --------------------------------------------------------
 else
   echo
-  echo ---------------------------------------------
+  echo --------------------------------------------------------
   echo no valid python version installed
   echo please run MW4_Install.command first
-  echo ---------------------------------------------
-  echo
+  echo --------------------------------------------------------
+
   echo no valid python version installed >> run.log 2>&1
   exit
 fi

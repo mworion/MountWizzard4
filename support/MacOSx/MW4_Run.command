@@ -2,8 +2,8 @@
 cd $(dirname "$0")
 
 #
-# run script for Ubuntu
-# (c) 2020 mworion
+# run script for macOS
+# (c) 2021 mworion
 #
 echo
 echo ---------------------------------------------
@@ -18,8 +18,8 @@ echo
 echo ---------------------------------------------
 echo run script version 0.4
 echo ---------------------------------------------
+
 echo run script version 0.4 > run.log 2>&1
-echo
 
 if [ ! -f ./venv/bin/activate ]; then
   echo
@@ -27,7 +27,7 @@ if [ ! -f ./venv/bin/activate ]; then
   echo no valid virtual environment installed
   echo please run MW4_Install.command first
   echo ---------------------------------------------
-  echo
+
   exit
 fi
 
@@ -37,7 +37,6 @@ echo
 echo ---------------------------------------------
 echo checking installed python version
 echo ---------------------------------------------
-echo
 
 echo Checking environment and start script >> run.log 2>&1
 
@@ -63,16 +62,16 @@ echo variable P_VER has value of $P_VER >> run.log 2>&1
 if [ "${P_VER:0:6}" == "python" ]; then
   echo
   echo ---------------------------------------------
-  echo python version ok
+  echo python version ok: ${P_VER}
   echo ---------------------------------------------
-  echo
+
 else
   echo
   echo ---------------------------------------------
   echo no valid python version installed
   echo please run MW4_Install.command first
   echo ---------------------------------------------
-  echo
+
   exit
 fi
 

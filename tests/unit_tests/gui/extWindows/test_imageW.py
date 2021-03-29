@@ -379,8 +379,63 @@ def test_imagePlot_5(function):
                ('a', '<f8'), ('b', '<f8'),
                ('theta', '<f8'), ('flux', '<f8')])
     function.bk_back = np.zeros([100, 100])
-    function.flux = np.random.rand(10)
+    function.bk_rms = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(5)
+    suc = function.imagePlot()
+    assert suc
+
+
+def test_imagePlot_6(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.image = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.axe = function.fig.add_subplot(label=0)
+    function.axeCB = function.fig.add_subplot(label=1)
+    function.stretch = AsinhStretch()
+    function.colorMap = 'rainbow'
+    function.objs = np.ones(
+        10,
+        dtype=[('x', '<f8'), ('y', '<f8'),
+               ('a', '<f8'), ('b', '<f8'),
+               ('theta', '<f8'), ('flux', '<f8')])
+    function.bk_back = np.zeros([100, 100])
+    function.flux = np.random.rand(10)
+    function.ui.view.setCurrentIndex(6)
+    suc = function.imagePlot()
+    assert suc
+
+
+def test_imagePlot_7(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.image = np.random.rand(300, 300)
+    function.header = fits.PrimaryHDU().header
+    function.axe = function.fig.add_subplot(label=0)
+    function.axeCB = function.fig.add_subplot(label=1)
+    function.stretch = AsinhStretch()
+    function.colorMap = 'rainbow'
+    function.objs = np.ones(
+        100,
+        dtype=[('x', '<f8'), ('y', '<f8'),
+               ('a', '<f8'), ('b', '<f8'),
+               ('theta', '<f8'), ('flux', '<f8')])
+    function.objs['x'] = np.random.rand(100)
+    function.objs['y'] = np.random.rand(100)
+    function.bk_back = np.zeros([300, 300])
+    function.radius = np.random.rand(100)
+    function.ui.view.setCurrentIndex(7)
     suc = function.imagePlot()
     assert suc
 
@@ -394,6 +449,24 @@ def test_writeHeaderDataToGUI_1(function):
 def test_writeHeaderDataToGUI_2(function):
     function.header = fits.PrimaryHDU().header
     function.header['naxis'] = 2
+    suc = function.writeHeaderDataToGUI()
+    assert suc
+
+
+def test_writeHeaderDataToGUI_3(function):
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
+    function.header['OBJCTRA'] = '+08 00 00'
+    function.header['OBJCTDEC'] = '90 00 00'
+    suc = function.writeHeaderDataToGUI()
+    assert suc
+
+
+def test_writeHeaderDataToGUI_4(function):
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
+    function.header['RA'] = 12.0
+    function.header['DEC'] = 80.0
     suc = function.writeHeaderDataToGUI()
     assert suc
 
@@ -515,6 +588,22 @@ def test_stackImages_3(function):
     suc = function.stackImages()
     assert suc
     assert function.numberStack == 6
+
+
+def test_clearStack_1(function):
+    function.ui.numberStacks.setText('test')
+    function.ui.checkStackImages.setChecked(False)
+    suc = function.clearStack()
+    assert not suc
+    assert function.ui.numberStacks.text() == 'single'
+
+
+def test_clearStack_2(function):
+    function.ui.numberStacks.setText('test')
+    function.ui.checkStackImages.setChecked(True)
+    suc = function.clearStack()
+    assert suc
+    assert function.ui.numberStacks.text() == 'test'
 
 
 def test_zoomImage_1(function):
@@ -691,7 +780,7 @@ def test_exposeImageNDone_1(function, qtbot):
         with qtbot.waitSignal(function.app.showImage):
             suc = function.exposeImageNDone()
             assert suc
-    assert ['Exposed:            []', 0] == blocker.args
+    assert ['Exposed:             []', 0] == blocker.args
 
 
 def test_exposeImageNDone_2(function, qtbot):
@@ -701,7 +790,7 @@ def test_exposeImageNDone_2(function, qtbot):
         with qtbot.waitSignal(function.signals.solveImage):
             suc = function.exposeImageNDone()
             assert suc
-    assert ['Exposed:            []', 0] == blocker.args
+    assert ['Exposed:             []', 0] == blocker.args
 
 
 def test_exposeImageN_1(function):

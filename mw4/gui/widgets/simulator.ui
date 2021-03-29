@@ -43,6 +43,7 @@
   <property name="font">
    <font>
     <family>Arial</family>
+    <pointsize>10</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -123,6 +124,9 @@
             <height>25</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When pressed, show top view of scene.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Top View</string>
           </property>
@@ -135,6 +139,9 @@
             <width>0</width>
             <height>25</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When pressed, show view from top west to telecope scene.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Top West View</string>
@@ -149,6 +156,9 @@
             <height>25</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When pressed, show view from west to telecope scene.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>West View</string>
           </property>
@@ -161,6 +171,9 @@
             <width>0</width>
             <height>25</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When pressed, show view from top east to telecope scene.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Top East View</string>
@@ -175,6 +188,9 @@
             <height>25</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When pressed, show view from east to telecope scene.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>East View</string>
           </property>
@@ -187,6 +203,9 @@
             <width>0</width>
             <height>25</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When pressed, show view from telecope to sphere.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Telescope View</string>
@@ -253,6 +272,9 @@
             <pointsize>10</pointsize>
            </font>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show dome transparent.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Dome transp.</string>
           </property>
@@ -272,8 +294,27 @@
             <pointsize>10</pointsize>
            </font>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show intersection point from line of sight and dome sphere.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Intersect Point</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkShowLaser">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show line of sight from telescope.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Laser</string>
           </property>
          </widget>
         </item>
@@ -290,6 +331,9 @@
             <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show build points on outer sphere.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Build Points</string>
@@ -310,6 +354,9 @@
             <pointsize>10</pointsize>
            </font>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show build point number close to build point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Numbers</string>
           </property>
@@ -329,6 +376,9 @@
             <pointsize>10</pointsize>
            </font>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show slew path between build points.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Slew Path</string>
           </property>
@@ -347,6 +397,9 @@
             <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show horizon in scene.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Horizon</string>

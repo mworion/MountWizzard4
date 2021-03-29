@@ -83,8 +83,17 @@ class ModelStar(object):
 
     @coord.setter
     def coord(self, value):
+        self._coord = None
+        self._az = None
+        self._alt = None
+
         if not isinstance(value, (tuple, list, Star)):
-            self._coord = None
+            return
+        if not self.obsSite:
+            return
+
+        loc = self.obsSite.location
+        if not loc:
             return
 
         if isinstance(value, Star):
@@ -94,7 +103,6 @@ class ModelStar(object):
 
         else:
             if len(value) != 2:
-                self._coord = None
                 return
 
             ha, dec = value
@@ -102,12 +110,11 @@ class ModelStar(object):
             dec = stringToDegree(dec)
 
             if not ha or not dec:
-                self._coord = None
                 self.log.warning('Malformed value: {0}'.format(value))
                 return
             self._coord = Star(ra_hours=ha, dec_degrees=dec)
 
-        lat = self.obsSite.location.latitude.degrees
+        lat = loc.latitude.degrees
         alt, az = topoToAltAz(ha, dec, lat)
         self._alt = Angle(degrees=alt)
         self._az = Angle(degrees=az)

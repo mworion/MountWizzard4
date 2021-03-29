@@ -23,20 +23,16 @@ import shutil
 import glob
 
 # external packages
-from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget, QInputDialog
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtTest import QTest
 from astropy.io import fits
-from mountcontrol.qtmount import Mount
 from skyfield.api import Angle
+import numpy as np
 
 # local import
 from tests.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabSettDome import SettDome
 from gui.mainWmixin.tabTools import Tools
 
 
@@ -135,7 +131,7 @@ def test_convertHeaderEntry_4(function):
 
 def test_convertHeaderEntry_5(function):
     chunk = function.convertHeaderEntry(entry=1, fitsKey='XBINNING')
-    assert chunk == 'Bin-1'
+    assert chunk == 'Bin1'
 
 
 def test_convertHeaderEntry_6(function):
@@ -145,23 +141,17 @@ def test_convertHeaderEntry_6(function):
 
 def test_convertHeaderEntry_7(function):
     chunk = function.convertHeaderEntry(entry='Light', fitsKey='FRAME')
-    assert chunk == 'Frame-Light'
+    assert chunk == 'Light'
 
 
 def test_convertHeaderEntry_8(function):
     chunk = function.convertHeaderEntry(entry='red', fitsKey='FILTER')
-    assert chunk == 'Filter-red'
+    assert chunk == 'red'
 
 
 def test_convertHeaderEntry_9(function):
     chunk = function.convertHeaderEntry(entry=14, fitsKey='EXPTIME')
-    assert chunk == 'Exp-0014s'
-
-
-def test_convertHeaderEntry_10(function):
-    function.ui.renameText.setText('test')
-    chunk = function.convertHeaderEntry(entry='test', fitsKey='RenameText')
-    assert chunk == 'TEST'
+    assert chunk == 'Exp14s'
 
 
 def test_convertHeaderEntry_11(function):
@@ -217,6 +207,42 @@ def test_renameFile_2(function):
 
 def test_renameFile_3(function):
     shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+
+    with mock.patch.object(os,
+                           'rename'):
+        suc = function.renameFile('tests/image/m51.fit')
+        assert suc
+
+
+def test_renameFile_4(function):
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    function.ui.newObjectName.setText('test')
+
+    with mock.patch.object(os,
+                           'rename'):
+        suc = function.renameFile('tests/image/m51.fit')
+        assert suc
+
+
+def test_renameFile_5(function):
+    hdu = fits.PrimaryHDU(np.arange(100.0))
+    hduList = fits.HDUList([hdu])
+    hduList.writeto('tests/image/m51.fit')
+
+    with mock.patch.object(os,
+                           'rename'):
+        suc = function.renameFile('tests/image/m51.fit')
+        assert suc
+
+
+def test_renameFile_6(function):
+    hdu = fits.PrimaryHDU(np.arange(100.0))
+    hdu.header['FILTER'] = 'test'
+    hduList = fits.HDUList([hdu])
+    hduList.writeto('tests/image/m51.fit')
+
+    function.ui.rename1.clear()
+    function.ui.rename1.addItem('Filter')
 
     with mock.patch.object(os,
                            'rename'):
@@ -718,12 +744,15 @@ def test_moveRaDecAbsolute_4(function):
 def test_moveRaDecAbsolute_5(function):
     function.ui.moveCoordinateRa.setText('12H')
     function.ui.moveCoordinateDec.setText('30 30')
-    function.app.mount.obsSite.timeJD = None
+    function.app.mount.obsSite.timeJD
     with mock.patch.object(function.app.mount.obsSite,
-                           'setTargetRaDec'):
-        with mock.patch.object(function,
-                               'slewSelectedTargetWithDome',
-                               return_value=False):
-            suc = function.moveRaDecAbsolute()
-            assert not suc
+                           'timeJD',
+                           return_value=None):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setTargetRaDec'):
+            with mock.patch.object(function,
+                                   'slewSelectedTargetWithDome',
+                                   return_value=False):
+                suc = function.moveRaDecAbsolute()
+                assert not suc
 

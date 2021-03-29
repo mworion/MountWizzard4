@@ -21,7 +21,7 @@ from PyQt5.QtCore import QMutex
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QVector3D
 from PyQt5.QtWidgets import QWidget
-from PyQt5.Qt3DExtras import Qt3DWindow, QSphereMesh
+from PyQt5.Qt3DExtras import Qt3DWindow
 from PyQt5.Qt3DExtras import QOrbitCameraController
 from PyQt5.Qt3DRender import QPointLight
 from PyQt5.Qt3DCore import QEntity, QTransform
@@ -36,6 +36,7 @@ from gui.extWindows.simulator.telescope import SimulatorTelescope
 from gui.extWindows.simulator.horizon import SimulatorHorizon
 from gui.extWindows.simulator.points import SimulatorBuildPoints
 from gui.extWindows.simulator.pointer import SimulatorPointer
+from gui.extWindows.simulator.laser import SimulatorLaser
 
 
 class SimulatorWindow(toolsQtWidget.MWidget):
@@ -57,7 +58,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         self.rootEntity = QEntity()
         self.camera = self.view.camera()
-        self.camera.lens().setPerspectiveProjection(45.0, 16.0 / 9.0, 0.1, 1000.0)
+        self.camera.lens().setPerspectiveProjection(60.0, 16.0 / 9.0, 0.1, 1000.0)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 15.0, 3.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -66,11 +67,11 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.camController.setLinearSpeed(5.0)
         self.camController.setLookSpeed(90)
         self.view.setRootEntity(self.rootEntity)
-        self.view.defaultFrameGraph().setClearColor(QColor(40, 40, 40))
+        self.view.defaultFrameGraph().setClearColor(QColor(24, 24, 24))
 
         self.pL0E = QEntity(self.rootEntity)
         self.pL0 = QPointLight(self.pL0E)
-        self.pL0.setIntensity(1)
+        self.pL0.setIntensity(1.5)
         self.pL0ETransform = QTransform()
         self.pL0ETransform.setTranslation(QVector3D(5, 20, 5))
         self.pL0E.addComponent(self.pL0)
@@ -81,14 +82,11 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.horizon = SimulatorHorizon(self.app)
         self.buildPoints = SimulatorBuildPoints(self.app)
         self.pointer = SimulatorPointer(self.app)
+        self.laser = SimulatorLaser(self.app)
         self.world = None
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to
-        the gui elements. if some initialisations have to be proceeded with the
-        loaded persistent data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
         if 'simulatorW' not in self.app.config:
@@ -114,6 +112,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         self.ui.checkDomeTransparent.setChecked(config.get('checkDomeTransparent', False))
         self.ui.checkShowPointer.setChecked(config.get('checkShowPointer', False))
+        self.ui.checkShowLaser.setChecked(config.get('checkShowLaser', False))
         self.ui.checkShowBuildPoints.setChecked(config.get('checkShowBuildPoints', False))
         self.ui.checkShowNumbers.setChecked(config.get('checkShowNumbers', False))
         self.ui.checkShowSlewPath.setChecked(config.get('checkShowSlewPath', False))
@@ -123,10 +122,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         if 'simulatorW' not in self.app.config:
@@ -145,6 +140,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         config['checkDomeTransparent'] = self.ui.checkDomeTransparent.isChecked()
         config['checkShowPointer'] = self.ui.checkShowPointer.isChecked()
+        config['checkShowLaser'] = self.ui.checkShowLaser.isChecked()
         config['checkShowBuildPoints'] = self.ui.checkShowBuildPoints.isChecked()
         config['checkShowNumbers'] = self.ui.checkShowNumbers.isChecked()
         config['checkShowSlewPath'] = self.ui.checkShowSlewPath.isChecked()
@@ -154,10 +150,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def closeEvent(self, closeEvent):
         """
-        closeEvent is overloaded to be able to store the data before the windows
-        is close and all it's data is garbage collected. all signals are
-        disconnected before closing.
-
         :param closeEvent:
         :return:
         """
@@ -167,8 +159,10 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.checkShowBuildPoints.clicked.disconnect(self.buildPointsCreate)
         self.ui.checkShowNumbers.clicked.disconnect(self.buildPointsCreate)
         self.ui.checkShowSlewPath.clicked.disconnect(self.buildPointsCreate)
+        self.app.updatePointMarker.disconnect(self.buildPointsCreate)
         self.ui.checkShowHorizon.clicked.disconnect(self.horizonCreate)
         self.ui.checkShowPointer.clicked.disconnect(self.pointerCreate)
+        self.ui.checkShowLaser.clicked.disconnect(self.laserCreate)
 
         self.ui.topView.clicked.disconnect(self.topView)
         self.ui.topEastView.clicked.disconnect(self.topEastView)
@@ -183,6 +177,8 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.updateDomeSettings.disconnect(self.dome.updateSettings)
         self.app.mount.signals.pointDone.disconnect(self.telescope.updatePositions)
         self.app.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
+        self.app.mount.signals.pointDone.disconnect(self.laser.updatePositions)
+        self.app.mount.signals.pointDone.disconnect(self.buildPoints.updatePositions)
         self.app.drawBuildPoints.disconnect(self.buildPointsCreate)
         self.app.drawHorizonPoints.disconnect(self.horizonCreate)
 
@@ -190,9 +186,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def showWindow(self):
         """
-        showWindow starts constructing the main window for the simulator view and shows the
-        window content. all signals are connected there
-
         :return: True for test purpose
         """
         self.createScene(self.rootEntity)
@@ -200,8 +193,10 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.checkShowBuildPoints.clicked.connect(self.buildPointsCreate)
         self.ui.checkShowNumbers.clicked.connect(self.buildPointsCreate)
         self.ui.checkShowSlewPath.clicked.connect(self.buildPointsCreate)
+        self.app.updatePointMarker.connect(self.buildPointsCreate)
         self.ui.checkShowHorizon.clicked.connect(self.horizonCreate)
         self.ui.checkShowPointer.clicked.connect(self.pointerCreate)
+        self.ui.checkShowLaser.clicked.connect(self.laserCreate)
 
         self.ui.topView.clicked.connect(self.topView)
         self.ui.topEastView.clicked.connect(self.topEastView)
@@ -215,6 +210,8 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.updateDomeSettings.connect(self.dome.updateSettings)
         self.app.mount.signals.pointDone.connect(self.telescope.updatePositions)
         self.app.mount.signals.pointDone.connect(self.pointer.updatePositions)
+        self.app.mount.signals.pointDone.connect(self.laser.updatePositions)
+        self.app.mount.signals.pointDone.connect(self.buildPoints.updatePositions)
         self.app.drawBuildPoints.connect(self.buildPointsCreate)
         self.app.drawHorizonPoints.connect(self.horizonCreate)
 
@@ -224,19 +221,16 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def buildPointsCreate(self):
         """
-        transfer function needed, because lambda function in signal connection cannot be used
         :return: True for test purpose
         """
         self.buildPoints.create(self.world['ref1000']['e'],
                                 self.ui.checkShowBuildPoints.isChecked(),
                                 self.ui.checkShowNumbers.isChecked(),
                                 self.ui.checkShowSlewPath.isChecked())
-
         return True
 
     def horizonCreate(self):
         """
-        transfer function needed, because lambda function in signal connection cannot be used
         :return: True for test purpose
         """
         self.horizon.create(self.world['ref1000']['e'],
@@ -245,16 +239,22 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def pointerCreate(self):
         """
-        transfer function needed, because lambda function in signal connection cannot be used
         :return: True for test purpose
         """
         self.pointer.create(self.world['ref']['e'],
                             self.ui.checkShowPointer.isChecked())
         return True
 
+    def laserCreate(self):
+        """
+        :return: True for test purpose
+        """
+        self.laser.create(self.world['ref']['e'],
+                          self.ui.checkShowLaser.isChecked())
+        return True
+
     def setDomeTransparency(self):
         """
-        transfer function needed, because lambda function in signal connection cannot be used
         :return: True for test purpose
         """
         self.dome.setTransparency(self.ui.checkDomeTransparent.isChecked())
@@ -322,22 +322,20 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def createWorld(self, rEntity):
         """
-        first transformation is from fusion360 to qt3d
-            fusion360 (x is north, y is west, z is up), scale in mm
-            Qt3D (-z is north, x is east, y is up) scale is m
-        and set as reference. from there on we are in the fusion coordinate system
+        first transformation is from fusion360 to qt3d fusion360 (x is north,
+        y is west, z is up), scale in mm Qt3D (-z is north, x is east, y is up)
+        scale is m and set as reference. from there on we are in the fusion
+        coordinate system
 
-            'ref' is the fusion360 coordinate system, please be aware that rotations around the
-            z axis for azimuth is clockwise and not counterclockwise as a right handed
-            coordinate system would propose.
+        'ref' is the fusion360 coordinate system, please be aware that rotations
+        around the z axis for azimuth is clockwise and not counterclockwise as a
+        right handed coordinate system would propose.
 
-        for the sake of simplifying there is another reference, which only has the
-        corrections in coordinates and not for scaling, this is called
+        for the sake of simplifying there is another reference, which only has
+        the corrections in coordinates and not for scaling, this is called 'ref1000'
 
-            'ref1000'
-
-        beside defining the references, createWorld build the foundation for the positioning
-        of a raw telescope column and a compass rose.
+        beside defining the references, createWorld build the foundation for the
+        positioning of a raw telescope column and a compass rose.
 
         :param rEntity:
         :return:
@@ -351,16 +349,10 @@ class SimulatorWindow(toolsQtWidget.MWidget):
                 'parent': 'ref1000',
                 'scale': [0.001, 0.001, 0.001],
             },
-            'centerPoint': {
-                'parent': 'ref',
-                'source': [QSphereMesh(), 10, 30, 30],
-                'trans': [0, 0, 1000],
-                'mat': Materials().pointer,
-            },
             'environ': {
                 'parent': 'ref',
                 'source': 'dome-environ.stl',
-                'scale': [1.5, 1.5, 1],
+                'scale': [2, 2, 1],
                 'mat': Materials().environ1,
             },
             'domeColumn': {
@@ -400,15 +392,26 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         numbers = self.ui.checkShowNumbers.isChecked()
         path = self.ui.checkShowSlewPath.isChecked()
         pointer = self.ui.checkShowPointer.isChecked()
+        laser = self.ui.checkShowLaser.isChecked()
         dome = self.app.deviceStat.get('dome', False)
         horizon = self.ui.checkShowHorizon.isChecked()
         points = self.ui.checkShowBuildPoints.isChecked()
         isDomeTransparent = self.ui.checkDomeTransparent.isChecked()
 
+        if dome:
+            self.ui.checkDomeTransparent.setEnabled(True)
+            self.ui.checkShowPointer.setEnabled(True)
+        else:
+            self.ui.checkDomeTransparent.setEnabled(False)
+            self.ui.checkDomeTransparent.setChecked(False)
+            self.ui.checkShowPointer.setEnabled(False)
+            self.ui.checkShowPointer.setChecked(False)
+
         self.createWorld(rEntity)
         self.telescope.create(self.world['ref']['e'], True)
         self.dome.create(self.world['ref']['e'], dome)
         self.pointer.create(self.world['ref']['e'], pointer)
+        self.laser.create(self.world['ref']['e'], laser)
         self.buildPoints.create(self.world['ref1000']['e'], points, numbers, path)
         self.horizon.create(self.world['ref1000']['e'], horizon)
 

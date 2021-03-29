@@ -142,6 +142,7 @@ def test_setCoolerTemp_1():
 
 def test_setCoolerTemp_2():
     app.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = 10
+    app.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = True
     with mock.patch.object(QMessageBox,
                            'critical'):
         with mock.patch.object(QInputDialog,
@@ -153,6 +154,19 @@ def test_setCoolerTemp_2():
 
 def test_setCoolerTemp_3():
     app.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = 10
+    app.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = False
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = app.setCoolerTemp()
+            assert not suc
+
+
+def test_setCoolerTemp_4():
+    app.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = 10
+    app.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = True
     with mock.patch.object(QMessageBox,
                            'critical'):
         with mock.patch.object(QInputDialog,
@@ -246,31 +260,63 @@ def test_setDownloadModeSlow():
     assert suc
 
 
-def test_setCoolerOn():
+def test_setCoolerOn_1():
+    app.app.camera.data['CAN_GET_COOLER_POWER'] = False
+    suc = app.setCoolerOn()
+    assert not suc
+
+
+def test_setCoolerOn_2():
+    app.app.camera.data['CAN_GET_COOLER_POWER'] = True
     suc = app.setCoolerOn()
     assert suc
 
 
-def test_setCoolerOff():
+def test_setCoolerOff_1():
+    app.app.camera.data['CAN_GET_COOLER_POWER'] = False
+    suc = app.setCoolerOff()
+    assert not suc
+
+
+def test_setCoolerOff_2():
+    app.app.camera.data['CAN_GET_COOLER_POWER'] = True
     suc = app.setCoolerOff()
     assert suc
 
 
 def test_updateCoverStatGui_1():
-    app.app.cover.data['CAP_PARK.UNPARK'] = 'On'
+    app.app.cover.data['CAP_PARK.PARK'] = True
     suc = app.updateCoverStatGui()
     assert suc
 
 
 def test_updateCoverStatGui_2():
-    app.app.cover.data['CAP_PARK.UNPARK'] = 'Off'
+    app.app.cover.data['CAP_PARK.PARK'] = False
     suc = app.updateCoverStatGui()
     assert suc
 
 
 def test_updateCoverStatGui_3():
-    app.app.cover.data['CAP_PARK.UNPARK'] = '.'
+    app.app.cover.data['CAP_PARK.PARK'] = None
     suc = app.updateCoverStatGui()
+    assert suc
+
+
+def test_updateCoverLightGui_1():
+    app.app.cover.data['FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON'] = True
+    suc = app.updateCoverLightGui()
+    assert suc
+
+
+def test_updateCoverLightGui_2():
+    app.app.cover.data['FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON'] = False
+    suc = app.updateCoverLightGui()
+    assert suc
+
+
+def test_updateCoverLightGui_3():
+    app.app.cover.data['FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON'] = None
+    suc = app.updateCoverLightGui()
     assert suc
 
 
@@ -368,3 +414,81 @@ def test_haltFocuser_2():
                            return_value=True):
         suc = app.haltFocuser()
         assert suc
+
+
+def test_switchLightOn_1():
+    with mock.patch.object(app.app.cover,
+                           'lightOn',
+                           return_value=False):
+        suc = app.switchLightOn()
+        assert not suc
+
+
+def test_switchLightOn_2():
+    with mock.patch.object(app.app.cover,
+                           'lightOn',
+                           return_value=True):
+        suc = app.switchLightOn()
+        assert suc
+
+
+def test_switchLightOff_1():
+    with mock.patch.object(app.app.cover,
+                           'lightOff',
+                           return_value=False):
+        suc = app.switchLightOff()
+        assert not suc
+
+
+def test_switchLightOff_2():
+    with mock.patch.object(app.app.cover,
+                           'lightOff',
+                           return_value=True):
+        suc = app.switchLightOff()
+        assert suc
+
+
+def test_setLightIntensity_1():
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        suc = app.setLightIntensity()
+        assert not suc
+
+
+def test_setLightIntensity_2():
+    app.app.cover.data['FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = app.setLightIntensity()
+            assert not suc
+
+
+def test_setLightIntensity_3():
+    app.app.cover.data['FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(app.app.cover,
+                                   'lightIntensity',
+                                   return_value=False):
+                suc = app.setLightIntensity()
+                assert not suc
+
+
+def test_setLightIntensity_4():
+    app.app.cover.data['FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(app.app.cover,
+                                   'lightIntensity',
+                                   return_value=True):
+                suc = app.setLightIntensity()
+                assert suc

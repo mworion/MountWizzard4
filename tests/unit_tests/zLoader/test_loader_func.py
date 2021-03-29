@@ -23,6 +23,7 @@ import glob
 import unittest.mock as mock
 import socket
 import platform
+import shutil
 
 # external packages
 import pytest
@@ -109,13 +110,25 @@ def test_extractDataFiles_2(qtbot):
 
 
 def test_extractDataFiles_3(qtbot):
+    class Splash:
+        @staticmethod
+        def showMessage(a):
+            return
+
+    mwGlob = dict()
+    mwGlob['dataDir'] = 'tests/data'
+    suc = extractDataFiles(mwGlob=mwGlob, splashW=Splash())
+    assert suc
+
+
+def test_extractDataFiles_4(qtbot):
     mwGlob = dict()
     mwGlob['dataDir'] = 'tests/data'
     suc = extractDataFiles(mwGlob=mwGlob)
     assert suc
 
 
-def test_extractDataFiles_4(qtbot):
+def test_extractDataFiles_5(qtbot):
     if platform.system() == 'Windows':
         return
 
@@ -130,3 +143,24 @@ def test_extractDataFiles_4(qtbot):
     assert os.path.isfile('tests/data/active.txt')
     assert os.path.isfile('tests/data/finals2000A.all')
     assert os.path.isfile('tests/data/tai-utc.dat')
+
+
+def test_extractDataFiles_6(qtbot):
+    if platform.system() == 'Windows':
+        return
+
+    class MTime:
+        st_mtime = 1000000000.0
+
+    shutil.copy('tests/testData/finals2000A.all', 'tests/data/finals2000A.all')
+
+    mwGlob = {'dataDir': 'tests/data'}
+
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(os,
+                               'stat',
+                               return_value=MTime()):
+            suc = extractDataFiles(mwGlob=mwGlob)
+            assert suc

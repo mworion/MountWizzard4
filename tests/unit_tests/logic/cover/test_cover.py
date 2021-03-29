@@ -141,3 +141,75 @@ def test_haltCover_3():
                            return_value=True):
         suc = app.haltCover()
         assert suc
+
+
+def test_lightOn_1():
+    app.framework = ''
+    suc = app.lightOn()
+    assert not suc
+
+
+def test_lightOn_2():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'lightOn',
+                           return_value=False):
+        suc = app.lightOn()
+        assert not suc
+
+
+def test_lightOn_3():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'lightOn',
+                           return_value=True):
+        suc = app.lightOn()
+        assert suc
+
+
+def test_lightOff_1():
+    app.framework = ''
+    suc = app.lightOff()
+    assert not suc
+
+
+def test_lightOff_2():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'lightOff',
+                           return_value=False):
+        suc = app.lightOff()
+        assert not suc
+
+
+def test_lightOff_3():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'lightOff',
+                           return_value=True):
+        suc = app.lightOff()
+        assert suc
+
+
+def test_lightIntensity_1():
+    app.framework = ''
+    suc = app.lightIntensity(0)
+    assert not suc
+
+
+def test_lightIntensity_2():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'lightIntensity',
+                           return_value=False):
+        suc = app.lightIntensity(0)
+        assert not suc
+
+
+def test_lightIntensity_3():
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'lightIntensity',
+                           return_value=True):
+        suc = app.lightIntensity(0)
+        assert suc

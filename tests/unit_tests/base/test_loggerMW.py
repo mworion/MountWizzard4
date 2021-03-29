@@ -72,6 +72,3 @@ def test_addLoggingLevel_4():
     loggerTest = logging.getLogger('test')
     loggerTest.setLevel(60)
     loggerTest.test('test')
-
-
-

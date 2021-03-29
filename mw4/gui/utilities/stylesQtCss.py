@@ -31,7 +31,7 @@ class Styles:
     COLOR_BLUE2 = QColor(80, 140, 176)
     COLOR_BLUE3 = QColor(48, 104, 128)
     COLOR_BLUE4 = QColor(44, 80, 112)
-    COLOR_YELLOW = QColor(192, 192, 0)
+    COLOR_YELLOW = QColor(255, 255, 0)
     COLOR_GREEN = QColor(0, 255, 0)
     COLOR_WHITE = QColor(255, 255, 255)
     COLOR_WHITE1 = QColor(224, 224, 224)
@@ -49,8 +49,14 @@ class Styles:
     BACK_RED = 'background-color: red;'
     BACK_GREEN = 'background-color: green;'
     BACK_NORM = 'background-color: #202020;'
+    BACK_BACK = 'background-color: #181818'
+    BACK_BLUE1 = 'background-color: #104860'
+    BACK_BLUE2 = 'background-color: #0C3648'
+    BACK_BLUE3 = 'background-color: #082430'
+    BACK_BLUE4 = 'background-color: #061828'
 
     M_TRANS = '#20202000'
+    M_BACK = '#181818'
     M_BLUE = '#2090C0'
     M_BLUE1 = '#104860'
     M_BLUE2 = '#0C3648'
@@ -416,7 +422,7 @@ class Styles:
         height: 16px;
     }
     /* Push Buttons */
-    QPushButton[iconset='true'] {
+    QPushButton[alignLeft='true'] {
         text-align: left;
         padding-left: 3px;
         padding-right: 3px;
@@ -461,6 +467,9 @@ class Styles:
         border-width: 2px;
         border-style: inset;
         border-radius: 2px;
+        /*
+        border-image: url(:/icon/check-circle.svg)
+        */
     }
     QPushButton[running='false'] {
         background-color: #202020;
@@ -509,6 +518,11 @@ class Styles:
     QPushButton[color='green'] {
         background-color: green;
         color: #000000;
+    }
+    QPushButton[stop='true'] {
+        background-color: transparent;
+        color: transparent;
+        border-color: transparent;
     }
     /* Combo Boxes */
     QComboBox {

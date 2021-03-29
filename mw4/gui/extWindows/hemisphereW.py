@@ -31,10 +31,10 @@ from gui.extWindows.hemisphereWext import HemisphereWindowExt
 
 class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
     """
-    the hemisphere window class handles all interaction with model points show / edit etc.
-    the z orders is aligned as follows:
-    there are two planes static / moving where the moving is behind the static one. the
-    static on has to be transparent.
+    the hemisphere window class handles all interaction with model points
+    show / edit etc. the z orders is aligned as follows:
+    there are two planes static / moving where the moving is behind the static
+    one. the static on has to be transparent.
 
     on the static plane we have (and set to the z order)
         - horizon               0
@@ -128,13 +128,8 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
-
         if 'hemisphereW' not in self.app.config:
             self.app.config['hemisphereW'] = {}
 
@@ -144,7 +139,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
         if x > self.screenSizeX:
             x = 0
-
         if y > self.screenSizeY:
             y = 0
 
@@ -158,15 +152,10 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', True))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
-
         return True
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         if 'hemisphereW' not in self.app.config:
@@ -183,7 +172,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         config['checkShowAlignStar'] = self.ui.checkShowAlignStar.isChecked()
         config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()
         config['showPolar'] = self.ui.showPolar.isChecked()
-
         return True
 
     def closeEvent(self, closeEvent):
@@ -289,10 +277,8 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
     def togglePolar(self):
         """
-
         :return: success
         """
-
         if self.ui.showPolar.isChecked():
             self.ui.polar.setMaximumSize(16777215, 16777215)
             self.ui.polar.setVisible(True)
@@ -302,18 +288,14 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             self.ui.polar.setVisible(False)
 
         self.drawHemisphere()
-
         return True
 
     def updateOnChangedParams(self, sett):
         """
-
         :param sett:
         :return: status redraw
         """
-
         needRedraw = False
-
         if self.meridianSlewParam != sett.meridianLimitSlew:
             self.meridianSlewParam = sett.meridianLimitSlew
             needRedraw = True
@@ -339,12 +321,10 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         """
         :return: success
         """
-
         if self.pointerAltAz is None:
             return False
 
         obsSite = self.app.mount.obsSite
-
         if obsSite.Alt is None or obsSite.Az is None:
             self.pointerAltAz.set_visible(False)
             return False
@@ -355,19 +335,16 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
-
         return True
 
     def updatePointerPolarAltAz(self):
         """
         :return: success
         """
-
         if self.pointerPolarAltAz is None:
             return False
 
         obsSite = self.app.mount.obsSite
-
         if obsSite.Alt is None or obsSite.Az is None:
             self.pointerPolarAltAz.set_visible(False)
             return False
@@ -378,19 +355,17 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         alt = 90 - obsSite.Alt.degrees
         az = obsSite.Az.radians
         self.pointerPolarAltAz.set_data((az, alt))
-
         return True
 
     def updateDome(self, azimuth):
         """
-        updateDome is called whenever an update of coordinates from dome are given.
-        it takes the actual values and corrects the point in window if window is in
-        show status.
+        updateDome is called whenever an update of coordinates from dome are
+        given. it takes the actual values and corrects the point in window if
+        window is in show status.
 
         :param azimuth:
         :return: success
         """
-
         if self.pointerDome is None:
             return False
 
@@ -399,57 +374,47 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             return False
 
         visible = self.app.deviceStat['dome']
-
         self.pointerDome.set_xy((azimuth - 15, 1))
         self.pointerDome.set_visible(visible)
-
         return True
 
     def getMarkerStatusParams(self, active, index):
         """
-
         :param active:
         :param index:
         :return: values
         """
-
         if active:
             marker = self.markerPoint()
             color = self.MODE[self.operationMode]['buildPColor']
-            markersize = 9
+            mSize = 9
             annotationText = f'{index + 1:2d}'
 
         else:
             marker = '$\u2714$'
             color = self.M_YELLOW
-            markersize = 11
+            mSize = 11
             annotationText = f'{index + 1:2d}'
 
-        return marker, markersize, color, annotationText
+        return marker, mSize, color, annotationText
 
     def updatePointMarker(self):
         """
-
         :return: success
         """
-
         for index, point in enumerate(self.app.data.buildP):
             active = point[2]
-
-            marker, markersize, color, _ = self.getMarkerStatusParams(active, index)
-
+            marker, mSize, color, _ = self.getMarkerStatusParams(active, index)
             self.pointsBuild[index].set_marker(marker)
-            self.pointsBuild[index].set_markersize(markersize)
+            self.pointsBuild[index].set_markersize(mSize)
             self.pointsBuild[index].set_color(color)
             self.pointsBuildAnnotate[index].set_color(color)
 
         self.hemisphereMat.figure.canvas.draw()
-
         return True
 
     def updatePolarPointMarker(self):
         """
-
         :return: success
         """
         if not self.pointsPolarBuild:
@@ -457,36 +422,31 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
         for index, point in enumerate(self.app.data.buildP):
             active = point[2]
-
-            marker, markersize, color, _ = self.getMarkerStatusParams(active, index)
-
+            marker, mSize, color, _ = self.getMarkerStatusParams(active, index)
             self.pointsPolarBuild[index].set_marker(marker)
-            self.pointsPolarBuild[index].set_markersize(markersize)
+            self.pointsPolarBuild[index].set_markersize(mSize)
             self.pointsPolarBuild[index].set_color(color)
             self.pointsPolarBuildAnnotate[index].set_color(color)
 
         self.polarMat.figure.canvas.draw()
-
         return True
 
     def updateAlignStar(self):
         """
-        updateAlignStar is called whenever an update of coordinates from mount are
-        given. it takes the actual values and corrects the point in window if window is in
-        show status.
-        If the object is not created, the routing returns false.
-
-        due to the fact that all annotation are only shown if in axes when coordinate
-        are in data, after some time, no annotation will be shown, because just moved.
-        therefore we add each time the annotation again.
+        updateAlignStar is called whenever an update of coordinates from mount
+        are given. it takes the actual values and corrects the point in window if
+        window is in show status. If the object is not created, the routing
+        returns false. Due to the fact that all annotation are only shown if in
+        axes when coordinate are in data, after some time, no annotation will be
+        shown, because just moved. Therefore we add each time the annotation again.
 
         :return: success
         """
-
         if self.starsAlign is None:
             return False
-
         if self.starsAlignAnnotate is None:
+            return False
+        if not self.mutexDraw.tryLock():
             return False
 
         axes = self.hemisphereMat.figure.axes[0]
@@ -512,26 +472,23 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             self.starsAlignAnnotate.append(annotation)
 
         self.hemisphereMat.figure.canvas.draw()
-
+        self.mutexDraw.unlock()
         return True
 
     def clearHemisphere(self):
         """
-        clearHemisphere is called when after startup the location of the mount is changed
-        to reconstruct correctly the hemisphere window
+        clearHemisphere is called when after startup the location of the mount
+        is changed to reconstruct correctly the hemisphere window
 
         :return: True for test Purpose
         """
-
         self.pointsBuild = None
         self.app.data.clearBuildP()
         self.drawHemisphere()
-
         return True
 
     def staticHorizon(self, axes=None, polar=False):
         """
-
         :param axes:
         :param polar:
         :return:
@@ -600,7 +557,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
     def staticModelData(self, axes=None, polar=False):
         """
-
         :param axes:
         :param polar:
         :return:
@@ -623,7 +579,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             alt = point[0]
             active = point[2]
 
-            marker, markersize, color, text = self.getMarkerStatusParams(active, index)
+            marker, mSize, color, text = self.getMarkerStatusParams(active, index)
 
             if self.ui.checkShowSlewPath.isChecked() and index > 0:
                 if polar:
@@ -639,7 +595,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             if polar:
                 p, = axes.plot(np.radians(az), 90 - alt,
                                marker=marker,
-                               markersize=markersize,
+                               markersize=mSize,
                                fillstyle='none',
                                color=self.MODE['normal']['buildPColor'],
                                zorder=40,
@@ -649,7 +605,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             else:
                 p, = axes.plot(az, alt,
                                marker=marker,
-                               markersize=markersize,
+                               markersize=mSize,
                                fillstyle='none',
                                color=self.MODE[self.operationMode]['buildPColor'],
                                zorder=40,
@@ -711,11 +667,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
     def staticMeridianLimits(self, axes=None):
         """
-
         :param axes:
         :return:
         """
-
         slew = self.app.mount.setting.meridianLimitSlew
         track = self.app.mount.setting.meridianLimitTrack
 
@@ -737,12 +691,10 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                 color=self.M_YELLOW_L,
                                                 alpha=0.5)
         axes.add_patch(self.meridianTrack)
-
         return True
 
     def staticHorizonLimits(self, axes=None, polar=False):
         """
-
         :param axes:
         :param polar:
         :return:
@@ -776,13 +728,12 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                   visible=True)
         axes.add_patch(self.horizonLimitHigh)
         axes.add_patch(self.horizonLimitLow)
-
         return True
 
     def drawHemisphereStatic(self, axes=None, polar=False):
         """
-         drawHemisphereStatic renders the static part of the hemisphere window and puts
-         all drawing on the static plane. the content consist of:
+         drawHemisphereStatic renders the static part of the hemisphere window
+         and puts all drawing on the static plane. the content consist of:
             - modeldata points
             - horizon mask
             - celestial paths
@@ -822,14 +773,13 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         drawHemisphereMoving is rendering the moving part which consists of:
             - pointer: where the mount points to
             - dome widget: which shows the position of the dome opening
-        the dynamic ones are located on a separate plane to improve rendering speed,
-        because we update this part very often.
+        the dynamic ones are located on a separate plane to improve rendering
+        speed, because we update this part very often.
 
         :param axes: matplotlib axes object
         :param polar: flag if polar should be drawn
         :return:
         """
-
         if polar:
             self.pointerPolarAltAz, = axes.plot(np.radians(180), 45,
                                                 zorder=10,
@@ -864,18 +814,19 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                   fill=True,
                                                   visible=False)
             axes.add_patch(self.pointerDome)
-
         return True
 
     def drawAlignmentStars(self, axes=None):
         """
-        drawAlignmentStars is rendering the alignment star map. this moves over time with
-        the speed of earth turning. so we have to update the rendering, but on low speed
-        without having any user interaction.
+        drawAlignmentStars is rendering the alignment star map. this moves over
+        time with the speed of earth turning. so we have to update the rendering,
+        but on low speed without having any user interaction.
 
         :param axes: matplotlib axes object
         :return: true for test purpose
         """
+        if not self.mutexDraw.tryLock():
+            return False
 
         self.starsAlignAnnotate = list()
         hip = self.app.hipparcos
@@ -902,36 +853,40 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                        clip_on=True,
                                        )
             self.starsAlignAnnotate.append(annotation)
-
+        self.mutexDraw.unlock()
         return True
 
     def drawHemisphere(self):
         """
-        drawHemisphere is the basic renderer for all items and widgets in the hemisphere
-        window. it takes care of drawing the grid, enables three layers of transparent
-        widgets for static content, moving content and star maps. this is mainly done to
-        get a reasonable performance when redrawing the canvas. in addition it initializes
-        the objects for points markers, patches, lines etc. for making the window nice
-        and user friendly.
-        the user interaction on the hemisphere windows is done by the event handler of
-        matplotlib itself implementing an on Mouse handler, which takes care of functions.
+        drawHemisphere is the basic renderer for all items and widgets in the
+        hemisphere window. it takes care of drawing the grid, enables three
+        layers of transparent widgets for static content, moving content and star
+        maps. this is mainly done to get a reasonable performance when redrawing
+        the canvas. in addition it initializes the objects for points markers,
+        patches, lines etc. for making the window nice and user friendly. the
+        user interaction on the hemisphere windows is done by the event handler
+        of matplotlib itself implementing an on Mouse handler, which takes care
+        of functions.
 
         :return: True for test purpose
         """
         if self.closingWindow:
             return False
 
-        hasPolar = self.ui.showPolar.isChecked()
-
-        axe, _ = self.generateFlat(widget=self.hemisphereMat, horizon=True)
-        axeMove, _ = self.generateFlat(widget=self.hemisphereMatMove, horizon=True,
+        axe, _ = self.generateFlat(widget=self.hemisphereMat,
+                                   horizon=True)
+        axeMove, _ = self.generateFlat(widget=self.hemisphereMatMove,
+                                       horizon=True,
                                        showAxes=False)
-
+        hasPolar = self.ui.showPolar.isChecked()
         if hasPolar:
-            axePolar, _ = self.generatePolar(widget=self.polarMat, horizon=True)
-            axePolarMove, _ = self.generatePolar(widget=self.polarMatMove, horizon=True,
-                                                 showAxes=False)
-
+            axePolar, _ = self.generatePolar(widget=self.polarMat,
+                                             horizon=True,
+                                             reversed=True)
+            axePolarMove, _ = self.generatePolar(widget=self.polarMatMove,
+                                                 horizon=True,
+                                                 showAxes=False,
+                                                 reversed=True)
         else:
             self.pointerPolarAltAz = None
             self.pointsBuildAnnotate = None

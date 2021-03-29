@@ -110,18 +110,9 @@ class AstrometryASTAP(object):
         :param options: additional solver options e.g. ra and dec hint
         :return: success
         """
-
-        runnable = [binPath,
-                    '-f',
-                    fitsPath,
-                    '-o',
-                    tempFile,
-                    ]
-
+        runnable = [binPath, '-f', fitsPath, '-o', tempFile]
         runnable += options
-
         timeStart = time.time()
-
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
@@ -129,12 +120,12 @@ class AstrometryASTAP(object):
             stdout, stderr = self.process.communicate(timeout=self.timeout)
 
         except subprocess.TimeoutExpired:
-            self.log.error('Timeout expired')
-            return False
+            self.log.error('Timeout happened')
+            return False, 0
 
         except Exception as e:
             self.log.critical(f'error: {e} happened')
-            return False
+            return False, 0
 
         else:
             delta = time.time() - timeStart
@@ -147,7 +138,7 @@ class AstrometryASTAP(object):
                            + stdout.decode().replace('\n', ' ')
                            )
 
-        return int(self.process.returncode)
+        return True, int(self.process.returncode)
 
     @staticmethod
     def getWCSHeader(wcsTextFile=None):
@@ -158,7 +149,6 @@ class AstrometryASTAP(object):
         :param wcsTextFile: fits file with wcs data
         :return: wcsHeader
         """
-
         if not wcsTextFile:
             return None
 
@@ -166,21 +156,22 @@ class AstrometryASTAP(object):
         for line in wcsTextFile:
             if line.startswith('END'):
                 continue
+            if line.startswith('COMMENT'):
+                continue
             tempString += line
 
         wcsHeader = fits.PrimaryHDU().header.fromstring(tempString,
                                                         sep='\n')
-
         return wcsHeader
 
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
               updateFits=False):
         """
         Solve uses the astap solver capabilities. The intention is to use an
-        offline solving capability, so we need a installed instance. As we go multi
-        platform and we need to focus on MW function, we use the astap package
-        which could be downloaded for all platforms. Many thanks to them providing such a
-        nice package.
+        offline solving capability, so we need a installed instance. As we go
+        multi platform and we need to focus on MW function, we use the astap
+        package which could be downloaded for all platforms. Many thanks
+        providing such a nice package.
 
         :param fitsPath:  full path to fits file
         :param raHint:  ra dest to look for solve in J2000
@@ -201,13 +192,11 @@ class AstrometryASTAP(object):
 
         tempFile = self.tempDir + '/temp'
         wcsPath = self.tempDir + '/temp.wcs'
-
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
         binPathASTAP = self.appPath + '/astap'
-
-        raFITS, decFITS, scaleFITS, _, _ = self.readFitsData(fitsPath=fitsPath)
+        raFITS, decFITS, scaleFITS = self.readFitsData(fitsPath=fitsPath)
 
         # if parameters are passed, they have priority
         if raHint is None:
@@ -227,13 +216,13 @@ class AstrometryASTAP(object):
                    '0',
                    ]
 
-        retValue = self.runASTAP(binPath=binPathASTAP,
-                                 fitsPath=fitsPath,
-                                 tempFile=tempFile,
-                                 options=options,
-                                 )
+        suc, retValue = self.runASTAP(binPath=binPathASTAP,
+                                      fitsPath=fitsPath,
+                                      tempFile=tempFile,
+                                      options=options,
+                                      )
 
-        if retValue:
+        if not suc:
             text = self.returnCodes.get(retValue, 'Unknown code')
             self.result['message'] = f'ASTAP error: [{text}]'
             self.log.warning(f'ASTAP error [{text}] in [{fitsPath}]')
@@ -251,6 +240,8 @@ class AstrometryASTAP(object):
             solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,
                                                     wcsHeader=wcsHeader,
                                                     updateFits=updateFits)
+            self.log.debug(f'Header: [{header}]')
+            self.log.debug(f'Solve : [{solve}]')
             fitsHDU[0].header = header
 
         self.result = {
@@ -259,7 +250,7 @@ class AstrometryASTAP(object):
             'message': 'Solved',
         }
         self.result.update(solve)
-
+        self.log.debug(f'Result: [{self.result}]')
         return True
 
     def abort(self):
@@ -268,7 +259,6 @@ class AstrometryASTAP(object):
 
         :return: success
         """
-
         if self.process:
             self.process.kill()
             return True
@@ -277,38 +267,37 @@ class AstrometryASTAP(object):
 
     def checkAvailability(self):
         """
-        checkAvailability searches for the existence of the core runtime modules from
-        all applications. to this family belong:
-            astrometry.net namely image2xy and solve-field
-            ASTP files
-
         :return: working environment found
         """
 
+        g17 = '/g17*.290'
+        g18 = '/g18*.290'
+        h17 = '/h17*.1476'
+        h18 = '/h18*.1476'
         if platform.system() == 'Darwin':
             program = self.appPath + '/astap'
-            index = self.indexPath + '/*.290'
         elif platform.system() == 'Linux':
             program = self.appPath + '/astap'
-            index = self.indexPath + '/*.290'
         elif platform.system() == 'Windows':
             program = self.appPath + '/astap.exe'
-            index = self.indexPath + '/*.290'
 
-        # checking binaries
         if not os.path.isfile(program):
             self.log.info(f'[{program}] not found')
             sucProgram = False
         else:
             sucProgram = True
 
-        # checking indexes
-        if not glob.glob(index):
+        isG17 = sum('.290' in s for s in glob.glob(self.indexPath + g17)) == 290
+        isG18 = sum('.290' in s for s in glob.glob(self.indexPath + g18)) == 290
+        isH17 = sum('.1476' in s for s in glob.glob(self.indexPath + h17)) == 1476
+        isH18 = sum('.1476' in s for s in glob.glob(self.indexPath + h18)) == 1476
+        if not any((isG17, isG18, isH17, isH18)):
             self.log.info('No index files found')
             sucIndex = False
         else:
             sucIndex = True
 
-        self.log.info(f'ASTAP OK, app:{program} index:{index}')
+        self.log.info(f'ASTAP OK, app: [{program}], index: [{self.indexPath}]')
+        self.log.info(f'Index G17:{isG17}, G18:{isG18}, H17:{isH17}, H18:{isH18}')
 
         return sucProgram, sucIndex

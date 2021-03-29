@@ -71,6 +71,7 @@ class Setting(object):
         self._weatherTemperature = None
         self._weatherHumidity = None
         self._weatherDewPoint = None
+        self._trackingRate = None
 
     @property
     def slewRate(self):
@@ -307,6 +308,14 @@ class Setting(object):
     def weatherDewPoint(self, value):
         self._weatherDewPoint = valueToFloat(value)
 
+    @property
+    def trackingRate(self):
+        return self._trackingRate
+
+    @trackingRate.setter
+    def trackingRate(self, value):
+        self._trackingRate = valueToFloat(value)
+
     def parseSetting(self, response, numberOfChunks):
         """
         Parsing the polling med command.
@@ -345,6 +354,7 @@ class Setting(object):
         self.weatherTemperature = response[18].split(',')[0]
         self.weatherHumidity = response[19].split(',')[0]
         self.weatherDewPoint = response[20].split(',')[0]
+        self.trackingRate = response[21]
 
         return True
 
@@ -357,9 +367,10 @@ class Setting(object):
         :return:    success:    True if ok, False if not
         """
         conn = Connection(self.host)
-        cs1 = ':U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#:GREF#:Guaf#'
-        cs2 = ':Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#:WSG#:WSP#:WST#:WSH#:WSD#'
-        commandString = cs1 + cs2
+        cs1 = ':U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#'
+        cs2 = ':GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#'
+        cs3 = ':WSG#:WSP#:WST#:WSH#:WSD#:GT#'
+        commandString = cs1 + cs2 + cs3
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
@@ -703,3 +714,57 @@ class Setting(object):
         if response[0] != '1':
             return False
         return True
+
+    def checkRateLunar(self):
+        """
+        :return:
+        """
+        if self._trackingRate == 62.4:
+            return True
+
+        else:
+            return False
+
+    def checkRateSidereal(self):
+        """
+        :return:
+        """
+        if self._trackingRate == 60.2:
+            return True
+
+        else:
+            return False
+
+    def checkRateSolar(self):
+        """
+        :return:
+        """
+        if self._trackingRate == 60.3:
+            return True
+
+        else:
+            return False
+
+    def setLunarTracking(self):
+        """
+        :return:    success
+        """
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(':RT0#')
+        return suc
+
+    def setSiderealTracking(self):
+        """
+        :return:    success
+        """
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(':RT2#')
+        return suc
+
+    def setSolarTracking(self):
+        """
+        :return:    success
+        """
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(':RT1#')
+        return suc

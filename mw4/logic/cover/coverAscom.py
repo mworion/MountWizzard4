@@ -43,12 +43,9 @@ class CoverAscom(AscomClass):
 
     def getInitialConfig(self):
         """
-
         :return: true for test purpose
         """
-
         super().getInitialConfig()
-
         return True
 
     def workerPollData(self):
@@ -56,14 +53,12 @@ class CoverAscom(AscomClass):
         :return: true for test purpose
         """
         coverStates = ['NotPresent', 'Closed', 'Moving', 'Open', 'Unknown', 'Error']
-
         if not self.deviceConnected:
             return False
 
         state = self.client.CoverState
         stateText = coverStates[state]
         self.dataEntry(stateText, 'Status.Cover')
-
         return True
 
     def closeCover(self):
@@ -73,7 +68,7 @@ class CoverAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.CloseCover()
+        self.callMethodThreaded(self.client.CloseCover)
         return True
 
     def openCover(self):
@@ -83,7 +78,7 @@ class CoverAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.OpenCover()
+        self.callMethodThreaded(self.client.OpenCover)
         return True
 
     def haltCover(self):
@@ -93,5 +88,36 @@ class CoverAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.HaltCover()
+        self.callMethodThreaded(self.client.HaltCover)
+        return True
+
+    def lightOn(self):
+        """
+        :return:
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.callMethodThreaded(self.client.CalibratorOn)
+        return True
+
+    def lightOff(self):
+        """
+        :return:
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.callMethodThreaded(self.client.CalibratorOff)
+        return True
+
+    def lightIntensity(self, value):
+        """
+        :param value:
+        :return:
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.callMethodThreaded(self.client.Brightness, value)
         return True

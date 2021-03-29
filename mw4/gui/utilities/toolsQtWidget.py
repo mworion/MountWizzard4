@@ -21,10 +21,10 @@ import os
 import re
 
 # external packages
-from PyQt5.QtWidgets import QWidget, QDesktopWidget, qApp, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
 from PyQt5.QtGui import QPalette, QIcon, QPixmap
-from PyQt5.QtCore import Qt, QSortFilterProxyModel, QDir, QObject, pyqtSignal, QEvent
-from PyQt5.QtCore import QSize
+from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
+from PyQt5.QtCore import Qt, QSize, QEvent
 from skyfield.api import Angle
 
 # local imports
@@ -41,9 +41,9 @@ __all__ = [
 
 class FileSortProxyModel(QSortFilterProxyModel):
     """
-    FileSortProxyModel enables a proxy solution for reversing the order of all file dialogues.
-    The sorting is now Descending meaning the last added files will be on top.
-    This is don by just overwriting the sort method
+    FileSortProxyModel enables a proxy solution for reversing the order of all
+    file dialogues. The sorting is now Descending meaning the last added files
+    will be on top. This is don by just overwriting the sort method
     """
 
     def sort(self, column, order):
@@ -52,8 +52,8 @@ class FileSortProxyModel(QSortFilterProxyModel):
 
 class QMultiWait(QObject):
     """
-    QMultiWaitable implements a signal collection class for waiting of entering multiple
-    signals before firing the "AND" relation of all signals.
+    QMultiWaitable implements a signal collection class for waiting of entering
+    multiple signals before firing the "AND" relation of all signals.
     derived from:
 
     https://stackoverflow.com/questions/21108407/qt-how-to-wait-for-multiple-signals
@@ -93,17 +93,17 @@ class QMultiWait(QObject):
 
 class MWidget(QWidget, Styles, ToolsMatplotlib):
     """
-    MWidget defines the common parts for all windows used in MountWizzard 4 and extends the
-    standard widgets. All widgets configs which are used mor than one time are centralized
-    in this class.
+    MWidget defines the common parts for all windows used in MountWizzard 4 and
+    extends the standard widgets. All widgets configs which are used mor than
+    one time are centralized in this class.
 
-    For the File dialogues, the original widgets are used, but with the removal of some
-    features to make them simpler. As one optimization they always show the files and
-    directories in descending order.
+    For the File dialogues, the original widgets are used, but with the removal
+    of some features to make them simpler. As one optimization they always show
+    the files and directories in descending order.
 
-    The styles of the widgets are defined separately in a css looking stylesheet. The
-    standard screen size will be 800x600 pixel for all windows, but except for the main
-    one are sizable.
+    The styles of the widgets are defined separately in a css looking
+    stylesheet. The standard screen size will be 800x600 pixel for all windows,
+    but except for the main one are sizable.
     """
 
     __all__ = ['MWidget',
@@ -123,42 +123,36 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         self.setWindowFlags(self.windowFlags() | newFlag)
 
     @staticmethod
-    def wIcon(gui=None, icon=None):
+    def wIcon(gui=None, name=''):
         """
         widget icon adds an icon to a gui element like an button.
 
         :param      gui:        gui element, which will be expanded by an icon
-        :param      icon:       icon to be added
+        :param      name:       icon to be added
         :return:    true for test purpose
         """
-
         if not gui:
             return False
-
-        if not icon:
+        if not name:
             return False
 
-        if not isinstance(icon, QIcon):
-            iconset = qApp.style().standardIcon(icon)
-            icon = QIcon(iconset)
-
+        icon = QIcon(f':/icon/{name}.svg')
         gui.setIcon(icon)
-        gui.setProperty('iconset', True)
+        gui.setIconSize(QSize(16, 16))
+        gui.setProperty('alignLeft', True)
         gui.style().unpolish(gui)
         gui.style().polish(gui)
-        gui.setIconSize(QSize(16, 16))
-
         return True
 
     def getStyle(self):
         """
         getStyle return the actual stylesheet for the used platform.
-        As the font sizes vary between Darwin and Windows / Ubuntu there were two sets of
-        stylesheets used. a basic stylesheet adds undifferentiated properties.
+        As the font sizes vary between Darwin and Windows / Ubuntu there were
+        two sets of stylesheets used. a basic stylesheet adds undifferentiated
+        properties.
 
         :return:    actual stylesheet string
         """
-
         if platform.system() == 'Darwin':
             return self.MAC_STYLE + self.BASIC_STYLE
 
@@ -167,45 +161,45 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
     def initUI(self):
         """
-        init_UI makes the basic initialisation of the GUI. is sets the window flags
-        and sets the handling of the window. is as well fixes the windows size (unless
-        a windows will be scalable later on. in addition the appropriate style sheet
-        for mac and non mac will be selected and used.
+        init_UI makes the basic initialisation of the GUI. is sets the window
+        flags and sets the handling of the window. is as well fixes the windows
+        size (unless a windows will be scalable later on. in addition the
+        appropriate style sheet for mac and non mac will be selected and used.
 
         :return:    true for test purpose
         """
-
         self.setWindowFlags(self.windowFlags())
         style = self.getStyle()
         self.setStyleSheet(style)
         self.setMouseTracking(True)
         self.setWindowIcon(QIcon(':/mw4.ico'))
-
         return True
 
     @staticmethod
-    def changeStyleDynamic(widget=None, item=None, value=None):
+    def changeStyleDynamic(widget=None, widgetProperty=None, value=None):
         """
-        changeStyleDynamic changes the stylesheet of a given uii element and makes it
-        visible. therefore the element has to be unpolished and polished again.
+        changeStyleDynamic changes the stylesheet of a given uii element and
+        makes it visible. therefore the element has to be unpolished and
+        polished again.
 
-        :param      widget:     widget element, where the stylesheet has to be changed
-        :param      item:   stylesheet attribute which has to be changes
+        :param      widget: widget element, where the stylesheet has to
+                            be changed
+        :param      widgetProperty: stylesheet attribute which has to be
+                                    changes
         :param      value:  new value of the attribute
         :return:    true for test purpose
         """
-
         if not widget:
             return False
-
-        if not item:
+        if not widgetProperty:
             return False
-
         if value is None:
             return False
+        if widget.property(widgetProperty) == value:
+            return True
 
         widget.style().unpolish(widget)
-        widget.setProperty(item, value)
+        widget.setProperty(widgetProperty, value)
         widget.style().polish(widget)
 
         return True
@@ -214,18 +208,16 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
     def extractNames(names=''):
         """
         extractNames splits a given path to basename and extension
-        if the input is a multiple list, there will be as return values a multiple list
-        as well, otherwise single values
+        if the input is a multiple list, there will be as return values a
+        multiple list as well, otherwise single values
 
         :param      names:   full path of file (s)
         :return:    short:  basename without extension
                     ext:    extension
                     name:   name
         """
-
         if not names:
             return '', '', ''
-
         if not isinstance(names, list):
             return '', '', ''
 
@@ -254,15 +246,15 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
     def prepareFileDialog(self, window=None, enableDir=False, reverseOrder=False):
         """
-        prepareFileDialog does some tweaking of the standard file dialogue widget for geometry
-        and general settings. it also removes some parts ans makes the dialog modal.
+        prepareFileDialog does some tweaking of the standard file dialogue
+        widget for geometry and general settings. it also removes some parts and
+        makes the dialog modal.
 
         :param window:  parent class
         :param enableDir:   allows dir selection in file box
         :param reverseOrder:   file selection z->a
         :return:        dlg, the dialog widget
         """
-
         if not window:
             return None
 
@@ -299,12 +291,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
     @staticmethod
     def runDialog(dlg):
         """
-        separated from method for better testing !
-
         :param dlg:
         :return: result
         """
-
         return dlg.exec_()
 
     def messageDialog(self, parentWidget, title, question):
@@ -314,7 +303,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param question:
         :return: OK
         """
-
         msg = QMessageBox()
         msg.setWindowModality(Qt.ApplicationModal)
         msg.setStyleSheet(self.getStyle())
@@ -660,6 +648,8 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
             elements = p1.split(value)
         elif isP2:
             elements = p2.split(value)
+        else:
+            elements = ''
 
         if isFloat:
             angle = float(value.replace(',', '.'))
@@ -710,6 +700,8 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
             elements = p1.split(value)
         elif isP2:
             elements = p2.split(value)
+        else:
+            elements = ''
 
         if isFloat:
             angle = float(value.replace(',', '.'))

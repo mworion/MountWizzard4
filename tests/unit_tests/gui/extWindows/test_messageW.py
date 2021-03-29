@@ -113,3 +113,9 @@ def test_writeMessage_4(function):
     function.app.messageQueue.put(('test', 10))
     suc = function.writeMessage()
     assert suc
+
+
+def test_writeMessage_5(function):
+    function.app.messageQueue.put(('test', 0x100))
+    suc = function.writeMessage()
+    assert suc

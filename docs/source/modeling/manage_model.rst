@@ -4,8 +4,6 @@ Managing your models is a central task especially if you image in a mobile envir
 supports this in the Manage Model Tab in the main window. All functions there are related to
 the actual mount model or the models stored in the mount.
 
-.. versionadded:: 0.149.7
-
 Three graphs are available for checking the model:
 
 .. hlist::

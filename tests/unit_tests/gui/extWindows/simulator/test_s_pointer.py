@@ -98,6 +98,6 @@ def test_updatePositions_3(qtbot):
 
     with mock.patch.object(app.app.mount.geometry,
                            'calcTransformationMatrices',
-                           return_value=(0, 0, 1, 1, 1)):
+                           return_value=(0, 0, [1, 1, 1], None, None)):
         suc = app.updatePositions()
         assert suc

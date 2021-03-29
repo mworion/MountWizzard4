@@ -18,9 +18,26 @@ from setuptools import setup
 from pathlib import Path
 import platform
 
+releaseNotes = """
+- adding release notes showing new capabilities in message window
+- adding cover light on / off 
+- adding cover light intensity settings
+- reversing E/W for polar diagram in hemisphere window
+- adding push mount time to computer manual / hourly
+- adding contour HFD plot to image windows
+- adding virtual emergency stop key on time group
+- update build-in files if newer ones are shipped
+- auto restart MW4 after update (checkbox available)
+- adding OBJCTRA / OBJCTDEC keywords when reading FITs
+- upgrade various libraries
+ """
+
+with open('notes.txt', 'w') as f:
+    f.writelines(releaseNotes)
+
 setup(
     name='mountwizzard4',
-    version='0.240.0',
+    version='1.2.0b0',
     packages=[
         'mw4',
         'mw4.base',
@@ -49,28 +66,30 @@ setup(
     ],
     python_requires='>=3.7.0, <3.10',
     install_requires=[
-        'numpy==1.19.3',
-        'matplotlib==3.3.3',
-        'pyerfa==1.7.1.1',
+        'numpy==1.20.2',
+        'pillow==8.1.2',
+        'matplotlib==3.3.4',
+        'pyerfa==1.7.2',
         'astropy==4.2',
-        'scipy==1.5.4',
+        'scipy==1.6.1',
         'sep==1.1.1',
-        'requests==2.24.0',
+        'requests==2.25.1',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.35',
+        'skyfield==1.37',
         'sgp4>=2.1',
         'qimage2ndarray==1.8.3',
-        'importlib_metadata==2.0.0',
+        'importlib_metadata==3.7.3',
         'deepdiff==5.0.2',
-        'colour_demosaicing==0.1.5',
+        'colour_demosaicing==0.1.6',
         'wakeonlan==1.1.6',
-        'pybase64==1.1.1'
+        'pybase64==1.1.4',
     ]
     + (['pywin32==300'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
-    + (['PyQt5==5.15.2'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt3D==5.15.2'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
-    + (['PyQtWebEngine==5.15.2'] if platform.machine() not in ['armv7l', 'aarch64'] else []),
+    + (['PyQt5==5.15.4'] if platform.machine() not in ['armv7l'] else [])
+    + (['PyQt3D==5.15.4'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
+    + (['PyQtWebEngine==5.15.4'] if platform.machine() not in ['armv7l',
+                                                               'aarch64'] else []),
 
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

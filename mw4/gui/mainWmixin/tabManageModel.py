@@ -135,8 +135,10 @@ class ManageModel(object):
         """
         buildModel = {}
         for star in buildModelData:
-            buildModel[star['errorIndex']] = {'ha': star.get('haMountModel', 0),
-                                              'dec': star.get('decMountModel', 0)}
+            index = star.get('errorIndex', 0)
+            mount = {'ha': star.get('haMountModel', 0),
+                     'dec': star.get('decMountModel', 0)}
+            buildModel[index] = mount
 
         pointsIn, pointsOut = self.findKeysFromSourceInDest(buildModel, mountModel)
         return pointsIn, pointsOut
@@ -261,14 +263,6 @@ class ManageModel(object):
                              zorder=1,
                              )
         self.generateColorbar(scatter=scatter, figure=fig, label='Error [arcsec]')
-
-        yValues = self.ui.targetRMS.value()
-        xMin = fig.axes[1].get_xlim()[0]
-        xMax = fig.axes[1].get_xlim()[1]
-        vRange = xMax - xMin
-        xValues = [xMin - 0.15 * vRange, xMax + 0.2 * vRange]
-        fig.axes[1].plot(xValues, [yValues] * 2, self.M_PINK_H, lw=3, clip_on=False)
-
         axe.figure.canvas.draw()
         return True
 

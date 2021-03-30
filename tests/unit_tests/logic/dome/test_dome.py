@@ -69,6 +69,7 @@ def test_stopCommunication_1():
 
 def test_stopCommunication_2():
     app.framework = 'indi'
+    app.app.update1s.connect(app.checkSlewingDome)
     suc = app.stopCommunication()
     assert suc
 

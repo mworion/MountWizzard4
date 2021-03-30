@@ -21,7 +21,7 @@ import platform
 releaseNotes = """
 - adding simulator feature
 - bugfix slewing message dome when disconnected
-- 
+- adding dome following when mount is in satellite tracking mode 
  """
 
 with open('notes.txt', 'w') as f:

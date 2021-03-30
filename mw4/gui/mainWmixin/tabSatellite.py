@@ -80,12 +80,12 @@ class Satellite(object):
         config = self.app.config['mainW']
         self.setupSatelliteSourceURLsDropDown()
         self.ui.filterSatellite.setText(config.get('filterSatellite'))
+        self.ui.domeAutoFollowSat.setChecked(config.get('domeAutoFollowSat', False))
+
         if not self.app.automation:
             self.installPath = self.app.mwGlob['dataDir']
-
         elif self.app.automation.installPath:
             self.installPath = self.app.automation.installPath
-
         else:
             self.installPath = self.app.mwGlob['dataDir']
         return True
@@ -96,6 +96,7 @@ class Satellite(object):
         """
         config = self.app.config['mainW']
         config['filterSatellite'] = self.ui.filterSatellite.text()
+        config['domeAutoFollowSat'] = self.ui.domeAutoFollowSat.isChecked()
         return True
 
     def setupSatelliteSourceURLsDropDown(self):

@@ -24,8 +24,9 @@ Released beta version of MW4
 ----------------------------
 2.0.0b0
 
-- 3d Simulator (mount, dome, build points etc)
+- adding simulator feature
 - bugfix slewing message dome when disconnected
+- adding dome following when mount is in satellite tracking mode
 
 Released version of MW4
 -----------------------

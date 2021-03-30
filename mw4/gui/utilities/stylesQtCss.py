@@ -172,7 +172,7 @@ class Styles:
         background-color: #202020;
         color: rgb(32, 144, 192);
         padding: 5px;
-        max-width: 300px;
+        max-width: 500px;
     }
     QLabel {
         background-color: transparent;

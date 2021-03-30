@@ -837,6 +837,8 @@ class MainWindow(
         :return: true for test purpose
         """
         for window in self.uiWindows:
+            if window == 'showSimulatorW':
+                continue
             if not self.app.config.get(window, False):
                 continue
 

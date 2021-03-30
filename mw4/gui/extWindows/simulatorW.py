@@ -84,9 +84,8 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.pointer = SimulatorPointer(self.app)
         self.laser = SimulatorLaser(self.app)
         self.world = None
-        self.camera.positionChanged.connect(self.pos)
 
-    def pos(self):
+    def limitPositionZ(self):
         pos = self.camera.position()
         if pos[1] < 0:
             z = 0
@@ -162,6 +161,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         self.storeConfig()
 
+        self.app.update1s.disconnect(self.dome.updatePositions)
         self.ui.checkDomeTransparent.clicked.disconnect(self.setDomeTransparency)
         self.ui.checkShowBuildPoints.clicked.disconnect(self.buildPointsCreate)
         self.ui.checkShowNumbers.clicked.disconnect(self.buildPointsCreate)
@@ -175,8 +175,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.topWestView.clicked.disconnect(self.topWestView)
         self.ui.eastView.clicked.disconnect(self.eastView)
         self.ui.westView.clicked.disconnect(self.westView)
-
-        self.app.update1s.disconnect(self.dome.updatePositions)
         self.app.updateDomeSettings.disconnect(self.updateSettings)
         self.app.updateDomeSettings.disconnect(self.telescope.updateSettings)
         self.app.updateDomeSettings.disconnect(self.dome.updateSettings)
@@ -186,7 +184,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.mount.signals.pointDone.disconnect(self.buildPoints.updatePositions)
         self.app.drawBuildPoints.disconnect(self.buildPointsCreate)
         self.app.drawHorizonPoints.disconnect(self.horizonCreate)
-
+        self.camera.positionChanged.disconnect(self.limitPositionZ)
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -207,7 +205,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.topWestView.clicked.connect(self.topWestView)
         self.ui.eastView.clicked.connect(self.eastView)
         self.ui.westView.clicked.connect(self.westView)
-
         self.app.update1s.connect(self.dome.updatePositions)
         self.app.updateDomeSettings.connect(self.updateSettings)
         self.app.updateDomeSettings.connect(self.telescope.updateSettings)
@@ -218,7 +215,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.mount.signals.pointDone.connect(self.buildPoints.updatePositions)
         self.app.drawBuildPoints.connect(self.buildPointsCreate)
         self.app.drawHorizonPoints.connect(self.horizonCreate)
-
+        self.camera.positionChanged.connect(self.limitPositionZ)
         self.show()
         return True
 

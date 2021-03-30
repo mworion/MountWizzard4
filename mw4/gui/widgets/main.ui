@@ -27280,15 +27280,15 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <zorder>statusOnline_2</zorder>
  </widget>
  <tabstops>
-  <tabstop>openMessageW</tabstop>
-  <tabstop>openMeasureW</tabstop>
-  <tabstop>openHemisphereW</tabstop>
   <tabstop>openImageW</tabstop>
   <tabstop>openSatelliteW</tabstop>
-  <tabstop>openKeypadW</tabstop>
   <tabstop>mountConnected</tabstop>
-  <tabstop>environConnected</tabstop>
-  <tabstop>domeConnected</tabstop>
+  <tabstop>moveCoordinateAlt</tabstop>
+  <tabstop>moveCoordinateAz</tabstop>
+  <tabstop>moveAltAzAbsolute</tabstop>
+  <tabstop>moveCoordinateRa</tabstop>
+  <tabstop>moveCoordinateDec</tabstop>
+  <tabstop>moveRaDecAbsolute</tabstop>
   <tabstop>cameraConnected</tabstop>
   <tabstop>astrometryConnected</tabstop>
   <tabstop>loadFrom</tabstop>
@@ -27596,6 +27596,99 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>posText2</tabstop>
   <tabstop>posAlt2</tabstop>
   <tabstop>posText7</tabstop>
+  <tabstop>virtualStop</tabstop>
+  <tabstop>followSat</tabstop>
+  <tabstop>almanacAstronomical</tabstop>
+  <tabstop>almanacNautical</tabstop>
+  <tabstop>almanacCivil</tabstop>
+  <tabstop>almanacDark</tabstop>
+  <tabstop>toolsTabWidget</tabstop>
+  <tabstop>posButton0</tabstop>
+  <tabstop>posButton8</tabstop>
+  <tabstop>posButton1</tabstop>
+  <tabstop>posButton6</tabstop>
+  <tabstop>posButton9</tabstop>
+  <tabstop>posButton3</tabstop>
+  <tabstop>posButton4</tabstop>
+  <tabstop>posButton5</tabstop>
+  <tabstop>posButton7</tabstop>
+  <tabstop>posButton2</tabstop>
+  <tabstop>parkMountAfterSlew</tabstop>
+  <tabstop>stopMoveAll</tabstop>
+  <tabstop>moveNorth</tabstop>
+  <tabstop>moveWest</tabstop>
+  <tabstop>moveEast</tabstop>
+  <tabstop>moveDuration</tabstop>
+  <tabstop>slewSpeedMax</tabstop>
+  <tabstop>slewSpeedMed</tabstop>
+  <tabstop>slewSpeedLow</tabstop>
+  <tabstop>slewSpeedHigh</tabstop>
+  <tabstop>moveNorthWest</tabstop>
+  <tabstop>moveSouth</tabstop>
+  <tabstop>moveSouthEast</tabstop>
+  <tabstop>moveNorthEast</tabstop>
+  <tabstop>moveSouthWest</tabstop>
+  <tabstop>moveWestAltAz</tabstop>
+  <tabstop>moveStepSizeAltAz</tabstop>
+  <tabstop>moveSouthAltAz</tabstop>
+  <tabstop>moveEastAltAz</tabstop>
+  <tabstop>moveNorthEastAltAz</tabstop>
+  <tabstop>moveSouthWestAltAz</tabstop>
+  <tabstop>moveNorthAltAz</tabstop>
+  <tabstop>moveSouthEastAltAz</tabstop>
+  <tabstop>moveNorthWestAltAz</tabstop>
+  <tabstop>openMeasureW</tabstop>
+  <tabstop>openKeypadW</tabstop>
+  <tabstop>openMessageW</tabstop>
+  <tabstop>environConnected</tabstop>
+  <tabstop>openHemisphereW</tabstop>
+  <tabstop>domeConnected</tabstop>
+  <tabstop>moveCoordinateRaFloat</tabstop>
+  <tabstop>moveCoordinateDecFloat</tabstop>
+  <tabstop>rename1</tabstop>
+  <tabstop>rename2</tabstop>
+  <tabstop>renameDir</tabstop>
+  <tabstop>renameInputSelect</tabstop>
+  <tabstop>checkIncludeSubdirs</tabstop>
+  <tabstop>rename5</tabstop>
+  <tabstop>rename4</tabstop>
+  <tabstop>renameStart</tabstop>
+  <tabstop>rename3</tabstop>
+  <tabstop>newObjectName</tabstop>
+  <tabstop>rename6</tabstop>
+  <tabstop>relayButton0</tabstop>
+  <tabstop>relayButton1</tabstop>
+  <tabstop>relayButton2</tabstop>
+  <tabstop>relayButton3</tabstop>
+  <tabstop>relayButton4</tabstop>
+  <tabstop>relayButton5</tabstop>
+  <tabstop>relayButton6</tabstop>
+  <tabstop>relayButton7</tabstop>
+  <tabstop>cancelAnalyse</tabstop>
+  <tabstop>le_analyseFileName</tabstop>
+  <tabstop>loadAnalyseData</tabstop>
+  <tabstop>delayTimeFlexure</tabstop>
+  <tabstop>numberRunsTimeChange</tabstop>
+  <tabstop>altitudeTimeChange</tabstop>
+  <tabstop>azimuthTimeChange</tabstop>
+  <tabstop>runFlexure</tabstop>
+  <tabstop>delayTimeHysterese</tabstop>
+  <tabstop>altitudeHysterese2</tabstop>
+  <tabstop>altitudeHysterese1</tabstop>
+  <tabstop>numberRunsHysterese</tabstop>
+  <tabstop>azimuthHysterese2</tabstop>
+  <tabstop>azimuthHysterese1</tabstop>
+  <tabstop>runHysteresis</tabstop>
+  <tabstop>coverLightOn</tabstop>
+  <tabstop>coverLightOff</tabstop>
+  <tabstop>port3492</tabstop>
+  <tabstop>port3490</tabstop>
+  <tabstop>versionReleaseNotes</tabstop>
+  <tabstop>automaticRestart</tabstop>
+  <tabstop>pushTime</tabstop>
+  <tabstop>autoPushTime</tabstop>
+  <tabstop>activateVirtualStop</tabstop>
+  <tabstop>domeAutoFollowSat</tabstop>
  </tabstops>
  <resources/>
  <connections/>

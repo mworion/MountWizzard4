@@ -688,3 +688,4 @@ class Satellite(object):
 
         self.lastAzimuth = azimuth
         self.app.dome.slewDome(altitude=altitude, azimuth=azimuth)
+        return True

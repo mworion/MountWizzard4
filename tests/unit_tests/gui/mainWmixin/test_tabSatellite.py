@@ -976,3 +976,67 @@ def test_progSatellitesFull_5(function):
                                    return_value=True):
                 suc = function.progSatellitesFull()
                 assert suc
+
+
+def test_diffModulus_1(function):
+    val = function.diffModulus(1, 20, 360)
+    assert val == 19
+
+
+def test_diffModulus_2(function):
+    val = function.diffModulus(350, 10, 360)
+    assert val == 20
+
+
+def test_diffModulus_3(function):
+    val = function.diffModulus(-10, 340, 360)
+    assert val == 10
+
+
+def test_followMount_1(function):
+    obs = function.app.mount.obsSite
+    function.ui.domeAutoFollowSat.setChecked(False)
+    obs.status = 1
+    suc = function.followMount(obs)
+    assert not suc
+
+
+def test_followMount_2(function):
+    obs = function.app.mount.obsSite
+    obs.status = 10
+    function.ui.domeAutoFollowSat.setChecked(False)
+    suc = function.followMount(obs)
+    assert not suc
+
+
+def test_followMount_3(function):
+    obs = function.app.mount.obsSite
+    obs.status = 10
+    function.ui.domeAutoFollowSat.setChecked(True)
+    function.app.deviceStat['dome'] = False
+    suc = function.followMount(obs)
+    assert not suc
+
+
+def test_followMount_4(function):
+    obs = function.app.mount.obsSite
+    obs.status = 10
+    function.ui.domeAutoFollowSat.setChecked(True)
+    function.app.deviceStat['dome'] = True
+    function.lastAzimuth = 1
+    obs.Az = Angle(degrees=1)
+    obs.Alt = Angle(degrees=1)
+    suc = function.followMount(obs)
+    assert not suc
+
+
+def test_followMount_5(function):
+    obs = function.app.mount.obsSite
+    obs.status = 10
+    function.ui.domeAutoFollowSat.setChecked(True)
+    function.app.deviceStat['dome'] = True
+    function.lastAzimuth = 10
+    obs.Az = Angle(degrees=1)
+    obs.Alt = Angle(degrees=1)
+    suc = function.followMount(obs)
+    assert suc

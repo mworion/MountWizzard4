@@ -53,6 +53,8 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.createMutex = QMutex()
 
         self.view = Qt3DWindow()
+        self.view.setA
+        self.view.setFormat()
         container = QWidget.createWindowContainer(self.view)
         self.ui.simulator.addWidget(container)
 

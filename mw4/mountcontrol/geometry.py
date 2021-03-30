@@ -444,7 +444,7 @@ class Geometry(object):
             return None, None, None, None, None
 
         t1 = - p / 2 + np.sqrt(p * p / 4 - q)
-        t2 = - p / 2 - np.sqrt(p * p / 4 - q)
+        # t2 = - p / 2 - np.sqrt(p * p / 4 - q)
 
         # we choose the positive solution as we look in the positive direction and
         # can omit the view to the back

@@ -356,7 +356,8 @@ def test_updateTrackingGui_6(function):
         assert not suc
 
 
-def test_setLunarTracking1(function, qtbot):
+def test_setLunarTracking_1(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.setting,
                            'setLunarTracking',
                            return_value=True):
@@ -366,7 +367,8 @@ def test_setLunarTracking1(function, qtbot):
         assert ['Tracking set to Lunar', 0] == blocker.args
 
 
-def test_setLunarTracking2(function, qtbot):
+def test_setLunarTracking_2(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.setting,
                            'setLunarTracking',
                            return_value=False):
@@ -376,7 +378,17 @@ def test_setLunarTracking2(function, qtbot):
         assert ['Cannot set tracking to Lunar', 2] == blocker.args
 
 
-def test_setSiderealTracking1(function, qtbot):
+def test_setLunarTracking_3(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.setting,
+                           'setLunarTracking',
+                           return_value=True):
+        suc = function.setLunarTracking()
+        assert not suc
+
+
+def test_setSiderealTracking_1(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.setting,
                            'setSiderealTracking',
                            return_value=True):
@@ -386,7 +398,8 @@ def test_setSiderealTracking1(function, qtbot):
         assert ['Tracking set to Sidereal', 0] == blocker.args
 
 
-def test_setSiderealTracking2(function, qtbot):
+def test_setSiderealTracking_2(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.setting,
                            'setSiderealTracking',
                            return_value=False):
@@ -396,7 +409,17 @@ def test_setSiderealTracking2(function, qtbot):
         assert ['Cannot set tracking to Sidereal', 2] == blocker.args
 
 
-def test_setSolarTracking1(function, qtbot):
+def test_setSiderealTracking_3(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.setting,
+                           'setSiderealTracking',
+                           return_value=True):
+        suc = function.setSiderealTracking()
+        assert not suc
+
+
+def test_setSolarTracking_1(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.setting,
                            'setSolarTracking',
                            return_value=True):
@@ -406,7 +429,8 @@ def test_setSolarTracking1(function, qtbot):
         assert ['Tracking set to Solar', 0] == blocker.args
 
 
-def test_setSolarTracking2(function, qtbot):
+def test_setSolarTracking_2(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.setting,
                            'setSolarTracking',
                            return_value=False):
@@ -416,7 +440,17 @@ def test_setSolarTracking2(function, qtbot):
         assert ['Cannot set tracking to Solar', 2] == blocker.args
 
 
+def test_setSolarTracking_3(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.setting,
+                           'setSolarTracking',
+                           return_value=True):
+        suc = function.setSolarTracking()
+        assert not suc
+
+
 def test_flipMount_1(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'flip',
                            return_value=False):
@@ -427,6 +461,7 @@ def test_flipMount_1(function, qtbot):
 
 
 def test_flipMount_2(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'flip',
                            return_value=True):
@@ -436,7 +471,17 @@ def test_flipMount_2(function, qtbot):
         assert ['Mount flipped', 0] == blocker.args
 
 
-def test_stop1(function, qtbot):
+def test_flipMount_3(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.obsSite,
+                           'flip',
+                           return_value=True):
+        suc = function.flipMount()
+        assert not suc
+
+
+def test_stop_1(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'stop',
                            return_value=True):
@@ -446,7 +491,7 @@ def test_stop1(function, qtbot):
         assert ['Mount stopped', 0] == blocker.args
 
 
-def test_stop2(function, qtbot):
+def test_stop_2(function, qtbot):
     with mock.patch.object(function.app.mount.obsSite,
                            'stop',
                            return_value=False):
@@ -454,6 +499,15 @@ def test_stop2(function, qtbot):
             suc = function.stop()
             assert not suc
         assert ['Cannot stop mount', 2] == blocker.args
+
+
+def test_test_stop_3(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.obsSite,
+                           'stop',
+                           return_value=True):
+        suc = function.stop()
+        assert not suc
 
 
 def test_virtualStop_1(function):
@@ -614,6 +668,7 @@ def test_updateLocGUI_3(function):
 
 
 def test_changeTracking_ok1(function, qtbot):
+    function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 0
     with mock.patch.object(function.app.mount.obsSite,
                            'stopTracking',
@@ -625,6 +680,7 @@ def test_changeTracking_ok1(function, qtbot):
 
 
 def test_changeTracking_ok2(function, qtbot):
+    function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 0
     with mock.patch.object(function.app.mount.obsSite,
                            'stopTracking',
@@ -637,6 +693,7 @@ def test_changeTracking_ok2(function, qtbot):
 
 def test_changeTracking_ok3(function, qtbot):
     function.app.mount.obsSite.status = 1
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'startTracking',
                            return_value=False):
@@ -648,6 +705,7 @@ def test_changeTracking_ok3(function, qtbot):
 
 def test_changeTracking_ok4(function, qtbot):
     function.app.mount.obsSite.status = 1
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'startTracking',
                            return_value=True):
@@ -657,8 +715,18 @@ def test_changeTracking_ok4(function, qtbot):
         assert ['Started tracking', 0] == blocker.args
 
 
+def test_changeTracking_notok(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.obsSite,
+                           'startTracking',
+                           return_value=True):
+        suc = function.changeTracking()
+        assert not suc
+
+
 def test_changePark_ok1(function, qtbot):
     function.app.mount.obsSite.status = 5
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'unpark',
                            return_value=False):
@@ -670,6 +738,7 @@ def test_changePark_ok1(function, qtbot):
 
 def test_changePark_ok2(function, qtbot):
     function.app.mount.obsSite.status = 5
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'unpark',
                            return_value=True):
@@ -681,6 +750,7 @@ def test_changePark_ok2(function, qtbot):
 
 def test_changePark_ok3(function, qtbot):
     function.app.mount.obsSite.status = 1
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'park',
                            return_value=False):
@@ -692,6 +762,7 @@ def test_changePark_ok3(function, qtbot):
 
 def test_changePark_ok4(function, qtbot):
     function.app.mount.obsSite.status = 1
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'park',
                            return_value=True):
@@ -699,6 +770,15 @@ def test_changePark_ok4(function, qtbot):
             suc = function.changePark()
             assert suc
         assert ['Mount parked', 0] == blocker.args
+
+
+def test_changePark_notok(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.obsSite,
+                           'park',
+                           return_value=True):
+        suc = function.changePark()
+        assert not suc
 
 
 def test_setMeridianLimitTrack_1(function, qtbot):

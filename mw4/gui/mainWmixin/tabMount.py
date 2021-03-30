@@ -360,7 +360,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.obsSite is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         obs = self.app.mount.obsSite
@@ -386,7 +386,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.obsSite is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         obs = self.app.mount.obsSite
@@ -412,7 +412,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         sett = self.app.mount.setting
@@ -431,7 +431,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         sett = self.app.mount.setting
@@ -450,7 +450,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         sett = self.app.mount.setting
@@ -469,7 +469,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.obsSite is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         obs = self.app.mount.obsSite
@@ -488,7 +488,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.obsSite is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         obs = self.app.mount.obsSite

@@ -85,15 +85,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.laser = SimulatorLaser(self.app)
         self.world = None
 
-    def limitPositionZ(self):
-        pos = self.camera.position()
-        if pos[1] < 0:
-            z = 0
-        else:
-            z = pos[1]
-        posNew = QVector3D(pos[0], z, pos[2])
-        self.camera.setPosition(posNew)
-
     def initConfig(self):
         """
         :return: True for test purpose
@@ -217,6 +208,19 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.drawHorizonPoints.connect(self.horizonCreate)
         self.camera.positionChanged.connect(self.limitPositionZ)
         self.show()
+        return True
+
+    def limitPositionZ(self):
+        """
+        :return:
+        """
+        pos = self.camera.position()
+        if pos[1] < 0:
+            z = 0
+        else:
+            z = pos[1]
+        posNew = QVector3D(pos[0], z, pos[2])
+        self.camera.setPosition(posNew)
         return True
 
     def buildPointsCreate(self):

@@ -39,6 +39,7 @@ class Satellite(object):
         self.satellitesRawTLE = {}
         self.databaseProcessing = DataWriter(self.app)
         self.installPath = ''
+        self.lastAzimuth = -1
 
         self.satelliteSourceURLs = {
             'Active': 'http://www.celestrak.com/NORAD/elements/active.txt',
@@ -70,6 +71,7 @@ class Satellite(object):
         self.ui.isOnline.stateChanged.connect(self.loadTLEDataFromSourceURLs)
 
         self.app.update3s.connect(self.updateOrbit)
+        self.app.mount.signals.pointDone.connect(self.followMount)
 
     def initConfig(self):
         """
@@ -657,3 +659,31 @@ class Satellite(object):
         else:
             self.app.message.emit('Programming success', 1)
         return suc
+
+    @staticmethod
+    def diffModulus(x, y, m):
+        diff = abs(x - y)
+        diff = abs(diff % m)
+        return min(diff, abs(diff - m))
+
+    def followMount(self, obs):
+        """
+        :return:
+        """
+        status = obs.status
+        if status != 10:
+            return False
+        if not self.ui.domeAutoFollowSat.isChecked():
+            return False
+        if not self.app.deviceStat['dome']:
+            return False
+
+        azimuth = obs.Az.degrees
+        altitude = obs.Alt.degrees
+
+        delta = self.diffModulus(azimuth, self.lastAzimuth, 360)
+        if delta < 1:
+            return False
+
+        self.lastAzimuth = azimuth
+        self.app.dome.slewDome(altitude=altitude, azimuth=azimuth)

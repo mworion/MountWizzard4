@@ -331,7 +331,6 @@ class MainWindow(
 
         :return:    True if success for test
         """
-
         # main window
         self.wIcon(self.ui.saveConfigAs, 'save')
         self.wIcon(self.ui.loadFrom, 'load')

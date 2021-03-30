@@ -35,29 +35,20 @@ class HemisphereWindowExt:
     @staticmethod
     def markerPoint():
         """
-        markerPoint constructs a custom marker for presentation of modeldata points by
-        concatenating the circle with an internal cutout of the star
-
         :return: marker
         """
-
         circleB = mpath.Path.unit_circle()
         circleS = mpath.Path.unit_circle()
         verts = np.concatenate([circleB.vertices, 0.5 * circleS.vertices])
         codes = np.concatenate([circleB.codes, circleS.codes])
         marker = mpath.Path(verts, codes)
-
         return marker
 
     @staticmethod
     def markerAltAz():
         """
-        markerAltAz constructs a custom marker for AltAz pointer by
-        concatenating the circle with an internal cutout of the star
-
         :return: marker
         """
-
         circleB = mpath.Path.unit_circle()
         circleM = mpath.Path.unit_circle()
         circleS = mpath.Path.unit_circle()
@@ -71,23 +62,17 @@ class HemisphereWindowExt:
                                 circleS.codes,
                                 circleC.codes])
         marker = mpath.Path(verts, codes)
-
         return marker
 
     @staticmethod
     def markerStar():
         """
-        markerStar constructs a custom marker for presentation of modeldata points by
-        concatenating the circle with an internal cutout of the star
-
         :return: marker
         """
-
         star = mpath.Path.unit_regular_star(8)
         verts = np.concatenate([star.vertices])
         codes = np.concatenate([star.codes])
         marker = mpath.Path(verts, codes)
-
         return marker
 
     def setOperationMode(self):
@@ -97,7 +82,6 @@ class HemisphereWindowExt:
 
         :return: success
         """
-
         if self.ui.checkEditNone.isChecked():
             self.operationMode = 'normal'
             self.ui.addPositionToHorizon.setEnabled(False)
@@ -121,29 +105,23 @@ class HemisphereWindowExt:
 
     def showMouseCoordinates(self, event):
         """
-
         :param event:
         :return: success
         """
-
         if event.xdata is None:
             return False
-
         if event.ydata is None:
             return False
 
         self.ui.altitude.setText(f'{event.ydata:3.1f}')
         self.ui.azimuth.setText(f'{event.xdata:3.1f}')
-
         return True
 
     def slewSelectedTarget(self, slewType='normal'):
         """
-
         :param slewType:
         :return: success
         """
-
         azimuthT = self.app.mount.obsSite.AzTarget.degrees
         altitudeT = self.app.mount.obsSite.AltTarget.degrees
 
@@ -159,7 +137,6 @@ class HemisphereWindowExt:
 
         if suc:
             self.app.message.emit('Slewing mount', 0)
-
         else:
             self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuthT, altitudeT), 2)
 
@@ -174,10 +151,8 @@ class HemisphereWindowExt:
         :param event: mouse events
         :return: success
         """
-
         if not event.inaxes:
             return False
-
         if event.button != 1 or not event.dblclick:
             return False
 
@@ -271,10 +246,8 @@ class HemisphereWindowExt:
         """
         if event.button == 1:
             suc = self.addHorizonPoint(data=data, event=event)
-
         elif event.button == 3:
             suc = self.deleteHorizonPoint(data=data, event=event)
-
         else:
             return False
 
@@ -332,10 +305,8 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return: success
         """
-
         if event.button == 1:
             suc = self.addBuildPoint(data=data, event=event)
-
         elif event.button == 3:
             suc = self.deleteBuildPoint(data=data, event=event)
 
@@ -359,16 +330,13 @@ class HemisphereWindowExt:
 
         if not event.inaxes:
             return False
-
         if event.dblclick:
             return False
 
         if self.ui.checkEditHorizonMask.isChecked():
             suc = self.editHorizonMask(event=event, data=data)
-
         elif self.ui.checkEditBuildPoints.isChecked():
             suc = self.editBuildPoints(event=event, data=data)
-
         else:
             return False
 
@@ -388,10 +356,8 @@ class HemisphereWindowExt:
 
         if event.button == 1 and not event.dblclick:
             alignType = 'polar'
-
         elif event.button == 3 and not event.dblclick:
             alignType = 'ortho'
-
         else:
             return False
 
@@ -420,7 +386,6 @@ class HemisphereWindowExt:
             return False
 
         suc = self.slewSelectedTarget(slewType=alignType)
-
         return suc
 
     def onMouseDispatcher(self, event):

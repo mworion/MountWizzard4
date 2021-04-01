@@ -422,10 +422,8 @@ class Satellite(object):
 
         if days > 10:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')
-
         elif 3 < days < 10:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'yellow')
-
         else:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', '')
 
@@ -443,7 +441,6 @@ class Satellite(object):
         self.satOrbits = self.showRises()
 
         winObj = self.app.uiWindows['showSatelliteW']
-
         if not winObj['classObj']:
             return False
 
@@ -458,7 +455,6 @@ class Satellite(object):
             return False
 
         winObj = self.app.uiWindows['showSatelliteW']
-
         if not winObj['classObj']:
             return False
 
@@ -503,20 +499,17 @@ class Satellite(object):
         if tleParams.jdStart is not None:
             time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdStart)
             self.ui.satTransitStartUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
-
         else:
             self.ui.satTransitStartUTC.setText('No transit')
 
         if tleParams.jdEnd is not None:
             time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdEnd)
             self.ui.satTransitEndUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
-
         else:
             self.ui.satTransitEndUTC.setText('No transit')
 
         if tleParams.flip:
             self.ui.satNeedFlip.setText('YES')
-
         else:
             self.ui.satNeedFlip.setText('NO')
 

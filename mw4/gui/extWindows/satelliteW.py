@@ -32,12 +32,6 @@ from gui.widgets import satellite_ui
 
 class SatelliteWindowSignals(QObject):
     """
-    The SatelliteWindowSignals class offers a list of signals to be used and instantiated by
-    the SatelliteWindow class to get signals for triggers for finished tasks to
-    enable a gui to update their values transferred to the caller back.
-
-    This has to be done in a separate class as the signals have to be subclassed from
-    QObject and the Mount class itself is subclassed from object
     """
 
     __all__ = ['SatelliteWindowSignals']
@@ -48,23 +42,17 @@ class SatelliteWindowSignals(QObject):
 
 class SatelliteWindow(toolsQtWidget.MWidget):
     """
-    the satellite window class handles
-
     """
 
     __all__ = ['SatelliteWindow']
 
-    # length of forecast time in hours
     FORECAST_TIME = 3
-    # earth radius
     EARTH_RADIUS = 6378.0
 
     def __init__(self, app):
         super().__init__()
-
         self.app = app
         self.threadPool = app.threadPool
-
         self.ui = satellite_ui.Ui_SatelliteDialog()
         self.ui.setupUi(self)
         self.initUI()
@@ -74,14 +62,17 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.plotSatPosSphere2 = None
         self.plotSatPosHorizon = None
         self.plotSatPosEarth = None
-
-        self.satSphereMat1 = self.embedMatplot(self.ui.satSphere1, constrainedLayout=False)
+        self.satSphereMat1 = self.embedMatplot(self.ui.satSphere1,
+                                               constrainedLayout=False)
         self.satSphereMat1.parentWidget().setStyleSheet(self.BACK_BG)
-        self.satSphereMat2 = self.embedMatplot(self.ui.satSphere2, constrainedLayout=False)
+        self.satSphereMat2 = self.embedMatplot(self.ui.satSphere2,
+                                               constrainedLayout=False)
         self.satSphereMat2.parentWidget().setStyleSheet(self.BACK_BG)
-        self.satHorizonMat = self.embedMatplot(self.ui.satHorizon, constrainedLayout=True)
+        self.satHorizonMat = self.embedMatplot(self.ui.satHorizon,
+                                               constrainedLayout=True)
         self.satHorizonMat.parentWidget().setStyleSheet(self.BACK_BG)
-        self.satEarthMat = self.embedMatplot(self.ui.satEarth, constrainedLayout=True)
+        self.satEarthMat = self.embedMatplot(self.ui.satEarth,
+                                             constrainedLayout=True)
         self.satEarthMat.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.signals.show.connect(self.drawSatellite)
@@ -95,13 +86,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
-
         if 'satelliteW' not in self.app.config:
             self.app.config['satelliteW'] = {}
         config = self.app.config['satelliteW']
@@ -110,7 +96,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         if x > self.screenSizeX:
             x = 0
-
         if y > self.screenSizeY:
             y = 0
 
@@ -118,34 +103,24 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         height = config.get('height', 600)
         width = config.get('width', 800)
         self.resize(width, height)
-
         return True
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         if 'satelliteW' not in self.app.config:
             self.app.config['satelliteW'] = {}
 
         config = self.app.config['satelliteW']
-
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
         config['width'] = self.width()
-
         return True
 
     def closeEvent(self, closeEvent):
         """
-        closeEvent is overloaded to be able to store the data before the windows is close
-        and all it's data is garbage collected
-
         :param closeEvent:
         :return:
         """
@@ -154,25 +129,20 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
     def showWindow(self):
         """
-        showWindow starts constructing the main window for satellite view and shows the
-        window content
-
         :return: True for test purpose
         """
-
         self.app.sendSatelliteData.emit()
         self.show()
-
         return True
 
     @staticmethod
     def markerSatellite():
         """
-        markerSatellite constructs a custom marker for presentation of satellite view
+        markerSatellite constructs a custom marker for presentation of
+        satellite view
 
         :return: marker
         """
-
         circle = mpath.Path.unit_circle()
 
         rect1p = [[0, 0], [1, 2], [0, 3], [4, 7], [7, 4], [3, 0], [2, 1], [6, 5], [5, 6],
@@ -192,8 +162,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
     def updatePositions(self, observe=None, subpoint=None, altaz=None):
         """
-        updatePositions is triggered once a second and update the satellite position in each
-        view.
+        updatePositions is triggered once a second and update the satellite
+        position in each view.
 
         :return: success
         """
@@ -242,19 +212,16 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.satSphereMat1.figure.canvas.draw()
         self.satEarthMat.figure.canvas.draw()
         self.satHorizonMat.figure.canvas.draw()
-
         return True
 
     @staticmethod
     def makeCubeLimits(axe, centers=None, hw=None):
         """
-
         :param axe:
         :param centers:
         :param hw:
         :return:
         """
-
         limits = axe.get_xlim(), axe.get_ylim(), axe.get_zlim()
         if centers is None:
             centers = [0.5 * sum(pair) for pair in limits]
@@ -282,21 +249,16 @@ class SatelliteWindow(toolsQtWidget.MWidget):
     def drawSphere1(self, observe=None):
         """
         draw sphere and put face color als image overlay:
-
         https://stackoverflow.com/questions/53074908/
         map-an-image-onto-a-sphere-and-plot-3d-trajectories
-
         but performance problems
-
         see also:
-
         https://space.stackexchange.com/questions/25958/
         how-can-i-plot-a-satellites-orbit-in-3d-from-a-tle-using-python-and-skyfield
 
         :param observe:
         :return: success
         """
-
         figure = self.satSphereMat1.figure
         figure.clf()
         figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
@@ -333,12 +295,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         # plotting sphere and labels
         for i, longitude in enumerate(longitudes):
             x, y, z = longitude
-            axe.plot(x, y, z, '-k', lw=1,
-                     color=self.M_GREY)
+            axe.plot(x, y, z, lw=1, color=self.M_GREY)
         for i, lat in enumerate(lats):
             x, y, z = lat
-            axe.plot(x, y, z, '-k', lw=1,
-                     color=self.M_GREY)
+            axe.plot(x, y, z, lw=1, color=self.M_GREY)
 
         axe.plot([0, 0],
                  [0, 0],
@@ -374,14 +334,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
     def drawSphere2(self, observe=None, subpoint=None):
         """
         draw sphere and put face color als image overlay:
-
         https://stackoverflow.com/questions/53074908/
         map-an-image-onto-a-sphere-and-plot-3d-trajectories
-
         but performance problems
-
         see also:
-
         https://space.stackexchange.com/questions/25958/
         how-can-i-plot-a-satellites-orbit-in-3d-from-a-tle-using-python-and-skyfield
 
@@ -389,7 +345,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param subpoint:
         :return: success
         """
-
         figure = self.satSphereMat2.figure
         figure.clf()
         figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
@@ -426,12 +381,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         # plotting sphere and labels
         for i, longitude in enumerate(longitudes):
             x, y, z = longitude
-            axe.plot(x, y, z, '-k', lw=1,
-                     color=self.M_GREY)
+            axe.plot(x, y, z, lw=1, color=self.M_GREY)
         for i, lat in enumerate(lats):
             x, y, z = lat
-            axe.plot(x, y, z, '-k', lw=1,
-                     color=self.M_GREY)
+            axe.plot(x, y, z, lw=1, color=self.M_GREY)
 
         axe.plot([0, 0],
                  [0, 0],
@@ -448,7 +401,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         # plot world
         for key in self.world.keys():
             shape = self.world[key]
-            x, y, z = functions.from_spherical(self.EARTH_RADIUS, shape['yRad'], shape['xRad'])
+            x, y, z = functions.from_spherical(self.EARTH_RADIUS,
+                                               shape['yRad'],
+                                               shape['xRad'])
             verts = [list(zip(x, y, z))]
             collect = Poly3DCollection(verts, facecolors=self.M_BLUE, alpha=0.5)
             axe.add_collection3d(collect)
@@ -490,20 +445,17 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         # finalizing
         self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
-
         return True
 
     def drawEarth(self, subpoint=None):
         """
-        drawEarth show a full earth view with the path of the subpoint of the satellite
-        drawn on it.
+        drawEarth show a full earth view with the path of the subpoint of the
+        satellite drawn on it.
 
         :param subpoint:
         :return: success
         """
-
         axe, fig = self.generateFlat(widget=self.satEarthMat)
-
         axe.set_xticks(np.arange(-180, 181, 45))
         axe.set_xlabel('Longitude in degrees',
                        color=self.M_BLUE,
@@ -559,11 +511,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
     def staticHorizon(self, axes=None):
         """
-
         :param axes: matplotlib axes object
         :return:
         """
-
         if not self.app.data.horizonP:
             return False
 
@@ -591,8 +541,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
     def drawHorizonView(self, difference=None):
         """
-        drawHorizonView shows the horizon and enable the users to explore a satellite
-        passing by
+        drawHorizonView shows the horizon and enable the users to explore a
+        satellite passing by
 
         :param difference:
         :return: success
@@ -640,14 +590,13 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
     def drawSatellite(self, satellite=None, satOrbits=None):
         """
-        drawSatellite draws 4 different views of the actual satellite situation: two sphere
-        views, a horizon view and an earth view.
+        drawSatellite draws 4 different views of the actual satellite
+        situation: two sphere views, a horizon view and an earth view.
 
         :param satellite:
         :param satOrbits:
         :return: True for test purpose
         """
-
         if satellite is None or satOrbits is None:
             print('none received')
             self.drawSphere1()

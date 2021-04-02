@@ -22,14 +22,19 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.0.0b0
+2.0.0b1
 
 - adding simulator feature
 - bugfix slewing message dome when disconnected
 - adding dome following when mount is in satellite tracking mode
+- adding fix for INDI cameras sending two times BUSY, EXP=0
 
 Released version of MW4
 -----------------------
+1.1.1
+
+- adding fix for INDI cameras sending two times BUSY, EXP=0
+
 1.1.0
 
 - adding release notes showing new capabilities in message window

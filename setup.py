@@ -22,6 +22,7 @@ releaseNotes = """
 - adding simulator feature
 - bugfix slewing message dome when disconnected
 - adding dome following when mount is in satellite tracking mode 
+- adding fix for INDI cameras sending two times BUSY, EXP=0
  """
 
 with open('notes.txt', 'w') as f:
@@ -29,7 +30,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b0',
+    version='2.0.0b1',
     packages=[
         'mw4',
         'mw4.base',

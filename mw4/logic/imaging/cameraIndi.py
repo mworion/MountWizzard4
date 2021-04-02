@@ -110,9 +110,10 @@ class CameraIndi(IndiClass):
 
         elif self.device.CCD_EXPOSURE['state'] == 'Busy':
             if value == 0:
+                if not self.isDownloading:
+                    self.signals.integrated.emit()
                 self.isDownloading = True
                 self.signals.message.emit('download')
-                self.signals.integrated.emit()
 
             else:
                 self.signals.message.emit(f'expose {value:2.0f} s')
@@ -120,7 +121,7 @@ class CameraIndi(IndiClass):
         elif self.device.CCD_EXPOSURE['state'] == 'Ok':
             self.signals.message.emit('')
 
-        if self.device.CCD_EXPOSURE['state'] in ['Idle', 'Ok'] and self.isDownloading:
+        if self.device.CCD_EXPOSURE['state'] in ['Idle', 'Ok']:
             self.isDownloading = False
 
         return True

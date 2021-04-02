@@ -222,19 +222,19 @@ class AstrometryNET(object):
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
               updateFits=False):
         """
-        Solve uses the astrometry.net solver capabilities. The intention is to use an
-        offline solving capability, so we need a installed instance. As we go multi
-        platform and we need to focus on MW function, we use the astrometry.net package
-        which is distributed with KStars / EKOS. Many thanks to them providing such a
-        nice package.
-        As we go using astrometry.net we focus on the minimum feature set possible to
-        omit many of the installation and wrapping work to be done. So we only support
-        solving of FITS files, use no python environment for astrometry.net parts (as we
-        could access these via MW directly)
+        Solve uses the astrometry.net solver capabilities. The intention is to
+        use an offline solving capability, so we need a installed instance. As we
+        go multi platform and we need to focus on MW function, we use the
+        astrometry.net package which is distributed with KStars / EKOS. Many
+        thanks to them providing such a nice package.
+        As we go using astrometry.net we focus on the minimum feature set possible
+        to omit many of the installation and wrapping work to be done. So we only
+        support solving of FITS files, use no python environment for
+        astrometry.net parts (as we could access these via MW directly)
 
-        The base outside ideas of implementation come from astrometry.net itself and the
-        astrometry implementation from cloudmakers.eu (another nice package for MAC Astro
-        software)
+        The base outside ideas of implementation come from astrometry.net itself
+        and the astrometry implementation from cloudmakers.eu (another nice
+        package for MAC Astro software)
 
         :param fitsPath:  full path to fits file
         :param raHint:  ra dest to look for solve in J2000
@@ -244,12 +244,12 @@ class AstrometryNET(object):
 
         :return: success
         """
-
         self.process = None
         self.result = {'success': False}
 
         if not os.path.isfile(fitsPath):
             self.result['message'] = 'image missing'
+            self.log.debug('Image missing for solving')
             return False
 
         tempPath = self.tempDir + '/temp.xy'
@@ -278,13 +278,10 @@ class AstrometryNET(object):
             return False
 
         raFITS, decFITS, scaleFITS = self.readFitsData(fitsPath=fitsPath)
-
         if raHint is None:
             raHint = raFITS
-
         if decHint is None:
             decHint = decFITS
-
         if scaleHint is None:
             scaleHint = scaleFITS
 
@@ -339,6 +336,8 @@ class AstrometryNET(object):
             solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,
                                                     wcsHeader=wcsHeader,
                                                     updateFits=updateFits)
+            self.log.debug(f'Header: [{header}]')
+            self.log.debug(f'Solve : [{solve}]')
             fitsHDU[0].header = header
 
         self.result = {
@@ -347,7 +346,7 @@ class AstrometryNET(object):
             'message': 'Solved',
         }
         self.result.update(solve)
-
+        self.log.debug(f'Result: [{self.result}]')
         return True
 
     def abort(self):
@@ -377,14 +376,12 @@ class AstrometryNET(object):
             program = ''
             index = ''
 
-        # checking binaries
         if not os.path.isfile(program):
             self.log.info(f'[{program}] not found')
             sucProgram = False
         else:
             sucProgram = True
 
-        # checking indexes
         if not glob.glob(index):
             self.log.info('No index files found')
             sucIndex = False
@@ -392,5 +389,4 @@ class AstrometryNET(object):
             sucIndex = True
 
         self.log.info(f'astrometry.net OK, app:{program} index:{index}')
-
         return sucProgram, sucIndex

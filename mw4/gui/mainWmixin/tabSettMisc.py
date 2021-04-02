@@ -54,7 +54,7 @@ class SettMisc(object):
         self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
         self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
         self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
-        self.ui.loglevelDebugTrace.clicked.connect(self.setLoggingLevel)
+        self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelStandard.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
@@ -77,7 +77,7 @@ class SettMisc(object):
         """
         config = self.app.config['mainW']
         self.setupAudioGui()
-        self.ui.loglevelDebugTrace.setChecked(config.get('loglevelDebugTrace', False))
+        self.ui.loglevelDebugTrace.setChecked(config.get('loglevelTrace', False))
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', False))
         self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', True))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
@@ -103,7 +103,7 @@ class SettMisc(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['loglevelDebugTrace'] = self.ui.loglevelDebugTrace.isChecked()
+        config['loglevelTrace'] = self.ui.loglevelDebugTrace.isChecked()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
@@ -397,7 +397,7 @@ class SettMisc(object):
         """
         :return: nothing
         """
-        if self.ui.loglevelDebugTrace.isChecked():
+        if self.ui.loglevelTrace.isChecked():
             setCustomLoggingLevel('TRACE')
 
         elif self.ui.loglevelDebug.isChecked():

@@ -204,7 +204,7 @@ class MountWizzard4(QObject):
                      elevation_m=elev)
 
         config = self.config.get('mainW', {})
-        if config.get('loglevelDeepDebug', False):
+        if config.get('loglevelTrace', False):
             level = 'TRACE'
         elif config.get('loglevelDebug', False):
             level = 'DEBUG'

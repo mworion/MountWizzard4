@@ -432,7 +432,7 @@ def test_setLoggingLevel2(function, qtbot):
 
 
 def test_setLoggingLevel3(function, qtbot):
-    function.ui.loglevelDebugTrace.setChecked(True)
+    function.ui.loglevelTrace.setChecked(True)
     function.setLoggingLevel()
     val = logging.getLogger().getEffectiveLevel()
     assert val == 5

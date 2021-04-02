@@ -77,7 +77,7 @@ class SettMisc(object):
         """
         config = self.app.config['mainW']
         self.setupAudioGui()
-        self.ui.loglevelDebugTrace.setChecked(config.get('loglevelTrace', False))
+        self.ui.loglevelTrace.setChecked(config.get('loglevelTrace', False))
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', False))
         self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', True))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
@@ -103,7 +103,7 @@ class SettMisc(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['loglevelTrace'] = self.ui.loglevelDebugTrace.isChecked()
+        config['loglevelTrace'] = self.ui.loglevelTrace.isChecked()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()

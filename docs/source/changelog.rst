@@ -3,8 +3,8 @@ Changelog
 The changelog contains the user related function or environment updates. For a
 detailed changes list, please refer to the commit list on GitHub.
 
-Unreleased version of MW4
--------------------------
+Idea for future
+---------------
 
 - 3d Simulator (mount, dome, build points etc)
 - retrofit model based on hashed coordinates
@@ -18,9 +18,13 @@ Unreleased version of MW4
   time for the mount So avoiding them would be great.
 - if indi UPD Driver is fixed and officially available, bring back auto dew
 
-Released beta version of MW4
-----------------------------
-1.1.0b12
+Released version of MW4
+-----------------------
+1.1.1
+
+- bugfix for indi: cameras sending more than once INDI busy and exp = 0
+
+1.1.0
 
 - adding release notes showing new capabilities in message window
 - adding cover light on / off
@@ -34,8 +38,6 @@ Released beta version of MW4
 - adding OBJCTRA / OBJCTDEC keywords when reading FITs
 - upgrade various libraries
 
-Released version of MW4
------------------------
 1.0.7
 
 - bugfix cooler

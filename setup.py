@@ -19,17 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- adding release notes showing new capabilities in message window
-- adding cover light on / off 
-- adding cover light intensity settings
-- reversing E/W for polar diagram in hemisphere window
-- adding push mount time to computer manual / hourly
-- adding contour HFD plot to image windows
-- adding virtual emergency stop key on time group
-- update build-in files if newer ones are shipped
-- auto restart MW4 after update (checkbox available)
-- adding OBJCTRA / OBJCTDEC keywords when reading FITs
-- upgrade various libraries
+- bugfix for indi: cameras sending more than once INDI busy and exp = 0
+
  """
 
 with open('notes.txt', 'w') as f:
@@ -37,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='1.1.0',
+    version='1.1.1',
     packages=[
         'mw4',
         'mw4.base',

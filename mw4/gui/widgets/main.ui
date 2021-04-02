@@ -25237,7 +25237,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="loglevelDebugTrace">
+       <widget class="QRadioButton" name="loglevelTrace">
         <property name="geometry">
          <rect>
           <x>190</x>
@@ -25258,7 +25258,7 @@ When clicking the button, you could change the value.</string>
          <string>Debug logging and communication will be stored in log file.</string>
         </property>
         <property name="text">
-         <string>Debug &amp; Trace</string>
+         <string>Trace</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -27510,7 +27510,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>installVersion</tabstop>
   <tabstop>loglevelStandard</tabstop>
   <tabstop>loglevelDebug</tabstop>
-  <tabstop>loglevelDebugTrace</tabstop>
+  <tabstop>loglevelTrace</tabstop>
   <tabstop>soundMountSlewFinished</tabstop>
   <tabstop>soundDomeSlewFinished</tabstop>
   <tabstop>soundMountAlert</tabstop>

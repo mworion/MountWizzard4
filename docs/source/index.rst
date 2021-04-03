@@ -8,7 +8,7 @@ install MW4 on a RPi3+, RPi4. Basically is it an automation and support tool, mo
 of the core functions are provided by the mount computer.
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
 
     overview
     install/index

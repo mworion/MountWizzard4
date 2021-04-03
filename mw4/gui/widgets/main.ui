@@ -7117,7 +7117,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>410</x>
        <y>190</y>
        <width>361</width>
-       <height>71</height>
+       <height>91</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -7225,14 +7225,38 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Avoid meridian flip when starting</string>
       </property>
      </widget>
+     <widget class="QCheckBox" name="checkAutoDeleteMeridian">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>65</y>
+        <width>256</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>If checked, all model points are deleted, which are within the meridian limits.</string>
+      </property>
+      <property name="text">
+       <string>Auto delete points within meridian limits</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_10">
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>280</y>
+       <y>300</y>
        <width>366</width>
-       <height>146</height>
+       <height>126</height>
       </rect>
      </property>
      <property name="title">
@@ -7395,30 +7419,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="checked">
        <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="checkAutoDeleteMeridian">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>120</y>
-        <width>256</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>If checked, all model points are deleted, which are within the meridian limits.</string>
-      </property>
-      <property name="text">
-       <string>Auto delete points within meridian limits</string>
       </property>
      </widget>
      <widget class="QPushButton" name="clearHorizonMask">
@@ -27331,7 +27331,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>clearHorizonMask</tabstop>
   <tabstop>checkAutoDeleteHorizon</tabstop>
   <tabstop>checkSafetyMarginHorizon</tabstop>
-  <tabstop>checkAutoDeleteMeridian</tabstop>
   <tabstop>safetyMarginHorizon</tabstop>
   <tabstop>runModel</tabstop>
   <tabstop>pauseModel</tabstop>

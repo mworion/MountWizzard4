@@ -1,28 +1,63 @@
 Selecting model points
 ======================
-Managing your models is a central task especially if you image in a mobile
-environment. MW4 supports this in the Manage Model Tab in the main window. All
-functions there are related to the actual mount model or the models stored in the
-mount.
+The first step for building a model is the selection of the desired model points.
+Handling you horizon is an important step as MW4 helps you could in finding
+points, which were not covered through obstacles in your location defined by the
+horizon line.
 
-Three graphs are available for checking the model:
+.. image:: image/model_points.png
+    :align: center
+    :scale: 71%
+
+There were multiple ways of setting your model points within MW4:
 
 .. hlist::
     :columns: 1
 
-    * Model Positions
-    * Error ascending
-    * Error Distribution
+    * From file
+    * In a generated alt/az grid
+    * First align points on defined alt
+    * Points along the celestial slew paths
+    * Equally distributed over the sphere (golden spiral)
+    * Based on a DSO track of an object with define Ra/Dec
+    * Manually set point (in hemisphere window)
 
-.. note::   All values which are show in these graphs were calculated by the mount computer
-            itself and just read out and displayed by MW4. As the 10micron algorithm of the
-            model optimizer is not know. The given hints are observations.
+There are multiple parameters or selections available to refine your point
+selection. the best way to find out is simplest to test them.
 
-The Model Positions graph shows in a polar plot how the model point were distributed over
-the hemisphere and how large the errors of each point is in a color scheme. If necessary you
-could check "Show error values" and numerical values will label each point.
+.. note::   Please think that you distribute the model points at the end over a
+            sphere! Using alt/az is convenient, but might be misleading. You could
+            enable the polar view in hemisphere window to get an image how the
+            points are spread in a polar diagram.
 
-.. image:: image/manage_model_1.png
-    :align: center
-    :scale: 71%
+It makes a lot of sense if you have discovered you favourite model points setup to
+store them in a file and reload them whenever you want. You could store as many
+files as you want.
+
+MW4 does a default sorting for you. If the default does not fit to your setup,
+you could tweak the order and additional constraints like you want. These settings
+ae store persistent in your profile.
+
+.. hlist::
+    :columns: 1
+
+    * Auto sort point -> default
+    * East / West: points from East coordinate to west coordinate (az)
+    * High / Low: point from high altitude to low altitude (good for domes)
+    * Avoid meridian flip: modeling start at the actual pier side
+    * Auto delete point below horizon
+    * Add safety distance: adds selected degrees safety margin to horizon
+    * Auto delete within meridian limits
+
+.. warning::    Regardless what you select, the 10micron mount computer could only
+                handle a maximum of 100 points
+
+In addition you could also mix different types of model point generation by
+checking
+
+.. epigraph::   **keep points from existing generation**
+
+MW4 will not cleanup the point map before adding new point, but add them.
+
+
 

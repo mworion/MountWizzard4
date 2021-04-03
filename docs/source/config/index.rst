@@ -6,7 +6,7 @@ After installation of python and MW4 you could start the application. For the fi
 configuration you should do the following steps:
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     mount
     camera

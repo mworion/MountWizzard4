@@ -1,9 +1,9 @@
-==============
-Installing MW4
-==============
+==================
+Installing Process
+==================
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     python
     mw4

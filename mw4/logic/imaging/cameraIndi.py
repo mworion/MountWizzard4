@@ -28,7 +28,6 @@ from base.indiClass import IndiClass
 
 class CameraIndi(IndiClass):
     """
-    the class Camera inherits all information and handling of the Camera device.
         >>> c = CameraIndi(app=None, signals=None, data=None)
     """
 
@@ -48,9 +47,6 @@ class CameraIndi(IndiClass):
 
     def setUpdateConfig(self, deviceName):
         """
-        _setUpdateRate corrects the update rate of camera devices to get an
-        defined setting regardless, what is setup in server side.
-
         :param deviceName:
         :return: success
         """
@@ -71,7 +67,6 @@ class CameraIndi(IndiClass):
 
         wcs = self.device.getSwitch('WCS_CONTROL')
         wcs['WCS_DISABLE'] = 'On'
-
         self.client.sendNewSwitch(deviceName=deviceName,
                                   propertyName='WCS_CONTROL',
                                   elements=wcs,
@@ -197,7 +192,6 @@ class CameraIndi(IndiClass):
         if fastReadout:
             quality['QUALITY_LOW'] = 'On'
             quality['QUALITY_HIGH'] = 'Off'
-
         else:
             quality['QUALITY_LOW'] = 'Off'
             quality['QUALITY_HIGH'] = 'On'
@@ -220,7 +214,6 @@ class CameraIndi(IndiClass):
                focalLength=1,
                ):
         """
-
         :param imagePath:
         :param expTime:
         :param binning:

@@ -7,7 +7,7 @@ functionalities are accessible in the separate image window and the imaging sett
 main window under sett / imaging.
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     imaging_window
 

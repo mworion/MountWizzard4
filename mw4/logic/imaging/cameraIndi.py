@@ -28,9 +28,6 @@ from base.indiClass import IndiClass
 
 class CameraIndi(IndiClass):
     """
-    the class Camera inherits all information and handling of the Camera device.
-
-
         >>> c = CameraIndi(app=None, signals=None, data=None)
     """
 
@@ -42,7 +39,6 @@ class CameraIndi(IndiClass):
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
-
         self.signals = signals
         self.data = data
         self.imagePath = ''
@@ -50,24 +46,17 @@ class CameraIndi(IndiClass):
 
     def setUpdateConfig(self, deviceName):
         """
-        _setUpdateRate corrects the update rate of camera devices to get an defined
-        setting regardless, what is setup in server side.
-
         :param deviceName:
         :return: success
         """
-
         if deviceName != self.deviceName:
             return False
-
         if self.device is None:
             return False
 
-        # set BLOB mode also
         self.client.setBlobMode(blobHandling='Also',
                                 deviceName=deviceName)
 
-        # setting a object name
         objectName = self.device.getText('FITS_HEADER')
         objectName['FITS_OBJECT'] = 'skymodel'
         self.client.sendNewText(deviceName=deviceName,
@@ -75,16 +64,13 @@ class CameraIndi(IndiClass):
                                 elements=objectName,
                                 )
 
-        # setting WCS Control off
         wcs = self.device.getSwitch('WCS_CONTROL')
         wcs['WCS_DISABLE'] = 'On'
-
         self.client.sendNewSwitch(deviceName=deviceName,
                                   propertyName='WCS_CONTROL',
                                   elements=wcs,
                                   )
 
-        # setting active device for telescope
         telescope = self.device.getText('ACTIVE_DEVICES')
         telescope['ACTIVE_TELESCOPE'] = 'LX200 10micron'
         self.client.sendNewText(deviceName=deviceName,
@@ -92,9 +78,7 @@ class CameraIndi(IndiClass):
                                 elements=telescope,
                                 )
 
-        # setting polling updates in driver
         update = self.device.getNumber('POLLING_PERIOD')
-
         if 'PERIOD_MS' not in update:
             return False
         if update.get('PERIOD_MS', 0) == self.UPDATE_RATE:
@@ -105,7 +89,6 @@ class CameraIndi(IndiClass):
                                         propertyName='POLLING_PERIOD',
                                         elements=update,
                                         )
-
         return suc
 
     def setExposureState(self):
@@ -140,9 +123,6 @@ class CameraIndi(IndiClass):
 
     def updateNumber(self, deviceName, propertyName):
         """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
         :param deviceName:
         :param propertyName:
         :return:
@@ -157,19 +137,14 @@ class CameraIndi(IndiClass):
 
     def updateBLOB(self, deviceName, propertyName):
         """
-        updateBLOB is called whenever a new BLOB is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
         :param deviceName:
         :param propertyName:
         :return: success
         """
-
         if not super().updateBLOB(deviceName, propertyName):
             return False
 
         data = self.device.getBlob(propertyName)
-
         if 'value' not in data:
             return False
         if 'name' not in data:
@@ -206,22 +181,17 @@ class CameraIndi(IndiClass):
 
     def sendDownloadMode(self, fastReadout=False):
         """
-        setDownloadMode sets the readout speed of the camera
-
         :return: success
         """
-
         if not self.device:
             return False
 
-        # setting fast mode:
         quality = self.device.getSwitch('READOUT_QUALITY')
         self.log.debug(f'camera has readout quality entry: {quality}')
 
         if fastReadout:
             quality['QUALITY_LOW'] = 'On'
             quality['QUALITY_HIGH'] = 'Off'
-
         else:
             quality['QUALITY_LOW'] = 'Off'
             quality['QUALITY_HIGH'] = 'On'
@@ -230,7 +200,6 @@ class CameraIndi(IndiClass):
                                         propertyName='READOUT_QUALITY',
                                         elements=quality,
                                         )
-
         return suc
 
     def expose(self,
@@ -245,7 +214,6 @@ class CameraIndi(IndiClass):
                focalLength=1,
                ):
         """
-
         :param imagePath:
         :param expTime:
         :param binning:
@@ -257,7 +225,6 @@ class CameraIndi(IndiClass):
         :param focalLength:
         :return: success
         """
-
         if not self.device:
             return False
 
@@ -299,16 +266,12 @@ class CameraIndi(IndiClass):
 
     def abort(self):
         """
-        abort cancels the exposing
-
         :return: success
         """
-
         if not self.device:
             return False
 
         indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
-
         if 'ABORT' not in indiCmd:
             return False
 
@@ -318,23 +281,17 @@ class CameraIndi(IndiClass):
                                         propertyName='CCD_ABORT_EXPOSURE',
                                         elements=indiCmd,
                                         )
-
         return suc
 
     def sendCoolerSwitch(self, coolerOn=False):
         """
-        sendCoolerTemp send the desired cooler temp, but does not switch on / off the cooler
-
         :param coolerOn:
         :return: success
         """
-
         if not self.device:
             return False
 
-        # setting fast mode:
         cooler = self.device.getSwitch('CCD_COOLER')
-
         if coolerOn:
             cooler['COOLER_ON'] = 'On'
             cooler['COOLER_OFF'] = 'Off'
@@ -347,13 +304,10 @@ class CameraIndi(IndiClass):
                                         propertyName='CCD_COOLER',
                                         elements=cooler,
                                         )
-
         return suc
 
     def sendCoolerTemp(self, temperature=0):
         """
-        sendCoolerTemp send the desired cooler temp, indi does automatically start cooler
-
         :param temperature:
         :return: success
         """
@@ -369,5 +323,4 @@ class CameraIndi(IndiClass):
                                         propertyName='CCD_TEMPERATURE',
                                         elements=temp,
                                         )
-
         return suc

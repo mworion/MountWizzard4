@@ -14,8 +14,8 @@ of the core functions are provided by the mount computer.
     install/index
     explain/index
     config/index
-    imaging/index
     modeling/index
+    imaging/index
     changelog
     changelogScripts
 

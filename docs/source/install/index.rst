@@ -1,6 +1,6 @@
-==============
-Installing MW4
-==============
+==================
+Installing Process
+==================
 
 .. toctree::
     :maxdepth: 2

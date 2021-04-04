@@ -77,8 +77,8 @@ class HemisphereWindowExt:
 
     def setOperationMode(self):
         """
-        setOperationMode changes the operation mode of the hemisphere window(s) depending
-        on the choice, colors and styles will be changed.
+        setOperationMode changes the operation mode of the hemisphere window(s)
+        depending on the choice, colors and styles will be changed.
 
         :return: success
         """
@@ -130,23 +130,25 @@ class HemisphereWindowExt:
                                            azimuth=azimuthT)
 
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
-            text = f'Slewing dome:        {geoStat}, az: {azimuthT:3.1f} delta: {delta:3.1f}'
-            self.app.message.emit(text, 0)
+            t = f'Slewing dome:        {geoStat},'
+            t += f' az: {azimuthT:3.1f} delta: {delta:3.1f}'
+            self.app.message.emit(t, 0)
 
         suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
 
         if suc:
             self.app.message.emit('Slewing mount', 0)
         else:
-            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuthT, altitudeT), 2)
+            t = f'Cannot slew to: {azimuthT}, {altitudeT}'
+            self.app.message.emit(t, 2)
 
         return suc
 
     def onMouseNormal(self, event):
         """
-        onMouseNormal handles the mouse event in normal mode. this means only a double
-        click is possible and offers the opportunity to slew the telescope to a certain
-        position in sky selected by the mouse.
+        onMouseNormal handles the mouse event in normal mode. this means only
+        a double click is possible and offers the opportunity to slew the
+        telescope to a certain position in sky selected by the mouse.
 
         :param event: mouse events
         :return: success
@@ -159,22 +161,20 @@ class HemisphereWindowExt:
         azimuth = int(event.xdata + 0.5)
         altitude = int(event.ydata + 0.5)
 
-        textFormat = 'Do you want to slew the mount to:\n\nAzimuth:\t{0}°\nAltitude:\t{1}°'
-        question = textFormat.format(azimuth, altitude)
-
+        question = 'Do you want to slew the mount to:'
+        question += f'\n\nAzimuth:\t{azimuth}°\nAltitude:\t{altitude}°'
         suc = self.messageDialog(self, 'Slewing mount', question)
-
         if not suc:
             return False
 
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
                                                     az_degrees=azimuth)
         if not suc:
-            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
+            t = f'Cannot slew to: {azimuth}, {altitude}'
+            self.app.message.emit(t, 2)
             return False
 
         suc = self.slewSelectedTarget(slewType='keep')
-
         return suc
 
     def addHorizonPointManual(self):
@@ -199,9 +199,9 @@ class HemisphereWindowExt:
 
     def addHorizonPoint(self, data=None, event=None):
         """
-        addHorizonPoint calculates from the position of the left mouse click the position
-        where the next horizon point should be added. the coordinates are given from mouse
-        click itself.
+        addHorizonPoint calculates from the position of the left mouse click the
+        position where the next horizon point should be added. the coordinates
+        are given from mouse click itself.
 
         :param data: point in tuples (alt, az)
         :param event: mouse event
@@ -217,8 +217,8 @@ class HemisphereWindowExt:
 
     def deleteHorizonPoint(self, data=None, event=None):
         """
-        deleteHorizonPoint selects the next horizon point in distance max and tries to
-        delete it. there have to be at least 2 horizon point left.
+        deleteHorizonPoint selects the next horizon point in distance max and
+        tries to delete it. there have to be at least 2 horizon point left.
 
         :param data: point in tuples (alt, az)
         :param event: mouse event
@@ -237,8 +237,8 @@ class HemisphereWindowExt:
 
     def editHorizonMask(self, data=None, event=None):
         """
-        editHorizonMask does dispatching the different mouse clicks for adding or deleting
-        horizon mask points and call the function accordingly.
+        editHorizonMask does dispatching the different mouse clicks for adding
+        or deleting horizon mask points and call the function accordingly.
 
         :param data: point in tuples (alt, az)
         :param event: mouse event
@@ -259,9 +259,9 @@ class HemisphereWindowExt:
 
     def addBuildPoint(self, data=None, event=None):
         """
-        addBuildPoint calculates from the position of the left mouse click the position
-        where the next modeldata point should be added. the coordinates are given from mouse
-        click itself.
+        addBuildPoint calculates from the position of the left mouse click the
+        position where the next modeldata point should be added. the coordinates
+        are given from mouse click itself.
 
         :param data: point in tuples (alt, az)
         :param event: mouse event
@@ -281,8 +281,8 @@ class HemisphereWindowExt:
 
     def deleteBuildPoint(self, data=None, event=None):
         """
-        deleteBuildPoint selects the next modeldata point in distance max and tries to
-        delete it. there have to be at least 2 horizon point left.
+        deleteBuildPoint selects the next modeldata point in distance max and
+        tries to delete it. there have to be at least 2 horizon point left.
 
         :param data: point in tuples (alt, az)
         :param event: mouse event
@@ -293,13 +293,12 @@ class HemisphereWindowExt:
             return False
 
         suc = data.delBuildP(position=index)
-
         return suc
 
     def editBuildPoints(self, data=None, event=None):
         """
-        editBuildPoints does dispatching the different mouse clicks for adding or deleting
-        model data points and call the function accordingly.
+        editBuildPoints does dispatching the different mouse clicks for adding
+        or deleting model data points and call the function accordingly.
 
         :param data: points in tuples (alt, az)
         :param event: mouse event
@@ -309,25 +308,22 @@ class HemisphereWindowExt:
             suc = self.addBuildPoint(data=data, event=event)
         elif event.button == 3:
             suc = self.deleteBuildPoint(data=data, event=event)
-
         else:
             return False
 
         self.drawHemisphere()
-
         return suc
 
     def onMouseEdit(self, event):
         """
-        onMouseEdit handles the mouse event in normal mode. this means depending on the
-        edit mode (horizon or model points) a left click adds a new point and right click
-        deletes the selected point.
+        onMouseEdit handles the mouse event in normal mode. this means depending
+        on the edit mode (horizon or model points) a left click adds a new point
+        and right click deletes the selected point.
 
         :param event: mouse events
         :return: success
         """
         data = self.app.data
-
         if not event.inaxes:
             return False
         if event.dblclick:
@@ -344,9 +340,9 @@ class HemisphereWindowExt:
 
     def onMouseStar(self, event):
         """
-        onMouseStar handles the mouse event in polar align mode. this means only a right
-        click is possible and offers the opportunity to slew the telescope to the selected
-        star and start manual polar alignment.
+        onMouseStar handles the mouse event in polar align mode. this means
+        only a right click is possible and offers the opportunity to slew the
+        telescope to the selected star and start manual polar alignment.
 
         :param event: mouse events
         :return: success
@@ -369,18 +365,15 @@ class HemisphereWindowExt:
 
         name = hip.name[index]
         ra, dec = hip.getAlignStarRaDecFromName(hip.name[index])
-
         textFormat = 'Align: {0}\nDo you want to slew the mount to:\n\n{1}'
         question = textFormat.format(alignType, name)
 
         suc = self.messageDialog(self, 'Slewing mount', question)
-
         if not suc:
             return False
 
         suc = self.app.mount.obsSite.setTargetRaDec(ra_hours=ra,
                                                     dec_degrees=dec)
-
         if not suc:
             self.app.message.emit(f'Cannot slew to: {name}', 2)
             return False
@@ -390,8 +383,8 @@ class HemisphereWindowExt:
 
     def onMouseDispatcher(self, event):
         """
-        onMouseDispatcher dispatches the button events depending on the actual operation
-        mode.
+        onMouseDispatcher dispatches the button events depending on the actual
+        operation mode.
 
         :param event: button event for parsing
         :return: True for test purpose
@@ -407,5 +400,4 @@ class HemisphereWindowExt:
 
         elif self.ui.checkPolarAlignment.isChecked():
             self.onMouseStar(event)
-
         return True

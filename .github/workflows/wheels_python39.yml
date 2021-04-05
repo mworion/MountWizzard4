@@ -70,7 +70,7 @@ jobs:
             apt-get -y install qt5-default pyqt5-dev pyqt5-dev-tools
             python3.9 -m venv venv
             source venv/bin/activate
-            
+
             python --version
             python -m pip install pip --upgrade
             pip install setuptools --upgrade

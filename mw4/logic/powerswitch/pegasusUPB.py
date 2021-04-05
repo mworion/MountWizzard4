@@ -17,12 +17,15 @@
 ###########################################################
 # standard libraries
 import logging
+import platform
 
 # external packages
 import PyQt5
 
 # local imports
 from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
+from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
+# from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
 
 
 class PegasusUPBSignals(PyQt5.QtCore.QObject):
@@ -63,25 +66,36 @@ class PegasusUPB:
         self.framework = ''
         self.run = {
             'indi': PegasusUPBIndi(self.app, self.signals, self.data),
+            # 'alpaca': PegasusUPBAlpaca(self.app, self.signals, self.data),
         }
+        if platform.system() == 'Windows':
+            self.run['ascom'] = PegasusUPBAscom(self.app, self.signals, self.data)
+            ascomSignals = self.run['ascom'].ascomSignals
+            ascomSignals.serverConnected.connect(self.signals.serverConnected)
+            ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+            ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
+            ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
-        # signalling from subclasses to main
-        self.run['indi'].client.signals.serverConnected.connect(self.signals.serverConnected)
-        self.run['indi'].client.signals.serverDisconnected.connect(self.signals.serverDisconnected)
-        self.run['indi'].client.signals.deviceConnected.connect(self.signals.deviceConnected)
-        self.run['indi'].client.signals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+        # alpacaSignals = self.run['alpaca'].client.signals
+        # alpacaSignals.serverConnected.connect(self.signals.serverConnected)
+        # alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+        # alpacaSignals.deviceConnected.connect(self.signals.deviceConnected)
+        # alpacaSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
+        indiSignals = self.run['indi'].client.signals
+        indiSignals.serverConnected.connect(self.signals.serverConnected)
+        indiSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+        indiSignals.deviceConnected.connect(self.signals.deviceConnected)
+        indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
     def startCommunication(self, loadConfig=False):
         """
-        startCommunication starts the devices in selected frameworks
-
         :param loadConfig:
         :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -90,11 +104,8 @@ class PegasusUPB:
 
     def stopCommunication(self):
         """
-        stopCommunication stop the devices in selected frameworks
-
         :return: true for test purpose
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -103,12 +114,9 @@ class PegasusUPB:
 
     def togglePowerPort(self, port=None):
         """
-        togglePowerPort
-
         :param port:
         :return: true fot test purpose
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -117,12 +125,9 @@ class PegasusUPB:
 
     def togglePowerPortBoot(self, port=None):
         """
-        togglePowerPortBoot
-
         :param port:
         :return: true fot test purpose
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -131,8 +136,6 @@ class PegasusUPB:
 
     def toggleHubUSB(self):
         """
-        toggleHubUSB
-
         :return: true fot test purpose
         """
         if self.framework not in self.run.keys():
@@ -143,12 +146,9 @@ class PegasusUPB:
 
     def togglePortUSB(self, port=None):
         """
-        togglePortUSB
-
         :param port:
         :return: true fot test purpose
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -157,8 +157,6 @@ class PegasusUPB:
 
     def toggleAutoDew(self):
         """
-        toggleAutoDewPort
-
         :return: true fot test purpose
         """
         if self.framework not in self.run.keys():
@@ -169,12 +167,10 @@ class PegasusUPB:
 
     def sendDew(self, port='', value=None):
         """
-
         :param port:
         :param value:
         :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -183,11 +179,9 @@ class PegasusUPB:
 
     def sendAdjustableOutput(self, value=None):
         """
-
         :param value:
         :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -196,10 +190,8 @@ class PegasusUPB:
 
     def reboot(self):
         """
-
         :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 

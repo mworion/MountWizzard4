@@ -23,8 +23,6 @@ jobs:
         include:
           - arch: aarch64
             distro: ubuntu18.04
-          - arch: aarch64
-            distro: ubuntu20.04
 
     steps:
       - uses: actions/checkout@v2.1.0
@@ -80,9 +78,10 @@ jobs:
             #pip wheel astropy==4.2 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pyerfa==1.7.2 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel matplotlib==3.3.4 -w "support/wheels/${{ matrix.distro}}"
+            #pip wheel pillow==8.1.2 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel sep==1.1.1 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel sgp4==2.17 -w "support/wheels/${{ matrix.distro}}"
-            pip wheel pybase64==1.1.4 -w "support/wheels/${{ matrix.distro}}"
+            #pip wheel pybase64==1.1.4 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pyqt5_sip==12.8.1 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pyqt5==5.15.4 -w "support/wheels/${{ matrix.distro}}"
 
@@ -96,7 +95,6 @@ jobs:
           git add "support/wheels/${{ matrix.distro}}"
           git commit -m "adding wheels" -a
           git pull --rebase
-          if: always()
 
       - name: upload_wheels
         uses: actions/upload-artifact@v2

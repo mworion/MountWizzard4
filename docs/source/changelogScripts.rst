@@ -5,12 +5,19 @@ detailed changes list, please refer to the commit list on GitHub.
 
 Unreleased versions of scripts
 ------------------------------
-(0.5)
 
 - further improvements
 
 Released versions of scripts
 ----------------------------
+2.0
+
+- update to requirements v2.0beta release of MW4
+
+1.1
+
+- update to requirements v1.1 release of MW4
+
 0.4
 
 - support for python 3.7 - 3.9, removing support 3.6

@@ -467,13 +467,6 @@ def test_playAudioModelFinished_1(function):
 
 
 def test_setupAudioSignals_1(function):
-    packageConfig.isAvailable = False
-    suc = function.setupAudioSignals()
-    assert not suc
-
-
-def test_setupAudioSignals_2(function):
-    packageConfig.isAvailable = True
     suc = function.setupAudioSignals()
     assert suc
 

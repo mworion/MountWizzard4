@@ -49,11 +49,6 @@ class SettMisc(object):
         self.process = None
         self.mutexInstall = PyQt5.QtCore.QMutex()
 
-        self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
-        self.app.dome.signals.slewFinished.connect(lambda: self.playSound('DomeSlew'))
-        self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
-        self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
-        self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelStandard.clicked.connect(self.setLoggingLevel)
@@ -69,7 +64,13 @@ class SettMisc(object):
         self.app.update1h.connect(self.pushTimeHourly)
         self.ui.autoPushTime.stateChanged.connect(self.pushTimeHourly)
 
-        self.setupAudioSignals()
+        if pConf.isAvailable:
+            self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
+            self.app.dome.signals.slewFinished.connect(lambda: self.playSound('DomeSlew'))
+            self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
+            self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
+            self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
+            self.setupAudioSignals()
 
     def initConfig(self):
         """
@@ -366,7 +367,6 @@ class SettMisc(object):
         """
         if pConf.isWindows:
             timeout = 180
-
         else:
             timeout = 90
 
@@ -399,12 +399,10 @@ class SettMisc(object):
         """
         if self.ui.loglevelTrace.isChecked():
             setCustomLoggingLevel('TRACE')
-
         elif self.ui.loglevelDebug.isChecked():
             setCustomLoggingLevel('DEBUG')
-
         elif self.ui.loglevelStandard.isChecked():
-            setCustomLoggingLevel('WARN')
+            setCustomLoggingLevel('INFO')
 
     def setupAudioGui(self):
         """
@@ -434,9 +432,6 @@ class SettMisc(object):
         """
         :return: True for test purpose
         """
-        if not pConf.isAvailable:
-            return False
-
         self.audioSignalsSet['Beep'] = ':/sound/beep.wav'
         self.audioSignalsSet['Beep1'] = ':/sound/beep1.wav'
         self.audioSignalsSet['Horn'] = ':/sound/horn.wav'
@@ -523,7 +518,6 @@ class SettMisc(object):
         if isAuto:
             self.pushTime()
             return True
-
         else:
             return False
 

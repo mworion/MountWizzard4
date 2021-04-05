@@ -209,7 +209,7 @@ class MountWizzard4(QObject):
         elif config.get('loglevelDebug', False):
             level = 'DEBUG'
         else:
-            level = 'WARN'
+            level = 'INFO'
         setCustomLoggingLevel(level)
         return topo
 

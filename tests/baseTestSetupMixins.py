@@ -362,6 +362,11 @@ class Dome:
                  altitude=0):
         return
 
+    @staticmethod
+    def followDome(azimuth=0,
+                 altitude=0):
+        return
+
 
 class Relay:
     class RelaySignals(QObject):

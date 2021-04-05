@@ -275,7 +275,6 @@ class AscomClass(object):
         if not self.deviceName:
             return False
 
-        # clsctx = pythoncom.CLSCTX_LOCAL_SERVER
         pythoncom.CoInitialize()
         try:
             self.client = client.dynamic.Dispatch(self.deviceName)

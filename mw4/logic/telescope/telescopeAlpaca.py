@@ -25,7 +25,8 @@ from base.alpacaBase import Telescope
 
 class TelescopeAlpaca(AlpacaClass):
     """
-    the class Telescope inherits all information and handling of the Telescope device.
+    the class Telescope inherits all information and handling of the
+    Telescope device.
     """
 
     __all__ = ['TelescopeAlpaca',
@@ -46,13 +47,10 @@ class TelescopeAlpaca(AlpacaClass):
 
     def getInitialConfig(self):
         """
-
         :return: true for test purpose
         """
-
         super().getInitialConfig()
 
         self.dataEntry(self.client.aperturediameter(), 'TELESCOPE_INFO.TELESCOPE_APERTURE')
         self.dataEntry(self.client.focallength(), 'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH')
-
         return True

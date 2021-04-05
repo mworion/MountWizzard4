@@ -38,12 +38,9 @@ class SensorWeatherAscom(AscomClass):
 
     def getInitialConfig(self):
         """
-
         :return: true for test purpose
         """
-
         super().getInitialConfig()
-
         return True
 
     def workerPollData(self):
@@ -51,7 +48,6 @@ class SensorWeatherAscom(AscomClass):
 
         :return: true for test purpose
         """
-
         if not self.deviceConnected:
             return False
 

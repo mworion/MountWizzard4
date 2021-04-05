@@ -24,14 +24,11 @@ from base.alpacaClass import AlpacaClass
 from base.alpacaBase import ObservingConditions
 
 
-class SensorWeatherAlpaca(AlpacaClass):
+class WeatherUPBAlpaca(AlpacaClass):
     """
-    the class Dome inherits all information and handling of the Dome device. there will be
-    some parameters who will define the slewing position of the dome relating to the
-    mount.dome = DomeAlpaca(app=None)
     """
 
-    __all__ = ['SensorWeatherAlpaca',
+    __all__ = ['WeatherUPBAlpaca',
                ]
 
     # specific timing for device
@@ -41,8 +38,6 @@ class SensorWeatherAlpaca(AlpacaClass):
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
-        # as we have in the base class only the base client there, we will get more
-        # specialized with Dome (which is derived from the base class)
         self.client = ObservingConditions()
         self.signals = signals
         self.data = data
@@ -62,7 +57,6 @@ class SensorWeatherAlpaca(AlpacaClass):
             return False
 
         self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = self.client.temperature()
-        self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = self.client.pressure()
         self.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = self.client.dewpoint()
         self.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = self.client.humidity()
         return True

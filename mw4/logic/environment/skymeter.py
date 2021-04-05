@@ -99,7 +99,6 @@ class Skymeter:
         :param loadConfig:
         :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -108,9 +107,8 @@ class Skymeter:
 
     def stopCommunication(self):
         """
-
+        :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 

@@ -58,7 +58,6 @@ class SensorWeather:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = SensorWeatherSignals()
-
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
@@ -94,12 +93,9 @@ class SensorWeather:
 
     def startCommunication(self, loadConfig=False):
         """
-        startCommunication enables the cyclic polling in framework driver
-
         :param loadConfig:
         :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -108,9 +104,8 @@ class SensorWeather:
 
     def stopCommunication(self):
         """
-
+        :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 

@@ -16,12 +16,16 @@
 ###########################################################
 # standard libraries
 import logging
+import platform
 
 # external packages
 import PyQt5
 
 # local imports
 from logic.environment.weatherUPBIndi import WeatherUPBIndi
+from logic.environment.weatherUPBAlpaca import WeatherUPBAlpaca
+if platform.system() == 'Windows':
+    from logic.environment.weatherUPBAscom import WeatherUPBAscom
 
 
 class WeatherUPBSignals(PyQt5.QtCore.QObject):
@@ -55,14 +59,22 @@ class WeatherUPB:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = WeatherUPBSignals()
-
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
         self.framework = ''
         self.run = {
             'indi': WeatherUPBIndi(self.app, self.signals, self.data),
+            'alpaca': WeatherUPBAlpaca(self.app, self.signals, self.data),
         }
+
+        if platform.system() == 'Windows':
+            self.run['ascom'] = WeatherUPBAscom(self.app, self.signals, self.data)
+            ascomSignals = self.run['ascom'].ascomSignals
+            ascomSignals.serverConnected.connect(self.signals.serverConnected)
+            ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+            ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
+            ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
@@ -75,12 +87,9 @@ class WeatherUPB:
 
     def startCommunication(self, loadConfig=False):
         """
-        startCommunication starts the devices in selected frameworks
-
         :param loadConfig:
         :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -89,11 +98,8 @@ class WeatherUPB:
 
     def stopCommunication(self):
         """
-        stopCommunication stop the devices in selected frameworks
-
         :return: true for test purpose
         """
-
         if self.framework not in self.run.keys():
             return False
 

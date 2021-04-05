@@ -168,17 +168,46 @@ class Dome:
 
         mount = self.app.mount
         if self.useGeometry:
-            alt, az, _, _, _ = mount.calcTransformationMatrices()
+            alt, az, _, _, _ = mount.calcTransformationMatricesTarget()
 
             if alt is None or az is None:
                 self.log.info(f'Geometry error, alt:{altitude}, az:{azimuth}')
                 alt = altitude
                 az = azimuth
-
             else:
                 alt = alt.degrees
                 az = az.degrees
+        else:
+            alt = altitude
+            az = azimuth
 
+        self.signals.message.emit('slewing')
+        self.counterStartSlewing = 3
+        self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
+        delta = azimuth - az
+        return delta
+
+    def followDome(self, altitude=0, azimuth=0):
+        """
+        :param altitude:
+        :param azimuth:
+        :return: success
+        """
+        if not self.data:
+            self.log.error('No data dict available')
+            return False
+
+        mount = self.app.mount
+        if self.useGeometry:
+            alt, az, _, _, _ = mount.calcTransformationMatricesActual()
+
+            if alt is None or az is None:
+                self.log.info(f'Geometry error, alt:{altitude}, az:{azimuth}')
+                alt = altitude
+                az = azimuth
+            else:
+                alt = alt.degrees
+                az = az.degrees
         else:
             alt = altitude
             az = azimuth

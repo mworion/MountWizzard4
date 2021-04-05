@@ -182,7 +182,7 @@ class Mount(object):
                                )
         self.geometry = Geometry(obsSite=self.obsSite)
 
-    def calcTransformationMatrices(self):
+    def calcTransformationMatricesTarget(self):
         """
         :return: alt az
         """
@@ -190,6 +190,19 @@ class Mount(object):
         dec = self.obsSite.decJNowTarget
         lat = self.obsSite.location.latitude
         pierside = self.obsSite.piersideTarget
+        return self.geometry.calcTransformationMatrices(ha=ha,
+                                                        dec=dec,
+                                                        lat=lat,
+                                                        pierside=pierside)
+
+    def calcTransformationMatricesActual(self):
+        """
+        :return: alt az
+        """
+        ha = self.obsSite.haJNow
+        dec = self.obsSite.decJNow
+        lat = self.obsSite.location.latitude
+        pierside = self.obsSite.pierside
         return self.geometry.calcTransformationMatrices(ha=ha,
                                                         dec=dec,
                                                         lat=lat,

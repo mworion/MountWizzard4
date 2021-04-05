@@ -600,11 +600,13 @@ class Satellite(object):
             return False
 
         if not self.app.automation:
-            self.app.message.emit('Not running windows - upload not possible', 2)
+            t = 'Not running windows - upload not possible'
+            self.app.message.emit(t, 2)
             return False
 
         if not self.app.automation.installPath:
-            self.app.message.emit('No QCI updater available - upload not possible', 2)
+            t = 'No QCI updater available - upload not possible'
+            self.app.message.emit(t, 2)
             return False
 
         self.app.message.emit('Uploading TLE data to mount', 0)
@@ -638,11 +640,13 @@ class Satellite(object):
             return False
 
         if not self.app.automation:
-            self.app.message.emit('Not running windows - upload not possible', 2)
+            t = 'Not running windows - upload not possible'
+            self.app.message.emit(t, 2)
             return False
 
         if not self.app.automation.installPath:
-            self.app.message.emit('No QCI updater available - upload not possible', 2)
+            t = 'No QCI updater available - upload not possible'
+            self.app.message.emit(t, 2)
             return False
 
         self.app.message.emit('Uploading TLE data to mount', 0)
@@ -680,5 +684,5 @@ class Satellite(object):
             return False
 
         self.lastAzimuth = azimuth
-        self.app.dome.slewDome(altitude=altitude, azimuth=azimuth)
+        self.app.dome.followDome(altitude=altitude, azimuth=azimuth)
         return True

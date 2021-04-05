@@ -23,8 +23,6 @@ jobs:
         include:
           - arch: aarch64
             distro: ubuntu18.04
-          - arch: aarch64
-            distro: ubuntu20.04
 
     steps:
       - uses: actions/checkout@v2.1.0
@@ -79,7 +77,7 @@ jobs:
             pip install wheel
             #pip wheel astropy==4.2 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pyerfa==1.7.2 -w "support/wheels/${{ matrix.distro}}"
-            #pip wheel matplotlib==3.3.4 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel matplotlib==3.3.4 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel sep==1.1.1 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel sgp4==2.17 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pybase64==1.1.4 -w "support/wheels/${{ matrix.distro}}"

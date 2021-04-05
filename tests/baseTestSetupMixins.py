@@ -364,7 +364,7 @@ class Dome:
 
     @staticmethod
     def followDome(azimuth=0,
-                 altitude=0):
+                   altitude=0):
         return
 
 

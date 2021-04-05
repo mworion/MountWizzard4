@@ -16,10 +16,10 @@ echo ##     ## ##  ##  ##       ##
 echo ##     ##  ###  ###        ##
 echo.
 echo ---------------------------------------------
-echo install script version 0.4
+echo install script version 1.1
 echo ---------------------------------------------
 
-echo install script version 0.4 > install.log 2>&1
+echo install script version 1.1 > install.log 2>&1
 
 
 echo.

@@ -16,10 +16,10 @@ echo ##     ## ##  ##  ##       ##
 echo ##     ##  ###  ###        ##
 echo.
 echo ---------------------------------------------
-echo run script version 0.4
+echo run script version 1.1
 echo ---------------------------------------------
 
-echo run script version 0.4 > run.log 2>&1
+echo run script version 1.1 > run.log 2>&1
 
 call venv\Scripts\activate venv >> run.log 2>&1
 

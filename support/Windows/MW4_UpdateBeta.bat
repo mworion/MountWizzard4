@@ -16,10 +16,10 @@ echo ##     ## ##  ##  ##       ##
 echo ##     ##  ###  ###        ##
 echo.
 echo ---------------------------------------------
-echo update script version 0.4
+echo update script version 1.1
 echo ---------------------------------------------
 
-echo update script version 0.4 > update.log 2>&1
+echo update script version 1.1 > update.log 2>&1
 
 echo.
 echo ---------------------------------------------

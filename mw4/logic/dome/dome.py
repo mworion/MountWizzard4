@@ -212,7 +212,7 @@ class Dome:
             alt = altitude
             az = azimuth
 
-        self.signals.message.emit('slewing')
+        self.signals.message.emit('following')
         self.counterStartSlewing = 3
         self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
         delta = azimuth - az

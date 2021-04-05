@@ -428,7 +428,7 @@ def test_setLoggingLevel2(function, qtbot):
     function.ui.loglevelStandard.setChecked(True)
     function.setLoggingLevel()
     val = logging.getLogger().getEffectiveLevel()
-    assert val == 30
+    assert val == 20
 
 
 def test_setLoggingLevel3(function, qtbot):

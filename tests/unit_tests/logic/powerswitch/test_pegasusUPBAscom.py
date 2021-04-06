@@ -36,10 +36,6 @@ def module_setup_teardown():
         Name = 'test'
         DriverVersion = '1'
         DriverInfo = 'test1'
-        temperature = 10
-        humidity = 85.00
-        pressure = 950
-        dewpoint = 5.5
 
     class Test(QObject):
         threadPool = QThreadPool()

@@ -25,7 +25,7 @@ import PyQt5
 # local imports
 from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
-# from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
+from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
 
 
 class PegasusUPBSignals(PyQt5.QtCore.QObject):
@@ -66,7 +66,7 @@ class PegasusUPB:
         self.framework = ''
         self.run = {
             'indi': PegasusUPBIndi(self.app, self.signals, self.data),
-            # 'alpaca': PegasusUPBAlpaca(self.app, self.signals, self.data),
+            'alpaca': PegasusUPBAlpaca(self.app, self.signals, self.data),
         }
         if platform.system() == 'Windows':
             self.run['ascom'] = PegasusUPBAscom(self.app, self.signals, self.data)
@@ -79,11 +79,11 @@ class PegasusUPB:
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
-        # alpacaSignals = self.run['alpaca'].client.signals
-        # alpacaSignals.serverConnected.connect(self.signals.serverConnected)
-        # alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)
-        # alpacaSignals.deviceConnected.connect(self.signals.deviceConnected)
-        # alpacaSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+        alpacaSignals = self.run['alpaca'].client.signals
+        alpacaSignals.serverConnected.connect(self.signals.serverConnected)
+        alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+        alpacaSignals.deviceConnected.connect(self.signals.deviceConnected)
+        alpacaSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
         indiSignals = self.run['indi'].client.signals
         indiSignals.serverConnected.connect(self.signals.serverConnected)

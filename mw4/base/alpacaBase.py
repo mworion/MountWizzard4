@@ -205,17 +205,16 @@ class AlpacaBase:
             **data: Data to send with request.
 
         """
-
         if not self.deviceName:
             return None
 
         uid = uuid.uuid4().int % 2**32
         data['ClientTransactionID'] = uid
 
-        self.log.trace(f'[{uid:10d}] {self.baseUrl}, attr:[{attr}]')
+        self.log.trace(f'[{uid:10d}] {self.baseUrl}/{attr}], data:[{data}]')
 
         try:
-            response = requests.get(f'{self.baseUrl}/{attr}', data=data, timeout=5)
+            response = requests.get(f'{self.baseUrl}/{attr}', params=data, timeout=5)
 
         except requests.exceptions.Timeout:
             self.log.info(f'[{uid:10d}] timeout')

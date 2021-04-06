@@ -29,7 +29,6 @@ class PegasusUPBAscom(AscomClass):
     __all__ = ['PegasusUPBAscom',
                ]
 
-    CYCLE_POLL_STATUS = 3000
     CYCLE_POLL_DATA = 1000
 
     def __init__(self, app=None, signals=None, data=None):
@@ -51,6 +50,7 @@ class PegasusUPBAscom(AscomClass):
         """
         if not self.deviceConnected:
             return False
+
         model = 'UPB' if self.client.maxswitch == 15 else 'UPBv2'
 
         self.data['FIRMWARE_INFO.VERSION'] = '1.4' if model == 'UPB' else '2.1'

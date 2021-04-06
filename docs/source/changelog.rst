@@ -8,8 +8,6 @@ Ideas for the future
 
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
 - implementing Baader dome control e.g. 10micron dome interface
-- adding ascom Pegasus (might have to split Pegasus into three devices - env,
-  switch, focuser)
 - optimizing dome for less movements on small changes
   I see quite a few times the dome being moved by only a very small amount. But it
   does affect the observatory, so even this small move needs another 10s settle
@@ -27,7 +25,8 @@ Released beta version of MW4
 - adding dome following when mount is in satellite tracking mode
 - adding fix for INDI cameras sending two times BUSY, EXP=0
 - debug standard moved from WARN to INFO
-- adding labels for UPB dew and enabling autodew
+- adding labels for UPB dew and enabling autodew in INDI
+- adding support for ASCOM / ALPACA Pegasus UPB v1 & v2
 
 Released version of MW4
 -----------------------

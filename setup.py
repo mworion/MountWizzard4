@@ -24,7 +24,8 @@ releaseNotes = """
 - adding dome following when mount is in satellite tracking mode 
 - adding fix for INDI cameras sending two times BUSY, EXP=0
 - debug standard moved from WARN to INFO
-- adding labels for UPB dew and enabling autodew
+- adding labels for UPB dew and enabling autodew in INDI
+- adding support for ASCOM / ALPACA Pegasus UPB v1 & v2
  """
 
 with open('notes.txt', 'w') as f:

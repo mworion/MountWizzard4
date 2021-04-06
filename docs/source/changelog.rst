@@ -6,7 +6,6 @@ detailed changes list, please refer to the commit list on GitHub.
 Ideas for the future
 --------------------
 
-- retrofit model based on hashed coordinates
 - adding switch interface Pegasus UPB for ASCOM / ALPACA
 - implementing Baader dome control e.g. 10micron dome interface
 - adding ascom Pegasus (might have to split Pegasus into three devices - env,
@@ -15,7 +14,6 @@ Ideas for the future
   I see quite a few times the dome being moved by only a very small amount. But it
   does affect the observatory, so even this small move needs another 10s settle
   time for the mount So avoiding them would be great.
-- if indi UPD Driver is fixed and officially available, bring back auto dew
 - automation windows 64 bit update
 - split profiles in base and add-on
 

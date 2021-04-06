@@ -22,12 +22,14 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.0.0b1
+2.0.0b3
 
 - adding simulator feature
 - bugfix slewing message dome when disconnected
 - adding dome following when mount is in satellite tracking mode
 - adding fix for INDI cameras sending two times BUSY, EXP=0
+- debug standard moved from WARN to INFO
+- adding labels for UPB dew and enabling autodew
 
 Released version of MW4
 -----------------------

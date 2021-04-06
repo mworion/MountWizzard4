@@ -29,8 +29,8 @@ class PegasusUPBAscom(AscomClass):
     __all__ = ['PegasusUPBAscom',
                ]
 
-    CYCLE_DEVICE = 3000
-    CYCLE_DATA = 1000
+    CYCLE_POLL_STATUS = 3000
+    CYCLE_POLL_DATA = 1000
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
@@ -51,28 +51,41 @@ class PegasusUPBAscom(AscomClass):
         """
         if not self.deviceConnected:
             return False
+        model = 'UPB' if self.client.maxswitch == 15 else 'UPBv2'
 
-        self.dataEntry(self.client.dew1, 'DEW_CURRENT.DEW_CURRENT_A')
-        self.dataEntry(self.client.dew2, 'DEW_CURRENT.DEW_CURRENT_B')
-        self.dataEntry(self.client.dew3, 'DEW_CURRENT.DEW_CURRENT_C')
-        self.dataEntry(self.client.autodewon, 'AUTO_DEW.DEW_A')
-        self.dataEntry(self.client.autodewon, 'AUTO_DEW.DEW_B')
-        self.dataEntry(self.client.autodewon, 'AUTO_DEW.DEW_C')
-        self.dataEntry(self.client.current, 'POWER_SENSORS.SENSOR_CURRENT')
-        self.dataEntry(self.client.voltage, 'POWER_SENSORS.SENSOR_VOLTAGE')
-        self.dataEntry(self.client.voltage, 'POWER_SENSORS.SENSOR_VOLTAGE')
+        self.data['FIRMWARE_INFO.VERSION'] = '1.4' if model == 'UPB' else '2.1'
+        if model == 'UPB':
+            self.dataEntry(self.client.getswitch(0), 'POWER_CONTROL.POWER_CONTROL_1')
+            self.dataEntry(self.client.getswitch(1), 'POWER_CONTROL.POWER_CONTROL_2')
+            self.dataEntry(self.client.getswitch(2), 'POWER_CONTROL.POWER_CONTROL_3')
+            self.dataEntry(self.client.getswitch(3), 'POWER_CONTROL.POWER_CONTROL_4')
+            self.dataEntry(self.client.getswitchvalue(4), 'DEW_CURRENT.DEW_CURRENT_A')
+            self.dataEntry(self.client.getswitchvalue(5), 'DEW_CURRENT.DEW_CURRENT_B')
+            self.dataEntry(self.client.getswitch(6), 'USB_HUB_CONTROL.INDI_ENABLED')
+            self.dataEntry(self.client.getswitch(7), 'AUTO_DEW.INDI_ENABLED')
+            self.dataEntry(self.client.getswitchvalue(11), 'POWER_SENSORS.SENSOR_VOLTAGE')
+            self.dataEntry(self.client.getswitchvalue(12), 'POWER_SENSORS.SENSOR_CURRENT')
+            self.dataEntry(self.client.getswitchvalue(13), 'POWER_SENSORS.SENSOR_POWER')
 
-        self.dataEntry(self.client.usbon, 'USB_HUB_CONTROL.INDI_ENABLED')
-        self.dataEntry(self.client.usb1on, 'USB_PORT_CONTROL.PORT_1')
-        self.dataEntry(self.client.usb2on, 'USB_PORT_CONTROL.PORT_2')
-        self.dataEntry(self.client.usb3on, 'USB_PORT_CONTROL.PORT_3')
-        self.dataEntry(self.client.usb4on, 'USB_PORT_CONTROL.PORT_4')
-        self.dataEntry(self.client.usb5on, 'USB_PORT_CONTROL.PORT_5')
-        self.dataEntry(self.client.usb6on, 'USB_PORT_CONTROL.PORT_6')
-
-        self.dataEntry(self.client.power1on, 'POWER_CONTROL.POWER_CONTROL_1')
-        self.dataEntry(self.client.power2on, 'POWER_CONTROL.POWER_CONTROL_2')
-        self.dataEntry(self.client.power3on, 'POWER_CONTROL.POWER_CONTROL_3')
-        self.dataEntry(self.client.power4on, 'POWER_CONTROL.POWER_CONTROL_4')
+        if model == 'UPBv2':
+            self.dataEntry(self.client.getswitch(0), 'POWER_CONTROL.POWER_CONTROL_1')
+            self.dataEntry(self.client.getswitch(1), 'POWER_CONTROL.POWER_CONTROL_2')
+            self.dataEntry(self.client.getswitch(2), 'POWER_CONTROL.POWER_CONTROL_3')
+            self.dataEntry(self.client.getswitch(3), 'POWER_CONTROL.POWER_CONTROL_4')
+            self.dataEntry(self.client.getswitchvalue(4) / 2.55, 'DEW_PWM.DEW_A')
+            self.dataEntry(self.client.getswitchvalue(5) / 2.55, 'DEW_PWM.DEW_B')
+            self.dataEntry(self.client.getswitchvalue(6) / 2.55, 'DEW_PWM.DEW_C')
+            self.dataEntry(self.client.getswitch(7), 'USB_PORT_CONTROL.PORT_1')
+            self.dataEntry(self.client.getswitch(8), 'USB_PORT_CONTROL.PORT_2')
+            self.dataEntry(self.client.getswitch(9), 'USB_PORT_CONTROL.PORT_3')
+            self.dataEntry(self.client.getswitch(10), 'USB_PORT_CONTROL.PORT_4')
+            self.dataEntry(self.client.getswitch(11), 'USB_PORT_CONTROL.PORT_5')
+            self.dataEntry(self.client.getswitch(12), 'USB_PORT_CONTROL.PORT_6')
+            self.dataEntry(self.client.getswitch(13), 'AUTO_DEW.DEW_A')
+            self.dataEntry(self.client.getswitch(13), 'AUTO_DEW.DEW_B')
+            self.dataEntry(self.client.getswitch(13), 'AUTO_DEW.DEW_C')
+            self.dataEntry(self.client.getswitchvalue(17), 'POWER_SENSORS.SENSOR_VOLTAGE')
+            self.dataEntry(self.client.getswitchvalue(18), 'POWER_SENSORS.SENSOR_CURRENT')
+            self.dataEntry(self.client.getswitchvalue(19), 'POWER_SENSORS.SENSOR_POWER')
 
         return True

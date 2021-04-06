@@ -58,8 +58,6 @@ class AscomClass(object):
     """
 
     log = logging.getLogger(__name__)
-
-    # relaxed generic timing
     CYCLE_POLL_STATUS = 3000
     CYCLE_POLL_DATA = 3000
 

@@ -267,7 +267,7 @@ def test_startCommunication_1():
                            'startTimer'):
         with mock.patch.object(pythoncom,
                                'CoInitialize'):
-            with mock.patch.object(win32com.client,
+            with mock.patch.object(win32com.client.dynamic,
                                    'Dispatch'):
                 suc = app.startCommunication()
                 assert suc
@@ -282,7 +282,7 @@ def test_startCommunication_2():
                            'startTimer'):
         with mock.patch.object(pythoncom,
                                'CoInitialize'):
-            with mock.patch.object(win32com.client,
+            with mock.patch.object(win32com.client.dynamic,
                                    'Dispatch',
                                    side_effect=Exception()):
                 suc = app.startCommunication()

@@ -58,8 +58,6 @@ class AscomClass(object):
     """
 
     log = logging.getLogger(__name__)
-
-    # relaxed generic timing
     CYCLE_POLL_STATUS = 3000
     CYCLE_POLL_DATA = 3000
 
@@ -275,7 +273,6 @@ class AscomClass(object):
         if not self.deviceName:
             return False
 
-        # clsctx = pythoncom.CLSCTX_LOCAL_SERVER
         pythoncom.CoInitialize()
         try:
             self.client = client.dynamic.Dispatch(self.deviceName)

@@ -79,7 +79,6 @@ class Skymeter:
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
-        # signalling from subclasses to main
         alpacaSignals = self.run['alpaca'].client.signals
         alpacaSignals.serverConnected.connect(self.signals.serverConnected)
         alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)
@@ -99,7 +98,6 @@ class Skymeter:
         :param loadConfig:
         :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -108,9 +106,8 @@ class Skymeter:
 
     def stopCommunication(self):
         """
-
+        :return: success
         """
-
         if self.framework not in self.run.keys():
             return False
 

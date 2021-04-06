@@ -141,7 +141,7 @@ class SettDevice:
                 'uiDropDown': self.ui.powerDevice,
                 'uiSetup': self.ui.powerSetup,
                 'class': self.app.power,
-                'deviceType': 'power',
+                'deviceType': 'switch',
             },
             'relay': {
                 'uiDropDown': self.ui.relayDevice,

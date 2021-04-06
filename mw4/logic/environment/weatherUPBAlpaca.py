@@ -20,24 +20,22 @@
 # external packages
 
 # local imports
-from base.ascomClass import AscomClass
+from base.alpacaClass import AlpacaClass
+from base.alpacaBase import ObservingConditions
 
 
-class FocuserAscom(AscomClass):
+class WeatherUPBAlpaca(AlpacaClass):
     """
-    the class focuser inherits all information and handling of the focuser device.
     """
 
-    __all__ = ['FocuserAscom',
+    __all__ = ['WeatherUPBAlpaca',
                ]
-
     CYCLE_POLL_DATA = 1000
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
-        # as we have in the base class only the base client there, we will get more
-        # specialized with Dome (which is derived from the base class)
+        self.client = ObservingConditions()
         self.signals = signals
         self.data = data
 
@@ -46,9 +44,6 @@ class FocuserAscom(AscomClass):
         :return: true for test purpose
         """
         super().getInitialConfig()
-        if not self.deviceConnected:
-            return False
-
         return True
 
     def workerPollData(self):
@@ -58,26 +53,7 @@ class FocuserAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.dataEntry(self.client.Position, 'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION')
-        return True
-
-    def move(self, position=None):
-        """
-        :param position:
-        :return:
-        """
-        if not self.deviceConnected:
-            return False
-
-        self.client.move(position)
-        return True
-
-    def halt(self):
-        """
-        :return:
-        """
-        if not self.deviceConnected:
-            return False
-
-        self.client.halt
+        self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = self.client.temperature()
+        self.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = self.client.dewpoint()
+        self.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = self.client.humidity()
         return True

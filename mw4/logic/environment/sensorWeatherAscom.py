@@ -27,9 +27,6 @@ class SensorWeatherAscom(AscomClass):
     __all__ = ['SensorWeatherAscom',
                ]
 
-    CYCLE_DEVICE = 3000
-    CYCLE_DATA = 1000
-
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
@@ -38,12 +35,9 @@ class SensorWeatherAscom(AscomClass):
 
     def getInitialConfig(self):
         """
-
         :return: true for test purpose
         """
-
         super().getInitialConfig()
-
         return True
 
     def workerPollData(self):
@@ -51,7 +45,6 @@ class SensorWeatherAscom(AscomClass):
 
         :return: true for test purpose
         """
-
         if not self.deviceConnected:
             return False
 

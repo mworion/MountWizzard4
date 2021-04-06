@@ -33,9 +33,7 @@ class CoverAlpaca(AlpacaClass):
     __all__ = ['CoverAlpaca',
                ]
 
-    # specific timing for device
-    CYCLE_DEVICE = 3000
-    CYCLE_DATA = 1000
+    CYCLE_POLL_DATA = 1000
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)

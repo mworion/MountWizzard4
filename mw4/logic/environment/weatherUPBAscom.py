@@ -11,7 +11,6 @@
 # GUI with PyQT5 for python
 #
 # written in python3, (c) 2019-2021 by mworion
-#
 # Licence APL2.0
 #
 ###########################################################
@@ -23,12 +22,11 @@
 from base.ascomClass import AscomClass
 
 
-class FocuserAscom(AscomClass):
+class WeatherUPBAscom(AscomClass):
     """
-    the class focuser inherits all information and handling of the focuser device.
     """
 
-    __all__ = ['FocuserAscom',
+    __all__ = ['WeatherUPBAscom',
                ]
 
     CYCLE_POLL_DATA = 1000
@@ -36,8 +34,6 @@ class FocuserAscom(AscomClass):
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
-        # as we have in the base class only the base client there, we will get more
-        # specialized with Dome (which is derived from the base class)
         self.signals = signals
         self.data = data
 
@@ -46,9 +42,6 @@ class FocuserAscom(AscomClass):
         :return: true for test purpose
         """
         super().getInitialConfig()
-        if not self.deviceConnected:
-            return False
-
         return True
 
     def workerPollData(self):
@@ -58,26 +51,8 @@ class FocuserAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.dataEntry(self.client.Position, 'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION')
-        return True
+        self.dataEntry(self.client.temperature, 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
+        self.dataEntry(self.client.dewpoint, 'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
+        self.dataEntry(self.client.humidity, 'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
 
-    def move(self, position=None):
-        """
-        :param position:
-        :return:
-        """
-        if not self.deviceConnected:
-            return False
-
-        self.client.move(position)
-        return True
-
-    def halt(self):
-        """
-        :return:
-        """
-        if not self.deviceConnected:
-            return False
-
-        self.client.halt
         return True

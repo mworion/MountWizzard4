@@ -34,10 +34,6 @@ class SensorWeatherAlpaca(AlpacaClass):
     __all__ = ['SensorWeatherAlpaca',
                ]
 
-    # specific timing for device
-    CYCLE_DEVICE = 3000
-    CYCLE_DATA = 1000
-
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
@@ -49,17 +45,13 @@ class SensorWeatherAlpaca(AlpacaClass):
 
     def getInitialConfig(self):
         """
-
         :return: true for test purpose
         """
-
         super().getInitialConfig()
-
         return True
 
     def workerPollData(self):
         """
-
         :return: true for test purpose
         """
         if not self.deviceConnected:
@@ -69,5 +61,4 @@ class SensorWeatherAlpaca(AlpacaClass):
         self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = self.client.pressure()
         self.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = self.client.dewpoint()
         self.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = self.client.humidity()
-
         return True

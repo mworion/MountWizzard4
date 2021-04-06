@@ -13231,7 +13231,7 @@ Hint if mount will need a flip when following satellite.</string>
      </property>
      <widget class="QPushButton" name="autoDew">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>

@@ -42,16 +42,20 @@ class Power(object):
                     'B': self.ui.dewB,
                     'C': self.ui.dewC,
                     }
+        self.dewLabel = {1: self.ui.groupDewA,
+                         2: self.ui.groupDewB,
+                         3: self.ui.groupDewC,
+                         }
         self.current = {'1': self.ui.powerCurrent1,
                         '2': self.ui.powerCurrent2,
                         '3': self.ui.powerCurrent3,
                         '4': self.ui.powerCurrent4,
                         }
-        self.label = {'1': self.ui.powerLabel1,
-                      '2': self.ui.powerLabel2,
-                      '3': self.ui.powerLabel3,
-                      '4': self.ui.powerLabel4,
-                      }
+        self.powerLabel = {'1': self.ui.powerLabel1,
+                           '2': self.ui.powerLabel2,
+                           '3': self.ui.powerLabel3,
+                           '4': self.ui.powerLabel4,
+                           }
         self.portUSB = {'1': self.ui.portUSB1,
                         '2': self.ui.portUSB2,
                         '3': self.ui.portUSB3,
@@ -88,7 +92,6 @@ class Power(object):
 
         :return: success for test
         """
-
         self.ui.powerCurrent1.setText('-')
         self.ui.powerCurrent2.setText('-')
         self.ui.powerCurrent3.setText('-')
@@ -101,7 +104,6 @@ class Power(object):
         self.ui.sensorPower.setText('-')
         self.ui.dewCurrentA.setText('-')
         self.ui.dewCurrentB.setText('-')
-
         return True
 
     def setGuiVersion(self, version=1):
@@ -112,13 +114,11 @@ class Power(object):
         :param version:
         :return:
         """
-
         if version == 1:
             self.ui.groupDewC.setVisible(False)
             self.ui.groupPortUSB.setVisible(False)
             self.ui.groupHubUSB.setVisible(True)
             self.ui.groupAdjustableOutput.setVisible(False)
-
         elif version == 2:
             self.ui.groupDewC.setVisible(True)
             self.ui.groupPortUSB.setVisible(True)
@@ -131,7 +131,6 @@ class Power(object):
 
         :return: success for test
         """
-
         for name, button in self.powerOnOFF.items():
             value = self.app.power.data.get(f'POWER_CONTROL.POWER_CONTROL_{name}', False)
             self.changeStyleDynamic(button, 'running', value)
@@ -148,7 +147,11 @@ class Power(object):
             value = self.app.power.data.get(f'DEW_PWM.DEW_{name}', 0)
             button.setText(f'{value:3.0f}')
 
-        for name, button in self.label.items():
+        for name, button in self.dewLabel.items():
+            value = self.app.power.data.get(f'DEW_CONTROL_LABEL.DEW_LABEL_{name}', 0)
+            button.setTitle(f'{value:1s}')
+
+        for name, button in self.powerLabel.items():
             value = self.app.power.data.get(f'POWER_CONTROL_LABEL.POWER_LABEL_{name}',
                                             f'Power {name}')
             button.setText(value)

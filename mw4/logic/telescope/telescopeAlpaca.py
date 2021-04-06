@@ -32,10 +32,6 @@ class TelescopeAlpaca(AlpacaClass):
     __all__ = ['TelescopeAlpaca',
                ]
 
-    # specific timing for device
-    CYCLE_DEVICE = 3000
-    CYCLE_DATA = 1000
-
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 

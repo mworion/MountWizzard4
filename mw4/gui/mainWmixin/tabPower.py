@@ -148,7 +148,7 @@ class Power(object):
             button.setText(f'{value:3.0f}')
 
         for name, button in self.dewLabel.items():
-            value = self.app.power.data.get(f'DEW_CONTROL_LABEL.DEW_LABEL_{name}', 0)
+            value = self.app.power.data.get(f'DEW_CONTROL_LABEL.DEW_LABEL_{name}', '')
             button.setTitle(f'{value:1s}')
 
         for name, button in self.powerLabel.items():

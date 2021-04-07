@@ -14,19 +14,22 @@ Ideas for the future
   time for the mount So avoiding them would be great.
 - automation windows 64 bit update
 - split profiles in base and add-on
+- adding gain and offset for cmos
 
 
 Released beta version of MW4
 ----------------------------
 2.0.0b3
 
-- adding simulator feature
-- bugfix slewing message dome when disconnected
-- adding dome following when mount is in satellite tracking mode
-- adding fix for INDI cameras sending two times BUSY, EXP=0
+- add simulator feature
+- add dome following when mount is in satellite tracking mode
 - debug standard moved from WARN to INFO
-- adding labels for UPB dew and enabling autodew in INDI
-- adding support for ASCOM / ALPACA Pegasus UPB v1 & v2
+- add setting label support for UPB dew entries
+- add autodew support for Pegasus UPB
+- add switch support for ASCOM/ALPACA Pegasus UPB
+- add observation condition support for ASCOM/ALPACA Pegasus UPB
+- fix for INDI cameras sending two times busy and exposure=0
+- fix slewing message dome when disconnected
 
 Released version of MW4
 -----------------------

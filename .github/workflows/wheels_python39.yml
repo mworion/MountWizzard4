@@ -83,7 +83,7 @@ jobs:
             #pip wheel sgp4==2.17 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pybase64==1.1.4 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pyqt5_sip==12.8.1 -w "support/wheels/${{ matrix.distro}}"
-            pip wheel pyqt5==5.15.4 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel pyqt5==5.15.2 -w "support/wheels/${{ matrix.distro}}"
 
       - name: upload_wheels
         uses: actions/upload-artifact@v2

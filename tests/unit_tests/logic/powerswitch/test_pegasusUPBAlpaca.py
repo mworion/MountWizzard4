@@ -24,7 +24,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 # local import
 from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
 from logic.powerswitch.pegasusUPB import PegasusUPBSignals
-from base.alpacaBase import AlpacaBase
+from base.alpacaBase import AlpacaBase, Switch
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -58,5 +58,19 @@ def test_workerPollData_2():
     app.deviceConnected = True
     with mock.patch.object(AlpacaBase,
                            'get'):
-        suc = app.workerPollData()
-        assert suc
+        with mock.patch.object(Switch,
+                               'maxswitch',
+                               return_value=15):
+            suc = app.workerPollData()
+            assert suc
+
+
+def test_workerPollData_3():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'get'):
+        with mock.patch.object(Switch,
+                               'maxswitch',
+                               return_value=21):
+            suc = app.workerPollData()
+            assert suc

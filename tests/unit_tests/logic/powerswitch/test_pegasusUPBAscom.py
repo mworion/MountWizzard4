@@ -37,6 +37,14 @@ def module_setup_teardown():
         DriverVersion = '1'
         DriverInfo = 'test1'
 
+        @staticmethod
+        def getswitch(a):
+            return False
+
+        @staticmethod
+        def getswitchvalue(a):
+            return 0
+
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)

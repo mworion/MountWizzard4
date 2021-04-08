@@ -62,7 +62,7 @@ jobs:
             apt-get upgrade -y
             apt-get install -y wget gcc build-essential zlib1g-dev libjpeg-dev
             apt-get install -y software-properties-common
-            add-apt-repository ppa:deadsnakes/ppa
+            # add-apt-repository ppa:deadsnakes/ppa
             
           # Produce a binary artifact and place it in the mounted volume
           run: |

@@ -431,3 +431,28 @@ def test_shutdown_2(function):
         suc = function.shutdown()
         assert not suc
         assert function.mountUp
+
+
+def test_errorDome(function):
+    function.errorDome('test')
+
+
+def test_clearDome_1(function):
+    suc = function.clearDome()
+    assert suc
+
+
+def test_cycleDome_1(function):
+    function.mountUp = True
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.cycleDome()
+        assert suc
+
+
+def test_cycleDome_2(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.cycleDome()
+        assert not suc

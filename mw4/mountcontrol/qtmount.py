@@ -45,6 +45,7 @@ class MountSignals(PyQt5.QtCore.QObject):
     __all__ = ['MountSignals']
 
     pointDone = PyQt5.QtCore.pyqtSignal(object)
+    domeDone = PyQt5.QtCore.pyqtSignal(object)
     settingDone = PyQt5.QtCore.pyqtSignal(object)
     alignDone = PyQt5.QtCore.pyqtSignal(object)
     namesDone = PyQt5.QtCore.pyqtSignal(object)
@@ -79,6 +80,7 @@ class Mount(mountcontrol.mount.Mount):
     """
 
     CYCLE_POINTING = 500
+    CYCLE_DOME = 1000
     CYCLE_MOUNT_UP = 3000
     CYCLE_SETTING = 3000
 
@@ -114,6 +116,9 @@ class Mount(mountcontrol.mount.Mount):
         self.timerPointing = PyQt5.QtCore.QTimer()
         self.timerPointing.setSingleShot(False)
         self.timerPointing.timeout.connect(self.cyclePointing)
+        self.timerDome = PyQt5.QtCore.QTimer()
+        self.timerDome.setSingleShot(False)
+        self.timerDome.timeout.connect(self.cycleDome)
         self.timerSetting = PyQt5.QtCore.QTimer()
         self.timerSetting.setSingleShot(False)
         self.timerSetting.timeout.connect(self.cycleSetting)
@@ -145,6 +150,7 @@ class Mount(mountcontrol.mount.Mount):
         """
         self.timerSetting.start(self.CYCLE_SETTING)
         self.timerPointing.start(self.CYCLE_POINTING)
+        self.timerDome.start(self.CYCLE_DOME)
         self.timerMountUp.start(self.CYCLE_MOUNT_UP)
         return True
 
@@ -153,6 +159,7 @@ class Mount(mountcontrol.mount.Mount):
         :return: true for test purpose
         """
         self.timerPointing.stop()
+        self.timerDome.stop()
         self.timerSetting.stop()
         self.timerMountUp.stop()
         self.threadPool.waitForDone()
@@ -179,10 +186,8 @@ class Mount(mountcontrol.mount.Mount):
             client.settimeout(self.SOCKET_TIMEOUT)
             try:
                 client.connect(self.host)
-
             except Exception:
                 self.mountUp = False
-
             else:
                 self.mountUp = True
 
@@ -233,18 +238,14 @@ class Mount(mountcontrol.mount.Mount):
         if self.obsSite.status in [1, 98, 99]:
             if not self.statusAlert:
                 self.signals.alert.emit()
-
             self.statusAlert = True
-
         else:
             self.statusAlert = False
 
         if self.obsSite.status not in [2, 6]:
             if not self.statusSlew:
                 self.settlingWait.start(self._settlingTime)
-
             self.statusSlew = True
-
         else:
             self.statusSlew = False
 
@@ -282,8 +283,8 @@ class Mount(mountcontrol.mount.Mount):
 
     def cycleSetting(self):
         """
-        cycleSet prepares the worker thread and the signals for getting the settings
-        data.
+        cycleSet prepares the worker thread and the signals for getting the
+        settings data.
 
         :return: success
         """
@@ -313,8 +314,8 @@ class Mount(mountcontrol.mount.Mount):
 
     def getAlign(self):
         """
-        getAlign prepares the worker thread and the signals for getting the alignment model
-        data.
+        getAlign prepares the worker thread and the signals for getting the
+        alignment model data.
 
         :return: success
         """
@@ -344,8 +345,8 @@ class Mount(mountcontrol.mount.Mount):
 
     def getNames(self):
         """
-        getNames prepares the worker thread and the signals for getting the alignment model
-        names.
+        getNames prepares the worker thread and the signals for getting the
+        alignment model names.
 
         :return: success
         """
@@ -376,8 +377,8 @@ class Mount(mountcontrol.mount.Mount):
 
     def getFW(self):
         """
-        getFW prepares the worker thread and the signals for getting the build data of
-        the mount computer.
+        getFW prepares the worker thread and the signals for getting the build
+        data of the mount computer.
 
         :return: success
         """
@@ -407,8 +408,8 @@ class Mount(mountcontrol.mount.Mount):
 
     def getLocation(self):
         """
-        getLocation prepares the worker thread and the signals for getting the mount
-        location data.
+        getLocation prepares the worker thread and the signals for getting the
+        mount location data.
 
         :return: success
         """
@@ -438,8 +439,8 @@ class Mount(mountcontrol.mount.Mount):
 
     def calcTLE(self):
         """
-        getCalcTLE prepares the worker thread and the signals for getting the mount
-        location data.
+        getCalcTLE prepares the worker thread and the signals for getting the
+        mount location data.
 
         :return: success
         """
@@ -519,11 +520,9 @@ class Mount(mountcontrol.mount.Mount):
         """
         :return:    True if success
         """
-
         if self.MAC is not None:
             wakeonlan.send_magic_packet(self.MAC)
             return True
-
         else:
             return False
 
@@ -531,9 +530,36 @@ class Mount(mountcontrol.mount.Mount):
         """
         :return:
         """
-
         suc = self.obsSite.shutdown()
         if suc:
             self.mountUp = False
 
         return suc
+
+    def errorDome(self, e):
+        """
+        :return: true for test purpose
+        """
+        self.log.warning(f'Cycle error: {e}')
+        return True
+
+    def clearDome(self):
+        """
+        :return: true for test purpose
+        """
+        self.signals.domeDone.emit(self.dome)
+        return True
+
+    def cycleDome(self):
+        """
+        :return: success
+        """
+        if not self.mountUp:
+            self.signals.domeDone.emit(self.dome)
+            return False
+
+        worker = Worker(self.dome.poll)
+        worker.signals.finished.connect(self.clearDome)
+        worker.signals.error.connect(self.errorDome)
+        self.threadPool.start(worker)
+        return True

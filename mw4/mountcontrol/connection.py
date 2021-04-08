@@ -61,7 +61,8 @@ class Connection(object):
     # these are the commands, which were used in mountcontrol so far
     COMMANDS = [':AP',
                 ':FLIP',
-                ':GDUT', ':GDUTV', ':GMs', ':GMsa', ':GMsb', ':GMACW', ':GMAC',
+                ':GDW', ':GDA', ':GDF', ':GDS', ':GDUT', ':GDUTV',
+                ':GMs', ':GMsa', ':GMsb', ':GMACW', ':GMAC',
                 ':GREF', ':GRPRS', ':GRTMP',
                 ':GS', ':GT', ':GTMP1', ':GVD', ':GVN', ':GVP', ':GVT', ':GVZ',
                 ':GWOL', ':Ga', ':GaXa', ':GaXb',
@@ -74,7 +75,7 @@ class Connection(object):
                 ':Q', ':QaXa', ':QaXb', ':Qe', ':Qn', ':Qs', ':Qw',
                 ':RC', ':Rc', ':RG', ':RM', ':RMs', ':RS',
                 ':RT0', ':RT1', ':RT2', ':RT9',
-                ':SREF', ':SRPRS', ':SRTMP', ':STOP', ':SWOL',
+                ':SDAr', ':SREF', ':SRPRS', ':SRTMP', ':STOP', ':SWOL',
                 ':Sa', ':SaXa', ':SaXb', ':Sd',
                 ':Sdat', ':Sev', ':Sev', ':Sg', ':Sg', ':Sh', ':Slms', ':Slmt',
                 ':So', ':Sr', ':St', ':Suaf', ':Sw', ':Sz',
@@ -99,7 +100,7 @@ class Connection(object):
                  ':Q', ':Qe', ':Qn', ':Qs', ':Qw',
                  ':RC', ':Rc', ':RG', ':RM', ':RS', ':RT0', ':RT1', ':RT2',
                  ':RT9',
-                 ':STOP',
+                 ':SDAr', ':STOP',
                  ':U2',
                  ':hP', ':Suaf',
                  ]

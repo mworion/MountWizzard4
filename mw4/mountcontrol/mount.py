@@ -21,6 +21,7 @@ import logging
 
 # local imports
 from mountcontrol.firmware import Firmware
+from mountcontrol.dome import Dome
 from mountcontrol.setting import Setting
 from mountcontrol.obsSite import ObsSite
 from mountcontrol.model import Model
@@ -76,6 +77,7 @@ class Mount(object):
                                verbose=self.verbose,
                                )
         self.geometry = Geometry(obsSite=self.obsSite)
+        self.dome = Dome(self.host)
         self.model = Model(self.host, self.obsSite)
         self.host = host
 
@@ -88,6 +90,7 @@ class Mount(object):
         value = self.checkFormatHost(value)
         self._host = value
         self.firmware.host = value
+        self.dome.host = value
         self.setting.host = value
         self.model.host = value
         self.obsSite.host = value
@@ -111,15 +114,12 @@ class Mount(object):
         :param      value: host value
         :return:    host value as tuple including port
         """
-
         if not value:
             self.log.info('Wrong host value: {0}'.format(value))
             return None
-
         if not isinstance(value, (tuple, str)):
             self.log.info('Wrong host value: {0}'.format(value))
             return None
-
         if isinstance(value, str):
             value = (value, self.DEFAULT_PORT)
 
@@ -133,7 +133,6 @@ class Mount(object):
         :param      value: string with mac address
         :return:    checked string in upper cases
         """
-
         if not value:
             self.log.info('wrong MAC value: {0}'.format(value))
             return None
@@ -171,8 +170,8 @@ class Mount(object):
 
         :return: nothing
         """
-
         self.firmware = Firmware(self.host)
+        self.dome = Dome(self.host)
         self.setting = Setting(self.host)
         self.model = Model(self.host)
         self.satellite = Satellite(self.host)

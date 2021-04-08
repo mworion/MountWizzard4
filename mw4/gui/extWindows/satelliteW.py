@@ -266,8 +266,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         # switching all visual grids and planes off
         axe.set_facecolor((0, 0, 0, 0))
-        axe.tick_params(colors=self.M_GREY,
-                        labelsize=12)
+        axe.tick_params(colors=self.M_GREY, labelsize=12)
         axe.set_axis_off()
         axe.xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         axe.yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
@@ -292,7 +291,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             lat = self.EARTH_RADIUS * np.vstack((cth * cph, sth * cph, zth + sph))
             lats.append(lat)
 
-        # plotting sphere and labels
         for i, longitude in enumerate(longitudes):
             x, y, z = longitude
             axe.plot(x, y, z, lw=1, color=self.M_GREY)
@@ -300,16 +298,12 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             x, y, z = lat
             axe.plot(x, y, z, lw=1, color=self.M_GREY)
 
-        axe.plot([0, 0],
-                 [0, 0],
+        axe.plot([0, 0], [0, 0],
                  [- self.EARTH_RADIUS * 1.1, self.EARTH_RADIUS * 1.1],
-                 lw=3,
+                 lw=3, color=self.M_BLUE)
+        axe.text(0, 0, self.EARTH_RADIUS * 1.2, 'N', fontsize=14,
                  color=self.M_BLUE)
-        axe.text(0, 0, self.EARTH_RADIUS * 1.2, 'N',
-                 fontsize=14,
-                 color=self.M_BLUE)
-        axe.text(0, 0, - self.EARTH_RADIUS * 1.2 - 200, 'S',
-                 fontsize=14,
+        axe.text(0, 0, - self.EARTH_RADIUS * 1.2 - 200, 'S', fontsize=14,
                  color=self.M_BLUE)
 
         # empty chart if no satellite is chosen
@@ -317,10 +311,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             axe.figure.canvas.draw()
             return False
 
-        # drawing satellite
         x, y, z = observe.position.km
         axe.plot(x, y, z, color=self.M_WHITE)
-
         self.plotSatPosSphere1, = axe.plot([x[0]], [y[0]], [z[0]],
                                            marker=self.markerSatellite(),
                                            markersize=16,
@@ -352,8 +344,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         # switching all visual grids and planes off
         axe.set_facecolor((0, 0, 0, 0))
-        axe.tick_params(colors=self.M_GREY,
-                        labelsize=12)
+        axe.tick_params(colors=self.M_GREY, labelsize=12)
         axe.set_axis_off()
         axe.xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         axe.yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
@@ -386,16 +377,12 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             x, y, z = lat
             axe.plot(x, y, z, lw=1, color=self.M_GREY)
 
-        axe.plot([0, 0],
-                 [0, 0],
+        axe.plot([0, 0], [0, 0],
                  [- self.EARTH_RADIUS * 1.1, self.EARTH_RADIUS * 1.1],
-                 lw=3,
+                 lw=3, color=self.M_BLUE)
+        axe.text(0, 0, self.EARTH_RADIUS * 1.2, 'N', fontsize=14,
                  color=self.M_BLUE)
-        axe.text(0, 0, self.EARTH_RADIUS * 1.2, 'N',
-                 fontsize=14,
-                 color=self.M_BLUE)
-        axe.text(0, 0, - self.EARTH_RADIUS * 1.2 - 200, 'S',
-                 fontsize=14,
+        axe.text(0, 0, - self.EARTH_RADIUS * 1.2 - 200, 'S', fontsize=14,
                  color=self.M_BLUE)
 
         # plot world
@@ -408,33 +395,22 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             collect = Poly3DCollection(verts, facecolors=self.M_BLUE, alpha=0.5)
             axe.add_collection3d(collect)
 
-        # drawing home position location on earth
         lat = self.app.mount.obsSite.location.latitude.radians
         lon = self.app.mount.obsSite.location.longitude.radians
-
         x, y, z = functions.from_spherical(self.EARTH_RADIUS, lat, lon)
+        axe.plot(x, y, z, marker='.', markersize=12, color=self.M_RED)
 
-        axe.plot(x, y, z,
-                 marker='.',
-                 markersize=12,
-                 color=self.M_RED,
-                 )
-
-        # empty chart if no satellite is chosen
         if observe is None:
             axe.figure.canvas.draw()
             return False
 
-        # drawing satellite subpoint path
         lat = subpoint.latitude.radians
         lon = subpoint.longitude.radians
         elev = subpoint.elevation.m / 1000 + self.EARTH_RADIUS
 
         x, y, z = functions.from_spherical(elev, lat, lon)
-
         axe.plot(x, y, z, color=self.M_WHITE)
 
-        # draw satellite position
         self.plotSatPosSphere2, = axe.plot([x[0]], [y[0]], [z[0]],
                                            marker=self.markerSatellite(),
                                            markersize=16,
@@ -457,14 +433,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         axe, fig = self.generateFlat(widget=self.satEarthMat)
         axe.set_xticks(np.arange(-180, 181, 45))
-        axe.set_xlabel('Longitude in degrees',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.set_ylabel('Latitude in degrees',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
+        axe.set_xlabel('Longitude in degrees')
+        axe.set_ylabel('Latitude in degrees')
 
         # plot world
         for key in self.world.keys():
@@ -475,37 +445,19 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         # mark the site location in the map
         lat = self.app.mount.obsSite.location.latitude.degrees
         lon = self.app.mount.obsSite.location.longitude.degrees
-        axe.plot(lon,
-                 lat,
-                 marker='.',
-                 markersize=10,
-                 color=self.M_RED)
+        axe.plot(lon, lat, marker='.', markersize=10, color=self.M_RED)
 
-        # empty chart if no satellite is chosen
         if subpoint is None:
             axe.figure.canvas.draw()
             return False
 
-        # drawing satellite subpoint path
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
-
-        axe.plot(lon,
-                 lat,
-                 marker='o',
-                 markersize=1,
-                 linestyle='none',
-                 color=self.M_WHITE)
-
-        # show the actual position
-        self.plotSatPosEarth, = axe.plot(lon[0],
-                                         lat[0],
+        axe.plot(lon, lat, marker='o', markersize=1, ls='none', color=self.M_WHITE)
+        self.plotSatPosEarth, = axe.plot(lon[0], lat[0],
                                          marker=self.markerSatellite(),
-                                         markersize=16,
-                                         linewidth=2,
-                                         fillstyle='none',
-                                         linestyle='none',
-                                         color=self.M_PINK)
+                                         markersize=16, lw=2, fillstyle='none',
+                                         ls='none', color=self.M_PINK)
         axe.figure.canvas.draw()
         return True
 
@@ -523,20 +475,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
         azF = np.concatenate([[0], [0], az, [360], [360]])
 
-        axes.fill(azF,
-                  altF,
-                  color=self.M_GREEN_LL,
-                  alpha=0.7,
-                  zorder=-20)
-
-        axes.plot(az,
-                  alt,
-                  color=self.M_GREEN,
-                  marker='',
-                  alpha=0.5,
-                  zorder=0,
-                  lw=3)
-
+        axes.fill(azF, altF, color=self.M_GREEN_LL, alpha=0.7, zorder=-20)
+        axes.plot(az, alt, color=self.M_GREEN, marker='', alpha=0.5, lw=3)
         return True
 
     def drawHorizonView(self, difference=None):
@@ -547,34 +487,20 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param difference:
         :return: success
         """
-
         axe, fig = self.generateFlat(widget=self.satHorizonMat, horizon=True)
-
-        # add horizon limit if selected
         self.staticHorizon(axes=axe)
-
-        # empty chart if no satellite is chosen
         if difference is None:
             axe.figure.canvas.draw()
             return False
 
         colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
-
-        # orbital calculations
         for diff in difference:
             alt, az, _ = difference[diff].altaz()
             alt = alt.degrees
             az = az.degrees
 
-            # draw path
-            axe.plot(az,
-                     alt,
-                     marker='.',
-                     markersize=3,
-                     linestyle='none',
-                     color=colors[diff])
+            axe.plot(az, alt, marker='.', markersize=3, ls='none', color=colors[diff])
 
-        # draw actual position
         self.plotSatPosHorizon, = axe.plot(180,
                                            -10,
                                            marker=self.markerSatellite(),
@@ -583,9 +509,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                                            fillstyle=None,
                                            linestyle='none',
                                            color=self.M_PINK)
-
         axe.figure.canvas.draw()
-
         return True
 
     def drawSatellite(self, satellite=None, satOrbits=None):

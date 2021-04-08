@@ -204,7 +204,7 @@ def test_updateOrbit_4(function):
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
     function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    function.ui.mainTabWidget.setCurrentIndex(1)
+    function.ui.mainTabWidget.setCurrentIndex(6)
     function.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
     suc = function.updateOrbit()
     assert suc

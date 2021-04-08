@@ -25,7 +25,7 @@ Released beta version of MW4
 - add dome following when mount is in satellite tracking mode
 - debug standard moved from WARN to INFO
 - add setting label support for UPB dew entries
-- add autodew support for Pegasus UPB
+- add auto dew control support for Pegasus UPB
 - add switch support for ASCOM/ALPACA Pegasus UPB
 - add observation condition support for ASCOM/ALPACA Pegasus UPB
 - fix for INDI cameras sending two times busy and exposure=0

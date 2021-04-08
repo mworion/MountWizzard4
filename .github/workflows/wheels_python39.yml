@@ -1,7 +1,7 @@
 #
 # GitHub actions for running the unit test of the mountwizzard4 package
 #
-# v0.1, Michael Wuertenberger
+# v0.1,  Michael Wuertenberger
 #
 name: build-wheels-python39
 

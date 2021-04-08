@@ -123,12 +123,8 @@ class Satellite(object):
         for row in range(listSat.model().rowCount()):
             isFound = filterStr.lower() in listSat.model().index(row).data().lower()
             isVisible = isFound or not filterStr
+            listSat.setRowHidden(row, not isVisible)
 
-            if isVisible:
-                listSat.setRowHidden(row, False)
-
-            else:
-                listSat.setRowHidden(row, True)
         return True
 
     def setupSatelliteNameList(self):

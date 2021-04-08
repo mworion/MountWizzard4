@@ -17,160 +17,290 @@
 # standard libraries
 import unittest
 import unittest.mock as mock
+
 # external packages
+from skyfield.api import Angle
+
 # local imports
-from mountcontrol.firmware import Firmware
+from mountcontrol.dome import Dome
 
 
 class TestConfigData(unittest.TestCase):
 
     def setUp(self):
         pass
-    #
-    #
-    # testing firmware class it's attribute
-    #
-    #
 
-    def test_Firmware_ok(self):
-        fw = Firmware()
+    def test_property_1(self):
+        dome = Dome()
 
-        fw.product = 'Test'
-        self.assertEqual('Test', fw.product)
-        self.assertEqual('Test', fw._product)
-        fw.vString = '2.15.08'
-        self.assertEqual('2.15.08', fw.vString)
-        self.assertEqual('2.15.08', fw._vString)
-        self.assertEqual(fw.number(), 21508)
-        fw.vString = '2.16'
-        self.assertEqual('2.16', fw.vString)
-        self.assertEqual('2.16', fw._vString)
-        self.assertEqual(fw.number(), 21600)
-        fw.vString = '3.0'
-        self.assertEqual('3.0', fw.vString)
-        self.assertEqual('3.0', fw._vString)
-        self.assertEqual(fw.number(), 30000)
-        fw.hardware = '4.5'
-        self.assertEqual('4.5', fw.hardware)
-        self.assertEqual('4.5', fw._hardware)
-        fw.date = '2018-07-08'
-        self.assertEqual('2018-07-08', fw.date)
-        self.assertEqual('2018-07-08', fw._date)
-        fw.time = '14:50'
-        self.assertEqual('14:50', fw.time)
-        self.assertEqual('14:50', fw._time)
-        self.assertEqual(True, fw.checkNewer(36000))
+        dome.shutterState = '1'
+        dome.flapState = '1'
+        dome.slew = '1'
+        dome.azimuth = '1800'
 
-    def test_Firmware_not_ok_vString(self):
-        fw = Firmware()
+        self.assertEqual(dome.shutterState, 1)
+        self.assertEqual(dome.flapState, 1)
+        self.assertEqual(dome.slew, True)
+        self.assertEqual(dome.azimuth, 180)
 
-        fw.vString = '21508'
-        self.assertEqual(None, fw.vString)
-        fw.vString = '2.ee.15'
-        self.assertEqual(None, fw.vString)
-        fw.vString = ''
-        self.assertEqual(None, fw.vString)
-        fw._vString = '2.ee.15'
-        self.assertEqual(None, fw.number())
-        fw._vString = '2.16.16.15'
-        self.assertEqual(None, fw.number())
+    def test_property_2(self):
+        dome = Dome()
 
-    def test_Firmware_checkNewer(self):
-        fw = Firmware()
-        fw.vString = 5
-        self.assertEqual(None, fw.checkNewer(100))
+        dome.shutterState = '-1'
+        dome.flapState = '-1'
+        dome.slew = '-1'
+        dome.azimuth = '5400'
 
-    #
-    #
-    # testing pollSetting
-    #
-    #
+        self.assertEqual(dome.shutterState, None)
+        self.assertEqual(dome.flapState, None)
+        self.assertEqual(dome.slew, True)
+        self.assertEqual(dome.azimuth, 180)
 
-    def test_Firmware_parse_ok1(self):
-        fw = Firmware()
+    def test_property_3(self):
+        dome = Dome()
 
-        response = ['Mar 19 2018', '2.15.14',
-                    '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
-        suc = fw.parse(response, 5)
+        dome.shutterState = '5'
+        dome.flapState = '5'
+        dome.slew = 'e'
+        dome.azimuth = 'e'
+
+        self.assertEqual(dome.shutterState, None)
+        self.assertEqual(dome.flapState, None)
+        self.assertEqual(dome.slew, None)
+        self.assertEqual(dome.azimuth, None)
+
+    def test_property_4(self):
+        dome = Dome()
+
+        dome.shutterState = 'e'
+        dome.flapState = 'e'
+
+        self.assertEqual(dome.shutterState, None)
+        self.assertEqual(dome.flapState, None)
+
+    def test_Firmware_parse_1(self):
+        dome = Dome()
+
+        response = ['0', '0', '0', '1800']
+        suc = dome.parse(response, 4)
         self.assertEqual(True, suc)
+        self.assertEqual(dome.shutterState, 0)
+        self.assertEqual(dome.flapState, 0)
+        self.assertEqual(dome.slew, False)
+        self.assertEqual(dome.azimuth, 180)
 
-    def test_Firmware_parse_ok2(self):
-        fw = Firmware()
+    def test_Firmware_parse_2(self):
+        dome = Dome()
 
-        response = ['Mar 19 2018', '2.15.14',
-                    '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
-        suc = fw.parse(response, 5)
+        response = ['1', '2', '1', '5400']
+        suc = dome.parse(response, 4)
         self.assertEqual(True, suc)
+        self.assertEqual(dome.shutterState, 1)
+        self.assertEqual(dome.flapState, 2)
+        self.assertEqual(dome.slew, True)
+        self.assertEqual(dome.azimuth, 180)
 
-    def test_Firmware_parse_not_ok1(self):
-        fw = Firmware()
+    def test_Firmware_parse_3(self):
+        dome = Dome()
 
-        response = ['Mar 19 2018', '2.15.14',
-                    '10micron GM1000HPS', '15:56:53']
-        suc = fw.parse(response, 5)
+        response = ['1', '2', '1']
+        suc = dome.parse(response, 4)
         self.assertEqual(False, suc)
 
-    def test_Firmware_parse_not_ok2(self):
-        fw = Firmware()
+    def test_Firmware_parse_4(self):
+        dome = Dome()
 
-        response = []
-        suc = fw.parse(response, 5)
-        self.assertEqual(False, suc)
-
-    def test_Firmware_parse_not_ok3(self):
-        fw = Firmware()
-
-        response = ['Mar 19 2018', '2.15.14',
-                    '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
-
-        suc = fw.parse(response, 5)
+        response = ['e', 'e', 'e', 'e']
+        suc = dome.parse(response, 4)
         self.assertEqual(True, suc)
+        self.assertEqual(dome.shutterState, 1)
+        self.assertEqual(dome.flapState, 2)
+        self.assertEqual(dome.slew, True)
+        self.assertEqual(dome.azimuth, 180)
 
-    def test_Firmware_parse_not_ok4(self):
-        fw = Firmware()
+    def test_Firmware_parse_4(self):
+        dome = Dome()
 
-        response = ['Mar 19 2018', '2.1514',
-                    '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
-
-        suc = fw.parse(response, 5)
+        response = ['5', '-1', '1', '5400']
+        suc = dome.parse(response, 4)
         self.assertEqual(True, suc)
+        self.assertEqual(dome.shutterState, None)
+        self.assertEqual(dome.flapState, None)
+        self.assertEqual(dome.slew, True)
 
-    def test_Firmware_parse_not_ok5(self):
-        fw = Firmware()
+    def test_Firmware_poll_1(self):
+        dome = Dome()
+        response = ['0', '0', '0', '1800']
 
-        response = ['Mar 19 2018', '2.15.14',
-                    '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 4
+            suc = dome.poll()
+            self.assertEqual(False, suc)
 
-        suc = fw.parse(response, 5)
-        self.assertEqual(True, suc)
+    def test_Firmware_poll_2(self):
+        dome = Dome()
+        response = ['0', '0', '0', '1800']
 
-    def test_Firmware_parse_not_ok6(self):
-        fw = Firmware()
-
-        response = ['Mar 19 2018', '2.15.14',
-                    '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
-
-        suc = fw.parse(response, 5)
-        self.assertEqual(True, suc)
-
-    def test_Firmware_poll_ok(self):
-        fw = Firmware()
-
-        response = ['Mar 19 2018', '2.15.14',
-                    '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
-
-        with mock.patch('mountcontrol.firmware.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 5
-            suc = fw.poll()
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 4
+            suc = dome.poll()
             self.assertEqual(True, suc)
 
-    def test_Firmware_poll_not_ok1(self):
-        fw = Firmware()
+    def test_openShutter_1(self):
+        dome = Dome()
 
-        response = ['Mar 19 2018', '2.15.14',
-                    '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
-
-        with mock.patch('mountcontrol.firmware.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, response, 5
-            suc = fw.poll()
+        response = ['1']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = dome.openShutter()
             self.assertEqual(False, suc)
+
+    def test_openShutter_2(self):
+        dome = Dome()
+
+        response = ['0']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = dome.openShutter()
+            self.assertEqual(False, suc)
+
+    def test_openShutter_3(self):
+        dome = Dome()
+
+        response = ['1']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = dome.openShutter()
+            self.assertEqual(True, suc)
+
+    def test_closeShutter_1(self):
+        dome = Dome()
+
+        response = ['1']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = dome.closeShutter()
+            self.assertEqual(False, suc)
+
+    def test_closeShutter_2(self):
+        dome = Dome()
+
+        response = ['0']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = dome.closeShutter()
+            self.assertEqual(False, suc)
+
+    def test_closeShutter_3(self):
+        dome = Dome()
+
+        response = ['1']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = dome.closeShutter()
+            self.assertEqual(True, suc)
+
+    def test_openFlap_1(self):
+        dome = Dome()
+
+        response = ['1']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = dome.openFlap()
+            self.assertEqual(False, suc)
+
+    def test_openFlap_2(self):
+        dome = Dome()
+
+        response = ['0']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = dome.openFlap()
+            self.assertEqual(False, suc)
+
+    def test_openFlap_3(self):
+        dome = Dome()
+
+        response = ['1']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = dome.openFlap()
+            self.assertEqual(True, suc)
+
+    def test_closeFlap_1(self):
+        dome = Dome()
+
+        response = ['1']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = dome.closeFlap()
+            self.assertEqual(False, suc)
+
+    def test_closeFlap_2(self):
+        dome = Dome()
+
+        response = ['0']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = dome.closeFlap()
+            self.assertEqual(False, suc)
+
+    def test_closeFlap_3(self):
+        dome = Dome()
+
+        response = ['1']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = dome.closeFlap()
+            self.assertEqual(True, suc)
+
+    def test_slewDome_1(self):
+        dome = Dome()
+
+        suc = dome.slewDome()
+        self.assertEqual(False, suc)
+
+    def test_slewDome_2(self):
+        dome = Dome()
+
+        response = ['1']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = dome.slewDome(azimuth=Angle(degrees=100))
+            self.assertEqual(False, suc)
+
+    def test_slewDome_3(self):
+        dome = Dome()
+
+        response = ['0']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = dome.slewDome(azimuth=100)
+            self.assertEqual(False, suc)
+
+    def test_slewDome_4(self):
+        dome = Dome()
+
+        response = ['1']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = dome.slewDome(azimuth=100)
+            self.assertEqual(True, suc)
+
+    def test_enableInternalDomeControl_1(self):
+        dome = Dome()
+
+        response = ['1']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = dome.enableInternalDomeControl()
+            self.assertEqual(False, suc)
+
+    def test_enableInternalDomeControl_2(self):
+        dome = Dome()
+
+        response = ['0']
+        with mock.patch('mountcontrol.dome.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = dome.enableInternalDomeControl()
+            self.assertEqual(True, suc)

@@ -18,34 +18,27 @@
 import logging
 
 # external packages
+from skyfield.api import Angle
 
 # local imports
 from mountcontrol.connection import Connection
-from mountcontrol.convert import valueToInt
+from mountcontrol.convert import valueToInt, valueToFloat
 
 
 class Dome(object):
     """
-    The class Firmware inherits all information and handling of firmware
-    attributes of the connected mount and provides the abstracted interface
-    to a 10 micron mount.
-
         >>> fw = Dome(host='')
     """
-
     __all__ = ['Dome',
                ]
-
     log = logging.getLogger(__name__)
 
-    def __init__(self,
-                 host=None,
-                 ):
+    def __init__(self, host=None):
         self.host = host
-        self.shutterState = 0
-        self.flapState = 0
-        self.slew = False
-        self.azimuth = None
+        self._shutterState = 0
+        self._flapState = 0
+        self._slew = False
+        self._azimuth = None
 
     @property
     def shutterState(self):
@@ -53,7 +46,15 @@ class Dome(object):
 
     @shutterState.setter
     def shutterState(self, value):
-        self._shutterState = value
+        value = valueToInt(value)
+        if value is None:
+            self._shutterState = None
+        elif value < 0:
+            self._shutterState = None
+        elif value > 4:
+            self._shutterState = None
+        else:
+            self._shutterState = value
 
     @property
     def flapState(self):
@@ -61,7 +62,15 @@ class Dome(object):
 
     @flapState.setter
     def flapState(self, value):
-        self._flapState = value
+        value = valueToInt(value)
+        if value is None:
+            self._flapState = None
+        elif value < 0:
+            self._flapState = None
+        elif value > 4:
+            self._flapState = None
+        else:
+            self._flapState = value
 
     @property
     def slew(self):
@@ -69,7 +78,11 @@ class Dome(object):
 
     @slew.setter
     def slew(self, value):
-        self._slew = bool(value)
+        value = valueToInt(value)
+        if value is None:
+            self._slew = None
+        else:
+            self._slew = bool(value)
 
     @property
     def azimuth(self):
@@ -77,7 +90,11 @@ class Dome(object):
 
     @azimuth.setter
     def azimuth(self, value):
-        self._azimuth = value
+        value = valueToFloat(value)
+        if value is None:
+            self._azimuth = None
+        else:
+            self._azimuth = (value / 10) % 360.0
 
     def parse(self, response, numberOfChunks):
         """
@@ -166,12 +183,14 @@ class Dome(object):
 
         return True
 
-    def slew(self, azimuth=None):
+    def slewDome(self, azimuth=None):
         """
         :return:
         """
         if azimuth is None:
             return False
+        if type(azimuth) == Angle:
+            azimuth = azimuth.degrees
 
         azimuth = azimuth % 360
         conn = Connection(self.host)
@@ -186,7 +205,7 @@ class Dome(object):
 
         return True
 
-    def setDomeControlInternal(self):
+    def enableInternalDomeControl(self):
         """
         :return:
         """

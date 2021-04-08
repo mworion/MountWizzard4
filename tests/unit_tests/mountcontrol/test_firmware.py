@@ -17,7 +17,9 @@
 # standard libraries
 import unittest
 import unittest.mock as mock
+
 # external packages
+
 # local imports
 from mountcontrol.firmware import Firmware
 

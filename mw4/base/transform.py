@@ -31,6 +31,7 @@ __all__ = [
     'J2000ToJNow',
     'J2000ToAltAz',
     'JNowToJ2000',
+    'diffModulus'
 ]
 
 log = logging.getLogger()
@@ -152,3 +153,9 @@ def J2000ToAltAz(ra, dec, timeJD, location):
         dec = Angle(radians=decConv, preference='degrees')
 
         return ra, dec
+
+
+def diffModulus(x, y, m):
+    diff = abs(x - y)
+    diff = abs(diff % m)
+    return min(diff, abs(diff - m))

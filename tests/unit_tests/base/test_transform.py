@@ -120,3 +120,18 @@ def test_J2000T0AltAz_3():
     alt, az = transform.J2000ToAltAz(Angle(hours=12), Angle(degrees=45), Test(), loc)
     assert alt.degrees != 0
     assert az.degrees != 0
+
+
+def test_diffModulus_1():
+    val = transform.diffModulus(1, 20, 360)
+    assert val == 19
+
+
+def test_diffModulus_2():
+    val = transform.diffModulus(350, 10, 360)
+    assert val == 20
+
+
+def test_diffModulus_3():
+    val = transform.diffModulus(-10, 340, 360)
+    assert val == 10

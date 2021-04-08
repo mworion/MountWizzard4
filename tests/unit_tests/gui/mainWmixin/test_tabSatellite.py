@@ -978,21 +978,6 @@ def test_progSatellitesFull_5(function):
                 assert suc
 
 
-def test_diffModulus_1(function):
-    val = function.diffModulus(1, 20, 360)
-    assert val == 19
-
-
-def test_diffModulus_2(function):
-    val = function.diffModulus(350, 10, 360)
-    assert val == 20
-
-
-def test_diffModulus_3(function):
-    val = function.diffModulus(-10, 340, 360)
-    assert val == 10
-
-
 def test_followMount_1(function):
     obs = function.app.mount.obsSite
     function.ui.domeAutoFollowSat.setChecked(False)

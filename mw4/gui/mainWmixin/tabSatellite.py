@@ -24,6 +24,7 @@ from sgp4.exporter import export_tle
 
 # local import
 from base.tpool import Worker
+from base.transform import diffModulus
 from logic.databaseProcessing.dataWriter import DataWriter
 
 
@@ -122,8 +123,7 @@ class Satellite(object):
 
         for row in range(listSat.model().rowCount()):
             isFound = filterStr.lower() in listSat.model().index(row).data().lower()
-            isVisible = isFound or not filterStr
-            listSat.setRowHidden(row, not isVisible)
+            listSat.setRowHidden(row, not isFound)
 
         return True
 
@@ -165,7 +165,6 @@ class Satellite(object):
         filePath = f'{dirPath}/{fileName}'
 
         satellites = self.app.mount.obsSite.loader.tle_file(source, reload=isOnline)
-
         self.satellites = {sat.name: sat for sat in satellites}
 
         if not os.path.isfile(filePath):
@@ -194,7 +193,6 @@ class Satellite(object):
                         isOnline=isOnline)
         worker.signals.finished.connect(self.setupSatelliteNameList)
         self.threadPool.start(worker)
-
         return True
 
     def updateOrbit(self):
@@ -210,55 +208,37 @@ class Satellite(object):
             self.ui.startSatelliteTracking.setEnabled(False)
             return False
 
-        # check if calculation is necessary to optimize cpu time
-        # get index for satellite tab and check if it's visible. i
-        # f not, no calculation
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Satellite')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        satTabVisible = self.ui.mainTabWidget.currentIndex() == tabIndex
-
         winObj = self.app.uiWindows['showSatelliteW']
-
         if not winObj:
             return False
 
-        # if nothing is visible, nothing to update !
-        if not winObj.get('classObj') and not satTabVisible:
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget,
+                                                    'Satellite')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        satTabVisible = self.ui.mainTabWidget.currentIndex() == tabIndex
+        if not satTabVisible:
             return False
 
-        # now calculating the satellite data
         now = self.app.mount.obsSite.ts.now()
         observe = self.satellite.at(now)
-
         subpoint = observe.subpoint()
+        self.ui.satLatitude.setText(f'{subpoint.latitude.degrees:3.2f}')
+        self.ui.satLongitude.setText(f'{subpoint.longitude.degrees:3.2f}')
+
         difference = self.satellite - self.app.mount.obsSite.location
-
         ra, dec, _ = difference.at(now).radec()
-        ra = ra.hours
-        dec = dec.degrees
-
-        self.ui.satRa.setText(f'{ra:3.2f}')
-        self.ui.satDec.setText(f'{dec:3.2f}')
-
-        lat = subpoint.latitude.degrees
-        lon = subpoint.longitude.degrees
-        self.ui.satLatitude.setText(f'{lat:3.2f}')
-        self.ui.satLongitude.setText(f'{lon:3.2f}')
+        self.ui.satRa.setText(f'{ra.hours:3.2f}')
+        self.ui.satDec.setText(f'{dec.degrees:3.2f}')
 
         altaz = difference.at(now).altaz()
-
         alt, az, _ = altaz
-        alt = alt.degrees
-        az = az.degrees
-
-        self.ui.satAltitude.setText(f'{alt:3.2f}')
-        self.ui.satAzimuth.setText(f'{az:3.2f}')
+        self.ui.satAltitude.setText(f'{alt.degrees:3.2f}')
+        self.ui.satAzimuth.setText(f'{az.degrees:3.2f}')
 
         if not winObj.get('classObj'):
             return True
 
         winObj['classObj'].signals.update.emit(observe, subpoint, altaz)
-
         return True
 
     def programTLEDataToMount(self):
@@ -529,12 +509,10 @@ class Satellite(object):
             self.app.message.emit('Mount is not online', 2)
             return False
 
-        # if mount is currently parked, we unpark it
         if self.app.mount.obsSite.status == 5:
             suc = self.app.mount.obsSite.unpark()
             if suc:
                 self.app.message.emit('Mount unparked', 0)
-
             else:
                 self.app.message.emit('Cannot unpark mount', 2)
 
@@ -576,7 +554,6 @@ class Satellite(object):
         self.app.message.emit('Exporting TLE data', 0)
 
         filterStr = self.ui.filterSatellite.text().lower()
-
         filtered = dict()
         for name, _ in self.satellites.items():
             if not isinstance(name, str):
@@ -630,7 +607,6 @@ class Satellite(object):
 
         suc = self.databaseProcessing.writeSatelliteTLE(self.satellites,
                                                         self.installPath)
-
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
             return False
@@ -647,18 +623,12 @@ class Satellite(object):
 
         self.app.message.emit('Uploading TLE data to mount', 0)
         suc = self.app.automation.uploadTLEData()
-
         if not suc:
             self.app.message.emit('Uploading error', 2)
         else:
             self.app.message.emit('Programming success', 1)
-        return suc
 
-    @staticmethod
-    def diffModulus(x, y, m):
-        diff = abs(x - y)
-        diff = abs(diff % m)
-        return min(diff, abs(diff - m))
+        return suc
 
     def followMount(self, obs):
         """
@@ -674,8 +644,7 @@ class Satellite(object):
 
         azimuth = obs.Az.degrees
         altitude = obs.Alt.degrees
-
-        delta = self.diffModulus(azimuth, self.lastAzimuth, 360)
+        delta = diffModulus(azimuth, self.lastAzimuth, 360)
         if delta < 1:
             return False
 

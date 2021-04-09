@@ -304,7 +304,6 @@ def test_drawSatellite_3(function, module):
     t2 = module.tt_jd(tt + 0.2)
     t3 = module.tt_jd(tt + 0.3)
     t4 = module.tt_jd(tt + 0.4)
-    t5 = module.tt_jd(tt + 0.5)
 
     satOrbits = {0: {'rise': t0,
                      'settle': t1},
@@ -312,8 +311,6 @@ def test_drawSatellite_3(function, module):
                      'settle': t3},
                  2: {'rise': t3,
                      'settle': t4},
-                 3: {'rise': t4,
-                     'settle': t5}
                  }
 
     suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)
@@ -333,7 +330,6 @@ def test_drawSatellite_4(function, module):
     t2 = module.tt_jd(tt + 0.2)
     t3 = module.tt_jd(tt + 0.3)
     t4 = module.tt_jd(tt + 0.4)
-    t5 = module.tt_jd(tt + 0.5)
 
     satOrbits = {0: {
                      'settle': t1},
@@ -341,8 +337,6 @@ def test_drawSatellite_4(function, module):
                      'settle': t3},
                  2: {'rise': t3,
                      'settle': t4},
-                 3: {'rise': t4,
-                     'settle': t5}
                  }
 
     suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)
@@ -362,7 +356,6 @@ def test_drawSatellite_5(function, module):
     t2 = module.tt_jd(tt + 0.2)
     t3 = module.tt_jd(tt + 0.3)
     t4 = module.tt_jd(tt + 0.4)
-    t5 = module.tt_jd(tt + 0.5)
 
     satOrbits = {0: {'rise': t0,
                      },
@@ -370,8 +363,6 @@ def test_drawSatellite_5(function, module):
                      'settle': t3},
                  2: {'rise': t3,
                      'settle': t4},
-                 3: {'rise': t4,
-                     'settle': t5}
                  }
 
     suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)

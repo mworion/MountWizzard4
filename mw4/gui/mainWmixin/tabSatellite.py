@@ -391,7 +391,7 @@ class Satellite(object):
         obsSite = self.app.mount.obsSite
         times, events = self.calcPassEvents(obsSite)
 
-        timeNow = obsSite.timeJD.tt
+        timeNow = obsSite.timeJD
         self.extractFirstOrbits(timeNow, times, events)
         self.addMeridianTransit(obsSite.location)
 

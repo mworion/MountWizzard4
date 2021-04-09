@@ -494,12 +494,13 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
 
         colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
-        for diff in difference:
-            alt, az, _ = difference[diff].altaz()
+        for i, diff in enumerate(difference):
+            alt, az, _ = diff.altaz()
             alt = alt.degrees
             az = az.degrees
 
-            axe.plot(az, alt, marker='.', markersize=3, ls='none', color=colors[diff])
+            axe.plot(az, alt, marker='.', markersize=3, ls='none',
+                     color=colors[i])
 
         self.plotSatPosHorizon, = axe.plot(180,
                                            -10,
@@ -522,7 +523,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         if satellite is None or satOrbits is None:
-            print('none received')
             self.drawSphere1()
             self.drawSphere2()
             self.drawEarth()
@@ -545,28 +545,26 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         now = timescale.now()
         timeVector = timescale.tt_jd(now.tt + forecast)
 
-        timeVectorsHorizon = dict()
+        timeVectorsHorizon = []
 
         for satOrbit in satOrbits:
-            if satOrbit > 2:
+            if 'rise' not in satOrbit:
                 break
-            if 'rise' not in satOrbits[satOrbit]:
+            if 'settle' not in satOrbit:
                 break
-            if 'settle' not in satOrbits[satOrbit]:
-                break
-            timeRise = satOrbits[satOrbit]['rise']
-            timeSettle = satOrbits[satOrbit]['settle']
+            timeRise = satOrbit['rise']
+            timeSettle = satOrbit['settle']
             showTime = timeSettle.tt - timeRise.tt
             forecast = np.arange(0, showTime, 0.002 * showTime)
-            timeVectorsHorizon[satOrbit] = timescale.tt_jd(timeRise.tt + forecast)
+            timeVectorsHorizon.append(timescale.tt_jd(timeRise.tt + forecast))
 
         observe = self.satellite.at(timeVector)
         subpoint = observe.subpoint()
 
-        difference = dict()
+        difference = []
         for timeVectorHorizon in timeVectorsHorizon:
-            diff = (self.satellite - location).at(timeVectorsHorizon[timeVectorHorizon])
-            difference[timeVectorHorizon] = diff
+            diff = (self.satellite - location).at(timeVectorHorizon)
+            difference.append(diff)
 
         self.drawSphere1(observe=observe)
         self.drawSphere2(observe=observe, subpoint=subpoint)

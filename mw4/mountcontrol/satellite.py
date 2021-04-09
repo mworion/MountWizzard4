@@ -18,6 +18,7 @@
 import logging
 
 # external packages
+import skyfield.timelib
 from skyfield.api import Angle
 
 # local imports
@@ -178,6 +179,61 @@ class TLEParams(object):
         self._name = value
 
 
+class TrajectoryParams(object):
+    """
+    The class TrajectoryParams inherits all information and handling of TLE tracking
+    and managing attributes of the connected mount and provides the abstracted
+    interface to a 10 micron mount.
+
+        >>> trajectoryParams = TrajectoryParams(host='')
+    """
+
+    __all__ = ['TLEParams',
+               ]
+
+    log = logging.getLogger(__name__)
+
+    def __init__(self):
+        self._jdStart = None
+        self._jdEnd = None
+        self._flip = None
+
+    @property
+    def flip(self):
+        return self._flip
+
+    @flip.setter
+    def flip(self, value):
+        if isinstance(value, bool):
+            self._flip = value
+            return
+        self._flip = bool(value == 'F')
+
+    @property
+    def jdStart(self):
+        return self._jdStart
+
+    @jdStart.setter
+    def jdStart(self, value):
+        value = valueToFloat(value)
+        if value:
+            self._jdStart = value
+        else:
+            self._jdStart = None
+
+    @property
+    def jdEnd(self):
+        return self._jdEnd
+
+    @jdEnd.setter
+    def jdEnd(self, value):
+        value = valueToFloat(value)
+        if value:
+            self._jdEnd = value
+        else:
+            self._jdEnd = None
+
+
 class Satellite(object):
     """
     The class Satellite inherits all information and handling of TLE tracking
@@ -224,6 +280,7 @@ class Satellite(object):
 
         self.host = host
         self.tleParams = TLEParams()
+        self.trajectoryParams = TrajectoryParams()
 
     def parseGetTLE(self, response, numberOfChunks):
         """
@@ -234,19 +291,15 @@ class Satellite(object):
         :param numberOfChunks:  amount of parts
         :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
             return False
-
         if response[0] == 'E':
             return False
-
         if numberOfChunks != 1:
             return False
 
         lines = response[0].split('$0A')
-
         if len(lines) != 4:
             return False
 
@@ -254,7 +307,6 @@ class Satellite(object):
         self.tleParams.l0 = lines[0]
         self.tleParams.l1 = lines[1]
         self.tleParams.l2 = lines[2]
-
         return True
 
     def getTLE(self):
@@ -272,10 +324,8 @@ class Satellite(object):
 
         :return: success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':TLEG#')
-
         if not suc:
             return False
 
@@ -309,7 +359,6 @@ class Satellite(object):
         :param line2:
         :return: success
         """
-
         if not line0 or not line1 or not line2:
             return False
         if len(line1) != 69:
@@ -320,7 +369,6 @@ class Satellite(object):
         commandString = f':TLEL0{line0}$0a{line1}$0a{line2}#'
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(commandString)
-
         if not suc:
             return False
         if response == 'E':
@@ -339,15 +387,12 @@ class Satellite(object):
         :param numberOfChunks:  amount of parts
         :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
             return False
-
         if len(response) != 3:
             self.log.warning('wrong number of chunks')
             return False
-
         if response[0] == 'E':
             return False
         if response[1] == 'E':
@@ -382,7 +427,6 @@ class Satellite(object):
         self.tleParams.flip = flip
         self.tleParams.jdStart = start
         self.tleParams.jdEnd = end
-
         return True
 
     def calcTLE(self, julD='', duration=1440):
@@ -437,7 +481,6 @@ class Satellite(object):
         conn = Connection(self.host)
         command = f':TLEGAZ{julD}#:TLEGEQ{julD}#:TLEP{julD},{duration}#'
         suc, response, numberOfChunks = conn.communicate(command)
-
         if not suc:
             return False
 
@@ -459,15 +502,12 @@ class Satellite(object):
 
         :return: success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':TLES#')
-
         if numberOfChunks != 1:
             return False, 'Error'
 
         message = self.TLES.get(response[0], 'Error')
-
         return suc, message
 
     def parseStatTLE(self, response, numberOfChunks):
@@ -478,20 +518,16 @@ class Satellite(object):
         :param numberOfChunks:  amount of parts
         :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
             return False
-
         if len(response) != 1:
             self.log.warning('wrong number of chunks')
             return False
-
         if not response[0]:
             return False
 
         self.tleParams.message = self.TLESCK.get(response[0], 'Error')
-
         return True
 
     def statTLE(self):
@@ -508,12 +544,117 @@ class Satellite(object):
 
         :return: success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':TLESCK#')
-
         if not suc:
             return False
 
         suc = self.parseStatTLE(response, numberOfChunks)
+        return suc
+
+    def parseCalcTrajectory(self, response, numberOfChunks, numData):
+        """
+        Parsing the parseCalcTrajectory command and entering the resulting
+        parameters. if no calculation could be made, the parameters were set
+        to None
+
+        :param response:        data load from mount
+        :param numberOfChunks:  amount of parts
+        :param numData:         amount of data
+        :return: success:       True if ok, False if not
+        """
+        if len(response) != numberOfChunks:
+            self.log.warning('wrong number of chunks')
+            return False
+        if len(response) != 3:
+            self.log.warning('wrong number of chunks')
+            return False
+
+        if response[0] != 'N':
+            return False
+        if response[2] == 'E':
+            return False
+        if int(response[1]) != numData:
+            return False
+
+        value = response[2].split(',')
+        if len(value) == 3:
+            start, end, flip = value
+        elif len(value) == 1:
+            flip = value
+            start = None
+            end = None
+        else:
+            return False
+
+        self.trajectoryParams.flip = flip
+        self.trajectoryParams.jdStart = start
+        self.trajectoryParams.jdEnd = end
+        return True
+
+    def calcTrajectoryData(self, julD=None, datas=[], replay=False):
+        """
+        set of three commands !
+
+        Pre calculates the first transit of the trajectory with the currently
+        loaded orbital elements, starting from Julian Date JD and for a period
+        of min minutes, where min is from 1 to 1440.
+
+        Returns:
+        E#                  no TLE loaded
+        +AA.AAAA,ZZZ.ZZZZ#  the apparent alt azimuth coordinates,
+                            where +AA.AAAA is the altitude in degrees with
+                            decimals accounting for refraction,
+                            and ZZZ.ZZZZ is the azimuth in degrees with
+                            decimals.
+
+        Returns:
+        E# no TLE loaded
+        RR.RRRRR,+DD.DDDD#  the apparent equatorial coordinates,
+                            where RR.RRRRR is the
+                            right ascension in hours with decimals,
+                            and +DD.DDDD is the
+                            declination in degrees with decimals.
+
+        Gets the apparent alt azimuth coordinates of the satellite with the
+        currently loaded orbital elements, computed for Julian Date JD (UTC).
+
+        Returns:
+        E#                      no TLE loaded or invalid command
+        N#                      no passes in the given amount of time
+        JD start,JD end,flags#  data for the first pass in the given interval.
+                                JD start and JD end mark the beginning and the
+                                end of the given transit. Flags is a string
+                                which can be empty or contain the letter F –
+                                meaning that mount will flip during the transit.
+
+        Gets the apparent equatorial coordinates of the satellite with the
+        currently loaded orbital elements, computed for Julian Date JD (UTC).
+
+        :param julD:
+        :param datas:
+        :param replay:
+        :return:
+        """
+        if julD is None:
+            return False
+        if type(julD, skyfield.timelib.Time):
+            julD = julD.tt
+        if not datas:
+            return False
+
+        cmd = f':TRNEW{julD:07.6f}#'
+        for data in datas:
+            az = data[0]
+            alt = data[1]
+            cmd += f':TRADD{az:03.5f},{alt:02.5f}#'
+
+        if replay:
+            cmd += ':TRREPLAY#'
+        else:
+            cmd += ':TRP#'
+
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        suc = self.parseCalcTrajectory(response, numberOfChunks, len(datas))
         return suc

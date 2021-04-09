@@ -76,6 +76,7 @@ class Styles:
     M_GREEN_LL = '#003000'
     M_GREEN_LL_A = '#00100040'
     M_RED = '#B03030'
+    M_RED_L = '#601818'
     M_PINK_H = '#FF00FF'
     M_PINK = '#B000B0'
     M_YELLOW_H = '#FFFF00'

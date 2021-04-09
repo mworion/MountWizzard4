@@ -609,7 +609,7 @@ class Satellite(object):
             time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdEnd)
             self.ui.satTrajectoryEnd.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
         else:
-            self.ui.satTransitEndUTC.setText('No transit')
+            self.ui.satTrajectoryEnd.setText('No transit')
 
         if tleParams.flip:
             self.ui.satTrajectoryFlip.setText('YES')

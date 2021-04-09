@@ -479,28 +479,47 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axes.plot(az, alt, color=self.M_GREEN, marker='', alpha=0.5, lw=3)
         return True
 
-    def drawHorizonView(self, difference=None):
+    def drawHorizonView(self, obsSite, satOrbits=None):
         """
         drawHorizonView shows the horizon and enable the users to explore a
         satellite passing by
 
-        :param difference:
+        :param obsSite:
+        :param satOrbits:
         :return: success
         """
         axe, fig = self.generateFlat(widget=self.satHorizonMat, horizon=True)
         self.staticHorizon(axes=axe)
-        if difference is None:
+
+        if satOrbits is None or obsSite is None:
             axe.figure.canvas.draw()
             return False
 
-        colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
-        for i, diff in enumerate(difference):
-            alt, az, _ = diff.altaz()
-            alt = alt.degrees
-            az = az.degrees
+        ts = obsSite.ts
+        colors = [self.M_RED, self.M_YELLOW, self.M_GREEN,
+                  self.M_RED_L, self.M_YELLOW_L, self.M_GREEN_L]
+        for i, satOrbit in enumerate(satOrbits):
+            rise = satOrbit['rise'].tt
+            settle = satOrbit['settle'].tt
+            step = 0.005 * (settle - rise)
 
-            axe.plot(az, alt, marker='.', markersize=3, ls='none',
-                     color=colors[i])
+            if satOrbit['flip'] is not None:
+                flip = satOrbit['flip'].tt
+                vector = np.arange(rise, flip, step)
+                vecT = ts.tt_jd(vector)
+                alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
+                axe.plot(az.degrees, alt.degrees, lw=5, color=colors[i])
+
+                vector = np.arange(flip, settle, step)
+                vecT = ts.tt_jd(vector)
+                alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
+                axe.plot(az.degrees, alt.degrees, lw=5, color=colors[i+3])
+
+            else:
+                vector = np.arange(rise, settle, step)
+                vecT = ts.tt_jd(vector)
+                alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
+                axe.plot(az.degrees, alt.degrees, lw=5, color=colors[i])
 
         self.plotSatPosHorizon, = axe.plot(180,
                                            -10,
@@ -530,7 +549,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
 
         self.satellite = satellite
-        location = self.app.mount.obsSite.location
         timescale = self.app.mount.obsSite.ts
 
         dayAngle = satellite.model.no_kozai * 24 * 60 / np.pi * 180
@@ -560,15 +578,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         observe = self.satellite.at(timeVector)
         subpoint = observe.subpoint()
-
-        difference = []
-        for timeVectorHorizon in timeVectorsHorizon:
-            diff = (self.satellite - location).at(timeVectorHorizon)
-            difference.append(diff)
-
         self.drawSphere1(observe=observe)
         self.drawSphere2(observe=observe, subpoint=subpoint)
         self.drawEarth(subpoint=subpoint)
-        self.drawHorizonView(difference=difference)
+        self.drawHorizonView(self.app.mount.obsSite, satOrbits=satOrbits)
 
         return True

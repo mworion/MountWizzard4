@@ -429,6 +429,12 @@ class Satellite(object):
             self.passUI[i]['flip'].setText(flipStr)
             self.passUI[i]['date'].setText(dateStr)
 
+        for i in range(len(self.satOrbits), 3):
+            self.passUI[i]['rise'].setText('-')
+            self.passUI[i]['culminate'].setText('-')
+            self.passUI[i]['settle'].setText('-')
+            self.passUI[i]['flip'].setText('-')
+            self.passUI[i]['date'].setText('-')
         return True
 
     @staticmethod
@@ -502,23 +508,17 @@ class Satellite(object):
         index = self.findIndexValue(self.ui.listSatelliteNames, satName,
                                     relaxed=True)
         item = self.ui.listSatelliteNames.item(index)
-
         if item is None:
             return False
 
         item.setSelected(True)
-
-        # making the entry visible (and scroll the list if necessary)
         position = PyQt5.QtWidgets.QAbstractItemView.EnsureVisible
         self.ui.listSatelliteNames.scrollToItem(item, position)
         self.satellite = self.satellites[satName]
-
-        # now we prepare the selection of the data in the gui
         self.ui.satelliteName.setText(self.satellite.name)
         epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M')
         self.ui.satelliteEpoch.setText(epochText)
 
-        # the epoch should be not too old
         now = self.app.mount.obsSite.ts.now()
         days = now - self.satellite.epoch
         self.ui.satelliteDataAge.setText(f'{days:2.2f}')
@@ -530,7 +530,6 @@ class Satellite(object):
         else:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', '')
 
-        # filling up the satellite data
         self.ui.satelliteNumber.setText(f'{self.satellite.model.satnum:5d}')
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
@@ -599,19 +598,19 @@ class Satellite(object):
         if not tleParams:
             return False
 
-        if tleParams.jdStart is not None:
+        if tleParams.jdStart is not None and self.satOrbits:
             time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdStart)
             self.ui.satTrajectoryStart.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
         else:
             self.ui.satTrajectoryStart.setText('No transit')
 
-        if tleParams.jdEnd is not None:
+        if tleParams.jdEnd is not None and self.satOrbits:
             time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdEnd)
             self.ui.satTrajectoryEnd.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
         else:
             self.ui.satTrajectoryEnd.setText('No transit')
 
-        if tleParams.flip:
+        if tleParams.flip and self.satOrbits:
             self.ui.satTrajectoryFlip.setText('YES')
         else:
             self.ui.satTrajectoryFlip.setText('NO')
@@ -619,7 +618,7 @@ class Satellite(object):
         if tleParams.message is not None:
             self.app.message.emit(tleParams.message, 0)
 
-        if tleParams.altitude is not None:
+        if tleParams.altitude is not None and self.satOrbits:
             self.ui.stopSatelliteTracking.setEnabled(True)
             self.ui.startSatelliteTracking.setEnabled(True)
         else:

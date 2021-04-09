@@ -323,7 +323,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.figure.canvas.draw()
         return True
 
-    def drawSphere2(self, observe=None, subpoint=None):
+    def drawSphere2(self, observe=None, subpoints=None):
         """
         draw sphere and put face color als image overlay:
         https://stackoverflow.com/questions/53074908/
@@ -334,7 +334,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         how-can-i-plot-a-satellites-orbit-in-3d-from-a-tle-using-python-and-skyfield
 
         :param observe:
-        :param subpoint:
+        :param subpoints:
         :return: success
         """
         figure = self.satSphereMat2.figure
@@ -404,9 +404,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             axe.figure.canvas.draw()
             return False
 
-        lat = subpoint.latitude.radians
-        lon = subpoint.longitude.radians
-        elev = subpoint.elevation.m / 1000 + self.EARTH_RADIUS
+        lat = subpoints.latitude.radians
+        lon = subpoints.longitude.radians
+        elev = subpoints.elevation.m / 1000 + self.EARTH_RADIUS
 
         x, y, z = functions.from_spherical(elev, lat, lon)
         axe.plot(x, y, z, color=self.M_WHITE)
@@ -423,12 +423,14 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.figure.canvas.draw()
         return True
 
-    def drawEarth(self, subpoint=None):
+    def drawEarth(self, obsSite, subpoints=None, satOrbits=None):
         """
         drawEarth show a full earth view with the path of the subpoint of the
         satellite drawn on it.
 
-        :param subpoint:
+        :param obsSite:
+        :param subpoints:
+        :param satOrbits:
         :return: success
         """
         axe, fig = self.generateFlat(widget=self.satEarthMat)
@@ -436,23 +438,21 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.set_xlabel('Longitude in degrees')
         axe.set_ylabel('Latitude in degrees')
 
-        # plot world
         for key in self.world.keys():
             shape = self.world[key]
             axe.fill(shape['xDeg'], shape['yDeg'], color=self.M_BLUE, alpha=0.2)
             axe.plot(shape['xDeg'], shape['yDeg'], color=self.M_BLUE, lw=1, alpha=0.4)
 
-        # mark the site location in the map
-        lat = self.app.mount.obsSite.location.latitude.degrees
-        lon = self.app.mount.obsSite.location.longitude.degrees
+        lat = obsSite.location.latitude.degrees
+        lon = obsSite.location.longitude.degrees
         axe.plot(lon, lat, marker='.', markersize=10, color=self.M_RED)
 
-        if subpoint is None:
+        if subpoints is None:
             axe.figure.canvas.draw()
             return False
 
-        lat = subpoint.latitude.degrees
-        lon = subpoint.longitude.degrees
+        lat = subpoints.latitude.degrees
+        lon = subpoints.longitude.degrees
         axe.plot(lon, lat, marker='o', markersize=1, ls='none', color=self.M_WHITE)
         self.plotSatPosEarth, = axe.plot(lon[0], lat[0],
                                          marker=self.markerSatellite(),
@@ -563,24 +563,11 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         now = timescale.now()
         timeVector = timescale.tt_jd(now.tt + forecast)
 
-        timeVectorsHorizon = []
-
-        for satOrbit in satOrbits:
-            if 'rise' not in satOrbit:
-                break
-            if 'settle' not in satOrbit:
-                break
-            timeRise = satOrbit['rise']
-            timeSettle = satOrbit['settle']
-            showTime = timeSettle.tt - timeRise.tt
-            forecast = np.arange(0, showTime, 0.002 * showTime)
-            timeVectorsHorizon.append(timescale.tt_jd(timeRise.tt + forecast))
-
         observe = self.satellite.at(timeVector)
-        subpoint = observe.subpoint()
+        subpoints = observe.subpoint()
         self.drawSphere1(observe=observe)
-        self.drawSphere2(observe=observe, subpoint=subpoint)
-        self.drawEarth(subpoint=subpoint)
+        self.drawSphere2(observe=observe, subpoints=subpoints)
+        self.drawEarth(self.app.mount.obsSite, subpoints=subpoints,
+                       satOrbits=satOrbits)
         self.drawHorizonView(self.app.mount.obsSite, satOrbits=satOrbits)
-
         return True

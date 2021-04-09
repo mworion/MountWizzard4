@@ -21,6 +21,7 @@ import os
 import PyQt5
 import numpy as np
 from sgp4.exporter import export_tle
+from skyfield import almanac
 
 # local import
 from base.tpool import Worker
@@ -41,6 +42,7 @@ class Satellite(object):
         self.databaseProcessing = DataWriter(self.app)
         self.installPath = ''
         self.lastAzimuth = -1
+        self.nextSatPass = [None, None, None]
 
         self.satelliteSourceURLs = {
             'Active': 'http://www.celestrak.com/NORAD/elements/active.txt',
@@ -58,6 +60,16 @@ class Satellite(object):
             'Last 30 days launch': 'http://www.celestrak.com/NORAD/elements/tle-new.txt',
         }
 
+        self.passUI = {
+            0: {'rise': self.ui.satTransitStartUTC_1,
+                'settle': self.ui.satTransitEndUTC_1},
+            1: {'rise': self.ui.satTransitStartUTC_2,
+                'settle': self.ui.satTransitEndUTC_2},
+            2: {'rise': self.ui.satTransitStartUTC_3,
+                'settle': self.ui.satTransitEndUTC_3},
+        }
+        self.satOrbits = dict()
+
         self.ui.progSatellitesFull.clicked.connect(self.progSatellitesFull)
         self.ui.progSatellitesFiltered.clicked.connect(self.progSatellitesFiltered)
         self.ui.listSatelliteNames.doubleClicked.connect(self.signalExtractSatelliteData)
@@ -70,6 +82,9 @@ class Satellite(object):
         self.app.mount.signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
         self.app.mount.signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
         self.ui.isOnline.stateChanged.connect(self.loadTLEDataFromSourceURLs)
+        self.ui.satMeridianWest.clicked.connect(self.calcMeridianWest)
+        self.ui.satMeridianEast.clicked.connect(self.calcMeridianEast)
+        self.ui.satMeridianBoth.clicked.connect(self.calcMeridianBoth)
 
         self.app.update3s.connect(self.updateOrbit)
         self.app.mount.signals.pointDone.connect(self.followMount)
@@ -281,84 +296,174 @@ class Satellite(object):
         self.app.mount.calcTLE()
         return True
 
-    def showRises(self):
+    def calcPassEvents(self, obsSite):
         """
-        showRises calculated the next three satellite passes for the
+        :return:
+        """
+        minAlt = self.app.mount.setting.horizonLimitLow
+        if minAlt is None:
+            minAlt = 3
+        if minAlt < 3:
+            minAlt = 3
+
+        loc = obsSite.location
+        orbitCycleTime = np.pi / self.satellite.model.no_kozai / 12 / 60
+
+        t0 = obsSite.ts.tt_jd(obsSite.timeJD.tt - orbitCycleTime)
+        t1 = obsSite.ts.tt_jd(obsSite.timeJD.tt + 5)
+        times, events = self.satellite.find_events(loc, t0, t1,
+                                                   altitude_degrees=minAlt)
+        return times, events
+
+    def extractFirstOrbits(self, timeNow, times, events):
+        """
+        :param timeNow:
+        :param times:
+        :param events:
+        :return:
+        """
+        counter = 0
+        self.satOrbits = []
+
+        for ti, event in zip(times, events):
+            if event == 0:
+                self.satOrbits.append({'rise': ti})
+
+            elif event == 1:
+                if counter >= len(self.satOrbits):
+                    continue
+                self.satOrbits[counter]['culminate'] = ti
+
+            elif event == 2:
+                if counter >= len(self.satOrbits):
+                    continue
+                self.satOrbits[counter]['settle'] = ti
+
+                if ti.tt < timeNow.tt:
+                    del self.satOrbits[counter]
+                    continue
+                counter += 1
+
+            if counter > 2:
+                break
+
+    @staticmethod
+    def calcSatelliteMeridianTransit(satellite, location):
+        """
+        :param satellite:
+        :param location:
+        :return:
+        """
+        difference = satellite - location
+
+        def west_of_meridian_at(t):
+            altaz = difference.at(t).altaz()
+            alt, az, _ = altaz
+            return ((az.degrees + 360) % 360 - 180) > 0
+
+        west_of_meridian_at.step_days = 0.4
+        return west_of_meridian_at
+
+    def addMeridianTransit(self, location):
+        """
+        :param location:
+        :return:
+        """
+        f = self.calcSatelliteMeridianTransit(self.satellite, location)
+
+        for satOrbit in self.satOrbits:
+            t, y = almanac.find_discrete(satOrbit['rise'],
+                                         satOrbit['settle'], f)
+            if t:
+                satOrbit['transit'] = t[0]
+            else:
+                satOrbit['transit'] = None
+
+    def showSatPasses(self):
+        """
+        showSatPasses calculated the next three satellite passes for the
         presentation in the gui. the times shown might differ from the
         calculation of the mount as we dont know, how the mount calculates is
         timings.
 
         :return: True for test purpose
         """
-        minAlt = self.app.mount.setting.horizonLimitLow
-        if minAlt is None:
-            minAlt = 0
+        obsSite = self.app.mount.obsSite
+        times, events = self.calcPassEvents(obsSite)
 
-        loc = self.app.mount.obsSite.location
-        obs = self.app.mount.obsSite
-
-        orbitCycleTime = np.pi / self.satellite.model.no_kozai / 12 / 60
-
-        t0 = obs.ts.tt_jd(obs.timeJD.tt - orbitCycleTime)
-        t1 = obs.ts.tt_jd(obs.timeJD.tt + 3)
-
-        t, events = self.satellite.find_events(loc, t0, t1, altitude_degrees=minAlt)
-
-        passUI = {
-            0:
-                {'rise': self.ui.satTransitStartUTC_1,
-                 'settle': self.ui.satTransitEndUTC_1,
-                 },
-            1:
-                {'rise': self.ui.satTransitStartUTC_2,
-                 'settle': self.ui.satTransitEndUTC_2,
-                 },
-            2:
-                {'rise': self.ui.satTransitStartUTC_3,
-                 'settle': self.ui.satTransitEndUTC_3,
-                 },
-        }
+        timeNow = obsSite.timeJD.tt
+        self.extractFirstOrbits(timeNow, times, events)
+        self.addMeridianTransit(obsSite.location)
 
         fString = "%Y-%m-%d  %H:%M"
-        index = 0
-        satOrbits = dict()
-        for ti, event in zip(t, events):
-            if event == 0:
-                satOrbits[index] = {'rise': ti}
+        for i, satOrbit in enumerate(self.satOrbits):
+            riseT = satOrbit.get('rise', None)
+            if riseT is not None:
+                riseStr = riseT.utc_strftime(fString)
+            settleT = satOrbit.get('settle', None)
+            if settleT is not None:
+                settleStr = settleT.utc_strftime(fString)
+            self.passUI[i]['rise'].setText(riseStr)
+            self.passUI[i]['settle'].setText(settleStr)
 
-            elif event == 1:
-                continue
+        return True
 
-            elif event == 2:
-                if index not in satOrbits:
-                    continue
+    @staticmethod
+    def calcDuration(start, end):
+        delta = end - start
+        delta = int(delta * 1440)
+        if delta < 1:
+            delta = 1
+        elif delta > 1440:
+            delta = 1440
+        return delta
 
-                satOrbits[index]['settle'] = ti
+    def calcMeridianEast(self):
+        """
+        :return:
+        """
+        if not self.ui.satMeridianEast.isChecked():
+            return False
+        if 'transit' not in self.satOrbits[0]:
+            return False
 
-                if ti.tt < obs.timeJD.tt:
-                    continue
+        start = self.satOrbits[0]['rise'].tt
+        end = self.satOrbits[0]['transit'].tt
+        duration = self.calcDuration(start, end)
+        self.app.mount.satellite.calcTLE(julD=start, duration=duration)
+        self.updateSatelliteTrackGui(self.app.mount.satellite.tleParams)
+        return True
 
-                index += 1
+    def calcMeridianWest(self):
+        """
+        :return:
+        """
+        if not self.ui.satMeridianWest.isChecked():
+            return False
+        if 'transit' not in self.satOrbits[0]:
+            return False
 
-        for satOrbit in satOrbits:
-            if satOrbit > 2:
-                break
-            if 'rise' not in satOrbits[satOrbit]:
-                break
-            if 'settle' not in satOrbits[satOrbit]:
-                break
+        start = self.satOrbits[0]['transit'].tt
+        end = self.satOrbits[0]['settle'].tt
+        duration = self.calcDuration(start, end)
+        self.app.mount.satellite.calcTLE(julD=start, duration=duration)
+        self.updateSatelliteTrackGui(self.app.mount.satellite.tleParams)
+        return True
 
-            timeRise = satOrbits[satOrbit]['rise'].utc_strftime(fString)
-            timeSettle = satOrbits[satOrbit]['settle'].utc_strftime(fString)
-            passUI[satOrbit]['rise'].setText(f'{timeRise}')
-            passUI[satOrbit]['settle'].setText(f'{timeSettle}')
+    def calcMeridianBoth(self):
+        """
 
-        while index < 3:
-            passUI[index]['rise'].setText('-')
-            passUI[index]['settle'].setText('-')
-            index += 1
+        :return:
+        """
+        if not self.ui.satMeridianBoth.isChecked():
+            return False
 
-        return satOrbits
+        start = self.satOrbits[0]['rise'].tt
+        end = self.satOrbits[0]['settle'].tt
+        duration = self.calcDuration(start, end)
+        self.app.mount.satellite.calcTLE(julD=start, duration=duration)
+        self.updateSatelliteTrackGui(self.app.mount.satellite.tleParams)
+        return True
 
     def extractSatelliteData(self, satName=''):
         """
@@ -414,7 +519,7 @@ class Satellite(object):
         self.updateOrbit()
         self.programTLEDataToMount()
         self.calcOrbitFromTLEInMount()
-        self.satOrbits = self.showRises()
+        self.showSatPasses()
 
         winObj = self.app.uiWindows['showSatelliteW']
         if not winObj['classObj']:

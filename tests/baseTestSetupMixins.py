@@ -77,7 +77,11 @@ class Mount(QObject):
             return
 
         @staticmethod
-        def slewTLE():
+        def slewTLE(julD=0, duration=0):
+            return
+
+        @staticmethod
+        def calcTLE():
             return
 
     class MountFirmware:

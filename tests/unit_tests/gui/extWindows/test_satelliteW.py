@@ -273,11 +273,11 @@ def test_drawSatellite_2(function, module):
     t2 = module.tt_jd(tt + 0.2)
     t3 = module.tt_jd(tt + 0.3)
 
-    satOrbits = {0: {'rise': t0,
-                     'settle': t1},
-                 1: {'rise': t2,
-                     'settle': t3}
-                 }
+    satOrbits = [{'rise': t0,
+                  'settle': t1},
+                 {'rise': t2,
+                  'settle': t3}
+                 ]
 
     with mock.patch.object(function,
                            'drawSphere1'):
@@ -305,13 +305,13 @@ def test_drawSatellite_3(function, module):
     t3 = module.tt_jd(tt + 0.3)
     t4 = module.tt_jd(tt + 0.4)
 
-    satOrbits = {0: {'rise': t0,
-                     'settle': t1},
-                 1: {'rise': t2,
-                     'settle': t3},
-                 2: {'rise': t3,
-                     'settle': t4},
-                 }
+    satOrbits = [{'rise': t0,
+                  'settle': t1},
+                 {'rise': t2,
+                  'settle': t3},
+                 {'rise': t3,
+                  'settle': t4},
+                 ]
 
     suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)
     assert suc
@@ -325,19 +325,18 @@ def test_drawSatellite_4(function, module):
 
     tt = module.now().tt
 
-    t0 = module.tt_jd(tt + 0)
     t1 = module.tt_jd(tt + 0.1)
     t2 = module.tt_jd(tt + 0.2)
     t3 = module.tt_jd(tt + 0.3)
     t4 = module.tt_jd(tt + 0.4)
 
-    satOrbits = {0: {
-                     'settle': t1},
-                 1: {'rise': t2,
-                     'settle': t3},
-                 2: {'rise': t3,
-                     'settle': t4},
-                 }
+    satOrbits = [{
+                  'settle': t1},
+                 {'rise': t2,
+                  'settle': t3},
+                 {'rise': t3,
+                  'settle': t4},
+                 ]
 
     suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)
     assert suc
@@ -357,13 +356,12 @@ def test_drawSatellite_5(function, module):
     t3 = module.tt_jd(tt + 0.3)
     t4 = module.tt_jd(tt + 0.4)
 
-    satOrbits = {0: {'rise': t0,
-                     },
-                 1: {'rise': t2,
-                     'settle': t3},
-                 2: {'rise': t3,
-                     'settle': t4},
-                 }
+    satOrbits = [{'rise': t0},
+                 {'rise': t2,
+                  'settle': t3},
+                 {'rise': t3,
+                  'settle': t4},
+                 ]
 
     suc = function.drawSatellite(satellite=satellite, satOrbits=satOrbits)
     assert suc

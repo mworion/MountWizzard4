@@ -96,7 +96,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                       starAnnColor=self.M_WHITE_H)
         )
 
-        # attributes to be stored in class
         self.pointerAltAz = None
         self.pointerDome = None
         self.pointsBuild = None
@@ -179,6 +178,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         :param closeEvent:
         :return:
         """
+        self.ui.checkEditNone.setChecked(True)
+        self.setOperationMode()
+        self.storeConfig()
         self.closingWindow = True
         self.app.update10s.disconnect(self.updateAlignStar)
         self.app.update1s.disconnect(self.hemisphereMatMove.figure.canvas.draw)
@@ -186,11 +188,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.app.updatePointMarker.disconnect(self.updatePointMarker)
         self.app.updatePointMarker.disconnect(self.updatePolarPointMarker)
         self.app.mount.signals.settingDone.disconnect(self.updateOnChangedParams)
-        self.storeConfig()
-
-        self.ui.checkEditNone.setChecked(True)
-        self.setOperationMode()
-
         self.ui.checkShowSlewPath.clicked.disconnect(self.drawHemisphere)
         self.ui.checkShowMeridian.clicked.disconnect(self.drawHemisphere)
         self.ui.checkShowCelestial.clicked.disconnect(self.drawHemisphere)
@@ -216,10 +213,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
     def resizeEvent(self, event):
         """
-        we are using the resize event to reset the timer, which means waiting for
-        RESIZE_FINISHED_TIMEOUT in total before redrawing the complete hemisphere.
-        as we are using a 0.1s cyclic timer.
-
         :param event:
         :return:
         """
@@ -237,10 +230,8 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
     def showWindow(self):
         """
-
         :return:
         """
-
         self.app.update10s.connect(self.updateAlignStar)
         self.app.update1s.connect(self.hemisphereMatMove.figure.canvas.draw)
         self.app.update1s.connect(self.polarMatMove.figure.canvas.draw)
@@ -253,7 +244,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.app.dome.signals.azimuth.connect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.connect(self.updateDome)
         self.app.dome.signals.serverDisconnected.connect(self.updateDome)
-
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
         self.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
         self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
@@ -272,7 +262,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                      self.showMouseCoordinates)
         self.togglePolar()
         self.show()
-
         return True
 
     def togglePolar(self):

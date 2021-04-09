@@ -24,6 +24,7 @@ import numpy as np
 import matplotlib.path as mpath
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from skyfield import functions
+import matplotlib.pyplot as plt
 
 # local import
 from gui.utilities import toolsQtWidget
@@ -33,9 +34,7 @@ from gui.widgets import satellite_ui
 class SatelliteWindowSignals(QObject):
     """
     """
-
     __all__ = ['SatelliteWindowSignals']
-
     show = pyqtSignal(object, object)
     update = pyqtSignal(object, object, object)
 
@@ -43,9 +42,7 @@ class SatelliteWindowSignals(QObject):
 class SatelliteWindow(toolsQtWidget.MWidget):
     """
     """
-
     __all__ = ['SatelliteWindow']
-
     FORECAST_TIME = 3
     EARTH_RADIUS = 6378.0
 
@@ -62,27 +59,22 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.plotSatPosSphere2 = None
         self.plotSatPosHorizon = None
         self.plotSatPosEarth = None
-        self.satSphereMat1 = self.embedMatplot(self.ui.satSphere1,
-                                               constrainedLayout=False)
-        self.satSphereMat1.parentWidget().setStyleSheet(self.BACK_BG)
-        self.satSphereMat2 = self.embedMatplot(self.ui.satSphere2,
-                                               constrainedLayout=False)
-        self.satSphereMat2.parentWidget().setStyleSheet(self.BACK_BG)
-        self.satHorizonMat = self.embedMatplot(self.ui.satHorizon,
-                                               constrainedLayout=True)
-        self.satHorizonMat.parentWidget().setStyleSheet(self.BACK_BG)
-        self.satEarthMat = self.embedMatplot(self.ui.satEarth,
-                                             constrainedLayout=True)
-        self.satEarthMat.parentWidget().setStyleSheet(self.BACK_BG)
+        self.satSphereMat1 = self.embedMatplot(self.ui.satSphere1)
+        self.satSphereMat2 = self.embedMatplot(self.ui.satSphere2)
+        self.satHorizonMat = self.embedMatplot(self.ui.satHorizon)
+        self.satEarthMat = self.embedMatplot(self.ui.satEarth)
 
-        self.signals.show.connect(self.drawSatellite)
-        self.signals.update.connect(self.updatePositions)
+        self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN,
+                       self.M_RED_L, self.M_YELLOW_L, self.M_GREEN_L]
 
         stream = QFile(':/data/worldmap.dat')
         stream.open(QFile.ReadOnly)
         pickleData = stream.readAll()
         stream.close()
         self.world = pickle.load(BytesIO(pickleData))
+
+        self.signals.show.connect(self.drawSatellite)
+        self.signals.update.connect(self.updatePositions)
 
     def initConfig(self):
         """
@@ -125,7 +117,18 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.storeConfig()
+        plt.close(self.satSphereMat1.figure)
+        plt.close(self.satSphereMat2.figure)
+        plt.close(self.satHorizonMat.figure)
+        plt.close(self.satEarthMat.figure)
         super().closeEvent(closeEvent)
+
+    def resizeEvent(self, event):
+        """
+        :param event:
+        :return:
+        """
+        super().resizeEvent(event)
 
     def showWindow(self):
         """
@@ -318,7 +321,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                                            markersize=16,
                                            linewidth=2,
                                            fillstyle='none',
-                                           color=self.M_PINK)
+                                           color=self.M_PINK_H)
         self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
         return True
@@ -416,23 +419,23 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                                            markersize=16,
                                            linewidth=2,
                                            fillstyle='none',
-                                           color=self.M_PINK)
+                                           color=self.M_PINK_H)
 
         # finalizing
         self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
         return True
 
-    def drawEarth(self, obsSite, subpoints=None, satOrbits=None):
+    def drawEarth(self, obsSite, satOrbits=None):
         """
         drawEarth show a full earth view with the path of the subpoint of the
         satellite drawn on it.
 
         :param obsSite:
-        :param subpoints:
         :param satOrbits:
         :return: success
         """
+        ts = obsSite.ts
         axe, fig = self.generateFlat(widget=self.satEarthMat)
         axe.set_xticks(np.arange(-180, 181, 45))
         axe.set_xlabel('Longitude in degrees')
@@ -447,17 +450,58 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lon = obsSite.location.longitude.degrees
         axe.plot(lon, lat, marker='.', markersize=10, color=self.M_RED)
 
-        if subpoints is None:
+        subpoint = self.satellite.at(ts.now()).subpoint()
+        lat = subpoint.latitude.degrees
+        lon = subpoint.longitude.degrees
+        self.plotSatPosEarth, = axe.plot(lon, lat,
+                                         marker=self.markerSatellite(),
+                                         markersize=16, lw=2, fillstyle='none',
+                                         ls='none', color=self.M_PINK_H,
+                                         zorder=10)
+
+        if not satOrbits:
             axe.figure.canvas.draw()
             return False
 
+        for i, satOrbit in enumerate(satOrbits):
+            rise = satOrbit['rise'].tt
+            settle = satOrbit['settle'].tt
+            step = 0.01 * (settle - rise)
+
+            if satOrbit['flip'] is not None:
+                flip = satOrbit['flip'].tt
+                vector = np.arange(rise, flip, step)
+                vecT = ts.tt_jd(vector)
+                subpoints = self.satellite.at(vecT).subpoint()
+                lat = subpoints.latitude.degrees
+                lon = subpoints.longitude.degrees
+                axe.plot(lon, lat, lw=4, color=self.colors[i])
+
+                vector = np.arange(flip, settle, step)
+                vecT = ts.tt_jd(vector)
+                subpoints = self.satellite.at(vecT).subpoint()
+                lat = subpoints.latitude.degrees
+                lon = subpoints.longitude.degrees
+                axe.plot(lon, lat, lw=4, color=self.colors[i+3])
+
+            else:
+                vector = np.arange(rise, settle, step)
+                vecT = ts.tt_jd(vector)
+                subpoints = self.satellite.at(vecT).subpoint()
+                lat = subpoints.latitude.degrees
+                lon = subpoints.longitude.degrees
+                axe.plot(lon, lat, lw=4, color=self.colors[i])
+
+        rise = satOrbits[0]['rise'].tt
+        settle = satOrbits[-1]['settle'].tt
+        step = 0.001 * (settle - rise)
+        vector = np.arange(rise - 0.15, settle, step)
+        vecT = ts.tt_jd(vector)
+        subpoints = self.satellite.at(vecT).subpoint()
         lat = subpoints.latitude.degrees
         lon = subpoints.longitude.degrees
-        axe.plot(lon, lat, marker='o', markersize=1, ls='none', color=self.M_WHITE)
-        self.plotSatPosEarth, = axe.plot(lon[0], lat[0],
-                                         marker=self.markerSatellite(),
-                                         markersize=16, lw=2, fillstyle='none',
-                                         ls='none', color=self.M_PINK)
+        axe.plot(lon, lat, lw=0, marker='.', markersize=1, color=self.M_WHITE_L,
+                 zorder=-10)
         axe.figure.canvas.draw()
         return True
 
@@ -475,7 +519,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
         azF = np.concatenate([[0], [0], az, [360], [360]])
 
-        axes.fill(azF, altF, color=self.M_GREEN_LL, alpha=0.7, zorder=-20)
+        axes.fill(azF, altF, color=self.M_GREEN_LL, alpha=0.7, zorder=-10)
         axes.plot(az, alt, color=self.M_GREEN, marker='', alpha=0.5, lw=3)
         return True
 
@@ -496,8 +540,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
 
         ts = obsSite.ts
-        colors = [self.M_RED, self.M_YELLOW, self.M_GREEN,
-                  self.M_RED_L, self.M_YELLOW_L, self.M_GREEN_L]
         for i, satOrbit in enumerate(satOrbits):
             rise = satOrbit['rise'].tt
             settle = satOrbit['settle'].tt
@@ -508,18 +550,18 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                 vector = np.arange(rise, flip, step)
                 vecT = ts.tt_jd(vector)
                 alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
-                axe.plot(az.degrees, alt.degrees, lw=5, color=colors[i])
+                axe.plot(az.degrees, alt.degrees, lw=5, color=self.colors[i])
 
                 vector = np.arange(flip, settle, step)
                 vecT = ts.tt_jd(vector)
                 alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
-                axe.plot(az.degrees, alt.degrees, lw=5, color=colors[i+3])
+                axe.plot(az.degrees, alt.degrees, lw=5, color=self.colors[i+3])
 
             else:
                 vector = np.arange(rise, settle, step)
                 vecT = ts.tt_jd(vector)
                 alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
-                axe.plot(az.degrees, alt.degrees, lw=5, color=colors[i])
+                axe.plot(az.degrees, alt.degrees, lw=5, color=self.colors[i])
 
         self.plotSatPosHorizon, = axe.plot(180,
                                            -10,
@@ -528,7 +570,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                                            linewidth=2,
                                            fillstyle=None,
                                            linestyle='none',
-                                           color=self.M_PINK)
+                                           color=self.M_PINK_H,
+                                           zorder=10)
         axe.figure.canvas.draw()
         return True
 
@@ -567,7 +610,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         subpoints = observe.subpoint()
         self.drawSphere1(observe=observe)
         self.drawSphere2(observe=observe, subpoints=subpoints)
-        self.drawEarth(self.app.mount.obsSite, subpoints=subpoints,
-                       satOrbits=satOrbits)
+        self.drawEarth(self.app.mount.obsSite, satOrbits=satOrbits)
         self.drawHorizonView(self.app.mount.obsSite, satOrbits=satOrbits)
         return True

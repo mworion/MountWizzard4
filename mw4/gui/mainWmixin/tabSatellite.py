@@ -61,12 +61,21 @@ class Satellite(object):
         }
 
         self.passUI = {
-            0: {'rise': self.ui.satTransitStartUTC_1,
-                'settle': self.ui.satTransitEndUTC_1},
-            1: {'rise': self.ui.satTransitStartUTC_2,
-                'settle': self.ui.satTransitEndUTC_2},
-            2: {'rise': self.ui.satTransitStartUTC_3,
-                'settle': self.ui.satTransitEndUTC_3},
+            0: {'rise': self.ui.satRise_1,
+                'culminate': self.ui.satCulminate_1,
+                'settle': self.ui.satSettle_1,
+                'flip': self.ui.satFlip_1,
+                'date': self.ui.satDate_1},
+            1: {'rise': self.ui.satRise_2,
+                'culminate': self.ui.satCulminate_2,
+                'settle': self.ui.satSettle_2,
+                'flip': self.ui.satFlip_2,
+                'date': self.ui.satDate_2},
+            2: {'rise': self.ui.satRise_3,
+                'culminate': self.ui.satCulminate_3,
+                'settle': self.ui.satSettle_3,
+                'flip': self.ui.satFlip_3,
+                'date': self.ui.satDate_3}
         }
         self.satOrbits = dict()
 
@@ -82,9 +91,6 @@ class Satellite(object):
         self.app.mount.signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
         self.app.mount.signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
         self.ui.isOnline.stateChanged.connect(self.loadTLEDataFromSourceURLs)
-        self.ui.satMeridianWest.clicked.connect(self.calcMeridianWest)
-        self.ui.satMeridianEast.clicked.connect(self.calcMeridianEast)
-        self.ui.satMeridianBoth.clicked.connect(self.calcMeridianBoth)
 
         self.app.update3s.connect(self.updateOrbit)
         self.app.mount.signals.pointDone.connect(self.followMount)
@@ -347,17 +353,20 @@ class Satellite(object):
             if counter > 2:
                 break
 
-    @staticmethod
-    def calcSatelliteMeridianTransit(satellite, location):
+    def calcSatelliteMeridianTransit(self, satellite, location):
         """
         :param satellite:
         :param location:
         :return:
         """
         difference = satellite - location
+        pressure = self.app.mount.setting.refractionPress
+        temperature = self.app.mount.setting.refractionTemp
 
         def west_of_meridian_at(t):
-            altaz = difference.at(t).altaz()
+
+            altaz = difference.at(t).altaz(temperature_C=temperature,
+                                           pressure_mbar=pressure)
             alt, az, _ = altaz
             return ((az.degrees + 360) % 360 - 180) > 0
 
@@ -375,9 +384,9 @@ class Satellite(object):
             t, y = almanac.find_discrete(satOrbit['rise'],
                                          satOrbit['settle'], f)
             if t:
-                satOrbit['transit'] = t[0]
+                satOrbit['flip'] = t[0]
             else:
-                satOrbit['transit'] = None
+                satOrbit['flip'] = None
 
     def showSatPasses(self):
         """
@@ -395,16 +404,30 @@ class Satellite(object):
         self.extractFirstOrbits(timeNow, times, events)
         self.addMeridianTransit(obsSite.location)
 
-        fString = "%Y-%m-%d  %H:%M"
+        fString = "%H:%M:%S"
+        fStringDate = "%d %b"
         for i, satOrbit in enumerate(self.satOrbits):
             riseT = satOrbit.get('rise', None)
             if riseT is not None:
                 riseStr = riseT.utc_strftime(fString)
+                dateStr = riseT.utc_strftime(fStringDate)
+            culminateT = satOrbit.get('culminate', None)
+            if culminateT is not None:
+                culminateStr = culminateT.utc_strftime(fString)
             settleT = satOrbit.get('settle', None)
             if settleT is not None:
                 settleStr = settleT.utc_strftime(fString)
+            flipT = satOrbit.get('flip', None)
+            if flipT is not None:
+                flipStr = flipT.utc_strftime(fString)
+            else:
+                flipStr = '---'
+
             self.passUI[i]['rise'].setText(riseStr)
+            self.passUI[i]['culminate'].setText(culminateStr)
             self.passUI[i]['settle'].setText(settleStr)
+            self.passUI[i]['flip'].setText(flipStr)
+            self.passUI[i]['date'].setText(dateStr)
 
         return True
 
@@ -418,44 +441,43 @@ class Satellite(object):
             delta = 1440
         return delta
 
-    def calcMeridianEast(self):
+    def calcBeforeFlip(self):
         """
         :return:
         """
-        if not self.ui.satMeridianEast.isChecked():
+        if not self.ui.setBeforeFlip.isChecked():
             return False
         if 'transit' not in self.satOrbits[0]:
             return False
 
         start = self.satOrbits[0]['rise'].tt
-        end = self.satOrbits[0]['transit'].tt
+        end = self.satOrbits[0]['flip'].tt
         duration = self.calcDuration(start, end)
         self.app.mount.satellite.calcTLE(julD=start, duration=duration)
         self.updateSatelliteTrackGui(self.app.mount.satellite.tleParams)
         return True
 
-    def calcMeridianWest(self):
+    def calcAfterFlip(self):
         """
         :return:
         """
-        if not self.ui.satMeridianWest.isChecked():
+        if not self.ui.satAfterFlip.isChecked():
             return False
         if 'transit' not in self.satOrbits[0]:
             return False
 
-        start = self.satOrbits[0]['transit'].tt
+        start = self.satOrbits[0]['flip'].tt
         end = self.satOrbits[0]['settle'].tt
         duration = self.calcDuration(start, end)
         self.app.mount.satellite.calcTLE(julD=start, duration=duration)
         self.updateSatelliteTrackGui(self.app.mount.satellite.tleParams)
         return True
 
-    def calcMeridianBoth(self):
+    def calcAllSegments(self):
         """
-
         :return:
         """
-        if not self.ui.satMeridianBoth.isChecked():
+        if not self.ui.satAllSegments.isChecked():
             return False
 
         start = self.satOrbits[0]['rise'].tt
@@ -512,9 +534,9 @@ class Satellite(object):
         self.ui.satelliteNumber.setText(f'{self.satellite.model.satnum:5d}')
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
-        self.ui.satTransitStartUTC.setText('-')
-        self.ui.satTransitEndUTC.setText('-')
-        self.ui.satNeedFlip.setText('-')
+        self.ui.satTrajectoryStart.setText('-')
+        self.ui.satTrajectoryEnd.setText('-')
+        self.ui.satTrajectoryFlip.setText('-')
 
         self.updateOrbit()
         self.programTLEDataToMount()
@@ -579,20 +601,20 @@ class Satellite(object):
 
         if tleParams.jdStart is not None:
             time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdStart)
-            self.ui.satTransitStartUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
+            self.ui.satTrajectoryStart.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
         else:
-            self.ui.satTransitStartUTC.setText('No transit')
+            self.ui.satTrajectoryStart.setText('No transit')
 
         if tleParams.jdEnd is not None:
             time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdEnd)
-            self.ui.satTransitEndUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
+            self.ui.satTrajectoryEnd.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
         else:
             self.ui.satTransitEndUTC.setText('No transit')
 
         if tleParams.flip:
-            self.ui.satNeedFlip.setText('YES')
+            self.ui.satTrajectoryFlip.setText('YES')
         else:
-            self.ui.satNeedFlip.setText('NO')
+            self.ui.satTrajectoryFlip.setText('NO')
 
         if tleParams.message is not None:
             self.app.message.emit(tleParams.message, 0)

@@ -59,8 +59,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.plotSatPosSphere2 = None
         self.plotSatPosHorizon = None
         self.plotSatPosEarth = None
-        self.satSphereMat1 = self.embedMatplot(self.ui.satSphere1)
-        self.satSphereMat2 = self.embedMatplot(self.ui.satSphere2)
+        self.satSphereMat1 = self.embedMatplot(self.ui.satSphere1,
+                                               constrainedLayout=False)
+        self.satSphereMat2 = self.embedMatplot(self.ui.satSphere2,
+                                               constrainedLayout=False)
         self.satHorizonMat = self.embedMatplot(self.ui.satHorizon)
         self.satEarthMat = self.embedMatplot(self.ui.satEarth)
 
@@ -95,6 +97,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         height = config.get('height', 600)
         width = config.get('width', 800)
         self.resize(width, height)
+        self.ui.tabWidget.setCurrentIndex(config.get('tabWidget', 0))
+
         return True
 
     def storeConfig(self):
@@ -109,6 +113,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
         config['width'] = self.width()
+        config['tabWidget'] = self.ui.tabWidget.currentIndex()
         return True
 
     def closeEvent(self, closeEvent):

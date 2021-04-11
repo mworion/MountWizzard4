@@ -353,20 +353,18 @@ class Satellite(object):
             if counter > 2:
                 break
 
-    def calcSatelliteMeridianTransit(self, satellite, location):
+    @staticmethod
+    def calcSatelliteMeridianTransit(satellite, location):
         """
         :param satellite:
         :param location:
         :return:
         """
         difference = satellite - location
-        pressure = self.app.mount.setting.refractionPress
-        temperature = self.app.mount.setting.refractionTemp
 
         def west_of_meridian_at(t):
 
-            altaz = difference.at(t).altaz(temperature_C=temperature,
-                                           pressure_mbar=pressure)
+            altaz = difference.at(t).altaz()
             alt, az, _ = altaz
             return ((az.degrees + 360) % 360 - 180) > 0
 

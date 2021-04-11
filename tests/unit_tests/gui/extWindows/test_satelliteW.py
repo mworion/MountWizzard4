@@ -226,7 +226,7 @@ def test_drawSphere2_1(function):
 
 
 def test_drawEarth_1(function):
-    function.drawEarth()
+    function.drawEarth(function.app.mount.obsSite)
 
 
 def test_staticHorizon_1(function):
@@ -306,10 +306,13 @@ def test_drawSatellite_3(function, module):
     t4 = module.tt_jd(tt + 0.4)
 
     satOrbits = [{'rise': t0,
+                  'flip': t0,
                   'settle': t1},
                  {'rise': t2,
+                  'flip': t2,
                   'settle': t3},
                  {'rise': t3,
+                  'flip': t3,
                   'settle': t4},
                  ]
 
@@ -331,10 +334,13 @@ def test_drawSatellite_4(function, module):
     t4 = module.tt_jd(tt + 0.4)
 
     satOrbits = [{
+                  'flip': t1,
                   'settle': t1},
                  {'rise': t2,
+                  'flip': t2,
                   'settle': t3},
                  {'rise': t3,
+                  'flip': t3,
                   'settle': t4},
                  ]
 
@@ -356,10 +362,14 @@ def test_drawSatellite_5(function, module):
     t3 = module.tt_jd(tt + 0.3)
     t4 = module.tt_jd(tt + 0.4)
 
-    satOrbits = [{'rise': t0},
+    satOrbits = [{'rise': t0,
+                  'flip': t1,
+                  },
                  {'rise': t2,
+                  'flip': t2,
                   'settle': t3},
                  {'rise': t3,
+                  'flip': t3,
                   'settle': t4},
                  ]
 

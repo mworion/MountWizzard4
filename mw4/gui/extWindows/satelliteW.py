@@ -431,7 +431,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.figure.canvas.draw()
         return True
 
-    def drawEarth(self, obsSite, satOrbits=None):
+    def drawEarth(self, obsSite=None, satOrbits=None):
         """
         drawEarth show a full earth view with the path of the subpoint of the
         satellite drawn on it.
@@ -440,7 +440,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param satOrbits:
         :return: success
         """
-        ts = obsSite.ts
         axe, fig = self.generateFlat(widget=self.satEarthMat)
         axe.set_xticks(np.arange(-180, 181, 45))
         axe.set_xlabel('Longitude in degrees')
@@ -451,10 +450,15 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             axe.fill(shape['xDeg'], shape['yDeg'], color=self.M_BLUE, alpha=0.2)
             axe.plot(shape['xDeg'], shape['yDeg'], color=self.M_BLUE, lw=1, alpha=0.4)
 
+        if satOrbits is None or obsSite is None:
+            axe.figure.canvas.draw()
+            return False
+
         lat = obsSite.location.latitude.degrees
         lon = obsSite.location.longitude.degrees
         axe.plot(lon, lat, marker='.', markersize=10, color=self.M_RED)
 
+        ts = obsSite.ts
         subpoint = self.satellite.at(ts.now()).subpoint()
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
@@ -463,10 +467,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                                          markersize=16, lw=2, fillstyle='none',
                                          ls='none', color=self.M_PINK_H,
                                          zorder=10)
-
-        if not satOrbits:
-            axe.figure.canvas.draw()
-            return False
 
         for i, satOrbit in enumerate(satOrbits):
             rise = satOrbit['rise'].tt
@@ -528,7 +528,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axes.plot(az, alt, color=self.M_GREEN, marker='', alpha=0.5, lw=3)
         return True
 
-    def drawHorizonView(self, obsSite, satOrbits=None):
+    def drawHorizonView(self, obsSite=None, satOrbits=None):
         """
         drawHorizonView shows the horizon and enable the users to explore a
         satellite passing by

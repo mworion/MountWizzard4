@@ -81,7 +81,7 @@ class Connection(object):
                 ':So', ':Sr', ':St', ':Suaf', ':Sw', ':Sz',
                 ':TLEG', ':TLEL0', ':TLEGAZ', ':TLEGEQ', ':TLEP', ':TLES',
                 ':TLESCK',
-                ':TRNEW', ':TRADD', ':TRP', ':TRREPLAY'
+                ':TRNEW', ':TRADD', ':TRP', ':TRREPLAY',
                 ':U2',
                 ':delalig', ':delalst',
                 ':endalig',

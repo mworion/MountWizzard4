@@ -22,7 +22,7 @@ from io import BytesIO
 from PyQt5.QtCore import QObject, pyqtSignal, QFile
 import numpy as np
 import matplotlib.path as mpath
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 from skyfield import functions
 import matplotlib.pyplot as plt
 
@@ -191,7 +191,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         lat = subpoint.latitude.radians
         lon = subpoint.longitude.radians
-        elev = subpoint.elevation.m / 1000 + self.EARTH_RADIUS
+        elev = subpoint.elevation.m / 1000 + self.EARTH_RADIUS * 1.1
 
         xyz = functions.from_spherical(elev, lat, lon)
         self.plotSatPosSphere2.set_data_3d(xyz)
@@ -328,7 +328,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         how-can-i-plot-a-satellites-orbit-in-3d-from-a-tle-using-python-and-skyfield
 
         :param observe:
-        :param subpoints:
         :return: success
         """
         figure = self.satSphereMat2.figure
@@ -383,13 +382,20 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                                                shape['yRad'],
                                                shape['xRad'])
             verts = [list(zip(x, y, z))]
-            collect = Poly3DCollection(verts, facecolors=self.M_BLUE, alpha=0.5)
+            collect = Line3DCollection(verts,
+                                       colors=self.M_BLUE1,
+                                       lw=1,
+                                       alpha=1)
+            axe.add_collection3d(collect)
+            collect = Poly3DCollection(verts,
+                                       edgecolors=self.M_BLUE,
+                                       alpha=0.3)
             axe.add_collection3d(collect)
 
         lat = self.app.mount.obsSite.location.latitude.radians
         lon = self.app.mount.obsSite.location.longitude.radians
         x, y, z = functions.from_spherical(self.EARTH_RADIUS, lat, lon)
-        axe.plot(x, y, z, marker='.', markersize=12, color=self.M_RED)
+        axe.plot(x, y, z, marker='.', markersize=12, color=self.M_YELLOW_H)
 
         if observe is None:
             axe.figure.canvas.draw()
@@ -398,7 +404,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         subpoints = observe.subpoint()
         lat = subpoints.latitude.radians
         lon = subpoints.longitude.radians
-        elev = subpoints.elevation.m / 1000 + self.EARTH_RADIUS
+        elev = subpoints.elevation.m / 1000 + self.EARTH_RADIUS * 1.1
         x, y, z = functions.from_spherical(elev, lat, lon)
         axe.plot(x, y, z, color=self.M_WHITE)
         self.plotSatPosSphere2, = axe.plot([x[0]], [y[0]], [z[0]],

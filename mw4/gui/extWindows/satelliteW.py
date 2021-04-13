@@ -309,7 +309,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.plot(x, y, z, color=self.M_WHITE)
         self.plotSatPosSphere1, = axe.plot([x[0]], [y[0]], [z[0]],
                                            marker=self.markerSatellite(),
-                                           markersize=16,
+                                           markersize=25,
                                            linewidth=2,
                                            fillstyle='none',
                                            color=self.M_PINK_H)
@@ -409,13 +409,33 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.plot(x, y, z, color=self.M_WHITE)
         self.plotSatPosSphere2, = axe.plot([x[0]], [y[0]], [z[0]],
                                            marker=self.markerSatellite(),
-                                           markersize=16,
+                                           markersize=25,
                                            linewidth=2,
                                            fillstyle='none',
                                            color=self.M_PINK_H)
         self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
         return True
+
+    @staticmethod
+    def unlinkWrap(dat, limits=[-180, 180], thresh=0.95):
+        """
+        Iterate over contiguous regions of `dat` (i.e. where it does not
+        jump from near one limit to the other).
+
+        This function returns an iterator object that yields slice
+        objects, which index the contiguous portions of `dat`.
+
+        This function implicitly assumes that all points in `dat` fall
+        within `limits`.
+
+        """
+        jump = np.nonzero(np.abs(np.diff(dat)) > ((limits[1] - limits[0]) * thresh))[0]
+        lastIndex = 0
+        for ind in jump:
+            yield slice(lastIndex, ind + 1)
+            lastIndex = ind + 1
+        yield slice(lastIndex, len(dat))
 
     def drawEarth(self, obsSite=None, satOrbits=None):
         """
@@ -430,6 +450,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.set_xticks(np.arange(-180, 181, 45))
         axe.set_xlabel('Longitude in degrees')
         axe.set_ylabel('Latitude in degrees')
+        axe.set_ylim([-90, 90])
+        axe.set_xlim([-180, 180])
 
         for key in self.world.keys():
             shape = self.world[key]
@@ -450,14 +472,14 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lon = subpoint.longitude.degrees
         self.plotSatPosEarth, = axe.plot(lon, lat,
                                          marker=self.markerSatellite(),
-                                         markersize=16, lw=2, fillstyle='none',
+                                         markersize=25, lw=2, fillstyle='none',
                                          ls='none', color=self.M_PINK_H,
                                          zorder=10)
 
         for i, satOrbit in enumerate(satOrbits):
             rise = satOrbit['rise'].tt
             settle = satOrbit['settle'].tt
-            step = 0.01 * (settle - rise)
+            step = 0.005 * (settle - rise)
 
             if satOrbit['flip'] is not None:
                 flip = satOrbit['flip'].tt
@@ -491,8 +513,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         subpoints = self.satellite.at(vecT).subpoint()
         lat = subpoints.latitude.degrees
         lon = subpoints.longitude.degrees
-        axe.plot(lon, lat, lw=0, marker='.', markersize=1, color=self.M_WHITE_L,
-                 zorder=-10)
+        for slc in self.unlinkWrap(lon):
+            axe.plot(lon[slc], lat[slc], lw=1, color=self.M_WHITE_L, zorder=-10)
         axe.figure.canvas.draw()
         return True
 
@@ -557,7 +579,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.plotSatPosHorizon, = axe.plot(180,
                                            -10,
                                            marker=self.markerSatellite(),
-                                           markersize=16,
+                                           markersize=25,
                                            linewidth=2,
                                            fillstyle=None,
                                            linestyle='none',

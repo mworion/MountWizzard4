@@ -477,6 +477,7 @@ def test_addMeridianTransit_1(function):
 def test_showSatPasses_1(function):
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'culminate': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)},
                           {'rise': ts.tt_jd(2459216.5),
                            'settle': ts.tt_jd(2459216.7)}]
@@ -506,28 +507,28 @@ def test_calcDuration_3(function):
     assert val == 1
 
 
-def test_calcMeridianEast_1(function):
+def test_calcBeforeFlip_1(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satMeridianEast.setChecked(False)
+    function.ui.satBeforeFlip.setChecked(False)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
-    suc = function.calcMeridianEast()
+    suc = function.calcBeforeFlip()
     assert not suc
 
 
-def test_calcMeridianEast_2(function):
+def test_calcBeforeFlip_2(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satMeridianEast.setChecked(True)
+    function.ui.satBeforeFlip.setChecked(True)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'settle': ts.tt_jd(2459215.7)}]
-    suc = function.calcMeridianEast()
+    suc = function.calcBeforeFlip()
     assert not suc
 
 
-def test_calcMeridianEast_3(function):
+def test_calcBeforeFlip_3(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satMeridianEast.setChecked(True)
+    function.ui.satBeforeFlip.setChecked(True)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
@@ -535,32 +536,32 @@ def test_calcMeridianEast_3(function):
                            'calcTLE'):
         with mock.patch.object(function,
                                'updateSatelliteTrackGui'):
-            suc = function.calcMeridianEast()
+            suc = function.calcBeforeFlip()
             assert suc
 
 
-def test_calcMeridianWest_1(function):
+def test_calcAfterFlip_1(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satMeridianWest.setChecked(False)
+    function.ui.satAfterFlip.setChecked(False)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
-    suc = function.calcMeridianWest()
+    suc = function.calcAfterFlip()
     assert not suc
 
 
-def test_calcMeridianWest_2(function):
+def test_calcAfterFlip_2(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satMeridianWest.setChecked(True)
+    function.ui.satAfterFlip.setChecked(True)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'settle': ts.tt_jd(2459215.7)}]
-    suc = function.calcMeridianWest()
+    suc = function.calcAfterFlip()
     assert not suc
 
 
-def test_calcMeridianWest_3(function):
+def test_calcAfterFlip_3(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satMeridianWest.setChecked(True)
+    function.ui.satAfterFlip.setChecked(True)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
@@ -568,23 +569,23 @@ def test_calcMeridianWest_3(function):
                            'calcTLE'):
         with mock.patch.object(function,
                                'updateSatelliteTrackGui'):
-            suc = function.calcMeridianWest()
+            suc = function.calcAfterFlip()
             assert suc
 
 
-def test_calcMeridianBoth_1(function):
+def test_calcAllSegments_1(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satMeridianBoth.setChecked(False)
+    function.ui.satAllSegments.setChecked(False)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
-    suc = function.calcMeridianBoth()
+    suc = function.calcAllSegments()
     assert not suc
 
 
-def test_calcMeridianBoth_3(function):
+def test_calcAllSegments_2(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satMeridianBoth.setChecked(True)
+    function.ui.satAllSegments.setChecked(True)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
@@ -592,7 +593,7 @@ def test_calcMeridianBoth_3(function):
                            'calcTLE'):
         with mock.patch.object(function,
                                'updateSatelliteTrackGui'):
-            suc = function.calcMeridianBoth()
+            suc = function.calcAllSegments()
             assert suc
 
 

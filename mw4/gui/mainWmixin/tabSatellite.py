@@ -449,7 +449,7 @@ class Satellite(object):
         """
         :return:
         """
-        if not self.ui.setBeforeFlip.isChecked():
+        if not self.ui.satBeforeFlip.isChecked():
             return False
         if 'transit' not in self.satOrbits[0]:
             return False

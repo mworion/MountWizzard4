@@ -531,6 +531,7 @@ def test_calcBeforeFlip_3(function):
     function.ui.satBeforeFlip.setChecked(True)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
+                           'flip': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
     with mock.patch.object(function.app.mount.satellite,
                            'calcTLE'):
@@ -564,6 +565,7 @@ def test_calcAfterFlip_3(function):
     function.ui.satAfterFlip.setChecked(True)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
+                           'flip': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
     with mock.patch.object(function.app.mount.satellite,
                            'calcTLE'):

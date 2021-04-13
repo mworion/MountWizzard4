@@ -128,13 +128,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         plt.close(self.satEarthMat.figure)
         super().closeEvent(closeEvent)
 
-    def resizeEvent(self, event):
-        """
-        :param event:
-        :return:
-        """
-        super().resizeEvent(event)
-
     def showWindow(self):
         """
         :return: True for test purpose
@@ -193,11 +186,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         if self.plotSatPosSphere2 is None:
             return False
 
-        # sphere1
         x, y, z = observe.position.km
         self.plotSatPosSphere1.set_data_3d((x, y, z))
 
-        # sphere2
         lat = subpoint.latitude.radians
         lon = subpoint.longitude.radians
         elev = subpoint.elevation.m / 1000 + self.EARTH_RADIUS
@@ -205,19 +196,17 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         xyz = functions.from_spherical(elev, lat, lon)
         self.plotSatPosSphere2.set_data_3d(xyz)
 
-        # earth
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
         self.plotSatPosEarth.set_data((lon, lat))
 
-        # horizon
         alt, az, _ = altaz
         alt = alt.degrees
         az = az.degrees
         self.plotSatPosHorizon.set_data((az, alt))
 
-        # update the plot and redraw
         self.satSphereMat1.figure.canvas.draw()
+        self.satSphereMat2.figure.canvas.draw()
         self.satEarthMat.figure.canvas.draw()
         self.satHorizonMat.figure.canvas.draw()
         return True
@@ -272,7 +261,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
         axe = figure.add_subplot(111, projection='3d')
 
-        # switching all visual grids and planes off
         axe.set_facecolor((0, 0, 0, 0))
         axe.tick_params(colors=self.M_GREY, labelsize=12)
         axe.set_axis_off()
@@ -280,7 +268,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         axe.zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
 
-        # calculating sphere
         theta = np.linspace(0, 2 * np.pi, 51)
         cth, sth, zth = [f(theta) for f in [np.cos, np.sin, np.zeros_like]]
         lon0 = self.EARTH_RADIUS * np.vstack((cth, zth, sth))
@@ -314,7 +301,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.text(0, 0, - self.EARTH_RADIUS * 1.2 - 200, 'S', fontsize=14,
                  color=self.M_BLUE)
 
-        # empty chart if no satellite is chosen
         if observe is None:
             axe.figure.canvas.draw()
             return False
@@ -331,7 +317,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.figure.canvas.draw()
         return True
 
-    def drawSphere2(self, observe=None, subpoints=None):
+    def drawSphere2(self, observe=None):
         """
         draw sphere and put face color als image overlay:
         https://stackoverflow.com/questions/53074908/
@@ -350,7 +336,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
         axe = figure.add_subplot(111, projection='3d')
 
-        # switching all visual grids and planes off
         axe.set_facecolor((0, 0, 0, 0))
         axe.tick_params(colors=self.M_GREY, labelsize=12)
         axe.set_axis_off()
@@ -358,12 +343,12 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         axe.zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
 
-        # calculating sphere
         theta = np.linspace(0, 2 * np.pi, 51)
         cth, sth, zth = [f(theta) for f in [np.cos, np.sin, np.zeros_like]]
         lon0 = self.EARTH_RADIUS * np.vstack((cth, zth, sth))
         longitudes = []
         lonBase = np.arange(-180, 180, 15)
+
         for phi in np.radians(lonBase):
             cph, sph = [f(phi) for f in [np.cos, np.sin]]
             lon = np.vstack((lon0[0] * cph - lon0[1] * sph,
@@ -372,12 +357,11 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             longitudes.append(lon)
         lats = []
         latBase = np.arange(-75, 90, 15)
+
         for phi in np.radians(latBase):
             cph, sph = [f(phi) for f in [np.cos, np.sin]]
             lat = self.EARTH_RADIUS * np.vstack((cth * cph, sth * cph, zth + sph))
             lats.append(lat)
-
-        # plotting sphere and labels
         for i, longitude in enumerate(longitudes):
             x, y, z = longitude
             axe.plot(x, y, z, lw=1, color=self.M_GREY)
@@ -393,7 +377,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.text(0, 0, - self.EARTH_RADIUS * 1.2 - 200, 'S', fontsize=14,
                  color=self.M_BLUE)
 
-        # plot world
         for key in self.world.keys():
             shape = self.world[key]
             x, y, z = functions.from_spherical(self.EARTH_RADIUS,
@@ -412,21 +395,18 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             axe.figure.canvas.draw()
             return False
 
+        subpoints = observe.subpoint()
         lat = subpoints.latitude.radians
         lon = subpoints.longitude.radians
         elev = subpoints.elevation.m / 1000 + self.EARTH_RADIUS
-
         x, y, z = functions.from_spherical(elev, lat, lon)
         axe.plot(x, y, z, color=self.M_WHITE)
-
         self.plotSatPosSphere2, = axe.plot([x[0]], [y[0]], [z[0]],
                                            marker=self.markerSatellite(),
                                            markersize=16,
                                            linewidth=2,
                                            fillstyle='none',
                                            color=self.M_PINK_H)
-
-        # finalizing
         self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
         return True
@@ -584,6 +564,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         drawSatellite draws 4 different views of the actual satellite
         situation: two sphere views, a horizon view and an earth view.
+        satellites with an day angle < 400 means less than one orbit per day and
+        might be stationary visible (geostationary)
 
         :param satellite:
         :param satOrbits:
@@ -602,7 +584,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         dayAngle = satellite.model.no_kozai * 24 * 60 / np.pi * 180
 
         if dayAngle < 400:
-            # this means less than one orbit per day (geostationary)
             forecastTime = 24
         else:
             forecastTime = 3
@@ -610,11 +591,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         forecast = np.arange(0, forecastTime, 0.005 * forecastTime / 3) / 24
         now = timescale.now()
         timeVector = timescale.tt_jd(now.tt + forecast)
-
         observe = self.satellite.at(timeVector)
-        subpoints = observe.subpoint()
         self.drawSphere1(observe=observe)
-        self.drawSphere2(observe=observe, subpoints=subpoints)
+        self.drawSphere2(observe=observe)
         self.drawEarth(self.app.mount.obsSite, satOrbits=satOrbits)
         self.drawHorizonView(self.app.mount.obsSite, satOrbits=satOrbits)
         return True

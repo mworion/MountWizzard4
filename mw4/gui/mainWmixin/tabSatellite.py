@@ -91,6 +91,8 @@ class Satellite(object):
         self.app.mount.signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
         self.app.mount.signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
         self.ui.isOnline.stateChanged.connect(self.loadTLEDataFromSourceURLs)
+        self.ui.satAfterFlip.clicked.connect(self.calcSegments)
+        self.ui.satBeforeFlip.clicked.connect(self.calcSegments)
 
         self.app.update3s.connect(self.updateOrbit)
         self.app.mount.signals.pointDone.connect(self.followMount)
@@ -103,6 +105,8 @@ class Satellite(object):
         self.setupSatelliteSourceURLsDropDown()
         self.ui.filterSatellite.setText(config.get('filterSatellite'))
         self.ui.domeAutoFollowSat.setChecked(config.get('domeAutoFollowSat', False))
+        self.ui.satBeforeFlip.setChecked(config.get('satBeforeFlip', True))
+        self.ui.satAfterFlip.setChecked(config.get('satAfterFlip', True))
 
         if not self.app.automation:
             self.installPath = self.app.mwGlob['dataDir']
@@ -119,6 +123,8 @@ class Satellite(object):
         config = self.app.config['mainW']
         config['filterSatellite'] = self.ui.filterSatellite.text()
         config['domeAutoFollowSat'] = self.ui.domeAutoFollowSat.isChecked()
+        config['satBeforeFlip'] = self.ui.satBeforeFlip.isChecked()
+        config['satAfterFlip'] = self.ui.satAfterFlip.isChecked()
         return True
 
     def setupSatelliteSourceURLsDropDown(self):
@@ -445,50 +451,24 @@ class Satellite(object):
             delta = 1440
         return delta
 
-    def calcBeforeFlip(self):
+    def calcSegments(self):
         """
         :return:
         """
-        if not self.ui.satBeforeFlip.isChecked():
-            return False
-        if 'transit' not in self.satOrbits[0]:
-            return False
+        if self.ui.satBeforeFlip.isChecked():
+            start = self.satOrbits[0]['rise'].tt
+        else:
+            start = self.satOrbits[0]['flip'].tt
 
-        start = self.satOrbits[0]['rise'].tt
-        end = self.satOrbits[0]['flip'].tt
+        if self.ui.satAfterFlip.isChecked():
+            end = self.satOrbits[0]['settle'].tt
+        else:
+            end = self.satOrbits[0]['flip'].tt
+
         duration = self.calcDuration(start, end)
         self.app.mount.satellite.calcTLE(julD=start, duration=duration)
         self.updateSatelliteTrackGui(self.app.mount.satellite.tleParams)
-        return True
-
-    def calcAfterFlip(self):
-        """
-        :return:
-        """
-        if not self.ui.satAfterFlip.isChecked():
-            return False
-        if 'transit' not in self.satOrbits[0]:
-            return False
-
-        start = self.satOrbits[0]['flip'].tt
-        end = self.satOrbits[0]['settle'].tt
-        duration = self.calcDuration(start, end)
-        self.app.mount.satellite.calcTLE(julD=start, duration=duration)
-        self.updateSatelliteTrackGui(self.app.mount.satellite.tleParams)
-        return True
-
-    def calcAllSegments(self):
-        """
-        :return:
-        """
-        if not self.ui.satAllSegments.isChecked():
-            return False
-
-        start = self.satOrbits[0]['rise'].tt
-        end = self.satOrbits[0]['settle'].tt
-        duration = self.calcDuration(start, end)
-        self.app.mount.satellite.calcTLE(julD=start, duration=duration)
-        self.updateSatelliteTrackGui(self.app.mount.satellite.tleParams)
+        self.sendSatelliteData()
         return True
 
     def extractSatelliteData(self, satName=''):
@@ -539,12 +519,7 @@ class Satellite(object):
         self.programTLEDataToMount()
         self.calcOrbitFromTLEInMount()
         self.showSatPasses()
-
-        winObj = self.app.uiWindows['showSatelliteW']
-        if not winObj['classObj']:
-            return False
-
-        winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits)
+        self.sendSatelliteData()
         return True
 
     def sendSatelliteData(self):
@@ -558,7 +533,10 @@ class Satellite(object):
         if not winObj['classObj']:
             return False
 
-        winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits)
+        segments = [self.ui.satBeforeFlip.isChecked(),
+                    self.ui.satAfterFlip.isChecked()]
+
+        winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits, segments)
         return True
 
     def signalExtractSatelliteData(self):

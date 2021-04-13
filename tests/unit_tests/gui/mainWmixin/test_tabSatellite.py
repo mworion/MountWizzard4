@@ -507,61 +507,27 @@ def test_calcDuration_3(function):
     assert val == 1
 
 
-def test_calcBeforeFlip_1(function):
-    ts = function.app.mount.obsSite.ts
-    function.ui.satBeforeFlip.setChecked(False)
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'transit': ts.tt_jd(2459215.6),
-                           'settle': ts.tt_jd(2459215.7)}]
-    suc = function.calcBeforeFlip()
-    assert not suc
-
-
-def test_calcBeforeFlip_2(function):
+def test_calcSegments_1(function):
     ts = function.app.mount.obsSite.ts
     function.ui.satBeforeFlip.setChecked(True)
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'settle': ts.tt_jd(2459215.7)}]
-    suc = function.calcBeforeFlip()
-    assert not suc
-
-
-def test_calcBeforeFlip_3(function):
-    ts = function.app.mount.obsSite.ts
-    function.ui.satBeforeFlip.setChecked(True)
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'transit': ts.tt_jd(2459215.6),
-                           'flip': ts.tt_jd(2459215.6),
-                           'settle': ts.tt_jd(2459215.7)}]
-    with mock.patch.object(function.app.mount.satellite,
-                           'calcTLE'):
-        with mock.patch.object(function,
-                               'updateSatelliteTrackGui'):
-            suc = function.calcBeforeFlip()
-            assert suc
-
-
-def test_calcAfterFlip_1(function):
-    ts = function.app.mount.obsSite.ts
     function.ui.satAfterFlip.setChecked(False)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
+                           'flip': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
-    suc = function.calcAfterFlip()
-    assert not suc
+    with mock.patch.object(function.app.mount.satellite,
+                           'calcTLE'):
+        with mock.patch.object(function,
+                               'updateSatelliteTrackGui'):
+            with mock.patch.object(function,
+                                   'sendSatelliteData'):
+                suc = function.calcSegments()
+                assert suc
 
 
-def test_calcAfterFlip_2(function):
+def test_calcSegments_2(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satAfterFlip.setChecked(True)
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'settle': ts.tt_jd(2459215.7)}]
-    suc = function.calcAfterFlip()
-    assert not suc
-
-
-def test_calcAfterFlip_3(function):
-    ts = function.app.mount.obsSite.ts
+    function.ui.satBeforeFlip.setChecked(False)
     function.ui.satAfterFlip.setChecked(True)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
@@ -571,32 +537,12 @@ def test_calcAfterFlip_3(function):
                            'calcTLE'):
         with mock.patch.object(function,
                                'updateSatelliteTrackGui'):
-            suc = function.calcAfterFlip()
-            assert suc
-
-
-def test_calcAllSegments_1(function):
-    ts = function.app.mount.obsSite.ts
-    function.ui.satAllSegments.setChecked(False)
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'transit': ts.tt_jd(2459215.6),
-                           'settle': ts.tt_jd(2459215.7)}]
-    suc = function.calcAllSegments()
-    assert not suc
-
-
-def test_calcAllSegments_2(function):
-    ts = function.app.mount.obsSite.ts
-    function.ui.satAllSegments.setChecked(True)
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'transit': ts.tt_jd(2459215.6),
-                           'settle': ts.tt_jd(2459215.7)}]
-    with mock.patch.object(function.app.mount.satellite,
-                           'calcTLE'):
-        with mock.patch.object(function,
-                               'updateSatelliteTrackGui'):
-            suc = function.calcAllSegments()
-            assert suc
+            with mock.patch.object(function,
+                                   'sendSatelliteData'):
+                suc = function.calcSegments()
+                assert suc
+    function.ui.satBeforeFlip.setChecked(True)
+    function.ui.satAfterFlip.setChecked(True)
 
 
 def test_extractSatelliteData_1(function):
@@ -629,7 +575,6 @@ def test_extractSatelliteData_3(function):
     class Test(QObject):
         signals = Test1()
 
-    function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
     function.ui.listSatelliteNames.clear()
     function.ui.listSatelliteNames.addItem('NOAA 8')
     function.ui.listSatelliteNames.addItem('Test1')
@@ -652,7 +597,7 @@ def test_extractSatelliteData_3(function):
                 with mock.patch.object(function,
                                        'calcOrbitFromTLEInMount'):
                     suc = function.extractSatelliteData(satName='NOAA 8')
-                    assert not suc
+                    assert suc
 
 
 def test_extractSatelliteData_4(function):
@@ -663,7 +608,6 @@ def test_extractSatelliteData_4(function):
     class Test(QObject):
         signals = Test1()
 
-    function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
     function.ui.listSatelliteNames.clear()
     function.ui.listSatelliteNames.addItem('NOAA 8')
     function.ui.listSatelliteNames.addItem('Test1')
@@ -686,7 +630,7 @@ def test_extractSatelliteData_4(function):
                 with mock.patch.object(function,
                                        'calcOrbitFromTLEInMount'):
                     suc = function.extractSatelliteData(satName='NOAA 8')
-                    assert not suc
+                    assert suc
 
 
 def test_extractSatelliteData_5(function):
@@ -697,7 +641,6 @@ def test_extractSatelliteData_5(function):
     class Test(QObject):
         signals = Test1()
 
-    function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
     function.ui.listSatelliteNames.clear()
     function.ui.listSatelliteNames.addItem('NOAA 8')
     function.ui.listSatelliteNames.addItem('Test1')
@@ -720,7 +663,7 @@ def test_extractSatelliteData_5(function):
                 with mock.patch.object(function,
                                        'calcOrbitFromTLEInMount'):
                     suc = function.extractSatelliteData(satName='NOAA 8')
-                    assert not suc
+                    assert suc
 
 
 def test_extractSatelliteData_6(function):
@@ -768,7 +711,7 @@ def test_sendSatelliteData_2(function):
 def test_sendSatelliteData_3(function):
     class Test1(QObject):
         update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object)
+        show = pyqtSignal(object, object, object)
 
     class Test(QObject):
         signals = Test1()

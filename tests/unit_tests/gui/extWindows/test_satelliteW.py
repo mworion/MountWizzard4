@@ -252,6 +252,12 @@ def test_drawSphere2_2(function, ts):
     assert suc
 
 
+def test_unlinkWrap(function):
+    data = [1, 2, 3, 170, 180, -180, -100, 3, 4]
+    for slc in function.unlinkWrap(data):
+        a = slc
+
+
 def test_drawEarth_1(function):
     suc = function.drawEarth()
     assert not suc
@@ -283,7 +289,8 @@ def test_drawEarth_2(function, ts):
                   'settle': t4},
                  ]
     obsSite = function.app.mount.obsSite
-    suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits)
+    suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits,
+                             segments=[True, True])
     assert suc
 
 
@@ -313,7 +320,8 @@ def test_drawEarth_3(function, ts):
                   'settle': t4},
                  ]
     obsSite = function.app.mount.obsSite
-    suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits)
+    suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits,
+                             segments=[True, True])
     assert suc
 
 
@@ -362,7 +370,8 @@ def test_drawHorizonView_2(function, ts):
                   'settle': t4},
                  ]
     obsSite = function.app.mount.obsSite
-    suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits)
+    suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits,
+                                   segments=[True, True])
     assert suc
 
 
@@ -392,7 +401,8 @@ def test_drawHorizonView_3(function, ts):
                   'settle': t4},
                  ]
     obsSite = function.app.mount.obsSite
-    suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits)
+    suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits,
+                                   segments=[True, True])
     assert suc
 
 

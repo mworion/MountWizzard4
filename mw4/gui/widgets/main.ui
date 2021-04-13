@@ -11196,13 +11196,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Start satellite tracking</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="satBeforeFlip">
+     <widget class="QCheckBox" name="satBeforeFlip">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>75</y>
-        <width>106</width>
-        <height>18</height>
+        <x>190</x>
+        <y>70</y>
+        <width>86</width>
+        <height>25</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -11212,13 +11212,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Before flip</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="satAfterFlip">
+     <widget class="QCheckBox" name="satAfterFlip">
       <property name="geometry">
        <rect>
-        <x>255</x>
-        <y>75</y>
-        <width>106</width>
-        <height>18</height>
+        <x>280</x>
+        <y>70</y>
+        <width>81</width>
+        <height>25</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -11226,22 +11226,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="text">
        <string>After flip</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="satAllSegments">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>75</y>
-        <width>106</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default: When checked satellite tracking on both meridian sides&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>All segments</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satSettle_1">
@@ -12304,6 +12288,27 @@ Next point in time when satellite settles.</string>
       </property>
       <property name="text">
        <string>Flip</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_345">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>70</y>
+        <width>151</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Segments for tracking:</string>
       </property>
      </widget>
     </widget>

@@ -593,11 +593,13 @@ def test_extractSatelliteData_3(function):
         with mock.patch.object(function,
                                'showSatPasses'):
             with mock.patch.object(function,
-                                   'programTLEDataToMount'):
+                                   'sendSatelliteData'):
                 with mock.patch.object(function,
-                                       'calcOrbitFromTLEInMount'):
-                    suc = function.extractSatelliteData(satName='NOAA 8')
-                    assert suc
+                                       'programTLEDataToMount'):
+                    with mock.patch.object(function,
+                                           'calcOrbitFromTLEInMount'):
+                        suc = function.extractSatelliteData(satName='NOAA 8')
+                        assert suc
 
 
 def test_extractSatelliteData_4(function):
@@ -626,11 +628,13 @@ def test_extractSatelliteData_4(function):
         with mock.patch.object(function,
                                'showSatPasses'):
             with mock.patch.object(function,
-                                   'programTLEDataToMount'):
+                                   'sendSatelliteData'):
                 with mock.patch.object(function,
-                                       'calcOrbitFromTLEInMount'):
-                    suc = function.extractSatelliteData(satName='NOAA 8')
-                    assert suc
+                                       'programTLEDataToMount'):
+                    with mock.patch.object(function,
+                                           'calcOrbitFromTLEInMount'):
+                        suc = function.extractSatelliteData(satName='NOAA 8')
+                        assert suc
 
 
 def test_extractSatelliteData_5(function):
@@ -659,11 +663,13 @@ def test_extractSatelliteData_5(function):
         with mock.patch.object(function,
                                'showSatPasses'):
             with mock.patch.object(function,
-                                   'programTLEDataToMount'):
+                                   'sendSatelliteData'):
                 with mock.patch.object(function,
-                                       'calcOrbitFromTLEInMount'):
-                    suc = function.extractSatelliteData(satName='NOAA 8')
-                    assert suc
+                                       'programTLEDataToMount'):
+                    with mock.patch.object(function,
+                                           'calcOrbitFromTLEInMount'):
+                        suc = function.extractSatelliteData(satName='NOAA 8')
+                        assert suc
 
 
 def test_extractSatelliteData_6(function):
@@ -689,8 +695,10 @@ def test_extractSatelliteData_6(function):
 
     with mock.patch.object(function,
                            'showSatPasses'):
-        suc = function.extractSatelliteData(satName='NOAA 8')
-        assert suc
+        with mock.patch.object(function,
+                               'sendSatelliteData'):
+            suc = function.extractSatelliteData(satName='NOAA 8')
+            assert suc
 
 
 def test_sendSatelliteData_1(function):

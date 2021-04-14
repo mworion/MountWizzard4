@@ -459,13 +459,13 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             axe.fill(shape['xDeg'], shape['yDeg'], color=self.M_BLUE, alpha=0.2)
             axe.plot(shape['xDeg'], shape['yDeg'], color=self.M_BLUE, lw=1, alpha=0.4)
 
-        if satOrbits is None or obsSite is None:
+        if not satOrbits or obsSite is None:
             axe.figure.canvas.draw()
             return False
 
         lat = obsSite.location.latitude.degrees
         lon = obsSite.location.longitude.degrees
-        axe.plot(lon, lat, marker='.', markersize=10, color=self.M_RED)
+        axe.plot(lon, lat, marker='.', markersize=5, color=self.M_YELLOW_H)
 
         ts = obsSite.ts
         subpoint = self.satellite.at(ts.now()).subpoint()
@@ -546,7 +546,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe, fig = self.generateFlat(widget=self.satHorizonMat, horizon=True)
         self.staticHorizon(axes=axe)
 
-        if satOrbits is None or obsSite is None:
+        if not satOrbits or obsSite is None:
             axe.figure.canvas.draw()
             return False
 
@@ -564,22 +564,20 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                 vector = np.arange(rise, flip, step)
                 vecT = ts.tt_jd(vector)
                 alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
-                axe.plot(az.degrees, alt.degrees, lw=5, color=self.colors[i])
+                axe.plot(az.degrees, alt.degrees, lw=4, color=self.colors[i])
 
             if segments[1]:
                 vector = np.arange(flip, settle, step)
                 vecT = ts.tt_jd(vector)
                 alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
-                axe.plot(az.degrees, alt.degrees, lw=5, color=self.colors[i+3])
+                axe.plot(az.degrees, alt.degrees, lw=4, color=self.colors[i+3])
 
-        self.plotSatPosHorizon, = axe.plot(180,
-                                           -10,
+        ts = obsSite.ts
+        alt, az, _ = (self.satellite - obsSite.location).at(ts.now()).altaz()
+        self.plotSatPosHorizon, = axe.plot(az.degrees, alt.degrees,
                                            marker=self.markerSatellite(),
-                                           markersize=25,
-                                           linewidth=2,
-                                           fillstyle=None,
-                                           linestyle='none',
-                                           color=self.M_PINK_H,
+                                           markersize=25, lw=2, fillstyle='none',
+                                           ls='none', color=self.M_PINK_H,
                                            zorder=10)
         axe.figure.canvas.draw()
         return True
@@ -605,9 +603,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         self.satellite = satellite
         timescale = self.app.mount.obsSite.ts
-
         dayAngle = satellite.model.no_kozai * 24 * 60 / np.pi * 180
-
         if dayAngle < 400:
             forecastTime = 24
         else:
@@ -617,6 +613,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         now = timescale.now()
         timeVector = timescale.tt_jd(now.tt + forecast)
         observe = self.satellite.at(timeVector)
+
         self.drawSphere1(observe=observe)
         self.drawSphere2(observe=observe)
         self.drawEarth(self.app.mount.obsSite, satOrbits=satOrbits,

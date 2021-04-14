@@ -526,7 +526,7 @@ class Satellite(object):
         """
         :return:
         """
-        if not self.satellite or not self.satOrbits:
+        if not self.satellite:
             return False
 
         winObj = self.app.uiWindows['showSatelliteW']

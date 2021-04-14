@@ -204,7 +204,10 @@ class TrajectoryParams(object):
 
     @flip.setter
     def flip(self, value):
-        if isinstance(value, bool):
+        if value is None:
+            self._flip = None
+            return
+        elif isinstance(value, bool):
             self._flip = value
             return
         self._flip = bool(value == 'F')
@@ -414,7 +417,7 @@ class Satellite(object):
         if len(value) == 3:
             start, end, flip = value
         elif len(value) == 1:
-            flip = value
+            flip = value[0]
             start = None
             end = None
         else:
@@ -581,7 +584,7 @@ class Satellite(object):
         if len(value) == 3:
             start, end, flip = value
         elif len(value) == 1:
-            flip = value
+            flip = value[0]
             start = None
             end = None
         else:
@@ -638,7 +641,7 @@ class Satellite(object):
         """
         if julD is None:
             return False
-        if type(julD, skyfield.timelib.Time):
+        if isinstance(julD, skyfield.timelib.Time):
             julD = julD.tt
         if not datas:
             return False
@@ -656,5 +659,8 @@ class Satellite(object):
 
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        if not suc:
+            return False
+
         suc = self.parseCalcTrajectory(response, numberOfChunks, len(datas))
         return suc

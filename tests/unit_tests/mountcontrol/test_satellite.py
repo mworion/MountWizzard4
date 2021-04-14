@@ -19,10 +19,10 @@ import unittest
 import unittest.mock as mock
 
 # external packages
-from skyfield.api import Angle
+from skyfield.api import Angle, load
 
 # local imports
-from mountcontrol.satellite import Satellite, TLEParams
+from mountcontrol.satellite import Satellite, TLEParams, TrajectoryParams
 
 
 class TestConfigData(unittest.TestCase):
@@ -129,6 +129,46 @@ class TestConfigData(unittest.TestCase):
         tleParams = TLEParams()
         tleParams.name = 'test'
         assert tleParams.name == 'test'
+
+    def test_TP_flip_1(self):
+        trajectoryParams = TrajectoryParams()
+        trajectoryParams.flip = None
+        assert trajectoryParams.flip is None
+
+    def test_TP_flip_2(self):
+        trajectoryParams = TrajectoryParams()
+        trajectoryParams.flip = 'F'
+        assert trajectoryParams.flip
+
+    def test_TP_flip_3(self):
+        trajectoryParams = TrajectoryParams()
+        trajectoryParams.flip = 'x'
+        assert not trajectoryParams.flip
+
+    def test_TP_flip_4(self):
+        trajectoryParams = TrajectoryParams()
+        trajectoryParams.flip = False
+        assert not trajectoryParams.flip
+
+    def test_TP_jdStart_1(self):
+        trajectoryParams = TrajectoryParams()
+        trajectoryParams.jdStart = None
+        assert trajectoryParams.jdStart is None
+
+    def test_TP_jdStart_2(self):
+        trajectoryParams = TrajectoryParams()
+        trajectoryParams.jdStart = '100'
+        assert trajectoryParams.jdStart == 100
+
+    def test_TP_jdEnd_1(self):
+        trajectoryParams = TrajectoryParams()
+        trajectoryParams.jdEnd = None
+        assert trajectoryParams.jdEnd is None
+
+    def test_TP_jdEnd_2(self):
+        trajectoryParams = TrajectoryParams()
+        trajectoryParams.jdEnd = '100'
+        assert trajectoryParams.jdEnd == 100
 
     def test_parseGetTLE_1(self):
         sat = Satellite()
@@ -638,3 +678,147 @@ class TestConfigData(unittest.TestCase):
 
             suc = sat.statTLE()
             self.assertTrue(suc)
+
+    def test_parseCalcTrajectory_1(self):
+        sat = Satellite()
+        response = ''
+
+        suc = sat.parseCalcTrajectory(response, 1, 0)
+        self.assertFalse(suc)
+
+    def test_parseCalcTrajectory_2(self):
+        sat = Satellite()
+        response = ['1', '2', ]
+
+        suc = sat.parseCalcTrajectory(response, 3, 0)
+        self.assertFalse(suc)
+
+    def test_parseCalcTrajectory_3(self):
+        sat = Satellite()
+        response = ['1', '2', '3']
+
+        suc = sat.parseCalcTrajectory(response, 3, 0)
+        self.assertFalse(suc)
+
+    def test_parseCalcTrajectory_4(self):
+        sat = Satellite()
+        response = ['E', '', 'E']
+
+        suc = sat.parseCalcTrajectory(response, 3, 0)
+        self.assertFalse(suc)
+
+    def test_parseCalcTrajectory_5(self):
+        sat = Satellite()
+        response = ['N', '', 'E']
+
+        suc = sat.parseCalcTrajectory(response, 3, 0)
+        self.assertFalse(suc)
+
+    def test_parseCalcTrajectory_6(self):
+        sat = Satellite()
+        response = ['N', '10', '1']
+
+        suc = sat.parseCalcTrajectory(response, 3, 1)
+        self.assertFalse(suc)
+
+    def test_parseCalcTrajectory_7(self):
+        sat = Satellite()
+        response = ['N', '1']
+
+        suc = sat.parseCalcTrajectory(response, 2, 2)
+        self.assertFalse(suc)
+
+    def test_parseCalcTrajectory_8(self):
+        sat = Satellite()
+        response = ['N', '2', 'F']
+
+        suc = sat.parseCalcTrajectory(response, 3, 2)
+        self.assertTrue(suc)
+        self.assertEqual(sat.trajectoryParams.flip, True)
+
+    def test_parseCalcTrajectory_9(self):
+        sat = Satellite()
+        response = ['N', '2', '1, 2, 3, 4']
+
+        suc = sat.parseCalcTrajectory(response, 3, 2)
+        self.assertFalse(suc)
+        self.assertEqual(sat.trajectoryParams.flip, None)
+        self.assertEqual(sat.trajectoryParams.jdStart, None)
+        self.assertEqual(sat.trajectoryParams.jdEnd, None)
+
+    def test_parseCalcTrajectory_10(self):
+        sat = Satellite()
+        response = ['N', '2', '12345678.1, 12345678.2, F']
+
+        suc = sat.parseCalcTrajectory(response, 3, 2)
+        self.assertTrue(suc)
+        self.assertEqual(sat.trajectoryParams.jdStart, 12345678.1)
+        self.assertEqual(sat.trajectoryParams.jdEnd, 12345678.2)
+
+    def test_calcTrajectoryData_1(self):
+        sat = Satellite()
+        suc = sat.calcTrajectoryData()
+        self.assertFalse(suc)
+
+    def test_calcTrajectoryData_2(self):
+        sat = Satellite()
+        suc = sat.calcTrajectoryData(julD=1234567.8)
+        self.assertFalse(suc)
+
+    def test_calcTrajectoryData_3(self):
+        sat = Satellite()
+        data = [[1, 1], [10, 10], [40, 40]]
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, 'V', 1
+
+            suc = sat.calcTrajectoryData(julD=1234567.8, datas=data)
+            self.assertFalse(suc)
+
+    def test_calcTrajectoryData_4(self):
+        sat = Satellite()
+        data = [[1, 1], [10, 10], [40, 40]]
+        ts = load.timescale()
+        julD = ts.now()
+
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, 'V', 1
+
+            suc = sat.calcTrajectoryData(julD=julD, datas=data)
+            self.assertFalse(suc)
+
+    def test_calcTrajectoryData_5(self):
+        sat = Satellite()
+        data = [[1, 1], [10, 10], [40, 40]]
+        ts = load.timescale()
+        julD = ts.now()
+
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, 'V', 1
+
+            suc = sat.calcTrajectoryData(julD=julD, datas=data, replay=True)
+            self.assertFalse(suc)
+
+    def test_calcTrajectoryData_6(self):
+        sat = Satellite()
+        data = [[1, 1], [10, 10], [40, 40]]
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, 'V', 1
+
+            with mock.patch.object(sat,
+                                   'parseCalcTrajectory',
+                                   return_value=False):
+
+                suc = sat.calcTrajectoryData(julD=1234567.8, datas=data)
+                self.assertFalse(suc)
+
+    def test_calcTrajectoryData_7(self):
+        sat = Satellite()
+        data = [[1, 1], [10, 10], [40, 40]]
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, 'V', 1
+
+            with mock.patch.object(sat,
+                                   'parseCalcTrajectory',
+                                   return_value=True):
+                suc = sat.calcTrajectoryData(julD=1234567.8, datas=data)
+                self.assertTrue(suc)

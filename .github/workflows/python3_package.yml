@@ -83,7 +83,7 @@ jobs:
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 9
+      max-parallel: 3
       matrix:
         os: [windows-latest]
         python-version: [3.7, 3.8, 3.9]
@@ -124,14 +124,19 @@ jobs:
       - name: check_dependencies_explicit
         run: |
           python -m pip check mountwizzard4
-
+          
+      - uses: GabrielBB/xvfb-action@v1
+          with:
+            run: |
+              touch test.txt
+              python mw4/loader.py
 
   install_package_ubuntu:
 
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 9
+      max-parallel: 3
       matrix:
         os: [ubuntu-latest]
         python-version: [3.7, 3.8, 3.9]
@@ -168,14 +173,19 @@ jobs:
       - name: check_dependencies_explicit
         run: |
           python -m pip check mountwizzard4
-
+          
+      - uses: GabrielBB/xvfb-action@v1
+          with:
+            run: |
+              touch test.txt
+              python mw4/loader.py
 
   install_package_macOS:
 
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 9
+      max-parallel: 3
       matrix:
         os: [macos-latest]
         python-version: [3.7, 3.8, 3.9]
@@ -212,7 +222,8 @@ jobs:
         run: |
           python -m pip check mountwizzard4
   
-      - name: make_test_run
-        run: |
-          touch test.txt
-          python mw4/loader.py
+      - uses: GabrielBB/xvfb-action@v1
+          with:
+            run: |
+              touch test.txt
+              python mw4/loader.py

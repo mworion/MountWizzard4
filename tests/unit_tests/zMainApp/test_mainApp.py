@@ -48,7 +48,7 @@ def app(qapp):
     for f in files:
         os.remove(f)
 
-    shutil.copy('tests/testData/de421_23.bsp', 'tests/data/de421_23.bsp')
+    shutil.copy(r'tests/testData/de421_23.bsp', r'tests/data/de421_23.bsp')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):

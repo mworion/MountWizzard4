@@ -124,12 +124,7 @@ jobs:
       - name: check_dependencies_explicit
         run: |
           python -m pip check mountwizzard4
-          
-      - uses: GabrielBB/xvfb-action@v1
-          with:
-            run: |
-              touch test.txt
-              python mw4/loader.py
+
 
   install_package_ubuntu:
 
@@ -173,12 +168,7 @@ jobs:
       - name: check_dependencies_explicit
         run: |
           python -m pip check mountwizzard4
-          
-      - uses: GabrielBB/xvfb-action@v1
-          with:
-            run: |
-              touch test.txt
-              python mw4/loader.py
+
 
   install_package_macOS:
 
@@ -222,8 +212,7 @@ jobs:
         run: |
           python -m pip check mountwizzard4
   
-      - uses: GabrielBB/xvfb-action@v1
-          with:
-            run: |
-              touch test.txt
-              python mw4/loader.py
+      - name: make_test_run
+        run: |
+          touch test.txt
+          python mw4/loader.py

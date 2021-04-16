@@ -456,3 +456,28 @@ def test_cycleDome_2(function):
                            'start'):
         suc = function.cycleDome()
         assert not suc
+
+
+def test_errorProgTrajectory(function):
+    function.errorProgTrajectory('test')
+
+
+def test_clearProgTrajectory_1(function):
+    suc = function.clearProgTrajectory()
+    assert suc
+
+
+def test_cycleProgTrajectory_1(function):
+    function.mountUp = True
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.cycleProgTrajectory()
+        assert suc
+
+
+def test_cycleProgTrajectory_2(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.cycleProgTrajectory()
+        assert not suc

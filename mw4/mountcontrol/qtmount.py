@@ -54,6 +54,7 @@ class MountSignals(PyQt5.QtCore.QObject):
     calcTLEdone = PyQt5.QtCore.pyqtSignal(object)
     statTLEdone = PyQt5.QtCore.pyqtSignal(object)
     getTLEdone = PyQt5.QtCore.pyqtSignal(object)
+    progTrajectoryDone = PyQt5.QtCore.pyqtSignal(object)
     mountUp = PyQt5.QtCore.pyqtSignal(object)
     slewFinished = PyQt5.QtCore.pyqtSignal()
     alert = PyQt5.QtCore.pyqtSignal()
@@ -546,5 +547,33 @@ class Mount(mountcontrol.mount.Mount):
         worker = Worker(self.dome.poll)
         worker.signals.finished.connect(self.clearDome)
         worker.signals.error.connect(self.errorDome)
+        self.threadPool.start(worker)
+        return True
+
+    def errorProgTrajectory(self, e):
+        """
+        :return: true for test purpose
+        """
+        self.log.warning(f'Cycle error: {e}')
+        return True
+
+    def clearProgTrajectory(self):
+        """
+        :return: true for test purpose
+        """
+        self.signals.progTrajectoryDone.emit(self.satellite.trajectoryParams)
+        return True
+
+    def cycleProgTrajectory(self):
+        """
+        :return: success
+        """
+        if not self.mountUp:
+            self.signals.progTrajectoryDone.emit(self.satellite.trajectoryParams)
+            return False
+
+        worker = Worker(self.dome.poll)
+        worker.signals.finished.connect(self.clearProgTrajectory)
+        worker.signals.error.connect(self.errorProgTrajectory)
         self.threadPool.start(worker)
         return True

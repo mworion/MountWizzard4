@@ -575,14 +575,14 @@ class Satellite(object):
             return False
 
         if tleParams.jdStart is not None and self.satOrbits:
-            time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdStart)
-            self.ui.satTrajectoryStart.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
+            t = tleParams.jdStart.utc_strftime('%Y-%m-%d  %H:%M:%S')
+            self.ui.satTrajectoryStart.setText(t)
         else:
             self.ui.satTrajectoryStart.setText('No transit')
 
         if tleParams.jdEnd is not None and self.satOrbits:
-            time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdEnd)
-            self.ui.satTrajectoryEnd.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
+            t = tleParams.jdEnd.utc_strftime('%Y-%m-%d  %H:%M:%S')
+            self.ui.satTrajectoryEnd.setText(t)
         else:
             self.ui.satTrajectoryEnd.setText('No transit')
 

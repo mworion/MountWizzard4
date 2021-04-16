@@ -377,9 +377,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def getFW(self):
         """
-        getFW prepares the worker thread and the signals for getting the build
-        data of the mount computer.
-
         :return: success
         """
         if not self.mountUp:
@@ -408,9 +405,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def getLocation(self):
         """
-        getLocation prepares the worker thread and the signals for getting the
-        mount location data.
-
         :return: success
         """
         if not self.mountUp:
@@ -439,9 +433,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def calcTLE(self):
         """
-        getCalcTLE prepares the worker thread and the signals for getting the
-        mount location data.
-
         :return: success
         """
         if not self.mountUp:
@@ -470,9 +461,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def statTLE(self):
         """
-        statTLE prepares the worker thread and the signals for getting the mount
-        location data.
-
         :return: success
         """
         if not self.mountUp:
@@ -501,9 +489,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def getTLE(self):
         """
-        getTLE prepares the worker thread and the signals for getting the mount
-        location data.
-
         :return: success
         """
         if not self.mountUp:

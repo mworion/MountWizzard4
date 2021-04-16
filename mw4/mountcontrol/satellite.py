@@ -41,8 +41,8 @@ class TLEParams(object):
 
     log = logging.getLogger(__name__)
 
-    def __init__(self):
-
+    def __init__(self, obsSite=None):
+        self.obsSite = obsSite
         self._azimuth = None
         self._altitude = None
         self._ra = None
@@ -118,8 +118,8 @@ class TLEParams(object):
     @jdStart.setter
     def jdStart(self, value):
         value = valueToFloat(value)
-        if value:
-            self._jdStart = value
+        if value and self.obsSite.utc_ut1 is not None:
+            self._jdStart = self.obsSite.ts.ut1_jd(value - self.obsSite.utc_ut1)
         else:
             self._jdStart = None
 
@@ -130,8 +130,8 @@ class TLEParams(object):
     @jdEnd.setter
     def jdEnd(self, value):
         value = valueToFloat(value)
-        if value:
-            self._jdEnd = value
+        if value and self.obsSite.utc_ut1 is not None:
+            self._jdEnd = self.obsSite.ts.ut1_jd(value - self.obsSite.utc_ut1)
         else:
             self._jdEnd = None
 
@@ -193,10 +193,11 @@ class TrajectoryParams(object):
 
     log = logging.getLogger(__name__)
 
-    def __init__(self):
+    def __init__(self, obsSite=None):
         self._jdStart = None
         self._jdEnd = None
         self._flip = None
+        self.obsSite = obsSite
 
     @property
     def flip(self):
@@ -219,8 +220,8 @@ class TrajectoryParams(object):
     @jdStart.setter
     def jdStart(self, value):
         value = valueToFloat(value)
-        if value:
-            self._jdStart = value
+        if value and self.obsSite.utc_ut1 is not None:
+            self._jdStart = self.obsSite.ts.ut1_jd(value - self.obsSite.utc_ut1)
         else:
             self._jdStart = None
 
@@ -231,8 +232,8 @@ class TrajectoryParams(object):
     @jdEnd.setter
     def jdEnd(self, value):
         value = valueToFloat(value)
-        if value:
-            self._jdEnd = value
+        if value and self.obsSite.utc_ut1 is not None:
+            self._jdEnd = self.obsSite.ts.ut1_jd(value - self.obsSite.utc_ut1)
         else:
             self._jdEnd = None
 
@@ -252,7 +253,7 @@ class Satellite(object):
     waits for it. when satellite reaches the altitude minimum, the mount
     starts to track.
 
-        >>> fw = Satellite(host='')
+        >>> fw = Satellite(host='', obsSite=None)
     """
 
     __all__ = ['Satellite',
@@ -277,13 +278,10 @@ class Satellite(object):
         'E': 'No slew to satellite requested'
     }
 
-    def __init__(self,
-                 host=None,
-                 ):
-
+    def __init__(self, host=None, obsSite=None):
         self.host = host
-        self.tleParams = TLEParams()
-        self.trajectoryParams = TrajectoryParams()
+        self.tleParams = TLEParams(obsSite=obsSite)
+        self.trajectoryParams = TrajectoryParams(obsSite=obsSite)
 
     def parseGetTLE(self, response, numberOfChunks):
         """
@@ -490,6 +488,32 @@ class Satellite(object):
         suc = self.parseCalcTLE(response, numberOfChunks)
         return suc
 
+    def getCoordsFromTLE(self, julD=None):
+        if not julD:
+            return False
+
+        conn = Connection(self.host)
+        command = f':TLEGAZ{julD}#:TLEGEQ{julD}#'
+        suc, response, numberOfChunks = conn.communicate(command)
+        if not suc:
+            return False
+
+        value = response[0].split(',')
+        if len(value) != 2:
+            return False
+        alt, az = value
+        self.tleParams.altitude = alt
+        self.tleParams.azimuth = az
+
+        value = response[1].split(',')
+        if len(value) != 2:
+            return False
+        ra, dec = value
+        self.tleParams.ra = ra
+        self.tleParams.dec = dec
+
+        return True
+
     def slewTLE(self):
         """
         Slews to the start of the satellite transit that has been pre
@@ -555,9 +579,9 @@ class Satellite(object):
         suc = self.parseStatTLE(response, numberOfChunks)
         return suc
 
-    def parseCalcTrajectory(self, response, numberOfChunks, numData):
+    def parseProgTrajectory(self, response, numberOfChunks, numData):
         """
-        Parsing the parseCalcTrajectory command and entering the resulting
+        Parsing the parseProgTrajectory command and entering the resulting
         parameters. if no calculation could be made, the parameters were set
         to None
 
@@ -595,7 +619,7 @@ class Satellite(object):
         self.trajectoryParams.jdEnd = end
         return True
 
-    def calcTrajectoryData(self, julD=None, datas=[], replay=False):
+    def progTrajectoryData(self, julD=None, datas=[], replay=False):
         """
         set of three commands !
 
@@ -662,5 +686,5 @@ class Satellite(object):
         if not suc:
             return False
 
-        suc = self.parseCalcTrajectory(response, numberOfChunks, len(datas))
+        suc = self.parseProgTrajectory(response, numberOfChunks, len(datas))
         return suc

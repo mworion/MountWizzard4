@@ -123,10 +123,10 @@ class Model:
         """
         if model.azimuthTurns is not None:
             if model.azimuthTurns > 0:
-                text = '{0:3.2f} revs left'.format(abs(model.azimuthTurns))
+                text = '{0:3.1f} revs left'.format(abs(model.azimuthTurns))
 
             else:
-                text = '{0:3.2f} revs right'.format(abs(model.azimuthTurns))
+                text = '{0:3.1f} revs right'.format(abs(model.azimuthTurns))
 
         else:
             text = '-'
@@ -135,10 +135,10 @@ class Model:
 
         if model.altitudeTurns is not None:
             if model.altitudeTurns > 0:
-                text = '{0:3.2f} revs down'.format(abs(model.altitudeTurns))
+                text = '{0:3.1f} revs down'.format(abs(model.altitudeTurns))
 
             else:
-                text = '{0:3.2f} revs up'.format(abs(model.altitudeTurns))
+                text = '{0:3.1f} revs up'.format(abs(model.altitudeTurns))
 
         else:
             text = '-'

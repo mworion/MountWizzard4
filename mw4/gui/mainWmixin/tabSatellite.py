@@ -94,7 +94,7 @@ class Satellite(object):
         self.ui.satAfterFlip.clicked.connect(self.calcSegments)
         self.ui.satBeforeFlip.clicked.connect(self.calcSegments)
 
-        self.app.update3s.connect(self.updateOrbit)
+        self.app.update1s.connect(self.updateOrbit)
         self.app.mount.signals.pointDone.connect(self.followMount)
 
     def initConfig(self):
@@ -235,37 +235,13 @@ class Satellite(object):
             self.ui.startSatelliteTracking.setEnabled(False)
             return False
 
-        winObj = self.app.uiWindows['showSatelliteW']
-        if not winObj:
-            return False
-
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget,
-                                                    'Satellite')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        satTabVisible = self.ui.mainTabWidget.currentIndex() == tabIndex
-        if not satTabVisible:
-            return False
-
         now = self.app.mount.obsSite.ts.now()
-        observe = self.satellite.at(now)
-        subpoint = observe.subpoint()
-        self.ui.satLatitude.setText(f'{subpoint.latitude.degrees:3.2f}')
-        self.ui.satLongitude.setText(f'{subpoint.longitude.degrees:3.2f}')
-
-        difference = self.satellite - self.app.mount.obsSite.location
-        ra, dec, _ = difference.at(now).radec()
-        self.ui.satRa.setText(f'{ra.hours:3.2f}')
-        self.ui.satDec.setText(f'{dec.degrees:3.2f}')
-
-        altaz = difference.at(now).altaz()
-        alt, az, _ = altaz
-        self.ui.satAltitude.setText(f'{alt.degrees:3.2f}')
-        self.ui.satAzimuth.setText(f'{az.degrees:3.2f}')
-
+        winObj = self.app.uiWindows['showSatelliteW']
         if not winObj.get('classObj'):
-            return True
+            return False
 
-        winObj['classObj'].signals.update.emit(observe, subpoint, altaz)
+        location = self.app.mount.obsSite.location
+        winObj['classObj'].signals.update.emit(now, location)
         return True
 
     def programTLEDataToMount(self):
@@ -515,7 +491,6 @@ class Satellite(object):
         self.ui.satTrajectoryEnd.setText('-')
         self.ui.satTrajectoryFlip.setText('-')
 
-        self.updateOrbit()
         self.programTLEDataToMount()
         self.calcOrbitFromTLEInMount()
         self.showSatPasses()

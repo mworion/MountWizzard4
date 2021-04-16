@@ -36,7 +36,7 @@ class SatelliteWindowSignals(QObject):
     """
     __all__ = ['SatelliteWindowSignals']
     show = pyqtSignal(object, object, object)
-    update = pyqtSignal(object, object, object)
+    update = pyqtSignal(object, object)
 
 
 class SatelliteWindow(toolsQtWidget.MWidget):
@@ -161,18 +161,16 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         marker = mpath.Path(verts, codes)
         return marker
 
-    def updatePositions(self, observe=None, subpoint=None, altaz=None):
+    def updatePositions(self, now=None, location=None):
         """
         updatePositions is triggered once a second and update the satellite
         position in each view.
 
         :return: success
         """
-        if observe is None:
+        if now is None:
             return False
-        if subpoint is None:
-            return False
-        if altaz is None:
+        if location is None:
             return False
 
         if self.satellite is None:
@@ -185,6 +183,22 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
         if self.plotSatPosSphere2 is None:
             return False
+
+        observe = self.satellite.at(now)
+        subpoint = observe.subpoint()
+
+        difference = self.satellite - location
+        ra, dec, _ = difference.at(now).radec()
+        altaz = difference.at(now).altaz()
+        alt, az, _ = altaz
+
+        alt, az, _ = altaz
+        self.ui.satRa.setText(f'{ra.hours:3.2f}')
+        self.ui.satDec.setText(f'{dec.degrees:3.2f}')
+        self.ui.satLatitude.setText(f'{subpoint.latitude.degrees:3.2f}')
+        self.ui.satLongitude.setText(f'{subpoint.longitude.degrees:3.2f}')
+        self.ui.satAltitude.setText(f'{alt.degrees:3.2f}')
+        self.ui.satAzimuth.setText(f'{az.degrees:3.2f}')
 
         x, y, z = observe.position.km
         self.plotSatPosSphere1.set_data_3d((x, y, z))

@@ -114,31 +114,35 @@ def test_updatePositions_1(function):
 
 
 def test_updatePositions_2(function):
-    suc = function.updatePositions(observe='t')
+    suc = function.updatePositions(now='t')
     assert not suc
 
 
 def test_updatePositions_3(function):
-    suc = function.updatePositions(observe='t', subpoint='t')
+    suc = function.updatePositions(now='t', location='loc')
     assert not suc
 
 
 def test_updatePositions_4(function):
-    suc = function.updatePositions(observe='t', subpoint='t', altaz='t')
+    function.satellite = 1
+    suc = function.updatePositions(now='t', location='loc')
     assert not suc
 
 
 def test_updatePositions_5(function):
     function.satellite = 1
-    suc = function.updatePositions(observe='t', subpoint='t', altaz='t')
+    function.plotSatPosEarth = 1
+
+    suc = function.updatePositions(now='t', location='loc')
     assert not suc
 
 
 def test_updatePositions_6(function):
     function.satellite = 1
     function.plotSatPosEarth = 1
+    function.plotSatPosHorizon = 1
 
-    suc = function.updatePositions(observe='t', subpoint='t', altaz='t')
+    suc = function.updatePositions(now='t', location='loc')
     assert not suc
 
 
@@ -146,22 +150,13 @@ def test_updatePositions_7(function):
     function.satellite = 1
     function.plotSatPosEarth = 1
     function.plotSatPosHorizon = 1
+    function.plotSatPosSphere1 = 1
 
-    suc = function.updatePositions(observe='t', subpoint='t', altaz='t')
+    suc = function.updatePositions(now='t', location='loc')
     assert not suc
 
 
 def test_updatePositions_8(function):
-    function.satellite = 1
-    function.plotSatPosEarth = 1
-    function.plotSatPosHorizon = 1
-    function.plotSatPosSphere1 = 1
-
-    suc = function.updatePositions(observe='t', subpoint='t', altaz='t')
-    assert not suc
-
-
-def test_updatePositions_9(function):
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
@@ -176,10 +171,7 @@ def test_updatePositions_9(function):
     function.plotSatPosSphere2, = ax.plot([1], [1], [1])
 
     now = function.app.mount.obsSite.ts.now()
-    observe = function.satellite.at(now)
-    subpoint = observe.subpoint()
-    difference = function.satellite - function.app.mount.obsSite.location
-    altaz = difference.at(now).altaz()
+    location = function.app.mount.obsSite.location
 
     with mock.patch.object(function.plotSatPosSphere1,
                            'set_data_3d'):
@@ -189,9 +181,7 @@ def test_updatePositions_9(function):
                                    'set_data'):
                 with mock.patch.object(function.plotSatPosHorizon,
                                        'set_data'):
-                    suc = function.updatePositions(observe=observe,
-                                                   subpoint=subpoint,
-                                                   altaz=altaz)
+                    suc = function.updatePositions(now=now, location=location)
                     assert suc
 
 

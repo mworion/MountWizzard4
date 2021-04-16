@@ -187,62 +187,20 @@ def test_updateOrbit_1(function):
 
 def test_updateOrbit_2(function):
     function.satellite = 'test'
-    function.app.uiWindows['showSatelliteW'] = None
+    function.app.uiWindows['showSatelliteW'] = {}
     suc = function.updateOrbit()
     assert not suc
 
 
 def test_updateOrbit_3(function):
+    class Test1(QObject):
+        update = pyqtSignal(object, object)
+
+    class Test(QObject):
+        signals = Test1()
+
     function.satellite = 'test'
-    function.ui.mainTabWidget.setCurrentIndex(1)
-    function.app.uiWindows = {'showSatelliteW': {'test': 1}}
-    suc = function.updateOrbit()
-    assert not suc
-
-
-def test_updateOrbit_4(function):
-    class Test1(QObject):
-        update = pyqtSignal(object, object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    function.ui.mainTabWidget.setCurrentIndex(6)
     function.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
-    suc = function.updateOrbit()
-    assert suc
-
-
-def test_updateOrbit_5(function):
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    function.ui.mainTabWidget.setCurrentIndex(5)
-    function.app.uiWindows = {'showSatelliteW': {'test': 1}}
-    suc = function.updateOrbit()
-    assert not suc
-
-
-def test_updateOrbit_6(function):
-    class Test1(QObject):
-        update = pyqtSignal(object, object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    tabWidget = function.ui.mainTabWidget.findChild(QWidget, 'Satellite')
-    tabIndex = function.ui.mainTabWidget.indexOf(tabWidget)
-    function.ui.mainTabWidget.setCurrentIndex(tabIndex)
-    function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
     suc = function.updateOrbit()
     assert suc
 

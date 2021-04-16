@@ -24,6 +24,7 @@ import numpy as np
 import matplotlib.path as mpath
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 from skyfield import functions
+from skyfield.api import wgs84
 import matplotlib.pyplot as plt
 
 # local import
@@ -185,7 +186,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
 
         observe = self.satellite.at(now)
-        subpoint = observe.subpoint()
+        subpoint = wgs84.subpoint(observe)
 
         difference = self.satellite - location
         ra, dec, _ = difference.at(now).radec()
@@ -415,7 +416,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             axe.figure.canvas.draw()
             return False
 
-        subpoints = observe.subpoint()
+        subpoints = wgs84.subpoint(observe)
         lat = subpoints.latitude.radians
         lon = subpoints.longitude.radians
         elev = subpoints.elevation.m / 1000 + self.EARTH_RADIUS * 1.1
@@ -482,7 +483,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.plot(lon, lat, marker='.', markersize=5, color=self.M_YELLOW_H)
 
         ts = obsSite.ts
-        subpoint = self.satellite.at(ts.now()).subpoint()
+        subpoint = wgs84.subpoint(self.satellite.at(ts.now()))
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
         self.plotSatPosEarth, = axe.plot(lon, lat,
@@ -503,7 +504,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             if segments[0]:
                 vector = np.arange(rise, flip, step)
                 vecT = ts.tt_jd(vector)
-                subpoints = self.satellite.at(vecT).subpoint()
+                subpoints = wgs84.subpoint(self.satellite.at(vecT))
                 lat = subpoints.latitude.degrees
                 lon = subpoints.longitude.degrees
                 axe.plot(lon, lat, lw=4, color=self.colors[i])
@@ -511,7 +512,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             if segments[1]:
                 vector = np.arange(flip, settle, step)
                 vecT = ts.tt_jd(vector)
-                subpoints = self.satellite.at(vecT).subpoint()
+                subpoints = wgs84.subpoint(self.satellite.at(vecT))
                 lat = subpoints.latitude.degrees
                 lon = subpoints.longitude.degrees
                 axe.plot(lon, lat, lw=4, color=self.colors[i+3])
@@ -521,7 +522,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         step = 0.001 * (settle - rise)
         vector = np.arange(rise - 0.15, settle, step)
         vecT = ts.tt_jd(vector)
-        subpoints = self.satellite.at(vecT).subpoint()
+        subpoints = wgs84.subpoint(self.satellite.at(vecT))
         lat = subpoints.latitude.degrees
         lon = subpoints.longitude.degrees
         for slc in self.unlinkWrap(lon):

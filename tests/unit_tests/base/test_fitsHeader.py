@@ -19,7 +19,7 @@ import pytest
 
 # external packages
 from skyfield.api import Angle
-from skyfield.api import Topos
+from skyfield.api import wgs84
 
 # local import
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale

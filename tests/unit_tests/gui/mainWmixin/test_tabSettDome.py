@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
-from skyfield.toposlib import Topos
+from skyfield.api import wgs84
 
 # local import
 from tests.baseTestSetupMixins import App

@@ -20,7 +20,7 @@ import unittest.mock as mock
 import os
 
 # external packages
-from skyfield.api import Angle, Timescale, Topos, Star
+from skyfield.api import Angle, Timescale, wgs84, Star
 
 # local imports
 from mountcontrol.obsSite import ObsSite
@@ -84,7 +84,7 @@ class TestConfigData(unittest.TestCase):
         elev = 100
         lon = 100
         lat = 45
-        obsSite.location = Topos(longitude_degrees=lon,
+        obsSite.location = wgs84.latlon(longitude_degrees=lon,
                                               latitude_degrees=lat,
                                               elevation_m=elev)
         self.assertAlmostEqual(100, obsSite.location.longitude.dms()[0], 6)
@@ -1013,9 +1013,9 @@ class TestConfigData(unittest.TestCase):
 
     def test_ObsSite_setLocation_ok(self):
         obsSite = ObsSite(pathToData=pathToData)
-        observer = Topos(latitude_degrees=50,
-                                      longitude_degrees=11,
-                                      elevation_m=580)
+        observer = wgs84.latlon(latitude_degrees=50,
+                                longitude_degrees=11,
+                                elevation_m=580)
         response = ['111']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1024,9 +1024,9 @@ class TestConfigData(unittest.TestCase):
 
     def test_ObsSite_setLocation_not_ok1(self):
         obsSite = ObsSite(pathToData=pathToData)
-        observer = Topos(latitude_degrees=50,
-                                      longitude_degrees=11,
-                                      elevation_m=580)
+        observer = wgs84.latlon(latitude_degrees=50,
+                                longitude_degrees=11,
+                                elevation_m=580)
         response = ['101']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1036,9 +1036,9 @@ class TestConfigData(unittest.TestCase):
     def test_ObsSite_setLocation_not_ok2(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        observer = Topos(latitude_degrees=50,
-                                      longitude_degrees=11,
-                                      elevation_m=580)
+        observer = wgs84.latlon(latitude_degrees=50,
+                                longitude_degrees=11,
+                                elevation_m=580)
         response = ['111']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1

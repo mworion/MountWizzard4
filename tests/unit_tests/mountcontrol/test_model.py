@@ -21,7 +21,7 @@ import numpy
 
 # external packages
 import skyfield.api
-from skyfield.api import Topos
+from skyfield.api import wgs84
 
 # local imports
 from mountcontrol.model import ModelStar
@@ -30,7 +30,7 @@ from mountcontrol.model import AlignStar
 from mountcontrol import obsSite
 import mountcontrol
 
-obsSite.location = Topos(latitude_degrees=0,
+obsSite.location = wgs84.latlon(latitude_degrees=0,
                          longitude_degrees=0,
                          elevation_m=0)
 

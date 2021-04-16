@@ -32,7 +32,7 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QPushButton, QWidget
 from PyQt5.QtCore import QTimer
 from mountcontrol.qtmount import Mount
-from skyfield.api import Topos
+from skyfield.api import wgs84
 from skyfield.api import load
 
 # local import
@@ -123,7 +123,7 @@ def function_setup_teardown(qtbot):
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
-        mount.obsSite.location = Topos(latitude_degrees=20,
+        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
         camera = Camera(app=Test1())

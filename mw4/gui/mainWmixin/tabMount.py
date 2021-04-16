@@ -20,7 +20,7 @@ import datetime
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-from skyfield.toposlib import Topos
+from skyfield.api import wgs84
 
 # local import
 from base import transform
@@ -724,9 +724,9 @@ class Mount(object):
         if value is None:
             return False
 
-        topo = Topos(longitude=value,
-                     latitude=obs.location.latitude,
-                     elevation_m=obs.location.elevation.m)
+        topo = wgs84.latlon(longitude=value,
+                            latitude=obs.location.latitude,
+                            elevation_m=obs.location.elevation.m)
         obs.location = topo
 
         if not self.deviceStat.get('mount', ''):
@@ -770,9 +770,9 @@ class Mount(object):
         if value is None:
             return False
 
-        topo = Topos(longitude=obs.location.longitude,
-                     latitude=value,
-                     elevation_m=obs.location.elevation.m)
+        topo = wgs84.latlon(longitude=obs.location.longitude,
+                            latitude=value,
+                            elevation_m=obs.location.elevation.m)
         obs.location = topo
 
         if not self.deviceStat.get('mount', ''):
@@ -815,9 +815,9 @@ class Mount(object):
         if not ok:
             return False
 
-        topo = Topos(longitude=obs.location.longitude,
-                     latitude=obs.location.latitude,
-                     elevation_m=value)
+        topo = wgs84.latlon(longitude=obs.location.longitude,
+                            latitude=obs.location.latitude,
+                            elevation_m=value)
         obs.location = topo
 
         if not self.deviceStat.get('mount', ''):

@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
-from skyfield.toposlib import Topos
+from skyfield.api import wgs84
 
 # local import
 from gui.mainWmixin.tabSettParkPos import SettParkPos
@@ -51,7 +51,7 @@ def module_setup_teardown(qtbot):
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
-        mount.obsSite.location = Topos(latitude_degrees=20,
+        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
 

@@ -20,7 +20,7 @@ from queue import Queue
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
-from skyfield.api import Topos, load, Loader
+from skyfield.api import wgs84, load, Loader
 
 # local import
 
@@ -224,7 +224,7 @@ class Mount(QObject):
         AzTarget = None
         AltTarget = None
         pierside = None
-        location = Topos(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+        location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         ts = load.timescale(builtin=True)
         timeJD = ts.now()
         loader = Loader('tests/temp', verbose=False)

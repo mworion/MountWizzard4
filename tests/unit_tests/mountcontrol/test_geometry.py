@@ -19,7 +19,7 @@ import pytest
 import os
 
 # external packages
-from skyfield.api import Angle, Topos
+from skyfield.api import Angle, wgs84
 import numpy as np
 
 # local imports
@@ -33,9 +33,9 @@ def function():
     m = Mount(host='192.168.2.15',
               pathToData=os.getcwd() + '/data',
               verbose=True)
-    m.obsSite.location = Topos(latitude_degrees=90,
-                               longitude_degrees=11,
-                               elevation_m=500)
+    m.obsSite.location = wgs84.latlon(latitude_degrees=90,
+                                      longitude_degrees=11,
+                                      elevation_m=500)
     yield m
 
 

@@ -24,7 +24,7 @@ import platform
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
-from skyfield.api import Topos
+from skyfield.api import wgs84
 from importlib_metadata import version
 
 # local import
@@ -199,9 +199,9 @@ class MountWizzard4(QObject):
         lat = self.config.get('topoLat', 51.47)
         lon = self.config.get('topoLon', 0)
         elev = self.config.get('topoElev', 46)
-        topo = Topos(longitude_degrees=lon,
-                     latitude_degrees=lat,
-                     elevation_m=elev)
+        topo = wgs84.latlon(longitude_degrees=lon,
+                            latitude_degrees=lat,
+                            elevation_m=elev)
 
         config = self.config.get('mainW', {})
         if config.get('loglevelTrace', False):

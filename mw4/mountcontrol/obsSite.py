@@ -18,12 +18,14 @@
 import logging
 
 # external packages
-import skyfield.api as api
+from skyfield.api import wgs84, Angle, load, Loader
+from skyfield.toposlib import GeographicPosition
 import skyfield.starlib as starlib
 
 # local imports
 from .connection import Connection
 from .convert import stringToAngle
+from .convert import stringToDegree
 from .convert import valueToFloat
 from .convert import valueToInt
 from .convert import valueToAngle
@@ -115,9 +117,9 @@ class ObsSite(object):
         :return:
         """
         if self.pathToData:
-            self.loader = api.Loader(self.pathToData, verbose=self.verbose)
+            self.loader = Loader(self.pathToData, verbose=self.verbose)
         else:
-            self.loader = api.load
+            self.loader = load
 
         self.ts = self.loader.timescale(builtin=True)
         self.log.debug('Timescale is using built-in')
@@ -129,7 +131,7 @@ class ObsSite(object):
 
     @location.setter
     def location(self, value):
-        if isinstance(value, api.Topos):
+        if isinstance(value, GeographicPosition):
             self._location = value
             return
 
@@ -144,21 +146,17 @@ class ObsSite(object):
             return
 
         lat, lon, elev = value
-        if not isinstance(lat, api.Angle):
-            lat = stringToAngle(lat, preference='degrees')
-
-        if not isinstance(lon, api.Angle):
-            lon = stringToAngle(lon, preference='degrees')
-
+        lat = stringToDegree(lat)
+        lon = stringToDegree(lon)
         elev = valueToFloat(elev)
         if lat is None or lon is None or elev is None:
             self._location = None
             self.log.info(f'Malformed value: {value}')
             return
 
-        self._location = api.Topos(longitude=lon,
-                                   latitude=lat,
-                                   elevation_m=elev)
+        self._location = wgs84.latlon(latitude_degrees=lat,
+                                      longitude_degrees=lon,
+                                      elevation_m=elev)
 
     @property
     def timeJD(self):
@@ -197,7 +195,7 @@ class ObsSite(object):
             self._timeSidereal = stringToAngle(value, preference='hours')
         elif isinstance(value, float):
             self._timeSidereal = valueToAngle(value, preference='hours')
-        elif isinstance(value, api.Angle):
+        elif isinstance(value, Angle):
             self._timeSidereal = value
         else:
             self._timeSidereal = None
@@ -208,7 +206,7 @@ class ObsSite(object):
 
     @raJNow.setter
     def raJNow(self, value):
-        if isinstance(value, api.Angle):
+        if isinstance(value, Angle):
             self._raJNow = value
             return
         self._raJNow = valueToAngle(value, preference='hours')
@@ -219,7 +217,7 @@ class ObsSite(object):
 
     @raJNowTarget.setter
     def raJNowTarget(self, value):
-        if isinstance(value, api.Angle):
+        if isinstance(value, Angle):
             self._raJNowTarget = value
             return
         self._raJNowTarget = stringToAngle(value, preference='hours')
@@ -231,7 +229,7 @@ class ObsSite(object):
         else:
             # ha is always positive between 0 and 24 hours
             ha = (self._timeSidereal.hours - self._raJNow.hours + 24) % 24
-            return api.Angle(hours=ha)
+            return Angle(hours=ha)
 
     @property
     def haJNowTarget(self):
@@ -240,7 +238,7 @@ class ObsSite(object):
         else:
             # ha is always positive between 0 and 24 hours
             ha = (self._timeSidereal.hours - self._raJNowTarget.hours + 24) % 24
-            return api.Angle(hours=ha)
+            return Angle(hours=ha)
 
     @property
     def decJNow(self):
@@ -248,7 +246,7 @@ class ObsSite(object):
 
     @decJNow.setter
     def decJNow(self, value):
-        if isinstance(value, api.Angle):
+        if isinstance(value, Angle):
             self._decJNow = value
             return
         self._decJNow = valueToAngle(value, preference='degrees')
@@ -259,7 +257,7 @@ class ObsSite(object):
 
     @decJNowTarget.setter
     def decJNowTarget(self, value):
-        if isinstance(value, api.Angle):
+        if isinstance(value, Angle):
             self._decJNowTarget = value
             return
         self._decJNowTarget = stringToAngle(value, preference='degrees')
@@ -270,7 +268,7 @@ class ObsSite(object):
 
     @angularPosRA.setter
     def angularPosRA(self, value):
-        if isinstance(value, api.Angle):
+        if isinstance(value, Angle):
             self._angularPosRA = value
             return
         self._angularPosRA = valueToAngle(value, preference='degrees')
@@ -281,7 +279,7 @@ class ObsSite(object):
 
     @angularPosDEC.setter
     def angularPosDEC(self, value):
-        if isinstance(value, api.Angle):
+        if isinstance(value, Angle):
             self._angularPosDEC = value
             return
         self._angularPosDEC = valueToAngle(value, preference='degrees')
@@ -292,7 +290,7 @@ class ObsSite(object):
 
     @angularPosRATarget.setter
     def angularPosRATarget(self, value):
-        if isinstance(value, api.Angle):
+        if isinstance(value, Angle):
             self._angularPosRATarget = value
             return
         self._angularPosRATarget = valueToAngle(value, preference='degrees')
@@ -303,7 +301,7 @@ class ObsSite(object):
 
     @angularPosDECTarget.setter
     def angularPosDECTarget(self, value):
-        if isinstance(value, api.Angle):
+        if isinstance(value, Angle):
             self._angularPosDECTarget = value
             return
         self._angularPosDECTarget = valueToAngle(value, preference='degrees')
@@ -341,7 +339,7 @@ class ObsSite(object):
 
     @Alt.setter
     def Alt(self, value):
-        if isinstance(value, api.Angle):
+        if isinstance(value, Angle):
             self._Alt = value
             return
         self._Alt = valueToAngle(value, preference='degrees')
@@ -352,7 +350,7 @@ class ObsSite(object):
 
     @AltTarget.setter
     def AltTarget(self, value):
-        if isinstance(value, api.Angle):
+        if isinstance(value, Angle):
             self._AltTarget = value
             return
         self._AltTarget = stringToAngle(value, preference='degrees')
@@ -363,7 +361,7 @@ class ObsSite(object):
 
     @Az.setter
     def Az(self, value):
-        if isinstance(value, api.Angle):
+        if isinstance(value, Angle):
             self._Az = value
             return
         self._Az = valueToAngle(value, preference='degrees')
@@ -374,7 +372,7 @@ class ObsSite(object):
 
     @AzTarget.setter
     def AzTarget(self, value):
-        if isinstance(value, api.Angle):
+        if isinstance(value, Angle):
             self._AzTarget = value
             return
         self._AzTarget = stringToAngle(value, preference='degrees')
@@ -587,7 +585,7 @@ class ObsSite(object):
         :param az_degrees:      azimuth in degrees float
         :return:        success
         """
-        hasAngles = isinstance(alt, api.Angle) and isinstance(az, api.Angle)
+        hasAngles = isinstance(alt, Angle) and isinstance(az, Angle)
         altHasFloat = isinstance(alt_degrees, (float, int))
         azHasFloat = isinstance(az_degrees, (float, int))
 
@@ -595,8 +593,8 @@ class ObsSite(object):
             pass
 
         elif altHasFloat and azHasFloat:
-            alt = api.Angle(degrees=alt_degrees)
-            az = api.Angle(degrees=az_degrees)
+            alt = Angle(degrees=alt_degrees)
+            az = Angle(degrees=az_degrees)
 
         else:
             return False
@@ -672,7 +670,7 @@ class ObsSite(object):
         :return:       success
         """
         hasTarget = isinstance(target, starlib.Star)
-        hasAngles = isinstance(ra, api.Angle) and isinstance(dec, api.Angle)
+        hasAngles = isinstance(ra, Angle) and isinstance(dec, Angle)
         raHasFloat = isinstance(ra_hours, (float, int))
         decHasFloat = isinstance(dec_degrees, (float, int))
         if hasTarget:
@@ -683,8 +681,8 @@ class ObsSite(object):
             pass
 
         elif raHasFloat and decHasFloat:
-            ra = api.Angle(hours=ra_hours, preference='hours')
-            dec = api.Angle(degrees=dec_degrees)
+            ra = Angle(hours=ra_hours, preference='hours')
+            dec = Angle(degrees=dec_degrees)
 
         else:
             return False
@@ -749,7 +747,7 @@ class ObsSite(object):
         :return:       success
         """
         hasTarget = isinstance(target, starlib.Star)
-        hasAngles = isinstance(ra, api.Angle) and isinstance(dec, api.Angle)
+        hasAngles = isinstance(ra, Angle) and isinstance(dec, Angle)
         decHasFloat = isinstance(ra_degrees, (float, int))
         raHasFloat = isinstance(dec_degrees, (float, int))
         if hasTarget:
@@ -760,8 +758,8 @@ class ObsSite(object):
             pass
 
         elif raHasFloat and decHasFloat:
-            ra = api.Angle(hours=ra_degrees)
-            dec = api.Angle(degrees=dec_degrees)
+            ra = Angle(hours=ra_degrees)
+            dec = Angle(degrees=dec_degrees)
 
         else:
             return False
@@ -857,7 +855,7 @@ class ObsSite(object):
         :param      obs:        skyfield.api.Topos of site
         :return:    success
         """
-        if not isinstance(obs, api.Topos):
+        if not isinstance(obs, GeographicPosition):
             return False
 
         conn = Connection(self.host)
@@ -903,7 +901,7 @@ class ObsSite(object):
         :param      lat_degrees:  coordinates as float
         :return:    success
         """
-        hasAngle = isinstance(lat, api.Angle)
+        hasAngle = isinstance(lat, Angle)
         hasFloat = isinstance(lat_degrees, (float, int))
         hasStr = isinstance(lat, str)
         if hasAngle:
@@ -959,7 +957,7 @@ class ObsSite(object):
         :param      lon_degrees:  coordinates as float
         :return:    success
         """
-        hasAngle = isinstance(lon, api.Angle)
+        hasAngle = isinstance(lon, Angle)
         hasFloat = isinstance(lon_degrees, (float, int))
         hasStr = isinstance(lon, str)
         if hasAngle:

@@ -24,9 +24,8 @@ import skyfield.timelib
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QWidget
 from skyfield.api import EarthSatellite
-from skyfield.api import Angle, Topos
+from skyfield.api import Angle, wgs84
 from sgp4.exporter import export_tle
 import numpy as np
 
@@ -413,12 +412,12 @@ def test_calcSatelliteMeridianTransit(function):
            '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
 
     satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    loc = Topos(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
+    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
     function.calcSatelliteMeridianTransit(satellite, loc)
 
 
 def test_addMeridianTransit_1(function):
-    loc = Topos(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
+    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
     tle = ['NOAA 8',
            '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
            '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']

@@ -28,7 +28,7 @@ from PyQt5.QtWidgets import QWidget, QMessageBox
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
-from skyfield.api import Topos, Star, Angle
+from skyfield.api import wgs84, Star, Angle
 from mountcontrol.modelStar import ModelStar
 
 # local import
@@ -52,7 +52,7 @@ def function(module):
         threadPool = QThreadPool()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData=Path('tests/data'))
-        mount.obsSite.location = Topos(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+        mount.obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         update1s = pyqtSignal()
         showAnalyse = pyqtSignal(object)
         message = pyqtSignal(str, int)

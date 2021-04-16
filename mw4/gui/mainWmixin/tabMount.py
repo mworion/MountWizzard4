@@ -724,8 +724,8 @@ class Mount(object):
         if value is None:
             return False
 
-        topo = wgs84.latlon(longitude=value,
-                            latitude=obs.location.latitude,
+        topo = wgs84.latlon(longitude_degrees=value.degrees,
+                            latitude_degrees=obs.location.latitude.degrees,
                             elevation_m=obs.location.elevation.m)
         obs.location = topo
 
@@ -770,8 +770,8 @@ class Mount(object):
         if value is None:
             return False
 
-        topo = wgs84.latlon(longitude=obs.location.longitude,
-                            latitude=value,
+        topo = wgs84.latlon(longitude_degrees=obs.location.longitude.degrees,
+                            latitude_degrees=value.degrees,
                             elevation_m=obs.location.elevation.m)
         obs.location = topo
 
@@ -815,8 +815,8 @@ class Mount(object):
         if not ok:
             return False
 
-        topo = wgs84.latlon(longitude=obs.location.longitude,
-                            latitude=obs.location.latitude,
+        topo = wgs84.latlon(longitude_degrees=obs.location.longitude.degrees,
+                            latitude_degrees=obs.location.latitude.degrees,
                             elevation_m=value)
         obs.location = topo
 

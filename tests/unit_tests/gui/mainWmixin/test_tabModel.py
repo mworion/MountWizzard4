@@ -249,7 +249,7 @@ def test_updateTurnKnobsGUI_altitudeTurns_1(function):
     value = 1.5
     function.app.mount.model.altitudeTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '1.50 revs down' == function.ui.altitudeTurns.text()
+    assert '1.5 revs down' == function.ui.altitudeTurns.text()
     value = None
     function.app.mount.model.altitudeTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
@@ -260,7 +260,7 @@ def test_updateTurnKnobsGUI_altitudeTurns_2(function):
     value = -1.5
     function.app.mount.model.altitudeTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '1.50 revs up' == function.ui.altitudeTurns.text()
+    assert '1.5 revs up' == function.ui.altitudeTurns.text()
     value = None
     function.app.mount.model.altitudeTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
@@ -271,7 +271,7 @@ def test_updateTurnKnobsGUI_azimuthTurns_1(function):
     value = 1.5
     function.app.mount.model.azimuthTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '1.50 revs left' == function.ui.azimuthTurns.text()
+    assert '1.5 revs left' == function.ui.azimuthTurns.text()
     value = None
     function.app.mount.model.azimuthTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
@@ -282,7 +282,7 @@ def test_updateTurnKnobsGUI_azimuthTurns_2(function):
     value = -1.5
     function.app.mount.model.azimuthTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '1.50 revs right' == function.ui.azimuthTurns.text()
+    assert '1.5 revs right' == function.ui.azimuthTurns.text()
     value = None
     function.app.mount.model.azimuthTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)

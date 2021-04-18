@@ -497,25 +497,27 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             settle = satOrbit['settle'].tt
             step = 0.005 * (settle - rise)
 
-            if satOrbit['transit'] is None:
-                satOrbit['transit'] = satOrbit['settle']
+            if satOrbit['flip'] is None:
+                satOrbit['flip'] = satOrbit['settle']
 
-            transit = satOrbit['transit'].tt
+            flip = satOrbit['flip'].tt
             if segments[0]:
-                vector = np.arange(rise, transit, step)
+                vector = np.arange(rise, flip, step)
                 vecT = ts.tt_jd(vector)
                 subpoints = wgs84.subpoint(self.satellite.at(vecT))
                 lat = subpoints.latitude.degrees
                 lon = subpoints.longitude.degrees
-                axe.plot(lon, lat, lw=4, color=self.colors[i])
+                for slc in self.unlinkWrap(lon):
+                    axe.plot(lon[slc], lat[slc], lw=4, color=self.colors[i])
 
             if segments[1]:
-                vector = np.arange(transit, settle, step)
+                vector = np.arange(flip, settle, step)
                 vecT = ts.tt_jd(vector)
                 subpoints = wgs84.subpoint(self.satellite.at(vecT))
                 lat = subpoints.latitude.degrees
                 lon = subpoints.longitude.degrees
-                axe.plot(lon, lat, lw=4, color=self.colors[i+3])
+                for slc in self.unlinkWrap(lon):
+                    axe.plot(lon[slc], lat[slc], lw=4, color=self.colors[i + 3])
 
         rise = satOrbits[0]['rise'].tt
         settle = satOrbits[-1]['settle'].tt
@@ -571,21 +573,25 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             settle = satOrbit['settle'].tt
             step = 0.005 * (settle - rise)
 
-            if satOrbit['transit'] is None:
-                satOrbit['transit'] = satOrbit['settle']
+            if satOrbit['flip'] is None:
+                satOrbit['flip'] = satOrbit['settle']
 
-            transit = satOrbit['transit'].tt
+            flip = satOrbit['flip'].tt
             if segments[0]:
-                vector = np.arange(rise, transit, step)
+                vector = np.arange(rise, flip, step)
                 vecT = ts.tt_jd(vector)
                 alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
-                axe.plot(az.degrees, alt.degrees, lw=4, color=self.colors[i])
+                for slc in self.unlinkWrap(az.degrees):
+                    axe.plot(az.degrees[slc], alt.degrees[slc], lw=4,
+                             color=self.colors[i])
 
             if segments[1]:
-                vector = np.arange(transit, settle, step)
+                vector = np.arange(flip, settle, step)
                 vecT = ts.tt_jd(vector)
                 alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
-                axe.plot(az.degrees, alt.degrees, lw=4, color=self.colors[i+3])
+                for slc in self.unlinkWrap(az.degrees):
+                    axe.plot(az.degrees[slc], alt.degrees[slc], lw=4,
+                             color=self.colors[i + 3])
 
         ts = obsSite.ts
         alt, az, _ = (self.satellite - obsSite.location).at(ts.now()).altaz()

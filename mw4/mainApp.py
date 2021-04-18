@@ -362,9 +362,9 @@ class MountWizzard4(QObject):
         :return:    status how it was called
         """
         if status and not self.mountUp:
+            self.mount.cycleSetting()
             self.mount.getFW()
             self.mount.getLocation()
-            self.mount.cycleSetting()
             self.mainW.refreshName()
             self.mainW.refreshModel()
             self.mount.getTLE()

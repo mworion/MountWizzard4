@@ -428,7 +428,60 @@ def test_addMeridianTransit_1(function):
                            'settle': ts.tt_jd(2459215.7)},
                           {'rise': ts.tt_jd(2459216.5),
                            'settle': ts.tt_jd(2459216.7)}]
-    function.addMeridianTransit(loc)
+    suc = function.addMeridianTransit(loc)
+    assert suc
+
+
+def test_calcMountFlip(function):
+    tle = ['NOAA 15 [B]',
+           '1 25338U 98030A   21104.44658620  .00000027  00000-0  29723-4 0  9990',
+           '2 25338  98.6888 133.5239 0011555 106.3612 253.8839 14.26021970192127']
+
+    satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
+    function.calcMountFlip(satellite, loc, 0)
+
+
+def test_addMountFlip_1(function):
+    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
+    tle = ['NOAA 15 [B]',
+           '1 25338U 98030A   21104.44658620  .00000027  00000-0  29723-4 0  9990',
+           '2 25338  98.6888 133.5239 0011555 106.3612 253.8839 14.26021970192127']
+    ts = function.app.mount.obsSite.ts
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    function.satOrbits = [{'rise': ts.tt_jd(2459323.2324153692),
+                           'culminate': ts.tt_jd(2459323.237090508),
+                           'transit': ts.tt_jd(2459323.2386906403),
+                           'settle': ts.tt_jd(2459323.241785044)}]
+    suc = function.addMountFlip(loc, 0)
+    assert suc
+
+
+def test_addMountFlip_2(function):
+    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
+    tle = ['NOAA 15 [B]',
+           '1 25338U 98030A   21104.44658620  .00000027  00000-0  29723-4 0  9990',
+           '2 25338  98.6888 133.5239 0011555 106.3612 253.8839 14.26021970192127']
+    ts = function.app.mount.obsSite.ts
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    function.satOrbits = [{'rise': ts.tt_jd(2459323.2324153692),
+                           'culminate': ts.tt_jd(2459323.237090508),
+                           'transit': ts.tt_jd(2459323.2386906403),
+                           'settle': ts.tt_jd(2459323.241785044)}]
+
+    start = function.satOrbits[0]['transit'].tt
+    function.addMountFlip(loc, 0)
+    t1 = function.satOrbits[0]['flip'].tt
+    assert t1 > start
+    function.addMountFlip(loc, 5)
+    t2 = function.satOrbits[0]['flip'].tt
+    assert t2 > t1
+    suc = function.addMountFlip(loc, 10)
+    t3 = function.satOrbits[0]['flip'].tt
+    assert t3 > t2
+    assert suc
 
 
 def test_showSatPasses_1(function):
@@ -445,8 +498,10 @@ def test_showSatPasses_1(function):
                                'extractFirstOrbits'):
             with mock.patch.object(function,
                                    'addMeridianTransit'):
-                suc = function.showSatPasses()
-                assert suc
+                with mock.patch.object(function,
+                                       'addMountFlip'):
+                    suc = function.showSatPasses()
+                    assert suc
 
 
 def test_calcDuration_1(function):
@@ -466,8 +521,8 @@ def test_calcDuration_3(function):
 
 def test_calcSegments_1(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satBeforeTransit.setChecked(True)
-    function.ui.satAfterTransit.setChecked(False)
+    function.ui.satBeforeFlip.setChecked(True)
+    function.ui.satAfterFlip.setChecked(False)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
                            'culminate': ts.tt_jd(2459215.6),
@@ -484,8 +539,8 @@ def test_calcSegments_1(function):
 
 def test_calcSegments_2(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satBeforeTransit.setChecked(False)
-    function.ui.satAfterTransit.setChecked(True)
+    function.ui.satBeforeFlip.setChecked(False)
+    function.ui.satAfterFlip.setChecked(True)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
                            'culminate': ts.tt_jd(2459215.6),
@@ -498,8 +553,8 @@ def test_calcSegments_2(function):
                                    'sendSatelliteData'):
                 suc = function.calcSegments()
                 assert suc
-    function.ui.satBeforeTransit.setChecked(True)
-    function.ui.satAfterTransit.setChecked(True)
+    function.ui.satBeforeFlip.setChecked(True)
+    function.ui.satAfterFlip.setChecked(True)
 
 
 def test_extractSatelliteData_1(function):

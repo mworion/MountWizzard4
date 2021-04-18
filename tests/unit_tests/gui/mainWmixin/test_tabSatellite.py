@@ -466,11 +466,11 @@ def test_calcDuration_3(function):
 
 def test_calcSegments_1(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satBeforeFlip.setChecked(True)
-    function.ui.satAfterFlip.setChecked(False)
+    function.ui.satBeforeTransit.setChecked(True)
+    function.ui.satAfterTransit.setChecked(False)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
-                           'flip': ts.tt_jd(2459215.6),
+                           'culminate': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
     with mock.patch.object(function.app.mount.satellite,
                            'calcTLE'):
@@ -484,11 +484,11 @@ def test_calcSegments_1(function):
 
 def test_calcSegments_2(function):
     ts = function.app.mount.obsSite.ts
-    function.ui.satBeforeFlip.setChecked(False)
-    function.ui.satAfterFlip.setChecked(True)
+    function.ui.satBeforeTransit.setChecked(False)
+    function.ui.satAfterTransit.setChecked(True)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'transit': ts.tt_jd(2459215.6),
-                           'flip': ts.tt_jd(2459215.6),
+                           'culminate': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
     with mock.patch.object(function.app.mount.satellite,
                            'calcTLE'):
@@ -498,8 +498,8 @@ def test_calcSegments_2(function):
                                    'sendSatelliteData'):
                 suc = function.calcSegments()
                 assert suc
-    function.ui.satBeforeFlip.setChecked(True)
-    function.ui.satAfterFlip.setChecked(True)
+    function.ui.satBeforeTransit.setChecked(True)
+    function.ui.satAfterTransit.setChecked(True)
 
 
 def test_extractSatelliteData_1(function):

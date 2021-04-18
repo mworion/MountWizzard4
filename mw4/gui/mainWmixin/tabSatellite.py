@@ -64,17 +64,17 @@ class Satellite(object):
             0: {'rise': self.ui.satRise_1,
                 'culminate': self.ui.satCulminate_1,
                 'settle': self.ui.satSettle_1,
-                'flip': self.ui.satFlip_1,
+                'transit': self.ui.satTransit_1,
                 'date': self.ui.satDate_1},
             1: {'rise': self.ui.satRise_2,
                 'culminate': self.ui.satCulminate_2,
                 'settle': self.ui.satSettle_2,
-                'flip': self.ui.satFlip_2,
+                'transit': self.ui.satTransit_2,
                 'date': self.ui.satDate_2},
             2: {'rise': self.ui.satRise_3,
                 'culminate': self.ui.satCulminate_3,
                 'settle': self.ui.satSettle_3,
-                'flip': self.ui.satFlip_3,
+                'transit': self.ui.satTransit_3,
                 'date': self.ui.satDate_3}
         }
         self.satOrbits = dict()
@@ -91,8 +91,8 @@ class Satellite(object):
         self.app.mount.signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
         self.app.mount.signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
         self.ui.isOnline.stateChanged.connect(self.loadTLEDataFromSourceURLs)
-        self.ui.satAfterFlip.clicked.connect(self.calcSegments)
-        self.ui.satBeforeFlip.clicked.connect(self.calcSegments)
+        self.ui.satAfterTransit.clicked.connect(self.calcSegments)
+        self.ui.satBeforeTransit.clicked.connect(self.calcSegments)
 
         self.app.update1s.connect(self.updateOrbit)
         self.app.mount.signals.pointDone.connect(self.followMount)
@@ -105,8 +105,8 @@ class Satellite(object):
         self.setupSatelliteSourceURLsDropDown()
         self.ui.filterSatellite.setText(config.get('filterSatellite'))
         self.ui.domeAutoFollowSat.setChecked(config.get('domeAutoFollowSat', False))
-        self.ui.satBeforeFlip.setChecked(config.get('satBeforeFlip', True))
-        self.ui.satAfterFlip.setChecked(config.get('satAfterFlip', True))
+        self.ui.satBeforeTransit.setChecked(config.get('satBeforeTransit', True))
+        self.ui.satAfterTransit.setChecked(config.get('satAfterTransit', True))
 
         if not self.app.automation:
             self.installPath = self.app.mwGlob['dataDir']
@@ -123,8 +123,8 @@ class Satellite(object):
         config = self.app.config['mainW']
         config['filterSatellite'] = self.ui.filterSatellite.text()
         config['domeAutoFollowSat'] = self.ui.domeAutoFollowSat.isChecked()
-        config['satBeforeFlip'] = self.ui.satBeforeFlip.isChecked()
-        config['satAfterFlip'] = self.ui.satAfterFlip.isChecked()
+        config['satBeforeTransit'] = self.ui.satBeforeTransit.isChecked()
+        config['satAfterTransit'] = self.ui.satAfterTransit.isChecked()
         return True
 
     def setupSatelliteSourceURLsDropDown(self):
@@ -364,9 +364,9 @@ class Satellite(object):
             t, y = almanac.find_discrete(satOrbit['rise'],
                                          satOrbit['settle'], f)
             if t:
-                satOrbit['flip'] = t[0]
+                satOrbit['transit'] = t[0]
             else:
-                satOrbit['flip'] = None
+                satOrbit['transit'] = None
 
     def showSatPasses(self):
         """
@@ -397,23 +397,23 @@ class Satellite(object):
             settleT = satOrbit.get('settle', None)
             if settleT is not None:
                 settleStr = settleT.utc_strftime(fString)
-            flipT = satOrbit.get('flip', None)
-            if flipT is not None:
-                flipStr = flipT.utc_strftime(fString)
+            transitT = satOrbit.get('transit', None)
+            if transitT is not None:
+                transitStr = transitT.utc_strftime(fString)
             else:
-                flipStr = '---'
+                transitStr = '---'
 
             self.passUI[i]['rise'].setText(riseStr)
             self.passUI[i]['culminate'].setText(culminateStr)
             self.passUI[i]['settle'].setText(settleStr)
-            self.passUI[i]['flip'].setText(flipStr)
+            self.passUI[i]['transit'].setText(transitStr)
             self.passUI[i]['date'].setText(dateStr)
 
         for i in range(len(self.satOrbits), 3):
             self.passUI[i]['rise'].setText('-')
             self.passUI[i]['culminate'].setText('-')
             self.passUI[i]['settle'].setText('-')
-            self.passUI[i]['flip'].setText('-')
+            self.passUI[i]['transit'].setText('-')
             self.passUI[i]['date'].setText('-')
         return True
 
@@ -431,15 +431,15 @@ class Satellite(object):
         """
         :return:
         """
-        if self.ui.satBeforeFlip.isChecked():
+        if self.ui.satBeforeTransit.isChecked():
             start = self.satOrbits[0]['rise'].tt
         else:
-            start = self.satOrbits[0]['flip'].tt
+            start = self.satOrbits[0]['transit'].tt
 
-        if self.ui.satAfterFlip.isChecked():
+        if self.ui.satAfterTransit.isChecked():
             end = self.satOrbits[0]['settle'].tt
         else:
-            end = self.satOrbits[0]['flip'].tt
+            end = self.satOrbits[0]['transit'].tt
 
         duration = self.calcDuration(start, end)
         self.app.mount.satellite.calcTLE(julD=start, duration=duration)
@@ -508,8 +508,8 @@ class Satellite(object):
         if not winObj['classObj']:
             return False
 
-        segments = [self.ui.satBeforeFlip.isChecked(),
-                    self.ui.satAfterFlip.isChecked()]
+        segments = [self.ui.satBeforeTransit.isChecked(),
+                    self.ui.satAfterTransit.isChecked()]
 
         winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits, segments)
         return True

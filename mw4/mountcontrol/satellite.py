@@ -593,18 +593,21 @@ class Satellite(object):
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
             return False
-        if len(response) != 3:
+        if len(response) != 2 + numData:
             self.log.warning('wrong number of chunks')
             return False
 
-        if response[0] != 'N':
+        if response[0] != 'V':
             return False
-        if response[2] == 'E':
+        if response[-1] == 'E':
             return False
-        if int(response[1]) != numData:
-            return False
+        for i in range(1, numData + 1):
+            if response[i] == 'E':
+                return False
+            if int(response[i]) != i:
+                return False
 
-        value = response[2].split(',')
+        value = response[-1].split(',')
         if len(value) == 3:
             start, end, flip = value
         elif len(value) == 1:
@@ -619,7 +622,7 @@ class Satellite(object):
         self.trajectoryParams.jdEnd = end
         return True
 
-    def progTrajectoryData(self, julD=None, datas=[], replay=False):
+    def progTrajectoryData(self, julD=None, alt=[], az=[], replay=False):
         """
         set of three commands !
 
@@ -659,7 +662,8 @@ class Satellite(object):
         currently loaded orbital elements, computed for Julian Date JD (UTC).
 
         :param julD:
-        :param datas:
+        :param alt:
+        :param az:
         :param replay:
         :return:
         """
@@ -667,14 +671,12 @@ class Satellite(object):
             return False
         if isinstance(julD, skyfield.timelib.Time):
             julD = julD.tt
-        if not datas:
+        if len(alt) == 0 or len(alt) != len(az):
             return False
 
-        cmd = f':TRNEW{julD:07.6f}#'
-        for data in datas:
-            az = data[0]
-            alt = data[1]
-            cmd += f':TRADD{az:03.5f},{alt:02.5f}#'
+        cmd = f':TRNEW{julD:07.5f}#'
+        for azimuth, altitude in zip(az, alt):
+            cmd += f':TRADD{azimuth:03.5f},{altitude:02.5f}#'
 
         if replay:
             cmd += ':TRREPLAY#'
@@ -684,7 +686,8 @@ class Satellite(object):
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
+            print(response)
             return False
 
-        suc = self.parseProgTrajectory(response, numberOfChunks, len(datas))
+        suc = self.parseProgTrajectory(response, numberOfChunks, len(az))
         return suc

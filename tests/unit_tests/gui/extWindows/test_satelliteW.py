@@ -266,16 +266,16 @@ def test_drawEarth_2(function, ts):
     t4 = ts.tt_jd(tt + 0.4)
 
     satOrbits = [{'rise': t0,
-                  'flip': t0,
+                  'transit': t0,
                   'culminate': t0,
                   'settle': t1},
                  {'rise': t2,
-                  'flip': t2,
+                  'transit': t2,
                   'culminate': t2,
                   'settle': t3},
                  {'rise': t3,
                   'culminate': t3,
-                  'flip': t3,
+                  'transit': t3,
                   'settle': t4},
                  ]
     obsSite = function.app.mount.obsSite
@@ -297,16 +297,16 @@ def test_drawEarth_3(function, ts):
     t4 = ts.tt_jd(tt + 0.4)
 
     satOrbits = [{'rise': t0,
-                  'flip': t0,
+                  'transit': t0,
                   'culminate': t0,
                   'settle': t1},
                  {'rise': t2,
-                  'flip': None,
+                  'transit': None,
                   'culminate': t2,
                   'settle': t3},
                  {'rise': t3,
                   'culminate': t3,
-                  'flip': t3,
+                  'transit': t3,
                   'settle': t4},
                  ]
     obsSite = function.app.mount.obsSite
@@ -347,16 +347,16 @@ def test_drawHorizonView_2(function, ts):
     t4 = ts.tt_jd(tt + 0.4)
 
     satOrbits = [{'rise': t0,
-                  'flip': t0,
+                  'transit': t0,
                   'culminate': t0,
                   'settle': t1},
                  {'rise': t2,
-                  'flip': t2,
+                  'transit': t2,
                   'culminate': t2,
                   'settle': t3},
                  {'rise': t3,
                   'culminate': t3,
-                  'flip': t3,
+                  'transit': t3,
                   'settle': t4},
                  ]
     obsSite = function.app.mount.obsSite
@@ -378,16 +378,16 @@ def test_drawHorizonView_3(function, ts):
     t4 = ts.tt_jd(tt + 0.4)
 
     satOrbits = [{'rise': t0,
-                  'flip': t0,
+                  'transit': t0,
                   'culminate': t0,
                   'settle': t1},
                  {'rise': t2,
-                  'flip': None,
+                  'transit': None,
                   'culminate': t2,
                   'settle': t3},
                  {'rise': t3,
                   'culminate': t3,
-                  'flip': t3,
+                  'transit': t3,
                   'settle': t4},
                  ]
     obsSite = function.app.mount.obsSite
@@ -422,16 +422,16 @@ def test_drawSatellite_2(function, ts):
     t4 = ts.tt_jd(tt + 0.4)
 
     satOrbits = [{'rise': t0,
-                  'flip': t0,
+                  'transit': t0,
                   'culminate': t0,
                   'settle': t1},
                  {'rise': t2,
-                  'flip': t2,
+                  'transit': t2,
                   'culminate': t2,
                   'settle': t3},
                  {'rise': t3,
                   'culminate': t3,
-                  'flip': t3,
+                  'transit': t3,
                   'settle': t4},
                  ]
 
@@ -462,16 +462,16 @@ def test_drawSatellite_3(function, ts):
     t4 = ts.tt_jd(tt + 0.4)
 
     satOrbits = [{'rise': t0,
-                  'flip': t0,
+                  'transit': t0,
                   'culminate': t0,
                   'settle': t1},
                  {'rise': t2,
-                  'flip': t2,
+                  'transit': t2,
                   'culminate': t2,
                   'settle': t3},
                  {'rise': t3,
                   'culminate': t3,
-                  'flip': t3,
+                  'transit': t3,
                   'settle': t4},
                  ]
 

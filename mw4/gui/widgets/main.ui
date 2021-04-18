@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -1067,7 +1067,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Flip Guide Tolerance</string>
+       <string>Flip Track Tolerance</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="refractionPress">
@@ -10326,9 +10326,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_228">
       <property name="geometry">
        <rect>
-        <x>215</x>
+        <x>245</x>
         <y>20</y>
-        <width>51</width>
+        <width>31</width>
         <height>21</height>
        </rect>
       </property>
@@ -10368,7 +10368,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_306">
       <property name="geometry">
        <rect>
-        <x>310</x>
+        <x>330</x>
         <y>45</y>
         <width>31</width>
         <height>21</height>
@@ -10392,9 +10392,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>75</x>
+        <x>60</x>
         <y>45</y>
-        <width>126</width>
+        <width>161</width>
         <height>21</height>
        </rect>
       </property>
@@ -10431,7 +10431,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_327">
       <property name="geometry">
        <rect>
-        <x>215</x>
+        <x>245</x>
         <y>45</y>
         <width>26</width>
         <height>21</height>
@@ -10476,7 +10476,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>255</x>
+        <x>275</x>
         <y>45</y>
         <width>51</width>
         <height>21</height>
@@ -10518,7 +10518,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>255</x>
+        <x>275</x>
         <y>20</y>
         <width>51</width>
         <height>21</height>
@@ -10560,9 +10560,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>75</x>
+        <x>60</x>
         <y>20</y>
-        <width>126</width>
+        <width>161</width>
         <height>21</height>
        </rect>
       </property>
@@ -10612,7 +10612,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QCheckBox" name="satBeforeFlip">
+     <widget class="QCheckBox" name="satBeforeTransit">
       <property name="geometry">
        <rect>
         <x>190</x>
@@ -10625,10 +10625,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking on east meridian side only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string>Before flip</string>
+       <string>Before transit</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="satAfterFlip">
+     <widget class="QCheckBox" name="satAfterTransit">
       <property name="geometry">
        <rect>
         <x>280</x>
@@ -10641,7 +10641,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking on west meridian side only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string>After flip</string>
+       <string>After transit</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satSettle_1">
@@ -10796,7 +10796,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </font>
       </property>
       <property name="text">
-       <string>Flip</string>
+       <string>Transit</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_337">
@@ -10887,7 +10887,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>red</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="satFlip_1">
+     <widget class="QLineEdit" name="satTransit_1">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -11025,7 +11025,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>yellow</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="satFlip_2">
+     <widget class="QLineEdit" name="satTransit_2">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -11251,7 +11251,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>green</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="satFlip_3">
+     <widget class="QLineEdit" name="satTransit_3">
       <property name="enabled">
        <bool>false</bool>
       </property>

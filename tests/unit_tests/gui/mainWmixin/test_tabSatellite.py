@@ -524,7 +524,7 @@ def test_calcSegments_1(function):
     function.ui.satBeforeFlip.setChecked(True)
     function.ui.satAfterFlip.setChecked(False)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'transit': ts.tt_jd(2459215.6),
+                           'flip': ts.tt_jd(2459215.6),
                            'culminate': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
     with mock.patch.object(function.app.mount.satellite,
@@ -542,7 +542,7 @@ def test_calcSegments_2(function):
     function.ui.satBeforeFlip.setChecked(False)
     function.ui.satAfterFlip.setChecked(True)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'transit': ts.tt_jd(2459215.6),
+                           'flip': ts.tt_jd(2459215.6),
                            'culminate': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
     with mock.patch.object(function.app.mount.satellite,
@@ -753,15 +753,26 @@ def test_signalExtractSatelliteData_1(function):
 
 
 def test_getSatelliteDataFromDatabase_1(function):
+    function.app.mount.satellite.tleParams = None
     suc = function.getSatelliteDataFromDatabase()
     assert not suc
 
 
 def test_getSatelliteDataFromDatabase_2(function):
-    class Test:
-        name = 'test'
+    class Name:
+        name = ''
 
-    suc = function.getSatelliteDataFromDatabase(Test())
+    function.app.mount.satellite.tleParams = Name()
+    suc = function.getSatelliteDataFromDatabase()
+    assert suc
+
+
+def test_getSatelliteDataFromDatabase_3(function):
+    class Name:
+        name = ''
+
+    tleParams = Name()
+    suc = function.getSatelliteDataFromDatabase(tleParams=tleParams)
     assert suc
 
 

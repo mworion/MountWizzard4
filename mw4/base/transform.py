@@ -149,10 +149,10 @@ def J2000ToAltAz(ra, dec, timeJD, location):
                                                   0.0)
         decConv = np.pi / 2 - zob
 
-        ra = Angle(radians=aob, preference='degrees')
-        dec = Angle(radians=decConv, preference='degrees')
+        azimuth = Angle(radians=aob, preference='degrees')
+        altitude = Angle(radians=decConv, preference='degrees')
 
-        return ra, dec
+        return azimuth, altitude
 
 
 def diffModulus(x, y, m):

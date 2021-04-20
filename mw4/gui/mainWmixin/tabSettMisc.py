@@ -481,10 +481,10 @@ class SettMisc(object):
             runnable = ['date', '-s', f'"{timeText}"']
 
         else:
-            timeText = ''
             runnable = ''
 
-        self.log.info(f'Set computer time to {timeText}')
+        t = timeJD.astimezone(tzlocal()).strftime('%H:%M:%S')
+        self.app.message.emit(f'Set computer time to {t}', 0)
         self.log.debug(f'Command: {runnable}')
 
         try:

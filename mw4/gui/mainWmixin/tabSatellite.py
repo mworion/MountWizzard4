@@ -370,6 +370,8 @@ class Satellite(object):
     @staticmethod
     def calcMountFlip(satellite, location, trackLimit):
         """
+        x[x<0] += 2*pi
+
         :param satellite:
         :param location:
         :param trackLimit:

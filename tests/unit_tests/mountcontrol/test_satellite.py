@@ -602,6 +602,49 @@ class TestConfigData(unittest.TestCase):
             suc = sat.calcTLE(julD=1234567.8, duration=0)
             self.assertFalse(suc)
 
+    def test_getCoordsFromTLE_1(self):
+        sat = Satellite()
+        suc = sat.getCoordsFromTLE()
+        self.assertFalse(suc)
+
+    def test_getCoordsFromTLE_2(self):
+        sat = Satellite()
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, 'E', 1
+
+            suc = sat.getCoordsFromTLE(julD=1234567.8)
+            self.assertFalse(suc)
+
+    def test_getCoordsFromTLE_3(self):
+        sat = Satellite()
+        response = ['E', 'E']
+        ret = (True, response, 2)
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = ret
+
+            suc = sat.getCoordsFromTLE(julD=1234567.8)
+            self.assertFalse(suc)
+
+    def test_getCoordsFromTLE_4(self):
+        sat = Satellite()
+        response = ['10.0, 10.0', 'E']
+        ret = (True, response, 2)
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = ret
+
+            suc = sat.getCoordsFromTLE(julD=1234567.8)
+            self.assertFalse(suc)
+
+    def test_getCoordsFromTLE_5(self):
+        sat = Satellite()
+        response = ['10.0, 10.0', '10.0, 10.0']
+        ret = (True, response, 2)
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = ret
+
+            suc = sat.getCoordsFromTLE(julD=1234567.8)
+            self.assertTrue(suc)
+
     def test_slewTLE_1(self):
         sat = Satellite()
 

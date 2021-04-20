@@ -489,6 +489,10 @@ class Satellite(object):
         return suc
 
     def getCoordsFromTLE(self, julD=None):
+        """
+        :param julD:
+        :return:
+        """
         if not julD:
             return False
 

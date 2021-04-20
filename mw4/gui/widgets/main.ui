@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>6</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -1002,7 +1002,7 @@
       </rect>
      </property>
      <property name="title">
-      <string>Status and settings from mount computer</string>
+      <string>Status and settings mount computer</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
@@ -10422,7 +10422,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>-</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
        <bool>false</bool>
@@ -10590,7 +10590,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>-</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
        <bool>false</bool>
@@ -10603,7 +10603,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>410</x>
        <y>110</y>
        <width>371</width>
-       <height>211</height>
+       <height>121</height>
       </rect>
      </property>
      <property name="title">
@@ -10612,38 +10612,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QCheckBox" name="satBeforeFlip">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>70</y>
-        <width>86</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking on east meridian side only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>Before flip</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="satAfterFlip">
-      <property name="geometry">
-       <rect>
-        <x>280</x>
-        <y>70</y>
-        <width>81</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking on west meridian side only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>After flip</string>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="satSettle_1">
       <property name="enabled">
        <bool>false</bool>
@@ -10940,7 +10908,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>100</x>
-        <y>105</y>
+        <y>65</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -10986,7 +10954,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>165</x>
-        <y>105</y>
+        <y>65</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -11032,7 +11000,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>295</x>
-        <y>105</y>
+        <y>65</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -11078,7 +11046,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>230</x>
-        <y>105</y>
+        <y>65</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -11169,7 +11137,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>230</x>
-        <y>130</y>
+        <y>90</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -11215,7 +11183,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>100</x>
-        <y>130</y>
+        <y>90</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -11261,7 +11229,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>295</x>
-        <y>130</y>
+        <y>90</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -11307,7 +11275,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>165</x>
-        <y>130</y>
+        <y>90</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -11353,7 +11321,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>105</y>
+        <y>65</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -11398,7 +11366,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>130</y>
+        <y>90</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -11461,7 +11429,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>105</y>
+        <y>65</y>
         <width>21</width>
         <height>21</height>
        </rect>
@@ -11482,7 +11450,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>130</y>
+        <y>90</y>
         <width>21</width>
         <height>21</height>
        </rect>
@@ -11499,6 +11467,90 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>3rd</string>
       </property>
      </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_60">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>270</y>
+       <width>371</width>
+       <height>156</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Mount Satellite Control</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QCheckBox" name="domeAutoFollowSat">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>130</y>
+        <width>351</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 tries to send slew updates to the dome as long as the mount is in satellite tracking state.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Dome auto follow during satellite tracking</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="stopSatelliteTracking">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>95</y>
+        <width>171</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Stops the satellite tracking mode. In some cases this does not work. Please start / stop tracking under mount.</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>Stop satellite tracking</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="startSatelliteTracking">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>95</y>
+        <width>171</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Starts the satellite tracking mode.</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>Start satellite tracking</string>
+      </property>
+     </widget>
      <widget class="QLineEdit" name="satTrajectoryStart">
       <property name="enabled">
        <bool>false</bool>
@@ -11506,8 +11558,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>180</y>
-        <width>136</width>
+        <y>65</y>
+        <width>106</width>
         <height>21</height>
        </rect>
       </property>
@@ -11536,50 +11588,7 @@ Next point in time when satellite rises over horizon.</string>
        <string>-</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="satTrajectoryEnd">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>160</x>
-        <y>180</y>
-        <width>136</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>This is calculated by the mount computer !
-Next point in time when satellite settles.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
        <bool>false</bool>
@@ -11589,8 +11598,8 @@ Next point in time when satellite settles.</string>
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>160</y>
-        <width>136</width>
+        <y>45</y>
+        <width>106</width>
         <height>21</height>
        </rect>
       </property>
@@ -11606,36 +11615,15 @@ Next point in time when satellite settles.</string>
        <string>Trajectory ends</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_343">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>160</y>
-        <width>136</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Trajectory starts</string>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="satTrajectoryFlip">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>310</x>
-        <y>180</y>
-        <width>46</width>
+        <x>285</x>
+        <y>65</y>
+        <width>36</width>
         <height>21</height>
        </rect>
       </property>
@@ -11664,18 +11652,82 @@ Next point in time when satellite settles.</string>
        <string>-</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
        <bool>false</bool>
       </property>
      </widget>
+     <widget class="QLineEdit" name="satTrajectoryEnd">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>65</y>
+        <width>106</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>This is calculated by the mount computer !
+Next point in time when satellite settles.</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_343">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>45</y>
+        <width>106</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Trajectory starts</string>
+      </property>
+     </widget>
      <widget class="QLabel" name="label_344">
       <property name="geometry">
        <rect>
-        <x>310</x>
-        <y>160</y>
-        <width>31</width>
+        <x>285</x>
+        <y>45</y>
+        <width>36</width>
         <height>21</height>
        </rect>
       </property>
@@ -11691,11 +11743,27 @@ Next point in time when satellite settles.</string>
        <string>Flip</string>
       </property>
      </widget>
+     <widget class="QCheckBox" name="satBeforeFlip">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>20</y>
+        <width>86</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking on east meridian side only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Before flip</string>
+      </property>
+     </widget>
      <widget class="QLabel" name="label_345">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>70</y>
+        <x>10</x>
+        <y>20</y>
         <width>151</width>
         <height>25</height>
        </rect>
@@ -11712,88 +11780,20 @@ Next point in time when satellite settles.</string>
        <string>Segments for tracking:</string>
       </property>
      </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_60">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>340</y>
-       <width>371</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Mount Satellite Control</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QCheckBox" name="domeAutoFollowSat">
+     <widget class="QCheckBox" name="satAfterFlip">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>55</y>
-        <width>351</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 tries to send slew updates to the dome as long as the mount is in satellite tracking state.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>Dome auto follow during satellite tracking</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="stopSatelliteTracking">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>25</y>
-        <width>171</width>
-        <height>26</height>
+        <x>285</x>
+        <y>20</y>
+        <width>81</width>
+        <height>25</height>
        </rect>
       </property>
       <property name="toolTip">
-       <string>Stops the satellite tracking mode. In some cases this does not work. Please start / stop tracking under mount.</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking on west meridian side only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string>Stop satellite tracking</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="startSatelliteTracking">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>25</y>
-        <width>171</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Starts the satellite tracking mode.</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string>Start satellite tracking</string>
+       <string>After flip</string>
       </property>
      </widget>
     </widget>
@@ -13475,7 +13475,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_8">
       <attribute name="title">

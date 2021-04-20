@@ -480,6 +480,40 @@ class Satellite(object):
             delta = 1440
         return delta
 
+    def progMountStandard(self, start, end):
+        """
+        :param start:
+        :param end:
+        :return:
+        """
+        duration = self.calcDuration(start, end)
+        self.app.mount.satellite.calcTLE(julD=start, duration=duration)
+        return True
+
+    def progMountNew(self, start, end):
+        """
+        :param start:
+        :param end:
+        :return:
+        """
+        duration = self.calcDuration(start, end)
+        self.app.mount.satellite.calcTLE(julD=start, duration=duration)
+        return True
+
+    def progMount(self, start, end):
+        """
+        :param start:
+        :param end:
+        :return:
+        """
+        if not self.app.mount.firmware.checkNewer(21699):
+            worker = Worker(self.progMountStandard, start, end)
+        else:
+            worker = Worker(self.progMountNew, start, end)
+
+        worker.signals.finished.connect(self.updateSatelliteTrackGui)
+        self.threadPool.start(worker)
+
     def calcSegments(self):
         """
         :return:
@@ -494,9 +528,7 @@ class Satellite(object):
         else:
             end = self.satOrbits[0]['flip'].tt
 
-        duration = self.calcDuration(start, end)
-        self.app.mount.satellite.calcTLE(julD=start, duration=duration)
-        self.updateSatelliteTrackGui(self.app.mount.satellite.tleParams)
+        self.progMount(start, end)
         self.sendSatelliteData()
         return True
 
@@ -601,17 +633,19 @@ class Satellite(object):
 
         :return: success for test purpose
         """
-        if not tleParams:
+        if tleParams is None:
+            tleParams = self.app.mount.satellite.tleParams
+        if tleParams is None:
             return False
 
         if tleParams.jdStart is not None and self.satOrbits:
-            t = tleParams.jdStart.utc_strftime('%Y-%m-%d  %H:%M:%S')
+            t = tleParams.jdStart.utc_strftime('%d %b  %H:%M:%S')
             self.ui.satTrajectoryStart.setText(t)
         else:
             self.ui.satTrajectoryStart.setText('No transit')
 
         if tleParams.jdEnd is not None and self.satOrbits:
-            t = tleParams.jdEnd.utc_strftime('%Y-%m-%d  %H:%M:%S')
+            t = tleParams.jdEnd.utc_strftime('%d %b  %H:%M:%S')
             self.ui.satTrajectoryEnd.setText(t)
         else:
             self.ui.satTrajectoryEnd.setText('No transit')

@@ -72,11 +72,11 @@ class Styles:
     M_GREY_DARK = '#101010'
     M_GREEN_H = '#00A000'
     M_GREEN = '#008000'
-    M_GREEN_L = '#004000'
+    M_GREEN_L = '#006000'
     M_GREEN_LL = '#003000'
     M_GREEN_LL_A = '#00100040'
     M_RED = '#B03030'
-    M_RED_L = '#601818'
+    M_RED_L = '#802020'
     M_PINK_H = '#FF00FF'
     M_PINK = '#B000B0'
     M_YELLOW_H = '#FFFF00'
@@ -229,6 +229,21 @@ class Styles:
         border-width: 2px;
         border-style: outset;
         border-color: red;
+    }
+    QLineEdit[color='M_RED_L'] {
+        border-width: 2px;
+        border-style: outset;
+        border-color: #802020;
+    }
+    QLineEdit[color='M_YELLOW_L'] {
+        border-width: 2px;
+        border-style: outset;
+        border-color: #808000;
+    }
+    QLineEdit[color='M_GREEN_L'] {
+        border-width: 2px;
+        border-style: outset;
+        border-color: #006000;
     }
     QLineEdit[status='on'] {
         color: black;

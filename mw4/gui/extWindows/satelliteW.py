@@ -67,8 +67,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.satHorizonMat = self.embedMatplot(self.ui.satHorizon)
         self.satEarthMat = self.embedMatplot(self.ui.satEarth)
 
-        self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN,
-                       self.M_RED_L, self.M_YELLOW_L, self.M_GREEN_L]
+        self.colors = [self.M_RED_L, self.M_YELLOW_L, self.M_GREEN_L]
 
         stream = QFile(':/data/worldmap.dat')
         stream.open(QFile.ReadOnly)
@@ -517,7 +516,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                 lat = subpoints.latitude.degrees
                 lon = subpoints.longitude.degrees
                 for slc in self.unlinkWrap(lon):
-                    axe.plot(lon[slc], lat[slc], lw=4, color=self.colors[i + 3])
+                    axe.plot(lon[slc], lat[slc], color=self.colors[i],
+                             lw=4, linestyle=(0, (0.5, 0.5)))
 
         rise = satOrbits[0]['rise'].tt
         settle = satOrbits[-1]['settle'].tt
@@ -590,8 +590,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                 vecT = ts.tt_jd(vector)
                 alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
                 for slc in self.unlinkWrap(az.degrees):
-                    axe.plot(az.degrees[slc], alt.degrees[slc], lw=4,
-                             color=self.colors[i + 3])
+                    axe.plot(az.degrees[slc], alt.degrees[slc], color=self.colors[i],
+                             lw=4, linestyle=(0, (0.5, 0.5)))
 
         ts = obsSite.ts
         alt, az, _ = (self.satellite - obsSite.location).at(ts.now()).altaz()

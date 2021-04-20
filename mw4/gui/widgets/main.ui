@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -5679,7 +5679,10 @@ to mount</string>
       </size>
      </property>
      <property name="toolTip">
-      <string/>
+      <string>Annual twilight show the different phases for your location and your local time.
+As the calulation is time consuming, it will be done only once per start of the app.
+y-axis is local day time and x-axis is date.
+MW4 will show the actual day always in the middel of the chart.</string>
      </property>
      <property name="title">
       <string>Annual twilight phases</string>
@@ -5737,10 +5740,7 @@ to mount</string>
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>Annual twilight show the different phases for your location and your local time.
-As the calulation is time consuming, it will be done only once per start of the app.
-y-axis is local day time and x-axis is date.
-MW4 will show the actual day always in the middel of the chart.</string>
+         <string/>
         </property>
         <property name="autoFillBackground">
          <bool>true</bool>
@@ -5803,7 +5803,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </size>
      </property>
      <property name="toolTip">
-      <string/>
+      <string>Show the moon phase as picture</string>
      </property>
      <property name="title">
       <string>Moon phases</string>
@@ -5944,7 +5944,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>Show the moon phase as picture</string>
+       <string/>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -10687,7 +10687,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="color" stdset="0">
-       <string>red</string>
+       <string>M_RED_L</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_334">
@@ -10754,7 +10754,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="color" stdset="0">
-       <string>red</string>
+       <string>M_RED_L</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_335">
@@ -10884,7 +10884,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="color" stdset="0">
-       <string>red</string>
+       <string>M_RED_L</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satFlip_1">
@@ -10930,7 +10930,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="color" stdset="0">
-       <string>red</string>
+       <string>M_RED_L</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satRise_2">
@@ -10976,7 +10976,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="color" stdset="0">
-       <string>yellow</string>
+       <string>M_YELLOW_L</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satCulminate_2">
@@ -11022,7 +11022,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="color" stdset="0">
-       <string>yellow</string>
+       <string>M_YELLOW_L</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satFlip_2">
@@ -11068,7 +11068,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="color" stdset="0">
-       <string>yellow</string>
+       <string>M_YELLOW_L</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satSettle_2">
@@ -11114,7 +11114,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="color" stdset="0">
-       <string>yellow</string>
+       <string>M_YELLOW_L</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satDate_1">
@@ -11157,6 +11157,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="readOnly">
        <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_RED_L</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satSettle_3">
@@ -11202,7 +11205,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="color" stdset="0">
-       <string>green</string>
+       <string>M_GREEN_L</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satRise_3">
@@ -11248,7 +11251,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="color" stdset="0">
-       <string>green</string>
+       <string>M_GREEN_L</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satFlip_3">
@@ -11294,7 +11297,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="color" stdset="0">
-       <string>green</string>
+       <string>M_GREEN_L</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satCulminate_3">
@@ -11340,7 +11343,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="color" stdset="0">
-       <string>green</string>
+       <string>M_GREEN_L</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="satDate_2">
@@ -11384,6 +11387,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="readOnly">
        <bool>false</bool>
       </property>
+      <property name="color" stdset="0">
+       <string>M_YELLOW_L</string>
+      </property>
      </widget>
      <widget class="QLineEdit" name="satDate_3">
       <property name="enabled">
@@ -11425,6 +11431,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="readOnly">
        <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_GREEN_L</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_340">

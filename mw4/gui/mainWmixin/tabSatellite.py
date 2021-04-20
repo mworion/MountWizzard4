@@ -290,9 +290,9 @@ class Satellite(object):
         """
         minAlt = self.app.mount.setting.horizonLimitLow
         if minAlt is None:
-            minAlt = 3
-        if minAlt < 3:
-            minAlt = 3
+            minAlt = 5
+        if minAlt < 5:
+            minAlt = 5
 
         loc = obsSite.location
         orbitCycleTime = np.pi / self.satellite.model.no_kozai / 12 / 60
@@ -362,15 +362,21 @@ class Satellite(object):
             t, y = almanac.find_discrete(satOrbit['rise'],
                                          satOrbit['settle'], f)
             if t:
-                satOrbit['transit'] = t[0]
+                satOrbit['flip'] = t[0]
             else:
-                satOrbit['transit'] = None
+                satOrbit['flip'] = None
         return True
 
     @staticmethod
     def calcMountFlip(satellite, location, trackLimit):
         """
         x[x<0] += 2*pi
+
+        Actually I have no clue how to determine, when the mount goes
+        counterweights up. there must be a way of doing so as the german
+        mounts decide which side to address. I know that there are two
+        situations possible to point to a sky object like written in
+        ASCOM and other specifications.
 
         :param satellite:
         :param location:
@@ -423,10 +429,13 @@ class Satellite(object):
         self.extractFirstOrbits(timeNow, times, events)
         self.addMeridianTransit(obsSite.location)
 
-        trackLimit = self.app.mount.setting.meridianLimitTrack
-        if trackLimit is None:
-            trackLimit = 0
-        self.addMountFlip(obsSite.location, trackLimit)
+        # trackLimit = self.app.mount.setting.meridianLimitTrack
+        # if trackLimit is None:
+        #     trackLimit = 0
+        # self.addMountFlip(obsSite.location, trackLimit)
+        #
+        # actually using meridian transit as possible flip as it fits in most
+        # cases.
 
         fString = "%H:%M:%S"
         fStringDate = "%d %b"

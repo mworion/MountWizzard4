@@ -373,6 +373,13 @@ class Geometry(object):
         # around x this should be (as we don't track) measured in HA, where HA = 6
         # / 18 h is North depending of the pierside the direction is clockwise,
         # turning to west over time
+        #
+        # using the definition of ASCOM about the pierEAST state
+        # Normal state:
+        # HA_sky = HA_mech
+        # Beyond the pole
+        # HA_sky = HA_mech + 12h, expressed in range ± 12h
+
         if pierside == 'E':
             value = - ha + np.radians(6 / 24 * 360)
 
@@ -385,6 +392,13 @@ class Geometry(object):
         # the rotation around dec axis of the mount is next step. this rotation is
         # around z axis. dec = 0 means rectangular directing scope. direction
         # changes due to position of the mount and pierside
+        #
+        # using the definition of ASCOM about the pierEAST state
+        # Normal state:
+        # Dec_sky = Dec_mech
+        # Beyond the pole
+        # Dec_sky = 180d - Dec_mech, expressed in range ± 90d
+
         value = dec - np.radians(90)
         if pierside == 'E':
             value = -value

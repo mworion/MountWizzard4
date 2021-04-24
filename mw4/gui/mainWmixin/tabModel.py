@@ -213,9 +213,6 @@ class Model:
         mPoint.update(result)
         isSuccess = mPoint['success']
 
-        if random() > 0.4:
-            isSuccess = False
-
         isInRange = mPoint.get('errorRMS_S', 0) < self.MAX_ERROR_MODEL_POINT
         if isSuccess and isInRange:
             raJNowS, decJNowS = transform.J2000ToJNow(mPoint['raJ2000S'],

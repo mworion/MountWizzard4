@@ -136,6 +136,7 @@ class CameraIndi(IndiClass):
 
     def updateHeaderInfo(self, header):
         """
+        adding for avoid having no entry in header
         :return:
         """
         if 'RA' in header and 'DEC' in header:

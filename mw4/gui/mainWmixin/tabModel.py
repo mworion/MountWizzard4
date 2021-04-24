@@ -191,10 +191,10 @@ class Model:
         :param result: true for test purpose
         :return: success
         """
-        self.log.debug('Processing astrometry result')
         if self.resultQueue.empty():
-            self.log.info('Empty result queue')
+            self.log.info('Empty result queue - error ?')
             return False
+        self.log.debug('Processing astrometry result')
 
         mPoint = self.resultQueue.get()
         self.log.debug(f'Result from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
@@ -294,10 +294,10 @@ class Model:
 
         :return: success
         """
-        self.log.debug('Imaging started')
         if self.imageQueue.empty():
-            self.log.info('Empty image queue')
+            self.log.info('Empty image queue - error ?')
             return False
+        self.log.debug('Imaging started')
 
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
@@ -342,10 +342,10 @@ class Model:
         :return: success
 
         """
-        self.log.debug('Slew started')
         if self.slewQueue.empty():
-            self.log.info('Empty slew queue')
+            self.log.info('Empty slew queue- model finished ?')
             return False
+        self.log.debug('Slew started')
 
         mPoint = self.slewQueue.get()
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],

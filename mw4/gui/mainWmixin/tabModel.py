@@ -780,8 +780,7 @@ class Model:
         self.app.message.emit('Starting retry failed points', 1)
         maxRetries = self.ui.numberBuildRetries.value()
         retryNumber = maxRetries - self.modelBuildRetryCounter + 1
-        self.app.message.emit(f'Retry run #{retryNumber}', 1)
-        self.log.debug('Retry started')
+        self.app.message.emit(f'Retry run number: {retryNumber}', 1)
         numberPointsRetry = self.retryQueue.qsize()
         countPointsRetry = 0
 

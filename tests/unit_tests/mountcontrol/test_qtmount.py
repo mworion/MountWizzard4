@@ -471,7 +471,7 @@ def test_cycleProgTrajectory_1(function):
     function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = function.cycleProgTrajectory()
+        suc = function.progTrajectory()
         assert suc
 
 
@@ -479,5 +479,5 @@ def test_cycleProgTrajectory_2(function):
     function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = function.cycleProgTrajectory()
+        suc = function.progTrajectory()
         assert not suc

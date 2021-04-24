@@ -564,7 +564,7 @@ class Mount(mountcontrol.mount.Mount):
         self.signals.progTrajectoryDone.emit(self.satellite.trajectoryParams)
         return True
 
-    def cycleProgTrajectory(self):
+    def progTrajectory(self):
         """
         :return: success
         """
@@ -572,7 +572,7 @@ class Mount(mountcontrol.mount.Mount):
             self.signals.progTrajectoryDone.emit(self.satellite.trajectoryParams)
             return False
 
-        worker = Worker(self.dome.poll)
+        worker = Worker(self.satellite.progTrajectoryData)
         worker.signals.finished.connect(self.clearProgTrajectory)
         worker.signals.error.connect(self.errorProgTrajectory)
         self.threadPool.start(worker)

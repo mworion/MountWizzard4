@@ -26,7 +26,7 @@ from PyQt5.QtTest import QTest
 from base.alpacaClass import AlpacaClass
 from base.alpacaBase import Camera
 from base.tpool import Worker
-from base import transform
+from base.transform import JNowToJ2000
 
 
 class CameraAlpaca(AlpacaClass):
@@ -162,7 +162,7 @@ class CameraAlpaca(AlpacaClass):
             dec = self.app.mount.obsSite.decJNow
             obsTime = self.app.mount.obsSite.timeJD
             if ra is not None and dec is not None and obsTime is not None:
-                ra, dec = transform.JNowToJ2000(ra, dec, obsTime)
+                ra, dec = JNowToJ2000(ra, dec, obsTime)
 
         self.client.startexposure(Duration=expTime, Light=True)
 

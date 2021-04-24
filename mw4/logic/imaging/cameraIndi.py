@@ -24,6 +24,7 @@ import astropy.io.fits as fits
 
 # local imports
 from base.indiClass import IndiClass
+from base.transform import JNowToJ2000
 
 
 class CameraIndi(IndiClass):
@@ -133,6 +134,28 @@ class CameraIndi(IndiClass):
             self.setExposureState()
         return True
 
+    def updateHeaderInfo(self, header):
+        """
+        :return:
+        """
+        if 'RA' in header and 'DEC' in header:
+            return header
+
+        isMount = self.app.deviceStat['mount']
+        if not isMount:
+            return header
+
+        self.log.info('Missing Ra/Cec in header adding from mount')
+        ra = self.app.mount.obsSite.raJNow
+        dec = self.app.mount.obsSite.decJNow
+        obsTime = self.app.mount.obsSite.timeJD
+        if ra is not None and dec is not None and obsTime is not None:
+            ra, dec = JNowToJ2000(ra, dec, obsTime)
+        header['RA'] = ra._degrees
+        header['DEC'] = dec.degrees
+        header['TELESCOP'] = self.app.mount.firmware.product
+        return header
+
     def updateBLOB(self, deviceName, propertyName):
         """
         :param deviceName:
@@ -159,21 +182,24 @@ class CameraIndi(IndiClass):
         self.signals.message.emit('Saving')
         if data['format'] == '.fits.fz':
             HDU = fits.HDUList.fromstring(data['value'])
-            fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
             self.log.info('Image BLOB is in FPacked format')
 
         elif data['format'] == '.fits.z':
             HDU = fits.HDUList.fromstring(zlib.decompress(data['value']))
-            fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
             self.log.info('Image BLOB is compressed fits format')
 
         elif data['format'] == '.fits':
             HDU = fits.HDUList.fromstring(data['value'])
-            fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
             self.log.info('Image BLOB is uncompressed fits format')
 
         else:
             self.log.info('Image BLOB is not supported')
+            self.signals.saved.emit(self.imagePath)
+            self.signals.message.emit('')
+            return True
+
+        HDU[0].header.update(self.updateHeaderInfo(HDU[0].header))
+        fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
 
         self.signals.saved.emit(self.imagePath)
         self.signals.message.emit('')

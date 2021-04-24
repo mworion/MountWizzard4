@@ -145,7 +145,7 @@ class CameraIndi(IndiClass):
         if not isMount:
             return header
 
-        self.log.info('Missing Ra/Cec in header adding from mount')
+        self.log.info('Missing Ra/Dec in header adding from mount')
         ra = self.app.mount.obsSite.raJNow
         dec = self.app.mount.obsSite.decJNow
         obsTime = self.app.mount.obsSite.timeJD

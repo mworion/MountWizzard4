@@ -17,6 +17,7 @@
 # standard libraries
 import queue
 import os
+from random import random
 import time
 import shutil
 import json
@@ -199,8 +200,9 @@ class Model:
         mPoint = self.resultQueue.get()
         self.log.debug(f'Result from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
-        number = mPoint["lenSequence"]
+        lenSequence = mPoint["lenSequence"]
         count = mPoint["countSequence"]
+        pointNumber = mPoint["pointNumber"]
 
         if not result:
             self.log.debug('Solving result is missing')
@@ -208,6 +210,10 @@ class Model:
 
         mPoint.update(result)
         isSuccess = mPoint['success']
+
+        if random() > 0.3:
+            isSuccess = False
+
         isInRange = mPoint.get('errorRMS_S', 0) < self.MAX_ERROR_MODEL_POINT
         if isSuccess and isInRange:
             raJNowS, decJNowS = transform.J2000ToJNow(mPoint['raJ2000S'],
@@ -215,9 +221,10 @@ class Model:
                                                       mPoint['julianDate'])
             mPoint['raJNowS'] = raJNowS
             mPoint['decJNowS'] = decJNowS
-            self.log.debug(f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]')
+            t = f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]'
+            self.log.debug(t)
             self.modelQueue.put(mPoint)
-            self.app.data.setStatusBuildP(count - 1, False)
+            self.app.data.setStatusBuildP(pointNumber - 1, False)
             self.app.updatePointMarker.emit()
 
             text = f'Solved   image-{count:03d}:  '
@@ -238,8 +245,8 @@ class Model:
             self.app.message.emit(text, 2)
             self.retryQueue.put(mPoint)
 
-        self.updateProgress(number=number, count=count)
-        if number == count:
+        self.updateProgress(number=lenSequence, count=count)
+        if lenSequence == count:
             self.modelCycleThroughBuildPointsFinished()
 
         return True
@@ -366,7 +373,8 @@ class Model:
         self.imageQueue.put(mPoint)
         self.log.debug(f'Queued to image [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
-        text = f'Slewing  mount:      point: {mPoint["countSequence"]:03d}, '
+        text = 'Slewing  mount:      point in sequence: '
+        text += f'{mPoint["countSequence"]:03d}, '
         text += f'altitude: {mPoint["altitude"]:3.0f}, '
         text += f'azimuth: {mPoint["azimuth"]:3.0f}'
         self.app.message.emit(text, 0)
@@ -716,8 +724,8 @@ class Model:
         """
         suc = self.collectingModelRunOutput()
         if not suc:
-            self.app.message.emit(f'Modeling finished:    {self.modelName}', 2)
-            self.app.message.emit('Model not enough valid model points available', 2)
+            self.app.message.emit(f'Modeling error:       {self.modelName}', 2)
+            self.app.message.emit('Not enough valid model points available', 2)
             return False
 
         self.app.message.emit('Programming model to mount', 0)
@@ -775,7 +783,7 @@ class Model:
         while not self.retryQueue.empty():
             point = self.retryQueue.get()
             point['lenSequence'] = numberPointsRetry
-            point['countSequence'] = countPointsRetry
+            point['countSequence'] = countPointsRetry + 1
             self.slewQueue.put(point)
             countPointsRetry += 1
 
@@ -788,16 +796,19 @@ class Model:
         :return:
         """
         if len(self.app.data.buildP) < 2:
-            self.app.message.emit('No modeling start because less than 3 points', 2)
+            t = 'No modeling start because less than 3 points'
+            self.app.message.emit(t, 2)
             return False
 
         if len(self.app.data.buildP) > 99:
-            self.app.message.emit('No modeling start because more than 99 points', 2)
+            t = 'No modeling start because more than 99 points'
+            self.app.message.emit(t, 2)
             return False
 
         excludeDonePoints = self.ui.excludeDonePoints.isChecked()
         if len([x for x in self.app.data.buildP if x[2]]) < 3 and excludeDonePoints:
-            self.app.message.emit('No modeling start because less than 3 points left over', 2)
+            t = 'No modeling start because less than 3 points left over'
+            self.app.message.emit(t, 2)
             return False
 
         if self.ui.astrometryDevice.currentText().startswith('No device'):
@@ -833,7 +844,8 @@ class Model:
 
         suc = self.app.mount.model.storeName('backup')
         if not suc:
-            self.app.message.emit('Cannot save backup model on mount, proceeding with model run', 2)
+            t = 'Cannot save backup model on mount, proceeding with model run'
+            self.app.message.emit(t, 2)
 
         return True
 
@@ -865,6 +877,7 @@ class Model:
             m['fastReadout'] = fastReadout
             m['lenSequence'] = lenSequence
             m['countSequence'] = index + 1
+            m['pointNumber'] = index + 1
             m['modelName'] = self.modelName
             m['imagePath'] = imagePath
             m['astrometryApp'] = astrometryApp
@@ -878,11 +891,11 @@ class Model:
 
     def modelCycleThroughBuildPoints(self, modelPoints=None):
         """
-        modelCycleThroughBuildPoints is the main method for preparing a model run. in
-        addition it checks necessary components and prepares all the parameters.
-        the modeling queue will be filled with point and the queue is started. the overall
-        modeling process consists of a set of queues which are handled by events running
-        in the gui event queue.
+        modelCycleThroughBuildPoints is the main method for preparing a model
+        run. in addition it checks necessary components and prepares all the
+        parameters. the modeling queue will be filled with point and the queue is
+        started. the overall modeling process consists of a set of queues which
+        are handled by events running in the gui event queue.
 
         :param modelPoints:
         :return: true for test purpose

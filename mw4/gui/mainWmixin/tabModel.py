@@ -72,6 +72,7 @@ class Model:
         """
         config = self.app.config['mainW']
         self.ui.checkDisableDAT.setChecked(config.get('checkDisableDAT', True))
+        self.ui.retriesReverse.setChecked(config.get('retriesReverse', False))
         self.ui.parkMountAfterModel.setChecked(config.get('parkMountAfterModel', False))
         self.ui.numberBuildRetries.setValue(config.get('numberBuildRetries', 0))
         return True
@@ -82,6 +83,7 @@ class Model:
         """
         config = self.app.config['mainW']
         config['checkDisableDAT'] = self.ui.checkDisableDAT.isChecked()
+        config['retriesReverse'] = self.ui.retriesReverse.isChecked()
         config['parkMountAfterModel'] = self.ui.parkMountAfterModel.isChecked()
         config['numberBuildRetries'] = self.ui.numberBuildRetries.value()
         return True
@@ -211,7 +213,7 @@ class Model:
         mPoint.update(result)
         isSuccess = mPoint['success']
 
-        if random() > 0.3:
+        if random() > 0.4:
             isSuccess = False
 
         isInRange = mPoint.get('errorRMS_S', 0) < self.MAX_ERROR_MODEL_POINT
@@ -776,19 +778,29 @@ class Model:
             return True
 
         self.app.message.emit('Starting retry failed points', 1)
+        maxRetries = self.ui.numberBuildRetries.value()
+        retryNumber = maxRetries - self.modelBuildRetryCounter + 1
+        self.app.message.emit(f'Retry run #{retryNumber}', 1)
         self.log.debug('Retry started')
         numberPointsRetry = self.retryQueue.qsize()
         countPointsRetry = 0
 
+        points = list()
         while not self.retryQueue.empty():
-            point = self.retryQueue.get()
+            points.append(self.retryQueue.get())
+
+        if self.ui.retriesReverse.isChecked():
+            points = reversed(points)
+
+        for point in points:
             point['lenSequence'] = numberPointsRetry
             point['countSequence'] = countPointsRetry + 1
-            self.slewQueue.put(point)
             countPointsRetry += 1
+            self.slewQueue.put(point)
 
         self.modelBuildRetryCounter -= 1
         self.modelSlew()
+        self.ui.modelProgress.setValue(0)
         return True
 
     def checkModelRunConditions(self):

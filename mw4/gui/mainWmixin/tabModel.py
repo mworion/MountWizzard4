@@ -942,7 +942,6 @@ class Model:
         """
         if not self.checkModelRunConditions():
             return False
-
         if not self.clearAlignAndBackup():
             return False
 
@@ -971,12 +970,11 @@ class Model:
         ret = self.openFile(self, 'Open model file', folder, 'Model files (*.model)',
                             multiple=True)
         loadFilePath, _, _ = ret
+
         if not loadFilePath:
             return False
-
         if isinstance(loadFilePath, str):
             loadFilePath = [loadFilePath]
-
         if not self.clearAlignAndBackup():
             return False
 
@@ -997,7 +995,6 @@ class Model:
 
         if suc:
             self.app.message.emit('Model programmed with success', 0)
-
         else:
             self.app.message.emit('Model programming error', 2)
 

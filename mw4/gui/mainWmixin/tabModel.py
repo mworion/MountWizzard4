@@ -309,7 +309,7 @@ class Model:
 
         :return: success
         """
-        noImagesLeft = not self.imageQueue.empty()
+        noImagesLeft = self.imageQueue.empty()
         slewsLeft = not self.slewQueue.empty()
         stillToWork = slewsLeft
 

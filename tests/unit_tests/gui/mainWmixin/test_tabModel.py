@@ -338,6 +338,10 @@ def test_updateProgress_8(function):
 
 
 def test_modelSolveDone_0(function, qtbot):
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'pointNumber': 1}
+    function.slewQueue.put(mPoint)
     result = {'raJ2000S': 0,
               'decJ2000S': 0,
               'angleS': 0,
@@ -352,46 +356,38 @@ def test_modelSolveDone_0(function, qtbot):
     assert not suc
 
 
-def test_modelSolveDone_1(function, qtbot):
+def test_modelSolveDone_1(function):
     mPoint = {'lenSequence': 3,
-              'countSequence': 3}
+              'countSequence': 3,
+              'pointNumber': 1}
 
     function.resultQueue.put(mPoint)
-
-    result = {'raJ2000S': 0,
-              'decJ2000S': 0,
-              'angleS': 0,
-              'scaleS': 1,
-              'errorRMS_S': 1,
-              'flippedS': False,
-              'success': False,
-              'message': 'test',
-              }
-
-    with qtbot.waitSignal(function.app.message) as blocker:
-        with mock.patch.object(function,
-                               'updateProgress'):
-            with mock.patch.object(function,
-                                   'modelCycleThroughBuildPointsFinished'):
-                suc = function.modelSolveDone(result)
-                assert suc
-    assert blocker.args == ['Solving failed for image-003', 2]
-
-
-def test_modelSolveDone_2(function):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3}
-
-    function.resultQueue.put(mPoint)
-
     suc = function.modelSolveDone({})
     assert not suc
 
 
+def test_modelSolveDone_2(function):
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'pointNumber': 1}
+    function.resultQueue.put(mPoint)
+    result = {'raJ2000S': skyfield.api.Angle(hours=0),
+              'decJ2000S': skyfield.api.Angle(degrees=0),
+              'success': False,
+              }
+
+    with mock.patch.object(function,
+                           'updateProgress'):
+        with mock.patch.object(function,
+                               'modelCycleThroughBuildPointsFinished'):
+            suc = function.modelSolveDone(result)
+            assert suc
+
+
 def test_modelSolveDone_3(function):
     mPoint = {'lenSequence': 3,
-              'countSequence': 3}
-
+              'countSequence': 2,
+              'pointNumber': 1}
     function.resultQueue.put(mPoint)
     function.app.data.buildP = [(0, 0, True), (1, 1, True), (2, 2, True)]
 
@@ -429,33 +425,8 @@ def test_modelSolveDone_3(function):
 
 def test_modelSolveDone_4(function):
     mPoint = {'lenSequence': 3,
-              'countSequence': 3}
-
-    result = {'raJ2000S': skyfield.api.Angle(hours=0),
-              'decJ2000S': skyfield.api.Angle(degrees=0),
-              'angleS': 0,
-              'scaleS': 1,
-              'errorRMS_S': 1,
-              'flippedS': False,
-              'success': True,
-              'message': 'test',
-              'julianDate': function.app.mount.obsSite.timeJD,
-              }
-
-    function.resultQueue.put(mPoint)
-    function.app.data.buildP = [(0, 0, True), (1, 1, True), (2, 2, True)]
-
-    with mock.patch.object(function,
-                           'updateProgress'):
-        with mock.patch.object(function,
-                               'modelCycleThroughBuildPointsFinished'):
-            suc = function.modelSolveDone(result)
-            assert suc
-
-
-def test_modelSolveDone_5(function):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 2}
+              'countSequence': 2,
+              'pointNumber': 1}
 
     result = {'raJ2000S': skyfield.api.Angle(hours=0),
               'decJ2000S': skyfield.api.Angle(degrees=0),
@@ -478,6 +449,10 @@ def test_modelSolveDone_5(function):
 
 
 def test_modelSolve_1(function):
+    mPoint = {'lenSequence': 3,
+              'countSequence': 2,
+              'pointNumber': 1}
+    function.slewQueue.put(mPoint)
     suc = function.modelSolve()
     assert not suc
 
@@ -488,9 +463,7 @@ def test_modelSolve_2(function):
               'imagePath': '',
               'searchRadius': 1,
               'solveTimeout': 10,
-
               }
-
     function.solveQueue.put(mPoint)
     with mock.patch.object(function.app.astrometry,
                            'solveThreading'):
@@ -499,6 +472,14 @@ def test_modelSolve_2(function):
 
 
 def test_modelImage_1(function):
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'searchRadius': 1,
+              'solveTimeout': 10,
+              }
+    function.slewQueue.put(mPoint)
+    function.imageQueue.queue.clear()
     suc = function.modelImage()
     assert not suc
 

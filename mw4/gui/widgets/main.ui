@@ -9215,7 +9215,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>If checked, MW4 will retry the points in reverse order to the last round to avoid unnecessary slews.</string>
       </property>
       <property name="text">
-       <string>Retries in reverse order</string>
+       <string>Run retries each time in reverse order</string>
       </property>
       <property name="checked">
        <bool>true</bool>

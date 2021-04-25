@@ -44,6 +44,8 @@ class CameraIndi(IndiClass):
         self.signals = signals
         self.data = data
         self.imagePath = ''
+        self.ra = None
+        self.dec = None
         self.isDownloading = False
 
     def setUpdateConfig(self, deviceName):
@@ -142,19 +144,12 @@ class CameraIndi(IndiClass):
         if 'RA' in header and 'DEC' in header:
             return header
 
-        isMount = self.app.deviceStat['mount']
-        if not isMount:
+        if self.ra is None or self.dec is None:
             return header
 
         self.log.info('Missing Ra/Dec in header adding from mount')
-        ra = self.app.mount.obsSite.raJNow
-        dec = self.app.mount.obsSite.decJNow
-        obsTime = self.app.mount.obsSite.timeJD
-        if ra is not None and dec is not None and obsTime is not None:
-            ra, dec = JNowToJ2000(ra, dec, obsTime)
-        header['RA'] = ra._degrees
-        header['DEC'] = dec.degrees
-        header['TELESCOP'] = self.app.mount.firmware.product
+        header['RA'] = self.ra._degrees
+        header['DEC'] = self.dec.degrees
         return header
 
     def updateBLOB(self, deviceName, propertyName):
@@ -256,6 +251,19 @@ class CameraIndi(IndiClass):
             return False
 
         self.imagePath = imagePath
+        isMount = self.app.deviceStat['mount']
+        if isMount:
+            ra = self.app.mount.obsSite.raJNow
+            dec = self.app.mount.obsSite.decJNow
+            obsTime = self.app.mount.obsSite.timeJD
+            if ra is not None and dec is not None and obsTime is not None:
+                ra, dec = JNowToJ2000(ra, dec, obsTime)
+            self.ra = ra
+            self.dec = dec
+        else:
+            self.ra = None
+            self.dec = None
+
         suc = self.sendDownloadMode(fastReadout=fastReadout)
         if not suc:
             self.log.debug('Download quality could not be set')

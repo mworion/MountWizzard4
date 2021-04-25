@@ -117,17 +117,12 @@ class Model:
 
     def updateTurnKnobsGUI(self, model):
         """
-        updateTurnKnobsGUI shows the data which is received through the getain
-        command. this is mainly polar and ortho errors as well as basic model
-        data.
-
         :param model:
         :return:    True if ok for testing
         """
         if model.azimuthTurns is not None:
             if model.azimuthTurns > 0:
                 text = '{0:3.1f} revs left'.format(abs(model.azimuthTurns))
-
             else:
                 text = '{0:3.1f} revs right'.format(abs(model.azimuthTurns))
 
@@ -135,11 +130,9 @@ class Model:
             text = '-'
 
         self.ui.azimuthTurns.setText(text)
-
         if model.altitudeTurns is not None:
             if model.altitudeTurns > 0:
                 text = '{0:3.1f} revs down'.format(abs(model.altitudeTurns))
-
             else:
                 text = '{0:3.1f} revs up'.format(abs(model.altitudeTurns))
 
@@ -147,7 +140,6 @@ class Model:
             text = '-'
 
         self.ui.altitudeTurns.setText(text)
-
         return True
 
     def updateProgress(self, number=0, count=0):
@@ -194,11 +186,21 @@ class Model:
         :param result: true for test purpose
         :return: success
         """
-        if self.resultQueue.empty():
-            self.log.info('Empty result queue - error ?')
-            return False
-        self.log.debug('Processing astrometry result')
+        noResultsLeft = self.resultQueue.empty()
+        slewsLeft = not self.slewQueue.empty()
+        imagesLeft = not self.imageQueue.empty()
+        solvesLeft = not self.solveQueue.empty()
+        stillToWork = slewsLeft or imagesLeft or solvesLeft
 
+        if noResultsLeft and stillToWork:
+            self.log.error('Empty result queue -> error')
+            t = f'Slews left: [{self.slewQueue.qsize()}] '
+            t += f'Images left: [{self.imageQueue.qsize()}] '
+            t += f'Solves left: [{self.solveQueue.qsize()}] '
+            self.log.error(t)
+            return False
+
+        self.log.debug('Processing astrometry result')
         mPoint = self.resultQueue.get()
         self.log.debug(f'Result from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
@@ -264,11 +266,18 @@ class Model:
 
         :return: success
         """
-        self.log.debug('Solving started')
-        if self.solveQueue.empty():
-            self.log.info('Empty solve queue')
+        noSolvesLeft = self.solveQueue.empty()
+        slewsLeft = not self.slewQueue.empty()
+        imagesLeft = not self.imageQueue.empty()
+        stillToWork = slewsLeft or imagesLeft
+
+        if noSolvesLeft and stillToWork:
+            t = f'Slews left: [{self.slewQueue.qsize()}] '
+            t += f'Images left: [{self.imageQueue.qsize()}] '
+            self.log.error(f'Empty solve queue: {t}')
             return False
 
+        self.log.debug('Solving started')
         mPoint = self.solveQueue.get()
         self.app.showImage.emit(mPoint["imagePath"])
         self.resultQueue.put(mPoint)
@@ -300,11 +309,16 @@ class Model:
 
         :return: success
         """
-        if self.imageQueue.empty():
-            self.log.info('Empty image queue - error ?')
-            return False
-        self.log.debug('Imaging started')
+        noImagesLeft = not self.imageQueue.empty()
+        slewsLeft = not self.slewQueue.empty()
+        stillToWork = slewsLeft
 
+        if noImagesLeft and stillToWork:
+            t = f'Slews left: [{self.slewQueue.qsize()}] '
+            self.log.error(f'Empty image queue: {t}')
+            return False
+
+        self.log.debug('Imaging started')
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
         while self.ui.pauseModel.property('pause'):
@@ -349,10 +363,10 @@ class Model:
 
         """
         if self.slewQueue.empty():
-            self.log.info('Empty slew queue- model finished ?')
+            self.log.info('Empty slew queue- model sequence finished')
             return False
-        self.log.debug('Slew started')
 
+        self.log.debug('Slew started')
         mPoint = self.slewQueue.get()
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
                                                     az_degrees=mPoint['azimuth'])
@@ -389,14 +403,12 @@ class Model:
         """
         if not self.ui.checkDisableDAT.isChecked():
             return False
-
         if self.statusDAT is None:
             self.statusDAT = self.app.mount.setting.statusDualAxisTracking
 
         self.statusDAT = self.app.mount.setting.statusDualAxisTracking
         self.app.mount.setting.setDualAxisTracking(False)
         self.changeStyleDynamic(self.ui.statusDualAxisTracking, 'color', 'yellow')
-
         return True
 
     def restoreStatusDAT(self):
@@ -410,7 +422,6 @@ class Model:
 
         self.app.mount.setting.setDualAxisTracking(self.statusDAT)
         self.changeStyleDynamic(self.ui.statusDualAxisTracking, 'color', '')
-
         return True
 
     def clearQueues(self):
@@ -503,7 +514,6 @@ class Model:
 
         if hasDome and hasAzimuth:
             self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
-
         elif hasDome and not hasAzimuth:
             self.app.message.emit('Dome without azimuth value used', 2)
 
@@ -533,7 +543,6 @@ class Model:
         """
         if self.ui.pauseModel.property('pause'):
             self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
-
         else:
             self.changeStyleDynamic(self.ui.pauseModel, 'pause', True)
 
@@ -553,7 +562,6 @@ class Model:
         self.clearQueues()
         self.restoreModelDefaultContextAndGuiStatus()
         self.app.message.emit('Modeling cancelled', 2)
-
         return True
 
     def retrofitModel(self):
@@ -714,7 +722,6 @@ class Model:
             self.app.data.setStatusBuildP(i, True)
 
         self.app.updatePointMarker.emit()
-
         return True
 
     def processModelData(self):
@@ -731,7 +738,6 @@ class Model:
         suc = self.programModelToMount(self.model)
         if suc:
             self.app.message.emit('Model programmed with success', 0)
-
         else:
             self.app.message.emit('Model programming error', 2)
 
@@ -748,7 +754,6 @@ class Model:
 
             if not suc:
                 self.app.message.emit('Cannot park mount', 2)
-
             else:
                 self.app.message.emit('Mount parked', 0)
 
@@ -769,7 +774,6 @@ class Model:
         if self.retryQueue.qsize() == 0:
             self.processModelData()
             return True
-
         if self.modelBuildRetryCounter == 0:
             self.processModelData()
             return True
@@ -839,7 +843,6 @@ class Model:
             self.app.message.emit('Actual model cannot be cleared', 2)
             self.app.message.emit('Model build cancelled', 2)
             return False
-
         else:
             self.app.message.emit('Actual model clearing, waiting 1s', 0)
             QTest.qWait(1000)

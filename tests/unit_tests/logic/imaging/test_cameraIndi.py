@@ -23,6 +23,7 @@ import zlib
 from astropy.io import fits
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from indibase.indiBase import Device, Client
+from skyfield.api import Angle, load
 
 # local import
 from logic.imaging.cameraIndi import CameraIndi
@@ -32,9 +33,19 @@ from base.indiClass import IndiClass
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
+    class Test2:
+        raJNow = Angle(hours=0)
+        decJNow = Angle(degrees=0)
+        timeJD = load.timescale().tt_jd(23456789.5)
+
+    class Test1:
+        obsSite = Test2()
+
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
+        deviceStat = {'mount': True}
+        mount = Test1()
 
     global app
     app = CameraIndi(app=Test(), signals=CameraSignals(), data={})
@@ -181,6 +192,47 @@ def test_updateNumber_2():
                            return_value=True):
         suc = app.updateNumber('test', 'CCD_EXPOSURE')
         assert suc
+
+
+def test_updateHeaderInfo_1():
+    header = {}
+    app.ra = Angle(hours=12)
+    app.dec = Angle(degrees=180)
+    h = app.updateHeaderInfo(header)
+    assert 'RA' in h
+    assert 'DEC' in h
+
+
+def test_updateHeaderInfo_2():
+    header = {'RA': 90,
+              'DEC': 90}
+    app.ra = Angle(hours=12)
+    app.dec = Angle(degrees=180)
+    h = app.updateHeaderInfo(header)
+    assert 'RA' in h
+    assert 'DEC' in h
+    assert h['RA'] == 90
+    assert h['DEC'] == 90
+
+
+def test_updateHeaderInfo_3():
+    header = {'RA': 90}
+    app.ra = Angle(hours=12)
+    app.dec = Angle(degrees=180)
+    h = app.updateHeaderInfo(header)
+    assert 'RA' in h
+    assert 'DEC' in h
+    assert h['RA'] == 180
+    assert h['DEC'] == 180
+
+
+def test_updateHeaderInfo_4():
+    header = {}
+    app.ra = None
+    app.dec = None
+    h = app.updateHeaderInfo(header)
+    assert 'RA' not in h
+    assert 'DEC' not in h
 
 
 def test_updateBLOB_1():
@@ -384,6 +436,20 @@ def test_expose_3():
 
 def test_expose_4():
     app.deviceName = 'test'
+    app.device = Device()
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={}):
+        with mock.patch.object(app.client,
+                               'sendNewNumber',
+                               return_value=True):
+            suc = app.expose()
+            assert suc
+
+
+def test_expose_5():
+    app.deviceName = 'test'
+    app.app.deviceStat['mount'] = False
     app.device = Device()
     with mock.patch.object(app.device,
                            'getNumber',

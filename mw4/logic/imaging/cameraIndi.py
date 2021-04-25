@@ -255,9 +255,9 @@ class CameraIndi(IndiClass):
         if isMount:
             ra = self.app.mount.obsSite.raJNow
             dec = self.app.mount.obsSite.decJNow
-            obsTime = self.app.mount.obsSite.timeJD
-            if ra is not None and dec is not None and obsTime is not None:
-                ra, dec = JNowToJ2000(ra, dec, obsTime)
+            timeJD = self.app.mount.obsSite.timeJD
+            if ra is not None and dec is not None and timeJD is not None:
+                ra, dec = JNowToJ2000(ra, dec, timeJD)
             self.ra = ra
             self.dec = dec
         else:

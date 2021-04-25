@@ -26,6 +26,7 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle, wgs84
+from skyfield import almanac
 from sgp4.exporter import export_tle
 import numpy as np
 
@@ -484,10 +485,50 @@ def test_addMountFlip_2(function):
     assert suc
 
 
+def test_addMountFlip_3(function):
+    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
+    tle = ['NOAA 15 [B]',
+           '1 25338U 98030A   21104.44658620  .00000027  00000-0  29723-4 0  9990',
+           '2 25338  98.6888 133.5239 0011555 106.3612 253.8839 14.26021970192127']
+    ts = function.app.mount.obsSite.ts
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    function.satOrbits = [{'rise': ts.tt_jd(2459323.2324153692),
+                           'culminate': ts.tt_jd(2459323.237090508),
+                           'transit': ts.tt_jd(2459323.2386906403),
+                           'settle': ts.tt_jd(2459323.241785044)}]
+    with mock.patch.object(almanac,
+                           'find_discrete',
+                           return_value=([], [])):
+        suc = function.addMountFlip(loc, 0)
+        assert suc
+
+
 def test_showSatPasses_1(function):
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'culminate': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)},
+                          {'rise': ts.tt_jd(2459216.5),
+                           'settle': ts.tt_jd(2459216.7)}]
+    with mock.patch.object(function,
+                           'calcPassEvents',
+                           return_value=(0, 0)):
+        with mock.patch.object(function,
+                               'extractFirstOrbits'):
+            with mock.patch.object(function,
+                                   'addMeridianTransit'):
+                with mock.patch.object(function,
+                                       'addMountFlip'):
+                    suc = function.showSatPasses()
+                    assert suc
+
+
+def test_showSatPasses_2(function):
+    ts = function.app.mount.obsSite.ts
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'culminate': ts.tt_jd(2459215.6),
+                           'flip': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)},
                           {'rise': ts.tt_jd(2459216.5),
                            'settle': ts.tt_jd(2459216.7)}]
@@ -517,6 +558,44 @@ def test_calcDuration_2(function):
 def test_calcDuration_3(function):
     val = function.calcDuration(2000 / 1440, 1000 / 1440)
     assert val == 1
+
+
+def test_progMountStandard(function):
+    with mock.patch.object(function,
+                           'calcDuration'):
+        with mock.patch.object(function.app.mount.satellite,
+                               'calcTLE'):
+            suc = function.progMountStandard(1, 2)
+            assert suc
+
+
+def test_progMountNew(function):
+    with mock.patch.object(function,
+                           'calcDuration'):
+        with mock.patch.object(function.app.mount.satellite,
+                               'calcTLE'):
+            suc = function.progMountNew(1, 2)
+            assert suc
+
+
+def test_progMount_1(function):
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        with mock.patch.object(function.app.mount.firmware,
+                               'checkNewer',
+                               return_value=True):
+            suc = function.progMount(1, 2)
+            assert suc
+
+
+def test_progMount_2(function):
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        with mock.patch.object(function.app.mount.firmware,
+                               'checkNewer',
+                               return_value=False):
+            suc = function.progMount(1, 2)
+            assert suc
 
 
 def test_calcSegments_1(function):
@@ -761,6 +840,12 @@ def test_getSatelliteDataFromDatabase_1(function):
 def test_getSatelliteDataFromDatabase_2(function):
     class Name:
         name = ''
+        jdStart = 1
+        jdEnd = 1
+        flip = False
+        message = ''
+        altitude = None
+        azimuth = None
 
     function.app.mount.satellite.tleParams = Name()
     suc = function.getSatelliteDataFromDatabase()
@@ -778,7 +863,7 @@ def test_getSatelliteDataFromDatabase_3(function):
 
 def test_updateSatelliteTrackGui_1(function):
     suc = function.updateSatelliteTrackGui()
-    assert not suc
+    assert suc
 
 
 def test_updateSatelliteTrackGui_2(function):

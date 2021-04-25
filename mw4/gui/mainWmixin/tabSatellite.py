@@ -513,6 +513,7 @@ class Satellite(object):
 
         worker.signals.finished.connect(self.updateSatelliteTrackGui)
         self.threadPool.start(worker)
+        return True
 
     def calcSegments(self):
         """

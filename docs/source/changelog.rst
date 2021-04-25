@@ -28,8 +28,13 @@ Released beta version of MW4
 - add auto dew control support for Pegasus UPB
 - add switch support for ASCOM/ALPACA Pegasus UPB
 - add observation condition support for ASCOM/ALPACA Pegasus UPB
+- add feature for RA/DEC FITS writing for INDI server without snooping
+- completely revised satellite tracking menu gui
+- add partially satellite tracking before / after possible flip
+- add reverse order for filed build point retry
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected
+- fix retry mechanism for failed build points
 
 Released version of MW4
 -----------------------

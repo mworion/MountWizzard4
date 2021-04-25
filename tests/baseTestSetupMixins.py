@@ -69,6 +69,12 @@ class Mount(QObject):
     class MountSatellite:
         class Name:
             name = ''
+            jdStart = 1
+            jdEnd = 1
+            flip = False
+            message = ''
+            altitude = None
+            azimuth = None
 
         tleParams = Name()
 
@@ -90,6 +96,10 @@ class Mount(QObject):
         vString = '12345'
         date = 'test'
         time = 'test'
+
+        @staticmethod
+        def checkNewer(a):
+            return True
 
     class MountGeometry:
         offNorth = 0

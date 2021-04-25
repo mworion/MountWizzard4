@@ -867,26 +867,47 @@ def test_updateSatelliteTrackGui_1(function):
 
 
 def test_updateSatelliteTrackGui_2(function):
-    class Test:
-        jdStart = None
-        jdEnd = None
-        flip = False
-        message = None
-        altitude = None
-
-    suc = function.updateSatelliteTrackGui(Test())
-    assert suc
+    function.app.mount.satellite.tleParams = None
+    suc = function.updateSatelliteTrackGui()
+    assert not suc
 
 
 def test_updateSatelliteTrackGui_3(function):
-    class Test:
-        jdStart = 2458715.14771
-        jdEnd = 2458715.15
-        flip = True
-        message = 'test'
-        altitude = Angle(degrees=50)
+    ts = function.app.mount.obsSite.ts
 
-    suc = function.updateSatelliteTrackGui(Test())
+    class Test:
+        jdStart = ts.tt_jd(2459215.5)
+        jdEnd = ts.tt_jd(2459215.5)
+        flip = False
+        message = 'e'
+        altitude = 1
+    function.app.mount.satellite.tleParams = Test()
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'flip': ts.tt_jd(2459215.6),
+                           'culminate': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)}]
+
+    suc = function.updateSatelliteTrackGui()
+    assert suc
+
+
+def test_updateSatelliteTrackGui_4(function):
+    ts = function.app.mount.obsSite.ts
+
+    class Test:
+        jdStart = ts.tt_jd(2459215.5)
+        jdEnd = ts.tt_jd(2459215.5)
+        flip = True
+        message = 'e'
+        altitude = 1
+
+    function.app.mount.satellite.tleParams = Test()
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'flip': ts.tt_jd(2459215.6),
+                           'culminate': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)}]
+
+    suc = function.updateSatelliteTrackGui()
     assert suc
 
 

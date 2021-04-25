@@ -17,7 +17,6 @@
 # standard libraries
 import queue
 import os
-from random import random
 import time
 import shutil
 import json

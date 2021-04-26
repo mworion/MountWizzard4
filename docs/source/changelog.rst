@@ -38,6 +38,8 @@ Released beta version of MW4
 
 Released version of MW4
 -----------------------
+Version 1.1
+^^^^^^^^^^^
 1.1.1
 
 - adding fix for INDI cameras sending two times BUSY, EXP=0
@@ -56,6 +58,8 @@ Released version of MW4
 - adding OBJCTRA / OBJCTDEC keywords when reading FITs
 - upgrade various libraries
 
+Version 1.0
+^^^^^^^^^^^
 1.0.7
 
 - bugfix cooler

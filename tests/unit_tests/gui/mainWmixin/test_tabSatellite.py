@@ -339,7 +339,7 @@ def test_extractFirstOrbits_1(function):
     times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
     events = [0, 1, 2, 0, 1, 2, 0, 1, 2]
 
-    function.extractFirstOrbits(now, times, events)
+    function.extractOrbits(now, times, events)
     assert len(function.satOrbits) == 3
 
 
@@ -360,7 +360,7 @@ def test_extractFirstOrbits_2(function):
     times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
     events = [0, 1, 2, 1, 1, 2, 0, 1, 2]
 
-    function.extractFirstOrbits(now, times, events)
+    function.extractOrbits(now, times, events)
     assert len(function.satOrbits) == 2
 
 
@@ -381,7 +381,7 @@ def test_extractFirstOrbits_3(function):
     times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
     events = [0, 1, 2, 0, 1, 2, 0, 1, 2]
 
-    function.extractFirstOrbits(now, times, events)
+    function.extractOrbits(now, times, events)
     print(function.satOrbits)
     assert len(function.satOrbits) == 1
 
@@ -403,7 +403,7 @@ def test_extractFirstOrbits_4(function):
     times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
     events = [0, 1, 2, 0, 1, 2, 0, 1, 2]
 
-    function.extractFirstOrbits(now, times, events)
+    function.extractOrbits(now, times, events)
     assert len(function.satOrbits) == 0
 
 
@@ -515,7 +515,7 @@ def test_showSatPasses_1(function):
                            'calcPassEvents',
                            return_value=(0, 0)):
         with mock.patch.object(function,
-                               'extractFirstOrbits'):
+                               'extractOrbits'):
             with mock.patch.object(function,
                                    'addMeridianTransit'):
                 with mock.patch.object(function,
@@ -536,7 +536,7 @@ def test_showSatPasses_2(function):
                            'calcPassEvents',
                            return_value=(0, 0)):
         with mock.patch.object(function,
-                               'extractFirstOrbits'):
+                               'extractOrbits'):
             with mock.patch.object(function,
                                    'addMeridianTransit'):
                 with mock.patch.object(function,

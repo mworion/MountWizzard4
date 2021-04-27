@@ -105,7 +105,12 @@ class Satellite(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.setupSatelliteSourceURLsDropDown()
+
+        self.ui.satelliteSource.clear()
+        self.ui.satelliteSource.setView(PyQt5.QtWidgets.QListView())
+        for name in self.satelliteSourceURLs.keys():
+            self.ui.satelliteSource.addItem(name)
+
         self.ui.filterSatellite.setText(config.get('filterSatellite'))
         self.ui.domeAutoFollowSat.setChecked(config.get('domeAutoFollowSat', False))
         self.ui.satBeforeFlip.setChecked(config.get('satBeforeFlip', True))
@@ -130,151 +135,6 @@ class Satellite(object):
         config['satAfterFlip'] = self.ui.satAfterFlip.isChecked()
         return True
 
-    def setupSatelliteSourceURLsDropDown(self):
-        """
-        setupSatelliteSourceURLsDropDown handles the dropdown list for the
-        satellite data online sources. therefore we add the necessary entries to
-        populate the list.
-
-        :return: success for test
-        """
-        self.ui.satelliteSource.clear()
-        self.ui.satelliteSource.setView(PyQt5.QtWidgets.QListView())
-        for name in self.satelliteSourceURLs.keys():
-            self.ui.satelliteSource.addItem(name)
-        return True
-
-    def filterSatelliteNamesList(self):
-        """
-        :return: true for test purpose
-        """
-        listSat = self.ui.listSatelliteNames
-        filterStr = self.ui.filterSatellite.text()
-
-        for row in range(listSat.model().rowCount()):
-            isFound = filterStr.lower() in listSat.model().index(row).data().lower()
-            listSat.setRowHidden(row, not isFound)
-
-        return True
-
-    def setupSatelliteNameList(self):
-        """
-        setupSatelliteNameList clears the list view of satellite names deriving
-        from the selected source file on disk. after that it populated the list
-        with actual data.
-
-        :return: success for test
-        """
-        self.ui.listSatelliteNames.clear()
-        for name, _ in self.satellites.items():
-            if not isinstance(name, str):
-                continue
-            entryName = f'{self.satellites[name].model.satnum:6d}: {name}'
-            self.ui.listSatelliteNames.addItem(entryName)
-        self.ui.listSatelliteNames.sortItems()
-        self.ui.listSatelliteNames.update()
-        self.filterSatelliteNamesList()
-        return True
-
-    def loadTLEDataFromSourceURLsWorker(self, source='', isOnline=False):
-        """
-        loadTLEDataFromSourceURLsWorker selects from a drop down list of
-        possible satellite data sources on the web and once selected downloads
-        the data. depending of the setting of reload is true setting, it takes an
-        already loaded file from local disk. after loading or opening the source
-        file, it updates the satellite list in the list view widget for the
-        selection of satellites.
-
-        :return: success
-        """
-        if not source:
-            return False
-
-        fileName = os.path.basename(source)
-        dirPath = self.app.mwGlob['dataDir']
-        filePath = f'{dirPath}/{fileName}'
-
-        satellites = self.app.mount.obsSite.loader.tle_file(source, reload=isOnline)
-        self.satellites = {sat.name: sat for sat in satellites}
-
-        if not os.path.isfile(filePath):
-            return False
-        return True
-
-    def loadTLEDataFromSourceURLs(self):
-        """
-        loadTLEDataFromSourceURLs selects from a drop down list of possible
-        satellite data sources on the web and once selected downloads the data.
-        depending of the setting of reload is true setting, it takes an already
-        loaded file from local disk. after loading or opening the source file,
-        it updates the satellite list in the list view widget for the selection
-        of satellites.
-
-        :return: success
-        """
-        key = self.ui.satelliteSource.currentText()
-        if key not in self.satelliteSourceURLs:
-            return False
-
-        source = self.satelliteSourceURLs[key]
-        isOnline = self.ui.isOnline.isChecked()
-        worker = Worker(self.loadTLEDataFromSourceURLsWorker,
-                        source=source,
-                        isOnline=isOnline)
-        worker.signals.finished.connect(self.setupSatelliteNameList)
-        self.threadPool.start(worker)
-        return True
-
-    def updateOrbit(self):
-        """
-        updateOrbit calculates the actual satellite orbits, sub point etc. and
-        updates the data in the gui. in addition when satellite window is open
-        it signals this update data as well for matplotlib drawings in satellite
-        window. this method is called cyclic every 3 seconds for updates
-
-        :return: success
-        """
-        if self.satellite is None:
-            self.ui.startSatelliteTracking.setEnabled(False)
-            return False
-
-        now = self.app.mount.obsSite.ts.now()
-        winObj = self.app.uiWindows['showSatelliteW']
-        if not winObj.get('classObj'):
-            return False
-
-        location = self.app.mount.obsSite.location
-        winObj['classObj'].signals.update.emit(now, location)
-        return True
-
-    def programTLEDataToMount(self):
-        """
-        programTLEDataToMount get the satellite data and programs this TLE data
-        into the mount. after programming the parameters it forces the mount to
-        calculate the satellite orbits immediately
-
-        :return: success
-        """
-        if not self.app.mount.mountUp:
-            self.app.message.emit('Mount is not online', 2)
-            return False
-
-        satellite = self.app.mount.satellite
-        if satellite.tleParams.name == self.satellite.name:
-            self.app.message.emit(f'Actual satellite is  [{self.satellite.name}]', 0)
-
-        else:
-            self.app.message.emit(f'Programming [{self.satellite.name}] to mount', 0)
-            line0 = self.satellite.name
-            line1, line2 = export_tle(self.satellite.model)
-            suc = satellite.setTLE(line0=line0,
-                                   line1=line1,
-                                   line2=line2)
-            if not suc:
-                self.app.message.emit('Error program TLE', 2)
-                return False
-        return True
-
     def calcPassEvents(self, obsSite):
         """
         :return:
@@ -294,7 +154,7 @@ class Satellite(object):
                                                    altitude_degrees=minAlt)
         return times, events
 
-    def extractFirstOrbits(self, timeNow, times, events):
+    def extractOrbits(self, timeNow, times, events):
         """
         :param timeNow:
         :param times:
@@ -358,75 +218,16 @@ class Satellite(object):
                 satOrbit['flip'] = None
         return True
 
-    @staticmethod
-    def calcMountFlip(satellite, location, trackLimit):
-        """
-        x[x<0] += 2*pi
-
-        Actually I have no clue how to determine, when the mount goes
-        counterweights up. there must be a way of doing so as the german
-        mounts decide which side to address. I know that there are two
-        situations possible to point to a sky object like written in
-        ASCOM and other specifications.
-
-        :param satellite:
-        :param location:
-        :param trackLimit:
-        :return:
-        """
-        difference = satellite - location
-        tl = trackLimit / 360 * 24
-
-        def counterweights_up(t):
-            ha, _, _ = difference.at(t).hadec()
-
-            x1 = np.less(ha.hours, tl)
-            x2 = np.greater(ha.hours, 12 - tl)
-            res = np.logical_or(x1, x2)
-            return res
-
-        counterweights_up.step_days = 0.4
-        return counterweights_up
-
-    def addMountFlip(self, location, trackLimit):
-        """
-        :param location:
-        :param trackLimit:
-        :return:
-        """
-        f = self.calcMountFlip(self.satellite, location, trackLimit)
-        for satOrbit in self.satOrbits:
-            t, y = almanac.find_discrete(satOrbit['rise'],
-                                         satOrbit['settle'], f)
-            if t:
-                satOrbit['flip'] = t[0]
-            else:
-                satOrbit['flip'] = None
-        return True
-
     def showSatPasses(self):
         """
-        showSatPasses calculated the next three satellite passes for the
-        presentation in the gui. the times shown might differ from the
-        calculation of the mount as we dont know, how the mount calculates is
-        timings.
-
         :return: True for test purpose
         """
         obsSite = self.app.mount.obsSite
         times, events = self.calcPassEvents(obsSite)
 
         timeNow = obsSite.timeJD
-        self.extractFirstOrbits(timeNow, times, events)
+        self.extractOrbits(timeNow, times, events)
         self.addMeridianTransit(obsSite.location)
-
-        # trackLimit = self.app.mount.setting.meridianLimitTrack
-        # if trackLimit is None:
-        #     trackLimit = 0
-        # self.addMountFlip(obsSite.location, trackLimit)
-        #
-        # actually using meridian transit as possible flip as it fits in most
-        # cases.
 
         fString = "%H:%M:%S"
         fStringDate = "%d %b"
@@ -459,6 +260,174 @@ class Satellite(object):
             self.passUI[i]['settle'].setText('-')
             self.passUI[i]['flip'].setText('-')
             self.passUI[i]['date'].setText('-')
+        return True
+
+    def extractSatelliteData(self, satName=''):
+        """
+        :param satName: additional parameter for calling this method
+        :return: success
+        """
+        if satName not in self.satellites:
+            return False
+
+        index = self.findIndexValue(self.ui.listSatelliteNames, satName,
+                                    relaxed=True)
+        item = self.ui.listSatelliteNames.item(index)
+        if item is None:
+            return False
+
+        item.setSelected(True)
+        position = PyQt5.QtWidgets.QAbstractItemView.EnsureVisible
+        self.ui.listSatelliteNames.scrollToItem(item, position)
+        self.satellite = self.satellites[satName]
+        self.ui.satelliteName.setText(self.satellite.name)
+        epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M')
+        self.ui.satelliteEpoch.setText(epochText)
+
+        now = self.app.mount.obsSite.ts.now()
+        days = now - self.satellite.epoch
+        self.ui.satelliteDataAge.setText(f'{days:2.2f}')
+
+        if days > 10:
+            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')
+        elif 3 < days < 10:
+            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'yellow')
+        else:
+            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', '')
+
+        self.ui.satelliteNumber.setText(f'{self.satellite.model.satnum:5d}')
+        self.ui.stopSatelliteTracking.setEnabled(False)
+        self.ui.startSatelliteTracking.setEnabled(False)
+        self.ui.satTrajectoryStart.setText('-')
+        self.ui.satTrajectoryEnd.setText('-')
+        self.ui.satTrajectoryFlip.setText('-')
+
+        self.showSatPasses()
+        self.sendSatelliteData()
+        return True
+
+    def getSatelliteDataFromDatabase(self, tleParams=None):
+        """
+        :param tleParams:
+        :return: True for test purpose
+        """
+        if tleParams is None:
+            return False
+
+        self.extractSatelliteData(satName=tleParams.name)
+        return True
+
+    def filterSatelliteNamesList(self):
+        """
+        :return: true for test purpose
+        """
+        listSat = self.ui.listSatelliteNames
+        filterStr = self.ui.filterSatellite.text()
+
+        for row in range(listSat.model().rowCount()):
+            isFound = filterStr.lower() in listSat.model().index(row).data().lower()
+            listSat.setRowHidden(row, not isFound)
+
+        return True
+
+    def setupSatelliteNameList(self):
+        """
+        :return: success for test
+        """
+        self.ui.listSatelliteNames.clear()
+        for name, _ in self.satellites.items():
+            if not isinstance(name, str):
+                continue
+            entryName = f'{self.satellites[name].model.satnum:6d}: {name}'
+            self.ui.listSatelliteNames.addItem(entryName)
+        self.ui.listSatelliteNames.sortItems()
+        self.ui.listSatelliteNames.update()
+        self.filterSatelliteNamesList()
+        return True
+
+    def loadTLEDataFromSourceURLsWorker(self, source='', isOnline=False):
+        """
+        :return: success
+        """
+        if not source:
+            return False
+
+        fileName = os.path.basename(source)
+        dirPath = self.app.mwGlob['dataDir']
+        filePath = f'{dirPath}/{fileName}'
+
+        satellites = self.app.mount.obsSite.loader.tle_file(source, reload=isOnline)
+        self.satellites = {sat.name: sat for sat in satellites}
+
+        if not os.path.isfile(filePath):
+            return False
+        return True
+
+    def loadTLEDataFromSourceURLs(self):
+        """
+        :return: success
+        """
+        key = self.ui.satelliteSource.currentText()
+        if key not in self.satelliteSourceURLs:
+            return False
+
+        source = self.satelliteSourceURLs[key]
+        isOnline = self.ui.isOnline.isChecked()
+        worker = Worker(self.loadTLEDataFromSourceURLsWorker,
+                        source=source,
+                        isOnline=isOnline)
+        worker.signals.finished.connect(self.setupSatelliteNameList)
+        self.threadPool.start(worker)
+        return True
+
+    def updateOrbit(self):
+        """
+        updateOrbit calculates the actual satellite orbits, sub point etc. and
+        updates the data in the gui. in addition when satellite window is open
+        it signals this update data as well for matplotlib drawings in satellite
+        window. this method is called cyclic every 3 seconds for updates
+
+        :return: success
+        """
+        if self.satellite is None:
+            self.ui.startSatelliteTracking.setEnabled(False)
+            return False
+
+        now = self.app.mount.obsSite.ts.now()
+        winObj = self.app.uiWindows['showSatelliteW']
+        if not winObj.get('classObj'):
+            return False
+
+        location = self.app.mount.obsSite.location
+        winObj['classObj'].signals.update.emit(now, location)
+        return True
+
+    def programTLEDataToMount(self):
+        """
+        programTLEDataToMount get the satellite data and programs this TLE data
+        into the mount. after programming the parameters it forces the mount to
+        calculate the satellite orbits immediately
+
+        :return: success
+        """
+        if not self.app.mount.mountUp:
+            self.app.message.emit('Mount is not online', 2)
+            return False
+
+        satellite = self.app.mount.satellite
+        if satellite.tleParams.name == self.satellite.name:
+            self.app.message.emit(f'Actual satellite is  [{self.satellite.name}]', 0)
+
+        else:
+            self.app.message.emit(f'Programming [{self.satellite.name}] to mount', 0)
+            line0 = self.satellite.name
+            line1, line2 = export_tle(self.satellite.model)
+            suc = satellite.setTLE(line0=line0,
+                                   line1=line1,
+                                   line2=line2)
+            if not suc:
+                self.app.message.emit('Error program TLE', 2)
+                return False
         return True
 
     @staticmethod
@@ -580,53 +549,6 @@ class Satellite(object):
         winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits, segments)
         return True
 
-    def extractSatelliteData(self, satName=''):
-        """
-        extractSatelliteData is called when a satellite is selected via mouse
-        click in the list menu. it collects the data and writes basic stuff to
-        the gui. depending on the age of the satellite data is colors the frame
-
-        :param satName: additional parameter for calling this method
-        :return: success
-        """
-        if satName not in self.satellites:
-            return False
-
-        index = self.findIndexValue(self.ui.listSatelliteNames, satName,
-                                    relaxed=True)
-        item = self.ui.listSatelliteNames.item(index)
-        if item is None:
-            return False
-
-        item.setSelected(True)
-        position = PyQt5.QtWidgets.QAbstractItemView.EnsureVisible
-        self.ui.listSatelliteNames.scrollToItem(item, position)
-        self.satellite = self.satellites[satName]
-        self.ui.satelliteName.setText(self.satellite.name)
-        epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M')
-        self.ui.satelliteEpoch.setText(epochText)
-
-        now = self.app.mount.obsSite.ts.now()
-        days = now - self.satellite.epoch
-        self.ui.satelliteDataAge.setText(f'{days:2.2f}')
-
-        if days > 10:
-            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')
-        elif 3 < days < 10:
-            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'yellow')
-        else:
-            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', '')
-
-        self.ui.satelliteNumber.setText(f'{self.satellite.model.satnum:5d}')
-        self.ui.stopSatelliteTracking.setEnabled(False)
-        self.ui.startSatelliteTracking.setEnabled(False)
-        self.ui.satTrajectoryStart.setText('-')
-        self.ui.satTrajectoryEnd.setText('-')
-        self.ui.satTrajectoryFlip.setText('-')
-        self.showSatPasses()
-        self.sendSatelliteData()
-        return True
-
     def chooseSatellite(self):
         """
         :return: True for test purpose
@@ -635,30 +557,8 @@ class Satellite(object):
         self.extractSatelliteData(satName=satName)
         return True
 
-    def getSatelliteDataFromDatabase(self, tleParams=None):
-        """
-        getSatelliteDataFromDatabase gets called, when the TLE setup is read
-        from the mount. we use the name to retrieve the data from the
-        "active.txt" database to be able to work with external database. it calls
-        extraction method for getting the specific satellite data read and stored.
-
-        :param tleParams:
-        :return: True for test purpose
-        """
-        if tleParams is None:
-            tleParams = self.app.mount.satellite.tleParams
-        if tleParams is None:
-            return False
-
-        self.extractSatelliteData(satName=tleParams.name)
-        return True
-
     def updateSatelliteTrackGui(self, params=None):
         """
-        updateSatelliteTrackGui is called, when the mount has finished its
-        calculations based on programmed TLE data. It writes the data to the gui
-        and enables the start track button.
-
         :return: success for test purpose
         """
         if params is None:

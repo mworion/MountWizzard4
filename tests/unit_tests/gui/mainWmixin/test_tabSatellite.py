@@ -141,7 +141,7 @@ def test_setupSatelliteNameList_3(function):
 
 
 def test_loadSatelliteSourceWorker_1(function):
-    suc = function.loadTLEDataFromSourceURLsWorker()
+    suc = function.loadDataFromSourceURLsWorker()
     assert not suc
 
 
@@ -153,7 +153,7 @@ def test_loadSatelliteSourceWorker_2(function):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=False):
-            suc = function.loadTLEDataFromSourceURLsWorker(source=source, isOnline=False)
+            suc = function.loadDataFromSourceURLsWorker(source=source, isOnline=False)
             assert not suc
 
 
@@ -165,18 +165,18 @@ def test_loadSatelliteSourceWorker_3(function):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=True):
-            suc = function.loadTLEDataFromSourceURLsWorker(source=source, isOnline=False)
+            suc = function.loadDataFromSourceURLsWorker(source=source, isOnline=False)
             assert suc
 
 
 def test_loadTLEDataFromSourceURLs_1(function):
-    suc = function.loadTLEDataFromSourceURLs()
+    suc = function.loadDataFromSourceURLs()
     assert not suc
 
 
 def test_loadTLEDataFromSourceURLs_2(function):
     function.ui.satelliteSource.addItem('Active')
-    suc = function.loadTLEDataFromSourceURLs()
+    suc = function.loadDataFromSourceURLs()
     assert suc
 
 
@@ -207,7 +207,7 @@ def test_updateOrbit_3(function):
 
 def test_programTLEToMount_1(function):
     function.app.mount.mountUp = False
-    suc = function.programTLEDataToMount()
+    suc = function.programDataToMount()
     assert not suc
 
 
@@ -218,7 +218,7 @@ def test_programTLEToMount_2(function):
     function.satellite = Test()
     function.app.mount.mountUp = True
     function.app.mount.satellite.tleParams.name = 'TIANGONG 1'
-    suc = function.programTLEDataToMount()
+    suc = function.programDataToMount()
     assert suc
 
 
@@ -242,7 +242,7 @@ def test_programTLEToMount_3(function):
     with mock.patch.object(function.app.mount.satellite,
                            'setTLE',
                            return_value=False):
-        suc = function.programTLEDataToMount()
+        suc = function.programDataToMount()
         assert not suc
 
 
@@ -264,7 +264,7 @@ def test_programTLEToMount_4(function):
     with mock.patch.object(function.app.mount.satellite,
                            'setTLE',
                            return_value=True):
-        suc = function.programTLEDataToMount()
+        suc = function.programDataToMount()
         assert suc
 
 
@@ -686,7 +686,7 @@ def test_extractSatelliteData_3(function):
             with mock.patch.object(function,
                                    'sendSatelliteData'):
                 with mock.patch.object(function,
-                                       'programTLEDataToMount'):
+                                       'programDataToMount'):
                     with mock.patch.object(function,
                                            'calcOrbitFromTLEInMount'):
                         suc = function.extractSatelliteData(satName='NOAA 8')
@@ -721,7 +721,7 @@ def test_extractSatelliteData_4(function):
             with mock.patch.object(function,
                                    'sendSatelliteData'):
                 with mock.patch.object(function,
-                                       'programTLEDataToMount'):
+                                       'programDataToMount'):
                     with mock.patch.object(function,
                                            'calcOrbitFromTLEInMount'):
                         suc = function.extractSatelliteData(satName='NOAA 8')
@@ -756,7 +756,7 @@ def test_extractSatelliteData_5(function):
             with mock.patch.object(function,
                                    'sendSatelliteData'):
                 with mock.patch.object(function,
-                                       'programTLEDataToMount'):
+                                       'programDataToMount'):
                     with mock.patch.object(function,
                                            'calcOrbitFromTLEInMount'):
                         suc = function.extractSatelliteData(satName='NOAA 8')

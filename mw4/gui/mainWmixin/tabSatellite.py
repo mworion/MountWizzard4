@@ -32,6 +32,28 @@ from gui.extWindows.progressPopupW import ProgressPopup
 
 class Satellite(object):
     """
+    Satellite has five parts:
+    1. When mount is connected it will automatically search for a stored
+    satellite in the mount. If so, the satellite reference is fetched, the data
+    is read out of the TLE database, the orbit data are calculate and the gui is
+    populated. If the satellite window is open, data will be sent to gui drawing
+    as well.
+
+    2. When a satellite is chosen from a drop down list by double click, it
+    selects the corresponding TLE data, programs is to the mount and follows the
+    steps of 1.
+
+    3. If a new satellite database is selected, is downloads the database and
+    updates the drop down menus with the satellite entries.
+
+    4. If a satellite is to be tracked, it takes the satellite TLE data, the user
+    gui input and calculates the satellite trajectory. In case of built in
+    command it only pushes the command if explicit, it calculates the trajectory
+    with alt/az positions and programs it to the mount. afterward a tracking
+    could be started.
+
+    5. If a mount upload is chosen (only available on windows) if prepares the
+    data in the necessary mount format and calls the updater.
     """
 
     def __init__(self):
@@ -85,7 +107,8 @@ class Satellite(object):
         self.ui.listSatelliteNames.doubleClicked.connect(self.chooseSatellite)
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
-        self.ui.satelliteSource.currentIndexChanged.connect(self.loadTLEDataFromSourceURLs)
+        self.ui.satelliteSource.currentIndexChanged.connect(self.loadDataFromSourceURLs)
+        self.ui.isOnline.stateChanged.connect(self.loadDataFromSourceURLs)
         self.ui.filterSatellite.textChanged.connect(self.filterSatelliteNamesList)
 
         msig = self.app.mount.signals
@@ -93,9 +116,8 @@ class Satellite(object):
         msig.calcTrajectoryDone.connect(self.updateSatelliteTrackGui)
         msig.getTLEdone.connect(self.getSatelliteDataFromDatabase)
         self.app.sendSatelliteData.connect(self.sendSatelliteData)
-        self.ui.isOnline.stateChanged.connect(self.loadTLEDataFromSourceURLs)
-        self.ui.satAfterFlip.clicked.connect(self.calcSegments)
-        self.ui.satBeforeFlip.clicked.connect(self.calcSegments)
+        self.ui.satAfterFlip.clicked.connect(self.showSatPasses)
+        self.ui.satBeforeFlip.clicked.connect(self.showSatPasses)
 
         self.app.update1s.connect(self.updateOrbit)
         self.app.mount.signals.pointDone.connect(self.followMount)
@@ -260,6 +282,8 @@ class Satellite(object):
             self.passUI[i]['settle'].setText('-')
             self.passUI[i]['flip'].setText('-')
             self.passUI[i]['date'].setText('-')
+
+        self.sendSatelliteData()
         return True
 
     def extractSatelliteData(self, satName=''):
@@ -303,7 +327,39 @@ class Satellite(object):
         self.ui.satTrajectoryFlip.setText('-')
 
         self.showSatPasses()
-        self.sendSatelliteData()
+        return True
+
+    def programDataToMount(self, satName=''):
+        """
+        :return: success
+        """
+        if not self.app.mount.mountUp:
+            return False
+        if not satName:
+            return False
+
+        satellite = self.app.mount.satellite
+        if satellite.tleParams.name == satName:
+            self.app.message.emit(f'Actual satellite is  [{self.satellite.name}]', 0)
+
+        else:
+            self.app.message.emit(f'Programming [{self.satellite.name}] to mount', 0)
+            line1, line2 = export_tle(self.satellite.model)
+            suc = satellite.setTLE(line0=satName,
+                                   line1=line1,
+                                   line2=line2)
+            if not suc:
+                self.app.message.emit('Error program TLE', 2)
+                return False
+        return True
+
+    def chooseSatellite(self):
+        """
+        :return: True for test purpose
+        """
+        satName = self.ui.listSatelliteNames.currentItem().text()[8:]
+        self.programDataToMount(satName=satName)
+        self.extractSatelliteData(satName=satName)
         return True
 
     def getSatelliteDataFromDatabase(self, tleParams=None):
@@ -345,7 +401,7 @@ class Satellite(object):
         self.filterSatelliteNamesList()
         return True
 
-    def loadTLEDataFromSourceURLsWorker(self, source='', isOnline=False):
+    def loadDataFromSourceURLsWorker(self, source='', isOnline=False):
         """
         :return: success
         """
@@ -363,7 +419,7 @@ class Satellite(object):
             return False
         return True
 
-    def loadTLEDataFromSourceURLs(self):
+    def loadDataFromSourceURLs(self):
         """
         :return: success
         """
@@ -373,7 +429,7 @@ class Satellite(object):
 
         source = self.satelliteSourceURLs[key]
         isOnline = self.ui.isOnline.isChecked()
-        worker = Worker(self.loadTLEDataFromSourceURLsWorker,
+        worker = Worker(self.loadDataFromSourceURLsWorker,
                         source=source,
                         isOnline=isOnline)
         worker.signals.finished.connect(self.setupSatelliteNameList)
@@ -382,11 +438,6 @@ class Satellite(object):
 
     def updateOrbit(self):
         """
-        updateOrbit calculates the actual satellite orbits, sub point etc. and
-        updates the data in the gui. in addition when satellite window is open
-        it signals this update data as well for matplotlib drawings in satellite
-        window. this method is called cyclic every 3 seconds for updates
-
         :return: success
         """
         if self.satellite is None:
@@ -400,34 +451,6 @@ class Satellite(object):
 
         location = self.app.mount.obsSite.location
         winObj['classObj'].signals.update.emit(now, location)
-        return True
-
-    def programTLEDataToMount(self):
-        """
-        programTLEDataToMount get the satellite data and programs this TLE data
-        into the mount. after programming the parameters it forces the mount to
-        calculate the satellite orbits immediately
-
-        :return: success
-        """
-        if not self.app.mount.mountUp:
-            self.app.message.emit('Mount is not online', 2)
-            return False
-
-        satellite = self.app.mount.satellite
-        if satellite.tleParams.name == self.satellite.name:
-            self.app.message.emit(f'Actual satellite is  [{self.satellite.name}]', 0)
-
-        else:
-            self.app.message.emit(f'Programming [{self.satellite.name}] to mount', 0)
-            line0 = self.satellite.name
-            line1, line2 = export_tle(self.satellite.model)
-            suc = satellite.setTLE(line0=line0,
-                                   line1=line1,
-                                   line2=line2)
-            if not suc:
-                self.app.message.emit('Error program TLE', 2)
-                return False
         return True
 
     @staticmethod
@@ -547,14 +570,6 @@ class Satellite(object):
                     self.ui.satAfterFlip.isChecked()]
 
         winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits, segments)
-        return True
-
-    def chooseSatellite(self):
-        """
-        :return: True for test purpose
-        """
-        satName = self.ui.listSatelliteNames.currentItem().text()[8:]
-        self.extractSatelliteData(satName=satName)
         return True
 
     def updateSatelliteTrackGui(self, params=None):

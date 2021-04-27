@@ -115,6 +115,7 @@ class Satellite(object):
         msig.calcTLEdone.connect(self.updateSatelliteTrackGui)
         msig.calcTrajectoryDone.connect(self.updateSatelliteTrackGui)
         msig.getTLEdone.connect(self.getSatelliteDataFromDatabase)
+        msig.firmwareDone.connect(self.enableGuiFunctions)
         self.app.sendSatelliteData.connect(self.sendSatelliteData)
         self.ui.satAfterFlip.clicked.connect(self.showSatPasses)
         self.ui.satBeforeFlip.clicked.connect(self.showSatPasses)
@@ -135,6 +136,9 @@ class Satellite(object):
 
         self.ui.filterSatellite.setText(config.get('filterSatellite'))
         self.ui.domeAutoFollowSat.setChecked(config.get('domeAutoFollowSat', False))
+        self.ui.useInternalSatCalc.setChecked(config.get('useInternalSatCalc',
+                                                         False))
+        self.ui.useInternalSatCalc.setChecked(False)
         self.ui.satBeforeFlip.setChecked(config.get('satBeforeFlip', True))
         self.ui.satAfterFlip.setChecked(config.get('satAfterFlip', True))
 
@@ -153,8 +157,23 @@ class Satellite(object):
         config = self.app.config['mainW']
         config['filterSatellite'] = self.ui.filterSatellite.text()
         config['domeAutoFollowSat'] = self.ui.domeAutoFollowSat.isChecked()
+        config['useInternalSatCalc'] = self.ui.useInternalSatCalc.isChecked()
         config['satBeforeFlip'] = self.ui.satBeforeFlip.isChecked()
         config['satAfterFlip'] = self.ui.satAfterFlip.isChecked()
+        return True
+
+    def enableGuiFunctions(self):
+        """
+        :return:
+        """
+        internalAvailable = self.app.mount.firmware.checkNewer(21699)
+        self.ui.satBeforeFlip.setEnabled(internalAvailable)
+        self.ui.satAfterFlip.setEnabled(internalAvailable)
+        self.ui.useInternalSatCalc.setEnabled(internalAvailable)
+        self.ui.segmentsText.setEnabled(internalAvailable)
+        self.ui.trajectoryProgress.setEnabled(internalAvailable)
+        self.ui.progTrajectory.setEnabled(internalAvailable)
+        self.ui.avoidHorizon.setEnabled(internalAvailable)
         return True
 
     def calcPassEvents(self, obsSite):
@@ -240,6 +259,23 @@ class Satellite(object):
                 satOrbit['flip'] = None
         return True
 
+    def sendSatelliteData(self):
+        """
+        :return:
+        """
+        if not self.satellite:
+            return False
+
+        winObj = self.app.uiWindows['showSatelliteW']
+        if not winObj['classObj']:
+            return False
+
+        segments = [self.ui.satBeforeFlip.isChecked(),
+                    self.ui.satAfterFlip.isChecked()]
+
+        winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits, segments)
+        return True
+
     def showSatPasses(self):
         """
         :return: True for test purpose
@@ -284,6 +320,7 @@ class Satellite(object):
             self.passUI[i]['date'].setText('-')
 
         self.sendSatelliteData()
+        self.progTrajectoryToMount()
         return True
 
     def extractSatelliteData(self, satName=''):
@@ -325,7 +362,6 @@ class Satellite(object):
         self.ui.satTrajectoryStart.setText('-')
         self.ui.satTrajectoryEnd.setText('-')
         self.ui.satTrajectoryFlip.setText('-')
-
         self.showSatPasses()
         return True
 
@@ -339,18 +375,14 @@ class Satellite(object):
             return False
 
         satellite = self.app.mount.satellite
-        if satellite.tleParams.name == satName:
-            self.app.message.emit(f'Actual satellite is  [{self.satellite.name}]', 0)
-
-        else:
-            self.app.message.emit(f'Programming [{self.satellite.name}] to mount', 0)
-            line1, line2 = export_tle(self.satellite.model)
-            suc = satellite.setTLE(line0=satName,
-                                   line1=line1,
-                                   line2=line2)
-            if not suc:
-                self.app.message.emit('Error program TLE', 2)
-                return False
+        self.app.message.emit(f'Programming [{satName}] to mount', 0)
+        line1, line2 = export_tle(self.satellite.model)
+        suc = satellite.setTLE(line0=satName,
+                               line1=line1,
+                               line2=line2)
+        if not suc:
+            self.app.message.emit('Error program TLE', 2)
+            return False
         return True
 
     def chooseSatellite(self):
@@ -359,7 +391,7 @@ class Satellite(object):
         """
         satName = self.ui.listSatelliteNames.currentItem().text()[8:]
         self.programDataToMount(satName=satName)
-        self.extractSatelliteData(satName=satName)
+        self.app.mount.getTLE()
         return True
 
     def getSatelliteDataFromDatabase(self, tleParams=None):
@@ -463,16 +495,6 @@ class Satellite(object):
             delta = 1440
         return delta
 
-    def progMountStandard(self, start, end):
-        """
-        :param start:
-        :param end:
-        :return:
-        """
-        duration = self.calcDuration(start, end)
-        self.app.mount.satellite.calcTLE(julD=start, duration=duration)
-        return True
-
     def calcTrajectoryData(self, start, end):
         """
         :param start:
@@ -482,66 +504,51 @@ class Satellite(object):
         m = self.app.mount
         temp = m.setting.refractionTemp
         press = m.setting.refractionPress
-        difference = self.satellite - m.obsSite.location
-        duration = int((end.tt - start.tt) * 86400)
-        timeSeries = (start.tt + np.arange(0, duration, 1)) / 86400
+        startUTC = start + m.obsSite.ts.delta_t
+        difference = self.satellite - m.obsSite.location - m.obsSite.ts.dut1
+        duration = int((end - start) * 86400)
+        timeSeries = (startUTC + np.arange(0, duration, 1) / 86400)
         timeVec = m.obsSite.ts.tt_jd(timeSeries)
         alt, az, _ = difference.at(timeVec).altaz(pressure_mbar=press,
                                                   temperature_C=temp)
         return alt, az
 
-    def progMountNew(self, start, end):
+    def progTrajectoryToMountNew(self, start, end):
         """
         :param start:
         :param end:
         :return:
         """
-        progress = ProgressPopup(self, title='Programming satellite trajectory')
         alt, az = self.calcTrajectoryData(start, end)
         suc = self.app.mount.satellite.startProgTrajectory(julD=start)
         if not suc:
             self.app.message.emit('Cannot clear satellite trajectory', 2)
             return False
 
-        for altitude, azimuth, i in enumerate(zip(alt, az)):
-            suc = self.app.mount.satellite.progTrajectory(alt=altitude, az=azimuth)
-            progressValue = i / len(alt)
-            progress.signalProgress(progressValue)
+        for i, (altitude, azimuth) in enumerate(zip(alt.degrees, az.degrees)):
+            suc = self.app.mount.satellite.progTrajectory(alt=[altitude],
+                                                          az=[azimuth])
             if not suc:
                 self.app.message.emit('Error programming satellite trajectory', 2)
                 return False
 
-        suc = self.app.mount.satellite.calcTrajectory()
+        suc = self.app.mount.calcTrajectory()
         if not suc:
             self.app.message.emit('Error calculate satellite trajectory', 2)
             return False
 
         return True
 
-    def progMount(self, start, end):
+    def progTrajectoryToMount(self):
         """
-        :param start:
-        :param end:
         :return:
         """
         if not self.app.mount.mountUp:
-            self.app.message.emit('Mount is not online', 2)
             return False
 
-        # if not self.app.mount.firmware.checkNewer(21699):
-        if True:
-            worker = Worker(self.progMountStandard, start, end)
-        else:
-            worker = Worker(self.progMountNew, start, end)
+        isInternal = self.ui.useInternalSatCalc.isChecked()
+        internalAvailable = self.ui.useInternalSatCalc.isEnabled()
 
-        worker.signals.finished.connect(self.updateSatelliteTrackGui)
-        self.threadPool.start(worker)
-        return True
-
-    def calcSegments(self):
-        """
-        :return:
-        """
         if self.ui.satBeforeFlip.isChecked():
             start = self.satOrbits[0]['rise'].tt
         else:
@@ -552,24 +559,11 @@ class Satellite(object):
         else:
             end = self.satOrbits[0]['flip'].tt
 
-        self.progMount(start, end)
-        return True
+        if isInternal and internalAvailable:
+            self.progTrajectoryToMountNew(start, end)
+        else:
+            self.app.mount.calcTLE()
 
-    def sendSatelliteData(self):
-        """
-        :return:
-        """
-        if not self.satellite:
-            return False
-
-        winObj = self.app.uiWindows['showSatelliteW']
-        if not winObj['classObj']:
-            return False
-
-        segments = [self.ui.satBeforeFlip.isChecked(),
-                    self.ui.satAfterFlip.isChecked()]
-
-        winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits, segments)
         return True
 
     def updateSatelliteTrackGui(self, params=None):
@@ -599,7 +593,7 @@ class Satellite(object):
         if params.message is not None:
             self.app.message.emit(params.message, 0)
 
-        if params.altitude is not None and self.satOrbits:
+        if params.jdStart is not None and self.satOrbits:
             self.ui.stopSatelliteTracking.setEnabled(True)
             self.ui.startSatelliteTracking.setEnabled(True)
         else:

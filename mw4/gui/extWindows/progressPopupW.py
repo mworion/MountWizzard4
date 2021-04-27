@@ -57,7 +57,6 @@ class ProgressPopup(toolsQtWidget.MWidget):
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
         self.signalProgress.connect(self.setProgressBarToValue)
-        self.signalProgressBarColor.connect(self.setProgressBarColor)
         self.show()
 
     def setProgressBarToValue(self, progressPercent):

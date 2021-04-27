@@ -852,7 +852,7 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.progTrajectoryData()
+            suc = sat.progTrajectory()
             assert not suc
 
     def test_progTrajectoryData_2(self):
@@ -867,7 +867,7 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.progTrajectoryData(alt=alt, az=az)
+            suc = sat.progTrajectory(alt=alt, az=az)
             assert not suc
 
     def test_progTrajectoryData_3(self):
@@ -882,7 +882,7 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.progTrajectoryData(alt=alt, az=az)
+            suc = sat.progTrajectory(alt=alt, az=az)
             assert not suc
 
     def test_progTrajectoryData_4(self):
@@ -897,7 +897,7 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.progTrajectoryData(alt=alt, az=az)
+            suc = sat.progTrajectory(alt=alt, az=az)
             assert not suc
 
     def test_progTrajectoryData_5(self):
@@ -912,7 +912,7 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.progTrajectoryData(alt=alt, az=az)
+            suc = sat.progTrajectory(alt=alt, az=az)
             assert not suc
 
     def test_progTrajectoryData_6(self):
@@ -927,7 +927,7 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.progTrajectoryData(alt=alt, az=az)
+            suc = sat.progTrajectory(alt=alt, az=az)
             assert not suc
 
     def test_progTrajectoryData_7(self):
@@ -942,7 +942,7 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.progTrajectoryData(alt=alt, az=az)
+            suc = sat.progTrajectory(alt=alt, az=az)
             assert not suc
 
     def test_progTrajectoryData_8(self):
@@ -957,7 +957,7 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.progTrajectoryData(alt=alt, az=az)
+            suc = sat.progTrajectory(alt=alt, az=az)
             assert suc
 
     def test_calcTrajectory_1(self):

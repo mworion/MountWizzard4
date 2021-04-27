@@ -127,10 +127,9 @@ class Firmware(object):
         :param compare:     fw number to test as int
         :return:            True if newer / False
         """
-
         value = self.number()
         if value:
-            return compare > value
+            return compare < value
         else:
             return None
 

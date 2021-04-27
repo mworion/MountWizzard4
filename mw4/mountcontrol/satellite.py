@@ -197,6 +197,7 @@ class TrajectoryParams(object):
         self._jdStart = None
         self._jdEnd = None
         self._flip = None
+        self._message = None
         self.obsSite = obsSite
 
     @property
@@ -236,6 +237,17 @@ class TrajectoryParams(object):
             self._jdEnd = self.obsSite.ts.ut1_jd(value - self.obsSite.utc_ut1)
         else:
             self._jdEnd = None
+
+    @property
+    def message(self):
+        return self._message
+
+    @message.setter
+    def message(self, value):
+        if value:
+            self._message = value
+        else:
+            self._message = None
 
 
 class Satellite(object):
@@ -610,7 +622,7 @@ class Satellite(object):
 
         return True
 
-    def progTrajectoryData(self, alt=[], az=[]):
+    def progTrajectory(self, alt=[], az=[]):
         """
         :param alt:
         :param az:
@@ -637,8 +649,6 @@ class Satellite(object):
 
         for i in range(0, len(az)):
             if response[i] == 'E':
-                return False
-            if int(response[i]) != i + 1:
                 return False
 
         return True

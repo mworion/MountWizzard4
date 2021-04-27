@@ -565,7 +565,7 @@ def test_progMountStandard(function):
                            'calcDuration'):
         with mock.patch.object(function.app.mount.satellite,
                                'calcTLE'):
-            suc = function.progMountStandard(1, 2)
+            suc = function.progTrajectoryToMountOld(1, 2)
             assert suc
 
 
@@ -574,7 +574,7 @@ def test_progMountNew(function):
                            'calcDuration'):
         with mock.patch.object(function.app.mount.satellite,
                                'calcTLE'):
-            suc = function.progMountNew(1, 2)
+            suc = function.progTrajectoryToMountNew(1, 2)
             assert suc
 
 
@@ -584,7 +584,7 @@ def test_progMount_1(function):
         with mock.patch.object(function.app.mount.firmware,
                                'checkNewer',
                                return_value=True):
-            suc = function.progMount(1, 2)
+            suc = function.progTrajectoryToMount(1, 2)
             assert suc
 
 
@@ -594,7 +594,7 @@ def test_progMount_2(function):
         with mock.patch.object(function.app.mount.firmware,
                                'checkNewer',
                                return_value=False):
-            suc = function.progMount(1, 2)
+            suc = function.progTrajectoryToMount(1, 2)
             assert suc
 
 
@@ -612,7 +612,7 @@ def test_calcSegments_1(function):
                                'updateSatelliteTrackGui'):
             with mock.patch.object(function,
                                    'sendSatelliteData'):
-                suc = function.calcSegments()
+                suc = function.chooseSegmentsForProg()
                 assert suc
 
 
@@ -630,7 +630,7 @@ def test_calcSegments_2(function):
                                'updateSatelliteTrackGui'):
             with mock.patch.object(function,
                                    'sendSatelliteData'):
-                suc = function.calcSegments()
+                suc = function.chooseSegmentsForProg()
                 assert suc
     function.ui.satBeforeFlip.setChecked(True)
     function.ui.satAfterFlip.setChecked(True)

@@ -330,6 +330,10 @@ class Styles:
         background-color: rgb(32, 144, 192);
         image: url(:/icon/checkmark.ico);
     }
+    QCheckBox::indicator:disabled {
+        background-color: transparent;
+        image: None;
+    }
     QCheckBox:disabled {
         color: #404040;
     }

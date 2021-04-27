@@ -583,41 +583,97 @@ class Satellite(object):
         suc = self.parseStatTLE(response, numberOfChunks)
         return suc
 
-    def parseProgTrajectory(self, response, numberOfChunks, numData):
+    def startProgTrajectory(self, julD=None):
         """
-        Parsing the parseProgTrajectory command and entering the resulting
-        parameters. if no calculation could be made, the parameters were set
-        to None
+        :param julD:
+        :return:
+        """
+        if julD is None:
+            return False
+        if isinstance(julD, skyfield.timelib.Time):
+            julD = julD.tt
 
-        :param response:        data load from mount
-        :param numberOfChunks:  amount of parts
-        :param numData:         amount of data
-        :return: success:       True if ok, False if not
-        """
+        cmd = f':TRNEW{julD:07.5f}#'
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        if not suc:
+            return False
+
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
             return False
-        if len(response) != 2 + numData:
+        if len(response) != 1:
+            self.log.warning('wrong number of chunks')
+            return False
+        if response[0] != 'V':
+            return False
+
+        return True
+
+    def progTrajectoryData(self, alt=[], az=[]):
+        """
+        :param alt:
+        :param az:
+        :return:
+        """
+        if len(alt) == 0 or len(alt) != len(az):
+            return False
+
+        cmd = ''
+        for azimuth, altitude in zip(az, alt):
+            cmd += f':TRADD{azimuth:03.5f},{altitude:02.5f}#'
+
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        if not suc:
+            return False
+
+        if len(response) != numberOfChunks:
+            self.log.warning('wrong number of chunks')
+            return False
+        if len(response) != len(az):
             self.log.warning('wrong number of chunks')
             return False
 
-        if response[0] != 'V':
-            return False
-        if response[-1] == 'E':
-            return False
-        for i in range(1, numData + 1):
+        for i in range(0, len(az)):
             if response[i] == 'E':
                 return False
-            if int(response[i]) != i:
+            if int(response[i]) != i + 1:
                 return False
 
-        value = response[-1].split(',')
+        return True
+
+    def calcTrajectory(self, replay=False):
+        """
+        :param replay:    start now
+        :return: success
+        """
+        self.trajectoryParams.flip = None
+        self.trajectoryParams.jdStart = None
+        self.trajectoryParams.jdEnd = None
+
+        if replay:
+            cmd = ':TRREPLAY#'
+        else:
+            cmd = ':TRP#'
+
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        if not suc:
+            return False
+
+        if len(response) != numberOfChunks:
+            self.log.warning('wrong number of chunks')
+            return False
+        if len(response) != 1:
+            self.log.warning('wrong number of chunks')
+            return False
+        if response[0] == 'E':
+            return False
+
+        value = response[0].split(',')
         if len(value) == 3:
             start, end, flip = value
-        elif len(value) == 1:
-            flip = value[0]
-            start = None
-            end = None
         else:
             return False
 
@@ -625,73 +681,3 @@ class Satellite(object):
         self.trajectoryParams.jdStart = start
         self.trajectoryParams.jdEnd = end
         return True
-
-    def progTrajectoryData(self, julD=None, alt=[], az=[], replay=False):
-        """
-        set of three commands !
-
-        Pre calculates the first transit of the trajectory with the currently
-        loaded orbital elements, starting from Julian Date JD and for a period
-        of min minutes, where min is from 1 to 1440.
-
-        Returns:
-        E#                  no TLE loaded
-        +AA.AAAA,ZZZ.ZZZZ#  the apparent alt azimuth coordinates,
-                            where +AA.AAAA is the altitude in degrees with
-                            decimals accounting for refraction,
-                            and ZZZ.ZZZZ is the azimuth in degrees with
-                            decimals.
-
-        Returns:
-        E# no TLE loaded
-        RR.RRRRR,+DD.DDDD#  the apparent equatorial coordinates,
-                            where RR.RRRRR is the
-                            right ascension in hours with decimals,
-                            and +DD.DDDD is the
-                            declination in degrees with decimals.
-
-        Gets the apparent alt azimuth coordinates of the satellite with the
-        currently loaded orbital elements, computed for Julian Date JD (UTC).
-
-        Returns:
-        E#                      no TLE loaded or invalid command
-        N#                      no passes in the given amount of time
-        JD start,JD end,flags#  data for the first pass in the given interval.
-                                JD start and JD end mark the beginning and the
-                                end of the given transit. Flags is a string
-                                which can be empty or contain the letter F –
-                                meaning that mount will flip during the transit.
-
-        Gets the apparent equatorial coordinates of the satellite with the
-        currently loaded orbital elements, computed for Julian Date JD (UTC).
-
-        :param julD:
-        :param alt:
-        :param az:
-        :param replay:
-        :return:
-        """
-        if julD is None:
-            return False
-        if isinstance(julD, skyfield.timelib.Time):
-            julD = julD.tt
-        if len(alt) == 0 or len(alt) != len(az):
-            return False
-
-        cmd = f':TRNEW{julD:07.5f}#'
-        for azimuth, altitude in zip(az, alt):
-            cmd += f':TRADD{azimuth:03.5f},{altitude:02.5f}#'
-
-        if replay:
-            cmd += ':TRREPLAY#'
-        else:
-            cmd += ':TRP#'
-
-        conn = Connection(self.host)
-        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
-        if not suc:
-            print(response)
-            return False
-
-        suc = self.parseProgTrajectory(response, numberOfChunks, len(az))
-        return suc

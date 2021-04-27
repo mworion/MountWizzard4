@@ -458,26 +458,26 @@ def test_cycleDome_2(function):
         assert not suc
 
 
-def test_errorProgTrajectory(function):
-    function.errorProgTrajectory('test')
+def test_errorCalcTrajectory(function):
+    function.errorCalcTrajectory('test')
 
 
-def test_clearProgTrajectory_1(function):
-    suc = function.clearProgTrajectory()
+def test_clearCalcTrajectory_1(function):
+    suc = function.clearCalcTrajectory()
     assert suc
 
 
-def test_cycleProgTrajectory_1(function):
+def test_cycleCalcTrajectory_1(function):
     function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = function.progTrajectory()
+        suc = function.calcTrajectory()
         assert suc
 
 
-def test_cycleProgTrajectory_2(function):
+def test_cycleCalcTrajectory_2(function):
     function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = function.progTrajectory()
+        suc = function.calcTrajectory()
         assert not suc

@@ -23,6 +23,7 @@ from skyfield.api import Angle, load
 
 # local imports
 from mountcontrol.satellite import Satellite, TLEParams, TrajectoryParams
+from mountcontrol.connection import Connection
 
 
 class TestConfigData(unittest.TestCase):
@@ -746,179 +747,306 @@ class TestConfigData(unittest.TestCase):
             suc = sat.statTLE()
             self.assertTrue(suc)
 
-    def test_parseProgTrajectory_1(self):
-        sat = Satellite()
-        response = ''
-
-        suc = sat.parseProgTrajectory(response, 1, 0)
-        self.assertFalse(suc)
-
-    def test_parseProgTrajectory_2(self):
-        sat = Satellite()
-        response = ['1', '2', '3']
-
-        suc = sat.parseProgTrajectory(response, 3, 0)
-        self.assertFalse(suc)
-
-    def test_parseProgTrajectory_3(self):
-        sat = Satellite()
-        response = ['1', '2', '3']
-
-        suc = sat.parseProgTrajectory(response, 3, 1)
-        self.assertFalse(suc)
-
-    def test_parseProgTrajectory_4(self):
-        sat = Satellite()
-        response = ['E', '', 'E']
-
-        suc = sat.parseProgTrajectory(response, 3, 1)
-        self.assertFalse(suc)
-
-    def test_parseProgTrajectory_5(self):
-        sat = Satellite()
-        response = ['V', '', 'E']
-
-        suc = sat.parseProgTrajectory(response, 3, 1)
-        self.assertFalse(suc)
-
-    def test_parseProgTrajectory_6(self):
-        sat = Satellite()
-        response = ['V', '1', '0, F']
-
-        suc = sat.parseProgTrajectory(response, 3, 1)
-        self.assertFalse(suc)
-
-    def test_parseProgTrajectory_7(self):
-        sat = Satellite()
-        response = ['V', '1', 'E']
-
-        suc = sat.parseProgTrajectory(response, 3, 1)
-        self.assertFalse(suc)
-
-    def test_parseProgTrajectory_8(self):
+    def test_startProgTrajectory_1(self):
         class ObsSite:
             utc_ut1 = 69
             ts = load.timescale()
 
         sat = Satellite(obsSite=ObsSite())
-        response = ['V', '1', '10, 10, F']
+        val = (False, ['V'], 1)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.startProgTrajectory()
+            assert not suc
 
-        suc = sat.parseProgTrajectory(response, 3, 1)
-        self.assertTrue(suc)
+    def test_startProgTrajectory_2(self):
+        ts = load.timescale()
+        julD = ts.tt_jd(12345678)
 
-    def test_parseProgTrajectory_9(self):
         class ObsSite:
             utc_ut1 = 69
             ts = load.timescale()
 
         sat = Satellite(obsSite=ObsSite())
-        response = ['V', '1', 'F']
+        val = (False, ['V'], 1)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.startProgTrajectory(julD=julD)
+            assert not suc
 
-        suc = sat.parseProgTrajectory(response, 3, 1)
-        self.assertTrue(suc)
+    def test_startProgTrajectory_3(self):
+        ts = load.timescale()
+        julD = ts.tt_jd(12345678)
 
-    def test_parseProgTrajectory_10(self):
         class ObsSite:
             utc_ut1 = 69
             ts = load.timescale()
 
         sat = Satellite(obsSite=ObsSite())
-        response = ['V', '1', '2', '3', 'F']
+        val = (True, ['V'], 2)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.startProgTrajectory(julD=julD)
+            assert not suc
 
-        suc = sat.parseProgTrajectory(response, 5, 3)
-        self.assertTrue(suc)
+    def test_startProgTrajectory_4(self):
+        ts = load.timescale()
+        julD = ts.tt_jd(12345678)
 
-    def test_parseProgTrajectory_11(self):
         class ObsSite:
             utc_ut1 = 69
             ts = load.timescale()
 
         sat = Satellite(obsSite=ObsSite())
-        response = ['V', '1', 'E', '3', 'F']
+        val = (True, ['V', 'V'], 2)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.startProgTrajectory(julD=julD)
+            assert not suc
 
-        suc = sat.parseProgTrajectory(response, 5, 3)
-        self.assertFalse(suc)
+    def test_startProgTrajectory_5(self):
+        ts = load.timescale()
+        julD = ts.tt_jd(12345678)
 
-    def test_parseProgTrajectory_12(self):
         class ObsSite:
             utc_ut1 = 69
             ts = load.timescale()
 
         sat = Satellite(obsSite=ObsSite())
-        response = ['V', '1', '5', '3', 'F']
+        val = (True, ['E'], 1)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.startProgTrajectory(julD=julD)
+            assert not suc
 
-        suc = sat.parseProgTrajectory(response, 5, 3)
-        self.assertFalse(suc)
+    def test_startProgTrajectory_6(self):
+        ts = load.timescale()
+        julD = ts.tt_jd(12345678)
+
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
+
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['V'], 1)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.startProgTrajectory(julD=julD)
+            assert suc
 
     def test_progTrajectoryData_1(self):
-        sat = Satellite()
-        suc = sat.progTrajectoryData()
-        self.assertFalse(suc)
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
+
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['V'], 1)
+        alt = [10, 20, 30]
+        az = [40, 50, 60]
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.progTrajectoryData()
+            assert not suc
 
     def test_progTrajectoryData_2(self):
-        sat = Satellite()
-        suc = sat.progTrajectoryData(julD=1234567.8)
-        self.assertFalse(suc)
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
+
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['V'], 1)
+        alt = [10, 20, 30]
+        az = [40, 50]
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.progTrajectoryData(alt=alt, az=az)
+            assert not suc
 
     def test_progTrajectoryData_3(self):
-        sat = Satellite()
-        alt = [1, 10, 40]
-        az = [1, 10, 40]
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, 'V', 1
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
 
-            suc = sat.progTrajectoryData(julD=1234567.8, alt=alt, az=az)
-            self.assertFalse(suc)
+        sat = Satellite(obsSite=ObsSite())
+        val = (False, ['1', '2'], 1)
+        alt = [10, 20, 30]
+        az = [40, 50, 60]
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.progTrajectoryData(alt=alt, az=az)
+            assert not suc
 
     def test_progTrajectoryData_4(self):
-        sat = Satellite()
-        alt = [1, 10, 40]
-        az = [1, 10, 40]
-        ts = load.timescale()
-        julD = ts.now()
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, 'V', 1
-
-            suc = sat.progTrajectoryData(julD=julD, alt=alt, az=az)
-            self.assertFalse(suc)
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['1', '2'], 1)
+        alt = [10, 20, 30]
+        az = [40, 50, 60]
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.progTrajectoryData(alt=alt, az=az)
+            assert not suc
 
     def test_progTrajectoryData_5(self):
-        sat = Satellite()
-        alt = [1, 10, 40]
-        az = [1, 10, 40]
-        ts = load.timescale()
-        julD = ts.now()
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, 'V', 1
-
-            suc = sat.progTrajectoryData(julD=julD, alt=alt, az=az, replay=True)
-            self.assertFalse(suc)
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['1', '2'], 2)
+        alt = [10, 20, 30]
+        az = [40, 50, 60]
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.progTrajectoryData(alt=alt, az=az)
+            assert not suc
 
     def test_progTrajectoryData_6(self):
-        sat = Satellite()
-        alt = [1, 10, 40]
-        az = [1, 10, 40]
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, 'V', 1
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
 
-            with mock.patch.object(sat,
-                                   'parseProgTrajectory',
-                                   return_value=False):
-
-                suc = sat.progTrajectoryData(julD=1234567.8, alt=alt, az=az)
-                self.assertFalse(suc)
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['1', '2', '4'], 3)
+        alt = [10, 20, 30]
+        az = [40, 50, 60]
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.progTrajectoryData(alt=alt, az=az)
+            assert not suc
 
     def test_progTrajectoryData_7(self):
-        sat = Satellite()
-        alt = [1, 10, 40]
-        az = [1, 10, 40]
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, 'V', 1
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
 
-            with mock.patch.object(sat,
-                                   'parseProgTrajectory',
-                                   return_value=True):
-                suc = sat.progTrajectoryData(julD=1234567.8, alt=alt, az=az)
-                self.assertTrue(suc)
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['1', '2', 'E'], 3)
+        alt = [10, 20, 30]
+        az = [40, 50, 60]
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.progTrajectoryData(alt=alt, az=az)
+            assert not suc
+
+    def test_progTrajectoryData_8(self):
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
+
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['1', '2', '3'], 3)
+        alt = [10, 20, 30]
+        az = [40, 50, 60]
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.progTrajectoryData(alt=alt, az=az)
+            assert suc
+
+    def test_calcTrajectory_1(self):
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
+
+        sat = Satellite(obsSite=ObsSite())
+        val = (False, ['V'], 1)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.calcTrajectory()
+            assert not suc
+
+    def test_calcTrajectory_2(self):
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
+
+        sat = Satellite(obsSite=ObsSite())
+        val = (False, ['V'], 1)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.calcTrajectory(replay=True)
+            assert not suc
+
+    def test_calcTrajectory_3(self):
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
+
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['V'], 2)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.calcTrajectory()
+            assert not suc
+
+    def test_calcTrajectory_4(self):
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
+
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['V', 'V'], 2)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.calcTrajectory()
+            assert not suc
+
+    def test_calcTrajectory_5(self):
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
+
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['E'], 1)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.calcTrajectory()
+            assert not suc
+
+    def test_calcTrajectory_6(self):
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
+
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['10, 10, F, F'], 1)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.calcTrajectory()
+            assert not suc
+
+    def test_calcTrajectory_7(self):
+        class ObsSite:
+            utc_ut1 = 69
+            ts = load.timescale()
+
+        sat = Satellite(obsSite=ObsSite())
+        val = (True, ['10, 10, F'], 1)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=val):
+            suc = sat.calcTrajectory()
+            assert suc

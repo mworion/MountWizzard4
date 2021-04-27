@@ -54,7 +54,7 @@ class MountSignals(PyQt5.QtCore.QObject):
     calcTLEdone = PyQt5.QtCore.pyqtSignal(object)
     statTLEdone = PyQt5.QtCore.pyqtSignal(object)
     getTLEdone = PyQt5.QtCore.pyqtSignal(object)
-    progTrajectoryDone = PyQt5.QtCore.pyqtSignal(object)
+    calcTrajectoryDone = PyQt5.QtCore.pyqtSignal(object)
     mountUp = PyQt5.QtCore.pyqtSignal(object)
     slewFinished = PyQt5.QtCore.pyqtSignal()
     alert = PyQt5.QtCore.pyqtSignal()
@@ -550,30 +550,30 @@ class Mount(mountcontrol.mount.Mount):
         self.threadPool.start(worker)
         return True
 
-    def errorProgTrajectory(self, e):
+    def errorCalcTrajectory(self, e):
         """
         :return: true for test purpose
         """
         self.log.warning(f'Cycle error: {e}')
         return True
 
-    def clearProgTrajectory(self):
+    def clearCalcTrajectory(self):
         """
         :return: true for test purpose
         """
-        self.signals.progTrajectoryDone.emit(self.satellite.trajectoryParams)
+        self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
         return True
 
-    def progTrajectory(self):
+    def calcTrajectory(self):
         """
         :return: success
         """
         if not self.mountUp:
-            self.signals.progTrajectoryDone.emit(self.satellite.trajectoryParams)
+            self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
             return False
 
-        worker = Worker(self.satellite.progTrajectoryData)
-        worker.signals.finished.connect(self.clearProgTrajectory)
-        worker.signals.error.connect(self.errorProgTrajectory)
+        worker = Worker(self.satellite.calcTrajectory)
+        worker.signals.finished.connect(self.clearCalcTrajectory)
+        worker.signals.error.connect(self.errorCalcTrajectory)
         self.threadPool.start(worker)
         return True

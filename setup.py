@@ -32,7 +32,8 @@ releaseNotes = """
 - add reverse order for filed build point retry 
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected
-- fix retry mechanism for failed build points 
+- fix retry mechanism for failed build points
+- up underlying libraries
  """
 
 with open('notes.txt', 'w') as f:
@@ -72,19 +73,19 @@ setup(
         'numpy==1.20.2',
         'pillow==8.2.0',
         'matplotlib==3.4.1',
-        'pyerfa==1.7.2',
+        'pyerfa==1.7.3',
         'astropy==4.2.1',
         'scipy==1.6.2',
         'sep==1.1.1',
         'requests==2.25.1',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.38',
+        'skyfield==1.39',
         'sgp4>=2.1',
         'qimage2ndarray==1.8.3',
-        'importlib_metadata==3.10.0',
-        'deepdiff==5.2.3',
+        'importlib_metadata==4.0.1',
+        'deepdiff==5.3.0',
         'colour_demosaicing==0.1.6',
-        'wakeonlan==1.1.6',
+        'wakeonlan==2.0.1',
         'pybase64==1.1.4',
     ]
     + (['pywin32==300'] if "Windows" == platform.system() else [])

@@ -119,7 +119,7 @@ class TLEParams(object):
     def jdStart(self, value):
         value = valueToFloat(value)
         if value and self.obsSite.utc_ut1 is not None:
-            self._jdStart = self.obsSite.ts.ut1_jd(value - self.obsSite.utc_ut1)
+            self._jdStart = self.obsSite.ts.ut1_jd(value + self.obsSite.utc_ut1)
         else:
             self._jdStart = None
 
@@ -131,7 +131,7 @@ class TLEParams(object):
     def jdEnd(self, value):
         value = valueToFloat(value)
         if value and self.obsSite.utc_ut1 is not None:
-            self._jdEnd = self.obsSite.ts.ut1_jd(value - self.obsSite.utc_ut1)
+            self._jdEnd = self.obsSite.ts.ut1_jd(value + self.obsSite.utc_ut1)
         else:
             self._jdEnd = None
 
@@ -222,7 +222,7 @@ class TrajectoryParams(object):
     def jdStart(self, value):
         value = valueToFloat(value)
         if value and self.obsSite.utc_ut1 is not None:
-            self._jdStart = self.obsSite.ts.ut1_jd(value - self.obsSite.utc_ut1)
+            self._jdStart = self.obsSite.ts.ut1_jd(value + self.obsSite.utc_ut1)
         else:
             self._jdStart = None
 
@@ -234,7 +234,7 @@ class TrajectoryParams(object):
     def jdEnd(self, value):
         value = valueToFloat(value)
         if value and self.obsSite.utc_ut1 is not None:
-            self._jdEnd = self.obsSite.ts.ut1_jd(value - self.obsSite.utc_ut1)
+            self._jdEnd = self.obsSite.ts.ut1_jd(value + self.obsSite.utc_ut1)
         else:
             self._jdEnd = None
 

@@ -168,8 +168,8 @@ class ObsSite(object):
     @timeJD.setter
     def timeJD(self, value):
         value = valueToFloat(value)
-        if value and self._utc_ut1 is not None:
-            self._timeJD = self.ts.ut1_jd(value - self._utc_ut1)
+        if value:
+            self._timeJD = self.ts.ut1_jd(value + self.ts.now().dut1 / 86400)
         else:
             self._timeJD = None
 

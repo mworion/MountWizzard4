@@ -564,7 +564,7 @@ class Mount(mountcontrol.mount.Mount):
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
         return True
 
-    def calcTrajectory(self):
+    def calcTrajectory(self, replay=False):
         """
         :return: success
         """
@@ -572,7 +572,7 @@ class Mount(mountcontrol.mount.Mount):
             self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
             return False
 
-        worker = Worker(self.satellite.calcTrajectory)
+        worker = Worker(self.satellite.calcTrajectory, replay=replay)
         worker.signals.finished.connect(self.clearCalcTrajectory)
         worker.signals.error.connect(self.errorCalcTrajectory)
         self.threadPool.start(worker)

@@ -117,8 +117,8 @@ class Satellite(object):
         msig.getTLEdone.connect(self.getSatelliteDataFromDatabase)
         msig.firmwareDone.connect(self.enableGuiFunctions)
         self.app.sendSatelliteData.connect(self.sendSatelliteData)
-        self.ui.satAfterFlip.clicked.connect(self.showSatPasses)
-        self.ui.satBeforeFlip.clicked.connect(self.showSatPasses)
+        # self.ui.satAfterFlip.clicked.connect(self.showSatPasses)
+        # self.ui.satBeforeFlip.clicked.connect(self.showSatPasses)
 
         self.app.update1s.connect(self.updateOrbit)
         self.app.mount.signals.pointDone.connect(self.followMount)
@@ -167,6 +167,8 @@ class Satellite(object):
         :return:
         """
         internalAvailable = self.app.mount.firmware.checkNewer(21699)
+        if internalAvailable is None:
+            return False
         self.ui.satBeforeFlip.setEnabled(internalAvailable)
         self.ui.satAfterFlip.setEnabled(internalAvailable)
         self.ui.useInternalSatCalc.setEnabled(internalAvailable)
@@ -373,10 +375,12 @@ class Satellite(object):
             return False
         if not satName:
             return False
+        if satName not in self.satellites:
+            return False
 
         satellite = self.app.mount.satellite
         self.app.message.emit(f'Programming [{satName}] to mount', 0)
-        line1, line2 = export_tle(self.satellite.model)
+        line1, line2 = export_tle(self.satellites[satName].model)
         suc = satellite.setTLE(line0=satName,
                                line1=line1,
                                line2=line2)
@@ -504,10 +508,9 @@ class Satellite(object):
         m = self.app.mount
         temp = m.setting.refractionTemp
         press = m.setting.refractionPress
-        startUTC = start + m.obsSite.ts.delta_t
-        difference = self.satellite - m.obsSite.location - m.obsSite.ts.dut1
+        difference = self.satellite - m.obsSite.location
         duration = int((end - start) * 86400)
-        timeSeries = (startUTC + np.arange(0, duration, 1) / 86400)
+        timeSeries = (start + np.arange(0, duration, 1) / 86400)
         timeVec = m.obsSite.ts.tt_jd(timeSeries)
         alt, az, _ = difference.at(timeVec).altaz(pressure_mbar=press,
                                                   temperature_C=temp)
@@ -525,14 +528,18 @@ class Satellite(object):
             self.app.message.emit('Cannot clear satellite trajectory', 2)
             return False
 
-        for i, (altitude, azimuth) in enumerate(zip(alt.degrees, az.degrees)):
-            suc = self.app.mount.satellite.progTrajectory(alt=[altitude],
-                                                          az=[azimuth])
+        altP = np.array_split(alt.degrees, 5)
+        azP = np.array_split(az.degrees, 5)
+
+        for i, (altitude, azimuth) in enumerate(zip(altP, azP)):
+            suc = self.app.mount.satellite.progTrajectory(alt=altitude,
+                                                          az=azimuth)
+            print(i)
             if not suc:
                 self.app.message.emit('Error programming satellite trajectory', 2)
                 return False
 
-        suc = self.app.mount.calcTrajectory()
+        suc = self.app.mount.calcTrajectory(replay=True)
         if not suc:
             self.app.message.emit('Error calculate satellite trajectory', 2)
             return False
@@ -560,6 +567,10 @@ class Satellite(object):
             end = self.satOrbits[0]['flip'].tt
 
         if isInternal and internalAvailable:
+            ti = self.app.mount.obsSite.ts.now()
+            tt_utc = (ti.delta_t + ti.dut1) / 86400
+            start = start - tt_utc
+            end = end - tt_utc
             self.progTrajectoryToMountNew(start, end)
         else:
             self.app.mount.calcTLE()

@@ -827,7 +827,7 @@ def test_signalExtractSatelliteData_1(function):
     function.ui.listSatelliteNames.setCurrentRow(0)
     with mock.patch.object(function,
                            'extractSatelliteData',):
-        suc = function.signalExtractSatelliteData()
+        suc = function.chooseSatellite()
         assert suc
 
 

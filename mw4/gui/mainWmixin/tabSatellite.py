@@ -27,6 +27,7 @@ from skyfield import almanac
 from base.tpool import Worker
 from base.transform import diffModulus
 from logic.databaseProcessing.dataWriter import DataWriter
+from gui.extWindows.progressPopupW import ProgressPopup
 
 
 class Satellite(object):
@@ -81,15 +82,17 @@ class Satellite(object):
 
         self.ui.progSatellitesFull.clicked.connect(self.progSatellitesFull)
         self.ui.progSatellitesFiltered.clicked.connect(self.progSatellitesFiltered)
-        self.ui.listSatelliteNames.doubleClicked.connect(self.signalExtractSatelliteData)
+        self.ui.listSatelliteNames.doubleClicked.connect(self.chooseSatellite)
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadTLEDataFromSourceURLs)
         self.ui.filterSatellite.textChanged.connect(self.filterSatelliteNamesList)
 
+        msig = self.app.mount.signals
+        msig.calcTLEdone.connect(self.updateSatelliteTrackGui)
+        msig.calcTrajectoryDone.connect(self.updateSatelliteTrackGui)
+        msig.getTLEdone.connect(self.getSatelliteDataFromDatabase)
         self.app.sendSatelliteData.connect(self.sendSatelliteData)
-        self.app.mount.signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
-        self.app.mount.signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
         self.ui.isOnline.stateChanged.connect(self.loadTLEDataFromSourceURLs)
         self.ui.satAfterFlip.clicked.connect(self.calcSegments)
         self.ui.satBeforeFlip.clicked.connect(self.calcSegments)
@@ -270,18 +273,6 @@ class Satellite(object):
             if not suc:
                 self.app.message.emit('Error program TLE', 2)
                 return False
-        return True
-
-    def calcOrbitFromTLEInMount(self):
-        """
-        :return: success
-        """
-        if self.satellite is None:
-            self.ui.startSatelliteTracking.setEnabled(False)
-            self.ui.stopSatelliteTracking.setEnabled(False)
-            return False
-
-        self.app.mount.calcTLE()
         return True
 
     def calcPassEvents(self, obsSite):
@@ -490,14 +481,49 @@ class Satellite(object):
         self.app.mount.satellite.calcTLE(julD=start, duration=duration)
         return True
 
+    def calcTrajectoryData(self, start, end):
+        """
+        :param start:
+        :param end:
+        :return:
+        """
+        m = self.app.mount
+        temp = m.setting.refractionTemp
+        press = m.setting.refractionPress
+        difference = self.satellite - m.obsSite.location
+        duration = int((end.tt - start.tt) * 86400)
+        timeSeries = (start.tt + np.arange(0, duration, 1)) / 86400
+        timeVec = m.obsSite.ts.tt_jd(timeSeries)
+        alt, az, _ = difference.at(timeVec).altaz(pressure_mbar=press,
+                                                  temperature_C=temp)
+        return alt, az
+
     def progMountNew(self, start, end):
         """
         :param start:
         :param end:
         :return:
         """
-        duration = self.calcDuration(start, end)
-        self.app.mount.satellite.calcTLE(julD=start, duration=duration)
+        progress = ProgressPopup(self, title='Programming satellite trajectory')
+        alt, az = self.calcTrajectoryData(start, end)
+        suc = self.app.mount.satellite.startProgTrajectory(julD=start)
+        if not suc:
+            self.app.message.emit('Cannot clear satellite trajectory', 2)
+            return False
+
+        for altitude, azimuth, i in enumerate(zip(alt, az)):
+            suc = self.app.mount.satellite.progTrajectory(alt=altitude, az=azimuth)
+            progressValue = i / len(alt)
+            progress.signalProgress(progressValue)
+            if not suc:
+                self.app.message.emit('Error programming satellite trajectory', 2)
+                return False
+
+        suc = self.app.mount.satellite.calcTrajectory()
+        if not suc:
+            self.app.message.emit('Error calculate satellite trajectory', 2)
+            return False
+
         return True
 
     def progMount(self, start, end):
@@ -506,7 +532,12 @@ class Satellite(object):
         :param end:
         :return:
         """
-        if not self.app.mount.firmware.checkNewer(21699):
+        if not self.app.mount.mountUp:
+            self.app.message.emit('Mount is not online', 2)
+            return False
+
+        # if not self.app.mount.firmware.checkNewer(21699):
+        if True:
             worker = Worker(self.progMountStandard, start, end)
         else:
             worker = Worker(self.progMountNew, start, end)
@@ -530,7 +561,23 @@ class Satellite(object):
             end = self.satOrbits[0]['flip'].tt
 
         self.progMount(start, end)
-        self.sendSatelliteData()
+        return True
+
+    def sendSatelliteData(self):
+        """
+        :return:
+        """
+        if not self.satellite:
+            return False
+
+        winObj = self.app.uiWindows['showSatelliteW']
+        if not winObj['classObj']:
+            return False
+
+        segments = [self.ui.satBeforeFlip.isChecked(),
+                    self.ui.satAfterFlip.isChecked()]
+
+        winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits, segments)
         return True
 
     def extractSatelliteData(self, satName=''):
@@ -576,31 +623,11 @@ class Satellite(object):
         self.ui.satTrajectoryStart.setText('-')
         self.ui.satTrajectoryEnd.setText('-')
         self.ui.satTrajectoryFlip.setText('-')
-
-        self.programTLEDataToMount()
-        self.calcOrbitFromTLEInMount()
         self.showSatPasses()
         self.sendSatelliteData()
         return True
 
-    def sendSatelliteData(self):
-        """
-        :return:
-        """
-        if not self.satellite:
-            return False
-
-        winObj = self.app.uiWindows['showSatelliteW']
-        if not winObj['classObj']:
-            return False
-
-        segments = [self.ui.satBeforeFlip.isChecked(),
-                    self.ui.satAfterFlip.isChecked()]
-
-        winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits, segments)
-        return True
-
-    def signalExtractSatelliteData(self):
+    def chooseSatellite(self):
         """
         :return: True for test purpose
         """
@@ -626,7 +653,7 @@ class Satellite(object):
         self.extractSatelliteData(satName=tleParams.name)
         return True
 
-    def updateSatelliteTrackGui(self, tleParams=None):
+    def updateSatelliteTrackGui(self, params=None):
         """
         updateSatelliteTrackGui is called, when the mount has finished its
         calculations based on programmed TLE data. It writes the data to the gui
@@ -634,32 +661,30 @@ class Satellite(object):
 
         :return: success for test purpose
         """
-        if tleParams is None:
-            tleParams = self.app.mount.satellite.tleParams
-        if tleParams is None:
+        if params is None:
             return False
 
-        if tleParams.jdStart is not None and self.satOrbits:
-            t = tleParams.jdStart.utc_strftime('%d %b  %H:%M:%S')
+        if params.jdStart is not None and self.satOrbits:
+            t = params.jdStart.utc_strftime('%d %b  %H:%M:%S')
             self.ui.satTrajectoryStart.setText(t)
         else:
             self.ui.satTrajectoryStart.setText('No transit')
 
-        if tleParams.jdEnd is not None and self.satOrbits:
-            t = tleParams.jdEnd.utc_strftime('%d %b  %H:%M:%S')
+        if params.jdEnd is not None and self.satOrbits:
+            t = params.jdEnd.utc_strftime('%d %b  %H:%M:%S')
             self.ui.satTrajectoryEnd.setText(t)
         else:
             self.ui.satTrajectoryEnd.setText('No transit')
 
-        if tleParams.flip and self.satOrbits:
+        if params.flip and self.satOrbits:
             self.ui.satTrajectoryFlip.setText('YES')
         else:
             self.ui.satTrajectoryFlip.setText('NO')
 
-        if tleParams.message is not None:
-            self.app.message.emit(tleParams.message, 0)
+        if params.message is not None:
+            self.app.message.emit(params.message, 0)
 
-        if tleParams.altitude is not None and self.satOrbits:
+        if params.altitude is not None and self.satOrbits:
             self.ui.stopSatelliteTracking.setEnabled(True)
             self.ui.startSatelliteTracking.setEnabled(True)
         else:

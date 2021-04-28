@@ -594,7 +594,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         for slc in self.unlinkWrap(azimuth):
             axe.plot(azimuth[slc], altitude[slc],
-                     color=self.M_WHITE, lw=4, linestyle=(0, (0.5, 0.5)))
+                     color=self.M_WHITE, lw=4)
 
         ts = obsSite.ts
         alt, az, _ = (self.satellite - obsSite.location).at(ts.now()).altaz()

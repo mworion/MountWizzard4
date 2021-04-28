@@ -537,7 +537,6 @@ class Satellite(object):
         alt, az = self.calcTrajectoryData(start, end)
         alt, az = self.filterHorizon(alt, az)
         self.sendSatelliteData(alt=alt, az=az)
-        return
 
         suc = self.app.mount.satellite.startProgTrajectory(julD=start)
         if not suc:

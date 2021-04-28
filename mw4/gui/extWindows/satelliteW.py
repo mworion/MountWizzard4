@@ -186,43 +186,44 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         observe = self.satellite.at(now)
         subpoint = wgs84.subpoint(observe)
-
         difference = self.satellite - location
-        ra, dec, _ = difference.at(now).radec()
-        altaz = difference.at(now).altaz()
-        alt, az, _ = altaz
 
-        alt, az, _ = altaz
-        self.ui.satRa.setText(f'{ra.hours:3.2f}')
-        self.ui.satDec.setText(f'{dec.degrees:3.2f}')
         self.ui.satLatitude.setText(f'{subpoint.latitude.degrees:3.2f}')
         self.ui.satLongitude.setText(f'{subpoint.longitude.degrees:3.2f}')
-        self.ui.satAltitude.setText(f'{alt.degrees:3.2f}')
-        self.ui.satAzimuth.setText(f'{az.degrees:3.2f}')
 
-        x, y, z = observe.position.km
-        self.plotSatPosSphere1.set_data_3d((x, y, z))
+        if self.ui.tabWidget.currentIndex() == 0:
+            ra, dec, _ = difference.at(now).radec()
+            self.ui.satRa.setText(f'{ra.hours:3.2f}')
+            self.ui.satDec.setText(f'{dec.degrees:3.2f}')
 
-        lat = subpoint.latitude.radians
-        lon = subpoint.longitude.radians
-        elev = subpoint.elevation.m / 1000 + self.EARTH_RADIUS * 1.1
+            x, y, z = observe.position.km
+            self.plotSatPosSphere1.set_data_3d((x, y, z))
 
-        xyz = functions.from_spherical(elev, lat, lon)
-        self.plotSatPosSphere2.set_data_3d(xyz)
+            lat = subpoint.latitude.radians
+            lon = subpoint.longitude.radians
+            elev = subpoint.elevation.m / 1000 + self.EARTH_RADIUS * 1.1
 
-        lat = subpoint.latitude.degrees
-        lon = subpoint.longitude.degrees
-        self.plotSatPosEarth.set_data((lon, lat))
+            xyz = functions.from_spherical(elev, lat, lon)
+            self.plotSatPosSphere2.set_data_3d(xyz)
 
-        alt, az, _ = altaz
-        alt = alt.degrees
-        az = az.degrees
-        self.plotSatPosHorizon.set_data((az, alt))
+            self.satSphereMat1.figure.canvas.draw()
+            self.satSphereMat2.figure.canvas.draw()
 
-        self.satSphereMat1.figure.canvas.draw()
-        self.satSphereMat2.figure.canvas.draw()
-        self.satEarthMat.figure.canvas.draw()
-        self.satHorizonMat.figure.canvas.draw()
+        else:
+            alt, az, _ = difference.at(now).altaz()
+            self.ui.satAltitude.setText(f'{alt.degrees:3.2f}')
+            self.ui.satAzimuth.setText(f'{az.degrees:3.2f}')
+
+            lat = subpoint.latitude.degrees
+            lon = subpoint.longitude.degrees
+            self.plotSatPosEarth.set_data((lon, lat))
+
+            alt = alt.degrees
+            az = az.degrees
+            self.plotSatPosHorizon.set_data((az, alt))
+
+            self.satEarthMat.figure.canvas.draw()
+            self.satHorizonMat.figure.canvas.draw()
         return True
 
     @staticmethod

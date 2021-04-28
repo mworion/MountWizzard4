@@ -36,7 +36,7 @@ class SatelliteWindowSignals(QObject):
     """
     """
     __all__ = ['SatelliteWindowSignals']
-    show = pyqtSignal(object, object, object)
+    show = pyqtSignal(object, object, object, object)
     update = pyqtSignal(object, object)
 
 
@@ -451,14 +451,15 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             lastIndex = ind + 1
         yield slice(lastIndex, len(dat))
 
-    def drawEarth(self, obsSite=None, satOrbits=None, segments=None):
+    def drawEarth(self, obsSite=None, satOrbits=None, altitude=[], azimuth=[]):
         """
         drawEarth show a full earth view with the path of the subpoint of the
         satellite drawn on it.
 
         :param obsSite:
         :param satOrbits:
-        :param segments:
+        :param altitude:
+        :param azimuth:
         :return: success
         """
         axe, fig = self.generateFlat(widget=self.satEarthMat)
@@ -500,24 +501,23 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                 satOrbit['flip'] = satOrbit['settle']
 
             flip = satOrbit['flip'].tt
-            if segments[0]:
-                vector = np.arange(rise, flip, step)
-                vecT = ts.tt_jd(vector)
-                subpoints = wgs84.subpoint(self.satellite.at(vecT))
-                lat = subpoints.latitude.degrees
-                lon = subpoints.longitude.degrees
-                for slc in self.unlinkWrap(lon):
-                    axe.plot(lon[slc], lat[slc], lw=4, color=self.colors[i])
 
-            if segments[1]:
-                vector = np.arange(flip, settle, step)
-                vecT = ts.tt_jd(vector)
-                subpoints = wgs84.subpoint(self.satellite.at(vecT))
-                lat = subpoints.latitude.degrees
-                lon = subpoints.longitude.degrees
-                for slc in self.unlinkWrap(lon):
-                    axe.plot(lon[slc], lat[slc], color=self.colors[i],
-                             lw=4, linestyle=(0, (0.5, 0.5)))
+            vector = np.arange(rise, flip, step)
+            vecT = ts.tt_jd(vector)
+            subpoints = wgs84.subpoint(self.satellite.at(vecT))
+            lat = subpoints.latitude.degrees
+            lon = subpoints.longitude.degrees
+            for slc in self.unlinkWrap(lon):
+                axe.plot(lon[slc], lat[slc], lw=4, color=self.colors[i])
+
+            vector = np.arange(flip, settle, step)
+            vecT = ts.tt_jd(vector)
+            subpoints = wgs84.subpoint(self.satellite.at(vecT))
+            lat = subpoints.latitude.degrees
+            lon = subpoints.longitude.degrees
+            for slc in self.unlinkWrap(lon):
+                axe.plot(lon[slc], lat[slc], color=self.colors[i],
+                         lw=4, linestyle=(0, (0.5, 0.5)))
 
         rise = satOrbits[0]['rise'].tt
         settle = satOrbits[-1]['settle'].tt
@@ -550,14 +550,15 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axes.plot(az, alt, color=self.M_GREEN, marker='', alpha=0.5, lw=3)
         return True
 
-    def drawHorizonView(self, obsSite=None, satOrbits=None, segments=None):
+    def drawHorizonView(self, obsSite=None, satOrbits=None, altitude=[], azimuth=[]):
         """
         drawHorizonView shows the horizon and enable the users to explore a
         satellite passing by
 
         :param obsSite:
         :param satOrbits:
-        :param segments:
+        :param altitude:
+        :param azimuth:
         :return: success
         """
         axe, fig = self.generateFlat(widget=self.satHorizonMat, horizon=True)
@@ -577,21 +578,23 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                 satOrbit['flip'] = satOrbit['settle']
 
             flip = satOrbit['flip'].tt
-            if segments[0]:
-                vector = np.arange(rise, flip, step)
-                vecT = ts.tt_jd(vector)
-                alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
-                for slc in self.unlinkWrap(az.degrees):
-                    axe.plot(az.degrees[slc], alt.degrees[slc], lw=4,
-                             color=self.colors[i])
+            vector = np.arange(rise, flip, step)
+            vecT = ts.tt_jd(vector)
+            alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
+            for slc in self.unlinkWrap(az.degrees):
+                axe.plot(az.degrees[slc], alt.degrees[slc], lw=4,
+                         color=self.colors[i])
 
-            if segments[1]:
-                vector = np.arange(flip, settle, step)
-                vecT = ts.tt_jd(vector)
-                alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
-                for slc in self.unlinkWrap(az.degrees):
-                    axe.plot(az.degrees[slc], alt.degrees[slc], color=self.colors[i],
-                             lw=4, linestyle=(0, (0.5, 0.5)))
+            vector = np.arange(flip, settle, step)
+            vecT = ts.tt_jd(vector)
+            alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
+            for slc in self.unlinkWrap(az.degrees):
+                axe.plot(az.degrees[slc], alt.degrees[slc], color=self.colors[i],
+                         lw=4, linestyle=(0, (0.5, 0.5)))
+
+        for slc in self.unlinkWrap(azimuth):
+            axe.plot(azimuth[slc], altitude[slc],
+                     color=self.M_WHITE, lw=4, linestyle=(0, (0.5, 0.5)))
 
         ts = obsSite.ts
         alt, az, _ = (self.satellite - obsSite.location).at(ts.now()).altaz()
@@ -603,7 +606,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.figure.canvas.draw()
         return True
 
-    def drawSatellite(self, satellite=None, satOrbits=None, segments=None):
+    def drawSatellite(self, satellite=None, satOrbits=None, altitude=[], azimuth=[]):
         """
         drawSatellite draws 4 different views of the actual satellite
         situation: two sphere views, a horizon view and an earth view.
@@ -612,7 +615,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         :param satellite:
         :param satOrbits:
-        :param segments:
+        :param altitude:
+        :param azimuth:
         :return: True for test purpose
         """
         if satellite is None or satOrbits is None:
@@ -637,8 +641,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         self.drawSphere1(observe=observe)
         self.drawSphere2(observe=observe)
-        self.drawEarth(self.app.mount.obsSite, satOrbits=satOrbits,
-                       segments=segments)
-        self.drawHorizonView(self.app.mount.obsSite, satOrbits=satOrbits,
-                             segments=segments)
+        self.drawEarth(self.app.mount.obsSite,
+                       satOrbits=satOrbits, altitude=altitude, azimuth=azimuth)
+        self.drawHorizonView(self.app.mount.obsSite,
+                             satOrbits=satOrbits, altitude=altitude, azimuth=azimuth)
         return True

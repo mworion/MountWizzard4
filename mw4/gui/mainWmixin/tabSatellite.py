@@ -27,7 +27,6 @@ from skyfield import almanac
 from base.tpool import Worker
 from base.transform import diffModulus
 from logic.databaseProcessing.dataWriter import DataWriter
-from gui.extWindows.progressPopupW import ProgressPopup
 
 
 class Satellite(object):
@@ -260,8 +259,10 @@ class Satellite(object):
                 satOrbit['flip'] = None
         return True
 
-    def sendSatelliteData(self):
+    def sendSatelliteData(self, alt=[], az=[]):
         """
+        :param alt:
+        :param az:
         :return:
         """
         if not self.satellite:
@@ -271,10 +272,10 @@ class Satellite(object):
         if not winObj['classObj']:
             return False
 
-        segments = [self.ui.satBeforeFlip.isChecked(),
-                    self.ui.satAfterFlip.isChecked()]
-
-        winObj['classObj'].signals.show.emit(self.satellite, self.satOrbits, segments)
+        winObj['classObj'].signals.show.emit(self.satellite,
+                                             self.satOrbits,
+                                             alt,
+                                             az)
         return True
 
     def showSatPasses(self):
@@ -503,10 +504,29 @@ class Satellite(object):
         if duration > 900 / 86400:
             duration = 900
         timeSeries = start + np.arange(0, duration, 1 / 86400)
-        timeVec = m.obsSite.ts.tt_jd(timeSeries)
+        timeVec = m.obsSite.ts.tt_jd(timeSeries + m.obsSite.UTC2TT)
         alt, az, _ = difference.at(timeVec).altaz(pressure_mbar=press,
                                                   temperature_C=temp)
-        return alt, az
+        return alt.degrees, az.degrees
+
+    def filterHorizon(self, alt, az):
+        """
+        :param alt:
+        :param az:
+        :return:
+        """
+        useHorizon = self.ui.avoidHorizon.isChecked()
+        if not useHorizon:
+            return alt, az
+
+        altitude = []
+        azimuth = []
+        for alt, az in zip(alt, az):
+            if not self.app.data.isAboveHorizon((alt, az)):
+                continue
+            altitude.append(alt)
+            azimuth.append(az)
+        return altitude, azimuth
 
     def progTrajectoryToMountNew(self, start, end):
         """
@@ -515,13 +535,17 @@ class Satellite(object):
         :return:
         """
         alt, az = self.calcTrajectoryData(start, end)
+        alt, az = self.filterHorizon(alt, az)
+        self.sendSatelliteData(alt=alt, az=az)
+        return
+
         suc = self.app.mount.satellite.startProgTrajectory(julD=start)
         if not suc:
             self.app.message.emit('Cannot clear satellite trajectory', 2)
             return False
 
-        altP = np.array_split(alt.degrees, 5)
-        azP = np.array_split(az.degrees, 5)
+        altP = np.array_split(alt, 5)
+        azP = np.array_split(az, 5)
 
         for i, (altitude, azimuth) in enumerate(zip(altP, azP)):
             print(i)
@@ -559,7 +583,7 @@ class Satellite(object):
         if self.ui.satBeforeFlip.isChecked():
             start = self.satOrbits[0]['rise'].tt
         else:
-            start = self.satOrbits[0]['flip'].tt + 60 / 86400
+            start = self.satOrbits[0]['flip'].tt
 
         if self.ui.satAfterFlip.isChecked():
             end = self.satOrbits[0]['settle'].tt

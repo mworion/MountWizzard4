@@ -490,16 +490,6 @@ class Satellite(object):
         winObj['classObj'].signals.update.emit(now, location)
         return True
 
-    @staticmethod
-    def calcDuration(start, end):
-        delta = end - start
-        delta = int(delta * 1440)
-        if delta < 1:
-            delta = 1
-        elif delta > 1440:
-            delta = 1440
-        return delta
-
     def calcTrajectoryData(self, start, end):
         """
         :param start:
@@ -511,6 +501,8 @@ class Satellite(object):
         press = m.setting.refractionPress
         difference = self.satellite - m.obsSite.location
         duration = end - start
+        if duration > 900 / 86400:
+            duration = 900
         timeSeries = start + np.arange(0, duration, 1 / 86400)
         timeVec = m.obsSite.ts.tt_jd(timeSeries)
         alt, az, _ = difference.at(timeVec).altaz(pressure_mbar=press,
@@ -574,8 +566,7 @@ class Satellite(object):
         if isInternal and internalAvailable:
             self.progTrajectoryToMountNew(start, end)
         else:
-            duration = self.calcDuration(start, end)
-            self.app.mount.calcTLE(start, duration)
+            self.app.mount.calcTLE(start)
 
         return True
 

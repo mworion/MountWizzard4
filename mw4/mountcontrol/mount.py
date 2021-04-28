@@ -75,11 +75,10 @@ class Mount(object):
                                pathToData=self.pathToData,
                                verbose=self.verbose,
                                )
-        self.satellite = Satellite(self.host,
-                                   obsSite=self.obsSite)
-        self.geometry = Geometry(obsSite=self.obsSite)
+        self.satellite = Satellite(parent=self, host=self.host)
+        self.geometry = Geometry(parent=self)
         self.dome = Dome(self.host)
-        self.model = Model(self.host, self.obsSite)
+        self.model = Model(self, self.host)
         self.host = host
 
     @property
@@ -179,9 +178,8 @@ class Mount(object):
                                pathToData=self.pathToData,
                                verbose=self.verbose,
                                )
-        self.satellite = Satellite(self.host,
-                                   obsSite=self.obsSite)
-        self.geometry = Geometry(obsSite=self.obsSite)
+        self.satellite = Satellite(parent=self, host=self.host)
+        self.geometry = Geometry(parent=self)
 
     def calcTransformationMatricesTarget(self):
         """

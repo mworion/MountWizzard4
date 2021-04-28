@@ -80,9 +80,9 @@ class Geometry(object):
         },
     }
 
-    def __init__(self, obsSite=None):
+    def __init__(self, parent=None):
 
-        self.obsSite = obsSite
+        self.parent = parent
         self.offBaseAltAxisX = 0
         self.offBaseAltAxisZ = 0
         self.offAltAxisGemX = 0
@@ -134,11 +134,11 @@ class Geometry(object):
     @offVert.setter
     def offVert(self, value):
         self._offVert = valueToFloat(value)
-        if self.obsSite.location is None:
+        if self.parent.obsSite.location is None:
             self.log.debug('offVert called without lat')
             return
 
-        lat = self.obsSite.location.latitude.radians
+        lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) + self.offBaseAltAxisZ
         val += np.sin(abs(lat)) * self.offAltAxisGemX
         self._offVertGEM = val
@@ -150,11 +150,11 @@ class Geometry(object):
     @offVertGEM.setter
     def offVertGEM(self, value):
         self._offVertGEM = valueToFloat(value)
-        if self.obsSite.location is None:
+        if self.parent.obsSite.location is None:
             self.log.debug('offVertGEM called without lat')
             return
 
-        lat = self.obsSite.location.latitude.radians
+        lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) - self.offBaseAltAxisZ
         val -= np.sin(abs(lat)) * self.offAltAxisGemX
         self._offVert = val

@@ -41,8 +41,8 @@ class TLEParams(object):
 
     log = logging.getLogger(__name__)
 
-    def __init__(self, obsSite=None):
-        self.obsSite = obsSite
+    def __init__(self, parent=None):
+        self.parent = parent
         self._azimuth = None
         self._altitude = None
         self._ra = None
@@ -119,7 +119,7 @@ class TLEParams(object):
     def jdStart(self, value):
         value = valueToFloat(value)
         if value:
-            self._jdStart = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
+            self._jdStart = self.parent.obsSite.ts.tt_jd(value + self.parent.obsSite.UTC2TT)
         else:
             self._jdStart = None
 
@@ -131,7 +131,7 @@ class TLEParams(object):
     def jdEnd(self, value):
         value = valueToFloat(value)
         if value:
-            self._jdEnd = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
+            self._jdEnd = self.parent.obsSite.ts.tt_jd(value + self.parent.obsSite.UTC2TT)
         else:
             self._jdEnd = None
 
@@ -193,12 +193,12 @@ class TrajectoryParams(object):
 
     log = logging.getLogger(__name__)
 
-    def __init__(self, obsSite=None):
+    def __init__(self, parent=None):
         self._jdStart = None
         self._jdEnd = None
         self._flip = None
         self._message = None
-        self.obsSite = obsSite
+        self.parent = parent
 
     @property
     def flip(self):
@@ -222,7 +222,7 @@ class TrajectoryParams(object):
     def jdStart(self, value):
         value = valueToFloat(value)
         if value:
-            self._jdStart = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
+            self._jdStart = self.parent.obsSite.ts.tt_jd(value + self.parent.obsSite.UTC2TT)
         else:
             self._jdStart = None
 
@@ -234,7 +234,7 @@ class TrajectoryParams(object):
     def jdEnd(self, value):
         value = valueToFloat(value)
         if value:
-            self._jdEnd = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
+            self._jdEnd = self.parent.obsSite.ts.tt_jd(value + self.parent.obsSite.UTC2TT)
         else:
             self._jdEnd = None
 
@@ -265,7 +265,7 @@ class Satellite(object):
     waits for it. when satellite reaches the altitude minimum, the mount
     starts to track.
 
-        >>> fw = Satellite(host='', obsSite=None)
+        >>> fw = Satellite(host='', parent=None)
     """
 
     __all__ = ['Satellite',
@@ -290,10 +290,10 @@ class Satellite(object):
         'E': 'No slew to satellite requested'
     }
 
-    def __init__(self, host=None, obsSite=None):
+    def __init__(self, parent=None, host=None):
         self.host = host
-        self.tleParams = TLEParams(obsSite=obsSite)
-        self.trajectoryParams = TrajectoryParams(obsSite=obsSite)
+        self.tleParams = TLEParams(parent=parent)
+        self.trajectoryParams = TrajectoryParams(parent=parent)
 
     def parseGetTLE(self, response, numberOfChunks):
         """

@@ -124,8 +124,7 @@ class ObsSite(object):
 
         self.ts = self.loader.timescale(builtin=True)
         t = self.ts.now()
-        _, leapSecond = t.utc_datetime_and_leap_second()
-        self.UTC2TT = (32.184 + leapSecond) / 86400
+        self.UTC2TT = (t.delta_t + t.dut1) / 86400
         self.log.debug('Timescale is using built-in')
         return True
 

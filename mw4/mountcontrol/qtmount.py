@@ -432,17 +432,16 @@ class Mount(mountcontrol.mount.Mount):
         self.signals.calcTLEdone.emit(self.satellite.tleParams)
         return True
 
-    def calcTLE(self, start, duration):
+    def calcTLE(self, start):
         """
         :param start:
-        :param duration:
         :return:
         """
         if not self.mountUp:
             self.signals.calcTLEdone.emit(self.satellite.tleParams)
             return False
 
-        worker = Worker(self.satellite.calcTLE, start, duration)
+        worker = Worker(self.satellite.calcTLE, start)
         worker.signals.finished.connect(self.clearCalcTLE)
         worker.signals.error.connect(self.errorCalcTLE)
         self.threadPool.start(worker)

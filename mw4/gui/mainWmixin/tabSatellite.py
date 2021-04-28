@@ -116,8 +116,11 @@ class Satellite(object):
         msig.getTLEdone.connect(self.getSatelliteDataFromDatabase)
         msig.firmwareDone.connect(self.enableGuiFunctions)
         self.app.sendSatelliteData.connect(self.sendSatelliteData)
-        # self.ui.satAfterFlip.clicked.connect(self.showSatPasses)
-        # self.ui.satBeforeFlip.clicked.connect(self.showSatPasses)
+        self.ui.satAfterFlip.clicked.connect(self.showSatPasses)
+        self.ui.satBeforeFlip.clicked.connect(self.showSatPasses)
+        self.ui.avoidHorizon.clicked.connect(self.showSatPasses)
+        self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
+        self.ui.useInternalSatCalc.clicked.connect(self.showSatPasses)
 
         self.app.update1s.connect(self.updateOrbit)
         self.app.mount.signals.pointDone.connect(self.followMount)
@@ -137,9 +140,9 @@ class Satellite(object):
         self.ui.domeAutoFollowSat.setChecked(config.get('domeAutoFollowSat', False))
         self.ui.useInternalSatCalc.setChecked(config.get('useInternalSatCalc',
                                                          False))
-        self.ui.useInternalSatCalc.setChecked(False)
         self.ui.satBeforeFlip.setChecked(config.get('satBeforeFlip', True))
         self.ui.satAfterFlip.setChecked(config.get('satAfterFlip', True))
+        self.ui.avoidHorizon.setChecked(config.get('avoidHorizon', False))
 
         if not self.app.automation:
             self.installPath = self.app.mwGlob['dataDir']
@@ -159,6 +162,7 @@ class Satellite(object):
         config['useInternalSatCalc'] = self.ui.useInternalSatCalc.isChecked()
         config['satBeforeFlip'] = self.ui.satBeforeFlip.isChecked()
         config['satAfterFlip'] = self.ui.satAfterFlip.isChecked()
+        config['avoidHorizon'] = self.ui.avoidHorizon.isChecked()
         return True
 
     def enableGuiFunctions(self):
@@ -172,9 +176,11 @@ class Satellite(object):
         self.ui.satAfterFlip.setEnabled(internalAvailable)
         self.ui.useInternalSatCalc.setEnabled(internalAvailable)
         self.ui.segmentsText.setEnabled(internalAvailable)
-        self.ui.trajectoryProgress.setEnabled(internalAvailable)
-        self.ui.progTrajectory.setEnabled(internalAvailable)
         self.ui.avoidHorizon.setEnabled(internalAvailable)
+
+        progAvailable = internalAvailable and self.ui.useInternalSatCalc.isChecked()
+        self.ui.trajectoryProgress.setEnabled(progAvailable)
+        self.ui.progTrajectory.setEnabled(progAvailable)
         return True
 
     def calcPassEvents(self, obsSite):
@@ -282,6 +288,12 @@ class Satellite(object):
         """
         :return: True for test purpose
         """
+        self.ui.satTrajectoryStart.setText('-')
+        self.ui.satTrajectoryEnd.setText('-')
+        self.ui.satTrajectoryFlip.setText('-')
+        self.ui.stopSatelliteTracking.setEnabled(False)
+        self.ui.startSatelliteTracking.setEnabled(False)
+
         obsSite = self.app.mount.obsSite
         times, events = self.calcPassEvents(obsSite)
 
@@ -360,11 +372,6 @@ class Satellite(object):
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', '')
 
         self.ui.satelliteNumber.setText(f'{self.satellite.model.satnum:5d}')
-        self.ui.stopSatelliteTracking.setEnabled(False)
-        self.ui.startSatelliteTracking.setEnabled(False)
-        self.ui.satTrajectoryStart.setText('-')
-        self.ui.satTrajectoryEnd.setText('-')
-        self.ui.satTrajectoryFlip.setText('-')
         self.showSatPasses()
         return True
 
@@ -535,9 +542,6 @@ class Satellite(object):
         :return:
         """
         alt, az = self.calcTrajectoryData(start, end)
-        alt, az = self.filterHorizon(alt, az)
-        self.sendSatelliteData(alt=alt, az=az)
-
         suc = self.app.mount.satellite.startProgTrajectory(julD=start)
         if not suc:
             self.app.message.emit('Cannot clear satellite trajectory', 2)
@@ -594,7 +598,10 @@ class Satellite(object):
         end = end - UTC2TT
 
         if isInternal and internalAvailable:
-            self.progTrajectoryToMountNew(start, end)
+            alt, az = self.calcTrajectoryData(start, end)
+            alt, az = self.filterHorizon(alt, az)
+            self.sendSatelliteData(alt=alt, az=az)
+            # self.progTrajectoryToMountNew(start, end)
         else:
             self.app.mount.calcTLE(start)
 

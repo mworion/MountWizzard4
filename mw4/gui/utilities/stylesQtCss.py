@@ -705,6 +705,14 @@ class Styles:
         border-color: #404040;
         border-style: outset;
     }
+    QProgressBar:disabled {
+        color: #606060;
+        background-color: #101010;
+        border-radius: 3px;
+        border-width: 1px;
+        border-color: #202020;
+        border-style: outset;
+    }
     QProgressBar::chunk {
         background-color: rgb(32, 144, 192);
         width: 1px;

@@ -239,9 +239,8 @@ class Satellite(object):
         difference = satellite - location
 
         def west_of_meridian_at(t):
-            altaz = difference.at(t).altaz()
-            alt, az, _ = altaz
-            return ((az.degrees + 360) % 360 - 180) > 0
+            alt, az, _ = difference.at(t).altaz()
+            return ((az.degrees + 360) % 360 - 180) < 0
 
         west_of_meridian_at.step_days = 0.4
         return west_of_meridian_at
@@ -532,7 +531,7 @@ class Satellite(object):
                 self.app.message.emit('Error programming satellite trajectory', 2)
                 return False
 
-        suc = self.app.mount.calcTrajectory(replay=False)
+        suc = self.app.mount.calcTrajectory(replay=True)
         if not suc:
             self.app.message.emit('Error calculate satellite trajectory', 2)
             return False
@@ -545,6 +544,14 @@ class Satellite(object):
         """
         if not self.app.mount.mountUp:
             return False
+        if not self.satOrbits:
+            return False
+        if 'rise' not in self.satOrbits[0]:
+            return False
+        if 'flip' not in self.satOrbits[0]:
+            return False
+        if 'settle' not in self.satOrbits[0]:
+            return False
 
         isInternal = self.ui.useInternalSatCalc.isChecked()
         internalAvailable = self.ui.useInternalSatCalc.isEnabled()
@@ -552,7 +559,7 @@ class Satellite(object):
         if self.ui.satBeforeFlip.isChecked():
             start = self.satOrbits[0]['rise'].tt
         else:
-            start = self.satOrbits[0]['flip'].tt
+            start = self.satOrbits[0]['flip'].tt + 60 / 86400
 
         if self.ui.satAfterFlip.isChecked():
             end = self.satOrbits[0]['settle'].tt

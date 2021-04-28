@@ -172,7 +172,7 @@ class ObsSite(object):
     def timeJD(self, value):
         value = valueToFloat(value)
         if value:
-            self._timeJD = self.ts.tt_jd(value + self.UTC_TO_TT)
+            self._timeJD = self.ts.tt_jd(value + self.UTC2TT)
         else:
             self._timeJD = None
 

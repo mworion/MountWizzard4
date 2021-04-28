@@ -350,6 +350,7 @@ class Satellite(object):
         now = self.app.mount.obsSite.ts.now()
         days = now - self.satellite.epoch
         self.ui.satelliteDataAge.setText(f'{days:2.2f}')
+        self.app.message.emit(f'Actually using satellite data for: [{satName}]', 0)
 
         if days > 10:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')
@@ -509,8 +510,8 @@ class Satellite(object):
         temp = m.setting.refractionTemp
         press = m.setting.refractionPress
         difference = self.satellite - m.obsSite.location
-        duration = int((end - start) * 86400)
-        timeSeries = (start + np.arange(0, duration, 1) / 86400)
+        duration = end - start
+        timeSeries = start + np.arange(0, duration, 1 / 86400)
         timeVec = m.obsSite.ts.tt_jd(timeSeries)
         alt, az, _ = difference.at(timeVec).altaz(pressure_mbar=press,
                                                   temperature_C=temp)
@@ -532,14 +533,14 @@ class Satellite(object):
         azP = np.array_split(az.degrees, 5)
 
         for i, (altitude, azimuth) in enumerate(zip(altP, azP)):
+            print(i)
             suc = self.app.mount.satellite.progTrajectory(alt=altitude,
                                                           az=azimuth)
-            print(i)
             if not suc:
                 self.app.message.emit('Error programming satellite trajectory', 2)
                 return False
 
-        suc = self.app.mount.calcTrajectory(replay=True)
+        suc = self.app.mount.calcTrajectory(replay=False)
         if not suc:
             self.app.message.emit('Error calculate satellite trajectory', 2)
             return False
@@ -566,14 +567,15 @@ class Satellite(object):
         else:
             end = self.satOrbits[0]['flip'].tt
 
+        UTC2TT = self.app.mount.obsSite.UTC2TT
+        start = start - UTC2TT
+        end = end - UTC2TT
+
         if isInternal and internalAvailable:
-            ti = self.app.mount.obsSite.ts.now()
-            tt_utc = (ti.delta_t + ti.dut1) / 86400
-            start = start - tt_utc
-            end = end - tt_utc
             self.progTrajectoryToMountNew(start, end)
         else:
-            self.app.mount.calcTLE()
+            duration = self.calcDuration(start, end)
+            self.app.mount.calcTLE(start, duration)
 
         return True
 

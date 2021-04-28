@@ -110,6 +110,7 @@ class ObsSite(object):
         self._AzTarget = None
         self._status = None
         self._statusSlew = None
+        self.UTC2TT = None
         self.setLoaderAndTimescale()
 
     def setLoaderAndTimescale(self):
@@ -122,6 +123,9 @@ class ObsSite(object):
             self.loader = load
 
         self.ts = self.loader.timescale(builtin=True)
+        t = self.ts.now()
+        _, leapSecond = t.utc_datetime_and_leap_second()
+        self.UTC2TT = (32.184 + leapSecond) / 86400
         self.log.debug('Timescale is using built-in')
         return True
 
@@ -169,7 +173,7 @@ class ObsSite(object):
     def timeJD(self, value):
         value = valueToFloat(value)
         if value:
-            self._timeJD = self.ts.ut1_jd(value + self.ts.now().dut1 / 86400)
+            self._timeJD = self.ts.tt_jd(value + self.UTC_TO_TT)
         else:
             self._timeJD = None
 

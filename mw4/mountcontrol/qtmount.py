@@ -21,6 +21,7 @@ import socket
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import wakeonlan
+import numpy as np
 
 # local imports
 from base.tpool import Worker
@@ -54,6 +55,7 @@ class MountSignals(PyQt5.QtCore.QObject):
     calcTLEdone = PyQt5.QtCore.pyqtSignal(object)
     statTLEdone = PyQt5.QtCore.pyqtSignal(object)
     getTLEdone = PyQt5.QtCore.pyqtSignal(object)
+    trajectoryProgress = PyQt5.QtCore.pyqtSignal(object)
     calcTrajectoryDone = PyQt5.QtCore.pyqtSignal(object)
     mountUp = PyQt5.QtCore.pyqtSignal(object)
     slewFinished = PyQt5.QtCore.pyqtSignal()
@@ -576,5 +578,54 @@ class Mount(mountcontrol.mount.Mount):
         worker = Worker(self.satellite.calcTrajectory, replay=replay)
         worker.signals.finished.connect(self.clearCalcTrajectory)
         worker.signals.error.connect(self.errorCalcTrajectory)
+        self.threadPool.start(worker)
+        return True
+
+    def errorProgTrajectory(self, e):
+        """
+        :return: true for test purpose
+        """
+        self.log.warning(f'Cycle error: {e}')
+        return True
+
+    def clearProgTrajectory(self):
+        """
+        :return: true for test purpose
+        """
+        self.calcTrajectory()
+        return True
+
+    def workerProgTrajectory(self, alt=[], az=[]):
+        """
+        :param alt:
+        :param az:
+        :return:
+        """
+        factor = len(alt) / 32
+        altP = np.array_split(alt, factor)
+        azP = np.array_split(az, factor)
+        chunks = len(altP)
+
+        for i, (altitude, azimuth) in enumerate(zip(altP, azP)):
+            self.satellite.progTrajectory(alt=altitude, az=azimuth)
+            self.signals.trajectoryProgress.emit(min(i / chunks * 100, 100))
+        self.signals.trajectoryProgress.emit(100)
+        return True
+
+    def progTrajectory(self, start, alt=[], az=[]):
+        """
+        :param start:
+        :param alt:
+        :param az:
+        :return:
+        """
+        if not self.mountUp:
+            return False
+
+        self.satellite.startProgTrajectory(julD=start)
+
+        worker = Worker(self.workerProgTrajectory, alt=alt, az=az)
+        worker.signals.finished.connect(self.clearProgTrajectory)
+        worker.signals.error.connect(self.errorProgTrajectory)
         self.threadPool.start(worker)
         return True

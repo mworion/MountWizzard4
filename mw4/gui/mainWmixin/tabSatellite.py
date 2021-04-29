@@ -121,6 +121,8 @@ class Satellite(object):
         self.ui.avoidHorizon.clicked.connect(self.showSatPasses)
         self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.useInternalSatCalc.clicked.connect(self.showSatPasses)
+        self.ui.progTrajectory.clicked.connect(self.startProg)
+        msig.trajectoryProgress.connect(self.trajectoryProgress)
 
         self.app.update1s.connect(self.updateOrbit)
         self.app.mount.signals.pointDone.connect(self.followMount)
@@ -172,13 +174,13 @@ class Satellite(object):
         internalAvailable = self.app.mount.firmware.checkNewer(21699)
         if internalAvailable is None:
             return False
-        self.ui.satBeforeFlip.setEnabled(internalAvailable)
-        self.ui.satAfterFlip.setEnabled(internalAvailable)
         self.ui.useInternalSatCalc.setEnabled(internalAvailable)
-        self.ui.segmentsText.setEnabled(internalAvailable)
-        self.ui.avoidHorizon.setEnabled(internalAvailable)
 
         progAvailable = internalAvailable and self.ui.useInternalSatCalc.isChecked()
+        self.ui.segmentsText.setEnabled(progAvailable)
+        self.ui.satBeforeFlip.setEnabled(progAvailable)
+        self.ui.satAfterFlip.setEnabled(progAvailable)
+        self.ui.avoidHorizon.setEnabled(progAvailable)
         self.ui.trajectoryProgress.setEnabled(progAvailable)
         self.ui.progTrajectory.setEnabled(progAvailable)
         return True
@@ -542,26 +544,9 @@ class Satellite(object):
         :return:
         """
         alt, az = self.calcTrajectoryData(start, end)
-        suc = self.app.mount.satellite.startProgTrajectory(julD=start)
+        suc = self.app.mount.progTrajectory(start, alt=alt, az=az)
         if not suc:
-            self.app.message.emit('Cannot clear satellite trajectory', 2)
-            return False
-
-        altP = np.array_split(alt, 5)
-        azP = np.array_split(az, 5)
-
-        for i, (altitude, azimuth) in enumerate(zip(altP, azP)):
-            print(i)
-            suc = self.app.mount.satellite.progTrajectory(alt=altitude,
-                                                          az=azimuth)
-            if not suc:
-                self.app.message.emit('Error programming satellite trajectory', 2)
-                return False
-
-        suc = self.app.mount.calcTrajectory(replay=True)
-        if not suc:
-            self.app.message.emit('Error calculate satellite trajectory', 2)
-            return False
+            self.app.message.emit('Mount is not online', 2)
 
         return True
 
@@ -580,9 +565,43 @@ class Satellite(object):
         if 'settle' not in self.satOrbits[0]:
             return False
 
+        self.ui.trajectoryProgress.setValue(0)
+        isBefore = self.ui.satBeforeFlip.isChecked()
+        isAfter = self.ui.satAfterFlip.isChecked()
+        if not (isBefore or isAfter):
+            return False
+
+        if isBefore:
+            start = self.satOrbits[0]['rise'].tt
+        else:
+            start = self.satOrbits[0]['flip'].tt
+
+        if isAfter:
+            end = self.satOrbits[0]['settle'].tt
+        else:
+            end = self.satOrbits[0]['flip'].tt
+
+        UTC2TT = self.app.mount.obsSite.UTC2TT
+        start = start - UTC2TT
+        end = end - UTC2TT
+
         isInternal = self.ui.useInternalSatCalc.isChecked()
         internalAvailable = self.ui.useInternalSatCalc.isEnabled()
 
+        if isInternal and internalAvailable:
+            alt, az = self.calcTrajectoryData(start, end)
+            alt, az = self.filterHorizon(alt, az)
+            self.sendSatelliteData(alt=alt, az=az)
+        else:
+            self.app.mount.calcTLE(start)
+
+        return True
+
+    def startProg(self):
+        """
+        :return:
+        """
+        self.ui.trajectoryProgress.setValue(0)
         if self.ui.satBeforeFlip.isChecked():
             start = self.satOrbits[0]['rise'].tt
         else:
@@ -596,15 +615,20 @@ class Satellite(object):
         UTC2TT = self.app.mount.obsSite.UTC2TT
         start = start - UTC2TT
         end = end - UTC2TT
+        alt, az = self.calcTrajectoryData(start, end)
+        alt, az = self.filterHorizon(alt, az)
+        self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)
+        self.app.mount.progTrajectory(start, alt=alt, az=az)
+        return True
 
-        if isInternal and internalAvailable:
-            alt, az = self.calcTrajectoryData(start, end)
-            alt, az = self.filterHorizon(alt, az)
-            self.sendSatelliteData(alt=alt, az=az)
-            # self.progTrajectoryToMountNew(start, end)
-        else:
-            self.app.mount.calcTLE(start)
-
+    def trajectoryProgress(self, value):
+        """
+        :param value:
+        :return:
+        """
+        self.ui.trajectoryProgress.setValue(value)
+        if value == 100:
+            self.changeStyleDynamic(self.ui.progTrajectory, 'running', False)
         return True
 
     def updateSatelliteTrackGui(self, params=None):

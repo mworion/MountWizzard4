@@ -286,16 +286,23 @@ class Satellite(object):
                                              az)
         return True
 
-    def showSatPasses(self):
+    def clearTrackingParameters(self):
         """
-        :return: True for test purpose
+        :return:
         """
         self.ui.satTrajectoryStart.setText('-')
         self.ui.satTrajectoryEnd.setText('-')
         self.ui.satTrajectoryFlip.setText('-')
+        self.ui.trajectoryProgress.setValue(0)
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
+        return True
 
+    def showSatPasses(self):
+        """
+        :return: True for test purpose
+        """
+        self.clearTrackingParameters()
         obsSite = self.app.mount.obsSite
         times, events = self.calcPassEvents(obsSite)
 
@@ -565,7 +572,6 @@ class Satellite(object):
         if 'settle' not in self.satOrbits[0]:
             return False
 
-        self.ui.trajectoryProgress.setValue(0)
         isBefore = self.ui.satBeforeFlip.isChecked()
         isAfter = self.ui.satAfterFlip.isChecked()
         if not (isBefore or isAfter):
@@ -601,7 +607,7 @@ class Satellite(object):
         """
         :return:
         """
-        self.ui.trajectoryProgress.setValue(0)
+        self.clearTrackingParameters()
         if self.ui.satBeforeFlip.isChecked():
             start = self.satOrbits[0]['rise'].tt
         else:
@@ -637,6 +643,7 @@ class Satellite(object):
         """
         if params is None:
             return False
+        self.ui.trajectoryProgress.setValue(0)
 
         if params.jdStart is not None and self.satOrbits:
             t = params.jdStart.utc_strftime('%d %b  %H:%M:%S')

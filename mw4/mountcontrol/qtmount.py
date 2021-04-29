@@ -608,7 +608,7 @@ class Mount(mountcontrol.mount.Mount):
 
         for i, (altitude, azimuth) in enumerate(zip(altP, azP)):
             self.satellite.progTrajectory(alt=altitude, az=azimuth)
-            self.signals.trajectoryProgress.emit(min(i / chunks * 100, 100))
+            self.signals.trajectoryProgress.emit(min((i + 1) / chunks * 100, 100))
         self.signals.trajectoryProgress.emit(100)
         return True
 

@@ -83,7 +83,7 @@ def test_drawTwilightData_1(function):
     e = [1, 1]
     widget = QWidget()
     function.twilight = function.embedMatplot(widget)
-    suc = function.drawTwilightData(t, e)
+    suc = function.plotTwilightData(t, e)
     assert suc
 
 
@@ -103,7 +103,7 @@ def test_searchTwilightWorker_1(function):
     t = [tsNow, tsNow]
     e = [1, 1]
     with mock.patch.object(function,
-                           'drawTwilightData'):
+                           'plotTwilightData'):
         with mock.patch.object(function,
                                'calcTwilightData',
                                return_value=(t, e)):

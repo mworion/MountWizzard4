@@ -185,6 +185,37 @@ def test_updatePositions_8(function):
                     assert suc
 
 
+def test_updatePositions_9(function):
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
+    function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    function.plotSatPosEarth, = plt.plot([1, 0], [1, 0])
+    function.plotSatPosHorizon, = plt.plot([1, 0], [1, 0])
+    function.plotSatPosSphere1, = ax.plot([1], [1], [1])
+    function.plotSatPosSphere2, = ax.plot([1], [1], [1])
+
+    function.ui.tabWidget.setCurrentIndex(1)
+
+    now = function.app.mount.obsSite.ts.now()
+    location = function.app.mount.obsSite.location
+
+    with mock.patch.object(function.plotSatPosSphere1,
+                           'set_data_3d'):
+        with mock.patch.object(function.plotSatPosSphere2,
+                               'set_data_3d'):
+            with mock.patch.object(function.plotSatPosEarth,
+                                   'set_data'):
+                with mock.patch.object(function.plotSatPosHorizon,
+                                       'set_data'):
+                    suc = function.updatePositions(now=now, location=location)
+                    assert suc
+
+
 def test_makeCubeLimits_1(function):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -279,8 +310,7 @@ def test_drawEarth_2(function, ts):
                   'settle': t4},
                  ]
     obsSite = function.app.mount.obsSite
-    suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits,
-                             segments=[True, True])
+    suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits)
     assert suc
 
 
@@ -310,8 +340,7 @@ def test_drawEarth_3(function, ts):
                   'settle': t4},
                  ]
     obsSite = function.app.mount.obsSite
-    suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits,
-                             segments=[True, True])
+    suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits)
     assert suc
 
 
@@ -360,8 +389,7 @@ def test_drawHorizonView_2(function, ts):
                   'settle': t4},
                  ]
     obsSite = function.app.mount.obsSite
-    suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits,
-                                   segments=[True, True])
+    suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits)
     assert suc
 
 
@@ -391,8 +419,7 @@ def test_drawHorizonView_3(function, ts):
                   'settle': t4},
                  ]
     obsSite = function.app.mount.obsSite
-    suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits,
-                                   segments=[True, True])
+    suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits)
     assert suc
 
 

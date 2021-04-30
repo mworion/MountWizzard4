@@ -542,6 +542,7 @@ def test_loadTLEDataFromSourceURLs_2(function):
 
 
 def test_updateOrbit_1(function):
+    function.satellite = None
     suc = function.updateOrbit()
     assert not suc
 
@@ -565,6 +566,140 @@ def test_updateOrbit_3(function):
     suc = function.updateOrbit()
     assert suc
 
+
+def test_calcTrajectoryData_1(function):
+    alt, az = function.calcTrajectoryData(100, 100)
+    assert alt == []
+    assert az == []
+
+
+def test_calcTrajectoryData_2(function):
+    tle = ['NOAA 8',
+           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
+           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    alt, az = function.calcTrajectoryData(100 / 86400, 101 / 86400)
+    assert alt != []
+    assert az != []
+
+
+def test_filterHorizon_1(function):
+    function.ui.avoidHorizon.setChecked(False)
+    alt, az = function.filterHorizon([1], [2])
+    assert alt == [1]
+    assert az == [2]
+
+
+def test_filterHorizon_2(function):
+    function.ui.avoidHorizon.setChecked(True)
+    with mock.patch.object(function.app.data,
+                           'isAboveHorizon',
+                           return_value=True):
+        alt, az = function.filterHorizon([1], [2])
+        assert alt == [1]
+        assert az == [2]
+
+
+def test_filterHorizon_3(function):
+    function.ui.avoidHorizon.setChecked(True)
+    with mock.patch.object(function.app.data,
+                           'isAboveHorizon',
+                           return_value=False):
+        alt, az = function.filterHorizon([1], [2])
+        assert alt == [1]
+        assert az == [2]
+
+
+def test_progMount_1(function):
+    function.app.mount.mountUp = False
+    suc = function.progTrajectoryToMount()
+    assert not suc
+
+
+def test_progMount_2(function):
+    function.app.mount.mountUp = True
+    suc = function.progTrajectoryToMount()
+    assert not suc
+
+
+def test_progMount_3(function):
+    function.app.mount.mountUp = True
+    ts = function.app.mount.obsSite.ts
+    function.satOrbits = [{'test': ts.tt_jd(2459215.5),
+                           'test': ts.tt_jd(2459215.7)}]
+    suc = function.progTrajectoryToMount()
+    assert not suc
+
+
+def test_progMount_4(function):
+    function.app.mount.mountUp = True
+    ts = function.app.mount.obsSite.ts
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'test': ts.tt_jd(2459215.6),
+                           'test': ts.tt_jd(2459215.7)}]
+    suc = function.progTrajectoryToMount()
+    assert not suc
+
+
+def test_progMount_5(function):
+    function.app.mount.mountUp = True
+    ts = function.app.mount.obsSite.ts
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'flip': ts.tt_jd(2459215.6),
+                           'test': ts.tt_jd(2459215.7)}]
+    suc = function.progTrajectoryToMount()
+    assert not suc
+
+
+def test_progMount_6(function):
+    function.app.mount.mountUp = True
+    ts = function.app.mount.obsSite.ts
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'flip': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)}]
+    function.ui.satBeforeFlip.setChecked(False)
+    function.ui.satAfterFlip.setChecked(False)
+    suc = function.progTrajectoryToMount()
+    assert not suc
+
+
+def test_progMount_7(function):
+    function.app.mount.mountUp = True
+    ts = function.app.mount.obsSite.ts
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'flip': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)}]
+    function.ui.satBeforeFlip.setChecked(True)
+    function.ui.satAfterFlip.setChecked(False)
+    function.ui.useInternalSatCalc.setChecked(True)
+    function.ui.useInternalSatCalc.setEnabled(True)
+    with mock.patch.object(function,
+                           'calcTrajectoryData',
+                           return_value=([], [])):
+        with mock.patch.object(function,
+                               'filterHorizon',
+                               return_value=([], [])):
+            with mock.patch.object(function,
+                                   'sendSatelliteData'):
+                suc = function.progTrajectoryToMount()
+                assert suc
+
+
+def test_progMount_8(function):
+    function.app.mount.mountUp = True
+    ts = function.app.mount.obsSite.ts
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'flip': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)}]
+    function.ui.satBeforeFlip.setChecked(False)
+    function.ui.satAfterFlip.setChecked(True)
+    function.ui.useInternalSatCalc.setChecked(False)
+    function.ui.useInternalSatCalc.setEnabled(False)
+    with mock.patch.object(function.app.mount,
+                           'calcTLE'):
+        suc = function.progTrajectoryToMount()
+        assert suc
 
 
 def test_clearTrackingParameters(function):
@@ -710,44 +845,6 @@ def test_calcDuration_2(function):
 def test_calcDuration_3(function):
     val = function.calcDuration(2000 / 1440, 1000 / 1440)
     assert val == 1
-
-
-def test_progMountStandard(function):
-    with mock.patch.object(function,
-                           'calcDuration'):
-        with mock.patch.object(function.app.mount.satellite,
-                               'calcTLE'):
-            suc = function.progTrajectoryToMountOld(1, 2)
-            assert suc
-
-
-def test_progMountNew(function):
-    with mock.patch.object(function,
-                           'calcDuration'):
-        with mock.patch.object(function.app.mount.satellite,
-                               'calcTLE'):
-            suc = function.progTrajectoryToMountNew(1, 2)
-            assert suc
-
-
-def test_progMount_1(function):
-    with mock.patch.object(function.threadPool,
-                           'start'):
-        with mock.patch.object(function.app.mount.firmware,
-                               'checkNewer',
-                               return_value=True):
-            suc = function.progTrajectoryToMount(1, 2)
-            assert suc
-
-
-def test_progMount_2(function):
-    with mock.patch.object(function.threadPool,
-                           'start'):
-        with mock.patch.object(function.app.mount.firmware,
-                               'checkNewer',
-                               return_value=False):
-            suc = function.progTrajectoryToMount(1, 2)
-            assert suc
 
 
 def test_calcSegments_1(function):

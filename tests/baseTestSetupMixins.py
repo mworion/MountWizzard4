@@ -241,6 +241,7 @@ class Mount(QObject):
         timeJD = ts.now()
         loader = Loader('tests/temp', verbose=False)
         status = 0
+        UTC2TT = 69.184
 
         @staticmethod
         def setLongitude(a):
@@ -423,6 +424,10 @@ class Data:
 
     @staticmethod
     def saveHorizonP(fileName=''):
+        return
+
+    @staticmethod
+    def isAboveHorizon(a):
         return
 
 

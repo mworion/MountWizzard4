@@ -512,11 +512,9 @@ class Satellite(object):
         :param end:
         :return:
         """
-        duration = end - start
+        duration = min(end - start, 900 / 86400)
         if duration < 1 / 86400:
             return [], []
-        if duration > 900 / 86400:
-            duration = 900
 
         m = self.app.mount
         temp = m.setting.refractionTemp

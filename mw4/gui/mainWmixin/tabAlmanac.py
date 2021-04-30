@@ -88,7 +88,7 @@ class Almanac:
                 },
         }
 
-        self.app.mount.signals.getTLEdone.connect(self.searchTwilight)
+        self.app.mount.signals.locationDone.connect(self.searchTwilight)
         self.app.update30m.connect(self.updateMoonPhase)
         self.ui.almanacCivil.setStyleSheet(self.BACK_BLUE1)
         self.ui.almanacNautical.setStyleSheet(self.BACK_BLUE2)

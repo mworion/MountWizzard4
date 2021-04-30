@@ -512,20 +512,20 @@ class Satellite(object):
         :param end:
         :return:
         """
+        duration = end - start
+        if duration < 1 / 86400:
+            return [], []
+        if duration > 900 / 86400:
+            duration = 900
+
         m = self.app.mount
         temp = m.setting.refractionTemp
         press = m.setting.refractionPress
         difference = self.satellite - m.obsSite.location
-        duration = end - start
-        if duration > 900 / 86400:
-            duration = 900
         timeSeries = start + np.arange(0, duration, 1 / 86400)
         timeVec = m.obsSite.ts.tt_jd(timeSeries + m.obsSite.UTC2TT)
-        if press and temp:
-            alt, az, _ = difference.at(timeVec).altaz(pressure_mbar=press,
-                                                      temperature_C=temp)
-        else:
-            alt, az, _ = difference.at(timeVec).altaz()
+        alt, az, _ = difference.at(timeVec).altaz(pressure_mbar=press,
+                                                  temperature_C=temp)
         return alt.degrees, az.degrees
 
     def filterHorizon(self, alt, az):
@@ -546,19 +546,6 @@ class Satellite(object):
             altitude.append(alt)
             azimuth.append(az)
         return altitude, azimuth
-
-    def progTrajectoryToMountNew(self, start, end):
-        """
-        :param start:
-        :param end:
-        :return:
-        """
-        alt, az = self.calcTrajectoryData(start, end)
-        suc = self.app.mount.progTrajectory(start, alt=alt, az=az)
-        if not suc:
-            self.app.message.emit('Mount is not online', 2)
-
-        return True
 
     def progTrajectoryToMount(self):
         """
@@ -611,6 +598,12 @@ class Satellite(object):
         :return:
         """
         self.clearTrackingParameters()
+
+        isBefore = self.ui.satBeforeFlip.isChecked()
+        isAfter = self.ui.satAfterFlip.isChecked()
+        if not (isBefore or isAfter):
+            return False
+
         if self.ui.satBeforeFlip.isChecked():
             start = self.satOrbits[0]['rise'].tt
         else:

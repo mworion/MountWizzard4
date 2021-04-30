@@ -93,10 +93,371 @@ def test_storeConfig_1(function):
     assert suc
 
 
-def test_setupSatelliteSourceURLsDropDown(function):
-    suc = function.setupSatelliteSourceURLsDropDown()
+def test_enableGuiFunctions_1(function):
+    with mock.patch.object(function.app.mount.firmware,
+                           'checkNewer',
+                           return_value=None):
+        suc = function.enableGuiFunctions()
+        assert not suc
+
+
+def test_enableGuiFunctions_2(function):
+    with mock.patch.object(function.app.mount.firmware,
+                           'checkNewer',
+                           return_value=None):
+        suc = function.enableGuiFunctions()
+        assert not suc
+
+
+def test_calcPassEvents_1(function):
+    tle = ['NOAA 8',
+           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
+           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    obsSite = function.app.mount.obsSite
+    function.app.mount.setting.horizonLimitLow = None
+    t, e = function.calcPassEvents(obsSite)
+    assert type(t) == skyfield.timelib.Time
+    assert type(e) == np.ndarray
+
+
+def test_calcPassEvents_2(function):
+    tle = ['NOAA 8',
+           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
+           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    obsSite = function.app.mount.obsSite
+    function.app.mount.setting.horizonLimitLow = 0
+    t, e = function.calcPassEvents(obsSite)
+    assert type(t) == skyfield.timelib.Time
+    assert type(e) == np.ndarray
+
+
+def test_extractOrbits_1(function):
+    ts = function.app.mount.obsSite.ts
+
+    now = ts.tt_jd(2459215.4)
+    t0 = ts.tt_jd(2459215.5)
+    t1 = ts.tt_jd(2459215.6)
+    t2 = ts.tt_jd(2459215.7)
+    t3 = ts.tt_jd(2459215.8)
+    t4 = ts.tt_jd(2459215.9)
+    t5 = ts.tt_jd(2459216.0)
+    t6 = ts.tt_jd(2459216.1)
+    t7 = ts.tt_jd(2459216.2)
+    t8 = ts.tt_jd(2459216.3)
+
+    times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
+    events = [0, 1, 2, 0, 1, 2, 0, 1, 2]
+
+    function.extractOrbits(now, times, events)
+    assert len(function.satOrbits) == 3
+
+
+def test_extractOrbits_2(function):
+    ts = function.app.mount.obsSite.ts
+
+    now = ts.tt_jd(2459215.4)
+    t0 = ts.tt_jd(2459215.5)
+    t1 = ts.tt_jd(2459215.6)
+    t2 = ts.tt_jd(2459215.7)
+    t3 = ts.tt_jd(2459215.8)
+    t4 = ts.tt_jd(2459215.9)
+    t5 = ts.tt_jd(2459216.0)
+    t6 = ts.tt_jd(2459216.1)
+    t7 = ts.tt_jd(2459216.2)
+    t8 = ts.tt_jd(2459216.3)
+
+    times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
+    events = [0, 1, 2, 1, 1, 2, 0, 1, 2]
+
+    function.extractOrbits(now, times, events)
+    assert len(function.satOrbits) == 2
+
+
+def test_extractOrbits_3(function):
+    ts = function.app.mount.obsSite.ts
+
+    now = ts.tt_jd(2459216.1)
+    t0 = ts.tt_jd(2459215.5)
+    t1 = ts.tt_jd(2459215.6)
+    t2 = ts.tt_jd(2459215.7)
+    t3 = ts.tt_jd(2459215.8)
+    t4 = ts.tt_jd(2459215.9)
+    t5 = ts.tt_jd(2459216.0)
+    t6 = ts.tt_jd(2459216.1)
+    t7 = ts.tt_jd(2459216.2)
+    t8 = ts.tt_jd(2459216.3)
+
+    times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
+    events = [0, 1, 2, 0, 1, 2, 0, 1, 2]
+
+    function.extractOrbits(now, times, events)
+    print(function.satOrbits)
+    assert len(function.satOrbits) == 1
+
+
+def test_extractOrbits_4(function):
+    ts = function.app.mount.obsSite.ts
+
+    now = ts.tt_jd(2459217.1)
+    t0 = ts.tt_jd(2459215.5)
+    t1 = ts.tt_jd(2459215.6)
+    t2 = ts.tt_jd(2459215.7)
+    t3 = ts.tt_jd(2459215.8)
+    t4 = ts.tt_jd(2459215.9)
+    t5 = ts.tt_jd(2459216.0)
+    t6 = ts.tt_jd(2459216.1)
+    t7 = ts.tt_jd(2459216.2)
+    t8 = ts.tt_jd(2459216.3)
+
+    times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
+    events = [0, 1, 2, 0, 1, 2, 0, 1, 2]
+
+    function.extractOrbits(now, times, events)
+    assert len(function.satOrbits) == 0
+
+
+def test_calcSatelliteMeridianTransit(function):
+    tle = ['NOAA 8',
+           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
+           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+
+    satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
+    function.calcSatelliteMeridianTransit(satellite, loc)
+
+
+def test_addMeridianTransit_1(function):
+    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
+    tle = ['NOAA 8',
+           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
+           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+    ts = function.app.mount.obsSite.ts
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'settle': ts.tt_jd(2459215.7)},
+                          {'rise': ts.tt_jd(2459216.5),
+                           'settle': ts.tt_jd(2459216.7)}]
+    suc = function.addMeridianTransit(loc)
     assert suc
-    assert len(function.ui.satelliteSource) == len(function.satelliteSourceURLs)
+
+
+def test_sendSatelliteData_1(function):
+    function.satellite = None
+    function.satOrbits = None
+    suc = function.sendSatelliteData()
+    assert not suc
+
+
+def test_sendSatelliteData_2(function):
+    function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
+    function.satellite = 1
+    function.satOrbits = 1
+    suc = function.sendSatelliteData()
+    assert not suc
+
+
+def test_sendSatelliteData_3(function):
+    class Test1(QObject):
+        update = pyqtSignal(object, object, object)
+        show = pyqtSignal(object, object, object, object)
+
+    class Test(QObject):
+        signals = Test1()
+
+    function.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
+    function.satellite = 1
+    function.satOrbits = 1
+    suc = function.sendSatelliteData()
+    assert suc
+
+
+def test_showSatPasses_1(function):
+    ts = function.app.mount.obsSite.ts
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'culminate': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)},
+                          {'rise': ts.tt_jd(2459216.5),
+                           'settle': ts.tt_jd(2459216.7)}]
+    with mock.patch.object(function,
+                           'clearTrackingParameters'):
+        with mock.patch.object(function,
+                               'calcPassEvents',
+                               return_value=(0, 0)):
+            with mock.patch.object(function,
+                                   'extractOrbits'):
+                with mock.patch.object(function,
+                                       'addMeridianTransit'):
+                    with mock.patch.object(function,
+                                           'sendSatelliteData'):
+                        with mock.patch.object(function,
+                                               'progTrajectoryToMount'):
+                            suc = function.showSatPasses()
+                            assert suc
+
+
+def test_showSatPasses_2(function):
+    ts = function.app.mount.obsSite.ts
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'culminate': ts.tt_jd(2459215.6),
+                           'flip': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)},
+                          {'rise': ts.tt_jd(2459216.5),
+                           'settle': ts.tt_jd(2459216.7)}]
+    with mock.patch.object(function,
+                           'clearTrackingParameters'):
+        with mock.patch.object(function,
+                               'calcPassEvents',
+                               return_value=(0, 0)):
+            with mock.patch.object(function,
+                                   'extractOrbits'):
+                with mock.patch.object(function,
+                                       'addMeridianTransit'):
+                    with mock.patch.object(function,
+                                           'sendSatelliteData'):
+                        with mock.patch.object(function,
+                                               'progTrajectoryToMount'):
+                            suc = function.showSatPasses()
+                            assert suc
+
+
+def test_extractSatelliteData_1(function):
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    function.satellites = {'NOAA 8': sat,
+                           'Test1': sat}
+
+    suc = function.extractSatelliteData(satName='Tjan')
+    assert not suc
+
+
+def test_extractSatelliteData_2(function):
+    function.ui.listSatelliteNames.clear()
+    function.satellites = {'NOAA 8': '',
+                           'Test1': ''}
+
+    suc = function.extractSatelliteData(satName='NOAA 8')
+    assert not suc
+
+
+def test_extractSatelliteData_3(function):
+    class Test1(QObject):
+        update = pyqtSignal(object, object, object)
+        show = pyqtSignal(object, object)
+
+    class Test(QObject):
+        signals = Test1()
+
+    function.ui.listSatelliteNames.clear()
+    function.ui.listSatelliteNames.addItem('NOAA 8')
+    function.ui.listSatelliteNames.addItem('Test1')
+
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    function.satellites = {'NOAA 8': sat,
+                           'Test1': sat}
+    ts = function.app.mount.obsSite.ts
+    with mock.patch.object(function.app.mount.obsSite.ts,
+                           'now',
+                           return_value=ts.tt_jd(2458925.404976551)):
+        with mock.patch.object(function,
+                               'showSatPasses'):
+            suc = function.extractSatelliteData(satName='NOAA 8')
+            assert suc
+
+
+def test_programDataToMount_1(function):
+    function.app.mount.mountUp = False
+    suc = function.programDataToMount()
+    assert not suc
+
+
+def test_programDataToMount_2(function):
+    function.app.mount.mountUp = True
+    suc = function.programDataToMount()
+    assert not suc
+
+
+def test_programDataToMount_3(function):
+    function.app.mount.mountUp = True
+    suc = function.programDataToMount(satName='test')
+    assert not suc
+
+
+def test_programDataToMount_4(function):
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.app.mount.mountUp = True
+    function.satellites = {'TIANGONG 2': EarthSatellite(tle[1], tle[2],  name=tle[0])}
+    function.app.mount.satellite.tleParams.name = 'TIANGONG 2'
+    with mock.patch.object(function.app.mount.satellite,
+                           'setTLE',
+                           return_value=False):
+        suc = function.programDataToMount(satName='TIANGONG 2')
+        assert not suc
+
+
+def test_programDataToMount_5(function):
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.app.mount.mountUp = True
+    function.satellites = {'TIANGONG 2': EarthSatellite(tle[1], tle[2],  name=tle[0])}
+    function.app.mount.satellite.tleParams.name = 'TIANGONG 2'
+    with mock.patch.object(function.app.mount.satellite,
+                           'setTLE',
+                           return_value=True):
+        suc = function.programDataToMount(satName='TIANGONG 2')
+        assert suc
+
+
+def test_chooseSatellite_1(function):
+    function.ui.listSatelliteNames.clear()
+    function.ui.listSatelliteNames.addItem('TIANGONG 2')
+    function.ui.listSatelliteNames.setCurrentRow(0)
+    with mock.patch.object(function,
+                           'programDataToMount'):
+        with mock.patch.object(function.app.mount,
+                               'getTLE'):
+            suc = function.chooseSatellite()
+            assert suc
+
+
+def test_getSatelliteDataFromDatabase_1(function):
+    class Name:
+        name = ''
+        jdStart = 1
+        jdEnd = 1
+        flip = False
+        message = ''
+        altitude = None
+        azimuth = None
+
+    function.app.mount.satellite.tleParams = Name()
+    suc = function.getSatelliteDataFromDatabase()
+    assert not suc
+
+
+def test_getSatelliteDataFromDatabase_2(function):
+    class Name:
+        name = ''
+
+    tleParams = Name()
+    suc = function.getSatelliteDataFromDatabase(tleParams=tleParams)
+    assert suc
 
 
 def test_filterSatelliteNamesList_1(function):
@@ -205,67 +566,10 @@ def test_updateOrbit_3(function):
     assert suc
 
 
-def test_programTLEToMount_1(function):
-    function.app.mount.mountUp = False
-    suc = function.programDataToMount()
-    assert not suc
 
-
-def test_programTLEToMount_2(function):
-    class Test:
-        name = 'TIANGONG 1'
-
-    function.satellite = Test()
-    function.app.mount.mountUp = True
-    function.app.mount.satellite.tleParams.name = 'TIANGONG 1'
-    suc = function.programDataToMount()
+def test_clearTrackingParameters(function):
+    suc = function.clearTrackingParameters()
     assert suc
-
-
-def test_programTLEToMount_3(function):
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    function.satellitesRawTLE = {tle[0].strip('\n'):
-                            {'line0': tle[0].strip('\n'),
-                             'line1': tle[1].strip('\n'),
-                             'line2': tle[2].strip('\n'),
-                             }
-                            }
-
-    function.app.mount.mountUp = True
-    function.app.mount.satellite.tleParams.name = 'TIANGONG 2'
-    with mock.patch.object(function.app.mount.satellite,
-                           'setTLE',
-                           return_value=False):
-        suc = function.programDataToMount()
-        assert not suc
-
-
-def test_programTLEToMount_4(function):
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    function.satellitesRawTLE = {tle[0].strip('\n'):
-                            {'line0': tle[0].strip('\n'),
-                             'line1': tle[1].strip('\n'),
-                             'line2': tle[2].strip('\n'),}
-                            }
-    function.app.mount.mountUp = True
-    function.app.mount.satellite.tleParams.name = 'TIANGONG 2'
-    with mock.patch.object(function.app.mount.satellite,
-                           'setTLE',
-                           return_value=True):
-        suc = function.programDataToMount()
-        assert suc
 
 
 def test_calcTLEParams_1(function):
@@ -294,117 +598,6 @@ def test_tle_export_1(function):
     assert tle[0] == satellite.name
     assert tle[1] == line1
     assert tle[2] == line2
-
-
-def test_calcPassEvents_1(function):
-    tle = ['NOAA 8',
-           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
-           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
-
-    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    obsSite = function.app.mount.obsSite
-    function.app.mount.setting.horizonLimitLow = None
-    t, e = function.calcPassEvents(obsSite)
-    assert type(t) == skyfield.timelib.Time
-    assert type(e) == np.ndarray
-
-
-def test_calcPassEvents_2(function):
-    tle = ['NOAA 8',
-           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
-           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
-
-    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    obsSite = function.app.mount.obsSite
-    function.app.mount.setting.horizonLimitLow = 0
-    t, e = function.calcPassEvents(obsSite)
-    assert type(t) == skyfield.timelib.Time
-    assert type(e) == np.ndarray
-
-
-def test_extractFirstOrbits_1(function):
-    ts = function.app.mount.obsSite.ts
-
-    now = ts.tt_jd(2459215.4)
-    t0 = ts.tt_jd(2459215.5)
-    t1 = ts.tt_jd(2459215.6)
-    t2 = ts.tt_jd(2459215.7)
-    t3 = ts.tt_jd(2459215.8)
-    t4 = ts.tt_jd(2459215.9)
-    t5 = ts.tt_jd(2459216.0)
-    t6 = ts.tt_jd(2459216.1)
-    t7 = ts.tt_jd(2459216.2)
-    t8 = ts.tt_jd(2459216.3)
-
-    times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
-    events = [0, 1, 2, 0, 1, 2, 0, 1, 2]
-
-    function.extractOrbits(now, times, events)
-    assert len(function.satOrbits) == 3
-
-
-def test_extractFirstOrbits_2(function):
-    ts = function.app.mount.obsSite.ts
-
-    now = ts.tt_jd(2459215.4)
-    t0 = ts.tt_jd(2459215.5)
-    t1 = ts.tt_jd(2459215.6)
-    t2 = ts.tt_jd(2459215.7)
-    t3 = ts.tt_jd(2459215.8)
-    t4 = ts.tt_jd(2459215.9)
-    t5 = ts.tt_jd(2459216.0)
-    t6 = ts.tt_jd(2459216.1)
-    t7 = ts.tt_jd(2459216.2)
-    t8 = ts.tt_jd(2459216.3)
-
-    times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
-    events = [0, 1, 2, 1, 1, 2, 0, 1, 2]
-
-    function.extractOrbits(now, times, events)
-    assert len(function.satOrbits) == 2
-
-
-def test_extractFirstOrbits_3(function):
-    ts = function.app.mount.obsSite.ts
-
-    now = ts.tt_jd(2459216.1)
-    t0 = ts.tt_jd(2459215.5)
-    t1 = ts.tt_jd(2459215.6)
-    t2 = ts.tt_jd(2459215.7)
-    t3 = ts.tt_jd(2459215.8)
-    t4 = ts.tt_jd(2459215.9)
-    t5 = ts.tt_jd(2459216.0)
-    t6 = ts.tt_jd(2459216.1)
-    t7 = ts.tt_jd(2459216.2)
-    t8 = ts.tt_jd(2459216.3)
-
-    times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
-    events = [0, 1, 2, 0, 1, 2, 0, 1, 2]
-
-    function.extractOrbits(now, times, events)
-    print(function.satOrbits)
-    assert len(function.satOrbits) == 1
-
-
-def test_extractFirstOrbits_4(function):
-    ts = function.app.mount.obsSite.ts
-
-    now = ts.tt_jd(2459217.1)
-    t0 = ts.tt_jd(2459215.5)
-    t1 = ts.tt_jd(2459215.6)
-    t2 = ts.tt_jd(2459215.7)
-    t3 = ts.tt_jd(2459215.8)
-    t4 = ts.tt_jd(2459215.9)
-    t5 = ts.tt_jd(2459216.0)
-    t6 = ts.tt_jd(2459216.1)
-    t7 = ts.tt_jd(2459216.2)
-    t8 = ts.tt_jd(2459216.3)
-
-    times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
-    events = [0, 1, 2, 0, 1, 2, 0, 1, 2]
-
-    function.extractOrbits(now, times, events)
-    assert len(function.satOrbits) == 0
 
 
 def test_calcSatelliteMeridianTransit(function):
@@ -504,47 +697,6 @@ def test_addMountFlip_3(function):
         assert suc
 
 
-def test_showSatPasses_1(function):
-    ts = function.app.mount.obsSite.ts
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'culminate': ts.tt_jd(2459215.6),
-                           'settle': ts.tt_jd(2459215.7)},
-                          {'rise': ts.tt_jd(2459216.5),
-                           'settle': ts.tt_jd(2459216.7)}]
-    with mock.patch.object(function,
-                           'calcPassEvents',
-                           return_value=(0, 0)):
-        with mock.patch.object(function,
-                               'extractOrbits'):
-            with mock.patch.object(function,
-                                   'addMeridianTransit'):
-                with mock.patch.object(function,
-                                       'addMountFlip'):
-                    suc = function.showSatPasses()
-                    assert suc
-
-
-def test_showSatPasses_2(function):
-    ts = function.app.mount.obsSite.ts
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'culminate': ts.tt_jd(2459215.6),
-                           'flip': ts.tt_jd(2459215.6),
-                           'settle': ts.tt_jd(2459215.7)},
-                          {'rise': ts.tt_jd(2459216.5),
-                           'settle': ts.tt_jd(2459216.7)}]
-    with mock.patch.object(function,
-                           'calcPassEvents',
-                           return_value=(0, 0)):
-        with mock.patch.object(function,
-                               'extractOrbits'):
-            with mock.patch.object(function,
-                                   'addMeridianTransit'):
-                with mock.patch.object(function,
-                                       'addMountFlip'):
-                    suc = function.showSatPasses()
-                    assert suc
-
-
 def test_calcDuration_1(function):
     val = function.calcDuration(2000 / 1440, 3000 / 1440)
     assert val == 1000
@@ -636,192 +788,6 @@ def test_calcSegments_2(function):
     function.ui.satAfterFlip.setChecked(True)
 
 
-def test_extractSatelliteData_1(function):
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
-
-    function.satellites = {'NOAA 8': sat,
-                           'Test1': sat}
-
-    suc = function.extractSatelliteData(satName='Tjan')
-    assert not suc
-
-
-def test_extractSatelliteData_2(function):
-    function.ui.listSatelliteNames.clear()
-    function.satellites = {'NOAA 8': '',
-                           'Test1': ''}
-
-    suc = function.extractSatelliteData(satName='NOAA 8')
-    assert not suc
-
-
-def test_extractSatelliteData_3(function):
-    class Test1(QObject):
-        update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
-    function.ui.listSatelliteNames.clear()
-    function.ui.listSatelliteNames.addItem('NOAA 8')
-    function.ui.listSatelliteNames.addItem('Test1')
-
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
-
-    function.satellites = {'NOAA 8': sat,
-                           'Test1': sat}
-    ts = function.app.mount.obsSite.ts
-    with mock.patch.object(function.app.mount.obsSite.ts,
-                           'now',
-                           return_value=ts.tt_jd(2458925.404976551)):
-        with mock.patch.object(function,
-                               'showSatPasses'):
-            with mock.patch.object(function,
-                                   'sendSatelliteData'):
-                with mock.patch.object(function,
-                                       'programDataToMount'):
-                    with mock.patch.object(function,
-                                           'calcOrbitFromTLEInMount'):
-                        suc = function.extractSatelliteData(satName='NOAA 8')
-                        assert suc
-
-
-def test_extractSatelliteData_4(function):
-    class Test1(QObject):
-        update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
-    function.ui.listSatelliteNames.clear()
-    function.ui.listSatelliteNames.addItem('NOAA 8')
-    function.ui.listSatelliteNames.addItem('Test1')
-
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
-
-    function.satellites = {'NOAA 8': sat,
-                           'Test1': sat}
-    ts = function.app.mount.obsSite.ts
-    with mock.patch.object(function.app.mount.obsSite.ts,
-                           'now',
-                           return_value=ts.tt_jd(2458930.404976551)):
-        with mock.patch.object(function,
-                               'showSatPasses'):
-            with mock.patch.object(function,
-                                   'sendSatelliteData'):
-                with mock.patch.object(function,
-                                       'programDataToMount'):
-                    with mock.patch.object(function,
-                                           'calcOrbitFromTLEInMount'):
-                        suc = function.extractSatelliteData(satName='NOAA 8')
-                        assert suc
-
-
-def test_extractSatelliteData_5(function):
-    class Test1(QObject):
-        update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
-    function.ui.listSatelliteNames.clear()
-    function.ui.listSatelliteNames.addItem('NOAA 8')
-    function.ui.listSatelliteNames.addItem('Test1')
-
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
-
-    function.satellites = {'NOAA 8': sat,
-                           'Test1': sat}
-    ts = function.app.mount.obsSite.ts
-    with mock.patch.object(function.app.mount.obsSite.ts,
-                           'now',
-                           return_value=ts.tt_jd(2458950.404976551)):
-        with mock.patch.object(function,
-                               'showSatPasses'):
-            with mock.patch.object(function,
-                                   'sendSatelliteData'):
-                with mock.patch.object(function,
-                                       'programDataToMount'):
-                    with mock.patch.object(function,
-                                           'calcOrbitFromTLEInMount'):
-                        suc = function.extractSatelliteData(satName='NOAA 8')
-                        assert suc
-
-
-def test_extractSatelliteData_6(function):
-    class Test1(QObject):
-        update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
-    function.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
-    function.ui.listSatelliteNames.clear()
-    function.ui.listSatelliteNames.addItem('        NOAA 8')
-    function.ui.listSatelliteNames.addItem('        Test1')
-
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
-
-    function.satellites = {'NOAA 8': sat,
-                           'Test1': sat}
-
-    with mock.patch.object(function,
-                           'showSatPasses'):
-        with mock.patch.object(function,
-                               'sendSatelliteData'):
-            suc = function.extractSatelliteData(satName='NOAA 8')
-            assert suc
-
-
-def test_sendSatelliteData_1(function):
-    function.satellite = None
-    function.satOrbits = None
-    suc = function.sendSatelliteData()
-    assert not suc
-
-
-def test_sendSatelliteData_2(function):
-    function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
-    function.satellite = 1
-    function.satOrbits = 1
-    suc = function.sendSatelliteData()
-    assert not suc
-
-
-def test_sendSatelliteData_3(function):
-    class Test1(QObject):
-        update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
-    function.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
-    function.satellite = 1
-    function.satOrbits = 1
-    suc = function.sendSatelliteData()
-    assert suc
-
-
 def test_signalExtractSatelliteData_1(function):
     function.ui.listSatelliteNames.addItem('Test 1234567')
     function.ui.listSatelliteNames.setCurrentRow(0)
@@ -829,36 +795,6 @@ def test_signalExtractSatelliteData_1(function):
                            'extractSatelliteData',):
         suc = function.chooseSatellite()
         assert suc
-
-
-def test_getSatelliteDataFromDatabase_1(function):
-    function.app.mount.satellite.tleParams = None
-    suc = function.getSatelliteDataFromDatabase()
-    assert not suc
-
-
-def test_getSatelliteDataFromDatabase_2(function):
-    class Name:
-        name = ''
-        jdStart = 1
-        jdEnd = 1
-        flip = False
-        message = ''
-        altitude = None
-        azimuth = None
-
-    function.app.mount.satellite.tleParams = Name()
-    suc = function.getSatelliteDataFromDatabase()
-    assert suc
-
-
-def test_getSatelliteDataFromDatabase_3(function):
-    class Name:
-        name = ''
-
-    tleParams = Name()
-    suc = function.getSatelliteDataFromDatabase(tleParams=tleParams)
-    assert suc
 
 
 def test_updateSatelliteTrackGui_1(function):

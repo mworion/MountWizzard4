@@ -213,6 +213,8 @@ class Mount(QObject):
         getTLEdone = pyqtSignal()
         alert = pyqtSignal()
         slewFinished = pyqtSignal()
+        calcTrajectoryDone = pyqtSignal()
+        trajectoryProgress = pyqtSignal()
 
     class MountObsSite:
 
@@ -327,6 +329,10 @@ class Mount(QObject):
 
     @staticmethod
     def calcTLE():
+        return
+
+    @staticmethod
+    def getTLE():
         return
 
 

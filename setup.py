@@ -29,11 +29,12 @@ releaseNotes = """
 - add feature for RA/DEC FITS writing for INDI server without snooping
 - completely revised satellite tracking menu gui
 - add partially satellite tracking before / after possible flip 
+- add satellite track respect horizon line
 - add reverse order for filed build point retry 
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected
 - fix retry mechanism for failed build points
-- up underlying libraries
+- update underlying libraries
  """
 
 with open('notes.txt', 'w') as f:
@@ -41,7 +42,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b3',
+    version='2.0.0b4',
     packages=[
         'mw4',
         'mw4.base',

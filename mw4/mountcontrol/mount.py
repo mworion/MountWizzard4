@@ -206,4 +206,3 @@ class Mount(object):
                                                         dec=dec,
                                                         lat=lat,
                                                         pierside=pierside)
-

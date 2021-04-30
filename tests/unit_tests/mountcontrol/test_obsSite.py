@@ -111,23 +111,23 @@ class TestConfigData(unittest.TestCase):
         obsSite.location = lat
         self.assertEqual(None, obsSite.location)
 
-    def test_Site_timeJD(self):
+    def test_Site_timeJD_1(self):
         obsSite = ObsSite(pathToData=pathToData)
 
         obsSite.utc_ut1 = '0'
         obsSite.timeJD = '2458240.12345678'
-        self.assertEqual(2458240.12345678, obsSite.timeJD.ut1)
+        self.assertEqual(2458240.123457949, obsSite.timeJD.ut1)
         obsSite.timeJD = 2458240.12345678
-        self.assertEqual(2458240.12345678, obsSite.timeJD.ut1)
+        self.assertEqual(2458240.123457949, obsSite.timeJD.ut1)
         obsSite.timeJD = '2458240.a23e5678'
         self.assertAlmostEqual(obsSite.ts.now(), obsSite.timeJD, 4)
         self.assertEqual(None, obsSite._timeJD)
 
-    def test_Site_timeJD1(self):
+    def test_Site_timeJD_2(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        obsSite.timeJD = '2458240.12345678'
-        self.assertAlmostEqual(obsSite.ts.now(), obsSite.timeJD, 4)
+        obsSite.timeJD = obsSite.ts.now().tt - 69.184 / 86400
+        self.assertAlmostEqual(obsSite.ts.now().tt, obsSite.timeJD.tt, 4)
 
     def test_Site_utc_ut1(self):
         obsSite = ObsSite(pathToData=pathToData)

@@ -78,7 +78,7 @@ class Mount(object):
         self.satellite = Satellite(parent=self, host=self.host)
         self.geometry = Geometry(parent=self)
         self.dome = Dome(self.host)
-        self.model = Model(self, self.host)
+        self.model = Model(parent=self, host=self.host)
         self.host = host
 
     @property
@@ -173,7 +173,7 @@ class Mount(object):
         self.firmware = Firmware(self.host)
         self.dome = Dome(self.host)
         self.setting = Setting(self.host)
-        self.model = Model(self.host)
+        self.model = Model(parent=self, host=self.host)
         self.obsSite = ObsSite(self.host,
                                pathToData=self.pathToData,
                                verbose=self.verbose,

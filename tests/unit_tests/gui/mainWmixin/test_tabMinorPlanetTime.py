@@ -18,7 +18,6 @@
 # standard libraries
 import pytest
 from unittest import mock
-import shutil
 import os
 import json
 import builtins

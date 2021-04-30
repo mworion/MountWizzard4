@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-import threading
 from dateutil.tz import tzlocal
 
 # external packages

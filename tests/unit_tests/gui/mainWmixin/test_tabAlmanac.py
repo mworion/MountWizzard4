@@ -42,6 +42,7 @@ def function(module):
         def __init__(self):
             super().__init__()
             self.app = App()
+            self.threadPool = self.app.threadPool
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
             Almanac.__init__(self)
@@ -121,9 +122,9 @@ def test_searchTwilight_1(function):
 
 def test_searchTwilight_2(function):
     function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
-                                                longitude_degrees=0,
-                                                elevation_m=0)
-    with mock.patch.object(threading.Thread,
+                                                       longitude_degrees=0,
+                                                       elevation_m=0)
+    with mock.patch.object(function.threadPool,
                            'start'):
         suc = function.searchTwilight()
         assert suc

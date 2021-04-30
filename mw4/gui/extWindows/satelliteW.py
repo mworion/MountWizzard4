@@ -30,6 +30,7 @@ import matplotlib.pyplot as plt
 # local import
 from gui.utilities import toolsQtWidget
 from gui.widgets import satellite_ui
+from base.tpool import Worker
 
 
 class SatelliteWindowSignals(QObject):
@@ -607,7 +608,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.figure.canvas.draw()
         return True
 
-    def drawSatellite(self, satellite=None, satOrbits=None, altitude=[], azimuth=[]):
+    def drawSatellite(self, satellite=None, satOrbits=None, altitude=[],
+                      azimuth=[]):
         """
         drawSatellite draws 4 different views of the actual satellite
         situation: two sphere views, a horizon view and an earth view.

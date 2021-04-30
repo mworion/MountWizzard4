@@ -521,8 +521,11 @@ class Satellite(object):
             duration = 900
         timeSeries = start + np.arange(0, duration, 1 / 86400)
         timeVec = m.obsSite.ts.tt_jd(timeSeries + m.obsSite.UTC2TT)
-        alt, az, _ = difference.at(timeVec).altaz(pressure_mbar=press,
-                                                  temperature_C=temp)
+        if press and temp:
+            alt, az, _ = difference.at(timeVec).altaz(pressure_mbar=press,
+                                                      temperature_C=temp)
+        else:
+            alt, az, _ = difference.at(timeVec).altaz()
         return alt.degrees, az.degrees
 
     def filterHorizon(self, alt, az):

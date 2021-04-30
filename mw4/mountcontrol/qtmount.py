@@ -601,7 +601,9 @@ class Mount(mountcontrol.mount.Mount):
         :param az:
         :return:
         """
-        factor = len(alt) / 32
+        factor = int(len(alt) / 32)
+        if factor < 1:
+            factor = 1
         altP = np.array_split(alt, factor)
         azP = np.array_split(az, factor)
         chunks = len(altP)

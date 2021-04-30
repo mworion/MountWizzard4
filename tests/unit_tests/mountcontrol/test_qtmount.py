@@ -27,6 +27,9 @@ from PyQt5.QtCore import QThreadPool, QTimer
 # local imports
 from mountcontrol.qtmount import MountSignals
 from mountcontrol.qtmount import Mount
+from base.loggerMW import setupLogging
+
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -333,7 +336,7 @@ def test_CalcTLE_1(function):
     function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = function.calcTLE()
+        suc = function.calcTLE(1234567)
         assert suc
 
 
@@ -341,7 +344,7 @@ def test_CalcTLE_2(function):
     function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = function.calcTLE()
+        suc = function.calcTLE(1234567)
         assert not suc
 
 
@@ -467,7 +470,7 @@ def test_clearCalcTrajectory_1(function):
     assert suc
 
 
-def test_cycleCalcTrajectory_1(function):
+def test_calcTrajectory_1(function):
     function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
@@ -475,9 +478,48 @@ def test_cycleCalcTrajectory_1(function):
         assert suc
 
 
-def test_cycleCalcTrajectory_2(function):
+def test_calcTrajectory_2(function):
     function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
         suc = function.calcTrajectory()
+        assert not suc
+
+
+def test_workerProgTrajectory_1(function):
+    suc = function.workerProgTrajectory()
+    assert suc
+
+
+def test_workerProgTrajectory_1(function):
+    alt = [10, 20, 30]
+    az = [10, 20, 30]
+    with mock.patch.object(function.satellite,
+                           'progTrajectory'):
+        suc = function.workerProgTrajectory(alt=alt, az=az)
+        assert suc
+
+
+def test_errorProgTrajectory(function):
+    function.errorProgTrajectory('test')
+
+
+def test_clearProgTrajectory_1(function):
+    suc = function.clearProgTrajectory()
+    assert suc
+
+
+def test_progTrajectory_1(function):
+    function.mountUp = True
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.progTrajectory(12345678)
+        assert suc
+
+
+def test_progTrajectory_2(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.progTrajectory(12345678)
         assert not suc

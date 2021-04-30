@@ -187,6 +187,16 @@ class TestConfigData(unittest.TestCase):
         trajectoryParams.jdEnd = '100'
         assert trajectoryParams.jdEnd.tt == 169
 
+    def test_TR_message_1(self):
+        trajectoryParams = TrajectoryParams()
+        trajectoryParams.message = None
+        assert trajectoryParams.message is None
+
+    def test_TR_message_2(self):
+        trajectoryParams = TrajectoryParams()
+        trajectoryParams.message = 'test'
+        assert trajectoryParams.message == 'test'
+
     def test_parseGetTLE_1(self):
         class ObsSite:
             UTC2TT = 69

@@ -104,9 +104,9 @@ def test_enableGuiFunctions_1(function):
 def test_enableGuiFunctions_2(function):
     with mock.patch.object(function.app.mount.firmware,
                            'checkNewer',
-                           return_value=None):
+                           return_value=True):
         suc = function.enableGuiFunctions()
-        assert not suc
+        assert suc
 
 
 def test_calcPassEvents_1(function):
@@ -246,6 +246,11 @@ def test_addMeridianTransit_1(function):
     assert suc
 
 
+def test_clearTrackingParameters(function):
+    suc = function.clearTrackingParameters()
+    assert suc
+
+
 def test_sendSatelliteData_1(function):
     function.satellite = None
     function.satOrbits = None
@@ -370,6 +375,64 @@ def test_extractSatelliteData_3(function):
     with mock.patch.object(function.app.mount.obsSite.ts,
                            'now',
                            return_value=ts.tt_jd(2458925.404976551)):
+        with mock.patch.object(function,
+                               'showSatPasses'):
+            suc = function.extractSatelliteData(satName='NOAA 8')
+            assert suc
+
+
+def test_extractSatelliteData_4(function):
+    class Test1(QObject):
+        update = pyqtSignal(object, object, object)
+        show = pyqtSignal(object, object)
+
+    class Test(QObject):
+        signals = Test1()
+
+    function.ui.listSatelliteNames.clear()
+    function.ui.listSatelliteNames.addItem('NOAA 8')
+    function.ui.listSatelliteNames.addItem('Test1')
+
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    function.satellites = {'NOAA 8': sat,
+                           'Test1': sat}
+    ts = function.app.mount.obsSite.ts
+    with mock.patch.object(function.app.mount.obsSite.ts,
+                           'now',
+                           return_value=ts.tt_jd(2458930.404976551)):
+        with mock.patch.object(function,
+                               'showSatPasses'):
+            suc = function.extractSatelliteData(satName='NOAA 8')
+            assert suc
+
+
+def test_extractSatelliteData_5(function):
+    class Test1(QObject):
+        update = pyqtSignal(object, object, object)
+        show = pyqtSignal(object, object)
+
+    class Test(QObject):
+        signals = Test1()
+
+    function.ui.listSatelliteNames.clear()
+    function.ui.listSatelliteNames.addItem('NOAA 8')
+    function.ui.listSatelliteNames.addItem('Test1')
+
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    function.satellites = {'NOAA 8': sat,
+                           'Test1': sat}
+    ts = function.app.mount.obsSite.ts
+    with mock.patch.object(function.app.mount.obsSite.ts,
+                           'now',
+                           return_value=ts.tt_jd(2458950.404976551)):
         with mock.patch.object(function,
                                'showSatPasses'):
             suc = function.extractSatelliteData(satName='NOAA 8')
@@ -607,52 +670,54 @@ def test_filterHorizon_3(function):
                            'isAboveHorizon',
                            return_value=False):
         alt, az = function.filterHorizon([1], [2])
-        assert alt == [1]
-        assert az == [2]
+        assert alt == []
+        assert az == []
 
 
-def test_progMount_1(function):
-    function.app.mount.mountUp = False
-    suc = function.progTrajectoryToMount()
-    assert not suc
+def test_selectStartEnd_1(function):
+    s, e = function.selectStartEnd()
+    assert s == 0
+    assert e == 0
 
 
-def test_progMount_2(function):
-    function.app.mount.mountUp = True
-    suc = function.progTrajectoryToMount()
-    assert not suc
+def test_selectStartEnd_2(function):
+    s, e = function.selectStartEnd()
+    assert s == 0
+    assert e == 0
 
 
-def test_progMount_3(function):
-    function.app.mount.mountUp = True
+def test_selectStartEnd_3(function):
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'test': ts.tt_jd(2459215.5),
                            'test': ts.tt_jd(2459215.7)}]
-    suc = function.progTrajectoryToMount()
-    assert not suc
+    s, e = function.selectStartEnd()
+    assert s == 0
+    assert e == 0
 
 
-def test_progMount_4(function):
+def test_selectStartEnd_4(function):
     function.app.mount.mountUp = True
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'test': ts.tt_jd(2459215.6),
                            'test': ts.tt_jd(2459215.7)}]
-    suc = function.progTrajectoryToMount()
-    assert not suc
+    s, e = function.selectStartEnd()
+    assert s == 0
+    assert e == 0
 
 
-def test_progMount_5(function):
+def test_selectStartEnd_5(function):
     function.app.mount.mountUp = True
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'flip': ts.tt_jd(2459215.6),
                            'test': ts.tt_jd(2459215.7)}]
-    suc = function.progTrajectoryToMount()
-    assert not suc
+    s, e = function.selectStartEnd()
+    assert s == 0
+    assert e == 0
 
 
-def test_progMount_6(function):
+def test_selectStartEnd_6(function):
     function.app.mount.mountUp = True
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
@@ -660,66 +725,150 @@ def test_progMount_6(function):
                            'settle': ts.tt_jd(2459215.7)}]
     function.ui.satBeforeFlip.setChecked(False)
     function.ui.satAfterFlip.setChecked(False)
-    suc = function.progTrajectoryToMount()
-    assert not suc
+    s, e = function.selectStartEnd()
+    assert s == 0
+    assert e == 0
 
 
-def test_progMount_7(function):
+def test_selectStartEnd_7(function):
     function.app.mount.mountUp = True
+    UTC2TT = function.app.mount.obsSite.UTC2TT
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'flip': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
     function.ui.satBeforeFlip.setChecked(True)
     function.ui.satAfterFlip.setChecked(False)
-    function.ui.useInternalSatCalc.setChecked(True)
-    function.ui.useInternalSatCalc.setEnabled(True)
-    with mock.patch.object(function,
-                           'calcTrajectoryData',
-                           return_value=([], [])):
-        with mock.patch.object(function,
-                               'filterHorizon',
-                               return_value=([], [])):
-            with mock.patch.object(function,
-                                   'sendSatelliteData'):
-                suc = function.progTrajectoryToMount()
-                assert suc
+    s, e = function.selectStartEnd()
+    assert s == 2459215.5 - UTC2TT
+    assert e == 2459215.6 - UTC2TT
 
 
-def test_progMount_8(function):
+def test_selectStartEnd_8(function):
     function.app.mount.mountUp = True
+    UTC2TT = function.app.mount.obsSite.UTC2TT
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'flip': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
     function.ui.satBeforeFlip.setChecked(False)
     function.ui.satAfterFlip.setChecked(True)
-    function.ui.useInternalSatCalc.setChecked(False)
-    function.ui.useInternalSatCalc.setEnabled(False)
-    with mock.patch.object(function.app.mount,
-                           'calcTLE'):
+    s, e = function.selectStartEnd()
+    assert s == 2459215.6 - UTC2TT
+    assert e == 2459215.7 - UTC2TT
+
+
+def test_progTrajectoryToMount_1(function):
+    function.app.mount.mountUp = False
+    suc = function.progTrajectoryToMount()
+    assert not suc
+
+
+def test_progTrajectoryToMount_2(function):
+    function.app.mount.mountUp = True
+    with mock.patch.object(function,
+                           'selectStartEnd',
+                           return_value=(0, 0)):
         suc = function.progTrajectoryToMount()
-        assert suc
-
-
-def test_clearTrackingParameters(function):
-    suc = function.clearTrackingParameters()
-    assert suc
-
-
-def test_calcTLEParams_1(function):
-    with mock.patch.object(function.app.mount,
-                           'calcTLE'):
-        suc = function.calcOrbitFromTLEInMount()
         assert not suc
 
 
-def test_calcTLEParams_2(function):
-    function.satellite = 'test'
-    with mock.patch.object(function.app.mount,
-                           'calcTLE'):
-        suc = function.calcOrbitFromTLEInMount()
-        assert suc
+def test_progTrajectoryToMount_3(function):
+    function.app.mount.mountUp = True
+    function.ui.useInternalSatCalc.setChecked(True)
+    function.ui.useInternalSatCalc.setEnabled(True)
+    with mock.patch.object(function,
+                           'selectStartEnd',
+                           return_value=(1, 2)):
+        with mock.patch.object(function,
+                               'calcTrajectoryData',
+                               return_value=(0, 0)):
+            with mock.patch.object(function,
+                                   'filterHorizon',
+                                   return_value=(0, 0)):
+                with mock.patch.object(function,
+                                       'sendSatelliteData'):
+                    suc = function.progTrajectoryToMount()
+                    assert suc
+
+
+def test_progTrajectoryToMount_4(function):
+    function.app.mount.mountUp = True
+    function.ui.useInternalSatCalc.setChecked(False)
+    function.ui.useInternalSatCalc.setEnabled(False)
+    with mock.patch.object(function,
+                           'selectStartEnd',
+                           return_value=(1, 2)):
+        with mock.patch.object(function.app.mount,
+                               'calcTLE'):
+            suc = function.progTrajectoryToMount()
+            assert suc
+
+
+def test_startProg_1(function):
+    with mock.patch.object(function,
+                           'clearTrackingParameters'):
+        with mock.patch.object(function,
+                               'selectStartEnd',
+                               return_value=(1, 2)):
+            with mock.patch.object(function,
+                                   'calcTrajectoryData',
+                                   return_value=(0, 0)):
+                with mock.patch.object(function,
+                                       'filterHorizon',
+                                       return_value=(0, 0)):
+                    with mock.patch.object(function.app.mount,
+                                           'progTrajectory'):
+                        suc = function.startProg()
+                        assert suc
+
+
+def test_trajectoryProgress_1(function):
+    suc = function.trajectoryProgress(100)
+    assert suc
+
+
+def test_updateSatelliteTrackGui_1(function):
+    suc = function.updateSatelliteTrackGui()
+    assert not suc
+
+
+def test_updateSatelliteTrackGui_2(function):
+    ts = function.app.mount.obsSite.ts
+
+    class Test:
+        jdStart = ts.tt_jd(2459215.5)
+        jdEnd = ts.tt_jd(2459215.6)
+        flip = False
+        message = 'e'
+        altitude = 1
+
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'flip': ts.tt_jd(2459215.6),
+                           'culminate': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)}]
+
+    suc = function.updateSatelliteTrackGui(Test())
+    assert suc
+
+
+def test_updateSatelliteTrackGui_3(function):
+    ts = function.app.mount.obsSite.ts
+
+    class Test:
+        jdStart = None
+        jdEnd = None
+        flip = True
+        message = 'e'
+        altitude = 1
+
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'flip': ts.tt_jd(2459215.6),
+                           'culminate': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)}]
+
+    suc = function.updateSatelliteTrackGui(Test())
+    assert suc
 
 
 def test_tle_export_1(function):
@@ -733,215 +882,6 @@ def test_tle_export_1(function):
     assert tle[0] == satellite.name
     assert tle[1] == line1
     assert tle[2] == line2
-
-
-def test_calcSatelliteMeridianTransit(function):
-    tle = ['NOAA 8',
-           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
-           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
-
-    satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
-    function.calcSatelliteMeridianTransit(satellite, loc)
-
-
-def test_addMeridianTransit_1(function):
-    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
-    tle = ['NOAA 8',
-           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
-           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
-    ts = function.app.mount.obsSite.ts
-    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'settle': ts.tt_jd(2459215.7)},
-                          {'rise': ts.tt_jd(2459216.5),
-                           'settle': ts.tt_jd(2459216.7)}]
-    suc = function.addMeridianTransit(loc)
-    assert suc
-
-
-def test_calcMountFlip(function):
-    tle = ['NOAA 15 [B]',
-           '1 25338U 98030A   21104.44658620  .00000027  00000-0  29723-4 0  9990',
-           '2 25338  98.6888 133.5239 0011555 106.3612 253.8839 14.26021970192127']
-
-    satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
-    function.calcMountFlip(satellite, loc, 0)
-
-
-def test_addMountFlip_1(function):
-    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
-    tle = ['NOAA 15 [B]',
-           '1 25338U 98030A   21104.44658620  .00000027  00000-0  29723-4 0  9990',
-           '2 25338  98.6888 133.5239 0011555 106.3612 253.8839 14.26021970192127']
-    ts = function.app.mount.obsSite.ts
-    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-
-    function.satOrbits = [{'rise': ts.tt_jd(2459323.2324153692),
-                           'culminate': ts.tt_jd(2459323.237090508),
-                           'transit': ts.tt_jd(2459323.2386906403),
-                           'settle': ts.tt_jd(2459323.241785044)}]
-    suc = function.addMountFlip(loc, 0)
-    assert suc
-
-
-def test_addMountFlip_2(function):
-    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
-    tle = ['NOAA 15 [B]',
-           '1 25338U 98030A   21104.44658620  .00000027  00000-0  29723-4 0  9990',
-           '2 25338  98.6888 133.5239 0011555 106.3612 253.8839 14.26021970192127']
-    ts = function.app.mount.obsSite.ts
-    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-
-    function.satOrbits = [{'rise': ts.tt_jd(2459323.2324153692),
-                           'culminate': ts.tt_jd(2459323.237090508),
-                           'transit': ts.tt_jd(2459323.2386906403),
-                           'settle': ts.tt_jd(2459323.241785044)}]
-
-    start = function.satOrbits[0]['transit'].tt
-    function.addMountFlip(loc, 0)
-    t1 = function.satOrbits[0]['flip'].tt
-    assert t1 > start
-    function.addMountFlip(loc, 5)
-    t2 = function.satOrbits[0]['flip'].tt
-    assert t2 > t1
-    suc = function.addMountFlip(loc, 10)
-    t3 = function.satOrbits[0]['flip'].tt
-    assert t3 > t2
-    assert suc
-
-
-def test_addMountFlip_3(function):
-    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
-    tle = ['NOAA 15 [B]',
-           '1 25338U 98030A   21104.44658620  .00000027  00000-0  29723-4 0  9990',
-           '2 25338  98.6888 133.5239 0011555 106.3612 253.8839 14.26021970192127']
-    ts = function.app.mount.obsSite.ts
-    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-
-    function.satOrbits = [{'rise': ts.tt_jd(2459323.2324153692),
-                           'culminate': ts.tt_jd(2459323.237090508),
-                           'transit': ts.tt_jd(2459323.2386906403),
-                           'settle': ts.tt_jd(2459323.241785044)}]
-    with mock.patch.object(almanac,
-                           'find_discrete',
-                           return_value=([], [])):
-        suc = function.addMountFlip(loc, 0)
-        assert suc
-
-
-def test_calcDuration_1(function):
-    val = function.calcDuration(2000 / 1440, 3000 / 1440)
-    assert val == 1000
-
-
-def test_calcDuration_2(function):
-    val = function.calcDuration(2000 / 1440, 5000 / 1440)
-    assert val == 1440
-
-
-def test_calcDuration_3(function):
-    val = function.calcDuration(2000 / 1440, 1000 / 1440)
-    assert val == 1
-
-
-def test_calcSegments_1(function):
-    ts = function.app.mount.obsSite.ts
-    function.ui.satBeforeFlip.setChecked(True)
-    function.ui.satAfterFlip.setChecked(False)
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'flip': ts.tt_jd(2459215.6),
-                           'culminate': ts.tt_jd(2459215.6),
-                           'settle': ts.tt_jd(2459215.7)}]
-    with mock.patch.object(function.app.mount.satellite,
-                           'calcTLE'):
-        with mock.patch.object(function,
-                               'updateSatelliteTrackGui'):
-            with mock.patch.object(function,
-                                   'sendSatelliteData'):
-                suc = function.chooseSegmentsForProg()
-                assert suc
-
-
-def test_calcSegments_2(function):
-    ts = function.app.mount.obsSite.ts
-    function.ui.satBeforeFlip.setChecked(False)
-    function.ui.satAfterFlip.setChecked(True)
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'flip': ts.tt_jd(2459215.6),
-                           'culminate': ts.tt_jd(2459215.6),
-                           'settle': ts.tt_jd(2459215.7)}]
-    with mock.patch.object(function.app.mount.satellite,
-                           'calcTLE'):
-        with mock.patch.object(function,
-                               'updateSatelliteTrackGui'):
-            with mock.patch.object(function,
-                                   'sendSatelliteData'):
-                suc = function.chooseSegmentsForProg()
-                assert suc
-    function.ui.satBeforeFlip.setChecked(True)
-    function.ui.satAfterFlip.setChecked(True)
-
-
-def test_signalExtractSatelliteData_1(function):
-    function.ui.listSatelliteNames.addItem('Test 1234567')
-    function.ui.listSatelliteNames.setCurrentRow(0)
-    with mock.patch.object(function,
-                           'extractSatelliteData',):
-        suc = function.chooseSatellite()
-        assert suc
-
-
-def test_updateSatelliteTrackGui_1(function):
-    suc = function.updateSatelliteTrackGui()
-    assert suc
-
-
-def test_updateSatelliteTrackGui_2(function):
-    function.app.mount.satellite.tleParams = None
-    suc = function.updateSatelliteTrackGui()
-    assert not suc
-
-
-def test_updateSatelliteTrackGui_3(function):
-    ts = function.app.mount.obsSite.ts
-
-    class Test:
-        jdStart = ts.tt_jd(2459215.5)
-        jdEnd = ts.tt_jd(2459215.5)
-        flip = False
-        message = 'e'
-        altitude = 1
-    function.app.mount.satellite.tleParams = Test()
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'flip': ts.tt_jd(2459215.6),
-                           'culminate': ts.tt_jd(2459215.6),
-                           'settle': ts.tt_jd(2459215.7)}]
-
-    suc = function.updateSatelliteTrackGui()
-    assert suc
-
-
-def test_updateSatelliteTrackGui_4(function):
-    ts = function.app.mount.obsSite.ts
-
-    class Test:
-        jdStart = ts.tt_jd(2459215.5)
-        jdEnd = ts.tt_jd(2459215.5)
-        flip = True
-        message = 'e'
-        altitude = 1
-
-    function.app.mount.satellite.tleParams = Test()
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'flip': ts.tt_jd(2459215.6),
-                           'culminate': ts.tt_jd(2459215.6),
-                           'settle': ts.tt_jd(2459215.7)}]
-
-    suc = function.updateSatelliteTrackGui()
-    assert suc
 
 
 def test_startTrack_1(function):

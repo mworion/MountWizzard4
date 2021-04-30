@@ -336,6 +336,10 @@ class Mount(QObject):
     def getTLE():
         return
 
+    @staticmethod
+    def progTrajectory():
+        return
+
 
 class Automation:
     installPath = None

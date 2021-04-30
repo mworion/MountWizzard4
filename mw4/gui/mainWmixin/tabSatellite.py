@@ -545,25 +545,23 @@ class Satellite(object):
             azimuth.append(az)
         return altitude, azimuth
 
-    def progTrajectoryToMount(self):
+    def selectStartEnd(self):
         """
         :return:
         """
-        if not self.app.mount.mountUp:
-            return False
         if not self.satOrbits:
-            return False
+            return 0, 0
         if 'rise' not in self.satOrbits[0]:
-            return False
+            return 0, 0
         if 'flip' not in self.satOrbits[0]:
-            return False
+            return 0, 0
         if 'settle' not in self.satOrbits[0]:
-            return False
+            return 0, 0
 
         isBefore = self.ui.satBeforeFlip.isChecked()
         isAfter = self.ui.satAfterFlip.isChecked()
         if not (isBefore or isAfter):
-            return False
+            return 0, 0
 
         if isBefore:
             start = self.satOrbits[0]['rise'].tt
@@ -578,10 +576,21 @@ class Satellite(object):
         UTC2TT = self.app.mount.obsSite.UTC2TT
         start = start - UTC2TT
         end = end - UTC2TT
+        return start, end
+
+    def progTrajectoryToMount(self):
+        """
+        :return:
+        """
+        if not self.app.mount.mountUp:
+            return False
+
+        start, end = self.selectStartEnd()
+        if not start:
+            return False
 
         isInternal = self.ui.useInternalSatCalc.isChecked()
         internalAvailable = self.ui.useInternalSatCalc.isEnabled()
-
         if isInternal and internalAvailable:
             alt, az = self.calcTrajectoryData(start, end)
             alt, az = self.filterHorizon(alt, az)
@@ -596,25 +605,7 @@ class Satellite(object):
         :return:
         """
         self.clearTrackingParameters()
-
-        isBefore = self.ui.satBeforeFlip.isChecked()
-        isAfter = self.ui.satAfterFlip.isChecked()
-        if not (isBefore or isAfter):
-            return False
-
-        if self.ui.satBeforeFlip.isChecked():
-            start = self.satOrbits[0]['rise'].tt
-        else:
-            start = self.satOrbits[0]['flip'].tt
-
-        if self.ui.satAfterFlip.isChecked():
-            end = self.satOrbits[0]['settle'].tt
-        else:
-            end = self.satOrbits[0]['flip'].tt
-
-        UTC2TT = self.app.mount.obsSite.UTC2TT
-        start = start - UTC2TT
-        end = end - UTC2TT
+        start, end = self.selectStartEnd()
         alt, az = self.calcTrajectoryData(start, end)
         alt, az = self.filterHorizon(alt, az)
         self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)

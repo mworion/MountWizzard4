@@ -30,7 +30,6 @@ import matplotlib.pyplot as plt
 # local import
 from gui.utilities import toolsQtWidget
 from gui.widgets import satellite_ui
-from base.tpool import Worker
 
 
 class SatelliteWindowSignals(QObject):

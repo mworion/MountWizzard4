@@ -227,7 +227,7 @@ class Connection(object):
 
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.settimeout(self.SOCKET_TIMEOUT)
-        client.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+        client.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
 
         try:
             client.connect(self.host)

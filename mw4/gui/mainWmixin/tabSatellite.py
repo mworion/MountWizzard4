@@ -391,8 +391,6 @@ class Satellite(object):
         """
         :return: success
         """
-        if not self.app.mount.mountUp:
-            return False
         if not satName:
             return False
         if satName not in self.satellites:
@@ -407,6 +405,7 @@ class Satellite(object):
         if not suc:
             self.app.message.emit('Error program TLE', 2)
             return False
+        self.app.mount.getTLE()
         return True
 
     def chooseSatellite(self):
@@ -414,8 +413,10 @@ class Satellite(object):
         :return: True for test purpose
         """
         satName = self.ui.listSatelliteNames.currentItem().text()[8:]
-        self.programDataToMount(satName=satName)
-        self.app.mount.getTLE()
+        if self.app.mount.mountUp:
+            self.programDataToMount(satName=satName)
+        else:
+            self.extractSatelliteData(satName=satName)
         return True
 
     def getSatelliteDataFromDatabase(self, tleParams=None):

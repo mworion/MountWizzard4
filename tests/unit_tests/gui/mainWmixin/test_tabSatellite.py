@@ -26,7 +26,6 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle, wgs84
-from skyfield import almanac
 from sgp4.exporter import export_tle
 import numpy as np
 
@@ -440,29 +439,20 @@ def test_extractSatelliteData_5(function):
 
 
 def test_programDataToMount_1(function):
-    function.app.mount.mountUp = False
     suc = function.programDataToMount()
     assert not suc
 
 
 def test_programDataToMount_2(function):
-    function.app.mount.mountUp = True
-    suc = function.programDataToMount()
-    assert not suc
-
-
-def test_programDataToMount_3(function):
-    function.app.mount.mountUp = True
     suc = function.programDataToMount(satName='test')
     assert not suc
 
 
-def test_programDataToMount_4(function):
+def test_programDataToMount_3(function):
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
     function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    function.app.mount.mountUp = True
     function.satellites = {'TIANGONG 2': EarthSatellite(tle[1], tle[2],  name=tle[0])}
     function.app.mount.satellite.tleParams.name = 'TIANGONG 2'
     with mock.patch.object(function.app.mount.satellite,
@@ -472,31 +462,42 @@ def test_programDataToMount_4(function):
         assert not suc
 
 
-def test_programDataToMount_5(function):
+def test_programDataToMount_4(function):
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
     function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    function.app.mount.mountUp = True
     function.satellites = {'TIANGONG 2': EarthSatellite(tle[1], tle[2],  name=tle[0])}
     function.app.mount.satellite.tleParams.name = 'TIANGONG 2'
     with mock.patch.object(function.app.mount.satellite,
                            'setTLE',
                            return_value=True):
-        suc = function.programDataToMount(satName='TIANGONG 2')
-        assert suc
+        with mock.patch.object(function.app.mount,
+                               'getTLE'):
+            suc = function.programDataToMount(satName='TIANGONG 2')
+            assert suc
 
 
 def test_chooseSatellite_1(function):
     function.ui.listSatelliteNames.clear()
     function.ui.listSatelliteNames.addItem('TIANGONG 2')
     function.ui.listSatelliteNames.setCurrentRow(0)
+    function.app.mount.mountUp = True
     with mock.patch.object(function,
                            'programDataToMount'):
-        with mock.patch.object(function.app.mount,
-                               'getTLE'):
-            suc = function.chooseSatellite()
-            assert suc
+        suc = function.chooseSatellite()
+        assert suc
+
+
+def test_chooseSatellite_2(function):
+    function.ui.listSatelliteNames.clear()
+    function.ui.listSatelliteNames.addItem('TIANGONG 2')
+    function.ui.listSatelliteNames.setCurrentRow(0)
+    function.app.mount.mountUp = False
+    with mock.patch.object(function,
+                           'extractSatelliteData'):
+        suc = function.chooseSatellite()
+        assert suc
 
 
 def test_getSatelliteDataFromDatabase_1(function):

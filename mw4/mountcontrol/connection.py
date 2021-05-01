@@ -141,7 +141,8 @@ class Connection(object):
 
     def validCommandSet(self, commandString):
         """
-        validCommandSet test if all commands in the commandString are valid and known.
+        validCommandSet test if all commands in the commandString are valid
+        and known.
 
         :param commandString: command for 10 micron to test
         :return: True if valid commands were issued
@@ -212,8 +213,8 @@ class Connection(object):
 
     def buildClient(self):
         """
-        buildClient checks necessary information and tries to open a socket. if success
-        it returns the client (socket connection)
+        buildClient checks necessary information and tries to open a socket.
+        if success it returns the client (socket connection)
 
         :return: client for socket connection if succeeded
         """
@@ -271,10 +272,10 @@ class Connection(object):
 
     def receiveData(self, client=None, numberOfChunks=0, minBytes=0):
         """
-        receive Data waits on the give socket client for a number of chunks to be receive or
-        a minimum set of bytes received. the chunks are delimited with #. the min bytes is
-        necessary, because the mount computer has commands which giv a response without
-        delimiter. this is bad, but status.
+        receive Data waits on the give socket client for a number of chunks to
+        be receive or a minimum set of bytes received. the chunks are delimited
+        with #. the min bytes is necessary, because the mount computer has
+        commands which giv a response without delimiter. this is bad, but status.
 
         :param client: socket client
         :param numberOfChunks: number of data chunks
@@ -318,14 +319,15 @@ class Connection(object):
 
     def communicate(self, commandString):
         """
-        transfer open a socket to the mount, takes the command string for the mount,
-        analyses it, check validity and finally if valid sends it to the mount. If
-        response expected, wait for the response and returns the data.
+        transfer open a socket to the mount, takes the command string for the
+        mount, analyses it, check validity and finally if valid sends it to the
+        mount. If response expected, wait for the response and returns the data.
 
         :param commandString:
         :return: success:           True or False for full transfer
                  response:          the data load
-                 numberOfChunks:    number of responses chunks which were split with #
+                 numberOfChunks:    number of responses chunks which were
+                                    split with #
         """
 
         if not self.validCommandSet(commandString):

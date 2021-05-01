@@ -643,7 +643,8 @@ def test_calcTrajectoryData_2(function):
            '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
 
     function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    alt, az = function.calcTrajectoryData(100 / 86400, 101 / 86400)
+    start = 2459215.0
+    alt, az = function.calcTrajectoryData(start, start + 2 / 86400)
     assert alt != []
     assert az != []
 

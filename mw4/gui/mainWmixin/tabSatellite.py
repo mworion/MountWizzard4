@@ -145,6 +145,7 @@ class Satellite(object):
         self.ui.satBeforeFlip.setChecked(config.get('satBeforeFlip', True))
         self.ui.satAfterFlip.setChecked(config.get('satAfterFlip', True))
         self.ui.avoidHorizon.setChecked(config.get('avoidHorizon', False))
+        self.ui.trackingSim.setChecked(config.get('trackingSim', False))
 
         if not self.app.automation:
             self.installPath = self.app.mwGlob['dataDir']
@@ -165,6 +166,7 @@ class Satellite(object):
         config['satBeforeFlip'] = self.ui.satBeforeFlip.isChecked()
         config['satAfterFlip'] = self.ui.satAfterFlip.isChecked()
         config['avoidHorizon'] = self.ui.avoidHorizon.isChecked()
+        config['trackingSim'] = self.ui.trackingSim.isChecked()
         return True
 
     def enableGuiFunctions(self):
@@ -181,6 +183,7 @@ class Satellite(object):
         self.ui.satBeforeFlip.setEnabled(progAvailable)
         self.ui.satAfterFlip.setEnabled(progAvailable)
         self.ui.avoidHorizon.setEnabled(progAvailable)
+        self.ui.trackingSim.setEnabled(progAvailable)
         self.ui.trajectoryProgress.setEnabled(progAvailable)
         self.ui.progTrajectory.setEnabled(progAvailable)
         return True
@@ -605,11 +608,12 @@ class Satellite(object):
         :return:
         """
         self.clearTrackingParameters()
+        isSim = self.ui.trackingSim.isChecked()
         start, end = self.selectStartEnd()
         alt, az = self.calcTrajectoryData(start, end)
         alt, az = self.filterHorizon(alt, az)
         self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)
-        self.app.mount.progTrajectory(start, alt=alt, az=az)
+        self.app.mount.progTrajectory(start, alt=alt, az=az, sim=isSim)
         return True
 
     def trajectoryProgress(self, value):

@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>6</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -11604,7 +11604,7 @@ Next point in time when satellite rises over horizon.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>165</x>
+        <x>140</x>
         <y>120</y>
         <width>36</width>
         <height>21</height>
@@ -11708,7 +11708,7 @@ Next point in time when satellite settles.</string>
      <widget class="QLabel" name="label_344">
       <property name="geometry">
        <rect>
-        <x>165</x>
+        <x>140</x>
         <y>100</y>
         <width>36</width>
         <height>21</height>
@@ -11888,6 +11888,25 @@ Next point in time when satellite settles.</string>
       </property>
       <property name="text">
        <string>Prog</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="trackingSim">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>120</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking is in simulation mode, means that tracking starts always now regardless which is the real tracking start time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Sim</string>
       </property>
      </widget>
     </widget>

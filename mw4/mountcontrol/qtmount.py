@@ -588,17 +588,19 @@ class Mount(mountcontrol.mount.Mount):
         self.log.warning(f'Cycle error: {e}')
         return True
 
-    def clearProgTrajectory(self):
+    def clearProgTrajectory(self, sim=False):
         """
+        :param sim:
         :return: true for test purpose
         """
-        self.calcTrajectory()
+        self.calcTrajectory(replay=sim)
         return True
 
-    def workerProgTrajectory(self, alt=[], az=[]):
+    def workerProgTrajectory(self, alt=[], az=[], sim=False):
         """
         :param alt:
         :param az:
+        :param sim:
         :return:
         """
         factor = int(len(alt) / 32)
@@ -612,13 +614,14 @@ class Mount(mountcontrol.mount.Mount):
             self.satellite.progTrajectory(alt=altitude, az=azimuth)
             self.signals.trajectoryProgress.emit(min((i + 1) / chunks * 100, 100))
         self.signals.trajectoryProgress.emit(100)
-        return True
+        return sim
 
-    def progTrajectory(self, start, alt=[], az=[]):
+    def progTrajectory(self, start, alt=[], az=[], sim=False):
         """
         :param start:
         :param alt:
         :param az:
+        :param sim:
         :return:
         """
         if not self.mountUp:
@@ -626,8 +629,8 @@ class Mount(mountcontrol.mount.Mount):
 
         self.satellite.startProgTrajectory(julD=start)
 
-        worker = Worker(self.workerProgTrajectory, alt=alt, az=az)
-        worker.signals.finished.connect(self.clearProgTrajectory)
+        worker = Worker(self.workerProgTrajectory, alt=alt, az=az, sim=sim)
+        worker.signals.result.connect(self.clearProgTrajectory)
         worker.signals.error.connect(self.errorProgTrajectory)
         self.threadPool.start(worker)
         return True

@@ -523,11 +523,14 @@ class Satellite(object):
         m = self.app.mount
         temp = m.setting.refractionTemp
         press = m.setting.refractionPress
-        difference = self.satellite - m.obsSite.location
         timeSeries = start + np.arange(0, duration, 1 / 86400)
         timeVec = m.obsSite.ts.tt_jd(timeSeries + m.obsSite.UTC2TT)
-        alt, az, _ = difference.at(timeVec).altaz(pressure_mbar=press,
-                                                  temperature_C=temp)
+
+        earth = self.app.ephemeris['earth']
+        ssb_sat = earth + self.satellite
+        ssb_loc = earth + m.obsSite.location
+        topocentric = ssb_loc.at(timeVec).observe(ssb_sat).apparent()
+        alt, az, _ = topocentric.altaz(pressure_mbar=press, temperature_C=temp)
         return alt.degrees, az.degrees
 
     def filterHorizon(self, alt, az):

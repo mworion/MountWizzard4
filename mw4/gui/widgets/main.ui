@@ -10666,8 +10666,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite settles.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1st point in time when satellite settles below standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -10733,8 +10732,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite rises over horizon.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1st point in time when satellite rises over standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -10863,8 +10861,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite rises over horizon.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1st point in time when satellite culminates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -10909,8 +10906,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite settles.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1st point in time when the satellite transits the meridian.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -10955,8 +10951,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite rises over horizon.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1nd point in time when satellite rises over standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11001,8 +10996,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite rises over horizon.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;2nd point in time when satellite culminates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11047,8 +11041,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite settles.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;2nd point in time when the satellite transits the meridian.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11093,8 +11086,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite settles.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;2nd point in time when satellite settles below standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11139,7 +11131,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Actual latitude where the satellite could be seen in zenith.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Date&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11184,8 +11176,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite settles.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3rd point in time when satellite settles below standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11230,8 +11221,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite rises over horizon.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3rd point in time when satellite rises over standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11276,8 +11266,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite settles.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3rd point in time when the satellite transits the meridian.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11322,8 +11311,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite rises over horizon.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3rd point in time when satellite culminates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11368,7 +11356,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Actual latitude where the satellite could be seen in zenith.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Date&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11413,7 +11401,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Actual latitude where the satellite could be seen in zenith.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Date&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>

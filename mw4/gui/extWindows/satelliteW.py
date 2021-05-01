@@ -547,8 +547,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
         azF = np.concatenate([[0], [0], az, [360], [360]])
 
-        axes.fill(azF, altF, color=self.M_GREEN_LL, alpha=0.7, zorder=-10)
-        axes.plot(az, alt, color=self.M_GREEN, marker='', alpha=0.5, lw=3)
+        axes.fill(azF, altF, color=self.M_GREY_LL, alpha=0.5, zorder=-10)
+        axes.plot(az, alt, color=self.M_BLUE, marker='', alpha=0.7, lw=2)
         return True
 
     def drawHorizonView(self, obsSite=None, satOrbits=None, altitude=[], azimuth=[]):

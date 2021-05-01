@@ -68,14 +68,14 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
         self.MODE = dict(
             normal=dict(horMarker='None',
-                        horColor=self.M_GREEN,
+                        horColor=self.M_BLUE,
                         buildPColor=self.M_GREEN_H,
                         starSize=6,
                         starColor=self.M_YELLOW_L,
                         starAnnColor=self.M_WHITE_L),
 
             build=dict(horMarker='None',
-                       horColor=self.M_GREEN,
+                       horColor=self.M_BLUE,
                        buildPColor=self.M_PINK_H,
                        starSize=6,
                        starColor=self.M_YELLOW_L,
@@ -89,7 +89,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                          starAnnColor=self.M_WHITE_L),
 
             star=dict(horMarker='None',
-                      horColor=self.M_GREEN_LL,
+                      horColor=self.M_BLUE1,
                       buildPColor=self.M_GREEN_L,
                       starSize=12,
                       starColor=self.M_YELLOW_H,
@@ -501,19 +501,19 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
             axes.plot(az,
                       90 - alt,
-                      color=self.MODE['normal']['horColor'],
-                      marker=self.MODE[self.operationMode]['horMarker'],
+                      color=self.MODE[self.operationMode]['horColor'],
+                      marker=self.MODE['normal']['horMarker'],
                       alpha=0.5,
                       zorder=0,
                       ls='none')
 
             axes.plot(azF,
                       90 - altF,
-                      color=self.MODE['normal']['horColor'],
+                      color=self.MODE[self.operationMode]['horColor'],
                       marker='',
-                      alpha=0.5,
+                      alpha=0.7,
                       zorder=0,
-                      lw=3)
+                      lw=2)
 
         else:
             alt = np.array(alt)
@@ -522,7 +522,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             azF = np.concatenate([[0], [0], az, [360], [360]])
             axes.fill(azF,
                       altF,
-                      color=self.M_GREEN_LL,
+                      color=self.M_GREY_LL,
                       alpha=0.5,
                       zorder=0)
 
@@ -538,9 +538,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                       alt,
                       color=self.MODE[self.operationMode]['horColor'],
                       marker='',
-                      alpha=0.5,
+                      alpha=0.7,
                       zorder=0,
-                      lw=3)
+                      lw=2)
 
         return True
 

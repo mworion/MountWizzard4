@@ -30,6 +30,7 @@ releaseNotes = """
 - completely revised satellite tracking menu gui
 - add partially satellite tracking before / after possible flip 
 - add satellite track respect horizon line
+- add tracking simulator feature to test without waiting for satellite
 - add reverse order for filed build point retry 
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected
@@ -42,7 +43,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b4',
+    version='2.0.0b5',
     packages=[
         'mw4',
         'mw4.base',

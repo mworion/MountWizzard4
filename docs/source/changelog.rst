@@ -19,7 +19,7 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.0.0b3
+2.0.0b5
 
 - add simulator feature
 - add dome following when mount is in satellite tracking mode
@@ -32,6 +32,7 @@ Released beta version of MW4
 - completely revised satellite tracking menu gui
 - add partially satellite tracking before / after possible flip
 - add satellite track respect horizon line
+- add tracking simulator feature to test without waiting for satellite
 - add reverse order for filed build point retry
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected

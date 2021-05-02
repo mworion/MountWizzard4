@@ -506,9 +506,9 @@ class ObsSite(object):
         :return:
         """
         if platform.system() == 'Windows':
-            corrTerm = -0.025
+            corrTerm = +0.001
         elif platform.system() == 'Linux':
-            corrTerm = 0
+            corrTerm = -0.001
         elif platform.system() == 'Darwin':
             corrTerm = -0.011
         else:

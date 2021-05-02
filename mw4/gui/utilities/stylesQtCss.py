@@ -232,6 +232,15 @@ class Styles:
         border-style: outset;
         border-color: red;
     }
+    QLineEdit[char='green'] {
+        color: #00C000;
+    }
+    QLineEdit[char='yellow'] {
+        color: '#C0C000';
+    }
+    QLineEdit[char='red'] {
+        color: #C00000;
+    }
     QLineEdit[color='M_RED_L'] {
         border-width: 2px;
         border-style: outset;

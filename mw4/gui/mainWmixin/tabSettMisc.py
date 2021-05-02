@@ -531,9 +531,18 @@ class SettMisc(object):
         """
         :return:
         """
+        doSync = self.ui.syncTimePC2Mount.isChecked()
         delta = self.app.mount.obsSite.timeDiff * 1000
         text = f'{delta:4.0f}'
         self.ui.timeDeltaPC2Mount.setText(text)
+        if not True:
+            self.changeStyleDynamic(self.ui.timeUTC, 'char', '')
+        elif abs(delta) < 200:
+            self.changeStyleDynamic(self.ui.timeUTC, 'char', 'green')
+        elif abs(delta) < 500:
+            self.changeStyleDynamic(self.ui.timeUTC, 'char', 'yellow')
+        else:
+            self.changeStyleDynamic(self.ui.timeUTC, 'char', 'red')
         return True
 
     def syncClock(self):
@@ -552,7 +561,7 @@ class SettMisc(object):
             return False
 
         delta = self.app.mount.obsSite.timeDiff * 1000
-        if abs(delta) < 5:
+        if abs(delta) < 10:
             return False
 
         if delta > 999:

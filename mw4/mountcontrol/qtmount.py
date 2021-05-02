@@ -551,6 +551,9 @@ class Mount(mountcontrol.mount.Mount):
         worker.signals.finished.connect(self.clearDome)
         worker.signals.error.connect(self.errorDome)
         self.threadPool.start(worker)
+
+        worker = Worker(self.obsSite.pollSyncClock)
+        self.threadPool.start(worker)
         return True
 
     def errorCalcTrajectory(self, e):

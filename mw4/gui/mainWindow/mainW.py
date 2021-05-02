@@ -724,9 +724,13 @@ class MainWindow(
         :return: True for test purpose
         """
         self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
+        timeJD = self.app.mount.obsSite.timeJD
+        if timeJD is not None:
+            text = timeJD.utc_strftime('%H:%M:%S')
+            self.ui.timeUTC.setText('UTC:' + text)
+
         if self.ui.isOnline.isChecked():
             text = 'Internet Online Mode'
-
         else:
             text = 'Offline Mode'
 

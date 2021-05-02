@@ -62,6 +62,8 @@ class SettMisc(object):
         self.ui.pushTime.clicked.connect(self.pushTime)
         self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
         self.app.update1h.connect(self.pushTimeHourly)
+        self.app.update1s.connect(self.showOffset)
+        self.app.update10s.connect(self.syncClock)
         self.ui.autoPushTime.stateChanged.connect(self.pushTimeHourly)
 
         if pConf.isAvailable:
@@ -83,6 +85,8 @@ class SettMisc(object):
         self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', True))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
         self.ui.autoPushTime.setChecked(config.get('autoPushTime', False))
+        self.ui.syncNotTracking.setChecked(config.get('syncNotTracking', True))
+        self.ui.syncTimePC2Mount.setChecked(config.get('syncTimePC2Mount', False))
         self.ui.automaticRestart.setChecked(config.get('automaticRestart', False))
         self.ui.activateVirtualStop.setChecked(config.get('activateVirtualStop', False))
         self.ui.versionReleaseNotes.setChecked(config.get('versionReleaseNotes', True))
@@ -109,6 +113,8 @@ class SettMisc(object):
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
         config['autoPushTime'] = self.ui.autoPushTime.isChecked()
+        config['syncNotTracking'] = self.ui.syncNotTracking.isChecked()
+        config['syncTimePC2Mount'] = self.ui.syncTimePC2Mount.isChecked()
         config['automaticRestart'] = self.ui.automaticRestart.isChecked()
         config['activateVirtualStop'] = self.ui.activateVirtualStop.isChecked()
         config['versionReleaseNotes'] = self.ui.versionReleaseNotes.isChecked()
@@ -520,6 +526,42 @@ class SettMisc(object):
             return True
         else:
             return False
+
+    def showOffset(self):
+        """
+        :return:
+        """
+        delta = self.app.mount.obsSite.timeDiff * 1000
+        text = f'{delta:4.0f}'
+        self.ui.timeDeltaPC2Mount.setText(text)
+        return True
+
+    def syncClock(self):
+        """
+        :return:
+        """
+        doSync = self.ui.syncTimePC2Mount.isChecked()
+        if not doSync:
+            return False
+        if not self.deviceStat['mount']:
+            return False
+
+        doSyncNotTrack = self.ui.syncNotTracking.isChecked()
+        mountTracks = self.app.mount.obsSite.status == 0
+        if doSyncNotTrack and mountTracks:
+            return False
+
+        delta = self.app.mount.obsSite.timeDiff * 1000
+        if abs(delta) < 10:
+            return False
+
+        suc = self.app.mount.obsSite.adjustClock(delta)
+        if not suc:
+            self.app.message.emit('Cannot adjust mount clock', 2)
+            return False
+
+        self.app.message.emit(f'Clock corrected for [{delta}] ms', 0)
+        return True
 
     def setVirtualStop(self):
         """

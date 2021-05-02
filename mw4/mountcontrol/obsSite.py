@@ -21,6 +21,7 @@ import logging
 from skyfield.api import wgs84, Angle, load, Loader
 from skyfield.toposlib import GeographicPosition
 import skyfield.starlib as starlib
+import numpy as np
 
 # local imports
 from .connection import Connection
@@ -89,6 +90,8 @@ class ObsSite(object):
         self._location = None
         self.ts = None
         self._timeJD = None
+        self.timePC = None
+        self._timeDiff = np.full(10, 0.0)
         self._utc_ut1 = None
         self._timeSidereal = None
         self._raJNow = None
@@ -175,6 +178,14 @@ class ObsSite(object):
             self._timeJD = self.ts.tt_jd(value + self.UTC2TT)
         else:
             self._timeJD = None
+
+    @property
+    def timeDiff(self):
+        return np.mean(self._timeDiff)
+
+    @timeDiff.setter
+    def timeDiff(self, value):
+        return
 
     @property
     def utc_ut1(self):
@@ -481,7 +492,6 @@ class ObsSite(object):
 
         :return: success:   True if ok, False if not
         """
-
         conn = Connection(self.host)
         commandString = ':U2#:GS#:GDUT#:GaXa#:GaXb#:Ginfo#'
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -489,6 +499,49 @@ class ObsSite(object):
             return False
         suc = self.parsePointing(response, numberOfChunks)
         return suc
+
+    def pollSyncClock(self):
+        """
+        :return:
+        """
+        conn = Connection(self.host)
+        commandString = ':GJD1#'
+        suc, response, numberOfChunks = conn.communicate(commandString)
+        if not suc:
+            return False
+
+        self.timePC = self.ts.now()
+        timeMount = valueToFloat(response[0])
+        if timeMount is None:
+            return False
+        timeMount = self.ts.tt_jd(timeMount + self.UTC2TT)
+        self._timeDiff = np.roll(self._timeDiff, 1)
+        delta = (self.timePC - timeMount) * 86400 - 0.009
+        self._timeDiff[0] = delta
+        return True
+
+    def adjustClock(self, delta):
+        """
+        :param delta: im milliseconds
+        :return:
+        """
+        if delta > 999:
+            delta = 999
+        if delta < -999:
+            delta = -999
+        sign = '+' if delta >= 0 else '-'
+        delta = abs(delta)
+        commandString = f':NUtim{sign}{delta:03.0f}#'
+
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(commandString)
+        if not suc:
+            return False
+
+        if response[0] == '0':
+            return False
+
+        return True
 
     def startSlewing(self, slewType='normal', forceUnpark=False):
         """
@@ -521,7 +574,6 @@ class ObsSite(object):
         - 'polar':      slew to coordinates and miss for polar alignment
         - 'ortho':      slew to coordinates and miss for orthogonal alignment
         - 'keep':       choose between normal and notrack to keep the tracking mode
-
 
         :param slewType:
         :return:

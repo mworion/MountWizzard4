@@ -153,10 +153,6 @@ class Mount(object):
         :param obs:
         :return:    True if ok for testing
         """
-        if obs.timeJD is not None:
-            text = obs.timeJD.utc_strftime('%H:%M:%S')
-            self.ui.timeUTC.setText('UTC: ' + text)
-
         if obs.timeSidereal is not None:
             siderealFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
             val = obs.timeSidereal.hms()

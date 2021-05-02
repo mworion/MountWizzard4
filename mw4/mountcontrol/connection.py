@@ -61,7 +61,8 @@ class Connection(object):
     # these are the commands, which were used in mountcontrol so far
     COMMANDS = [':AP',
                 ':FLIP',
-                ':GDW', ':GDA', ':GDF', ':GDS', ':GDGPS', ':GDUT', ':GDUTV',
+                ':GDW', ':GDA', ':GDF', ':GDS', ':GDGPS', ':GJD1',
+                ':GDUT', ':GDUTV',
                 ':GLDT', ':GMs', ':GMsa', ':GMsb', ':GMACW', ':GMAC',
                 ':GREF', ':GRPRS', ':GRTMP',
                 ':GS', ':GT', ':GTMP1', ':GUDT',
@@ -72,6 +73,7 @@ class Connection(object):
                 ':Guaf', ':Gz',
                 ':MA', ':MS', ':MaX', ':Me', ':Mn', ':Ms', ':Mw',
                 ':MSao', ':MSap',
+                ':NUtim',
                 ':PO', ':PO', ':PO', ':PaX', ':PiP',
                 ':Q', ':QaXa', ':QaXb', ':Qe', ':Qn', ':Qs', ':Qw',
                 ':RC', ':Rc', ':RG', ':RM', ':RMs', ':RS',

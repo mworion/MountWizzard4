@@ -19,7 +19,7 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.0.0b5
+2.0.0b6
 
 - add mount clock sync feature
 - add simulator feature

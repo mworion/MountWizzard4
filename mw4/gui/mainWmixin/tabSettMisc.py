@@ -556,7 +556,7 @@ class SettMisc(object):
             return False
 
         doSyncNotTrack = self.ui.syncNotTracking.isChecked()
-        mountTracks = self.app.mount.obsSite.status == 0
+        mountTracks = self.app.mount.obsSite.status in [0, 10]
         if doSyncNotTrack and mountTracks:
             return False
 

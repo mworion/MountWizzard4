@@ -76,6 +76,7 @@ def function_setup_teardown(qtbot):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
         update10s = pyqtSignal()
+        update30s = pyqtSignal()
         update1s = pyqtSignal()
         update1h = pyqtSignal()
         mwGlob = {'imageDir': 'tests/image',
@@ -117,6 +118,7 @@ def function_setup_teardown(qtbot):
         showImage = pyqtSignal(str)
         update3s = pyqtSignal()
         update30m = pyqtSignal()
+        update30s = pyqtSignal()
         sendSatelliteData = pyqtSignal()
         remoteCommand = pyqtSignal(str)
         threadPool = QThreadPool()

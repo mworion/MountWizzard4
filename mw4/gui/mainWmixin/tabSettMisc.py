@@ -535,7 +535,7 @@ class SettMisc(object):
         delta = self.app.mount.obsSite.timeDiff * 1000
         text = f'{delta:4.0f}'
         self.ui.timeDeltaPC2Mount.setText(text)
-        if not True:
+        if not doSync:
             self.changeStyleDynamic(self.ui.timeUTC, 'char', '')
         elif abs(delta) < 200:
             self.changeStyleDynamic(self.ui.timeUTC, 'char', 'green')

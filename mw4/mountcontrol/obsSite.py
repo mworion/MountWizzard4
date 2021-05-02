@@ -91,7 +91,7 @@ class ObsSite(object):
         self.ts = None
         self._timeJD = None
         self.timePC = None
-        self._timeDiff = np.full(10, 0.0)
+        self._timeDiff = np.full(25, 0.0)
         self._utc_ut1 = None
         self._timeSidereal = None
         self._raJNow = None
@@ -516,7 +516,7 @@ class ObsSite(object):
             return False
         timeMount = self.ts.tt_jd(timeMount + self.UTC2TT)
         self._timeDiff = np.roll(self._timeDiff, 1)
-        delta = (self.timePC - timeMount) * 86400 - 0.009
+        delta = (self.timePC - timeMount) * 86400 - 0.011
         self._timeDiff[0] = delta
         return True
 
@@ -525,12 +525,9 @@ class ObsSite(object):
         :param delta: im milliseconds
         :return:
         """
-        if delta > 999:
-            delta = 999
-        if delta < -999:
-            delta = -999
         sign = '+' if delta >= 0 else '-'
         delta = abs(delta)
+        delta = min(delta, 999)
         commandString = f':NUtim{sign}{delta:03.0f}#'
 
         conn = Connection(self.host)

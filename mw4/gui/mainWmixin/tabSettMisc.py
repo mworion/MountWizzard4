@@ -63,7 +63,7 @@ class SettMisc(object):
         self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
         self.app.update1h.connect(self.pushTimeHourly)
         self.app.update1s.connect(self.showOffset)
-        self.app.update10s.connect(self.syncClock)
+        self.app.update30s.connect(self.syncClock)
         self.ui.autoPushTime.stateChanged.connect(self.pushTimeHourly)
 
         if pConf.isAvailable:
@@ -552,15 +552,21 @@ class SettMisc(object):
             return False
 
         delta = self.app.mount.obsSite.timeDiff * 1000
-        if abs(delta) < 10:
+        if abs(delta) < 5:
             return False
 
+        if delta > 999:
+            delta = 999
+        if delta < -999:
+            delta = -999
+
+        delta = int(delta)
         suc = self.app.mount.obsSite.adjustClock(delta)
         if not suc:
             self.app.message.emit('Cannot adjust mount clock', 2)
             return False
 
-        self.app.message.emit(f'Clock corrected for [{delta}] ms', 0)
+        self.app.message.emit(f'Mount clock corrected [{-delta}] ms', 0)
         return True
 
     def setVirtualStop(self):

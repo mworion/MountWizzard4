@@ -26026,7 +26026,7 @@ p, li { white-space: pre-wrap; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;With button press, MW4 tries to set the actual time from the mount to the computer. The precision is about 1s.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Push time to PC</string>
+         <string>Push mount time to PC</string>
         </property>
        </widget>
        <widget class="QCheckBox" name="autoPushTime">
@@ -26086,7 +26086,7 @@ p, li { white-space: pre-wrap; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Sync PC to mount time</string>
+         <string>Sync mount to PC clock</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -26116,7 +26116,7 @@ p, li { white-space: pre-wrap; }
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clock difference between PC clock and Mount Computer, filtered over 30 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clock difference between PC clock and Mount Computer, filtered over 10 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>

@@ -20,6 +20,7 @@ import socket
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
+from PyQt5.QtCore import QMutex
 import wakeonlan
 import numpy as np
 
@@ -84,6 +85,7 @@ class Mount(mountcontrol.mount.Mount):
 
     CYCLE_POINTING = 500
     CYCLE_DOME = 1000
+    CYCLE_CLOCK = 1000
     CYCLE_MOUNT_UP = 3000
     CYCLE_SETTING = 3000
 
@@ -106,7 +108,6 @@ class Mount(mountcontrol.mount.Mount):
 
         if threadPool is None:
             self.threadPool = PyQt5.QtCore.QThreadPool()
-
         else:
             self.threadPool = threadPool
 
@@ -115,6 +116,7 @@ class Mount(mountcontrol.mount.Mount):
         self.statusAlert = False
         self.statusSlew = True
         self.signals = MountSignals()
+        self.clockMutex = QMutex()
 
         self.timerPointing = PyQt5.QtCore.QTimer()
         self.timerPointing.setSingleShot(False)
@@ -122,6 +124,9 @@ class Mount(mountcontrol.mount.Mount):
         self.timerDome = PyQt5.QtCore.QTimer()
         self.timerDome.setSingleShot(False)
         self.timerDome.timeout.connect(self.cycleDome)
+        self.timerClock = PyQt5.QtCore.QTimer()
+        self.timerClock.setSingleShot(False)
+        self.timerClock.timeout.connect(self.cycleClock)
         self.timerSetting = PyQt5.QtCore.QTimer()
         self.timerSetting.setSingleShot(False)
         self.timerSetting.timeout.connect(self.cycleSetting)
@@ -154,6 +159,7 @@ class Mount(mountcontrol.mount.Mount):
         self.timerSetting.start(self.CYCLE_SETTING)
         self.timerPointing.start(self.CYCLE_POINTING)
         self.timerDome.start(self.CYCLE_DOME)
+        self.timerClock.start(self.CYCLE_CLOCK)
         self.timerMountUp.start(self.CYCLE_MOUNT_UP)
         return True
 
@@ -163,6 +169,7 @@ class Mount(mountcontrol.mount.Mount):
         """
         self.timerPointing.stop()
         self.timerDome.stop()
+        self.timerClock.stop()
         self.timerSetting.stop()
         self.timerMountUp.stop()
         self.threadPool.waitForDone()
@@ -551,8 +558,33 @@ class Mount(mountcontrol.mount.Mount):
         worker.signals.finished.connect(self.clearDome)
         worker.signals.error.connect(self.errorDome)
         self.threadPool.start(worker)
+        return True
+
+    def errorClock(self, e):
+        """
+        :return: true for test purpose
+        """
+        self.log.warning(f'Cycle error: {e}')
+        return True
+
+    def clearClock(self):
+        """
+        :return: true for test purpose
+        """
+        self.clockMutex.unlock()
+        return True
+
+    def cycleClock(self):
+        """
+        :return: success
+        """
+        if not self.mountUp:
+            return False
+        if not self.clockMutex.tryLock(100):
+            return False
 
         worker = Worker(self.obsSite.pollSyncClock)
+        worker.signals.finished.connect(self.clearClock)
         self.threadPool.start(worker)
         return True
 

@@ -80,6 +80,7 @@ class MountWizzard4(QObject):
     update1s = pyqtSignal()
     update3s = pyqtSignal()
     update10s = pyqtSignal()
+    update30s = pyqtSignal()
     update60s = pyqtSignal()
     update3m = pyqtSignal()
     update10m = pyqtSignal()
@@ -240,6 +241,8 @@ class MountWizzard4(QObject):
             self.update3s.emit()
         if (self.timerCounter + 20) % 100 == 0:
             self.update10s.emit()
+        if (self.timerCounter + 25) % 300 == 0:
+            self.update30s.emit()
         if (self.timerCounter + 25) % 600 == 0:
             self.update60s.emit()
         if (self.timerCounter + 12) % 1800 == 0:

@@ -525,7 +525,7 @@ class ObsSite(object):
             return False
         timeMount = self.ts.tt_jd(timeMount + self.UTC2TT)
         self._timeDiff = np.roll(self._timeDiff, 1)
-        delta = (self.timePC - timeMount) * 86400 - 0.011
+        delta = (self.timePC - timeMount) * 86400 + corrTerm
         self._timeDiff[0] = delta
         return True
 

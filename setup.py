@@ -19,6 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- add mount clock sync feature
 - add simulator feature
 - add dome following when mount is in satellite tracking mode 
 - debug standard moved from WARN to INFO

@@ -441,6 +441,7 @@ class App(QObject):
     update10s = pyqtSignal()
     update1s = pyqtSignal()
     update3s = pyqtSignal()
+    update30s = pyqtSignal()
     update30m = pyqtSignal()
     update1h = pyqtSignal()
     sendSatelliteData = pyqtSignal()

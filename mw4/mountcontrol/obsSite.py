@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import logging
+import platform
 
 # external packages
 from skyfield.api import wgs84, Angle, load, Loader
@@ -504,6 +505,14 @@ class ObsSite(object):
         """
         :return:
         """
+        if platform.system() == 'Windows':
+            corrTerm = -0.025
+        elif platform.system() == 'Linux':
+            corrTerm = 0
+        elif platform.system() == 'Darwin':
+            corrTerm = -0.011
+        else:
+            corrTerm = 0
         conn = Connection(self.host)
         commandString = ':GJD1#'
         suc, response, numberOfChunks = conn.communicate(commandString)

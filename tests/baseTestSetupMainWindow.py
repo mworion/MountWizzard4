@@ -315,6 +315,7 @@ class App(QObject):
     update10s = pyqtSignal()
     update1s = pyqtSignal()
     update3s = pyqtSignal()
+    update30s = pyqtSignal()
     update30m = pyqtSignal()
     remoteCommand = pyqtSignal(object)
     message = pyqtSignal(str, int)

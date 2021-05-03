@@ -36,16 +36,9 @@ setupLogging()
 def function():
     m = Mount(host='127.0.0.1',
               pathToData=os.getcwd() + '/data',
-              verbose=True)
+              verbose=False,
+              threadPool=QThreadPool())
     yield m
-
-
-def test_mountClass(function):
-    test = Mount(host='127.0.0.1',
-                 pathToData=os.getcwd() + '/data',
-                 verbose=True,
-                 threadPool=QThreadPool())
-    del test
 
 
 def test_mountSignals(function):
@@ -77,10 +70,36 @@ def test_startTimers(function):
 def test_stopTimers(function):
     with mock.patch.object(QTimer,
                            'stop'):
-        with mock.patch.object(QThreadPool,
-                               'waitForDone'):
-            suc = function.stopTimers()
-            assert suc
+        suc = function.stopTimers()
+        assert suc
+
+
+def test_startDome(function):
+    with mock.patch.object(QTimer,
+                           'start'):
+        suc = function.startDome()
+        assert suc
+
+
+def test_stopDome(function):
+    with mock.patch.object(QTimer,
+                           'stop'):
+        suc = function.stopDome()
+        assert suc
+
+
+def test_startClock(function):
+    with mock.patch.object(QTimer,
+                           'start'):
+        suc = function.startClock()
+        assert suc
+
+
+def test_stopClock(function):
+    with mock.patch.object(QTimer,
+                           'stop'):
+        suc = function.stopClock()
+        assert suc
 
 
 def test_resetData_1(function):
@@ -126,7 +145,7 @@ def test_cycleCheckMountUp_1(function):
 
 def test_cycleCheckMountUp_2(function):
     function.host = ('localhost', 80)
-    with mock.patch.object(QThreadPool,
+    with mock.patch.object(function.threadPool,
                            'start'):
         suc = function.cycleCheckMountUp()
         assert suc
@@ -459,6 +478,31 @@ def test_cycleDome_2(function):
     with mock.patch.object(QThreadPool,
                            'start'):
         suc = function.cycleDome()
+        assert not suc
+
+
+def test_errorClock(function):
+    function.errorClock('test')
+
+
+def test_clearClock_1(function):
+    suc = function.clearClock()
+    assert suc
+
+
+def test_cycleClock_1(function):
+    function.mountUp = True
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.cycleClock()
+        assert suc
+
+
+def test_cycleClock_2(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.cycleClock()
         assert not suc
 
 

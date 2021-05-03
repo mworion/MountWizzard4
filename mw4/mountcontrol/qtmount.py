@@ -20,7 +20,6 @@ import socket
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-from PyQt5.QtCore import QMutex
 import wakeonlan
 import numpy as np
 
@@ -83,11 +82,11 @@ class Mount(mountcontrol.mount.Mount):
 
     """
 
-    CYCLE_POINTING = 500
-    CYCLE_DOME = 1000
+    CYCLE_POINTING = 550
+    CYCLE_DOME = 950
     CYCLE_CLOCK = 1000
-    CYCLE_MOUNT_UP = 3000
-    CYCLE_SETTING = 3000
+    CYCLE_MOUNT_UP = 2700
+    CYCLE_SETTING = 3100
 
     # set timeout
     SOCKET_TIMEOUT = 3.5
@@ -107,13 +106,11 @@ class Mount(mountcontrol.mount.Mount):
                          )
 
         self.threadPool = threadPool
-
         self.mountUp = False
         self._settlingTime = 0
         self.statusAlert = False
         self.statusSlew = True
         self.signals = MountSignals()
-        self.clockMutex = QMutex()
 
         self.timerPointing = PyQt5.QtCore.QTimer()
         self.timerPointing.setSingleShot(False)
@@ -167,7 +164,6 @@ class Mount(mountcontrol.mount.Mount):
         self.timerClock.stop()
         self.timerSetting.stop()
         self.timerMountUp.stop()
-        self.threadPool.waitForDone()
         return True
 
     def startDome(self):
@@ -594,7 +590,6 @@ class Mount(mountcontrol.mount.Mount):
         """
         :return: true for test purpose
         """
-        self.clockMutex.unlock()
         return True
 
     def cycleClock(self):
@@ -602,8 +597,6 @@ class Mount(mountcontrol.mount.Mount):
         :return: success
         """
         if not self.mountUp:
-            return False
-        if not self.clockMutex.tryLock(100):
             return False
 
         worker = Worker(self.obsSite.pollSyncClock)

@@ -413,6 +413,7 @@ class MainWindow(
         self.wIcon(self.ui.startSatelliteTracking, 'start')
         self.wIcon(self.ui.progSatellitesFull, 'run')
         self.wIcon(self.ui.progSatellitesFiltered, 'run')
+        self.wIcon(self.ui.progTrajectory, 'run')
 
         # analyse
         self.wIcon(self.ui.runFlexure, 'start')

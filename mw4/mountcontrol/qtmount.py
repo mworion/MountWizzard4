@@ -106,10 +106,7 @@ class Mount(mountcontrol.mount.Mount):
                          verbose=verbose,
                          )
 
-        if threadPool is None:
-            self.threadPool = PyQt5.QtCore.QThreadPool()
-        else:
-            self.threadPool = threadPool
+        self.threadPool = threadPool
 
         self.mountUp = False
         self._settlingTime = 0

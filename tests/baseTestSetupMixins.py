@@ -239,6 +239,7 @@ class Mount(QObject):
         location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         ts = load.timescale(builtin=True)
         timeJD = ts.now()
+        timeDiff = 0
         loader = Loader('tests/temp', verbose=False)
         status = 0
         UTC2TT = 69.184
@@ -304,6 +305,10 @@ class Mount(QObject):
             return True
 
         @staticmethod
+        def adjustClock(a):
+            return True
+
+        @staticmethod
         def setTargetAltAz(alt_degrees=0,
                            az_degrees=0):
             return True
@@ -338,6 +343,14 @@ class Mount(QObject):
 
     @staticmethod
     def progTrajectory():
+        return
+
+    @staticmethod
+    def startClockTimer():
+        return
+
+    @staticmethod
+    def stopClockTimer():
         return
 
 

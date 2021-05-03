@@ -50,6 +50,7 @@ def function(module):
         def __init__(self):
             super().__init__()
             self.app = App()
+            self.deviceStat = self.app.deviceStat
             self.threadPool = self.app.threadPool
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
@@ -711,6 +712,109 @@ def test_pushTimeHourly_2(function):
     function.ui.autoPushTime.setChecked(True)
     suc = function.pushTimeHourly()
     assert suc
+
+
+def test_toggleClockSync_1(function):
+    function.ui.clockSync.setChecked(True)
+    suc = function.toggleClockSync()
+    assert suc
+
+
+def test_toggleClockSync_2(function):
+    function.ui.clockSync.setChecked(False)
+    suc = function.toggleClockSync()
+    assert suc
+
+
+def test_showOffset_1(function):
+    function.ui.clockSync.setChecked(False)
+    function.ui.syncTimePC2Mount.setChecked(False)
+
+    suc = function.showOffset()
+    assert suc
+
+
+@mock.patch('tests.baseTestSetupMixins.App.mount.obsSite.timeDiff', 0.003)
+def test_showOffset_2(function):
+    function.ui.clockSync.setChecked(True)
+    function.ui.syncTimePC2Mount.setChecked(True)
+    suc = function.showOffset()
+    assert suc
+
+
+@mock.patch('tests.baseTestSetupMixins.App.mount.obsSite.timeDiff', 0.3)
+def test_showOffset_3(function):
+    function.ui.clockSync.setChecked(True)
+    function.ui.syncTimePC2Mount.setChecked(True)
+
+    suc = function.showOffset()
+    assert suc
+
+
+@mock.patch('tests.baseTestSetupMixins.App.mount.obsSite.timeDiff', 0.6)
+def test_showOffset_4(function):
+    function.ui.clockSync.setChecked(True)
+    function.ui.syncTimePC2Mount.setChecked(True)
+    suc = function.showOffset()
+    assert suc
+
+
+def test_syncClock_1(function):
+    function.ui.syncTimePC2Mount.setChecked(False)
+    suc = function.syncClock()
+    assert not suc
+
+
+def test_syncClock_2(function):
+    function.ui.syncTimePC2Mount.setChecked(True)
+    function.app.deviceStat['mount'] = False
+    suc = function.syncClock()
+    assert not suc
+
+
+def test_syncClock_3(function):
+    function.ui.syncTimePC2Mount.setChecked(True)
+    function.ui.syncNotTracking.setChecked(True)
+    function.app.deviceStat['mount'] = True
+    function.app.mount.obsSite.status = 0
+    suc = function.syncClock()
+    assert not suc
+
+
+@mock.patch('tests.baseTestSetupMixins.App.mount.obsSite.timeDiff', 0.005)
+def test_syncClock_4(function):
+    function.ui.syncTimePC2Mount.setChecked(True)
+    function.ui.syncNotTracking.setChecked(False)
+    function.app.deviceStat['mount'] = True
+    function.app.mount.obsSite.status = 1
+    suc = function.syncClock()
+    assert not suc
+
+
+@mock.patch('tests.baseTestSetupMixins.App.mount.obsSite.timeDiff', 1)
+def test_syncClock_5(function):
+    function.ui.syncTimePC2Mount.setChecked(True)
+    function.ui.syncNotTracking.setChecked(False)
+    function.app.deviceStat['mount'] = True
+    function.app.mount.obsSite.status = 1
+    with mock.patch.object(function.app.mount.obsSite,
+                           'adjustClock',
+                           return_value=False):
+        suc = function.syncClock()
+        assert not suc
+
+
+@mock.patch('tests.baseTestSetupMixins.App.mount.obsSite.timeDiff', -1)
+def test_syncClock_6(function):
+    function.ui.syncTimePC2Mount.setChecked(True)
+    function.ui.syncNotTracking.setChecked(False)
+    function.app.deviceStat['mount'] = True
+    function.app.mount.obsSite.status = 1
+    with mock.patch.object(function.app.mount.obsSite,
+                           'adjustClock',
+                           return_value=True):
+        suc = function.syncClock()
+        assert suc
 
 
 def test_setVirtualStop(function):

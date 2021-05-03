@@ -542,9 +542,9 @@ class SettMisc(object):
         self.ui.clockOffsetMS.setEnabled(enableSync)
         self.ui.timeDeltaPC2Mount.setEnabled(enableSync)
         if enableSync:
-            self.app.mount.startClock()
+            self.app.mount.startClockTimer()
         else:
-            self.app.mount.stopClock()
+            self.app.mount.stopClockTimer()
         return True
 
     def showOffset(self):
@@ -559,6 +559,7 @@ class SettMisc(object):
         else:
             text = '-'
         self.ui.timeDeltaPC2Mount.setText(text)
+
         if not doSync or not enableSync:
             self.changeStyleDynamic(self.ui.timeUTC, 'char', '')
         elif abs(delta) < 200:

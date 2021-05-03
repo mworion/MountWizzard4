@@ -74,31 +74,31 @@ def test_stopTimers(function):
         assert suc
 
 
-def test_startDome(function):
+def test_startDomeTimer(function):
     with mock.patch.object(QTimer,
                            'start'):
-        suc = function.startDome()
+        suc = function.startDomeTimer()
         assert suc
 
 
-def test_stopDome(function):
+def test_stopDomeTimer(function):
     with mock.patch.object(QTimer,
                            'stop'):
-        suc = function.stopDome()
+        suc = function.stopDomeTimer()
         assert suc
 
 
-def test_startClock(function):
+def test_startClockTimer(function):
     with mock.patch.object(QTimer,
                            'start'):
-        suc = function.startClock()
+        suc = function.startClockTimer()
         assert suc
 
 
-def test_stopClock(function):
+def test_stopClockTimer(function):
     with mock.patch.object(QTimer,
                            'stop'):
-        suc = function.stopClock()
+        suc = function.stopClockTimer()
         assert suc
 
 

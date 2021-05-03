@@ -166,28 +166,28 @@ class Mount(mountcontrol.mount.Mount):
         self.timerMountUp.stop()
         return True
 
-    def startDome(self):
+    def startDomeTimer(self):
         """
         :return:
         """
         self.timerDome.start(self.CYCLE_DOME)
         return True
 
-    def stopDome(self):
+    def stopDomeTimer(self):
         """
         :return:
         """
         self.timerDome.stop()
         return True
 
-    def startClock(self):
+    def startClockTimer(self):
         """
         :return:
         """
         self.timerClock.start(self.CYCLE_CLOCK)
         return True
 
-    def stopClock(self):
+    def stopClockTimer(self):
         """
         :return:
         """

@@ -413,7 +413,7 @@ class Satellite(object):
         :return: True for test purpose
         """
         satName = self.ui.listSatelliteNames.currentItem().text()[8:]
-        if self.app.mount.mountUp:
+        if self.app.deviceStat['mount']:
             self.programDataToMount(satName=satName)
         else:
             self.extractSatelliteData(satName=satName)
@@ -589,7 +589,7 @@ class Satellite(object):
         """
         :return:
         """
-        if not self.app.mount.mountUp:
+        if not self.app.deviceStat['mount']:
             return False
 
         start, end = self.selectStartEnd()
@@ -671,7 +671,7 @@ class Satellite(object):
         """
         :return: success
         """
-        if not self.app.mount.mountUp:
+        if not self.app.deviceStat['mount']:
             self.app.message.emit('Mount is not online', 2)
             return False
 
@@ -694,7 +694,7 @@ class Satellite(object):
         """
         :return: success
         """
-        if not self.app.mount.mountUp:
+        if not self.app.deviceStat['mount']:
             self.app.message.emit('Mount is not online', 2)
             return False
 

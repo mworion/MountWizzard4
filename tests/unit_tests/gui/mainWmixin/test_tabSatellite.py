@@ -482,7 +482,7 @@ def test_chooseSatellite_1(function):
     function.ui.listSatelliteNames.clear()
     function.ui.listSatelliteNames.addItem('TIANGONG 2')
     function.ui.listSatelliteNames.setCurrentRow(0)
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function,
                            'programDataToMount'):
         suc = function.chooseSatellite()
@@ -493,7 +493,7 @@ def test_chooseSatellite_2(function):
     function.ui.listSatelliteNames.clear()
     function.ui.listSatelliteNames.addItem('TIANGONG 2')
     function.ui.listSatelliteNames.setCurrentRow(0)
-    function.app.mount.mountUp = False
+    function.app.deviceStat['mount'] = False
     with mock.patch.object(function,
                            'extractSatelliteData'):
         suc = function.chooseSatellite()
@@ -698,7 +698,7 @@ def test_selectStartEnd_3(function):
 
 
 def test_selectStartEnd_4(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'test': ts.tt_jd(2459215.6),
@@ -709,7 +709,7 @@ def test_selectStartEnd_4(function):
 
 
 def test_selectStartEnd_5(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'flip': ts.tt_jd(2459215.6),
@@ -720,7 +720,7 @@ def test_selectStartEnd_5(function):
 
 
 def test_selectStartEnd_6(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'flip': ts.tt_jd(2459215.6),
@@ -733,7 +733,7 @@ def test_selectStartEnd_6(function):
 
 
 def test_selectStartEnd_7(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     UTC2TT = function.app.mount.obsSite.UTC2TT
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
@@ -747,7 +747,7 @@ def test_selectStartEnd_7(function):
 
 
 def test_selectStartEnd_8(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     UTC2TT = function.app.mount.obsSite.UTC2TT
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
@@ -761,13 +761,13 @@ def test_selectStartEnd_8(function):
 
 
 def test_progTrajectoryToMount_1(function):
-    function.app.mount.mountUp = False
+    function.app.deviceStat['mount'] = False
     suc = function.progTrajectoryToMount()
     assert not suc
 
 
 def test_progTrajectoryToMount_2(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function,
                            'selectStartEnd',
                            return_value=(0, 0)):
@@ -776,7 +776,7 @@ def test_progTrajectoryToMount_2(function):
 
 
 def test_progTrajectoryToMount_3(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     function.ui.useInternalSatCalc.setChecked(True)
     function.ui.useInternalSatCalc.setEnabled(True)
     with mock.patch.object(function,
@@ -795,7 +795,7 @@ def test_progTrajectoryToMount_3(function):
 
 
 def test_progTrajectoryToMount_4(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     function.ui.useInternalSatCalc.setChecked(False)
     function.ui.useInternalSatCalc.setEnabled(False)
     with mock.patch.object(function,
@@ -887,13 +887,13 @@ def test_tle_export_1(function):
 
 
 def test_startTrack_1(function):
-    function.app.mount.mountUp = False
+    function.app.deviceStat['mount'] = False
     suc = function.startTrack()
     assert not suc
 
 
 def test_startTrack_2(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.satellite,
                            'slewTLE',
                            return_value=(False, 'test')):
@@ -902,7 +902,7 @@ def test_startTrack_2(function):
 
 
 def test_startTrack_3(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.satellite,
                            'slewTLE',
                            return_value=(False, 'test')):
@@ -911,7 +911,7 @@ def test_startTrack_3(function):
 
 
 def test_startTrack_4(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 5
     with mock.patch.object(function.app.mount.satellite,
                            'slewTLE',
@@ -921,7 +921,7 @@ def test_startTrack_4(function):
 
 
 def test_startTrack_5(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 5
     with mock.patch.object(function.app.mount.satellite,
                            'slewTLE',
@@ -931,7 +931,7 @@ def test_startTrack_5(function):
 
 
 def test_startTrack_6(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 5
     with mock.patch.object(function.app.mount.satellite,
                            'slewTLE',
@@ -944,7 +944,7 @@ def test_startTrack_6(function):
 
 
 def test_startTrack_7(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 5
     with mock.patch.object(function.app.mount.satellite,
                            'slewTLE',
@@ -957,13 +957,13 @@ def test_startTrack_7(function):
 
 
 def test_stopTrack_1(function):
-    function.app.mount.mountUp = False
+    function.app.deviceStat['mount'] = False
     suc = function.stopTrack()
     assert not suc
 
 
 def test_stopTrack_2(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'stopTracking',
                            return_value=False):
@@ -972,7 +972,7 @@ def test_stopTrack_2(function):
 
 
 def test_stopTrack_3(function):
-    function.app.mount.mountUp = True
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'stopTracking',
                            return_value=True):

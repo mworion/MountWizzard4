@@ -155,8 +155,6 @@ class Mount(mountcontrol.mount.Mount):
         """
         self.timerSetting.start(self.CYCLE_SETTING)
         self.timerPointing.start(self.CYCLE_POINTING)
-        self.timerDome.start(self.CYCLE_DOME)
-        self.timerClock.start(self.CYCLE_CLOCK)
         self.timerMountUp.start(self.CYCLE_MOUNT_UP)
         return True
 
@@ -170,6 +168,34 @@ class Mount(mountcontrol.mount.Mount):
         self.timerSetting.stop()
         self.timerMountUp.stop()
         self.threadPool.waitForDone()
+        return True
+
+    def startDome(self):
+        """
+        :return:
+        """
+        self.timerDome.start(self.CYCLE_DOME)
+        return True
+
+    def stopDome(self):
+        """
+        :return:
+        """
+        self.timerDome.stop()
+        return True
+
+    def startClock(self):
+        """
+        :return:
+        """
+        self.timerClock.start(self.CYCLE_CLOCK)
+        return True
+
+    def stopClock(self):
+        """
+        :return:
+        """
+        self.timerClock.stop()
         return True
 
     def resetData(self):

@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -16894,7 +16894,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -25696,7 +25696,7 @@ p, li { white-space: pre-wrap; }
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>51</height>
+         <height>46</height>
         </rect>
        </property>
        <property name="title">
@@ -25737,7 +25737,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>75</y>
+         <y>70</y>
          <width>366</width>
          <height>116</height>
         </rect>
@@ -26002,9 +26002,9 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>205</y>
+         <y>195</y>
          <width>366</width>
-         <height>96</height>
+         <height>106</height>
         </rect>
        </property>
        <property name="title">
@@ -26066,7 +26066,7 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>45</y>
+          <y>55</y>
           <width>166</width>
           <height>21</height>
          </rect>
@@ -26096,7 +26096,7 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>100</x>
-          <y>55</y>
+          <y>80</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -26137,11 +26137,11 @@ p, li { white-space: pre-wrap; }
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLabel" name="label_98">
+       <widget class="QLabel" name="clockOffset">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>55</y>
+          <y>80</y>
           <width>96</width>
           <height>21</height>
          </rect>
@@ -26158,11 +26158,11 @@ p, li { white-space: pre-wrap; }
          <string>Clock offset</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_125">
+       <widget class="QLabel" name="clockOffsetMS">
         <property name="geometry">
          <rect>
           <x>155</x>
-          <y>55</y>
+          <y>80</y>
           <width>21</width>
           <height>21</height>
          </rect>
@@ -26186,7 +26186,7 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>70</y>
+          <y>80</y>
           <width>166</width>
           <height>21</height>
          </rect>
@@ -26210,6 +26210,61 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="checked">
          <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="clockSync">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>55</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will enable measure and enable possible sync of the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Enable clock sync</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="Line" name="line_85">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>346</width>
+          <height>1</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </widget>

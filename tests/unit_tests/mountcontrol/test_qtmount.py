@@ -82,6 +82,7 @@ def test_stopTimers(function):
             suc = function.stopTimers()
             assert suc
 
+
 def test_resetData_1(function):
     suc = function.resetData()
     assert suc

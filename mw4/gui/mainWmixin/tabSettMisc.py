@@ -65,6 +65,7 @@ class SettMisc(object):
         self.app.update1s.connect(self.showOffset)
         self.app.update30s.connect(self.syncClock)
         self.ui.autoPushTime.stateChanged.connect(self.pushTimeHourly)
+        self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
 
         if pConf.isAvailable:
             self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
@@ -87,6 +88,7 @@ class SettMisc(object):
         self.ui.autoPushTime.setChecked(config.get('autoPushTime', False))
         self.ui.syncNotTracking.setChecked(config.get('syncNotTracking', True))
         self.ui.syncTimePC2Mount.setChecked(config.get('syncTimePC2Mount', False))
+        self.ui.clockSync.setChecked(config.get('clockSync', False))
         self.ui.automaticRestart.setChecked(config.get('automaticRestart', False))
         self.ui.activateVirtualStop.setChecked(config.get('activateVirtualStop', False))
         self.ui.versionReleaseNotes.setChecked(config.get('versionReleaseNotes', True))
@@ -97,6 +99,7 @@ class SettMisc(object):
         self.ui.soundImageSaved.setCurrentIndex(config.get('soundImageSaved', 0))
         self.ui.soundImageSolved.setCurrentIndex(config.get('soundImageSolved', 0))
 
+        self.toggleClockSync()
         self.setWeatherOnline()
         self.setupIERS()
         self.showUpdates()
@@ -115,6 +118,7 @@ class SettMisc(object):
         config['autoPushTime'] = self.ui.autoPushTime.isChecked()
         config['syncNotTracking'] = self.ui.syncNotTracking.isChecked()
         config['syncTimePC2Mount'] = self.ui.syncTimePC2Mount.isChecked()
+        config['clockSync'] = self.ui.clockSync.isChecked()
         config['automaticRestart'] = self.ui.automaticRestart.isChecked()
         config['activateVirtualStop'] = self.ui.activateVirtualStop.isChecked()
         config['versionReleaseNotes'] = self.ui.versionReleaseNotes.isChecked()
@@ -527,15 +531,35 @@ class SettMisc(object):
         else:
             return False
 
+    def toggleClockSync(self):
+        """
+        :return:
+        """
+        enableSync = self.ui.clockSync.isChecked()
+        self.ui.syncTimePC2Mount.setEnabled(enableSync)
+        self.ui.syncNotTracking.setEnabled(enableSync)
+        self.ui.clockOffset.setEnabled(enableSync)
+        self.ui.clockOffsetMS.setEnabled(enableSync)
+        self.ui.timeDeltaPC2Mount.setEnabled(enableSync)
+        if enableSync:
+            self.app.mount.startClock()
+        else:
+            self.app.mount.stopClock()
+        return True
+
     def showOffset(self):
         """
         :return:
         """
+        enableSync = self.ui.clockSync.isChecked()
         doSync = self.ui.syncTimePC2Mount.isChecked()
         delta = self.app.mount.obsSite.timeDiff * 1000
-        text = f'{delta:4.0f}'
+        if enableSync:
+            text = f'{delta:4.0f}'
+        else:
+            text = '-'
         self.ui.timeDeltaPC2Mount.setText(text)
-        if not doSync:
+        if not doSync or not enableSync:
             self.changeStyleDynamic(self.ui.timeUTC, 'char', '')
         elif abs(delta) < 200:
             self.changeStyleDynamic(self.ui.timeUTC, 'char', 'green')

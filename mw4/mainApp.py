@@ -269,7 +269,7 @@ class MountWizzard4(QObject):
         """
         self.aboutToQuit()
         self.deviceStat['mount'] = False
-        self.threadPool.waitForDone(5000)
+        self.threadPool.waitForDone(10000)
         self.message.emit('MountWizzard4 manual stopped', 1)
         self.application.quit()
         return True

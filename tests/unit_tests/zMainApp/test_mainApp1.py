@@ -17,7 +17,7 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
-import shutil
+import shutil, time
 
 # external packages
 import PyQt5
@@ -52,3 +52,4 @@ def test_start_parameters_1(qapp):
                                        'checkAndSetAutomation',
                                        return_value=None):
                     MountWizzard4(mwGlob=mwGlob, application=qapp)
+                    time.sleep(10)

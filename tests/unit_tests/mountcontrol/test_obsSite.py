@@ -18,11 +18,13 @@
 import unittest
 import unittest.mock as mock
 import os
+import platform
 
 # external packages
 from skyfield.api import Angle, Timescale, wgs84, Star
 
 # local imports
+import mountcontrol
 from mountcontrol.obsSite import ObsSite
 from base.loggerMW import setupLogging
 setupLogging()
@@ -128,6 +130,12 @@ class TestConfigData(unittest.TestCase):
 
         obsSite.timeJD = obsSite.ts.now().tt - 69.184 / 86400
         self.assertAlmostEqual(obsSite.ts.now().tt, obsSite.timeJD.tt, 4)
+
+    def test_timeDiff(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite._timeDiff = [10, 10, 10, 10, 10]
+        obsSite.timeDiff = 20
+        assert obsSite.timeDiff == 10
 
     def test_Site_utc_ut1(self):
         obsSite = ObsSite(pathToData=pathToData)
@@ -582,6 +590,85 @@ class TestConfigData(unittest.TestCase):
             mConn.return_value.communicate.return_value = True, response, 6
             suc = obsSite.pollPointing()
             self.assertEqual(False, suc)
+
+    def test_pollSyncClock_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Windows'):
+            with mock.patch.object(mountcontrol.obsSite.Connection,
+                                   'communicate',
+                                   return_value=(False, [], 0)):
+                suc = obsSite.pollSyncClock()
+                assert not suc
+
+    def test_pollSyncClock_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Linux'):
+            with mock.patch.object(mountcontrol.obsSite.Connection,
+                                   'communicate',
+                                   return_value=(False, [], 0)):
+                suc = obsSite.pollSyncClock()
+                assert not suc
+
+    def test_pollSyncClock_3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='aarch64'):
+            with mock.patch.object(mountcontrol.obsSite.Connection,
+                                   'communicate',
+                                   return_value=(False, [], 0)):
+                suc = obsSite.pollSyncClock()
+                assert not suc
+
+    def test_pollSyncClock_4(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Darwin'):
+            with mock.patch.object(mountcontrol.obsSite.Connection,
+                                   'communicate',
+                                   return_value=(True, ['eee'], 1)):
+                suc = obsSite.pollSyncClock()
+                assert not suc
+
+    def test_pollSyncClock_5(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Darwin'):
+            with mock.patch.object(mountcontrol.obsSite.Connection,
+                                   'communicate',
+                                   return_value=(True, ['12345678.1'], 1)):
+                suc = obsSite.pollSyncClock()
+                assert suc
+
+    def test_adjustClock_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(False, ['0'], 1)):
+            suc = obsSite.adjustClock(0)
+            assert not suc
+
+    def test_adjustClock_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, ['0'], 1)):
+            suc = obsSite.adjustClock(0)
+            assert not suc
+
+    def test_adjustClock_3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, ['1'], 1)):
+            suc = obsSite.adjustClock(0)
+            assert suc
 
     def test_startSlewing_1(self):
         obsSite = ObsSite(pathToData=pathToData)

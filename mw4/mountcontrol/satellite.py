@@ -605,7 +605,7 @@ class Satellite(object):
         if isinstance(julD, skyfield.timelib.Time):
             julD = julD.tt
 
-        cmd = f':TRNEW{julD:07.5f}#'
+        cmd = f':TRNEW{julD}#'
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
@@ -633,7 +633,7 @@ class Satellite(object):
 
         cmd = ''
         for azimuth, altitude in zip(az, alt):
-            cmd += f':TRADD{azimuth:03.5f},{altitude:02.5f}#'
+            cmd += f':TRADD{azimuth},{altitude}#'
 
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
@@ -678,7 +678,8 @@ class Satellite(object):
         if len(response) != 1:
             self.log.warning('wrong number of chunks')
             return False
-        if response[0] == 'E':
+        # should be 'E' only , actually wrong 'N' in
+        if response[0] in ['E', 'N']:
             return False
 
         value = response[0].split(',')

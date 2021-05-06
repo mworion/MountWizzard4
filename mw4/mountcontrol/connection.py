@@ -73,6 +73,7 @@ class Connection(object):
                 ':Guaf', ':Gz',
                 ':MA', ':MS', ':MaX', ':Me', ':Mn', ':Ms', ':Mw',
                 ':MSao', ':MSap',
+                ':NTGdisc', ':NTGweb', ':NTSdisc', ':NTSweb',
                 ':NUtim',
                 ':PO', ':PO', ':PO', ':PaX', ':PiP',
                 ':Q', ':QaXa', ':QaXb', ':Qe', ':Qn', ':Qs', ':Qw',

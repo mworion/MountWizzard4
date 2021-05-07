@@ -223,7 +223,27 @@ need to restart MW4 to run the new version.
 MW4 offers to install alpha or beta releases as well. If you would like to do so,
 please check the according box.
 
-Area 3: Logging Levels
+Area 3: Clock-Sync
+^^^^^^^^^^^^^^^^^^
+Sync of clocks could be done in two ways:
+
+As the timebase for MW4 is the mount
+clock, MW4 could set the computer clock to the actual mount clock. This also could
+be done on a regular base when auto update is checked. The precision is limited so
+it is really setting the clock not syncing the time base.
+
+In the other direction, the mount clock could be synced to the PC time base like
+the 10 micron clock sync tool does. When enabled MW4 starts to measure the
+difference with a long filter and compares it. If you enable sync, MW4 will adjust
+the mount clock in intervals until the difference is below 10 ms. When enabled the
+UTC (mount time) in main window will show a status of the sync: Green (like
+10micron) when difference is below 200ms, yellow if below 500ms and red if exceeds
+this delta. Normally you should see a difference below 10ms after 2-3 minutes.
+Syncing is always tricky as the time base is relevant for precision in tracking or
+pointing, so you could force MW4 to sync clocks only when not in "working" mode,
+means tracking or following satellite.
+
+Area 4: Logging Levels
 ^^^^^^^^^^^^^^^^^^^^^^
 As MW4 is not perfect things might happen and to review the situation and review
 it, MW4 writes log files. For all release versions information setting is ok, for
@@ -240,7 +260,7 @@ MW4 tries to log all data needed for bugfixing.
     this issue as well. It's easy to do and the size of the log file should not
     matter. Using issues on GitHub help me to improve MW4.
 
-Area 4: Audio Signals
+Area 5: Audio Signals
 ^^^^^^^^^^^^^^^^^^^^^
 MW4 could play audio signals for some events to giv you an audio feedback what is
 happening. Event and audio could be setup.

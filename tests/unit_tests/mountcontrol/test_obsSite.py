@@ -116,7 +116,7 @@ class TestConfigData(unittest.TestCase):
     def test_Site_timeJD_1(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        obsSite.utc_ut1 = '0'
+        obsSite.ut1_utc = '0'
         obsSite.timeJD = '2458240.12345678'
         self.assertEqual(2458240.123457949, obsSite.timeJD.ut1)
         obsSite.timeJD = 2458240.12345678
@@ -137,17 +137,17 @@ class TestConfigData(unittest.TestCase):
         obsSite.timeDiff = 20
         assert obsSite.timeDiff == 10
 
-    def test_Site_utc_ut1(self):
+    def test_Site_ut1_utc(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        obsSite.utc_ut1 = '123.11'
-        self.assertEqual(123.11 / 86400, obsSite.utc_ut1)
+        obsSite.ut1_utc = '123.11'
+        self.assertEqual(123.11 / 86400, obsSite.ut1_utc)
 
     def test_Site_utc_ut2(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        obsSite.utc_ut1 = None
-        assert obsSite.utc_ut1 is None
+        obsSite.ut1_utc = None
+        assert obsSite.ut1_utc is None
 
     def test_Site_timeSidereal_1(self):
         obsSite = ObsSite(pathToData=pathToData)

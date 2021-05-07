@@ -93,7 +93,7 @@ class ObsSite(object):
         self._timeJD = None
         self.timePC = None
         self._timeDiff = np.full(25, 0.0)
-        self._utc_ut1 = None
+        self.ut1_utc = None
         self._timeSidereal = None
         self._raJNow = None
         self._raJNowTarget = None
@@ -189,16 +189,16 @@ class ObsSite(object):
         return
 
     @property
-    def utc_ut1(self):
-        return self._utc_ut1
+    def ut1_utc(self):
+        return self._ut1_utc
 
-    @utc_ut1.setter
-    def utc_ut1(self, value):
+    @ut1_utc.setter
+    def ut1_utc(self, value):
         value = valueToFloat(value)
         if value is not None:
-            self._utc_ut1 = value / 86400
+            self._ut1_utc = value / 86400
         else:
-            self._utc_ut1 = None
+            self._ut1_utc = None
 
     @property
     def timeSidereal(self):
@@ -472,7 +472,7 @@ class ObsSite(object):
             return False
         self.timeSidereal = response[0]
         # remove the leap seconds flag if present
-        self.utc_ut1 = response[1].replace('L', '')
+        self.ut1_utc = response[1].replace('L', '')
         self.angularPosRA = response[2]
         self.angularPosDEC = response[3]
         responseSplit = response[4].split(',')

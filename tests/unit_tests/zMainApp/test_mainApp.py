@@ -23,6 +23,7 @@ import unittest.mock as mock
 import logging
 import platform
 import shutil
+import time
 
 # external packages
 import pytest
@@ -61,6 +62,7 @@ def app(qapp):
                 addLoggingLevel('TRACE', 5)
                 addLoggingLevel('UI', 35)
                 yield app
+                time.sleep(10)
 
 
 @pytest.fixture(autouse=True, scope='function')

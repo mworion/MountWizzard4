@@ -33,6 +33,21 @@ class TestConfigData(unittest.TestCase):
     #
     #
 
+    def test_webInterfaceStat_1(self):
+        sett = Setting()
+        sett.webInterfaceStat = '0'
+        assert not sett.webInterfaceStat
+
+    def test_webInterfaceStat_2(self):
+        sett = Setting()
+        sett.webInterfaceStat = '1'
+        assert sett.webInterfaceStat
+
+    def test_webInterfaceStat_3(self):
+        sett = Setting()
+        sett.webInterfaceStat = 'E'
+        assert sett.webInterfaceStat is None
+
     def test_Setting_slewRate(self):
         sett = Setting()
         sett.slewRate = '67'
@@ -1206,3 +1221,30 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
         setting.trackingRate = '67'
         self.assertEqual(67, setting.trackingRate)
+
+    def test_setWebInterface_ok(self):
+        setting = Setting()
+
+        response = ['1']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = setting.setWebInterface(True)
+            self.assertEqual(True, suc)
+
+    def test_setWebInterface_not_ok1(self):
+        setting = Setting()
+
+        response = ['1']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = setting.setWebInterface(True)
+            self.assertEqual(False, suc)
+
+    def test_setWebInterface_not_ok2(self):
+        setting = Setting()
+
+        response = ['0']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = setting.setWebInterface(True)
+            self.assertEqual(False, suc)

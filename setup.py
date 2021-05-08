@@ -33,6 +33,7 @@ releaseNotes = """
 - add satellite track respect horizon line
 - add tracking simulator feature to test without waiting for satellite
 - add reverse order for filed build point retry 
+- add automatic enable webinterface for keypad use
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected
 - fix retry mechanism for failed build points

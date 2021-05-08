@@ -72,7 +72,6 @@ class Setting(object):
         self._weatherHumidity = None
         self._weatherDewPoint = None
         self._trackingRate = None
-        self._networkDiscoveryStat = None
         self._webInterfaceStat = None
 
     @property
@@ -324,15 +323,11 @@ class Setting(object):
 
     @webInterfaceStat.setter
     def webInterfaceStat(self, value):
-        self._webInterfaceStat = valueToFloat(value)
-
-    @property
-    def networkDiscoveryStat(self):
-        return self._networkDiscoveryStat
-
-    @networkDiscoveryStat.setter
-    def networkDiscoveryStat(self, value):
-        self._networkDiscoveryStat = valueToFloat(value)
+        value = valueToFloat(value)
+        if value is None:
+            self._webInterfaceStat = None
+        else:
+            self._webInterfaceStat = bool(value)
 
     def parseSetting(self, response, numberOfChunks):
         """
@@ -786,3 +781,17 @@ class Setting(object):
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':RT1#')
         return suc
+
+    def setWebInterface(self, status):
+        """
+        :return:    success
+        """
+        conn = Connection(self.host)
+        commandString = ':NTSweb{0:1d}#'.format(1 if status else 0)
+        suc, response, numberOfChunks = conn.communicate(commandString)
+        if not suc:
+            return False
+        if response[0] != '1':
+            return False
+        return True
+

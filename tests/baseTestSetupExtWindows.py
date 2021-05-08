@@ -168,6 +168,11 @@ class Mount(QObject):
         meridianLimitTrack = 0
         horizonLimitHigh = 0
         horizonLimitLow = 0
+        webInterfaceStat = 0
+
+        @staticmethod
+        def setWebInterface(a):
+            return
 
     class MountSignals(QObject):
         settingDone = pyqtSignal()

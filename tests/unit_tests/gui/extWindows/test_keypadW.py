@@ -90,6 +90,20 @@ def test_closeEvent_1(function):
                 function.closeEvent(QCloseEvent)
 
 
+def test_showWindow_1(function):
+    function.app.mount.setting.webInterfaceStat = 0
+    with mock.patch.object(function,
+                           'show'):
+        with mock.patch.object(function,
+                               'showUrl'):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setWebInterface',
+                                   return_value=False):
+                suc = function.showWindow()
+                assert suc
+                function.browser.loadFinished.disconnect(function.loadFinished)
+
+
 def test_loadFinished_1(function):
     function.loadFinished()
 

@@ -1010,7 +1010,7 @@
      <widget class="QLabel" name="label_148">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>280</x>
         <y>150</y>
         <width>116</width>
         <height>21</height>
@@ -1193,7 +1193,7 @@
      <widget class="QLabel" name="label_74">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>280</x>
         <y>100</y>
         <width>116</width>
         <height>21</height>
@@ -1436,7 +1436,7 @@
      <widget class="QLabel" name="label_55">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>280</x>
         <y>75</y>
         <width>101</width>
         <height>21</height>
@@ -1457,7 +1457,7 @@
      <widget class="QLabel" name="label_61">
       <property name="geometry">
        <rect>
-        <x>445</x>
+        <x>450</x>
         <y>25</y>
         <width>31</width>
         <height>21</height>
@@ -1604,7 +1604,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
+        <x>400</x>
         <y>50</y>
         <width>51</width>
         <height>21</height>
@@ -1670,7 +1670,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
+        <x>400</x>
         <y>75</y>
         <width>51</width>
         <height>21</height>
@@ -1982,7 +1982,7 @@
      <widget class="QLabel" name="label_91">
       <property name="geometry">
        <rect>
-        <x>445</x>
+        <x>450</x>
         <y>50</y>
         <width>31</width>
         <height>21</height>
@@ -2108,7 +2108,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
+        <x>400</x>
         <y>100</y>
         <width>51</width>
         <height>21</height>
@@ -2157,7 +2157,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_52">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>280</x>
         <y>50</y>
         <width>91</width>
         <height>20</height>
@@ -2184,7 +2184,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
+        <x>400</x>
         <y>150</y>
         <width>51</width>
         <height>21</height>
@@ -2229,7 +2229,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_151">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>280</x>
         <y>125</y>
         <width>116</width>
         <height>21</height>
@@ -2580,7 +2580,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_90">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>280</x>
         <y>25</y>
         <width>101</width>
         <height>20</height>
@@ -2634,7 +2634,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
+        <x>400</x>
         <y>25</y>
         <width>51</width>
         <height>21</height>
@@ -2739,7 +2739,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
+        <x>400</x>
         <y>125</y>
         <width>51</width>
         <height>21</height>
@@ -2787,7 +2787,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_mountMAC_2">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>280</x>
         <y>175</y>
         <width>106</width>
         <height>21</height>
@@ -2811,7 +2811,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
+        <x>400</x>
         <y>175</y>
         <width>51</width>
         <height>21</height>
@@ -2862,7 +2862,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_mountMAC_4">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>280</x>
         <y>200</y>
         <width>106</width>
         <height>21</height>
@@ -2886,7 +2886,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
+        <x>400</x>
         <y>200</y>
         <width>51</width>
         <height>21</height>
@@ -2920,6 +2920,96 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="text">
        <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="clockOffsetMS">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>75</y>
+        <width>21</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>ms</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="clockOffset">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>75</y>
+        <width>126</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Clock sync offset</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="timeDeltaPC2Mount">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>155</x>
+        <y>75</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clock difference between PC clock and Mount Computer, filtered over 10 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="inputMask">
+       <string/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="maxLength">
+       <number>20</number>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -26247,96 +26337,6 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="timeDeltaPC2Mount">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>80</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clock difference between PC clock and Mount Computer, filtered over 10 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string/>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="maxLength">
-         <number>20</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="clockOffset">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>80</y>
-          <width>96</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Clock offset</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="clockOffsetMS">
-        <property name="geometry">
-         <rect>
-          <x>150</x>
-          <y>80</y>
-          <width>21</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>ms</string>
         </property>
        </widget>
       </widget>

@@ -45,6 +45,7 @@ class Mount(object):
         ms.settingDone.connect(self.updateSetStatGUI)
         ms.settingDone.connect(self.updateSetSyncGUI)
         ms.settingDone.connect(self.updateTrackingGui)
+        self.app.update1s.connect(self.showOffset)
 
         self.ui.park.clicked.connect(self.changePark)
         self.ui.flipMount.clicked.connect(self.flipMount)
@@ -959,3 +960,25 @@ class Mount(object):
         else:
             self.app.message.emit('Refraction correction cannot be set', 2)
         return suc
+
+    def showOffset(self):
+        """
+        :return:
+        """
+        connectSync = self.ui.clockSync.isChecked()
+        delta = self.app.mount.obsSite.timeDiff * 1000
+        if connectSync:
+            text = f'{delta:4.0f}'
+        else:
+            text = '-'
+        self.ui.timeDeltaPC2Mount.setText(text)
+
+        if not connectSync:
+            self.changeStyleDynamic(self.ui.timeUTC, 'char', '')
+        elif abs(delta) < 200:
+            self.changeStyleDynamic(self.ui.timeUTC, 'char', 'green')
+        elif abs(delta) < 500:
+            self.changeStyleDynamic(self.ui.timeUTC, 'char', 'yellow')
+        else:
+            self.changeStyleDynamic(self.ui.timeUTC, 'char', 'red')
+        return True

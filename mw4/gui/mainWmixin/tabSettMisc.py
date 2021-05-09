@@ -62,7 +62,6 @@ class SettMisc(object):
         self.ui.pushTime.clicked.connect(self.pushTime)
         self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
         self.app.update1h.connect(self.pushTimeHourly)
-        self.app.update1s.connect(self.showOffset)
         self.app.update30s.connect(self.syncClock)
         self.ui.autoPushTime.stateChanged.connect(self.pushTimeHourly)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
@@ -545,28 +544,6 @@ class SettMisc(object):
             self.app.mount.startClockTimer()
         else:
             self.app.mount.stopClockTimer()
-        return True
-
-    def showOffset(self):
-        """
-        :return:
-        """
-        connectSync = self.ui.clockSync.isChecked()
-        delta = self.app.mount.obsSite.timeDiff * 1000
-        if connectSync:
-            text = f'{delta:4.0f}'
-        else:
-            text = '-'
-        self.ui.timeDeltaPC2Mount.setText(text)
-
-        if not connectSync:
-            self.changeStyleDynamic(self.ui.timeUTC, 'char', '')
-        elif abs(delta) < 200:
-            self.changeStyleDynamic(self.ui.timeUTC, 'char', 'green')
-        elif abs(delta) < 500:
-            self.changeStyleDynamic(self.ui.timeUTC, 'char', 'yellow')
-        else:
-            self.changeStyleDynamic(self.ui.timeUTC, 'char', 'red')
         return True
 
     def syncClock(self):

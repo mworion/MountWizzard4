@@ -726,39 +726,6 @@ def test_toggleClockSync_2(function):
     assert suc
 
 
-def test_showOffset_1(function):
-    function.ui.clockSync.setChecked(False)
-    function.ui.syncTimePC2Mount.setChecked(False)
-
-    suc = function.showOffset()
-    assert suc
-
-
-@mock.patch('tests.baseTestSetupMixins.App.mount.obsSite.timeDiff', 0.003)
-def test_showOffset_2(function):
-    function.ui.clockSync.setChecked(True)
-    function.ui.syncTimePC2Mount.setChecked(True)
-    suc = function.showOffset()
-    assert suc
-
-
-@mock.patch('tests.baseTestSetupMixins.App.mount.obsSite.timeDiff', 0.3)
-def test_showOffset_3(function):
-    function.ui.clockSync.setChecked(True)
-    function.ui.syncTimePC2Mount.setChecked(True)
-
-    suc = function.showOffset()
-    assert suc
-
-
-@mock.patch('tests.baseTestSetupMixins.App.mount.obsSite.timeDiff', 0.6)
-def test_showOffset_4(function):
-    function.ui.clockSync.setChecked(True)
-    function.ui.syncTimePC2Mount.setChecked(True)
-    suc = function.showOffset()
-    assert suc
-
-
 def test_syncClock_1(function):
     function.ui.syncTimePC2Mount.setChecked(False)
     suc = function.syncClock()

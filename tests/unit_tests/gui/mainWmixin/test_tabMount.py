@@ -302,6 +302,24 @@ def test_updateSetSyncGUI_6(function):
     assert suc
 
 
+def test_updateSetSyncGUI_7(function):
+    function.app.mount.setting.webInterfaceStat = 0
+    suc = function.updateSetSyncGUI(function.app.mount.setting)
+    assert suc
+
+
+def test_updateSetSyncGUI_8(function):
+    function.app.mount.setting.webInterfaceStat = 1
+    suc = function.updateSetSyncGUI(function.app.mount.setting)
+    assert suc
+
+
+def test_updateSetSyncGUI_9(function):
+    function.app.mount.setting.webInterfaceStat = None
+    suc = function.updateSetSyncGUI(function.app.mount.setting)
+    assert suc
+
+
 def test_updateTrackingGui_1(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,

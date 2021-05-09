@@ -123,6 +123,7 @@ class Mount(QObject):
         typeConnection = 1
         slewRateMin = 0
         slewRateMax = 1
+        webInterfaceStat = 0
 
         @staticmethod
         def timeToMeridian():

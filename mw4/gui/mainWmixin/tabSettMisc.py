@@ -551,16 +551,15 @@ class SettMisc(object):
         """
         :return:
         """
-        enableSync = self.ui.clockSync.isChecked()
-        doSync = self.ui.syncTimePC2Mount.isChecked()
+        connectSync = self.ui.clockSync.isChecked()
         delta = self.app.mount.obsSite.timeDiff * 1000
-        if enableSync:
+        if connectSync:
             text = f'{delta:4.0f}'
         else:
             text = '-'
         self.ui.timeDeltaPC2Mount.setText(text)
 
-        if not doSync or not enableSync:
+        if not connectSync:
             self.changeStyleDynamic(self.ui.timeUTC, 'char', '')
         elif abs(delta) < 200:
             self.changeStyleDynamic(self.ui.timeUTC, 'char', 'green')

@@ -95,13 +95,11 @@ class Mount(object):
         """
         if obs.Alt is not None:
             self.ui.ALT.setText('{0:5.2f}'.format(obs.Alt.degrees))
-
         else:
             self.ui.ALT.setText('-')
 
         if obs.Az is not None:
             self.ui.AZ.setText('{0:5.2f}'.format(obs.Az.degrees))
-
         else:
             self.ui.AZ.setText('-')
 
@@ -111,7 +109,6 @@ class Mount(object):
         isValid = isValid and obs.timeJD is not None
         if isJ2000 and isValid:
             ra, dec = transform.JNowToJ2000(obs.raJNow, obs.decJNow, obs.timeJD)
-
         else:
             ra = obs.raJNow
             dec = obs.decJNow
@@ -119,7 +116,6 @@ class Mount(object):
         if ra is not None:
             self.ui.RA.setText(self.formatHstrToText(ra))
             self.ui.RAfloat.setText(f'{ra.hours:3.4f}')
-
         else:
             self.ui.RA.setText('-')
             self.ui.RAfloat.setText('-')
@@ -127,21 +123,18 @@ class Mount(object):
         if dec is not None:
             self.ui.DEC.setText(self.formatDstrToText(dec))
             self.ui.DECfloat.setText(f'{dec.degrees:+3.4f}')
-
         else:
             self.ui.DEC.setText('-')
             self.ui.DECfloat.setText('-')
 
         if obs.pierside is not None:
             self.ui.pierside.setText('WEST' if obs.pierside == 'W' else 'EAST')
-
         else:
             self.ui.pierside.setText('-')
 
         if obs.haJNow is not None:
             self.ui.HA.setText(self.formatHstrToText(obs.haJNow))
             self.ui.HAfloat.setText(f'{obs.haJNow.hours:3.4f}')
-
         else:
             self.ui.HA.setText('-')
             self.ui.HAfloat.setText('-')
@@ -158,7 +151,6 @@ class Mount(object):
             val = obs.timeSidereal.hms()
             siderealText = siderealFormat.format(*val)
             self.ui.timeSidereal.setText(siderealText)
-
         else:
             self.ui.timeSidereal.setText('-')
 
@@ -178,10 +170,8 @@ class Mount(object):
 
             if now > expire:
                 self.changeStyleDynamic(ui, 'color', 'red')
-
             elif now > expire - deltaYellow:
                 self.changeStyleDynamic(ui, 'color', 'yellow')
-
             else:
                 self.changeStyleDynamic(ui, 'color', '')
 
@@ -191,11 +181,9 @@ class Mount(object):
         if sett.statusUnattendedFlip is None:
             text = '-'
             self.changeStyleDynamic(ui, 'status', '')
-
         elif sett.statusUnattendedFlip:
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
-
         else:
             text = 'OFF'
             self.changeStyleDynamic(ui, 'status', '')
@@ -206,11 +194,9 @@ class Mount(object):
         if sett.statusDualAxisTracking is None:
             text = '-'
             self.changeStyleDynamic(ui, 'status', '')
-
         elif sett.statusDualAxisTracking:
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
-
         else:
             text = 'OFF'
             self.changeStyleDynamic(ui, 'status', '')
@@ -223,13 +209,11 @@ class Mount(object):
             self.changeStyleDynamic(ui, 'status', '')
             self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
             self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
-
         elif sett.statusRefraction:
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
             self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
             self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
-
         else:
             text = 'OFF'
             self.changeStyleDynamic(ui, 'status', '')
@@ -262,6 +246,18 @@ class Mount(object):
             text = '-'
             self.changeStyleDynamic(ui, 'status', '')
         elif sett.wakeOnLan == 'On':
+            text = 'ON'
+            self.changeStyleDynamic(ui, 'status', 'on')
+        else:
+            text = 'OFF'
+            self.changeStyleDynamic(ui, 'status', '')
+        self.guiSetText(ui, 's', text)
+
+        ui = self.ui.statusWebInterface
+        if sett.webInterfaceStat is None:
+            text = '-'
+            self.changeStyleDynamic(ui, 'status', '')
+        elif sett.webInterfaceStat == 1:
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
         else:

@@ -21,4 +21,11 @@ Astronomical Union. TT is distinct from the time scale often used as a basis for
 civil purposes, UTC. TT is indirectly the basis of UTC, via International Atomic
 Time (TAI).
 
-I do the conversion for all time references done in julian dates.
+MW4 does sync time from mount to PC by just setting the time with standard
+commands. Unfortunately all platforms (Windows, Mac and Linux) handle this
+different and with precision in seconds.
+
+If the mount clock is synced to the PC, MW4 polls the actual julian date and save
+the time when the TCP packet is received with this time. As the TCP transfer is on
+a wired network below 1ms, you could compare both timestamps and correct the mount
+time accordingsly.

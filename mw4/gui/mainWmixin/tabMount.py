@@ -170,11 +170,14 @@ class Mount(object):
             deltaYellow = datetime.timedelta(days=30)
 
             if now > expire:
+                self.changeStyleDynamic(ui, 'char', 'red')
                 self.changeStyleDynamic(ui, 'color', 'red')
             elif now > expire - deltaYellow:
-                self.changeStyleDynamic(ui, 'color', 'yellow')
+                self.changeStyleDynamic(ui, 'char', '')
+                self.changeStyleDynamic(ui, 'color', 'red')
             else:
                 self.changeStyleDynamic(ui, 'color', '')
+                self.changeStyleDynamic(ui, 'char', '')
 
         self.guiSetText(self.ui.UTCExpire, 's', sett.UTCExpire)
 
@@ -967,18 +970,23 @@ class Mount(object):
         """
         connectSync = self.ui.clockSync.isChecked()
         delta = self.app.mount.obsSite.timeDiff * 1000
+        ui = self.ui.timeDeltaPC2Mount
         if connectSync:
             text = f'{delta:4.0f}'
         else:
             text = '-'
-        self.ui.timeDeltaPC2Mount.setText(text)
+        ui.setText(text)
 
         if not connectSync:
-            self.changeStyleDynamic(self.ui.timeUTC, 'char', '')
-        elif abs(delta) < 200:
-            self.changeStyleDynamic(self.ui.timeUTC, 'char', 'green')
+            self.changeStyleDynamic(ui, 'char', '')
+            self.changeStyleDynamic(ui, 'color', '')
+        elif abs(delta) < 100:
+            self.changeStyleDynamic(ui, 'char', '')
+            self.changeStyleDynamic(ui, 'color', '')
         elif abs(delta) < 500:
-            self.changeStyleDynamic(self.ui.timeUTC, 'char', 'yellow')
+            self.changeStyleDynamic(ui, 'char', 'yellow')
+            self.changeStyleDynamic(ui, 'color', '')
         else:
-            self.changeStyleDynamic(self.ui.timeUTC, 'char', 'red')
+            self.changeStyleDynamic(ui, 'char', 'red')
+            self.changeStyleDynamic(ui, 'color', 'red')
         return True

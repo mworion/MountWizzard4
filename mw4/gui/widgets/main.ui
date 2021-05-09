@@ -25478,7 +25478,7 @@ When clicking the button, you could change the value.</string>
      </widget>
      <widget class="QWidget" name="AudioMisc">
       <attribute name="title">
-       <string>Misc / Audio</string>
+       <string>Update / Time / Audio / Misc</string>
       </attribute>
       <widget class="Line" name="line_84">
        <property name="geometry">

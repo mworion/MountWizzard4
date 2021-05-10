@@ -122,17 +122,20 @@ class ObsSite(object):
         """
         :return:
         """
-        if self.pathToData:
+        hasPathToData = self.pathToData is not None
+        if hasPathToData:
             self.loader = Loader(self.pathToData, verbose=self.verbose)
+            hasOnline = os.path.isfile(self.pathToData + 'finals2000A.all')
         else:
             self.loader = load
+            hasOnline = False
 
-        if os.path.isfile(self.pathToData + '/finals2000A.all'):
+        if hasOnline:
             self.ts = self.loader.timescale(builtin=False)
-            self.log.debug('Timescale is using downloaded version')
+            self.log.info('Timescale is using downloaded version')
         else:
             self.ts = self.loader.timescale(builtin=True)
-            self.log.debug('Timescale is using built-in')
+            self.log.info('Timescale is using built-in')
 
         t = self.ts.now()
         self.UTC2TT = (t.delta_t + t.dut1) / 86400

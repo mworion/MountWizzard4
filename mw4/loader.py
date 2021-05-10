@@ -302,8 +302,9 @@ def extractDataFiles(mwGlob=None, splashW=None):
     files = {
         'de421_23.bsp': 0,
         'active.txt': 0,
-        'tai-utc.dat': 0,
+        'CDFLeapSeconds.txt': 0,
         'finals2000A.all': 0,
+        'finals.data': 0,
     }
 
     content = QFile(':/data/content.txt')

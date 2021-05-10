@@ -17,6 +17,7 @@
 # standard libraries
 import logging
 import platform
+import os
 
 # external packages
 from skyfield.api import wgs84, Angle, load, Loader
@@ -126,10 +127,15 @@ class ObsSite(object):
         else:
             self.loader = load
 
-        self.ts = self.loader.timescale(builtin=True)
+        if os.path.isfile(self.pathToData + '/finals2000A.all'):
+            self.ts = self.loader.timescale(builtin=False)
+            self.log.debug('Timescale is using downloaded version')
+        else:
+            self.ts = self.loader.timescale(builtin=True)
+            self.log.debug('Timescale is using built-in')
+
         t = self.ts.now()
         self.UTC2TT = (t.delta_t + t.dut1) / 86400
-        self.log.debug('Timescale is using built-in')
         return True
 
     @property

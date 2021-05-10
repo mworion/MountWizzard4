@@ -19,7 +19,7 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.0.0b6
+2.0.0b7
 
 - add mount clock sync feature
 - add simulator feature
@@ -36,9 +36,11 @@ Released beta version of MW4
 - add tracking simulator feature to test without waiting for satellite
 - add reverse order for filed build point retry
 - add automatic enable webinterface for keypad use
+- changed IERS and lead second download
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected
 - fix retry mechanism for failed build points
+- fix using builtins for skyfield and rotation update
 - update underlying libraries
 
 Released version of MW4

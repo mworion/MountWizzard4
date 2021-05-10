@@ -47,6 +47,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
                  parentWidget,
                  url='',
                  dest='',
+                 unzip=True,
                  callBack=None,
                  ):
 
@@ -67,7 +68,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.threadPool = parentWidget.threadPool
         self.signalProgress.connect(self.setProgressBarToValue)
         self.signalProgressBarColor.connect(self.setProgressBarColor)
-        self.downloadFile(url, dest)
+        self.downloadFile(url, dest, unzip=unzip)
         self.show()
 
     def setProgressBarColor(self, color):
@@ -123,10 +124,11 @@ class DownloadPopup(toolsQtWidget.MWidget):
 
         return True
 
-    def downloadFileWorker(self, url, dest):
+    def downloadFileWorker(self, url, dest, unzip=True):
         """
         :param url:
         :param dest:
+        :param unzip:
         :return:
         """
         if not os.path.dirname(dest):
@@ -155,6 +157,9 @@ class DownloadPopup(toolsQtWidget.MWidget):
         finally:
             time.sleep(1)
 
+        if not unzip:
+            return True
+
         try:
             self.unzipFile(dest)
 
@@ -173,13 +178,15 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.close()
         return True
 
-    def downloadFile(self, url, dest):
+    def downloadFile(self, url, dest, unzip=True):
         """
         :param url:
         :param dest:
+        :param unzip:
         :return:
         """
-        self.worker = Worker(self.downloadFileWorker, url=url, dest=dest)
+        self.worker = Worker(self.downloadFileWorker, url=url, dest=dest,
+                             unzip=unzip)
         if self.callBack:
             self.worker.signals.result.connect(self.processResult)
         else:

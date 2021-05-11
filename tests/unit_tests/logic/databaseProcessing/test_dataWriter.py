@@ -66,14 +66,14 @@ def test_writeEarthRotationData_1(function):
 
 
 def test_writeEarthRotationData_2(function):
-    shutil.copy('tests/testData/tai-utc.dat', 'tests/data/tai-utc.dat')
+    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/data/CDFLeapSeconds.txt')
     suc = function.writeEarthRotationData()
     assert not suc
 
 
 def test_writeEarthRotationData_3(function):
-    shutil.copy('tests/testData/tai-utc.dat', 'tests/data/tai-utc.dat')
-    shutil.copy('tests/testData/finals2000A.all', 'tests/data/finals2000A.all')
+    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/data/CDFLeapSeconds.txt')
+    shutil.copy('tests/testData/finals.data', 'tests/data/finals.data')
     suc = function.writeEarthRotationData(installPath='tests/temp')
     assert suc
 

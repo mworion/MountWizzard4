@@ -72,6 +72,7 @@ class Setting(object):
         self._weatherHumidity = None
         self._weatherDewPoint = None
         self._trackingRate = None
+        self._webInterfaceStat = None
 
     @property
     def slewRate(self):
@@ -316,6 +317,18 @@ class Setting(object):
     def trackingRate(self, value):
         self._trackingRate = valueToFloat(value)
 
+    @property
+    def webInterfaceStat(self):
+        return self._webInterfaceStat
+
+    @webInterfaceStat.setter
+    def webInterfaceStat(self, value):
+        value = valueToFloat(value)
+        if value is None:
+            self._webInterfaceStat = None
+        else:
+            self._webInterfaceStat = bool(value)
+
     def parseSetting(self, response, numberOfChunks):
         """
         Parsing the polling med command.
@@ -355,7 +368,7 @@ class Setting(object):
         self.weatherHumidity = response[19].split(',')[0]
         self.weatherDewPoint = response[20].split(',')[0]
         self.trackingRate = response[21]
-
+        self.webInterfaceStat = response[22]
         return True
 
     def pollSetting(self):
@@ -369,7 +382,7 @@ class Setting(object):
         conn = Connection(self.host)
         cs1 = ':U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#'
         cs2 = ':GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#'
-        cs3 = ':WSG#:WSP#:WST#:WSH#:WSD#:GT#'
+        cs3 = ':WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#'
         commandString = cs1 + cs2 + cs3
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -768,3 +781,17 @@ class Setting(object):
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':RT1#')
         return suc
+
+    def setWebInterface(self, status):
+        """
+        :return:    success
+        """
+        conn = Connection(self.host)
+        commandString = ':NTSweb{0:1d}#'.format(1 if status else 0)
+        suc, response, numberOfChunks = conn.communicate(commandString)
+        if not suc:
+            return False
+        if response[0] != '1':
+            return False
+        return True
+

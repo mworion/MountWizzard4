@@ -16,12 +16,9 @@
 ###########################################################
 # standard libraries
 import pytest
-import unittest.mock as mock
-import numpy
 
 # external packages
-import skyfield.api
-from skyfield.api import Topos, Star, Angle
+from skyfield.api import wgs84, Star, Angle
 
 # local imports
 from mountcontrol.model import ModelStar
@@ -30,9 +27,9 @@ from mountcontrol import obsSite
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    obsSite.location = Topos(latitude_degrees=0,
-                             longitude_degrees=0,
-                             elevation_m=0)
+    obsSite.location = wgs84.latlon(latitude_degrees=0,
+                                    longitude_degrees=0,
+                                    elevation_m=0)
 
     modelStar = ModelStar(obsSite=obsSite)
     yield modelStar

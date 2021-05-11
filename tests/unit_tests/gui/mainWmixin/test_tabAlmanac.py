@@ -21,7 +21,7 @@ from unittest import mock
 
 # external packages
 from PyQt5.QtWidgets import QWidget
-from skyfield.api import Topos
+from skyfield.api import wgs84
 
 # local import
 from tests.baseTestSetupMixins import App
@@ -42,6 +42,7 @@ def function(module):
         def __init__(self):
             super().__init__()
             self.app = App()
+            self.threadPool = self.app.threadPool
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
             Almanac.__init__(self)
@@ -83,12 +84,12 @@ def test_drawTwilightData_1(function):
     e = [1, 1]
     widget = QWidget()
     function.twilight = function.embedMatplot(widget)
-    suc = function.drawTwilightData(t, e)
+    suc = function.plotTwilightData(t, e)
     assert suc
 
 
 def test_calcTwilightData_1(function):
-    function.app.mount.obsSite.location = Topos(latitude_degrees=0,
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
                                                 longitude_degrees=0,
                                                 elevation_m=0)
     val = function.calcTwilightData()
@@ -96,14 +97,14 @@ def test_calcTwilightData_1(function):
 
 
 def test_searchTwilightWorker_1(function):
-    function.app.mount.obsSite.location = Topos(latitude_degrees=0,
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
                                                 longitude_degrees=0,
                                                 elevation_m=0)
     tsNow = function.app.mount.obsSite.ts.now()
     t = [tsNow, tsNow]
     e = [1, 1]
     with mock.patch.object(function,
-                           'drawTwilightData'):
+                           'plotTwilightData'):
         with mock.patch.object(function,
                                'calcTwilightData',
                                return_value=(t, e)):
@@ -120,10 +121,10 @@ def test_searchTwilight_1(function):
 
 
 def test_searchTwilight_2(function):
-    function.app.mount.obsSite.location = Topos(latitude_degrees=0,
-                                                longitude_degrees=0,
-                                                elevation_m=0)
-    with mock.patch.object(threading.Thread,
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
+                                                       longitude_degrees=0,
+                                                       elevation_m=0)
+    with mock.patch.object(function.threadPool,
                            'start'):
         suc = function.searchTwilight()
         assert suc

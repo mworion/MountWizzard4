@@ -19,7 +19,7 @@ import logging
 import platform
 
 if platform.system() == 'Windows':
-    import win32com.client
+    from win32com import client
     import pythoncom
 
 # external packages
@@ -58,8 +58,6 @@ class AscomClass(object):
     """
 
     log = logging.getLogger(__name__)
-
-    # relaxed generic timing
     CYCLE_POLL_STATUS = 3000
     CYCLE_POLL_DATA = 3000
 
@@ -275,10 +273,9 @@ class AscomClass(object):
         if not self.deviceName:
             return False
 
-        # clsctx = pythoncom.CLSCTX_LOCAL_SERVER
         pythoncom.CoInitialize()
         try:
-            self.client = win32com.client.Dispatch(self.deviceName)
+            self.client = client.dynamic.Dispatch(self.deviceName)
 
         except Exception as e:
             self.log.error(f'Dispatch for [{self.deviceName}] error: {e}')

@@ -32,7 +32,7 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QPushButton, QWidget
 from PyQt5.QtCore import QTimer
 from mountcontrol.qtmount import Mount
-from skyfield.api import Topos
+from skyfield.api import wgs84
 from skyfield.api import load
 
 # local import
@@ -76,6 +76,7 @@ def function_setup_teardown(qtbot):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
         update10s = pyqtSignal()
+        update30s = pyqtSignal()
         update1s = pyqtSignal()
         update1h = pyqtSignal()
         mwGlob = {'imageDir': 'tests/image',
@@ -117,13 +118,14 @@ def function_setup_teardown(qtbot):
         showImage = pyqtSignal(str)
         update3s = pyqtSignal()
         update30m = pyqtSignal()
+        update30s = pyqtSignal()
         sendSatelliteData = pyqtSignal()
         remoteCommand = pyqtSignal(str)
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
-        mount.obsSite.location = Topos(latitude_degrees=20,
+        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
         camera = Camera(app=Test1())
@@ -163,13 +165,12 @@ def function_setup_teardown(qtbot):
         showWindows = testShowWindows
         initConfig = testInitConfig
 
-    shutil.copy2('tests/testData/active.txt', 'tests/data/active.txt')
+    shutil.copy('tests/testData/active.txt', 'tests/data/active.txt')
 
     with mock.patch.object(MainWindow,
                            'show'):
         with mock.patch.object(ImageWindow,
                                'show'):
-            packageConfig.isSimulator = True
             packageConfig.isAvailable = True
             app = MainWindow(app=Test())
             app.log = logging.getLogger()
@@ -248,35 +249,24 @@ def test_setupIcons():
     assert suc
 
 
-@patch('base.packageConfig.isSimulator', False)
+@patch('base.packageConfig.isAvailable', True)
 def test_updateMountConnStat_1():
-    suc = app.updateMountConnStat(False)
+    suc = app.updateMountConnStat(True)
     assert suc
-    assert not app.deviceStat['mount']
+    assert app.deviceStat['mount']
+    assert app.ui.mountConnected.text() == 'Mount 3D'
 
 
-@patch('base.packageConfig.isSimulator', True)
+@patch('base.packageConfig.isAvailable', False)
 def test_updateMountConnStat_2():
     suc = app.updateMountConnStat(True)
     assert suc
     assert app.deviceStat['mount']
+    assert app.ui.mountConnected.text() == 'Mount'
 
 
-@patch('base.packageConfig.isSimulator', True)
+@patch('base.packageConfig.isAvailable', True)
 def test_updateMountConnStat_3():
-    app.uiWindows = {'showSimulatorW': {
-        'button': app.ui.mountConnected,
-        'classObj': None,
-        'name': 'SimulatorDialog',
-        'class': None,
-        }
-    }
-    suc = app.updateMountConnStat(False)
-    assert not suc
-
-
-@patch('base.packageConfig.isSimulator', True)
-def test_updateMountConnStat_4():
     app.uiWindows = {'showSimulatorW': {
         'button': app.ui.mountConnected,
         'classObj': QWidget(),
@@ -285,6 +275,8 @@ def test_updateMountConnStat_4():
         }
     }
     suc = app.updateMountConnStat(False)
+    assert app.ui.mountConnected.text() == 'Mount'
+    assert not app.deviceStat['mount']
     assert suc
 
 

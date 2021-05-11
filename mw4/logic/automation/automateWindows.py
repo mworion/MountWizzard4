@@ -44,7 +44,7 @@ class AutomateWindows(QObject):
     log = logging.getLogger(__name__)
 
     UTC_1_FILE = 'finals.data'
-    UTC_2_FILE = 'tai-utc.dat'
+    UTC_2_FILE = 'CDFLeapSeconds.txt'
 
     COMET_FIELDS = [
         'Orbit_type',

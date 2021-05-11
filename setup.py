@@ -19,17 +19,27 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- adding release notes showing new capabilities in message window
-- adding cover light on / off 
-- adding cover light intensity settings
-- reversing E/W for polar diagram in hemisphere window
-- adding push mount time to computer manual / hourly
-- adding contour HFD plot to image windows
-- adding virtual emergency stop key on time group
-- update build-in files if newer ones are shipped
-- auto restart MW4 after update (checkbox available)
-- adding OBJCTRA / OBJCTDEC keywords when reading FITs
-- upgrade various libraries
+- add mount clock sync feature
+- add simulator feature
+- add dome following when mount is in satellite tracking mode 
+- debug standard moved from WARN to INFO
+- add setting label support for UPB dew entries
+- add auto dew control support for Pegasus UPB
+- add switch support for ASCOM/ALPACA Pegasus UPB
+- add observation condition support for ASCOM/ALPACA Pegasus UPB
+- add feature for RA/DEC FITS writing for INDI server without snooping
+- completely revised satellite tracking menu gui
+- add partially satellite tracking before / after possible flip 
+- add satellite track respect horizon line
+- add tracking simulator feature to test without waiting for satellite
+- add reverse order for filed build point retry 
+- add automatic enable webinterface for keypad use
+- changed IERS and lead second download
+- fix for INDI cameras sending two times busy and exposure=0
+- fix slewing message dome when disconnected
+- fix retry mechanism for failed build points
+- fix using builtins for skyfield and rotation update
+- update underlying libraries
  """
 
 with open('notes.txt', 'w') as f:
@@ -37,7 +47,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='1.2.0b0',
+    version='2.0.0b7',
     packages=[
         'mw4',
         'mw4.base',
@@ -67,21 +77,21 @@ setup(
     python_requires='>=3.7.0, <3.10',
     install_requires=[
         'numpy==1.20.2',
-        'pillow==8.1.2',
-        'matplotlib==3.3.4',
-        'pyerfa==1.7.2',
-        'astropy==4.2',
-        'scipy==1.6.1',
+        'pillow==8.2.0',
+        'matplotlib==3.4.2',
+        'pyerfa==1.7.3',
+        'astropy==4.2.1',
+        'scipy==1.6.2',
         'sep==1.1.1',
         'requests==2.25.1',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.37',
+        'skyfield==1.39',
         'sgp4>=2.1',
         'qimage2ndarray==1.8.3',
-        'importlib_metadata==3.7.3',
-        'deepdiff==5.0.2',
+        'importlib_metadata==4.0.1',
+        'deepdiff==5.3.0',
         'colour_demosaicing==0.1.6',
-        'wakeonlan==1.1.6',
+        'wakeonlan==2.0.1',
         'pybase64==1.1.4',
     ]
     + (['pywin32==300'] if "Windows" == platform.system() else [])

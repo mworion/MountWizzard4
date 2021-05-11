@@ -49,12 +49,7 @@ class SettMisc(object):
         self.process = None
         self.mutexInstall = PyQt5.QtCore.QMutex()
 
-        self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
-        self.app.dome.signals.slewFinished.connect(lambda: self.playSound('DomeSlew'))
-        self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
-        self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
-        self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
-        self.ui.loglevelDebugTrace.clicked.connect(self.setLoggingLevel)
+        self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelStandard.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
@@ -67,9 +62,17 @@ class SettMisc(object):
         self.ui.pushTime.clicked.connect(self.pushTime)
         self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
         self.app.update1h.connect(self.pushTimeHourly)
+        self.app.update30s.connect(self.syncClock)
         self.ui.autoPushTime.stateChanged.connect(self.pushTimeHourly)
+        self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
 
-        self.setupAudioSignals()
+        if pConf.isAvailable:
+            self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
+            self.app.dome.signals.slewFinished.connect(lambda: self.playSound('DomeSlew'))
+            self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
+            self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
+            self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
+            self.setupAudioSignals()
 
     def initConfig(self):
         """
@@ -77,11 +80,14 @@ class SettMisc(object):
         """
         config = self.app.config['mainW']
         self.setupAudioGui()
-        self.ui.loglevelDebugTrace.setChecked(config.get('loglevelDebugTrace', False))
+        self.ui.loglevelTrace.setChecked(config.get('loglevelTrace', False))
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', False))
         self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', True))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
         self.ui.autoPushTime.setChecked(config.get('autoPushTime', False))
+        self.ui.syncNotTracking.setChecked(config.get('syncNotTracking', True))
+        self.ui.syncTimePC2Mount.setChecked(config.get('syncTimePC2Mount', False))
+        self.ui.clockSync.setChecked(config.get('clockSync', False))
         self.ui.automaticRestart.setChecked(config.get('automaticRestart', False))
         self.ui.activateVirtualStop.setChecked(config.get('activateVirtualStop', False))
         self.ui.versionReleaseNotes.setChecked(config.get('versionReleaseNotes', True))
@@ -92,6 +98,7 @@ class SettMisc(object):
         self.ui.soundImageSaved.setCurrentIndex(config.get('soundImageSaved', 0))
         self.ui.soundImageSolved.setCurrentIndex(config.get('soundImageSolved', 0))
 
+        self.toggleClockSync()
         self.setWeatherOnline()
         self.setupIERS()
         self.showUpdates()
@@ -103,11 +110,14 @@ class SettMisc(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['loglevelDebugTrace'] = self.ui.loglevelDebugTrace.isChecked()
+        config['loglevelTrace'] = self.ui.loglevelTrace.isChecked()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
         config['autoPushTime'] = self.ui.autoPushTime.isChecked()
+        config['syncNotTracking'] = self.ui.syncNotTracking.isChecked()
+        config['syncTimePC2Mount'] = self.ui.syncTimePC2Mount.isChecked()
+        config['clockSync'] = self.ui.clockSync.isChecked()
         config['automaticRestart'] = self.ui.automaticRestart.isChecked()
         config['activateVirtualStop'] = self.ui.activateVirtualStop.isChecked()
         config['versionReleaseNotes'] = self.ui.versionReleaseNotes.isChecked()
@@ -366,7 +376,6 @@ class SettMisc(object):
         """
         if pConf.isWindows:
             timeout = 180
-
         else:
             timeout = 90
 
@@ -397,14 +406,12 @@ class SettMisc(object):
         """
         :return: nothing
         """
-        if self.ui.loglevelDebugTrace.isChecked():
+        if self.ui.loglevelTrace.isChecked():
             setCustomLoggingLevel('TRACE')
-
         elif self.ui.loglevelDebug.isChecked():
             setCustomLoggingLevel('DEBUG')
-
         elif self.ui.loglevelStandard.isChecked():
-            setCustomLoggingLevel('WARN')
+            setCustomLoggingLevel('INFO')
 
     def setupAudioGui(self):
         """
@@ -434,9 +441,6 @@ class SettMisc(object):
         """
         :return: True for test purpose
         """
-        if not pConf.isAvailable:
-            return False
-
         self.audioSignalsSet['Beep'] = ':/sound/beep.wav'
         self.audioSignalsSet['Beep1'] = ':/sound/beep1.wav'
         self.audioSignalsSet['Horn'] = ':/sound/horn.wav'
@@ -486,10 +490,10 @@ class SettMisc(object):
             runnable = ['date', '-s', f'"{timeText}"']
 
         else:
-            timeText = ''
             runnable = ''
 
-        self.log.info(f'Set computer time to {timeText}')
+        t = timeJD.astimezone(tzlocal()).strftime('%H:%M:%S')
+        self.app.message.emit(f'Set computer time to {t}', 0)
         self.log.debug(f'Command: {runnable}')
 
         try:
@@ -523,9 +527,57 @@ class SettMisc(object):
         if isAuto:
             self.pushTime()
             return True
-
         else:
             return False
+
+    def toggleClockSync(self):
+        """
+        :return:
+        """
+        enableSync = self.ui.clockSync.isChecked()
+        self.ui.syncTimePC2Mount.setEnabled(enableSync)
+        self.ui.syncNotTracking.setEnabled(enableSync)
+        self.ui.clockOffset.setEnabled(enableSync)
+        self.ui.clockOffsetMS.setEnabled(enableSync)
+        self.ui.timeDeltaPC2Mount.setEnabled(enableSync)
+        if enableSync:
+            self.app.mount.startClockTimer()
+        else:
+            self.app.mount.stopClockTimer()
+        return True
+
+    def syncClock(self):
+        """
+        :return:
+        """
+        doSync = self.ui.syncTimePC2Mount.isChecked()
+        if not doSync:
+            return False
+        if not self.deviceStat['mount']:
+            return False
+
+        doSyncNotTrack = self.ui.syncNotTracking.isChecked()
+        mountTracks = self.app.mount.obsSite.status in [0, 10]
+        if doSyncNotTrack and mountTracks:
+            return False
+
+        delta = self.app.mount.obsSite.timeDiff * 1000
+        if abs(delta) < 10:
+            return False
+
+        if delta > 999:
+            delta = 999
+        if delta < -999:
+            delta = -999
+
+        delta = int(delta)
+        suc = self.app.mount.obsSite.adjustClock(delta)
+        if not suc:
+            self.app.message.emit('Cannot adjust mount clock', 2)
+            return False
+
+        self.app.message.emit(f'Mount clock corrected [{-delta}] ms', 0)
+        return True
 
     def setVirtualStop(self):
         """

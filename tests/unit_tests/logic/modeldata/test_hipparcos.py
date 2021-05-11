@@ -19,7 +19,7 @@
 import pytest
 
 # external packages
-from skyfield.toposlib import Topos
+from skyfield.api import wgs84
 from mountcontrol.mount import Mount
 
 # local import
@@ -31,7 +31,7 @@ def module_setup_teardown():
     class Test():
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
-        mount.obsSite.location = Topos(latitude_degrees=20,
+        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
 

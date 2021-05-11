@@ -1,7 +1,7 @@
 #
 # GitHub actions for running the unit test of the mountwizzard4 package
 #
-# v0.1, Michael Wuertenberger
+# v0.1,  Michael Wuertenberger
 #
 name: build-wheels-python39
 
@@ -65,47 +65,32 @@ jobs:
             apt-get install -y wget gcc build-essential zlib1g-dev libjpeg-dev
             apt-get install -y software-properties-common
             add-apt-repository ppa:deadsnakes/ppa
-            
+            apt-get update -y
+  
+  
           # Produce a binary artifact and place it in the mounted volume
           run: |
             apt-get -y install python3.9 python3-pip python3.9-venv python3.9-dev
             apt-get -y install qt5-default pyqt5-dev pyqt5-dev-tools
             python3.9 -m venv venv
             source venv/bin/activate
-            
+
             python --version
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
             pip install wheel
-            #pip wheel astropy==4.2 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel astropy==4.2.1 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pyerfa==1.7.2 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel matplotlib==3.3.4 -w "support/wheels/${{ matrix.distro}}"
+            #pip wheel pillow==8.1.2 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel sep==1.1.1 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel sgp4==2.17 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pybase64==1.1.4 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pyqt5_sip==12.8.1 -w "support/wheels/${{ matrix.distro}}"
-            #pip wheel pyqt5==5.15.4 -w "support/wheels/${{ matrix.distro}}"
-
-      - name: show_artifact_and_commit
-        # Items placed in /artifacts in the container will be in
-        # ${PWD}/artifacts on the host.
-        run: |
-          ls -al "support/wheels/${{ matrix.distro }}"
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add "support/wheels/${{ matrix.distro}}"
-          git commit -m "adding wheels" -a
-          git pull --rebase
-          if: always()
+            #pip wheel pyqt5==5.15.2 -w "support/wheels/${{ matrix.distro}}"
 
       - name: upload_wheels
         uses: actions/upload-artifact@v2
         with:
-          name: wheelhouse
+          name: "wheelhouse${{ matrix.distro }}"
           path: "support/wheels/${{ matrix.distro }}"
-          
-      - name: push_changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}

@@ -80,9 +80,9 @@ class Geometry(object):
         },
     }
 
-    def __init__(self, obsSite=None):
+    def __init__(self, parent=None):
 
-        self.obsSite = obsSite
+        self.parent = parent
         self.offBaseAltAxisX = 0
         self.offBaseAltAxisZ = 0
         self.offAltAxisGemX = 0
@@ -134,11 +134,11 @@ class Geometry(object):
     @offVert.setter
     def offVert(self, value):
         self._offVert = valueToFloat(value)
-        if self.obsSite.location is None:
+        if self.parent.obsSite.location is None:
             self.log.debug('offVert called without lat')
             return
 
-        lat = self.obsSite.location.latitude.radians
+        lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) + self.offBaseAltAxisZ
         val += np.sin(abs(lat)) * self.offAltAxisGemX
         self._offVertGEM = val
@@ -150,11 +150,11 @@ class Geometry(object):
     @offVertGEM.setter
     def offVertGEM(self, value):
         self._offVertGEM = valueToFloat(value)
-        if self.obsSite.location is None:
+        if self.parent.obsSite.location is None:
             self.log.debug('offVertGEM called without lat')
             return
 
-        lat = self.obsSite.location.latitude.radians
+        lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) - self.offBaseAltAxisZ
         val -= np.sin(abs(lat)) * self.offAltAxisGemX
         self._offVert = val
@@ -373,6 +373,13 @@ class Geometry(object):
         # around x this should be (as we don't track) measured in HA, where HA = 6
         # / 18 h is North depending of the pierside the direction is clockwise,
         # turning to west over time
+        #
+        # using the definition of ASCOM about the pierEAST state
+        # Normal state:
+        # HA_sky = HA_mech
+        # Beyond the pole
+        # HA_sky = HA_mech + 12h, expressed in range ± 12h
+
         if pierside == 'E':
             value = - ha + np.radians(6 / 24 * 360)
 
@@ -385,6 +392,13 @@ class Geometry(object):
         # the rotation around dec axis of the mount is next step. this rotation is
         # around z axis. dec = 0 means rectangular directing scope. direction
         # changes due to position of the mount and pierside
+        #
+        # using the definition of ASCOM about the pierEAST state
+        # Normal state:
+        # Dec_sky = Dec_mech
+        # Beyond the pole
+        # Dec_sky = 180d - Dec_mech, expressed in range ± 90d
+
         value = dec - np.radians(90)
         if pierside == 'E':
             value = -value
@@ -444,12 +458,10 @@ class Geometry(object):
             return None, None, None, None, None
 
         t1 = - p / 2 + np.sqrt(p * p / 4 - q)
-        t2 = - p / 2 - np.sqrt(p * p / 4 - q)
+        # t2 = - p / 2 - np.sqrt(p * p / 4 - q)
 
         # we choose the positive solution as we look in the positive direction and
         # can omit the view to the back
-
-        self.log.debug(f'Solutions: [{t1}], [{t2}]')
 
         intersect = PB + np.dot(t1, PD)
 

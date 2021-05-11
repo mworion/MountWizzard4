@@ -17,7 +17,9 @@
 # standard libraries
 import unittest
 import unittest.mock as mock
+
 # external packages
+
 # local imports
 from mountcontrol.firmware import Firmware
 
@@ -59,7 +61,7 @@ class TestConfigData(unittest.TestCase):
         fw.time = '14:50'
         self.assertEqual('14:50', fw.time)
         self.assertEqual('14:50', fw._time)
-        self.assertEqual(True, fw.checkNewer(36000))
+        self.assertEqual(True, fw.checkNewer(10000))
 
     def test_Firmware_not_ok_vString(self):
         fw = Firmware()
@@ -75,11 +77,22 @@ class TestConfigData(unittest.TestCase):
         fw._vString = '2.16.16.15'
         self.assertEqual(None, fw.number())
 
-    def test_Firmware_checkNewer(self):
+    def test_Firmware_checkNewer_1(self):
         fw = Firmware()
         fw.vString = 5
         self.assertEqual(None, fw.checkNewer(100))
 
+    def test_Firmware_checkNewer_2(self):
+        fw = Firmware()
+        fw.vString = '2.99.99'
+        suc = fw.checkNewer(30000)
+        assert not suc
+
+    def test_Firmware_checkNewer_3(self):
+        fw = Firmware()
+        fw.vString = '2.99.99'
+        suc = fw.checkNewer(29998)
+        assert suc
     #
     #
     # testing pollSetting

@@ -32,7 +32,7 @@ from PyQt5.QtWidgets import QCheckBox
 from mountcontrol.qtmount import Mount
 import skyfield.api
 from skyfield.api import Angle
-from skyfield.api import Topos
+from skyfield.api import wgs84
 from mountcontrol.modelStar import ModelStar
 
 # local import
@@ -87,7 +87,7 @@ def function(module):
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
-        mount.obsSite.location = Topos(latitude_degrees=20,
+        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
         data = DataPoint(app=Test1())
@@ -249,7 +249,7 @@ def test_updateTurnKnobsGUI_altitudeTurns_1(function):
     value = 1.5
     function.app.mount.model.altitudeTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '1.50 revs down' == function.ui.altitudeTurns.text()
+    assert '1.5 revs down' == function.ui.altitudeTurns.text()
     value = None
     function.app.mount.model.altitudeTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
@@ -260,7 +260,7 @@ def test_updateTurnKnobsGUI_altitudeTurns_2(function):
     value = -1.5
     function.app.mount.model.altitudeTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '1.50 revs up' == function.ui.altitudeTurns.text()
+    assert '1.5 revs up' == function.ui.altitudeTurns.text()
     value = None
     function.app.mount.model.altitudeTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
@@ -271,7 +271,7 @@ def test_updateTurnKnobsGUI_azimuthTurns_1(function):
     value = 1.5
     function.app.mount.model.azimuthTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '1.50 revs left' == function.ui.azimuthTurns.text()
+    assert '1.5 revs left' == function.ui.azimuthTurns.text()
     value = None
     function.app.mount.model.azimuthTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
@@ -282,7 +282,7 @@ def test_updateTurnKnobsGUI_azimuthTurns_2(function):
     value = -1.5
     function.app.mount.model.azimuthTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '1.50 revs right' == function.ui.azimuthTurns.text()
+    assert '1.5 revs right' == function.ui.azimuthTurns.text()
     value = None
     function.app.mount.model.azimuthTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
@@ -338,6 +338,10 @@ def test_updateProgress_8(function):
 
 
 def test_modelSolveDone_0(function, qtbot):
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'pointNumber': 1}
+    function.slewQueue.put(mPoint)
     result = {'raJ2000S': 0,
               'decJ2000S': 0,
               'angleS': 0,
@@ -352,46 +356,38 @@ def test_modelSolveDone_0(function, qtbot):
     assert not suc
 
 
-def test_modelSolveDone_1(function, qtbot):
+def test_modelSolveDone_1(function):
     mPoint = {'lenSequence': 3,
-              'countSequence': 3}
+              'countSequence': 3,
+              'pointNumber': 1}
 
     function.resultQueue.put(mPoint)
-
-    result = {'raJ2000S': 0,
-              'decJ2000S': 0,
-              'angleS': 0,
-              'scaleS': 1,
-              'errorRMS_S': 1,
-              'flippedS': False,
-              'success': False,
-              'message': 'test',
-              }
-
-    with qtbot.waitSignal(function.app.message) as blocker:
-        with mock.patch.object(function,
-                               'updateProgress'):
-            with mock.patch.object(function,
-                                   'modelCycleThroughBuildPointsFinished'):
-                suc = function.modelSolveDone(result)
-                assert suc
-    assert blocker.args == ['Solving failed for image-003', 2]
-
-
-def test_modelSolveDone_2(function):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3}
-
-    function.resultQueue.put(mPoint)
-
     suc = function.modelSolveDone({})
     assert not suc
 
 
+def test_modelSolveDone_2(function):
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'pointNumber': 1}
+    function.resultQueue.put(mPoint)
+    result = {'raJ2000S': skyfield.api.Angle(hours=0),
+              'decJ2000S': skyfield.api.Angle(degrees=0),
+              'success': False,
+              }
+
+    with mock.patch.object(function,
+                           'updateProgress'):
+        with mock.patch.object(function,
+                               'modelCycleThroughBuildPointsFinished'):
+            suc = function.modelSolveDone(result)
+            assert suc
+
+
 def test_modelSolveDone_3(function):
     mPoint = {'lenSequence': 3,
-              'countSequence': 3}
-
+              'countSequence': 2,
+              'pointNumber': 1}
     function.resultQueue.put(mPoint)
     function.app.data.buildP = [(0, 0, True), (1, 1, True), (2, 2, True)]
 
@@ -429,33 +425,8 @@ def test_modelSolveDone_3(function):
 
 def test_modelSolveDone_4(function):
     mPoint = {'lenSequence': 3,
-              'countSequence': 3}
-
-    result = {'raJ2000S': skyfield.api.Angle(hours=0),
-              'decJ2000S': skyfield.api.Angle(degrees=0),
-              'angleS': 0,
-              'scaleS': 1,
-              'errorRMS_S': 1,
-              'flippedS': False,
-              'success': True,
-              'message': 'test',
-              'julianDate': function.app.mount.obsSite.timeJD,
-              }
-
-    function.resultQueue.put(mPoint)
-    function.app.data.buildP = [(0, 0, True), (1, 1, True), (2, 2, True)]
-
-    with mock.patch.object(function,
-                           'updateProgress'):
-        with mock.patch.object(function,
-                               'modelCycleThroughBuildPointsFinished'):
-            suc = function.modelSolveDone(result)
-            assert suc
-
-
-def test_modelSolveDone_5(function):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 2}
+              'countSequence': 2,
+              'pointNumber': 1}
 
     result = {'raJ2000S': skyfield.api.Angle(hours=0),
               'decJ2000S': skyfield.api.Angle(degrees=0),
@@ -478,6 +449,10 @@ def test_modelSolveDone_5(function):
 
 
 def test_modelSolve_1(function):
+    mPoint = {'lenSequence': 3,
+              'countSequence': 2,
+              'pointNumber': 1}
+    function.slewQueue.put(mPoint)
     suc = function.modelSolve()
     assert not suc
 
@@ -488,9 +463,7 @@ def test_modelSolve_2(function):
               'imagePath': '',
               'searchRadius': 1,
               'solveTimeout': 10,
-
               }
-
     function.solveQueue.put(mPoint)
     with mock.patch.object(function.app.astrometry,
                            'solveThreading'):
@@ -499,6 +472,14 @@ def test_modelSolve_2(function):
 
 
 def test_modelImage_1(function):
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'searchRadius': 1,
+              'solveTimeout': 10,
+              }
+    function.slewQueue.put(mPoint)
+    function.imageQueue.queue.clear()
     suc = function.modelImage()
     assert not suc
 

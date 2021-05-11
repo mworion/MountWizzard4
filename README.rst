@@ -16,7 +16,7 @@ For being fully operational, MW4 needs either:
 -   INDIGO server(s) (see: http://www.indigo-astronomy.org) where your devices
     are connected to.
 
--   ASCOM Alpaca remote server (see: https://ascom-standards.org/Developer/Alpaca.htm)
+-   ASCOM Alpaca remote server (see: https://ascom-standards.org/FAQs/Index.htm)
     abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if
     you want to connect over IP with your environment.
 
@@ -127,7 +127,7 @@ CS Michel
     :target: https://github.com/mworion/MountWizzard4/issues
 
 .. |COMMITS_MASTER| image::
-    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.1.0/master
+    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v1.1.1/master
     :target: https://github.com/mworion/MountWizzard4/commits/master
 
 .. |COMMITS_WEEK| image::

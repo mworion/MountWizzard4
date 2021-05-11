@@ -16,16 +16,17 @@
 #
 ###########################################################
 # standard libraries
-import threading
 from dateutil.tz import tzlocal
 
 # external packages
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor, QFont
 from PyQt5.QtCore import Qt, QPointF
+from PyQt5.QtWidgets import QApplication
 from skyfield import almanac
 import numpy as np
 
 # local import
+from base.tpool import Worker
 
 
 class Almanac:
@@ -111,8 +112,10 @@ class Almanac:
             self.thread.join()
         return True
 
-    def drawTwilightData(self, t, e):
+    def plotTwilightData(self, t, e):
         """
+        :param t:
+        :param e:
         :return: true for test purpose
         """
         ts = self.app.mount.obsSite.ts
@@ -136,6 +139,7 @@ class Almanac:
         axe.set_ylim(0, 24)
 
         for ti, event in zip(t, e):
+            QApplication.processEvents()
             hour = int(ti.astimezone(tzlocal()).strftime('%H'))
             minute = int(ti.astimezone(tzlocal()).strftime('%M'))
             y = (hour + 12 + minute / 60) % 24
@@ -181,7 +185,6 @@ class Almanac:
         f = almanac.dark_twilight_day(self.app.ephemeris, location)
         f.step_days = 0.04
         timeEvents, events = almanac.find_discrete(t0, t1, f)
-
         return timeEvents, events
 
     def searchTwilightWorker(self, timeWindow):
@@ -189,7 +192,7 @@ class Almanac:
         :return: true for test purpose
         """
         t, e = self.calcTwilightData(timeWindow)
-        self.drawTwilightData(t, e)
+        self.plotTwilightData(t, e)
         return True
 
     def searchTwilight(self):
@@ -201,12 +204,11 @@ class Almanac:
         location = self.app.mount.obsSite.location
         if location is None:
             return False
-
         t, e = self.calcTwilightData()
         self.displayTwilightData(t, e)
-        self.thread = threading.Thread(target=self.searchTwilightWorker,
-                                       args=[182])
-        self.thread.start()
+
+        worker = Worker(self.searchTwilightWorker, 182)
+        self.threadPool.start(worker)
         return True
 
     def calcMoonPhase(self):

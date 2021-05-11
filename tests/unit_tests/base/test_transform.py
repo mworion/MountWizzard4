@@ -18,7 +18,7 @@
 import pytest
 # external packages
 from skyfield.api import Angle
-from skyfield.api import Topos
+from skyfield.api import wgs84
 
 # local import
 from base import transform
@@ -94,7 +94,7 @@ def test_J2000T0AltAz_1():
         tt = 2458849.50000
         ut1 = 2458849.50000
 
-    loc = Topos('42.3583 N', '71.0636 W')
+    loc = wgs84.latlon(latitude_degrees=42.3583, longitude_degrees=-71.0636)
     alt, az = transform.J2000ToAltAz(180, 180, Test(), loc)
     assert alt.degrees == 0
     assert az.degrees == 0
@@ -105,7 +105,7 @@ def test_J2000T0AltAz_2():
         tt = 2458849.50000
         ut1 = 2458849.50000
 
-    loc = Topos('42.3583 N', '71.0636 W')
+    loc = wgs84.latlon(latitude_degrees=42.3583, longitude_degrees=-71.0636)
     alt, az = transform.J2000ToAltAz(Angle(hours=12), 45, Test(), loc)
     assert alt.degrees == 0
     assert az.degrees == 0
@@ -116,7 +116,22 @@ def test_J2000T0AltAz_3():
         tt = 2458849.50000
         ut1 = 2458849.50000
 
-    loc = Topos('42.3583 N', '71.0636 W')
+    loc = wgs84.latlon(latitude_degrees=42.3583, longitude_degrees=-71.0636)
     alt, az = transform.J2000ToAltAz(Angle(hours=12), Angle(degrees=45), Test(), loc)
     assert alt.degrees != 0
     assert az.degrees != 0
+
+
+def test_diffModulus_1():
+    val = transform.diffModulus(1, 20, 360)
+    assert val == 19
+
+
+def test_diffModulus_2():
+    val = transform.diffModulus(350, 10, 360)
+    assert val == 20
+
+
+def test_diffModulus_3():
+    val = transform.diffModulus(-10, 340, 360)
+    assert val == 10

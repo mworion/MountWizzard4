@@ -61,25 +61,31 @@ class Connection(object):
     # these are the commands, which were used in mountcontrol so far
     COMMANDS = [':AP',
                 ':FLIP',
-                ':GDUT', ':GDUTV', ':GMs', ':GMsa', ':GMsb', ':GMACW', ':GMAC',
+                ':GDW', ':GDA', ':GDF', ':GDS', ':GDGPS', ':GJD1',
+                ':GDUT', ':GDUTV',
+                ':GLDT', ':GMs', ':GMsa', ':GMsb', ':GMACW', ':GMAC',
                 ':GREF', ':GRPRS', ':GRTMP',
-                ':GS', ':GT', ':GTMP1', ':GVD', ':GVN', ':GVP', ':GVT', ':GVZ',
+                ':GS', ':GT', ':GTMP1', ':GUDT',
+                ':GVD', ':GVN', ':GVP', ':GVT', ':GVZ',
                 ':GWOL', ':Ga', ':GaXa', ':GaXb',
                 ':Gd', ':Gdat', ':Gev', ':Gg', ':Gh', ':GINQ', ':Ginfo', ':Glms',
                 ':Glmt', ':Gmte', ':Go', ':Gr', ':Gt', ':gtg', ':GTsid',
                 ':Guaf', ':Gz',
                 ':MA', ':MS', ':MaX', ':Me', ':Mn', ':Ms', ':Mw',
                 ':MSao', ':MSap',
+                ':NTGdisc', ':NTGweb', ':NTSdisc', ':NTSweb',
+                ':NUtim',
                 ':PO', ':PO', ':PO', ':PaX', ':PiP',
                 ':Q', ':QaXa', ':QaXb', ':Qe', ':Qn', ':Qs', ':Qw',
                 ':RC', ':Rc', ':RG', ':RM', ':RMs', ':RS',
                 ':RT0', ':RT1', ':RT2', ':RT9',
-                ':SREF', ':SRPRS', ':SRTMP', ':STOP', ':SWOL',
+                ':SDAr', ':SREF', ':SRPRS', ':SRTMP', ':STOP', ':SWOL',
                 ':Sa', ':SaXa', ':SaXb', ':Sd',
                 ':Sdat', ':Sev', ':Sev', ':Sg', ':Sg', ':Sh', ':Slms', ':Slmt',
                 ':So', ':Sr', ':St', ':Suaf', ':Sw', ':Sz',
                 ':TLEG', ':TLEL0', ':TLEGAZ', ':TLEGEQ', ':TLEP', ':TLES',
                 ':TLESCK',
+                ':TRNEW', ':TRADD', ':TRP', ':TRREPLAY',
                 ':U2',
                 ':delalig', ':delalst',
                 ':endalig',
@@ -99,7 +105,7 @@ class Connection(object):
                  ':Q', ':Qe', ':Qn', ':Qs', ':Qw',
                  ':RC', ':Rc', ':RG', ':RM', ':RS', ':RT0', ':RT1', ':RT2',
                  ':RT9',
-                 ':STOP',
+                 ':SDAr', ':STOP',
                  ':U2',
                  ':hP', ':Suaf',
                  ]
@@ -138,7 +144,8 @@ class Connection(object):
 
     def validCommandSet(self, commandString):
         """
-        validCommandSet test if all commands in the commandString are valid and known.
+        validCommandSet test if all commands in the commandString are valid
+        and known.
 
         :param commandString: command for 10 micron to test
         :return: True if valid commands were issued
@@ -209,8 +216,8 @@ class Connection(object):
 
     def buildClient(self):
         """
-        buildClient checks necessary information and tries to open a socket. if success
-        it returns the client (socket connection)
+        buildClient checks necessary information and tries to open a socket.
+        if success it returns the client (socket connection)
 
         :return: client for socket connection if succeeded
         """
@@ -224,7 +231,7 @@ class Connection(object):
 
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.settimeout(self.SOCKET_TIMEOUT)
-        client.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+        client.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
 
         try:
             client.connect(self.host)
@@ -268,10 +275,10 @@ class Connection(object):
 
     def receiveData(self, client=None, numberOfChunks=0, minBytes=0):
         """
-        receive Data waits on the give socket client for a number of chunks to be receive or
-        a minimum set of bytes received. the chunks are delimited with #. the min bytes is
-        necessary, because the mount computer has commands which giv a response without
-        delimiter. this is bad, but status.
+        receive Data waits on the give socket client for a number of chunks to
+        be receive or a minimum set of bytes received. the chunks are delimited
+        with #. the min bytes is necessary, because the mount computer has
+        commands which giv a response without delimiter. this is bad, but status.
 
         :param client: socket client
         :param numberOfChunks: number of data chunks
@@ -315,14 +322,15 @@ class Connection(object):
 
     def communicate(self, commandString):
         """
-        transfer open a socket to the mount, takes the command string for the mount,
-        analyses it, check validity and finally if valid sends it to the mount. If
-        response expected, wait for the response and returns the data.
+        transfer open a socket to the mount, takes the command string for the
+        mount, analyses it, check validity and finally if valid sends it to the
+        mount. If response expected, wait for the response and returns the data.
 
         :param commandString:
         :return: success:           True or False for full transfer
                  response:          the data load
-                 numberOfChunks:    number of responses chunks which were split with #
+                 numberOfChunks:    number of responses chunks which were
+                                    split with #
         """
 
         if not self.validCommandSet(commandString):

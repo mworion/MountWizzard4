@@ -49,12 +49,12 @@ class Model(object):
     log = logging.getLogger(__name__)
 
     def __init__(self,
+                 parent=None,
                  host=None,
-                 obsSite=None,
                  ):
 
         self.host = host
-        self.obsSite = obsSite
+        self.parent = parent
         self.numberNames = None
         self.numberStars = None
         self._starList = list()
@@ -197,7 +197,7 @@ class Model(object):
                               errorRMS=err,
                               errorAngle=angle,
                               number=number,
-                              obsSite=self.obsSite,
+                              obsSite=self.parent.obsSite,
                               )
             self._starList.insert(len(self._starList), value)
 

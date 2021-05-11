@@ -69,6 +69,7 @@ def test_stopCommunication_1():
 
 def test_stopCommunication_2():
     app.framework = 'indi'
+    app.app.update1s.connect(app.checkSlewingDome)
     suc = app.stopCommunication()
     assert suc
 
@@ -138,7 +139,7 @@ def test_slewDome_3():
     app.useGeometry = True
 
     with mock.patch.object(app.app.mount,
-                           'calcTransformationMatrices',
+                           'calcTransformationMatricesTarget',
                            return_value=(Angle(degrees=10), Angle(degrees=10),
                                          [0, 0, 0], None, None)):
         val = app.slewDome(altitude=0, azimuth=0)
@@ -151,7 +152,7 @@ def test_slewDome_4():
     app.useGeometry = True
 
     with mock.patch.object(app.app.mount,
-                           'calcTransformationMatrices',
+                           'calcTransformationMatricesTarget',
                            return_value=(None, Angle(degrees=10),
                                          [0, 0, 0], None, None)):
         val = app.slewDome(altitude=0, azimuth=0)
@@ -164,10 +165,68 @@ def test_slewDome_5():
     app.useGeometry = True
 
     with mock.patch.object(app.app.mount,
-                           'calcTransformationMatrices',
+                           'calcTransformationMatricesTarget',
                            return_value=(Angle(degrees=10), None,
                                          [0, 0, 0], None, None)):
         val = app.slewDome(altitude=0, azimuth=0)
+        assert val == 0
+
+
+def test_followDome_0():
+    app.data = {}
+    suc = app.followDome()
+    assert not suc
+
+
+def test_followDome_1():
+    app.data = {}
+    suc = app.followDome()
+    assert not suc
+
+
+def test_followDome_2():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    suc = app.followDome()
+    assert not suc
+
+
+def test_followDome_3():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    app.useGeometry = True
+
+    with mock.patch.object(app.app.mount,
+                           'calcTransformationMatricesActual',
+                           return_value=(Angle(degrees=10), Angle(degrees=10),
+                                         [0, 0, 0], None, None)):
+        val = app.followDome(altitude=0, azimuth=0)
+        assert val == -10
+
+
+def test_followDome_4():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    app.useGeometry = True
+
+    with mock.patch.object(app.app.mount,
+                           'calcTransformationMatricesActual',
+                           return_value=(None, Angle(degrees=10),
+                                         [0, 0, 0], None, None)):
+        val = app.followDome(altitude=0, azimuth=0)
+        assert val == 0
+
+
+def test_followDome_5():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    app.useGeometry = True
+
+    with mock.patch.object(app.app.mount,
+                           'calcTransformationMatricesActual',
+                           return_value=(Angle(degrees=10), None,
+                                         [0, 0, 0], None, None)):
+        val = app.followDome(altitude=0, azimuth=0)
         assert val == 0
 
 

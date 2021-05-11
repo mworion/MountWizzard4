@@ -47,20 +47,17 @@ class DataWriter:
         sourceDir = self.app.mwGlob['dataDir'] + '/'
         destDir = installPath + '/'
 
-        if not os.path.isfile(sourceDir + 'tai-utc.dat'):
+        if not os.path.isfile(sourceDir + 'CDFLeapSeconds.txt'):
             return False
 
-        if not os.path.isfile(sourceDir + 'finals2000A.all'):
+        if not os.path.isfile(sourceDir + 'finals.data'):
             return False
 
         if destDir != sourceDir:
-            shutil.copy(sourceDir + 'tai-utc.dat', destDir + 'tai-utc.dat')
+            shutil.copy(sourceDir + 'CDFLeapSeconds.txt', destDir + 'CDFLeapSeconds.txt')
 
-        with open(sourceDir + 'finals2000A.all', 'r') as infile:
-            with open(destDir + 'finals.data', 'w') as outfile:
-                for line in infile:
-                    if 19 < int(line[0:2]) < 50:
-                        outfile.writelines(line)
+        if destDir != sourceDir:
+            shutil.copy(sourceDir + 'finals.data', destDir + 'finals.data')
 
         return True
 

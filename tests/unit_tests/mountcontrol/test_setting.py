@@ -33,6 +33,21 @@ class TestConfigData(unittest.TestCase):
     #
     #
 
+    def test_webInterfaceStat_1(self):
+        sett = Setting()
+        sett.webInterfaceStat = '0'
+        assert not sett.webInterfaceStat
+
+    def test_webInterfaceStat_2(self):
+        sett = Setting()
+        sett.webInterfaceStat = '1'
+        assert sett.webInterfaceStat
+
+    def test_webInterfaceStat_3(self):
+        sett = Setting()
+        sett.webInterfaceStat = 'E'
+        assert sett.webInterfaceStat is None
+
     def test_Setting_slewRate(self):
         sett = Setting()
         sett.slewRate = '67'
@@ -267,8 +282,8 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*',
                     '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
-        suc = sett.parseSetting(response,  22)
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
+        suc = sett.parseSetting(response,  23)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_not_ok0(self):
@@ -277,7 +292,7 @@ class TestConfigData(unittest.TestCase):
                     '101+90*',
                     '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
                     '0', '987.0', '+20,5']
-        suc = sett.parseSetting(response,  22)
+        suc = sett.parseSetting(response,  23)
         self.assertEqual(False, suc)
 
     def test_Setting_parse_not_ok1(self):
@@ -285,8 +300,8 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0EEE.0', '60.2', '+033.0',
                     '101+90*',
                     '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
-        suc = sett.parseSetting(response,  22)
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
+        suc = sett.parseSetting(response,  23)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_not_ok2(self):
@@ -294,8 +309,8 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '+90*',
                     '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
-        suc = sett.parseSetting(response,  22)
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
+        suc = sett.parseSetting(response,  23)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_not_ok3(self):
@@ -303,9 +318,9 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*',
                     '+00', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
 
-        suc = sett.parseSetting(response,  22)
+        suc = sett.parseSetting(response,  23)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_not_ok4(self):
@@ -314,9 +329,9 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*',
                     '+00*', ',2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
 
-        suc = sett.parseSetting(response,  22)
+        suc = sett.parseSetting(response,  23)
 
         self.assertEqual(True, suc)
 
@@ -325,10 +340,10 @@ class TestConfigData(unittest.TestCase):
 
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
 
         with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response,  22
+            mConn.return_value.communicate.return_value = True, response,  23
             suc = sett.pollSetting()
             self.assertEqual(True, suc)
 
@@ -337,10 +352,10 @@ class TestConfigData(unittest.TestCase):
 
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
 
         with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response,  22
+            mConn.return_value.communicate.return_value = True, response,  23
             suc = sett.pollSetting()
             self.assertEqual(True, suc)
 
@@ -349,10 +364,10 @@ class TestConfigData(unittest.TestCase):
 
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
 
         with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, response,  22
+            mConn.return_value.communicate.return_value = False, response,  23
             suc = sett.pollSetting()
             self.assertEqual(False, suc)
 
@@ -361,7 +376,7 @@ class TestConfigData(unittest.TestCase):
 
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2']
+                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
 
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 6
@@ -1206,3 +1221,30 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
         setting.trackingRate = '67'
         self.assertEqual(67, setting.trackingRate)
+
+    def test_setWebInterface_ok(self):
+        setting = Setting()
+
+        response = ['1']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = setting.setWebInterface(True)
+            self.assertEqual(True, suc)
+
+    def test_setWebInterface_not_ok1(self):
+        setting = Setting()
+
+        response = ['1']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 1
+            suc = setting.setWebInterface(True)
+            self.assertEqual(False, suc)
+
+    def test_setWebInterface_not_ok2(self):
+        setting = Setting()
+
+        response = ['0']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 1
+            suc = setting.setWebInterface(True)
+            self.assertEqual(False, suc)

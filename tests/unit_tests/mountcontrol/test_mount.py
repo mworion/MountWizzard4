@@ -19,7 +19,7 @@ import pytest
 import os
 
 # external packages
-from skyfield.api import Topos
+from skyfield.api import wgs84
 
 # local imports
 from mountcontrol.mount import Mount
@@ -101,15 +101,31 @@ def test_resetData():
     m.resetData()
 
 
-def test_calcTransformationMatrices():
+def test_calcTransformationMatricesTarget():
     m.obsSite.raJNowTarget = 12
     m.obsSite.timeSidereal = 12
     m.obsSite.decJNowTarget = 10
-    m.obsSite.location = Topos(latitude_degrees=49,
-                               longitude_degrees=11,
-                               elevation_m=500)
+    m.obsSite.location = wgs84.latlon(latitude_degrees=49,
+                                      longitude_degrees=11,
+                                      elevation_m=500)
     m.obsSite.piersideTarget = 'E'
-    val = m.calcTransformationMatrices()
+    val = m.calcTransformationMatricesTarget()
+    assert val[0] is None
+    assert val[1] is None
+    assert val[2] is None
+    assert val[3] is None
+    assert val[4] is None
+
+
+def test_calcTransformationMatricesActual():
+    m.obsSite.raJNow = 12
+    m.obsSite.timeSidereal = 12
+    m.obsSite.decJNow = 10
+    m.obsSite.location = wgs84.latlon(latitude_degrees=49,
+                                      longitude_degrees=11,
+                                      elevation_m=500)
+    m.obsSite.pierside = 'E'
+    val = m.calcTransformationMatricesActual()
     assert val[0] is None
     assert val[1] is None
     assert val[2] is None

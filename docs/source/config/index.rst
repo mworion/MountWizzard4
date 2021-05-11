@@ -1,12 +1,12 @@
-=============
-Configure MW4
-=============
+===================
+Configuration Steps
+===================
 
 After installation of python and MW4 you could start the application. For the first
 configuration you should do the following steps:
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     mount
     camera

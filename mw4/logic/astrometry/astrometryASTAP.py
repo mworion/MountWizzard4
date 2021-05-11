@@ -181,7 +181,6 @@ class AstrometryASTAP(object):
 
         :return: success
         """
-
         self.process = None
         self.result = {'success': False}
 
@@ -196,9 +195,8 @@ class AstrometryASTAP(object):
             os.remove(wcsPath)
 
         binPathASTAP = self.appPath + '/astap'
-        raFITS, decFITS, scaleFITS = self.readFitsData(fitsPath=fitsPath)
+        raFITS, decFITS, _ = self.readFitsData(fitsPath=fitsPath)
 
-        # if parameters are passed, they have priority
         if raHint is None:
             raHint = raFITS.hours
         if decHint is None:
@@ -269,7 +267,6 @@ class AstrometryASTAP(object):
         """
         :return: working environment found
         """
-
         g17 = '/g17*.290'
         g18 = '/g18*.290'
         h17 = '/h17*.1476'
@@ -299,5 +296,4 @@ class AstrometryASTAP(object):
 
         self.log.info(f'ASTAP OK, app: [{program}], index: [{self.indexPath}]')
         self.log.info(f'Index G17:{isG17}, G18:{isG18}, H17:{isH17}, H18:{isH18}')
-
         return sucProgram, sucIndex

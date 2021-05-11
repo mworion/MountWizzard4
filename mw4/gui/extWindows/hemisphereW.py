@@ -68,14 +68,14 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
         self.MODE = dict(
             normal=dict(horMarker='None',
-                        horColor=self.M_GREEN,
+                        horColor=self.M_BLUE,
                         buildPColor=self.M_GREEN_H,
                         starSize=6,
                         starColor=self.M_YELLOW_L,
                         starAnnColor=self.M_WHITE_L),
 
             build=dict(horMarker='None',
-                       horColor=self.M_GREEN,
+                       horColor=self.M_BLUE,
                        buildPColor=self.M_PINK_H,
                        starSize=6,
                        starColor=self.M_YELLOW_L,
@@ -89,14 +89,13 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                          starAnnColor=self.M_WHITE_L),
 
             star=dict(horMarker='None',
-                      horColor=self.M_GREEN_LL,
+                      horColor=self.M_BLUE1,
                       buildPColor=self.M_GREEN_L,
                       starSize=12,
                       starColor=self.M_YELLOW_H,
                       starAnnColor=self.M_WHITE_H)
         )
 
-        # attributes to be stored in class
         self.pointerAltAz = None
         self.pointerDome = None
         self.pointsBuild = None
@@ -179,6 +178,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         :param closeEvent:
         :return:
         """
+        self.ui.checkEditNone.setChecked(True)
+        self.setOperationMode()
+        self.storeConfig()
         self.closingWindow = True
         self.app.update10s.disconnect(self.updateAlignStar)
         self.app.update1s.disconnect(self.hemisphereMatMove.figure.canvas.draw)
@@ -186,11 +188,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.app.updatePointMarker.disconnect(self.updatePointMarker)
         self.app.updatePointMarker.disconnect(self.updatePolarPointMarker)
         self.app.mount.signals.settingDone.disconnect(self.updateOnChangedParams)
-        self.storeConfig()
-
-        self.ui.checkEditNone.setChecked(True)
-        self.setOperationMode()
-
         self.ui.checkShowSlewPath.clicked.disconnect(self.drawHemisphere)
         self.ui.checkShowMeridian.clicked.disconnect(self.drawHemisphere)
         self.ui.checkShowCelestial.clicked.disconnect(self.drawHemisphere)
@@ -216,10 +213,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
     def resizeEvent(self, event):
         """
-        we are using the resize event to reset the timer, which means waiting for
-        RESIZE_FINISHED_TIMEOUT in total before redrawing the complete hemisphere.
-        as we are using a 0.1s cyclic timer.
-
         :param event:
         :return:
         """
@@ -237,10 +230,8 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
     def showWindow(self):
         """
-
         :return:
         """
-
         self.app.update10s.connect(self.updateAlignStar)
         self.app.update1s.connect(self.hemisphereMatMove.figure.canvas.draw)
         self.app.update1s.connect(self.polarMatMove.figure.canvas.draw)
@@ -253,7 +244,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.app.dome.signals.azimuth.connect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.connect(self.updateDome)
         self.app.dome.signals.serverDisconnected.connect(self.updateDome)
-
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
         self.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
         self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
@@ -272,7 +262,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                      self.showMouseCoordinates)
         self.togglePolar()
         self.show()
-
         return True
 
     def togglePolar(self):
@@ -512,19 +501,19 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
             axes.plot(az,
                       90 - alt,
-                      color=self.MODE['normal']['horColor'],
-                      marker=self.MODE[self.operationMode]['horMarker'],
+                      color=self.MODE[self.operationMode]['horColor'],
+                      marker=self.MODE['normal']['horMarker'],
                       alpha=0.5,
                       zorder=0,
                       ls='none')
 
             axes.plot(azF,
                       90 - altF,
-                      color=self.MODE['normal']['horColor'],
+                      color=self.MODE[self.operationMode]['horColor'],
                       marker='',
-                      alpha=0.5,
+                      alpha=0.7,
                       zorder=0,
-                      lw=3)
+                      lw=2)
 
         else:
             alt = np.array(alt)
@@ -533,7 +522,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             azF = np.concatenate([[0], [0], az, [360], [360]])
             axes.fill(azF,
                       altF,
-                      color=self.M_GREEN_LL,
+                      color=self.M_GREY_LL,
                       alpha=0.5,
                       zorder=0)
 
@@ -549,9 +538,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                       alt,
                       color=self.MODE[self.operationMode]['horColor'],
                       marker='',
-                      alpha=0.5,
+                      alpha=0.7,
                       zorder=0,
-                      lw=3)
+                      lw=2)
 
         return True
 

@@ -83,7 +83,7 @@ jobs:
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 9
+      max-parallel: 3
       matrix:
         os: [windows-latest]
         python-version: [3.7, 3.8, 3.9]
@@ -131,7 +131,7 @@ jobs:
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 9
+      max-parallel: 3
       matrix:
         os: [ubuntu-latest]
         python-version: [3.7, 3.8, 3.9]
@@ -175,7 +175,7 @@ jobs:
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 9
+      max-parallel: 3
       matrix:
         os: [macos-latest]
         python-version: [3.7, 3.8, 3.9]
@@ -215,4 +215,4 @@ jobs:
       - name: make_test_run
         run: |
           touch test.txt
-          python mw4/loader.py
+          # python mw4/loader.py

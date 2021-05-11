@@ -40,18 +40,12 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
     def __init__(self, app):
         super().__init__()
-
         self.app = app
-
         self.ui = keypad_ui.Ui_KeypadDialog()
         self.ui.setupUi(self)
         self.initUI()
-
-        # getting a new browser object
         self.host = None
         self.browser = QWebEngineView()
-
-        # adding it to window widget
         self.ui.keypad.addWidget(self.browser)
 
         # avoid flickering in white
@@ -66,18 +60,14 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
         :return: True for test purpose
         """
-
         if 'keypadW' not in self.app.config:
             self.app.config['keypadW'] = {}
 
         config = self.app.config['keypadW']
-
         x = config.get('winPosX', 100)
         y = config.get('winPosY', 100)
-
         if x > self.screenSizeX:
             x = 0
-
         if y > self.screenSizeY:
             y = 0
 
@@ -85,7 +75,6 @@ class KeypadWindow(toolsQtWidget.MWidget):
         height = config.get('height', 500)
         width = config.get('width', 260)
         self.resize(width, height)
-
         return True
 
     def storeConfig(self):
@@ -104,56 +93,47 @@ class KeypadWindow(toolsQtWidget.MWidget):
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
         config['width'] = self.width()
-
         return True
 
     def closeEvent(self, closeEvent):
         """
-
         :param closeEvent:
         :return:
         """
-
-        # save config
         self.storeConfig()
-
-        # gui signals
         self.browser.loadFinished.disconnect(self.loadFinished)
-
-        # remove big object
         sip.delete(self.browser)
         self.browser = None
-
         super().closeEvent(closeEvent)
 
     def showWindow(self):
         """
-
         :return:
         """
-
+        if not self.app.mount.setting.webInterfaceStat:
+            self.app.message.emit('Enable webinterface', 0)
+            suc = self.app.mount.setting.setWebInterface(True)
+            if not suc:
+                self.app.message.emit('Could not enable webinterface', 2)
         self.browser.loadFinished.connect(self.loadFinished)
         self.show()
         self.showUrl()
+        return True
 
     def loadFinished(self):
         """
-
         :return:
         """
-
         self.browser.setVisible(True)
+        return True
 
     def showUrl(self):
         """
-
         :return: success
         """
-
         if not self.app.mount.host:
             return False
 
         file = f'qrc:/webif/virtkeypad.html?host={self.app.mount.host[0]}'
         self.browser.load(PyQt5.QtCore.QUrl(file))
-
         return True

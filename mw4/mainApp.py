@@ -24,7 +24,7 @@ import platform
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
-from skyfield.api import Topos
+from skyfield.api import wgs84
 from importlib_metadata import version
 
 # local import
@@ -80,6 +80,7 @@ class MountWizzard4(QObject):
     update1s = pyqtSignal()
     update3s = pyqtSignal()
     update10s = pyqtSignal()
+    update30s = pyqtSignal()
     update60s = pyqtSignal()
     update3m = pyqtSignal()
     update10m = pyqtSignal()
@@ -100,7 +101,7 @@ class MountWizzard4(QObject):
         self.timerCounter = 0
         self.mainW = None
         self.threadPool = QThreadPool()
-        self.threadPool.setMaxThreadCount(20)
+        self.threadPool.setMaxThreadCount(30)
         self.message.connect(self.writeMessageQueue)
         self.config = {}
         self.loadConfig()
@@ -199,17 +200,17 @@ class MountWizzard4(QObject):
         lat = self.config.get('topoLat', 51.47)
         lon = self.config.get('topoLon', 0)
         elev = self.config.get('topoElev', 46)
-        topo = Topos(longitude_degrees=lon,
-                     latitude_degrees=lat,
-                     elevation_m=elev)
+        topo = wgs84.latlon(longitude_degrees=lon,
+                            latitude_degrees=lat,
+                            elevation_m=elev)
 
         config = self.config.get('mainW', {})
-        if config.get('loglevelDeepDebug', False):
+        if config.get('loglevelTrace', False):
             level = 'TRACE'
         elif config.get('loglevelDebug', False):
             level = 'DEBUG'
         else:
-            level = 'WARN'
+            level = 'INFO'
         setCustomLoggingLevel(level)
         return topo
 
@@ -240,6 +241,8 @@ class MountWizzard4(QObject):
             self.update3s.emit()
         if (self.timerCounter + 20) % 100 == 0:
             self.update10s.emit()
+        if (self.timerCounter + 25) % 300 == 0:
+            self.update30s.emit()
         if (self.timerCounter + 25) % 600 == 0:
             self.update60s.emit()
         if (self.timerCounter + 12) % 1800 == 0:
@@ -265,7 +268,7 @@ class MountWizzard4(QObject):
         :return:    True for test purpose
         """
         self.aboutToQuit()
-        self.mount.mountUp = False
+        self.deviceStat['mount'] = False
         self.threadPool.waitForDone(5000)
         self.message.emit('MountWizzard4 manual stopped', 1)
         self.application.quit()
@@ -362,9 +365,9 @@ class MountWizzard4(QObject):
         :return:    status how it was called
         """
         if status and not self.mountUp:
+            self.mount.cycleSetting()
             self.mount.getFW()
             self.mount.getLocation()
-            self.mount.cycleSetting()
             self.mainW.refreshName()
             self.mainW.refreshModel()
             self.mount.getTLE()

@@ -20,7 +20,7 @@ import datetime
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-from skyfield.toposlib import Topos
+from skyfield.api import wgs84
 
 # local import
 from base import transform
@@ -45,6 +45,7 @@ class Mount(object):
         ms.settingDone.connect(self.updateSetStatGUI)
         ms.settingDone.connect(self.updateSetSyncGUI)
         ms.settingDone.connect(self.updateTrackingGui)
+        self.app.update1s.connect(self.showOffset)
 
         self.ui.park.clicked.connect(self.changePark)
         self.ui.flipMount.clicked.connect(self.flipMount)
@@ -95,13 +96,11 @@ class Mount(object):
         """
         if obs.Alt is not None:
             self.ui.ALT.setText('{0:5.2f}'.format(obs.Alt.degrees))
-
         else:
             self.ui.ALT.setText('-')
 
         if obs.Az is not None:
             self.ui.AZ.setText('{0:5.2f}'.format(obs.Az.degrees))
-
         else:
             self.ui.AZ.setText('-')
 
@@ -111,7 +110,6 @@ class Mount(object):
         isValid = isValid and obs.timeJD is not None
         if isJ2000 and isValid:
             ra, dec = transform.JNowToJ2000(obs.raJNow, obs.decJNow, obs.timeJD)
-
         else:
             ra = obs.raJNow
             dec = obs.decJNow
@@ -119,7 +117,6 @@ class Mount(object):
         if ra is not None:
             self.ui.RA.setText(self.formatHstrToText(ra))
             self.ui.RAfloat.setText(f'{ra.hours:3.4f}')
-
         else:
             self.ui.RA.setText('-')
             self.ui.RAfloat.setText('-')
@@ -127,21 +124,18 @@ class Mount(object):
         if dec is not None:
             self.ui.DEC.setText(self.formatDstrToText(dec))
             self.ui.DECfloat.setText(f'{dec.degrees:+3.4f}')
-
         else:
             self.ui.DEC.setText('-')
             self.ui.DECfloat.setText('-')
 
         if obs.pierside is not None:
             self.ui.pierside.setText('WEST' if obs.pierside == 'W' else 'EAST')
-
         else:
             self.ui.pierside.setText('-')
 
         if obs.haJNow is not None:
             self.ui.HA.setText(self.formatHstrToText(obs.haJNow))
             self.ui.HAfloat.setText(f'{obs.haJNow.hours:3.4f}')
-
         else:
             self.ui.HA.setText('-')
             self.ui.HAfloat.setText('-')
@@ -153,16 +147,11 @@ class Mount(object):
         :param obs:
         :return:    True if ok for testing
         """
-        if obs.timeJD is not None:
-            text = obs.timeJD.utc_strftime('%H:%M:%S')
-            self.ui.timeUTC.setText('UTC: ' + text)
-
         if obs.timeSidereal is not None:
             siderealFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
             val = obs.timeSidereal.hms()
             siderealText = siderealFormat.format(*val)
             self.ui.timeSidereal.setText(siderealText)
-
         else:
             self.ui.timeSidereal.setText('-')
 
@@ -181,13 +170,14 @@ class Mount(object):
             deltaYellow = datetime.timedelta(days=30)
 
             if now > expire:
+                self.changeStyleDynamic(ui, 'char', 'red')
                 self.changeStyleDynamic(ui, 'color', 'red')
-
             elif now > expire - deltaYellow:
-                self.changeStyleDynamic(ui, 'color', 'yellow')
-
+                self.changeStyleDynamic(ui, 'char', '')
+                self.changeStyleDynamic(ui, 'color', 'red')
             else:
                 self.changeStyleDynamic(ui, 'color', '')
+                self.changeStyleDynamic(ui, 'char', '')
 
         self.guiSetText(self.ui.UTCExpire, 's', sett.UTCExpire)
 
@@ -195,11 +185,9 @@ class Mount(object):
         if sett.statusUnattendedFlip is None:
             text = '-'
             self.changeStyleDynamic(ui, 'status', '')
-
         elif sett.statusUnattendedFlip:
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
-
         else:
             text = 'OFF'
             self.changeStyleDynamic(ui, 'status', '')
@@ -210,11 +198,9 @@ class Mount(object):
         if sett.statusDualAxisTracking is None:
             text = '-'
             self.changeStyleDynamic(ui, 'status', '')
-
         elif sett.statusDualAxisTracking:
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
-
         else:
             text = 'OFF'
             self.changeStyleDynamic(ui, 'status', '')
@@ -227,13 +213,11 @@ class Mount(object):
             self.changeStyleDynamic(ui, 'status', '')
             self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
             self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
-
         elif sett.statusRefraction:
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
             self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
             self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
-
         else:
             text = 'OFF'
             self.changeStyleDynamic(ui, 'status', '')
@@ -266,6 +250,18 @@ class Mount(object):
             text = '-'
             self.changeStyleDynamic(ui, 'status', '')
         elif sett.wakeOnLan == 'On':
+            text = 'ON'
+            self.changeStyleDynamic(ui, 'status', 'on')
+        else:
+            text = 'OFF'
+            self.changeStyleDynamic(ui, 'status', '')
+        self.guiSetText(ui, 's', text)
+
+        ui = self.ui.statusWebInterface
+        if sett.webInterfaceStat is None:
+            text = '-'
+            self.changeStyleDynamic(ui, 'status', '')
+        elif sett.webInterfaceStat == 1:
             text = 'ON'
             self.changeStyleDynamic(ui, 'status', 'on')
         else:
@@ -360,7 +356,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.obsSite is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         obs = self.app.mount.obsSite
@@ -386,7 +382,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.obsSite is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         obs = self.app.mount.obsSite
@@ -412,7 +408,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         sett = self.app.mount.setting
@@ -431,7 +427,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         sett = self.app.mount.setting
@@ -450,7 +446,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.setting is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         sett = self.app.mount.setting
@@ -469,7 +465,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.obsSite is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         obs = self.app.mount.obsSite
@@ -488,7 +484,7 @@ class Mount(object):
         """
         isMount = self.deviceStat.get('mount', False)
         isData = self.app.mount.obsSite is not None
-        if not isMount and not isData:
+        if not isMount or not isData:
             return False
 
         obs = self.app.mount.obsSite
@@ -724,9 +720,9 @@ class Mount(object):
         if value is None:
             return False
 
-        topo = Topos(longitude=value,
-                     latitude=obs.location.latitude,
-                     elevation_m=obs.location.elevation.m)
+        topo = wgs84.latlon(longitude_degrees=value.degrees,
+                            latitude_degrees=obs.location.latitude.degrees,
+                            elevation_m=obs.location.elevation.m)
         obs.location = topo
 
         if not self.deviceStat.get('mount', ''):
@@ -770,9 +766,9 @@ class Mount(object):
         if value is None:
             return False
 
-        topo = Topos(longitude=obs.location.longitude,
-                     latitude=value,
-                     elevation_m=obs.location.elevation.m)
+        topo = wgs84.latlon(longitude_degrees=obs.location.longitude.degrees,
+                            latitude_degrees=value.degrees,
+                            elevation_m=obs.location.elevation.m)
         obs.location = topo
 
         if not self.deviceStat.get('mount', ''):
@@ -815,9 +811,9 @@ class Mount(object):
         if not ok:
             return False
 
-        topo = Topos(longitude=obs.location.longitude,
-                     latitude=obs.location.latitude,
-                     elevation_m=value)
+        topo = wgs84.latlon(longitude_degrees=obs.location.longitude.degrees,
+                            latitude_degrees=obs.location.latitude.degrees,
+                            elevation_m=value)
         obs.location = topo
 
         if not self.deviceStat.get('mount', ''):
@@ -967,3 +963,30 @@ class Mount(object):
         else:
             self.app.message.emit('Refraction correction cannot be set', 2)
         return suc
+
+    def showOffset(self):
+        """
+        :return:
+        """
+        connectSync = self.ui.clockSync.isChecked()
+        delta = self.app.mount.obsSite.timeDiff * 1000
+        ui = self.ui.timeDeltaPC2Mount
+        if connectSync:
+            text = f'{delta:4.0f}'
+        else:
+            text = '-'
+        ui.setText(text)
+
+        if not connectSync:
+            self.changeStyleDynamic(ui, 'char', '')
+            self.changeStyleDynamic(ui, 'color', '')
+        elif abs(delta) < 100:
+            self.changeStyleDynamic(ui, 'char', '')
+            self.changeStyleDynamic(ui, 'color', '')
+        elif abs(delta) < 500:
+            self.changeStyleDynamic(ui, 'char', 'yellow')
+            self.changeStyleDynamic(ui, 'color', '')
+        else:
+            self.changeStyleDynamic(ui, 'char', 'red')
+            self.changeStyleDynamic(ui, 'color', 'red')
+        return True

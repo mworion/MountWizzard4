@@ -21,6 +21,7 @@ import logging
 
 # local imports
 from mountcontrol.firmware import Firmware
+from mountcontrol.dome import Dome
 from mountcontrol.setting import Setting
 from mountcontrol.obsSite import ObsSite
 from mountcontrol.model import Model
@@ -70,13 +71,14 @@ class Mount(object):
 
         self.firmware = Firmware(self.host)
         self.setting = Setting(self.host)
-        self.satellite = Satellite(self.host)
         self.obsSite = ObsSite(self.host,
                                pathToData=self.pathToData,
                                verbose=self.verbose,
                                )
-        self.geometry = Geometry(obsSite=self.obsSite)
-        self.model = Model(self.host, self.obsSite)
+        self.satellite = Satellite(parent=self, host=self.host)
+        self.geometry = Geometry(parent=self)
+        self.dome = Dome(self.host)
+        self.model = Model(parent=self, host=self.host)
         self.host = host
 
     @property
@@ -88,6 +90,7 @@ class Mount(object):
         value = self.checkFormatHost(value)
         self._host = value
         self.firmware.host = value
+        self.dome.host = value
         self.setting.host = value
         self.model.host = value
         self.obsSite.host = value
@@ -111,15 +114,12 @@ class Mount(object):
         :param      value: host value
         :return:    host value as tuple including port
         """
-
         if not value:
             self.log.info('Wrong host value: {0}'.format(value))
             return None
-
         if not isinstance(value, (tuple, str)):
             self.log.info('Wrong host value: {0}'.format(value))
             return None
-
         if isinstance(value, str):
             value = (value, self.DEFAULT_PORT)
 
@@ -133,7 +133,6 @@ class Mount(object):
         :param      value: string with mac address
         :return:    checked string in upper cases
         """
-
         if not value:
             self.log.info('wrong MAC value: {0}'.format(value))
             return None
@@ -171,18 +170,18 @@ class Mount(object):
 
         :return: nothing
         """
-
         self.firmware = Firmware(self.host)
+        self.dome = Dome(self.host)
         self.setting = Setting(self.host)
-        self.model = Model(self.host)
-        self.satellite = Satellite(self.host)
+        self.model = Model(parent=self, host=self.host)
         self.obsSite = ObsSite(self.host,
                                pathToData=self.pathToData,
                                verbose=self.verbose,
                                )
-        self.geometry = Geometry(obsSite=self.obsSite)
+        self.satellite = Satellite(parent=self, host=self.host)
+        self.geometry = Geometry(parent=self)
 
-    def calcTransformationMatrices(self):
+    def calcTransformationMatricesTarget(self):
         """
         :return: alt az
         """
@@ -195,3 +194,15 @@ class Mount(object):
                                                         lat=lat,
                                                         pierside=pierside)
 
+    def calcTransformationMatricesActual(self):
+        """
+        :return: alt az
+        """
+        ha = self.obsSite.haJNow
+        dec = self.obsSite.decJNow
+        lat = self.obsSite.location.latitude
+        pierside = self.obsSite.pierside
+        return self.geometry.calcTransformationMatrices(ha=ha,
+                                                        dec=dec,
+                                                        lat=lat,
+                                                        pierside=pierside)

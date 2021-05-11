@@ -35,8 +35,6 @@ from gui.widgets.devicePopup_ui import Ui_DevicePopup
 
 class DevicePopup(toolsQtWidget.MWidget):
     """
-    the DevicePopup window class handles
-
     """
 
     __all__ = ['DevicePopup',

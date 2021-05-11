@@ -20,7 +20,7 @@ from queue import Queue
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
-from skyfield.api import Topos, load
+from skyfield.api import wgs84, load
 
 # local import
 
@@ -295,7 +295,9 @@ class Mount(QObject):
         angularPosDEC = None
         AzTarget = None
         AltTarget = None
-        location = Topos(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+        location = wgs84.latlon(latitude_degrees=0,
+                                longitude_degrees=0,
+                                elevation_m=0)
         ts = load.timescale(builtin=True)
         timeJD = ts.now()
 
@@ -313,6 +315,7 @@ class App(QObject):
     update10s = pyqtSignal()
     update1s = pyqtSignal()
     update3s = pyqtSignal()
+    update30s = pyqtSignal()
     update30m = pyqtSignal()
     remoteCommand = pyqtSignal(object)
     message = pyqtSignal(str, int)

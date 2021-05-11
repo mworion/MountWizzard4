@@ -116,6 +116,7 @@ def update_builtins(c):
     runMW(c, 'cp ./data/de421_23.bsp ./mw4/resource/data/de421_23.bsp')
     runMW(c, 'cp ./data/active.txt ./mw4/resource/data/active.txt')
     runMW(c, 'cp ./data/finals2000A.all ./mw4/resource/data/finals2000A.all')
+    runMW(c, 'cp ./data/finals.data ./mw4/resource/data/finals.data')
 
 
 @task
@@ -217,14 +218,14 @@ def test_win(c):
         printMW('...copy *.tar.gz to test dir')
         runMWd(c, f'scp -r mountwizzard4.tar.gz {wWinSCP}')
 
-    with c.cd('support/Windows'):
+    with c.cd('support/2.0/Windows'):
         printMW('...copy install script to test dir')
         runMWd(c, f'scp -r MW4_InstallTest.bat {wWinSCP}')
         runMWd(c, f'scp -r MW4_Install.bat {wWinSCP}')
         printMW('...run install script in test dir')
         runMWd(c, f'ssh {uWin} "cd {wWin} && MW4_InstallTest.bat"')
         printMW('...copy run script to test dir')
-        runMWd(c, f'scp -r test.txt {wWinSCP}')
+        runMWd(c, f'ssh {uWin} "cd {wWin} && echo > test.txt"')
         runMWd(c, f'scp -r MW4_Run.bat {wWinSCP}')
         printMW('...run MountWizzard4 for 3 seconds')
         runMWd(c, f'ssh {uWin} "cd {wWin} && MW4_Run.bat"')
@@ -244,14 +245,14 @@ def test_ubuntu(c):
         printMW('...copy *.tar.gz to test dir')
         runMWd(c, f'scp -r mountwizzard4.tar.gz {workUbuntuSCP}')
 
-    with c.cd('support/Ubuntu'):
+    with c.cd('support/2.0/Ubuntu'):
         printMW('...copy install script to test dir')
         runMWd(c, f'scp -r MW4_InstallTest.sh {workUbuntuSCP}')
         runMWd(c, f'scp -r MW4_Install.sh {workUbuntuSCP}')
         printMW('...run install script in test dir')
         runMWd(c, f'ssh {userUbuntu} "cd {workUbuntu} && ./MW4_InstallTest.sh"')
         printMW('...copy run script and environ to test dir')
-        runMWd(c, f'scp -r test.txt {workUbuntuSCP}')
+        runMWd(c, f'ssh {userUbuntu} "cd {workUbuntu} && touch test.txt"')
         runMWd(c, f'scp -r MW4_Run.sh {workUbuntuSCP}')
         runMWd(c, f'scp -r MountWizzard4.desktop {workUbuntuSCP}')
         runMWd(c, f'scp -r mw4.png {workUbuntuSCP}')
@@ -273,14 +274,14 @@ def test_mac(c):
         printMW('...copy *.tar.gz to test dir')
         runMWd(c, f'scp -r mountwizzard4.tar.gz {workMacSCP}')
 
-    with c.cd('support/MacOSx'):
+    with c.cd('support/2.0/MacOSx'):
         printMW('...copy install script to test dir')
         runMWd(c, f'scp -r MW4_InstallTest.command {workMacSCP}')
         runMWd(c, f'scp -r MW4_Install.command {workMacSCP}')
         printMW('...run install script in test dir')
         runMWd(c, f'ssh {userMac} "cd {workMac} && ./MW4_InstallTest.command"')
         printMW('...copy run script and environ to test dir')
-        runMWd(c, f'scp -r test.txt {workMacSCP}')
+        runMWd(c, f'ssh {userMac} "cd {workMac} && touch test.txt"')
         runMWd(c, f'scp -r MW4_Run.command {workMacSCP}')
         printMW('...run MountWizzard4 for 3 seconds')
         runMWd(c, f'ssh {userMac} "cd {workMac} && ./MW4_Run.command"')

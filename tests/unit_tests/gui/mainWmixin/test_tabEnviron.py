@@ -27,7 +27,7 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
 import requests
-from skyfield.toposlib import Topos
+from skyfield.api import wgs84
 from skyfield.api import Loader
 import numpy as np
 
@@ -65,7 +65,7 @@ def function(module):
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData=Path('tests/data'))
-        mount.obsSite.location = Topos(latitude_degrees=20,
+        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
         loader = Loader('tests/testData', verbose=False)

@@ -132,12 +132,10 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
         config['width'] = self.width()
-
         pos = self.camera.position()
         config['cameraPositionX'] = pos.x()
         config['cameraPositionY'] = pos.y()
         config['cameraPositionZ'] = pos.z()
-
         config['checkDomeTransparent'] = self.ui.checkDomeTransparent.isChecked()
         config['checkShowPointer'] = self.ui.checkShowPointer.isChecked()
         config['checkShowLaser'] = self.ui.checkShowLaser.isChecked()
@@ -145,7 +143,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         config['checkShowNumbers'] = self.ui.checkShowNumbers.isChecked()
         config['checkShowSlewPath'] = self.ui.checkShowSlewPath.isChecked()
         config['checkShowHorizon'] = self.ui.checkShowHorizon.isChecked()
-
         return True
 
     def closeEvent(self, closeEvent):
@@ -155,6 +152,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         self.storeConfig()
 
+        self.app.update1s.disconnect(self.dome.updatePositions)
         self.ui.checkDomeTransparent.clicked.disconnect(self.setDomeTransparency)
         self.ui.checkShowBuildPoints.clicked.disconnect(self.buildPointsCreate)
         self.ui.checkShowNumbers.clicked.disconnect(self.buildPointsCreate)
@@ -163,15 +161,11 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.checkShowHorizon.clicked.disconnect(self.horizonCreate)
         self.ui.checkShowPointer.clicked.disconnect(self.pointerCreate)
         self.ui.checkShowLaser.clicked.disconnect(self.laserCreate)
-
         self.ui.topView.clicked.disconnect(self.topView)
         self.ui.topEastView.clicked.disconnect(self.topEastView)
         self.ui.topWestView.clicked.disconnect(self.topWestView)
         self.ui.eastView.clicked.disconnect(self.eastView)
         self.ui.westView.clicked.disconnect(self.westView)
-
-        # connect functional signals
-        self.app.update1s.disconnect(self.dome.updatePositions)
         self.app.updateDomeSettings.disconnect(self.updateSettings)
         self.app.updateDomeSettings.disconnect(self.telescope.updateSettings)
         self.app.updateDomeSettings.disconnect(self.dome.updateSettings)
@@ -181,7 +175,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.mount.signals.pointDone.disconnect(self.buildPoints.updatePositions)
         self.app.drawBuildPoints.disconnect(self.buildPointsCreate)
         self.app.drawHorizonPoints.disconnect(self.horizonCreate)
-
+        self.camera.positionChanged.disconnect(self.limitPositionZ)
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -197,13 +191,11 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.checkShowHorizon.clicked.connect(self.horizonCreate)
         self.ui.checkShowPointer.clicked.connect(self.pointerCreate)
         self.ui.checkShowLaser.clicked.connect(self.laserCreate)
-
         self.ui.topView.clicked.connect(self.topView)
         self.ui.topEastView.clicked.connect(self.topEastView)
         self.ui.topWestView.clicked.connect(self.topWestView)
         self.ui.eastView.clicked.connect(self.eastView)
         self.ui.westView.clicked.connect(self.westView)
-
         self.app.update1s.connect(self.dome.updatePositions)
         self.app.updateDomeSettings.connect(self.updateSettings)
         self.app.updateDomeSettings.connect(self.telescope.updateSettings)
@@ -214,9 +206,21 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.mount.signals.pointDone.connect(self.buildPoints.updatePositions)
         self.app.drawBuildPoints.connect(self.buildPointsCreate)
         self.app.drawHorizonPoints.connect(self.horizonCreate)
-
+        self.camera.positionChanged.connect(self.limitPositionZ)
         self.show()
+        return True
 
+    def limitPositionZ(self):
+        """
+        :return:
+        """
+        pos = self.camera.position()
+        if pos[1] < 0:
+            z = 0
+        else:
+            z = pos[1]
+        posNew = QVector3D(pos[0], z, pos[2])
+        self.camera.setPosition(posNew)
         return True
 
     def buildPointsCreate(self):

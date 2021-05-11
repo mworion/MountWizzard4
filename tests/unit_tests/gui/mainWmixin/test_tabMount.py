@@ -22,7 +22,7 @@ import datetime
 # external packages
 import PyQt5
 from PyQt5.QtWidgets import QWidget
-from skyfield.api import Angle, Topos
+from skyfield.api import Angle, wgs84
 
 # local import
 from tests.baseTestSetupMixins import App
@@ -302,6 +302,24 @@ def test_updateSetSyncGUI_6(function):
     assert suc
 
 
+def test_updateSetSyncGUI_7(function):
+    function.app.mount.setting.webInterfaceStat = 0
+    suc = function.updateSetSyncGUI(function.app.mount.setting)
+    assert suc
+
+
+def test_updateSetSyncGUI_8(function):
+    function.app.mount.setting.webInterfaceStat = 1
+    suc = function.updateSetSyncGUI(function.app.mount.setting)
+    assert suc
+
+
+def test_updateSetSyncGUI_9(function):
+    function.app.mount.setting.webInterfaceStat = None
+    suc = function.updateSetSyncGUI(function.app.mount.setting)
+    assert suc
+
+
 def test_updateTrackingGui_1(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
@@ -356,7 +374,8 @@ def test_updateTrackingGui_6(function):
         assert not suc
 
 
-def test_setLunarTracking1(function, qtbot):
+def test_setLunarTracking_1(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.setting,
                            'setLunarTracking',
                            return_value=True):
@@ -366,7 +385,8 @@ def test_setLunarTracking1(function, qtbot):
         assert ['Tracking set to Lunar', 0] == blocker.args
 
 
-def test_setLunarTracking2(function, qtbot):
+def test_setLunarTracking_2(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.setting,
                            'setLunarTracking',
                            return_value=False):
@@ -376,7 +396,17 @@ def test_setLunarTracking2(function, qtbot):
         assert ['Cannot set tracking to Lunar', 2] == blocker.args
 
 
-def test_setSiderealTracking1(function, qtbot):
+def test_setLunarTracking_3(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.setting,
+                           'setLunarTracking',
+                           return_value=True):
+        suc = function.setLunarTracking()
+        assert not suc
+
+
+def test_setSiderealTracking_1(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.setting,
                            'setSiderealTracking',
                            return_value=True):
@@ -386,7 +416,8 @@ def test_setSiderealTracking1(function, qtbot):
         assert ['Tracking set to Sidereal', 0] == blocker.args
 
 
-def test_setSiderealTracking2(function, qtbot):
+def test_setSiderealTracking_2(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.setting,
                            'setSiderealTracking',
                            return_value=False):
@@ -396,7 +427,17 @@ def test_setSiderealTracking2(function, qtbot):
         assert ['Cannot set tracking to Sidereal', 2] == blocker.args
 
 
-def test_setSolarTracking1(function, qtbot):
+def test_setSiderealTracking_3(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.setting,
+                           'setSiderealTracking',
+                           return_value=True):
+        suc = function.setSiderealTracking()
+        assert not suc
+
+
+def test_setSolarTracking_1(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.setting,
                            'setSolarTracking',
                            return_value=True):
@@ -406,7 +447,8 @@ def test_setSolarTracking1(function, qtbot):
         assert ['Tracking set to Solar', 0] == blocker.args
 
 
-def test_setSolarTracking2(function, qtbot):
+def test_setSolarTracking_2(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.setting,
                            'setSolarTracking',
                            return_value=False):
@@ -416,7 +458,17 @@ def test_setSolarTracking2(function, qtbot):
         assert ['Cannot set tracking to Solar', 2] == blocker.args
 
 
+def test_setSolarTracking_3(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.setting,
+                           'setSolarTracking',
+                           return_value=True):
+        suc = function.setSolarTracking()
+        assert not suc
+
+
 def test_flipMount_1(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'flip',
                            return_value=False):
@@ -427,6 +479,7 @@ def test_flipMount_1(function, qtbot):
 
 
 def test_flipMount_2(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'flip',
                            return_value=True):
@@ -436,7 +489,17 @@ def test_flipMount_2(function, qtbot):
         assert ['Mount flipped', 0] == blocker.args
 
 
-def test_stop1(function, qtbot):
+def test_flipMount_3(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.obsSite,
+                           'flip',
+                           return_value=True):
+        suc = function.flipMount()
+        assert not suc
+
+
+def test_stop_1(function, qtbot):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'stop',
                            return_value=True):
@@ -446,7 +509,7 @@ def test_stop1(function, qtbot):
         assert ['Mount stopped', 0] == blocker.args
 
 
-def test_stop2(function, qtbot):
+def test_stop_2(function, qtbot):
     with mock.patch.object(function.app.mount.obsSite,
                            'stop',
                            return_value=False):
@@ -454,6 +517,15 @@ def test_stop2(function, qtbot):
             suc = function.stop()
             assert not suc
         assert ['Cannot stop mount', 2] == blocker.args
+
+
+def test_test_stop_3(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.obsSite,
+                           'stop',
+                           return_value=True):
+        suc = function.stop()
+        assert not suc
 
 
 def test_virtualStop_1(function):
@@ -592,7 +664,7 @@ def test_updateSetting_timeToMeridian(function):
 
 
 def test_updateLocGUI_1(function):
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
                                                 latitude_degrees=49,
                                                 elevation_m=500)
     function.updateLocGUI(function.app.mount.obsSite)
@@ -614,6 +686,7 @@ def test_updateLocGUI_3(function):
 
 
 def test_changeTracking_ok1(function, qtbot):
+    function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 0
     with mock.patch.object(function.app.mount.obsSite,
                            'stopTracking',
@@ -625,6 +698,7 @@ def test_changeTracking_ok1(function, qtbot):
 
 
 def test_changeTracking_ok2(function, qtbot):
+    function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 0
     with mock.patch.object(function.app.mount.obsSite,
                            'stopTracking',
@@ -637,6 +711,7 @@ def test_changeTracking_ok2(function, qtbot):
 
 def test_changeTracking_ok3(function, qtbot):
     function.app.mount.obsSite.status = 1
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'startTracking',
                            return_value=False):
@@ -648,6 +723,7 @@ def test_changeTracking_ok3(function, qtbot):
 
 def test_changeTracking_ok4(function, qtbot):
     function.app.mount.obsSite.status = 1
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'startTracking',
                            return_value=True):
@@ -657,8 +733,18 @@ def test_changeTracking_ok4(function, qtbot):
         assert ['Started tracking', 0] == blocker.args
 
 
+def test_changeTracking_notok(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.obsSite,
+                           'startTracking',
+                           return_value=True):
+        suc = function.changeTracking()
+        assert not suc
+
+
 def test_changePark_ok1(function, qtbot):
     function.app.mount.obsSite.status = 5
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'unpark',
                            return_value=False):
@@ -670,6 +756,7 @@ def test_changePark_ok1(function, qtbot):
 
 def test_changePark_ok2(function, qtbot):
     function.app.mount.obsSite.status = 5
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'unpark',
                            return_value=True):
@@ -681,6 +768,7 @@ def test_changePark_ok2(function, qtbot):
 
 def test_changePark_ok3(function, qtbot):
     function.app.mount.obsSite.status = 1
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'park',
                            return_value=False):
@@ -692,6 +780,7 @@ def test_changePark_ok3(function, qtbot):
 
 def test_changePark_ok4(function, qtbot):
     function.app.mount.obsSite.status = 1
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
                            'park',
                            return_value=True):
@@ -699,6 +788,15 @@ def test_changePark_ok4(function, qtbot):
             suc = function.changePark()
             assert suc
         assert ['Mount parked', 0] == blocker.args
+
+
+def test_changePark_notok(function, qtbot):
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function.app.mount.obsSite,
+                           'park',
+                           return_value=True):
+        suc = function.changePark()
+        assert not suc
 
 
 def test_setMeridianLimitTrack_1(function, qtbot):
@@ -941,7 +1039,7 @@ def test_setLongitude_1(function, qtbot):
 
 def test_setLongitude_2(function, qtbot):
     function.app.deviceStat['mount'] = False
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
                                                 latitude_degrees=49,
                                                 elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -953,7 +1051,7 @@ def test_setLongitude_2(function, qtbot):
 
 def test_setLongitude_3(function, qtbot):
     function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
                                                 latitude_degrees=49,
                                                 elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -965,7 +1063,7 @@ def test_setLongitude_3(function, qtbot):
 
 def test_setLongitude_4(function, qtbot):
     function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
                                                 latitude_degrees=49,
                                                 elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -980,9 +1078,9 @@ def test_setLongitude_4(function, qtbot):
 
 def test_setLongitude_5(function, qtbot):
     function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('11E 30 45.5', True)):
@@ -995,9 +1093,9 @@ def test_setLongitude_5(function, qtbot):
 
 def test_setLongitude_6(function, qtbot):
     function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=(None, True)):
@@ -1010,9 +1108,9 @@ def test_setLongitude_6(function, qtbot):
 
 def test_setLongitude_7(function, qtbot):
     function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('11E 30 45.5', True)):
@@ -1025,9 +1123,9 @@ def test_setLongitude_7(function, qtbot):
 
 def test_setLongitude_8(function, qtbot):
     function.app.deviceStat['mount'] = False
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('11E 30 45.5', True)):
@@ -1049,9 +1147,9 @@ def test_setLatitude_1(function, qtbot):
 
 def test_setLatitude_2(function, qtbot):
     function.app.deviceStat['mount'] = False
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('+45*30:45.5', True)):
@@ -1060,9 +1158,9 @@ def test_setLatitude_2(function, qtbot):
 
 
 def test_setLatitude_3(function, qtbot):
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('+45*30:45.5', False)):
@@ -1072,9 +1170,9 @@ def test_setLatitude_3(function, qtbot):
 
 def test_setLatitude_4(function, qtbot):
     function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('+45*30:45.5', True)):
@@ -1087,9 +1185,9 @@ def test_setLatitude_4(function, qtbot):
 
 def test_setLatitude_5(function, qtbot):
     function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('45N 30 45.5', True)):
@@ -1102,9 +1200,9 @@ def test_setLatitude_5(function, qtbot):
 
 def test_setLatitude_6(function, qtbot):
     function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=(None, True)):
@@ -1114,9 +1212,9 @@ def test_setLatitude_6(function, qtbot):
 
 def test_setLatitude_7(function, qtbot):
     function.app.deviceStat['mount'] = False
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('45N 30 45.5', True)):
@@ -1129,9 +1227,9 @@ def test_setLatitude_7(function, qtbot):
 
 def test_setLatitude_8(function, qtbot):
     function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('45N 30 45.5', True)):
@@ -1152,9 +1250,9 @@ def test_setElevation_1(function, qtbot):
 
 
 def test_setElevation_2(function, qtbot):
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getDouble',
                            return_value=(10, False)):
@@ -1164,9 +1262,9 @@ def test_setElevation_2(function, qtbot):
 
 def test_setElevation_3(function, qtbot):
     function.app.deviceStat['mount'] = False
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getDouble',
                            return_value=(10, True)):
@@ -1176,9 +1274,9 @@ def test_setElevation_3(function, qtbot):
 
 def test_setElevation_4(function, qtbot):
     function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getDouble',
                            return_value=(10, True)):
@@ -1191,9 +1289,9 @@ def test_setElevation_4(function, qtbot):
 
 def test_setElevation_5(function, qtbot):
     function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = Topos(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getDouble',
                            return_value=(10, True)):
@@ -1391,3 +1489,36 @@ def test_updatePointGui_ra_j2000(function):
     value = Angle(degrees=45)
     function.app.mount.obsSite.decJNow = value
     function.updatePointGUI(function.app.mount.obsSite)
+
+
+def test_showOffset_1(function):
+    function.ui.clockSync.setChecked(False)
+    function.ui.syncTimePC2Mount.setChecked(False)
+
+    suc = function.showOffset()
+    assert suc
+
+
+@mock.patch('tests.baseTestSetupMixins.App.mount.obsSite.timeDiff', 0.003)
+def test_showOffset_2(function):
+    function.ui.clockSync.setChecked(True)
+    function.ui.syncTimePC2Mount.setChecked(True)
+    suc = function.showOffset()
+    assert suc
+
+
+@mock.patch('tests.baseTestSetupMixins.App.mount.obsSite.timeDiff', 0.3)
+def test_showOffset_3(function):
+    function.ui.clockSync.setChecked(True)
+    function.ui.syncTimePC2Mount.setChecked(True)
+
+    suc = function.showOffset()
+    assert suc
+
+
+@mock.patch('tests.baseTestSetupMixins.App.mount.obsSite.timeDiff', 0.6)
+def test_showOffset_4(function):
+    function.ui.clockSync.setChecked(True)
+    function.ui.syncTimePC2Mount.setChecked(True)
+    suc = function.showOffset()
+    assert suc

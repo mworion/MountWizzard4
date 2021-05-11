@@ -66,16 +66,19 @@ class Styles:
     M_WHITE_H = '#F0F0F0'
     M_WHITE = '#A0A0A0'
     M_WHITE_L = '#808080'
+    M_GREY_H = '#606060'
     M_GREY = '#404040'
     M_GREY_MID = '#303030'
+    M_GREY_LL = '#282828'
     M_GREY_LIGHT = '#202020'
     M_GREY_DARK = '#101010'
     M_GREEN_H = '#00A000'
     M_GREEN = '#008000'
-    M_GREEN_L = '#004000'
+    M_GREEN_L = '#006000'
     M_GREEN_LL = '#003000'
     M_GREEN_LL_A = '#00100040'
     M_RED = '#B03030'
+    M_RED_L = '#802020'
     M_PINK_H = '#FF00FF'
     M_PINK = '#B000B0'
     M_YELLOW_H = '#FFFF00'
@@ -172,7 +175,7 @@ class Styles:
         background-color: #202020;
         color: rgb(32, 144, 192);
         padding: 5px;
-        max-width: 300px;
+        max-width: 500px;
     }
     QLabel {
         background-color: transparent;
@@ -228,6 +231,30 @@ class Styles:
         border-width: 2px;
         border-style: outset;
         border-color: red;
+    }
+    QLineEdit[char='green'] {
+        color: #00C000;
+    }
+    QLineEdit[char='yellow'] {
+        color: '#C0C000';
+    }
+    QLineEdit[char='red'] {
+        color: #C00000;
+    }
+    QLineEdit[color='M_RED_L'] {
+        border-width: 2px;
+        border-style: outset;
+        border-color: #802020;
+    }
+    QLineEdit[color='M_YELLOW_L'] {
+        border-width: 2px;
+        border-style: outset;
+        border-color: #808000;
+    }
+    QLineEdit[color='M_GREEN_L'] {
+        border-width: 2px;
+        border-style: outset;
+        border-color: #006000;
     }
     QLineEdit[status='on'] {
         color: black;
@@ -313,6 +340,10 @@ class Styles:
     QCheckBox::indicator:checked {
         background-color: rgb(32, 144, 192);
         image: url(:/icon/checkmark.ico);
+    }
+    QCheckBox::indicator:disabled {
+        background-color: transparent;
+        image: None;
     }
     QCheckBox:disabled {
         color: #404040;
@@ -683,6 +714,14 @@ class Styles:
         border-radius: 3px;
         border-width: 1px;
         border-color: #404040;
+        border-style: outset;
+    }
+    QProgressBar:disabled {
+        color: #606060;
+        background-color: #101010;
+        border-radius: 3px;
+        border-width: 1px;
+        border-color: #202020;
         border-style: outset;
     }
     QProgressBar::chunk {

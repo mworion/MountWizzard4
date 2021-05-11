@@ -145,7 +145,7 @@ class MainWindow(
             'name': 'AnalyseDialog',
             'class': AnalyseWindow,
         }
-        if packageConfig.isSimulator and packageConfig.isAvailable:
+        if packageConfig.isAvailable:
             self.uiWindows['showSimulatorW'] = {
                 'button': self.ui.mountConnected,
                 'classObj': None,
@@ -331,7 +331,6 @@ class MainWindow(
 
         :return:    True if success for test
         """
-
         # main window
         self.wIcon(self.ui.saveConfigAs, 'save')
         self.wIcon(self.ui.loadFrom, 'load')
@@ -414,6 +413,7 @@ class MainWindow(
         self.wIcon(self.ui.startSatelliteTracking, 'start')
         self.wIcon(self.ui.progSatellitesFull, 'run')
         self.wIcon(self.ui.progSatellitesFiltered, 'run')
+        self.wIcon(self.ui.progTrajectory, 'run')
 
         # analyse
         self.wIcon(self.ui.runFlexure, 'start')
@@ -519,15 +519,21 @@ class MainWindow(
         :param status:
         :return: true for test purpose
         """
+        hasSim = packageConfig.isAvailable
         self.deviceStat['mount'] = status
-        if not packageConfig.isSimulator:
-            return True
-        self.ui.mountConnected.setEnabled(status)
-        if status:
-            return True
-        if not self.uiWindows['showSimulatorW']['classObj']:
-            return False
-        self.uiWindows['showSimulatorW']['classObj'].close()
+
+        if status and hasSim:
+            self.ui.mountConnected.setEnabled(status)
+            self.ui.mountConnected.setText('Mount 3D')
+
+        elif status:
+            self.ui.mountConnected.setText('Mount')
+
+        elif not status and hasSim:
+            self.ui.mountConnected.setText('Mount')
+            if self.uiWindows['showSimulatorW']['classObj']:
+                self.uiWindows['showSimulatorW']['classObj'].close()
+
         return True
 
     def updateMountWeatherStat(self, setting):
@@ -611,10 +617,6 @@ class MainWindow(
             'Relay': {
                 'statID': 'relay',
                 'tab': self.ui.toolsTabWidget,
-            },
-            'Dome': {
-                'statID': 'dome',
-                'tab': self.ui.settingsTabWidget,
             },
         }
         tabChanged = False
@@ -723,9 +725,13 @@ class MainWindow(
         :return: True for test purpose
         """
         self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
+        timeJD = self.app.mount.obsSite.timeJD
+        if timeJD is not None:
+            text = timeJD.utc_strftime('%H:%M:%S')
+            self.ui.timeUTC.setText('UTC:' + text)
+
         if self.ui.isOnline.isChecked():
             text = 'Internet Online Mode'
-
         else:
             text = 'Offline Mode'
 
@@ -835,9 +841,9 @@ class MainWindow(
         :return: true for test purpose
         """
         for window in self.uiWindows:
-            if not self.app.config.get(window, False):
-                continue
             if window == 'showSimulatorW':
+                continue
+            if not self.app.config.get(window, False):
                 continue
 
             self.buildWindow(window)
@@ -863,7 +869,6 @@ class MainWindow(
                     continue
 
                 waitDeleted = False
-
             QTest.qWait(100)
         return True
 

@@ -20,7 +20,7 @@ from queue import Queue
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
-from skyfield.api import Topos, load, Loader
+from skyfield.api import wgs84, load, Loader
 
 # local import
 
@@ -69,6 +69,12 @@ class Mount(QObject):
     class MountSatellite:
         class Name:
             name = ''
+            jdStart = 1
+            jdEnd = 1
+            flip = False
+            message = ''
+            altitude = None
+            azimuth = None
 
         tleParams = Name()
 
@@ -77,7 +83,11 @@ class Mount(QObject):
             return
 
         @staticmethod
-        def slewTLE():
+        def slewTLE(julD=0, duration=0):
+            return
+
+        @staticmethod
+        def calcTLE():
             return
 
     class MountFirmware:
@@ -86,6 +96,10 @@ class Mount(QObject):
         vString = '12345'
         date = 'test'
         time = 'test'
+
+        @staticmethod
+        def checkNewer(a):
+            return True
 
     class MountGeometry:
         offNorth = 0
@@ -109,6 +123,7 @@ class Mount(QObject):
         typeConnection = 1
         slewRateMin = 0
         slewRateMax = 1
+        webInterfaceStat = 0
 
         @staticmethod
         def timeToMeridian():
@@ -199,6 +214,8 @@ class Mount(QObject):
         getTLEdone = pyqtSignal()
         alert = pyqtSignal()
         slewFinished = pyqtSignal()
+        calcTrajectoryDone = pyqtSignal()
+        trajectoryProgress = pyqtSignal()
 
     class MountObsSite:
 
@@ -220,11 +237,13 @@ class Mount(QObject):
         AzTarget = None
         AltTarget = None
         pierside = None
-        location = Topos(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+        location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         ts = load.timescale(builtin=True)
         timeJD = ts.now()
+        timeDiff = 0
         loader = Loader('tests/temp', verbose=False)
         status = 0
+        UTC2TT = 69.184
 
         @staticmethod
         def setLongitude(a):
@@ -287,6 +306,10 @@ class Mount(QObject):
             return True
 
         @staticmethod
+        def adjustClock(a):
+            return True
+
+        @staticmethod
         def setTargetAltAz(alt_degrees=0,
                            az_degrees=0):
             return True
@@ -313,6 +336,22 @@ class Mount(QObject):
 
     @staticmethod
     def calcTLE():
+        return
+
+    @staticmethod
+    def getTLE():
+        return
+
+    @staticmethod
+    def progTrajectory():
+        return
+
+    @staticmethod
+    def startClockTimer():
+        return
+
+    @staticmethod
+    def stopClockTimer():
         return
 
 
@@ -362,6 +401,11 @@ class Dome:
                  altitude=0):
         return
 
+    @staticmethod
+    def followDome(azimuth=0,
+                   altitude=0):
+        return
+
 
 class Relay:
     class RelaySignals(QObject):
@@ -400,6 +444,10 @@ class Data:
     def saveHorizonP(fileName=''):
         return
 
+    @staticmethod
+    def isAboveHorizon(a):
+        return
+
 
 class App(QObject):
     config = {'mainW': {}}
@@ -407,6 +455,7 @@ class App(QObject):
     update10s = pyqtSignal()
     update1s = pyqtSignal()
     update3s = pyqtSignal()
+    update30s = pyqtSignal()
     update30m = pyqtSignal()
     update1h = pyqtSignal()
     sendSatelliteData = pyqtSignal()

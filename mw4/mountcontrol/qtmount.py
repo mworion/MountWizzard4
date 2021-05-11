@@ -21,6 +21,7 @@ import socket
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import wakeonlan
+import numpy as np
 
 # local imports
 from base.tpool import Worker
@@ -45,6 +46,7 @@ class MountSignals(PyQt5.QtCore.QObject):
     __all__ = ['MountSignals']
 
     pointDone = PyQt5.QtCore.pyqtSignal(object)
+    domeDone = PyQt5.QtCore.pyqtSignal(object)
     settingDone = PyQt5.QtCore.pyqtSignal(object)
     alignDone = PyQt5.QtCore.pyqtSignal(object)
     namesDone = PyQt5.QtCore.pyqtSignal(object)
@@ -53,6 +55,8 @@ class MountSignals(PyQt5.QtCore.QObject):
     calcTLEdone = PyQt5.QtCore.pyqtSignal(object)
     statTLEdone = PyQt5.QtCore.pyqtSignal(object)
     getTLEdone = PyQt5.QtCore.pyqtSignal(object)
+    trajectoryProgress = PyQt5.QtCore.pyqtSignal(object)
+    calcTrajectoryDone = PyQt5.QtCore.pyqtSignal(object)
     mountUp = PyQt5.QtCore.pyqtSignal(object)
     slewFinished = PyQt5.QtCore.pyqtSignal()
     alert = PyQt5.QtCore.pyqtSignal()
@@ -78,9 +82,11 @@ class Mount(mountcontrol.mount.Mount):
 
     """
 
-    CYCLE_POINTING = 500
-    CYCLE_MOUNT_UP = 3000
-    CYCLE_SETTING = 3000
+    CYCLE_POINTING = 550
+    CYCLE_DOME = 950
+    CYCLE_CLOCK = 1000
+    CYCLE_MOUNT_UP = 2700
+    CYCLE_SETTING = 3100
 
     # set timeout
     SOCKET_TIMEOUT = 3.5
@@ -99,12 +105,7 @@ class Mount(mountcontrol.mount.Mount):
                          verbose=verbose,
                          )
 
-        if threadPool is None:
-            self.threadPool = PyQt5.QtCore.QThreadPool()
-
-        else:
-            self.threadPool = threadPool
-
+        self.threadPool = threadPool
         self.mountUp = False
         self._settlingTime = 0
         self.statusAlert = False
@@ -114,6 +115,12 @@ class Mount(mountcontrol.mount.Mount):
         self.timerPointing = PyQt5.QtCore.QTimer()
         self.timerPointing.setSingleShot(False)
         self.timerPointing.timeout.connect(self.cyclePointing)
+        self.timerDome = PyQt5.QtCore.QTimer()
+        self.timerDome.setSingleShot(False)
+        self.timerDome.timeout.connect(self.cycleDome)
+        self.timerClock = PyQt5.QtCore.QTimer()
+        self.timerClock.setSingleShot(False)
+        self.timerClock.timeout.connect(self.cycleClock)
         self.timerSetting = PyQt5.QtCore.QTimer()
         self.timerSetting.setSingleShot(False)
         self.timerSetting.timeout.connect(self.cycleSetting)
@@ -153,9 +160,38 @@ class Mount(mountcontrol.mount.Mount):
         :return: true for test purpose
         """
         self.timerPointing.stop()
+        self.timerDome.stop()
+        self.timerClock.stop()
         self.timerSetting.stop()
         self.timerMountUp.stop()
-        self.threadPool.waitForDone()
+        return True
+
+    def startDomeTimer(self):
+        """
+        :return:
+        """
+        self.timerDome.start(self.CYCLE_DOME)
+        return True
+
+    def stopDomeTimer(self):
+        """
+        :return:
+        """
+        self.timerDome.stop()
+        return True
+
+    def startClockTimer(self):
+        """
+        :return:
+        """
+        self.timerClock.start(self.CYCLE_CLOCK)
+        return True
+
+    def stopClockTimer(self):
+        """
+        :return:
+        """
+        self.timerClock.stop()
         return True
 
     def resetData(self):
@@ -179,10 +215,8 @@ class Mount(mountcontrol.mount.Mount):
             client.settimeout(self.SOCKET_TIMEOUT)
             try:
                 client.connect(self.host)
-
             except Exception:
                 self.mountUp = False
-
             else:
                 self.mountUp = True
 
@@ -233,18 +267,14 @@ class Mount(mountcontrol.mount.Mount):
         if self.obsSite.status in [1, 98, 99]:
             if not self.statusAlert:
                 self.signals.alert.emit()
-
             self.statusAlert = True
-
         else:
             self.statusAlert = False
 
         if self.obsSite.status not in [2, 6]:
             if not self.statusSlew:
                 self.settlingWait.start(self._settlingTime)
-
             self.statusSlew = True
-
         else:
             self.statusSlew = False
 
@@ -282,8 +312,8 @@ class Mount(mountcontrol.mount.Mount):
 
     def cycleSetting(self):
         """
-        cycleSet prepares the worker thread and the signals for getting the settings
-        data.
+        cycleSet prepares the worker thread and the signals for getting the
+        settings data.
 
         :return: success
         """
@@ -313,8 +343,8 @@ class Mount(mountcontrol.mount.Mount):
 
     def getAlign(self):
         """
-        getAlign prepares the worker thread and the signals for getting the alignment model
-        data.
+        getAlign prepares the worker thread and the signals for getting the
+        alignment model data.
 
         :return: success
         """
@@ -344,8 +374,8 @@ class Mount(mountcontrol.mount.Mount):
 
     def getNames(self):
         """
-        getNames prepares the worker thread and the signals for getting the alignment model
-        names.
+        getNames prepares the worker thread and the signals for getting the
+        alignment model names.
 
         :return: success
         """
@@ -376,9 +406,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def getFW(self):
         """
-        getFW prepares the worker thread and the signals for getting the build data of
-        the mount computer.
-
         :return: success
         """
         if not self.mountUp:
@@ -407,9 +434,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def getLocation(self):
         """
-        getLocation prepares the worker thread and the signals for getting the mount
-        location data.
-
         :return: success
         """
         if not self.mountUp:
@@ -436,18 +460,16 @@ class Mount(mountcontrol.mount.Mount):
         self.signals.calcTLEdone.emit(self.satellite.tleParams)
         return True
 
-    def calcTLE(self):
+    def calcTLE(self, start):
         """
-        getCalcTLE prepares the worker thread and the signals for getting the mount
-        location data.
-
-        :return: success
+        :param start:
+        :return:
         """
         if not self.mountUp:
             self.signals.calcTLEdone.emit(self.satellite.tleParams)
             return False
 
-        worker = Worker(self.satellite.calcTLE, self.obsSite.timeJD.tt)
+        worker = Worker(self.satellite.calcTLE, start)
         worker.signals.finished.connect(self.clearCalcTLE)
         worker.signals.error.connect(self.errorCalcTLE)
         self.threadPool.start(worker)
@@ -469,9 +491,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def statTLE(self):
         """
-        statTLE prepares the worker thread and the signals for getting the mount
-        location data.
-
         :return: success
         """
         if not self.mountUp:
@@ -500,9 +519,6 @@ class Mount(mountcontrol.mount.Mount):
 
     def getTLE(self):
         """
-        getTLE prepares the worker thread and the signals for getting the mount
-        location data.
-
         :return: success
         """
         if not self.mountUp:
@@ -519,11 +535,9 @@ class Mount(mountcontrol.mount.Mount):
         """
         :return:    True if success
         """
-
         if self.MAC is not None:
             wakeonlan.send_magic_packet(self.MAC)
             return True
-
         else:
             return False
 
@@ -531,9 +545,143 @@ class Mount(mountcontrol.mount.Mount):
         """
         :return:
         """
-
         suc = self.obsSite.shutdown()
         if suc:
             self.mountUp = False
 
         return suc
+
+    def errorDome(self, e):
+        """
+        :return: true for test purpose
+        """
+        self.log.warning(f'Cycle error: {e}')
+        return True
+
+    def clearDome(self):
+        """
+        :return: true for test purpose
+        """
+        self.signals.domeDone.emit(self.dome)
+        return True
+
+    def cycleDome(self):
+        """
+        :return: success
+        """
+        if not self.mountUp:
+            self.signals.domeDone.emit(self.dome)
+            return False
+
+        worker = Worker(self.dome.poll)
+        worker.signals.finished.connect(self.clearDome)
+        worker.signals.error.connect(self.errorDome)
+        self.threadPool.start(worker)
+        return True
+
+    def errorClock(self, e):
+        """
+        :return: true for test purpose
+        """
+        self.log.warning(f'Cycle error: {e}')
+        return True
+
+    def clearClock(self):
+        """
+        :return: true for test purpose
+        """
+        return True
+
+    def cycleClock(self):
+        """
+        :return: success
+        """
+        if not self.mountUp:
+            return False
+
+        worker = Worker(self.obsSite.pollSyncClock)
+        worker.signals.finished.connect(self.clearClock)
+        self.threadPool.start(worker)
+        return True
+
+    def errorCalcTrajectory(self, e):
+        """
+        :return: true for test purpose
+        """
+        self.log.warning(f'Cycle error: {e}')
+        return True
+
+    def clearCalcTrajectory(self):
+        """
+        :return: true for test purpose
+        """
+        self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
+        return True
+
+    def calcTrajectory(self, replay=False):
+        """
+        :return: success
+        """
+        if not self.mountUp:
+            self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
+            return False
+
+        worker = Worker(self.satellite.calcTrajectory, replay=replay)
+        worker.signals.finished.connect(self.clearCalcTrajectory)
+        worker.signals.error.connect(self.errorCalcTrajectory)
+        self.threadPool.start(worker)
+        return True
+
+    def errorProgTrajectory(self, e):
+        """
+        :return: true for test purpose
+        """
+        self.log.warning(f'Cycle error: {e}')
+        return True
+
+    def clearProgTrajectory(self, sim=False):
+        """
+        :param sim:
+        :return: true for test purpose
+        """
+        self.calcTrajectory(replay=sim)
+        return True
+
+    def workerProgTrajectory(self, alt=[], az=[], sim=False):
+        """
+        :param alt:
+        :param az:
+        :param sim:
+        :return:
+        """
+        factor = int(len(alt) / 32)
+        if factor < 1:
+            factor = 1
+        altP = np.array_split(alt, factor)
+        azP = np.array_split(az, factor)
+        chunks = len(altP)
+
+        for i, (altitude, azimuth) in enumerate(zip(altP, azP)):
+            self.satellite.progTrajectory(alt=altitude, az=azimuth)
+            self.signals.trajectoryProgress.emit(min((i + 1) / chunks * 100, 100))
+        self.signals.trajectoryProgress.emit(100)
+        return sim
+
+    def progTrajectory(self, start, alt=[], az=[], sim=False):
+        """
+        :param start:
+        :param alt:
+        :param az:
+        :param sim:
+        :return:
+        """
+        if not self.mountUp:
+            return False
+
+        self.satellite.startProgTrajectory(julD=start)
+
+        worker = Worker(self.workerProgTrajectory, alt=alt, az=az, sim=sim)
+        worker.signals.result.connect(self.clearProgTrajectory)
+        worker.signals.error.connect(self.errorProgTrajectory)
+        self.threadPool.start(worker)
+        return True

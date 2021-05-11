@@ -251,15 +251,21 @@ class MinorPlanetTime:
         """
         :return: success
         """
-        source = 'finals2000A.all'
-        url = 'https://datacenter.iers.org/data/9/' + source
-        dest = self.app.mwGlob['dataDir'] + '/' + source
         isOnline = self.ui.isOnline.isChecked()
         if not isOnline:
             return False
 
-        self.app.message.emit(f'Download data for:   [{source}]', 1)
-        DownloadPopup(self, url=url, dest=dest)
+        source = 'finals2000A.all'
+        url = 'https://datacenter.iers.org/data/9/' + source
+        dest = self.app.mwGlob['dataDir'] + '/' + source
+        self.app.message.emit(f'Download skyfield data: [{source}]', 1)
+        DownloadPopup(self, url=url, dest=dest, unzip=False)
+
+        source = 'finals.data'
+        url = 'https://datacenter.iers.org/data/8/' + source
+        dest = self.app.mwGlob['dataDir'] + '/' + source
+        self.app.message.emit(f'Download mount earth rotation data: [{source}]', 1)
+        DownloadPopup(self, url=url, dest=dest, unzip=False)
         return True
 
     def progMinorPlanetToMount(self):

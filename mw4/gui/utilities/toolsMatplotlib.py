@@ -179,7 +179,6 @@ class ToolsMatplotlib:
 
         if showAxes:
             color = self.M_BLUE
-
         else:
             color = self.M_TRANS
 
@@ -189,7 +188,6 @@ class ToolsMatplotlib:
             if figure.axes:
                 axe = figure.axes[0]
                 axe.cla()
-
             else:
                 figure.clf()
                 axe = figure.add_subplot(1, 1, 1, facecolor='None')
@@ -201,7 +199,6 @@ class ToolsMatplotlib:
 
             if showAxes:
                 axe.grid(showAxes, color=self.M_GREY)
-
             else:
                 axe.grid(showAxes)
 

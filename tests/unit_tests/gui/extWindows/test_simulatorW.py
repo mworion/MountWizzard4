@@ -105,6 +105,24 @@ def test_closeEvent_1(function):
                 function.closeEvent(QCloseEvent)
 
 
+def test_limitPositionZ_1(function):
+    from PyQt5.QtGui import QVector3D
+
+    function.camera.setPosition(QVector3D(1, 1, 1))
+    suc = function.limitPositionZ()
+    assert suc
+    assert function.camera.position()[1] == 1
+
+
+def test_limitPositionZ_2(function):
+    from PyQt5.QtGui import QVector3D
+
+    function.camera.setPosition(QVector3D(1, -10, 1))
+    suc = function.limitPositionZ()
+    assert suc
+    assert function.camera.position()[1] == 0
+
+
 def test_buildPointsCreate_1(function):
     function.world = {
         'ref1000': {

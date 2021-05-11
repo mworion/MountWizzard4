@@ -1002,7 +1002,7 @@
       </rect>
      </property>
      <property name="title">
-      <string>Status and settings from mount computer</string>
+      <string>Status and settings mount computer</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
@@ -1010,8 +1010,8 @@
      <widget class="QLabel" name="label_148">
       <property name="geometry">
        <rect>
-        <x>275</x>
-        <y>175</y>
+        <x>280</x>
+        <y>150</y>
         <width>116</width>
         <height>21</height>
        </rect>
@@ -1032,7 +1032,7 @@
       <property name="geometry">
        <rect>
         <x>520</x>
-        <y>205</y>
+        <y>200</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -1053,7 +1053,7 @@
       <property name="geometry">
        <rect>
         <x>520</x>
-        <y>85</y>
+        <y>75</y>
         <width>131</width>
         <height>21</height>
        </rect>
@@ -1067,7 +1067,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Flip Guide Tolerance</string>
+       <string>Flip Track Tolerance</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="refractionPress">
@@ -1077,7 +1077,7 @@
       <property name="geometry">
        <rect>
         <x>155</x>
-        <y>145</y>
+        <y>150</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1122,7 +1122,7 @@
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>55</y>
+        <y>50</y>
         <width>96</width>
         <height>21</height>
        </rect>
@@ -1193,8 +1193,8 @@
      <widget class="QLabel" name="label_74">
       <property name="geometry">
        <rect>
-        <x>275</x>
-        <y>115</y>
+        <x>280</x>
+        <y>100</y>
         <width>116</width>
         <height>21</height>
        </rect>
@@ -1215,7 +1215,7 @@
       <property name="geometry">
        <rect>
         <x>520</x>
-        <y>115</y>
+        <y>100</y>
         <width>131</width>
         <height>21</height>
        </rect>
@@ -1239,7 +1239,7 @@
       <property name="geometry">
        <rect>
         <x>155</x>
-        <y>205</y>
+        <y>200</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1293,7 +1293,7 @@
       <property name="geometry">
        <rect>
         <x>155</x>
-        <y>85</y>
+        <y>100</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1338,7 +1338,7 @@
       <property name="geometry">
        <rect>
         <x>155</x>
-        <y>115</y>
+        <y>125</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1436,8 +1436,8 @@
      <widget class="QLabel" name="label_55">
       <property name="geometry">
        <rect>
-        <x>275</x>
-        <y>85</y>
+        <x>280</x>
+        <y>75</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -1457,7 +1457,7 @@
      <widget class="QLabel" name="label_61">
       <property name="geometry">
        <rect>
-        <x>445</x>
+        <x>450</x>
         <y>25</y>
         <width>31</width>
         <height>21</height>
@@ -1509,7 +1509,7 @@
       <property name="geometry">
        <rect>
         <x>125</x>
-        <y>55</y>
+        <y>50</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -1557,7 +1557,7 @@
       <property name="geometry">
        <rect>
         <x>635</x>
-        <y>145</y>
+        <y>150</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -1604,8 +1604,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
-        <y>55</y>
+        <x>400</x>
+        <y>50</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1647,7 +1647,7 @@
       <property name="geometry">
        <rect>
         <x>520</x>
-        <y>55</y>
+        <y>50</y>
         <width>121</width>
         <height>21</height>
        </rect>
@@ -1670,8 +1670,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
-        <y>85</y>
+        <x>400</x>
+        <y>75</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1719,7 +1719,7 @@
       <property name="geometry">
        <rect>
         <x>715</x>
-        <y>205</y>
+        <y>200</y>
         <width>21</width>
         <height>20</height>
        </rect>
@@ -1746,7 +1746,7 @@
       <property name="geometry">
        <rect>
         <x>210</x>
-        <y>115</y>
+        <y>125</y>
         <width>31</width>
         <height>21</height>
        </rect>
@@ -1767,7 +1767,7 @@
       <property name="geometry">
        <rect>
         <x>715</x>
-        <y>55</y>
+        <y>50</y>
         <width>16</width>
         <height>20</height>
        </rect>
@@ -1860,7 +1860,7 @@
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>115</y>
+        <y>125</y>
         <width>136</width>
         <height>21</height>
        </rect>
@@ -1938,7 +1938,7 @@
       <property name="geometry">
        <rect>
         <x>635</x>
-        <y>205</y>
+        <y>200</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -1982,8 +1982,8 @@
      <widget class="QLabel" name="label_91">
       <property name="geometry">
        <rect>
-        <x>445</x>
-        <y>55</y>
+        <x>450</x>
+        <y>50</y>
         <width>31</width>
         <height>21</height>
        </rect>
@@ -2010,7 +2010,7 @@
       <property name="geometry">
        <rect>
         <x>520</x>
-        <y>145</y>
+        <y>150</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -2034,7 +2034,7 @@
       <property name="geometry">
        <rect>
         <x>665</x>
-        <y>115</y>
+        <y>100</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -2085,7 +2085,7 @@
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>145</y>
+        <y>150</y>
         <width>121</width>
         <height>21</height>
        </rect>
@@ -2108,8 +2108,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
-        <y>115</y>
+        <x>400</x>
+        <y>100</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -2157,8 +2157,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_52">
       <property name="geometry">
        <rect>
-        <x>275</x>
-        <y>55</y>
+        <x>280</x>
+        <y>50</y>
         <width>91</width>
         <height>20</height>
        </rect>
@@ -2184,8 +2184,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
-        <y>175</y>
+        <x>400</x>
+        <y>150</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -2229,8 +2229,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_151">
       <property name="geometry">
        <rect>
-        <x>275</x>
-        <y>145</y>
+        <x>280</x>
+        <y>125</y>
         <width>116</width>
         <height>21</height>
        </rect>
@@ -2278,7 +2278,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="geometry">
        <rect>
         <x>210</x>
-        <y>205</y>
+        <y>200</y>
         <width>16</width>
         <height>21</height>
        </rect>
@@ -2302,7 +2302,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="geometry">
        <rect>
         <x>665</x>
-        <y>85</y>
+        <y>75</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -2374,7 +2374,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>85</y>
+        <y>100</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -2395,7 +2395,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="geometry">
        <rect>
         <x>715</x>
-        <y>85</y>
+        <y>75</y>
         <width>16</width>
         <height>20</height>
        </rect>
@@ -2422,7 +2422,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>205</y>
+        <y>200</y>
         <width>121</width>
         <height>21</height>
        </rect>
@@ -2443,7 +2443,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="geometry">
        <rect>
         <x>210</x>
-        <y>145</y>
+        <y>150</y>
         <width>31</width>
         <height>21</height>
        </rect>
@@ -2512,7 +2512,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="geometry">
        <rect>
         <x>720</x>
-        <y>145</y>
+        <y>150</y>
         <width>31</width>
         <height>20</height>
        </rect>
@@ -2560,7 +2560,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="geometry">
        <rect>
         <x>210</x>
-        <y>55</y>
+        <y>50</y>
         <width>36</width>
         <height>21</height>
        </rect>
@@ -2580,7 +2580,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_90">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>280</x>
         <y>25</y>
         <width>101</width>
         <height>20</height>
@@ -2605,7 +2605,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="geometry">
        <rect>
         <x>715</x>
-        <y>115</y>
+        <y>100</y>
         <width>16</width>
         <height>20</height>
        </rect>
@@ -2634,7 +2634,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
+        <x>400</x>
         <y>25</y>
         <width>51</width>
         <height>21</height>
@@ -2680,7 +2680,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="geometry">
        <rect>
         <x>665</x>
-        <y>55</y>
+        <y>50</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -2739,8 +2739,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
-        <y>145</y>
+        <x>400</x>
+        <y>125</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -2787,8 +2787,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_mountMAC_2">
       <property name="geometry">
        <rect>
-        <x>275</x>
-        <y>205</y>
+        <x>280</x>
+        <y>175</y>
         <width>106</width>
         <height>21</height>
        </rect>
@@ -2811,8 +2811,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
-        <y>205</y>
+        <x>400</x>
+        <y>175</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -2854,6 +2854,165 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="dragEnabled">
        <bool>true</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_mountMAC_4">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>200</y>
+        <width>106</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>WebInterace</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="statusWebInterface">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>200</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows if the mount is synced to an attached GPS receiver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="inputMask">
+       <string/>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="clockOffsetMS">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>75</y>
+        <width>21</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>ms</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="clockOffset">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>75</y>
+        <width>126</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Clock sync offset</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="timeDeltaPC2Mount">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>155</x>
+        <y>75</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clock difference between PC clock and Mount Computer, filtered over 10 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="inputMask">
+       <string/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="maxLength">
+       <number>20</number>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
        <bool>true</bool>
@@ -5679,7 +5838,10 @@ to mount</string>
       </size>
      </property>
      <property name="toolTip">
-      <string/>
+      <string>Annual twilight show the different phases for your location and your local time.
+As the calulation is time consuming, it will be done only once per start of the app.
+y-axis is local day time and x-axis is date.
+MW4 will show the actual day always in the middel of the chart.</string>
      </property>
      <property name="title">
       <string>Annual twilight phases</string>
@@ -5737,10 +5899,7 @@ to mount</string>
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>Annual twilight show the different phases for your location and your local time.
-As the calulation is time consuming, it will be done only once per start of the app.
-y-axis is local day time and x-axis is date.
-MW4 will show the actual day always in the middel of the chart.</string>
+         <string/>
         </property>
         <property name="autoFillBackground">
          <bool>true</bool>
@@ -5803,7 +5962,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </size>
      </property>
      <property name="toolTip">
-      <string/>
+      <string>Show the moon phase as picture</string>
      </property>
      <property name="title">
       <string>Moon phases</string>
@@ -5944,7 +6103,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>Show the moon phase as picture</string>
+       <string/>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -7117,7 +7276,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>410</x>
        <y>190</y>
        <width>361</width>
-       <height>71</height>
+       <height>91</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -7225,14 +7384,38 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Avoid meridian flip when starting</string>
       </property>
      </widget>
+     <widget class="QCheckBox" name="checkAutoDeleteMeridian">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>65</y>
+        <width>256</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>If checked, all model points are deleted, which are within the meridian limits.</string>
+      </property>
+      <property name="text">
+       <string>Auto delete points within meridian limits</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_10">
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>280</y>
+       <y>300</y>
        <width>366</width>
-       <height>146</height>
+       <height>126</height>
       </rect>
      </property>
      <property name="title">
@@ -7395,30 +7578,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="checked">
        <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="checkAutoDeleteMeridian">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>120</y>
-        <width>256</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>If checked, all model points are deleted, which are within the meridian limits.</string>
-      </property>
-      <property name="text">
-       <string>Auto delete points within meridian limits</string>
       </property>
      </widget>
      <widget class="QPushButton" name="clearHorizonMask">
@@ -7697,7 +7856,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>25</y>
+       <y>15</y>
        <width>366</width>
        <height>146</height>
       </rect>
@@ -8449,9 +8608,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>25</y>
+       <y>15</y>
        <width>366</width>
-       <height>271</height>
+       <height>286</height>
       </rect>
      </property>
      <property name="title">
@@ -8879,7 +9038,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <x>5</x>
         <y>135</y>
         <width>356</width>
-        <height>26</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="maximum">
@@ -9014,7 +9173,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>170</y>
+        <y>160</y>
         <width>356</width>
         <height>20</height>
        </rect>
@@ -9041,7 +9200,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>195</y>
+        <y>185</y>
         <width>266</width>
         <height>20</height>
        </rect>
@@ -9071,7 +9230,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>220</y>
+        <y>210</y>
         <width>336</width>
         <height>20</height>
        </rect>
@@ -9120,7 +9279,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>145</x>
-        <y>245</y>
+        <y>235</y>
         <width>41</width>
         <height>21</height>
        </rect>
@@ -9156,7 +9315,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>195</x>
-        <y>245</y>
+        <y>235</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -9177,7 +9336,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>245</y>
+        <y>235</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -9192,6 +9351,33 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="text">
        <string>If model points fail use</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="retriesReverse">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>260</y>
+        <width>356</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>If checked, MW4 will retry the points in reverse order to the last round to avoid unnecessary slews.</string>
+      </property>
+      <property name="text">
+       <string>Run retries each time in reverse order</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
@@ -10128,7 +10314,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
     <widget class="Line" name="line_68">
      <property name="geometry">
       <rect>
-       <x>410</x>
+       <x>390</x>
        <y>10</y>
        <width>11</width>
        <height>416</height>
@@ -10147,27 +10333,188 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-    <widget class="QGroupBox" name="groupBox_12">
+    <widget class="QGroupBox" name="groupBox_27">
      <property name="geometry">
       <rect>
-       <x>430</x>
+       <x>10</x>
        <y>15</y>
-       <width>351</width>
-       <height>271</height>
+       <width>371</width>
+       <height>56</height>
       </rect>
      </property>
      <property name="title">
-      <string>TLE satellite data calculation</string>
+      <string>Satellite data file</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QLabel" name="label_227">
+     <widget class="QComboBox" name="satelliteSource">
       <property name="geometry">
        <rect>
-        <x>215</x>
+        <x>10</x>
+        <y>25</y>
+        <width>261</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>Selects the TLE database from where the satellite list should be loaded.</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="filterSatellite">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>30</y>
+        <width>81</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Filter for selecting satellite names. The filter is not case sensitive.</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_269">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>10</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>search string</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_52">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>371</width>
+       <height>306</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>List of available satellites</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QListWidget" name="listSatelliteNames">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>25</y>
+        <width>361</width>
+        <height>276</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier New</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>List of satellites.</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QPushButton" name="progSatellitesFiltered">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>395</y>
+       <width>181</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) satellite database to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Program filtered database</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="progSatellitesFull">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>395</y>
+       <width>181</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected satellite database to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Program complete database</string>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_24">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>15</y>
+       <width>371</width>
+       <height>76</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Satellite data (TLE)</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QLabel" name="label_228">
+      <property name="geometry">
+       <rect>
+        <x>245</x>
         <y>20</y>
-        <width>51</width>
+        <width>31</width>
         <height>21</height>
        </rect>
       </property>
@@ -10183,112 +10530,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>No.</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_234">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>75</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Azimuth</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="satLongitude">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>255</x>
-        <y>125</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Actual longitude where the satellite could be seen in zenith.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="satDec">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>255</x>
-        <y>100</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Actual declination of the satelite from observers position.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_225">
+     <widget class="QLabel" name="label_229">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -10309,157 +10551,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Name</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_236">
+     <widget class="QLabel" name="label_306">
       <property name="geometry">
        <rect>
-        <x>215</x>
-        <y>75</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>RA</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="satRa">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>255</x>
-        <y>75</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Actual right ascention of the satelite from observers position.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_239">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>125</y>
-        <width>41</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Lat</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_235">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>100</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Altitude</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="satAzimuth">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>75</x>
-        <y>75</y>
-        <width>66</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Actual azimuth of the satelite from observers position.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_233">
-      <property name="geometry">
-       <rect>
-        <x>310</x>
+        <x>330</x>
         <y>45</y>
         <width>31</width>
         <height>21</height>
@@ -10477,42 +10572,15 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>days</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_207">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>100</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>°</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>false</bool>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="satelliteEpoch">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>75</x>
+        <x>60</x>
         <y>45</y>
-        <width>126</width>
+        <width>161</width>
         <height>21</height>
        </rect>
       </property>
@@ -10540,43 +10608,16 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>-</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label_221">
+     <widget class="QLabel" name="label_327">
       <property name="geometry">
        <rect>
-        <x>310</x>
-        <y>75</y>
-        <width>36</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>hours</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_231">
-      <property name="geometry">
-       <rect>
-        <x>215</x>
+        <x>245</x>
         <y>45</y>
         <width>26</width>
         <height>21</height>
@@ -10594,28 +10635,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Age</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_237">
-      <property name="geometry">
-       <rect>
-        <x>215</x>
-        <y>100</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>DEC</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_230">
+     <widget class="QLabel" name="label_329">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -10642,7 +10662,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>255</x>
+        <x>275</x>
         <y>45</y>
         <width>51</width>
         <height>21</height>
@@ -10678,109 +10698,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label_252">
-      <property name="geometry">
-       <rect>
-        <x>305</x>
-        <y>125</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>°</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_202">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>75</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>°</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="satAltitude">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>75</x>
-        <y>100</y>
-        <width>66</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Actual altitude of the satelite from observers position.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="satelliteNumber">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>255</x>
+        <x>275</x>
         <y>20</y>
         <width>51</width>
         <height>21</height>
@@ -10816,84 +10740,15 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QLineEdit" name="satLatitude">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>75</x>
-        <y>125</y>
-        <width>66</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Actual latitude where the satellite could be seen in zenith.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_253">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>125</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>°</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>false</bool>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="satelliteName">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>75</x>
+        <x>60</x>
         <y>20</y>
-        <width>126</width>
+        <width>161</width>
         <height>21</height>
        </rect>
       </property>
@@ -10921,507 +10776,79 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>-</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
        <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_226">
-      <property name="geometry">
-       <rect>
-        <x>305</x>
-        <y>100</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>°</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_240">
-      <property name="geometry">
-       <rect>
-        <x>215</x>
-        <y>125</y>
-        <width>36</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Lon</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="satTransitStartUTC_1">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>75</x>
-        <y>190</y>
-        <width>126</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite rises over horizon.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-      <property name="color" stdset="0">
-       <string>red</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="satTransitEndUTC_1">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>215</x>
-        <y>190</y>
-        <width>126</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>This is a prognosis:
-1st point in time when satellite settles.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-      <property name="color" stdset="0">
-       <string>red</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="satTransitEndUTC_2">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>215</x>
-        <y>215</y>
-        <width>126</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>This is a prognosis:
-2nd point in time when satellite settles.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-      <property name="color" stdset="0">
-       <string>yellow</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="satTransitStartUTC_2">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>75</x>
-        <y>215</y>
-        <width>126</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>This is a prognosis:
-2nd point in time when satellite rises over horizon.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-      <property name="color" stdset="0">
-       <string>yellow</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="satTransitEndUTC_3">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>215</x>
-        <y>240</y>
-        <width>126</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>This is a prognosis:
-3rd point in time when satellite settles.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-      <property name="color" stdset="0">
-       <string>green</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="satTransitStartUTC_3">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>75</x>
-        <y>240</y>
-        <width>126</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>This is a prognosis:
-3rd point in time when satellite rises over horizon.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-      <property name="color" stdset="0">
-       <string>green</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_298">
-      <property name="geometry">
-       <rect>
-        <x>75</x>
-        <y>170</y>
-        <width>126</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Prognosis rise (UTC)</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_309">
-      <property name="geometry">
-       <rect>
-        <x>215</x>
-        <y>170</y>
-        <width>136</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Prognosis settle (UTC)</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_241">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>190</y>
-        <width>61</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>1st pass</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_254">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>215</y>
-        <width>61</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>2nd pass</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_260">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>240</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>3rd pass</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_19">
+    <widget class="QGroupBox" name="groupBox_59">
      <property name="geometry">
       <rect>
-       <x>430</x>
-       <y>305</y>
-       <width>351</width>
-       <height>116</height>
+       <x>410</x>
+       <y>105</y>
+       <width>371</width>
+       <height>121</height>
       </rect>
      </property>
      <property name="title">
-      <string>Mount satellite tracking</string>
+      <string>Satellite passes (time in UTC)</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QPushButton" name="stopSatelliteTracking">
+     <widget class="QLineEdit" name="satSettle_1">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>180</x>
-        <y>80</y>
-        <width>166</width>
-        <height>26</height>
+        <x>230</x>
+        <y>40</y>
+        <width>66</width>
+        <height>21</height>
        </rect>
       </property>
-      <property name="toolTip">
-       <string>Stops the satellite tracking mode. In some cases this does not work. Please start / stop tracking under mount.</string>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
       </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string>Stop satellite tracking</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="startSatelliteTracking">
-      <property name="enabled">
+      <property name="mouseTracking">
        <bool>false</bool>
       </property>
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>80</y>
-        <width>161</width>
-        <height>26</height>
-       </rect>
+      <property name="acceptDrops">
+       <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Starts the satellite tracking mode.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1st point in time when satellite settles below standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
-      <property name="styleSheet">
-       <string notr="true"/>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
       </property>
       <property name="text">
-       <string>Start satellite tracking</string>
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_RED_L</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_271">
+     <widget class="QLabel" name="label_334">
       <property name="geometry">
        <rect>
-        <x>290</x>
-        <y>25</y>
-        <width>56</width>
+        <x>100</x>
+        <y>20</y>
+        <width>61</width>
         <height>21</height>
        </rect>
       </property>
@@ -11434,18 +10861,835 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </font>
       </property>
       <property name="text">
-       <string>Need Flip</string>
+       <string>Rise</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="satTransitStartUTC">
+     <widget class="QLineEdit" name="satRise_1">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>5</x>
-        <y>45</y>
-        <width>136</width>
+        <x>100</x>
+        <y>40</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1st point in time when satellite rises over standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_RED_L</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_335">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>20</y>
+        <width>61</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Settle</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_336">
+      <property name="geometry">
+       <rect>
+        <x>295</x>
+        <y>20</y>
+        <width>61</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Flip</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_337">
+      <property name="geometry">
+       <rect>
+        <x>165</x>
+        <y>20</y>
+        <width>61</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Culminate</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_338">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>20</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Date</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satCulminate_1">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>165</x>
+        <y>40</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1st point in time when satellite culminates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_RED_L</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satFlip_1">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>295</x>
+        <y>40</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1st point in time when the satellite transits the meridian.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_RED_L</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satRise_2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>65</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1nd point in time when satellite rises over standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_YELLOW_L</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satCulminate_2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>165</x>
+        <y>65</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;2nd point in time when satellite culminates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_YELLOW_L</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satFlip_2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>295</x>
+        <y>65</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;2nd point in time when the satellite transits the meridian.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_YELLOW_L</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satSettle_2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>65</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;2nd point in time when satellite settles below standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_YELLOW_L</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satDate_1">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>40</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Date&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_RED_L</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satSettle_3">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>90</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3rd point in time when satellite settles below standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_GREEN_L</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satRise_3">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>90</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3rd point in time when satellite rises over standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_GREEN_L</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satFlip_3">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>295</x>
+        <y>90</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3rd point in time when the satellite transits the meridian.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_GREEN_L</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satCulminate_3">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>165</x>
+        <y>90</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3rd point in time when satellite culminates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_GREEN_L</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satDate_2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>65</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Date&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_YELLOW_L</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satDate_3">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>90</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Date&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="color" stdset="0">
+       <string>M_GREEN_L</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_340">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>21</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>1st</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_341">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>65</y>
+        <width>21</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>2nd</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_342">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>21</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>3rd</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_60">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>240</y>
+       <width>371</width>
+       <height>146</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Satellite tracking</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QCheckBox" name="domeAutoFollowSat">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>20</y>
+        <width>146</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 tries to send slew updates to the dome as long as the mount is in satellite tracking state.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Dome auto follow</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satTrajectoryStart">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>120</y>
+        <width>116</width>
         <height>21</height>
        </rect>
       </property>
@@ -11474,21 +11718,42 @@ Next point in time when satellite rises over horizon.</string>
        <string>-</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QLineEdit" name="satTransitEndUTC">
+     <widget class="QLabel" name="label_339">
+      <property name="geometry">
+       <rect>
+        <x>245</x>
+        <y>100</y>
+        <width>106</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Trajectory ends</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="satTrajectoryFlip">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>45</y>
-        <width>136</width>
+        <x>165</x>
+        <y>120</y>
+        <width>41</width>
         <height>21</height>
        </rect>
       </property>
@@ -11517,21 +11782,21 @@ Next point in time when satellite settles.</string>
        <string>-</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QLineEdit" name="satNeedFlip">
+     <widget class="QLineEdit" name="satTrajectoryEnd">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>290</x>
-        <y>45</y>
-        <width>56</width>
+        <x>245</x>
+        <y>120</y>
+        <width>116</width>
         <height>21</height>
        </rect>
       </property>
@@ -11551,7 +11816,7 @@ Next point in time when satellite settles.</string>
       </property>
       <property name="toolTip">
        <string>This is calculated by the mount computer !
-Hint if mount will need a flip when following satellite.</string>
+Next point in time when satellite settles.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11560,95 +11825,18 @@ Hint if mount will need a flip when following satellite.</string>
        <string>-</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label_300">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>25</y>
-        <width>136</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Trackable rise (UTC)</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_301">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>25</y>
-        <width>136</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Trackable settle (UTC)</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_27">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>15</y>
-       <width>391</width>
-       <height>56</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Satellite data file</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QComboBox" name="satelliteSource">
+     <widget class="QLabel" name="label_343">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>25</y>
-        <width>271</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="toolTip">
-       <string>Selects the TLE database from where the satellite list should be loaded.</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="filterSatellite">
-      <property name="geometry">
-       <rect>
-        <x>290</x>
-        <y>30</y>
-        <width>96</width>
+        <y>100</y>
+        <width>106</width>
         <height>21</height>
        </rect>
       </property>
@@ -11660,32 +11848,17 @@ Hint if mount will need a flip when following satellite.</string>
         <bold>false</bold>
        </font>
       </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Filter for selecting satellite names. The filter is not case sensitive.</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
       <property name="text">
-       <string/>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
+       <string>Trajectory starts</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_269">
+     <widget class="QLabel" name="label_344">
       <property name="geometry">
        <rect>
-        <x>290</x>
-        <y>10</y>
-        <width>81</width>
-        <height>16</height>
+        <x>165</x>
+        <y>100</y>
+        <width>36</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="font">
@@ -11697,77 +11870,235 @@ Hint if mount will need a flip when following satellite.</string>
        </font>
       </property>
       <property name="text">
-       <string>search string</string>
+       <string>Flip</string>
       </property>
      </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_52">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>391</width>
-       <height>306</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>List of available satellites</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QListWidget" name="listSatelliteNames">
+     <widget class="QCheckBox" name="satBeforeFlip">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
-        <x>5</x>
-        <y>25</y>
-        <width>381</width>
-        <height>276</height>
+        <x>90</x>
+        <y>45</y>
+        <width>86</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking on east meridian side only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Before flip</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="segmentsText">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>45</y>
+        <width>71</width>
+        <height>25</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Courier New</family>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Segments:</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="satAfterFlip">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>45</y>
+        <width>81</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking on west meridian side only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>After flip</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="useInternalSatCalc">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>141</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked MW4 will calculate the satellite track on it's own with more features&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Use internal maths</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="avoidHorizon">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>285</x>
+        <y>45</y>
+        <width>76</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
       <property name="toolTip">
-       <string>List of satellites.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 tries to respects horizon constraints in finding a trajectory&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Horizon</string>
+      </property>
+     </widget>
+     <widget class="QProgressBar" name="trajectoryProgress">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>75</x>
+        <y>75</y>
+        <width>201</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Progress bar for the trajectory programming&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="textVisible">
+       <bool>true</bool>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="invertedAppearance">
+       <bool>false</bool>
+      </property>
+      <property name="textDirection">
+       <enum>QProgressBar::TopToBottom</enum>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="progTrajectory">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>75</y>
+        <width>61</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Prog</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="trackingSim">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>285</x>
+        <y>75</y>
+        <width>76</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking is in simulation mode, means that tracking starts always now regardless which is the real tracking start time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Simulate</string>
       </property>
      </widget>
     </widget>
-    <widget class="QPushButton" name="progSatellitesFiltered">
+    <widget class="QPushButton" name="stopSatelliteTracking">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>600</x>
        <y>395</y>
-       <width>191</width>
+       <width>181</width>
        <height>26</height>
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) satellite database to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Stops the satellite tracking mode. In some cases this does not work. Please start / stop tracking under mount.</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
      </property>
      <property name="text">
-      <string>Program filtered database</string>
+      <string>Stop satellite tracking</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="progSatellitesFull">
+    <widget class="QPushButton" name="startSatelliteTracking">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>410</x>
        <y>395</y>
-       <width>191</width>
+       <width>181</width>
        <height>26</height>
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected satellite database to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Starts the satellite tracking mode.</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
      </property>
      <property name="text">
-      <string>Program complete database</string>
+      <string>Start satellite tracking</string>
      </property>
     </widget>
    </widget>
@@ -11780,7 +12111,7 @@ Hint if mount will need a flip when following satellite.</string>
       <rect>
        <x>10</x>
        <y>15</y>
-       <width>391</width>
+       <width>371</width>
        <height>56</height>
       </rect>
      </property>
@@ -11795,7 +12126,7 @@ Hint if mount will need a flip when following satellite.</string>
        <rect>
         <x>10</x>
         <y>25</y>
-        <width>271</width>
+        <width>261</width>
         <height>26</height>
        </rect>
       </property>
@@ -11812,9 +12143,9 @@ Hint if mount will need a flip when following satellite.</string>
      <widget class="QLineEdit" name="filterMinorPlanet">
       <property name="geometry">
        <rect>
-        <x>290</x>
+        <x>280</x>
         <y>30</y>
-        <width>91</width>
+        <width>81</width>
         <height>21</height>
        </rect>
       </property>
@@ -11848,7 +12179,7 @@ Hint if mount will need a flip when following satellite.</string>
      <widget class="QLabel" name="label_270">
       <property name="geometry">
        <rect>
-        <x>290</x>
+        <x>280</x>
         <y>10</y>
         <width>81</width>
         <height>16</height>
@@ -11872,7 +12203,7 @@ Hint if mount will need a flip when following satellite.</string>
       <rect>
        <x>10</x>
        <y>80</y>
-       <width>391</width>
+       <width>371</width>
        <height>306</height>
       </rect>
      </property>
@@ -11887,7 +12218,7 @@ Hint if mount will need a flip when following satellite.</string>
        <rect>
         <x>5</x>
         <y>25</y>
-        <width>381</width>
+        <width>361</width>
         <height>276</height>
        </rect>
       </property>
@@ -11907,7 +12238,7 @@ Hint if mount will need a flip when following satellite.</string>
     <widget class="Line" name="line_69">
      <property name="geometry">
       <rect>
-       <x>410</x>
+       <x>390</x>
        <y>10</y>
        <width>11</width>
        <height>416</height>
@@ -11931,7 +12262,7 @@ Hint if mount will need a flip when following satellite.</string>
       <rect>
        <x>10</x>
        <y>395</y>
-       <width>191</width>
+       <width>181</width>
        <height>26</height>
       </rect>
      </property>
@@ -11945,9 +12276,9 @@ Hint if mount will need a flip when following satellite.</string>
     <widget class="QPushButton" name="progMinorPlanetsFiltered">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>200</x>
        <y>395</y>
-       <width>191</width>
+       <width>181</width>
        <height>26</height>
       </rect>
      </property>
@@ -11961,9 +12292,9 @@ Hint if mount will need a flip when following satellite.</string>
     <widget class="QGroupBox" name="groupBox_36">
      <property name="geometry">
       <rect>
-       <x>430</x>
+       <x>410</x>
        <y>15</y>
-       <width>351</width>
+       <width>371</width>
        <height>96</height>
       </rect>
      </property>
@@ -11978,7 +12309,7 @@ Hint if mount will need a flip when following satellite.</string>
        <rect>
         <x>10</x>
         <y>25</y>
-        <width>331</width>
+        <width>351</width>
         <height>26</height>
        </rect>
       </property>
@@ -11994,7 +12325,7 @@ Hint if mount will need a flip when following satellite.</string>
        <rect>
         <x>10</x>
         <y>60</y>
-        <width>331</width>
+        <width>351</width>
         <height>26</height>
        </rect>
       </property>
@@ -13207,7 +13538,7 @@ Hint if mount will need a flip when following satellite.</string>
      </property>
      <widget class="QPushButton" name="autoDew">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -13448,7 +13779,7 @@ Hint if mount will need a flip when following satellite.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_8">
       <attribute name="title">
@@ -25147,7 +25478,7 @@ When clicking the button, you could change the value.</string>
      </widget>
      <widget class="QWidget" name="AudioMisc">
       <attribute name="title">
-       <string>Misc / Audio</string>
+       <string>Update / Time / Audio / Misc</string>
       </attribute>
       <widget class="Line" name="line_84">
        <property name="geometry">
@@ -25237,7 +25568,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="loglevelDebugTrace">
+       <widget class="QRadioButton" name="loglevelTrace">
         <property name="geometry">
          <rect>
           <x>190</x>
@@ -25258,7 +25589,7 @@ When clicking the button, you could change the value.</string>
          <string>Debug logging and communication will be stored in log file.</string>
         </property>
         <property name="text">
-         <string>Debug &amp; Trace</string>
+         <string>Trace</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -25524,7 +25855,7 @@ p, li { white-space: pre-wrap; }
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>51</height>
+         <height>46</height>
         </rect>
        </property>
        <property name="title">
@@ -25565,7 +25896,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>85</y>
+         <y>70</y>
          <width>366</width>
          <height>116</height>
         </rect>
@@ -25830,13 +26161,13 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>220</y>
+         <y>195</y>
          <width>366</width>
-         <height>51</height>
+         <height>106</height>
         </rect>
        </property>
        <property name="title">
-        <string>Set computer clock from mount</string>
+        <string>Clock sync computer and mount</string>
        </property>
        <widget class="QPushButton" name="pushTime">
         <property name="enabled">
@@ -25846,7 +26177,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>75</width>
+          <width>161</width>
           <height>21</height>
          </rect>
         </property>
@@ -25854,15 +26185,15 @@ p, li { white-space: pre-wrap; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;With button press, MW4 tries to set the actual time from the mount to the computer. The precision is about 1s.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Push time</string>
+         <string>Push mount time to PC</string>
         </property>
        </widget>
        <widget class="QCheckBox" name="autoPushTime">
         <property name="geometry">
          <rect>
-          <x>155</x>
+          <x>195</x>
           <y>20</y>
-          <width>201</width>
+          <width>166</width>
           <height>21</height>
          </rect>
         </property>
@@ -25887,12 +26218,133 @@ p, li { white-space: pre-wrap; }
          <bool>false</bool>
         </property>
        </widget>
+       <widget class="QCheckBox" name="syncTimePC2Mount">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>195</x>
+          <y>55</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Sync mount to PC clock</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="syncNotTracking">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>195</x>
+          <y>80</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the clocks only if tracking state is off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Sync when not tracking</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="clockSync">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>55</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will enable measure and enable possible sync of the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Connect clock sync</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="Line" name="line_85">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>346</width>
+          <height>1</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
       </widget>
       <widget class="QCheckBox" name="activateVirtualStop">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>285</y>
+         <y>310</y>
          <width>201</width>
          <height>21</height>
         </rect>
@@ -27174,7 +27626,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="geometry">
      <rect>
-      <x>3</x>
+      <x>5</x>
       <y>13</y>
       <width>131</width>
       <height>21</height>
@@ -27256,15 +27708,15 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <zorder>statusOnline_2</zorder>
  </widget>
  <tabstops>
-  <tabstop>openMessageW</tabstop>
-  <tabstop>openMeasureW</tabstop>
-  <tabstop>openHemisphereW</tabstop>
   <tabstop>openImageW</tabstop>
   <tabstop>openSatelliteW</tabstop>
-  <tabstop>openKeypadW</tabstop>
   <tabstop>mountConnected</tabstop>
-  <tabstop>environConnected</tabstop>
-  <tabstop>domeConnected</tabstop>
+  <tabstop>moveCoordinateAlt</tabstop>
+  <tabstop>moveCoordinateAz</tabstop>
+  <tabstop>moveAltAzAbsolute</tabstop>
+  <tabstop>moveCoordinateRa</tabstop>
+  <tabstop>moveCoordinateDec</tabstop>
+  <tabstop>moveRaDecAbsolute</tabstop>
   <tabstop>cameraConnected</tabstop>
   <tabstop>astrometryConnected</tabstop>
   <tabstop>loadFrom</tabstop>
@@ -27331,7 +27783,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>clearHorizonMask</tabstop>
   <tabstop>checkAutoDeleteHorizon</tabstop>
   <tabstop>checkSafetyMarginHorizon</tabstop>
-  <tabstop>checkAutoDeleteMeridian</tabstop>
   <tabstop>safetyMarginHorizon</tabstop>
   <tabstop>runModel</tabstop>
   <tabstop>pauseModel</tabstop>
@@ -27369,27 +27820,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>listSatelliteNames</tabstop>
   <tabstop>progSatellitesFull</tabstop>
   <tabstop>progSatellitesFiltered</tabstop>
-  <tabstop>satelliteName</tabstop>
-  <tabstop>satelliteEpoch</tabstop>
-  <tabstop>satAzimuth</tabstop>
-  <tabstop>satAltitude</tabstop>
-  <tabstop>satLatitude</tabstop>
-  <tabstop>satelliteNumber</tabstop>
-  <tabstop>satelliteDataAge</tabstop>
-  <tabstop>satRa</tabstop>
-  <tabstop>satDec</tabstop>
-  <tabstop>satLongitude</tabstop>
-  <tabstop>satTransitStartUTC_1</tabstop>
-  <tabstop>satTransitEndUTC_1</tabstop>
-  <tabstop>satTransitStartUTC_2</tabstop>
-  <tabstop>satTransitEndUTC_2</tabstop>
-  <tabstop>satTransitStartUTC_3</tabstop>
-  <tabstop>satTransitEndUTC_3</tabstop>
-  <tabstop>satTransitStartUTC</tabstop>
-  <tabstop>satTransitEndUTC</tabstop>
-  <tabstop>satNeedFlip</tabstop>
-  <tabstop>startSatelliteTracking</tabstop>
-  <tabstop>stopSatelliteTracking</tabstop>
   <tabstop>minorPlanetSource</tabstop>
   <tabstop>filterMinorPlanet</tabstop>
   <tabstop>listMinorPlanetNames</tabstop>
@@ -27510,7 +27940,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>installVersion</tabstop>
   <tabstop>loglevelStandard</tabstop>
   <tabstop>loglevelDebug</tabstop>
-  <tabstop>loglevelDebugTrace</tabstop>
+  <tabstop>loglevelTrace</tabstop>
   <tabstop>soundMountSlewFinished</tabstop>
   <tabstop>soundDomeSlewFinished</tabstop>
   <tabstop>soundMountAlert</tabstop>
@@ -27572,6 +28002,98 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>posText2</tabstop>
   <tabstop>posAlt2</tabstop>
   <tabstop>posText7</tabstop>
+  <tabstop>virtualStop</tabstop>
+  <tabstop>followSat</tabstop>
+  <tabstop>almanacAstronomical</tabstop>
+  <tabstop>almanacNautical</tabstop>
+  <tabstop>almanacCivil</tabstop>
+  <tabstop>almanacDark</tabstop>
+  <tabstop>toolsTabWidget</tabstop>
+  <tabstop>posButton0</tabstop>
+  <tabstop>posButton8</tabstop>
+  <tabstop>posButton1</tabstop>
+  <tabstop>posButton6</tabstop>
+  <tabstop>posButton9</tabstop>
+  <tabstop>posButton3</tabstop>
+  <tabstop>posButton4</tabstop>
+  <tabstop>posButton5</tabstop>
+  <tabstop>posButton7</tabstop>
+  <tabstop>posButton2</tabstop>
+  <tabstop>parkMountAfterSlew</tabstop>
+  <tabstop>stopMoveAll</tabstop>
+  <tabstop>moveNorth</tabstop>
+  <tabstop>moveWest</tabstop>
+  <tabstop>moveEast</tabstop>
+  <tabstop>moveDuration</tabstop>
+  <tabstop>slewSpeedMax</tabstop>
+  <tabstop>slewSpeedMed</tabstop>
+  <tabstop>slewSpeedLow</tabstop>
+  <tabstop>slewSpeedHigh</tabstop>
+  <tabstop>moveNorthWest</tabstop>
+  <tabstop>moveSouth</tabstop>
+  <tabstop>moveSouthEast</tabstop>
+  <tabstop>moveNorthEast</tabstop>
+  <tabstop>moveSouthWest</tabstop>
+  <tabstop>moveWestAltAz</tabstop>
+  <tabstop>moveStepSizeAltAz</tabstop>
+  <tabstop>moveSouthAltAz</tabstop>
+  <tabstop>moveEastAltAz</tabstop>
+  <tabstop>moveNorthEastAltAz</tabstop>
+  <tabstop>moveSouthWestAltAz</tabstop>
+  <tabstop>moveNorthAltAz</tabstop>
+  <tabstop>moveSouthEastAltAz</tabstop>
+  <tabstop>moveNorthWestAltAz</tabstop>
+  <tabstop>openMeasureW</tabstop>
+  <tabstop>openKeypadW</tabstop>
+  <tabstop>openMessageW</tabstop>
+  <tabstop>environConnected</tabstop>
+  <tabstop>openHemisphereW</tabstop>
+  <tabstop>domeConnected</tabstop>
+  <tabstop>moveCoordinateRaFloat</tabstop>
+  <tabstop>moveCoordinateDecFloat</tabstop>
+  <tabstop>rename1</tabstop>
+  <tabstop>rename2</tabstop>
+  <tabstop>renameDir</tabstop>
+  <tabstop>renameInputSelect</tabstop>
+  <tabstop>checkIncludeSubdirs</tabstop>
+  <tabstop>rename5</tabstop>
+  <tabstop>rename4</tabstop>
+  <tabstop>renameStart</tabstop>
+  <tabstop>rename3</tabstop>
+  <tabstop>newObjectName</tabstop>
+  <tabstop>rename6</tabstop>
+  <tabstop>relayButton0</tabstop>
+  <tabstop>relayButton1</tabstop>
+  <tabstop>relayButton2</tabstop>
+  <tabstop>relayButton3</tabstop>
+  <tabstop>relayButton4</tabstop>
+  <tabstop>relayButton5</tabstop>
+  <tabstop>relayButton6</tabstop>
+  <tabstop>relayButton7</tabstop>
+  <tabstop>cancelAnalyse</tabstop>
+  <tabstop>le_analyseFileName</tabstop>
+  <tabstop>loadAnalyseData</tabstop>
+  <tabstop>delayTimeFlexure</tabstop>
+  <tabstop>numberRunsTimeChange</tabstop>
+  <tabstop>altitudeTimeChange</tabstop>
+  <tabstop>azimuthTimeChange</tabstop>
+  <tabstop>runFlexure</tabstop>
+  <tabstop>delayTimeHysterese</tabstop>
+  <tabstop>altitudeHysterese2</tabstop>
+  <tabstop>altitudeHysterese1</tabstop>
+  <tabstop>numberRunsHysterese</tabstop>
+  <tabstop>azimuthHysterese2</tabstop>
+  <tabstop>azimuthHysterese1</tabstop>
+  <tabstop>runHysteresis</tabstop>
+  <tabstop>coverLightOn</tabstop>
+  <tabstop>coverLightOff</tabstop>
+  <tabstop>port3492</tabstop>
+  <tabstop>port3490</tabstop>
+  <tabstop>versionReleaseNotes</tabstop>
+  <tabstop>automaticRestart</tabstop>
+  <tabstop>pushTime</tabstop>
+  <tabstop>autoPushTime</tabstop>
+  <tabstop>activateVirtualStop</tabstop>
  </tabstops>
  <resources/>
  <connections/>

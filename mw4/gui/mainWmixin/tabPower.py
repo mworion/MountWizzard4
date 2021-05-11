@@ -42,16 +42,20 @@ class Power(object):
                     'B': self.ui.dewB,
                     'C': self.ui.dewC,
                     }
+        self.dewLabel = {1: self.ui.groupDewA,
+                         2: self.ui.groupDewB,
+                         3: self.ui.groupDewC,
+                         }
         self.current = {'1': self.ui.powerCurrent1,
                         '2': self.ui.powerCurrent2,
                         '3': self.ui.powerCurrent3,
                         '4': self.ui.powerCurrent4,
                         }
-        self.label = {'1': self.ui.powerLabel1,
-                      '2': self.ui.powerLabel2,
-                      '3': self.ui.powerLabel3,
-                      '4': self.ui.powerLabel4,
-                      }
+        self.powerLabel = {'1': self.ui.powerLabel1,
+                           '2': self.ui.powerLabel2,
+                           '3': self.ui.powerLabel3,
+                           '4': self.ui.powerLabel4,
+                           }
         self.portUSB = {'1': self.ui.portUSB1,
                         '2': self.ui.portUSB2,
                         '3': self.ui.portUSB3,
@@ -88,7 +92,6 @@ class Power(object):
 
         :return: success for test
         """
-
         self.ui.powerCurrent1.setText('-')
         self.ui.powerCurrent2.setText('-')
         self.ui.powerCurrent3.setText('-')
@@ -101,7 +104,6 @@ class Power(object):
         self.ui.sensorPower.setText('-')
         self.ui.dewCurrentA.setText('-')
         self.ui.dewCurrentB.setText('-')
-
         return True
 
     def setGuiVersion(self, version=1):
@@ -112,13 +114,11 @@ class Power(object):
         :param version:
         :return:
         """
-
         if version == 1:
             self.ui.groupDewC.setVisible(False)
             self.ui.groupPortUSB.setVisible(False)
             self.ui.groupHubUSB.setVisible(True)
             self.ui.groupAdjustableOutput.setVisible(False)
-
         elif version == 2:
             self.ui.groupDewC.setVisible(True)
             self.ui.groupPortUSB.setVisible(True)
@@ -131,7 +131,6 @@ class Power(object):
 
         :return: success for test
         """
-
         for name, button in self.powerOnOFF.items():
             value = self.app.power.data.get(f'POWER_CONTROL.POWER_CONTROL_{name}', False)
             self.changeStyleDynamic(button, 'running', value)
@@ -141,38 +140,42 @@ class Power(object):
             button.setChecked(value)
 
         for name, button in self.current.items():
-            value = self.app.power.data.get(f'POWER_CURRENT.POWER_CURRENT_{name}', 0)
-            button.setText(f'{value:4.2f}')
+            value = self.app.power.data.get(f'POWER_CURRENT.POWER_CURRENT_{name}')
+            self.guiSetText(button, '4.2f', value)
 
         for name, button in self.dew.items():
-            value = self.app.power.data.get(f'DEW_PWM.DEW_{name}', 0)
-            button.setText(f'{value:3.0f}')
+            value = self.app.power.data.get(f'DEW_PWM.DEW_{name}')
+            self.guiSetText(button, '3.0f', value)
 
-        for name, button in self.label.items():
+        for name, button in self.dewLabel.items():
+            value = self.app.power.data.get(f'DEW_CONTROL_LABEL.DEW_LABEL_{name}', '')
+            button.setTitle(f'{value:1s}')
+
+        for name, button in self.powerLabel.items():
             value = self.app.power.data.get(f'POWER_CONTROL_LABEL.POWER_LABEL_{name}',
                                             f'Power {name}')
             button.setText(value)
 
-        value = self.app.power.data.get('POWER_CONSUMPTION.CONSUMPTION_AVG_AMPS', 0)
-        self.ui.consumptionAvgAmps.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('POWER_CONSUMPTION.CONSUMPTION_AMP_HOURS', 0)
-        self.ui.consumptionAmpHours.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('POWER_CONSUMPTION.CONSUMPTION_WATT_HOURS', 0)
-        self.ui.consumptionWattHours.setText('{0:4.2f}'.format(value))
+        value = self.app.power.data.get('POWER_CONSUMPTION.CONSUMPTION_AVG_AMPS')
+        self.guiSetText(self.ui.consumptionAvgAmps, '4.2f', value)
+        value = self.app.power.data.get('POWER_CONSUMPTION.CONSUMPTION_AMP_HOURS')
+        self.guiSetText(self.ui.consumptionAmpHours, '4.2f', value)
+        value = self.app.power.data.get('POWER_CONSUMPTION.CONSUMPTION_WATT_HOURS')
+        self.guiSetText(self.ui.consumptionWattHours, '4.2f', value)
 
-        value = self.app.power.data.get('POWER_SENSORS.SENSOR_VOLTAGE', 0)
-        self.ui.sensorVoltage.setText('{0:4.1f}'.format(value))
-        value = self.app.power.data.get('POWER_SENSORS.SENSOR_CURRENT', 0)
-        self.ui.sensorCurrent.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('POWER_SENSORS.SENSOR_POWER', 0)
-        self.ui.sensorPower.setText('{0:4.2f}'.format(value))
+        value = self.app.power.data.get('POWER_SENSORS.SENSOR_VOLTAGE')
+        self.guiSetText(self.ui.sensorVoltage, '4.1f', value)
+        value = self.app.power.data.get('POWER_SENSORS.SENSOR_CURRENT')
+        self.guiSetText(self.ui.sensorCurrent, '4.2f', value)
+        value = self.app.power.data.get('POWER_SENSORS.SENSOR_POWER')
+        self.guiSetText(self.ui.sensorPower, '4.2f', value)
 
-        value = self.app.power.data.get('DEW_CURRENT.DEW_CURRENT_A', 0)
-        self.ui.dewCurrentA.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('DEW_CURRENT.DEW_CURRENT_B', 0)
-        self.ui.dewCurrentB.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('DEW_CURRENT.DEW_CURRENT_C', 0)
-        self.ui.dewCurrentC.setText('{0:4.2f}'.format(value))
+        value = self.app.power.data.get('DEW_CURRENT.DEW_CURRENT_A')
+        self.guiSetText(self.ui.dewCurrentA, '4.2f', value)
+        value = self.app.power.data.get('DEW_CURRENT.DEW_CURRENT_B')
+        self.guiSetText(self.ui.dewCurrentB, '4.2f', value)
+        value = self.app.power.data.get('DEW_CURRENT.DEW_CURRENT_C')
+        self.guiSetText(self.ui.dewCurrentC, '4.2f', value)
 
         value1 = self.app.power.data.get('AUTO_DEW.INDI_ENABLED', False)
         value2 = self.app.power.data.get('AUTO_DEW.DEW_A', False)
@@ -182,8 +185,8 @@ class Power(object):
         self.changeStyleDynamic(self.ui.autoDew, 'running', value)
 
         if self.app.power.data.get('FIRMWARE_INFO.VERSION', '1.4') > '1.4':
-            value = self.app.power.data.get('ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE', 0)
-            self.ui.adjustableOutput.setText(f'{value:4.1f}')
+            value = self.app.power.data.get('ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE')
+            self.guiSetText(self.ui.adjustableOutput, '4.1f', value)
 
             for name, button in self.portUSB.items():
                 value = self.app.power.data.get(f'USB_PORT_CONTROL.PORT_{name}', False)

@@ -24,13 +24,11 @@ import astropy.io.fits as fits
 
 # local imports
 from base.indiClass import IndiClass
+from base.transform import JNowToJ2000
 
 
 class CameraIndi(IndiClass):
     """
-    the class Camera inherits all information and handling of the Camera device.
-
-
         >>> c = CameraIndi(app=None, signals=None, data=None)
     """
 
@@ -46,28 +44,23 @@ class CameraIndi(IndiClass):
         self.signals = signals
         self.data = data
         self.imagePath = ''
+        self.ra = None
+        self.dec = None
         self.isDownloading = False
 
     def setUpdateConfig(self, deviceName):
         """
-        _setUpdateRate corrects the update rate of camera devices to get an defined
-        setting regardless, what is setup in server side.
-
         :param deviceName:
         :return: success
         """
-
         if deviceName != self.deviceName:
             return False
-
         if self.device is None:
             return False
 
-        # set BLOB mode also
         self.client.setBlobMode(blobHandling='Also',
                                 deviceName=deviceName)
 
-        # setting a object name
         objectName = self.device.getText('FITS_HEADER')
         objectName['FITS_OBJECT'] = 'skymodel'
         self.client.sendNewText(deviceName=deviceName,
@@ -75,16 +68,13 @@ class CameraIndi(IndiClass):
                                 elements=objectName,
                                 )
 
-        # setting WCS Control off
         wcs = self.device.getSwitch('WCS_CONTROL')
         wcs['WCS_DISABLE'] = 'On'
-
         self.client.sendNewSwitch(deviceName=deviceName,
                                   propertyName='WCS_CONTROL',
                                   elements=wcs,
                                   )
 
-        # setting active device for telescope
         telescope = self.device.getText('ACTIVE_DEVICES')
         telescope['ACTIVE_TELESCOPE'] = 'LX200 10micron'
         self.client.sendNewText(deviceName=deviceName,
@@ -92,9 +82,7 @@ class CameraIndi(IndiClass):
                                 elements=telescope,
                                 )
 
-        # setting polling updates in driver
         update = self.device.getNumber('POLLING_PERIOD')
-
         if 'PERIOD_MS' not in update:
             return False
         if update.get('PERIOD_MS', 0) == self.UPDATE_RATE:
@@ -105,7 +93,6 @@ class CameraIndi(IndiClass):
                                         propertyName='POLLING_PERIOD',
                                         elements=update,
                                         )
-
         return suc
 
     def setExposureState(self):
@@ -116,15 +103,15 @@ class CameraIndi(IndiClass):
             return False
 
         value = self.data.get('CCD_EXPOSURE.CCD_EXPOSURE_VALUE', 0)
-
         if self.device.CCD_EXPOSURE['state'] == 'Idle':
             self.signals.message.emit('')
 
         elif self.device.CCD_EXPOSURE['state'] == 'Busy':
             if value == 0:
+                if not self.isDownloading:
+                    self.signals.integrated.emit()
                 self.isDownloading = True
                 self.signals.message.emit('download')
-                self.signals.integrated.emit()
 
             else:
                 self.signals.message.emit(f'expose {value:2.0f} s')
@@ -132,43 +119,49 @@ class CameraIndi(IndiClass):
         elif self.device.CCD_EXPOSURE['state'] == 'Ok':
             self.signals.message.emit('')
 
-        if self.device.CCD_EXPOSURE['state'] in ['Idle', 'Ok'] and self.isDownloading:
+        if self.device.CCD_EXPOSURE['state'] in ['Idle', 'Ok']:
             self.isDownloading = False
 
         return True
 
     def updateNumber(self, deviceName, propertyName):
         """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
         :param deviceName:
         :param propertyName:
         :return:
         """
         if not super().updateNumber(deviceName, propertyName):
             return False
-
         if propertyName == 'CCD_EXPOSURE':
             self.setExposureState()
-
         return True
+
+    def updateHeaderInfo(self, header):
+        """
+        adding for avoid having no entry in header
+        :return:
+        """
+        if 'RA' in header and 'DEC' in header:
+            return header
+
+        if self.ra is None or self.dec is None:
+            return header
+
+        self.log.info('Missing Ra/Dec in header adding from mount')
+        header['RA'] = self.ra._degrees
+        header['DEC'] = self.dec.degrees
+        return header
 
     def updateBLOB(self, deviceName, propertyName):
         """
-        updateBLOB is called whenever a new BLOB is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
         :param deviceName:
         :param propertyName:
         :return: success
         """
-
         if not super().updateBLOB(deviceName, propertyName):
             return False
 
         data = self.device.getBlob(propertyName)
-
         if 'value' not in data:
             return False
         if 'name' not in data:
@@ -182,45 +175,45 @@ class CameraIndi(IndiClass):
         if not os.path.isdir(os.path.dirname(self.imagePath)):
             return False
 
+        self.signals.message.emit('Saving')
         if data['format'] == '.fits.fz':
             HDU = fits.HDUList.fromstring(data['value'])
-            fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
             self.log.info('Image BLOB is in FPacked format')
 
         elif data['format'] == '.fits.z':
             HDU = fits.HDUList.fromstring(zlib.decompress(data['value']))
-            fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
             self.log.info('Image BLOB is compressed fits format')
 
         elif data['format'] == '.fits':
             HDU = fits.HDUList.fromstring(data['value'])
-            fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
             self.log.info('Image BLOB is uncompressed fits format')
 
         else:
             self.log.info('Image BLOB is not supported')
+            self.signals.saved.emit(self.imagePath)
+            self.signals.message.emit('')
+            return True
+
+        HDU[0].header = self.updateHeaderInfo(HDU[0].header)
+        fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
 
         self.signals.saved.emit(self.imagePath)
+        self.signals.message.emit('')
         return True
 
     def sendDownloadMode(self, fastReadout=False):
         """
-        setDownloadMode sets the readout speed of the camera
-
         :return: success
         """
-
         if not self.device:
             return False
 
-        # setting fast mode:
         quality = self.device.getSwitch('READOUT_QUALITY')
         self.log.debug(f'camera has readout quality entry: {quality}')
 
         if fastReadout:
             quality['QUALITY_LOW'] = 'On'
             quality['QUALITY_HIGH'] = 'Off'
-
         else:
             quality['QUALITY_LOW'] = 'Off'
             quality['QUALITY_HIGH'] = 'On'
@@ -229,7 +222,6 @@ class CameraIndi(IndiClass):
                                         propertyName='READOUT_QUALITY',
                                         elements=quality,
                                         )
-
         return suc
 
     def expose(self,
@@ -244,7 +236,6 @@ class CameraIndi(IndiClass):
                focalLength=1,
                ):
         """
-
         :param imagePath:
         :param expTime:
         :param binning:
@@ -256,11 +247,22 @@ class CameraIndi(IndiClass):
         :param focalLength:
         :return: success
         """
-
         if not self.device:
             return False
 
         self.imagePath = imagePath
+        isMount = self.app.deviceStat['mount']
+        if isMount:
+            ra = self.app.mount.obsSite.raJNow
+            dec = self.app.mount.obsSite.decJNow
+            timeJD = self.app.mount.obsSite.timeJD
+            if ra is not None and dec is not None and timeJD is not None:
+                ra, dec = JNowToJ2000(ra, dec, timeJD)
+            self.ra = ra
+            self.dec = dec
+        else:
+            self.ra = None
+            self.dec = None
 
         suc = self.sendDownloadMode(fastReadout=fastReadout)
         if not suc:
@@ -298,42 +300,31 @@ class CameraIndi(IndiClass):
 
     def abort(self):
         """
-        abort cancels the exposing
-
         :return: success
         """
-
         if not self.device:
             return False
 
         indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
-
         if 'ABORT' not in indiCmd:
             return False
 
         indiCmd['ABORT'] = 'On'
-
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='CCD_ABORT_EXPOSURE',
                                         elements=indiCmd,
                                         )
-
         return suc
 
     def sendCoolerSwitch(self, coolerOn=False):
         """
-        sendCoolerTemp send the desired cooler temp, but does not switch on / off the cooler
-
         :param coolerOn:
         :return: success
         """
-
         if not self.device:
             return False
 
-        # setting fast mode:
         cooler = self.device.getSwitch('CCD_COOLER')
-
         if coolerOn:
             cooler['COOLER_ON'] = 'On'
             cooler['COOLER_OFF'] = 'Off'
@@ -346,13 +337,10 @@ class CameraIndi(IndiClass):
                                         propertyName='CCD_COOLER',
                                         elements=cooler,
                                         )
-
         return suc
 
     def sendCoolerTemp(self, temperature=0):
         """
-        sendCoolerTemp send the desired cooler temp, indi does automatically start cooler
-
         :param temperature:
         :return: success
         """
@@ -368,5 +356,4 @@ class CameraIndi(IndiClass):
                                         propertyName='CCD_TEMPERATURE',
                                         elements=temp,
                                         )
-
         return suc

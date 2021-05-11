@@ -18,11 +18,13 @@
 import unittest
 import unittest.mock as mock
 import os
+import platform
 
 # external packages
-from skyfield.api import Angle, Timescale, Topos, Star
+from skyfield.api import Angle, Timescale, wgs84, Star
 
 # local imports
+import mountcontrol
 from mountcontrol.obsSite import ObsSite
 from base.loggerMW import setupLogging
 setupLogging()
@@ -84,7 +86,7 @@ class TestConfigData(unittest.TestCase):
         elev = 100
         lon = 100
         lat = 45
-        obsSite.location = Topos(longitude_degrees=lon,
+        obsSite.location = wgs84.latlon(longitude_degrees=lon,
                                               latitude_degrees=lat,
                                               elevation_m=elev)
         self.assertAlmostEqual(100, obsSite.location.longitude.dms()[0], 6)
@@ -111,35 +113,41 @@ class TestConfigData(unittest.TestCase):
         obsSite.location = lat
         self.assertEqual(None, obsSite.location)
 
-    def test_Site_timeJD(self):
+    def test_Site_timeJD_1(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        obsSite.utc_ut1 = '0'
+        obsSite.ut1_utc = '0'
         obsSite.timeJD = '2458240.12345678'
-        self.assertEqual(2458240.12345678, obsSite.timeJD.ut1)
+        self.assertEqual(2458240.123457949, obsSite.timeJD.ut1)
         obsSite.timeJD = 2458240.12345678
-        self.assertEqual(2458240.12345678, obsSite.timeJD.ut1)
+        self.assertEqual(2458240.123457949, obsSite.timeJD.ut1)
         obsSite.timeJD = '2458240.a23e5678'
         self.assertAlmostEqual(obsSite.ts.now(), obsSite.timeJD, 4)
         self.assertEqual(None, obsSite._timeJD)
 
-    def test_Site_timeJD1(self):
+    def test_Site_timeJD_2(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        obsSite.timeJD = '2458240.12345678'
-        self.assertAlmostEqual(obsSite.ts.now(), obsSite.timeJD, 4)
+        obsSite.timeJD = obsSite.ts.now().tt - 69.184 / 86400
+        self.assertAlmostEqual(obsSite.ts.now().tt, obsSite.timeJD.tt, 4)
 
-    def test_Site_utc_ut1(self):
+    def test_timeDiff(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite._timeDiff = [10, 10, 10, 10, 10]
+        obsSite.timeDiff = 20
+        assert obsSite.timeDiff == 10
+
+    def test_Site_ut1_utc(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        obsSite.utc_ut1 = '123.11'
-        self.assertEqual(123.11 / 86400, obsSite.utc_ut1)
+        obsSite.ut1_utc = '123.11'
+        self.assertEqual(123.11 / 86400, obsSite.ut1_utc)
 
     def test_Site_utc_ut2(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        obsSite.utc_ut1 = None
-        assert obsSite.utc_ut1 is None
+        obsSite.ut1_utc = None
+        assert obsSite.ut1_utc is None
 
     def test_Site_timeSidereal_1(self):
         obsSite = ObsSite(pathToData=pathToData)
@@ -583,6 +591,85 @@ class TestConfigData(unittest.TestCase):
             suc = obsSite.pollPointing()
             self.assertEqual(False, suc)
 
+    def test_pollSyncClock_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Windows'):
+            with mock.patch.object(mountcontrol.obsSite.Connection,
+                                   'communicate',
+                                   return_value=(False, [], 0)):
+                suc = obsSite.pollSyncClock()
+                assert not suc
+
+    def test_pollSyncClock_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Linux'):
+            with mock.patch.object(mountcontrol.obsSite.Connection,
+                                   'communicate',
+                                   return_value=(False, [], 0)):
+                suc = obsSite.pollSyncClock()
+                assert not suc
+
+    def test_pollSyncClock_3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='aarch64'):
+            with mock.patch.object(mountcontrol.obsSite.Connection,
+                                   'communicate',
+                                   return_value=(False, [], 0)):
+                suc = obsSite.pollSyncClock()
+                assert not suc
+
+    def test_pollSyncClock_4(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Darwin'):
+            with mock.patch.object(mountcontrol.obsSite.Connection,
+                                   'communicate',
+                                   return_value=(True, ['eee'], 1)):
+                suc = obsSite.pollSyncClock()
+                assert not suc
+
+    def test_pollSyncClock_5(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Darwin'):
+            with mock.patch.object(mountcontrol.obsSite.Connection,
+                                   'communicate',
+                                   return_value=(True, ['12345678.1'], 1)):
+                suc = obsSite.pollSyncClock()
+                assert suc
+
+    def test_adjustClock_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(False, ['0'], 1)):
+            suc = obsSite.adjustClock(0)
+            assert not suc
+
+    def test_adjustClock_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, ['0'], 1)):
+            suc = obsSite.adjustClock(0)
+            assert not suc
+
+    def test_adjustClock_3(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, ['1'], 1)):
+            suc = obsSite.adjustClock(0)
+            assert suc
+
     def test_startSlewing_1(self):
         obsSite = ObsSite(pathToData=pathToData)
 
@@ -1013,9 +1100,9 @@ class TestConfigData(unittest.TestCase):
 
     def test_ObsSite_setLocation_ok(self):
         obsSite = ObsSite(pathToData=pathToData)
-        observer = Topos(latitude_degrees=50,
-                                      longitude_degrees=11,
-                                      elevation_m=580)
+        observer = wgs84.latlon(latitude_degrees=50,
+                                longitude_degrees=11,
+                                elevation_m=580)
         response = ['111']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1024,9 +1111,9 @@ class TestConfigData(unittest.TestCase):
 
     def test_ObsSite_setLocation_not_ok1(self):
         obsSite = ObsSite(pathToData=pathToData)
-        observer = Topos(latitude_degrees=50,
-                                      longitude_degrees=11,
-                                      elevation_m=580)
+        observer = wgs84.latlon(latitude_degrees=50,
+                                longitude_degrees=11,
+                                elevation_m=580)
         response = ['101']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1036,9 +1123,9 @@ class TestConfigData(unittest.TestCase):
     def test_ObsSite_setLocation_not_ok2(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        observer = Topos(latitude_degrees=50,
-                                      longitude_degrees=11,
-                                      elevation_m=580)
+        observer = wgs84.latlon(latitude_degrees=50,
+                                longitude_degrees=11,
+                                elevation_m=580)
         response = ['111']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1

@@ -30,7 +30,7 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import QTimer
 from mountcontrol.qtmount import Mount
-from skyfield.api import Topos
+from skyfield.api import wgs84
 from skyfield.api import load
 
 # local import

@@ -30,12 +30,6 @@ if platform.system() == 'Windows':
 
 class DomeSignals(PyQt5.QtCore.QObject):
     """
-    The DomeSignals class offers a list of signals to be used and instantiated by
-    the Mount class to get signals for triggers for finished tasks to
-    enable a gui to update their values transferred to the caller back.
-
-    This has to be done in a separate class as the signals have to be subclassed from
-    QObject and the Mount class itself is subclassed from object
     """
 
     __all__ = ['DomeSignals']
@@ -97,7 +91,6 @@ class Dome:
         indiSignals.deviceConnected.connect(self.signals.deviceConnected)
         indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
-        self.app.update1s.connect(self.checkSlewingDome)
         self.useGeometry = False
         self.isSlewing = False
         self.counterStartSlewing = -1
@@ -115,6 +108,7 @@ class Dome:
             return False
 
         suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
+        self.app.update1s.connect(self.checkSlewingDome)
         return suc
 
     def stopCommunication(self):
@@ -126,16 +120,15 @@ class Dome:
 
         self.signals.message.emit('')
         suc = self.run[self.framework].stopCommunication()
+        self.app.update1s.disconnect(self.checkSlewingDome)
         return suc
 
     def waitSettlingAndEmit(self):
         """
         :return: true for test purpose
         """
-
         self.signals.slewFinished.emit()
         self.signals.message.emit('')
-
         return True
 
     def checkSlewingDome(self):
@@ -175,22 +168,51 @@ class Dome:
 
         mount = self.app.mount
         if self.useGeometry:
-            alt, az, _, _, _ = mount.calcTransformationMatrices()
+            alt, az, _, _, _ = mount.calcTransformationMatricesTarget()
 
             if alt is None or az is None:
                 self.log.info(f'Geometry error, alt:{altitude}, az:{azimuth}')
                 alt = altitude
                 az = azimuth
-
             else:
                 alt = alt.degrees
                 az = az.degrees
-
         else:
             alt = altitude
             az = azimuth
 
         self.signals.message.emit('slewing')
+        self.counterStartSlewing = 3
+        self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
+        delta = azimuth - az
+        return delta
+
+    def followDome(self, altitude=0, azimuth=0):
+        """
+        :param altitude:
+        :param azimuth:
+        :return: success
+        """
+        if not self.data:
+            self.log.error('No data dict available')
+            return False
+
+        mount = self.app.mount
+        if self.useGeometry:
+            alt, az, _, _, _ = mount.calcTransformationMatricesActual()
+
+            if alt is None or az is None:
+                self.log.info(f'Geometry error, alt:{altitude}, az:{azimuth}')
+                alt = altitude
+                az = azimuth
+            else:
+                alt = alt.degrees
+                az = az.degrees
+        else:
+            alt = altitude
+            az = azimuth
+
+        self.signals.message.emit('following')
         self.counterStartSlewing = 3
         self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
         delta = azimuth - az

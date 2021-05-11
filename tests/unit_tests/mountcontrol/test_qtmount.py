@@ -27,22 +27,18 @@ from PyQt5.QtCore import QThreadPool, QTimer
 # local imports
 from mountcontrol.qtmount import MountSignals
 from mountcontrol.qtmount import Mount
+from base.loggerMW import setupLogging
+
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
     m = Mount(host='127.0.0.1',
               pathToData=os.getcwd() + '/data',
-              verbose=True)
+              verbose=False,
+              threadPool=QThreadPool())
     yield m
-
-
-def test_mountClass(function):
-    test = Mount(host='127.0.0.1',
-                 pathToData=os.getcwd() + '/data',
-                 verbose=True,
-                 threadPool=QThreadPool())
-    del test
 
 
 def test_mountSignals(function):
@@ -74,10 +70,37 @@ def test_startTimers(function):
 def test_stopTimers(function):
     with mock.patch.object(QTimer,
                            'stop'):
-        with mock.patch.object(QThreadPool,
-                               'waitForDone'):
-            suc = function.stopTimers()
-            assert suc
+        suc = function.stopTimers()
+        assert suc
+
+
+def test_startDomeTimer(function):
+    with mock.patch.object(QTimer,
+                           'start'):
+        suc = function.startDomeTimer()
+        assert suc
+
+
+def test_stopDomeTimer(function):
+    with mock.patch.object(QTimer,
+                           'stop'):
+        suc = function.stopDomeTimer()
+        assert suc
+
+
+def test_startClockTimer(function):
+    with mock.patch.object(QTimer,
+                           'start'):
+        suc = function.startClockTimer()
+        assert suc
+
+
+def test_stopClockTimer(function):
+    with mock.patch.object(QTimer,
+                           'stop'):
+        suc = function.stopClockTimer()
+        assert suc
+
 
 def test_resetData_1(function):
     suc = function.resetData()
@@ -122,7 +145,7 @@ def test_cycleCheckMountUp_1(function):
 
 def test_cycleCheckMountUp_2(function):
     function.host = ('localhost', 80)
-    with mock.patch.object(QThreadPool,
+    with mock.patch.object(function.threadPool,
                            'start'):
         suc = function.cycleCheckMountUp()
         assert suc
@@ -333,7 +356,7 @@ def test_CalcTLE_1(function):
     function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = function.calcTLE()
+        suc = function.calcTLE(1234567)
         assert suc
 
 
@@ -341,7 +364,7 @@ def test_CalcTLE_2(function):
     function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = function.calcTLE()
+        suc = function.calcTLE(1234567)
         assert not suc
 
 
@@ -431,3 +454,126 @@ def test_shutdown_2(function):
         suc = function.shutdown()
         assert not suc
         assert function.mountUp
+
+
+def test_errorDome(function):
+    function.errorDome('test')
+
+
+def test_clearDome_1(function):
+    suc = function.clearDome()
+    assert suc
+
+
+def test_cycleDome_1(function):
+    function.mountUp = True
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.cycleDome()
+        assert suc
+
+
+def test_cycleDome_2(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.cycleDome()
+        assert not suc
+
+
+def test_errorClock(function):
+    function.errorClock('test')
+
+
+def test_clearClock_1(function):
+    suc = function.clearClock()
+    assert suc
+
+
+def test_cycleClock_1(function):
+    function.mountUp = True
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.cycleClock()
+        assert suc
+
+
+def test_cycleClock_2(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.cycleClock()
+        assert not suc
+
+
+def test_errorCalcTrajectory(function):
+    function.errorCalcTrajectory('test')
+
+
+def test_clearCalcTrajectory_1(function):
+    suc = function.clearCalcTrajectory()
+    assert suc
+
+
+def test_calcTrajectory_1(function):
+    function.mountUp = True
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.calcTrajectory()
+        assert suc
+
+
+def test_calcTrajectory_2(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.calcTrajectory()
+        assert not suc
+
+
+def test_workerProgTrajectory_1(function):
+    suc = function.workerProgTrajectory()
+    assert not suc
+
+
+def test_workerProgTrajectory_2(function):
+    alt = [10, 20, 30]
+    az = [10, 20, 30]
+    with mock.patch.object(function.satellite,
+                           'progTrajectory'):
+        suc = function.workerProgTrajectory(alt=alt, az=az)
+        assert not suc
+
+
+def test_workerProgTrajectory_3(function):
+    alt = [10, 20, 30]
+    az = [10, 20, 30]
+    with mock.patch.object(function.satellite,
+                           'progTrajectory'):
+        suc = function.workerProgTrajectory(alt=alt, az=az, sim=True)
+        assert suc
+
+
+def test_errorProgTrajectory(function):
+    function.errorProgTrajectory('test')
+
+
+def test_clearProgTrajectory_1(function):
+    suc = function.clearProgTrajectory()
+    assert suc
+
+
+def test_progTrajectory_1(function):
+    function.mountUp = True
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.progTrajectory(12345678)
+        assert suc
+
+
+def test_progTrajectory_2(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        suc = function.progTrajectory(12345678)
+        assert not suc

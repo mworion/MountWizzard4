@@ -18,6 +18,7 @@
 import logging
 
 # external packages
+import skyfield.timelib
 from skyfield.api import Angle
 
 # local imports
@@ -40,8 +41,8 @@ class TLEParams(object):
 
     log = logging.getLogger(__name__)
 
-    def __init__(self):
-
+    def __init__(self, obsSite=None):
+        self.obsSite = obsSite
         self._azimuth = None
         self._altitude = None
         self._ra = None
@@ -118,7 +119,7 @@ class TLEParams(object):
     def jdStart(self, value):
         value = valueToFloat(value)
         if value:
-            self._jdStart = value
+            self._jdStart = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
         else:
             self._jdStart = None
 
@@ -130,7 +131,7 @@ class TLEParams(object):
     def jdEnd(self, value):
         value = valueToFloat(value)
         if value:
-            self._jdEnd = value
+            self._jdEnd = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
         else:
             self._jdEnd = None
 
@@ -178,6 +179,77 @@ class TLEParams(object):
         self._name = value
 
 
+class TrajectoryParams(object):
+    """
+    The class TrajectoryParams inherits all information and handling of TLE tracking
+    and managing attributes of the connected mount and provides the abstracted
+    interface to a 10 micron mount.
+
+        >>> trajectoryParams = TrajectoryParams(host='')
+    """
+
+    __all__ = ['TLEParams',
+               ]
+
+    log = logging.getLogger(__name__)
+
+    def __init__(self, obsSite=None):
+        self._jdStart = None
+        self._jdEnd = None
+        self._flip = None
+        self._message = None
+        self.obsSite = obsSite
+
+    @property
+    def flip(self):
+        return self._flip
+
+    @flip.setter
+    def flip(self, value):
+        if value is None:
+            self._flip = None
+            return
+        elif isinstance(value, bool):
+            self._flip = value
+            return
+        self._flip = bool(value == 'F')
+
+    @property
+    def jdStart(self):
+        return self._jdStart
+
+    @jdStart.setter
+    def jdStart(self, value):
+        value = valueToFloat(value)
+        if value:
+            self._jdStart = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
+        else:
+            self._jdStart = None
+
+    @property
+    def jdEnd(self):
+        return self._jdEnd
+
+    @jdEnd.setter
+    def jdEnd(self, value):
+        value = valueToFloat(value)
+        if value:
+            self._jdEnd = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
+        else:
+            self._jdEnd = None
+
+    @property
+    def message(self):
+        return self._message
+
+    @message.setter
+    def message(self, value):
+        if value:
+            self._message = value
+        else:
+            self._message = None
+
+
 class Satellite(object):
     """
     The class Satellite inherits all information and handling of TLE tracking
@@ -193,7 +265,7 @@ class Satellite(object):
     waits for it. when satellite reaches the altitude minimum, the mount
     starts to track.
 
-        >>> fw = Satellite(host='')
+        >>> fw = Satellite(host='', parent=None)
     """
 
     __all__ = ['Satellite',
@@ -218,12 +290,10 @@ class Satellite(object):
         'E': 'No slew to satellite requested'
     }
 
-    def __init__(self,
-                 host=None,
-                 ):
-
+    def __init__(self, parent=None, host=None):
         self.host = host
-        self.tleParams = TLEParams()
+        self.tleParams = TLEParams(obsSite=parent.obsSite)
+        self.trajectoryParams = TrajectoryParams(obsSite=parent.obsSite)
 
     def parseGetTLE(self, response, numberOfChunks):
         """
@@ -234,19 +304,15 @@ class Satellite(object):
         :param numberOfChunks:  amount of parts
         :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
             return False
-
         if response[0] == 'E':
             return False
-
         if numberOfChunks != 1:
             return False
 
         lines = response[0].split('$0A')
-
         if len(lines) != 4:
             return False
 
@@ -254,7 +320,6 @@ class Satellite(object):
         self.tleParams.l0 = lines[0]
         self.tleParams.l1 = lines[1]
         self.tleParams.l2 = lines[2]
-
         return True
 
     def getTLE(self):
@@ -272,10 +337,8 @@ class Satellite(object):
 
         :return: success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':TLEG#')
-
         if not suc:
             return False
 
@@ -309,7 +372,6 @@ class Satellite(object):
         :param line2:
         :return: success
         """
-
         if not line0 or not line1 or not line2:
             return False
         if len(line1) != 69:
@@ -320,7 +382,6 @@ class Satellite(object):
         commandString = f':TLEL0{line0}$0a{line1}$0a{line2}#'
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(commandString)
-
         if not suc:
             return False
         if response == 'E':
@@ -339,15 +400,12 @@ class Satellite(object):
         :param numberOfChunks:  amount of parts
         :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
             return False
-
         if len(response) != 3:
             self.log.warning('wrong number of chunks')
             return False
-
         if response[0] == 'E':
             return False
         if response[1] == 'E':
@@ -369,7 +427,7 @@ class Satellite(object):
         if len(value) == 3:
             start, end, flip = value
         elif len(value) == 1:
-            flip = value
+            flip = value[0]
             start = None
             end = None
         else:
@@ -382,7 +440,6 @@ class Satellite(object):
         self.tleParams.flip = flip
         self.tleParams.jdStart = start
         self.tleParams.jdEnd = end
-
         return True
 
     def calcTLE(self, julD='', duration=1440):
@@ -437,12 +494,41 @@ class Satellite(object):
         conn = Connection(self.host)
         command = f':TLEGAZ{julD}#:TLEGEQ{julD}#:TLEP{julD},{duration}#'
         suc, response, numberOfChunks = conn.communicate(command)
-
         if not suc:
             return False
 
         suc = self.parseCalcTLE(response, numberOfChunks)
         return suc
+
+    def getCoordsFromTLE(self, julD=None):
+        """
+        :param julD:
+        :return:
+        """
+        if not julD:
+            return False
+
+        conn = Connection(self.host)
+        command = f':TLEGAZ{julD}#:TLEGEQ{julD}#'
+        suc, response, numberOfChunks = conn.communicate(command)
+        if not suc:
+            return False
+
+        value = response[0].split(',')
+        if len(value) != 2:
+            return False
+        alt, az = value
+        self.tleParams.altitude = alt
+        self.tleParams.azimuth = az
+
+        value = response[1].split(',')
+        if len(value) != 2:
+            return False
+        ra, dec = value
+        self.tleParams.ra = ra
+        self.tleParams.dec = dec
+
+        return True
 
     def slewTLE(self):
         """
@@ -459,15 +545,12 @@ class Satellite(object):
 
         :return: success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':TLES#')
-
         if numberOfChunks != 1:
             return False, 'Error'
 
         message = self.TLES.get(response[0], 'Error')
-
         return suc, message
 
     def parseStatTLE(self, response, numberOfChunks):
@@ -478,20 +561,16 @@ class Satellite(object):
         :param numberOfChunks:  amount of parts
         :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
             return False
-
         if len(response) != 1:
             self.log.warning('wrong number of chunks')
             return False
-
         if not response[0]:
             return False
 
         self.tleParams.message = self.TLESCK.get(response[0], 'Error')
-
         return True
 
     def statTLE(self):
@@ -508,12 +587,108 @@ class Satellite(object):
 
         :return: success
         """
-
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':TLESCK#')
-
         if not suc:
             return False
 
         suc = self.parseStatTLE(response, numberOfChunks)
         return suc
+
+    def startProgTrajectory(self, julD=None):
+        """
+        :param julD:
+        :return:
+        """
+        if julD is None:
+            return False
+        if isinstance(julD, skyfield.timelib.Time):
+            julD = julD.tt
+
+        cmd = f':TRNEW{julD}#'
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        if not suc:
+            return False
+
+        if len(response) != numberOfChunks:
+            self.log.warning('wrong number of chunks')
+            return False
+        if len(response) != 1:
+            self.log.warning('wrong number of chunks')
+            return False
+        if response[0] != 'V':
+            return False
+
+        return True
+
+    def progTrajectory(self, alt=[], az=[]):
+        """
+        :param alt:
+        :param az:
+        :return:
+        """
+        if len(alt) == 0 or len(alt) != len(az):
+            return False
+
+        cmd = ''
+        for azimuth, altitude in zip(az, alt):
+            cmd += f':TRADD{azimuth},{altitude}#'
+
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        if not suc:
+            return False
+
+        if len(response) != numberOfChunks:
+            self.log.warning('wrong number of chunks')
+            return False
+        if len(response) != len(az):
+            self.log.warning('wrong number of chunks')
+            return False
+
+        for i in range(0, len(az)):
+            if response[i] == 'E':
+                return False
+
+        return True
+
+    def calcTrajectory(self, replay=False):
+        """
+        :param replay:    start now
+        :return: success
+        """
+        self.trajectoryParams.flip = None
+        self.trajectoryParams.jdStart = None
+        self.trajectoryParams.jdEnd = None
+
+        if replay:
+            cmd = ':TRREPLAY#'
+        else:
+            cmd = ':TRP#'
+
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        if not suc:
+            return False
+
+        if len(response) != numberOfChunks:
+            self.log.warning('wrong number of chunks')
+            return False
+        if len(response) != 1:
+            self.log.warning('wrong number of chunks')
+            return False
+        # should be 'E' only , actually wrong 'N' in
+        if response[0] in ['E', 'N']:
+            return False
+
+        value = response[0].split(',')
+        if len(value) == 3:
+            start, end, flip = value
+        else:
+            return False
+
+        self.trajectoryParams.flip = flip
+        self.trajectoryParams.jdStart = start
+        self.trajectoryParams.jdEnd = end
+        return True

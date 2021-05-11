@@ -142,7 +142,8 @@ def test_extractDataFiles_5(qtbot):
     assert os.path.isfile('tests/data/de421_23.bsp')
     assert os.path.isfile('tests/data/active.txt')
     assert os.path.isfile('tests/data/finals2000A.all')
-    assert os.path.isfile('tests/data/tai-utc.dat')
+    assert os.path.isfile('tests/data/finals.data')
+    assert os.path.isfile('tests/data/CDFLeapSeconds.txt')
 
 
 def test_extractDataFiles_6(qtbot):

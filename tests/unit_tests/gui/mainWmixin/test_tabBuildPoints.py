@@ -42,7 +42,7 @@ def function(module):
     class Test1(QObject):
         mwGlob = {'configDir': 'tests/config'}
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData=Path('tests/data'))
+                      pathToData='tests/data')
 
     class Test(QObject):
         config = {'mainW': {}}
@@ -52,10 +52,10 @@ def function(module):
         sendBuildPoints = pyqtSignal(object)
         mwGlob = {'configDir': 'tests/config'}
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData=Path('tests/data'))
+                      pathToData='tests/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
+                                              longitude_degrees=10,
+                                              elevation_m=500)
         data = DataPoint(app=Test1())
         uiWindows = {'showHemisphereW': {'classObj': None}}
 

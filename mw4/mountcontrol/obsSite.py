@@ -125,7 +125,7 @@ class ObsSite(object):
         hasPathToData = self.pathToData is not None
         if hasPathToData:
             self.loader = Loader(self.pathToData, verbose=self.verbose)
-            hasOnline = os.path.isfile(self.pathToData + 'finals2000A.all')
+            hasOnline = os.path.isfile(self.pathToData + '/finals2000A.all')
         else:
             self.loader = load
             hasOnline = False

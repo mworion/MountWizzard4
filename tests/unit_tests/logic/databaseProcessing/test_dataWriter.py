@@ -51,7 +51,7 @@ def function(module):
                   'dataDir': 'tests/data',
                   }
 
-    for file in ['tai-utc.dat', 'finals2000A.all']:
+    for file in ['CDFLeapSeconds.txt', 'finals.data']:
         path = 'tests/data/' + file
         if os.path.isfile(path):
             os.remove(path)

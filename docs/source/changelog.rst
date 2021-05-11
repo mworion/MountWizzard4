@@ -6,7 +6,6 @@ detailed changes list, please refer to the commit list on GitHub.
 Ideas for the future
 --------------------
 
-- adding switch interface Pegasus UPB for ASCOM / ALPACA
 - implementing Baader dome control e.g. 10micron dome interface
 - optimizing dome for less movements on small changes
   I see quite a few times the dome being moved by only a very small amount. But it

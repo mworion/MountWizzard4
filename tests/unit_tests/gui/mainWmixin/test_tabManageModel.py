@@ -51,7 +51,7 @@ def function(module):
         config = {'mainW': {}}
         threadPool = QThreadPool()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData=Path('tests/data'))
+                      pathToData='tests/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         update1s = pyqtSignal()
         showAnalyse = pyqtSignal(object)

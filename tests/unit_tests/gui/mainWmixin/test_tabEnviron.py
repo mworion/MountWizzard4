@@ -53,7 +53,7 @@ def function(module):
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData=Path('tests/data'))
+                      pathToData='tests/data')
         update10s = pyqtSignal()
         threadPool = QThreadPool()
 
@@ -64,10 +64,10 @@ def function(module):
         update30m = pyqtSignal()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData=Path('tests/data'))
+                      pathToData='tests/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
+                                              longitude_degrees=10,
+                                              elevation_m=500)
         loader = Loader('tests/testData', verbose=False)
         planets = loader('de421_23.bsp')
         sensorWeather = SensorWeather(app=Test1())

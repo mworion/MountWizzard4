@@ -1,5 +1,5 @@
 path_classifiers:
   exclude: mw4/resource/
-  exclude: gists
+  exclude: gists/
 queries:
   exclude: py/similar-function

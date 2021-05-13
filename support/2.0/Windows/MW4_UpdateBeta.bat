@@ -23,7 +23,7 @@ echo update script version 2.0 > update.log 2>&1
 
 echo.
 echo ---------------------------------------------
-echo updating MW4 to newest official release
+echo updating MW4 to newest beta release
 echo ---------------------------------------------
 
 call venv\Scripts\activate venv >> update.log 2>&1

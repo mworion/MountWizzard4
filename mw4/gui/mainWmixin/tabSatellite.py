@@ -318,6 +318,13 @@ class Satellite(object):
         self.extractOrbits(timeNow, times, events)
         self.addMeridianTransit(obsSite.location)
 
+        for i in range(0, 3):
+            self.passUI[i]['rise'].setText('-')
+            self.passUI[i]['culminate'].setText('-')
+            self.passUI[i]['settle'].setText('-')
+            self.passUI[i]['flip'].setText('-')
+            self.passUI[i]['date'].setText('-')
+
         fString = "%H:%M:%S"
         fStringDate = "%d %b"
         for i, satOrbit in enumerate(self.satOrbits):
@@ -341,20 +348,13 @@ class Satellite(object):
             if flipT is not None:
                 flipStr = flipT.utc_strftime(fString)
             else:
-                flipStr = '---'
+                flipStr = 'no flip'
 
             self.passUI[i]['rise'].setText(riseStr)
             self.passUI[i]['culminate'].setText(culminateStr)
             self.passUI[i]['settle'].setText(settleStr)
             self.passUI[i]['flip'].setText(flipStr)
             self.passUI[i]['date'].setText(dateStr)
-
-        for i in range(len(self.satOrbits), 3):
-            self.passUI[i]['rise'].setText('-')
-            self.passUI[i]['culminate'].setText('-')
-            self.passUI[i]['settle'].setText('-')
-            self.passUI[i]['flip'].setText('-')
-            self.passUI[i]['date'].setText('-')
 
         self.sendSatelliteData()
         self.progTrajectoryToMount()

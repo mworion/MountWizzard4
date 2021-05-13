@@ -273,8 +273,6 @@ class Satellite(object):
                                          satOrbit['settle'], f)
             if t:
                 satOrbit['flip'] = t[0]
-            else:
-                satOrbit['flip'] = None
         return True
 
     def sendSatelliteData(self, alt=[], az=[]):

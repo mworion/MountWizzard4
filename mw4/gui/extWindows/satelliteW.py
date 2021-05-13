@@ -498,7 +498,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             settle = satOrbit['settle'].tt
             step = 0.005 * (settle - rise)
 
-            if satOrbit['flip'] is None:
+            if 'flip' not in satOrbit:
                 satOrbit['flip'] = satOrbit['settle']
 
             flip = satOrbit['flip'].tt
@@ -574,7 +574,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             settle = satOrbit['settle'].tt
             step = 0.005 * (settle - rise)
 
-            if satOrbit['flip'] is None:
+            if 'flip' not in satOrbit:
                 satOrbit['flip'] = satOrbit['settle']
 
             flip = satOrbit['flip'].tt

@@ -239,6 +239,13 @@ class Satellite(object):
             if counter > 2:
                 break
 
+        if not self.satOrbits:
+            return False
+        if 'settle' not in self.satOrbits[-1]:
+            del self.satOrbits[counter]
+            return False
+        return True
+
     @staticmethod
     def calcSatelliteMeridianTransit(satellite, location):
         """
@@ -320,12 +327,18 @@ class Satellite(object):
             if riseT is not None:
                 riseStr = riseT.utc_strftime(fString)
                 dateStr = riseT.utc_strftime(fStringDate)
+            else:
+                riseStr = 'unknown'
             culminateT = satOrbit.get('culminate', None)
             if culminateT is not None:
                 culminateStr = culminateT.utc_strftime(fString)
+            else:
+                culminateStr = 'unknown'
             settleT = satOrbit.get('settle', None)
             if settleT is not None:
                 settleStr = settleT.utc_strftime(fString)
+            else:
+                settleStr = 'unknown'
             flipT = satOrbit.get('flip', None)
             if flipT is not None:
                 flipStr = flipT.utc_strftime(fString)

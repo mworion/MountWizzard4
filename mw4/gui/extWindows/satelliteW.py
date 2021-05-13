@@ -519,7 +519,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             for slc in self.unlinkWrap(lon):
                 axe.plot(lon[slc], lat[slc], color=self.colors[i],
                          lw=4, linestyle=(0, (0.5, 0.5)))
-
         rise = satOrbits[0]['rise'].tt
         settle = satOrbits[-1]['settle'].tt
         step = 0.001 * (settle - rise)

@@ -157,7 +157,6 @@ class MainWindow(
                 'name': 'KeypadDialog',
                 'class': KeypadWindow,
             }
-
         self.deviceStatGui = {
             'dome': self.ui.domeConnected,
             'camera': self.ui.cameraConnected,
@@ -658,11 +657,9 @@ class MainWindow(
             if stat is None:
                 group.setFixedWidth(0)
                 group.setEnabled(False)
-
             elif stat:
                 group.setMinimumSize(75, 0)
                 group.setEnabled(True)
-
             else:
                 group.setMinimumSize(75, 0)
                 group.setEnabled(False)
@@ -677,7 +674,6 @@ class MainWindow(
 
             if winObj['classObj']:
                 self.changeStyleDynamic(winObj['button'], 'running', True)
-
             else:
                 self.changeStyleDynamic(winObj['button'], 'running', False)
         return True
@@ -695,17 +691,14 @@ class MainWindow(
         """
         if self.refractionSource in self.deviceStat:
             self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
-
         else:
             self.deviceStat['environOverall'] = None
 
         for device, ui in self.deviceStatGui.items():
             if self.deviceStat.get(device, None) is None:
                 self.changeStyleDynamic(ui, 'color', 'gray')
-
             elif self.deviceStat[device]:
                 self.changeStyleDynamic(ui, 'color', 'green')
-
             else:
                 self.changeStyleDynamic(ui, 'color', 'red')
         return True
@@ -716,25 +709,6 @@ class MainWindow(
         :return: True for test purpose
         """
         self.deviceStat['onlineWeather'] = stat
-        return True
-
-    def updateTime(self):
-        """
-        :return: True for test purpose
-        """
-        self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
-        timeJD = self.app.mount.obsSite.timeJD
-        if timeJD is not None:
-            text = timeJD.utc_strftime('%H:%M:%S')
-            self.ui.timeUTC.setText('UTC:' + text)
-
-        if self.ui.isOnline.isChecked():
-            text = 'Internet Online Mode'
-        else:
-            text = 'Offline Mode'
-
-        text = f'{self.threadPool.activeThreadCount():2d} - {text}'
-        self.ui.statusOnline.setTitle(text)
         return True
 
     def updateAstrometryStatus(self, text):
@@ -761,13 +735,31 @@ class MainWindow(
         self.ui.cameraText.setText(text)
         return True
 
+    def updateTime(self):
+        """
+        :return: True for test purpose
+        """
+        self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
+        timeJD = self.app.mount.obsSite.timeJD
+        if timeJD is not None:
+            text = timeJD.utc_strftime('%H:%M:%S')
+            self.ui.timeUTC.setText('UTC:' + text)
+
+        if self.ui.isOnline.isChecked():
+            text = 'Internet Online Mode'
+        else:
+            text = 'Offline Mode'
+
+        text = f'{self.threadPool.activeThreadCount():2d} - {text}'
+        self.ui.statusOnline.setTitle(text)
+        return True
+
     def updateStatusGUI(self, obs):
         """
         :return:    True if ok for testing
         """
         if obs.statusText() is not None:
             self.ui.statusText.setText(obs.statusText())
-
         else:
             self.ui.statusText.setText('-')
 
@@ -826,7 +818,6 @@ class MainWindow(
 
             if not self.uiWindows[window]['classObj']:
                 self.buildWindow(window)
-
             else:
                 self.uiWindows[window]['classObj'].close()
         return True
@@ -873,15 +864,12 @@ class MainWindow(
     @staticmethod
     def checkExtension(filePath, ext):
         """
-        checkExtension ensures to have an extension attached for a filename.
-
         :param filePath:
         :param ext:
         :return:
         """
         if not filePath.endswith(ext):
             filePath += ext
-
         return filePath
 
     def loadProfile(self):
@@ -908,29 +896,20 @@ class MainWindow(
 
         # closing all windows to be base lined
         self.closeExtendedWindows()
-
         suc = self.app.loadConfig(name=name)
-
         if suc:
             self.app.config['profileName'] = name
             self.ui.profile.setText(name)
-            self.app.message.emit(f'Profile              [{name}] loaded', 0)
-
+            t = f'Profile              [{name}] loaded'
+            self.app.message.emit(t, 0)
         else:
-            self.app.message.emit(
-                f'Profile              [{name}] cannot no be loaded', 2
-            )
+            t = f'Profile              [{name}] cannot no be loaded'
+            self.app.message.emit(t, 2)
 
-        # configure mainApp
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo
-
-        # initialize the mainW configurations
         self.initConfig()
-
-        # instantiate the extended windows where needed
         self.showExtendedWindows()
-
         return True
 
     def saveProfileAs(self):
@@ -953,12 +932,11 @@ class MainWindow(
         suc = self.app.saveConfig(name=name)
         if suc:
             self.ui.profile.setText(name)
-            self.app.message.emit(f'Profile              [{name}] saved', 0)
-
+            t = f'Profile              [{name}] saved'
+            self.app.message.emit(t, 0)
         else:
-            self.app.message.emit(
-                f'Profile              [{name}] cannot no be saved', 2
-            )
+            t = f'Profile              [{name}] cannot no be saved'
+            self.app.message.emit(t, 2)
         return True
 
     def saveProfile(self):
@@ -988,13 +966,10 @@ class MainWindow(
         if command == 'shutdown':
             self.quitSave()
             self.app.message.emit('Shutdown MW remotely', 2)
-
         elif command == 'shutdown mount':
             self.mountShutdown()
             self.app.message.emit('Shutdown mount remotely', 2)
-
         elif command == 'boot mount':
             self.mountBoot()
             self.app.message.emit('Boot mount remotely', 2)
-
         return True

@@ -132,30 +132,30 @@ def test_updatePointGui_pierside(function):
 def test_updatePointGui_ha_1(function):
     value = Angle(hours=12)
     function.app.mount.obsSite.haJNow = value
-    function.app.mount.obsSite.timeSidereal = '00:00:00'
+    function.app.mount.obsSite.timeSidereal = value
     function.updatePointGUI(function.app.mount.obsSite)
     assert '12 00 00' == function.ui.HA.text()
 
 
 def test_updatePointGui_ha_2(function):
     value = None
-    function.app.mount.obsSite.timeSidereal = '00:00:00'
+    function.app.mount.obsSite.timeSidereal = value
     function.app.mount.obsSite.haJNow = value
     function.updatePointGUI(function.app.mount.obsSite)
     assert '-' == function.ui.HA.text()
 
 
-def test_updateTimeGui_sidereal_1(function):
+def test_updatePointGUI_sidereal_1(function):
     value = Angle(hours=12)
     function.app.mount.obsSite.timeSidereal = value
-    function.updateTimeGUI(function.app.mount.obsSite)
-    assert '12:00:00' == function.ui.timeSidereal.text()
+    function.updatePointGUI(function.app.mount.obsSite)
+    assert '12 00 00' == function.ui.timeSidereal.text()
 
 
-def test_updateTimeGui_sidereal_2(function):
+def test_updatePointGUI_sidereal_2(function):
     value = None
     function.app.mount.obsSite.timeSidereal = value
-    function.updateTimeGUI(function.app.mount.obsSite)
+    function.updatePointGUI(function.app.mount.obsSite)
     assert '-' == function.ui.timeSidereal.text()
 
 
@@ -181,197 +181,188 @@ def test_updateSetting_timeToFlip(function):
     assert '-' == function.ui.timeToFlip.text()
 
 
-def test_updateSettingExt_UTCExpire(function):
+def test_updateSettingGUI_UTCExpire(function):
     value = '2020-10-05'
     function.app.mount.setting.UTCExpire = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert value == function.ui.UTCExpire.text()
     value = None
     function.app.mount.setting.UTCExpire = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert '-' == function.ui.UTCExpire.text()
 
 
-def test_updateSettingExt_UTCExpire_1(function):
+def test_updateSettingGUI_UTCExpire_1(function):
     value = '2016-10-05'
     function.app.mount.setting.UTCExpire = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert value == function.ui.UTCExpire.text()
     value = None
     function.app.mount.setting.UTCExpire = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert '-' == function.ui.UTCExpire.text()
 
 
-def test_updateSettingExt_UTCExpire_2(function):
+def test_updateSettingGUI_UTCExpire_2(function):
     tomorrow = datetime.date.today() + datetime.timedelta(days=15)
     value = tomorrow.strftime('%Y-%m-%d')
     function.app.mount.setting.UTCExpire = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert value == function.ui.UTCExpire.text()
     value = None
     function.app.mount.setting.UTCExpire = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert '-' == function.ui.UTCExpire.text()
 
 
-def test_updateSettingExt_UTCExpire_3(function):
+def test_updateSettingGUI_UTCExpire_3(function):
     tomorrow = datetime.date.today() + datetime.timedelta(days=40)
     value = tomorrow.strftime('%Y-%m-%d')
     function.app.mount.setting.UTCExpire = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert value == function.ui.UTCExpire.text()
     value = None
     function.app.mount.setting.UTCExpire = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert '-' == function.ui.UTCExpire.text()
 
 
-def test_updateSetting_statusUnattendedFlip(function):
+def test_updateSettingGUI_statusUnattendedFlip(function):
     value = True
     function.app.mount.setting.statusUnattendedFlip = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert 'ON' == function.ui.statusUnattendedFlip.text()
     value = None
     function.app.mount.setting.statusUnattendedFlip = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert '-' == function.ui.statusUnattendedFlip.text()
 
 
-def test_updateSetting_statusDualAxisTracking(function):
+def test_updateSettingGUI_statusDualAxisTracking(function):
     value = True
     function.app.mount.setting.statusDualAxisTracking = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert 'ON' == function.ui.statusDualAxisTracking.text()
     value = None
     function.app.mount.setting.statusDualAxisTracking = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert '-' == function.ui.statusDualAxisTracking.text()
 
 
-def test_updateSetting_statusRefraction(function):
+def test_updateSettingGUI_statusRefraction(function):
     value = True
     function.app.mount.setting.statusRefraction = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert 'ON' == function.ui.statusRefraction.text()
     value = None
     function.app.mount.setting.statusRefraction = value
-    function.updateSetStatGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert '-' == function.ui.statusRefraction.text()
 
 
-def test_updateSetSyncGUI_1(function):
+def test_updateSettingGUI_1(function):
     function.app.mount.setting.gpsSynced = True
-    suc = function.updateSetSyncGUI(function.app.mount.setting)
-    assert function.ui.statusGPSSynced.text() == 'YES'
+    suc = function.updateSettingGUI(function.app.mount.setting)
+    assert function.ui.statusGPSSynced.text() == 'ON'
     assert suc
 
 
-def test_updateSetSyncGUI_2(function):
+def test_updateSettingGUI_2(function):
     function.app.mount.setting.gpsSynced = False
-    suc = function.updateSetSyncGUI(function.app.mount.setting)
-    assert function.ui.statusGPSSynced.text() == 'NO'
+    suc = function.updateSettingGUI(function.app.mount.setting)
+    assert function.ui.statusGPSSynced.text() == 'OFF'
     assert suc
 
 
-def test_updateSetSyncGUI_3(function):
+def test_updateSettingGUI_3(function):
     function.app.mount.setting.gpsSynced = None
-    suc = function.updateSetSyncGUI(function.app.mount.setting)
+    suc = function.updateSettingGUI(function.app.mount.setting)
     assert function.ui.statusGPSSynced.text() == '-'
     assert suc
 
 
-def test_updateSetSyncGUI_4(function):
+def test_updateSettingGUI_4(function):
     function.app.mount.setting.typeConnection = None
     function.app.mount.setting.wakeOnLan = 'On'
-    suc = function.updateSetSyncGUI(function.app.mount.setting)
+    suc = function.updateSettingGUI(function.app.mount.setting)
     assert suc
 
 
-def test_updateSetSyncGUI_5(function):
+def test_updateSettingGUI_5(function):
     function.app.mount.setting.typeConnection = 1
     function.app.mount.setting.wakeOnLan = None
-    suc = function.updateSetSyncGUI(function.app.mount.setting)
+    suc = function.updateSettingGUI(function.app.mount.setting)
     assert suc
 
 
-def test_updateSetSyncGUI_6(function):
+def test_updateSettingGUI_6(function):
     function.app.mount.setting.typeConnection = 1
     function.app.mount.setting.wakeOnLan = 'OFF'
-    suc = function.updateSetSyncGUI(function.app.mount.setting)
+    suc = function.updateSettingGUI(function.app.mount.setting)
     assert suc
 
 
-def test_updateSetSyncGUI_7(function):
-    function.app.mount.setting.webInterfaceStat = 0
-    suc = function.updateSetSyncGUI(function.app.mount.setting)
+def test_updateSettingGUI_7(function):
+    function.app.mount.setting.webInterfaceStat = False
+    suc = function.updateSettingGUI(function.app.mount.setting)
     assert suc
 
 
-def test_updateSetSyncGUI_8(function):
-    function.app.mount.setting.webInterfaceStat = 1
-    suc = function.updateSetSyncGUI(function.app.mount.setting)
+def test_updateSettingGUI_8(function):
+    function.app.mount.setting.webInterfaceStat = True
+    suc = function.updateSettingGUI(function.app.mount.setting)
     assert suc
 
 
-def test_updateSetSyncGUI_9(function):
+def test_updateSettingGUI_9(function):
     function.app.mount.setting.webInterfaceStat = None
-    suc = function.updateSetSyncGUI(function.app.mount.setting)
+    suc = function.updateSettingGUI(function.app.mount.setting)
     assert suc
 
 
-def test_updateTrackingGui_1(function):
+def test_updateSettingGUI_1(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
                            'checkRateLunar',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.setting)
+        suc = function.updateSettingGUI(function.app.mount.setting)
         assert suc
 
 
-def test_updateTrackingGui_2(function):
+def test_updateSettingGUI_2(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSidereal',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.setting)
+        suc = function.updateSettingGUI(function.app.mount.setting)
         assert suc
 
 
-def test_updateTrackingGui_3(function):
+def test_updateSettingGUI_3(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.setting)
+        suc = function.updateSettingGUI(function.app.mount.setting)
         assert suc
 
 
-def test_updateTrackingGui_4(function):
+def test_updateSettingGUI_4(function):
     function.app.mount.obsSite.status = 10
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.setting)
+        suc = function.updateSettingGUI(function.app.mount.setting)
         assert suc
 
 
-def test_updateTrackingGui_5(function):
+def test_updateSettingGUI_5(function):
     function.app.mount.obsSite.status = None
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
-        suc = function.updateTrackingGui(function.app.mount.setting)
-        assert not suc
-
-
-def test_updateTrackingGui_6(function):
-    function.app.mount.obsSite.status = None
-    with mock.patch.object(function.app.mount.setting,
-                           'checkRateSolar',
-                           return_value=True):
-        suc = function.updateTrackingGui(None)
-        assert not suc
+        suc = function.updateSettingGUI(function.app.mount.setting)
+        assert suc
 
 
 def test_setLunarTracking_1(function, qtbot):
@@ -1040,8 +1031,8 @@ def test_setLongitude_1(function, qtbot):
 def test_setLongitude_2(function, qtbot):
     function.app.deviceStat['mount'] = False
     function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('+160*30:45.5', True)):
@@ -1052,8 +1043,8 @@ def test_setLongitude_2(function, qtbot):
 def test_setLongitude_3(function, qtbot):
     function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('+160*30:45.5', False)):
@@ -1064,8 +1055,8 @@ def test_setLongitude_3(function, qtbot):
 def test_setLongitude_4(function, qtbot):
     function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('+160*30:45.5', True)):

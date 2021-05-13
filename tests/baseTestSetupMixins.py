@@ -20,7 +20,7 @@ from queue import Queue
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
-from skyfield.api import wgs84, load, Loader
+from skyfield.api import wgs84, load, Loader, Angle
 
 # local import
 
@@ -123,7 +123,9 @@ class Mount(QObject):
         typeConnection = 1
         slewRateMin = 0
         slewRateMax = 1
-        webInterfaceStat = 0
+        webInterfaceStat = True
+        UTCExpire = None
+        gpsSynced = True
 
         @staticmethod
         def timeToMeridian():
@@ -237,6 +239,7 @@ class Mount(QObject):
         AzTarget = None
         AltTarget = None
         pierside = None
+        timeSidereal = Angle(hours=12)
         location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         ts = load.timescale(builtin=True)
         timeJD = ts.now()

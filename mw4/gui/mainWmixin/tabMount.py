@@ -587,9 +587,6 @@ class Mount(object):
                             elevation_m=obs.location.elevation.m)
         obs.location = topo
 
-        if not self.deviceStat.get('mount', ''):
-            self.updateLocGUI(obs)
-            return False
         if obs.setLongitude(value):
             self.app.message.emit(f'Longitude set to:    '
                                   f'[{self.ui.siteLongitude.text()}]', 0)
@@ -631,9 +628,6 @@ class Mount(object):
                             elevation_m=obs.location.elevation.m)
         obs.location = topo
 
-        if not self.deviceStat.get('mount', ''):
-            self.updateLocGUI(obs)
-            return False
         if obs.setLatitude(value):
             self.app.message.emit(f'Latitude set to:     '
                                   f'[{self.ui.siteLatitude.text()}]', 0)
@@ -674,9 +668,6 @@ class Mount(object):
                             elevation_m=value)
         obs.location = topo
 
-        if not self.deviceStat.get('mount', ''):
-            self.updateLocGUI(obs)
-            return False
         if obs.setElevation(value):
             self.app.message.emit(f'Elevation set to:    [{value}]', 0)
             self.app.mount.getLocation()

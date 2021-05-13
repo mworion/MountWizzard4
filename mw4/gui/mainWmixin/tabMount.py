@@ -674,6 +674,7 @@ class Mount(object):
             return True
         else:
             self.app.message.emit('Elevation cannot be set', 2)
+            return False
 
     def setUnattendedFlip(self):
         """

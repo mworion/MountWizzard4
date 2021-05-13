@@ -1267,6 +1267,18 @@ def test_setElevation_4(function, qtbot):
                                                        elevation_m=500)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getDouble',
+                           return_value=(10, False)):
+        suc = function.setElevation()
+        assert not suc
+
+
+def test_setElevation_5(function, qtbot):
+    function.app.deviceStat['mount'] = True
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getDouble',
                            return_value=(10, True)):
         with mock.patch.object(function.app.mount.obsSite,
                                'setElevation',
@@ -1275,7 +1287,7 @@ def test_setElevation_4(function, qtbot):
             assert not suc
 
 
-def test_setElevation_5(function, qtbot):
+def test_setElevation_6(function, qtbot):
     function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
                                                        latitude_degrees=49,

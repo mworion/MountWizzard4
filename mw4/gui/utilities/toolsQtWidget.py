@@ -525,6 +525,8 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param pVals:
         :return:
         """
+        if not pStyle:
+            return False
         if value is None:
             pVal = pVals[0]
         elif value:

@@ -155,6 +155,13 @@ def test_changeStyleDynamic_4(function):
     assert suc
 
 
+def test_changeStyleDynamic_5(function):
+    ui = QPushButton()
+    ui.setProperty('color', 'red')
+    suc = function.changeStyleDynamic(ui, 'color', 'red')
+    assert suc
+
+
 def test_extractNames_0(function):
     name = ''
     name, short, ext = function.extractNames(name)
@@ -479,6 +486,86 @@ def test_guiSetText_4(function):
     suc = function.guiSetText(pb, '3.0f', 100)
     assert suc
     assert pb.text() == '100'
+
+
+def test_guiSetText_5(function):
+    pb = QPushButton()
+    suc = function.guiSetText(pb, 'HSTR', Angle(hours=10))
+    assert suc
+    assert pb.text() == '10 00 00'
+
+
+def test_guiSetText_6(function):
+    pb = QPushButton()
+    suc = function.guiSetText(pb, 'DSTR', Angle(degrees=90))
+    assert suc
+    assert pb.text() == '+90 00 00'
+
+
+def test_guiSetText_7(function):
+    pb = QPushButton()
+    suc = function.guiSetText(pb, 'H2.2f', Angle(hours=12))
+    assert suc
+    assert pb.text() == '12.00'
+
+
+def test_guiSetText_8(function):
+    pb = QPushButton()
+    suc = function.guiSetText(pb, 'D+2.2f', Angle(degrees=90))
+    assert suc
+    assert pb.text() == '+90.00'
+
+
+def test_guiSetText_9(function):
+    pb = QPushButton()
+    suc = function.guiSetText(pb, 's', 'E')
+    assert suc
+    assert pb.text() == 'EAST'
+
+
+def test_guiSetText_10(function):
+    pb = QPushButton()
+    suc = function.guiSetText(pb, 's', 'W')
+    assert suc
+    assert pb.text() == 'WEST'
+
+
+def test_guiSetText_11(function):
+    pb = QPushButton()
+    suc = function.guiSetText(pb, 's', True)
+    assert suc
+    assert pb.text() == 'ON'
+
+
+def test_guiSetText_12(function):
+    pb = QPushButton()
+    suc = function.guiSetText(pb, 's', False)
+    assert suc
+    assert pb.text() == 'OFF'
+
+
+def test_guiSetStyle_1(function):
+    pb = QPushButton()
+    suc = function.guiSetStyle(pb)
+    assert not suc
+
+
+def test_guiSetStyle_2(function):
+    pb = QPushButton()
+    suc = function.guiSetStyle(pb, pStyle='color', value=None)
+    assert suc
+
+
+def test_guiSetStyle_3(function):
+    pb = QPushButton()
+    suc = function.guiSetStyle(pb, pStyle='color', value=True)
+    assert suc
+
+
+def test_guiSetStyle_4(function):
+    pb = QPushButton()
+    suc = function.guiSetStyle(pb, pStyle='color', value=False)
+    assert suc
 
 
 def test_returnDriver_1(function):

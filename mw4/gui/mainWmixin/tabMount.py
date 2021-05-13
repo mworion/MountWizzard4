@@ -143,9 +143,6 @@ class Mount(object):
 
         ui = self.ui.statusRefraction
         self.guiSetText(ui, 's', sett.statusRefraction)
-        ui = self.ui.refractionTemp1
-        self.guiSetStyle(ui, 'status', sett.statusRefraction, ['', 'on', ''])
-        ui = self.ui.refractionPress1
         self.guiSetStyle(ui, 'status', sett.statusRefraction, ['', 'on', ''])
 
         ui = self.ui.statusGPSSynced

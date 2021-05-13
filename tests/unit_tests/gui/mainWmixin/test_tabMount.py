@@ -1029,10 +1029,8 @@ def test_setLongitude_1(function, qtbot):
 
 
 def test_setLongitude_2(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
+    function.app.deviceStat['mount'] = True
+    function.app.mount.obsSite.location = None
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('+160*30:45.5', True)):
@@ -1128,6 +1126,7 @@ def test_setLongitude_8(function, qtbot):
 
 
 def test_setLatitude_1(function, qtbot):
+    function.app.deviceStat['mount'] = False
     function.app.mount.obsSite.location = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -1137,10 +1136,8 @@ def test_setLatitude_1(function, qtbot):
 
 
 def test_setLatitude_2(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
+    function.app.deviceStat['mount'] = True
+    function.app.mount.obsSite.location = None
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('+45*30:45.5', True)):
@@ -1149,6 +1146,7 @@ def test_setLatitude_2(function, qtbot):
 
 
 def test_setLatitude_3(function, qtbot):
+    function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
                                                        latitude_degrees=49,
                                                        elevation_m=500)
@@ -1241,9 +1239,8 @@ def test_setElevation_1(function, qtbot):
 
 
 def test_setElevation_2(function, qtbot):
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
+    function.app.deviceStat['mount'] = True
+    function.app.mount.obsSite.location = None
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getDouble',
                            return_value=(10, False)):

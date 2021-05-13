@@ -45,7 +45,6 @@ class FileSortProxyModel(QSortFilterProxyModel):
     file dialogues. The sorting is now Descending meaning the last added files
     will be on top. This is don by just overwriting the sort method
     """
-
     def sort(self, column, order):
         self.sourceModel().sort(0, Qt.DescendingOrder)
 
@@ -60,7 +59,6 @@ class QMultiWait(QObject):
 
     in addition all received signals could be reset
     """
-
     ready = pyqtSignal()
 
     def __init__(self):
@@ -155,7 +153,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         """
         if platform.system() == 'Darwin':
             return self.MAC_STYLE + self.BASIC_STYLE
-
         else:
             return self.NON_MAC_STYLE + self.BASIC_STYLE
 
@@ -201,7 +198,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         widget.style().unpolish(widget)
         widget.setProperty(widgetProperty, value)
         widget.style().polish(widget)
-
         return True
 
     @staticmethod
@@ -240,7 +236,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
         if len(names) == 1:
             return nameList[0], shortList[0], extList[0]
-
         else:
             return nameList, shortList, extList
 
@@ -269,13 +264,11 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
         if enableDir:
             dlg.setFilter(QDir.Files | QDir.AllDirs)
-
         else:
             dlg.setFilter(QDir.Files)
 
         width = 600
         height = 400
-
         ph = window.geometry().height()
         pw = window.geometry().width()
         px = window.geometry().x()
@@ -285,7 +278,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
                         py + int(0.5 * (ph - height)),
                         width,
                         height)
-
         return dlg
 
     @staticmethod
@@ -320,7 +312,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
         if reply != msg.Yes:
             return False
-
         else:
             return True
 
@@ -346,16 +337,12 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
                             short: just file name without extension
                             ext: extension of the file
         """
-
         if not window:
             return '', '', ''
-
         if not title:
             return '', '', ''
-
         if not folder:
             return '', '', ''
-
         if not filterSet:
             return '', '', ''
 
@@ -370,18 +357,15 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
         if multiple:
             dlg.setFileMode(QFileDialog.ExistingFiles)
-
         else:
             dlg.setFileMode(QFileDialog.ExistingFile)
 
         result = self.runDialog(dlg)
-
         if not result:
             return '', '', ''
 
         filePath = dlg.selectedFiles()
         full, short, ext = self.extractNames(names=filePath)
-
         return full, short, ext
 
     def saveFile(self,
@@ -402,34 +386,26 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
                             short: just file name without extension
                             ext: extension of the file
         """
-
         if not window:
             return '', '', ''
-
         if not title:
             return '', '', ''
-
         if not folder:
             return '', '', ''
-
         if not filterSet:
             return '', '', ''
 
         dlg = self.prepareFileDialog(window, enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptSave)
-
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
         dlg.setDirectory(folder)
-
         result = self.runDialog(dlg)
-
         if not result:
             return '', '', ''
 
         filePath = dlg.selectedFiles()
         full, short, ext = self.extractNames(names=filePath)
-
         return full, short, ext
 
     def openDir(self,
@@ -446,31 +422,24 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
                             short: just file name without extension
                             ext: extension of the file
         """
-
         if not window:
             return '', '', ''
-
         if not title:
             return '', '', ''
-
         if not folder:
             return '', '', ''
 
         dlg = self.prepareFileDialog(window=window, enableDir=True)
         dlg.setAcceptMode(QFileDialog.AcceptOpen)
-
         dlg.setWindowTitle(title)
         dlg.setDirectory(folder)
         dlg.setFileMode(QFileDialog.DirectoryOnly)
-
         result = self.runDialog(dlg)
-
         if not result:
             return '', '', ''
 
         filePath = dlg.selectedFiles()
         full, short, ext = self.extractNames(names=filePath)
-
         return full, short, ext
 
     @staticmethod
@@ -507,34 +476,63 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
         doubleClickEventFilter = MouseDoubleClickEventFilter(widget)
         widget.installEventFilter(doubleClickEventFilter)
-
         return doubleClickEventFilter.clicked
 
-    @staticmethod
-    def guiSetText(ui, formatElement, value=None):
+    def guiSetText(self, ui, formatElement, value=None):
         """
-
         :param ui:
         :param formatElement:
         :param value:
         :return: True for test purpose
         """
-
         if not ui:
             return False
-
         if not formatElement:
             return False
-
         if value is None:
             text = '-'
-
+        elif formatElement.startswith('HSTR'):
+            text = self.formatHstrToText(value)
+        elif formatElement.startswith('DSTR'):
+            text = self.formatDstrToText(value)
+        elif formatElement.startswith('D'):
+            formatStr = '{0:' + formatElement.lstrip('D') + '}'
+            text = formatStr.format(value.degrees)
+        elif formatElement.startswith('H'):
+            formatStr = '{0:' + formatElement.lstrip('H') + '}'
+            text = formatStr.format(value.hours)
+        elif value == 'E':
+            text = 'EAST'
+        elif value == 'W':
+            text = 'WEST'
+        elif isinstance(value, bool):
+            if value:
+                text = 'ON'
+            else:
+                text = 'OFF'
         else:
             formatStr = '{0:' + formatElement + '}'
             text = formatStr.format(value)
 
         ui.setText(text)
+        return True
 
+    def guiSetStyle(self, ui, pStyle='', value=None, pVals=['', '', '']):
+        """
+        :param ui:
+        :param pStyle:
+        :param value:
+        :param pVals:
+        :return:
+        """
+        if value is None:
+            pVal = pVals[0]
+        elif value:
+            pVal = pVals[1]
+        else:
+            pVal = pVals[2]
+
+        self.changeStyleDynamic(ui, pStyle, pVal)
         return True
 
     @staticmethod
@@ -552,16 +550,13 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param addKey:
         :return:
         """
-
         if addKey:
             searchD = dict([(key, value[addKey]) for key, value in searchDict.items()])
-
         else:
             searchD = searchDict
 
         searchD = dict([(value, key) for key, value in searchD.items()])
         driver = searchD.get(sender, '')
-
         return driver
 
     @staticmethod
@@ -592,7 +587,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
                 angle += float(elements[10]) / 3600
             if elements[4].startswith(pf[0]):
                 angle = -angle
-
         else:
             return None
 
@@ -603,7 +597,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
         if angle > maxAbs:
             return None
-
         elif angle < -maxAbs:
             return None
 
@@ -653,26 +646,21 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
         if isFloat:
             angle = float(value.replace(',', '.'))
-
         elif isSexagesimal:
             angle = float(elements[2])
             if elements[3] is not None:
                 angle += float(elements[3]) / 60
             if elements[4] is not None:
                 angle += float(elements[4]) / 3600
-
         else:
             return None
 
         if angle >= 24:
             return None
-
         if angle < 0:
             return None
-
         if isFloat:
             angle = Angle(hours=angle / 360 * 24)
-
         elif isSexagesimal:
             angle = Angle(hours=angle)
 
@@ -719,7 +707,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
         if angle > 90:
             return None
-
         if angle < -90:
             return None
 

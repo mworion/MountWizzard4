@@ -40,11 +40,7 @@ class Mount(object):
         ms = self.app.mount.signals
         ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
-        ms.pointDone.connect(self.updateTimeGUI)
         ms.settingDone.connect(self.updateSettingGUI)
-        ms.settingDone.connect(self.updateSetStatGUI)
-        ms.settingDone.connect(self.updateSetSyncGUI)
-        ms.settingDone.connect(self.updateTrackingGui)
         self.app.update1s.connect(self.showOffset)
 
         self.ui.park.clicked.connect(self.changePark)
@@ -94,16 +90,6 @@ class Mount(object):
         :param obs:
         :return:    True if ok for testing
         """
-        if obs.Alt is not None:
-            self.ui.ALT.setText('{0:5.2f}'.format(obs.Alt.degrees))
-        else:
-            self.ui.ALT.setText('-')
-
-        if obs.Az is not None:
-            self.ui.AZ.setText('{0:5.2f}'.format(obs.Az.degrees))
-        else:
-            self.ui.AZ.setText('-')
-
         isJ2000 = self.ui.checkJ2000.isChecked()
         isValid = obs.raJNow is not None
         isValid = isValid and obs.decJNow is not None
@@ -114,61 +100,29 @@ class Mount(object):
             ra = obs.raJNow
             dec = obs.decJNow
 
-        if ra is not None:
-            self.ui.RA.setText(self.formatHstrToText(ra))
-            self.ui.RAfloat.setText(f'{ra.hours:3.4f}')
-        else:
-            self.ui.RA.setText('-')
-            self.ui.RAfloat.setText('-')
-
-        if dec is not None:
-            self.ui.DEC.setText(self.formatDstrToText(dec))
-            self.ui.DECfloat.setText(f'{dec.degrees:+3.4f}')
-        else:
-            self.ui.DEC.setText('-')
-            self.ui.DECfloat.setText('-')
-
-        if obs.pierside is not None:
-            self.ui.pierside.setText('WEST' if obs.pierside == 'W' else 'EAST')
-        else:
-            self.ui.pierside.setText('-')
-
-        if obs.haJNow is not None:
-            self.ui.HA.setText(self.formatHstrToText(obs.haJNow))
-            self.ui.HAfloat.setText(f'{obs.haJNow.hours:3.4f}')
-        else:
-            self.ui.HA.setText('-')
-            self.ui.HAfloat.setText('-')
-
+        self.guiSetText(self.ui.RA, 'HSTR', ra)
+        self.guiSetText(self.ui.RAfloat, 'H5.4f', ra)
+        self.guiSetText(self.ui.DEC, 'DSTR', dec)
+        self.guiSetText(self.ui.DECfloat, 'D5.4f', dec)
+        self.guiSetText(self.ui.HA, 'HSTR', obs.haJNow)
+        self.guiSetText(self.ui.HAfloat, 'H5.4f', obs.haJNow)
+        self.guiSetText(self.ui.ALT, 'D5.2f', obs.Alt)
+        self.guiSetText(self.ui.AZ, 'D5.2f', obs.Az)
+        self.guiSetText(self.ui.pierside, 's', obs.pierside)
+        self.guiSetText(self.ui.timeSidereal, 'HSTR', obs.timeSidereal)
         return True
 
-    def updateTimeGUI(self, obs):
-        """
-        :param obs:
-        :return:    True if ok for testing
-        """
-        if obs.timeSidereal is not None:
-            siderealFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            val = obs.timeSidereal.hms()
-            siderealText = siderealFormat.format(*val)
-            self.ui.timeSidereal.setText(siderealText)
-        else:
-            self.ui.timeSidereal.setText('-')
-
-        return True
-
-    def updateSetStatGUI(self, sett):
+    def updateSettingGUI(self, sett):
         """
         :param sett:
         :return:    True if ok for testing
         """
+        ui = self.ui.UTCExpire
+        self.guiSetText(ui, 's', sett.UTCExpire)
         if sett.UTCExpire is not None:
-            ui = self.ui.UTCExpire
-            ui.setText(sett.UTCExpire)
             now = datetime.datetime.now()
             expire = datetime.datetime.strptime(sett.UTCExpire, '%Y-%m-%d')
             deltaYellow = datetime.timedelta(days=30)
-
             if now > expire:
                 self.changeStyleDynamic(ui, 'char', 'red')
                 self.changeStyleDynamic(ui, 'color', 'red')
@@ -179,106 +133,37 @@ class Mount(object):
                 self.changeStyleDynamic(ui, 'color', '')
                 self.changeStyleDynamic(ui, 'char', '')
 
-        self.guiSetText(self.ui.UTCExpire, 's', sett.UTCExpire)
-
         ui = self.ui.statusUnattendedFlip
-        if sett.statusUnattendedFlip is None:
-            text = '-'
-            self.changeStyleDynamic(ui, 'status', '')
-        elif sett.statusUnattendedFlip:
-            text = 'ON'
-            self.changeStyleDynamic(ui, 'status', 'on')
-        else:
-            text = 'OFF'
-            self.changeStyleDynamic(ui, 'status', '')
-
-        self.guiSetText(ui, 's', text)
+        self.guiSetText(ui, 's', sett.statusUnattendedFlip)
+        self.guiSetStyle(ui, 'status', sett.statusUnattendedFlip, ['', 'on', ''])
 
         ui = self.ui.statusDualAxisTracking
-        if sett.statusDualAxisTracking is None:
-            text = '-'
-            self.changeStyleDynamic(ui, 'status', '')
-        elif sett.statusDualAxisTracking:
-            text = 'ON'
-            self.changeStyleDynamic(ui, 'status', 'on')
-        else:
-            text = 'OFF'
-            self.changeStyleDynamic(ui, 'status', '')
-
-        self.guiSetText(ui, 's', text)
+        self.guiSetText(ui, 's', sett.statusDualAxisTracking)
+        self.guiSetStyle(ui, 'status', sett.statusDualAxisTracking, ['', 'on', ''])
 
         ui = self.ui.statusRefraction
-        if sett.statusRefraction is None:
-            text = '-'
-            self.changeStyleDynamic(ui, 'status', '')
-            self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
-            self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
-        elif sett.statusRefraction:
-            text = 'ON'
-            self.changeStyleDynamic(ui, 'status', 'on')
-            self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
-            self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
-        else:
-            text = 'OFF'
-            self.changeStyleDynamic(ui, 'status', '')
-            self.changeStyleDynamic(self.ui.refractionTemp1, 'color', 'yellow')
-            self.changeStyleDynamic(self.ui.refractionPress1, 'color', 'yellow')
+        self.guiSetText(ui, 's', sett.statusRefraction)
+        ui = self.ui.refractionTemp1
+        self.guiSetStyle(ui, 'status', sett.statusRefraction, ['', 'on', ''])
+        ui = self.ui.refractionPress1
+        self.guiSetStyle(ui, 'status', sett.statusRefraction, ['', 'on', ''])
 
-        self.guiSetText(ui, 's', text)
-
-        return True
-
-    def updateSetSyncGUI(self, sett):
-        """
-        :param sett:
-        :return:    True if ok for testing
-        """
         ui = self.ui.statusGPSSynced
-        if sett.gpsSynced is None:
-            text = '-'
-            self.changeStyleDynamic(ui, 'status', '')
-        elif sett.gpsSynced:
-            text = 'YES'
-            self.changeStyleDynamic(ui, 'status', 'on')
-        else:
-            text = 'NO'
-            self.changeStyleDynamic(ui, 'status', '')
-        self.guiSetText(ui, 's', text)
+        self.guiSetText(ui, 's', sett.gpsSynced)
+        self.guiSetStyle(ui, 'status', sett.gpsSynced, ['', 'on', ''])
 
         ui = self.ui.statusWOL
-        if sett.wakeOnLan is None:
-            text = '-'
-            self.changeStyleDynamic(ui, 'status', '')
-        elif sett.wakeOnLan == 'On':
-            text = 'ON'
-            self.changeStyleDynamic(ui, 'status', 'on')
-        else:
-            text = 'OFF'
-            self.changeStyleDynamic(ui, 'status', '')
-        self.guiSetText(ui, 's', text)
+        self.guiSetText(ui, 's', sett.wakeOnLan)
+        self.guiSetStyle(ui, 'status', sett.wakeOnLan, ['', 'on', ''])
 
         ui = self.ui.statusWebInterface
-        if sett.webInterfaceStat is None:
-            text = '-'
-            self.changeStyleDynamic(ui, 'status', '')
-        elif sett.webInterfaceStat == 1:
-            text = 'ON'
-            self.changeStyleDynamic(ui, 'status', 'on')
-        else:
-            text = 'OFF'
-            self.changeStyleDynamic(ui, 'status', '')
-        self.guiSetText(ui, 's', text)
+        self.guiSetText(ui, 's', sett.webInterfaceStat)
+        self.guiSetStyle(ui, 'status', sett.webInterfaceStat, ['', 'on', ''])
 
         if sett.typeConnection is not None:
             text = self.typeConnectionTexts[sett.typeConnection]
             self.ui.mountTypeConnection.setText(text)
 
-        return True
-
-    def updateSettingGUI(self, sett):
-        """
-        :return:    True if ok for testing
-        """
         self.guiSetText(self.ui.slewRate, '2.0f', sett.slewRate)
         self.guiSetText(self.ui.timeToFlip, '3.0f', sett.timeToFlip)
         self.guiSetText(self.ui.timeToMeridian, '3.0f', sett.timeToMeridian())
@@ -291,40 +176,13 @@ class Mount(object):
         self.guiSetText(self.ui.horizonLimitLow, '3.0f', sett.horizonLimitLow)
         self.guiSetText(self.ui.horizonLimitHigh, '3.0f', sett.horizonLimitHigh)
 
-        return True
-
-    def updateLocGUI(self, obs):
-        """
-        :param obs:
-        :return:    True if ok for testing
-        """
-        if obs is None:
-            return False
-
-        location = obs.location
-        if location is None:
-            return False
-
-        self.ui.siteLongitude.setText(self.formatLonToText(location.longitude))
-        self.ui.siteLatitude.setText(self.formatLatToText(location.latitude))
-        self.ui.siteElevation.setText(str(location.elevation.m))
-        return True
-
-    def updateTrackingGui(self, sett):
-        """
-        :param sett:
-        :return:    True if ok for testing
-        """
-        if sett is None:
-            return False
         if self.app.mount.obsSite.status is None:
             self.changeStyleDynamic(self.ui.followSat, 'running', 'false')
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
-            return False
 
-        if self.app.mount.obsSite.status == 10:
+        elif self.app.mount.obsSite.status == 10:
             self.changeStyleDynamic(self.ui.followSat, 'running', 'true')
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
@@ -347,7 +205,22 @@ class Mount(object):
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')
+        return True
 
+    def updateLocGUI(self, obs):
+        """
+        :param obs:
+        :return:    True if ok for testing
+        """
+        if obs is None:
+            return False
+        location = obs.location
+        if location is None:
+            return False
+
+        self.ui.siteLongitude.setText(self.formatLonToText(location.longitude))
+        self.ui.siteLatitude.setText(self.formatLatToText(location.latitude))
+        self.ui.siteElevation.setText(str(location.elevation.m))
         return True
 
     def changeTracking(self):
@@ -532,11 +405,9 @@ class Mount(object):
 
         if not ok:
             return False
-
         if sett.setMeridianLimitTrack(value):
             self.app.message.emit(f'Meridian Limit Track: [{value}]', 0)
             return True
-
         else:
             self.app.message.emit('Meridian Limit Track cannot be set', 2)
             return False
@@ -569,11 +440,9 @@ class Mount(object):
 
         if not ok:
             return False
-
         if sett.setMeridianLimitSlew(value):
             self.app.message.emit(f'Meridian Limit Slew: [{value}]', 0)
             return True
-
         else:
             self.app.message.emit('Meridian Limit Slew cannot be set', 2)
             return False
@@ -606,11 +475,9 @@ class Mount(object):
 
         if not ok:
             return False
-
         if sett.setHorizonLimitHigh(value):
             self.app.message.emit(f'Horizon Limit High: [{value}]', 0)
             return True
-
         else:
             self.app.message.emit('Horizon Limit High cannot be set', 2)
             return False
@@ -643,11 +510,9 @@ class Mount(object):
 
         if not ok:
             return False
-
         if sett.setHorizonLimitLow(value):
             self.app.message.emit(f'Horizon Limit Low: [{value}]', 0)
             return True
-
         else:
             self.app.message.emit('Horizon Limit Low cannot be set', 2)
             return False
@@ -682,11 +547,9 @@ class Mount(object):
 
         if not ok:
             return False
-
         if sett.setSlewRate(value):
             self.app.message.emit(f'Slew Rate: [{value}]', 0)
             return True
-
         else:
             self.app.message.emit('Slew Rate cannot be set', 2)
             return False
@@ -716,7 +579,6 @@ class Mount(object):
             return False
 
         value = self.convertLonToAngle(value)
-
         if value is None:
             return False
 
@@ -728,13 +590,11 @@ class Mount(object):
         if not self.deviceStat.get('mount', ''):
             self.updateLocGUI(obs)
             return False
-
         if obs.setLongitude(value):
             self.app.message.emit(f'Longitude set to:    '
                                   f'[{self.ui.siteLongitude.text()}]', 0)
             self.app.mount.getLocation()
             return True
-
         else:
             self.app.message.emit('Longitude cannot be set', 2)
             return False
@@ -774,13 +634,11 @@ class Mount(object):
         if not self.deviceStat.get('mount', ''):
             self.updateLocGUI(obs)
             return False
-
         if obs.setLatitude(value):
             self.app.message.emit(f'Latitude set to:     '
                                   f'[{self.ui.siteLatitude.text()}]', 0)
             self.app.mount.getLocation()
             return True
-
         else:
             self.app.message.emit('Latitude cannot be set', 2)
             return False
@@ -819,12 +677,10 @@ class Mount(object):
         if not self.deviceStat.get('mount', ''):
             self.updateLocGUI(obs)
             return False
-
         if obs.setElevation(value):
             self.app.message.emit(f'Elevation set to:    [{value}]', 0)
             self.app.mount.getLocation()
             return True
-
         else:
             self.app.message.emit('Elevation cannot be set', 2)
 
@@ -853,11 +709,9 @@ class Mount(object):
                                 )
         if not ok:
             return False
-
         suc = sett.setUnattendedFlip(value == 'ON')
         if suc:
             self.app.message.emit(f'Unattended flip set to [{value}]', 0)
-
         else:
             self.app.message.emit('Unattended flip cannot be set', 2)
         return suc
@@ -891,7 +745,6 @@ class Mount(object):
         suc = sett.setDualAxisTracking(value == 'ON')
         if suc:
             self.app.message.emit(f'Dual axis tracking set to [{value}]', 0)
-
         else:
             self.app.message.emit('Dual axis tracking cannot be set', 2)
         return suc
@@ -925,7 +778,6 @@ class Mount(object):
         suc = sett.setWOL(value == 'ON')
         if suc:
             self.app.message.emit(f'WOL set to [{value}]', 0)
-
         else:
             self.app.message.emit('WOL cannot be set', 2)
         return suc
@@ -959,7 +811,6 @@ class Mount(object):
         suc = sett.setRefraction(value == 'ON')
         if suc:
             self.app.message.emit(f'Refraction correction set to [{value}]', 0)
-
         else:
             self.app.message.emit('Refraction correction cannot be set', 2)
         return suc

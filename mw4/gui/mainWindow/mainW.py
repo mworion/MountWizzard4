@@ -102,13 +102,11 @@ class MainWindow(
         self.uiWindows = app.uiWindows
         self.setAttribute(Qt.WA_DeleteOnClose)
 
-        # load and init the gui
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.initUI()
         self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
 
-        # link cross widget gui signals as all ui widgets have to be present
         self.uiWindows['showMessageW'] = {
             'button': self.ui.openMessageW,
             'classObj': None,

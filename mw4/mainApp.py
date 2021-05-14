@@ -26,6 +26,7 @@ import platform
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
 from skyfield.api import wgs84
 from importlib_metadata import version
+from PyQt5.QtTest import QTest
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
@@ -370,8 +371,9 @@ class MountWizzard4(QObject):
             self.mount.getLocation()
             self.mainW.refreshName()
             self.mainW.refreshModel()
-            self.mount.getTLE()
             self.mountUp = True
+            QTest.qWait(500)
+            self.mount.getTLE()
             return True
 
         elif not status and self.mountUp:

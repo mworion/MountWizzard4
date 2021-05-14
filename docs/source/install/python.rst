@@ -33,10 +33,13 @@ There is a video on youtube with the install process python: https://youtu.be/xJ
 
 Windows
 -------
+.. warning:: Windows makes a hard split between 32bit and 64bit versions. If your
+             drivers and setup uses 64bit solutions, please install 64bit python!
+
 Depending on your Windows version please download or directly run the web
 installer from:
 
-https://www.python.org/ftp/python/3.9.2/python-3.9.2-webinstall.exe
+https://www.python.org/downloads/windows/
 
 and follow the installation procedure.
 

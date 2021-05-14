@@ -368,18 +368,18 @@ def test_plotCurrent_2(function):
 
 
 def test_drawMeasure_1(function):
-    function.ui.measureSet1.addItem('None')
-    function.ui.measureSet2.addItem('None')
-    function.ui.measureSet3.addItem('None')
+    function.ui.measureSet1.addItem('No chart')
+    function.ui.measureSet2.addItem('No chart')
+    function.ui.measureSet3.addItem('No chart')
     suc = function.drawMeasure()
     assert not suc
 
 
 def test_drawMeasure_2(function):
-    function.ui.measureSet1.addItem('None')
+    function.ui.measureSet1.addItem('No chart')
     function.ui.measureSet1.addItem('Pressure')
-    function.ui.measureSet2.addItem('None')
-    function.ui.measureSet3.addItem('None')
+    function.ui.measureSet2.addItem('No chart')
+    function.ui.measureSet3.addItem('No chart')
     function.ui.measureSet1.setCurrentIndex(1)
     suc = function.drawMeasure(1)
     assert suc
@@ -387,26 +387,26 @@ def test_drawMeasure_2(function):
 
 def test_drawMeasure_3(function):
     function.app.measure.data = {}
-    function.ui.measureSet1.addItem('None')
-    function.ui.measureSet2.addItem('None')
-    function.ui.measureSet3.addItem('None')
+    function.ui.measureSet1.addItem('No chart')
+    function.ui.measureSet2.addItem('No chart')
+    function.ui.measureSet3.addItem('No chart')
     suc = function.drawMeasure()
     assert not suc
 
 
 def test_drawMeasure_4(function):
     function.app.measure.data['time'] = [1, 2, 3]
-    function.ui.measureSet1.addItem('None')
-    function.ui.measureSet2.addItem('None')
-    function.ui.measureSet3.addItem('None')
+    function.ui.measureSet1.addItem('No chart')
+    function.ui.measureSet2.addItem('No chart')
+    function.ui.measureSet3.addItem('No chart')
     suc = function.drawMeasure()
     assert not suc
 
 
 def test_drawMeasure_5(function):
-    function.ui.measureSet1.addItem('None')
-    function.ui.measureSet2.addItem('None')
-    function.ui.measureSet3.addItem('None')
+    function.ui.measureSet1.addItem('No chart')
+    function.ui.measureSet2.addItem('No chart')
+    function.ui.measureSet3.addItem('No chart')
     with mock.patch.object(function,
                            'setupAxes',
                            return_value=None):
@@ -416,7 +416,7 @@ def test_drawMeasure_5(function):
 
 def test_drawMeasure_6(function):
     function.ui.measureSet1.addItem('Pressure')
-    function.ui.measureSet2.addItem('None')
+    function.ui.measureSet2.addItem('No chart')
     function.ui.measureSet3.addItem('Pressure')
 
     suc = function.drawMeasure()

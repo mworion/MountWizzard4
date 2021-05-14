@@ -219,6 +219,28 @@ def test_extractOrbits_4(function):
     assert len(function.satOrbits) == 0
 
 
+def test_extractOrbits_5(function):
+    ts = function.app.mount.obsSite.ts
+
+    now = ts.tt_jd(2459216.1)
+    t0 = ts.tt_jd(2459215.5)
+    t1 = ts.tt_jd(2459215.6)
+    t2 = ts.tt_jd(2459215.7)
+    t3 = ts.tt_jd(2459215.8)
+    t4 = ts.tt_jd(2459215.9)
+    t5 = ts.tt_jd(2459216.0)
+    t6 = ts.tt_jd(2459216.1)
+    t7 = ts.tt_jd(2459216.2)
+    t8 = ts.tt_jd(2459216.3)
+
+    times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
+    events = [0, 1, 2, 0, 1, 2, 0, 1, 1]
+
+    function.extractOrbits(now, times, events)
+    print(function.satOrbits)
+    assert len(function.satOrbits) == 0
+
+
 def test_calcSatelliteMeridianTransit(function):
     tle = ['NOAA 8',
            '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
@@ -226,7 +248,90 @@ def test_calcSatelliteMeridianTransit(function):
 
     satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
-    function.calcSatelliteMeridianTransit(satellite, loc)
+    function.calcSatelliteMeridianTransit(satellite, loc, 0)
+
+
+def test_sortFlipEvents_0(function):
+    ts = function.app.mount.obsSite.ts
+    satOrbit = {'rise': ts.tt_jd(2459215.5),
+                'settle': ts.tt_jd(2459215.7)}
+    t0 = []
+    t1 = [ts.tt_jd(2459215.5)]
+    t2 = [ts.tt_jd(2459215.6)]
+    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
+    assert suc
+    assert 'flip' not in satOrbit
+
+
+def test_sortFlipEvents_1(function):
+    ts = function.app.mount.obsSite.ts
+    satOrbit = {'rise': ts.tt_jd(2459215.5),
+                'settle': ts.tt_jd(2459215.7)}
+    t0 = [ts.tt_jd(2459215.5)]
+    t1 = [ts.tt_jd(2459215.5)]
+    t2 = [ts.tt_jd(2459215.6)]
+    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
+    assert suc
+    assert 'flip' in satOrbit
+
+
+def test_sortFlipEvents_2(function):
+    ts = function.app.mount.obsSite.ts
+    satOrbit = {'rise': ts.tt_jd(2459215.5),
+                'settle': ts.tt_jd(2459215.7)}
+    t0 = [ts.tt_jd(2459215.5)]
+    t1 = [ts.tt_jd(2459215.6)]
+    t2 = [ts.tt_jd(2459215.5)]
+    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
+    assert suc
+
+
+def test_sortFlipEvents_3(function):
+    ts = function.app.mount.obsSite.ts
+    satOrbit = {'rise': ts.tt_jd(2459215.5),
+                'settle': ts.tt_jd(2459215.7)}
+    t0 = [ts.tt_jd(2459215.5)]
+    t1 = [ts.tt_jd(2459215.65)]
+    t2 = []
+    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
+    assert suc
+    assert 'flipLate' in satOrbit
+
+
+def test_sortFlipEvents_4(function):
+    ts = function.app.mount.obsSite.ts
+    satOrbit = {'rise': ts.tt_jd(2459215.5),
+                'settle': ts.tt_jd(2459215.7)}
+    t0 = [ts.tt_jd(2459215.5)]
+    t1 = [ts.tt_jd(2459215.55)]
+    t2 = []
+    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
+    assert suc
+    assert 'flipEarly' in satOrbit
+
+
+def test_sortFlipEvents_5(function):
+    ts = function.app.mount.obsSite.ts
+    satOrbit = {'rise': ts.tt_jd(2459215.5),
+                'settle': ts.tt_jd(2459215.7)}
+    t0 = [ts.tt_jd(2459215.5)]
+    t1 = []
+    t2 = [ts.tt_jd(2459215.55)]
+    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
+    assert suc
+    assert 'flipEarly' in satOrbit
+
+
+def test_sortFlipEvents_6(function):
+    ts = function.app.mount.obsSite.ts
+    satOrbit = {'rise': ts.tt_jd(2459215.5),
+                'settle': ts.tt_jd(2459215.7)}
+    t0 = [ts.tt_jd(2459215.5)]
+    t1 = []
+    t2 = [ts.tt_jd(2459215.65)]
+    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
+    assert suc
+    assert 'flipLate' in satOrbit
 
 
 def test_addMeridianTransit_1(function):
@@ -235,6 +340,23 @@ def test_addMeridianTransit_1(function):
            '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
            '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
     ts = function.app.mount.obsSite.ts
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'settle': ts.tt_jd(2459215.7)},
+                          {'rise': ts.tt_jd(2459216.5),
+                           'settle': ts.tt_jd(2459216.7)}]
+    suc = function.addMeridianTransit(loc)
+    assert suc
+
+
+def test_addMeridianTransit_2(function):
+    loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
+    tle = ['NOAA 8',
+           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
+           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+    ts = function.app.mount.obsSite.ts
+    function.app.mount.setting.meridianLimitSlew = None
     function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
@@ -310,6 +432,29 @@ def test_showSatPasses_2(function):
                            'culminate': ts.tt_jd(2459215.6),
                            'flip': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)},
+                          {'rise': ts.tt_jd(2459216.5),
+                           'settle': ts.tt_jd(2459216.7)}]
+    with mock.patch.object(function,
+                           'clearTrackingParameters'):
+        with mock.patch.object(function,
+                               'calcPassEvents',
+                               return_value=(0, 0)):
+            with mock.patch.object(function,
+                                   'extractOrbits'):
+                with mock.patch.object(function,
+                                       'addMeridianTransit'):
+                    with mock.patch.object(function,
+                                           'sendSatelliteData'):
+                        with mock.patch.object(function,
+                                               'progTrajectoryToMount'):
+                            suc = function.showSatPasses()
+                            assert suc
+
+
+def test_showSatPasses_3(function):
+    ts = function.app.mount.obsSite.ts
+    function.satOrbits = [{'culminate': ts.tt_jd(2459215.6),
+                           'flip': ts.tt_jd(2459215.6),},
                           {'rise': ts.tt_jd(2459216.5),
                            'settle': ts.tt_jd(2459216.7)}]
     with mock.patch.object(function,
@@ -713,17 +858,6 @@ def test_selectStartEnd_5(function):
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'flip': ts.tt_jd(2459215.6),
-                           'test': ts.tt_jd(2459215.7)}]
-    s, e = function.selectStartEnd()
-    assert s == 0
-    assert e == 0
-
-
-def test_selectStartEnd_6(function):
-    function.app.deviceStat['mount'] = True
-    ts = function.app.mount.obsSite.ts
-    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'flip': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
     function.ui.satBeforeFlip.setChecked(False)
     function.ui.satAfterFlip.setChecked(False)
@@ -732,12 +866,26 @@ def test_selectStartEnd_6(function):
     assert e == 0
 
 
+def test_selectStartEnd_6(function):
+    function.app.deviceStat['mount'] = True
+    ts = function.app.mount.obsSite.ts
+    UTC2TT = function.app.mount.obsSite.UTC2TT
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'flip': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)}]
+    function.ui.satBeforeFlip.setChecked(True)
+    function.ui.satAfterFlip.setChecked(True)
+    s, e = function.selectStartEnd()
+    assert s == 2459215.5 - UTC2TT
+    assert e == 2459215.7 - UTC2TT
+
+
 def test_selectStartEnd_7(function):
     function.app.deviceStat['mount'] = True
     UTC2TT = function.app.mount.obsSite.UTC2TT
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'flip': ts.tt_jd(2459215.6),
+                           'flipLate': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
     function.ui.satBeforeFlip.setChecked(True)
     function.ui.satAfterFlip.setChecked(False)
@@ -751,7 +899,7 @@ def test_selectStartEnd_8(function):
     UTC2TT = function.app.mount.obsSite.UTC2TT
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                           'flip': ts.tt_jd(2459215.6),
+                           'flipEarly': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
     function.ui.satBeforeFlip.setChecked(False)
     function.ui.satAfterFlip.setChecked(True)

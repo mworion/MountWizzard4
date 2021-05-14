@@ -380,6 +380,7 @@ class Satellite(object):
                 dateStr = riseT.utc_strftime(fStringDate)
             else:
                 riseStr = 'unknown'
+                dateStr = '---'
             culminateT = satOrbit.get('culminate', None)
             if culminateT is not None:
                 culminateStr = culminateT.utc_strftime(fString)

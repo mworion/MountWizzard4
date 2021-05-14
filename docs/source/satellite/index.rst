@@ -11,6 +11,23 @@ the entire track. As you would like to follow the as precise as possible I made
 some comparisons between the internal calculations done in 10micron mount and the
 results provided by skyfield.
 
+In skyfield there is a chapter about satellite calculations and precision:
+https://rhodesmill.org/skyfield/earth-satellites.html#avoid-calling-the-observe-method
+Despite the fact that the observe method is expensive the difference in calulation
+time for a 900 step track is on my computer 40ms (using more precise observe
+method) to 0.7ms (using the less precise difference).
+
+Brandon writes about it:
+
+.. epigraph::
+
+    While satellite positions are only accurate to about a kilometer anyway,
+    accounting for light travel time only affected the position in this case by
+    less than an additional tenth of a kilometer. This difference is not
+    meaningful when compared to the uncertainty that is inherent in satellite
+    positions to begin with, so you should neglect it and simply subtract
+    GCRS-centered vectors instead as detailed above.
+
 Here the charts for NOAA 15 [B] at julian date JD=2459333.26498 for the transit
 happening. You could see the alt/az of the sat track.
 

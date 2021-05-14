@@ -18169,7 +18169,7 @@ Next point in time when satellite settles.</string>
          <x>5</x>
          <y>10</y>
          <width>366</width>
-         <height>226</height>
+         <height>246</height>
         </rect>
        </property>
        <property name="title">
@@ -18182,7 +18182,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>25</y>
+          <y>20</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -18203,7 +18203,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>25</y>
+          <y>20</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -18224,7 +18224,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>25</y>
+          <y>20</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -18262,8 +18262,8 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_41">
         <property name="geometry">
          <rect>
-          <x>205</x>
-          <y>25</y>
+          <x>210</x>
+          <y>20</y>
           <width>61</width>
           <height>21</height>
          </rect>
@@ -18283,9 +18283,9 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="binning">
         <property name="geometry">
          <rect>
-          <x>280</x>
-          <y>25</y>
-          <width>76</width>
+          <x>285</x>
+          <y>20</y>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -18323,7 +18323,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>75</y>
+          <y>70</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -18344,7 +18344,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>75</y>
+          <y>70</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -18383,7 +18383,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>75</y>
+          <y>70</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -18404,7 +18404,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>180</y>
+          <y>200</y>
           <width>341</width>
           <height>21</height>
          </rect>
@@ -18431,7 +18431,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>200</y>
+          <y>220</y>
           <width>231</width>
           <height>21</height>
          </rect>
@@ -18464,7 +18464,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>100</y>
+          <y>95</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -18536,7 +18536,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>100</y>
+          <y>95</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -18559,9 +18559,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>280</x>
-          <y>100</y>
-          <width>76</width>
+          <x>285</x>
+          <y>95</y>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -18601,8 +18601,8 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_401">
         <property name="geometry">
          <rect>
-          <x>205</x>
-          <y>100</y>
+          <x>210</x>
+          <y>95</y>
           <width>66</width>
           <height>21</height>
          </rect>
@@ -18622,9 +18622,9 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="downloadSlow">
         <property name="geometry">
          <rect>
-          <x>280</x>
-          <y>150</y>
-          <width>76</width>
+          <x>285</x>
+          <y>145</y>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -18639,7 +18639,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>125</y>
+          <y>120</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -18655,7 +18655,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>150</y>
+          <y>145</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -18670,9 +18670,9 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="coolerOff">
         <property name="geometry">
          <rect>
-          <x>280</x>
-          <y>125</y>
-          <width>76</width>
+          <x>285</x>
+          <y>120</y>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -18687,7 +18687,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>125</y>
+          <y>120</y>
           <width>91</width>
           <height>21</height>
          </rect>
@@ -18708,7 +18708,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>150</y>
+          <y>145</y>
           <width>96</width>
           <height>21</height>
          </rect>
@@ -18729,7 +18729,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
+          <y>45</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -18750,7 +18750,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>50</y>
+          <y>45</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -18789,7 +18789,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>50</y>
+          <y>45</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -18809,9 +18809,9 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="binningN">
         <property name="geometry">
          <rect>
-          <x>280</x>
-          <y>50</y>
-          <width>76</width>
+          <x>285</x>
+          <y>45</y>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -18848,8 +18848,8 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_51">
         <property name="geometry">
          <rect>
-          <x>205</x>
-          <y>50</y>
+          <x>210</x>
+          <y>45</y>
           <width>61</width>
           <height>21</height>
          </rect>
@@ -18864,6 +18864,138 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string>Binning</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_412">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>170</y>
+          <width>96</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Gain</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_413">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>170</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Offset</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="gainCam">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>170</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the binning for the camera&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>9.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="offsetCam">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>285</x>
+          <y>170</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the binning for the camera&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>9.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
         </property>
        </widget>
       </widget>
@@ -19610,7 +19742,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>145</y>
+         <y>150</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -19866,7 +19998,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>210</y>
+         <y>215</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -20087,7 +20219,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>300</y>
+         <y>305</y>
          <width>366</width>
          <height>81</height>
         </rect>
@@ -20294,9 +20426,9 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>250</y>
+         <y>260</y>
          <width>366</width>
-         <height>51</height>
+         <height>46</height>
         </rect>
        </property>
        <property name="title">
@@ -20309,7 +20441,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>205</x>
-          <y>20</y>
+          <y>15</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -20333,7 +20465,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>20</y>
+          <y>15</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -20385,7 +20517,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>15</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -20409,7 +20541,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>20</y>
+          <y>15</y>
           <width>76</width>
           <height>21</height>
          </rect>

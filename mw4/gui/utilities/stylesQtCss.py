@@ -380,6 +380,10 @@ class Styles:
         border-radius: 2px;
         padding-right: 2px;
     }
+    QDoubleSpinBox:disabled {
+        background-color: #202020;
+        color: #404040;
+    }
     QDoubleSpinBox::up-button {
         subcontrol-origin: border;
         subcontrol-position: top right;
@@ -528,7 +532,7 @@ class Styles:
     }
     QPushButton:disabled {
         background-color: #101010;
-        color: #606060;
+        color: #404040;
         border-color: #202020;
         border-width: 1px;
         border-style: outset;
@@ -717,7 +721,7 @@ class Styles:
         border-style: outset;
     }
     QProgressBar:disabled {
-        color: #606060;
+        color: #404040;
         background-color: #101010;
         border-radius: 3px;
         border-width: 1px;

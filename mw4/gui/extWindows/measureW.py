@@ -70,14 +70,14 @@ class MeasureWindow(toolsQtWidget.MWidget):
                          'Current': self.plotCurrent,
                          }
 
-        self.timeScale = {'  1s Tick   -  4 min': 1,
-                          '  2s Ticks  -  8 min': 2,
-                          '  4s Ticks  - 16 min': 4,
-                          '  8s Ticks  - 32 min': 8,
-                          ' 16s Ticks  -  1 hour': 16,
-                          ' 32s Ticks  -  2 hours': 32,
-                          ' 64s Ticks  -  4 hours': 64,
-                          '128s Ticks  -  9 hours': 128,
+        self.timeScale = {'  1s Tick   -  4 min window': 1,
+                          '  2s Ticks  -  8 min window': 2,
+                          '  4s Ticks  - 16 min window': 4,
+                          '  8s Ticks  - 32 min window': 8,
+                          ' 16s Ticks  -  1 hour window': 16,
+                          ' 32s Ticks  -  2 hours window': 32,
+                          ' 64s Ticks  -  4 hours window': 64,
+                          '128s Ticks  -  9 hours window': 128,
                           }
 
         self.measureMat = self.embedMatplot(self.ui.measure, constrainedLayout=False)

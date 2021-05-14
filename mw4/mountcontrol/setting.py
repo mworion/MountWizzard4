@@ -794,4 +794,3 @@ class Setting(object):
         if response[0] != '1':
             return False
         return True
-

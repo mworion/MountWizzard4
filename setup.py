@@ -30,7 +30,7 @@ releaseNotes = """
 - add feature for RA/DEC FITS writing for INDI server without snooping
 - completely revised satellite tracking menu gui
 - add partially satellite tracking before / after possible flip 
-- add satellite track respect horizon line
+- add satellite track respect horizon line and meridian limits
 - add tracking simulator feature to test without waiting for satellite
 - add reverse order for filed build point retry 
 - add automatic enable webinterface for keypad use
@@ -47,7 +47,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b7',
+    version='2.0.0b8',
     packages=[
         'mw4',
         'mw4.base',

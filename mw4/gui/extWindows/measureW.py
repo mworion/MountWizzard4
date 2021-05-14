@@ -57,7 +57,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                        self.ui.measureSet3,
                        ]
 
-        self.plotFunc = {'None': None,
+        self.plotFunc = {'No chart': None,
                          'RA Stability': self.plotRa,
                          'DEC Stability': self.plotDec,
                          'RA Angular Stability': self.plotAngularPosRa,
@@ -864,7 +864,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
         numberPlots = 0
         for mSet in self.mSetUI:
-            if mSet.currentText() == 'None':
+            if mSet.currentText() == 'No chart':
                 continue
             numberPlots += 1
 

@@ -13779,7 +13779,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_8">
       <attribute name="title">
@@ -19648,7 +19648,7 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>295</x>
+          <x>300</x>
           <y>20</y>
           <width>36</width>
           <height>21</height>
@@ -19692,7 +19692,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -19735,7 +19735,7 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>70</x>
           <y>20</y>
           <width>36</width>
           <height>21</height>
@@ -19780,7 +19780,7 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>165</x>
+          <x>175</x>
           <y>20</y>
           <width>36</width>
           <height>21</height>
@@ -19822,7 +19822,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_406">
         <property name="geometry">
          <rect>
-          <x>210</x>
+          <x>220</x>
           <y>20</y>
           <width>16</width>
           <height>21</height>

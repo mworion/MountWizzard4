@@ -264,6 +264,39 @@ class Satellite(object):
         west_of_meridian_at.step_days = 0.4
         return west_of_meridian_at
 
+    @staticmethod
+    def sortFlipEvents(satOrbit, t0, t1, t2):
+        """
+        :param satOrbit:
+        :param t0:
+        :param t1:
+        :param t2:
+        :return:
+        """
+        settle = satOrbit['settle']
+        rise = satOrbit['rise']
+        if t0:
+            satOrbit['flip'] = t0[0]
+        if t1 and t2:
+            if t1[0].tt > t2[0].tt:
+                satOrbit['flipEarly'] = t2[0]
+                satOrbit['flipLate'] = t1[0]
+            else:
+                satOrbit['flipEarly'] = t1[0]
+                satOrbit['flipLate'] = t2[0]
+        if t1 and not t2:
+            if abs(rise.tt - t1[0].tt) > abs(settle.tt - t1[0].tt):
+                satOrbit['flipLate'] = t1[0]
+            else:
+                satOrbit['flipEarly'] = t1[0]
+        if not t1 and t2:
+            if abs(rise.tt - t2[0].tt) > abs(settle.tt - t2[0].tt):
+                satOrbit['flipLate'] = t2[0]
+            else:
+                satOrbit['flipEarly'] = t2[0]
+
+        return True
+
     def addMeridianTransit(self, location):
         """
         :param location:
@@ -272,6 +305,7 @@ class Satellite(object):
         tol = self.app.mount.setting.meridianLimitSlew
         if tol is None:
             tol = 0
+        tol = tol * 0.97
 
         f0 = self.calcSatelliteMeridianTransit(self.satellite, location, 0)
         f1 = self.calcSatelliteMeridianTransit(self.satellite, location, tol)
@@ -284,19 +318,7 @@ class Satellite(object):
             t2, y2 = almanac.find_discrete(satOrbit['rise'],
                                            satOrbit['settle'], f2)
 
-            if t0:
-                satOrbit['flip'] = t0[0]
-
-            if not t1 and not t2:
-                satOrbit['flipEarly'] = satOrbit['rise']
-                satOrbit['flipLate'] = satOrbit['settle']
-            elif t1 and not t2:
-                pass
-            elif not t1 and t2:
-                pass
-            elif t1 and t2:
-                pass
-        print(self.satOrbits[0])
+            self.sortFlipEvents(satOrbit, t0, t1, t2)
         return True
 
     def sendSatelliteData(self, alt=[], az=[]):
@@ -595,31 +617,24 @@ class Satellite(object):
             return 0, 0
         if 'rise' not in self.satOrbits[0]:
             return 0, 0
-        if 'flip' not in self.satOrbits[0]:
-            return 0, 0
         if 'settle' not in self.satOrbits[0]:
             return 0, 0
 
         isBefore = self.ui.satBeforeFlip.isChecked()
         isAfter = self.ui.satAfterFlip.isChecked()
-        if not (isBefore or isAfter):
-            return 0, 0
+        start = self.satOrbits[0]['rise'].tt
+        end = self.satOrbits[0]['settle'].tt
 
-        if isBefore:
-            start = self.satOrbits[0]['rise'].tt
-        else:
-            if 'flipEarly' in self.satOrbits[0]:
-                start = self.satOrbits[0]['flipEarly'].tt
-            else:
-                start = self.satOrbits[0]['flip'].tt
-
-        if isAfter:
-            end = self.satOrbits[0]['settle'].tt
-        else:
+        if isBefore and isAfter:
+            pass
+        elif isBefore and not isAfter:
             if 'flipLate' in self.satOrbits[0]:
                 end = self.satOrbits[0]['flipLate'].tt
-            else:
-                end = self.satOrbits[0]['flip'].tt
+        elif not isBefore and isAfter:
+            if 'flipEarly' in self.satOrbits[0]:
+                start = self.satOrbits[0]['flipEarly'].tt
+        else:
+            return 0, 0
 
         UTC2TT = self.app.mount.obsSite.UTC2TT
         start = start - UTC2TT
@@ -634,7 +649,7 @@ class Satellite(object):
             return False
 
         start, end = self.selectStartEnd()
-        if not start:
+        if not start or not end:
             return False
 
         isInternal = self.ui.useInternalSatCalc.isChecked()
@@ -655,6 +670,8 @@ class Satellite(object):
         self.clearTrackingParameters()
         isSim = self.ui.trackingSim.isChecked()
         start, end = self.selectStartEnd()
+        if not start or not end:
+            return False
         alt, az = self.calcTrajectoryData(start, end)
         alt, az = self.filterHorizon(alt, az)
         self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)

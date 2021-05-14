@@ -101,6 +101,14 @@ class Satellite(object):
         }
         self.satOrbits = dict()
 
+        msig = self.app.mount.signals
+        msig.calcTLEdone.connect(self.updateSatelliteTrackGui)
+        msig.calcTrajectoryDone.connect(self.updateSatelliteTrackGui)
+        msig.getTLEdone.connect(self.getSatelliteDataFromDatabase)
+        msig.firmwareDone.connect(self.enableGuiFunctions)
+        msig.trajectoryProgress.connect(self.trajectoryProgress)
+        msig.pointDone.connect(self.followMount)
+
         self.ui.progSatellitesFull.clicked.connect(self.progSatellitesFull)
         self.ui.progSatellitesFiltered.clicked.connect(self.progSatellitesFiltered)
         self.ui.listSatelliteNames.doubleClicked.connect(self.chooseSatellite)
@@ -109,12 +117,6 @@ class Satellite(object):
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadDataFromSourceURLs)
         self.ui.isOnline.stateChanged.connect(self.loadDataFromSourceURLs)
         self.ui.filterSatellite.textChanged.connect(self.filterSatelliteNamesList)
-
-        msig = self.app.mount.signals
-        msig.calcTLEdone.connect(self.updateSatelliteTrackGui)
-        msig.calcTrajectoryDone.connect(self.updateSatelliteTrackGui)
-        msig.getTLEdone.connect(self.getSatelliteDataFromDatabase)
-        msig.firmwareDone.connect(self.enableGuiFunctions)
         self.app.sendSatelliteData.connect(self.sendSatelliteData)
         self.ui.satAfterFlip.clicked.connect(self.showSatPasses)
         self.ui.satBeforeFlip.clicked.connect(self.showSatPasses)
@@ -122,10 +124,8 @@ class Satellite(object):
         self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.useInternalSatCalc.clicked.connect(self.showSatPasses)
         self.ui.progTrajectory.clicked.connect(self.startProg)
-        msig.trajectoryProgress.connect(self.trajectoryProgress)
 
         self.app.update1s.connect(self.updateOrbit)
-        self.app.mount.signals.pointDone.connect(self.followMount)
 
     def initConfig(self):
         """
@@ -247,17 +247,19 @@ class Satellite(object):
         return True
 
     @staticmethod
-    def calcSatelliteMeridianTransit(satellite, location):
+    def calcSatelliteMeridianTransit(satellite, location, tolerance):
         """
         :param satellite:
         :param location:
+        :param tolerance:
         :return:
         """
         difference = satellite - location
 
         def west_of_meridian_at(t):
             alt, az, _ = difference.at(t).altaz()
-            return ((az.degrees + 360) % 360 - 180) < 0
+            delta = (az.degrees + tolerance + 360) % 360 - 180
+            return delta < 0
 
         west_of_meridian_at.step_days = 0.4
         return west_of_meridian_at
@@ -267,12 +269,34 @@ class Satellite(object):
         :param location:
         :return:
         """
-        f = self.calcSatelliteMeridianTransit(self.satellite, location)
+        tol = self.app.mount.setting.meridianLimitSlew
+        if tol is None:
+            tol = 0
+
+        f0 = self.calcSatelliteMeridianTransit(self.satellite, location, 0)
+        f1 = self.calcSatelliteMeridianTransit(self.satellite, location, tol)
+        f2 = self.calcSatelliteMeridianTransit(self.satellite, location, -tol)
         for satOrbit in self.satOrbits:
-            t, y = almanac.find_discrete(satOrbit['rise'],
-                                         satOrbit['settle'], f)
-            if t:
-                satOrbit['flip'] = t[0]
+            t0, y0 = almanac.find_discrete(satOrbit['rise'],
+                                           satOrbit['settle'], f0)
+            t1, y1 = almanac.find_discrete(satOrbit['rise'],
+                                           satOrbit['settle'], f1)
+            t2, y2 = almanac.find_discrete(satOrbit['rise'],
+                                           satOrbit['settle'], f2)
+
+            if t0:
+                satOrbit['flip'] = t0[0]
+
+            if not t1 and not t2:
+                satOrbit['flipEarly'] = satOrbit['rise']
+                satOrbit['flipLate'] = satOrbit['settle']
+            elif t1 and not t2:
+                pass
+            elif not t1 and t2:
+                pass
+            elif t1 and t2:
+                pass
+        print(self.satOrbits[0])
         return True
 
     def sendSatelliteData(self, alt=[], az=[]):
@@ -584,12 +608,18 @@ class Satellite(object):
         if isBefore:
             start = self.satOrbits[0]['rise'].tt
         else:
-            start = self.satOrbits[0]['flip'].tt
+            if 'flipEarly' in self.satOrbits[0]:
+                start = self.satOrbits[0]['flipEarly'].tt
+            else:
+                start = self.satOrbits[0]['flip'].tt
 
         if isAfter:
             end = self.satOrbits[0]['settle'].tt
         else:
-            end = self.satOrbits[0]['flip'].tt
+            if 'flipLate' in self.satOrbits[0]:
+                end = self.satOrbits[0]['flipLate'].tt
+            else:
+                end = self.satOrbits[0]['flip'].tt
 
         UTC2TT = self.app.mount.obsSite.UTC2TT
         start = start - UTC2TT

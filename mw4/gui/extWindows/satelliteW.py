@@ -517,8 +517,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             lat = subpoints.latitude.degrees
             lon = subpoints.longitude.degrees
             for slc in self.unlinkWrap(lon):
-                axe.plot(lon[slc], lat[slc], color=self.colors[i],
-                         lw=4, linestyle=(0, (0.5, 0.5)))
+                axe.plot(lon[slc], lat[slc], lw=4, color=self.colors[i],
+                         linestyle=(0, (0.5, 0.5)))
         rise = satOrbits[0]['rise'].tt
         settle = satOrbits[-1]['settle'].tt
         step = 0.001 * (settle - rise)
@@ -589,12 +589,12 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             vecT = ts.tt_jd(vector)
             alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
             for slc in self.unlinkWrap(az.degrees):
-                axe.plot(az.degrees[slc], alt.degrees[slc], color=self.colors[i],
-                         lw=4, linestyle=(0, (0.5, 0.5)))
+                axe.plot(az.degrees[slc], alt.degrees[slc], lw=4,
+                         color=self.colors[i], linestyle=(0, (0.5, 0.5)))
 
         for slc in self.unlinkWrap(azimuth):
             axe.plot(azimuth[slc], altitude[slc],
-                     color=self.M_WHITE, lw=4)
+                     color=self.M_WHITE, lw=7, alpha=0.8, zorder=-5)
 
         ts = obsSite.ts
         alt, az, _ = (self.satellite - obsSite.location).at(ts.now()).altaz()

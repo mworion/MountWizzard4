@@ -28,10 +28,10 @@ from logic.modeldata.alignstars import generateAlignStars
 
 class Hipparcos(object):
     """
-    The class Data inherits all information and handling of hipparcos data and other
-    attributes. this includes data about the alignment stars defined in generateAlignStars,
-    their ra dec coordinates, proper motion, parallax and radial velocity and the
-    calculation of data for display and slew commands
+    The class Data inherits all information and handling of hipparcos data and
+    other attributes. this includes data about the alignment stars defined in
+    generateAlignStars, their ra dec coordinates, proper motion, parallax and
+    radial velocity and the calculation of data for display and slew commands
 
         >>> hip = Hipparcos(
         >>>                 app=app
@@ -57,13 +57,15 @@ class Hipparcos(object):
 
     def calculateAlignStarPositionsAltAz(self):
         """
-        calculateAlignStarPositionsAltAz does calculate the star coordinates from give data
-        out of generated star list. calculation routines are from astropy erfa. atco13 does
-        the results based on proper motion, parallax and radial velocity and need J2000
-        coordinates. because of using the hipparcos catalogue, which is based on J1991,
-        25 epoch the pre calculation from J1991,25 to J2000 is done already when generating
-        the alignstars file. there is no refraction data taken into account, because we need
-        this only for display purpose and for this, the accuracy is more than sufficient.
+        calculateAlignStarPositionsAltAz does calculate the star coordinates
+        from give data out of generated star list. calculation routines are from
+        astropy erfa. atco13 does the results based on proper motion, parallax
+        and radial velocity and need J2000 coordinates. because of using the
+        hipparcos catalogue, which is based on J1991, 25 epoch the pre
+        calculation from J1991,25 to J2000 is done already when generating the
+        alignstars file. there is no refraction data taken into account,
+        because we need this only for display purpose and for this, the accuracy
+        is more than sufficient.
 
         :return: lists for alt, az and name of star
         """
@@ -101,13 +103,14 @@ class Hipparcos(object):
 
     def getAlignStarRaDecFromName(self, name):
         """
-        getAlignStarRaDecFromName does calculate the star coordinates from give data
-        out of generated star list. calculation routines are from astropy erfa. atco13 does
-        the results based on proper motion, parallax and radial velocity and need J2000
-        coordinates. because of using the hipparcos catalogue, which is based on J1991,
-        25 epoch the pre calculation from J1991,25 to J2000 is done already when generating
-        the alignstars file. there is no refraction data taken into account, because we need
-        this only for display purpose and for this, the accuracy is more than sufficient.
+        getAlignStarRaDecFromName does calculate the star coordinates from give
+        data out of generated star list. calculation routines are from astropy
+        erfa. atco13 does the results based on proper motion, parallax and radial
+        velocity and need J2000 coordinates. because of using the hipparcos
+        catalogue, which is based on J1991,25 epoch the pre calculation from
+        J1991,25 to J2000 is done already when generating the alignstars file.
+        there is no refraction data taken into account, because we need this only
+        for display purpose and for this, the accuracy is more than sufficient.
 
         the return values are in JNow epoch as the mount only handles this epoch !
 

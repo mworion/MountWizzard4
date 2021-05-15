@@ -30,31 +30,26 @@ happening. You could see the alt/az of the sat track.
 
 .. image:: image/sat_track.png
     :align: center
-    :scale: 71%
 
 the difference for altitude between 10micron and skyfield
 
 .. image:: image/sat_altitude.png
     :align: center
-    :scale: 71%
 
 the difference for azimuth between 10micron and skyfield
 
 .. image:: image/sat_azimuth.png
     :align: center
-    :scale: 71%
 
 the difference for right ascension between 10micron and skyfield
 
 .. image:: image/sat_ra.png
     :align: center
-    :scale: 71%
 
 the difference for declination between 10micron and skyfield
 
 .. image:: image/sat_dec.png
     :align: center
-    :scale: 71%
 
 For all calculations is valid:
 

@@ -71,7 +71,7 @@ def clean_mw(c):
 @task
 def image_res(c):
     printMW('changing image resolution for docs to 150 dpi')
-    files = glob.glob('./docs/**/*.png', recursive=True)
+    files = glob.glob('./docs/source/**/*.png', recursive=True)
     for file in files:
         print(file)
         im = Image.open(file)

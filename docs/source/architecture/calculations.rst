@@ -26,7 +26,15 @@ Brandon writes about it:
     GCRS-centered vectors instead as detailed above.
 
 Here the charts for NOAA 15 [B] at julian date JD=2459333.26498 for the transit
-happening. You could see the alt/az of the sat track.
+happening. The used TLE data was:
+
+.. code-block:: python
+
+    NOAA 15 [B]
+    1 25338U 98030A   21104.44658620  .00000027  00000-0  29723-4 0  9990
+    2 25338  98.6888 133.5239 0011555 106.3612 253.8839 14.26021970192127
+
+You could see the alt/az of the sat track.
 
 .. image:: image/sat_track.png
     :align: center
@@ -51,6 +59,41 @@ the difference for declination between 10micron and skyfield
 .. image:: image/sat_dec.png
     :align: center
 
+
+There is a set of plots for another satellite, which shows the same behavior. The
+used TLE data was:
+
+.. code-block:: python
+
+    RAAVANA-1
+    1 44329U 98067QE  21134.29933328  .00044698  00000-0  30736-3 0  9995
+    2 44329  51.6342 100.9674 0004554 122.3279 237.8162 15.74179130108776
+
+You could see the alt/az of the sat track.
+
+.. image:: image/sat2_track.png
+    :align: center
+
+the difference for altitude between 10micron and skyfield
+
+.. image:: image/sat2_altitude.png
+    :align: center
+
+the difference for azimuth between 10micron and skyfield
+
+.. image:: image/sat2_azimuth.png
+    :align: center
+
+the difference for right ascension between 10micron and skyfield
+
+.. image:: image/sat2_ra.png
+    :align: center
+
+the difference for declination between 10micron and skyfield
+
+.. image:: image/sat2_dec.png
+    :align: center
+
 For all calculations is valid:
 
 - they are using refraction correction with the same values.
@@ -62,12 +105,3 @@ For all calculations is valid:
 - 10micron firmware 3.0.4
 
 - skyfield version 1.39
-
-The used TLE data was:
-
-.. code-block:: python
-
-    NOAA 15 [B]
-    1 25338U 98030A   21104.44658620  .00000027  00000-0  29723-4 0  9990
-    2 25338  98.6888 133.5239 0011555 106.3612 253.8839 14.26021970192127
-

@@ -1,5 +1,6 @@
 Handling time
 =============
+
 One basic definition is that MW4 will use at any time the clock of the mount
 computer. Therefore MW4 polls julian date, difference utc - ut1, time sidereal.
 This allows full sync for any calculation to be made. No time from computer to

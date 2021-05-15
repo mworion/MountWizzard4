@@ -1,5 +1,6 @@
 Extended Windows
 ================
+
 MW4 has some more windows to show and use. Some of them are necessary for full
 functionality. These windows could be opened on the main window with dedicated
 button in the upper left part described here: :ref:`Layout of main window`.

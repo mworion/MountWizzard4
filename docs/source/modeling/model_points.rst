@@ -1,5 +1,6 @@
 Selecting model points
 ======================
+
 The first step for building a model is the selection of the desired model points.
 Handling you horizon is an important step as MW4 helps you could in finding
 points, which were not covered through obstacles in your location defined by the

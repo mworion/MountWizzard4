@@ -1,5 +1,5 @@
 Adding the camera
------------------
+=================
 For adding devices like the camera select the Sett. / Conf. tab in the main menu
 and there select the devices tab. For the following explanation we would like to
 connect a camera, a filter and adding a link to the mount as well. The mount link

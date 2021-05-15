@@ -1,5 +1,6 @@
 Managing Mount Models
 =====================
+
 Managing your models is a central task especially if you image in a mobile environment. MW4
 supports this in the Manage Model Tab in the main window. All functions there are related to
 the actual mount model or the models stored in the mount.
@@ -49,6 +50,7 @@ model point removal.
 
 Optimizing the model
 ====================
+
 I some cases you will discover that some model points and their errors are outside a
 reasonable area. In that case three different model optimization scenarios come into place.
 the first and the obvious one is to remove manually the worst point of the model (1).

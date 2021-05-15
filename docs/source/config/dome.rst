@@ -1,5 +1,5 @@
 Configuring dome geometry
--------------------------
+=========================
 If you using dome, you should set up the parameters to get a good
 performance of the slew calculations. To use the calculations, please check the
 "Enable dome geometry offset calculations". If checked, MW4 will calculate th
@@ -11,7 +11,7 @@ pierside already into account, so you could slew mount and dome at the same time
     :scale: 71%
 
 Area 1: dome geometry parameters
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------
 I this section the geometry parameters of the dome and mount in relation to the
 dome are set. The dome center - the center point of the dome hemisphere - is
 always the reference point from where the measurements are taken. All measure are
@@ -54,7 +54,7 @@ taken from base plate of the mount to the OTA axis. Displacement to the right
     :align: center
 
 Area 2: dome shutter
-^^^^^^^^^^^^^^^^^^^^
+--------------------
 If you have a dome driver setup, MW4 could open and close the shutter.
 Last, but not least the dome shutter width for calculating the open FOV of the
 telescope.
@@ -63,12 +63,12 @@ telescope.
     :align: center
 
 Area 3: dome geometry help
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------
 As geometry parameters are difficult to remember, MW4 will show you a short
 explanation picture of the parameter you are currently changing.
 
 Area 4: dome settle time
-^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------
 With the dome settle time you define the waiting time from reaching the target
 azimuth until the dome emits slew finished. This could be used for avoiding
 mechanical influence on the mount. This settle time in handled in MW4 only. If

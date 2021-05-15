@@ -1,81 +1,140 @@
 Satellite tracking
 ==================
 
+MW4 supports the mount capability of tracking satellites. The planning is based
+on Two Line Elements (TLE), which are provided by organisations (e.g.
+http://www.celestrak.com) and deliver a set of orbital parameters for calculating
+the satellite track with regard to your location in Alt / Az coordinates. Since
+the introduction, 10micron does the calculation internally. Therefore it is needed
+to upload the satellite TLE data to the mount and let it calculate. Before ``FW 3.x``
+this is the only possibility (using the internal satellite database works similar)
+to do tracking.
 
-Precision of the internal calculations
---------------------------------------
-MW4 is using for all calculations the skyfield (https://rhodesmill.org/skyfield/)
-from Brandon Rhodes. As for the new command set offered with 10microns FW3.x it
-needs to calculate the alt/az coordinates for a satellite track each second for
-the entire track. As you would like to follow the as precise as possible I made
-some comparisons between the internal calculations done in 10micron mount and the
-results provided by skyfield.
+.. note:: As the orbital elements of a satellite change over time, it is necessary
+          to get most actual data for get a good tracking. Data which is older
+          than 10 days is definitely outdated. MW4 marks them red. Older than 3
+          days may work, MW4 marks them yellow. Ideal is to get them right in time.
 
-In skyfield there is a chapter about satellite calculations and precision:
-https://rhodesmill.org/skyfield/earth-satellites.html#avoid-calling-the-observe-method
-Despite the fact that the observe method is expensive the difference in calulation
-time for a 900 step track is on my computer 40ms (using more precise observe
-method) to 0.7ms (using the less precise difference).
+You could select different databases on the left part of the satellite tab. Once
+selected and online enabled, MW4 will download the newest data and offers the list
+of included satellites. For finding the satellite of your choice you could use the
+search field to reduce the list. The string is *not* case sensitive and will be
+stored persistent.
 
-Brandon writes about it:
-
-.. epigraph::
-
-    While satellite positions are only accurate to about a kilometer anyway,
-    accounting for light travel time only affected the position in this case by
-    less than an additional tenth of a kilometer. This difference is not
-    meaningful when compared to the uncertainty that is inherent in satellite
-    positions to begin with, so you should neglect it and simply subtract
-    GCRS-centered vectors instead as detailed above.
-
-Here the charts for NOAA 15 [B] at julian date JD=2459333.26498 for the transit
-happening. You could see the alt/az of the sat track.
-
-.. image:: image/sat_track.png
+.. image:: image/sat_classic.png
     :align: center
     :scale: 71%
 
-the difference for altitude between 10micron and skyfield
+Once you choose a satellite with double click, data is programmed to mount
+controller, parameters are displayed, MW4 calculated the next 3 orbits of the
+satellite with rise / culminate / settle and if it occurs the flip time when
+crossing the meridian. After the mount has done it's calculations as well, the
+result will be shown in the **``Trajectory starts``** and **``Trajectory ends``**
+fields
+and a
+possible flip will be announced.
 
-.. image:: image/sat_altitude.png
+As soon as a valid tracking path is present in the mount, the **``Start satellite
+tracking``** and **``Stop satellite tracking``** button are enabled. Once started,
+the mount will slew to the begin of the tracking path and wait for the satellite
+to rise. Selecting partial tracks and respecting constraints is not possible.
+
+Since ``FW 3.x`` the command protocol offers the programming of a custom satellite
+track. This offers the capability of takings care of avoiding flips, respect
+horizon and other constraints. The operation is different to the classic approach:
+Instead of programming TLE data to the mount, MW4 programs Alt / Az coordinates in
+a one second interval to the mount (max. 900s) which the mount after start
+tracking will follow. You could enable this feature with checking **``Use
+internal maths``** if the firmware is 3.x or higher. After enabling, additional
+elements will be enabled.
+
+.. image:: image/sat_new.png
     :align: center
     :scale: 71%
 
-the difference for azimuth between 10micron and skyfield
+As the calculation now happens outside the mount, we could take a look to the
+difference between tracks calculated by the 10micron mount and MW4 based on the
+same satellite TLE data! You will find some comparison under the architecture /
+math section: :ref:`precision of internal calculations`.
 
-.. image:: image/sat_azimuth.png
+If you are using the internal math as well as classic mode, you could open the
+satellite window and choose the **``Earth and Horizon Maps``** tab. There you
+could see the next three orbits and for internal math the resulting satellite
+track with an white underlay. If you change any setup, MW4 will recalculate all
+data and updates the plots accordingly.
+
+Select only a segment before a meridian transit (and therefore avoiding a flip
+during tracking):
+
+.. image:: image/sat_af.png
+    :scale: 49%
+
+.. image:: image/sat_af_track.png
+    :scale: 49%
+
+Select only a segment after a meridian transit (and therefore avoiding a flip
+during tracking):
+
+.. image:: image/sat_be.png
+    :scale: 49%
+
+.. image:: image/sat_be_track.png
+    :scale: 49%
+
+
+Select both segments of the meridian (this might cause a flip during tracking):
+
+.. image:: image/sat_be_af.png
+    :scale: 49%
+
+.. image:: image/sat_be_af_track.png
+    :scale: 49%
+
+Select respecting the horizon line. This filters out additional all segments,
+which are below the given horizon mask.
+
+.. image:: image/sat_hor.png
+    :scale: 49%
+
+.. image:: image/sat_hor_track.png
+    :scale: 49%
+
+MW4 will take into account the meridian track limits of your mount. Here set to 1
+degree (which is close to meridian)
+
+.. image:: image/sat_lim_1.png
+    :scale: 49%
+
+.. image:: image/sat_lim_1_track.png
+    :scale: 49%
+
+MW4 will take into account the meridian track limits of your mount. Here set to
+15 degrees (which could avoid a meridian flip or at least extend the tracking time)
+
+.. image:: image/sat_lim_15.png
+    :scale: 49%
+
+.. image:: image/sat_lim_15_track.png
+    :scale: 49%
+
+.. warning:: The meridian track limits have to be chosen carefully as the mount
+             might hit your setup !
+
+The biggest change in using satellite tracking with the new implementation is how
+the data is handled to the mount: whereas in classic mode only the TLE data has to
+be uploaded (which is quick) now the whole track coordinates have to be programmed
+. As this takes up to 10 seconds, MW4 does not automatically start the transfer.
+Once your setup (choice of segment, horizon etc.) is made, you have to start the
+programming by pushing the **``Prog``** button.
+
+.. image:: image/sat_prog.png
     :align: center
     :scale: 71%
 
-the difference for right ascension between 10micron and skyfield
+After a successful upload, the trajectory data is populated and the Start / Stop
+tracking buttons are enable like in classic mode.
 
-.. image:: image/sat_ra.png
+.. image:: image/sat_result.png
     :align: center
     :scale: 71%
-
-the difference for declination between 10micron and skyfield
-
-.. image:: image/sat_dec.png
-    :align: center
-    :scale: 71%
-
-For all calculations is valid:
-
-- they are using refraction correction with the same values.
-
-- the coordinates from 10micron are gathered with :TLEGEQJD#, :TLEGAZJD# commands
-
-- julian date is in UTC time system
-
-- 10micron firmware 3.0.4
-
-- skyfield version 1.39
-
-The used TLE data was:
-
-.. code-block:: python
-
-    NOAA 15 [B]
-    1 25338U 98030A   21104.44658620  .00000027  00000-0  29723-4 0  9990
-    2 25338  98.6888 133.5239 0011555 106.3612 253.8839 14.26021970192127
 

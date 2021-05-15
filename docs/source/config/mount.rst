@@ -1,5 +1,6 @@
 Mount Connectivity
-------------------
+==================
+
 With the first start you have a clean installation. First step should be to enable
 the mount connectivity.
 

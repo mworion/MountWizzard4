@@ -87,6 +87,11 @@ class MountWizzard4(QObject):
     update10m = pyqtSignal()
     update30m = pyqtSignal()
     update1h = pyqtSignal()
+    start1s = pyqtSignal()
+    start3s = pyqtSignal()
+    start5s = pyqtSignal()
+    start10s = pyqtSignal()
+    start30s = pyqtSignal()
 
     def __init__(self,
                  mwGlob=None,
@@ -254,6 +259,16 @@ class MountWizzard4(QObject):
             self.update30m.emit()
         if (self.timerCounter + 15) % 36000 == 0:
             self.update1h.emit()
+        if self.timerCounter == 10:
+            self.start1s.emit()
+        if self.timerCounter == 30:
+            self.start3s.emit()
+        if self.timerCounter == 50:
+            self.start5s.emit()
+        if self.timerCounter == 100:
+            self.start10s.emit()
+        if self.timerCounter == 300:
+            self.start30s.emit()
         return True
 
     def aboutToQuit(self):

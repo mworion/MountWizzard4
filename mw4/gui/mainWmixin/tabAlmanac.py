@@ -89,7 +89,8 @@ class Almanac:
                 },
         }
 
-        self.app.mount.signals.locationDone.connect(self.searchTwilight)
+        self.app.start1s.connect(self.searchTwilightList)
+        self.app.start3s.connect(self.searchTwilightPlot)
         self.app.update30m.connect(self.updateMoonPhase)
         self.ui.almanacCivil.setStyleSheet(self.BACK_BLUE1)
         self.ui.almanacNautical.setStyleSheet(self.BACK_BLUE2)
@@ -112,13 +113,12 @@ class Almanac:
             self.thread.join()
         return True
 
-    def plotTwilightData(self, t, e):
+    def plotTwilightData(self, result):
         """
-        :param t:
-        :param e:
+        :param result:
         :return: true for test purpose
         """
-        ts = self.app.mount.obsSite.ts
+        ts, t, e = result
         minLim = int(t[0].tt) + 1
         maxLim = int(t[-1].tt) - 1
         midLim = minLim + (maxLim - minLim) / 2
@@ -171,14 +171,14 @@ class Almanac:
             text = '\n'
         return True
 
-    def calcTwilightData(self, timeWindow=0):
+    def calcTwilightData(self, ts, location, timeWindow=0):
         """
+        :param ts:
+        :param location:
         :param timeWindow:
         :return:
         """
-        ts = self.app.mount.obsSite.ts
         timeJD = self.app.mount.obsSite.timeJD
-        location = self.app.mount.obsSite.location
         t0 = ts.tt_jd(int(timeJD.tt) - timeWindow)
         t1 = ts.tt_jd(int(timeJD.tt) + timeWindow + 1)
 
@@ -187,28 +187,41 @@ class Almanac:
         timeEvents, events = almanac.find_discrete(t0, t1, f)
         return timeEvents, events
 
-    def searchTwilightWorker(self, timeWindow):
+    def searchTwilightWorker(self, ts, location, timeWindow):
         """
+        :param ts:
+        :param location:
+        :param timeWindow:
         :return: true for test purpose
         """
-        t, e = self.calcTwilightData(timeWindow)
-        self.plotTwilightData(t, e)
-        return True
+        t, e = self.calcTwilightData(ts, location, timeWindow)
+        return ts, t, e
 
-    def searchTwilight(self):
+    def searchTwilightPlot(self):
         """
-        search twilight just starts the worker in a separate thread.
-
         :return: true for test purpose
         """
         location = self.app.mount.obsSite.location
         if location is None:
             return False
-        t, e = self.calcTwilightData()
-        self.displayTwilightData(t, e)
 
-        worker = Worker(self.searchTwilightWorker, 182)
+        ts = self.app.mount.obsSite.ts
+        worker = Worker(self.searchTwilightWorker, ts, location, 182)
+        worker.signals.result.connect(self.plotTwilightData)
         self.threadPool.start(worker)
+        return True
+
+    def searchTwilightList(self):
+        """
+        :return: true for test purpose
+        """
+        location = self.app.mount.obsSite.location
+        if location is None:
+            return False
+
+        ts = self.app.mount.obsSite.ts
+        t, e = self.calcTwilightData(ts, location)
+        self.displayTwilightData(t, e)
         return True
 
     def calcMoonPhase(self):

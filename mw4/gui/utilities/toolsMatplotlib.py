@@ -17,7 +17,6 @@
 ###########################################################
 # standard libraries
 import logging
-from threading import Lock
 import bisect
 
 # external packages
@@ -113,7 +112,6 @@ class ToolsMatplotlib:
         if not hasattr(widget, 'figure'):
             return None, None
 
-        lock = Lock()
         if showAxes:
             color = self.M_BLUE
             colorGrid = self.M_GREY
@@ -122,7 +120,7 @@ class ToolsMatplotlib:
             color = self.M_TRANS
             colorGrid = self.M_TRANS
 
-        with lock:
+        with self.matplotlibLock:
             figure = widget.figure
 
             if figure.axes:
@@ -175,14 +173,12 @@ class ToolsMatplotlib:
         if not hasattr(widget, 'figure'):
             return None, None
 
-        lock = Lock()
-
         if showAxes:
             color = self.M_BLUE
         else:
             color = self.M_TRANS
 
-        with lock:
+        with self.matplotlibLock:
             figure = widget.figure
 
             if figure.axes:

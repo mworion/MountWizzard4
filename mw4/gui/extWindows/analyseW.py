@@ -19,6 +19,7 @@ import json
 import os
 
 # external packages
+from PyQt5.QtWidgets import QApplication
 from matplotlib import pyplot as plt
 from matplotlib import ticker
 from matplotlib.colors import Normalize
@@ -621,4 +622,5 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         for chart in self.charts:
             chart()
+            QApplication.processEvents()
         return True

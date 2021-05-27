@@ -112,7 +112,7 @@ def test_initConfig_2(app):
 
 def test_initConfig_3(app):
     app.config['mainW'] = {}
-    app.config['mainW']['loglevelDeepDebug'] = True
+    app.config['mainW']['loglevelTrace'] = True
 
     val = app.initConfig()
     assert val.longitude.degrees == 0
@@ -186,6 +186,36 @@ def test_sendUpdate_8(app):
 
 def test_sendUpdate_9(app):
     app.timerCounter = 36000 - 15 - 1
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_10(app):
+    app.timerCounter = 9
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_11(app):
+    app.timerCounter = 29
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_12(app):
+    app.timerCounter = 49
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_13(app):
+    app.timerCounter = 99
+    suc = app.sendUpdate()
+    assert suc
+
+
+def test_sendUpdate_14(app):
+    app.timerCounter = 299
     suc = app.sendUpdate()
     assert suc
 

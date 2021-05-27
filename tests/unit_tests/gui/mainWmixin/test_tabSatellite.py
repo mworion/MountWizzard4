@@ -410,6 +410,10 @@ def test_showSatPasses_0(function):
 
 def test_showSatPasses_1(function):
     ts = function.app.mount.obsSite.ts
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'culminate': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)},
@@ -419,7 +423,7 @@ def test_showSatPasses_1(function):
                            'clearTrackingParameters'):
         with mock.patch.object(function,
                                'calcPassEvents',
-                               return_value=(0, 0, True)):
+                               return_value=(0, 0)):
             with mock.patch.object(function,
                                    'extractOrbits'):
                 with mock.patch.object(function,
@@ -432,6 +436,10 @@ def test_showSatPasses_1(function):
 
 def test_showSatPasses_2(function):
     ts = function.app.mount.obsSite.ts
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'culminate': ts.tt_jd(2459215.6),
                            'flip': ts.tt_jd(2459215.6),
@@ -442,7 +450,7 @@ def test_showSatPasses_2(function):
                            'clearTrackingParameters'):
         with mock.patch.object(function,
                                'calcPassEvents',
-                               return_value=(0, 0, True)):
+                               return_value=(0, 0)):
             with mock.patch.object(function,
                                    'extractOrbits'):
                 with mock.patch.object(function,
@@ -455,6 +463,10 @@ def test_showSatPasses_2(function):
 
 def test_showSatPasses_3(function):
     ts = function.app.mount.obsSite.ts
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     function.satOrbits = [{'culminate': ts.tt_jd(2459215.6),
                            'flip': ts.tt_jd(2459215.6),},
                           {'rise': ts.tt_jd(2459216.5),
@@ -463,7 +475,7 @@ def test_showSatPasses_3(function):
                            'clearTrackingParameters'):
         with mock.patch.object(function,
                                'calcPassEvents',
-                               return_value=(0, 0, True)):
+                               return_value=(0, 0)):
             with mock.patch.object(function,
                                    'extractOrbits'):
                 with mock.patch.object(function,

@@ -454,6 +454,13 @@ def test_updateWindowsStats_1():
     assert suc
 
 
+def test_updateWindowsStats_2():
+    app.app.uiWindows = {'showMessageW': {'classObj': None,
+                                          'button': QPushButton()}}
+    suc = app.updateWindowsStats()
+    assert suc
+
+
 def test_updateDeviceStats_1():
     app.deviceStat = {'online': True}
     app.refractionSource = 'online'
@@ -479,6 +486,13 @@ def test_updateDeviceStats_3():
 
 def test_updateDeviceStats_4():
     app.deviceStat = {}
+    app.refractionSource = 'online'
+    suc = app.updateDeviceStats()
+    assert suc
+
+
+def test_updateDeviceStats_5():
+    app.deviceStat = {'online': False}
     app.refractionSource = 'online'
     suc = app.updateDeviceStats()
     assert suc

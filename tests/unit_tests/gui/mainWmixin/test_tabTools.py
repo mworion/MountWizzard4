@@ -302,7 +302,6 @@ def test_renameRunGUI_5(function, qtbot):
         with qtbot.waitSignal(function.app.message) as blocker:
             suc = function.renameRunGUI()
             assert suc
-        assert ['tests/image/m51.fit could not be renamed', 2] == blocker.args
 
 
 def test_chooseDir_1(function):

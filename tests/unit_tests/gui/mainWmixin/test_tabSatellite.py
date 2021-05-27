@@ -390,7 +390,7 @@ def test_sendSatelliteData_2(function):
 def test_sendSatelliteData_3(function):
     class Test1(QObject):
         update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object, object, object)
+        show = pyqtSignal(object, object, object, object, object)
 
     class Test(QObject):
         signals = Test1()
@@ -399,6 +399,12 @@ def test_sendSatelliteData_3(function):
     function.satellite = 1
     function.satOrbits = 1
     suc = function.sendSatelliteData()
+    assert suc
+
+
+def test_showSatPasses_0(function):
+    function.satellite = None
+    suc = function.showSatPasses()
     assert suc
 
 
@@ -931,7 +937,7 @@ def test_progTrajectoryToMount_3(function):
                            return_value=(1, 2)):
         with mock.patch.object(function,
                                'calcTrajectoryData',
-                               return_value=(0, 0)):
+                               return_value=(0, 0, False)):
             with mock.patch.object(function,
                                    'filterHorizon',
                                    return_value=(0, 0)):
@@ -951,7 +957,7 @@ def test_startProg_1(function):
                                return_value=(1, 2)):
             with mock.patch.object(function,
                                    'calcTrajectoryData',
-                                   return_value=(0, 0)):
+                                   return_value=(0, 0, False)):
                 with mock.patch.object(function,
                                        'filterHorizon',
                                        return_value=(0, 0)):

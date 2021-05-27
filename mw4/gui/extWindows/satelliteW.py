@@ -36,7 +36,7 @@ class SatelliteWindowSignals(QObject):
     """
     """
     __all__ = ['SatelliteWindowSignals']
-    show = pyqtSignal(object, object, object, object)
+    show = pyqtSignal(object, object, object, object, object)
     update = pyqtSignal(object, object)
 
 
@@ -550,7 +550,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axes.plot(az, alt, color=self.M_BLUE, marker='', alpha=0.7, lw=2)
         return True
 
-    def drawHorizonView(self, obsSite=None, satOrbits=None, altitude=[], azimuth=[]):
+    def drawHorizonView(self, obsSite=None, satOrbits=None,
+                        altitude=[], azimuth=[], isSunlit=[]):
         """
         drawHorizonView shows the horizon and enable the users to explore a
         satellite passing by
@@ -559,6 +560,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param satOrbits:
         :param altitude:
         :param azimuth:
+        :param isSunlit:
         :return: success
         """
         axe, fig = self.generateFlat(widget=self.satHorizonMat, horizon=True)
@@ -595,6 +597,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         for slc in self.unlinkWrap(azimuth):
             axe.plot(azimuth[slc], altitude[slc],
                      color=self.M_WHITE, lw=7, alpha=0.8, zorder=-5)
+        # color = np.where(isSunlit, 'red', 'blue')
+        # axe.scatter(azimuth, altitude, marker='o', color=color)
 
         ts = obsSite.ts
         alt, az, _ = (self.satellite - obsSite.location).at(ts.now()).altaz()
@@ -607,7 +611,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         return True
 
     def drawSatellite(self, satellite=None, satOrbits=None, altitude=[],
-                      azimuth=[]):
+                      azimuth=[], isSunlit=[]):
         """
         drawSatellite draws 4 different views of the actual satellite
         situation: two sphere views, a horizon view and an earth view.
@@ -618,6 +622,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param satOrbits:
         :param altitude:
         :param azimuth:
+        :param isSunlit:
         :return: True for test purpose
         """
         if satellite is None or satOrbits is None:
@@ -645,5 +650,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.drawEarth(self.app.mount.obsSite,
                        satOrbits=satOrbits, altitude=altitude, azimuth=azimuth)
         self.drawHorizonView(self.app.mount.obsSite,
-                             satOrbits=satOrbits, altitude=altitude, azimuth=azimuth)
+                             satOrbits=satOrbits,
+                             altitude=altitude, azimuth=azimuth,
+                             isSunlit=isSunlit)
         return True

@@ -316,10 +316,11 @@ class Satellite(object):
             self.sortFlipEvents(satOrbit, t0, t1, t2)
         return True
 
-    def sendSatelliteData(self, alt=[], az=[]):
+    def sendSatelliteData(self, alt=[], az=[], isSunlit=[]):
         """
         :param alt:
         :param az:
+        :param isSunlit:
         :return:
         """
         if not self.satellite:
@@ -332,7 +333,8 @@ class Satellite(object):
         winObj['classObj'].signals.show.emit(self.satellite,
                                              self.satOrbits,
                                              alt,
-                                             az)
+                                             az,
+                                             isSunlit)
         return True
 
     def clearTrackingParameters(self):
@@ -351,6 +353,8 @@ class Satellite(object):
         """
         :return: True for test purpose
         """
+        if not self.satellite:
+            return False
         self.clearTrackingParameters()
         obsSite = self.app.mount.obsSite
         times, events = self.calcPassEvents(obsSite)
@@ -647,12 +651,13 @@ class Satellite(object):
 
         useInternal = self.ui.useInternalSatCalc.isChecked()
         if useInternal:
-            alt, az = self.calcTrajectoryData(start, end)
+            alt, az, isSunlit = self.calcTrajectoryData(start, end)
             alt, az = self.filterHorizon(alt, az)
         else:
             alt = []
             az = []
-        self.sendSatelliteData(alt=alt, az=az)
+            isSunlit = []
+        self.sendSatelliteData(alt=alt, az=az, isSunlit=isSunlit)
         if self.app.deviceStat['mount'] and not useInternal:
             self.app.mount.calcTLE(start)
 
@@ -667,7 +672,7 @@ class Satellite(object):
         start, end = self.selectStartEnd()
         if not start or not end:
             return False
-        alt, az = self.calcTrajectoryData(start, end)
+        alt, az, isSunlit = self.calcTrajectoryData(start, end)
         alt, az = self.filterHorizon(alt, az)
         self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)
         self.app.mount.progTrajectory(start, alt=alt, az=az, sim=isSim)

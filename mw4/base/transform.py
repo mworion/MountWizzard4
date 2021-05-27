@@ -16,9 +16,9 @@
 ###########################################################
 # standard libraries
 import logging
-from threading import Lock
 
 # external packages
+from PyQt5.QtCore import QMutex
 import numpy as np
 
 # noinspection PyProtectedMember
@@ -35,8 +35,7 @@ __all__ = [
 ]
 
 log = logging.getLogger()
-
-lock = Lock()
+mutex = QMutex()
 
 
 def JNowToJ2000(ra, dec, timeJD):
@@ -50,24 +49,21 @@ def JNowToJ2000(ra, dec, timeJD):
     :param timeJD:
     :return:
     """
-
     if not isinstance(ra, Angle):
         return Angle(hours=0), Angle(degrees=0)
-
     if not isinstance(dec, Angle):
         return Angle(hours=0), Angle(degrees=0)
 
-    with lock:
-        ra = ra.radians
-        dec = dec.radians
+    mutex.lock()
+    ra = ra.radians
+    dec = dec.radians
+    ra = erfa.anp(ra + erfa.eo06a(timeJD.tt, 0.0))
+    raConv, decConv, _ = erfa.atic13(ra, dec, timeJD.ut1, 0.0)
+    ra = Angle(radians=raConv, preference='hours')
+    dec = Angle(radians=decConv, preference='degrees')
+    mutex.unlock()
 
-        ra = erfa.anp(ra + erfa.eo06a(timeJD.tt, 0.0))
-
-        raConv, decConv, _ = erfa.atic13(ra, dec, timeJD.ut1, 0.0)
-
-        ra = Angle(radians=raConv, preference='hours')
-        dec = Angle(radians=decConv, preference='degrees')
-        return ra, dec
+    return ra, dec
 
 
 def J2000ToJNow(ra, dec, timeJD):
@@ -81,23 +77,21 @@ def J2000ToJNow(ra, dec, timeJD):
     :param timeJD:
     :return:
     """
-
     if not isinstance(ra, Angle):
         return Angle(hours=0), Angle(degrees=0)
-
     if not isinstance(dec, Angle):
         return Angle(hours=0), Angle(degrees=0)
 
-    with lock:
-        ra = ra.radians
-        dec = dec.radians
+    mutex.lock()
+    ra = ra.radians
+    dec = dec.radians
+    raConv, decConv, eo = erfa.atci13(ra, dec, 0, 0, 0, 0, timeJD.ut1, 0)
+    raConv = erfa.anp(raConv - eo)
+    ra = Angle(radians=raConv, preference='hours')
+    dec = Angle(radians=decConv, preference='degrees')
+    mutex.unlock()
 
-        raConv, decConv, eo = erfa.atci13(ra, dec, 0, 0, 0, 0, timeJD.ut1, 0)
-
-        raConv = erfa.anp(raConv - eo)
-        ra = Angle(radians=raConv, preference='hours')
-        dec = Angle(radians=decConv, preference='degrees')
-        return ra, dec
+    return ra, dec
 
 
 def J2000ToAltAz(ra, dec, timeJD, location):
@@ -115,44 +109,42 @@ def J2000ToAltAz(ra, dec, timeJD, location):
     :param location:
     :return:
     """
-
     if not isinstance(ra, Angle):
         return Angle(degrees=0), Angle(degrees=0)
-
     if not isinstance(dec, Angle):
         return Angle(degrees=0), Angle(degrees=0)
 
-    with lock:
-        ra = ra.radians
-        dec = dec.radians
-        lat = location.latitude.radians
-        lon = location.longitude.radians
-        elevation = location.elevation.m
+    mutex.lock()
+    ra = ra.radians
+    dec = dec.radians
+    lat = location.latitude.radians
+    lon = location.longitude.radians
+    elevation = location.elevation.m
 
-        aob, zob, hob, dob, rob, eo = erfa.atco13(ra,
-                                                  dec,
-                                                  0.0,
-                                                  0.0,
-                                                  0.0,
-                                                  0.0,
-                                                  timeJD.ut1,
-                                                  0.0,
-                                                  0,
-                                                  lon,
-                                                  lat,
-                                                  elevation,
-                                                  0.0,
-                                                  0.0,
-                                                  0.0,
-                                                  0.0,
-                                                  0.0,
-                                                  0.0)
-        decConv = np.pi / 2 - zob
+    aob, zob, hob, dob, rob, eo = erfa.atco13(ra,
+                                              dec,
+                                              0.0,
+                                              0.0,
+                                              0.0,
+                                              0.0,
+                                              timeJD.ut1,
+                                              0.0,
+                                              0,
+                                              lon,
+                                              lat,
+                                              elevation,
+                                              0.0,
+                                              0.0,
+                                              0.0,
+                                              0.0,
+                                              0.0,
+                                              0.0)
+    decConv = np.pi / 2 - zob
 
-        azimuth = Angle(radians=aob, preference='degrees')
-        altitude = Angle(radians=decConv, preference='degrees')
-
-        return azimuth, altitude
+    azimuth = Angle(radians=aob, preference='degrees')
+    altitude = Angle(radians=decConv, preference='degrees')
+    mutex.unlock()
+    return azimuth, altitude
 
 
 def diffModulus(x, y, m):

@@ -405,7 +405,7 @@ def test_sendSatelliteData_3(function):
 def test_showSatPasses_0(function):
     function.satellite = None
     suc = function.showSatPasses()
-    assert suc
+    assert not suc
 
 
 def test_showSatPasses_1(function):
@@ -419,7 +419,7 @@ def test_showSatPasses_1(function):
                            'clearTrackingParameters'):
         with mock.patch.object(function,
                                'calcPassEvents',
-                               return_value=(0, 0)):
+                               return_value=(0, 0, True)):
             with mock.patch.object(function,
                                    'extractOrbits'):
                 with mock.patch.object(function,
@@ -442,7 +442,7 @@ def test_showSatPasses_2(function):
                            'clearTrackingParameters'):
         with mock.patch.object(function,
                                'calcPassEvents',
-                               return_value=(0, 0)):
+                               return_value=(0, 0, True)):
             with mock.patch.object(function,
                                    'extractOrbits'):
                 with mock.patch.object(function,
@@ -463,7 +463,7 @@ def test_showSatPasses_3(function):
                            'clearTrackingParameters'):
         with mock.patch.object(function,
                                'calcPassEvents',
-                               return_value=(0, 0)):
+                               return_value=(0, 0, True)):
             with mock.patch.object(function,
                                    'extractOrbits'):
                 with mock.patch.object(function,

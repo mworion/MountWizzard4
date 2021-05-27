@@ -122,6 +122,7 @@ class Satellite(object):
         self.ui.satBeforeFlip.clicked.connect(self.showSatPasses)
         self.ui.avoidHorizon.clicked.connect(self.showSatPasses)
         self.ui.useInternalSatCalc.clicked.connect(self.showSatPasses)
+        self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.progTrajectory.clicked.connect(self.startProg)
         self.app.update1s.connect(self.updateOrbit)
 
@@ -484,6 +485,7 @@ class Satellite(object):
             return False
 
         self.extractSatelliteData(satName=tleParams.name)
+        self.showSatPasses()
         return True
 
     def filterSatelliteNamesList(self):

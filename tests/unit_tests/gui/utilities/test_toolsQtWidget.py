@@ -24,7 +24,7 @@ import math
 
 # external packages
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle, QPushButton
-from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtCore import pyqtSignal, QObject, QEvent
 from skyfield.api import Angle
 
 # local import
@@ -458,9 +458,12 @@ def test_clickable_1(function):
 
 
 def test_clickable_2(function):
-    widget = QWidget()
+    event = QEvent(QEvent.MouseButtonRelease)
+    widget = QPushButton()
     suc = function.clickable(widget=widget)
     assert suc
+    suc = widget.eventFilter(widget, event)
+    assert not suc
 
 
 def test_guiSetText_1(function):

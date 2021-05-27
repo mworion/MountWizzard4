@@ -55,13 +55,15 @@ def test_initConfig_1(function):
     with mock.patch.object(function,
                            'updateMoonPhase'):
         with mock.patch.object(function,
-                               'searchTwilight'):
+                               'searchTwilightPlot'):
             with mock.patch.object(function,
-                                   'displayTwilightData'):
+                                   'searchTwilightList'):
                 with mock.patch.object(function,
-                                       'lunarNodes'):
-                    suc = function.initConfig()
-                    assert suc
+                                       'displayTwilightData'):
+                    with mock.patch.object(function,
+                                           'lunarNodes'):
+                        suc = function.initConfig()
+                        assert suc
 
 
 def test_storeConfig_1(function):
@@ -79,54 +81,74 @@ def test_storeConfig_2(function):
 
 
 def test_drawTwilightData_1(function):
-    tsNow = function.app.mount.obsSite.ts.now()
+    ts = function.app.mount.obsSite.ts
+    tsNow = ts.now()
     t = [tsNow, tsNow]
     e = [1, 1]
+    result = (ts, t, e)
     widget = QWidget()
     function.twilight = function.embedMatplot(widget)
-    suc = function.plotTwilightData(t, e)
+    suc = function.plotTwilightData(result)
     assert suc
 
 
 def test_calcTwilightData_1(function):
-    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
-                                                longitude_degrees=0,
-                                                elevation_m=0)
-    val = function.calcTwilightData()
+    ts = function.app.mount.obsSite.ts
+    location = wgs84.latlon(latitude_degrees=0,
+                            longitude_degrees=0,
+                            elevation_m=0)
+    val = function.calcTwilightData(ts, location, timeWindow=0)
     assert val
 
 
 def test_searchTwilightWorker_1(function):
-    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
-                                                longitude_degrees=0,
-                                                elevation_m=0)
-    tsNow = function.app.mount.obsSite.ts.now()
+    location = wgs84.latlon(latitude_degrees=0,
+                            longitude_degrees=0,
+                            elevation_m=0)
+    ts = function.app.mount.obsSite.ts
+    tsNow = ts.now()
     t = [tsNow, tsNow]
     e = [1, 1]
     with mock.patch.object(function,
-                           'plotTwilightData'):
-        with mock.patch.object(function,
-                               'calcTwilightData',
-                               return_value=(t, e)):
-            suc = function.searchTwilightWorker(1)
-            assert suc
+                           'calcTwilightData',
+                           return_value=(t, e)):
+        suc = function.searchTwilightWorker(ts, location, timeWindow=0)
+        assert suc
 
 
-def test_searchTwilight_1(function):
+def test_searchTwilightPlot_1(function):
     function.app.mount.obsSite.location = None
     with mock.patch.object(threading.Thread,
                            'start'):
-        suc = function.searchTwilight()
+        suc = function.searchTwilightPlot()
         assert not suc
 
 
-def test_searchTwilight_2(function):
+def test_searchTwilightPLot_2(function):
     function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
                                                        longitude_degrees=0,
                                                        elevation_m=0)
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.searchTwilight()
+        suc = function.searchTwilightPlot()
+        assert suc
+
+
+def test_searchTwilightList_1(function):
+    function.app.mount.obsSite.location = None
+    with mock.patch.object(threading.Thread,
+                           'start'):
+        suc = function.searchTwilightList()
+        assert not suc
+
+
+def test_searchTwilightList_2(function):
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
+                                                       longitude_degrees=0,
+                                                       elevation_m=0)
+    with mock.patch.object(function,
+                           'displayTwilightData'):
+        suc = function.searchTwilightList()
         assert suc
 
 

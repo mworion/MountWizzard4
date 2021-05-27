@@ -11875,7 +11875,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QCheckBox" name="satBeforeFlip">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -11894,7 +11894,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLabel" name="segmentsText">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -11918,7 +11918,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QCheckBox" name="satAfterFlip">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -11937,7 +11937,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QCheckBox" name="useInternalSatCalc">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -11956,7 +11956,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QCheckBox" name="avoidHorizon">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>

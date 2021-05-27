@@ -88,8 +88,8 @@ def function(module):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
+                                              longitude_degrees=10,
+                                              elevation_m=500)
         data = DataPoint(app=Test1())
         camera = Camera(app=Test1())
         astrometry = Astrometry(app=Test1())

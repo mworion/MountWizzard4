@@ -219,7 +219,10 @@ class Camera:
             return False
 
         posX, posY, width, height = result
+
         # this protects against overrun
+        if self.exposing:
+            self.log.warning('Expose overrun happened')
         while self.exposing:
             QTest.qWait(250)
 

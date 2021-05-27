@@ -22,6 +22,7 @@ import logging
 import subprocess
 import platform
 import os
+import builtins
 
 # external packages
 from PyQt5.QtMultimedia import QSound
@@ -291,8 +292,11 @@ def test_runInstall_1(function):
         with mock.patch.object(function,
                                'formatPIP',
                                return_value='test'):
-            suc, val = function.runInstall()
-            assert suc
+            with mock.patch.object(builtins,
+                                   'iter',
+                                   return_value=['1', '2']):
+                suc, val = function.runInstall()
+                assert suc
 
 
 def test_runInstall_2(function):

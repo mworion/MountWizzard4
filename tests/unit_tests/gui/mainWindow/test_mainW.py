@@ -626,8 +626,6 @@ def test_toggleWindow_3():
         return app.ui.openImageW
 
     app.sender = Sender
-    app.uiWindows['showImageW']['classObj'] = 1
-
     suc = app.toggleWindow()
     assert suc
 

@@ -137,8 +137,7 @@ def test_downloadFileWorker_4(function):
 
 def test_downloadFileWorker_5(function):
     with mock.patch.object(function,
-                           'getFileFromUrl',
-                           return_value=False):
+                           'getFileFromUrl'):
         with mock.patch.object(time,
                                'sleep'):
             suc = function.downloadFileWorker(url='', dest='test/test.txt')
@@ -147,8 +146,16 @@ def test_downloadFileWorker_5(function):
 
 def test_downloadFileWorker_6(function):
     with mock.patch.object(function,
-                           'getFileFromUrl',
-                           return_value=True):
+                           'getFileFromUrl'):
+        with mock.patch.object(time,
+                               'sleep'):
+            suc = function.downloadFileWorker(url='', dest='test/test.txt', unzip=False)
+            assert suc
+
+
+def test_downloadFileWorker_7(function):
+    with mock.patch.object(function,
+                           'getFileFromUrl'):
         with mock.patch.object(time,
                                'sleep'):
             with mock.patch.object(function,
@@ -158,10 +165,9 @@ def test_downloadFileWorker_6(function):
                 assert not suc
 
 
-def test_downloadFileWorker_7(function):
+def test_downloadFileWorker_8(function):
     with mock.patch.object(function,
-                           'getFileFromUrl',
-                           return_value=True):
+                           'getFileFromUrl'):
         with mock.patch.object(function,
                                'unzipFile'):
             with mock.patch.object(time,

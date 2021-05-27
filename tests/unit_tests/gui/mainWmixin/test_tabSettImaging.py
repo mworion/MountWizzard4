@@ -141,7 +141,7 @@ def test_setCoolerTemp_1():
 
 
 def test_setCoolerTemp_2():
-    app.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = 10
+    app.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = None
     app.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = True
     with mock.patch.object(QMessageBox,
                            'critical'):

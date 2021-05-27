@@ -214,8 +214,6 @@ class Tools(object):
             chunk = f'{entry}'
         elif fitsKey == 'EXPTIME':
             chunk = f'Exp{entry:1.0f}s'
-        elif fitsKey == 'RenameText':
-            chunk = self.ui.renameText.text().upper()
         else:
             chunk = ''
 

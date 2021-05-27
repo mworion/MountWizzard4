@@ -109,6 +109,11 @@ def test_getNumberFiles_6(function):
     assert number == 2
 
 
+def test_getNumberFiles_7(function):
+    number = function.getNumberFiles(pathDir='tests/testData')
+    assert number == 0
+
+
 def test_convertHeaderEntry_1(function):
     chunk = function.convertHeaderEntry(entry='', fitsKey='1')
     assert not chunk
@@ -286,6 +291,18 @@ def test_renameRunGUI_4(function, qtbot):
             suc = function.renameRunGUI()
             assert suc
         assert ['1 images were renamed', 0] == blocker.args
+
+
+def test_renameRunGUI_5(function, qtbot):
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    function.ui.renameDir.setText('tests/image')
+    with mock.patch.object(function,
+                           'renameFile',
+                           return_value=False):
+        with qtbot.waitSignal(function.app.message) as blocker:
+            suc = function.renameRunGUI()
+            assert suc
+        assert ['tests/image/m51.fit could not be renamed', 2] == blocker.args
 
 
 def test_chooseDir_1(function):
@@ -720,6 +737,16 @@ def test_moveRaDecAbsolute_2(function):
 def test_moveRaDecAbsolute_3(function):
     function.ui.moveCoordinateRa.setText('12H')
     function.ui.moveCoordinateDec.setText('30 30')
+    a = function.app.mount.obsSite.timeJD
+    function.app.mount.obsSite.timeJD = None
+    suc = function.moveRaDecAbsolute()
+    assert not suc
+    function.app.mount.obsSite.timeJD = a
+
+
+def test_moveRaDecAbsolute_4(function):
+    function.ui.moveCoordinateRa.setText('12H')
+    function.ui.moveCoordinateDec.setText('30 30')
     with mock.patch.object(function.app.mount.obsSite,
                            'setTargetRaDec'):
         with mock.patch.object(function,
@@ -729,7 +756,7 @@ def test_moveRaDecAbsolute_3(function):
             assert not suc
 
 
-def test_moveRaDecAbsolute_4(function):
+def test_moveRaDecAbsolute_5(function):
     function.ui.moveCoordinateRa.setText('12H')
     function.ui.moveCoordinateDec.setText('30 30')
     with mock.patch.object(function.app.mount.obsSite,
@@ -741,7 +768,7 @@ def test_moveRaDecAbsolute_4(function):
             assert suc
 
 
-def test_moveRaDecAbsolute_5(function):
+def test_moveRaDecAbsolute_6(function):
     function.ui.moveCoordinateRa.setText('12H')
     function.ui.moveCoordinateDec.setText('30 30')
     function.app.mount.obsSite.timeJD
@@ -755,4 +782,3 @@ def test_moveRaDecAbsolute_5(function):
                                    return_value=False):
                 suc = function.moveRaDecAbsolute()
                 assert not suc
-

@@ -121,10 +121,8 @@ class Satellite(object):
         self.ui.satAfterFlip.clicked.connect(self.showSatPasses)
         self.ui.satBeforeFlip.clicked.connect(self.showSatPasses)
         self.ui.avoidHorizon.clicked.connect(self.showSatPasses)
-        self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.useInternalSatCalc.clicked.connect(self.showSatPasses)
         self.ui.progTrajectory.clicked.connect(self.startProg)
-
         self.app.update1s.connect(self.updateOrbit)
 
     def initConfig(self):
@@ -173,16 +171,12 @@ class Satellite(object):
         """
         :return:
         """
-        internalAvailable = self.app.mount.firmware.checkNewer(21699)
-        if internalAvailable is None:
+        useInternal = self.ui.useInternalSatCalc.isChecked()
+        availableInternal = self.app.mount.firmware.checkNewer(21699)
+        if availableInternal is None:
             return False
-        self.ui.useInternalSatCalc.setEnabled(internalAvailable)
 
-        progAvailable = internalAvailable and self.ui.useInternalSatCalc.isChecked()
-        self.ui.segmentsText.setEnabled(progAvailable)
-        self.ui.satBeforeFlip.setEnabled(progAvailable)
-        self.ui.satAfterFlip.setEnabled(progAvailable)
-        self.ui.avoidHorizon.setEnabled(progAvailable)
+        progAvailable = availableInternal and useInternal
         self.ui.trackingSim.setEnabled(progAvailable)
         self.ui.trajectoryProgress.setEnabled(progAvailable)
         self.ui.progTrajectory.setEnabled(progAvailable)
@@ -244,6 +238,7 @@ class Satellite(object):
         if 'settle' not in self.satOrbits[-1]:
             del self.satOrbits[counter]
             return False
+
         return True
 
     @staticmethod
@@ -403,7 +398,6 @@ class Satellite(object):
             self.passUI[i]['flip'].setText(flipStr)
             self.passUI[i]['date'].setText(dateStr)
 
-        self.sendSatelliteData()
         self.progTrajectoryToMount()
         return True
 
@@ -442,7 +436,6 @@ class Satellite(object):
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', '')
 
         self.ui.satelliteNumber.setText(f'{self.satellite.model.satnum:5d}')
-        self.showSatPasses()
         return True
 
     def programDataToMount(self, satName=''):
@@ -475,6 +468,7 @@ class Satellite(object):
             self.programDataToMount(satName=satName)
         else:
             self.extractSatelliteData(satName=satName)
+        self.showSatPasses()
         return True
 
     def getSatelliteDataFromDatabase(self, tleParams=None):
@@ -576,7 +570,7 @@ class Satellite(object):
         """
         duration = min(end - start, 900 / 86400)
         if duration < 1 / 86400:
-            return [], []
+            return [], [], []
 
         m = self.app.mount
         temp = m.setting.refractionTemp
@@ -589,7 +583,8 @@ class Satellite(object):
         ssb_loc = earth + m.obsSite.location
         topocentric = ssb_loc.at(timeVec).observe(ssb_sat).apparent()
         alt, az, _ = topocentric.altaz(pressure_mbar=press, temperature_C=temp)
-        return alt.degrees, az.degrees
+        isSunlit = self.satellite.at(timeVec).is_sunlit(self.app.ephemeris)
+        return alt.degrees, az.degrees, isSunlit
 
     def filterHorizon(self, alt, az):
         """
@@ -646,20 +641,19 @@ class Satellite(object):
         """
         :return:
         """
-        if not self.app.deviceStat['mount']:
-            return False
-
         start, end = self.selectStartEnd()
         if not start or not end:
             return False
 
-        isInternal = self.ui.useInternalSatCalc.isChecked()
-        internalAvailable = self.ui.useInternalSatCalc.isEnabled()
-        if isInternal and internalAvailable:
+        useInternal = self.ui.useInternalSatCalc.isChecked()
+        if useInternal:
             alt, az = self.calcTrajectoryData(start, end)
             alt, az = self.filterHorizon(alt, az)
-            self.sendSatelliteData(alt=alt, az=az)
         else:
+            alt = []
+            az = []
+        self.sendSatelliteData(alt=alt, az=az)
+        if self.app.deviceStat['mount'] and not useInternal:
             self.app.mount.calcTLE(start)
 
         return True

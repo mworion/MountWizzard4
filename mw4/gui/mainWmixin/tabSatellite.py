@@ -473,7 +473,7 @@ class Satellite(object):
             self.programDataToMount(satName=satName)
         else:
             self.extractSatelliteData(satName=satName)
-        self.showSatPasses()
+            self.showSatPasses()
         return True
 
     def getSatelliteDataFromDatabase(self, tleParams=None):

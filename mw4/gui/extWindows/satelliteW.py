@@ -589,19 +589,19 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             vecT = ts.tt_jd(vector)
             alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
             for slc in self.unlinkWrap(az.degrees):
-                axe.plot(az.degrees[slc], alt.degrees[slc], lw=4,
+                axe.plot(az.degrees[slc], alt.degrees[slc], lw=3,
                          color=self.colors[i])
 
             vector = np.arange(flip, settle, step)
             vecT = ts.tt_jd(vector)
             alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
             for slc in self.unlinkWrap(az.degrees):
-                axe.plot(az.degrees[slc], alt.degrees[slc], lw=4,
+                axe.plot(az.degrees[slc], alt.degrees[slc], lw=3,
                          color=self.colors[i], linestyle=(0, (0.5, 0.5)))
 
         for slc in self.unlinkWrap(azimuth):
             axe.plot(azimuth[slc], altitude[slc],
-                     color=self.M_WHITE, lw=9, alpha=0.8, zorder=-5)
+                     color=self.M_WHITE, lw=7, alpha=0.8, zorder=-5)
         # color = np.where(isSunlit, 'red', 'blue')
         # axe.scatter(azimuth, altitude, marker='o', color=color)
 

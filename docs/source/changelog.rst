@@ -14,11 +14,13 @@ Ideas for the future
 - automation windows 64 bit update
 - split profiles in base and add-on
 - adding gain and offset for cmos
+- satellite search with constraints
+- adding more tools for getting observations done
 
 
 Released beta version of MW4
 ----------------------------
-2.0.0b7
+2.0.0b9
 
 - add mount clock sync feature
 - add simulator feature
@@ -31,11 +33,12 @@ Released beta version of MW4
 - add feature for RA/DEC FITS writing for INDI server without snooping
 - completely revised satellite tracking menu gui
 - add partially satellite tracking before / after possible flip
-- add satellite track respect horizon line
+- add satellite track respect horizon line and meridian limits
 - add tracking simulator feature to test without waiting for satellite
 - add reverse order for filed build point retry
 - add automatic enable webinterface for keypad use
 - changed IERS and lead second download
+- more functions are available without mount connected
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected
 - fix retry mechanism for failed build points

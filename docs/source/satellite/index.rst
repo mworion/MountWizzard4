@@ -65,7 +65,9 @@ data and updates the plots accordingly.
 
 .. note:: The solid line shows the track before meridian transit, the dotted
           line the track after meridian transit. The resulting white background
-          shows the resulting track, which takes flip slew tolerance into account.
+          shows the resulting track, which takes flip track tolerance into account.
+          If you change settings in satellite (or even limits), MW4 will update
+          the tracks path in plot accordingly and reset the prog state.
 
 Select only a segment before a meridian transit (and therefore avoiding a flip
 during tracking):

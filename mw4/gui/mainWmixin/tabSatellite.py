@@ -65,6 +65,7 @@ class Satellite(object):
         self.installPath = ''
         self.lastAzimuth = -1
         self.nextSatPass = [None, None, None]
+        self.lastMeridianLimit = None
 
         self.satelliteSourceURLs = {
             'Active': 'http://www.celestrak.com/NORAD/elements/active.txt',
@@ -108,6 +109,7 @@ class Satellite(object):
         msig.firmwareDone.connect(self.enableGuiFunctions)
         msig.trajectoryProgress.connect(self.trajectoryProgress)
         msig.pointDone.connect(self.followMount)
+        msig.settingDone.connect(self.updatePasses)
 
         self.ui.progSatellitesFull.clicked.connect(self.progSatellitesFull)
         self.ui.progSatellitesFiltered.clicked.connect(self.progSatellitesFiltered)
@@ -298,7 +300,7 @@ class Satellite(object):
         :param location:
         :return:
         """
-        merS = self.app.mount.setting.meridianLimitSlew
+        merS = self.app.mount.setting.meridianLimitTrack
         if merS is None:
             merS = 0
         merS = merS * 0.95
@@ -348,6 +350,16 @@ class Satellite(object):
         self.ui.trajectoryProgress.setValue(0)
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
+        return True
+
+    def updatePasses(self):
+        """
+        :return:
+        """
+        actMeridianLimit = self.app.mount.setting.meridianLimitTrack
+        if actMeridianLimit != self.lastMeridianLimit:
+            self.showSatPasses()
+            self.lastMeridianLimit = actMeridianLimit
         return True
 
     def showSatPasses(self):

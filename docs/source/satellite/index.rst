@@ -63,6 +63,10 @@ could see the next three orbits and for internal math the resulting satellite
 track with an white underlay. If you change any setup, MW4 will recalculate all
 data and updates the plots accordingly.
 
+.. note:: The solid line shows the track before meridian transit, the dotted
+          line the track after meridian transit. The resulting white background
+          shows the resulting track, which takes flip slew tolerance into account.
+
 Select only a segment before a meridian transit (and therefore avoiding a flip
 during tracking):
 

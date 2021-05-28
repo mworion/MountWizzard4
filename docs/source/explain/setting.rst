@@ -154,7 +154,7 @@ MW4 stores up to 10 different park positions for you. You could setup these
 positions with text (the text will be displayed in the tools menu), and altitude
 and azimuth for the position.
 
-.. image:: image/sett_dome_tab.png
+.. image:: image/sett_parkpos_tab.png
     :align: center
     :scale: 71%
 

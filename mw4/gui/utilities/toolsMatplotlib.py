@@ -120,45 +120,44 @@ class ToolsMatplotlib:
             color = self.M_TRANS
             colorGrid = self.M_TRANS
 
-        with self.matplotlibLock:
-            figure = widget.figure
+        figure = widget.figure
 
-            if figure.axes:
-                axe = figure.axes[0]
-                axe.cla()
+        if figure.axes:
+            axe = figure.axes[0]
+            axe.cla()
 
-            else:
-                figure.clf()
-                axe = figure.add_subplot(1, 1, 1, polar=True, facecolor='None')
+        else:
+            figure.clf()
+            axe = figure.add_subplot(1, 1, 1, polar=True, facecolor='None')
 
-            axe.grid(True, color=colorGrid)
+        axe.grid(True, color=colorGrid)
 
-            if title:
-                axe.set_title(title, color=color, fontweight='bold', pad=15)
+        if title:
+            axe.set_title(title, color=color, fontweight='bold', pad=15)
 
-            axe.set_xlabel('', color=color, fontweight='bold', fontsize=12)
-            axe.set_ylabel('', color=color, fontweight='bold', fontsize=12)
-            axe.tick_params(axis='x', colors=color, labelsize=12)
-            axe.tick_params(axis='y', colors=color, labelsize=12)
-            axe.set_theta_zero_location('N')
-            axe.set_rlabel_position(45)
-            axe.spines['polar'].set_color(color)
+        axe.set_xlabel('', color=color, fontweight='bold', fontsize=12)
+        axe.set_ylabel('', color=color, fontweight='bold', fontsize=12)
+        axe.tick_params(axis='x', colors=color, labelsize=12)
+        axe.tick_params(axis='y', colors=color, labelsize=12)
+        axe.set_theta_zero_location('N')
+        axe.set_rlabel_position(45)
+        axe.spines['polar'].set_color(color)
 
-            if reversed:
-                axe.set_theta_direction(1)
-            else:
-                axe.set_theta_direction(-1)
+        if reversed:
+            axe.set_theta_direction(1)
+        else:
+            axe.set_theta_direction(-1)
 
-            axe.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))
-            axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
+        axe.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))
+        axe.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'])
 
-            if not horizon:
-                return axe, figure
-
-            axe.set_ylim(0, 90)
-            axe.set_yticks(range(0, 91, 15))
-            axe.set_yticklabels(['', '75', '60', '45', '30', '15', ''])
+        if not horizon:
             return axe, figure
+
+        axe.set_ylim(0, 90)
+        axe.set_yticks(range(0, 91, 15))
+        axe.set_yticklabels(['', '75', '60', '45', '30', '15', ''])
+        return axe, figure
 
     def generateFlat(self, widget=None, title='', horizon=False, showAxes=True):
         """
@@ -178,48 +177,47 @@ class ToolsMatplotlib:
         else:
             color = self.M_TRANS
 
-        with self.matplotlibLock:
-            figure = widget.figure
+        figure = widget.figure
 
-            if figure.axes:
-                axe = figure.axes[0]
-                axe.cla()
-            else:
-                figure.clf()
-                axe = figure.add_subplot(1, 1, 1, facecolor='None')
+        if figure.axes:
+            axe = figure.axes[0]
+            axe.cla()
+        else:
+            figure.clf()
+            axe = figure.add_subplot(1, 1, 1, facecolor='None')
 
-            axe.spines['bottom'].set_color(color)
-            axe.spines['top'].set_color(color)
-            axe.spines['left'].set_color(color)
-            axe.spines['right'].set_color(color)
+        axe.spines['bottom'].set_color(color)
+        axe.spines['top'].set_color(color)
+        axe.spines['left'].set_color(color)
+        axe.spines['right'].set_color(color)
 
-            if showAxes:
-                axe.grid(showAxes, color=self.M_GREY)
-            else:
-                axe.grid(showAxes)
+        if showAxes:
+            axe.grid(showAxes, color=self.M_GREY)
+        else:
+            axe.grid(showAxes)
 
-            if title:
-                axe.set_title(title, color=color, fontweight='bold', pad=15)
+        if title:
+            axe.set_title(title, color=color, fontweight='bold', pad=15)
 
-            axe.set_xlabel('', color=color, fontweight='bold', fontsize=12)
-            axe.set_ylabel('', color=color, fontweight='bold', fontsize=12)
-            axe.tick_params(axis='x', colors=color, labelsize=12)
-            axe.tick_params(axis='y', colors=color, labelsize=12)
+        axe.set_xlabel('', color=color, fontweight='bold', fontsize=12)
+        axe.set_ylabel('', color=color, fontweight='bold', fontsize=12)
+        axe.tick_params(axis='x', colors=color, labelsize=12)
+        axe.tick_params(axis='y', colors=color, labelsize=12)
 
-            if not horizon:
-                return axe, figure
-
-            axe.set_xlim(0, 360)
-            axe.set_ylim(0, 90)
-            axe.set_xticks(np.arange(0, 361, 45))
-            axe.set_xticklabels(['0 N', '45 NE', '90 E', '135 SE', '180 S',
-                                 '225 SW', '270 W', '315 NW', '360 N'])
-            axe.set_xlabel('Azimuth [degrees]', color=color, fontweight='bold',
-                           fontsize=12)
-            axe.set_ylabel('Altitude [degrees]', color=color, fontweight='bold',
-                           fontsize=12)
-
+        if not horizon:
             return axe, figure
+
+        axe.set_xlim(0, 360)
+        axe.set_ylim(0, 90)
+        axe.set_xticks(np.arange(0, 361, 45))
+        axe.set_xticklabels(['0 N', '45 NE', '90 E', '135 SE', '180 S',
+                             '225 SW', '270 W', '315 NW', '360 N'])
+        axe.set_xlabel('Azimuth [degrees]', color=color, fontweight='bold',
+                       fontsize=12)
+        axe.set_ylabel('Altitude [degrees]', color=color, fontweight='bold',
+                       fontsize=12)
+
+        return axe, figure
 
     def generateColorbar(self, figure=None, scatter=None, label=''):
         """

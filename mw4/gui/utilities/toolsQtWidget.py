@@ -19,7 +19,6 @@
 import platform
 import os
 import re
-from threading import Lock
 
 # external packages
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
@@ -116,7 +115,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         self.screenSizeX = QDesktopWidget().screenGeometry().width()
         self.screenSizeY = QDesktopWidget().screenGeometry().height()
         self.setAttribute(Qt.WA_DeleteOnClose, True)
-        self.matplotlibLock = Lock()
 
         newFlag = Qt.CustomizeWindowHint | Qt.WindowSystemMenuHint
         newFlag = newFlag | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint

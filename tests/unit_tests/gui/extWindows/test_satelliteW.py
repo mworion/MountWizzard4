@@ -170,6 +170,7 @@ def test_updatePositions_8(function):
     function.plotSatPosSphere1, = ax.plot([1], [1], [1])
     function.plotSatPosSphere2, = ax.plot([1], [1], [1])
 
+    function.ui.tabWidget.setCurrentIndex(0)
     now = function.app.mount.obsSite.ts.now()
     location = function.app.mount.obsSite.location
 

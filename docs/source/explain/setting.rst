@@ -142,37 +142,11 @@ are the same limitations for WOL like for the mount.
 
 Dome / Cover Tab
 ----------------
-MW4 could handle a dome which is connected via INDI.
+MW4 could handle a dome which is connected via INDI / ASCOM / ALPACA.
 
 .. image:: image/sett_dome_tab.png
     :align: center
     :scale: 71%
-
-Area 1: Dome geometry
-^^^^^^^^^^^^^^^^^^^^^
-If a dome is connected and as device setup, MW4 will slew the dome to the azimuth,
-the mount is slewed to automatically. If you own an all sky dome this is
-sufficient. In other setups there is the need to calculate the right dome opening
-for the appropriate geometry in your setup. In this case, please check the enable
-geometry calculations box and setup the geometry parameters of your dome and the
-position of your mount in relation to the dome. If you think of the center point
-of the dome as a hemisphere, the distances (offsets) from your mount to this point
-have to be entered. The base point of the mount is the center of the mount adapter
-ring.
-
-For setting up the GEM and OTA offset the picture (3) should help you. There is no
-need for setting both of them. GEM offset is the more known parameter whereas OTA
-offset might be easier to measure. As they are dependant on each other, MW4 will
-calculate the other parameter automatically for you.
-
-Area 2: Dome Settle time
-^^^^^^^^^^^^^^^^^^^^^^^^
-After moving your dome, your setup might need some time for settle before starting
-imaging again. With this parameter you could choose the waiting time.
-
-Area 4: Cover
-^^^^^^^^^^^^^
-If you have a telescope cover device setup, you could open and close your cover.
 
 Park Position Tab
 -----------------

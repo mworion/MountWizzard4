@@ -631,10 +631,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         if satellite is None or satOrbits is None:
-            self.drawSphere1()
-            self.drawSphere2()
             self.drawEarth()
             self.drawHorizonView()
+            self.drawSphere1()
+            self.drawSphere2()
             return False
 
         self.satellite = satellite
@@ -650,12 +650,12 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         timeVector = timescale.tt_jd(now.tt + forecast)
         observe = self.satellite.at(timeVector)
 
-        self.drawSphere1(observe=observe)
-        self.drawSphere2(observe=observe)
         self.drawEarth(self.app.mount.obsSite,
                        satOrbits=satOrbits, altitude=altitude, azimuth=azimuth)
         self.drawHorizonView(self.app.mount.obsSite,
                              satOrbits=satOrbits,
                              altitude=altitude, azimuth=azimuth,
                              isSunlit=isSunlit)
+        self.drawSphere1(observe=observe)
+        self.drawSphere2(observe=observe)
         return True

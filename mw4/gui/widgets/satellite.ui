@@ -71,7 +71,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <property name="sizePolicy">
@@ -446,7 +446,7 @@
         <number>4</number>
        </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1">
+        <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1">
          <item>
           <widget class="QLabel" name="label_273">
            <property name="minimumSize">

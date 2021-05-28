@@ -35,6 +35,7 @@ releaseNotes = """
 - add reverse order for filed build point retry 
 - add automatic enable webinterface for keypad use
 - changed IERS and lead second download
+- more functions are available without mount connected
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected
 - fix retry mechanism for failed build points
@@ -47,7 +48,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b8',
+    version='2.0.0b9',
     packages=[
         'mw4',
         'mw4.base',

@@ -20,12 +20,13 @@ from io import BytesIO
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QFile
+from PyQt5.QtWidgets import QApplication
 import numpy as np
 import matplotlib.path as mpath
+import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 from skyfield import functions
 from skyfield.api import wgs84
-import matplotlib.pyplot as plt
 
 # local import
 from gui.utilities import toolsQtWidget
@@ -146,12 +147,12 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         circle = mpath.Path.unit_circle()
 
-        rect1p = [[0, 0], [1, 2], [0, 3], [4, 7], [7, 4], [3, 0], [2, 1], [6, 5], [5, 6],
-                  [1, 2], [2, 1], [0, 0]]
+        rect1p = [[0, 0], [1, 2], [0, 3], [4, 7], [7, 4], [3, 0], [2, 1],
+                  [6, 5], [5, 6], [1, 2], [2, 1], [0, 0]]
         rect1p = np.array(rect1p)
         rect1c = [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 79]
         rect1c = np.array(rect1c)
-        # concatenate the circle with an internal cutout of the star
+
         verts = np.concatenate([rect1p,
                                 rect1p * -1,
                                 circle.vertices])
@@ -392,6 +393,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                  color=self.M_BLUE)
 
         for key in self.world.keys():
+            QApplication.processEvents()
             shape = self.world[key]
             x, y, z = functions.from_spherical(self.EARTH_RADIUS,
                                                shape['yRad'],
@@ -494,6 +496,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                                          zorder=10)
 
         for i, satOrbit in enumerate(satOrbits):
+            QApplication.processEvents()
             rise = satOrbit['rise'].tt
             settle = satOrbit['settle'].tt
             step = 0.005 * (settle - rise)
@@ -572,6 +575,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         ts = obsSite.ts
         for i, satOrbit in enumerate(satOrbits):
+            QApplication.processEvents()
             rise = satOrbit['rise'].tt
             settle = satOrbit['settle'].tt
             step = 0.005 * (settle - rise)
@@ -602,6 +606,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         ts = obsSite.ts
         alt, az, _ = (self.satellite - obsSite.location).at(ts.now()).altaz()
+        QApplication.processEvents()
         self.plotSatPosHorizon, = axe.plot(az.degrees, alt.degrees,
                                            marker=self.markerSatellite(),
                                            markersize=25, lw=2, fillstyle='none',

@@ -5914,7 +5914,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>510</x>
        <y>10</y>
        <width>271</width>
-       <height>156</height>
+       <height>166</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -5936,9 +5936,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>25</y>
+        <y>20</y>
         <width>261</width>
-        <height>121</height>
+        <height>141</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -5950,9 +5950,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>510</x>
-       <y>230</y>
+       <y>240</y>
        <width>271</width>
-       <height>201</height>
+       <height>191</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -5977,7 +5977,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>120</x>
-        <y>175</y>
+        <y>165</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -6070,7 +6070,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>175</x>
-        <y>175</y>
+        <y>165</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -6097,7 +6097,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>40</y>
+        <y>35</y>
         <width>130</width>
         <height>130</height>
        </rect>
@@ -6191,7 +6191,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>175</y>
+        <y>165</y>
         <width>26</width>
         <height>21</height>
        </rect>
@@ -6236,7 +6236,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>175</y>
+        <y>165</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -6264,7 +6264,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>510</x>
-       <y>175</y>
+       <y>185</y>
        <width>271</width>
        <height>46</height>
       </rect>
@@ -26258,36 +26258,6 @@ p, li { white-space: pre-wrap; }
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QCheckBox" name="automaticRestart">
-        <property name="geometry">
-         <rect>
-          <x>205</x>
-          <y>90</y>
-          <width>146</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Restart MountWizzard4 after a successful install automatically. Changes will be *not* saved.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Automatic restart</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
       </widget>
       <widget class="QGroupBox" name="LoglevelGroup_2">
        <property name="geometry">
@@ -28222,7 +28192,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>port3492</tabstop>
   <tabstop>port3490</tabstop>
   <tabstop>versionReleaseNotes</tabstop>
-  <tabstop>automaticRestart</tabstop>
   <tabstop>pushTime</tabstop>
   <tabstop>autoPushTime</tabstop>
   <tabstop>activateVirtualStop</tabstop>

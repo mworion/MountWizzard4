@@ -17,7 +17,6 @@
 import base.packageConfig as pConf
 # standard libraries
 import os
-import time
 import subprocess
 import sys
 import platform
@@ -36,7 +35,6 @@ from astropy.utils import data
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
-from base import tpool
 
 
 class SettMisc(object):
@@ -88,7 +86,6 @@ class SettMisc(object):
         self.ui.syncNotTracking.setChecked(config.get('syncNotTracking', True))
         self.ui.syncTimePC2Mount.setChecked(config.get('syncTimePC2Mount', False))
         self.ui.clockSync.setChecked(config.get('clockSync', False))
-        self.ui.automaticRestart.setChecked(config.get('automaticRestart', False))
         self.ui.activateVirtualStop.setChecked(config.get('activateVirtualStop', False))
         self.ui.versionReleaseNotes.setChecked(config.get('versionReleaseNotes', True))
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
@@ -118,7 +115,6 @@ class SettMisc(object):
         config['syncNotTracking'] = self.ui.syncNotTracking.isChecked()
         config['syncTimePC2Mount'] = self.ui.syncTimePC2Mount.isChecked()
         config['clockSync'] = self.ui.clockSync.isChecked()
-        config['automaticRestart'] = self.ui.automaticRestart.isChecked()
         config['activateVirtualStop'] = self.ui.activateVirtualStop.isChecked()
         config['versionReleaseNotes'] = self.ui.versionReleaseNotes.isChecked()
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
@@ -252,114 +248,6 @@ class SettMisc(object):
         self.log.debug(f'venv path: [{os.environ.get("VIRTUAL_ENV", "")}]')
         return status
 
-    @staticmethod
-    def formatPIP(line=''):
-        """
-        formatPIP shortens the stdout line for presenting it to the user. as the
-        lines are really long, mw4 concentrates on package names and action.
-
-        :param line:
-        :return: formatted line
-        """
-        if line.startswith(' '):
-            return ''
-
-        elif line.startswith('Requirement'):
-            val = line.split(':')
-            prefix = val[0]
-            packageName = val[1].split('<')[0].split('>')[0].split('=')[0].split(' ')[1]
-            line = f'{prefix} : {packageName}'
-
-        elif line.startswith('Collecting'):
-            line = line.split('<')[0].split('>')[0].split('=')[0]
-
-        elif line.startswith('Installing') or line.startswith('Building'):
-            line = line.split(':')[0]
-
-        else:
-            line = line.split('\n')[0]
-
-        return line
-
-    @staticmethod
-    def restartProgram():
-        python = sys.executable
-        os.execl(python, python, *sys.argv)
-
-    def runInstall(self, versionPackage='', timeout=60):
-        """
-        :param versionPackage:   package version to install
-        :param timeout:
-        :return: success
-        """
-        runnable = ['pip',
-                    'install',
-                    f'mountwizzard4=={versionPackage}',
-                    '--disable-pip-version-check',
-                    ]
-
-        timeStart = time.time()
-        try:
-            self.process = subprocess.Popen(args=runnable,
-                                            stdout=subprocess.PIPE,
-                                            stderr=subprocess.STDOUT,
-                                            text=True,
-                                            )
-            for stdout_line in iter(self.process.stdout.readline, ""):
-                line = self.formatPIP(line=stdout_line)
-                if line:
-                    self.app.message.emit(line, 0)
-
-            output = self.process.communicate(timeout=timeout)[0]
-
-        except subprocess.TimeoutExpired as e:
-            self.log.error(e)
-            return False, None
-
-        except Exception as e:
-            self.log.error(f'error: {e} happened')
-            return False, None
-
-        else:
-            delta = time.time() - timeStart
-            retCode = str(self.process.returncode)
-            self.log.debug(f'pip install took {delta}s [{retCode}] [{output}]')
-
-        success = (self.process.returncode == 0)
-        return success, versionPackage
-
-    def installFinished(self, result):
-        """
-        installFinished is called when the installation thread is finished. It
-        writes the final messages to the user and resets the gui to default.
-
-        :param result:
-        :return: success
-        """
-        if isinstance(result, tuple):
-            success, versionPackage = result
-        else:
-            success = False
-
-        if success:
-            self.app.message.emit(f'MountWizzard4 {versionPackage} installed', 1)
-            packages = sorted(["%s==%s" % (i.key, i.version) for i in working_set])
-            self.log.debug(f'After update:   {packages}')
-
-        else:
-            self.app.message.emit('Could not install update installation ', 2)
-
-        self.mutexInstall.unlock()
-        self.changeStyleDynamic(self.ui.installVersion, 'running', False)
-
-        if not success:
-            return False
-
-        if self.ui.automaticRestart.isChecked():
-            self.app.message.emit('...restarting', 1)
-            self.restartProgram()
-        return True
-
     def installVersion(self):
         """
         installVersion updates mw4 with the standard pip package installer.
@@ -374,32 +262,21 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
-        if pConf.isWindows:
-            timeout = 180
-        else:
-            timeout = 90
-
         if not self.isVenv():
             self.app.message.emit('MW4 not running in an virtual environment', 2)
-            return False
-
-        if not self.mutexInstall.tryLock():
-            self.app.message.emit('Install already running', 2)
             return False
 
         packages = sorted(["%s==%s" % (i.key, i.version) for i in working_set])
         self.log.debug(f'Before update:  {packages}')
 
         versionPackage = self.ui.versionAvailable.text()
-        self.changeStyleDynamic(self.ui.installVersion, 'running', True)
         self.app.message.emit(f'Installing [{versionPackage}] please wait', 1)
 
-        worker = tpool.Worker(self.runInstall,
-                              versionPackage=versionPackage,
-                              timeout=timeout)
-
-        worker.signals.result.connect(self.installFinished)
-        self.threadPool.start(worker)
+        updaterDir = os.path.dirname(sys.argv[0])
+        updaterFull = updaterDir + '/update.py'
+        python = sys.executable
+        os.execl(python, python, updaterFull, versionPackage)
+        # os.execl(python, python, sys.argv[0])
         return True
 
     def setLoggingLevel(self):

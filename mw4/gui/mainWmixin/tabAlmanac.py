@@ -150,6 +150,8 @@ class Almanac:
         x = [midLim - 1, midLim - 1, midLim + 1, midLim + 1]
         y = [0, 24, 24, 0]
         axe.fill(x, y, self.M_GREY, alpha=0.5)
+        if self.closing:
+            return False
         axe.figure.canvas.draw()
         return True
 

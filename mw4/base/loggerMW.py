@@ -84,7 +84,8 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
 
 def setupLogging():
     """
-    setupLogging defines the logger and formats and disables unnecessary library logging
+    setupLogging defines the logger and formats and disables unnecessary
+    library logging
 
     :return: true for test purpose
     """

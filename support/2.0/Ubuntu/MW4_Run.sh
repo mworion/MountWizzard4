@@ -27,7 +27,6 @@ if [ ! -f ./venv/bin/activate ]; then
   echo
   echo --------------------------------------------------------
   echo no valid virtual environment installed
-  echo please run MW4_Install.command first
   echo --------------------------------------------------------
   exit
 fi

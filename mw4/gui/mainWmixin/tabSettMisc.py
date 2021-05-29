@@ -189,7 +189,7 @@ class SettMisc(object):
             finalPackage = verRelease[0]
 
         comment = response['releases'][finalPackage][0]['comment_text']
-        return finalPackage, comment
+        return finalPackage, comment, vPackage
 
     def showUpdates(self):
         """
@@ -208,7 +208,7 @@ class SettMisc(object):
             self.ui.installVersion.setEnabled(False)
             return False
 
-        availPackage, comment = self.versionPackage(packageName)
+        availPackage, comment, _ = self.versionPackage(packageName)
 
         if availPackage is None:
             self.app.message.emit('Failed get actual package from server', 2)
@@ -270,6 +270,12 @@ class SettMisc(object):
         self.log.debug(f'Before update:  {packages}')
 
         versionPackage = self.ui.versionAvailable.text()
+        _, _, existPackage = self.versionPackage('MountWizzard4')
+
+        if versionPackage not in existPackage:
+            self.app.message.emit(f'Version {versionPackage} does not exist', 2)
+            return False
+
         self.app.message.emit(f'Installing [{versionPackage}] please wait', 1)
 
         updaterDir = os.path.dirname(sys.argv[0])

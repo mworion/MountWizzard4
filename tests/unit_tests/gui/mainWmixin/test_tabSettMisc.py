@@ -130,9 +130,10 @@ def test_versionPackage_2(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        pack, comm = function.versionPackage('matplotlib')
+        pack, comm, ver = function.versionPackage('matplotlib')
         assert pack == '1.0.0'
         assert comm == 'test'
+        assert ver == ['1.0.0', '1.0.0b1']
 
 
 def test_versionPackage_3(function):
@@ -148,7 +149,7 @@ def test_versionPackage_3(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        pack, comm = function.versionPackage('matplotlib')
+        pack, comm, _ = function.versionPackage('matplotlib')
         assert pack == '1.0.0b1'
         assert comm == 'test'
 
@@ -168,7 +169,7 @@ def test_showUpdates_2(function):
                            return_value='0.148.8'):
         with mock.patch.object(function,
                                'versionPackage',
-                               return_value=(None, None)):
+                               return_value=(None, None, [])):
             suc = function.showUpdates()
             assert not suc
 
@@ -180,7 +181,7 @@ def test_showUpdates_3(function):
                            return_value='0.148.10'):
         with mock.patch.object(function,
                                'versionPackage',
-                               return_value=('0.148.9', 'test')):
+                               return_value=('0.148.9', 'test', ['1.2.3'])):
             suc = function.showUpdates()
             assert suc
 
@@ -192,7 +193,7 @@ def test_showUpdates_4(function):
                            return_value='0.148.8'):
         with mock.patch.object(function,
                                'versionPackage',
-                               return_value=('0.148.9', 'test')):
+                               return_value=('0.148.9', 'test', ['1.2.3'])):
             suc = function.showUpdates()
             assert suc
 
@@ -205,7 +206,7 @@ def test_showUpdates_5(function):
                            return_value='0.148.8'):
         with mock.patch.object(function,
                                'versionPackage',
-                               return_value=('0.148.9', '')):
+                               return_value=('0.148.9', '', ['1.2.3'])):
             suc = function.showUpdates()
             assert suc
 
@@ -218,7 +219,7 @@ def test_showUpdates_6(function):
                            return_value='0.148.8'):
         with mock.patch.object(function,
                                'versionPackage',
-                               return_value=('0.148.9', 'test')):
+                               return_value=('0.148.9', 'test', ['1.2.3'])):
             suc = function.showUpdates()
             assert suc
 
@@ -236,13 +237,29 @@ def test_installVersion_1(function):
 
 
 def test_installVersion_2(function):
+    function.ui.versionAvailable.setText('2.1.1')
     with mock.patch.object(function,
                            'isVenv',
                            return_value=True):
-        with mock.patch.object(os,
-                               'execl'):
+        with mock.patch.object(function,
+                               'versionPackage',
+                               return_value=(None, None, ['1.2.3'])):
             suc = function.installVersion()
-            assert suc
+            assert not suc
+
+
+def test_installVersion_3(function):
+    function.ui.versionAvailable.setText('1.2.3')
+    with mock.patch.object(function,
+                           'isVenv',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'versionPackage',
+                               return_value=(None, None, ['1.2.3'])):
+            with mock.patch.object(os,
+                                   'execl'):
+                suc = function.installVersion()
+                assert suc
 
 
 def test_setLoggingLevel1(function, qtbot):

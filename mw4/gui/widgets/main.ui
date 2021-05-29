@@ -26045,9 +26045,9 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="geometry">
          <rect>
-          <x>280</x>
+          <x>264</x>
           <y>20</y>
-          <width>75</width>
+          <width>91</width>
           <height>46</height>
          </rect>
         </property>
@@ -26056,7 +26056,7 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="text">
          <string>Start 
- Updater</string>
+Updater</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_23">

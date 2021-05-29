@@ -17,10 +17,12 @@
 ###########################################################
 # standard libraries
 import os
+import sys
 import unittest.mock as mock
 import pytest
 import subprocess
 import builtins
+import platform
 
 # external packages
 from PyQt5.QtWidgets import QApplication, QTextBrowser, QWidget
@@ -201,11 +203,11 @@ def test_runUpdate_1():
     tb = QTextBrowser()
     with mock.patch.object(update,
                            'writeText'):
-        with mock.patch.object(QTest,
+        with mock.patch.object(update,
+                               'runInstall',
+                               return_value=False):
+            with mock.patch.object(QTest,
                                'qWait'):
-            with mock.patch.object(update,
-                                   'runInstall',
-                                   return_value=False):
                 with mock.patch.object(os,
                                        'execl'):
                     update.runUpdate(tb, '1')
@@ -215,11 +217,63 @@ def test_runUpdate_2():
     tb = QTextBrowser()
     with mock.patch.object(update,
                            'writeText'):
-        with mock.patch.object(QTest,
+        with mock.patch.object(update,
+                               'runInstall',
+                               return_value=True):
+            with mock.patch.object(QTest,
                                'qWait'):
-            with mock.patch.object(update,
-                                   'runInstall',
-                                   return_value=True):
                 with mock.patch.object(os,
                                        'execl'):
                     update.runUpdate(tb, '1')
+
+
+def test_main_1():
+    class App:
+
+        @staticmethod
+        def installEventFilter(a):
+            return
+
+        @staticmethod
+        def exec_():
+            return 0
+
+        @staticmethod
+        def setWindowIcon(a):
+            return 0
+
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        with mock.patch.object(update,
+                               'QApplication',
+                               return_value=App()):
+            with mock.patch.object(sys,
+                                   'exit'):
+                update.main()
+
+
+def test_main_2():
+    class App:
+
+        @staticmethod
+        def installEventFilter(a):
+            return
+
+        @staticmethod
+        def exec_():
+            return 0
+
+        @staticmethod
+        def setWindowIcon(a):
+            return 0
+
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        with mock.patch.object(update,
+                               'QApplication',
+                               return_value=App()):
+            with mock.patch.object(sys,
+                                   'exit'):
+                update.main()

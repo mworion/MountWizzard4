@@ -166,7 +166,6 @@ class Almanac:
 
         for timeEvent, event in zip(timeEvents, events):
             self.ui.twilightEvents.setTextColor(self.colors[event]['text'])
-            self.ui.twilightEvents.setFontWeight(QFont.Bold)
             text += f'{timeEvent.astimezone(tzlocal()).strftime("%H:%M:%S")} '
             text += f'{almanac.TWILIGHTS[event]}'
             self.ui.twilightEvents.insertPlainText(text)

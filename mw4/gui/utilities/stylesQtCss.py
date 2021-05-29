@@ -108,13 +108,13 @@ class Styles:
         font-size: 11pt;
     }
     QTextBrowser {
-        font-family: Courier;
-        font-weight: normal;
+        font-family: Courier New;
+        font-weight: bold;
         font-size: 13pt;
     }
     QListWidget {
-        font-family: Courier;
-        font-weight: normal;
+        font-family: Courier New;
+        font-weight: bold;
         font-size: 13pt;
     }
     QToolTip {
@@ -145,14 +145,14 @@ class Styles:
         font-size: 9pt;
     }
     QTextBrowser {
-        font-family: Courier;
-        font-weight: normal;
-        font-size: 8pt;
+        font-family: Courier New;
+        font-weight: bold;
+        font-size: 9pt;
     }
     QListWidget {
-        font-family: Courier;
-        font-weight: normal;
-        font-size: 8pt;
+        font-family: Courier New;
+        font-weight: bold;
+        font-size: 9pt;
     }
     QToolTip {
         font-size: 10pt;

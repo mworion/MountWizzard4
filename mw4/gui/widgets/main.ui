@@ -5914,7 +5914,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>510</x>
        <y>10</y>
        <width>271</width>
-       <height>166</height>
+       <height>161</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -5938,7 +5938,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <x>5</x>
         <y>20</y>
         <width>261</width>
-        <height>141</height>
+        <height>136</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -6264,7 +6264,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>510</x>
-       <y>185</y>
+       <y>180</y>
        <width>271</width>
        <height>46</height>
       </rect>

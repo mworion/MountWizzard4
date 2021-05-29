@@ -45,6 +45,7 @@ def function(module):
             self.threadPool = self.app.threadPool
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
+            self.closing = False
             Almanac.__init__(self)
 
     window = Mixin()
@@ -80,7 +81,21 @@ def test_storeConfig_2(function):
         assert suc
 
 
-def test_drawTwilightData_1(function):
+def test_plotTwilightData_1(function):
+    function.closing = False
+    ts = function.app.mount.obsSite.ts
+    tsNow = ts.now()
+    t = [tsNow, tsNow]
+    e = [1, 1]
+    result = (ts, t, e)
+    widget = QWidget()
+    function.twilight = function.embedMatplot(widget)
+    suc = function.plotTwilightData(result)
+    assert suc
+
+
+def test_plotTwilightData_2(function):
+    function.closing = True
     ts = function.app.mount.obsSite.ts
     tsNow = ts.now()
     t = [tsNow, tsNow]

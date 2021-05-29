@@ -283,8 +283,6 @@ class SettMisc(object):
 
     @staticmethod
     def restartProgram():
-        print("argv was", sys.argv)
-        print("sys.executable was", sys.executable)
         python = sys.executable
         os.execl(python, python, *sys.argv)
 

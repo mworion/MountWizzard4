@@ -46,18 +46,18 @@ elif [[ $T == *"3.7"* ]]; then
   P_VER="python3.7"
 fi
 
+echo variable P_VER has value of $P_VER >> install.log 2>&1
+
 if [ "${P_VER:0:6}" == "python" ]; then
   echo
   echo ---------------------------------------------
   echo python version ok
   echo ---------------------------------------------
-
 else
   echo
   echo ---------------------------------------------
   echo no valid python version installed
   echo ---------------------------------------------
-
   echo no valid python version installed >> install.log 2>&1
   exit
 fi
@@ -74,9 +74,9 @@ echo ---------------------------------------------
 echo installing $P_VER in virtual environ
 echo ---------------------------------------------
 
+echo Installing $P_VER in virtual environ >> install.log 2>&1
 python3 -m venv venv >> install.log 2>&1
 
-# check if virtualenv is available
 if [ ! -f ./venv/bin/activate ]; then
   echo
   echo ---------------------------------------------

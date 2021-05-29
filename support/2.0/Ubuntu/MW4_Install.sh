@@ -52,6 +52,7 @@ else
   echo --------------------------------------------------------
   echo no valid python version installed
   echo --------------------------------------------------------
+  echo no valid python version installed >> install.log 2>&1
   exit
 fi
 
@@ -68,22 +69,18 @@ echo Installing $P_VER in virtual environ
 echo --------------------------------------------------------
 
 echo Installing $P_VER in virtual environ >> install.log 2>&1
+python3 -m venv venv >> install.log 2>&1
 
-{
-virtualenv venv >> install.log 2>&1
-} || {
+if [ ! -f ./venv/bin/activate ]; then
   echo
-  echo --------------------------------------------------------
+  echo ---------------------------------------------
   echo no valid virtual environment installed
   echo please check the install.log for errors
-  echo install virtualenv with
-  echo sudo apt-get install python3-virtualenv
-  echo --------------------------------------------------------
+  echo ---------------------------------------------
 
   echo no valid virtual environment installed >> install.log 2>&1
-
   exit
-}
+fi
 
 echo
 echo --------------------------------------------------------

@@ -1,3 +1,3 @@
-Imaging Settings
-================
-tbd
+Imaging parameters
+==================
+

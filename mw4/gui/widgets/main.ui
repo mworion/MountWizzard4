@@ -12050,7 +12050,7 @@ Next point in time when satellite settles.</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking is in simulation mode, means that tracking starts always now regardless which is the real tracking start time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking is in simulation mode, means that tracking starts always now regardless which is the real tracking start time. Please uncheck it for real satellite tracking.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>Simulate</string>

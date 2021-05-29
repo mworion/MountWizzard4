@@ -55,6 +55,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.ui = satellite_ui.Ui_SatelliteDialog()
         self.ui.setupUi(self)
         self.initUI()
+        self.closing = False
         self.signals = SatelliteWindowSignals()
         self.satellite = None
         self.plotSatPosSphere1 = None
@@ -122,11 +123,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param closeEvent:
         :return:
         """
+        self.closing = True
         self.storeConfig()
-        plt.close(self.satSphereMat1.figure)
-        plt.close(self.satSphereMat2.figure)
-        plt.close(self.satHorizonMat.figure)
-        plt.close(self.satEarthMat.figure)
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -631,6 +629,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param isSunlit:
         :return: True for test purpose
         """
+        if self.closing:
+            return False
+
         if satellite is None or satOrbits is None:
             self.drawEarth()
             self.drawHorizonView()

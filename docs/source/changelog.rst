@@ -20,8 +20,9 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.0.0b9
+2.0.0b11
 
+- new updater concept
 - add mount clock sync feature
 - add simulator feature
 - add dome following when mount is in satellite tracking mode

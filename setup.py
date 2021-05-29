@@ -19,6 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- new updater concept
 - add mount clock sync feature
 - add simulator feature
 - add dome following when mount is in satellite tracking mode 
@@ -48,7 +49,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b10',
+    version='2.0.0a14',
     packages=[
         'mw4',
         'mw4.base',
@@ -82,15 +83,15 @@ setup(
         'matplotlib==3.4.2',
         'pyerfa==1.7.3',
         'astropy==4.2.1',
-        'scipy==1.6.2',
-        'sep==1.1.1',
+        'scipy==1.6.3',
+        'sep==1.2.0',
         'requests==2.25.1',
         'requests_toolbelt==0.9.1',
         'skyfield==1.39',
-        'sgp4>=2.1',
+        'sgp4==2.19',
         'qimage2ndarray==1.8.3',
-        'importlib_metadata==4.0.1',
-        'deepdiff==5.3.0',
+        'importlib_metadata==4.3.1',
+        'deepdiff==5.5.0',
         'colour_demosaicing==0.1.6',
         'wakeonlan==2.0.1',
         'pybase64==1.1.4',

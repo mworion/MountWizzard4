@@ -104,7 +104,7 @@ def test_plotTwilightData_2(function):
     widget = QWidget()
     function.twilight = function.embedMatplot(widget)
     suc = function.plotTwilightData(result)
-    assert suc
+    assert not suc
 
 
 def test_calcTwilightData_1(function):

@@ -150,6 +150,7 @@ def runUpdate(textBrow, version):
     :return:
     """
     writeText(textBrow, f'Installing now version {version}', 1)
+    QTest.qWait(1000)
 
     suc = runInstall(textBrow, version)
     if suc:
@@ -181,8 +182,10 @@ def main():
     app.setWindowIcon(QIcon(':/icon/mw4.ico'))
     window = QWidget()
     window.setWindowTitle('MountWizzard4 Updater')
-    window.resize(800, 600)
-    window.move(int(sys.argv[2]), int(sys.argv[3]))
+    window.resize(500, 300)
+    x = int(sys.argv[2]) + 150
+    y = int(sys.argv[3]) + 150
+    window.move(x, y)
 
     if platform.system() == 'Darwin':
         style = Styles.MAC_STYLE + Styles.BASIC_STYLE
@@ -195,6 +198,7 @@ def main():
     update = QPushButton('Start Update')
     update.setFixedHeight(25)
     textBrow = QTextBrowser()
+    textBrow.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
     update.clicked.connect(lambda: runUpdate(textBrow, version))
     cancel.clicked.connect(lambda: runCancel(textBrow))
@@ -205,16 +209,16 @@ def main():
 
     header = QLabel()
     iconLabel = QLabel()
-    pixmap = QPixmap(':icon/mw4.png').scaled(128, 128)
+    pixmap = QPixmap(':icon/mw4.png').scaled(32, 32)
     iconLabel.setPixmap(pixmap)
     layoutHeader.addWidget(iconLabel)
 
     header.setText(f'Update to version: [{version}]')
-    header.setStyleSheet('font-size: 28pt;')
+    header.setStyleSheet('font-size: 18pt;')
     layoutHeader.addWidget(header)
 
     question = QLabel()
-    pixmap = QPixmap(':/icon/question.svg').scaled(128, 128)
+    pixmap = QPixmap(':/icon/question.svg').scaled(32, 32)
     question.setPixmap(pixmap)
     question.setAlignment(Qt.AlignRight)
     layoutHeader.addWidget(question)

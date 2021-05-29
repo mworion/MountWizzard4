@@ -26,7 +26,6 @@ Released beta version of MW4
 - add mount clock sync feature
 - add simulator feature
 - add dome following when mount is in satellite tracking mode
-- debug standard moved from WARN to INFO
 - add setting label support for UPB dew entries
 - add auto dew control support for Pegasus UPB
 - add switch support for ASCOM/ALPACA Pegasus UPB
@@ -44,6 +43,7 @@ Released beta version of MW4
 - fix slewing message dome when disconnected
 - fix retry mechanism for failed build points
 - fix using builtins for skyfield and rotation update
+- debug standard moved from WARN to INFO
 - update underlying libraries
 
 Released version of MW4

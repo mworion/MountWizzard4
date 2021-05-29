@@ -26052,10 +26052,11 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starting process for updating MountWizzard4 to selected version. The button remains blue as long as the installations is running.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starting process for updating MountWizzard4 to selected version. MW4 will start an external updater programm. MW4 will be closed during this time. If you would like to keep your settings, please save first.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Install</string>
+         <string>Start 
+ Updater</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_23">

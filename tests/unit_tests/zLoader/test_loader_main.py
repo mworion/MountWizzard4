@@ -22,10 +22,8 @@ import glob
 import os
 
 # external packages
-import pytest
 import PyQt5
 from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
 
 # local import
 from mw4 import loader

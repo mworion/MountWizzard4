@@ -227,173 +227,7 @@ def test_isVenv_1(function):
     function.isVenv()
 
 
-def test_formatPIP_1(function):
-    line = function.formatPIP()
-    assert line == ''
-
-
-def test_formatPIP_2(function):
-    line = function.formatPIP('   ')
-    assert line == ''
-
-
-def test_formatPIP_3(function):
-    line = function.formatPIP('Requirement already satisfied: mountcontrol in /Users (0.157)')
-    assert line == 'Requirement already satisfied : mountcontrol'
-
-
-def test_formatPIP_4(function):
-    line = function.formatPIP('Collecting mountcontrol==0.157')
-    assert line == 'Collecting mountcontrol'
-
-
-def test_formatPIP_5(function):
-    line = function.formatPIP('Installing collected packages: mountcontrol')
-    assert line == 'Installing collected packages'
-
-
-def test_formatPIP_6(function):
-    line = function.formatPIP('Successfully installed mountcontrol-0.156')
-    assert line == 'Successfully installed mountcontrol-0.156'
-
-
-def test_restartProgram(function):
-    with mock.patch.object(os,
-                           'execl'):
-        function.restartProgram()
-
-
-def test_runInstall_1(function):
-    class Test1:
-        @staticmethod
-        def decode():
-            return 'decode'
-
-        @staticmethod
-        def readline():
-            return ''
-
-        @staticmethod
-        def replace(a, b):
-            return ''
-
-    class Test:
-        returncode = 0
-        stderr = Test1()
-        stdout = Test1()
-
-        @staticmethod
-        def communicate(timeout=0):
-            return Test1(), Test1()
-
-    with mock.patch.object(subprocess,
-                           'Popen',
-                           return_value=Test()):
-        with mock.patch.object(function,
-                               'formatPIP',
-                               return_value='test'):
-            with mock.patch.object(builtins,
-                                   'iter',
-                                   return_value=['1', '2']):
-                suc, val = function.runInstall()
-                assert suc
-
-
-def test_runInstall_2(function):
-    class Test1:
-        @staticmethod
-        def decode():
-            return 'decode'
-
-        @staticmethod
-        def readline():
-            return
-
-        @staticmethod
-        def replace(a, b):
-            return ''
-
-    class Test:
-        returncode = 0
-        stderr = Test1()
-        stdout = Test1()
-
-        @staticmethod
-        def communicate(timeout=0):
-            return Test1(), Test1()
-
-    with mock.patch.object(subprocess,
-                           'Popen',
-                           return_value=Test(),
-                           side_effect=Exception()):
-        with mock.patch.object(function,
-                               'formatPIP',
-                               return_value=''):
-            suc, val = function.runInstall()
-            assert not suc
-
-
-def test_runInstall_3(function):
-    class Test1:
-        @staticmethod
-        def decode():
-            return 'decode'
-
-        @staticmethod
-        def readline():
-            return
-
-        @staticmethod
-        def replace(a, b):
-            return ''
-
-    class Test:
-        returncode = 0
-        stderr = Test1()
-        stdout = Test1()
-
-        @staticmethod
-        def communicate(timeout=0):
-            return Test1(), Test1()
-
-    with mock.patch.object(subprocess,
-                           'Popen',
-                           return_value=Test(),
-                           side_effect=subprocess.TimeoutExpired('res', 2)):
-        with mock.patch.object(function,
-                               'formatPIP',
-                               return_value=''):
-            suc, val = function.runInstall()
-            assert not suc
-
-
-def test_installFinished_1(function):
-    function.mutexInstall.lock()
-    with mock.patch.object(function,
-                           'restartProgram'):
-        suc = function.installFinished(None)
-        assert not suc
-
-
-def test_installFinished_2(function):
-    function.mutexInstall.lock()
-    with mock.patch.object(function,
-                           'restartProgram'):
-        suc = function.installFinished((False, '0.148.8'))
-        assert not suc
-
-
-def test_installFinished_3(function):
-    function.mutexInstall.lock()
-    function.ui.automaticRestart.setChecked(True)
-    with mock.patch.object(function,
-                           'restartProgram'):
-        suc = function.installFinished((True, '0.148.8'))
-        assert suc
-
-
 def test_installVersion_1(function):
-    packageConfig.isWindows = True
     with mock.patch.object(function,
                            'isVenv',
                            return_value=False):
@@ -402,22 +236,11 @@ def test_installVersion_1(function):
 
 
 def test_installVersion_2(function):
-    function.mutexInstall.lock()
-    packageConfig.isWindows = False
     with mock.patch.object(function,
                            'isVenv',
                            return_value=True):
-        suc = function.installVersion()
-        assert not suc
-
-
-def test_installVersion_3(function):
-    with mock.patch.object(function,
-                           'isVenv',
-                           return_value=True):
-        with mock.patch.object(function.threadPool,
-                               'start',
-                               return_value=True):
+        with mock.patch.object(os,
+                               'execl'):
             suc = function.installVersion()
             assert suc
 

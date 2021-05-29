@@ -116,11 +116,11 @@ def runInstall(textBrow, versionPackage=''):
 
     except subprocess.TimeoutExpired as e:
         log.error(e)
-        return False, None
+        return False
 
     except Exception as e:
         log.error(f'Error: {e} happened')
-        return False, None
+        return False
 
     else:
         retCode = str(process.returncode)

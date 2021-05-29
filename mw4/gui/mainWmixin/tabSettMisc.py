@@ -275,7 +275,8 @@ class SettMisc(object):
         updaterDir = os.path.dirname(sys.argv[0])
         updaterFull = updaterDir + '/update.py'
         python = sys.executable
-        os.execl(python, python, updaterFull, versionPackage)
+        os.execl(python, python, updaterFull, versionPackage,
+                 str(self.pos().x()), str(self.pos().y()))
         return True
 
     def setLoggingLevel(self):

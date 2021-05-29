@@ -182,6 +182,7 @@ def main():
     window = QWidget()
     window.setWindowTitle('MountWizzard4 Updater')
     window.resize(800, 600)
+    window.move(int(sys.argv[2]), int(sys.argv[3]))
 
     if platform.system() == 'Darwin':
         style = Styles.MAC_STYLE + Styles.BASIC_STYLE

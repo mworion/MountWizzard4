@@ -67,20 +67,21 @@ class Satellite(object):
         self.nextSatPass = [None, None, None]
         self.lastMeridianLimit = None
 
+        baseUrl = 'http://www.celestrak.com/NORAD/elements/'
         self.satelliteSourceURLs = {
-            'Active': 'http://www.celestrak.com/NORAD/elements/active.txt',
-            'Space Stations': 'http://www.celestrak.com/NORAD/elements/stations.txt',
-            '100 brightest': 'http://www.celestrak.com/NORAD/elements/visual.txt',
-            'NOAA': 'http://www.celestrak.com/NORAD/elements/noaa.txt',
-            'GEOS': 'http://www.celestrak.com/NORAD/elements/goes.txt',
-            'Weather': 'http://www.celestrak.com/NORAD/elements/weather.txt',
-            'Earth Resources': 'http://celestrak.com/NORAD/elements/resource.txt',
-            'TDRSS TRacking and Data Relay': 'http://celestrak.com/NORAD/elements/tdrss.txt',
-            'ARGOS': 'http://celestrak.com/NORAD/elements/argos.txt',
-            'Amateur Radio': 'http://www.celestrak.com/NORAD/elements/amateur.txt',
-            'Space & Earth Science': 'http://celestrak.com/NORAD/elements/science.txt',
-            'Engineering': 'http://celestrak.com/NORAD/elements/engineering.txt',
-            'Last 30 days launch': 'http://www.celestrak.com/NORAD/elements/tle-new.txt',
+            'Active': baseUrl + 'active.txt',
+            'Space Stations': baseUrl + 'stations.txt',
+            '100 brightest': baseUrl + 'visual.txt',
+            'NOAA': baseUrl + 'noaa.txt',
+            'GEOS': baseUrl + 'goes.txt',
+            'Weather': baseUrl + 'weather.txt',
+            'Earth Resources': baseUrl + 'resource.txt',
+            'TDRSS Tracking & Data Relay': baseUrl + 'tdrss.txt',
+            'ARGOS': baseUrl + 'argos.txt',
+            'Amateur Radio': baseUrl + 'amateur.txt',
+            'Space & Earth Science': baseUrl + 'science.txt',
+            'Engineering': baseUrl + 'engineering.txt',
+            'Last 30 days launch': baseUrl + 'tle-new.txt',
         }
 
         self.passUI = {

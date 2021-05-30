@@ -138,6 +138,7 @@ def runCancel(textBrow, cancel, update):
     update.setEnabled(False)
     writeText(textBrow, 'Update cancelled', 2)
     writeText(textBrow, 'Restarting MountWizzard4...', 1)
+    writeText(textBrow, '...this takes some seconds...', 1)
     QTest.qWait(3000)
 
     runDir = os.path.dirname(sys.argv[0])
@@ -155,7 +156,6 @@ def runUpdate(textBrow, version, cancel, update):
     update.setEnabled(False)
     writeText(textBrow, f'Installing now version {version}', 1)
     QTest.qWait(1000)
-
     suc = runInstall(textBrow, version)
     if suc:
         writeText(textBrow, f'Successfully installed {version}', 1)
@@ -163,6 +163,7 @@ def runUpdate(textBrow, version, cancel, update):
         writeText(textBrow, 'Error installing {version}', 2)
 
     writeText(textBrow, f'Restarting MountWizzard4...', 1)
+    writeText(textBrow, '...this takes some seconds...', 1)
     QTest.qWait(3000)
 
     runDir = os.path.dirname(sys.argv[0])

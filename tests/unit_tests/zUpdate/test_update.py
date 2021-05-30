@@ -207,7 +207,7 @@ def test_runUpdate_1():
                                'runInstall',
                                return_value=False):
             with mock.patch.object(QTest,
-                               'qWait'):
+                                   'qWait'):
                 with mock.patch.object(os,
                                        'execl'):
                     update.runUpdate(tb, '1')
@@ -221,7 +221,7 @@ def test_runUpdate_2():
                                'runInstall',
                                return_value=True):
             with mock.patch.object(QTest,
-                               'qWait'):
+                                   'qWait'):
                 with mock.patch.object(os,
                                        'execl'):
                     update.runUpdate(tb, '1')
@@ -250,7 +250,10 @@ def test_main_1():
                                return_value=App()):
             with mock.patch.object(sys,
                                    'exit'):
-                update.main()
+                with mock.patch.object(sys,
+                                       'argv',
+                                       return_value=('', '1', '10', '10')):
+                    update.main()
 
 
 def test_main_2():
@@ -275,5 +278,8 @@ def test_main_2():
                                'QApplication',
                                return_value=App()):
             with mock.patch.object(sys,
+                                   'argv',
+                                   return_value=('', '1', '10', '10')):
+                with mock.patch.object(sys,
                                    'exit'):
-                update.main()
+                    update.main()

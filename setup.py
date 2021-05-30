@@ -32,6 +32,7 @@ releaseNotes = """
 - add partially satellite tracking before / after possible flip 
 - add satellite track respect horizon line and meridian limits
 - add tracking simulator feature to test without waiting for satellite
+- add alt/az pointer to satellite view
 - add reverse order for filed build point retry 
 - add automatic enable webinterface for keypad use
 - changed IERS and lead second download
@@ -49,7 +50,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b11',
+    version='2.0.0b12',
     packages=[
         'mw4',
         'mw4.base',

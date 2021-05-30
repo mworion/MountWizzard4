@@ -20,7 +20,7 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.0.0b11
+2.0.0b12
 
 - new updater concept
 - add mount clock sync feature
@@ -35,6 +35,7 @@ Released beta version of MW4
 - add partially satellite tracking before / after possible flip
 - add satellite track respect horizon line and meridian limits
 - add tracking simulator feature to test without waiting for satellite
+- add alt/az pointer to satellite view
 - add reverse order for filed build point retry
 - add automatic enable webinterface for keypad use
 - changed IERS and lead second download

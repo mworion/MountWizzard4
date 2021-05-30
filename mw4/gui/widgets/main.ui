@@ -10475,7 +10475,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) satellite database to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Program filtered database</string>
+      <string>Prog filtered database</string>
      </property>
     </widget>
     <widget class="QPushButton" name="progSatellitesFull">
@@ -10491,7 +10491,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected satellite database to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Program complete database</string>
+      <string>Prog complete database</string>
      </property>
     </widget>
     <widget class="QGroupBox" name="groupBox_24">
@@ -12270,7 +12270,7 @@ Next point in time when satellite settles.</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Program complete database</string>
+      <string>Prog complete database</string>
      </property>
     </widget>
     <widget class="QPushButton" name="progMinorPlanetsFiltered">
@@ -12286,7 +12286,7 @@ Next point in time when satellite settles.</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Program filtered database</string>
+      <string>Prog filtered database</string>
      </property>
     </widget>
     <widget class="QGroupBox" name="groupBox_36">

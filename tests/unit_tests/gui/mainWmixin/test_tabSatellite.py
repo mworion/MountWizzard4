@@ -1136,7 +1136,7 @@ def test_stopTrack_1(function):
 def test_stopTrack_2(function):
     function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
-                           'stopTracking',
+                           'startTracking',
                            return_value=False):
         suc = function.stopTrack()
         assert not suc
@@ -1145,7 +1145,7 @@ def test_stopTrack_2(function):
 def test_stopTrack_3(function):
     function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount.obsSite,
-                           'stopTracking',
+                           'startTracking',
                            return_value=True):
         suc = function.stopTrack()
         assert suc

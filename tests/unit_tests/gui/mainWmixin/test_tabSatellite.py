@@ -382,6 +382,16 @@ def test_updatePasses_1(function):
         assert function.lastMeridianLimit == 10
 
 
+def test_updatePasses_2(function):
+    function.app.mount.setting.meridianLimitTrack = None
+    function.lastMeridianLimit = 5
+    with mock.patch.object(function,
+                           'showSatPasses'):
+        suc = function.updatePasses()
+        assert not suc
+        assert function.lastMeridianLimit == 5
+
+
 def test_sendSatelliteData_1(function):
     function.satellite = None
     function.satOrbits = None

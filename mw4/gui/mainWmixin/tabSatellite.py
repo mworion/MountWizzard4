@@ -357,6 +357,9 @@ class Satellite(object):
         :return:
         """
         actMeridianLimit = self.app.mount.setting.meridianLimitTrack
+        if actMeridianLimit is None:
+            return False
+
         if actMeridianLimit != self.lastMeridianLimit:
             self.showSatPasses()
             self.lastMeridianLimit = actMeridianLimit

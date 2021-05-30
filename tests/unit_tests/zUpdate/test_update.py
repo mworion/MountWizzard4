@@ -25,7 +25,7 @@ import builtins
 import platform
 
 # external packages
-from PyQt5.QtWidgets import QApplication, QTextBrowser, QWidget
+from PyQt5.QtWidgets import QApplication, QTextBrowser, QWidget, QPushButton
 from PyQt5.QtTest import QTest
 
 # local import
@@ -190,17 +190,19 @@ def test_runInstall_3():
 
 def test_runCancel():
     tb = QTextBrowser()
+    pb = QPushButton()
     with mock.patch.object(update,
                            'writeText'):
         with mock.patch.object(QTest,
                                'qWait'):
             with mock.patch.object(os,
                                    'execl'):
-                update.runCancel(tb)
+                update.runCancel(tb, pb, pb)
 
 
 def test_runUpdate_1():
     tb = QTextBrowser()
+    pb = QPushButton()
     with mock.patch.object(update,
                            'writeText'):
         with mock.patch.object(update,
@@ -210,11 +212,12 @@ def test_runUpdate_1():
                                    'qWait'):
                 with mock.patch.object(os,
                                        'execl'):
-                    update.runUpdate(tb, '1')
+                    update.runUpdate(tb, '1', pb, pb)
 
 
 def test_runUpdate_2():
     tb = QTextBrowser()
+    pb = QPushButton()
     with mock.patch.object(update,
                            'writeText'):
         with mock.patch.object(update,
@@ -224,7 +227,7 @@ def test_runUpdate_2():
                                    'qWait'):
                 with mock.patch.object(os,
                                        'execl'):
-                    update.runUpdate(tb, '1')
+                    update.runUpdate(tb, '1', pb, pb)
 
 
 def test_main_1():

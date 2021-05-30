@@ -130,10 +130,12 @@ def runInstall(textBrow, versionPackage=''):
     return success
 
 
-def runCancel(textBrow):
+def runCancel(textBrow, cancel, update):
     """
     :return:
     """
+    cancel.setEnabled(False)
+    update.setEnabled(False)
     writeText(textBrow, 'Update cancelled', 2)
     writeText(textBrow, 'Restarting MountWizzard4...', 1)
     QTest.qWait(3000)
@@ -145,10 +147,12 @@ def runCancel(textBrow):
     return True
 
 
-def runUpdate(textBrow, version):
+def runUpdate(textBrow, version, cancel, update):
     """
     :return:
     """
+    cancel.setEnabled(False)
+    update.setEnabled(False)
     writeText(textBrow, f'Installing now version {version}', 1)
     QTest.qWait(1000)
 
@@ -200,8 +204,8 @@ def main():
     textBrow = QTextBrowser()
     textBrow.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-    update.clicked.connect(lambda: runUpdate(textBrow, version))
-    cancel.clicked.connect(lambda: runCancel(textBrow))
+    update.clicked.connect(lambda: runUpdate(textBrow, version, cancel, update))
+    cancel.clicked.connect(lambda: runCancel(textBrow, cancel, update))
 
     layoutMain = QVBoxLayout()
     layoutHeader = QHBoxLayout()

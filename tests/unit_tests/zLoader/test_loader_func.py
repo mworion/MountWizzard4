@@ -173,7 +173,7 @@ def test_extractDataFiles_6(qtbot):
 
 
 def test_getWindowPos_1():
-    test = os.getcwd() + '/tests'
+    test = 'tests'
     with mock.patch.object(os,
                            'getcwd',
                            return_value=test):
@@ -183,7 +183,7 @@ def test_getWindowPos_1():
 
 
 def test_getWindowPos_2():
-    test = os.getcwd() + '/tests'
+    test = 'tests'
     with open(test + '/config/profile', 'w+') as f:
         f.write('config')
     with mock.patch.object(os,
@@ -195,7 +195,7 @@ def test_getWindowPos_2():
 
 
 def test_getWindowPos_3():
-    test = os.getcwd() + '/tests'
+    test = 'tests'
     with open(test + '/config/profile', 'w+') as f:
         f.write('config')
     with open(test + '/config/config.cfg', 'w+') as f:
@@ -209,7 +209,7 @@ def test_getWindowPos_3():
 
 
 def test_getWindowPos_4():
-    test = os.getcwd() + '/tests'
+    test = 'tests'
     with open(test + '/config/profile', 'w+') as f:
         f.write('config')
     with open(test + '/config/config.cfg', 'w+') as f:

@@ -129,6 +129,7 @@ jobs:
       - name: running_unit_tests
         run: |
           pytest tests/unit_tests/zLoader --cov=mw4/
+          pytest tests/unit_tests/zUpdate --cov-append --cov=mw4/
           pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/
           pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/
           pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/

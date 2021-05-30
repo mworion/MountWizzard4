@@ -124,6 +124,7 @@ jobs:
       - name: running_unit_tests
         run: |
           pytest tests/unit_tests/zLoader
+          pytest tests/unit_tests/zUpdate
           pytest tests/unit_tests/zMainApp
           pytest tests/unit_tests/gui/utilities
           pytest tests/unit_tests/gui/extWindows

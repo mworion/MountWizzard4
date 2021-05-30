@@ -6,6 +6,7 @@ Installing Process
 
     python
     mw4
+    update
     platesolvers
     rpi3
     rpi4

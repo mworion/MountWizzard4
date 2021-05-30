@@ -34,8 +34,16 @@ def module_setup_teardown():
         yield
 
 
-def test_icon(qtbot):
+def test_icon_1(qtbot):
     app = SplashScreen(QWidget())
+    qtbot.addWidget(app)
+
+    value = QPixmap(':/icon/mw4.ico')
+    assert isinstance(value, QPixmap)
+
+
+def test_icon_2(qtbot):
+    app = SplashScreen(QWidget(), 100, 100)
     qtbot.addWidget(app)
 
     value = QPixmap(':/icon/mw4.ico')

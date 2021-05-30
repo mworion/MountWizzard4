@@ -212,6 +212,16 @@ def test_initConfig_2():
 
 def test_initConfig_3():
     app.app.config['mainW'] = {}
+    app.app.config['mainW']['winPosX'] = 100
+    app.app.config['mainW']['winPosY'] = 100
+    with mock.patch.object(app,
+                           'mwSuper'):
+        suc = app.initConfig()
+        assert suc
+
+
+def test_initConfig_4():
+    app.app.config['mainW'] = {}
     app.app.config['mainW']['winPosX'] = 10000
     app.app.config['mainW']['winPosY'] = 10000
     with mock.patch.object(app,

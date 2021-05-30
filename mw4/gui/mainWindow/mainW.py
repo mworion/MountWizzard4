@@ -229,15 +229,16 @@ class MainWindow(
         if 'mainW' not in config:
             config['mainW'] = {}
         config = config['mainW']
-        x = config.get('winPosX', 20)
-        y = config.get('winPosY', 20)
+        x = config.get('winPosX', 0)
+        y = config.get('winPosY', 0)
 
         if x > self.screenSizeX:
             x = 0
         if y > self.screenSizeY:
             y = 0
+        if x != 0 and y != 0:
+            self.move(x, y)
 
-        self.move(x, y)
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
         self.ui.toolsTabWidget.setCurrentIndex(config.get('toolsTabWidget', 0))

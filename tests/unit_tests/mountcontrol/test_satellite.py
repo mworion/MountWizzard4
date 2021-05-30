@@ -736,6 +736,24 @@ class TestConfigData(unittest.TestCase):
         suc = sat.parseCalcTLE(response, 3)
         self.assertFalse(suc)
 
+    def test_calcTLE_0(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        ts = load.timescale()
+        julD = ts.tt_jd(1234567.8)
+
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, 'E', 1
+
+            suc = sat.calcTLE(julD=1234567.8)
+            self.assertFalse(suc)
+
     def test_calcTLE_1(self):
         class ObsSite:
             UTC2TT = 69
@@ -745,11 +763,13 @@ class TestConfigData(unittest.TestCase):
             obsSite = ObsSite()
 
         sat = Satellite(parent=Parent())
+        ts = load.timescale()
+        julD = ts.tt_jd(1234567.8)
 
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'E', 1
 
-            suc = sat.calcTLE(julD=1234567.8)
+            suc = sat.calcTLE(julD=julD)
             self.assertFalse(suc)
 
     def test_calcTLE_2(self):
@@ -825,8 +845,13 @@ class TestConfigData(unittest.TestCase):
             self.assertTrue(suc)
 
     def test_calcTLE_6(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
         class Parent:
-            obsSite = None
+            obsSite = ObsSite()
+
         sat = Satellite(parent=Parent())
         s0 = '+23.12334,123.1234'
         s1 = '12.12345,+12.1234'
@@ -840,8 +865,13 @@ class TestConfigData(unittest.TestCase):
             self.assertFalse(suc)
 
     def test_calcTLE_7(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
         class Parent:
-            obsSite = None
+            obsSite = ObsSite()
+
         sat = Satellite(parent=Parent())
         s0 = '+23.12334,123.1234'
         s1 = '12.12345,+12.1234'
@@ -854,16 +884,43 @@ class TestConfigData(unittest.TestCase):
             suc = sat.calcTLE(julD=1234567.8, duration=0)
             self.assertFalse(suc)
 
-    def test_getCoordsFromTLE_1(self):
+    def test_getCoordsFromTLE_0(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
         class Parent:
-            obsSite = None
+            obsSite = ObsSite()
+
         sat = Satellite(parent=Parent())
         suc = sat.getCoordsFromTLE()
         self.assertFalse(suc)
 
-    def test_getCoordsFromTLE_2(self):
+    def test_getCoordsFromTLE_1(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
         class Parent:
-            obsSite = None
+            obsSite = ObsSite()
+
+        ts = load.timescale()
+        julD = ts.tt_jd(1234567.8)
+
+        sat = Satellite(parent=Parent())
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, 'E', 1
+
+            suc = sat.getCoordsFromTLE(julD=julD)
+            self.assertFalse(suc)
+
+    def test_getCoordsFromTLE_2(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
         sat = Satellite(parent=Parent())
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'E', 1
@@ -872,8 +929,12 @@ class TestConfigData(unittest.TestCase):
             self.assertFalse(suc)
 
     def test_getCoordsFromTLE_3(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
         class Parent:
-            obsSite = None
+            obsSite = ObsSite()
         sat = Satellite(parent=Parent())
         response = ['E', 'E']
         ret = (True, response, 2)
@@ -884,8 +945,12 @@ class TestConfigData(unittest.TestCase):
             self.assertFalse(suc)
 
     def test_getCoordsFromTLE_4(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
         class Parent:
-            obsSite = None
+            obsSite = ObsSite()
         sat = Satellite(parent=Parent())
         response = ['10.0, 10.0', 'E']
         ret = (True, response, 2)
@@ -896,8 +961,12 @@ class TestConfigData(unittest.TestCase):
             self.assertFalse(suc)
 
     def test_getCoordsFromTLE_5(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
         class Parent:
-            obsSite = None
+            obsSite = ObsSite()
         sat = Satellite(parent=Parent())
         response = ['10.0, 10.0', '10.0, 10.0']
         ret = (True, response, 2)
@@ -908,8 +977,12 @@ class TestConfigData(unittest.TestCase):
             self.assertTrue(suc)
 
     def test_slewTLE_1(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
         class Parent:
-            obsSite = None
+            obsSite = ObsSite()
         sat = Satellite(parent=Parent())
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'E', 1
@@ -918,8 +991,12 @@ class TestConfigData(unittest.TestCase):
             self.assertFalse(suc)
 
     def test_slewTLE_2(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
         class Parent:
-            obsSite = None
+            obsSite = ObsSite()
         sat = Satellite(parent=Parent())
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'X', 1
@@ -929,8 +1006,12 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(mes, 'Error')
 
     def test_slewTLE_3(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
         class Parent:
-            obsSite = None
+            obsSite = ObsSite()
         sat = Satellite(parent=Parent())
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'V', 1
@@ -940,8 +1021,12 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(mes, 'Slewing to start and track')
 
     def test_slewTLE_4(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
         class Parent:
-            obsSite = None
+            obsSite = ObsSite()
         sat = Satellite(parent=Parent())
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'V', 2

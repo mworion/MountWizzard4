@@ -292,6 +292,7 @@ class Satellite(object):
 
     def __init__(self, parent=None, host=None):
         self.host = host
+        self.obsSite = parent.obsSite
         self.tleParams = TLEParams(obsSite=parent.obsSite)
         self.trajectoryParams = TrajectoryParams(obsSite=parent.obsSite)
 
@@ -442,7 +443,7 @@ class Satellite(object):
         self.tleParams.jdEnd = end
         return True
 
-    def calcTLE(self, julD='', duration=1440):
+    def calcTLE(self, julD=None, duration=1440):
         """
         set of three commands !
 
@@ -486,8 +487,14 @@ class Satellite(object):
         :param duration:    duration in minutes
         :return: success
         """
-        if not julD:
+        if julD is None:
             return False
+        if isinstance(julD, skyfield.timelib.Time):
+            julD = julD.tt
+
+        # transformation UTC <-> TT time system
+        julD -= self.obsSite.UTC2TT
+
         if not 0 < duration < 1441:
             return False
 
@@ -505,8 +512,13 @@ class Satellite(object):
         :param julD:
         :return:
         """
-        if not julD:
+        if julD is None:
             return False
+        if isinstance(julD, skyfield.timelib.Time):
+            julD = julD.tt
+
+        # transformation UTC <-> TT time system
+        julD -= self.obsSite.UTC2TT
 
         conn = Connection(self.host)
         command = f':TLEGAZ{julD}#:TLEGEQ{julD}#'
@@ -605,6 +617,9 @@ class Satellite(object):
         if isinstance(julD, skyfield.timelib.Time):
             julD = julD.tt
 
+        # transformation UTC <-> TT time system
+        julD -= self.obsSite.UTC2TT
+
         cmd = f':TRNEW{julD}#'
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
@@ -678,6 +693,7 @@ class Satellite(object):
         if len(response) != 1:
             self.log.warning('wrong number of chunks')
             return False
+
         # should be 'E' only , actually wrong 'N' in
         if response[0] in ['E', 'N']:
             return False

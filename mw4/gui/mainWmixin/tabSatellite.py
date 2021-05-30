@@ -594,7 +594,7 @@ class Satellite(object):
         temp = m.setting.refractionTemp
         press = m.setting.refractionPress
         timeSeries = start + np.arange(0, duration, 1 / 86400)
-        timeVec = m.obsSite.ts.tt_jd(timeSeries + m.obsSite.UTC2TT)
+        timeVec = m.obsSite.ts.tt_jd(timeSeries)
 
         earth = self.app.ephemeris['earth']
         ssb_sat = earth + self.satellite
@@ -650,9 +650,6 @@ class Satellite(object):
         else:
             return 0, 0
 
-        UTC2TT = self.app.mount.obsSite.UTC2TT
-        start = start - UTC2TT
-        end = end - UTC2TT
         return start, end
 
     def progTrajectoryToMount(self):

@@ -586,7 +586,8 @@ class Mount(mountcontrol.mount.Mount):
         self.log.warning(f'Cycle error: {e}')
         return True
 
-    def clearClock(self):
+    @staticmethod
+    def clearClock():
         """
         :return: true for test purpose
         """

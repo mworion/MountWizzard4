@@ -767,7 +767,7 @@ class Satellite(object):
             self.app.message.emit('Mount is not online', 2)
             return False
 
-        suc = self.app.mount.obsSite.stopTracking()
+        suc = self.app.mount.obsSite.startTracking()
         if not suc:
             self.app.message.emit('Cannot stop tracking', 2)
         else:

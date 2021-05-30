@@ -147,9 +147,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         circle = mpath.Path.unit_circle()
 
-        rect1p = [[0, 0], [1, 2], [0, 3], [4, 7], [7, 4], [3, 0], [2, 1],
+        rect1p = [[0, 0], [1, 2], [-1, 4], [3, 8], [8, 3], [4, -1], [2, 1],
                   [6, 5], [5, 6], [1, 2], [2, 1], [0, 0]]
-        rect1p = np.array(rect1p)
+        rect1p = np.array(rect1p) * 0.75
         rect1c = [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 79]
         rect1c = np.array(rect1c)
 
@@ -344,10 +344,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.plot(x, y, z, color=self.M_WHITE)
         self.plotSatPosSphere1, = axe.plot([x[0]], [y[0]], [z[0]],
                                            marker=self.markerSatellite(),
-                                           markersize=25,
+                                           markersize=35,
                                            linewidth=2,
                                            fillstyle='none',
-                                           color=self.M_PINK_H)
+                                           color=self.M_WHITE_H)
         self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
         return True
@@ -445,10 +445,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.plot(x, y, z, color=self.M_WHITE)
         self.plotSatPosSphere2, = axe.plot([x[0]], [y[0]], [z[0]],
                                            marker=self.markerSatellite(),
-                                           markersize=25,
+                                           markersize=35,
                                            linewidth=2,
                                            fillstyle='none',
-                                           color=self.M_PINK_H)
+                                           color=self.M_WHITE_H)
         self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
         return True
@@ -510,8 +510,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lon = subpoint.longitude.degrees
         self.plotSatPosEarth, = axe.plot(lon, lat,
                                          marker=self.markerSatellite(),
-                                         markersize=25, lw=2, fillstyle='none',
-                                         ls='none', color=self.M_BLUE_H,
+                                         markersize=35, lw=2, fillstyle='none',
+                                         ls='none', color=self.M_WHITE_H,
                                          zorder=10)
 
         for i, satOrbit in enumerate(satOrbits):
@@ -649,15 +649,15 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         QApplication.processEvents()
         self.plotSatPosHorizon, = axe.plot(az.degrees, alt.degrees,
                                            marker=self.markerSatellite(),
-                                           markersize=25, lw=2, fillstyle='none',
-                                           ls='none', color=self.M_BLUE_H,
+                                           markersize=35, lw=2, fillstyle='none',
+                                           ls='none', color=self.M_WHITE_H,
                                            zorder=10)
 
         self.pointerAltAz, = axe.plot(np.radians(180), 45,
                                       zorder=-5,
                                       color=self.M_PINK_H,
                                       marker=self.markerAltAz(),
-                                      markersize=25,
+                                      markersize=20,
                                       linestyle='none',
                                       fillstyle='none',
                                       clip_on=False,

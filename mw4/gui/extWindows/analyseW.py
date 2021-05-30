@@ -46,7 +46,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         self.ui = analyse_ui.Ui_AnalyseDialog()
         self.ui.setupUi(self)
-        self.initUI()
         self.closing = False
 
         self.latitude = None

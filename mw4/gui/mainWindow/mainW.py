@@ -104,7 +104,6 @@ class MainWindow(
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.initUI()
         self.closing = False
         self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
 

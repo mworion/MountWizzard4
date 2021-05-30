@@ -371,7 +371,6 @@ def main():
     splashW.showMessage('Initialize Application')
     splashW.setValue(80)
     sys.excepthook = except_hook
-    app.setWindowIcon(QIcon(':/icon/mw4.ico'))
     app.installEventFilter(QAwesomeTooltipEventFilter(app))
     MountWizzard4(mwGlob=mwGlob, application=app)
 

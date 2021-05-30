@@ -119,6 +119,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         newFlag = Qt.CustomizeWindowHint | Qt.WindowSystemMenuHint
         newFlag = newFlag | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint
         self.setWindowFlags(self.windowFlags() | newFlag)
+        self.setWindowIcon(QIcon(':/icon/mw4.png'))
 
     @staticmethod
     def wIcon(gui=None, name=''):

@@ -54,7 +54,6 @@ class DownloadPopup(toolsQtWidget.MWidget):
         super().__init__()
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self)
-        self.initUI()
         self.callBack = callBack
         self.worker = None
         self.setWindowModality(Qt.ApplicationModal)

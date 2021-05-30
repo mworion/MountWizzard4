@@ -43,7 +43,6 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.app = app
         self.ui = keypad_ui.Ui_KeypadDialog()
         self.ui.setupUi(self)
-        self.initUI()
         self.host = None
         self.browser = QWebEngineView()
         self.ui.keypad.addWidget(self.browser)

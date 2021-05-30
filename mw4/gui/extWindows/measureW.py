@@ -47,7 +47,6 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.app = app
         self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self)
-        self.initUI()
         self.refreshCounter = 1
         self.measureIndex = 0
         self.timeIndex = 0

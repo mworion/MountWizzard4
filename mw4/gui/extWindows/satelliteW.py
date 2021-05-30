@@ -53,7 +53,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.threadPool = app.threadPool
         self.ui = satellite_ui.Ui_SatelliteDialog()
         self.ui.setupUi(self)
-        self.initUI()
         self.closing = False
         self.signals = SatelliteWindowSignals()
         self.satellite = None

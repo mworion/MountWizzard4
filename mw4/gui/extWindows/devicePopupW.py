@@ -66,7 +66,6 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self)
-        self.initUI()
         self.setWindowModality(Qt.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)

@@ -62,7 +62,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.threadPool = app.threadPool
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
-        self.initUI()
         self.signals = ImageWindowSignals()
 
         self.imageFileName = ''

@@ -49,7 +49,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app = app
         self.ui = simulator_ui.Ui_SimulatorDialog()
         self.ui.setupUi(self)
-        self.initUI()
         self.createMutex = QMutex()
 
         self.view = Qt3DWindow()

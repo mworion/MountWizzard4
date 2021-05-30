@@ -61,7 +61,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.app = app
         self.ui = hemisphere_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self)
-        self.initUI()
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.operationMode = 'normal'
         self.statusDAT = None

@@ -44,7 +44,6 @@ class MessageWindow(toolsQtWidget.MWidget):
         self.app = app
         self.ui = message_ui.Ui_MessageDialog()
         self.ui.setupUi(self)
-        self.initUI()
 
         self.messColor = [self.COLOR_ASTRO,
                           self.COLOR_WHITE,

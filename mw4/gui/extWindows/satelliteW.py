@@ -23,7 +23,6 @@ from PyQt5.QtCore import QObject, pyqtSignal, QFile
 from PyQt5.QtWidgets import QApplication
 import numpy as np
 import matplotlib.path as mpath
-import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 from skyfield import functions
 from skyfield.api import wgs84
@@ -62,6 +61,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.plotSatPosSphere2 = None
         self.plotSatPosHorizon = None
         self.plotSatPosEarth = None
+        self.pointerAltAz = None
         self.satSphereMat1 = self.embedMatplot(self.ui.satSphere1,
                                                constrainedLayout=False)
         self.satSphereMat2 = self.embedMatplot(self.ui.satSphere2,
@@ -125,12 +125,14 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         self.closing = True
         self.storeConfig()
+        self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
         super().closeEvent(closeEvent)
 
     def showWindow(self):
         """
         :return: True for test purpose
         """
+        self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.sendSatelliteData.emit()
         self.show()
         return True
@@ -159,6 +161,25 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                                 circle.codes])
         marker = mpath.Path(verts, codes)
         return marker
+
+    def updatePointerAltAz(self, obsSite):
+        """
+        :return: success
+        """
+        if self.pointerAltAz is None:
+            return False
+
+        if obsSite.Alt is None or obsSite.Az is None:
+            self.pointerAltAz.set_visible(False)
+            return False
+
+        else:
+            self.pointerAltAz.set_visible(True)
+
+        alt = obsSite.Alt.degrees
+        az = obsSite.Az.degrees
+        self.pointerAltAz.set_data((az, alt))
+        return True
 
     def updatePositions(self, now=None, location=None):
         """
@@ -490,7 +511,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.plotSatPosEarth, = axe.plot(lon, lat,
                                          marker=self.markerSatellite(),
                                          markersize=25, lw=2, fillstyle='none',
-                                         ls='none', color=self.M_PINK_H,
+                                         ls='none', color=self.M_BLUE_H,
                                          zorder=10)
 
         for i, satOrbit in enumerate(satOrbits):
@@ -552,6 +573,26 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axes.plot(az, alt, color=self.M_BLUE, marker='', alpha=0.7, lw=2)
         return True
 
+    @staticmethod
+    def markerAltAz():
+        """
+        :return: marker
+        """
+        circleB = mpath.Path.unit_circle()
+        circleM = mpath.Path.unit_circle()
+        circleS = mpath.Path.unit_circle()
+        circleC = mpath.Path.unit_circle()
+        verts = np.concatenate([circleB.vertices,
+                                0.8 * circleM.vertices,
+                                0.15 * circleS.vertices,
+                                0.1 * circleC.vertices])
+        codes = np.concatenate([circleB.codes,
+                                circleM.codes,
+                                circleS.codes,
+                                circleC.codes])
+        marker = mpath.Path(verts, codes)
+        return marker
+
     def drawHorizonView(self, obsSite=None, satOrbits=None,
                         altitude=[], azimuth=[], isSunlit=[]):
         """
@@ -609,8 +650,19 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.plotSatPosHorizon, = axe.plot(az.degrees, alt.degrees,
                                            marker=self.markerSatellite(),
                                            markersize=25, lw=2, fillstyle='none',
-                                           ls='none', color=self.M_PINK_H,
+                                           ls='none', color=self.M_BLUE_H,
                                            zorder=10)
+
+        self.pointerAltAz, = axe.plot(np.radians(180), 45,
+                                      zorder=-5,
+                                      color=self.M_PINK_H,
+                                      marker=self.markerAltAz(),
+                                      markersize=25,
+                                      linestyle='none',
+                                      fillstyle='none',
+                                      clip_on=False,
+                                      visible=False,
+                                      )
         axe.figure.canvas.draw()
         return True
 

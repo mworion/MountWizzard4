@@ -89,6 +89,7 @@ def test_storeConfig_2(function):
 
 
 def test_closeEvent_1(function):
+    function.app.mount.signals.pointDone.connect(function.updatePointerAltAz)
     with mock.patch.object(function,
                            'show'):
         with mock.patch.object(MWidget,
@@ -106,6 +107,39 @@ def test_showWindow(function):
 def test_markerSatellite(function):
     val = function.markerSatellite()
     assert val is not None
+
+
+def test_updatePointerAltAz_1(function):
+    function.pointerAltAz = None
+    suc = function.updatePointerAltAz(function.app.mount.obsSite)
+    assert not suc
+
+
+def test_updatePointerAltAz_2(function):
+    axe, _ = function.generateFlat(widget=function.satEarthMat, horizon=False)
+    function.pointerAltAz, = axe.plot(0, 0)
+    function.app.mount.obsSite.Alt = Angle(degrees=80)
+    function.app.mount.obsSite.Az = None
+    suc = function.updatePointerAltAz(function.app.mount.obsSite)
+    assert not suc
+
+
+def test_updatePointerAltAz_3(function):
+    axe, _ = function.generateFlat(widget=function.satEarthMat, horizon=False)
+    function.pointerAltAz, = axe.plot(0, 0)
+    function.app.mount.obsSite.Alt = None
+    function.app.mount.obsSite.Az = Angle(degrees=80)
+    suc = function.updatePointerAltAz(function.app.mount.obsSite)
+    assert not suc
+
+
+def test_updatePointerAltAz_4(function):
+    axe, _ = function.generateFlat(widget=function.satEarthMat, horizon=False)
+    function.pointerAltAz, = axe.plot(0, 0)
+    function.app.mount.obsSite.Alt = Angle(degrees=80)
+    function.app.mount.obsSite.Az = Angle(degrees=80)
+    suc = function.updatePointerAltAz(function.app.mount.obsSite)
+    assert suc
 
 
 def test_updatePositions_1(function):
@@ -356,6 +390,10 @@ def test_staticHorizon_2(function):
     function.app.data.horizonP = [(0, 0), (0, 360)]
     suc = function.staticHorizon(axe)
     assert suc
+
+
+def test_markerAltAz(function):
+    function.markerAltAz()
 
 
 def test_drawHorizonView_1(function):

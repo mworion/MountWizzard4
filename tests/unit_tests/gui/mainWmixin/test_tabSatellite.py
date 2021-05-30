@@ -891,20 +891,18 @@ def test_selectStartEnd_5(function):
 def test_selectStartEnd_6(function):
     function.app.deviceStat['mount'] = True
     ts = function.app.mount.obsSite.ts
-    UTC2TT = function.app.mount.obsSite.UTC2TT
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'flip': ts.tt_jd(2459215.6),
                            'settle': ts.tt_jd(2459215.7)}]
     function.ui.satBeforeFlip.setChecked(True)
     function.ui.satAfterFlip.setChecked(True)
     s, e = function.selectStartEnd()
-    assert s == 2459215.5 - UTC2TT
-    assert e == 2459215.7 - UTC2TT
+    assert s == 2459215.5
+    assert e == 2459215.7
 
 
 def test_selectStartEnd_7(function):
     function.app.deviceStat['mount'] = True
-    UTC2TT = function.app.mount.obsSite.UTC2TT
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'flipLate': ts.tt_jd(2459215.6),
@@ -912,13 +910,12 @@ def test_selectStartEnd_7(function):
     function.ui.satBeforeFlip.setChecked(True)
     function.ui.satAfterFlip.setChecked(False)
     s, e = function.selectStartEnd()
-    assert s == 2459215.5 - UTC2TT
-    assert e == 2459215.6 - UTC2TT
+    assert s == 2459215.5
+    assert e == 2459215.6
 
 
 def test_selectStartEnd_8(function):
     function.app.deviceStat['mount'] = True
-    UTC2TT = function.app.mount.obsSite.UTC2TT
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'flipEarly': ts.tt_jd(2459215.6),
@@ -926,8 +923,8 @@ def test_selectStartEnd_8(function):
     function.ui.satBeforeFlip.setChecked(False)
     function.ui.satAfterFlip.setChecked(True)
     s, e = function.selectStartEnd()
-    assert s == 2459215.6 - UTC2TT
-    assert e == 2459215.7 - UTC2TT
+    assert s == 2459215.6
+    assert e == 2459215.7
 
 
 def test_progTrajectoryToMount_1(function):

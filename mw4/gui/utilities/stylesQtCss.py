@@ -57,6 +57,7 @@ class Styles:
 
     M_TRANS = '#20202000'
     M_BACK = '#181818'
+    M_BLUE_H = '#30C0FF'
     M_BLUE = '#2090C0'
     M_BLUE1 = '#104860'
     M_BLUE2 = '#0C3648'
@@ -81,6 +82,7 @@ class Styles:
     M_RED_L = '#802020'
     M_PINK_H = '#FF00FF'
     M_PINK = '#B000B0'
+    M_PINK_L = '#800080'
     M_YELLOW_H = '#FFFF00'
     M_YELLOW = '#C0C000'
     M_YELLOW_L = '#808000'

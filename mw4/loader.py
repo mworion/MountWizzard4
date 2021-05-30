@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 import html
+import json
 import locale
 import logging
 import os
@@ -340,6 +341,33 @@ def extractDataFiles(mwGlob=None, splashW=None):
     return True
 
 
+def getWindowPos():
+    """
+    :return:
+    """
+    configDir = os.getcwd() + '/config'
+    profile = configDir + '/profile'
+    if not os.path.isfile(profile):
+        return 0, 0
+
+    with open(profile) as f:
+        configName = f.readline()
+
+    configFile = configDir + '/' + configName + '.cfg'
+    if not os.path.isfile(configFile):
+        return 0, 0
+
+    with open(configFile) as f:
+        try:
+            data = json.load(f)
+        except Exception:
+            return 0, 0
+        else:
+            x = data['mainW'].get('winPosX', 0)
+            y = data['mainW'].get('winPosY', 0)
+            return x, y
+
+
 def main():
     """
     main prepares the loading of mountwizzard application. it prepares a
@@ -354,7 +382,8 @@ def main():
     app = MyApp(sys.argv)
     # app = QApplication(sys.argv)
 
-    splashW = SplashScreen(application=app)
+    x, y = getWindowPos()
+    splashW = SplashScreen(application=app, x=x, y=y)
     splashW.showMessage('Start initialising')
     splashW.setValue(0)
     mwGlob = dict()

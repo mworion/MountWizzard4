@@ -24,17 +24,22 @@ import unittest.mock as mock
 import socket
 import platform
 import shutil
+import json
 
 # external packages
 import pytest
 
 # local import
 from loader import except_hook, setupWorkDirs, writeSystemInfo, extractDataFiles
+from loader import getWindowPos
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown(qtbot):
-    files = glob.glob('tests/config/*.cfg')
+    files = glob.glob('tests/config/*.*')
+    for f in files:
+        os.remove(f)
+    files = glob.glob('tests/config/*')
     for f in files:
         os.remove(f)
     yield
@@ -165,3 +170,55 @@ def test_extractDataFiles_6(qtbot):
                                return_value=MTime()):
             suc = extractDataFiles(mwGlob=mwGlob)
             assert suc
+
+
+def test_getWindowPos_1():
+    test = os.getcwd() + '/tests'
+    with mock.patch.object(os,
+                           'getcwd',
+                           return_value=test):
+        x, y = getWindowPos()
+        assert x == 0
+        assert y == 0
+
+
+def test_getWindowPos_2():
+    test = os.getcwd() + '/tests'
+    with open(test + '/config/profile', 'w+') as f:
+        f.write('config')
+    with mock.patch.object(os,
+                           'getcwd',
+                           return_value=test):
+        x, y = getWindowPos()
+        assert x == 0
+        assert y == 0
+
+
+def test_getWindowPos_3():
+    test = os.getcwd() + '/tests'
+    with open(test + '/config/profile', 'w+') as f:
+        f.write('config')
+    with open(test + '/config/config.cfg', 'w+') as f:
+        f.write('this is a test')
+    with mock.patch.object(os,
+                           'getcwd',
+                           return_value=test):
+        x, y = getWindowPos()
+        assert x == 0
+        assert y == 0
+
+
+def test_getWindowPos_4():
+    test = os.getcwd() + '/tests'
+    with open(test + '/config/profile', 'w+') as f:
+        f.write('config')
+    with open(test + '/config/config.cfg', 'w+') as f:
+        data = {'mainW': {'winPosX': 200,
+                          'winPosY': 100}}
+        json.dump(data, f)
+    with mock.patch.object(os,
+                           'getcwd',
+                           return_value=test):
+        x, y = getWindowPos()
+        assert x == 200
+        assert y == 100

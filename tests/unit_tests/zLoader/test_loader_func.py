@@ -36,10 +36,10 @@ from loader import getWindowPos
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown(qtbot):
-    files = glob.glob('tests/config/*.*')
+    files = glob.glob('tests/config/*.cfg')
     for f in files:
         os.remove(f)
-    files = glob.glob('tests/config/*')
+    files = glob.glob('tests/config/profile')
     for f in files:
         os.remove(f)
     yield

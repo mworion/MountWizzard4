@@ -75,20 +75,22 @@ def test_main_1():
         with mock.patch.object(PyQt5.QtCore.QTimer,
                                'start'):
             with mock.patch.object(loader,
-                                   'MyApp',
-                                   return_value=App()):
+                                   'QIcon'):
                 with mock.patch.object(loader,
-                                       'SplashScreen',
-                                       return_value=Splash()):
+                                       'MyApp',
+                                       return_value=App()):
                     with mock.patch.object(loader,
-                                           'MountWizzard4'):
+                                           'SplashScreen',
+                                           return_value=Splash()):
                         with mock.patch.object(loader,
-                                               'setupWorkDirs',
-                                               return_value=mwGlob):
-                            with mock.patch.object(sys,
-                                                   'exit'):
+                                               'MountWizzard4'):
+                            with mock.patch.object(loader,
+                                                   'setupWorkDirs',
+                                                   return_value=mwGlob):
                                 with mock.patch.object(sys,
-                                                       'excepthook'):
-                                    with mock.patch.object(loader,
-                                                           'QAwesomeTooltipEventFilter'):
-                                        loader.main()
+                                                       'exit'):
+                                    with mock.patch.object(sys,
+                                                           'excepthook'):
+                                        with mock.patch.object(loader,
+                                                               'QAwesomeTooltipEventFilter'):
+                                            loader.main()

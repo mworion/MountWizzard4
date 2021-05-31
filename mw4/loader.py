@@ -31,7 +31,7 @@ import warnings
 import astropy
 import matplotlib
 from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
-from PyQt5.QtGui import QMouseEvent
+from PyQt5.QtGui import QMouseEvent, QIcon
 from PyQt5.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
 from PyQt5.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButton
 from importlib_metadata import version
@@ -400,6 +400,7 @@ def main():
     splashW.showMessage('Initialize Application')
     splashW.setValue(80)
     sys.excepthook = except_hook
+    app.setWindowIcon(QIcon(':/icon/mw4.ico'))
     app.installEventFilter(QAwesomeTooltipEventFilter(app))
     MountWizzard4(mwGlob=mwGlob, application=app)
 

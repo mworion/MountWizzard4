@@ -17,11 +17,14 @@
 # standard libraries
 
 # external packages
+import os.path
+
 import PyQt5
 from PyQt5.QtCore import QRect
 import numpy as np
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
+from PIL import Image
 
 # local import
 from gui.utilities import toolsQtWidget
@@ -148,6 +151,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', True))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
+        self.ui.checkUseTerrain.setChecked(config.get('useTerrain', False))
+        self.ui.terrainAlpha.setValue(config.get('terrainAlpha', 0.35))
+        self.ui.azimuthShift.setValue(config.get('azimuthShift', 0))
         return True
 
     def storeConfig(self):
@@ -168,6 +174,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         config['checkShowAlignStar'] = self.ui.checkShowAlignStar.isChecked()
         config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()
         config['showPolar'] = self.ui.showPolar.isChecked()
+        config['useTerrain'] = self.ui.checkUseTerrain.isChecked()
+        config['useTerrain'] = self.ui.terrainAlpha.value()
+        config['azimuthShift'] = self.ui.azimuthShift.value()
         return True
 
     def closeEvent(self, closeEvent):
@@ -194,6 +203,10 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.checkEditBuildPoints.clicked.disconnect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.disconnect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.disconnect(self.drawHemisphere)
+        self.ui.checkUseTerrain.clicked.disconnect(self.drawHemisphere)
+        self.ui.azimuthShift.valueChanged.disconnect(self.drawHemisphere)
+        self.ui.terrainAlpha.valueChanged.disconnect(self.drawHemisphere)
+
         self.ui.showPolar.clicked.disconnect(self.togglePolar)
         self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
         self.app.mount.signals.pointDone.disconnect(self.updatePointerPolarAltAz)
@@ -250,6 +263,10 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
+        self.ui.checkUseTerrain.clicked.connect(self.drawHemisphere)
+        self.ui.azimuthShift.valueChanged.connect(self.drawHemisphere)
+        self.ui.terrainAlpha.valueChanged.connect(self.drawHemisphere)
+
         self.ui.showPolar.clicked.connect(self.togglePolar)
         self.ui.addPositionToHorizon.clicked.connect(self.addHorizonPointManual)
 
@@ -716,6 +733,35 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         axes.add_patch(self.horizonLimitLow)
         return True
 
+    def staticTerrainMask(self, axes=None):
+        """
+        :param axes:
+        :return:
+        """
+        terrainFile = self.app.mwGlob['configDir'] + '/terrain.jpg'
+        if not os.path.isfile(terrainFile):
+            return False
+
+        img = Image.open(terrainFile).convert('LA')
+        (w, h) = img.size
+        img = img.crop((0, 0, w, h / 2))
+        img = img.resize((360, 90))
+        img = img.transpose(Image.FLIP_TOP_BOTTOM)
+
+        imgF = Image.new('L', (720, 90))
+        imgF.paste(img)
+        imgF.paste(img, (360, 0))
+
+        shift = self.ui.azimuthShift.value()
+        imgF = imgF.crop((shift, 0, 360 + shift, 90))
+
+        (w, h) = imgF.size
+        img = list(imgF.getdata())
+        img = np.array(img).reshape((h, w))
+        alpha = self.ui.terrainAlpha.value()
+        axes.imshow(img, aspect='auto', zorder=-10, cmap='gray', alpha=alpha)
+        return True
+
     def drawHemisphereStatic(self, axes=None, polar=False):
         """
          drawHemisphereStatic renders the static part of the hemisphere window
@@ -751,6 +797,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                 self.staticMeridianLimits(axes=axes)
 
             self.staticModelData(axes=axes, polar=polar)
+
+            if self.ui.checkUseTerrain.isChecked():
+                self.staticTerrainMask(axes=axes)
 
         return True
 

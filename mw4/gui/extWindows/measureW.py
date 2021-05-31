@@ -89,18 +89,17 @@ class MeasureWindow(toolsQtWidget.MWidget):
         if 'measureW' not in self.app.config:
             self.app.config['measureW'] = {}
         config = self.app.config['measureW']
-        x = config.get('winPosX', 120)
-        y = config.get('winPosY', 120)
-
-        if x > self.screenSizeX:
-            x = 0
-        if y > self.screenSizeY:
-            y = 0
-        self.move(x, y)
-
         height = config.get('height', 600)
         width = config.get('width', 800)
         self.resize(width, height)
+        x = config.get('winPosX', 0)
+        y = config.get('winPosY', 0)
+        if x > self.screenSizeX - width:
+            x = 0
+        if y > self.screenSizeY - height:
+            y = 0
+        if x != 0 and y != 0:
+            self.move(x, y)
         self.setupButtons()
         self.ui.measureSet1.setCurrentIndex(config.get('measureSet1', 0))
         self.ui.measureSet2.setCurrentIndex(config.get('measureSet2', 0))

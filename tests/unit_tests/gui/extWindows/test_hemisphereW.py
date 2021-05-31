@@ -56,6 +56,14 @@ def test_initConfig_3(function):
     assert suc
 
 
+def test_initConfig_4(function):
+    function.app.config['hemisphereW'] = {}
+    function.app.config['hemisphereW']['winPosX'] = 100
+    function.app.config['hemisphereW']['winPosY'] = 100
+    suc = function.initConfig()
+    assert suc
+
+
 def test_storeConfig_1(function):
     function.app.config = {}
     suc = function.storeConfig()

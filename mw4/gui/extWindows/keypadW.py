@@ -61,19 +61,18 @@ class KeypadWindow(toolsQtWidget.MWidget):
         """
         if 'keypadW' not in self.app.config:
             self.app.config['keypadW'] = {}
-
         config = self.app.config['keypadW']
-        x = config.get('winPosX', 100)
-        y = config.get('winPosY', 100)
-        if x > self.screenSizeX:
-            x = 0
-        if y > self.screenSizeY:
-            y = 0
-
-        self.move(x, y)
         height = config.get('height', 500)
         width = config.get('width', 260)
         self.resize(width, height)
+        x = config.get('winPosX', 0)
+        y = config.get('winPosY', 0)
+        if x > self.screenSizeX - width:
+            x = 0
+        if y > self.screenSizeY - height:
+            y = 0
+        if x != 0 and y != 0:
+            self.move(x, y)
         return True
 
     def storeConfig(self):
@@ -130,7 +129,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         """
         :return: success
         """
-        if not self.app.mount.host:
+        if not self.app.mount.host[0]:
             return False
 
         file = f'qrc:/webif/virtkeypad.html?host={self.app.mount.host[0]}'

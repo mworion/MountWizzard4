@@ -63,15 +63,17 @@ class MessageWindow(toolsQtWidget.MWidget):
         if 'messageW' not in self.app.config:
             self.app.config['messageW'] = {}
         config = self.app.config['messageW']
-        x = config.get('winPosX', 140)
-        y = config.get('winPosY', 140)
-        if x > self.screenSizeX:
-            x = 0
-        if y > self.screenSizeY:
-            y = 0
-        self.move(x, y)
         height = config.get('height', 600)
-        self.resize(800, height)
+        width = 800
+        self.resize(width, height)
+        x = config.get('winPosX', 0)
+        y = config.get('winPosY', 0)
+        if x > self.screenSizeX - width:
+            x = 0
+        if y > self.screenSizeY - height:
+            y = 0
+        if x != 0 and y != 0:
+            self.move(x, y)
         return True
 
     def storeConfig(self):

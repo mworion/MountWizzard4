@@ -86,18 +86,17 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         if 'satelliteW' not in self.app.config:
             self.app.config['satelliteW'] = {}
         config = self.app.config['satelliteW']
-        x = config.get('winPosX', 160)
-        y = config.get('winPosY', 160)
-
-        if x > self.screenSizeX:
-            x = 0
-        if y > self.screenSizeY:
-            y = 0
-
-        self.move(x, y)
         height = config.get('height', 600)
         width = config.get('width', 800)
         self.resize(width, height)
+        x = config.get('winPosX', 0)
+        y = config.get('winPosY', 0)
+        if x > self.screenSizeX - width:
+            x = 0
+        if y > self.screenSizeY - height:
+            y = 0
+        if x != 0 and y != 0:
+            self.move(x, y)
         self.ui.tabWidget.setCurrentIndex(config.get('tabWidget', 0))
 
         return True

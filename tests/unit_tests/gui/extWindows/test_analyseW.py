@@ -65,6 +65,14 @@ def test_initConfig_3(function):
     assert suc
 
 
+def test_initConfig_4(function):
+    function.app.config['analyseW'] = {}
+    function.app.config['analyseW']['winPosX'] = 100
+    function.app.config['analyseW']['winPosY'] = 100
+    suc = function.initConfig()
+    assert suc
+
+
 def test_storeConfig_1(function):
     if 'analyseW' in function.app.config:
         del function.app.config['analyseW']

@@ -91,16 +91,17 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         if 'simulatorW' not in self.app.config:
             self.app.config['simulatorW'] = {}
         config = self.app.config['simulatorW']
-        x = config.get('winPosX', 180)
-        y = config.get('winPosY', 180)
-        if x > self.screenSizeX:
-            x = 0
-        if y > self.screenSizeY:
-            y = 0
-        self.move(x, y)
         height = config.get('height', 600)
         width = config.get('width', 800)
         self.resize(width, height)
+        x = config.get('winPosX', 0)
+        y = config.get('winPosY', 0)
+        if x > self.screenSizeX - width:
+            x = 0
+        if y > self.screenSizeY - height:
+            y = 0
+        if x != 0 and y != 0:
+            self.move(x, y)
 
         if 'cameraPositionX' in config:
             x = config['cameraPositionX']

@@ -130,20 +130,18 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         """
         if 'hemisphereW' not in self.app.config:
             self.app.config['hemisphereW'] = {}
-
         config = self.app.config['hemisphereW']
-        x = config.get('winPosX', 60)
-        y = config.get('winPosY', 60)
-
-        if x > self.screenSizeX:
-            x = 0
-        if y > self.screenSizeY:
-            y = 0
-
-        self.move(x, y)
         height = config.get('height', 600)
         width = config.get('width', 800)
         self.resize(width, height)
+        x = config.get('winPosX', 0)
+        y = config.get('winPosY', 0)
+        if x > self.screenSizeX - width:
+            x = 0
+        if y > self.screenSizeY - height:
+            y = 0
+        if x != 0 and y != 0:
+            self.move(x, y)
         self.ui.checkShowSlewPath.setChecked(config.get('checkShowSlewPath', False))
         self.ui.checkShowMeridian.setChecked(config.get('checkShowMeridian', False))
         self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))

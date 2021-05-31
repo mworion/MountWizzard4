@@ -64,6 +64,14 @@ def test_initConfig_3(function):
     assert suc
 
 
+def test_initConfig_4(function):
+    function.app.config['keypadW'] = {}
+    function.app.config['keypadW']['winPosX'] = 100
+    function.app.config['keypadW']['winPosY'] = 100
+    suc = function.initConfig()
+    assert suc
+
+
 def test_storeConfig_1(function):
     if 'keypadW' in function.app.config:
         del function.app.config['keypadW']

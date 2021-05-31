@@ -229,12 +229,14 @@ class MainWindow(
         if 'mainW' not in config:
             config['mainW'] = {}
         config = config['mainW']
+        height = config.get('height', 600)
+        width = config.get('width', 800)
+        self.resize(width, height)
         x = config.get('winPosX', 0)
         y = config.get('winPosY', 0)
-
-        if x > self.screenSizeX:
+        if x > self.screenSizeX - width:
             x = 0
-        if y > self.screenSizeY:
+        if y > self.screenSizeY - height:
             y = 0
         if x != 0 and y != 0:
             self.move(x, y)

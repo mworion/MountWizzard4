@@ -108,6 +108,14 @@ def test_initConfig_3(function):
     assert suc
 
 
+def test_initConfig_4(function):
+    function.app.config['measureW'] = {}
+    function.app.config['measureW']['winPosX'] = 100
+    function.app.config['measureW']['winPosY'] = 100
+    suc = function.initConfig()
+    assert suc
+
+
 def test_storeConfig_1(function):
     if 'measureW' in function.app.config:
         del function.app.config['measureW']

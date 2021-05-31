@@ -21,6 +21,7 @@ from queue import Queue
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
 from skyfield.api import wgs84, load, Loader, Angle
+import numpy as np
 
 # local import
 
@@ -447,9 +448,38 @@ class Data:
     def saveHorizonP(fileName=''):
         return
 
-    @staticmethod
-    def isAboveHorizon(a):
-        return
+    def isAboveHorizon(self, point):
+        """
+        isAboveHorizon calculates for a given point the relationship to the actual horizon
+        and determines if this point is above the horizon line. for that there will be a
+        linear interpolation for the horizon line points.
+
+        :param point:
+        :return:
+        """
+        if point[1] > 360:
+            point = (point[0], 360)
+
+        if point[1] < 0:
+            point = (point[0], 0)
+
+        x = range(0, 361)
+
+        if self.horizonP:
+            xRef = [i[1] for i in self.horizonP]
+            yRef = [i[0] for i in self.horizonP]
+
+        else:
+            xRef = [0]
+            yRef = [0]
+
+        y = np.interp(x, xRef, yRef)
+
+        if point[0] > y[int(point[1])]:
+            return True
+
+        else:
+            return False
 
 
 class App(QObject):

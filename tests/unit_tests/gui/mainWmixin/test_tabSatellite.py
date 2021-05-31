@@ -828,29 +828,30 @@ def test_calcTrajectoryData_2(function):
 
 def test_filterHorizon_1(function):
     function.ui.avoidHorizon.setChecked(False)
-    alt, az = function.filterHorizon([1], [2])
-    assert alt == [1]
-    assert az == [2]
+    start = 100 / 86400
+    end = 109 / 86400
+    alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
+    az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    function.app.data.horizonP = [(40, 40)]
+    start, end, alt, az = function.filterHorizon(start, end, alt, az)
+    assert alt == [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
+    assert az == [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    assert start == 100  / 86400
+    assert end == 109 / 86400
 
 
 def test_filterHorizon_2(function):
     function.ui.avoidHorizon.setChecked(True)
-    with mock.patch.object(function.app.data,
-                           'isAboveHorizon',
-                           return_value=True):
-        alt, az = function.filterHorizon([1], [2])
-        assert alt == [1]
-        assert az == [2]
-
-
-def test_filterHorizon_3(function):
-    function.ui.avoidHorizon.setChecked(True)
-    with mock.patch.object(function.app.data,
-                           'isAboveHorizon',
-                           return_value=False):
-        alt, az = function.filterHorizon([1], [2])
-        assert alt == []
-        assert az == []
+    start = 100 / 86400
+    end = 109 / 86400
+    alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
+    az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    function.app.data.horizonP = [(40, 40)]
+    start, end, alt, az = function.filterHorizon(start, end, alt, az)
+    assert np.array_equal(alt, [45, 46, 47, 48])
+    assert np.array_equal(az, [40, 50, 60, 70])
+    assert start == (100 + 3) / 86400
+    assert end == (109 - 3) / 86400
 
 
 def test_selectStartEnd_1(function):
@@ -971,7 +972,7 @@ def test_progTrajectoryToMount_3(function):
                                return_value=(0, 0, False)):
             with mock.patch.object(function,
                                    'filterHorizon',
-                                   return_value=(0, 0)):
+                                   return_value=(0, 0, 0, 0)):
                 with mock.patch.object(function,
                                        'sendSatelliteData'):
                     suc = function.progTrajectoryToMount()
@@ -989,7 +990,7 @@ def test_startProg_1(function):
                                    return_value=(0, 0, False)):
                 with mock.patch.object(function,
                                        'filterHorizon',
-                                       return_value=(0, 0)):
+                                       return_value=(0, 0, 0, 0)):
                     with mock.patch.object(function.app.mount,
                                            'progTrajectory'):
                         suc = function.startProg()

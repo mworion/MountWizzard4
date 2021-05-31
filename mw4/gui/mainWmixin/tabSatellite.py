@@ -608,24 +608,43 @@ class Satellite(object):
         isSunlit = self.satellite.at(timeVec).is_sunlit(self.app.ephemeris)
         return alt.degrees, az.degrees, isSunlit
 
-    def filterHorizon(self, alt, az):
+    def filterHorizon(self, start, end, alt, az):
         """
+        Filter horizon runs from starts on both sides of the track and tries to
+        determine, when a track is hidden behind horizon line. As a satellite
+        track has to be in one piece, the resulting vectors might have a shorter
+        length and a different start and end time.
+
+        :param start:
+        :param end:
         :param alt:
         :param az:
         :return:
         """
         useHorizon = self.ui.avoidHorizon.isChecked()
         if not useHorizon:
-            return alt, az
+            return start, end, alt, az
 
-        altitude = []
-        azimuth = []
-        for alt, az in zip(alt, az):
-            if not self.app.data.isAboveHorizon((alt, az)):
-                continue
-            altitude.append(alt)
-            azimuth.append(az)
-        return altitude, azimuth
+        timeDelayStart = 0
+        for altitude, azimuth in list(zip(alt, az)):
+            if self.app.data.isAboveHorizon((altitude, azimuth)):
+                break
+            timeDelayStart += 1
+            alt = np.delete(alt, 0)
+            az = np.delete(az, 0)
+
+        timeDelayEnd = 0
+        for altitude, azimuth in reversed(list(zip(alt, az))):
+            if self.app.data.isAboveHorizon((altitude, azimuth)):
+                break
+            timeDelayEnd += 1
+            alt = np.delete(alt, -1)
+            az = np.delete(az, -1)
+
+        start += timeDelayStart / 86400
+        end -= timeDelayEnd / 86400
+
+        return start, end, alt, az
 
     def selectStartEnd(self):
         """
@@ -667,7 +686,7 @@ class Satellite(object):
         useInternal = self.ui.useInternalSatCalc.isChecked()
         if useInternal:
             alt, az, isSunlit = self.calcTrajectoryData(start, end)
-            alt, az = self.filterHorizon(alt, az)
+            start, end, alt, az = self.filterHorizon(start, end, alt, az)
         else:
             alt = []
             az = []
@@ -688,7 +707,7 @@ class Satellite(object):
         if not start or not end:
             return False
         alt, az, isSunlit = self.calcTrajectoryData(start, end)
-        alt, az = self.filterHorizon(alt, az)
+        start, end, alt, az = self.filterHorizon(start, end, alt, az)
         self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)
         self.app.mount.progTrajectory(start, alt=alt, az=az, sim=isSim)
         return True

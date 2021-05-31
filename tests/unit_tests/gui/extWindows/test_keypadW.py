@@ -92,10 +92,12 @@ def test_closeEvent_1(function):
                            'delete'):
         with mock.patch.object(function,
                                'show'):
-            with mock.patch.object(MWidget,
-                                   'closeEvent'):
-                function.showWindow()
-                function.closeEvent(QCloseEvent)
+            with mock.patch.object(function,
+                                   'showUrl'):
+                with mock.patch.object(MWidget,
+                                       'closeEvent'):
+                    function.showWindow()
+                    function.closeEvent(QCloseEvent)
 
 
 def test_showWindow_1(function):
@@ -117,6 +119,7 @@ def test_loadFinished_1(function):
 
 
 def test_showUrl_1(function):
+    function.app.mount.host = ('', 3492)
     function.showUrl()
 
 

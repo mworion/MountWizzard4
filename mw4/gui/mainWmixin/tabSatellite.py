@@ -703,6 +703,8 @@ class Satellite(object):
         """
         self.clearTrackingParameters()
         isSim = self.ui.trackingSim.isChecked()
+        t = ('for simulation' if isSim else '')
+        self.app.message.emit('Programming satellite track data ' + t, 0)
         start, end = self.selectStartEnd()
         if not start or not end:
             return False

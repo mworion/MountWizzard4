@@ -18,6 +18,8 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+import os
+import shutil
 
 # external packages
 from PyQt5.QtCore import QEvent
@@ -466,10 +468,29 @@ def test_staticHorizonLimits_2(function):
     assert suc
 
 
+def test_staticTerrainMask_1(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        suc = function.staticTerrainMask(axe)
+        assert not suc
+
+
+def test_staticTerrainMask_2(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    shutil.copy('tests/testData/terrain.jpg', 'tests/config/terrain.jpg')
+    with mock.patch.object(axe,
+                           'imshow'):
+        suc = function.staticTerrainMask(axe)
+        assert suc
+
+
 def test_drawHemisphereStatic_1(function):
     function.ui.checkUseHorizon.setChecked(True)
     function.ui.checkShowCelestial.setChecked(True)
     function.ui.checkShowMeridian.setChecked(True)
+    function.ui.checkUseTerrain.setChecked(True)
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     suc = function.drawHemisphereStatic(axe)
     assert suc
@@ -479,6 +500,7 @@ def test_drawHemisphereStatic_2(function):
     function.ui.checkUseHorizon.setChecked(True)
     function.ui.checkShowCelestial.setChecked(True)
     function.ui.checkShowMeridian.setChecked(True)
+    function.ui.checkUseTerrain.setChecked(True)
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     suc = function.drawHemisphereStatic(axe, polar=True)
     assert suc

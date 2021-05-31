@@ -20,11 +20,12 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.0.0b12
+2.0.0b16
 
 - new updater concept
 - add mount clock sync feature
 - add simulator feature
+- adding terrain image
 - add dome following when mount is in satellite tracking mode
 - add setting label support for UPB dew entries
 - add auto dew control support for Pegasus UPB

@@ -244,4 +244,6 @@ class App(QObject):
     deviceStat = {}
     threadPool = QThreadPool()
     mwGlob = {'modelDir': 'tests/model',
-              'imageDir': 'tests/image'}
+              'imageDir': 'tests/image',
+              'configDir': 'tests/config',
+              }

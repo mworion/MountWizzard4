@@ -511,6 +511,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                                          marker=self.markerSatellite(),
                                          markersize=35, lw=2, fillstyle='none',
                                          ls='none', color=self.M_WHITE_H,
+                                         clip_on=False,
                                          zorder=10)
 
         for i, satOrbit in enumerate(satOrbits):

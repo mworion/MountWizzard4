@@ -117,6 +117,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.pointsBuildAnnotate = None
         self.pointsPolarBuild = None
         self.pointsPolarBuildAnnotate = None
+        self.imageTerrain = None
         self.closingWindow = False
 
         self.ui.hemisphereMove.stackUnder(self.ui.hemisphere)
@@ -154,6 +155,21 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.checkUseTerrain.setChecked(config.get('useTerrain', False))
         self.ui.terrainAlpha.setValue(config.get('terrainAlpha', 0.35))
         self.ui.azimuthShift.setValue(config.get('azimuthShift', 0))
+
+        terrainFile = self.app.mwGlob['configDir'] + '/terrain.jpg'
+        if not os.path.isfile(terrainFile):
+            return False
+
+        img = Image.open(terrainFile).convert('LA')
+        (w, h) = img.size
+        img = img.crop((0, 0, w, h / 2))
+        img = img.resize((360, 90))
+        img = img.transpose(Image.FLIP_TOP_BOTTOM)
+
+        self.imageTerrain = Image.new('L', (720, 90))
+        self.imageTerrain.paste(img)
+        self.imageTerrain.paste(img, (360, 0))
+
         return True
 
     def storeConfig(self):
@@ -738,22 +754,8 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         :param axes:
         :return:
         """
-        terrainFile = self.app.mwGlob['configDir'] + '/terrain.jpg'
-        if not os.path.isfile(terrainFile):
-            return False
-
-        img = Image.open(terrainFile).convert('LA')
-        (w, h) = img.size
-        img = img.crop((0, 0, w, h / 2))
-        img = img.resize((360, 90))
-        img = img.transpose(Image.FLIP_TOP_BOTTOM)
-
-        imgF = Image.new('L', (720, 90))
-        imgF.paste(img)
-        imgF.paste(img, (360, 0))
-
         shift = self.ui.azimuthShift.value()
-        imgF = imgF.crop((shift, 0, 360 + shift, 90))
+        imgF = self.imageTerrain.crop((shift, 0, 360 + shift, 90))
 
         (w, h) = imgF.size
         img = list(imgF.getdata())

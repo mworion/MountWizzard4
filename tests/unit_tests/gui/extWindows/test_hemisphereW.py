@@ -26,6 +26,7 @@ from PyQt5.QtCore import QEvent
 from PyQt5.QtGui import QCloseEvent
 import matplotlib.patches as mpatches
 from skyfield.api import Angle
+from PIL import Image
 
 # local import
 from tests.baseTestSetupExtWindows import App
@@ -48,17 +49,35 @@ def function(module):
 
 def test_initConfig_1(function):
     suc = function.initConfig()
-    assert suc
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        assert suc
 
 
 def test_initConfig_3(function):
     function.app.config['hemisphereW']['winPosX'] = 10000
     function.app.config['hemisphereW']['winPosY'] = 10000
-    suc = function.initConfig()
-    assert suc
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        suc = function.initConfig()
+        assert not suc
 
 
 def test_initConfig_4(function):
+    function.app.config['hemisphereW'] = {}
+    function.app.config['hemisphereW']['winPosX'] = 100
+    function.app.config['hemisphereW']['winPosY'] = 100
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        suc = function.initConfig()
+        assert not suc
+
+
+def test_initConfig_5(function):
+    shutil.copy('tests/testData/terrain.jpg', 'tests/config/terrain.jpg')
     function.app.config['hemisphereW'] = {}
     function.app.config['hemisphereW']['winPosX'] = 100
     function.app.config['hemisphereW']['winPosY'] = 100
@@ -470,16 +489,15 @@ def test_staticHorizonLimits_2(function):
 
 def test_staticTerrainMask_1(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    with mock.patch.object(os.path,
-                           'isfile',
-                           return_value=False):
-        suc = function.staticTerrainMask(axe)
-        assert not suc
+    img = Image.open('tests/testData/terrain.jpg').convert('LA')
+    (w, h) = img.size
+    img = img.crop((0, 0, w, h / 2))
+    img = img.resize((360, 90))
+    img = img.transpose(Image.FLIP_TOP_BOTTOM)
 
-
-def test_staticTerrainMask_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    shutil.copy('tests/testData/terrain.jpg', 'tests/config/terrain.jpg')
+    function.imageTerrain = Image.new('L', (720, 90))
+    function.imageTerrain.paste(img)
+    function.imageTerrain.paste(img, (360, 0))
     with mock.patch.object(axe,
                            'imshow'):
         suc = function.staticTerrainMask(axe)
@@ -492,8 +510,10 @@ def test_drawHemisphereStatic_1(function):
     function.ui.checkShowMeridian.setChecked(True)
     function.ui.checkUseTerrain.setChecked(True)
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.drawHemisphereStatic(axe)
-    assert suc
+    with mock.patch.object(function,
+                           'staticTerrainMask'):
+        suc = function.drawHemisphereStatic(axe)
+        assert suc
 
 
 def test_drawHemisphereStatic_2(function):

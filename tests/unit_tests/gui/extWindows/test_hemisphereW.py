@@ -52,7 +52,8 @@ def test_initConfig_1(function):
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
-        assert suc
+        suc = function.initConfig()
+        assert not suc
 
 
 def test_initConfig_3(function):

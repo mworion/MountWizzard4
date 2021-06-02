@@ -191,7 +191,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()
         config['showPolar'] = self.ui.showPolar.isChecked()
         config['useTerrain'] = self.ui.checkUseTerrain.isChecked()
-        config['useTerrain'] = self.ui.terrainAlpha.value()
+        config['terrainAlpha'] = self.ui.terrainAlpha.value()
         config['azimuthShift'] = self.ui.azimuthShift.value()
         return True
 

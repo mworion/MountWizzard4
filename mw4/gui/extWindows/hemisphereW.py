@@ -937,11 +937,11 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         if hasPolar:
             axePolar, _ = self.generatePolar(widget=self.polarMat,
                                              horizon=True,
-                                             reversed=True)
+                                             reverse=True)
             axePolarMove, _ = self.generatePolar(widget=self.polarMatMove,
                                                  horizon=True,
                                                  showAxes=False,
-                                                 reversed=True)
+                                                 reverse=True)
         else:
             self.pointerPolarAltAz = None
             self.pointsBuildAnnotate = None

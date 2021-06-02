@@ -98,13 +98,13 @@ class ToolsMatplotlib:
         return staticCanvas
 
     def generatePolar(self, widget=None, title='', horizon=False,
-                      showAxes=True, reversed=False):
+                      showAxes=True, reverse=False):
         """
         :param widget:
         :param title:
         :param horizon:
         :param showAxes:
-        :param reversed: does change E/W setting
+        :param reverse: does change E/W setting
         :return:
         """
         if widget is None:
@@ -143,7 +143,7 @@ class ToolsMatplotlib:
         axe.set_rlabel_position(45)
         axe.spines['polar'].set_color(color)
 
-        if reversed:
+        if reverse:
             axe.set_theta_direction(1)
         else:
             axe.set_theta_direction(-1)
@@ -155,8 +155,8 @@ class ToolsMatplotlib:
             return axe, figure
 
         axe.set_ylim(0, 90)
-        axe.set_yticks(range(0, 91, 15))
-        axe.set_yticklabels(['', '75', '60', '45', '30', '15', ''])
+        axe.set_yticks(range(0, 90, 10))
+        axe.set_yticklabels(['', '80', '70', '60', '50', '40', '30', '20', '10'])
         return axe, figure
 
     def generateFlat(self, widget=None, title='', horizon=False, showAxes=True):

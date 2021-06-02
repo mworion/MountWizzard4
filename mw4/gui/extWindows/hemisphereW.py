@@ -603,7 +603,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
             if self.ui.checkShowSlewPath.isChecked() and index > 0:
                 if polar:
-                    axes.plot(np.radians((points[index - 1][1], points[index][1])),
+                    axes.plot(np.radians(-(points[index - 1][1], points[index][1])),
                               (90 - points[index - 1][0], 90 - points[index][0]),
                               ls=':', lw=1, color=self.M_WHITE, zorder=40)
 
@@ -613,7 +613,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                               ls=':', lw=1, color=self.M_WHITE, zorder=40)
 
             if polar:
-                p, = axes.plot(np.radians(az), 90 - alt,
+                p, = axes.plot(np.radians(-az), 90 - alt,
                                marker=marker,
                                markersize=mSize,
                                fillstyle='none',
@@ -634,7 +634,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
             if polar:
                 annotation = axes.annotate(text,
-                                           xy=(np.radians(az), 90 - alt),
+                                           xy=(np.radians(-az), 90 - alt),
                                            xytext=(2, -10),
                                            textcoords='offset points',
                                            color=color,
@@ -668,7 +668,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         alt = np.array(alt)
 
         if polar:
-            self.celestialPath, = axes.plot(np.radians(az),
+            self.celestialPath, = axes.plot(np.radians(-az),
                                             90 - alt,
                                             '.',
                                             markersize=1,
@@ -760,7 +760,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             return False
 
         shift = self.ui.azimuthShift.value()
-        shiftR = np.radians(shift - 180)
         alpha = self.ui.terrainAlpha.value()
         imgF = self.imageTerrain.crop((4 * shift, 0, 1440 + 4 * shift, 360))
         (w, h) = imgF.size
@@ -768,15 +767,17 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         img = np.array(img).reshape((h, w))
 
         if polar:
-            phi = np.linspace(0 + shiftR, 2 * np.pi + shiftR, img.shape[1] + 1)
-            r = np.linspace(0, 1, img.shape[0] + 1)
+            phi = np.linspace(0, 2 * np.pi, img.shape[1] + 1)
+            r = np.linspace(0, 90, img.shape[0] + 1)
+
             Phi, R = np.meshgrid(phi, r)
-            axes.pcolormesh(Phi, R, img[:, :], cmap='gray', linewidth=0)
+            axes.pcolormesh(Phi, 90 - R, img[:, :], linewidth=0,
+                            zorder=-10, cmap='gray', alpha=alpha * 0.25)
 
         else:
             axes.imshow(img, aspect='auto', extent=(0, 360, 90, 0),
                         zorder=-10, cmap='gray', alpha=alpha)
-            return True
+        return True
 
     def drawHemisphereStatic(self, axes=None, polar=False):
         """

@@ -60,5 +60,5 @@ Then you could add the horizon mask quite easily:
           there might be some deviations from "real life".
 
 .. warning:: All calculations which respect a horizon mask reference to a given
-             mask not the image itself. So even if you have an image set, you need
-             to define horizon mask points!
+             mask not the image itself. So even if you have an image set, you
+             need to define horizon mask points!

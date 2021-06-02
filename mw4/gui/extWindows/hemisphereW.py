@@ -754,6 +754,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         :param axes:
         :return:
         """
+        if not self.imageTerrain:
+            return False
+
         shift = self.ui.azimuthShift.value()
         imgF = self.imageTerrain.crop((4 * shift, 0, 1440 + 4 * shift, 360))
 

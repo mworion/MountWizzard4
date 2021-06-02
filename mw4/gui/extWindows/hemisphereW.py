@@ -163,12 +163,12 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         img = Image.open(terrainFile).convert('LA')
         (w, h) = img.size
         img = img.crop((0, 0, w, h / 2))
-        img = img.resize((360, 90))
+        img = img.resize((1440, 360))
         img = img.transpose(Image.FLIP_TOP_BOTTOM)
 
-        self.imageTerrain = Image.new('L', (720, 90))
+        self.imageTerrain = Image.new('L', (2880, 360))
         self.imageTerrain.paste(img)
-        self.imageTerrain.paste(img, (360, 0))
+        self.imageTerrain.paste(img, (1440, 0))
 
         return True
 
@@ -755,13 +755,14 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         :return:
         """
         shift = self.ui.azimuthShift.value()
-        imgF = self.imageTerrain.crop((shift, 0, 360 + shift, 90))
+        imgF = self.imageTerrain.crop((4 * shift, 0, 1440 + 4 * shift, 360))
 
         (w, h) = imgF.size
         img = list(imgF.getdata())
         img = np.array(img).reshape((h, w))
         alpha = self.ui.terrainAlpha.value()
-        axes.imshow(img, aspect='auto', zorder=-10, cmap='gray', alpha=alpha)
+        axes.imshow(img, aspect='auto', extent=(0, 360, 90, 0),
+                    zorder=-10, cmap='gray', alpha=alpha)
         return True
 
     def drawHemisphereStatic(self, axes=None, polar=False):

@@ -750,24 +750,33 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         axes.add_patch(self.horizonLimitLow)
         return True
 
-    def staticTerrainMask(self, axes=None):
+    def staticTerrainMask(self, axes=None, polar=False):
         """
         :param axes:
+        :param polar:
         :return:
         """
         if not self.imageTerrain:
             return False
 
         shift = self.ui.azimuthShift.value()
+        shiftR = np.radians(shift - 180)
+        alpha = self.ui.terrainAlpha.value()
         imgF = self.imageTerrain.crop((4 * shift, 0, 1440 + 4 * shift, 360))
-
         (w, h) = imgF.size
         img = list(imgF.getdata())
         img = np.array(img).reshape((h, w))
-        alpha = self.ui.terrainAlpha.value()
-        axes.imshow(img, aspect='auto', extent=(0, 360, 90, 0),
-                    zorder=-10, cmap='gray', alpha=alpha)
-        return True
+
+        if polar:
+            phi = np.linspace(0 + shiftR, 2 * np.pi + shiftR, img.shape[1] + 1)
+            r = np.linspace(0, 1, img.shape[0] + 1)
+            Phi, R = np.meshgrid(phi, r)
+            axes.pcolormesh(Phi, R, img[:, :], cmap='gray', linewidth=0)
+
+        else:
+            axes.imshow(img, aspect='auto', extent=(0, 360, 90, 0),
+                        zorder=-10, cmap='gray', alpha=alpha)
+            return True
 
     def drawHemisphereStatic(self, axes=None, polar=False):
         """
@@ -791,6 +800,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                 self.staticHorizon(axes=axes, polar=polar)
 
             self.staticModelData(axes=axes, polar=polar)
+
+            if self.ui.checkUseTerrain.isChecked():
+                self.staticTerrainMask(axes=axes, polar=polar)
 
         else:
             if self.ui.checkUseHorizon.isChecked():

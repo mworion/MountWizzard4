@@ -490,6 +490,15 @@ def test_staticHorizonLimits_2(function):
 
 def test_staticTerrainMask_1(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.imageTerrain = None
+    with mock.patch.object(axe,
+                           'imshow'):
+        suc = function.staticTerrainMask(axe)
+        assert not suc
+
+
+def test_staticTerrainMask_2(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     img = Image.open('tests/testData/terrain.jpg').convert('LA')
     (w, h) = img.size
     img = img.crop((0, 0, w, h / 2))

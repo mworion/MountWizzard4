@@ -44,7 +44,7 @@ not show up in polar diagram!
 
 Two adjustments could be changed to make the image fit for use: Most important
 the azimuth adjustment.
-* You shift the image by a number of degrees (0 -359) to get your image fit to
+* You shift the image by a number of degrees (0 - 359) to get your image fit to
   the cardinal points of the hemisphere.
 * You could change the alpha channel of the image to get a nice view on your
   screen.

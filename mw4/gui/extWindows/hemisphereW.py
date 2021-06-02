@@ -158,6 +158,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
         terrainFile = self.app.mwGlob['configDir'] + '/terrain.jpg'
         if not os.path.isfile(terrainFile):
+            self.imageTerrain = None
             return False
 
         img = Image.open(terrainFile).convert('LA')

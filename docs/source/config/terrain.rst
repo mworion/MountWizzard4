@@ -11,7 +11,7 @@ Please use streeview app to generate a 360 degress image around your mount rig.
 
 .. image:: image/streetviewapp.png
     :align: center
-    :scale: 50%
+    :scale: 33%
 
 If you finished the image and transferred it to you computer it might look like:
 

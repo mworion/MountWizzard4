@@ -20,9 +20,12 @@ If you finished the image and transferred it to you computer it might look like:
     :scale: 71%
 
 Please put this image to you config dir in your MW4 working folder. The file
-format output from streetview is 4096 + 2048 pixel color as JPG.
+format output from streetview is 4096 X 2048 pixel color as JPG. The horizon for
+altitude 0 degree cuts the image in an upper and lower half. MW4 uses only the
+upper half of the image as it exspects the image to be taken at the hight of the
+horizon line.
 
-.. note:: The image file hase to be named: terrain.jpg and should be in JPG
+.. note:: The image file has to be named to: **terrain.jpg** and should be in JPG
           format.
 
 MW4 will use the image as greyscale image. You could play around how you prepare

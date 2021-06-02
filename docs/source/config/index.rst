@@ -11,5 +11,6 @@ configuration you should do the following steps:
     camera
     dome
     imaging
+    terrain
 
 

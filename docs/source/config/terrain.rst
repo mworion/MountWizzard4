@@ -7,7 +7,7 @@ based on your actual environment
 
 Using terrain image from streetview app
 ---------------------------------------
-Please use streeview app to generate a 360 degress image around your mount rig.
+Please use streeview app to generate a 360 degrees image around your mount rig.
 
 .. image:: image/streetviewapp.png
     :align: center
@@ -22,7 +22,7 @@ If you finished the image and transferred it to you computer it might look like:
 Please put this image to you config dir in your MW4 working folder. The file
 format output from streetview is 4096 X 2048 pixel color as JPG. The horizon for
 altitude 0 degree cuts the image in an upper and lower half. MW4 uses only the
-upper half of the image as it exspects the image to be taken at the hight of the
+upper half of the image as it expects the image to be taken at the height of the
 horizon line.
 
 .. note:: The image file has to be named to: **terrain.jpg** and should be in JPG
@@ -39,15 +39,21 @@ setups for the terrain background.
     :scale: 71%
 
 After **use terrain** is checked and a terrain.jpg image is available in config
-directory, the image will be shown as background of hemisphere. The image will
-not show up in polar diagram!
+directory, the image will be shown as background of hemisphere.
 
 .. image:: image/terrain_hemisphere.png
     :align: center
     :scale: 71%
 
+The image will also show up in polar diagram!
+
+.. image:: image/terrain_hemisphere_polar.png
+    :align: center
+    :scale: 71%
+
 Two adjustments could be changed to make the image fit for use: Most important
 the azimuth adjustment.
+
 * You shift the image by a number of degrees (0 - 359) to get your image fit to
   the cardinal points of the hemisphere.
 * You could change the alpha channel of the image to get a nice view on your

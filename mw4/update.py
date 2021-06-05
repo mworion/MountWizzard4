@@ -130,6 +130,24 @@ def runInstall(textBrow, versionPackage=''):
     return success
 
 
+def restart():
+    """
+    :return:
+    """
+    runDir = os.path.dirname(sys.argv[0])
+    runScript = runDir + '/loader.py'
+    pythonPath = os.path.realpath(sys.executable)
+
+    if platform.system() == 'Windows':
+        runScript = "\"" + runScript + "\""
+        pythonRuntime = "\"" + pythonPath + "\""
+    else:
+        pythonRuntime = pythonPath
+
+    os.execl(pythonPath, pythonRuntime, runScript)
+    return True
+
+
 def runCancel(textBrow, cancel, update):
     """
     :return:
@@ -140,11 +158,7 @@ def runCancel(textBrow, cancel, update):
     writeText(textBrow, 'Restarting MountWizzard4...', 1)
     writeText(textBrow, '...this takes some seconds...', 1)
     QTest.qWait(3000)
-
-    runDir = os.path.dirname(sys.argv[0])
-    runFull = runDir + '/loader.py'
-    python = sys.executable
-    os.execl(python, python, runFull)
+    restart()
     return True
 
 
@@ -165,11 +179,7 @@ def runUpdate(textBrow, version, cancel, update):
     writeText(textBrow, f'Restarting MountWizzard4...', 1)
     writeText(textBrow, '...this takes some seconds...', 1)
     QTest.qWait(3000)
-
-    runDir = os.path.dirname(sys.argv[0])
-    runFull = runDir + '/loader.py'
-    python = sys.executable
-    os.execl(python, python, runFull)
+    restart()
     return True
 
 

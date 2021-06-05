@@ -228,6 +228,26 @@ def test_isVenv_1(function):
     function.isVenv()
 
 
+def test_startUpdater_1(function):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        with mock.patch.object(os,
+                               'execl'):
+            suc = function.restart()
+            assert suc
+
+
+def test_startUpdater_2(function):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        with mock.patch.object(os,
+                               'execl'):
+            suc = function.restart()
+            assert suc
+
+
 def test_installVersion_1(function):
     with mock.patch.object(function,
                            'isVenv',
@@ -246,20 +266,6 @@ def test_installVersion_2(function):
                                return_value=(None, None, ['1.2.3'])):
             suc = function.installVersion()
             assert not suc
-
-
-def test_installVersion_3(function):
-    function.ui.versionAvailable.setText('1.2.3')
-    with mock.patch.object(function,
-                           'isVenv',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'versionPackage',
-                               return_value=(None, None, ['1.2.3'])):
-            with mock.patch.object(os,
-                                   'execl'):
-                suc = function.installVersion()
-                assert suc
 
 
 def test_setLoggingLevel1(function, qtbot):

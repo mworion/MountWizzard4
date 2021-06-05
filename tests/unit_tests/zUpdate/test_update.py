@@ -188,6 +188,26 @@ def test_runInstall_3():
             assert not suc
 
 
+def test_restart_1():
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        with mock.patch.object(os,
+                               'execl'):
+            suc = update.restart()
+            assert suc
+
+
+def test_restart_2():
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        with mock.patch.object(os,
+                               'execl'):
+            suc = update.restart()
+            assert suc
+
+
 def test_runCancel():
     tb = QTextBrowser()
     pb = QPushButton()
@@ -195,8 +215,8 @@ def test_runCancel():
                            'writeText'):
         with mock.patch.object(QTest,
                                'qWait'):
-            with mock.patch.object(os,
-                                   'execl'):
+            with mock.patch.object(update,
+                                   'restart'):
                 update.runCancel(tb, pb, pb)
 
 
@@ -210,8 +230,8 @@ def test_runUpdate_1():
                                return_value=False):
             with mock.patch.object(QTest,
                                    'qWait'):
-                with mock.patch.object(os,
-                                       'execl'):
+                with mock.patch.object(update,
+                                       'restart'):
                     update.runUpdate(tb, '1', pb, pb)
 
 
@@ -225,8 +245,8 @@ def test_runUpdate_2():
                                return_value=True):
             with mock.patch.object(QTest,
                                    'qWait'):
-                with mock.patch.object(os,
-                                       'execl'):
+                with mock.patch.object(update,
+                                       'restart'):
                     update.runUpdate(tb, '1', pb, pb)
 
 

@@ -248,6 +248,24 @@ class SettMisc(object):
         self.log.debug(f'venv path: [{os.environ.get("VIRTUAL_ENV", "")}]')
         return status
 
+    def startUpdater(self, versionPackage):
+        """
+        :return:
+        """
+        updaterDir = os.path.dirname(sys.argv[0])
+        updaterScript = os.path.realpath(updaterDir + '/update.py')
+        pythonPath = os.path.realpath(sys.executable)
+
+        if platform.system() == 'Windows':
+            updaterScript = "\"" + updaterScript + "\""
+            pythonRuntime = "\"" + pythonPath + "\""
+        else:
+            pythonRuntime = pythonPath
+
+        os.execl(pythonPath, pythonRuntime, updaterScript, versionPackage,
+                 str(self.pos().x()), str(self.pos().y()))
+        return True
+
     def installVersion(self):
         """
         installVersion updates mw4 with the standard pip package installer.
@@ -277,12 +295,7 @@ class SettMisc(object):
             return False
 
         self.app.message.emit(f'Installing [{versionPackage}] please wait', 1)
-
-        updaterDir = os.path.dirname(sys.argv[0])
-        updaterFull = updaterDir + '/update.py'
-        python = sys.executable
-        os.execl(python, python, updaterFull, versionPackage,
-                 str(self.pos().x()), str(self.pos().y()))
+        self.startUpdater(versionPackage)
         return True
 
     def setLoggingLevel(self):

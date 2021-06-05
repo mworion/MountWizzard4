@@ -135,8 +135,8 @@ def restart():
     :return:
     """
     runDir = os.path.dirname(sys.argv[0])
-    runScript = runDir + '/loader.py'
-    pythonPath = os.path.realpath(sys.executable)
+    runScript = os.path.abspath(runDir + '/loader.py')
+    pythonPath = os.path.abspath(sys.executable)
 
     if platform.system() == 'Windows':
         runScript = "\"" + runScript + "\""

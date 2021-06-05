@@ -234,7 +234,7 @@ def test_startUpdater_1(function):
                            return_value='Windows'):
         with mock.patch.object(os,
                                'execl'):
-            suc = function.restart()
+            suc = function.startUpdater('1.2.3')
             assert suc
 
 
@@ -244,7 +244,7 @@ def test_startUpdater_2(function):
                            return_value='Darwin'):
         with mock.patch.object(os,
                                'execl'):
-            suc = function.restart()
+            suc = function.startUpdater('1.2.3')
             assert suc
 
 
@@ -266,6 +266,20 @@ def test_installVersion_2(function):
                                return_value=(None, None, ['1.2.3'])):
             suc = function.installVersion()
             assert not suc
+
+
+def test_installVersion_3(function):
+    function.ui.versionAvailable.setText('1.2.3')
+    with mock.patch.object(function,
+                           'isVenv',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'versionPackage',
+                               return_value=(None, None, ['1.2.3'])):
+            with mock.patch.object(function,
+                                   'startUpdater'):
+                suc = function.installVersion()
+                assert suc
 
 
 def test_setLoggingLevel1(function, qtbot):

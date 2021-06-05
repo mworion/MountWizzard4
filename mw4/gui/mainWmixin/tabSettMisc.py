@@ -253,8 +253,8 @@ class SettMisc(object):
         :return:
         """
         updaterDir = os.path.dirname(sys.argv[0])
-        updaterScript = os.path.realpath(updaterDir + '/update.py')
-        pythonPath = os.path.realpath(sys.executable)
+        updaterScript = os.path.abspath(updaterDir + '/update.py')
+        pythonPath = os.path.abspath(sys.executable)
 
         if platform.system() == 'Windows':
             updaterScript = "\"" + updaterScript + "\""

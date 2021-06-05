@@ -56,7 +56,7 @@ class SplashScreen(QObject):
         h = self.qss.height()
         w = self.qss.width()
         if x != 0 and y != 0:
-            self.qss.move(x + (800 - w) / 2, y + (600 - h) / 2)
+            self.qss.move(int(x + (800 - w) / 2), int(y + (600 - h) / 2))
         self.msg = ''
         self.maxv = 100.0
         self.minv = 0.0

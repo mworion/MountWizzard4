@@ -35,25 +35,17 @@ def module_setup_teardown():
 
 
 def test_icon_1(qtbot):
-    app = SplashScreen(QWidget())
-    qtbot.addWidget(app)
-
     value = QPixmap(':/icon/mw4.ico')
     assert isinstance(value, QPixmap)
 
 
 def test_icon_2(qtbot):
-    app = SplashScreen(QWidget(), 100, 100)
-    qtbot.addWidget(app)
-
     value = QPixmap(':/icon/mw4.ico')
     assert isinstance(value, QPixmap)
 
 
 def test_upcoming(qtbot):
     app = SplashScreen(QWidget())
-    qtbot.addWidget(app)
-
     app.showMessage('test')
     app.setValue(10)
     app.setValue(50)
@@ -63,13 +55,9 @@ def test_upcoming(qtbot):
 
 def test_drawContents(qtbot):
     app = SplashScreen(QWidget())
-    qtbot.addWidget(app)
-
     app.drawContents(QPainter())
 
 
 def test_finish(qtbot):
     app = SplashScreen(QWidget())
-    qtbot.addWidget(app)
-
     app.finish(QWidget())

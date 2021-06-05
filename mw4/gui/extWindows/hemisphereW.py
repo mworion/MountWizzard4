@@ -603,7 +603,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
             if self.ui.checkShowSlewPath.isChecked() and index > 0:
                 if polar:
-                    axes.plot(np.radians(-(points[index - 1][1], points[index][1])),
+                    axes.plot((np.radians(-points[index - 1][1]), points[index][1]),
                               (90 - points[index - 1][0], 90 - points[index][0]),
                               ls=':', lw=1, color=self.M_WHITE, zorder=40)
 
@@ -666,6 +666,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
         alt, az = zip(*celestial)
         alt = np.array(alt)
+        az = np.array(az)
 
         if polar:
             self.celestialPath, = axes.plot(np.radians(-az),

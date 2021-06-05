@@ -67,11 +67,7 @@ def module_setup_teardown(qtbot):
     app.deviceStat = dict()
     app.log = logging.getLogger(__name__)
     app.threadPool = QThreadPool()
-
-    qtbot.addWidget(app)
-
     yield
-
     app.threadPool.waitForDone(1000)
 
 

@@ -53,8 +53,6 @@ def module_setup_teardown(qtbot):
     app.close = MWidget().close
 
     app.deleteLater = MWidget().deleteLater
-    qtbot.addWidget(app)
-
     yield
 
 

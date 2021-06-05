@@ -71,8 +71,8 @@ def module_setup_teardown(qtbot):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
+                                              longitude_degrees=10,
+                                              elevation_m=500)
         sensorWeather = SensorWeather(app=Test1())
         onlineWeather = OnlineWeather(app=Test1())
         directWeather = DirectWeather(app=Test1())
@@ -111,11 +111,7 @@ def module_setup_teardown(qtbot):
     app.BACK_NORM = '#000000'
     app.BACK_GREEN = '#000000'
     app.driversData = {'camera': {}}
-
-    qtbot.addWidget(app)
-
     yield
-
     app.threadPool.waitForDone(1000)
 
 

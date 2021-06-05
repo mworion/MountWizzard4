@@ -71,9 +71,6 @@ def module_setup_teardown(qtbot):
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
     app.log = logging.getLogger(__name__)
-
-    qtbot.addWidget(app)
-
     yield
 
 

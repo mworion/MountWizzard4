@@ -514,6 +514,23 @@ def test_staticTerrainMask_2(function):
         assert suc
 
 
+def test_staticTerrainMask_3(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    img = Image.open('tests/testData/terrain.jpg').convert('LA')
+    (w, h) = img.size
+    img = img.crop((0, 0, w, h / 2))
+    img = img.resize((360, 90))
+    img = img.transpose(Image.FLIP_TOP_BOTTOM)
+
+    function.imageTerrain = Image.new('L', (720, 90))
+    function.imageTerrain.paste(img)
+    function.imageTerrain.paste(img, (360, 0))
+    with mock.patch.object(axe,
+                           'pcolormesh'):
+        suc = function.staticTerrainMask(axe, polar=True)
+        assert suc
+
+
 def test_drawHemisphereStatic_1(function):
     function.ui.checkUseHorizon.setChecked(True)
     function.ui.checkShowCelestial.setChecked(True)

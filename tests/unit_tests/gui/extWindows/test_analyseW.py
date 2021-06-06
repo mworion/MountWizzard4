@@ -66,9 +66,8 @@ def test_initConfig_3(function):
 
 
 def test_initConfig_4(function):
-    function.app.config['analyseW'] = {}
-    function.app.config['analyseW']['winPosX'] = 100
-    function.app.config['analyseW']['winPosY'] = 100
+    function.app.config['analyseW'] = {'winPosX': 100}
+    function.app.config['analyseW'] = {'winPosY': 100}
     suc = function.initConfig()
     assert suc
 

@@ -138,7 +138,6 @@ def test_extractDataFiles_5(qtbot):
         return
 
     mwGlob = {'dataDir': 'tests/data'}
-
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
@@ -159,9 +158,7 @@ def test_extractDataFiles_6(qtbot):
         st_mtime = 1000000000.0
 
     shutil.copy('tests/testData/finals2000A.all', 'tests/data/finals2000A.all')
-
     mwGlob = {'dataDir': 'tests/data'}
-
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=True):

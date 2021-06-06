@@ -3,18 +3,18 @@
 #
 # v0.1,  Michael Wuertenberger
 #
-name: build-wheels-python38
+name: wheels-20-04-python39
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/wheels_python38.yml'
+      - '.github/workflows/wheels_20_04_python39.yml'
 
 jobs:
   build_job:
     # The host should always be linux
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     # Run steps on a matrix of 3 arch/distro combinations
@@ -23,8 +23,6 @@ jobs:
         include:
           - arch: aarch64
             distro: ubuntu20.04
-          - arch: aarch64
-            distro: ubuntu18.04
 
     steps:
       - uses: actions/checkout@v2.1.0
@@ -69,21 +67,21 @@ jobs:
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            apt-get -y install python3.8 python3-pip python3.8-venv python3.8-dev
+            apt-get -y install python3.8 python3-pip python3.9-venv python3.9-dev
             apt-get -y install qt5-default pyqt5-dev pyqt5-dev-tools
-            python3.8 -m venv venv
+            python3.9 -m venv venv
             source venv/bin/activate
             
             python --version
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
             pip install wheel
-            pip wheel astropy==4.2.1 -w "support/wheels/${{ matrix.distro}}"
-            #pip wheel pyerfa==1.7.2 -w "support/wheels/${{ matrix.distro}}"
-            #pip wheel matplotlib==3.3.4 -w "support/wheels/${{ matrix.distro}}"
-            #pip wheel pillow==8.1.2 -w "support/wheels/${{ matrix.distro}}"
-            #pip wheel sep==1.1.1 -w "support/wheels/${{ matrix.distro}}"
-            #pip wheel sgp4==2.17 -w "support/wheels/${{ matrix.distro}}"
+            #pip wheel astropy==4.2.1 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel pyerfa==1.7.3 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel matplotlib==3.4.2 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel pillow==8.2.0 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel sep==1.2.0 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel sgp4==2.19 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pybase64==1.1.4 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pyqt5_sip==12.8.1 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pyqt5==5.15.2 -w "support/wheels/${{ matrix.distro}}"

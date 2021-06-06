@@ -603,7 +603,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
             if self.ui.checkShowSlewPath.isChecked() and index > 0:
                 if polar:
-                    axes.plot((np.radians(-points[index - 1][1]), points[index][1]),
+                    axes.plot(np.radians((-points[index - 1][1], -points[index][1])),
                               (90 - points[index - 1][0], 90 - points[index][0]),
                               ls=':', lw=1, color=self.M_WHITE, zorder=40)
 
@@ -772,8 +772,8 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             r = np.linspace(0, 90, img.shape[0] + 1)
 
             Phi, R = np.meshgrid(phi, r)
-            axes.pcolormesh(Phi, 90 - R, img[:, :], linewidth=0,
-                            zorder=-10, cmap='gray', alpha=alpha * 0.25)
+            axes.pcolormesh(Phi, 90 - R, img[:, :], linewidth=0, linestyle='None',
+                            zorder=-10, cmap='gray', alpha=alpha * 0.1)
 
         else:
             axes.imshow(img, aspect='auto', extent=(0, 360, 90, 0),

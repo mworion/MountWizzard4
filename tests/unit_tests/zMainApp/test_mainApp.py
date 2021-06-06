@@ -110,7 +110,7 @@ def test_initConfig_2(app):
     assert val.longitude.degrees == 0
 
 
-def test_initConfig_3(app):
+def test_initConfig_4(app):
     app.config['mainW'] = {}
     app.config['mainW']['loglevelTrace'] = True
 

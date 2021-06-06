@@ -83,7 +83,7 @@ setup(
         'numpy==1.20.3',
         'pillow==8.2.0',
         'matplotlib==3.4.2',
-        'pyerfa==1.7.3',
+        'pyerfa==2.0.0',
         'astropy==4.2.1',
         'scipy==1.6.3',
         'sep==1.2.0',

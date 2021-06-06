@@ -116,11 +116,10 @@ elif [ "${P_VER:0:9}" == "python3.7" ]; then
   PY=PY37
 fi
   
-pip install "${WHL}"/kiwisolver-1.3.1"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/pyerfa-1.7.2"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/astropy-4.2"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/sep-1.1.1"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/sgp4-2.17"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/pyerfa-2.0.0"${PY}"linux"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/astropy-4.2.1"${PY}"linux"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/sep-1.2.0"${PY}"linux"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/sgp4-2.19"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/PyQt5_sip-12.8.1"${PY}"linux"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}" >> install.log 2>&1
 

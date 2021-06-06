@@ -558,3 +558,36 @@ def test_drawSatellite_3(function, ts):
                     suc = function.drawSatellite(satellite=satellite,
                                                  satOrbits=satOrbits)
                     assert suc
+
+
+def test_drawSatellite_4(function, ts):
+    tle = ["ISS (ZARYA)",
+           "1 25544U 98067A   21103.51063550  .00000247  00000-0  12689-4 0  9995",
+           "2 25544  51.6440 302.6231 0002845 223.0251 174.3348 15.48881931278570"]
+
+    satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    tt = ts.now().tt
+    t0 = ts.tt_jd(tt + 0)
+    t1 = ts.tt_jd(tt + 0.1)
+    t2 = ts.tt_jd(tt + 0.2)
+    t3 = ts.tt_jd(tt + 0.3)
+    t4 = ts.tt_jd(tt + 0.4)
+
+    satOrbits = [{'rise': t0,
+                  'flip': t0,
+                  'culminate': t0,
+                  'settle': t1},
+                 {'rise': t2,
+                  'flip': t2,
+                  'culminate': t2,
+                  'settle': t3},
+                 {'rise': t3,
+                  'culminate': t3,
+                  'flip': t3,
+                  'settle': t4},
+                 ]
+
+    function.closing = True
+    suc = function.drawSatellite(satellite=satellite,
+                                 satOrbits=satOrbits)
+    assert not suc

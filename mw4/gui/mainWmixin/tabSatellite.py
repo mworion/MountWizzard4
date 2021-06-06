@@ -301,14 +301,14 @@ class Satellite(object):
         :param location:
         :return:
         """
-        merS = self.app.mount.setting.meridianLimitTrack
-        if merS is None:
-            merS = 0
-        merS = merS * 0.95
+        limit = self.app.mount.setting.meridianLimitTrack
+        if limit is None:
+            limit = 0
+        limit = limit * 0.95
 
         f0 = self.calcSatelliteMeridianTransit(self.satellite, location, 0)
-        f1 = self.calcSatelliteMeridianTransit(self.satellite, location, merS)
-        f2 = self.calcSatelliteMeridianTransit(self.satellite, location, -merS)
+        f1 = self.calcSatelliteMeridianTransit(self.satellite, location, limit)
+        f2 = self.calcSatelliteMeridianTransit(self.satellite, location, -limit)
         for satOrbit in self.satOrbits:
             t0, y0 = almanac.find_discrete(satOrbit['rise'],
                                            satOrbit['settle'], f0)

@@ -356,7 +356,7 @@ def test_addMeridianTransit_2(function):
            '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
            '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
     ts = function.app.mount.obsSite.ts
-    function.app.mount.setting.meridianLimitSlew = None
+    function.app.mount.setting.meridianLimitTrack = None
     function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),

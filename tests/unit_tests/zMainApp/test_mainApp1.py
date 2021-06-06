@@ -53,11 +53,8 @@ def test_start_parameters_1(qapp):
                 with mock.patch.object(MountWizzard4,
                                        'checkAndSetAutomation',
                                        return_value=None):
-                    with mock.patch.object(os.path,
-                                           'isfile',
-                                           return_value=False):
-                        MountWizzard4(mwGlob=mwGlob, application=qapp)
-                        time.sleep(5)
+                    MountWizzard4(mwGlob=mwGlob, application=qapp)
+                    time.sleep(5)
 
 
 def test_start_parameters_2(qapp):
@@ -72,6 +69,7 @@ def test_start_parameters_2(qapp):
         test.write('test')
 
     shutil.copy(r'tests/testData/de421_23.bsp', r'tests/data/de421_23.bsp')
+    shutil.copy(r'tests/testData/tempNET.wcs', r'tests/test.txt')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):
@@ -82,8 +80,5 @@ def test_start_parameters_2(qapp):
                 with mock.patch.object(MountWizzard4,
                                        'checkAndSetAutomation',
                                        return_value=None):
-                    with mock.patch.object(os.path,
-                                           'isfile',
-                                           return_value=True):
-                        MountWizzard4(mwGlob=mwGlob, application=qapp)
-                        time.sleep(5)
+                    MountWizzard4(mwGlob=mwGlob, application=qapp)
+                    time.sleep(5)

@@ -263,7 +263,7 @@ class SettMisc(object):
             pythonRuntime = pythonPath
 
         os.execl(pythonPath, pythonRuntime, updaterScript, versionPackage,
-                 str(self.pos().x()), str(self.pos().y()))
+                 str(self.pos().x()), str(self.pos().y()), 'comfort')
         return True
 
     def installVersion(self):

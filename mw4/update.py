@@ -23,26 +23,12 @@ import subprocess
 import platform
 
 # external packages
-from PyQt5.QtTest import QTest
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon, QTextCursor, QPixmap
-from PyQt5.QtWidgets import QApplication, QPushButton, QVBoxLayout, QHBoxLayout
-from PyQt5.QtWidgets import QWidget, QTextBrowser, QLabel
 
 # local import
 from base.loggerMW import setupLogging
-from gui.utilities.stylesQtCss import Styles
-import resource.resources as res
-res.qInitResources()
 
 setupLogging()
 log = logging.getLogger()
-
-mColor = [Styles.COLOR_ASTRO,
-          Styles.COLOR_WHITE,
-          Styles.COLOR_YELLOW,
-          Styles.COLOR_RED,
-          ]
 
 
 def writeText(textBrow, t, color):
@@ -148,7 +134,7 @@ def restart():
     return True
 
 
-def runCancel(textBrow, cancel, update):
+def runCancel(textBrow, cancel, update, t):
     """
     :return:
     """
@@ -157,19 +143,19 @@ def runCancel(textBrow, cancel, update):
     writeText(textBrow, 'Update cancelled', 2)
     writeText(textBrow, 'Restarting MountWizzard4...', 1)
     writeText(textBrow, '...this takes some seconds...', 1)
-    QTest.qWait(3000)
+    t.qWait(3000)
     restart()
     return True
 
 
-def runUpdate(textBrow, version, cancel, update):
+def runUpdate(textBrow, version, cancel, update, t):
     """
     :return:
     """
     cancel.setEnabled(False)
     update.setEnabled(False)
     writeText(textBrow, f'Installing now version {version}', 1)
-    QTest.qWait(1000)
+    t.qWait(1000)
     suc = runInstall(textBrow, version)
     if suc:
         writeText(textBrow, f'Successfully installed {version}', 1)
@@ -178,19 +164,29 @@ def runUpdate(textBrow, version, cancel, update):
 
     writeText(textBrow, f'Restarting MountWizzard4...', 1)
     writeText(textBrow, '...this takes some seconds...', 1)
-    QTest.qWait(3000)
+    t.qWait(3000)
     restart()
     return True
 
 
-def main():
+def runUI(version, x, y):
     """
-    :return: nothing
+    :return:
     """
-    version = sys.argv[1]
-    log.header('-' * 100)
-    log.header(f'Running updater')
-    log.header('-' * 100)
+    from PyQt5.QtTest import QTest
+    from PyQt5.QtCore import Qt
+    from PyQt5.QtGui import QIcon, QTextCursor, QPixmap
+    from PyQt5.QtWidgets import QApplication, QPushButton, QVBoxLayout, QHBoxLayout
+    from PyQt5.QtWidgets import QWidget, QTextBrowser, QLabel
+    from gui.utilities.stylesQtCss import Styles
+    import resource.resources as res
+
+    res.qInitResources()
+    mColor = [Styles.COLOR_ASTRO,
+              Styles.COLOR_WHITE,
+              Styles.COLOR_YELLOW,
+              Styles.COLOR_RED,
+              ]
 
     QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
     app = QApplication(sys.argv)
@@ -198,8 +194,6 @@ def main():
     window = QWidget()
     window.setWindowTitle('MountWizzard4 Updater')
     window.resize(500, 300)
-    x = int(sys.argv[2]) + 150
-    y = int(sys.argv[3]) + 150
     window.move(x, y)
 
     if platform.system() == 'Darwin':
@@ -215,8 +209,8 @@ def main():
     textBrow = QTextBrowser()
     textBrow.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-    update.clicked.connect(lambda: runUpdate(textBrow, version, cancel, update))
-    cancel.clicked.connect(lambda: runCancel(textBrow, cancel, update))
+    update.clicked.connect(lambda: runUpdate(textBrow, version, cancel, update, QTest))
+    cancel.clicked.connect(lambda: runCancel(textBrow, cancel, update, QTest))
 
     layoutMain = QVBoxLayout()
     layoutHeader = QHBoxLayout()
@@ -244,9 +238,27 @@ def main():
     layoutMain.addWidget(textBrow)
     layoutMain.addLayout(layoutButtons)
     window.setLayout(layoutMain)
-
     window.show()
     sys.exit(app.exec_())
+
+
+def main():
+    """
+    :return: nothing
+    """
+    version = sys.argv[1]
+    x = int(sys.argv[2]) + 150
+    y = int(sys.argv[3]) + 150
+    simpleGui = sys.argv[4] == 'simple'
+
+    log.header('-' * 100)
+    log.header(f'Running updater')
+    log.header('-' * 100)
+
+    if simpleGui:
+        pass
+    else:
+        runUI(version, x, y)
 
 
 if __name__ == "__main__":

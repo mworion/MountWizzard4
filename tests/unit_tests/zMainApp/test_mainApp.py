@@ -61,8 +61,6 @@ def app(qapp):
                                    'start'):
                 app = MountWizzard4(mwGlob=mwGlob, application=qapp)
                 app.log = logging.getLogger()
-                addLoggingLevel('TRACE', 5)
-                addLoggingLevel('UI', 35)
                 yield app
                 time.sleep(10)
 

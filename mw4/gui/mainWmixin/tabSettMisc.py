@@ -262,8 +262,13 @@ class SettMisc(object):
         else:
             pythonRuntime = pythonPath
 
+        if self.ui.versionBeta.isChecked():
+            t = 'comfort'
+        else:
+            t = 'simple'
+
         os.execl(pythonPath, pythonRuntime, updaterScript, versionPackage,
-                 str(self.pos().x()), str(self.pos().y()), 'comfort')
+                 str(self.pos().x()), str(self.pos().y()), t)
         return True
 
     def installVersion(self):
@@ -271,12 +276,12 @@ class SettMisc(object):
         installVersion updates mw4 with the standard pip package installer.
         this is actually only tested and ok for running in a virtual environment.
         updates have to run only once at a time, so a mutex ensures this. If
-        everything is ok, a thread it started doing the install work and a
-        callback is defined when finished.
+        everything is ok, a thread it started doing the installation work, and a
+        callback executes when finished.
 
-        as observation, installation on windows side takes for some reasons
-        longer than in linux or osx environment. therefore an extended timeout is
-        chosen.
+        as observation, installation on Windows side takes for some reasons
+        longer than in linux or osx environment. therefore, an extended timeout
+        runs.
 
         :return: True for test purpose
         """

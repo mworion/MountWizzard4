@@ -19,6 +19,7 @@
 import logging
 import os
 import json
+import sys
 from queue import Queue
 import platform
 
@@ -180,6 +181,9 @@ class MountWizzard4(QObject):
 
         if os.path.isfile('test.txt'):
             self.update3s.connect(self.quit)
+
+        if len(sys.argv) > 1:
+            self.message.emit(sys.argv[1], 1)
 
     def checkAndSetAutomation(self):
         """

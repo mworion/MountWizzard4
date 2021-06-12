@@ -21,6 +21,7 @@ import sys
 import logging
 import subprocess
 import platform
+import time
 
 # external packages
 
@@ -31,221 +32,268 @@ setupLogging()
 log = logging.getLogger()
 
 
-def writeText(textBrow, t, color):
-    """
-    :param textBrow:
-    :param t:
-    :param color:
-    :return:
-    """
-    textBrow.setTextColor(mColor[color])
-    textBrow.insertPlainText(t + '\n')
-    textBrow.moveCursor(QTextCursor.End)
-    log.ui(f'Updater window: [{t}]')
-    QApplication.processEvents()
-    return True
+class Update:
+    log = logging.getLogger(__name__)
+
+    def __init__(self, runnable=None, writer=None):
+        self.writer = writer
+        self.runnable = runnable
+
+    @staticmethod
+    def formatPIP(line=''):
+        """
+        formatPIP shortens the stdout line for presenting it to the user. as the
+        lines are really long, mw4 concentrates on package names and action.
+
+        :param line:
+        :return: formatted line
+        """
+        if line.startswith(' '):
+            return ''
+
+        elif line.startswith('Requirement'):
+            val = line.split(':')
+            prefix = val[0]
+            packageName = val[1].split('<')[0].split('>')[0].split('=')[0].split(' ')[1]
+            line = f'{prefix} : {packageName}'
+
+        elif line.startswith('Collecting'):
+            line = line.split('<')[0].split('>')[0].split('=')[0]
+
+        elif line.startswith('Installing') or line.startswith('Building'):
+            line = line.split(':')[0]
+
+        else:
+            line = line.split('\n')[0]
+
+        return line
+
+    def runInstall(self, versionPackage=''):
+        """
+        :param versionPackage:   package version to install
+        :return: success
+        """
+        runnable = ['pip',
+                    'install',
+                    f'mountwizzard4=={versionPackage}',
+                    '--disable-pip-version-check',
+                    ]
+
+        try:
+            process = subprocess.Popen(args=runnable,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.STDOUT,
+                                       text=True,
+                                       )
+            for stdout_line in iter(process.stdout.readline, ""):
+                line = self.formatPIP(line=stdout_line)
+                if line:
+                    self.writer(line, 0)
+
+            output = process.communicate(timeout=60)[0]
+
+        except subprocess.TimeoutExpired as e:
+            self.log.error(e)
+            return False
+
+        except Exception as e:
+            self.log.error(f'Error: {e} happened')
+            return False
+
+        else:
+            retCode = str(process.returncode)
+            self.log.debug(f'pip install: [{retCode}] [{output}]')
+
+        success = (process.returncode == 0)
+        return success
+
+    def restart(self, text):
+        """
+        :param text:
+        :return:
+        """
+        runDir = os.path.dirname(self.runnable)
+        runScript = os.path.abspath(runDir + '/loader.py')
+        pythonPath = os.path.abspath(sys.executable)
+
+        if platform.system() == 'Windows':
+            runScript = "\"" + runScript + "\""
+            pythonRuntime = "\"" + pythonPath + "\""
+        else:
+            pythonRuntime = pythonPath
+
+        if platform.system() == 'Windows':
+            text = "\"" + text + "\""
+            text = "\"" + text + "\""
+
+        os.execl(pythonPath, pythonRuntime, runScript, text)
+        return True
 
 
-def formatPIP(line=''):
-    """
-    formatPIP shortens the stdout line for presenting it to the user. as the
-    lines are really long, mw4 concentrates on package names and action.
+class UpdateGUI:
+    log = logging.getLogger(__name__)
 
-    :param line:
-    :return: formatted line
-    """
-    if line.startswith(' '):
-        return ''
+    def __init__(self, runnable=None, version=None, x=0, y=0):
+        self.version = version
 
-    elif line.startswith('Requirement'):
-        val = line.split(':')
-        prefix = val[0]
-        packageName = val[1].split('<')[0].split('>')[0].split('=')[0].split(' ')[1]
-        line = f'{prefix} : {packageName}'
+        from PyQt5.QtTest import QTest
+        from PyQt5.QtCore import Qt
+        from PyQt5.QtGui import QIcon, QPixmap
+        from PyQt5.QtWidgets import QApplication, QPushButton, QVBoxLayout, \
+            QHBoxLayout
+        from PyQt5.QtWidgets import QWidget, QTextBrowser, QLabel
+        import resource.resources as res
+        res.qInitResources()
+        from gui.utilities.stylesQtCss import Styles
 
-    elif line.startswith('Collecting'):
-        line = line.split('<')[0].split('>')[0].split('=')[0]
+        self.t = QTest
+        self.update = Update(runnable=runnable, writer=self.writeText)
 
-    elif line.startswith('Installing') or line.startswith('Building'):
-        line = line.split(':')[0]
+        QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
+        app = QApplication(sys.argv)
+        app.setWindowIcon(QIcon(':/icon/mw4.ico'))
 
-    else:
-        line = line.split('\n')[0]
+        self.mColor = [Styles.COLOR_ASTRO,
+                       Styles.COLOR_WHITE,
+                       Styles.COLOR_YELLOW,
+                       Styles.COLOR_RED,
+                       ]
+        if platform.system() == 'Darwin':
+            self.style = Styles.MAC_STYLE + Styles.BASIC_STYLE
+        else:
+            self.style = Styles.NON_MAC_STYLE + Styles.BASIC_STYLE
 
-    return line
+        window = QWidget()
+        window.setWindowTitle('MountWizzard4 Updater')
+        window.resize(500, 300)
+        window.move(x, y)
+        window.setStyleSheet(self.style)
+
+        self.cancelButt = QPushButton('Cancel Update')
+        self.cancelButt.setFixedHeight(25)
+        self.updateButt = QPushButton('Start Update')
+        self.updateButt.setFixedHeight(25)
+        self.textBrow = QTextBrowser()
+        self.textBrow.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.updateButt.clicked.connect(self.runUpdate)
+        self.cancelButt.clicked.connect(self.runCancel)
+
+        layoutMain = QVBoxLayout()
+        layoutHeader = QHBoxLayout()
+        layoutButtons = QHBoxLayout()
+        header = QLabel()
+        iconLabel = QLabel()
+        pixmap = QPixmap(':icon/mw4.png').scaled(32, 32)
+        iconLabel.setPixmap(pixmap)
+        layoutHeader.addWidget(iconLabel)
+        header.setText(f'Update to version: [{self.version}]')
+        header.setStyleSheet('font-size: 18pt;')
+        layoutHeader.addWidget(header)
+        question = QLabel()
+        pixmap = QPixmap(':/icon/question.svg').scaled(32, 32)
+        question.setPixmap(pixmap)
+        question.setAlignment(Qt.AlignRight)
+        layoutHeader.addWidget(question)
+        layoutButtons.addWidget(self.cancelButt)
+        layoutButtons.addWidget(self.updateButt)
+        layoutMain.addLayout(layoutHeader)
+        layoutMain.addWidget(self.textBrow)
+        layoutMain.addLayout(layoutButtons)
+        window.setLayout(layoutMain)
+
+        window.show()
+        sys.exit(app.exec_())
+
+    def writeText(self, text, color):
+        """
+        :param text:
+        :param color:
+        :return:
+        """
+        from PyQt5.QtGui import QTextCursor
+        from PyQt5.QtWidgets import QApplication
+
+        self.textBrow.setTextColor(self.mColor[color])
+        self.textBrow.insertPlainText(text + '\n')
+        self.textBrow.moveCursor(QTextCursor.End)
+        self.log.ui(f'Updater window: [{text}]')
+        QApplication.processEvents()
+        return True
+
+    def runCancel(self):
+        """
+        :return:
+        """
+        self.cancelButt.setEnabled(False)
+        self.updateButt.setEnabled(False)
+        text = 'Update cancelled'
+        self.writeText(text, 2)
+        self.writeText('Restarting MountWizzard4...', 1)
+        self.writeText('...this takes some seconds...', 1)
+        self.t.qWait(3000)
+        self.update.restart(text)
+        return True
+
+    def runUpdate(self):
+        """
+        :return:
+        """
+        self.cancelButt.setEnabled(False)
+        self.updateButt.setEnabled(False)
+        self.writeText(f'Installing now version {self.version}', 1)
+        self.t.qWait(1000)
+        suc = self.update.runInstall(self.version)
+        if suc:
+            text = f'Successfully installed {self.version}'
+            self.writeText(text, 1)
+        else:
+            text = f'Error installing {self.version}'
+            self.writeText(text, 2)
+
+        self. writeText(f'Restarting MountWizzard4...', 1)
+        self.writeText('...this takes some seconds...', 1)
+        self.t.qWait(3000)
+        self.update.restart(text)
+        return True
 
 
-def runInstall(textBrow, versionPackage=''):
-    """
-    :param textBrow:
-    :param versionPackage:   package version to install
-    :return: success
-    """
-    runnable = ['pip',
-                'install',
-                f'mountwizzard4=={versionPackage}',
-                '--disable-pip-version-check',
-                ]
+class UpdateCLI:
+    log = logging.getLogger(__name__)
 
-    try:
-        process = subprocess.Popen(args=runnable,
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.STDOUT,
-                                   text=True,
-                                   )
-        for stdout_line in iter(process.stdout.readline, ""):
-            line = formatPIP(line=stdout_line)
-            if line:
-                writeText(textBrow, line, 0)
+    def __init__(self, runnable=None, version=None):
+        self.version = version
+        self.update = Update(runnable=runnable, writer=self.writeText)
 
-        output = process.communicate(timeout=60)[0]
+        self.writeText(f'Installing now version {self.version}', 1)
+        time.sleep(1)
+        suc = self.update.runInstall(self.version)
+        if suc:
+            text = f'Successfully installed {self.version}'
+            self.writeText(text, 1)
+        else:
+            text = f'Error installing {self.version}'
+            self.writeText(text, 2)
 
-    except subprocess.TimeoutExpired as e:
-        log.error(e)
-        return False
+        self. writeText(f'Restarting MountWizzard4...', 1)
+        self.writeText('...this takes some seconds...', 1)
+        self.update.restart(text)
 
-    except Exception as e:
-        log.error(f'Error: {e} happened')
-        return False
-
-    else:
-        retCode = str(process.returncode)
-        log.debug(f'pip install: [{retCode}] [{output}]')
-
-    success = (process.returncode == 0)
-    return success
-
-
-def restart():
-    """
-    :return:
-    """
-    runDir = os.path.dirname(sys.argv[0])
-    runScript = os.path.abspath(runDir + '/loader.py')
-    pythonPath = os.path.abspath(sys.executable)
-
-    if platform.system() == 'Windows':
-        runScript = "\"" + runScript + "\""
-        pythonRuntime = "\"" + pythonPath + "\""
-    else:
-        pythonRuntime = pythonPath
-
-    os.execl(pythonPath, pythonRuntime, runScript)
-    return True
-
-
-def runCancel(textBrow, cancel, update, t):
-    """
-    :return:
-    """
-    cancel.setEnabled(False)
-    update.setEnabled(False)
-    writeText(textBrow, 'Update cancelled', 2)
-    writeText(textBrow, 'Restarting MountWizzard4...', 1)
-    writeText(textBrow, '...this takes some seconds...', 1)
-    t.qWait(3000)
-    restart()
-    return True
-
-
-def runUpdate(textBrow, version, cancel, update, t):
-    """
-    :return:
-    """
-    cancel.setEnabled(False)
-    update.setEnabled(False)
-    writeText(textBrow, f'Installing now version {version}', 1)
-    t.qWait(1000)
-    suc = runInstall(textBrow, version)
-    if suc:
-        writeText(textBrow, f'Successfully installed {version}', 1)
-    else:
-        writeText(textBrow, 'Error installing {version}', 2)
-
-    writeText(textBrow, f'Restarting MountWizzard4...', 1)
-    writeText(textBrow, '...this takes some seconds...', 1)
-    t.qWait(3000)
-    restart()
-    return True
-
-
-def runUI(version, x, y):
-    """
-    :return:
-    """
-    from PyQt5.QtTest import QTest
-    from PyQt5.QtCore import Qt
-    from PyQt5.QtGui import QIcon, QTextCursor, QPixmap
-    from PyQt5.QtWidgets import QApplication, QPushButton, QVBoxLayout, QHBoxLayout
-    from PyQt5.QtWidgets import QWidget, QTextBrowser, QLabel
-    from gui.utilities.stylesQtCss import Styles
-    import resource.resources as res
-
-    res.qInitResources()
-    mColor = [Styles.COLOR_ASTRO,
-              Styles.COLOR_WHITE,
-              Styles.COLOR_YELLOW,
-              Styles.COLOR_RED,
-              ]
-
-    QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
-    app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon(':/icon/mw4.ico'))
-    window = QWidget()
-    window.setWindowTitle('MountWizzard4 Updater')
-    window.resize(500, 300)
-    window.move(x, y)
-
-    if platform.system() == 'Darwin':
-        style = Styles.MAC_STYLE + Styles.BASIC_STYLE
-    else:
-        style = Styles.NON_MAC_STYLE + Styles.BASIC_STYLE
-    window.setStyleSheet(style)
-
-    cancel = QPushButton('Cancel Update')
-    cancel.setFixedHeight(25)
-    update = QPushButton('Start Update')
-    update.setFixedHeight(25)
-    textBrow = QTextBrowser()
-    textBrow.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-
-    update.clicked.connect(lambda: runUpdate(textBrow, version, cancel, update, QTest))
-    cancel.clicked.connect(lambda: runCancel(textBrow, cancel, update, QTest))
-
-    layoutMain = QVBoxLayout()
-    layoutHeader = QHBoxLayout()
-    layoutButtons = QHBoxLayout()
-
-    header = QLabel()
-    iconLabel = QLabel()
-    pixmap = QPixmap(':icon/mw4.png').scaled(32, 32)
-    iconLabel.setPixmap(pixmap)
-    layoutHeader.addWidget(iconLabel)
-
-    header.setText(f'Update to version: [{version}]')
-    header.setStyleSheet('font-size: 18pt;')
-    layoutHeader.addWidget(header)
-
-    question = QLabel()
-    pixmap = QPixmap(':/icon/question.svg').scaled(32, 32)
-    question.setPixmap(pixmap)
-    question.setAlignment(Qt.AlignRight)
-    layoutHeader.addWidget(question)
-
-    layoutButtons.addWidget(cancel)
-    layoutButtons.addWidget(update)
-    layoutMain.addLayout(layoutHeader)
-    layoutMain.addWidget(textBrow)
-    layoutMain.addLayout(layoutButtons)
-    window.setLayout(layoutMain)
-    window.show()
-    sys.exit(app.exec_())
+    @staticmethod
+    def writeText(text, color):
+        if color == 0:
+            pass
+        elif color == 1:
+            pass
+        else:
+            pass
+        print(text)
 
 
 def main():
     """
     :return: nothing
     """
+    runnable = sys.argv[0]
     version = sys.argv[1]
     x = int(sys.argv[2]) + 150
     y = int(sys.argv[3]) + 150
@@ -253,12 +301,17 @@ def main():
 
     log.header('-' * 100)
     log.header(f'Running updater')
+    if simpleGui:
+        log.header(f'Simple updater in CLI mode')
+    else:
+        log.header(f'Comfort updater in GUI mode')
+
     log.header('-' * 100)
 
     if simpleGui:
-        pass
+        UpdateCLI(runnable=runnable, version=version)
     else:
-        runUI(version, x, y)
+        UpdateGUI(runnable=runnable, version=version, x=x, y=y)
 
 
 if __name__ == "__main__":

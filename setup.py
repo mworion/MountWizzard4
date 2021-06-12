@@ -51,7 +51,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0a40',
+    version='2.0.0b17',
     packages=[
         'mw4',
         'mw4.base',
@@ -104,6 +104,7 @@ setup(
     + (['PyQt3D==5.15.4'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
     + (['PyQtWebEngine==5.15.4'] if platform.machine() not in ['armv7l',
                                                                'aarch64'] else []),
+    keywords=['5.15.4'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='mworion',

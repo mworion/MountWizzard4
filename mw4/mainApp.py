@@ -30,7 +30,7 @@ from importlib_metadata import version
 from PyQt5.QtTest import QTest
 
 # local import
-from base.loggerMW import setCustomLoggingLevel
+from base.loggerMW import setCustomLoggingLevel, setupLogging
 from mountcontrol import qtmount
 from gui.mainWindow.mainW import MainWindow
 from logic.powerswitch.kmRelay import KMRelay

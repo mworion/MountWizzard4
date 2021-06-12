@@ -248,6 +248,24 @@ class SettMisc(object):
         self.log.debug(f'venv path: [{os.environ.get("VIRTUAL_ENV", "")}]')
         return status
 
+    def checkUpdateVersion(self, versionPackage):
+        """
+        :return:
+        """
+        url = f'https://pypi.python.org/pypi/mountwizzard4/{versionPackage}/json'
+        try:
+            response = requests.get(url).json()
+        except Exception as e:
+            self.log.critical(f'Cannot determine package data: {e}')
+            return None
+        else:
+            self.log.debug(f'{response["info"]}')
+
+        targetPyQt5 = response['info']['keywords'].split(',')[0]
+        actPyQt5 = importlib_metadata.version('PyQt5')
+        self.log.debug(f'target: [{targetPyQt5}], actual: [{actPyQt5}]')
+        return targetPyQt5 == actPyQt5
+
     def startUpdater(self, versionPackage):
         """
         :return:
@@ -262,13 +280,16 @@ class SettMisc(object):
         else:
             pythonRuntime = pythonPath
 
-        if self.ui.versionBeta.isChecked():
-            t = 'comfort'
+        uType = self.checkUpdateVersion(versionPackage)
+        if uType is None:
+            return False
+        elif uType:
+            updateType = 'GUI'
         else:
-            t = 'simple'
+            updateType = 'CLI'
 
         os.execl(pythonPath, pythonRuntime, updaterScript, versionPackage,
-                 str(self.pos().x()), str(self.pos().y()), t)
+                 str(self.pos().x()), str(self.pos().y()), updateType)
         return True
 
     def installVersion(self):

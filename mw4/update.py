@@ -138,19 +138,18 @@ class UpdateGUI:
         from PyQt5.QtTest import QTest
         from PyQt5.QtCore import Qt
         from PyQt5.QtGui import QIcon, QPixmap
-        from PyQt5.QtWidgets import QApplication, QPushButton, QVBoxLayout, \
-            QHBoxLayout
-        from PyQt5.QtWidgets import QWidget, QTextBrowser, QLabel
+        from PyQt5.QtWidgets import QApplication, QPushButton, QVBoxLayout
+        from PyQt5.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
         import resource.resources as res
         res.qInitResources()
         from gui.utilities.stylesQtCss import Styles
 
-        self.t = QTest
+        self.test = QTest
         self.update = Update(runnable=runnable, writer=self.writeText)
 
         QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
-        app = QApplication(sys.argv)
-        app.setWindowIcon(QIcon(':/icon/mw4.ico'))
+        self.app = QApplication(sys.argv)
+        self.app.setWindowIcon(QIcon(':/icon/mw4.ico'))
 
         self.mColor = [Styles.COLOR_ASTRO,
                        Styles.COLOR_WHITE,
@@ -162,11 +161,11 @@ class UpdateGUI:
         else:
             self.style = Styles.NON_MAC_STYLE + Styles.BASIC_STYLE
 
-        window = QWidget()
-        window.setWindowTitle('MountWizzard4 Updater')
-        window.resize(500, 300)
-        window.move(x, y)
-        window.setStyleSheet(self.style)
+        self.window = QWidget()
+        self.window.setWindowTitle('MountWizzard4 Updater')
+        self.window.resize(500, 300)
+        self.window.move(x, y)
+        self.window.setStyleSheet(self.style)
 
         self.cancelButt = QPushButton('Cancel Update')
         self.cancelButt.setFixedHeight(25)
@@ -198,10 +197,11 @@ class UpdateGUI:
         layoutMain.addLayout(layoutHeader)
         layoutMain.addWidget(self.textBrow)
         layoutMain.addLayout(layoutButtons)
-        window.setLayout(layoutMain)
+        self.window.setLayout(layoutMain)
+        self.window.show()
 
-        window.show()
-        sys.exit(app.exec_())
+    def run(self):
+        sys.exit(self.app.exec_())
 
     def writeText(self, text, color):
         """
@@ -229,7 +229,7 @@ class UpdateGUI:
         self.writeText(text, 2)
         self.writeText('Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
-        self.t.qWait(3000)
+        self.test.qWait(3000)
         self.update.restart(text)
         return True
 
@@ -240,7 +240,7 @@ class UpdateGUI:
         self.cancelButt.setEnabled(False)
         self.updateButt.setEnabled(False)
         self.writeText(f'Installing now version {self.version}', 1)
-        self.t.qWait(1000)
+        self.test.qWait(1000)
         suc = self.update.runInstall(self.version)
         if suc:
             text = f'Successfully installed {self.version}'
@@ -249,9 +249,9 @@ class UpdateGUI:
             text = f'Error installing {self.version}'
             self.writeText(text, 2)
 
-        self. writeText(f'Restarting MountWizzard4...', 1)
+        self.writeText(f'Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
-        self.t.qWait(3000)
+        self.test.qWait(3000)
         self.update.restart(text)
         return True
 
@@ -273,10 +273,9 @@ class UpdateCLI:
             text = f'Error installing {self.version}'
             self.writeText(text, 2)
 
-        self. writeText(f'Restarting MountWizzard4...', 1)
+        self.writeText(f'Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
         self.update.restart(text)
-        return True
 
     def writeText(self, text, color):
         """
@@ -295,7 +294,7 @@ def main():
     version = sys.argv[1]
     x = int(sys.argv[2]) + 150
     y = int(sys.argv[3]) + 150
-    simpleGui = sys.argv[4] == 'simple'
+    simpleGui = sys.argv[4] == 'CLI'
 
     log.header('-' * 100)
     log.header(f'Running updater')
@@ -309,7 +308,8 @@ def main():
     if simpleGui:
         UpdateCLI(runnable=runnable, version=version)
     else:
-        UpdateGUI(runnable=runnable, version=version, x=x, y=y)
+        u = UpdateGUI(runnable=runnable, version=version, x=x, y=y)
+        u.run()
 
 
 if __name__ == "__main__":

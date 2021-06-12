@@ -234,8 +234,57 @@ def test_startUpdater_1(function):
                            return_value='Windows'):
         with mock.patch.object(os,
                                'execl'):
-            suc = function.startUpdater('1.2.3')
+            with mock.patch.object(function,
+                                   'checkUpdateVersion',
+                                   return_value=None):
+                suc = function.startUpdater('1.2.3')
+                assert not suc
+
+
+def test_checkUpdateVersion_1(function):
+    class Test:
+        @staticmethod
+        def json():
+            return {'info': {'keywords': '5.15.4'}}
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test(),
+                           side_effect=Exception):
+        suc = function.checkUpdateVersion('1.2.3')
+        assert suc is None
+
+
+def test_checkUpdateVersion_2(function):
+    class Test:
+        @staticmethod
+        def json():
+            return {'info': {'keywords': '5.15.4'}}
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        with mock.patch.object(importlib_metadata,
+                               'version',
+                               return_value='5.15.4'):
+            suc = function.checkUpdateVersion('1.2.3')
             assert suc
+
+
+def test_checkUpdateVersion_3(function):
+    class Test:
+        @staticmethod
+        def json():
+            return {'info': {'keywords': '5.15.4'}}
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        with mock.patch.object(importlib_metadata,
+                               'version',
+                               return_value='5.14.4'):
+            suc = function.checkUpdateVersion('1.2.3')
+            assert not suc
 
 
 def test_startUpdater_2(function):
@@ -244,8 +293,24 @@ def test_startUpdater_2(function):
                            return_value='Darwin'):
         with mock.patch.object(os,
                                'execl'):
-            suc = function.startUpdater('1.2.3')
-            assert suc
+            with mock.patch.object(function,
+                                   'checkUpdateVersion',
+                                   return_value=True):
+                suc = function.startUpdater('1.2.3')
+                assert suc
+
+
+def test_startUpdater_3(function):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        with mock.patch.object(os,
+                               'execl'):
+            with mock.patch.object(function,
+                                   'checkUpdateVersion',
+                                   return_value=False):
+                suc = function.startUpdater('1.2.3')
+                assert suc
 
 
 def test_installVersion_1(function):

@@ -335,7 +335,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
             QFile.copy(f':/data/{file}', filePath)
             log.debug(f'Writing file:  [{file}]')
         else:
-            log.debug(f'Using existing file: [{file}]')
+            log.info(f'Using existing file: [{file}]')
 
         os.chmod(filePath, 0o666)
     return True
@@ -407,7 +407,6 @@ def main():
     splashW.showMessage('Finishing loading')
     splashW.setValue(100)
     splashW.close()
-
     sys.exit(app.exec_())
 
 

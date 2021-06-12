@@ -31,7 +31,9 @@ import PyQt5
 
 # local import
 from mainApp import MountWizzard4
-from base.loggerMW import addLoggingLevel
+from base.loggerMW import setupLogging
+
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='module')

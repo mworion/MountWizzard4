@@ -124,7 +124,6 @@ class Update:
 
         if platform.system() == 'Windows':
             text = "\"" + text + "\""
-            text = "\"" + text + "\""
 
         os.execl(pythonPath, pythonRuntime, runScript, text)
         return True
@@ -277,16 +276,15 @@ class UpdateCLI:
         self. writeText(f'Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
         self.update.restart(text)
+        return True
 
     @staticmethod
     def writeText(text, color):
-        if color == 0:
-            pass
-        elif color == 1:
-            pass
-        else:
-            pass
-        print(text)
+        """
+        :return:
+        """
+        sys.stdout.write(text + '\n')
+        return True
 
 
 def main():

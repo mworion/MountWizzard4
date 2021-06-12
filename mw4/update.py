@@ -278,12 +278,12 @@ class UpdateCLI:
         self.update.restart(text)
         return True
 
-    @staticmethod
-    def writeText(text, color):
+    def writeText(self, text, color):
         """
         :return:
         """
         sys.stdout.write(text + '\n')
+        self.log.ui(f'Updater terminal: [{text}]')
         return True
 
 

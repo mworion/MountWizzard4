@@ -74,6 +74,6 @@ else
   exit
 fi
 
-COMMAND="python ./venv/lib/$P_VER/site-packages/mw4/loader.py"
+COMMAND="python ./venv/lib/$P_VER/site-packages/mw4/loader.py 2>run.log"
 eval ${COMMAND}
 deactivate >> run.log 2>&1

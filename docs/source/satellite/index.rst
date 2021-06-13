@@ -73,55 +73,55 @@ Select only a segment before a meridian transit (and therefore avoiding a flip
 during tracking):
 
 .. image:: image/sat_af.png
-    :scale: 49%
+    :scale: 48%
 
 .. image:: image/sat_af_track.png
-    :scale: 49%
+    :scale: 48%
 
 Select only a segment after a meridian transit (and therefore avoiding a flip
 during tracking):
 
 .. image:: image/sat_be.png
-    :scale: 49%
+    :scale: 48%
 
 .. image:: image/sat_be_track.png
-    :scale: 49%
+    :scale: 48%
 
 
 Select both segments of the meridian (this might cause a flip during tracking):
 
 .. image:: image/sat_be_af.png
-    :scale: 49%
+    :scale: 48%
 
 .. image:: image/sat_be_af_track.png
-    :scale: 49%
+    :scale: 48%
 
 Select respecting the horizon line. This filters out additional all segments,
 which are below the given horizon mask.
 
 .. image:: image/sat_hor.png
-    :scale: 49%
+    :scale: 48%
 
 .. image:: image/sat_hor_track.png
-    :scale: 49%
+    :scale: 48%
 
 MW4 will take into account the meridian track limits of your mount. Here set to 1
 degree (which is close to meridian)
 
 .. image:: image/sat_lim_1.png
-    :scale: 49%
+    :scale: 48%
 
 .. image:: image/sat_lim_1_track.png
-    :scale: 49%
+    :scale: 48%
 
 MW4 will take into account the meridian track limits of your mount. Here set to
 15 degrees (which could avoid a meridian flip or at least extend the tracking time)
 
 .. image:: image/sat_lim_15.png
-    :scale: 49%
+    :scale: 48%
 
 .. image:: image/sat_lim_15_track.png
-    :scale: 49%
+    :scale: 48%
 
 .. warning:: The meridian track limits have to be chosen carefully as the mount
              might hit your setup !

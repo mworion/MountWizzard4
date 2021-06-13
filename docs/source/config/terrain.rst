@@ -4,6 +4,7 @@ For an optimal use of model points, slew path etc. it is necessary to define a
 horizon mask for the use in MW4. There are several way to define and use a mask
 based on your actual environment
 
+.. hint:: See also on youtube: https://youtu.be/EqDNNMNMS0w
 
 Using terrain image from streetview app
 ---------------------------------------

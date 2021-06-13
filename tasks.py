@@ -196,13 +196,6 @@ def build_mw(c):
 @task(pre=[build_mw])
 def upload_mw(c):
     printMW('uploading dist mountwizzard4')
-
-    with open('notes.txt') as f:
-        tmp = f.readlines()
-    rn = ''
-    for line in tmp:
-        rn += line
-
     with c.cd('./dist'):
         print(rn)
         print(f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')

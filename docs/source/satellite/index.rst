@@ -29,13 +29,13 @@ Once you choose a satellite with double click, data is programmed to mount
 controller, parameters are displayed, MW4 calculated the next 3 orbits of the
 satellite with rise / culminate / settle and if it occurs the flip time when
 crossing the meridian. After the mount has done it's calculations as well, the
-result will be shown in the **``Trajectory starts``** and **``Trajectory ends``**
+result will be shown in the ``**Trajectory starts**`` and ``**Trajectory ends**``
 fields
 and a
 possible flip will be announced.
 
-As soon as a valid tracking path is present in the mount, the **``Start satellite
-tracking``** and **``Stop satellite tracking``** button are enabled. Once started,
+As soon as a valid tracking path is present in the mount, the ``**Start satellite
+tracking**`` and ``**Stop satellite tracking**`` button are enabled. Once started,
 the mount will slew to the begin of the tracking path and wait for the satellite
 to rise. Selecting partial tracks and respecting constraints is not possible.
 
@@ -44,8 +44,8 @@ track. This offers the capability of takings care of avoiding flips, respect
 horizon and other constraints. The operation is different to the classic approach:
 Instead of programming TLE data to the mount, MW4 programs Alt / Az coordinates in
 a one second interval to the mount (max. 900s) which the mount after start
-tracking will follow. You could enable this feature with checking **``Use
-internal maths``** if the firmware is 3.x or higher. After enabling, additional
+tracking will follow. You could enable this feature with checking ``**Use
+internal maths**`` if the firmware is 3.x or higher. After enabling, additional
 elements will be enabled.
 
 .. image:: image/sat_new.png
@@ -58,7 +58,7 @@ same satellite TLE data! You will find some comparison under the architecture /
 math section: :ref:`precision of internal calculations`.
 
 If you are using the internal math as well as classic mode, you could open the
-satellite window and choose the **``Earth and Horizon Maps``** tab. There you
+satellite window and choose the ``**Earth and Horizon Maps**`` tab. There you
 could see the next three orbits and for internal math the resulting satellite
 track with an white underlay. If you change any setup, MW4 will recalculate all
 data and updates the plots accordingly.
@@ -131,7 +131,7 @@ the data is handled to the mount: whereas in classic mode only the TLE data has 
 be uploaded (which is quick) now the whole track coordinates have to be programmed
 . As this takes up to 10 seconds, MW4 does not automatically start the transfer.
 Once your setup (choice of segment, horizon etc.) is made, you have to start the
-programming by pushing the **``Prog``** button.
+programming by pushing the ``**Prog**`` button.
 
 .. image:: image/sat_prog.png
     :align: center

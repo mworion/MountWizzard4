@@ -22,7 +22,7 @@ releaseNotes = """
 - new updater concept
 - add mount clock sync feature
 - add simulator feature
-- adding terrain image
+- adding terrain image feature
 - add dome following when mount is in satellite tracking mode 
 - add setting label support for UPB dew entries
 - add auto dew control support for Pegasus UPB

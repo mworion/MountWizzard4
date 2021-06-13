@@ -6,7 +6,7 @@ version exists will be processed and if successful, MW4 will be closed and the
 updater program will be started.
 
 .. note:: MW4 does not store your actual settings. If you would like to do so,
-          please ``**Save**`` your configuration before updating.
+          please **Save** your configuration before updating.
 
 .. image:: image/update1.png
     :align: center
@@ -26,7 +26,8 @@ If started, the updater will download and install all necessary libraries.
     :scale: 71%
 
 The updater finishes automatically and reloads MW4. This will happen in both cases
-``**Cancel Update**`` and ``**Start Update**``. If you close the updater window
+**Cancel Update** and **Start Update**. If you close the updater
+window
 directly, MW4 will be not reloaded.
 
 .. image:: image/update4.png

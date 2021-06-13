@@ -25,10 +25,10 @@ displacement to the north is treated positive as well as a displacement to
 the east.
 
 .. image:: image/north.png
-    :width: 49%
+    :width: 48%
 
 .. image:: image/east.png
-    :width: 49%
+    :width: 48%
 
 For the vertical displacement you have to take car about different definitions of
 how to measure this value. A common way many ASCOM drivers do is measuring the
@@ -39,10 +39,10 @@ done between the dome center and the base of the mount. This value is mostly
 negative, because the mount base level is on lower height than the dome center.
 
 .. image:: image/z_10micron.png
-    :width: 49%
+    :width: 48%
 
 .. image:: image/z_ascom.png
-    :width: 49%
+    :width: 48%
 
 
 If you have mor than one telescope mounted, you will experience a lateral

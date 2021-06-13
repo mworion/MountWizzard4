@@ -9,14 +9,23 @@ each basic step.
 
 The necessary steps follow the order in MW4 main tab:
 
+Step 1
+
 .. image:: image/model_points.png
-    :scale: 30%
+    :align: center
+    :scale: 50%
+
+Step 2
 
 .. image:: image/model_build.png
-    :scale: 30%
+    :align: center
+    :scale: 50%
+
+Step 3
 
 .. image:: image/manage_model.png
-    :scale: 30%
+    :align: center
+    :scale: 50%
 
 .. toctree::
     :maxdepth: 1

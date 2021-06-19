@@ -69,7 +69,7 @@ def test_start_parameters_2(qapp):
         test.write('test')
 
     shutil.copy(r'tests/testData/de421_23.bsp', r'tests/data/de421_23.bsp')
-    shutil.copy(r'tests/testData/tempNET.wcs', r'tests/test.txt')
+    shutil.copy(r'tests/testData/tempNET.wcs', r'test.txt')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):

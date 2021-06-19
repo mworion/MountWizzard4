@@ -93,3 +93,22 @@ def test_updateGUI_5(app):
                                    'runInstall',
                                    return_value=True):
                 app.runUpdate()
+
+
+def test_updateGUI_6():
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        with mock.patch.object(Update,
+                               'restart'):
+            with mock.patch.object(QWidget,
+                                   'show'):
+                with mock.patch.object(QTest,
+                                       'qWait'):
+                    with mock.patch.object(QWidget,
+                                           'show'):
+                        with mock.patch.object(sys,
+                                               'exit'):
+                            with mock.patch.object(QApplication,
+                                                   'exec_'):
+                                UpdateGUI(runnable='python', version='1.2.3')

@@ -61,3 +61,14 @@ def test_drawContents(qtbot):
 def test_finish(qtbot):
     app = SplashScreen(QWidget())
     app.finish(QWidget())
+
+
+def test_init():
+    SplashScreen(QWidget(), 100, 100)
+
+
+def test_close(qtbot):
+    app = SplashScreen(QWidget())
+    with mock.patch.object(app, 'update'):
+        with mock.patch.object(app.qss, 'close'):
+            app.finish(QWidget())

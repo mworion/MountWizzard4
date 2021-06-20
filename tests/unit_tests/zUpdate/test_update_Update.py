@@ -72,7 +72,6 @@ def test_formatPIP_6(update):
 
 
 def test_runInstall_1(update):
-
     class Test1:
         @staticmethod
         def decode():

@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-import sys
 import unittest.mock as mock
 import pytest
 
@@ -29,26 +28,25 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='function')
-def app(qapp):
-    yield
-
-
 @mock.patch('sys.argv', ['python', '1', '10', '10', 'CLI'])
 def test_main_1():
-    with mock.patch.object(update,
-                           'UpdateCLI'):
-        update.main()
+    class Test:
+        def __init__(self, runnable=None, version=None):
+            pass
+
+    update.UpdateCLI = Test
+    update.main()
 
 
 @mock.patch('sys.argv', ['python', '1', '10', '10', 'GUI'])
 def test_main_2():
     class Test:
+        def __init__(self, runnable=None, version=None, x=0, y=0):
+            pass
+
         @staticmethod
         def run():
             return
 
-    with mock.patch.object(update,
-                           'UpdateGUI',
-                           return_value=Test()):
-        update.main()
+    update.UpdateGUI = Test
+    update.main()

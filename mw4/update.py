@@ -156,10 +156,9 @@ class UpdateGUI:
                        Styles.COLOR_YELLOW,
                        Styles.COLOR_RED,
                        ]
-        if platform.system() == 'Darwin':
-            self.style = Styles.MAC_STYLE + Styles.BASIC_STYLE
-        else:
-            self.style = Styles.NON_MAC_STYLE + Styles.BASIC_STYLE
+        isMac = platform.system() == 'Darwin'
+        addStyle = Styles.MAC_STYLE if isMac else Styles.NON_MAC_STYLE
+        self.style = addStyle + Styles.BASIC_STYLE
 
         self.window = QWidget()
         self.window.setWindowTitle('MountWizzard4 Updater')

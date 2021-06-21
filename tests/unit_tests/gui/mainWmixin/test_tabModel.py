@@ -25,6 +25,7 @@ import shutil
 import glob
 
 # external packages
+from PyQt5.QtTest import QTest
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
@@ -485,6 +486,12 @@ def test_modelImage_1(function):
 
 
 def test_modelImage_2(function):
+    def qWaitBreak(a):
+        function.ui.pauseModel.setProperty('pause', False)
+
+    QTest.qWait = qWaitBreak
+    function.ui.pauseModel.setProperty('pause', True)
+    function
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': '',

@@ -259,6 +259,10 @@ def test_expose_7(function):
 
 
 def test_expose_8(function):
+    def qWaitBreak(a):
+        function.exposing = False
+
+    QTest.qWait = qWaitBreak
     function.exposing = True
     function.framework = 'indi'
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,

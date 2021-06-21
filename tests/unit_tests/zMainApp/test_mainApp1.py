@@ -20,15 +20,26 @@ import unittest.mock as mock
 import shutil
 import time
 import os
+import glob
+import pytest
 
 # external packages
 import PyQt5
 
 # local import
 from mainApp import MountWizzard4
-from base.loggerMW import addLoggingLevel
+from base.loggerMW import setupLogging
 
-addLoggingLevel('TRACE', 5)
+setupLogging()
+
+
+@pytest.fixture(autouse=True, scope='function')
+def app(qapp):
+
+    files = glob.glob('tests/data/*.bsp')
+    for f in files:
+        os.remove(f)
+        yield
 
 
 def test_start_parameters_1(qapp):

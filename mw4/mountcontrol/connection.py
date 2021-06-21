@@ -287,8 +287,9 @@ class Connection(object):
         """
 
         response = ''
+        receiving = True
         try:
-            while True:
+            while receiving:
                 chunkRaw = client.recv(2048)
                 try:
                     chunk = chunkRaw.decode('ASCII')

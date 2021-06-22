@@ -46,19 +46,19 @@ available from Github:
 
 Windows10:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/<x.x>/Windows_Scripts.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/Windows_Scripts.zip
 
 MacOSx:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/<x.x>/MacOSx_Scripts.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/MacOSx_Scripts.zip
 
 Ubuntu:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/<x.x>/Ubuntu_Scripts.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Scripts.zip
 
 UbuntuMate ARM64:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/<x.x>/Ubuntu_Mate_Scripts.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Mate_Scripts.zip
 
 Whereas <x.x> is the major version MW4 you would like to install.
 

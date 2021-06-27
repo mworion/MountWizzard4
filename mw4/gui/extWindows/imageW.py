@@ -626,7 +626,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         return True
 
-    def preparePlot(self):
+    def workerPreparePlot(self):
         """
         :return:
         """
@@ -663,6 +663,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.stretchImage()
         self.colorImage()
         self.imagePlot()
+        return True
+
+    def preparePlot(self):
+        """
+        :return:
+        """
+        worker = Worker(self.workerPreparePlot)
+        self.threadPool.start(worker)
         return True
 
     def workerPhotometry(self):
@@ -774,6 +782,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param imagePath:
         :return:
         """
+        import time
         if not imagePath:
             return False
 

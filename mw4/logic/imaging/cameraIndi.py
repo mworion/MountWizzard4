@@ -23,6 +23,7 @@ import os
 import astropy.io.fits as fits
 
 # local imports
+from base.tpool import Worker
 from base.indiClass import IndiClass
 from base.transform import JNowToJ2000
 
@@ -41,6 +42,7 @@ class CameraIndi(IndiClass):
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
+        self.threadPool = app.threadPool
         self.signals = signals
         self.data = data
         self.imagePath = ''
@@ -117,7 +119,8 @@ class CameraIndi(IndiClass):
                 self.signals.message.emit(f'expose {value:2.0f} s')
 
         elif self.device.CCD_EXPOSURE['state'] == 'Ok':
-            self.signals.message.emit('')
+            pass
+            # self.signals.message.emit('')
 
         if self.device.CCD_EXPOSURE['state'] in ['Idle', 'Ok']:
             self.isDownloading = False
@@ -152,6 +155,36 @@ class CameraIndi(IndiClass):
         header['DEC'] = self.dec.degrees
         return header
 
+    def workerSaveBlob(self, data):
+        """
+        :param data:
+        :return:
+        """
+        if data['format'] == '.fits.fz':
+            HDU = fits.HDUList.fromstring(data['value'])
+            self.log.info('Image BLOB is in FPacked format')
+
+        elif data['format'] == '.fits.z':
+            HDU = fits.HDUList.fromstring(zlib.decompress(data['value']))
+            self.log.info('Image BLOB is compressed fits format')
+
+        elif data['format'] == '.fits':
+            HDU = fits.HDUList.fromstring(data['value'])
+            self.log.info('Image BLOB is uncompressed fits format')
+
+        else:
+            self.log.info('Image BLOB is not supported')
+            self.signals.saved.emit(self.imagePath)
+            self.signals.message.emit('')
+            return True
+
+        HDU[0].header = self.updateHeaderInfo(HDU[0].header)
+        fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
+
+        self.signals.saved.emit(self.imagePath)
+        self.signals.message.emit('')
+        return True
+
     def updateBLOB(self, deviceName, propertyName):
         """
         :param deviceName:
@@ -176,29 +209,8 @@ class CameraIndi(IndiClass):
             return False
 
         self.signals.message.emit('Saving')
-        if data['format'] == '.fits.fz':
-            HDU = fits.HDUList.fromstring(data['value'])
-            self.log.info('Image BLOB is in FPacked format')
-
-        elif data['format'] == '.fits.z':
-            HDU = fits.HDUList.fromstring(zlib.decompress(data['value']))
-            self.log.info('Image BLOB is compressed fits format')
-
-        elif data['format'] == '.fits':
-            HDU = fits.HDUList.fromstring(data['value'])
-            self.log.info('Image BLOB is uncompressed fits format')
-
-        else:
-            self.log.info('Image BLOB is not supported')
-            self.signals.saved.emit(self.imagePath)
-            self.signals.message.emit('')
-            return True
-
-        HDU[0].header = self.updateHeaderInfo(HDU[0].header)
-        fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
-
-        self.signals.saved.emit(self.imagePath)
-        self.signals.message.emit('')
+        worker = Worker(self.workerSaveBlob, data)
+        self.threadPool.start(worker)
         return True
 
     def sendDownloadMode(self, fastReadout=False):

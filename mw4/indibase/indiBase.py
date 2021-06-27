@@ -16,9 +16,11 @@
 ###########################################################
 # standard libraries
 import logging
+import time
 
 # external packages
 import PyQt5
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtNetwork import QTcpSocket, QAbstractSocket
 import xml.etree.ElementTree as ETree
@@ -207,8 +209,7 @@ class Device(object):
             self.log.warning(f'Property: {iProperty["propertyType"]} is not Blob')
             return {}
 
-        elementList = iProperty['elementList']
-        return elementList[propertyName]
+        return iProperty['elementList'][propertyName]
 
 
 class Client(QObject):
@@ -922,6 +923,7 @@ class Client(QObject):
                              chunk=chunk,
                              elementList=elementList,
                              defVector=True)
+
         self.signals.newProperty.emit(deviceName, iProperty)
         if isinstance(chunk, indiXML.DefBLOBVector):
             self.signals.defBLOB.emit(deviceName, iProperty)

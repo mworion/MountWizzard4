@@ -171,7 +171,7 @@ class SettMisc(object):
 
         except Exception as e:
             self.log.critical(f'Cannot determine package version: {e}')
-            return None, None
+            return None, None, None
 
         vPackage = list(response['releases'].keys())
         vPackage.sort(key=StrictVersion, reverse=True)

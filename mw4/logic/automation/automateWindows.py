@@ -501,15 +501,22 @@ class AutomateWindows(QObject):
         """
         :return:
         """
+        import ctypes
+        import locale
+        windll = ctypes.windll.kernel32
+        a = locale.windows_locale[windll.GetUserDefaultUILanguage()]
+        self.log.debug(f'DefaultGui: {a}')
+        self.log.debug(f'Locale: {locale.getdefaultlocale()}')
+
         win = self.updater['10 micron control box update']
         self.log.debug(f'Updater win: [{win}]')
         controls.ButtonWrapper(win['Orbital parameters of satellites']).check_by_click()
         win['Edit...2'].click()
         popup = self.updater['Satellites orbits']
-        self.log.debug(f'Updater popup: [{popup}]')
+        self.log.debug(f'Updater popup: [{popup.print_control_identifiers()}]')
         popup['Load from file'].click()
         filedialog = self.updater['Dialog']
-        self.log.debug(f'Updater filedialog: [{filedialog}]')
+        self.log.debug(f'Updater filedialog: [{filedialog.print_control_identifiers()}]')
         text = self.installPath + 'satellites.tle'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
 

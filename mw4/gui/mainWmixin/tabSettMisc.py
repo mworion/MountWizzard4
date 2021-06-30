@@ -259,7 +259,7 @@ class SettMisc(object):
             self.log.critical(f'Cannot determine package data: {e}')
             return None
         else:
-            self.log.debug(f'{response["info"]}')
+            self.log.trace(f'{response["info"]}')
 
         targetPyQt5 = response['info']['keywords'].split(',')[0]
         actPyQt5 = importlib_metadata.version('PyQt5')

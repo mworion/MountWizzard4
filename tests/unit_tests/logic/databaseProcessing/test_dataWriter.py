@@ -356,3 +356,19 @@ def test_writeSatelliteTLE_3(function):
     assert tle[0] == refLines[0].strip('\n')
     assert tle[1] == refLines[1].strip('\n')
     assert tle[2] == refLines[2].strip('\n')
+
+
+def test_writeSatelliteTLE_4(function):
+    tle = ["BEIDOU-3 M23",
+           "1 44542U 19061A   21180.78220369 -.00000015  00000-0 -66561+1 0  9997",
+           "2 44542  54.7025 244.1098 0007981 318.8601 283.5781  1.86231125 12011"]
+    data = {'BEIDOU-3 M23': EarthSatellite(tle[1], tle[2],  name=tle[0])}
+    suc = function.writeSatelliteTLE(datas=data, installPath='tests/temp')
+    assert suc
+
+    with open('tests/temp/satellites.tle', 'r') as f:
+        refLines = f.readlines()
+
+    assert tle[0] == refLines[0].strip('\n')
+    assert tle[1] == refLines[1].strip('\n')
+    assert tle[2] == refLines[2].strip('\n')

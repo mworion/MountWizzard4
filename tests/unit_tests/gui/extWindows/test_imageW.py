@@ -479,29 +479,29 @@ def test_writeHeaderDataToGUI_4(function):
     assert suc
 
 
-def test_preparePlot_1(function):
+def test_workerPreparePlot_1(function):
     function.image = None
     function.header = None
-    suc = function.preparePlot()
+    suc = function.workerPreparePlot()
     assert not suc
 
 
-def test_preparePlot_2(function):
+def test_workerPreparePlot_2(function):
     function.image = np.random.rand(100, 100)
     function.header = None
-    suc = function.preparePlot()
+    suc = function.workerPreparePlot()
     assert not suc
 
 
-def test_preparePlot_3(function):
+def test_workerPreparePlot_3(function):
     function.ui.zoom.addItem(' 1x Zoom')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
-    suc = function.preparePlot()
+    suc = function.workerPreparePlot()
     assert suc
 
 
-def test_preparePlot_4(function):
+def test_workerPreparePlot_4(function):
     function.ui.zoom.addItem(' 1x Zoom')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
@@ -511,11 +511,11 @@ def test_preparePlot_4(function):
                            'setupNormal'):
         with mock.patch.object(function,
                                'imagePlot'):
-            suc = function.preparePlot()
+            suc = function.workerPreparePlot()
             assert suc
 
 
-def test_preparePlot_5(function):
+def test_workerPreparePlot_5(function):
     function.ui.view.addItem('test')
     function.ui.view.addItem('test')
     function.ui.zoom.addItem(' 1x Zoom')
@@ -533,8 +533,15 @@ def test_preparePlot_5(function):
                                'setupDistorted'):
             with mock.patch.object(function,
                                    'imagePlot'):
-                suc = function.preparePlot()
+                suc = function.workerPreparePlot()
                 assert suc
+
+
+def test_preparePlot(function):
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        suc = function.preparePlot()
+        assert suc
 
 
 def test_workerPhotometry_1(function):

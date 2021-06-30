@@ -235,6 +235,62 @@ def test_updateHeaderInfo_4():
     assert 'DEC' not in h
 
 
+def test_workerSaveBLOB_1():
+    app.imagePath = 'tests/image/test.fit'
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    data = {'value': '1',
+            'name': 'CCD1',
+            'format': '.fits.fz'}
+    with mock.patch.object(fits.HDUList,
+                           'fromstring',
+                           return_value=hdu):
+        suc = app.workerSaveBLOB(data)
+        assert suc
+
+
+def test_workerSaveBLOB_2():
+    app.imagePath = 'tests/image/test.fit'
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    data = {'value': zlib.compress(b'1'),
+            'name': 'CCD1',
+            'format': '.fits.z'}
+    with mock.patch.object(fits.HDUList,
+                           'fromstring',
+                           return_value=hdu):
+        suc = app.workerSaveBLOB(data)
+        assert suc
+
+
+def test_workerSaveBLOB_3():
+    app.imagePath = 'tests/image/test.fit'
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    data = {'value': '1',
+            'name': 'CCD1',
+            'format': '.fits'}
+    with mock.patch.object(fits.HDUList,
+                           'fromstring',
+                           return_value=hdu):
+        suc = app.workerSaveBLOB(data)
+        assert suc
+
+
+def test_workerSaveBLOB_4():
+    app.imagePath = 'tests/image/test.fit'
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    data = {'value': '1',
+            'name': 'CCD1',
+            'format': '.test'}
+    with mock.patch.object(fits.HDUList,
+                           'fromstring',
+                           return_value=hdu):
+        suc = app.workerSaveBLOB(data)
+        assert suc
+
+
 def test_updateBLOB_1():
     app.device = Device()
     with mock.patch.object(IndiClass,
@@ -337,66 +393,6 @@ def test_updateBLOB_8():
                                return_value={'value': 1,
                                              'name': 'CCD1',
                                              'format': '.fits.fz'}):
-            with mock.patch.object(fits.HDUList,
-                                   'fromstring',
-                                   return_value=hdu):
-                suc = app.updateBLOB('test', 'test')
-                assert suc
-
-
-def test_updateBLOB_9():
-    app.device = Device()
-    app.imagePath = 'tests/image/test.fit'
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    with mock.patch.object(IndiClass,
-                           'updateBLOB',
-                           return_value=True):
-        with mock.patch.object(app.device,
-                               'getBlob',
-                               return_value={'value': zlib.compress(b'1'),
-                                             'name': 'CCD1',
-                                             'format': '.fits.z'}):
-            with mock.patch.object(fits.HDUList,
-                                   'fromstring',
-                                   return_value=hdu):
-                suc = app.updateBLOB('test', 'test')
-                assert suc
-
-
-def test_updateBLOB_10():
-    app.device = Device()
-    app.imagePath = 'tests/image/test.fit'
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    with mock.patch.object(IndiClass,
-                           'updateBLOB',
-                           return_value=True):
-        with mock.patch.object(app.device,
-                               'getBlob',
-                               return_value={'value': 1,
-                                             'name': 'CCD1',
-                                             'format': '.fits'}):
-            with mock.patch.object(fits.HDUList,
-                                   'fromstring',
-                                   return_value=hdu):
-                suc = app.updateBLOB('test', 'test')
-                assert suc
-
-
-def test_updateBLOB_11():
-    app.device = Device()
-    app.imagePath = 'tests/image/test.fit'
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    with mock.patch.object(IndiClass,
-                           'updateBLOB',
-                           return_value=True):
-        with mock.patch.object(app.device,
-                               'getBlob',
-                               return_value={'value': 1,
-                                             'name': 'CCD1',
-                                             'format': '.test'}):
             with mock.patch.object(fits.HDUList,
                                    'fromstring',
                                    return_value=hdu):

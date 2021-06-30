@@ -155,7 +155,7 @@ class CameraIndi(IndiClass):
         header['DEC'] = self.dec.degrees
         return header
 
-    def workerSaveBlob(self, data):
+    def workerSaveBLOB(self, data):
         """
         :param data:
         :return:
@@ -209,7 +209,7 @@ class CameraIndi(IndiClass):
             return False
 
         self.signals.message.emit('Saving')
-        worker = Worker(self.workerSaveBlob, data)
+        worker = Worker(self.workerSaveBLOB, data)
         self.threadPool.start(worker)
         return True
 

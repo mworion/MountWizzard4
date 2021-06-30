@@ -16,11 +16,9 @@
 ###########################################################
 # standard libraries
 import logging
-import time
 
 # external packages
 import PyQt5
-from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtNetwork import QTcpSocket, QAbstractSocket
 import xml.etree.ElementTree as ETree

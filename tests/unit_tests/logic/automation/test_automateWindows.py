@@ -917,7 +917,7 @@ def test_uploadTLEDataCommands_1(function):
               }
     function.updater = {'10 micron control box update': win,
                         'Satellites orbits': popup,
-                        'Dialog': dialog,
+                        'Open': dialog,
                         }
 
     with mock.patch.object(automateWindows.controls,
@@ -958,7 +958,7 @@ def test_uploadTLEDataCommands_2(function):
               }
     function.updater = {'10 micron control box update': win,
                         'Satellites orbits': popup,
-                        'Dialog': dialog,
+                        'Open': dialog,
                         }
 
     with mock.patch.object(automateWindows.controls,

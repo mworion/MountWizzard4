@@ -91,7 +91,6 @@ class Environ(object):
 
         self.refractionSource = config.get('refractionSource', '')
         self.setRefractionSourceGui()
-        self.updateClearOutside()
         return True
 
     def storeConfig(self):

@@ -55,9 +55,9 @@ class CoverAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        state = self.client.CoverState
+        state = self.getAscomProperty('CoverState')
         stateText = coverStates[state]
-        self.dataEntry(stateText, 'Status.Cover')
+        self.storeAscomProperty(stateText, 'Status.Cover')
         return True
 
     def closeCover(self):

@@ -54,20 +54,20 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.dataEntry('CameraXSize', 'CCD_INFO.CCD_MAX_X')
-        self.dataEntry('CameraYSize', 'CCD_INFO.CCD_MAX_Y')
-        self.dataEntry('CanFastReadout', 'CAN_FAST')
-        self.dataEntry('CanAbortExposure', 'CAN_ABORT')
-        self.dataEntry('CanSetCCDTemperature', 'CAN_SET_CCD_TEMPERATURE')
-        self.dataEntry('CanGetCoolerPower', 'CAN_GET_COOLER_POWER')
-        self.dataEntry('PixelSizeX', 'CCD_INFO.CCD_PIXEL_SIZE_X')
-        self.dataEntry('PixelSizeY', 'CCD_INFO.CCD_PIXEL_SIZE_Y')
-        self.dataEntry('MaxBinX', 'CCD_BINNING.HOR_BIN_MAX')
-        self.dataEntry('MaxBinY', 'CCD_BINNING.VERT_BIN_MAX')
-        self.dataEntry('BinX', 'CCD_BINNING.HOR_BIN')
-        self.dataEntry('BinY', 'CCD_BINNING.VERT_BIN')
-        self.dataEntry('StartX', 'CCD_FRAME.X')
-        self.dataEntry('StartY', 'CCD_FRAME.Y')
+        self.getAndStoreAscomProperty('CameraXSize', 'CCD_INFO.CCD_MAX_X')
+        self.getAndStoreAscomProperty('CameraYSize', 'CCD_INFO.CCD_MAX_Y')
+        self.getAndStoreAscomProperty('CanFastReadout', 'CAN_FAST')
+        self.getAndStoreAscomProperty('CanAbortExposure', 'CAN_ABORT')
+        self.getAndStoreAscomProperty('CanSetCCDTemperature', 'CAN_SET_CCD_TEMPERATURE')
+        self.getAndStoreAscomProperty('CanGetCoolerPower', 'CAN_GET_COOLER_POWER')
+        self.getAndStoreAscomProperty('PixelSizeX', 'CCD_INFO.CCD_PIXEL_SIZE_X')
+        self.getAndStoreAscomProperty('PixelSizeY', 'CCD_INFO.CCD_PIXEL_SIZE_Y')
+        self.getAndStoreAscomProperty('MaxBinX', 'CCD_BINNING.HOR_BIN_MAX')
+        self.getAndStoreAscomProperty('MaxBinY', 'CCD_BINNING.VERT_BIN_MAX')
+        self.getAndStoreAscomProperty('BinX', 'CCD_BINNING.HOR_BIN')
+        self.getAndStoreAscomProperty('BinY', 'CCD_BINNING.VERT_BIN')
+        self.getAndStoreAscomProperty('StartX', 'CCD_FRAME.X')
+        self.getAndStoreAscomProperty('StartY', 'CCD_FRAME.Y')
         self.log.debug(f'Initial data: {self.data}')
 
         return True
@@ -79,26 +79,24 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.dataEntry('CameraState',
-                       'CAMERA.STATE')
+        self.getAndStoreAscomProperty('CameraState', 'CAMERA.STATE')
 
         canFast = self.data.get('CAN_FAST', False)
         if canFast:
-            self.dataEntry('FastReadout',
-                           'READOUT_QUALITY.QUALITY_LOW',
-                           'READOUT_QUALITY.QUALITY_HIGH')
+            self.getAndStoreAscomProperty('FastReadout',
+                                          'READOUT_QUALITY.QUALITY_LOW',
+                                          'READOUT_QUALITY.QUALITY_HIGH')
 
         canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
         if canSetCCDTemp:
-            self.dataEntry('CCDTemperature',
-                           'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-            self.dataEntry('CoolerOn',
-                           'CCD_COOLER.COOLER_ON')
+            self.getAndStoreAscomProperty('CCDTemperature',
+                                          'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+            self.getAndStoreAscomProperty('CoolerOn', 'CCD_COOLER.COOLER_ON')
 
         canGetCoolerPower = self.data.get('CAN_GET_COOLER_POWER', False)
         if canGetCoolerPower:
-            self.dataEntry('CoolerPower',
-                           'CCD_COOLER_POWER.CCD_COOLER_VALUE')
+            self.getAndStoreAscomProperty('CoolerPower',
+                                          'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         return True
 
@@ -287,7 +285,7 @@ class CameraAscom(AscomClass):
         if not canGetCoolerPower:
             return False
 
-        self.client.CoolerOn = coolerOn
+        self.setAscomProperty('CoolerOn', coolerOn)
         return True
 
     def sendCoolerTemp(self, temperature=0):
@@ -302,5 +300,5 @@ class CameraAscom(AscomClass):
         if not canSetCCDTemp:
             return False
 
-        self.client.SetCCDTemperature = temperature
+        self.setAscomProperty('SetCCDTemperature', temperature)
         return True

@@ -93,6 +93,7 @@ class AscomClass(object):
         """
         :return:
         """
+        self.propertyExceptions = []
         self.client.connected = True
         return True
 

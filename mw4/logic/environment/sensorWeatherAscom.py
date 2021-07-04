@@ -48,39 +48,15 @@ class SensorWeatherAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.dataEntry(self.client.temperature, 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
-        self.dataEntry(self.client.pressure, 'WEATHER_PARAMETERS.WEATHER_PRESSURE')
-        self.dataEntry(self.client.dewpoint, 'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
-        self.dataEntry(self.client.humidity, 'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
+        self.getAndStoreAscomProperty('temperature', 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
+        self.getAndStoreAscomProperty('pressure', 'WEATHER_PARAMETERS.WEATHER_PRESSURE')
+        self.getAndStoreAscomProperty('dewpoint', 'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
+        self.getAndStoreAscomProperty('humidity', 'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
 
-        try:
-            val = self.client.skyquality
-        except Exception:
-            val = 0
-        self.dataEntry(val, 'SKY_QUALITY.SKY_BRIGHTNESS')
-
-        try:
-            val = self.client.cloudcover
-        except Exception:
-            val = 0
-        self.dataEntry(val, 'cloudCover')
-
-        try:
-            val = self.client.rainrate
-        except Exception:
-            val = 0
-        self.dataEntry(val, 'rain')
-
-        try:
-            val = self.client.winddirection
-        except Exception:
-            val = 0
-        self.dataEntry(val, 'windDir')
-
-        try:
-            val = self.client.windspeed
-        except Exception:
-            val = 0
-        self.dataEntry(val, 'windSpeed')
+        self.getAndStoreAscomProperty('skyquality', 'SKY_QUALITY.SKY_BRIGHTNESS')
+        self.getAndStoreAscomProperty('cloudcover', 'cloudCover')
+        self.getAndStoreAscomProperty('rainrate', 'rain')
+        self.getAndStoreAscomProperty('winddirection', 'windDir')
+        self.getAndStoreAscomProperty('windspeed', 'windSpeed')
 
         return True

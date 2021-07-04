@@ -52,7 +52,7 @@ class SkymeterAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.dataEntry(self.client.temperature, 'SKY_QUALITY.SKY_TEMPERATURE')
-        self.dataEntry(self.client.skyquality, 'SKY_QUALITY.SKY_BRIGHTNESS')
+        self.getAndStoreAscomProperty('temperature', 'SKY_QUALITY.SKY_TEMPERATURE')
+        self.getAndStoreAscomProperty('skyquality', 'SKY_QUALITY.SKY_BRIGHTNESS')
 
         return True

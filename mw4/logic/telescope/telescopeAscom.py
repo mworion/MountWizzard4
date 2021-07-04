@@ -44,14 +44,14 @@ class TelescopeAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        value = self.client.ApertureDiameter
+        value = self.getAscomProperty('ApertureDiameter')
         if isinstance(value, float):
             value = value * 1000
 
-        self.dataEntry(value, 'TELESCOPE_INFO.TELESCOPE_APERTURE')
-        value = self.client.FocalLength
+        self.storeAscomProperty(value, 'TELESCOPE_INFO.TELESCOPE_APERTURE')
+        value = self.getAscomProperty('FocalLength')
         if isinstance(value, float):
             value = value * 1000
 
-        self.dataEntry(value, 'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH')
+        self.storeAscomProperty(value, 'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH')
         return True

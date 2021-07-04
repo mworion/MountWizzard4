@@ -49,14 +49,14 @@ class FilterAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        names = self.client.Names
+        names = self.getAscomProperty('Names')
         if names is None:
             return False
 
         for i, name in enumerate(names):
             if name is None:
                 continue
-            self.dataEntry(name, f'FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}')
+            self.storeAscomProperty(name, f'FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}')
         return True
 
     def workerPollData(self):
@@ -66,11 +66,11 @@ class FilterAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        position = self.client.Position
+        position = self.getAscomProperty('Position')
         if position == -1 or position is None:
             return False
 
-        self.dataEntry(position, 'FILTER_SLOT.FILTER_SLOT_VALUE')
+        self.storeAscomProperty(position, 'FILTER_SLOT.FILTER_SLOT_VALUE')
         return True
 
     def sendFilterNumber(self, filterNumber=0):
@@ -80,5 +80,5 @@ class FilterAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.Position = filterNumber
+        self.setAscomProperty('Position', filterNumber)
         return True

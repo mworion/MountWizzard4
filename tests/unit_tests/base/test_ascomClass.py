@@ -18,10 +18,12 @@
 # standard libraries
 from unittest import mock
 import platform
+import builtins
 
 # external packages
 import PyQt5
 import pytest
+from PyQt5.QtTest import QTest
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
@@ -82,13 +84,15 @@ def test_getInitialConfig_1():
     app.serverConnected = False
     app.deviceConnected = False
     app.client = Test()
-    suc = app.getInitialConfig()
-    assert suc
-    assert app.serverConnected
-    assert app.deviceConnected
-    assert app.data['DRIVER_INFO.DRIVER_NAME'] == 'test'
-    assert app.data['DRIVER_INFO.DRIVER_VERSION'] == '1'
-    assert app.data['DRIVER_INFO.DRIVER_EXEC'] == 'test1'
+    with mock.patch.object(QTest,
+                           'qWait'):
+        suc = app.getInitialConfig()
+        assert suc
+        assert app.serverConnected
+        assert app.deviceConnected
+        assert app.data['DRIVER_INFO.DRIVER_NAME'] == 'test'
+        assert app.data['DRIVER_INFO.DRIVER_VERSION'] == '1'
+        assert app.data['DRIVER_INFO.DRIVER_EXEC'] == 'test1'
 
 
 def test_getInitialConfig_2():
@@ -104,8 +108,10 @@ def test_getInitialConfig_2():
     with mock.patch.object(app,
                            'connectClient',
                            side_effect=Exception):
-        suc = app.getInitialConfig()
-        assert not suc
+        with mock.patch.object(QTest,
+                               'qWait'):
+            suc = app.getInitialConfig()
+            assert not suc
 
 
 def test_startTimer():
@@ -122,32 +128,94 @@ def test_stopTimer():
         assert suc
 
 
-def test_dataEntry_1():
+def test_getAscomProperty_1():
+    app.propertyExceptions = ['Connect']
+    val = app.getAscomProperty('Connect')
+    assert val is None
+
+
+def test_getAscomProperty_2():
+    app.propertyExceptions = ['Close']
+    with mock.patch.object(builtins,
+                           'eval',
+                           side_effect=Exception):
+        val = app.getAscomProperty('Connect')
+        assert val is None
+        assert 'Connect' in app.propertyExceptions
+
+
+def test_getAscomProperty_3():
+    class Client:
+        Connect = True
+
+    app.propertyExceptions = []
+    app.client = Client()
+    app.propertyExceptions = ['Close']
+    val = app.getAscomProperty('Connect')
+    assert val
+
+
+def test_setAscomProperty_1():
+    app.propertyExceptions = ['Connect']
+    suc = app.setAscomProperty('Connect', True)
+    assert not suc
+
+
+def test_setAscomProperty_2():
+    app.propertyExceptions = ['Close']
+    with mock.patch.object(builtins,
+                           'exec',
+                           side_effect=Exception):
+        suc = app.setAscomProperty('Connect', True)
+        assert not suc
+        assert 'Connect' in app.propertyExceptions
+
+
+def test_setAscomProperty_3():
+    class Client:
+        Connect = False
+
+    app.propertyExceptions = []
+    app.client = Client()
+    app.propertyExceptions = ['Close']
+    suc = app.setAscomProperty('Connect', True)
+    assert suc
+    assert app.client
+
+
+def test_storeAscomProperty_1():
     app.data = {'YES': 0}
 
-    res = app.dataEntry(None, 'YES')
+    res = app.storeAscomProperty(None, 'YES')
     assert res
     assert 'YES' not in app.data
 
 
-def test_dataEntry_2():
+def test_storeAscomProperty_2():
     app.data = {'YES': 0,
                 'NO': 0}
 
-    res = app.dataEntry(None, 'YES', 'NO')
+    res = app.storeAscomProperty(None, 'YES', 'NO')
     assert res
     assert 'YES' not in app.data
     assert 'NO' not in app.data
 
 
-def test_dataEntry_3():
+def test_storeAscomProperty_3():
     app.data = {'YES': 0,
                 'NO': 0}
 
-    res = app.dataEntry(10, 'YES', 'NO')
+    res = app.storeAscomProperty(10, 'YES', 'NO')
     assert not res
     assert 'YES' in app.data
     assert 'NO' in app.data
+
+
+def test_getAndStoreAscomProperty():
+    app.data = {'YES': 0,
+                'NO': 0}
+    suc = app.getAndStoreAscomProperty(10, 'YES', 'NO')
+    assert suc
 
 
 def test_pollStatus_1():

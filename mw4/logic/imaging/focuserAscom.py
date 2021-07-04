@@ -58,7 +58,8 @@ class FocuserAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.dataEntry(self.client.Position, 'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION')
+        self.getAndStoreAscomProperty('Position',
+                                      'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION')
         return True
 
     def move(self, position=None):
@@ -79,5 +80,5 @@ class FocuserAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.halt
+        self.getAscomProperty('halt')
         return True

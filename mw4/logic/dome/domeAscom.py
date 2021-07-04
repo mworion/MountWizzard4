@@ -60,25 +60,25 @@ class DomeAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        azimuth = self.client.Azimuth
-        self.dataEntry(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
+        azimuth = self.getAscomProperty('Azimuth')
+        self.storeAscomProperty(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
-        self.dataEntry(self.client.Slewing, 'Slewing')
-        self.dataEntry(self.client.CanSetAltitude, 'CanSetAltitude')
-        self.dataEntry(self.client.CanSetAzimuth, 'CanSetAzimuth')
-        self.dataEntry(self.client.CanSetShutter, 'CanSetShutter')
+        self.getAndStoreAscomProperty('Slewing', 'Slewing')
+        self.getAndStoreAscomProperty('CanSetAltitude', 'CanSetAltitude')
+        self.getAndStoreAscomProperty('CanSetAzimuth', 'CanSetAzimuth')
+        self.getAndStoreAscomProperty('CanSetShutter', 'CanSetShutter')
 
-        state = self.client.ShutterStatus
+        state = self.getAscomProperty('ShutterStatus')
         stateText = shutterStates[state]
-        self.dataEntry(stateText, 'Status.Shutter')
+        self.storeAscomProperty(stateText, 'Status.Shutter')
         if state == 0:
-            self.dataEntry(True,
-                           'DOME_SHUTTER.SHUTTER_OPEN',
-                           elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
+            self.storeAscomProperty(True,
+                                    'DOME_SHUTTER.SHUTTER_OPEN',
+                                    elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         elif state == 1:
-            self.dataEntry(False,
-                           'DOME_SHUTTER.SHUTTER_OPEN',
-                           elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
+            self.storeAscomProperty(False,
+                                    'DOME_SHUTTER.SHUTTER_OPEN',
+                                    elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         else:
             self.data['DOME_SHUTTER.SHUTTER_OPEN'] = None
             self.data['DOME_SHUTTER.SHUTTER_CLOSED'] = None

@@ -70,6 +70,7 @@ class AscomClass(object):
 
         self.client = None
         self.data = data
+        self.propertyExceptions = []
         self.deviceName = ''
         self.defaultConfig = {
             'ascom': {
@@ -92,6 +93,7 @@ class AscomClass(object):
         """
         :return:
         """
+        self.propertyExceptions = []
         self.client.connected = True
         return True
 
@@ -167,7 +169,41 @@ class AscomClass(object):
         self.cyclePollStatus.stop()
         return True
 
-    def dataEntry(self, value, element, elementInv=None):
+    def getAscomProperty(self, valueProp):
+        """
+        :param valueProp:
+        :return: value
+        """
+        value = None
+        if valueProp in self.propertyExceptions:
+            return value
+
+        try:
+            value = eval('self.client.' + valueProp)
+        except Exception as e:
+            self.log.debug(f'Property [{valueProp}] is not implemented: {e}')
+            self.propertyExceptions.append(valueProp)
+        finally:
+            return value
+
+    def setAscomProperty(self, valueProp, value):
+        """
+        :param valueProp:
+        :param value:
+        """
+        if valueProp in self.propertyExceptions:
+            return False
+
+        try:
+            exec('self.client.' + valueProp + ' = value')
+        except Exception as e:
+            self.log.debug(f'Property [{valueProp}] is not implemented: {e}')
+            self.propertyExceptions.append(valueProp)
+            return False
+        else:
+            return True
+
+    def storeAscomProperty(self, value, element, elementInv=None):
         """
         :param value:
         :param element:
@@ -177,7 +213,6 @@ class AscomClass(object):
         resetValue = value is None and element in self.data
         if resetValue:
             del self.data[element]
-
         else:
             self.data[element] = value
 
@@ -187,11 +222,21 @@ class AscomClass(object):
         resetValue = value is None and elementInv in self.data
         if resetValue:
             del self.data[elementInv]
-
         else:
             self.data[elementInv] = value
 
         return resetValue
+
+    def getAndStoreAscomProperty(self, valueProp, element, elementInv=None):
+        """
+        :param valueProp:
+        :param element:
+        :param elementInv:
+        :return: reset entry
+        """
+        value = self.getAscomProperty(valueProp)
+        self.storeAscomProperty(value, element, elementInv)
+        return True
 
     def pollStatusWorker(self):
         """

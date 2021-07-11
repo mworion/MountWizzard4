@@ -49,6 +49,9 @@ class SettMount(object):
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
+        self.ui.mountWolAddress.setText(config.get('mountWolAddress',
+                                                   '255.255.255.255'))
+        self.ui.mountWolPort.setText(config.get('mountWolPort', '9'))
         self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
         self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 0))
         return True
@@ -60,6 +63,8 @@ class SettMount(object):
         config = self.app.config['mainW']
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
+        config['mountWolAddress'] = self.ui.mountWolAddress.text()
+        config['mountWolPort'] = self.ui.mountWolPort.text()
         config['rackCompMAC'] = self.ui.rackCompMAC.text()
         config['settleTimeMount'] = self.ui.settleTimeMount.value()
         config['port3492'] = self.ui.port3492.isChecked()
@@ -69,7 +74,8 @@ class SettMount(object):
         """
         :return:
         """
-        if self.app.mount.bootMount():
+        if self.app.mount.bootMount(bAddress=self.ui.mountWolAddress.text(),
+                                    bPort=int(self.ui.mountWolPort.text())):
             self.app.message.emit('Sent boot command to mount', 0)
             return True
 

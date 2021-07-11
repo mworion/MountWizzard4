@@ -531,15 +531,21 @@ class Mount(mountcontrol.mount.Mount):
         self.threadPool.start(worker)
         return True
 
-    def bootMount(self):
+    def bootMount(self, bAddress='', bPort=0):
         """
+        :param bAddress:
+        :param bPort:
         :return:    True if success
         """
-        if self.MAC is not None:
-            wakeonlan.send_magic_packet(self.MAC)
-            return True
-        else:
+        if self.MAC is None:
             return False
+        if bAddress and bPort:
+            wakeonlan.send_magic_packet(self.MAC,
+                                        ip_address=bAddress,
+                                        port=bPort)
+        else:
+            wakeonlan.send_magic_packet(self.MAC)
+        return True
 
     def shutdown(self):
         """

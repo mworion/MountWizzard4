@@ -20822,7 +20822,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>106</height>
+         <height>171</height>
         </rect>
        </property>
        <property name="title">
@@ -20873,7 +20873,7 @@ When clicking the button, you could change the value.</string>
          <number>50</number>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="dragEnabled">
          <bool>true</bool>
@@ -21053,6 +21053,150 @@ When clicking the button, you could change the value.</string>
          <string>Port</string>
         </property>
        </widget>
+       <widget class="QLabel" name="label_mountMAC_5">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>115</y>
+          <width>106</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>WOL B address</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_mountMAC_6">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>140</y>
+          <width>106</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>WOL B port</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="mountWolAddress">
+        <property name="geometry">
+         <rect>
+          <x>115</x>
+          <y>115</y>
+          <width>116</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of mount, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>255.255.255.255</string>
+        </property>
+        <property name="maxLength">
+         <number>50</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="mountWolPort">
+        <property name="geometry">
+         <rect>
+          <x>115</x>
+          <y>140</y>
+          <width>116</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of mount, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>9</string>
+        </property>
+        <property name="maxLength">
+         <number>50</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_63">
        <property name="geometry">
@@ -21136,7 +21280,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>135</y>
+         <y>200</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -21233,7 +21377,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>200</y>
+         <y>270</y>
          <width>366</width>
          <height>101</height>
         </rect>

@@ -36,6 +36,7 @@ releaseNotes = """
 - add alt/az pointer to satellite view
 - add reverse order for filed build point retry 
 - add automatic enable webinterface for keypad use
+- add bradcast address and port for WOL
 - changed IERS and lead second download
 - more functions are available without mount connected
 - fix for INDI cameras sending two times busy and exposure=0
@@ -51,7 +52,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b19',
+    version='2.0.0b21',
     packages=[
         'mw4',
         'mw4.base',

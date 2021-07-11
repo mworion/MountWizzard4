@@ -20,12 +20,12 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.0.0b16
+2.0.0b20
 
 - new updater concept
 - add mount clock sync feature
 - add simulator feature
-- adding terrain image
+- adding terrain image feature
 - add dome following when mount is in satellite tracking mode
 - add setting label support for UPB dew entries
 - add auto dew control support for Pegasus UPB
@@ -39,6 +39,7 @@ Released beta version of MW4
 - add alt/az pointer to satellite view
 - add reverse order for filed build point retry
 - add automatic enable webinterface for keypad use
+- add bradcast address and port for WOL
 - changed IERS and lead second download
 - more functions are available without mount connected
 - fix for INDI cameras sending two times busy and exposure=0

@@ -542,8 +542,10 @@ class Model:
         """
         if self.ui.pauseModel.property('pause'):
             self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
+            self.ui.runModel.setEnabled(True)
         else:
             self.changeStyleDynamic(self.ui.pauseModel, 'pause', True)
+            self.ui.runModel.setEnabled(False)
 
         return True
 

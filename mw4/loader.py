@@ -378,10 +378,6 @@ def main():
     :return: nothing
     """
     locale.setlocale(locale.LC_ALL, '')
-    QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
-    app = MyApp(sys.argv)
-    # app = QApplication(sys.argv)
-
     x, y = getWindowPos()
     splashW = SplashScreen(application=app, x=x, y=y)
     splashW.showMessage('Start initialising')

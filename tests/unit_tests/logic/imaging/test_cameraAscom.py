@@ -264,14 +264,6 @@ def test_sendCoolerSwitch_1():
 
 def test_sendCoolerSwitch_2():
     app.deviceConnected = True
-    app.data['CAN_GET_COOLER_POWER'] = False
-    suc = app.sendCoolerSwitch(coolerOn=True)
-    assert not suc
-
-
-def test_sendCoolerSwitch_3():
-    app.deviceConnected = True
-    app.data['CAN_GET_COOLER_POWER'] = True
     suc = app.sendCoolerSwitch(coolerOn=True)
     assert suc
 

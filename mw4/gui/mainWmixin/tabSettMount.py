@@ -74,8 +74,11 @@ class SettMount(object):
         """
         :return:
         """
-        if self.app.mount.bootMount(bAddress=self.ui.mountWolAddress.text(),
-                                    bPort=int(self.ui.mountWolPort.text())):
+        bAddress = self.ui.mountWolAddress.text()
+        bPort = self.ui.mountWolPort.text()
+        bPort = (int(bPort) if bPort else 0)
+        if self.app.mount.bootMount(bAddress=bAddress,
+                                    bPort=bPort):
             self.app.message.emit('Sent boot command to mount', 0)
             return True
 

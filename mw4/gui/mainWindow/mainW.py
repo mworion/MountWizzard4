@@ -570,8 +570,9 @@ class MainWindow(
         isModelingReady = all(
             self.deviceStat[x] for x in ['mount', 'camera', 'astrometry']
         )
+        isPause = self.ui.pauseModel.property('pause')
 
-        if isModelingReady and self.app.data.buildP:
+        if isModelingReady and self.app.data.buildP and not isPause:
             self.ui.runModel.setEnabled(True)
             self.ui.plateSolveSync.setEnabled(True)
             self.ui.runFlexure.setEnabled(True)

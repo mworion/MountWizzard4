@@ -281,10 +281,6 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        canGetCoolerPower = self.data.get('CAN_GET_COOLER_POWER', False)
-        if not canGetCoolerPower:
-            return False
-
         self.setAscomProperty('CoolerOn', coolerOn)
         return True
 

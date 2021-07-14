@@ -114,7 +114,7 @@ class CameraAscom(AscomClass):
             return False
 
         if fastReadout:
-            self.client.FastReadout = True
+            self.setAscomProperty('FastReadout', True)
 
         isQualityHigh = self.data.get('READOUT_QUALITY.QUALITY_HIGH', True)
         qualityText = 'High' if isQualityHigh else 'Low'
@@ -148,12 +148,12 @@ class CameraAscom(AscomClass):
             return False
 
         self.sendDownloadMode(fastReadout=fastReadout)
-        self.client.BinX = int(binning)
-        self.client.BinY = int(binning)
-        self.client.StartX = int(posX / binning)
-        self.client.StartY = int(posY / binning)
-        self.client.NumX = int(width / binning)
-        self.client.NumY = int(height / binning)
+        self.setAscomProperty('BinX', int(binning))
+        self.setAscomProperty('BinY', int(binning))
+        self.setAscomProperty('StartX', int(posX / binning))
+        self.setAscomProperty('StartY', int(posY / binning))
+        self.setAscomProperty('NumX', int(width / binning))
+        self.setAscomProperty('NumY', int(height / binning))
 
         isMount = self.app.deviceStat['mount']
         if isMount:
@@ -166,7 +166,7 @@ class CameraAscom(AscomClass):
         self.client.StartExposure(expTime, True)
 
         timeLeft = expTime
-        while not self.client.ImageReady:
+        while not self.getAscomProperty('ImageReady'):
             text = f'expose {timeLeft:3.0f} s'
             QTest.qWait(100)
             if timeLeft >= 0.1:
@@ -183,7 +183,7 @@ class CameraAscom(AscomClass):
 
         if not self.abortExpose:
             self.signals.message.emit('download')
-            data = np.array(self.client.ImageArray, dtype=np.uint16)
+            data = np.array(self.getAscomProperty('ImageArray'), dtype=np.uint16)
             data = np.transpose(data)
 
         if not self.abortExpose:

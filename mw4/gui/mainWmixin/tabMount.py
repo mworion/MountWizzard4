@@ -586,7 +586,7 @@ class Mount(object):
 
         if obs.setLongitude(value):
             self.app.message.emit(f'Longitude set to:    '
-                                  f'[{self.ui.siteLongitude.text()}]', 0)
+                                  f'[{value}]', 0)
             self.app.mount.getLocation()
             return True
         else:
@@ -627,7 +627,7 @@ class Mount(object):
 
         if obs.setLatitude(value):
             self.app.message.emit(f'Latitude set to:     '
-                                  f'[{self.ui.siteLatitude.text()}]', 0)
+                                  f'[{value}]', 0)
             self.app.mount.getLocation()
             return True
         else:

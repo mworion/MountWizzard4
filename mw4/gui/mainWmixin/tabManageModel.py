@@ -119,7 +119,15 @@ class ManageModel(object):
         pointsOut = []
         for buildPoint in buildModel:
             for mountPoint in mountModel:
-                if mountModel[mountPoint] == buildModel[buildPoint]:
+                dHA = mountModel[mountPoint]['ha'] - buildModel[buildPoint]['ha']
+                dHA = dHA / mountModel[mountPoint]['ha']
+                dDEC = mountModel[mountPoint]['dec'] - buildModel[buildPoint]['dec']
+                dDEC = dDEC / mountModel[mountPoint]['dec']
+
+                fitHA = abs(dHA) < 1e-4
+                fitDEC = abs(dDEC) < 1e-4
+
+                if fitHA and fitDEC:
                     pointsIn.append(buildPoint)
                     break
 
@@ -173,7 +181,7 @@ class ManageModel(object):
 
             pointsIn, pointsOut = self.compareModel(buildModelData, mountModel)
 
-            if pointsIn:
+            if len(pointsIn) > 2:
                 self.fittedModelPoints = pointsIn
                 self.fittedModelPath = modelFilePath
                 break

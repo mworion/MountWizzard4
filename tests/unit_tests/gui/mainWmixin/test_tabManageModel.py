@@ -113,16 +113,16 @@ def test_findKeysFromSourceInDest_1(function):
 
 
 def test_findKeysFromSourceInDest_2(function):
-    source = [1: {'ha': 1, 'dec': 2}]
-    dest = [1: {'ha': 3, 'dec': 4}]
+    source = {1: {'ha': 1, 'dec': 2}}
+    dest = {1: {'ha': 3, 'dec': 4}}
     val1, val2 = function.findKeysFromSourceInDest(source, dest)
     assert val1 == []
     assert val2 == [1, 2]
 
 
 def test_findKeysFromSourceInDest_3(function):
-    source = [1: {'ha': 1, 'dec': 2}, 2: {'ha': 3, 'dec': 4}]
-    dest = [1: {'ha': 2, 'dec': 1}, 2: {'ha': 3, 'dec': 4}]
+    source = {1: {'ha': 1, 'dec': 2}, 2: {'ha': 3, 'dec': 4}}
+    dest = {1: {'ha': 2, 'dec': 1}, 2: {'ha': 3, 'dec': 4}}
     val1, val2 = function.findKeysFromSourceInDest(source, dest)
     assert val1 == [1]
     assert val2 == [2]

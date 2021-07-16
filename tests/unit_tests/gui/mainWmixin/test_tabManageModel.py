@@ -117,15 +117,16 @@ def test_findKeysFromSourceInDest_2(function):
     dest = {1: {'ha': 3, 'dec': 4}}
     val1, val2 = function.findKeysFromSourceInDest(source, dest)
     assert val1 == []
-    assert val2 == [1, 2]
+    assert 1 in val2
+    assert 2 in val2
 
 
 def test_findKeysFromSourceInDest_3(function):
     source = {1: {'ha': 1, 'dec': 2}, 2: {'ha': 3, 'dec': 4}}
     dest = {1: {'ha': 2, 'dec': 1}, 2: {'ha': 3, 'dec': 4}}
     val1, val2 = function.findKeysFromSourceInDest(source, dest)
-    assert val1 == [1]
-    assert val2 == [2]
+    assert 2 in val1
+    assert 1 in val2
 
 
 def test_compareModel_1(function):

@@ -113,8 +113,8 @@ def test_findKeysFromSourceInDest_1(function):
 
 
 def test_findKeysFromSourceInDest_2(function):
-    source = {1: {'ha': 1, 'dec': 2}}
-    dest = {1: {'ha': 3, 'dec': 4}}
+    source = {1: {'ha': 1, 'dec': 2}, 2: {'ha': 4, 'dec': 3}}
+    dest = {1: {'ha': 2, 'dec': 1}, 2: {'ha': 3, 'dec': 4}}
     val1, val2 = function.findKeysFromSourceInDest(source, dest)
     assert val1 == []
     assert 1 in val2
@@ -212,12 +212,12 @@ def test_findFittingModel_4(function):
                            return_value={}):
         with mock.patch.object(function,
                                'compareModel',
-                               return_value=([1], [2])):
+                               return_value=([1, 2, 3], [4])):
             name, pointsIn, pointsOut = function.findFittingModel()
 
             assert name == 'test'
-            assert pointsIn == [1]
-            assert pointsOut == [2]
+            assert pointsIn == [1, 2, 3]
+            assert pointsOut == [4]
     function.app.mwGlob['modelDir'] = 'tests/model'
 
 

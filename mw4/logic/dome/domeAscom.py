@@ -69,13 +69,15 @@ class DomeAscom(AscomClass):
         self.getAndStoreAscomProperty('CanSetShutter', 'CanSetShutter')
 
         state = self.getAscomProperty('ShutterStatus')
-        stateText = shutterStates[state]
-        self.storeAscomProperty(stateText, 'Status.Shutter')
         if state == 0:
+            stateText = shutterStates[state]
+            self.storeAscomProperty(stateText, 'Status.Shutter')
             self.storeAscomProperty(True,
                                     'DOME_SHUTTER.SHUTTER_OPEN',
                                     elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         elif state == 1:
+            stateText = shutterStates[state]
+            self.storeAscomProperty(stateText, 'Status.Shutter')
             self.storeAscomProperty(False,
                                     'DOME_SHUTTER.SHUTTER_OPEN',
                                     elementInv='DOME_SHUTTER.SHUTTER_CLOSED')

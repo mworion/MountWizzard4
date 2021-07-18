@@ -38,6 +38,7 @@ class SettDome(object):
         self.ui.domeShutterZenith.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
         self.ui.checkUseDomeGeometry.clicked.connect(self.setUseDomeGeometry)
+        self.ui.checkUseDynamicFollowing.clicked.connect(self.setUseDomeGeometry)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
         self.app.mount.signals.firmwareDone.connect(self.setUseGeometryInMount)
         self.app.mount.signals.firmwareDone.connect(self.setZoffGEMInMount)
@@ -108,6 +109,9 @@ class SettDome(object):
         """
         config = self.app.config['mainW']
         self.ui.domeShutterWidth.setValue(config.get('domeShutterWidth', 0.2))
+        self.ui.domeShutterHysteresis.setValue(config.get('domeShutterHysteresis',
+                                                          0.1))
+        self.ui.domeShutterZenith.setValue(config.get('domeShutterZenith', 0.2))
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
         self.ui.domeZoffGEM.setValue(config.get('domeZoffGEM', 0))
@@ -116,6 +120,7 @@ class SettDome(object):
         self.ui.domeRadius.setValue(config.get('domeRadius', 1.5))
         self.ui.checkUseDomeGeometry.setChecked(config.get('checkUseDomeGeometry', False))
         self.ui.checkAutomaticDome.setChecked(config.get('checkAutomaticDome', False))
+        self.ui.checkUseDynamicFollowing.setChecked(config.get('checkUseDynamicFollowing', False))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
         self.setUseDomeGeometry()
         return True
@@ -131,6 +136,8 @@ class SettDome(object):
         config = self.app.config['mainW']
         config['domeRadius'] = self.ui.domeRadius.value()
         config['domeShutterWidth'] = self.ui.domeShutterWidth.value()
+        config['domeShutterHysteresis'] = self.ui.domeShutterHysteresis.value()
+        config['domeShutterZenith'] = self.ui.domeShutterZenith.value()
         config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
         config['domeEastOffset'] = self.ui.domeEastOffset.value()
         config['domeZoffGEM'] = self.ui.domeZoffGEM.value()
@@ -138,6 +145,7 @@ class SettDome(object):
         config['offLAT'] = self.ui.offLAT.value()
         config['checkUseDomeGeometry'] = self.ui.checkUseDomeGeometry.isChecked()
         config['checkAutomaticDome'] = self.ui.checkAutomaticDome.isChecked()
+        config['checkUseDynamicFollowing'] = self.ui.checkUseDynamicFollowing.isChecked()
         config['settleTimeDome'] = self.ui.settleTimeDome.value()
         return True
 
@@ -187,6 +195,8 @@ class SettDome(object):
         """
         useGeometry = self.ui.checkUseDomeGeometry.isChecked()
         self.app.dome.useGeometry = useGeometry
+        useDynamicFollowing = self.ui.checkUseDynamicFollowing.isChecked()
+        self.app.dome.useDynamicFollowing = useDynamicFollowing
         return True
 
     def updateDomeGeometryToGui(self):

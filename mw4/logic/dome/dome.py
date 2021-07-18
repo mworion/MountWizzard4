@@ -57,12 +57,6 @@ class Dome:
         self.threadPool = app.threadPool
         self.signals = DomeSignals()
 
-        self.overshoot = None
-        self.targetShutterDist = None
-        self.shutterZenithDist = None
-        self.radius = None
-        self.shutterWidth = None
-
         self.data = {
             'Slewing': False,
         }
@@ -99,7 +93,13 @@ class Dome:
         indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
         self.useGeometry = False
+        self.useDynamicFollowing = False
         self.isSlewing = False
+        self.overshoot = None
+        self.targetShutterDist = None
+        self.shutterZenithDist = None
+        self.radius = None
+        self.shutterWidth = None
         self.counterStartSlewing = -1
         self.settlingTime = 0
         self.settlingWait = PyQt5.QtCore.QTimer()
@@ -281,7 +281,7 @@ class Dome:
 
         mount = self.app.mount
         if self.useGeometry:
-            alt, az, _, _, _ = mount.calcTransformationMatricesActual()
+            alt, az, x, y, _ = mount.calcTransformationMatricesActual()
 
             if alt is None or az is None:
                 self.log.info(f'Geometry error, alt:{altitude}, az:{azimuth}')
@@ -295,9 +295,19 @@ class Dome:
             az = azimuth
 
         self.signals.message.emit('following')
-        self.counterStartSlewing = 3
-        self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
-        delta = azimuth - az
+
+        if self.useDynamicFolowing:
+            needSlew = self.checkSlewNeeded(x, y)
+        else:
+            needSlew = True
+
+        if needSlew:
+            self.counterStartSlewing = 3
+            self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
+            delta = azimuth - az
+        else:
+            delta = 0
+
         return delta
 
     def openShutter(self):

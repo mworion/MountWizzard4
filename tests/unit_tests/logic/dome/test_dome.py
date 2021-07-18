@@ -23,6 +23,7 @@ import unittest.mock as mock
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from mountcontrol.mount import Mount
 from skyfield.api import Angle
+import numpy as np
 
 # local import
 from logic.dome.dome import Dome
@@ -112,6 +113,185 @@ def test_checkSlewingDome_4():
                            'start'):
         suc = app.checkSlewingDome()
         assert suc
+
+
+def test_checkTargetConditions_1():
+    app.overshoot = None
+    app.targetShutterDist = None
+    app.shutterZenithDist = None
+    app.radius = None
+    app.shutterWidth = None
+    suc = app.checkTargetConditions()
+    assert not suc
+
+
+def test_checkTargetConditions_2():
+    app.overshoot = None
+    app.targetShutterDist = 0.1
+    app.shutterZenithDist = None
+    app.radius = None
+    app.shutterWidth = None
+    suc = app.checkTargetConditions()
+    assert not suc
+
+
+def test_checkTargetConditions_3():
+    app.overshoot = None
+    app.targetShutterDist = 0.1
+    app.shutterZenithDist = 0.2
+    app.radius = None
+    app.shutterWidth = None
+    suc = app.checkTargetConditions()
+    assert not suc
+
+
+def test_checkTargetConditions_4():
+    app.overshoot = 0
+    app.targetShutterDist = 0.1
+    app.shutterZenithDist = 0.2
+    app.radius = None
+    app.shutterWidth = None
+    suc = app.checkTargetConditions()
+    assert not suc
+
+
+def test_checkTargetConditions_5():
+    app.overshoot = 0
+    app.targetShutterDist = 0.1
+    app.shutterZenithDist = 0.2
+    app.radius = 1.5
+    app.shutterWidth = None
+    suc = app.checkTargetConditions()
+    assert not suc
+
+
+def test_checkTargetConditions_6():
+    app.overshoot = 0
+    app.targetShutterDist = 0.5
+    app.shutterZenithDist = 0.2
+    app.radius = 1.5
+    app.shutterWidth = 0.8
+    suc = app.checkTargetConditions()
+    assert not suc
+
+
+def test_checkTargetConditions_7():
+    app.overshoot = 0
+    app.targetShutterDist = 0.1
+    app.shutterZenithDist = 0.2
+    app.radius = 1.5
+    app.shutterWidth = 0.8
+    suc = app.checkTargetConditions()
+    assert suc
+
+
+def test_calcTargetRectanglePoints_1():
+    app.targetShutterDist = 0.1
+    app.shutterZenithDist = 0.2
+    app.radius = 10
+    app.shutterWidth = 1.2
+    a, b, c = app.calcTargetRectanglePoints(0)
+    assert a[0] == -0.1
+    assert a[1] == 0.5
+    assert b[0] == 10
+    assert b[1] == 0.5
+    assert c[0] == 10
+    assert c[1] == -0.5
+
+
+def test_calcTargetRectanglePoints_2():
+    app.targetShutterDist = 0.1
+    app.shutterZenithDist = 0.2
+    app.radius = 10
+    app.shutterWidth = 1.2
+    a, b, c = app.calcTargetRectanglePoints(90)
+    assert round(a[0], 5) == 0.5
+    assert round(a[1], 5) == 0.1
+    assert round(b[0], 5) == 0.5
+    assert round(b[1], 5) == -10
+    assert round(c[0], 5) == -0.5
+    assert round(c[1], 5) == -10
+
+
+def test_targetInDomeShutter_1():
+    A = np.array([0, 0])
+    B = np.array([0, 3])
+    C = np.array([4, 3])
+    M = np.array([2, 1])
+    suc = app.targetInDomeShutter(A, B, C, M)
+    assert suc
+
+
+def test_targetInDomeShutter_2():
+    A = np.array([0, 0])
+    B = np.array([0, 3])
+    C = np.array([4, 3])
+    M = np.array([5, 4])
+    suc = app.targetInDomeShutter(A, B, C, M)
+    assert not suc
+
+
+def test_targetInDomeShutter_3():
+    A = np.array([0, 0])
+    B = np.array([0, 3])
+    C = np.array([4, 3])
+    M = np.array([2, 3])
+    suc = app.targetInDomeShutter(A, B, C, M)
+    assert suc
+
+
+def test_targetInDomeShutter_4():
+    A = np.array([2, 0])
+    B = np.array([0, 2])
+    C = np.array([3, 5])
+    M = np.array([0, 0])
+    suc = app.targetInDomeShutter(A, B, C, M)
+    assert not suc
+
+
+def test_targetInDomeShutter_5():
+    A = np.array([2, 0])
+    B = np.array([0, 2])
+    C = np.array([3, 5])
+    M = np.array([2, 2])
+    suc = app.targetInDomeShutter(A, B, C, M)
+    assert suc
+
+
+def test_checkSlewNeeded_1():
+    with mock.patch.object(app,
+                           'checkTargetConditions',
+                           return_value=False):
+        suc = app.checkSlewNeeded(0, 0)
+        assert not suc
+
+
+def test_checkSlewNeeded_2():
+    with mock.patch.object(app,
+                           'checkTargetConditions',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'calcTargetRectanglePoints',
+                               return_value=(0, 1, 2)):
+            with mock.patch.object(app,
+                                   'targetInDomeShutter',
+                                   return_value=False):
+                suc = app.checkSlewNeeded(0, 0)
+                assert not suc
+
+
+def test_checkSlewNeeded_3():
+    with mock.patch.object(app,
+                           'checkTargetConditions',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'calcTargetRectanglePoints',
+                               return_value=(0, 1, 2)):
+            with mock.patch.object(app,
+                                   'targetInDomeShutter',
+                                   return_value=True):
+                suc = app.checkSlewNeeded(0, 0)
+                assert suc
 
 
 def test_slewDome_0():

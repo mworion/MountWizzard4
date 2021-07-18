@@ -25,10 +25,10 @@ displacement to the north is treated positive as well as a displacement to
 the east.
 
 .. image:: image/north.png
-    :width: 48%
+    :align: center
 
 .. image:: image/east.png
-    :width: 48%
+    :align: center
 
 For the vertical displacement you have to take car about different definitions of
 how to measure this value. A common way many ASCOM drivers do is measuring the
@@ -39,10 +39,10 @@ done between the dome center and the base of the mount. This value is mostly
 negative, because the mount base level is on lower height than the dome center.
 
 .. image:: image/z_10micron.png
-    :width: 48%
+    :align: center
 
 .. image:: image/z_ascom.png
-    :width: 48%
+    :align: center
 
 
 If you have mor than one telescope mounted, you will experience a lateral
@@ -74,3 +74,21 @@ azimuth until the dome emits slew finished. This could be used for avoiding
 mechanical influence on the mount. This settle time in handled in MW4 only. If
 you could enter a settle time in your dome driver etc. the times will add up.
 
+Dome dynamic follow
+-------------------
+For satellite tracking moving the dome adequately is very important. If you have
+following on your dome controller, you might have set a hysteresis to avoid
+continuous dome movements. These values normally are between 1 and 3 degrees.
+MW4 could handle this different. If you set your dome geometry correctly, you
+could add parameters for target shutter distance (better terminus ???) and shutter
+zenith distance (better terminus ???). With these parameters MW4 will calculate if
+the viewing spot of you telescope moves with the next slew command in the "red
+zone". If so, the dome azimuth will be corrected and the dome will slew to it's
+new centered position. If there is still a reasonable distance, your telescope
+still could view your target and no dome movement is necessary.
+
+
+Top view of your dome setup:
+
+.. image:: image/dome_math_1.drawio.svg
+    :align: center

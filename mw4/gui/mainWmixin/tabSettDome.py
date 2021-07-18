@@ -157,10 +157,12 @@ class SettDome(object):
             self.updateDomeGeometryToGui()
 
         self.app.mount.geometry.domeRadius = self.ui.domeRadius.value()
+        self.app.dome.radius = self.ui.domeRadius.value()
         self.app.mount.geometry.offGEM = self.ui.offGEM.value()
         self.app.mount.geometry.offLAT = self.ui.offLAT.value()
         self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
         self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
+        self.app.dome.domeShutterWidth = self.ui.domeShutterWidth.value()
         self.app.dome.domeShutterWidth = self.ui.domeShutterWidth.value()
         self.app.updateDomeSettings.emit()
         return True

@@ -20,6 +20,7 @@ import platform
 
 # external packages
 import PyQt5
+import numpy as np
 
 # local imports
 from logic.dome.domeIndi import DomeIndi
@@ -55,6 +56,12 @@ class Dome:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = DomeSignals()
+
+        self.overshoot = None
+        self.targetShutterDist = None
+        self.shutterZenithDist = None
+        self.radius = None
+        self.shutterWidth = None
 
         self.data = {
             'Slewing': False,
@@ -155,6 +162,81 @@ class Dome:
                 self.counterStartSlewing -= 1
 
         return True
+
+    def checkTargetConditions(self):
+        """
+        :return:
+        """
+        if self.targetShutterDist is None:
+            return False
+        if self.shutterZenithDist is None:
+            return False
+        if self.overshoot is None:
+            return False
+        if self.radius is None:
+            return False
+        if self.shutterWidth is None:
+            return False
+        BC = self.shutterWidth - 2 * self.targetShutterDist
+        if BC <= 0:
+            return False
+        return True
+
+    def calcTargetRectanglePoints(self, azimuth):
+        """
+        :param azimuth:
+        :return:
+        """
+        azRad = np.radians(-azimuth)
+        sinAz = np.sin(azRad)
+        cosAz = np.cos(azRad)
+        rot = np.array([[cosAz, -sinAz], [sinAz, cosAz]])
+
+        A = np.array([- self.shutterZenithDist + self.targetShutterDist,
+                     self.shutterWidth / 2 - self.targetShutterDist])
+        B = np.array([self.radius,
+                     self.shutterWidth / 2 - self.targetShutterDist])
+        C = np.array([self.radius,
+                     - self.shutterWidth / 2 + self.targetShutterDist])
+
+        A = rot.dot(A)
+        B = rot.dot(B)
+        C = rot.dot(C)
+
+        return A, B, C
+
+    @staticmethod
+    def targetInDomeShutter(A, B, C, M):
+        """
+        Based on the maths presented on:
+            https://stackoverflow.com/questions/2752725/
+            finding-whether-a-point-lies-inside-a-rectangle-or-not
+        :param A: Rectangle point A
+        :param B: Rectangle point B in clockwise
+        :param C: Rectangle point C in clockwise
+        :param M: Point to be checked
+        :return:
+        """
+        checkAB = 0 <= np.dot(B - A, M - A) <= np.dot(B - A, B - A)
+        checkBC = 0 <= np.dot(C - B, M - A) <= np.dot(C - B, C - B)
+        result = checkAB and checkBC
+        return result
+
+    def checkSlewNeeded(self, x, y):
+        """
+        :param x:
+        :param y:
+        :return:
+        """
+        if not self.checkTargetConditions():
+            return False
+
+        azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
+        A, B, C = self.calcTargetRectanglePoints(azimuth)
+        M = np.array([x, y])
+        result = self.targetInDomeShutter(A, B, C, M)
+
+        return result
 
     def slewDome(self, altitude=0, azimuth=0):
         """

@@ -63,7 +63,6 @@ class Satellite(object):
         self.satellitesRawTLE = {}
         self.databaseProcessing = DataWriter(self.app)
         self.installPath = ''
-        self.lastAzimuth = -1
         self.nextSatPass = [None, None, None]
         self.lastMeridianLimit = None
 
@@ -904,10 +903,6 @@ class Satellite(object):
 
         azimuth = obs.Az.degrees
         altitude = obs.Alt.degrees
-        delta = diffModulus(azimuth, self.lastAzimuth, 360)
-        if delta < 1:
-            return False
 
-        self.lastAzimuth = azimuth
         self.app.dome.followDome(altitude=altitude, azimuth=azimuth)
         return True

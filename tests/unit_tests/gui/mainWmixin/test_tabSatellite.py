@@ -1480,19 +1480,6 @@ def test_followMount_4(function):
     obs.status = 10
     function.ui.domeAutoFollowSat.setChecked(True)
     function.app.deviceStat['dome'] = True
-    function.lastAzimuth = 1
-    obs.Az = Angle(degrees=1)
-    obs.Alt = Angle(degrees=1)
-    suc = function.followMount(obs)
-    assert not suc
-
-
-def test_followMount_5(function):
-    obs = function.app.mount.obsSite
-    obs.status = 10
-    function.ui.domeAutoFollowSat.setChecked(True)
-    function.app.deviceStat['dome'] = True
-    function.lastAzimuth = 10
     obs.Az = Angle(degrees=1)
     obs.Alt = Angle(degrees=1)
     suc = function.followMount(obs)

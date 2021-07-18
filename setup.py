@@ -24,6 +24,7 @@ releaseNotes = """
 - add simulator feature
 - adding terrain image feature
 - add dome following when mount is in satellite tracking mode 
+- add dome slew reduction policy approach
 - add setting label support for UPB dew entries
 - add auto dew control support for Pegasus UPB
 - add switch support for ASCOM/ALPACA Pegasus UPB
@@ -52,7 +53,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b24',
+    version='2.0.0b25',
     packages=[
         'mw4',
         'mw4.base',

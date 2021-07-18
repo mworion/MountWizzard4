@@ -73,13 +73,15 @@ class DomeAlpaca(AlpacaClass):
         self.dataEntry(self.client.cansetshutter(), 'CanSetShutter')
 
         state = self.client.shutterstatus()
-        stateText = shutterStates[state]
-        self.dataEntry(stateText, 'Status.Shutter')
         if state == 0:
+            stateText = shutterStates[state]
+            self.dataEntry(stateText, 'Status.Shutter')
             self.dataEntry(True,
                            'DOME_SHUTTER.SHUTTER_OPEN',
                            elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         elif state == 1:
+            stateText = shutterStates[state]
+            self.dataEntry(stateText, 'Status.Shutter')
             self.dataEntry(False,
                            'DOME_SHUTTER.SHUTTER_OPEN',
                            elementInv='DOME_SHUTTER.SHUTTER_CLOSED')

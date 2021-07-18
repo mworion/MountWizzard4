@@ -48,6 +48,9 @@ class SettDome(object):
         self.ui.offGEM.valueChanged.connect(self.tab6)
         self.ui.offLAT.valueChanged.connect(self.tab7)
         self.ui.domeShutterWidth.valueChanged.connect(self.tab8)
+        self.ui.domeShutterHysteresis.valueChanged.connect(self.tab8)
+        self.ui.domeShutterZenith.valueChanged.connect(self.tab9)
+        self.ui.domeShutterWidth.valueChanged.connect(self.tab10)
         self.app.update1s.connect(self.updateShutterStatGui)
         self.ui.domeAbortSlew.clicked.connect(self.domeAbortSlew)
         self.ui.domeOpenShutter.clicked.connect(self.domeOpenShutter)
@@ -83,6 +86,14 @@ class SettDome(object):
 
     def tab8(self):
         self.ui.tabDomeExplain.setCurrentIndex(7)
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+
+    def tab9(self):
+        self.ui.tabDomeExplain.setCurrentIndex(8)
+        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
+
+    def tab10(self):
+        self.ui.tabDomeExplain.setCurrentIndex(9)
         self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
 
     def initConfig(self):

@@ -92,3 +92,9 @@ Top view of your dome setup:
 
 .. image:: image/dome_math_1.drawio.svg
     :align: center
+
+.. image:: image/shutter_hysteresis.png
+    :align: center
+
+.. image:: image/shutter_zenith
+    :align: center

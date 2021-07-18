@@ -34,6 +34,8 @@ class SettDome(object):
         self.ui.domeZoffGEM.valueChanged.connect(self.setZoffGEMInMount)
         self.ui.domeZoff10micron.valueChanged.connect(self.setZoff10micronInMount)
         self.ui.domeShutterWidth.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeShutterHysteresis.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeShutterZenith.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
         self.ui.checkUseDomeGeometry.clicked.connect(self.setUseDomeGeometry)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
@@ -173,8 +175,9 @@ class SettDome(object):
         self.app.mount.geometry.offLAT = self.ui.offLAT.value()
         self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
         self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
-        self.app.dome.domeShutterWidth = self.ui.domeShutterWidth.value()
-        self.app.dome.domeShutterWidth = self.ui.domeShutterWidth.value()
+        self.app.dome.shutterWidth = self.ui.domeShutterWidth.value()
+        self.app.dome.targetShutterDist = self.ui.domeShutterHysteresis.value()
+        self.app.dome.shutterZenithDist = self.ui.domeShutterZenith.value()
         self.app.updateDomeSettings.emit()
         return True
 

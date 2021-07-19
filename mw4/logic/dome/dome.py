@@ -95,7 +95,7 @@ class Dome:
         self.useGeometry = False
         self.useDynamicFollowing = False
         self.isSlewing = False
-        self.overshoot = 1
+        self.overshoot = None
         self.openingHysteresis = None
         self.clearanceZenith = None
         self.radius = None
@@ -263,6 +263,17 @@ class Dome:
         y = intersect[1]
         return alt, az, x, y
 
+    def calcOvershoot(self, az):
+        """
+        :param az:
+        :return:
+        """
+        if self.overshoot is None:
+            return az
+
+        az *= (1 + self.overshoot / 100)
+        return az
+
     def slewDome(self, altitude=0, azimuth=0, follow=False):
         """
         :param altitude:
@@ -281,6 +292,7 @@ class Dome:
             func = mount.calcTransformationMatricesTarget
 
         alt, az, x, y = self.calcSlewTarget(altitude, azimuth, func)
+        az = self.calcOvershoot(az)
 
         if self.useDynamicFollowing and x is not None and y is not None:
             doSlew = self.checkSlewNeeded(x, y)

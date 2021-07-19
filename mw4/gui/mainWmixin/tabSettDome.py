@@ -36,6 +36,7 @@ class SettDome(object):
         self.ui.domeClearOpening.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeOpeningHysteresis.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeClearanceZenith.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeOvershoot.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
         self.ui.useDomeGeometry.clicked.connect(self.setUseDomeGeometry)
         self.ui.useDynamicFollowing.clicked.connect(self.setUseDomeGeometry)
@@ -112,6 +113,7 @@ class SettDome(object):
         self.ui.domeOpeningHysteresis.setValue(config.get('domeOpeningHysteresis',
                                                           0.1))
         self.ui.domeClearanceZenith.setValue(config.get('domeClearanceZenith', 0.2))
+        self.ui.domeOvershoot.setValue(config.get('domeOvershoot', 0))
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
         self.ui.domeZoffGEM.setValue(config.get('domeZoffGEM', 0))
@@ -138,6 +140,7 @@ class SettDome(object):
         config['domeClearOpening'] = self.ui.domeClearOpening.value()
         config['domeOpeningHysteresis'] = self.ui.domeOpeningHysteresis.value()
         config['domeClearanceZenith'] = self.ui.domeClearanceZenith.value()
+        config['domeOvershoot'] = self.ui.domeOvershoot.value()
         config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
         config['domeEastOffset'] = self.ui.domeEastOffset.value()
         config['domeZoffGEM'] = self.ui.domeZoffGEM.value()
@@ -186,6 +189,7 @@ class SettDome(object):
         self.app.dome.clearOpening = self.ui.domeClearOpening.value()
         self.app.dome.openingHysteresis = self.ui.domeOpeningHysteresis.value()
         self.app.dome.clearanceZenith = self.ui.domeClearanceZenith.value()
+        self.app.dome.overshoot = self.ui.domeOvershoot.value()
         self.app.updateDomeSettings.emit()
         return True
 

@@ -351,6 +351,30 @@ def test_calcSlewTarget_3():
     assert y == 10
 
 
+def test_calcOvershoot_1():
+    app.overshoot = 0
+    val = app.calcOvershoot(100)
+    assert val == 100
+
+
+def test_calcOvershoot_2():
+    app.overshoot = 50
+    val = app.calcOvershoot(100)
+    assert val == 150
+
+
+def test_calcOvershoot_3():
+    app.overshoot = 100
+    val = app.calcOvershoot(100)
+    assert val == 200
+
+
+def test_calcOvershoot_4():
+    app.overshoot = None
+    val = app.calcOvershoot(100)
+    assert val == 100
+
+
 def test_slewDome_1():
     app.data = {}
     suc = app.slewDome()

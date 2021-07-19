@@ -31,7 +31,8 @@ __all__ = [
     'J2000ToJNow',
     'J2000ToAltAz',
     'JNowToJ2000',
-    'diffModulus'
+    'diffModulusAbs',
+    'diffModulusSign',
 ]
 
 log = logging.getLogger()

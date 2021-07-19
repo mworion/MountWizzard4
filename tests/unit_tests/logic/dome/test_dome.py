@@ -362,24 +362,38 @@ def test_calcOvershoot_2():
     app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
     app.overshoot = 50
     val = app.calcOvershoot(100)
-    assert val == 150
+    assert val == 100
 
 
 def test_calcOvershoot_3():
     app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
     app.overshoot = 100
     val = app.calcOvershoot(100)
-    assert val == 200
+    assert val == 100
 
 
 def test_calcOvershoot_4():
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
+    app.overshoot = 100
+    val = app.calcOvershoot(30)
+    assert val == 50
+
+
+def test_calcOvershoot_5():
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
+    app.overshoot = 50
+    val = app.calcOvershoot(30)
+    assert val == 40
+
+
+def test_calcOvershoot_6():
     app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
     app.overshoot = None
     val = app.calcOvershoot(100)
     assert val == 100
 
 
-def test_calcOvershoot_5():
+def test_calcOvershoot_7():
     app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = None
     app.overshoot = 0
     val = app.calcOvershoot(100)

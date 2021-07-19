@@ -24,6 +24,7 @@ import numpy as np
 
 # local imports
 from base.transform import diffModulusSign
+from base.transform import diffModulusAbs
 from logic.dome.domeIndi import DomeIndi
 from logic.dome.domeAlpaca import DomeAlpaca
 if platform.system() == 'Windows':
@@ -271,6 +272,9 @@ class Dome:
         """
         actAz = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', None)
         if self.overshoot is None or actAz is None:
+            return az
+
+        if diffModulusAbs(actAz, az, 360) > 30:
             return az
 
         deltaAz = diffModulusSign(actAz, az, 360)

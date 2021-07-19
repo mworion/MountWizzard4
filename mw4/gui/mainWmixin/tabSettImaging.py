@@ -239,14 +239,12 @@ class SettImaging(object):
         """
         :return: success
         """
-        c1 = self.app.camera.data.get('CAN_SET_CCD_TEMPERATURE', False)
-        c2 = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', False)
-        canSetCCDTemp = c1 or c2
+        canSetCCDTemp = self.app.camera.data.get('CAN_SET_CCD_TEMPERATURE', False)
         if not canSetCCDTemp:
             return False
 
         msg = PyQt5.QtWidgets.QMessageBox
-        actValue = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+        actValue = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
         if actValue is None:
             msg.critical(self,
                          'Error Message',
@@ -363,10 +361,6 @@ class SettImaging(object):
         """
         :return:
         """
-        canGetCoolerPower = self.app.camera.data.get('CAN_GET_COOLER_POWER', False)
-        if not canGetCoolerPower:
-            return False
-
         self.app.camera.sendCoolerSwitch(coolerOn=True)
         return True
 
@@ -374,10 +368,6 @@ class SettImaging(object):
         """
         :return:
         """
-        canGetCoolerPower = self.app.camera.data.get('CAN_GET_COOLER_POWER', False)
-        if not canGetCoolerPower:
-            return False
-
         self.app.camera.sendCoolerSwitch(coolerOn=False)
         return True
 

@@ -91,7 +91,8 @@ class CameraAscom(AscomClass):
         if canSetCCDTemp:
             self.getAndStoreAscomProperty('CCDTemperature',
                                           'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-            self.getAndStoreAscomProperty('CoolerOn', 'CCD_COOLER.COOLER_ON')
+
+        self.getAndStoreAscomProperty('CoolerOn', 'CCD_COOLER.COOLER_ON')
 
         canGetCoolerPower = self.data.get('CAN_GET_COOLER_POWER', False)
         if canGetCoolerPower:

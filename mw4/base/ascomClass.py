@@ -183,6 +183,8 @@ class AscomClass(object):
         except Exception as e:
             self.log.debug(f'Property [{valueProp}] is not implemented: {e}')
             self.propertyExceptions.append(valueProp)
+        else:
+            self.log.trace(f'Property [{valueProp}] has value: [{value}]')
         finally:
             return value
 
@@ -201,6 +203,7 @@ class AscomClass(object):
             self.propertyExceptions.append(valueProp)
             return False
         else:
+            self.log.trace(f'Property [{valueProp}] is set to [{value}]')
             return True
 
     def storeAscomProperty(self, value, element, elementInv=None):

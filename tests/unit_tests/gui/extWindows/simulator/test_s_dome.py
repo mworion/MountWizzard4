@@ -34,13 +34,13 @@ def module_setup_teardown():
 
     class Test3:
         data = None
-        domeShutterWidth = 0
+        clearOpening = 0
 
     class Test2:
         domeRadius = QDoubleSpinBox()
         domeRadius.setValue(1)
-        domeShutterWidth = QDoubleSpinBox()
-        domeShutterWidth.setValue(40)
+        clearOpening = QDoubleSpinBox()
+        clearOpening.setValue(40)
 
     class Test1:
         ui = Test2()
@@ -49,8 +49,8 @@ def module_setup_teardown():
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
+                                              longitude_degrees=10,
+                                              elevation_m=500)
         mwGlob = {'modelDir': 'tests/model',
                   'imageDir': 'tests/image'}
         uiWindows = {'showImageW': {'classObj': None}}

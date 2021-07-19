@@ -94,8 +94,8 @@ class CameraAlpaca(AlpacaClass):
         if canSetCCDTemp:
             self.dataEntry(self.client.ccdtemperature(),
                            'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-            self.dataEntry(self.client.cooleron(),
-                           'CCD_COOLER.COOLER_ON')
+
+        self.dataEntry(self.client.cooleron(), 'CCD_COOLER.COOLER_ON')
 
         canGetCoolerPower = self.data.get('CAN_GET_COOLER_POWER', False)
         if canGetCoolerPower:

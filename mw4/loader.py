@@ -157,7 +157,7 @@ class MyApp(QApplication):
         :param returnValue:
         :return:
         """
-        if obj.objectName() == 'MainWindow':
+        if obj.objectName() == 'MainWindowWindow':
             return returnValue
 
         if obj == self.last:

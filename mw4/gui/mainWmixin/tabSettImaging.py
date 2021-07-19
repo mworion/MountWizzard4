@@ -63,10 +63,8 @@ class SettImaging(object):
 
     def initConfig(self):
         """
-
         :return:
         """
-
         config = self.app.config['mainW']
         self.ui.expTime.setValue(config.get('expTime', 1))
         self.ui.binning.setValue(config.get('binning', 1))
@@ -79,15 +77,12 @@ class SettImaging(object):
         self.ui.checkFastDownload.setChecked(config.get('checkFastDownload', False))
         self.ui.checkKeepImages.setChecked(config.get('checkKeepImages', False))
         self.ui.checkAutomaticTelescope.setChecked(config.get('checkAutomaticTelescope', False))
-
         return True
 
     def storeConfig(self):
         """
-
         :return:
         """
-
         config = self.app.config['mainW']
         config['expTime'] = self.ui.expTime.value()
         config['binning'] = self.ui.binning.value()
@@ -100,7 +95,6 @@ class SettImaging(object):
         config['checkFastDownload'] = self.ui.checkFastDownload.isChecked()
         config['checkKeepImages'] = self.ui.checkKeepImages.isChecked()
         config['checkAutomaticTelescope'] = self.ui.checkAutomaticTelescope.isChecked()
-
         return True
 
     def updateParameters(self):
@@ -110,7 +104,6 @@ class SettImaging(object):
 
         :return: true for test purpose
         """
-
         if self.ui.checkAutomaticTelescope.isChecked():
             self.updateTelescopeParametersToGui()
 
@@ -150,14 +143,12 @@ class SettImaging(object):
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
             resolutionY = pixelSizeY / focalLength * 206.265
-
         else:
             resolutionX = None
             resolutionY = None
 
         if aperture:
             speed = focalLength / aperture
-
         else:
             speed = None
 
@@ -165,7 +156,6 @@ class SettImaging(object):
             dawes = 116 / aperture
             rayleigh = 138 / aperture
             magLimit = 7.7 + (5 * np.log10(aperture / 10))
-
         else:
             dawes = None
             rayleigh = None
@@ -174,7 +164,6 @@ class SettImaging(object):
         if focalLength and pixelSizeY and pixelSizeY and pixelX and pixelY:
             FOVX = pixelSizeX / focalLength * 206.265 * pixelX / 3600
             FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
-
         else:
             FOVX = None
             FOVY = None
@@ -201,7 +190,6 @@ class SettImaging(object):
         if coolerOn:
             self.changeStyleDynamic(self.ui.coolerOn, 'running', True)
             self.changeStyleDynamic(self.ui.coolerOff, 'running', False)
-
         else:
             self.changeStyleDynamic(self.ui.coolerOn, 'running', False)
             self.changeStyleDynamic(self.ui.coolerOff, 'running', True)
@@ -209,7 +197,6 @@ class SettImaging(object):
         if downloadFast:
             self.changeStyleDynamic(self.ui.downloadFast, 'running', True)
             self.changeStyleDynamic(self.ui.downloadSlow, 'running', False)
-
         else:
             self.changeStyleDynamic(self.ui.downloadFast, 'running', False)
             self.changeStyleDynamic(self.ui.downloadSlow, 'running', True)
@@ -239,14 +226,12 @@ class SettImaging(object):
         """
         :return: success
         """
-        c1 = self.app.camera.data.get('CAN_SET_CCD_TEMPERATURE', False)
-        c2 = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', False)
-        canSetCCDTemp = c1 or c2
+        canSetCCDTemp = self.app.camera.data.get('CAN_SET_CCD_TEMPERATURE', False)
         if not canSetCCDTemp:
             return False
 
         msg = PyQt5.QtWidgets.QMessageBox
-        actValue = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+        actValue = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
         if actValue is None:
             msg.critical(self,
                          'Error Message',
@@ -287,7 +272,6 @@ class SettImaging(object):
         if isAlpaca:
             start = 0
             end = numberFilter - 1
-
         else:
             start = 1
             end = numberFilter
@@ -338,7 +322,6 @@ class SettImaging(object):
         isAlpaca = 'FILTER_NAME.FILTER_SLOT_NAME_0' in data
         if isAlpaca:
             number = availNames.index(value)
-
         else:
             number = availNames.index(value) + 1
 
@@ -363,10 +346,6 @@ class SettImaging(object):
         """
         :return:
         """
-        canGetCoolerPower = self.app.camera.data.get('CAN_GET_COOLER_POWER', False)
-        if not canGetCoolerPower:
-            return False
-
         self.app.camera.sendCoolerSwitch(coolerOn=True)
         return True
 
@@ -374,10 +353,6 @@ class SettImaging(object):
         """
         :return:
         """
-        canGetCoolerPower = self.app.camera.data.get('CAN_GET_COOLER_POWER', False)
-        if not canGetCoolerPower:
-            return False
-
         self.app.camera.sendCoolerSwitch(coolerOn=False)
         return True
 

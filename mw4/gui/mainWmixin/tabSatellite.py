@@ -25,7 +25,6 @@ from skyfield import almanac
 
 # local import
 from base.tpool import Worker
-from base.transform import diffModulus
 from logic.databaseProcessing.dataWriter import DataWriter
 
 

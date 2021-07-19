@@ -147,10 +147,20 @@ def J2000ToAltAz(ra, dec, timeJD, location):
     return azimuth, altitude
 
 
-def diffModulus(x, y, m):
-    diff = abs(x - y)
-    diff = abs(diff % m)
+def diffModulusAbs(x, y, m):
+    diff = abs(y - x)
+    diff = diff % m
     return min(diff, abs(diff - m))
+
+
+def diffModulusSign(x, y, m):
+    x = (x + m) % m
+    y = (y + m) % m
+    diff = y - x
+    diff = diff % m
+    if diff > m/2:
+        diff -= m
+    return diff
 
 
 """

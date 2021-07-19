@@ -122,16 +122,41 @@ def test_J2000T0AltAz_3():
     assert az.degrees != 0
 
 
-def test_diffModulus_1():
-    val = transform.diffModulus(1, 20, 360)
+def test_diffModulusAbs_1():
+    val = transform.diffModulusAbs(1, 20, 360)
     assert val == 19
 
 
-def test_diffModulus_2():
-    val = transform.diffModulus(350, 10, 360)
+def test_diffModulusAbs_2():
+    val = transform.diffModulusAbs(350, 10, 360)
     assert val == 20
 
 
-def test_diffModulus_3():
-    val = transform.diffModulus(-10, 340, 360)
+def test_diffModulusAbs_3():
+    val = transform.diffModulusAbs(-10, 340, 360)
     assert val == 10
+
+
+def test_diffModulusSign_1():
+    val = transform.diffModulusSign(1, 20, 360)
+    assert val == 19
+
+
+def test_diffModulusSign_2():
+    val = transform.diffModulusSign(350, 10, 360)
+    assert val == 20
+
+
+def test_diffModulusSign_3():
+    val = transform.diffModulusSign(-10, 340, 360)
+    assert val == -10
+
+
+def test_diffModulusSign_4():
+    val = transform.diffModulusSign(330, 320, 360)
+    assert val == -10
+
+
+def test_diffModulusSign_5():
+    val = transform.diffModulusSign(-10, -20, 360)
+    assert val == -10

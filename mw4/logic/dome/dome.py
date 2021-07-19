@@ -23,6 +23,7 @@ import PyQt5
 import numpy as np
 
 # local imports
+from base.transform import diffModulusSign
 from logic.dome.domeIndi import DomeIndi
 from logic.dome.domeAlpaca import DomeAlpaca
 if platform.system() == 'Windows':
@@ -272,11 +273,10 @@ class Dome:
         if self.overshoot is None or actAz is None:
             return az
 
-        deltaAz =
+        deltaAz = diffModulusSign(actAz, az, 360)
         deltaAz *= (1 + self.overshoot / 100)
-
-
-        return az
+        finalAz = (actAz + deltaAz + 360) % 360
+        return finalAz
 
     def slewDome(self, altitude=0, azimuth=0, follow=False):
         """

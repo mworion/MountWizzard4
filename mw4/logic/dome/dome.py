@@ -268,10 +268,14 @@ class Dome:
         :param az:
         :return:
         """
-        if self.overshoot is None:
+        actAz = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', None)
+        if self.overshoot is None or actAz is None:
             return az
 
-        az *= (1 + self.overshoot / 100)
+        deltaAz =
+        deltaAz *= (1 + self.overshoot / 100)
+
+
         return az
 
     def slewDome(self, altitude=0, azimuth=0, follow=False):

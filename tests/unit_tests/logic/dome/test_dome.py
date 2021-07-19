@@ -352,25 +352,36 @@ def test_calcSlewTarget_3():
 
 
 def test_calcOvershoot_1():
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
     app.overshoot = 0
     val = app.calcOvershoot(100)
     assert val == 100
 
 
 def test_calcOvershoot_2():
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
     app.overshoot = 50
     val = app.calcOvershoot(100)
     assert val == 150
 
 
 def test_calcOvershoot_3():
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
     app.overshoot = 100
     val = app.calcOvershoot(100)
     assert val == 200
 
 
 def test_calcOvershoot_4():
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
     app.overshoot = None
+    val = app.calcOvershoot(100)
+    assert val == 100
+
+
+def test_calcOvershoot_5():
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = None
+    app.overshoot = 0
     val = app.calcOvershoot(100)
     assert val == 100
 

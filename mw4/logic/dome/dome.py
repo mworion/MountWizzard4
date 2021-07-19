@@ -274,7 +274,7 @@ class Dome:
         if self.overshoot is None or actAz is None:
             return az
 
-        if diffModulusAbs(actAz, az, 360) > 30:
+        if diffModulusAbs(actAz, az, 360) > 60:
             return az
 
         deltaAz = diffModulusSign(actAz, az, 360)

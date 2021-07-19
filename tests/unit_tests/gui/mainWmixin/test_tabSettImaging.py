@@ -138,19 +138,6 @@ def test_setCoolerTemp_1():
 
 
 def test_setCoolerTemp_2():
-    app.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = None
-    app.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = True
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, False)):
-            suc = app.setCoolerTemp()
-            assert not suc
-
-
-def test_setCoolerTemp_3():
-    app.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = 10
     app.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = False
     with mock.patch.object(QMessageBox,
                            'critical'):
@@ -161,8 +148,7 @@ def test_setCoolerTemp_3():
             assert not suc
 
 
-def test_setCoolerTemp_4():
-    app.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = 10
+def test_setCoolerTemp_3():
     app.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = True
     with mock.patch.object(QMessageBox,
                            'critical'):
@@ -258,25 +244,11 @@ def test_setDownloadModeSlow():
 
 
 def test_setCoolerOn_1():
-    app.app.camera.data['CAN_GET_COOLER_POWER'] = False
-    suc = app.setCoolerOn()
-    assert not suc
-
-
-def test_setCoolerOn_2():
-    app.app.camera.data['CAN_GET_COOLER_POWER'] = True
     suc = app.setCoolerOn()
     assert suc
 
 
 def test_setCoolerOff_1():
-    app.app.camera.data['CAN_GET_COOLER_POWER'] = False
-    suc = app.setCoolerOff()
-    assert not suc
-
-
-def test_setCoolerOff_2():
-    app.app.camera.data['CAN_GET_COOLER_POWER'] = True
     suc = app.setCoolerOff()
     assert suc
 

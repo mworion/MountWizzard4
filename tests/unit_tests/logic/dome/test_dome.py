@@ -117,79 +117,79 @@ def test_checkSlewingDome_4():
 
 def test_checkTargetConditions_1():
     app.overshoot = None
-    app.targetShutterDist = None
-    app.shutterZenithDist = None
+    app.openingHysteresis = None
+    app.clearanceZenith = None
     app.radius = None
-    app.shutterWidth = None
+    app.clearOpening = None
     suc = app.checkTargetConditions()
     assert not suc
 
 
 def test_checkTargetConditions_2():
     app.overshoot = None
-    app.targetShutterDist = 0.1
-    app.shutterZenithDist = None
+    app.openingHysteresis = 0.1
+    app.clearanceZenith = None
     app.radius = None
-    app.shutterWidth = None
+    app.clearOpening = None
     suc = app.checkTargetConditions()
     assert not suc
 
 
 def test_checkTargetConditions_3():
     app.overshoot = None
-    app.targetShutterDist = 0.1
-    app.shutterZenithDist = 0.2
+    app.openingHysteresis = 0.1
+    app.clearanceZenith = 0.2
     app.radius = None
-    app.shutterWidth = None
+    app.clearOpening = None
     suc = app.checkTargetConditions()
     assert not suc
 
 
 def test_checkTargetConditions_4():
     app.overshoot = 0
-    app.targetShutterDist = 0.1
-    app.shutterZenithDist = 0.2
+    app.openingHysteresis = 0.1
+    app.clearanceZenith = 0.2
     app.radius = None
-    app.shutterWidth = None
+    app.clearOpening = None
     suc = app.checkTargetConditions()
     assert not suc
 
 
 def test_checkTargetConditions_5():
     app.overshoot = 0
-    app.targetShutterDist = 0.1
-    app.shutterZenithDist = 0.2
+    app.openingHysteresis = 0.1
+    app.clearanceZenith = 0.2
     app.radius = 1.5
-    app.shutterWidth = None
+    app.clearOpening = None
     suc = app.checkTargetConditions()
     assert not suc
 
 
 def test_checkTargetConditions_6():
     app.overshoot = 0
-    app.targetShutterDist = 0.5
-    app.shutterZenithDist = 0.2
+    app.openingHysteresis = 0.5
+    app.clearanceZenith = 0.2
     app.radius = 1.5
-    app.shutterWidth = 0.8
+    app.clearOpening = 0.8
     suc = app.checkTargetConditions()
     assert not suc
 
 
 def test_checkTargetConditions_7():
     app.overshoot = 0
-    app.targetShutterDist = 0.1
-    app.shutterZenithDist = 0.2
+    app.openingHysteresis = 0.1
+    app.clearanceZenith = 0.2
     app.radius = 1.5
-    app.shutterWidth = 0.8
+    app.clearOpening = 0.8
     suc = app.checkTargetConditions()
     assert suc
 
 
 def test_calcTargetRectanglePoints_1():
-    app.targetShutterDist = 0.1
-    app.shutterZenithDist = 0.2
+    app.openingHysteresis = 0.1
+    app.clearanceZenith = 0.2
     app.radius = 10
-    app.shutterWidth = 1.2
+    app.clearOpening = 1.2
     a, b, c = app.calcTargetRectanglePoints(0)
     assert a[0] == -0.1
     assert a[1] == 0.5
@@ -200,10 +200,10 @@ def test_calcTargetRectanglePoints_1():
 
 
 def test_calcTargetRectanglePoints_2():
-    app.targetShutterDist = 0.1
-    app.shutterZenithDist = 0.2
+    app.openingHysteresis = 0.1
+    app.clearanceZenith = 0.2
     app.radius = 10
-    app.shutterWidth = 1.2
+    app.clearOpening = 1.2
     a, b, c = app.calcTargetRectanglePoints(90)
     assert round(a[0], 5) == 0.5
     assert round(a[1], 5) == 0.1
@@ -277,7 +277,7 @@ def test_checkSlewNeeded_2():
                                    'targetInDomeShutter',
                                    return_value=False):
                 suc = app.checkSlewNeeded(0, 0)
-                assert not suc
+                assert suc
 
 
 def test_checkSlewNeeded_3():
@@ -291,13 +291,64 @@ def test_checkSlewNeeded_3():
                                    'targetInDomeShutter',
                                    return_value=True):
                 suc = app.checkSlewNeeded(0, 0)
-                assert suc
+                assert not suc
 
 
-def test_slewDome_0():
-    app.data = {}
-    suc = app.slewDome()
-    assert not suc
+def test_checkSlewNeeded_4():
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 0
+    app.openingHysteresis = 0.0
+    app.clearanceZenith = 0.3
+    app.radius = 1.5
+    app.clearOpening = 0.8
+    with mock.patch.object(app,
+                           'checkTargetConditions',
+                           return_value=True):
+        suc = app.checkSlewNeeded(0, 0)
+        assert not suc
+
+
+def test_calcSlewTarget_1():
+    def func():
+        return None, Angle(degrees=10), [5, 10, 0], None, None
+
+    azimuth = 20
+    altitude = 20
+    app.useGeometry = False
+    alt, az, x, y = app.calcSlewTarget(azimuth, altitude, func)
+    assert alt == 20
+    assert az == 20
+    assert x is None
+    assert y is None
+
+
+def test_calcSlewTarget_2():
+    def func():
+        return None, Angle(degrees=10), [5, 10, 0], None, None
+
+    azimuth = 20
+    altitude = 20
+    app.useGeometry = True
+
+    alt, az, x, y = app.calcSlewTarget(azimuth, altitude, func)
+    assert alt == 20
+    assert az == 20
+    assert x == 5
+    assert y == 10
+
+
+def test_calcSlewTarget_3():
+    def func():
+        return Angle(degrees=10), Angle(degrees=10), [5, 10, 0], None, None
+
+    azimuth = 20
+    altitude = 20
+    app.useGeometry = True
+
+    alt, az, x, y = app.calcSlewTarget(azimuth, altitude, func)
+    assert alt == 10
+    assert az == 10
+    assert x == 5
+    assert y == 10
 
 
 def test_slewDome_1():
@@ -309,105 +360,51 @@ def test_slewDome_1():
 def test_slewDome_2():
     app.data = {'AZ': 1}
     app.framework = 'indi'
-    suc = app.slewDome()
-    assert not suc
+    val = (10, 10, None, None)
+    with mock.patch.object(app,
+                           'calcSlewTarget',
+                           return_value=val):
+        with mock.patch.object(app.run['indi'],
+                               'slewToAltAz',
+                               return_value=val):
+            delta = app.slewDome(0, 0, False)
+            assert delta == -10
 
 
 def test_slewDome_3():
     app.data = {'AZ': 1}
     app.framework = 'indi'
-    app.useGeometry = True
-
-    with mock.patch.object(app.app.mount,
-                           'calcTransformationMatricesTarget',
-                           return_value=(Angle(degrees=10), Angle(degrees=10),
-                                         [0, 0, 0], None, None)):
-        val = app.slewDome(altitude=0, azimuth=0)
-        assert val == -10
+    app.useDynamicFollowing = True
+    val = (10, 10, 0, 0)
+    with mock.patch.object(app,
+                           'calcSlewTarget',
+                           return_value=val):
+        with mock.patch.object(app.run['indi'],
+                               'slewToAltAz',
+                               return_value=val):
+            with mock.patch.object(app,
+                                   'checkSlewNeeded',
+                                   return_value=False):
+                delta = app.slewDome(0, 0, False)
+                assert delta == 0
 
 
 def test_slewDome_4():
     app.data = {'AZ': 1}
     app.framework = 'indi'
-    app.useGeometry = True
-
-    with mock.patch.object(app.app.mount,
-                           'calcTransformationMatricesTarget',
-                           return_value=(None, Angle(degrees=10),
-                                         [0, 0, 0], None, None)):
-        val = app.slewDome(altitude=0, azimuth=0)
-        assert val == 0
-
-
-def test_slewDome_5():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    app.useGeometry = True
-
-    with mock.patch.object(app.app.mount,
-                           'calcTransformationMatricesTarget',
-                           return_value=(Angle(degrees=10), None,
-                                         [0, 0, 0], None, None)):
-        val = app.slewDome(altitude=0, azimuth=0)
-        assert val == 0
-
-
-def test_followDome_0():
-    app.data = {}
-    suc = app.followDome()
-    assert not suc
-
-
-def test_followDome_1():
-    app.data = {}
-    suc = app.followDome()
-    assert not suc
-
-
-def test_followDome_2():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    suc = app.followDome()
-    assert not suc
-
-
-def test_followDome_3():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    app.useGeometry = True
-
-    with mock.patch.object(app.app.mount,
-                           'calcTransformationMatricesActual',
-                           return_value=(Angle(degrees=10), Angle(degrees=10),
-                                         [0, 0, 0], None, None)):
-        val = app.followDome(altitude=0, azimuth=0)
-        assert val == -10
-
-
-def test_followDome_4():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    app.useGeometry = True
-
-    with mock.patch.object(app.app.mount,
-                           'calcTransformationMatricesActual',
-                           return_value=(None, Angle(degrees=10),
-                                         [0, 0, 0], None, None)):
-        val = app.followDome(altitude=0, azimuth=0)
-        assert val == 0
-
-
-def test_followDome_5():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    app.useGeometry = True
-
-    with mock.patch.object(app.app.mount,
-                           'calcTransformationMatricesActual',
-                           return_value=(Angle(degrees=10), None,
-                                         [0, 0, 0], None, None)):
-        val = app.followDome(altitude=0, azimuth=0)
-        assert val == 0
+    app.useDynamicFollowing = True
+    val = (10, 10, 0, 0)
+    with mock.patch.object(app,
+                           'calcSlewTarget',
+                           return_value=val):
+        with mock.patch.object(app.run['indi'],
+                               'slewToAltAz',
+                               return_value=val):
+            with mock.patch.object(app,
+                                   'checkSlewNeeded',
+                                   return_value=False):
+                delta = app.slewDome(0, 0, True)
+                assert delta == 0
 
 
 def test_openShutter_1():

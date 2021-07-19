@@ -21745,7 +21745,7 @@ When clicking the button, you could change the value.</string>
          <x>380</x>
          <y>10</y>
          <width>11</width>
-         <height>376</height>
+         <height>381</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -21767,7 +21767,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>10</y>
          <width>366</width>
-         <height>231</height>
+         <height>236</height>
         </rect>
        </property>
        <property name="title">
@@ -21902,7 +21902,7 @@ When clicking the button, you could change the value.</string>
          <string>m</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkUseDomeGeometry">
+       <widget class="QCheckBox" name="useDomeGeometry">
         <property name="geometry">
          <rect>
           <x>15</x>
@@ -21926,7 +21926,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>Enable dome geometry offset calculations</string>
+         <string>Enable dome geometry</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -22130,7 +22130,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>230</x>
-          <y>205</y>
+          <y>210</y>
           <width>131</width>
           <height>21</height>
          </rect>
@@ -22139,7 +22139,7 @@ When clicking the button, you could change the value.</string>
          <string>Data from Driver</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkAutomaticDome">
+       <widget class="QCheckBox" name="autoDomeDriver">
         <property name="geometry">
          <rect>
           <x>15</x>
@@ -22302,7 +22302,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>335</y>
+         <y>340</y>
          <width>361</width>
          <height>51</height>
         </rect>
@@ -22750,7 +22750,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>250</y>
          <width>366</width>
-         <height>136</height>
+         <height>141</height>
         </rect>
        </property>
        <property name="title">
@@ -22809,10 +22809,10 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>Dome shutter width</string>
+         <string>Clear opening</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="domeShutterWidth">
+       <widget class="QDoubleSpinBox" name="domeClearOpening">
         <property name="geometry">
          <rect>
           <x>250</x>
@@ -22831,7 +22831,7 @@ When clicking the button, you could change the value.</string>
          <double>1.000000000000000</double>
         </property>
         <property name="singleStep">
-         <double>0.010000000000000</double>
+         <double>0.050000000000000</double>
         </property>
         <property name="value">
          <double>0.400000000000000</double>
@@ -22922,7 +22922,7 @@ When clicking the button, you could change the value.</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="domeShutterZenith">
+       <widget class="QDoubleSpinBox" name="domeClearanceZenith">
         <property name="geometry">
          <rect>
           <x>250</x>
@@ -22962,10 +22962,10 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>Shutter zenith distance</string>
+         <string>Clearance from zenith</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="domeShutterHysteresis">
+       <widget class="QDoubleSpinBox" name="domeOpeningHysteresis">
         <property name="geometry">
          <rect>
           <x>250</x>
@@ -23005,7 +23005,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>Shutter hysteresis</string>
+         <string>Opening hysteresis</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_147">
@@ -23050,7 +23050,7 @@ When clicking the button, you could change the value.</string>
          <string>m</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkUseDynamicFollowing">
+       <widget class="QCheckBox" name="useDynamicFollowing">
         <property name="geometry">
          <rect>
           <x>15</x>
@@ -28395,13 +28395,13 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>domeZoff10micron</tabstop>
   <tabstop>offGEM</tabstop>
   <tabstop>offLAT</tabstop>
-  <tabstop>checkUseDomeGeometry</tabstop>
-  <tabstop>checkAutomaticDome</tabstop>
+  <tabstop>useDomeGeometry</tabstop>
+  <tabstop>autoDomeDriver</tabstop>
   <tabstop>copyFromDomeDriver</tabstop>
   <tabstop>domeOpenShutter</tabstop>
   <tabstop>domeCloseShutter</tabstop>
   <tabstop>domeAbortSlew</tabstop>
-  <tabstop>domeShutterWidth</tabstop>
+  <tabstop>domeClearOpening</tabstop>
   <tabstop>tabDomeExplain</tabstop>
   <tabstop>settleTimeDome</tabstop>
   <tabstop>isOnline</tabstop>

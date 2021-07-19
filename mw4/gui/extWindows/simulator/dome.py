@@ -181,7 +181,7 @@ class SimulatorDome:
             isOpen = self.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN']
             radius = self.app.mount.geometry.domeRadius * 1000
             scale = 1 + (radius - 1250) / 1250
-            width = self.app.dome.domeShutterWidth * 1000
+            width = self.app.dome.clearOpening * 1000
             scaleSlit = (1 + (width - 600) / 600 / 2) * 0.9
             shiftShutter = width / 2 / scale
 

@@ -33,12 +33,12 @@ class SettDome(object):
         self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.domeZoffGEM.valueChanged.connect(self.setZoffGEMInMount)
         self.ui.domeZoff10micron.valueChanged.connect(self.setZoff10micronInMount)
-        self.ui.domeShutterWidth.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.domeShutterHysteresis.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.domeShutterZenith.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeClearOpening.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeOpeningHysteresis.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeClearanceZenith.valueChanged.connect(self.setUseGeometryInMount)
         self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
-        self.ui.checkUseDomeGeometry.clicked.connect(self.setUseDomeGeometry)
-        self.ui.checkUseDynamicFollowing.clicked.connect(self.setUseDomeGeometry)
+        self.ui.useDomeGeometry.clicked.connect(self.setUseDomeGeometry)
+        self.ui.useDynamicFollowing.clicked.connect(self.setUseDomeGeometry)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
         self.app.mount.signals.firmwareDone.connect(self.setUseGeometryInMount)
         self.app.mount.signals.firmwareDone.connect(self.setZoffGEMInMount)
@@ -50,10 +50,10 @@ class SettDome(object):
         self.ui.domeZoff10micron.valueChanged.connect(self.tab5)
         self.ui.offGEM.valueChanged.connect(self.tab6)
         self.ui.offLAT.valueChanged.connect(self.tab7)
-        self.ui.domeShutterWidth.valueChanged.connect(self.tab8)
-        self.ui.domeShutterHysteresis.valueChanged.connect(self.tab8)
-        self.ui.domeShutterZenith.valueChanged.connect(self.tab9)
-        self.ui.domeShutterWidth.valueChanged.connect(self.tab10)
+        self.ui.domeClearOpening.valueChanged.connect(self.tab8)
+        self.ui.domeOpeningHysteresis.valueChanged.connect(self.tab8)
+        self.ui.domeClearanceZenith.valueChanged.connect(self.tab9)
+        self.ui.domeClearOpening.valueChanged.connect(self.tab10)
         self.app.update1s.connect(self.updateShutterStatGui)
         self.ui.domeAbortSlew.clicked.connect(self.domeAbortSlew)
         self.ui.domeOpenShutter.clicked.connect(self.domeOpenShutter)
@@ -108,19 +108,19 @@ class SettDome(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.domeShutterWidth.setValue(config.get('domeShutterWidth', 0.2))
-        self.ui.domeShutterHysteresis.setValue(config.get('domeShutterHysteresis',
+        self.ui.domeClearOpening.setValue(config.get('domeClearOpening', 0.2))
+        self.ui.domeOpeningHysteresis.setValue(config.get('domeOpeningHysteresis',
                                                           0.1))
-        self.ui.domeShutterZenith.setValue(config.get('domeShutterZenith', 0.2))
+        self.ui.domeClearanceZenith.setValue(config.get('domeClearanceZenith', 0.2))
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
         self.ui.domeZoffGEM.setValue(config.get('domeZoffGEM', 0))
         self.ui.offGEM.setValue(config.get('offGEM', 0))
         self.ui.offLAT.setValue(config.get('offLAT', 0))
         self.ui.domeRadius.setValue(config.get('domeRadius', 1.5))
-        self.ui.checkUseDomeGeometry.setChecked(config.get('checkUseDomeGeometry', False))
-        self.ui.checkAutomaticDome.setChecked(config.get('checkAutomaticDome', False))
-        self.ui.checkUseDynamicFollowing.setChecked(config.get('checkUseDynamicFollowing', False))
+        self.ui.useDomeGeometry.setChecked(config.get('useDomeGeometry', False))
+        self.ui.autoDomeDriver.setChecked(config.get('autoDomeDriver', False))
+        self.ui.useDynamicFollowing.setChecked(config.get('useDynamicFollowing', False))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
         self.setUseDomeGeometry()
         return True
@@ -135,17 +135,17 @@ class SettDome(object):
         """
         config = self.app.config['mainW']
         config['domeRadius'] = self.ui.domeRadius.value()
-        config['domeShutterWidth'] = self.ui.domeShutterWidth.value()
-        config['domeShutterHysteresis'] = self.ui.domeShutterHysteresis.value()
-        config['domeShutterZenith'] = self.ui.domeShutterZenith.value()
+        config['domeClearOpening'] = self.ui.domeClearOpening.value()
+        config['domeOpeningHysteresis'] = self.ui.domeOpeningHysteresis.value()
+        config['domeClearanceZenith'] = self.ui.domeClearanceZenith.value()
         config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
         config['domeEastOffset'] = self.ui.domeEastOffset.value()
         config['domeZoffGEM'] = self.ui.domeZoffGEM.value()
         config['offGEM'] = self.ui.offGEM.value()
         config['offLAT'] = self.ui.offLAT.value()
-        config['checkUseDomeGeometry'] = self.ui.checkUseDomeGeometry.isChecked()
-        config['checkAutomaticDome'] = self.ui.checkAutomaticDome.isChecked()
-        config['checkUseDynamicFollowing'] = self.ui.checkUseDynamicFollowing.isChecked()
+        config['useDomeGeometry'] = self.ui.useDomeGeometry.isChecked()
+        config['autoDomeDriver'] = self.ui.autoDomeDriver.isChecked()
+        config['useDynamicFollowing'] = self.ui.useDynamicFollowing.isChecked()
         config['settleTimeDome'] = self.ui.settleTimeDome.value()
         return True
 
@@ -174,7 +174,7 @@ class SettDome(object):
 
         :return: true for test purpose
         """
-        if self.ui.checkAutomaticDome.isChecked():
+        if self.ui.autoDomeDriver.isChecked():
             self.updateDomeGeometryToGui()
 
         self.app.mount.geometry.domeRadius = self.ui.domeRadius.value()
@@ -183,9 +183,9 @@ class SettDome(object):
         self.app.mount.geometry.offLAT = self.ui.offLAT.value()
         self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
         self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
-        self.app.dome.shutterWidth = self.ui.domeShutterWidth.value()
-        self.app.dome.targetShutterDist = self.ui.domeShutterHysteresis.value()
-        self.app.dome.shutterZenithDist = self.ui.domeShutterZenith.value()
+        self.app.dome.clearOpening = self.ui.domeClearOpening.value()
+        self.app.dome.openingHysteresis = self.ui.domeOpeningHysteresis.value()
+        self.app.dome.clearanceZenith = self.ui.domeClearanceZenith.value()
         self.app.updateDomeSettings.emit()
         return True
 
@@ -193,9 +193,9 @@ class SettDome(object):
         """
         :return: True for test purpose
         """
-        useGeometry = self.ui.checkUseDomeGeometry.isChecked()
+        useGeometry = self.ui.useDomeGeometry.isChecked()
         self.app.dome.useGeometry = useGeometry
-        useDynamicFollowing = self.ui.checkUseDynamicFollowing.isChecked()
+        useDynamicFollowing = self.ui.useDynamicFollowing.isChecked()
         self.app.dome.useDynamicFollowing = useDynamicFollowing
         return True
 
@@ -210,7 +210,7 @@ class SettDome(object):
         self.ui.domeRadius.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_SHUTTER_WIDTH', 0))
-        self.ui.domeShutterWidth.setValue(value)
+        self.ui.domeClearOpening.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT', 0))
         self.ui.domeNorthOffset.setValue(value)

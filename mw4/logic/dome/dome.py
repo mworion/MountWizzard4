@@ -95,11 +95,11 @@ class Dome:
         self.useGeometry = False
         self.useDynamicFollowing = False
         self.isSlewing = False
-        self.overshoot = None
-        self.targetShutterDist = None
-        self.shutterZenithDist = None
+        self.overshoot = 1
+        self.openingHysteresis = None
+        self.clearanceZenith = None
         self.radius = None
-        self.shutterWidth = None
+        self.clearOpening = None
         self.counterStartSlewing = -1
         self.settlingTime = 0
         self.settlingWait = PyQt5.QtCore.QTimer()
@@ -167,17 +167,17 @@ class Dome:
         """
         :return:
         """
-        if self.targetShutterDist is None:
+        if self.openingHysteresis is None:
             return False
-        if self.shutterZenithDist is None:
+        if self.clearanceZenith is None:
             return False
         if self.overshoot is None:
             return False
         if self.radius is None:
             return False
-        if self.shutterWidth is None:
+        if self.clearOpening is None:
             return False
-        BC = self.shutterWidth - 2 * self.targetShutterDist
+        BC = self.clearOpening - 2 * self.openingHysteresis
         if BC <= 0:
             return False
         return True
@@ -192,16 +192,16 @@ class Dome:
         cosAz = np.cos(azRad)
         rot = np.array([[cosAz, -sinAz], [sinAz, cosAz]])
 
-        A = np.array([- self.shutterZenithDist + self.targetShutterDist,
-                     self.shutterWidth / 2 - self.targetShutterDist])
+        A = np.array([- self.clearanceZenith + self.openingHysteresis,
+                     self.clearOpening / 2 - self.openingHysteresis])
         B = np.array([self.radius,
-                     self.shutterWidth / 2 - self.targetShutterDist])
+                     self.clearOpening / 2 - self.openingHysteresis])
         C = np.array([self.radius,
-                     - self.shutterWidth / 2 + self.targetShutterDist])
+                     - self.clearOpening / 2 + self.openingHysteresis])
 
-        A = rot.dot(A)
-        B = rot.dot(B)
-        C = rot.dot(C)
+        A = np.dot(rot, A)
+        B = np.dot(rot, B)
+        C = np.dot(rot, C)
 
         return A, B, C
 
@@ -234,23 +234,18 @@ class Dome:
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
         A, B, C = self.calcTargetRectanglePoints(azimuth)
         M = np.array([x, y])
-        result = self.targetInDomeShutter(A, B, C, M)
+        slewNeeded = not self.targetInDomeShutter(A, B, C, M)
+        return slewNeeded
 
-        return result
-
-    def slewDome(self, altitude=0, azimuth=0):
+    def calcSlewTarget(self, altitude, azimuth, func):
         """
         :param altitude:
         :param azimuth:
-        :return: success
+        :param func:
+        :return:
         """
-        if not self.data:
-            self.log.error('No data dict available')
-            return False
-
-        mount = self.app.mount
         if self.useGeometry:
-            alt, az, _, _, _ = mount.calcTransformationMatricesTarget()
+            alt, az, intersect, _, _ = func()
 
             if alt is None or az is None:
                 self.log.info(f'Geometry error, alt:{altitude}, az:{azimuth}')
@@ -262,17 +257,17 @@ class Dome:
         else:
             alt = altitude
             az = azimuth
+            intersect = [None, None, None]
 
-        self.signals.message.emit('slewing')
-        self.counterStartSlewing = 3
-        self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
-        delta = azimuth - az
-        return delta
+        x = intersect[0]
+        y = intersect[1]
+        return alt, az, x, y
 
-    def followDome(self, altitude=0, azimuth=0):
+    def slewDome(self, altitude=0, azimuth=0, follow=False):
         """
         :param altitude:
         :param azimuth:
+        :param follow:
         :return: success
         """
         if not self.data:
@@ -280,30 +275,22 @@ class Dome:
             return False
 
         mount = self.app.mount
-        if self.useGeometry:
-            alt, az, x, y, _ = mount.calcTransformationMatricesActual()
-
-            if alt is None or az is None:
-                self.log.info(f'Geometry error, alt:{altitude}, az:{azimuth}')
-                alt = altitude
-                az = azimuth
-            else:
-                alt = alt.degrees
-                az = az.degrees
+        if follow:
+            func = mount.calcTransformationMatricesActual
         else:
-            alt = altitude
-            az = azimuth
+            func = mount.calcTransformationMatricesTarget
 
-        self.signals.message.emit('following')
+        alt, az, x, y = self.calcSlewTarget(altitude, azimuth, func)
 
-        if self.useDynamicFolowing:
-            needSlew = self.checkSlewNeeded(x, y)
+        if self.useDynamicFollowing and x is not None and y is not None:
+            doSlew = self.checkSlewNeeded(x, y)
         else:
-            needSlew = True
+            doSlew = True
 
-        if needSlew:
+        if doSlew:
             self.counterStartSlewing = 3
             self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
+            self.signals.message.emit('slewing')
             delta = azimuth - az
         else:
             delta = 0

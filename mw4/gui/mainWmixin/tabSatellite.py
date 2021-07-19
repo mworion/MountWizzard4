@@ -902,6 +902,5 @@ class Satellite(object):
 
         azimuth = obs.Az.degrees
         altitude = obs.Alt.degrees
-
-        self.app.dome.followDome(altitude=altitude, azimuth=azimuth)
+        self.app.dome.slewDome(altitude=altitude, azimuth=azimuth, follow=True)
         return True

@@ -402,7 +402,8 @@ class Dome:
 
     @staticmethod
     def slewDome(azimuth=0,
-                 altitude=0):
+                 altitude=0,
+                 follow=False):
         return
 
     @staticmethod

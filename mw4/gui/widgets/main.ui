@@ -26667,7 +26667,7 @@ Updater</string>
        <widget class="QCheckBox" name="versionReleaseNotes">
         <property name="geometry">
          <rect>
-          <x>205</x>
+          <x>185</x>
           <y>70</y>
           <width>146</width>
           <height>21</height>
@@ -26715,7 +26715,7 @@ Updater</string>
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>161</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -26729,7 +26729,7 @@ Updater</string>
        <widget class="QCheckBox" name="autoPushTime">
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>185</x>
           <y>20</y>
           <width>166</width>
           <height>21</height>
@@ -26762,7 +26762,7 @@ Updater</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>185</x>
           <y>55</y>
           <width>166</width>
           <height>21</height>
@@ -26795,9 +26795,9 @@ Updater</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>185</x>
           <y>80</y>
-          <width>166</width>
+          <width>176</width>
           <height>21</height>
          </rect>
         </property>
@@ -26816,7 +26816,7 @@ Updater</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the clocks only if tracking state is off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Sync when not tracking</string>
+         <string>Do not sync while tracking</string>
         </property>
         <property name="checked">
          <bool>false</bool>

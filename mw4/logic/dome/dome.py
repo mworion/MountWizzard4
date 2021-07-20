@@ -267,6 +267,7 @@ class Dome:
 
     def calcOvershoot(self, az):
         """
+        only overshoot in sat tracking mode ('T')
         :param az:
         :return:
         """
@@ -274,7 +275,7 @@ class Dome:
         if self.overshoot is None or actAz is None:
             return az
 
-        if diffModulusAbs(actAz, az, 360) > 60:
+        if self.app.mount.obsSite.statusSat != 'T':
             return az
 
         deltaAz = diffModulusSign(actAz, az, 360)

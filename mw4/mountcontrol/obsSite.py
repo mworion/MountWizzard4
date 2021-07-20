@@ -114,6 +114,7 @@ class ObsSite(object):
         self._Az = None
         self._AzTarget = None
         self._status = None
+        self._statusSat = None
         self._statusSlew = None
         self.UTC2TT = None
         self.setLoaderAndTimescale()
@@ -411,6 +412,16 @@ class ObsSite(object):
         if self._status not in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 98, 99]:
             self._status = None
 
+    @property
+    def statusSat(self):
+        return self._statusSat
+
+    @statusSat.setter
+    def statusSat(self, value):
+        self._statusSat = value
+        if self._statusSat not in ['V', 'P', 'S', 'T', 'Q', 'E']:
+            self._statusSat = None
+
     def statusText(self):
         if self._status is None:
             return None
@@ -484,7 +495,8 @@ class ObsSite(object):
         self.ut1_utc = response[1].replace('L', '')
         self.angularPosRA = response[2]
         self.angularPosDEC = response[3]
-        responseSplit = response[4].split(',')
+        self.statusSat = response[4]
+        responseSplit = response[5].split(',')
         self.raJNow = responseSplit[0]
         self.decJNow = responseSplit[1]
         self.pierside = responseSplit[2]
@@ -492,7 +504,7 @@ class ObsSite(object):
         self.Alt = responseSplit[4]
         self.timeJD = responseSplit[5]
         self.status = responseSplit[6]
-        self.statusSlew = (responseSplit[7] == '1')
+        self.statusSlew = (responseSplit[8] == '1')
         return True
 
     def pollPointing(self):
@@ -503,7 +515,7 @@ class ObsSite(object):
         :return: success:   True if ok, False if not
         """
         conn = Connection(self.host)
-        commandString = ':U2#:GS#:GDUT#:GaXa#:GaXb#:Ginfo#'
+        commandString = ':U2#:GS#:GDUT#:GaXa#:GaXb#:TLESCK#:Ginfo#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False

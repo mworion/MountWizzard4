@@ -349,6 +349,8 @@ class Satellite(object):
         self.ui.trajectoryProgress.setValue(0)
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
+        self.ui.startSatelliteTracking.setText('Start satellite tracking')
+        self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', 'false')
         return True
 
     def updatePasses(self):
@@ -571,6 +573,8 @@ class Satellite(object):
         """
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
+            self.ui.stopSatelliteTracking.setEnabled(False)
+            self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', 'false')
             return False
 
         now = self.app.mount.obsSite.ts.now()
@@ -753,6 +757,7 @@ class Satellite(object):
         if params.jdStart is not None and self.satOrbits:
             self.ui.stopSatelliteTracking.setEnabled(True)
             self.ui.startSatelliteTracking.setEnabled(True)
+
         else:
             self.ui.stopSatelliteTracking.setEnabled(False)
             self.ui.startSatelliteTracking.setEnabled(False)
@@ -779,6 +784,7 @@ class Satellite(object):
             self.app.message.emit(message, 2)
             return False
 
+        self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', True)
         self.app.message.emit(message, 0)
         return True
 
@@ -793,8 +799,11 @@ class Satellite(object):
         suc = self.app.mount.obsSite.startTracking()
         if not suc:
             self.app.message.emit('Cannot stop tracking', 2)
-        else:
-            self.app.message.emit('Stopped tracking', 0)
+            return False
+
+        self.ui.startSatelliteTracking.setText('Start satellite tracking')
+        self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', 'false')
+        self.app.message.emit('Stopped tracking', 0)
         return suc
 
     def progSatellitesFiltered(self):
@@ -892,6 +901,13 @@ class Satellite(object):
         """
         :return:
         """
+        TLESCK = {
+            'V': 'is slewing to transit start',
+            'P': 'is waiting for satellite',
+            'S': 'is catching satellite',
+            'T': 'is tracking satellite',
+        }
+
         status = obs.status
         if status != 10:
             return False
@@ -899,6 +915,10 @@ class Satellite(object):
             return False
         if not self.app.deviceStat['dome']:
             return False
+
+        stat = obs.statusSat
+        statText = (TLESCK[stat] if stat in TLESCK else '')
+        self.ui.startSatelliteTracking.setText(statText)
 
         azimuth = obs.Az.degrees
         altitude = obs.Alt.degrees

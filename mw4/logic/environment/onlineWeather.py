@@ -39,7 +39,6 @@ class WeatherSignals(PyQt5.QtCore.QObject):
     __all__ = ['WeatherSignals']
 
     dataReceived = PyQt5.QtCore.pyqtSignal(object)
-    connected = PyQt5.QtCore.pyqtSignal(object)
 
     serverConnected = PyQt5.QtCore.pyqtSignal()
     serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
@@ -117,7 +116,6 @@ class OnlineWeather(PyQt5.QtCore.QObject):
             return False
 
         self.running = True
-        self.signals.deviceConnected.emit('OnlineWeather')
         self.updateOpenWeatherMapData()
 
         return True
@@ -170,17 +168,20 @@ class OnlineWeather(PyQt5.QtCore.QObject):
 
         if data is None:
             self.signals.dataReceived.emit(None)
-            self.signals.connected.emit(False)
+            self.signals.deviceDisconnected.emit('OnlineWeather')
+
             return False
 
         if 'list' not in data:
             self.signals.dataReceived.emit(None)
-            self.signals.connected.emit(False)
+            self.signals.deviceDisconnected.emit('OnlineWeather')
+
             return False
 
         if len(data['list']) == 0:
             self.signals.dataReceived.emit(None)
-            self.signals.connected.emit(False)
+            self.signals.deviceDisconnected.emit('OnlineWeather')
+
             return False
 
         val = data['list'][0]
@@ -203,7 +204,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
             self.data['rain'] = val['rain']['3h']
 
         self.signals.dataReceived.emit(self.data)
-        self.signals.connected.emit(True)
+        self.signals.deviceConnected.emit('OnlineWeather')
 
         return True
 
@@ -259,16 +260,16 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         """
 
         if not self.apiKey:
-            self.signals.connected.emit(None)
+            self.signals.deviceDisconnected.emit('OnlineWeather')
             return False
 
         if not self.online:
-            self.signals.connected.emit(False)
+            self.signals.deviceDisconnected.emit('OnlineWeather')
             self.signals.dataReceived.emit(None)
             return False
 
         if not self.running:
-            self.signals.connected.emit(False)
+            self.signals.deviceDisconnected.emit('OnlineWeather')
             return False
 
         # prepare coordinates for website

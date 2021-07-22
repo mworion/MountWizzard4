@@ -22032,7 +22032,7 @@ When clicking the button, you could change the value.</string>
          <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>3.000000000000000</double>
+         <double>5.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>0.100000000000000</double>
@@ -22828,7 +22828,7 @@ When clicking the button, you could change the value.</string>
          <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>1.000000000000000</double>
+         <double>2.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>0.050000000000000</double>

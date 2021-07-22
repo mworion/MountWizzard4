@@ -247,6 +247,7 @@ class Mount(QObject):
         timeDiff = 0
         loader = Loader('tests/temp', verbose=False)
         status = 0
+        statusSat = 'E'
         UTC2TT = 69.184
 
         @staticmethod

@@ -504,7 +504,7 @@ class ObsSite(object):
         self.Alt = responseSplit[4]
         self.timeJD = responseSplit[5]
         self.status = responseSplit[6]
-        self.statusSlew = (responseSplit[8] == '1')
+        self.statusSlew = (responseSplit[7] == '1')
         return True
 
     def pollPointing(self):

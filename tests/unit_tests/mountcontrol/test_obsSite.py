@@ -417,6 +417,16 @@ class TestConfigData(unittest.TestCase):
         obsSite.status = '5'
         self.assertEqual(5, obsSite.status)
 
+    def test_statusSat_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite.statusSat = 1
+        self.assertEqual(obsSite.statusSat, None)
+
+    def test_statusSat_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite.statusSat = 'V'
+        self.assertEqual(obsSite.statusSat, 'V')
+
     def test_Site_statusText_1(self):
         obsSite = ObsSite(pathToData=pathToData)
 
@@ -535,37 +545,37 @@ class TestConfigData(unittest.TestCase):
     def test_ObsSite_parsePointing_ok1(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        response = ['13:15:35.68', '0.12', '+100.0000', '-050.0000',
+        response = ['13:15:35.68', '0.12', '+100.0000', '-050.0000', 'V',
                     '19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0']
-        suc = obsSite.parsePointing(response, 5)
+        suc = obsSite.parsePointing(response, 6)
         self.assertEqual(True, suc)
 
     def test_ObsSite_parsePointing_ok2(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        response = ['13:15:35.68', '0.12', '+100.0000', '-050.0000',
+        response = ['13:15:35.68', '0.12', '+100.0000', '-050.0000', 'V',
                     '19.44591,+88.0032,W,000.0000,+47.9945,2458352.10403639,5,0']
-        suc = obsSite.parsePointing(response, 5)
+        suc = obsSite.parsePointing(response, 6)
         self.assertEqual(True, suc)
         self.assertEqual(type(obsSite.Az), Angle)
 
     def test_ObsSite_parsePointing_ok3(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        response = ['13:15:35.68', '0.12', '+100.0000', '-050.0000',
+        response = ['13:15:35.68', '0.12', '+100.0000', '-050.0000', 'V',
                     '19.44591,+88.0032,W,000.0001,+00.0000,2458352.10403639,5,0']
-        suc = obsSite.parsePointing(response, 5)
+        suc = obsSite.parsePointing(response, 6)
         self.assertEqual(True, suc)
         self.assertEqual(type(obsSite.Alt), Angle)
 
     def test_ObsSite_pollPointing_ok4(self):
         obsSite = ObsSite(pathToData=pathToData)
 
-        response = ['13:15:35.68', '0.12', '+100.0000', '-050.0000',
+        response = ['13:15:35.68', '0.12', '+100.0000', '-050.0000', 'V',
                     '19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0']
 
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 5
+            mConn.return_value.communicate.return_value = True, response, 6
             suc = obsSite.pollPointing()
             self.assertEqual(True, suc)
 

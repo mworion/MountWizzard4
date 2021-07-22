@@ -508,18 +508,6 @@ def test_updateDeviceStats_5():
     assert suc
 
 
-def test_updateOnlineWeatherStat_1():
-    suc = app.updateOnlineWeatherStat(True)
-    assert suc
-    assert app.deviceStat['onlineWeather']
-
-
-def test_updateOnlineWeatherStat_2():
-    suc = app.updateOnlineWeatherStat(False)
-    assert suc
-    assert not app.deviceStat['onlineWeather']
-
-
 def test_updateTime_1():
     app.ui.isOnline.setChecked(True)
     suc = app.updateTime()

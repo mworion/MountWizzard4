@@ -53,7 +53,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b26',
+    version='2.0.0b27',
     packages=[
         'mw4',
         'mw4.base',

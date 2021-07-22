@@ -181,7 +181,6 @@ class MainWindow(
         self.app.astrometry.signals.message.connect(self.updateAstrometryStatus)
         self.app.dome.signals.message.connect(self.updateDomeStatus)
         self.app.camera.signals.message.connect(self.updateCameraStatus)
-        self.app.onlineWeather.signals.connected.connect(self.updateOnlineWeatherStat)
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
@@ -710,14 +709,6 @@ class MainWindow(
                 self.changeStyleDynamic(ui, 'color', 'green')
             else:
                 self.changeStyleDynamic(ui, 'color', 'red')
-        return True
-
-    def updateOnlineWeatherStat(self, stat):
-        """
-        :param stat:
-        :return: True for test purpose
-        """
-        self.deviceStat['onlineWeather'] = stat
         return True
 
     def updateAstrometryStatus(self, text):

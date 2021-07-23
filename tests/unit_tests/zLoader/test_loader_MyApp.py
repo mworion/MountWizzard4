@@ -106,7 +106,7 @@ def test_handleButtons_9():
 
 def test_handleButtons_10():
     ui = QtWidgets.QLineEdit()
-    ui.setObjectName('MainWindow')
+    ui.setObjectName('MainWindowWindow')
     val = app.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 

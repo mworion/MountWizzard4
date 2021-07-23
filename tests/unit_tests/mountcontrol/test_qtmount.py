@@ -445,6 +445,16 @@ def test_bootMount_3(function):
         assert suc
 
 
+def test_bootMount_4(function):
+
+    function._MAC = '00:00:00:00:00:00'
+    with mock.patch.object(wakeonlan,
+                           'send_magic_packet'):
+        suc = function.bootMount(bAddress='255.255.255.255',
+                                 bPort=9)
+        assert suc
+
+
 def test_shutdown_1(function):
     function.mountUp = True
     with mock.patch.object(function.obsSite,

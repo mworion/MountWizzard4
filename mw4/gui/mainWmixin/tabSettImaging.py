@@ -231,7 +231,8 @@ class SettImaging(object):
             return False
 
         msg = PyQt5.QtWidgets.QMessageBox
-        actValue = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
+        actValue = self.app.camera.data.get(
+            'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', None)
         if actValue is None:
             msg.critical(self,
                          'Error Message',

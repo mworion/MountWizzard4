@@ -156,7 +156,31 @@ def test_setCoolerTemp_3():
                                'getInt',
                                return_value=(10, True)):
             suc = app.setCoolerTemp()
+            assert not suc
+
+
+def test_setCoolerTemp_4():
+    app.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = True
+    app.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            suc = app.setCoolerTemp()
             assert suc
+
+
+def test_setCoolerTemp_5():
+    app.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = True
+    app.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = app.setCoolerTemp()
+            assert not suc
 
 
 def test_setFilterNumber_1():

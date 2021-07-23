@@ -24,7 +24,6 @@ import numpy as np
 
 # local imports
 from base.transform import diffModulusSign
-from base.transform import diffModulusAbs
 from logic.dome.domeIndi import DomeIndi
 from logic.dome.domeAlpaca import DomeAlpaca
 if platform.system() == 'Windows':
@@ -314,6 +313,7 @@ class Dome:
             self.signals.message.emit('slewing')
             delta = azimuth - az
         else:
+            self.signals.slewFinished.emit()
             delta = 0
 
         return delta

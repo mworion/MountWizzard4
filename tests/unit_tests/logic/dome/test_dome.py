@@ -353,59 +353,43 @@ def test_calcSlewTarget_3():
 
 
 def test_calcOvershoot_1():
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
-    app.app.mount.obsSite.statusSat = 'T'
-    app.overshoot = 0
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = None
     val = app.calcOvershoot(100)
     assert val == 100
 
 
 def test_calcOvershoot_2():
     app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
-    app.app.mount.obsSite.statusSat = ''
-    app.overshoot = 50
+    app.overshoot = None
     val = app.calcOvershoot(100)
     assert val == 100
 
 
 def test_calcOvershoot_3():
     app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
-    app.app.mount.obsSite.statusSat = ''
     app.overshoot = 100
+    app.firstSlewOvershoot = True
     val = app.calcOvershoot(100)
     assert val == 100
+    assert not app.firstSlewOvershoot
 
 
 def test_calcOvershoot_4():
     app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
-    app.app.mount.obsSite.statusSat = 'T'
     app.overshoot = 100
+    app.firstSlewOvershoot = False
     val = app.calcOvershoot(30)
     assert val == 50
+    assert not app.firstSlewOvershoot
 
 
 def test_calcOvershoot_5():
     app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
-    app.app.mount.obsSite.statusSat = 'T'
     app.overshoot = 50
+    app.firstSlewOvershoot = False
     val = app.calcOvershoot(30)
     assert val == 40
-
-
-def test_calcOvershoot_6():
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
-    app.app.mount.obsSite.statusSat = 'T'
-    app.overshoot = None
-    val = app.calcOvershoot(100)
-    assert val == 100
-
-
-def test_calcOvershoot_7():
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = None
-    app.app.mount.obsSite.statusSat = 'T'
-    app.overshoot = 0
-    val = app.calcOvershoot(100)
-    assert val == 100
+    assert not app.firstSlewOvershoot
 
 
 def test_slewDome_1():

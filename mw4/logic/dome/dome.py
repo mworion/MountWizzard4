@@ -97,6 +97,7 @@ class Dome:
         self.useDynamicFollowing = False
         self.isSlewing = False
         self.overshoot = None
+        self.firstSlewOvershoot = False
         self.openingHysteresis = None
         self.clearanceZenith = None
         self.radius = None
@@ -266,15 +267,15 @@ class Dome:
 
     def calcOvershoot(self, az):
         """
-        only overshoot in sat tracking mode ('T')
         :param az:
         :return:
         """
-        actAz = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', None)
-        if self.overshoot is None or actAz is None:
+        if self.firstSlewOvershoot:
+            self.firstSlewOvershoot = False
             return az
 
-        if self.app.mount.obsSite.statusSat != 'T':
+        actAz = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', None)
+        if self.overshoot is None or actAz is None:
             return az
 
         deltaAz = diffModulusSign(actAz, az, 360)

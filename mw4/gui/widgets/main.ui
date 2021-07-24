@@ -22931,6 +22931,9 @@ When clicking the button, you could change the value.</string>
           <height>22</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;From a top view: This is the distance from the rear end of the dome opening to the center of dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
@@ -22973,6 +22976,9 @@ When clicking the button, you could change the value.</string>
           <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;From a top view: This is the safety marging from the bounding box of the dome opening to the actual viewing direction of the telescope to avoid obstuction of the view.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -23109,6 +23115,9 @@ When clicking the button, you could change the value.</string>
           <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Overshoot is the value how much more the dome will slew more than calculated center for the next target to minimize dome slews if the tragets are ordered EAST / WEST&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

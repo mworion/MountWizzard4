@@ -186,7 +186,9 @@ class SettDome(object):
         self.app.mount.geometry.offLAT = self.ui.offLAT.value()
         self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
         self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
-        self.app.dome.clearOpening = self.ui.domeClearOpening.value()
+        clearOpening = self.ui.domeClearOpening.value()
+        self.app.dome.clearOpening = clearOpening
+        self.ui.domeOpeningHysteresis.setMaximum(clearOpening / 2.5)
         self.app.dome.openingHysteresis = self.ui.domeOpeningHysteresis.value()
         self.app.dome.clearanceZenith = self.ui.domeClearanceZenith.value()
         self.app.dome.overshoot = self.ui.domeOvershoot.value()

@@ -22981,7 +22981,7 @@ When clicking the button, you could change the value.</string>
          <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>0.150000000000000</double>
+         <double>0.500000000000000</double>
         </property>
         <property name="singleStep">
          <double>0.030000000000000</double>

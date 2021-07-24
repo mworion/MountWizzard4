@@ -83,27 +83,28 @@ setup(
     python_requires='>=3.7.0, <3.10',
     install_requires=[
         'numpy==1.20.3',
-        'pillow==8.2.0',
+        'pillow==8.3.1',
         'matplotlib==3.4.2',
         'pyerfa==2.0.0',
         'astropy==4.2.1',
-        'scipy==1.6.3',
+        'scipy==1.7.0',
         'sep==1.2.0',
-        'requests==2.25.1',
+        'requests==2.26.0',
         'requests_toolbelt==0.9.1',
         'skyfield==1.39',
-        'sgp4==2.19',
+        'sgp4==2.20',
         'qimage2ndarray==1.8.3',
-        'importlib_metadata==4.3.1',
+        'importlib_metadata==4.6.1',
         'deepdiff==5.5.0',
         'colour_demosaicing==0.1.6',
         'wakeonlan==2.0.1',
         'pybase64==1.1.4',
     ]
-    + (['pywin32==300'] if "Windows" == platform.system() else [])
+    + (['pywin32==301'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
     + (['PyQt5==5.15.4'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt3D==5.15.4'] if platform.machine() not in ['armv7l', 'aarch64'] else [])
+    + (['PyQt3D==5.15.4'] if platform.machine() not in ['armv7l',
+                                                        'aarch64'] else [])
     + (['PyQtWebEngine==5.15.4'] if platform.machine() not in ['armv7l',
                                                                'aarch64'] else []),
     keywords=['5.15.4'],

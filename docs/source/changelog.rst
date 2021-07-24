@@ -7,25 +7,19 @@ Ideas for the future
 --------------------
 
 - implementing Baader dome control e.g. 10micron dome interface
-- optimizing dome for less movements on small changes
-  I see quite a few times the dome being moved by only a very small amount. But it
-  does affect the observatory, so even this small move needs another 10s settle
-  time for the mount So avoiding them would be great.
-- automation windows 64 bit update
 - split profiles in base and add-on
 - adding gain and offset for cmos
 - satellite search with constraints
-- adding more tools for getting observations done
 
 
 Released beta version of MW4
 ----------------------------
-2.0.0b26
+2.0.0b29
 
-- new updater concept
+- add new updater concept
 - add mount clock sync feature
 - add simulator feature
-- adding terrain image feature
+- add terrain image feature
 - add dome following when mount is in satellite tracking mode
 - add dome dynamic following feature: reduction of slews for dome
 - add setting label support for UPB dew entries
@@ -33,7 +27,7 @@ Released beta version of MW4
 - add switch support for ASCOM/ALPACA Pegasus UPB
 - add observation condition support for ASCOM/ALPACA Pegasus UPB
 - add feature for RA/DEC FITS writing for INDI server without snooping
-- completely revised satellite tracking menu gui
+- add completely revised satellite tracking menu gui
 - add partially satellite tracking before / after possible flip
 - add satellite track respect horizon line and meridian limits
 - add tracking simulator feature to test without waiting for satellite
@@ -41,14 +35,15 @@ Released beta version of MW4
 - add reverse order for filed build point retry
 - add automatic enable webinterface for keypad use
 - add broadcast address and port for WOL
-- changed IERS and lead second download
-- more functions are available without mount connected
+- add new IERS and lead second download
+- add more functions are available without mount connected
+- update debug standard moved from WARN to INFO
+- update underlying libraries
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected
 - fix retry mechanism for failed build points
 - fix using builtins for skyfield and rotation update
-- debug standard moved from WARN to INFO
-- update underlying libraries
+
 
 Released version of MW4
 -----------------------

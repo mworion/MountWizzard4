@@ -32,7 +32,7 @@ Released beta version of MW4
 - add satellite track respect horizon line and meridian limits
 - add tracking simulator feature to test without waiting for satellite
 - add alt/az pointer to satellite view
-- add reverse order for filed build point retry
+- add reverse order for failed build point retry
 - add automatic enable webinterface for keypad use
 - add broadcast address and port for WOL
 - add new IERS and lead second download

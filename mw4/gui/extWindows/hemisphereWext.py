@@ -126,7 +126,7 @@ class HemisphereWindowExt:
         altitudeT = self.app.mount.obsSite.AltTarget.degrees
 
         if self.app.deviceStat['dome']:
-            self.app.firstSlewOvershoot = True
+            self.app.dome.firstSlewOvershoot = True
             delta = self.app.dome.slewDome(altitude=altitudeT,
                                            azimuth=azimuthT)
 

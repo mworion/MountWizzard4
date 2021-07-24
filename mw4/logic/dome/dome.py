@@ -270,16 +270,17 @@ class Dome:
         :param az:
         :return:
         """
-        if self.firstSlewOvershoot:
-            self.firstSlewOvershoot = False
-            return az
-
         actAz = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', None)
         if self.overshoot is None or actAz is None:
             return az
 
+        overshoot = self.overshoot
+        if self.firstSlewOvershoot:
+            self.firstSlewOvershoot = False
+            overshoot = 0
+
         deltaAz = diffModulusSign(actAz, az, 360)
-        deltaAz *= (1 + self.overshoot / 100)
+        deltaAz *= (1 + overshoot / 100)
         finalAz = (actAz + deltaAz + 360) % 360
         return finalAz
 

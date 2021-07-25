@@ -97,7 +97,7 @@ class Dome:
         self.useDynamicFollowing = False
         self.isSlewing = False
         self.overshoot = None
-        self.firstSlewOvershoot = False
+        self.avoidFirstSlewOvershoot = True
         self.openingHysteresis = None
         self.clearanceZenith = None
         self.radius = None
@@ -270,18 +270,26 @@ class Dome:
         :param az:
         :return:
         """
-        actAz = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', None)
-        if self.overshoot is None or actAz is None:
+        if self.avoidFirstSlewOvershoot:
+            self.avoidFirstSlewOvershoot = False
             return az
 
-        overshoot = self.overshoot
-        if self.firstSlewOvershoot:
-            self.firstSlewOvershoot = False
-            overshoot = 0
+        actAz = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', None)
+        if not self.overshoot or actAz is None:
+            return az
+
+        y = max(self.clearOpening - 2 * self.openingHysteresis, 0)
+        x = self.radius
+        maxOvershootAzimuth = np.degrees(np.arctan2(y, x))
 
         deltaAz = diffModulusSign(actAz, az, 360)
-        deltaAz *= (1 + overshoot / 100)
+        deltaAzSign = np.sign(deltaAz)
+        deltaOverAbs = abs(maxOvershootAzimuth)
+        deltaAzAbs = abs(deltaAz)
+
+        deltaAz = (deltaOverAbs + deltaAzAbs) * deltaAzSign
         finalAz = (actAz + deltaAz + 360) % 360
+
         return finalAz
 
     def slewDome(self, altitude=0, azimuth=0, follow=False):
@@ -302,7 +310,6 @@ class Dome:
             func = mount.calcTransformationMatricesTarget
 
         alt, az, x, y = self.calcSlewTarget(altitude, azimuth, func)
-        az = self.calcOvershoot(az)
 
         if self.useDynamicFollowing and x is not None and y is not None:
             doSlew = self.checkSlewNeeded(x, y)
@@ -311,6 +318,7 @@ class Dome:
 
         if doSlew:
             self.counterStartSlewing = 3
+            az = self.calcOvershoot(az)
             self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
             self.signals.message.emit('slewing')
             delta = azimuth - az
@@ -319,6 +327,13 @@ class Dome:
             delta = 0
 
         return delta
+
+    def avoidFirstOvershoot(self):
+        """
+        :return:
+        """
+        self.avoidFirstSlewOvershoot = True
+        return True
 
     def openShutter(self):
         """

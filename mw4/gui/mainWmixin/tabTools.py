@@ -427,7 +427,6 @@ class Tools(object):
         altitudeT = altitudeT.degrees
 
         if self.app.deviceStat['dome']:
-            self.app.firstSlewOvershoot = True
             delta = self.app.dome.slewDome(altitude=altitudeT,
                                            azimuth=azimuthT)
             geoStat = 'Geometry corrected' if delta else 'Equal mount'

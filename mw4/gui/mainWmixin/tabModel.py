@@ -918,7 +918,7 @@ class Model:
         for point in modelPoints:
             self.slewQueue.put(point)
 
-        self.app.dome.firstSlewOvershoot = True
+        self.app.dome.avoidFirstOvershoot()
         self.modelSlew()
         return True
 

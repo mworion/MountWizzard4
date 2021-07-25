@@ -779,7 +779,7 @@ class Satellite(object):
             else:
                 self.app.message.emit('Cannot unpark mount', 2)
 
-        self.app.dome.firstSlewOvershoot = True
+        self.app.dome.avoidFirstOvershoot()
         suc, message = self.app.mount.satellite.slewTLE()
         if not suc:
             self.app.message.emit(message, 2)

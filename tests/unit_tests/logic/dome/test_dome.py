@@ -352,44 +352,49 @@ def test_calcSlewTarget_3():
     assert y == 10
 
 
+def test_calcOvershoot_0():
+    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
+    app.avoidFirstSlewOvershoot = True
+    val = app.calcOvershoot(100)
+    assert val == 100
+    assert not app.avoidFirstSlewOvershoot
+
+
 def test_calcOvershoot_1():
     app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = None
+    app.avoidFirstSlewOvershoot = False
     val = app.calcOvershoot(100)
     assert val == 100
 
 
 def test_calcOvershoot_2():
     app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
-    app.overshoot = None
+    app.avoidFirstSlewOvershoot = False
+    app.overshoot = False
     val = app.calcOvershoot(100)
     assert val == 100
 
 
 def test_calcOvershoot_3():
     app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
-    app.overshoot = 100
-    app.firstSlewOvershoot = True
+    app.clearOpening = 0.8
+    app.openingHysteresis = 0.2
+    app.radius = 1.5
+    app.avoidFirstSlewOvershoot = False
+    app.overshoot = True
     val = app.calcOvershoot(100)
-    assert val == 100
-    assert not app.firstSlewOvershoot
+    assert round(val, 3) == 114.931
 
 
 def test_calcOvershoot_4():
     app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
-    app.overshoot = 100
-    app.firstSlewOvershoot = False
+    app.clearOpening = 0.8
+    app.openingHysteresis = 0.2
+    app.radius = 1.5
+    app.avoidFirstSlewOvershoot = False
+    app.overshoot = True
     val = app.calcOvershoot(30)
-    assert val == 50
-    assert not app.firstSlewOvershoot
-
-
-def test_calcOvershoot_5():
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
-    app.overshoot = 50
-    app.firstSlewOvershoot = False
-    val = app.calcOvershoot(30)
-    assert val == 40
-    assert not app.firstSlewOvershoot
+    assert round(val, 3) == 44.931
 
 
 def test_slewDome_1():
@@ -446,6 +451,13 @@ def test_slewDome_4():
                                    return_value=False):
                 delta = app.slewDome(0, 0, True)
                 assert delta == 0
+
+
+def test_avoidFirstOvershoot():
+    app.avoidFirstSlewOvershoot = False
+    suc = app.avoidFirstOvershoot()
+    assert suc
+    assert app.avoidFirstSlewOvershoot
 
 
 def test_openShutter_1():

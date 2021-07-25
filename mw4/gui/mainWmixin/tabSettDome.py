@@ -26,22 +26,22 @@ class SettDome(object):
     """
 
     def __init__(self):
-        self.ui.domeRadius.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.offGEM.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.offLAT.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.domeEastOffset.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeRadius.valueChanged.connect(self.setUseGeometry)
+        self.ui.offGEM.valueChanged.connect(self.setUseGeometry)
+        self.ui.offLAT.valueChanged.connect(self.setUseGeometry)
+        self.ui.domeEastOffset.valueChanged.connect(self.setUseGeometry)
+        self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometry)
         self.ui.domeZoffGEM.valueChanged.connect(self.setZoffGEMInMount)
         self.ui.domeZoff10micron.valueChanged.connect(self.setZoff10micronInMount)
-        self.ui.domeClearOpening.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.domeOpeningHysteresis.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.domeClearanceZenith.valueChanged.connect(self.setUseGeometryInMount)
-        self.ui.domeOvershoot.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeClearOpening.valueChanged.connect(self.setUseGeometry)
+        self.ui.domeOpeningHysteresis.valueChanged.connect(self.setUseGeometry)
+        self.ui.domeClearanceZenith.valueChanged.connect(self.setUseGeometry)
+        self.ui.useOvershoot.clicked.connect(self.setUseGeometry)
         self.ui.settleTimeDome.valueChanged.connect(self.setDomeSettlingTime)
-        self.ui.useDomeGeometry.clicked.connect(self.setUseDomeGeometry)
-        self.ui.useDynamicFollowing.clicked.connect(self.setUseDomeGeometry)
+        self.ui.useDomeGeometry.clicked.connect(self.setUseGeometry)
+        self.ui.useDynamicFollowing.clicked.connect(self.setUseGeometry)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
-        self.app.mount.signals.firmwareDone.connect(self.setUseGeometryInMount)
+        self.app.mount.signals.firmwareDone.connect(self.setUseGeometry)
         self.app.mount.signals.firmwareDone.connect(self.setZoffGEMInMount)
 
         self.ui.domeRadius.valueChanged.connect(self.tab1)
@@ -112,7 +112,7 @@ class SettDome(object):
         self.ui.domeOpeningHysteresis.setValue(config.get('domeOpeningHysteresis',
                                                           0.1))
         self.ui.domeClearanceZenith.setValue(config.get('domeClearanceZenith', 0.2))
-        self.ui.domeOvershoot.setValue(config.get('domeOvershoot', 0))
+        self.ui.useOvershoot.setChecked(config.get('useOvershoot', False))
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
         self.ui.domeZoffGEM.setValue(config.get('domeZoffGEM', 0))
@@ -123,7 +123,7 @@ class SettDome(object):
         self.ui.autoDomeDriver.setChecked(config.get('autoDomeDriver', False))
         self.ui.useDynamicFollowing.setChecked(config.get('useDynamicFollowing', False))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
-        self.setUseDomeGeometry()
+        self.setUseGeometry()
         return True
 
     def storeConfig(self):
@@ -139,7 +139,7 @@ class SettDome(object):
         config['domeClearOpening'] = self.ui.domeClearOpening.value()
         config['domeOpeningHysteresis'] = self.ui.domeOpeningHysteresis.value()
         config['domeClearanceZenith'] = self.ui.domeClearanceZenith.value()
-        config['domeOvershoot'] = self.ui.domeOvershoot.value()
+        config['useOvershoot'] = self.ui.useOvershoot.isChecked()
         config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
         config['domeEastOffset'] = self.ui.domeEastOffset.value()
         config['domeZoffGEM'] = self.ui.domeZoffGEM.value()
@@ -169,9 +169,9 @@ class SettDome(object):
         self.app.updateDomeSettings.emit()
         return True
 
-    def setUseGeometryInMount(self):
+    def setUseGeometry(self):
         """
-        setUseGeometryInMount updates the mount class with the new setting if use
+        setUseGeometry updates the mount class with the new setting if use
         geometry for dome calculation should be used or not.
 
         :return: true for test purpose
@@ -190,18 +190,12 @@ class SettDome(object):
         self.ui.domeOpeningHysteresis.setMaximum(clearOpening / 2.1)
         self.app.dome.openingHysteresis = self.ui.domeOpeningHysteresis.value()
         self.app.dome.clearanceZenith = self.ui.domeClearanceZenith.value()
-        self.app.dome.overshoot = self.ui.domeOvershoot.value()
-        self.app.updateDomeSettings.emit()
-        return True
-
-    def setUseDomeGeometry(self):
-        """
-        :return: True for test purpose
-        """
         useGeometry = self.ui.useDomeGeometry.isChecked()
         self.app.dome.useGeometry = useGeometry
         useDynamicFollowing = self.ui.useDynamicFollowing.isChecked()
         self.app.dome.useDynamicFollowing = useDynamicFollowing
+        self.app.dome.overshoot = self.ui.useOvershoot.isChecked()
+        self.app.updateDomeSettings.emit()
         return True
 
     def updateDomeGeometryToGui(self):

@@ -18,6 +18,7 @@
 # standard libraries
 
 # external packages
+import numpy as np
 
 # local imports
 from base.indiClass import IndiClass
@@ -42,6 +43,7 @@ class DomeIndi(IndiClass):
 
         self.signals = signals
         self.data = data
+        self.lastAzimuth = None
 
         self.app.update1s.connect(self.updateStatus)
 
@@ -106,7 +108,8 @@ class DomeIndi(IndiClass):
         for element, value in self.device.getNumber(propertyName).items():
 
             if element == 'DOME_ABSOLUTE_POSITION':
-                azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
+                azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION',
+                                        0)
                 self.signals.azimuth.emit(azimuth)
 
                 slewing = self.device.ABS_DOME_POSITION['state'] == 'Busy'

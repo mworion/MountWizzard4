@@ -26,6 +26,7 @@ import skyfield.starlib as starlib
 import numpy as np
 
 # local imports
+from base.transform import diffModulusSign
 from .connection import Connection
 from .convert import stringToAngle
 from .convert import stringToDegree
@@ -89,6 +90,8 @@ class ObsSite(object):
         self.pathToData = pathToData
         self.verbose = verbose
         self.loader = None
+        self.AzDirection = None
+        self.lastAz = None
         self._location = None
         self.ts = None
         self._timeJD = None
@@ -390,6 +393,13 @@ class ObsSite(object):
             self._Az = value
             return
         self._Az = valueToAngle(value, preference='degrees')
+        az = self._Az.degrees
+        if self.lastAz is None:
+            self.AzDirection = 0
+            self.lastAz = az
+        else:
+            direction = np.sign(diffModulusSign(self.lastAz, az, 360))
+            self.AzDirection = direction
 
     @property
     def AzTarget(self):

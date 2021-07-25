@@ -23,7 +23,7 @@ import PyQt5
 import numpy as np
 
 # local imports
-from base.transform import diffModulusSign
+from base.transform import diffModulusAbs
 from logic.dome.domeIndi import DomeIndi
 from logic.dome.domeAlpaca import DomeAlpaca
 if platform.system() == 'Windows':
@@ -282,13 +282,13 @@ class Dome:
         x = self.radius
         maxOvershootAzimuth = np.degrees(np.arctan2(y, x))
 
-        deltaAz = diffModulusSign(actAz, az, 360)
-        deltaAzSign = np.sign(deltaAz)
+        deltaAzAbs = diffModulusAbs(actAz, az, 360)
         deltaOverAbs = abs(maxOvershootAzimuth)
-        deltaAzAbs = abs(deltaAz)
-
-        deltaAz = (deltaOverAbs + deltaAzAbs) * deltaAzSign
-        finalAz = (actAz + deltaAz + 360) % 360
+        direction = self.app.mount.obsSite.AzDirection
+        deltaAzSum = (deltaOverAbs + deltaAzAbs) * direction
+        finalAz = (actAz + deltaAzSum + 360) % 360
+        print(f'dir:{direction:1.0f}, azAct:{actAz:1.1f}, az:{az:1.1f}, '
+              f'd:{deltaAzSum:1.1f}, final:{finalAz:1.1f}')
 
         return finalAz
 

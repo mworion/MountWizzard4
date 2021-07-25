@@ -412,6 +412,10 @@ class Dome:
                    altitude=0):
         return
 
+    @staticmethod
+    def avoidFirstOvershoot():
+        return
+
 
 class Relay:
     class RelaySignals(QObject):

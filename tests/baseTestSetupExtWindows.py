@@ -150,6 +150,10 @@ class Dome(QObject):
                  lat=None):
         return
 
+    @staticmethod
+    def avoidFirstOvershoot():
+        return
+
     signals = DomeSignals()
     data = {}
     domeShutterWidth = 0

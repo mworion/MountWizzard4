@@ -23,7 +23,6 @@ import PyQt5
 import numpy as np
 
 # local imports
-from base.transform import diffModulusAbs
 from logic.dome.domeIndi import DomeIndi
 from logic.dome.domeAlpaca import DomeAlpaca
 if platform.system() == 'Windows':
@@ -274,22 +273,18 @@ class Dome:
             self.avoidFirstSlewOvershoot = False
             return az
 
-        actAz = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', None)
-        if not self.overshoot or actAz is None:
+        if not self.overshoot:
             return az
 
         y = max(self.clearOpening - 2 * self.openingHysteresis, 0)
         x = self.radius
-        maxOvershootAzimuth = np.degrees(np.arctan2(y, x))
-
-        deltaAzAbs = diffModulusAbs(actAz, az, 360)
-        deltaOverAbs = abs(maxOvershootAzimuth)
+        maxOvershootAzimuth = abs(np.degrees(np.arctan2(y, x)))
         direction = self.app.mount.obsSite.AzDirection
-        deltaAzSum = (deltaOverAbs + deltaAzAbs) * direction
-        finalAz = (actAz + deltaAzSum + 360) % 360
-        print(f'dir:{direction:1.0f}, azAct:{actAz:1.1f}, az:{az:1.1f}, '
-              f'd:{deltaAzSum:1.1f}, final:{finalAz:1.1f}')
+        if direction is None:
+            return az
 
+        deltaAz = maxOvershootAzimuth * direction
+        finalAz = (az + deltaAz + 360) % 360
         return finalAz
 
     def slewDome(self, altitude=0, azimuth=0, follow=False):

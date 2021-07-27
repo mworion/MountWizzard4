@@ -18,7 +18,6 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
-from unittest.mock import patch
 
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
@@ -361,14 +360,12 @@ def test_calcOvershoot_0():
 
 
 def test_calcOvershoot_1():
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = None
     app.avoidFirstSlewOvershoot = False
     val = app.calcOvershoot(100)
     assert val == 100
 
 
 def test_calcOvershoot_2():
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
     app.avoidFirstSlewOvershoot = False
     app.overshoot = False
     val = app.calcOvershoot(100)
@@ -376,25 +373,47 @@ def test_calcOvershoot_2():
 
 
 def test_calcOvershoot_3():
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
     app.clearOpening = 0.8
     app.openingHysteresis = 0.2
     app.radius = 1.5
     app.avoidFirstSlewOvershoot = False
     app.overshoot = True
+    app.app.mount.obsSite.AzDirection = None
+    val = app.calcOvershoot(100)
+    assert val == 100
+
+
+def test_calcOvershoot_4():
+    app.clearOpening = 0.8
+    app.openingHysteresis = 0.2
+    app.radius = 1.5
+    app.avoidFirstSlewOvershoot = False
+    app.overshoot = True
+    app.app.mount.obsSite.AzDirection = 1
     val = app.calcOvershoot(100)
     assert round(val, 3) == 114.931
 
 
-def test_calcOvershoot_4():
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
+def test_calcOvershoot_5():
     app.clearOpening = 0.8
     app.openingHysteresis = 0.2
     app.radius = 1.5
     app.avoidFirstSlewOvershoot = False
+    app.app.mount.obsSite.AzDirection = 1
     app.overshoot = True
     val = app.calcOvershoot(30)
     assert round(val, 3) == 44.931
+
+
+def test_calcOvershoot_6():
+    app.clearOpening = 0.8
+    app.openingHysteresis = 0.2
+    app.radius = 1.5
+    app.avoidFirstSlewOvershoot = False
+    app.app.mount.obsSite.AzDirection = -1
+    app.overshoot = True
+    val = app.calcOvershoot(30)
+    assert round(val, 3) == 30 - 14.931
 
 
 def test_slewDome_1():

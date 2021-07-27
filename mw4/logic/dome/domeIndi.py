@@ -18,7 +18,6 @@
 # standard libraries
 
 # external packages
-import numpy as np
 
 # local imports
 from base.indiClass import IndiClass

@@ -391,8 +391,13 @@ class ObsSite(object):
     def Az(self, value):
         if isinstance(value, Angle):
             self._Az = value
+        else:
+            self._Az = valueToAngle(value, preference='degrees')
+
+        if self._Az is None:
+            self.AzDirection = 0
             return
-        self._Az = valueToAngle(value, preference='degrees')
+
         az = self._Az.degrees
         if self.lastAz is None:
             self.AzDirection = 0

@@ -401,10 +401,10 @@ class ObsSite(object):
         az = self._Az.degrees
         if self.lastAz is None:
             self.AzDirection = 0
-            self.lastAz = az
         else:
             direction = np.sign(diffModulusSign(self.lastAz, az, 360))
             self.AzDirection = direction
+        self.lastAz = az
 
     @property
     def AzTarget(self):

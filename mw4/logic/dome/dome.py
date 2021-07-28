@@ -23,6 +23,7 @@ import PyQt5
 import numpy as np
 
 # local imports
+from base.transform import diffModulusAbs
 from logic.dome.domeIndi import DomeIndi
 from logic.dome.domeAlpaca import DomeAlpaca
 if platform.system() == 'Windows':
@@ -96,6 +97,7 @@ class Dome:
         self.useDynamicFollowing = False
         self.isSlewing = False
         self.overshoot = None
+        self.lastFinalAz = None
         self.avoidFirstSlewOvershoot = True
         self.openingHysteresis = None
         self.clearanceZenith = None
@@ -269,23 +271,37 @@ class Dome:
         :param az:
         :return:
         """
-        if self.avoidFirstSlewOvershoot:
-            self.avoidFirstSlewOvershoot = False
+        if not self.overshoot:
+            self.lastFinalAz = None
             return az
 
-        if not self.overshoot:
+        if self.avoidFirstSlewOvershoot:
+            self.avoidFirstSlewOvershoot = False
+            self.lastFinalAz = None
+            return az
+
+        direction = self.app.mount.obsSite.AzDirection
+        if direction is None:
             return az
 
         y = max(self.clearOpening - 2 * self.openingHysteresis, 0)
         x = self.radius
         maxOvershootAzimuth = abs(np.degrees(np.arctan2(y, x)))
-        direction = self.app.mount.obsSite.AzDirection
-        if direction is None:
-            return az
 
         deltaAz = maxOvershootAzimuth * direction
         finalAz = (az + deltaAz + 360) % 360
-        return finalAz
+
+        if self.lastFinalAz is None:
+            self.lastFinalAz = finalAz
+            return finalAz
+
+        delta = diffModulusAbs(self.lastFinalAz, finalAz, 360)
+        if delta > maxOvershootAzimuth / 2:
+            self.lastFinalAz = finalAz
+
+        #print(f'az:{az:1.1f}, dAz:{deltaAz:1.1f}, faz:{self.lastFinalAz:1.1f}, '
+        #      f'dir:{direction}')
+        return self.lastFinalAz
 
     def slewDome(self, altitude=0, azimuth=0, follow=False):
         """

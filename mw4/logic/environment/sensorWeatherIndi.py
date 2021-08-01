@@ -34,8 +34,6 @@ class SensorWeatherIndi(IndiClass):
 
     __all__ = ['SensorWeatherIndi',
                ]
-
-    # update rate to 1 seconds for setting indi server
     UPDATE_RATE = 1
 
     def __init__(self, app=None, signals=None, data=None):
@@ -52,15 +50,12 @@ class SensorWeatherIndi(IndiClass):
         :param deviceName:
         :return: success
         """
-
         if deviceName != self.deviceName:
             return False
-
         if self.device is None:
             return False
 
         update = self.device.getNumber('WEATHER_UPDATE')
-
         if 'PERIOD' not in update:
             return False
 

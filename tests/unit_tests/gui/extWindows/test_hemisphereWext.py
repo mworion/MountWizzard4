@@ -89,24 +89,15 @@ def test_setOperationMode_4(function):
 
 def test_showMouseCoordinates_1(function):
     class Event:
-        xdata = 1
-        ydata = None
+        inaxes = False
 
     suc = function.showMouseCoordinates(Event())
-    assert not suc
+    assert suc
 
 
 def test_showMouseCoordinates_2(function):
     class Event:
-        xdata = None
-        ydata = 1
-
-    suc = function.showMouseCoordinates(Event())
-    assert not suc
-
-
-def test_showMouseCoordinates_3(function):
-    class Event:
+        inaxes = True
         xdata = 10
         ydata = 10
 

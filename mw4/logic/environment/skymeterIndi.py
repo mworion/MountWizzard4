@@ -31,8 +31,6 @@ class SkymeterIndi(IndiClass):
 
     __all__ = ['SkymeterIndi',
                ]
-
-    # update rate to 1 seconds for setting indi server
     UPDATE_RATE = 5
 
     def __init__(self, app=None, signals=None, data=None):
@@ -49,15 +47,12 @@ class SkymeterIndi(IndiClass):
         :param deviceName:
         :return: success
         """
-
         if deviceName != self.deviceName:
             return False
-
         if self.device is None:
             return False
 
         update = self.device.getNumber('WEATHER_UPDATE')
-
         if 'PERIOD' not in update:
             return False
 

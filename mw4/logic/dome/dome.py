@@ -276,7 +276,7 @@ class Dome:
         if not self.overshoot:
             return az
 
-        y = max(self.clearOpening - 2 * self.openingHysteresis, 0)
+        y = max(self.clearOpening / 2 - self.openingHysteresis, 0)
         x = self.radius
         maxOvershootAzimuth = abs(np.degrees(np.arctan2(y, x)))
         direction = self.app.mount.obsSite.AzDirection

@@ -299,8 +299,6 @@ class Dome:
         if delta > maxOvershootAzimuth / 2:
             self.lastFinalAz = finalAz
 
-        #print(f'az:{az:1.1f}, dAz:{deltaAz:1.1f}, faz:{self.lastFinalAz:1.1f}, '
-        #      f'dir:{direction}')
         return self.lastFinalAz
 
     def slewDome(self, altitude=0, azimuth=0, follow=False):

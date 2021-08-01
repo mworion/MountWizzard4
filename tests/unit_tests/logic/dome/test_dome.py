@@ -391,7 +391,7 @@ def test_calcOvershoot_4():
     app.overshoot = True
     app.app.mount.obsSite.AzDirection = 1
     val = app.calcOvershoot(100)
-    assert round(val, 3) == 114.931
+    assert round(val, 3) == 107.595
 
 
 def test_calcOvershoot_5():
@@ -402,7 +402,7 @@ def test_calcOvershoot_5():
     app.app.mount.obsSite.AzDirection = 1
     app.overshoot = True
     val = app.calcOvershoot(30)
-    assert round(val, 3) == 44.931
+    assert round(val, 3) == 37.595
 
 
 def test_calcOvershoot_6():
@@ -413,7 +413,7 @@ def test_calcOvershoot_6():
     app.app.mount.obsSite.AzDirection = -1
     app.overshoot = True
     val = app.calcOvershoot(30)
-    assert round(val, 3) == 30 - 14.931
+    assert round(val, 3) == 22.405
 
 
 def test_slewDome_1():

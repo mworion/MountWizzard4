@@ -17,6 +17,8 @@
 # standard libraries
 
 # external packages
+from PyQt5.QtGui import QGuiApplication, QCursor
+from PyQt5.QtCore import Qt
 import numpy as np
 import matplotlib.path as mpath
 
@@ -111,9 +113,11 @@ class HemisphereWindowExt:
         if not event.inaxes:
             xText = '-'
             yText = '-'
+            QGuiApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
         else:
             xText = f'{event.xdata:3.1f}'
             yText = f'{event.ydata:3.1f}'
+            QGuiApplication.setOverrideCursor(QCursor(Qt.CrossCursor))
 
         self.ui.altitude.setText(yText)
         self.ui.azimuth.setText(xText)

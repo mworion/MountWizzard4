@@ -108,13 +108,15 @@ class HemisphereWindowExt:
         :param event:
         :return: success
         """
-        if event.xdata is None:
-            return False
-        if event.ydata is None:
-            return False
+        if not event.inaxes:
+            xText = '-'
+            yText = '-'
+        else:
+            xText = f'{event.xdata:3.1f}'
+            yText = f'{event.ydata:3.1f}'
 
-        self.ui.altitude.setText(f'{event.ydata:3.1f}')
-        self.ui.azimuth.setText(f'{event.xdata:3.1f}')
+        self.ui.altitude.setText(yText)
+        self.ui.azimuth.setText(xText)
         return True
 
     def slewSelectedTarget(self, slewType='normal'):

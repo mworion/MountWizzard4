@@ -53,17 +53,13 @@ class WeatherUPBIndi(IndiClass):
 
         if deviceName != self.deviceName:
             return False
-
         if self.device is None:
             return False
-
-        # setting polling updates in driver
 
         update = self.device.getNumber('POLLING')
 
         if 'PERIOD' not in update:
             return False
-
         if update.get('PERIOD', 0) == self.UPDATE_RATE:
             return True
 
@@ -72,5 +68,4 @@ class WeatherUPBIndi(IndiClass):
                                         propertyName='POLLING',
                                         elements=update,
                                         )
-
         return suc

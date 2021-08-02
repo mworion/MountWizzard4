@@ -40,6 +40,7 @@ releaseNotes = """
 - add broadcast address and port for WOL
 - add new IERS and lead second download
 - add more functions are available without mount connected
+- add change mouse pointer in hemisphere
 - update debug standard moved from WARN to INFO
 - update underlying libraries
 - fix for INDI cameras sending two times busy and exposure=0
@@ -53,7 +54,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b31',
+    version='2.0.0b32',
     packages=[
         'mw4',
         'mw4.base',

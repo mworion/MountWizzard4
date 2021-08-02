@@ -351,25 +351,20 @@ def test_calcSlewTarget_3():
     assert y == 10
 
 
-def test_calcOvershoot_0():
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 10
+def test_calcOvershoot_1():
+    app.overshoot = False
+    val = app.calcOvershoot(100)
+    assert val == 100
+    assert app.lastFinalAz is None
+
+
+def test_calcOvershoot_2():
+    app.overshoot = True
     app.avoidFirstSlewOvershoot = True
     val = app.calcOvershoot(100)
     assert val == 100
     assert not app.avoidFirstSlewOvershoot
-
-
-def test_calcOvershoot_1():
-    app.avoidFirstSlewOvershoot = False
-    val = app.calcOvershoot(100)
-    assert val == 100
-
-
-def test_calcOvershoot_2():
-    app.avoidFirstSlewOvershoot = False
-    app.overshoot = False
-    val = app.calcOvershoot(100)
-    assert val == 100
+    assert app.lastFinalAz is None
 
 
 def test_calcOvershoot_3():
@@ -389,6 +384,7 @@ def test_calcOvershoot_4():
     app.radius = 1.5
     app.avoidFirstSlewOvershoot = False
     app.overshoot = True
+    app.lastFinalAz = None
     app.app.mount.obsSite.AzDirection = 1
     val = app.calcOvershoot(100)
     assert round(val, 3) == 107.595
@@ -399,10 +395,11 @@ def test_calcOvershoot_5():
     app.openingHysteresis = 0.2
     app.radius = 1.5
     app.avoidFirstSlewOvershoot = False
-    app.app.mount.obsSite.AzDirection = 1
     app.overshoot = True
-    val = app.calcOvershoot(30)
-    assert round(val, 3) == 37.595
+    app.lastFinalAz = 10
+    app.app.mount.obsSite.AzDirection = 1
+    val = app.calcOvershoot(100)
+    assert round(val, 3) == 107.595
 
 
 def test_calcOvershoot_6():
@@ -410,8 +407,21 @@ def test_calcOvershoot_6():
     app.openingHysteresis = 0.2
     app.radius = 1.5
     app.avoidFirstSlewOvershoot = False
+    app.app.mount.obsSite.AzDirection = 1
+    app.overshoot = True
+    app.lastFinalAz = 10
+    val = app.calcOvershoot(30)
+    assert round(val, 3) == 37.595
+
+
+def test_calcOvershoot_7():
+    app.clearOpening = 0.8
+    app.openingHysteresis = 0.2
+    app.radius = 1.5
+    app.avoidFirstSlewOvershoot = False
     app.app.mount.obsSite.AzDirection = -1
     app.overshoot = True
+    app.lastFinalAz = 10
     val = app.calcOvershoot(30)
     assert round(val, 3) == 22.405
 

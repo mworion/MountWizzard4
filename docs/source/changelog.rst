@@ -14,7 +14,7 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.0.0b29
+2.0.0b31
 
 - add new updater concept
 - add mount clock sync feature
@@ -37,6 +37,7 @@ Released beta version of MW4
 - add broadcast address and port for WOL
 - add new IERS and lead second download
 - add more functions are available without mount connected
+- add change mouse pointer in hemisphere
 - update debug standard moved from WARN to INFO
 - update underlying libraries
 - fix for INDI cameras sending two times busy and exposure=0

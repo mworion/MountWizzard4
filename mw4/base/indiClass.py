@@ -99,7 +99,7 @@ class IndiClass:
         'observingconditions': (1 << 7) | (1 << 15),
         'skymeter': (1 << 15) | (1 << 19),
         'covercalibrator': (1 << 9) | (1 << 10),
-        'power': (1 << 7) | (1 << 3) | (1 << 15) | (1 << 18),
+        'switch': (1 << 7) | (1 << 3) | (1 << 15) | (1 << 18),
     }
 
     def __init__(self, app=None, data=None, threadPool=None):

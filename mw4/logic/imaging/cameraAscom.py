@@ -64,6 +64,10 @@ class CameraAscom(AscomClass):
         self.getAndStoreAscomProperty('PixelSizeY', 'CCD_INFO.CCD_PIXEL_SIZE_Y')
         self.getAndStoreAscomProperty('MaxBinX', 'CCD_BINNING.HOR_BIN_MAX')
         self.getAndStoreAscomProperty('MaxBinY', 'CCD_BINNING.VERT_BIN_MAX')
+        self.getAndStoreAscomProperty('ExposureMax', 'CCD_Exposure.MAX')
+        self.getAndStoreAscomProperty('ExposureMin', 'CCD_Exposure.Min')
+        self.getAndStoreAscomProperty('GainMax', 'CCD_Gain.MAX')
+        self.getAndStoreAscomProperty('GainMin', 'CCD_Gain.Min')
         self.getAndStoreAscomProperty('BinX', 'CCD_BINNING.HOR_BIN')
         self.getAndStoreAscomProperty('BinY', 'CCD_BINNING.VERT_BIN')
         self.getAndStoreAscomProperty('StartX', 'CCD_FRAME.X')
@@ -80,25 +84,14 @@ class CameraAscom(AscomClass):
             return False
 
         self.getAndStoreAscomProperty('CameraState', 'CAMERA.STATE')
-
-        canFast = self.data.get('CAN_FAST', False)
-        if canFast:
-            self.getAndStoreAscomProperty('FastReadout',
-                                          'READOUT_QUALITY.QUALITY_LOW',
-                                          'READOUT_QUALITY.QUALITY_HIGH')
-
-        canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
-        if canSetCCDTemp:
-            self.getAndStoreAscomProperty('CCDTemperature',
-                                          'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-
+        self.getAndStoreAscomProperty('FastReadout',
+                                      'READOUT_QUALITY.QUALITY_LOW',
+                                      'READOUT_QUALITY.QUALITY_HIGH')
+        self.getAndStoreAscomProperty('CCDTemperature',
+                                      'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
         self.getAndStoreAscomProperty('CoolerOn', 'CCD_COOLER.COOLER_ON')
-
-        canGetCoolerPower = self.data.get('CAN_GET_COOLER_POWER', False)
-        if canGetCoolerPower:
-            self.getAndStoreAscomProperty('CoolerPower',
-                                          'CCD_COOLER_POWER.CCD_COOLER_VALUE')
-
+        self.getAndStoreAscomProperty('CoolerPower',
+                                      'CCD_COOLER_POWER.CCD_COOLER_VALUE')
         return True
 
     def sendDownloadMode(self, fastReadout=False):
@@ -110,10 +103,8 @@ class CameraAscom(AscomClass):
 
         if not canFast:
             return False
-
         if not self.deviceConnected:
             return False
-
         if fastReadout:
             self.setAscomProperty('FastReadout', True)
 
@@ -266,7 +257,6 @@ class CameraAscom(AscomClass):
 
         self.abortExpose = True
         canAbort = self.data.get('CAN_ABORT', False)
-
         if not canAbort:
             return False
 

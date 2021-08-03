@@ -18868,7 +18868,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLabel" name="label_412">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -18892,7 +18892,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLabel" name="label_413">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -18914,7 +18914,7 @@ Next point in time when satellite settles.</string>
          <string>Offset</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="gainCam">
+       <widget class="QLineEdit" name="gainCam">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -18934,29 +18934,41 @@ Next point in time when satellite settles.</string>
           <bold>false</bold>
          </font>
         </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the binning for the camera&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gain value of a camera if present&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="cursorPosition">
+         <number>1</number>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-        <property name="decimals">
-         <number>0</number>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
-        <property name="minimum">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>9.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="offsetCam">
+       <widget class="QLineEdit" name="offsetCam">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -18976,26 +18988,38 @@ Next point in time when satellite settles.</string>
           <bold>false</bold>
          </font>
         </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the binning for the camera&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Offset value of a camera if present&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="cursorPosition">
+         <number>1</number>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-        <property name="decimals">
-         <number>0</number>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
-        <property name="minimum">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>9.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>

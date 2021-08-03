@@ -38,6 +38,8 @@ class SettImaging(object):
         self.ui.coolerOn.clicked.connect(self.setCoolerOn)
         self.ui.coolerOff.clicked.connect(self.setCoolerOff)
         self.clickable(self.ui.coolerTemp).connect(self.setCoolerTemp)
+        self.clickable(self.ui.gainCam).connect(self.setGain)
+        self.clickable(self.ui.offsetCam).connect(self.setOffset)
         self.clickable(self.ui.filterNumber).connect(self.setFilterNumber)
         self.clickable(self.ui.filterName).connect(self.setFilterName)
         self.ui.coverPark.clicked.connect(self.setCoverPark)
@@ -118,6 +120,8 @@ class SettImaging(object):
         rotation = self.app.camera.data.get('CCD_ROTATION.CCD_ROTATION_VALUE', 0)
         coolerTemp = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
         coolerPower = self.app.camera.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE', 0)
+        gainCam = self.app.camera.data.get('CCD_GAIN.GAIN', None)
+        offsetCam = self.app.camera.data.get('CCD_OFFSET.OFFSET', None)
         coolerOn = self.app.camera.data.get('CCD_COOLER.COOLER_ON', False)
         downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW', False)
         focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
@@ -178,6 +182,8 @@ class SettImaging(object):
         self.guiSetText(self.ui.rotation, '3.1f', rotation)
         self.guiSetText(self.ui.coolerTemp, '3.1f', coolerTemp)
         self.guiSetText(self.ui.coolerPower, '3.1f', coolerPower)
+        self.guiSetText(self.ui.gainCam, '3.0f', gainCam)
+        self.guiSetText(self.ui.offsetCam, '3.0f', offsetCam)
         self.guiSetText(self.ui.focuserPosition, '6.0f', focus)
         self.guiSetText(self.ui.resolutionX, '2.2f', resolutionX)
         self.guiSetText(self.ui.resolutionY, '2.2f', resolutionY)
@@ -251,6 +257,60 @@ class SettImaging(object):
             return False
 
         self.app.camera.sendCoolerTemp(temperature=value)
+        return True
+
+    def setOffset(self):
+        """
+        :return: success
+        """
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = self.app.camera.data.get('CCD_OFFSET.OFFSET', None)
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set offset',
+                               'Value (0..255):',
+                               actValue,
+                               0,
+                               255,
+                               1,
+                               )
+        if not ok:
+            return False
+
+        self.app.camera.sendOffset(offset=value)
+        return True
+
+    def setGain(self):
+        """
+        :return: success
+        """
+        msg = PyQt5.QtWidgets.QMessageBox
+        minGain = self.app.camera.data.get('CCD_INFO.GAIN_MIN', 1)
+        maxGain = self.app.camera.data.get('CCD_INFO.GAIN_MAX', 200)
+        actValue = self.app.camera.data.get('CCD_GAIN.GAIN', None)
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set gain',
+                               'Value (0..255):',
+                               actValue,
+                               minGain,
+                               maxGain,
+                               1,
+                               )
+        if not ok:
+            return False
+
+        self.app.camera.sendGain(gain=value)
         return True
 
     def setFilterNumber(self):

@@ -29,7 +29,7 @@ else:
 
 from PyQt5.QtCore import QObject
 from pywinauto.findwindows import find_windows
-from pywinauto.application import AppStartError, Application
+from pywinauto.application import AppStartError, Application, Timings
 import pywinauto.controls.win32_controls as controls
 import winreg
 from winreg import HKEY_LOCAL_MACHINE
@@ -281,6 +281,7 @@ class AutomateWindows(QObject):
         else:
             self.updater = Application(backend='uia')
             self.log.info('Using 64Bit backend uia')
+            Timings.slow()
 
         try:
             self.updater.start(self.installPath + self.updaterEXE)

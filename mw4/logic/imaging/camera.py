@@ -272,3 +272,25 @@ class Camera:
 
         suc = self.run[self.framework].sendCoolerTemp(temperature=temperature)
         return suc
+
+    def sendOffset(self, offset=0):
+        """
+        :param offset:
+        :return: success
+        """
+        if self.framework not in self.run.keys():
+            return False
+
+        suc = self.run[self.framework].sendOffset(offset=offset)
+        return suc
+
+    def sendGain(self, gain=0):
+        """
+        :param gain:
+        :return: success
+        """
+        if self.framework not in self.run.keys():
+            return False
+
+        suc = self.run[self.framework].sendGain(gain=gain)
+        return suc

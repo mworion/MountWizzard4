@@ -286,3 +286,27 @@ def test_sendCoolerTemp_3():
     app.data['CAN_SET_CCD_TEMPERATURE'] = True
     suc = app.sendCoolerTemp(temperature=-10)
     assert suc
+
+
+def test_sendOffset_1():
+    app.deviceConnected = False
+    suc = app.sendOffset()
+    assert not suc
+
+
+def test_sendOffset_2():
+    app.deviceConnected = True
+    suc = app.sendOffset(offset=50)
+    assert suc
+
+
+def test_sendGain_1():
+    app.deviceConnected = False
+    suc = app.sendGain()
+    assert not suc
+
+
+def test_sendGain_2():
+    app.deviceConnected = True
+    suc = app.sendGain(gain=50)
+    assert suc

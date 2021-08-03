@@ -545,3 +545,63 @@ def test_sendCoolerTemp_3():
                                return_value=True):
             suc = app.sendCoolerTemp()
             assert suc
+
+
+def test_sendOffset_1():
+    app.deviceName = 'test'
+    app.device = None
+    suc = app.sendOffset()
+    assert not suc
+
+
+def test_sendOffset_2():
+    app.deviceName = 'test'
+    app.device = Device()
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'Test': 1}):
+        suc = app.sendOffset()
+        assert not suc
+
+
+def test_sendOffset_3():
+    app.deviceName = 'test'
+    app.device = Device()
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'OFFSET': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewNumber',
+                               return_value=True):
+            suc = app.sendOffset()
+            assert suc
+
+
+def test_sendGain_1():
+    app.deviceName = 'test'
+    app.device = None
+    suc = app.sendGain()
+    assert not suc
+
+
+def test_sendGain_2():
+    app.deviceName = 'test'
+    app.device = Device()
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'Test': 1}):
+        suc = app.sendGain()
+        assert not suc
+
+
+def test_sendGain_3():
+    app.deviceName = 'test'
+    app.device = Device()
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'GAIN': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewNumber',
+                               return_value=True):
+            suc = app.sendGain()
+            assert suc

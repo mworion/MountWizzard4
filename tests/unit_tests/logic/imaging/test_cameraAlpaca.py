@@ -284,3 +284,39 @@ def test_sendCoolerTemp_3():
                            return_value=True):
         suc = app.sendCoolerTemp(temperature=-10)
         assert suc
+
+
+def test_sendOffset_1():
+    app.deviceConnected = False
+    with mock.patch.object(AlpacaBase,
+                           'get',
+                           return_value=True):
+        suc = app.sendOffset()
+        assert not suc
+
+
+def test_sendOffset_2():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'put',
+                           return_value=True):
+        suc = app.sendOffset(offset=50)
+        assert suc
+
+
+def test_sendGain_1():
+    app.deviceConnected = False
+    with mock.patch.object(AlpacaBase,
+                           'get',
+                           return_value=True):
+        suc = app.sendGain()
+        assert not suc
+
+
+def test_sendGain_2():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'put',
+                           return_value=True):
+        suc = app.sendGain(gain=50)
+        assert suc

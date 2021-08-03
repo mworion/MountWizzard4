@@ -359,13 +359,51 @@ class CameraIndi(IndiClass):
         if not self.device:
             return False
 
-        temp = self.device.getNumber('CCD_TEMPERATURE')
-        if 'CCD_TEMPERATURE_VALUE' not in temp:
+        element = self.device.getNumber('CCD_TEMPERATURE')
+        if 'CCD_TEMPERATURE_VALUE' not in element:
             return False
 
-        temp['CCD_TEMPERATURE_VALUE'] = temperature
+        element['CCD_TEMPERATURE_VALUE'] = temperature
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='CCD_TEMPERATURE',
-                                        elements=temp,
+                                        elements=element,
+                                        )
+        return suc
+
+    def sendOffset(self, offset=0):
+        """
+        :param offset:
+        :return: success
+        """
+        if not self.device:
+            return False
+
+        element = self.device.getNumber('CCD_OFFSET')
+        if 'OFFSET' not in element:
+            return False
+
+        element['OFFSET'] = offset
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
+                                        propertyName='CCD_OFFSET',
+                                        elements=element,
+                                        )
+        return suc
+
+    def sendGain(self, gain=0):
+        """
+        :param gain:
+        :return: success
+        """
+        if not self.device:
+            return False
+
+        element = self.device.getNumber('CCD_GAIN')
+        if 'GAIN' not in element:
+            return False
+
+        element['GAIN'] = gain
+        suc = self.client.sendNewNumber(deviceName=self.deviceName,
+                                        propertyName='CCD_GAIN',
+                                        elements=element,
                                         )
         return suc

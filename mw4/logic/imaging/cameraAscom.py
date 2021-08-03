@@ -289,3 +289,25 @@ class CameraAscom(AscomClass):
 
         self.setAscomProperty('SetCCDTemperature', temperature)
         return True
+
+    def sendOffset(self, offset=0):
+        """
+        :param offset:
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.setAscomProperty('Offset', offset)
+        return True
+
+    def sendGain(self, gain=0):
+        """
+        :param gain:
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.setAscomProperty('Gain', gain)
+        return True

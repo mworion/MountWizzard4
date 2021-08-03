@@ -323,3 +323,31 @@ def test_sendCoolerTemp_2(function):
                            return_value=True):
         suc = function.sendCoolerTemp()
         assert suc
+
+
+def test_sendOffset_1(function):
+    suc = function.sendOffset()
+    assert not suc
+
+
+def test_sendOffset_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
+                           'sendOffset',
+                           return_value=True):
+        suc = function.sendOffset()
+        assert suc
+
+
+def test_sendGain_1(function):
+    suc = function.sendGain()
+    assert not suc
+
+
+def test_sendGain_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
+                           'sendGain',
+                           return_value=True):
+        suc = function.sendGain()
+        assert suc

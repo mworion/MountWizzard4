@@ -283,8 +283,6 @@ class CameraAlpaca(AlpacaClass):
 
     def sendCoolerTemp(self, temperature=0):
         """
-        sendCoolerTemp send the desired cooler temp, indi does automatically start cooler
-
         :param temperature:
         :return: success
         """
@@ -296,4 +294,26 @@ class CameraAlpaca(AlpacaClass):
             return False
 
         self.client.setccdtemperature(SetCCDTemperature=temperature)
+        return True
+
+    def sendOffset(self, offset=0):
+        """
+        :param offset:
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.client.offset(Offset=offset)
+        return True
+
+    def sendGain(self, gain=0):
+        """
+        :param gain:
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.client.gain(Gain=gain)
         return True

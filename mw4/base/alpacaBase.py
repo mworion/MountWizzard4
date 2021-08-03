@@ -1126,21 +1126,18 @@ class Camera(AlpacaBase):
         """
         Indicate that an image is ready to be downloaded.
         """
-
         return self.get("imageready")
 
     def ispulseguiding(self):
         """
         Indicatee that the camera is pulse guideing.
         """
-
         return self.get("ispulseguiding")
 
     def lastexposureduration(self):
         """
         Report the actual exposure duration in seconds (i.e. shutter open time).
         """
-
         return self.get("lastexposureduration")
 
     def lastexposurestarttime(self):
@@ -1152,28 +1149,24 @@ class Camera(AlpacaBase):
         :return:
             Start time of the last exposure in FITS standard format.
         """
-
         return self.get("lastexposurestarttime")
 
     def maxadu(self):
         """
         Camera's maximum ADU value.
         """
-
         return self.get("maxadu")
 
     def maxbinx(self):
         """
         Maximum binning for the camera X axis.
         """
-
         return self.get("maxbinx")
 
     def maxbiny(self):
         """
         Maximum binning for the camera Y axis.
         """
-
         return self.get("maxbiny")
 
     def numx(self, NumX=None):
@@ -1186,7 +1179,6 @@ class Camera(AlpacaBase):
         :return:
             Current subframe width.
         """
-
         if NumX is None:
             return self.get("numx")
 
@@ -1202,11 +1194,19 @@ class Camera(AlpacaBase):
         :return:
             Current subframe height.
         """
-
         if NumY is None:
             return self.get("numy")
 
         self.put("numy", NumY=NumY)
+
+    def offset(self, Offset=None):
+        """
+        Indicate the camera's Offset.
+        """
+        if Offset is None:
+            return self.get("offset")
+
+        self.put("offset", Offset=Offset)
 
     def percentcompleted(self):
         """
@@ -1217,28 +1217,24 @@ class Camera(AlpacaBase):
             completion).
 
         """
-
         return self.get("percentcompleted")
 
     def pixelsizex(self):
         """
         Width of CCD chip pixels (microns).
         """
-
         return self.get("pixelsizex")
 
     def pixelsizey(self):
         """
         Height of CCD chip pixels (microns).
         """
-
         return self.get("pixelsizey")
 
     def readoutmode(self, ReadoutMode=None):
         """
         Indicate the camera's readout mode as an index into the array ReadoutModes.
         """
-
         if ReadoutMode is None:
             return self.get("readoutmode")
 
@@ -1248,14 +1244,12 @@ class Camera(AlpacaBase):
         """
         List of available readout modes.
         """
-
         return self.get("readoutmodes")
 
     def sensorname(self):
         """
         Name of the sensor used within the camera.
         """
-
         return self.get("sensorname")
 
     def sensortype(self):
@@ -1271,7 +1265,6 @@ class Camera(AlpacaBase):
             Value indicating whether the sensor is monochrome, or what Bayer matrix it
             encodes.
         """
-
         return self.get("sensortype")
 
     def setccdtemperature(self, SetCCDTemperature=None):
@@ -1283,7 +1276,6 @@ class Camera(AlpacaBase):
         :return:
             Camera's cooler setpoint (degrees Celsius).
         """
-
         if SetCCDTemperature is None:
             return self.get("setccdtemperature")
 
@@ -1299,7 +1291,6 @@ class Camera(AlpacaBase):
             Sets the subframe start position for the X axis (0 based) and returns the
             current value. If binning is active, value is in binned pixels.
         """
-
         if StartX is None:
             return self.get("startx")
 
@@ -1315,7 +1306,6 @@ class Camera(AlpacaBase):
             Sets the subframe start position for the Y axis (0 based) and returns the
             current value. If binning is active, value is in binned pixels.
         """
-
         if StartY is None:
             return self.get("starty")
 
@@ -1325,7 +1315,6 @@ class Camera(AlpacaBase):
         """
         Abort the current exposure, if any, and returns the camera to Idle state.
         """
-
         self.put("abortexposure")
 
     def pulseguide(self, Direction: int, Duration: int):
@@ -1337,7 +1326,6 @@ class Camera(AlpacaBase):
                 3 = West).
             Duration (int): Duration of movement in milli-seconds.
         """
-
         self.put("pulseguide", Direction=Direction, Duration=Duration)
 
     def startexposure(self, Duration=0, Light=True):
@@ -1351,7 +1339,6 @@ class Camera(AlpacaBase):
             Duration (float): Duration of exposure in seconds.
             Light (bool): True if light frame, false if dark frame.
         """
-
         self.put("startexposure", Duration=Duration, Light=Light)
 
     def stopexposure(self):
@@ -1362,7 +1349,6 @@ class Camera(AlpacaBase):
             If an exposure is in progress, the readout process is initiated. Ignored if
             readout is already in process.
         """
-
         self.put("stopexposure")
 
 

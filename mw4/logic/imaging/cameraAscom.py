@@ -64,12 +64,8 @@ class CameraAscom(AscomClass):
         self.getAndStoreAscomProperty('PixelSizeY', 'CCD_INFO.CCD_PIXEL_SIZE_Y')
         self.getAndStoreAscomProperty('MaxBinX', 'CCD_BINNING.HOR_BIN_MAX')
         self.getAndStoreAscomProperty('MaxBinY', 'CCD_BINNING.VERT_BIN_MAX')
-        self.getAndStoreAscomProperty('ExposureMax', 'CCD_Exposure.MAX')
-        self.getAndStoreAscomProperty('ExposureMin', 'CCD_Exposure.Min')
-        self.getAndStoreAscomProperty('GainMax', 'CCD_Gain.MAX')
-        self.getAndStoreAscomProperty('GainMin', 'CCD_Gain.Min')
-        self.getAndStoreAscomProperty('BinX', 'CCD_BINNING.HOR_BIN')
-        self.getAndStoreAscomProperty('BinY', 'CCD_BINNING.VERT_BIN')
+        self.getAndStoreAscomProperty('GainMax', 'CCD_INFO.GAIN_MAX')
+        self.getAndStoreAscomProperty('GainMin', 'CCD_INFO.GAIN_MIN')
         self.getAndStoreAscomProperty('StartX', 'CCD_FRAME.X')
         self.getAndStoreAscomProperty('StartY', 'CCD_FRAME.Y')
         self.log.debug(f'Initial data: {self.data}')
@@ -83,7 +79,11 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
+        self.getAndStoreAscomProperty('BinX', 'CCD_BINNING.HOR_BIN')
+        self.getAndStoreAscomProperty('BinY', 'CCD_BINNING.VERT_BIN')
         self.getAndStoreAscomProperty('CameraState', 'CAMERA.STATE')
+        self.getAndStoreAscomProperty('Gain', 'CCD_GAIN.GAIN')
+        self.getAndStoreAscomProperty('Offset', 'CCD_OFFSET.OFFSET')
         self.getAndStoreAscomProperty('FastReadout',
                                       'READOUT_QUALITY.QUALITY_LOW',
                                       'READOUT_QUALITY.QUALITY_HIGH')

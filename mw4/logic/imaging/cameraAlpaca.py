@@ -64,11 +64,10 @@ class CameraAlpaca(AlpacaClass):
         self.dataEntry(self.client.pixelsizey(), 'CCD_INFO.CCD_PIXEL_SIZE_Y')
         self.dataEntry(self.client.maxbinx(), 'CCD_BINNING.HOR_BIN_MAX')
         self.dataEntry(self.client.maxbiny(), 'CCD_BINNING.VERT_BIN_MAX')
-        self.dataEntry(self.client.binx(), 'CCD_BINNING.HOR_BIN')
-        self.dataEntry(self.client.biny(), 'CCD_BINNING.VERT_BIN')
+        self.dataEntry(self.client.gainmax(), 'CCD_INFO.GAIN_MAX')
+        self.dataEntry(self.client.gainmin(), 'CCD_INFO.GAIN_MIN')
         self.dataEntry(self.client.startx(), 'CCD_FRAME.X')
         self.dataEntry(self.client.starty(), 'CCD_FRAME.Y')
-
         self.log.debug(f'Initial data: {self.data}')
 
         return True
@@ -81,26 +80,19 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.dataEntry(self.client.camerastate(),
-                       'CAMERA.STATE')
-
-        canFast = self.data.get('CAN_FAST', False)
-        if canFast:
-            self.dataEntry(self.client.fastreadout(),
-                           'READOUT_QUALITY.QUALITY_LOW',
-                           'READOUT_QUALITY.QUALITY_HIGH')
-
-        canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
-        if canSetCCDTemp:
-            self.dataEntry(self.client.ccdtemperature(),
-                           'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-
+        self.dataEntry(self.client.binx(), 'CCD_BINNING.HOR_BIN')
+        self.dataEntry(self.client.biny(), 'CCD_BINNING.VERT_BIN')
+        self.dataEntry(self.client.camerastate(), 'CAMERA.STATE')
+        self.dataEntry(self.client.gain(), 'CCD_GAIN.GAIN')
+        self.dataEntry(self.client.offset(), 'CCD_OFFSET.OFFSET')
+        self.dataEntry(self.client.fastreadout(),
+                       'READOUT_QUALITY.QUALITY_LOW',
+                       'READOUT_QUALITY.QUALITY_HIGH')
+        self.dataEntry(self.client.ccdtemperature(),
+                       'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
         self.dataEntry(self.client.cooleron(), 'CCD_COOLER.COOLER_ON')
-
-        canGetCoolerPower = self.data.get('CAN_GET_COOLER_POWER', False)
-        if canGetCoolerPower:
-            self.dataEntry(self.client.coolerpower(),
-                           'CCD_COOLER_POWER.CCD_COOLER_VALUE')
+        self.dataEntry(self.client.coolerpower(),
+                       'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         return True
 

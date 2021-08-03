@@ -356,7 +356,7 @@ class IndiClass:
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
 
-            # print('number', self.deviceName, key, value)
+            print('number', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
 
             self.data[key] = float(value)

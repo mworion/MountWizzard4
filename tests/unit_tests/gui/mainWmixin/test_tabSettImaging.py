@@ -183,6 +183,84 @@ def test_setCoolerTemp_5():
             assert not suc
 
 
+def test_setGain_1():
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        suc = app.setGain()
+        assert not suc
+
+
+def test_setGain_2():
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            suc = app.setGain()
+            assert not suc
+
+
+def test_setGain_3():
+    app.app.camera.data['CCD_GAIN.GAIN'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            suc = app.setGain()
+            assert suc
+
+
+def test_setGain_4():
+    app.app.camera.data['CCD_GAIN.GAIN'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = app.setGain()
+            assert not suc
+
+
+def test_setOffset_1():
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        suc = app.setOffset()
+        assert not suc
+
+
+def test_setOffset_2():
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            suc = app.setOffset()
+            assert not suc
+
+
+def test_setOffset_3():
+    app.app.camera.data['CCD_OFFSET.OFFSET'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            suc = app.setOffset()
+            assert suc
+
+
+def test_setOffset_4():
+    app.app.camera.data['CCD_OFFSET.OFFSET'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = app.setOffset()
+            assert not suc
+
+
 def test_setFilterNumber_1():
     with mock.patch.object(QMessageBox,
                            'critical'):

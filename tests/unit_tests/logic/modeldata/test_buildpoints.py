@@ -41,8 +41,8 @@ def module_setup_teardown():
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
+                                              longitude_degrees=10,
+                                              elevation_m=500)
         mwGlob = {'configDir': 'tests/config'}
 
     global app
@@ -79,56 +79,56 @@ def test_topoToAltAz2():
 
 def test_genHaDecParams1():
     selection = 'min'
-    length = len(app.DEC[selection])
-    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection=selection)):
+    length = len(app.DEC_N[selection])
+    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection, 50)):
         if i > length - 1:
             j = 2 * length - i - 1
         else:
             j = i
-        assert a == app.DEC[selection][j]
-        assert b == app.STEP[selection][j]
+        assert a == app.DEC_N[selection][j]
+        assert b == app.STEP_N[selection][j]
         assert c == app.START[selection][i]
         assert d == app.STOP[selection][i]
 
 
 def test_genHaDecParams2():
     selection = 'norm'
-    length = len(app.DEC[selection])
-    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection=selection)):
+    length = len(app.DEC_N[selection])
+    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection, 50)):
         if i > length - 1:
             j = 2 * length - i - 1
         else:
             j = i
-        assert a == app.DEC[selection][j]
-        assert b == app.STEP[selection][j]
+        assert a == app.DEC_N[selection][j]
+        assert b == app.STEP_N[selection][j]
         assert c == app.START[selection][i]
         assert d == app.STOP[selection][i]
 
 
 def test_genHaDecParams3():
     selection = 'med'
-    length = len(app.DEC[selection])
-    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection=selection)):
+    length = len(app.DEC_N[selection])
+    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection, 50)):
         if i > length - 1:
             j = 2 * length - i - 1
         else:
             j = i
-        assert a == app.DEC[selection][j]
-        assert b == app.STEP[selection][j]
+        assert a == app.DEC_N[selection][j]
+        assert b == app.STEP_N[selection][j]
         assert c == app.START[selection][i]
         assert d == app.STOP[selection][i]
 
 
 def test_genHaDecParams4():
     selection = 'max'
-    length = len(app.DEC[selection])
-    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection=selection)):
+    length = len(app.DEC_N[selection])
+    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection, 50)):
         if i > length - 1:
             j = 2 * length - i - 1
         else:
             j = i
-        assert a == app.DEC[selection][j]
-        assert b == app.STEP[selection][j]
+        assert a == app.DEC_N[selection][j]
+        assert b == app.STEP_N[selection][j]
         assert c == app.START[selection][i]
         assert d == app.STOP[selection][i]
 
@@ -136,18 +136,32 @@ def test_genHaDecParams4():
 def test_genHaDecParams5():
     selection = 'test'
     val = True
-    for i, (_, _, _, _) in enumerate(app.genHaDecParams(selection=selection)):
+    for i, (_, _, _, _) in enumerate(app.genHaDecParams(selection, 50)):
         val = False
     assert val
+
+
+def test_genHaDecParams6():
+    selection = 'max'
+    length = len(app.DEC_S[selection])
+    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection, -50)):
+        if i > length - 1:
+            j = 2 * length - i - 1
+        else:
+            j = i
+        assert a == app.DEC_S[selection][j]
+        assert b == app.STEP_S[selection][j]
+        assert c == app.START[selection][i]
+        assert d == app.STOP[selection][i]
 
 
 def test_horizonP1():
     app.genGreaterCircle('max')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == 125
+    assert len(app.horizonP) == 110
     app.genGreaterCircle('med')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == 95
+    assert len(app.horizonP) == 82
     app.genGreaterCircle('norm')
     app.horizonP = app.buildP
     assert len(app.horizonP) == 76
@@ -169,9 +183,9 @@ def test_horizonP3():
 def test_buildP1():
     app.buildP = ()
     app.genGreaterCircle('max')
-    assert len(app.buildP) == 125
+    assert len(app.buildP) == 110
     app.genGreaterCircle('med')
-    assert len(app.buildP) == 95
+    assert len(app.buildP) == 82
     app.genGreaterCircle('norm')
     assert len(app.buildP) == 76
     app.genGreaterCircle('min')
@@ -229,7 +243,7 @@ def test_genGreaterCircle3():
         assert alt >= 0
         assert az >= 0
         assert status
-    assert i == 94
+    assert i == 81
 
 
 def test_genGreaterCircle4():
@@ -243,7 +257,7 @@ def test_genGreaterCircle4():
         assert alt >= 0
         assert az >= 0
         assert status
-    assert i == 124
+    assert i == 109
 
 
 def test_genGreaterCircle5():
@@ -293,7 +307,7 @@ def test_checkFormat_6():
 def test_clearBuildP():
     app.buildP = ()
     app.genGreaterCircle('max')
-    assert len(app.buildP) == 125
+    assert len(app.buildP) == 110
     app.clearBuildP()
     assert len(app.buildP) == 0
 
@@ -417,49 +431,49 @@ def test_addBuildP10():
 def test_delBuildP1():
     app.buildP = []
     app.genGreaterCircle('max')
-    assert len(app.buildP) == 125
+    assert len(app.buildP) == 110
     suc = app.delBuildP(5)
     assert suc
-    assert len(app.buildP) == 124
+    assert len(app.buildP) == 109
     suc = app.delBuildP(0)
     assert suc
-    assert len(app.buildP) == 123
-    suc = app.delBuildP(121)
+    assert len(app.buildP) == 108
+    suc = app.delBuildP(99)
     assert suc
-    assert len(app.buildP) == 122
+    assert len(app.buildP) == 107
 
 
 def test_delBuildP2():
     app.buildP = []
     app.genGreaterCircle('max')
-    assert len(app.buildP) == 125
+    assert len(app.buildP) == 110
     suc = app.delBuildP(-5)
     assert not suc
-    assert len(app.buildP) == 125
+    assert len(app.buildP) == 110
 
 
 def test_delBuildP3():
     app.buildP = []
     app.genGreaterCircle('max')
-    assert len(app.buildP) == 125
+    assert len(app.buildP) == 110
     suc = app.delBuildP(170)
     assert not suc
-    assert len(app.buildP) == 125
+    assert len(app.buildP) == 110
 
 
 def test_delBuildP4():
     app.buildP = []
     app.genGreaterCircle('max')
-    assert len(app.buildP) == 125
+    assert len(app.buildP) == 110
     suc = app.delBuildP('1')
     assert not suc
-    assert len(app.buildP) == 125
+    assert len(app.buildP) == 110
 
 
 def test_clearHorizonP():
     app.genGreaterCircle('max')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == 125
+    assert len(app.horizonP) == 110
     app.clearHorizonP()
     assert len(app.horizonP) == 0
 
@@ -630,22 +644,22 @@ def test_addHorizonP8():
 def test_delHorizonP1():
     app.genGreaterCircle('max')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == 125
+    assert len(app.horizonP) == 110
     suc = app.delHorizonP(5)
     assert suc
-    assert len(app.horizonP) == 124
+    assert len(app.horizonP) == 109
     suc = app.delHorizonP(1)
     assert suc
-    assert len(app.horizonP) == 123
+    assert len(app.horizonP) == 108
     suc = app.delHorizonP(10)
     assert suc
-    assert len(app.horizonP) == 122
+    assert len(app.horizonP) == 107
 
 
 def test_delHorizonP2():
     app.genGreaterCircle('max')
     app.horizonP = app.buildP
-    assert len(app.horizonP) == 125
+    assert len(app.horizonP) == 110
 
     suc = app.delHorizonP(-5)
     assert not suc
@@ -1182,7 +1196,7 @@ def test_sort_8():
 
 def test_generateCelestialEquator_1():
     value = app.generateCelestialEquator()
-    assert len(value) == 3000
+    assert len(value) == 3480
 
 
 def test_generateCelestialEquator_2():

@@ -64,8 +64,9 @@ def HaDecToAltAz(ha, dec, lat):
 
 class DataPoint(object):
     """
-    The class Data inherits all information and handling of modeldata data and other
-    attributes. this includes horizon data, model points data and their persistence
+    The class Data inherits all information and handling of modeldata data and
+    other attributes. this includes horizon data, model points data and their
+    persistence
 
         >>> data = DataPoint(
         >>>                  app=None,
@@ -76,17 +77,29 @@ class DataPoint(object):
 
     log = logging.getLogger(__name__)
 
-    # data for generating greater circles, dec and step only for east, west is reversed
-    DEC = {'min': [-15, 0, 15, 30, 45, 60, 75],
-           'norm': [-15, 0, 15, 30, 45, 60, 75],
-           'med': [-15, -5, 5, 15, 25, 40, 55, 70, 85],
-           'max': [-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85],
-           }
-    STEP = {'min': [15, -15, 15, -15, 15, -30, 30],
-            'norm': [10, -10, 10, -10, 10, -20, 20],
-            'med': [10, -10, 10, -10, 10, -10, 10, -30, 30],
-            'max': [10, -10, 10, -10, 10, -10, 10, -10, 10, -30, 30],
-            }
+    DEC_N = {'min': [-15, 0, 15, 30, 45, 60, 75],
+             'norm': [-15, 0, 15, 30, 45, 60, 75],
+             'med': [-15, -5, 5, 15, 25, 40, 55, 70, 85],
+             'max': [-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85],
+             }
+
+    DEC_S = {'min': [-75, -60, -45, -30, -15, 0, 15],
+             'norm': [-75, -60, -45, -30, -15, 0, 15],
+             'med': [-85, -70, -55, -40, -25, -15, -5, 5, 15],
+             'max': [-85, -75, -65, -55, -45, -35, -25, -15, -5, 5, 15],
+             }
+
+    STEP_N = {'min': [15, -15, 15, -15, 15, -30, 30],
+              'norm': [10, -10, 10, -10, 10, -20, 20],
+              'med': [10, -10, 10, -10, 10, -20, 20, -30, 30],
+              'max': [10, -10, 10, -10, 10, -10, 10, -20, 20, -30, 30],
+              }
+
+    STEP_S = {'min': [30, -30, 15, -15, 15, -15, 15],
+              'norm': [20, -20, 10, -10, 10, -10, 10],
+              'med': [30, -30, 20, -20, 10, -10, 10, -10, 10],
+              'max': [30, -30, 20, -20, 10, -10, 10, -10, 10, -10, 10],
+              }
     START = {'min': [-120, -5, -120, -5, -120, -5, -120,
                      5, 120, 5, 120, 5, 120, 5],
              'norm': [-120, -5, -120, -5, -120, -5, -120,
@@ -153,47 +166,38 @@ class DataPoint(object):
 
     def addBuildP(self, value=None, position=None):
         """
-        addBuildP extends the list of modeldata points. the new point could be added at the end
-        of the list (default) or in any location in the list.
+        addBuildP extends the list of modeldata points. the new point could be
+        added at the end of the list (default) or in any location in the list.
 
         :param value: value to be inserted
         :param position: position in list
         :return:
         """
-
         if value is None:
             return False
-
         if not isinstance(value, tuple):
             self.log.info('malformed value: {0}'.format(value))
             return False
-
         if len(value) != 3:
             self.log.info('malformed value: {0}'.format(value))
             return False
-
         if position is None:
             position = len(self._buildP)
-
         if not isinstance(position, (int, float)):
             self.log.info('malformed position: {0}'.format(position))
             return False
-
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
-
         else:
             high = 90
 
         if self.app.mount.setting.horizonLimitLow is not None:
             low = self.app.mount.setting.horizonLimitLow
-
         else:
             low = 0
 
         if value[0] > high:
             return False
-
         if value[0] < low:
             return False
 
@@ -201,76 +205,68 @@ class DataPoint(object):
         position = min(len(self._buildP), position)
         position = max(0, position)
         self._buildP.insert(position, value)
-
         return True
 
     def delBuildP(self, position):
         """
-        delBuildP deletes one point from the modeldata points list at the given index.
+        delBuildP deletes one point from the modeldata points list at the given
+        index.
 
         :param position:
         :return:
         """
-
         if not isinstance(position, (int, float)):
             self.log.info('malformed position: {0}'.format(position))
             return False
 
         position = int(position)
-
         if position < 0 or position > len(self._buildP) - 1:
             self.log.info('invalid position: {0}'.format(position))
             return False
 
         self._buildP.pop(position)
-
         return True
 
     def clearBuildP(self):
+        """
+        :return:
+        """
         self._buildP.clear()
 
     def setStatusBuildP(self, number, status):
         """
-
         :param number:
         :param status:
         :return: True for test purpose
         """
         if number < 0:
             return False
-
         if number > len(self._buildP) - 1:
             return False
 
         alt, az, _ = self._buildP[number]
         self._buildP[number] = (alt, az, status)
-
         return True
 
     def addHorizonP(self, value=None, position=None):
         """
-        addHorizonP extends the list of modeldata points. the new point could be added at the
-        end of the list (default) or in any location in the list.
+        addHorizonP extends the list of modeldata points. the new point could be
+        added at the end of the list (default) or in any location in the list.
 
         :param value:
         :param position:
         :return:
         """
-
         if value is None:
             return False
-
         if not isinstance(value, tuple):
             self.log.info('malformed value: {0}'.format(value))
             return False
-
         if len(value) != 2:
             self.log.info('malformed value: {0}'.format(value))
             return False
-
         if position is None:
             position = len(self.horizonP)
-
         if not isinstance(position, (int, float)):
             self.log.info('malformed position: {0}'.format(position))
             return False
@@ -279,29 +275,26 @@ class DataPoint(object):
         position = min(len(self._horizonP), position)
         position = max(0, position)
         self._horizonP.insert(position, value)
-
         return True
 
     def delHorizonP(self, position):
         """
-        delHorizonP deletes one point from the modeldata points list at the given index.
+        delHorizonP deletes one point from the modeldata points list at the given
+        index.
 
         :param position:
         :return:
         """
-
         if not isinstance(position, (int, float)):
             self.log.info('malformed position: {0}'.format(position))
             return False
 
         position = int(position)
-
         if position < 0 or position > len(self._horizonP):
             self.log.info('invalid position: {0}'.format(position))
             return False
 
         self._horizonP.pop(position)
-
         return True
 
     def clearHorizonP(self):
@@ -318,7 +311,6 @@ class DataPoint(object):
         :param horizonI:
         :return:
         """
-
         pointRef = np.asarray([point[1], point[0]])
         closest_index = distance.cdist([pointRef], horizonI).argmin()
         pointClose = horizonI[closest_index]
@@ -326,46 +318,41 @@ class DataPoint(object):
 
         if val < margin:
             return True
-
         else:
             return False
 
     def isAboveHorizon(self, point):
         """
-        isAboveHorizon calculates for a given point the relationship to the actual horizon
-        and determines if this point is above the horizon line. for that there will be a
-        linear interpolation for the horizon line points.
+        isAboveHorizon calculates for a given point the relationship to the
+        actual horizon and determines if this point is above the horizon line.
+        for that there will be a linear interpolation for the horizon line points.
 
         :param point:
         :return:
         """
         if point[1] > 360:
             point = (point[0], 360)
-
         if point[1] < 0:
             point = (point[0], 0)
 
         x = range(0, 361)
-
         if self.horizonP:
             xRef = [i[1] for i in self.horizonP]
             yRef = [i[0] for i in self.horizonP]
-
         else:
             xRef = [0]
             yRef = [0]
 
         y = np.interp(x, xRef, yRef)
-
         if point[0] > y[int(point[1])]:
             return True
-
         else:
             return False
 
     def isCloseMeridian(self, point):
         """
-        isCloseMeridian check if a point is close to meridian slew / track limits limit
+        isCloseMeridian check if a point is close to meridian slew / track
+        limits limit
 
         :param point:
         :return: status
@@ -377,20 +364,16 @@ class DataPoint(object):
             return False
 
         value = max(slew, track)
-
         lower = 180 - value
         upper = 180 + value
 
         if lower < point[1] < upper:
             return True
-
         else:
             return False
 
     def deleteBelowHorizon(self):
         """
-        deleteBelowHorizon deletes all points which are below horizon line
-
         :return: true for test purpose
         """
         self._buildP = [x for x in self._buildP if self.isAboveHorizon(x)]
@@ -398,9 +381,6 @@ class DataPoint(object):
 
     def deleteCloseMeridian(self):
         """
-        deleteCloseMeridian deletes all points which are too close to the meridian and
-        therefore need to flip all the time
-
         :return: true for test purpose
         """
         self._buildP = [x for x in self._buildP if not self.isCloseMeridian(x)]
@@ -430,10 +410,8 @@ class DataPoint(object):
         :param pierside:  start pierside sorting with this position
         :return: true for test purpose
         """
-
         if eastwest and highlow:
             return False
-
         if not eastwest and not highlow and pierside is None:
             return False
 
@@ -443,14 +421,11 @@ class DataPoint(object):
         if eastwest:
             east = sorted(east, key=lambda x: -x[1])
             west = sorted(west, key=lambda x: -x[1])
-
         if highlow:
             east = sorted(east, key=lambda x: -x[0])
             west = sorted(west, key=lambda x: -x[0])
-
         if pierside == 'E':
             self._buildP = west + east
-
         else:
             self._buildP = east + west
 
@@ -458,7 +433,6 @@ class DataPoint(object):
 
     def loadJSON(self, fileName, ext):
         """
-
         :param fileName: name of file to be handled
         :param ext: extension of file to be handled
         :return: value: loaded data
@@ -483,7 +457,6 @@ class DataPoint(object):
 
     def loadCSV(self, fileName, ext, delimiter=','):
         """
-
         :param fileName: name of file to be handled
         :param ext: extension of file to be handled
         :param delimiter: delimiter of file to be handled
@@ -526,26 +499,22 @@ class DataPoint(object):
 
     def loadBuildP(self, fileName=None, ext='.bpts', keep=False):
         """
-        loadBuildP loads a modeldata pints file and stores the data in the buildP list.
-        necessary conversion are made.
+        loadBuildP loads a modeldata pints file and stores the data in the
+        buildP list. necessary conversion are made.
 
         :param fileName: name of file to be handled
         :param ext: load extension type
         :param keep:
         :return: success
         """
-
         if fileName is None:
             return False
 
         value = None
-
         if ext == '.csv':
             value = self.loadCSV(fileName, ext)
-
         elif ext == '.bpts':
             value = self.loadJSON(fileName, ext)
-
         elif ext == '.txt':
             value = self.loadCSV(fileName, ext, delimiter=':')
 
@@ -553,7 +522,6 @@ class DataPoint(object):
             return False
 
         suc = self.checkFormat(value)
-
         if not suc:
             self.clearBuildP()
             return False
@@ -562,7 +530,6 @@ class DataPoint(object):
 
         if keep:
             self._buildP += points
-
         else:
             self._buildP = points
 
@@ -574,19 +541,17 @@ class DataPoint(object):
 
     def saveBuildP(self, fileName=None):
         """
-        saveBuildP saves the actual modeldata points list in a file in json dump format
+        saveBuildP saves the actual modeldata points list in a file in json
+        dump format
 
         :param fileName: name of file to be handled
         :return: success
         """
-
         if fileName is None:
             return False
 
         fileName = self.configDir + '/' + fileName + '.bpts'
-
         points = [(x[0], x[1]) for x in self.buildP]
-
         with open(fileName, 'w') as handle:
             json.dump(points,
                       handle,
@@ -595,29 +560,25 @@ class DataPoint(object):
 
     def loadHorizonP(self, fileName=None, ext='.hpts'):
         """
-        loadHorizonP loads a modeldata pints file and stores the data in the buildP list.
-        necessary conversion are made.
+        loadHorizonP loads a modeldata pints file and stores the data in the
+        buildP list. necessary conversion are made.
 
         :param fileName: name of file to be handled
         :param ext: load extension type
         :return: success
         """
-
         if fileName is None:
             return False
 
         value = None
         if ext == '.csv':
             value = self.loadCSV(fileName, ext)
-
         elif ext == '.hpts':
             value = self.loadJSON(fileName, ext)
-
         elif ext == '.txt':
             value = self.loadCSV(fileName, ext, delimiter=':')
 
         suc = self.checkFormat(value)
-
         if not suc:
             self.clearHorizonP()
             return False
@@ -632,12 +593,12 @@ class DataPoint(object):
 
     def saveHorizonP(self, fileName=None):
         """
-        saveHorizonP saves the actual modeldata points list in a file in json dump format
+        saveHorizonP saves the actual modeldata points list in a file in json
+        dump format
 
         :param fileName: name of file to be handled
         :return: success
         """
-
         if fileName is None:
             return False
 
@@ -650,25 +611,33 @@ class DataPoint(object):
 
         return True
 
-    def genHaDecParams(self, selection):
+    def genHaDecParams(self, selection, lat):
         """
-        genHaDecParams selects the parameters for generating the boundaries for next
-        step processing greater circles. the parameters are sorted for different targets
-        actually for minimum slew distance between the points. defined is only the east
-        side of data, the west side will be mirrored to the east one.
+        genHaDecParams selects the parameters for generating the boundaries for
+        next step processing greater circles. the parameters are sorted for
+        different targets actually for minimum slew distance between the points.
+        defined is only the east side of data, the west side will be mirrored to
+        the east one.
 
         :param selection: type of model we would like to use
+        :param lat: choose hemisphere southern
         :return: yield tuple of dec value and step, start and stop for range
         """
+        if lat < 0:
+            DEC = self.DEC_S
+            STEP = self.STEP_S
+        else:
+            DEC = self.DEC_N
+            STEP = self.STEP_N
 
-        if selection not in self.DEC or selection not in self.STEP:
+        if selection not in DEC or selection not in STEP:
             return
 
-        eastDec = self.DEC[selection]
+        eastDec = DEC[selection]
         westDec = list(reversed(eastDec))
         decL = eastDec + westDec
 
-        eastStepL = self.STEP[selection]
+        eastStepL = STEP[selection]
         westStepL = list(reversed(eastStepL))
         stepL = eastStepL + westStepL
         startL = self.START[selection]
@@ -687,15 +656,14 @@ class DataPoint(object):
         :param keep:
         :return: yields alt, az tuples which are above horizon
         """
-
         if not self.app.mount.obsSite.location:
             return False
-
         if not keep:
             self.clearBuildP()
 
         lat = self.app.mount.obsSite.location.latitude.degrees
-        for dec, step, start, stop in self.genHaDecParams(selection):
+        isSouth = lat < 0
+        for dec, step, start, stop in self.genHaDecParams(selection, lat):
             for ha in range(start, stop, step):
                 alt, az = HaDecToAltAz(ha / 10, dec, lat)
                 # only values with above horizon = 0
@@ -709,8 +677,8 @@ class DataPoint(object):
     @staticmethod
     def genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
         """
-        genGridGenerator generates the point values out of the given ranges of altitude
-        and azimuth
+        genGridGenerator generates the point values out of the given ranges of
+        altitude and azimuth
 
         :param eastAlt:
         :param westAlt:
@@ -719,7 +687,6 @@ class DataPoint(object):
         :param maxAz:
         :return:
         """
-
         for i, alt in enumerate(eastAlt):
             if i % 2:
                 for az in range(minAz, 180, stepAz):
@@ -738,13 +705,13 @@ class DataPoint(object):
 
     def genGrid(self, minAlt=5, maxAlt=85, numbRows=5, numbCols=6, keep=False):
         """
-        genGrid generates a grid of points and transforms ha, dec to alt az. with given
-        limits in alt, the min and max will be used as a hard condition. on az there is
-        not given limit, therefore a split over the whole space (omitting the meridian)
-        is done. the simplest way to avoid hitting the meridian is to enforce the number
-        of cols to be a factor of 2. reasonable values for the grid are 5 to 85 degrees.
-        defined is only the east side of data, the west side will be mirrored to the
-        east one.
+        genGrid generates a grid of points and transforms ha, dec to alt az.
+        with given limits in alt, the min and max will be used as a hard
+        condition. on az there is not given limit, therefore a split over the
+        whole space (omitting the meridian) is done. the simplest way to avoid
+        hitting the meridian is to enforce the number of cols to be a factor of
+        2. reasonable values for the grid are 5 to 85 degrees. defined is only
+        the east side of data, the west side will be mirrored to the east one.
             the number of rows is 2 < x < 8
             the number of columns is 2 < x < 15
 
@@ -755,22 +722,16 @@ class DataPoint(object):
         :param keep:
         :return: yields alt, az tuples which are above horizon
         """
-
         if not 5 <= minAlt <= 85:
             return False
-
         if not 5 <= maxAlt <= 85:
             return False
-
         if not maxAlt > minAlt:
             return False
-
         if not 1 < numbRows < 9:
             return False
-
         if not 1 < numbCols < 16:
             return False
-
         if numbCols % 2:
             return False
 
@@ -797,9 +758,9 @@ class DataPoint(object):
 
     def genAlign(self, altBase=30, azBase=10, numberBase=3, keep=False):
         """
-        genAlign generates a number of initial points for the first step of modeling. it
-        adjusts the first align point in a matter, that the starting point is the closest
-        to az = 0.
+        genAlign generates a number of initial points for the first step of
+        modeling. it adjusts the first align point in a matter, that the starting
+        point is the closest to az = 0.
 
         :param altBase:
         :param azBase:
@@ -807,13 +768,10 @@ class DataPoint(object):
         :param keep:
         :return: yields alt, az tuples which are above horizon
         """
-
         if not 5 <= altBase <= 85:
             return False
-
         if not 2 < numberBase < 11:
             return False
-
         if not 0 <= azBase < 360:
             return False
 
@@ -833,20 +791,18 @@ class DataPoint(object):
 
     def generateCelestialEquator(self):
         """
-        generateCelestialEquator calculates a line for greater circles like a celestial
-        equator for showing the paths in the hemisphere window.
+        generateCelestialEquator calculates a line for greater circles like a
+        celestial equator for showing the paths in the hemisphere window.
 
         :return: celestial equator
         """
-
         celestialEquator = list()
-
         if not self.app.mount.obsSite.location:
             return celestialEquator
 
         lat = self.app.mount.obsSite.location.latitude.degrees
 
-        for dec in range(-15, 90, 15):
+        for dec in range(-75, 90, 15):
             for ha in range(- 119, 120, 2):
                 az, alt = HaDecToAltAz(ha / 10, dec, lat)
                 if alt > 0:
@@ -863,10 +819,10 @@ class DataPoint(object):
     def generateDSOPath(self, ra=0, dec=0, timeJD=0, location=None,
                         numberPoints=0, duration=0, timeShift=0, keep=False):
         """
-        generateDSOPath calculates a list of model points along the desired path beginning
-        at ra, dec coordinates, which is in time duration hours long and consists of
-        numberPoints model points. TimeShift moves the pearl of points to an earlier or
-        later point in time.
+        generateDSOPath calculates a list of model points along the desired path
+        beginning at ra, dec coordinates, which is in time duration hours long
+        and consists of numberPoints model points. TimeShift moves the pearl of
+        points to an earlier or later point in time.
 
         :param ra:
         :param dec:
@@ -878,18 +834,14 @@ class DataPoint(object):
         :param keep:
         :return: True for test purpose
         """
-
         if numberPoints < 1:
             return False
-
         if duration == 0:
             return False
-
         if location is None:
             return False
 
         numberPoints = int(numberPoints)
-
         if not keep:
             self.clearBuildP()
 
@@ -904,19 +856,18 @@ class DataPoint(object):
 
     def generateGoldenSpiral(self, numberPoints, keep=False):
         """
-        based on the evaluations and implementation of CR Drost from 17-05-24 found at:
+        based on the evaluations and implementation of CR Drost from 17-05-24
+        found at:
         https://stackoverflow.com/questions/9600801/evenly-distributing-n-points-on-a-sphere
-        the implementation of an equally distributed points cloud over on half of the
-        hemisphere.
+        the implementation of an equally distributed points cloud over on half
+        of the hemisphere.
 
         :param numberPoints:
         :param keep:
         :return: true for test purpose
         """
-
         if numberPoints < 50:
             return False
-
         if not keep:
             self.clearBuildP()
 

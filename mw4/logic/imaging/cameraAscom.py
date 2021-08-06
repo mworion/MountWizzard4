@@ -172,11 +172,9 @@ class CameraAscom(AscomClass):
                 break
 
         self.signals.integrated.emit()
-
-        if not self.abortExpose:
-            self.signals.message.emit('download')
-            with safearray_as_ndarray:
-                data = self.client.imagearray
+        self.signals.message.emit('download')
+        with safearray_as_ndarray:
+            data = self.client.ImageArray
 
         if not self.abortExpose:
             self.signals.message.emit('saving')

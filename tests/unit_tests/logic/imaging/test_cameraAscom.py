@@ -24,6 +24,7 @@ import platform
 from astropy.io import fits
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from skyfield.api import Angle
+import ctypes
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
@@ -64,8 +65,10 @@ def module_setup_teardown():
         DriverVersion = '1'
         DriverInfo = 'test1'
         ImageReady = True
-        ImageArray = [1, 1, 1]
-
+        image = [1, 1, 1]
+        ImageArray = (ctypes.c_int * len(image))(*image)
+        # see
+        # https://stackoverflow.com/questions/4145775/how-do-i-convert-a-python-list-into-a-c-array-by-using-ctypes
         @staticmethod
         def StartExposure(time, light=True):
             return True
@@ -89,9 +92,7 @@ def module_setup_teardown():
 
     global app
     app = CameraAscom(app=Test(), signals=CameraSignals(), data={})
-
     app.client = Test1()
-
     yield
 
 

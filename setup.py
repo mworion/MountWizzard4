@@ -103,7 +103,7 @@ setup(
         'wakeonlan==2.0.1',
         'pybase64==1.1.4',
     ]
-    + (['comtypes==1.1.10'] if "Windows" == platform.system() else [])
+    + (['comtypes>=1.1.7'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
     + (['PyQt5==5.15.4'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.4'] if platform.machine() not in ['armv7l',

@@ -35,7 +35,7 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 if not platform.system() == 'Windows':
-    pytest.skip("skipping windows-only tests", allow_module_level=True)
+    pytest.skip("skipping windows-only tests")
 
 
 @pytest.fixture(autouse=True, scope='function')

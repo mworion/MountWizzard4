@@ -19,7 +19,8 @@ import logging
 import platform
 
 if platform.system() == 'Windows':
-    from win32com import client
+    # from win32com import client
+    from comtypes.client import CreateObject
     import pythoncom
 
 # external packages
@@ -323,7 +324,8 @@ class AscomClass(object):
 
         pythoncom.CoInitialize()
         try:
-            self.client = client.dynamic.Dispatch(self.deviceName)
+            # self.client = client.dynamic.Dispatch(self.deviceName)
+            self.client = CreateObject(self.deviceName)
 
         except Exception as e:
             self.log.error(f'Dispatch for [{self.deviceName}] error: {e}')

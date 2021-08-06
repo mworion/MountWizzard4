@@ -25,6 +25,9 @@ from astropy.io import fits
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from skyfield.api import Angle
 
+if not platform.system() == 'Windows':
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
+
 # local import
 from mountcontrol.mount import Mount
 from logic.environment.skymeter import Skymeter
@@ -33,9 +36,6 @@ from logic.imaging.camera import CameraSignals
 from base.ascomClass import AscomClass
 from base.loggerMW import setupLogging
 setupLogging()
-
-if not platform.system() == 'Windows':
-    pytest.skip("skipping windows-only tests")
 
 
 @pytest.fixture(autouse=True, scope='function')

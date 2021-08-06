@@ -70,8 +70,8 @@ class AscomClass(object):
         self.ascomSignals = AscomSignals()
 
         self.client = None
+        self.clientProps = None
         self.data = data
-        self.propertyExceptions = []
         self.deviceName = ''
         self.defaultConfig = {
             'ascom': {
@@ -176,14 +176,13 @@ class AscomClass(object):
         :return: value
         """
         value = None
-        if valueProp in self.propertyExceptions:
+        if valueProp not in self.clientProps:
             return value
 
         try:
             value = eval('self.client.' + valueProp)
         except Exception as e:
             self.log.debug(f'Property [{valueProp}] is not implemented: {e}')
-            self.propertyExceptions.append(valueProp)
         else:
             self.log.trace(f'Property [{valueProp}] has value: [{value}]')
         finally:
@@ -194,14 +193,13 @@ class AscomClass(object):
         :param valueProp:
         :param value:
         """
-        if valueProp in self.propertyExceptions:
+        if valueProp not in self.clientProps:
             return False
 
         try:
             exec('self.client.' + valueProp + ' = value')
         except Exception as e:
             self.log.debug(f'Property [{valueProp}] is not implemented: {e}')
-            self.propertyExceptions.append(valueProp)
             return False
         else:
             self.log.trace(f'Property [{valueProp}] is set to [{value}]')
@@ -326,6 +324,9 @@ class AscomClass(object):
         try:
             # self.client = client.dynamic.Dispatch(self.deviceName)
             self.client = CreateObject(self.deviceName)
+            props = self.client._disp_methods_
+            self.clientProps = [x[1] for x in props if x[2][-1] != 'propput']
+            self.log.debug(f'Implemented: {self.clientProps}')
 
         except Exception as e:
             self.log.error(f'Dispatch for [{self.deviceName}] error: {e}')
@@ -354,6 +355,7 @@ class AscomClass(object):
         self.deviceConnected = False
         self.serverConnected = False
         self.client = None
+        self.clientProps = None
         pythoncom.CoUninitialize()
         self.ascomSignals.deviceDisconnected.emit(f'{self.deviceName}')
         self.ascomSignals.serverDisconnected.emit({f'{self.deviceName}': 0})

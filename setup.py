@@ -85,12 +85,12 @@ setup(
     ],
     python_requires='>=3.7.0, <3.10',
     install_requires=[
-        'numpy==1.20.3',
+        'numpy==1.21.1',
         'pillow==8.3.1',
         'matplotlib==3.4.2',
         'pyerfa==2.0.0',
         'astropy==4.2.1',
-        'scipy==1.7.0',
+        'scipy==1.7.1',
         'sep==1.2.0',
         'requests==2.26.0',
         'requests_toolbelt==0.9.1',
@@ -103,7 +103,7 @@ setup(
         'wakeonlan==2.0.1',
         'pybase64==1.1.4',
     ]
-    + (['pywin32==301'] if "Windows" == platform.system() else [])
+    + (['comtypes==1.1.10'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])
     + (['PyQt5==5.15.4'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.4'] if platform.machine() not in ['armv7l',

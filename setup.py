@@ -42,6 +42,7 @@ releaseNotes = """
 - add more functions are available without mount connected
 - add change mouse pointer in hemisphere
 - add offset and gain setting to imaging
+- add improved performance ASCOM large image sensors for download
 - update debug standard moved from WARN to INFO
 - update underlying libraries
 - fix for INDI cameras sending two times busy and exposure=0
@@ -55,7 +56,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b34',
+    version='2.0.0b35',
     packages=[
         'mw4',
         'mw4.base',

@@ -94,7 +94,6 @@ class AscomClass(object):
         """
         :return:
         """
-        self.propertyExceptions = []
         self.client.connected = True
         return True
 
@@ -322,7 +321,6 @@ class AscomClass(object):
 
         pythoncom.CoInitialize()
         try:
-            # self.client = client.dynamic.Dispatch(self.deviceName)
             self.client = CreateObject(self.deviceName)
             props = self.client._disp_methods_
             self.clientProps = [x[1] for x in props if x[2][-1] != 'propput']

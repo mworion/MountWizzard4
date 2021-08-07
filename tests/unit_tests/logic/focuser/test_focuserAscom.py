@@ -54,6 +54,7 @@ def module_setup_teardown():
 
     global app
     app = FocuserAscom(app=Test(), signals=FocuserSignals(), data={})
+    app.clientProps = []
     app.client = Test1()
 
     yield

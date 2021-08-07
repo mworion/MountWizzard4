@@ -49,6 +49,7 @@ def module_setup_teardown():
 
     app = SensorWeatherAscom(app=Test(), signals=SensorWeatherSignals(), data={})
     app.client = Test1()
+    app.clientProps = []
     yield
 
 

@@ -47,8 +47,8 @@ def module_setup_teardown():
 
     global app
     app = FilterAscom(app=Test(), signals=FilterSignals(), data={})
+    app.clientProps = []
     app.client = Test1()
-
     yield
 
 

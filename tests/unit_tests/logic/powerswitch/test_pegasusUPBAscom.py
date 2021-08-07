@@ -52,6 +52,7 @@ def module_setup_teardown():
     global app
 
     app = PegasusUPBAscom(app=Test(), signals=PegasusUPBSignals(), data={})
+    app.clientProps = []
     app.client = Test1()
     yield
 

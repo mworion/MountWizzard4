@@ -49,6 +49,7 @@ def module_setup_teardown():
 
     app = WeatherUPBAscom(app=Test(), signals=WeatherUPBSignals(), data={})
     app.client = Test1()
+    app.clientProps = []
     yield
 
 

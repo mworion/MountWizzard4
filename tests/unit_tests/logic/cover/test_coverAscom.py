@@ -72,6 +72,7 @@ def module_setup_teardown():
                            'start'):
         app = CoverAscom(app=Test(), signals=CoverSignals(), data={})
         app.client = Test1()
+        app.clientProps = []
         yield
 
 

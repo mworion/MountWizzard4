@@ -93,6 +93,7 @@ def module_setup_teardown():
     global app
     app = CameraAscom(app=Test(), signals=CameraSignals(), data={})
     app.client = Test1()
+    app.clientProps = []
     yield
 
 
@@ -173,46 +174,68 @@ def test_workerExpose_0():
 
 
 def test_workerExpose_1():
+    def mockGetAscomProperty(a):
+        return False
+
     app.deviceConnected = True
     app.data['CAN_FAST'] = False
     app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
     app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
     app.imagePath = ''
-
+    app.app.deviceStat['mount'] = True
+    app.abortExpose = True
+    tmp = app.getAscomProperty
+    app.getAscomProperty = mockGetAscomProperty
     with mock.patch.object(fits.PrimaryHDU,
                            'writeto'):
-        suc = app.workerExpose()
+        with mock.patch.object(app.client,
+                               'StartExposure'):
+            suc = app.workerExpose()
         assert suc
+    app.getAscomProperty = tmp
 
 
 def test_workerExpose_2():
+    def mockGetAscomProperty(a):
+        return False
+
     app.deviceConnected = True
     app.data['CAN_FAST'] = False
     app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
     app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
     app.imagePath = ''
+    app.app.deviceStat['mount'] = True
     app.abortExpose = True
-    app.client.ImageReady = False
-
+    tmp = app.getAscomProperty
+    app.getAscomProperty = mockGetAscomProperty
     with mock.patch.object(fits.PrimaryHDU,
                            'writeto'):
-        suc = app.workerExpose(expTime=0.3)
+        with mock.patch.object(app.client,
+                               'StartExposure'):
+            suc = app.workerExpose(expTime=0)
         assert suc
+    app.getAscomProperty = tmp
 
 
 def test_workerExpose_3():
+    def mockGetAscomProperty(a):
+        return True
+
     app.deviceConnected = True
     app.data['CAN_FAST'] = False
     app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
     app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
     app.imagePath = ''
-    app.abortExpose = True
-    app.client.ImageReady = False
-
+    app.app.deviceStat['mount'] = True
+    tmp = app.getAscomProperty
+    app.getAscomProperty = mockGetAscomProperty
     with mock.patch.object(fits.PrimaryHDU,
                            'writeto'):
-        suc = app.workerExpose(expTime=0.05)
+        with mock.patch.object(app.client,
+                               'StartExposure'):
+            suc = app.workerExpose(expTime=0)
         assert suc
+    app.getAscomProperty = tmp
 
 
 def test_expose_1():
@@ -223,18 +246,10 @@ def test_expose_1():
 
 def test_expose_2():
     app.deviceConnected = True
-    suc = app.expose()
-    assert suc
-
-
-def test_expose_3():
-    app.deviceConnected = True
-    app.data['CCD_BINNING.HOR_BIN_MAX'] = 3
-    app.data['CCD_BINNING.VERT_BIN_MAX'] = 3
-
-    suc = app.expose(expTime=1,
-                     binning=4)
-    assert suc
+    with mock.patch.object(app.threadPool,
+                           'start'):
+        suc = app.expose()
+        assert suc
 
 
 def test_abort_1():

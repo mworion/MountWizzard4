@@ -47,6 +47,7 @@ def module_setup_teardown():
 
     app = SkymeterAscom(app=Test(), signals=SkymeterSignals(), data={})
     app.client = Test1()
+    app.clientProps = []
     yield
 
 

@@ -54,6 +54,7 @@ def module_setup_teardown():
                            'start'):
         app = TelescopeAscom(app=Test(), signals=TelescopeSignals(), data={})
         app.client = Test1()
+        app.clientProps = []
         yield
 
 

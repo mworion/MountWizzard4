@@ -66,6 +66,7 @@ def module_setup_teardown():
                            'start'):
         app = DomeAscom(app=Test(), signals=DomeSignals(), data={})
         app.client = Test1()
+        app.clientProps = []
         yield
 
 

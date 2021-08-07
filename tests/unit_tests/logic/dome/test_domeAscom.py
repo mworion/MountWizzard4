@@ -96,6 +96,7 @@ def test_workerPollData_3():
         CanSetAzimuth = True
         CanSetShutter = True
 
+    app.clientProps = ['ShutterStatus']
     app.deviceConnected = True
     app.client = Test()
     suc = app.workerPollData()
@@ -111,6 +112,7 @@ def test_workerPollData_4():
         CanSetAzimuth = True
         CanSetShutter = True
 
+    app.clientProps = ['ShutterStatus']
     app.deviceConnected = True
     app.client = Test()
     suc = app.workerPollData()

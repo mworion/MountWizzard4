@@ -18,6 +18,7 @@
 # standard libraries
 import pytest
 import platform
+import unittest.mock as mock
 
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
@@ -64,20 +65,26 @@ def test_getInitialConfig_1():
 
 def test_workerPollData_1():
     app.deviceConnected = False
-    app.client.maxswitch = 15
-    suc = app.workerPollData()
-    assert not suc
+    with mock.patch.object(app,
+                           'getAscomProperty',
+                           return_value=15):
+        suc = app.workerPollData()
+        assert not suc
 
 
 def test_workerPollData_2():
     app.deviceConnected = True
-    app.client.maxswitch = 15
-    suc = app.workerPollData()
-    assert suc
+    with mock.patch.object(app,
+                           'getAscomProperty',
+                           return_value=15):
+        suc = app.workerPollData()
+        assert suc
 
 
 def test_workerPollData_3():
     app.deviceConnected = True
-    app.client.maxswitch = 21
-    suc = app.workerPollData()
-    assert suc
+    with mock.patch.object(app,
+                           'getAscomProperty',
+                           return_value=21):
+        suc = app.workerPollData()
+        assert suc

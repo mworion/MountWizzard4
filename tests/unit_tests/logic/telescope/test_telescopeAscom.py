@@ -78,6 +78,7 @@ def test_getInitialConfig_1():
 
 def test_getInitialConfig_2():
     app.deviceConnected = True
+    app.clientProps = ['ApertureDiameter', 'FocalLength']
     with mock.patch.object(AscomClass,
                            'getInitialConfig',
                            return_value=True):
@@ -89,6 +90,7 @@ def test_getInitialConfig_2():
 
 def test_getInitialConfig_3():
     app.deviceConnected = True
+    app.clientProps = ['ApertureDiameter', 'FocalLength']
     app.client.ApertureDiameter = 0.100
     app.client.FocalLength = 0.570
     with mock.patch.object(AscomClass,

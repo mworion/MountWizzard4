@@ -54,8 +54,6 @@ class FilterAscom(AscomClass):
             return False
 
         for i, name in enumerate(names):
-            if name is None:
-                continue
             self.storeAscomProperty(name, f'FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}')
         return True
 

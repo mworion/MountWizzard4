@@ -66,32 +66,25 @@ def test_getInitialConfig_1():
     with mock.patch.object(AscomClass,
                            'getInitialConfig',
                            return_value=True):
-        suc = app.getInitialConfig()
-        assert suc
+        with mock.patch.object(app,
+                               'getAscomProperty',
+                               return_value=None):
+            suc = app.getInitialConfig()
+            assert not suc
 
 
 def test_getInitialConfig_2():
     app.deviceConnected = True
-    app.client.Names = None
-    suc = app.getInitialConfig()
-    assert not suc
-
-
-def test_getInitialConfig_3():
-    app.deviceConnected = True
-    app.client.Names = ['test', 'test1']
-    suc = app.getInitialConfig()
-    assert suc
-    assert app.data['FILTER_NAME.FILTER_SLOT_NAME_0'] == 'test'
-    assert app.data['FILTER_NAME.FILTER_SLOT_NAME_1'] == 'test1'
-
-
-def test_getInitialConfig_4():
-    app.deviceConnected = True
-    app.client.Names = ['test', None]
-    suc = app.getInitialConfig()
-    assert suc
-    assert app.data['FILTER_NAME.FILTER_SLOT_NAME_0'] == 'test'
+    with mock.patch.object(AscomClass,
+                           'getInitialConfig',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'getAscomProperty',
+                               return_value=['test']):
+            with mock.patch.object(app,
+                                   'storeAscomProperty'):
+                suc = app.getInitialConfig()
+                assert suc
 
 
 def test_workerPollData_0():
@@ -111,16 +104,31 @@ def test_workerPollData_1():
 def test_workerPollData_2():
     app.deviceConnected = True
     app.client.Position = 1
-    suc = app.workerPollData()
-    assert suc
-    assert app.data['FILTER_SLOT.FILTER_SLOT_VALUE'] == 1
+    with mock.patch.object(app,
+                           'getAscomProperty',
+                           return_value=-1):
+        suc = app.workerPollData()
+        assert not suc
+
+
+def test_workerPollData_3():
+    app.deviceConnected = True
+    app.client.Position = 1
+    with mock.patch.object(app,
+                           'getAscomProperty',
+                           return_value=1):
+        with mock.patch.object(app,
+                               'storeAscomProperty'):
+            suc = app.workerPollData()
+            assert suc
 
 
 def test_sendFilterNumber_1():
     app.deviceConnected = True
-    suc = app.sendFilterNumber(3)
-    assert suc
-    assert app.client.Position == 3
+    with mock.patch.object(app,
+                           'setAscomProperty'):
+        suc = app.sendFilterNumber(3)
+        assert suc
 
 
 def test_sendFilterNumber_2():

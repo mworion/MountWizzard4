@@ -89,22 +89,13 @@ def test_workerPollData_1():
 
 def test_workerPollData_2():
     app.deviceConnected = True
-    suc = app.workerPollData()
-    assert suc
-
-
-def test_workerPollData_3():
-    app.deviceConnected = True
-    app.client.coverstate = 1
-    suc = app.workerPollData()
-    assert suc
-
-
-def test_workerPollData_4():
-    app.deviceConnected = True
-    app.client.coverstate = 0
-    suc = app.workerPollData()
-    assert suc
+    with mock.patch.object(app,
+                           'getAscomProperty',
+                           return_value=1):
+        with mock.patch.object(app,
+                               'storeAscomProperty'):
+            suc = app.workerPollData()
+            assert suc
 
 
 def test_closeCover_1():

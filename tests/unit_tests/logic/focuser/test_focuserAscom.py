@@ -77,9 +77,10 @@ def test_getInitialConfig_2():
 
 def test_workerPollData_1():
     app.deviceConnected = True
-    suc = app.workerPollData()
-    assert suc
-    assert app.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] == 1
+    with mock.patch.object(app,
+                           'getAndStoreAscomProperty'):
+        suc = app.workerPollData()
+        assert suc
 
 
 def test_workerPollData_2():

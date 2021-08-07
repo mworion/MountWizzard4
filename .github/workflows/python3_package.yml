@@ -49,7 +49,6 @@ jobs:
         python -m PyQt5.uic.pyuic mw4/gui/widgets/message.ui -o mw4/gui/widgets/message_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/satellite.ui -o mw4/gui/widgets/satellite_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/analyse.ui -o mw4/gui/widgets/analyse_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/mount3D.ui -o mw4/gui/widgets/mount3D_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/simulator.ui -o mw4/gui/widgets/simulator_ui.py
         python -m PyQt5.pyrcc_main mw4/resource/resources.qrc -o mw4/resource/resources.py
 

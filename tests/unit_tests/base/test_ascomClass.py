@@ -28,11 +28,14 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
 if platform.system() == 'Windows':
-    import win32com.client
+    import comtypes
     import pythoncom
 
 # local import
 from base.ascomClass import AscomClass
+from base.loggerMW import setupLogging
+
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -135,13 +138,12 @@ def test_getAscomProperty_1():
 
 
 def test_getAscomProperty_2():
-    app.clientProps = ['Test']
+    app.clientProps = ['Connect']
     with mock.patch.object(builtins,
                            'eval',
                            side_effect=Exception):
         val = app.getAscomProperty('Connect')
         assert val is None
-        assert 'Connect' in app.clientProps
 
 
 def test_getAscomProperty_3():
@@ -161,13 +163,12 @@ def test_setAscomProperty_1():
 
 
 def test_setAscomProperty_2():
-    app.clientProps = ['Close']
+    app.clientProps = ['Connect']
     with mock.patch.object(builtins,
                            'exec',
                            side_effect=Exception):
         suc = app.setAscomProperty('Connect', True)
         assert not suc
-        assert 'Connect' in app.clientProps
 
 
 def test_setAscomProperty_3():
@@ -175,7 +176,7 @@ def test_setAscomProperty_3():
         Connect = False
 
     app.client = Client()
-    app.clientProps = ['Close']
+    app.clientProps = ['Connect']
     suc = app.setAscomProperty('Connect', True)
     assert suc
     assert app.client
@@ -210,10 +211,12 @@ def test_storeAscomProperty_3():
 
 
 def test_getAndStoreAscomProperty():
-    app.data = {'YES': 0,
-                'NO': 0}
-    suc = app.getAndStoreAscomProperty(10, 'YES', 'NO')
-    assert suc
+    with mock.patch.object(app,
+                           'getAscomProperty'):
+        with mock.patch.object(app,
+                               'storeAscomProperty'):
+            suc = app.getAndStoreAscomProperty(10, 'YES', 'NO')
+            assert suc
 
 
 def test_pollStatus_1():
@@ -333,8 +336,8 @@ def test_startCommunication_1():
                            'startTimer'):
         with mock.patch.object(pythoncom,
                                'CoInitialize'):
-            with mock.patch.object(win32com.client.dynamic,
-                                   'Dispatch'):
+            with mock.patch.object(comtypes.client,
+                                   'CreateObject'):
                 suc = app.startCommunication()
                 assert suc
 
@@ -348,8 +351,8 @@ def test_startCommunication_2():
                            'startTimer'):
         with mock.patch.object(pythoncom,
                                'CoInitialize'):
-            with mock.patch.object(win32com.client.dynamic,
-                                   'Dispatch',
+            with mock.patch.object(comtypes.client,
+                                   'CreateObject',
                                    side_effect=Exception()):
                 suc = app.startCommunication()
                 assert not suc
@@ -394,7 +397,7 @@ def test_stopCommunication_2():
         with mock.patch.object(app,
                                'stopTimer'):
             with mock.patch.object(pythoncom,
-                               'CoUninitialize'):
+                                   'CoUninitialize'):
                 suc = app.stopCommunication()
                 assert suc
                 assert not app.serverConnected

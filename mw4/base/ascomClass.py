@@ -19,8 +19,7 @@ import logging
 import platform
 
 if platform.system() == 'Windows':
-    # from win32com import client
-    from comtypes.client import CreateObject
+    from comtypes import client
     import pythoncom
 
 # external packages
@@ -321,7 +320,7 @@ class AscomClass(object):
 
         pythoncom.CoInitialize()
         try:
-            self.client = CreateObject(self.deviceName)
+            self.client = client.CreateObject(self.deviceName)
             props = self.client._disp_methods_
             self.clientProps = [x[1] for x in props if x[2][-1] != 'propput']
             self.log.debug(f'Implemented: {self.clientProps}')

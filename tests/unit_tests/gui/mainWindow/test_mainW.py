@@ -46,9 +46,9 @@ from logic.environment.skymeter import Skymeter
 from logic.powerswitch.kmRelay import KMRelay
 from logic.powerswitch.pegasusUPB import PegasusUPB
 from logic.dome.dome import Dome
-from logic.imaging.camera import Camera
-from logic.imaging.filter import Filter
-from logic.imaging.focuser import Focuser
+from logic.camera.camera import Camera
+from logic.filter.filter import Filter
+from logic.focuser.focuser import Focuser
 from logic.cover.cover import Cover
 from logic.modeldata.buildpoints import DataPoint
 from logic.remote.remote import Remote

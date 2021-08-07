@@ -37,9 +37,9 @@ from logic.powerswitch.kmRelay import KMRelay
 from logic.modeldata.buildpoints import DataPoint
 from logic.modeldata.hipparcos import Hipparcos
 from logic.dome.dome import Dome
-from logic.imaging.camera import Camera
-from logic.imaging.filter import Filter
-from logic.imaging.focuser import Focuser
+from logic.camera.camera import Camera
+from logic.filter.filter import Filter
+from logic.focuser.focuser import Focuser
 from logic.environment.sensorWeather import SensorWeather
 from logic.environment.skymeter import Skymeter
 from logic.environment.onlineWeather import OnlineWeather

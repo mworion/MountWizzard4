@@ -37,9 +37,9 @@ from logic.environment.directWeather import DirectWeather
 from logic.environment.weatherUPB import WeatherUPB
 from logic.environment.skymeter import Skymeter
 from logic.cover.cover import Cover
-from logic.imaging.filter import Filter
-from logic.imaging.camera import Camera
-from logic.imaging.focuser import Focuser
+from logic.filter.filter import Filter
+from logic.camera.camera import Camera
+from logic.focuser.focuser import Focuser
 from logic.dome.dome import Dome
 from logic.powerswitch.pegasusUPB import PegasusUPB
 from logic.telescope.telescope import Telescope

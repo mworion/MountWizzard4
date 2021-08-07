@@ -40,7 +40,7 @@ from mountcontrol.modelStar import ModelStar
 from gui.mainWmixin.tabModel import Model
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
-from logic.imaging.camera import Camera
+from logic.camera.camera import Camera
 from logic.dome.dome import Dome
 from logic.astrometry.astrometry import Astrometry
 from logic.modeldata.buildpoints import DataPoint

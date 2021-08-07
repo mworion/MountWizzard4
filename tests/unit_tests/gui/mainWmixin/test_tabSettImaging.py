@@ -32,9 +32,9 @@ from mountcontrol.qtmount import Mount
 from gui.mainWmixin.tabSettImaging import SettImaging
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
-from logic.imaging.camera import Camera
-from logic.imaging.focuser import Focuser
-from logic.imaging.filter import Filter
+from logic.camera.camera import Camera
+from logic.focuser.focuser import Focuser
+from logic.filter.filter import Filter
 from logic.cover.cover import Cover
 from logic.telescope.telescope import Telescope
 

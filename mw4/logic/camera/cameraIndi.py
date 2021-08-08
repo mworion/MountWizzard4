@@ -137,6 +137,8 @@ class CameraIndi(IndiClass):
             return False
         if propertyName == 'CCD_EXPOSURE':
             self.setExposureState()
+        if propertyName == 'CCD_TEMPERATURE':
+            self.data['CAN_SET_CCD_TEMPERATURE'] = True
         return True
 
     def updateHeaderInfo(self, header):

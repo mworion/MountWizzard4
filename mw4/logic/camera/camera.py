@@ -250,6 +250,7 @@ class Camera:
             return False
 
         suc = self.run[self.framework].abort()
+        self.signals.message.emit('')
         return suc
 
     def sendCoolerSwitch(self, coolerOn=False):

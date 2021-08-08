@@ -18,6 +18,7 @@
 # standard libraries
 import logging
 import sys
+import os
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QRunnable, pyqtSlot
@@ -85,12 +86,14 @@ class Worker(QRunnable):
                 tb = tb.tb_next
 
             # getting data out for processing
-            file = tb.tb_frame.f_code.co_filename
+            file = os.path.basename(tb.tb_frame.f_code.co_filename)
             line = tb.tb_frame.f_lineno
+            fnName = self.fn.__name__
 
-            errorString = f'{file}, line {line} {exc_value}'
-            self.log.critical(errorString)
-            self.signals.error.emit(errorString)
+            eStr = f'fn: [{fnName}], file: [{file}], line: {line} '
+            eStr += f'msg: [{exc_value}]'
+            self.log.critical(eStr)
+            self.signals.error.emit(eStr)
 
         else:
             self.signals.result.emit(result)

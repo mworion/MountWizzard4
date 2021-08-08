@@ -42,7 +42,7 @@ releaseNotes = """
 - add more functions are available without mount connected
 - add change mouse pointer in hemisphere
 - add offset and gain setting to imaging
-- add improved performance ASCOM large image sensors for download
+- performance faster ASCOM large image sensors download speed
 - update debug standard moved from WARN to INFO
 - update underlying libraries
 - fix for INDI cameras sending two times busy and exposure=0

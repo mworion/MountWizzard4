@@ -20,6 +20,7 @@ import os
 
 # external packages
 import PyQt5.QtWidgets
+from PyQt5.QtCore import QMutex
 import numpy as np
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
@@ -66,6 +67,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.imageFileName = ''
         self.imageFileNameOld = ''
+        self.preparePlotLock = QMutex()
         self.expTime = 1
         self.binning = 1
         self.image = None
@@ -631,9 +633,11 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         if self.image is None:
+            self.preparePlotLock.unlock()
             return False
 
         if self.header is None:
+            self.preparePlotLock.unlock()
             return False
 
         self.updateWindowsStats()
@@ -663,12 +667,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.stretchImage()
         self.colorImage()
         self.imagePlot()
+        self.preparePlotLock.unlock()
         return True
 
     def preparePlot(self):
         """
         :return:
         """
+        if not self.preparePlotLock.tryLock():
+            return False
         worker = Worker(self.workerPreparePlot)
         self.threadPool.start(worker)
         return True

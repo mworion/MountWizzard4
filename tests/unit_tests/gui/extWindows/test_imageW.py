@@ -480,6 +480,7 @@ def test_writeHeaderDataToGUI_4(function):
 
 
 def test_workerPreparePlot_1(function):
+    function.preparePlotLock.lock()
     function.image = None
     function.header = None
     suc = function.workerPreparePlot()
@@ -487,6 +488,7 @@ def test_workerPreparePlot_1(function):
 
 
 def test_workerPreparePlot_2(function):
+    function.preparePlotLock.lock()
     function.image = np.random.rand(100, 100)
     function.header = None
     suc = function.workerPreparePlot()
@@ -494,6 +496,7 @@ def test_workerPreparePlot_2(function):
 
 
 def test_workerPreparePlot_3(function):
+    function.preparePlotLock.lock()
     function.ui.zoom.addItem(' 1x Zoom')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
@@ -502,6 +505,7 @@ def test_workerPreparePlot_3(function):
 
 
 def test_workerPreparePlot_4(function):
+    function.preparePlotLock.lock()
     function.ui.zoom.addItem(' 1x Zoom')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
@@ -516,6 +520,7 @@ def test_workerPreparePlot_4(function):
 
 
 def test_workerPreparePlot_5(function):
+    function.preparePlotLock.lock()
     function.ui.view.addItem('test')
     function.ui.view.addItem('test')
     function.ui.zoom.addItem(' 1x Zoom')
@@ -537,11 +542,21 @@ def test_workerPreparePlot_5(function):
                 assert suc
 
 
-def test_preparePlot(function):
+def test_preparePlot_1(function):
+    function.preparePlotLock.lock()
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        suc = function.preparePlot()
+        assert not suc
+    function.preparePlotLock.unlock()
+
+
+def test_preparePlot_2(function):
     with mock.patch.object(function.threadPool,
                            'start'):
         suc = function.preparePlot()
         assert suc
+    function.preparePlotLock.unlock()
 
 
 def test_workerPhotometry_1(function):

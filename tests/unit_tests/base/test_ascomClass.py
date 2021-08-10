@@ -57,16 +57,20 @@ def test_connectClient():
     class Test:
         connected = False
 
+    app.propertyExceptions = ['Connected']
     app.client = Test()
     app.connectClient()
+    assert app.propertyExceptions == []
 
 
 def test_disconnectClient():
     class Test:
         connected = False
 
+    app.propertyExceptions = ['Connected']
     app.client = Test()
     app.disconnectClient()
+    assert app.propertyExceptions == []
 
 
 def test_isClientConnected():
@@ -132,18 +136,19 @@ def test_stopTimer():
 
 
 def test_getAscomProperty_1():
-    app.clientProps = ['Test']
+    app.propertyExceptions = ['Connect']
     val = app.getAscomProperty('Connect')
     assert val is None
 
 
 def test_getAscomProperty_2():
-    app.clientProps = ['Connect']
+    app.propertyExceptions = ['Test']
     with mock.patch.object(builtins,
                            'eval',
                            side_effect=Exception):
         val = app.getAscomProperty('Connect')
         assert val is None
+        assert 'Connect' in app.propertyExceptions
 
 
 def test_getAscomProperty_3():
@@ -151,24 +156,25 @@ def test_getAscomProperty_3():
         Connect = True
 
     app.client = Client()
-    app.clientProps = ['Connect']
+    app.propertyExceptions = ['Test']
     val = app.getAscomProperty('Connect')
     assert val
 
 
 def test_setAscomProperty_1():
-    app.clientProps = ['Test']
+    app.propertyExceptions = ['Connect']
     suc = app.setAscomProperty('Connect', True)
     assert not suc
 
 
 def test_setAscomProperty_2():
-    app.clientProps = ['Connect']
+    app.propertyExceptions = ['Test']
     with mock.patch.object(builtins,
                            'exec',
                            side_effect=Exception):
         suc = app.setAscomProperty('Connect', True)
         assert not suc
+        assert 'Connect' in app.propertyExceptions
 
 
 def test_setAscomProperty_3():
@@ -176,7 +182,7 @@ def test_setAscomProperty_3():
         Connect = False
 
     app.client = Client()
-    app.clientProps = ['Connect']
+    app.propertyExceptions = ['Test']
     suc = app.setAscomProperty('Connect', True)
     assert suc
     assert app.client

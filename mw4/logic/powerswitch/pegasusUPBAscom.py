@@ -96,9 +96,10 @@ class PegasusUPBAscom(AscomClass):
             return False
         if port is None:
             return False
-        portN = int(port) - 1
+
+        switchNumber = int(port) - 1
         val = self.data.get(f'POWER_CONTROL.POWER_CONTROL_{port}', True)
-        self.callAscomMethod('setswitch', (portN, not val))
+        self.callAscomMethod('setswitch', (switchNumber, not val))
         return True
 
     def togglePowerPortBoot(self, port=None):
@@ -109,21 +110,46 @@ class PegasusUPBAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-    def reboot(self):
-        if not self.deviceConnected:
-            return False
-
     def togglePortUSB(self, port=None):
         if not self.deviceConnected:
             return False
+        if port is None:
+            return False
+
+        maxSwitch = self.getAscomProperty('maxswitch')
+        model = 'UPB' if maxSwitch == 15 else 'UPBv2'
+        if model == 'UPBv2':
+            switchNumber = int(port) + 6
+            val = self.data.get(f'USB_PORT_CONTROL.PORT_{port}', True)
+            self.callAscomMethod('setswitch', (switchNumber, not val))
 
     def toggleAutoDew(self):
         if not self.deviceConnected:
             return False
 
+        maxSwitch = self.getAscomProperty('maxswitch')
+        model = 'UPB' if maxSwitch == 15 else 'UPBv2'
+
+        if model == 'UPB':
+            val = self.data.get('AUTO_DEW.INDI_ENABLED', False)
+            self.callAscomMethod('setswitch', (7, not val))
+        else:
+            val = self.data.get('AUTO_DEW.DEW_A', False)
+            self.callAscomMethod('setswitch', (13, not val))
+
     def sendDew(self, port='', value=None):
         if not self.deviceConnected:
             return False
+        if port is None:
+            return False
+
+        maxSwitch = self.getAscomProperty('maxswitch')
+        model = 'UPB' if maxSwitch == 15 else 'UPBv2'
+
+        switchNumber = ord(port) - ord('A') + 4
+        val = int(value * 2.55)
+        if model == 'UPBv2':
+            self.callAscomMethod('setswitchvalue', (switchNumber, val))
 
     def sendAdjustableOutput(self, value=None):
         if not self.deviceConnected:

@@ -207,6 +207,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.closingWindow = True
         self.app.update10s.disconnect(self.updateAlignStar)
         self.app.update1s.disconnect(self.hemisphereMatMove.figure.canvas.draw)
+        self.app.update1s.disconnect(self.polarMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.disconnect(self.drawHemisphere)
         self.app.updatePointMarker.disconnect(self.updatePointMarker)
         self.app.updatePointMarker.disconnect(self.updatePolarPointMarker)

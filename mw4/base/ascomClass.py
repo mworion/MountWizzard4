@@ -19,7 +19,7 @@ import logging
 import platform
 
 if platform.system() == 'Windows':
-    from comtypes import client
+    from win32com import client
     import pythoncom
 
 # external packages
@@ -149,9 +149,9 @@ class AscomClass(object):
             self.ascomSignals.deviceConnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ASCOM device found:  [{self.deviceName}]', 0)
 
-        self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.Name
-        self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.DriverVersion
-        self.data['DRIVER_INFO.DRIVER_EXEC'] = self.client.DriverInfo
+        self.getAndStoreAscomProperty('Name', 'DRIVER_INFO.DRIVER_NAME')
+        self.getAndStoreAscomProperty('DriverVersion', 'DRIVER_INFO.DRIVER_VERSION')
+        self.getAndStoreAscomProperty('DriverInfo', 'DRIVER_INFO.DRIVER_EXEC')
         return True
 
     def startTimer(self):
@@ -324,7 +324,7 @@ class AscomClass(object):
 
         pythoncom.CoInitialize()
         try:
-            self.client = client.CreateObject(self.deviceName)
+            self.client = client.dynamic.Dispatch(self.deviceName)
 
         except Exception as e:
             self.log.error(f'Dispatch for [{self.deviceName}] error: {e}')

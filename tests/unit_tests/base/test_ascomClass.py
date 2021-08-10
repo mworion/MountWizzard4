@@ -28,7 +28,7 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
 if platform.system() == 'Windows':
-    import comtypes
+    import win32com.client
     import pythoncom
 
 # local import
@@ -342,8 +342,8 @@ def test_startCommunication_1():
                            'startTimer'):
         with mock.patch.object(pythoncom,
                                'CoInitialize'):
-            with mock.patch.object(comtypes.client,
-                                   'CreateObject'):
+            with mock.patch.object(win32com.client.dynamic,
+                                   'Dispatch'):
                 suc = app.startCommunication()
                 assert suc
 
@@ -357,8 +357,8 @@ def test_startCommunication_2():
                            'startTimer'):
         with mock.patch.object(pythoncom,
                                'CoInitialize'):
-            with mock.patch.object(comtypes.client,
-                                   'CreateObject',
+            with mock.patch.object(win32com.client.dynamic,
+                                   'Dispatch',
                                    side_effect=Exception()):
                 suc = app.startCommunication()
                 assert not suc

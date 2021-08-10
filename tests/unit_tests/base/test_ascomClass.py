@@ -161,6 +161,48 @@ def test_getAscomProperty_3():
     assert val
 
 
+def test_callAscomMethod_1():
+    app.propertyExceptions = ['Connect']
+    suc = app.callAscomMethod('Connect', True)
+    assert not suc
+
+
+def test_callAscomMethod_2():
+    app.propertyExceptions = ['Test']
+    with mock.patch.object(builtins,
+                           'exec',
+                           side_effect=Exception):
+        suc = app.callAscomMethod('Connect', True)
+        assert not suc
+        assert 'Connect' in app.propertyExceptions
+
+
+def test_callAscomMethod_3():
+    class Client:
+        Connect = False
+
+    app.client = Client()
+    app.propertyExceptions = ['Test']
+    with mock.patch.object(app.client,
+                           'Connect'):
+        suc = app.callAscomMethod('Connect', True)
+        assert suc
+        assert app.client
+
+
+def test_callAscomMethod_4():
+    class Client:
+        Connect = False
+
+    app.client = Client()
+    app.propertyExceptions = ['Test']
+    with mock.patch.object(app.client,
+                           'Connect'):
+        suc = app.callAscomMethod('Connect', (True, 1))
+        assert suc
+        assert app.client
+
+
 def test_setAscomProperty_1():
     app.propertyExceptions = ['Connect']
     suc = app.setAscomProperty('Connect', True)

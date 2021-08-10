@@ -207,6 +207,24 @@ class AscomClass(object):
             self.log.trace(f'Property [{valueProp}] is set to [{value}]')
             return True
 
+    def callAscomMethod(self, method, param):
+        """
+        :param method:
+        :param param:
+        """
+        if method in self.propertyExceptions:
+            return False
+
+        try:
+            exec('self.client.' + method + f'{param}')
+        except Exception as e:
+            self.log.debug(f'Method [{method}] is not implemented: {e}')
+            self.propertyExceptions.append(method)
+            return False
+        else:
+            self.log.trace(f'Method [{method}] is set to [{param}]')
+            return True
+
     def storeAscomProperty(self, value, element, elementInv=None):
         """
         :param value:

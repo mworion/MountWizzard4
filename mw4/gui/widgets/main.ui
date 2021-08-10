@@ -18515,7 +18515,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>180</x>
-          <y>100</y>
+          <y>95</y>
           <width>16</width>
           <height>21</height>
          </rect>

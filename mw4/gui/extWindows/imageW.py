@@ -613,6 +613,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.guiSetText(self.ui.expTime, '5.1f', value)
 
         value = self.header.get('FILTER', 0)
+        value = f'{value}'
         self.guiSetText(self.ui.filter, 's', value)
 
         value = self.header.get('XBINNING', 0)

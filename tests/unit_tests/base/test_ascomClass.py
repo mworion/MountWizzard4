@@ -234,7 +234,7 @@ def test_storeAscomProperty_1():
     app.data = {'YES': 0}
 
     res = app.storeAscomProperty(None, 'YES')
-    assert res
+    assert not res
     assert 'YES' not in app.data
 
 
@@ -243,7 +243,7 @@ def test_storeAscomProperty_2():
                 'NO': 0}
 
     res = app.storeAscomProperty(None, 'YES', 'NO')
-    assert res
+    assert not res
     assert 'YES' not in app.data
     assert 'NO' not in app.data
 
@@ -253,9 +253,27 @@ def test_storeAscomProperty_3():
                 'NO': 0}
 
     res = app.storeAscomProperty(10, 'YES', 'NO')
-    assert not res
+    assert res
     assert 'YES' in app.data
     assert 'NO' in app.data
+
+
+def test_storeAscomProperty_4():
+    app.data = {}
+
+    res = app.storeAscomProperty(10, 'YES', 'NO')
+    assert res
+    assert 'YES' in app.data
+    assert 'NO' in app.data
+
+
+def test_storeAscomProperty_5():
+    app.data = {'NO': 0}
+
+    res = app.storeAscomProperty(None, 'YES', 'NO')
+    assert not res
+    assert 'YES' not in app.data
+    assert 'NO' not in app.data
 
 
 def test_getAndStoreAscomProperty():

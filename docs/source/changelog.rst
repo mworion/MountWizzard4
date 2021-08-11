@@ -8,8 +8,8 @@ Ideas for the future
 
 - implementing Baader dome control e.g. 10micron dome interface
 - split profiles in base and add-on
-- adding gain and offset for cmos
 - satellite search with constraints
+- Joystick support
 
 
 Released beta version of MW4
@@ -50,6 +50,13 @@ Released beta version of MW4
 
 Released version of MW4
 -----------------------
+Version 2.0
+^^^^^^^^^^^
+2.0.0
+
+- coming soon
+
+
 Version 1.1
 ^^^^^^^^^^^
 1.1.1

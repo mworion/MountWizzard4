@@ -606,22 +606,22 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.scale.setText(f'{scale:5.3f}')
         self.ui.rotation.setText(f'{rotation:6.3f}')
 
-        ccdTemp = self.header.get('CCD-TEMP', 0)
-        self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
+        value = self.header.get('CCD-TEMP', 0)
+        self.guiSetText(self.ui.ccdTemp, '4.1f', value)
 
-        expTime = getExposure(header=self.header)
-        self.ui.expTime.setText(f'{expTime:5.1f}')
+        value = getExposure(header=self.header)
+        self.guiSetText(self.ui.expTime, '5.1f', value)
 
-        filterCCD = self.header.get('FILTER', 0)
-        self.ui.filter.setText(f'{filterCCD}')
+        value = self.header.get('FILTER', 0)
+        self.guiSetText(self.ui.filter, 's', value)
 
-        binX = self.header.get('XBINNING', 0)
-        binY = self.header.get('YBINNING', 0)
-        self.ui.binX.setText(f'{binX:1.0f}')
-        self.ui.binY.setText(f'{binY:1.0f}')
+        value = self.header.get('XBINNING', 0)
+        self.guiSetText(self.ui.binX, '1.0f', value)
+        value = self.header.get('YBINNING', 0)
+        self.guiSetText(self.ui.binY, '1.0f', value)
 
-        sqm = getSQM(header=self.header)
-        self.ui.sqm.setText(f'{sqm:5.2f}')
+        value = getSQM(header=self.header)
+        self.guiSetText(self.ui.sqm, '5.2f', value)
 
         flipped = bool(self.header.get('FLIPPED', False))
         self.ui.isFlipped.setEnabled(flipped)

@@ -204,7 +204,7 @@ class CameraAscom(AscomClass):
                 header['TELESCOP'] = self.app.mount.firmware.product
 
             hdu.writeto(imagePath, overwrite=True)
-            self.log.info(f'Saved Image: [{imagePath}]')
+            self.log.info(f'Saved Image: [{imagePath}], FITS: [{header}]')
 
         if self.abortExpose:
             imagePath = ''

@@ -214,22 +214,24 @@ class AscomClass(object):
         :param elementInv:
         :return: reset entry
         """
-        resetValue = value is None and element in self.data
-        if resetValue:
+        removeElement = value is None
+
+        if removeElement and element in self.data:
             del self.data[element]
-        else:
-            self.data[element] = value
 
-        if elementInv is None:
-            return resetValue
+        if removeElement and elementInv is not None:
+            if elementInv in self.data:
+                del self.data[elementInv]
 
-        resetValue = value is None and elementInv in self.data
-        if resetValue:
-            del self.data[elementInv]
-        else:
+        if removeElement:
+            return False
+
+        self.data[element] = value
+
+        if elementInv is not None:
             self.data[elementInv] = value
 
-        return resetValue
+        return True
 
     def getAndStoreAscomProperty(self, valueProp, element, elementInv=None):
         """

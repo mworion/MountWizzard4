@@ -180,9 +180,11 @@ class AscomClass(object):
             return value
 
         try:
-            value = eval('self.client.' + valueProp)
+            cmd = 'self.client.' + valueProp
+            value = eval(cmd)
         except Exception as e:
-            self.log.debug(f'Property [{valueProp}] is not implemented: {e}')
+            t = f'Property [{valueProp}] is not implemented: {e}, cmd: [{cmd}]'
+            self.log.debug(t)
             self.propertyExceptions.append(valueProp)
         else:
             self.log.trace(f'Property [{valueProp}] has value: [{value}]')
@@ -198,13 +200,36 @@ class AscomClass(object):
             return False
 
         try:
-            exec('self.client.' + valueProp + ' = value')
+            cmd = 'self.client.' + valueProp + ' = value'
+            exec(cmd)
         except Exception as e:
-            self.log.debug(f'Property [{valueProp}] is not implemented: {e}')
+            t = f'Property [{valueProp}] is not implemented: {e}, cmd: [{cmd}]'
+            self.log.debug(t)
             self.propertyExceptions.append(valueProp)
             return False
         else:
             self.log.trace(f'Property [{valueProp}] is set to [{value}]')
+            return True
+
+    def callAscomMethod(self, method, param):
+        """
+        :param method:
+        :param param:
+        """
+        if method in self.propertyExceptions:
+            return False
+
+        paramStr = f'{param}'.rstrip(')').lstrip('(')
+        try:
+            cmd = 'self.client.' + method + f'({paramStr})'
+            exec(cmd)
+        except Exception as e:
+            t = f'Method [{method}] is not implemented: {e}, cmd: [{cmd}]'
+            self.log.debug(t)
+            self.propertyExceptions.append(method)
+            return False
+        else:
+            self.log.trace(f'Method [{method}] is set to [{param}]')
             return True
 
     def storeAscomProperty(self, value, element, elementInv=None):

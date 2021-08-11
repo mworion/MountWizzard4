@@ -45,26 +45,17 @@ class PegasusUPBIndi(IndiClass):
 
     def setUpdateConfig(self, deviceName):
         """
-        _setUpdateRate corrects the update rate of weather devices to get an defined
-        setting regardless, what is setup in server side.
-
         :param deviceName:
         :return: success
         """
-
         if deviceName != self.deviceName:
             return False
-
         if self.device is None:
             return False
 
-        # setting polling updates in driver
-
         update = self.device.getNumber('POLLING')
-
         if 'PERIOD' not in update:
             return False
-
         if update.get('PERIOD', 0) == self.UPDATE_RATE:
             return True
 
@@ -73,25 +64,18 @@ class PegasusUPBIndi(IndiClass):
                                         propertyName='POLLING',
                                         elements=update,
                                         )
-
         return suc
 
     def updateText(self, deviceName, propertyName):
         """
-        updateText is called whenever a new text is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
         :param deviceName:
         :param propertyName:
         :return:
         """
-
         if not super().updateText(deviceName, propertyName):
             return False
-
         if propertyName != 'DRIVER_INFO' and propertyName != 'FIRMWARE_INFO':
             return False
-
         if 'DRIVER_INFO.DEVICE_MODEL' in self.data:
             if self.data.get('DRIVER_INFO.DEVICE_MODEL', 'UPB') == 'UPB':
                 if self.modelVersion != 1:
@@ -115,18 +99,13 @@ class PegasusUPBIndi(IndiClass):
 
     def togglePowerPort(self, port=None):
         """
-        togglePowerPort
-
         :param port:
         :return: true for test purpose
         """
-
         if port is None:
             return False
-
         if self.device is None:
             return False
-
         if self.isINDIGO:
             propertyName = 'AUX_POWER_OUTLET'
             power = self.device.getSwitch(propertyName)
@@ -152,21 +131,15 @@ class PegasusUPBIndi(IndiClass):
 
     def togglePowerPortBoot(self, port=None):
         """
-        togglePowerPortBoot
-
         :param port:
         :return: true for test purpose
         """
-
         if port is None:
             return False
-
         if self.device is None:
             return False
-
         if self.isINDIGO:
             return False
-
         else:
             propertyName = 'POWER_ON_BOOT'
             power = self.device.getSwitch(propertyName)
@@ -177,7 +150,6 @@ class PegasusUPBIndi(IndiClass):
 
         if power[portName] == 'On':
             power[portName] = 'Off'
-
         else:
             power[portName] = 'On'
 
@@ -189,21 +161,15 @@ class PegasusUPBIndi(IndiClass):
 
     def toggleHubUSB(self):
         """
-        toggleHubUSB
-
         :return: true for test purpose
         """
-
         if self.device is None:
             return False
-
         if self.isINDIGO:
             return False
-
         else:
             propertyName = 'USB_HUB_CONTROL'
             usb = self.device.getSwitch(propertyName)
-
             if 'INDI_ENABLED' not in usb:
                 return False
             if usb['INDI_ENABLED'] == 'On':
@@ -221,23 +187,17 @@ class PegasusUPBIndi(IndiClass):
 
     def togglePortUSB(self, port=None):
         """
-        togglePortUSB
-
         :param port:
         :return: true for test purpose
         """
-
         if port is None:
             return False
-
         if self.device is None:
             return False
-
         if self.isINDIGO:
             propertyName = 'AUX_USB_PORT'
             usb = self.device.getSwitch(propertyName)
             portName = f'PORT_{port}'
-
         else:
             propertyName = 'USB_PORT_CONTROL'
             usb = self.device.getSwitch(propertyName)
@@ -259,14 +219,10 @@ class PegasusUPBIndi(IndiClass):
 
     def toggleAutoDew(self):
         """
-        toggleAutoDew
-
         :return: true for test purpose
         """
-
         if self.device is None:
             return False
-
         if self.isINDIGO:
             propertyName = 'AUX_DEW_CONTROL'
             autoDew = self.device.getSwitch(propertyName)
@@ -277,7 +233,6 @@ class PegasusUPBIndi(IndiClass):
             else:
                 autoDew['MANUAL'] = 'On'
                 autoDew['AUTOMATIC'] = 'Off'
-
         else:
             propertyName = 'AUTO_DEW'
             autoDew = self.device.getSwitch(propertyName)
@@ -291,7 +246,6 @@ class PegasusUPBIndi(IndiClass):
                 else:
                     autoDew['INDI_ENABLED'] = 'Off'
                     autoDew['INDI_DISABLED'] = 'On'
-
             else:
                 if 'DEW_A' not in autoDew:
                     return False
@@ -304,7 +258,6 @@ class PegasusUPBIndi(IndiClass):
                     autoDew['DEW_B'] = 'On'
                     autoDew['DEW_C'] = 'On'
 
-        # print(autoDew, self.modelVersion)
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=autoDew,
@@ -313,21 +266,17 @@ class PegasusUPBIndi(IndiClass):
 
     def sendDew(self, port='', value=None):
         """
-
         :param port:
         :param value:
         :return: success
         """
-
         if self.device is None:
             return False
-
         if self.isINDIGO:
             conv = {'A': '1', 'B': '2', 'C': '3'}
             propertyName = 'AUX_HEATER_OUTLET'
             dew = self.device.getNumber(propertyName)
             portName = f'OUTLET_{conv[port]}'
-
         else:
             propertyName = 'DEW_PWM'
             dew = self.device.getNumber(propertyName)
@@ -337,7 +286,6 @@ class PegasusUPBIndi(IndiClass):
             return False
 
         dew[portName] = value
-
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=dew,
@@ -346,14 +294,11 @@ class PegasusUPBIndi(IndiClass):
 
     def sendAdjustableOutput(self, value=None):
         """
-
         :param value:
         :return: success
         """
-
         if self.device is None:
             return False
-
         if self.isINDIGO:
             propertyName = 'X_AUX_VARIABLE_POWER_OUTLET'
             output = self.device.getNumber(propertyName)
@@ -364,7 +309,6 @@ class PegasusUPBIndi(IndiClass):
             portName = 'ADJUSTABLE_VOLTAGE_VALUE'
 
         output[portName] = value
-
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=output,
@@ -373,13 +317,10 @@ class PegasusUPBIndi(IndiClass):
 
     def reboot(self):
         """
-
         :return: success
         """
-
         if self.device is None:
             return False
-
         if self.isINDIGO:
             propertyName = 'X_AUX_REBOOT'
             output = self.device.getSwitch(propertyName)
@@ -393,7 +334,6 @@ class PegasusUPBIndi(IndiClass):
             return False
 
         output[portName] = 'On'
-
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName=propertyName,
                                         elements=output,

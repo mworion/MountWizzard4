@@ -85,13 +85,13 @@ def test_togglePowerPort_1():
 def test_togglePowerPort_2():
     app.deviceConnected = True
     suc = app.togglePowerPort()
-    assert suc
+    assert not suc
 
 
 def test_togglePowerPort_3():
     app.deviceConnected = True
-    with mock.patch.object(app,
-                           'callAscomMethod'):
+    with mock.patch.object(app.client,
+                           'setswitchvalue'):
         suc = app.togglePowerPort('1')
         assert suc
 
@@ -129,18 +129,18 @@ def test_togglePortUSB_1():
 def test_togglePortUSB_2():
     app.deviceConnected = True
     suc = app.togglePortUSB()
-    assert suc
+    assert not suc
 
 
 def test_togglePortUSB_3():
     app.deviceConnected = True
     with mock.patch.object(AlpacaBase,
                            'put'):
-        with mock.patch.object(app,
-                               'getAscomProperty',
+        with mock.patch.object(app.client,
+                               'maxswitch',
                                return_value=21):
-            with mock.patch.object(app,
-                                   'callAscomMethod'):
+            with mock.patch.object(app.client,
+                                   'setswitchvalue'):
                 suc = app.togglePortUSB('1')
                 assert suc
 
@@ -155,11 +155,11 @@ def test_toggleAutoDew_2():
     app.deviceConnected = True
     with mock.patch.object(AlpacaBase,
                            'put'):
-        with mock.patch.object(app,
-                               'getAscomProperty',
+        with mock.patch.object(app.client,
+                               'maxswitch',
                                return_value=21):
-            with mock.patch.object(app,
-                                   'callAscomMethod'):
+            with mock.patch.object(app.client,
+                                   'setswitchvalue'):
                 suc = app.toggleAutoDew()
                 assert suc
 
@@ -168,11 +168,11 @@ def test_toggleAutoDew_3():
     app.deviceConnected = True
     with mock.patch.object(AlpacaBase,
                            'put'):
-        with mock.patch.object(app,
-                               'getAscomProperty',
+        with mock.patch.object(app.client,
+                               'maxswitch',
                                return_value=15):
-            with mock.patch.object(app,
-                                   'callAscomMethod'):
+            with mock.patch.object(app.client,
+                                   'setswitchvalue'):
                 suc = app.toggleAutoDew()
                 assert suc
 
@@ -186,19 +186,25 @@ def test_sendDew_1():
 def test_sendDew_2():
     app.deviceConnected = True
     suc = app.sendDew()
-    assert suc
+    assert not suc
 
 
 def test_sendDew_3():
     app.deviceConnected = True
+    suc = app.sendDew('1')
+    assert not suc
+
+
+def test_sendDew_4():
+    app.deviceConnected = True
     with mock.patch.object(AlpacaBase,
                            'put'):
-        with mock.patch.object(app,
-                               'getAscomProperty',
+        with mock.patch.object(app.client,
+                               'maxswitch',
                                return_value=21):
-            with mock.patch.object(app,
-                                   'callAscomMethod'):
-                suc = app.sendDew('1')
+            with mock.patch.object(app.client,
+                                   'setswitchvalue'):
+                suc = app.sendDew('1', 10)
                 assert suc
 
 

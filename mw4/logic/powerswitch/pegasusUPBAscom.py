@@ -105,10 +105,12 @@ class PegasusUPBAscom(AscomClass):
     def togglePowerPortBoot(self, port=None):
         if not self.deviceConnected:
             return False
+        return True
 
     def toggleHubUSB(self):
         if not self.deviceConnected:
             return False
+        return True
 
     def togglePortUSB(self, port=None):
         if not self.deviceConnected:
@@ -122,6 +124,7 @@ class PegasusUPBAscom(AscomClass):
             switchNumber = int(port) + 6
             val = self.data.get(f'USB_PORT_CONTROL.PORT_{port}', True)
             self.callAscomMethod('setswitch', (switchNumber, not val))
+        return True
 
     def toggleAutoDew(self):
         if not self.deviceConnected:
@@ -136,11 +139,14 @@ class PegasusUPBAscom(AscomClass):
         else:
             val = self.data.get('AUTO_DEW.DEW_A', False)
             self.callAscomMethod('setswitch', (13, not val))
+        return True
 
-    def sendDew(self, port='', value=None):
+    def sendDew(self, port=None, value=None):
         if not self.deviceConnected:
             return False
         if port is None:
+            return False
+        if value is None:
             return False
 
         maxSwitch = self.getAscomProperty('maxswitch')
@@ -150,12 +156,15 @@ class PegasusUPBAscom(AscomClass):
         val = int(value * 2.55)
         if model == 'UPBv2':
             self.callAscomMethod('setswitchvalue', (switchNumber, val))
+        return True
 
     def sendAdjustableOutput(self, value=None):
         if not self.deviceConnected:
             return False
+        return True
 
     def reboot(self):
         if not self.deviceConnected:
             return False
+        return True
 

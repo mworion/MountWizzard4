@@ -107,10 +107,12 @@ class PegasusUPBAlpaca(AlpacaClass):
     def togglePowerPortBoot(self, port=None):
         if not self.deviceConnected:
             return False
+        return True
 
     def toggleHubUSB(self):
         if not self.deviceConnected:
             return False
+        return True
 
     def togglePortUSB(self, port=None):
         if not self.deviceConnected:
@@ -122,7 +124,8 @@ class PegasusUPBAlpaca(AlpacaClass):
         if model == 'UPBv2':
             switchNumber = int(port) + 6
             val = self.data.get(f'USB_PORT_CONTROL.PORT_{port}', True)
-            self.client.setswitch(Id=switchNumber, Value=val)
+            self.client.setswitchvalue(Id=switchNumber, Value=val)
+        return True
 
     def toggleAutoDew(self):
         if not self.deviceConnected:
@@ -131,15 +134,18 @@ class PegasusUPBAlpaca(AlpacaClass):
         model = 'UPB' if self.client.maxswitch() == 15 else 'UPBv2'
         if model == 'UPB':
             val = self.data.get('AUTO_DEW.INDI_ENABLED', False)
-            self.client.setswitch(Id=7, Value=val)
+            self.client.setswitchvalue(Id=7, Value=val)
         else:
             val = self.data.get('AUTO_DEW.DEW_A', False)
-            self.client.setswitch(Id=13, Value=val)
+            self.client.setswitchvalue(Id=13, Value=val)
+        return True
 
     def sendDew(self, port='', value=None):
         if not self.deviceConnected:
             return False
         if port is None:
+            return False
+        if value is None:
             return False
 
         model = 'UPB' if self.client.maxswitch() == 15 else 'UPBv2'
@@ -147,11 +153,14 @@ class PegasusUPBAlpaca(AlpacaClass):
         val = int(value * 2.55)
         if model == 'UPBv2':
             self.client.setswitchvalue(Id=switchNumber, Value=val)
+        return True
 
     def sendAdjustableOutput(self, value=None):
         if not self.deviceConnected:
             return False
+        return True
 
     def reboot(self):
         if not self.deviceConnected:
             return False
+        return True

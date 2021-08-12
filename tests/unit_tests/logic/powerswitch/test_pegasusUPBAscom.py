@@ -99,7 +99,7 @@ def test_togglePowerPort_1():
 def test_togglePowerPort_2():
     app.deviceConnected = True
     suc = app.togglePowerPort()
-    assert suc
+    assert not suc
 
 
 def test_togglePowerPort_3():
@@ -143,7 +143,7 @@ def test_togglePortUSB_1():
 def test_togglePortUSB_2():
     app.deviceConnected = True
     suc = app.togglePortUSB()
-    assert suc
+    assert not suc
 
 
 def test_togglePortUSB_3():
@@ -194,17 +194,23 @@ def test_sendDew_1():
 def test_sendDew_2():
     app.deviceConnected = True
     suc = app.sendDew()
-    assert suc
+    assert not suc
 
 
 def test_sendDew_3():
+    app.deviceConnected = True
+    suc = app.sendDew('1')
+    assert not suc
+
+
+def test_sendDew_4():
     app.deviceConnected = True
     with mock.patch.object(app,
                            'getAscomProperty',
                            return_value=21):
         with mock.patch.object(app,
                                'callAscomMethod'):
-            suc = app.sendDew('1')
+            suc = app.sendDew('1', 10)
             assert suc
 
 

@@ -74,3 +74,153 @@ def test_workerPollData_3():
                                return_value=21):
             suc = app.workerPollData()
             assert suc
+
+
+def test_togglePowerPort_1():
+    app.deviceConnected = False
+    suc = app.togglePowerPort()
+    assert not suc
+
+
+def test_togglePowerPort_2():
+    app.deviceConnected = True
+    suc = app.togglePowerPort()
+    assert suc
+
+
+def test_togglePowerPort_3():
+    app.deviceConnected = True
+    with mock.patch.object(app,
+                           'callAscomMethod'):
+        suc = app.togglePowerPort('1')
+        assert suc
+
+
+def test_togglePowerPortBoot_1():
+    app.deviceConnected = False
+    suc = app.togglePowerPortBoot()
+    assert not suc
+
+
+def test_togglePowerPortBoot_2():
+    app.deviceConnected = True
+    suc = app.togglePowerPortBoot()
+    assert suc
+
+
+def test_toggleHubUSB_1():
+    app.deviceConnected = False
+    suc = app.toggleHubUSB()
+    assert not suc
+
+
+def test_toggleHubUSB_2():
+    app.deviceConnected = True
+    suc = app.toggleHubUSB()
+    assert suc
+
+
+def test_togglePortUSB_1():
+    app.deviceConnected = False
+    suc = app.togglePortUSB()
+    assert not suc
+
+
+def test_togglePortUSB_2():
+    app.deviceConnected = True
+    suc = app.togglePortUSB()
+    assert suc
+
+
+def test_togglePortUSB_3():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        with mock.patch.object(app,
+                               'getAscomProperty',
+                               return_value=21):
+            with mock.patch.object(app,
+                                   'callAscomMethod'):
+                suc = app.togglePortUSB('1')
+                assert suc
+
+
+def test_toggleAutoDew_1():
+    app.deviceConnected = False
+    suc = app.toggleAutoDew()
+    assert not suc
+
+
+def test_toggleAutoDew_2():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        with mock.patch.object(app,
+                               'getAscomProperty',
+                               return_value=21):
+            with mock.patch.object(app,
+                                   'callAscomMethod'):
+                suc = app.toggleAutoDew()
+                assert suc
+
+
+def test_toggleAutoDew_3():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        with mock.patch.object(app,
+                               'getAscomProperty',
+                               return_value=15):
+            with mock.patch.object(app,
+                                   'callAscomMethod'):
+                suc = app.toggleAutoDew()
+                assert suc
+
+
+def test_sendDew_1():
+    app.deviceConnected = False
+    suc = app.sendDew()
+    assert not suc
+
+
+def test_sendDew_2():
+    app.deviceConnected = True
+    suc = app.sendDew()
+    assert suc
+
+
+def test_sendDew_3():
+    app.deviceConnected = True
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        with mock.patch.object(app,
+                               'getAscomProperty',
+                               return_value=21):
+            with mock.patch.object(app,
+                                   'callAscomMethod'):
+                suc = app.sendDew('1')
+                assert suc
+
+
+def test_sendAdjustableOutput_1():
+    app.deviceConnected = False
+    suc = app.sendAdjustableOutput()
+    assert not suc
+
+
+def test_sendAdjustableOutput_2():
+    app.deviceConnected = True
+    suc = app.sendAdjustableOutput(4)
+    assert suc
+
+
+def test_reboot_1():
+    app.deviceConnected = False
+    suc = app.reboot()
+    assert not suc
+
+
+def test_reboot_2():
+    app.deviceConnected = True
+    suc = app.reboot()
+    assert suc

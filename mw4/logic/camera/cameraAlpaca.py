@@ -171,10 +171,8 @@ class CameraAlpaca(AlpacaClass):
                 break
 
         self.signals.integrated.emit()
-
-        if not self.abortExpose:
-            self.signals.message.emit('download')
-            data = np.ndarray(self.client.imagearray(), dtype=np.uint16).transpose()
+        self.signals.message.emit('download')
+        data = np.array(self.client.imagearray(), dtype=np.uint16).transpose()
 
         if not self.abortExpose:
             self.signals.message.emit('saving')

@@ -21,7 +21,7 @@
 from astropy.io import fits
 from PyQt5.QtTest import QTest
 from comtypes.safearray import safearray_as_ndarray
-import mumpy as np
+import numpy as np
 
 # local imports
 from base.ascomClass import AscomClass
@@ -174,10 +174,7 @@ class CameraAscom(AscomClass):
 
         self.signals.integrated.emit()
         self.signals.message.emit('download')
-
-        with safearray_as_ndarray:
-            # data = self.client.ImageArray
-            data = np.ndarray(self.client.ImageArray, dtype=np.uint16).transpose()
+        data = np.array(self.client.ImageArray, dtype=np.uint16).transpose()
 
         if not self.abortExpose:
             self.signals.message.emit('saving')

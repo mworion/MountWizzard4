@@ -91,7 +91,7 @@ def test_workerPollData_2():
             with mock.patch.object(app,
                                    'getAndStoreAscomProperty'):
                 suc = app.workerPollData()
-                assert not suc
+                assert suc
 
 
 def test_workerPollData_3():
@@ -104,7 +104,7 @@ def test_workerPollData_3():
             with mock.patch.object(app,
                                    'getAndStoreAscomProperty'):
                 suc = app.workerPollData()
-                assert not suc
+                assert suc
 
 
 def test_workerPollData_4():
@@ -117,7 +117,7 @@ def test_workerPollData_4():
             with mock.patch.object(app,
                                    'getAndStoreAscomProperty'):
                 suc = app.workerPollData()
-                assert not suc
+                assert suc
 
 
 def test_slewToAltAz_1():

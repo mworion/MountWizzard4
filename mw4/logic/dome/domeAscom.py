@@ -35,6 +35,7 @@ class DomeAscom(AscomClass):
 
     CYCLE_DEVICE = 3000
     CYCLE_DATA = 1000
+    shutterStates = ['Open', 'Closed', 'Opening', 'Closing', 'Error']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
@@ -55,8 +56,6 @@ class DomeAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        shutterStates = ['Open', 'Closed', 'Opening', 'Closing', 'Error']
-
         if not self.deviceConnected:
             return False
 
@@ -70,7 +69,7 @@ class DomeAscom(AscomClass):
 
         state = self.getAscomProperty('ShutterStatus')
         if state == 0:
-            stateText = shutterStates[state]
+            stateText = self.shutterStates[state]
             self.storeAscomProperty(stateText, 'Status.Shutter')
             self.storeAscomProperty(True,
                                     'DOME_SHUTTER.SHUTTER_OPEN',

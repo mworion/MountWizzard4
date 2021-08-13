@@ -89,9 +89,9 @@ setup(
     install_requires=[
         'numpy==1.21.1',
         'pillow==8.3.1',
-        'matplotlib==3.4.2',
+        'matplotlib==3.4.3',
         'pyerfa==2.0.0',
-        'astropy==4.2.1',
+        'astropy==4.3.1',
         'scipy==1.7.1',
         'sep==1.2.0',
         'requests==2.26.0',

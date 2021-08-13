@@ -75,7 +75,7 @@ class DomeAscom(AscomClass):
                                      'DOME_SHUTTER.SHUTTER_OPEN',
                                      elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         elif state == 1:
-            stateText = shutterStates[state]
+            stateText = self.shutterStates[state]
             self.storePropertyToData(stateText, 'Status.Shutter')
             self.storePropertyToData(False,
                                      'DOME_SHUTTER.SHUTTER_OPEN',

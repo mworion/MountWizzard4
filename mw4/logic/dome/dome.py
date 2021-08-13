@@ -232,12 +232,14 @@ class Dome:
         :return:
         """
         if not self.checkTargetConditions():
+            self.log.debug('Slew needed: [False]')
             return False
 
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
         A, B, C = self.calcTargetRectanglePoints(azimuth)
         M = np.array([x, y])
         slewNeeded = not self.targetInDomeShutter(A, B, C, M)
+        self.log.debug(f'Slew needed: [{slewNeeded}]')
         return slewNeeded
 
     def calcSlewTarget(self, altitude, azimuth, func):
@@ -273,15 +275,18 @@ class Dome:
         """
         if not self.overshoot:
             self.lastFinalAz = None
+            self.log.debug(f'Overshoot: [{az}]')
             return az
 
         if self.avoidFirstSlewOvershoot:
             self.avoidFirstSlewOvershoot = False
             self.lastFinalAz = None
+            self.log.debug(f'Overshoot: [{az}]')
             return az
 
         direction = self.app.mount.obsSite.AzDirection
         if direction is None:
+            self.log.debug(f'Overshoot: [{az}]')
             return az
 
         y = max(self.clearOpening / 2 - self.openingHysteresis, 0)
@@ -293,12 +298,14 @@ class Dome:
 
         if self.lastFinalAz is None:
             self.lastFinalAz = finalAz
+            self.log.debug(f'Overshoot: [{finalAz}]')
             return finalAz
 
         delta = diffModulusAbs(self.lastFinalAz, finalAz, 360)
         if delta > maxOvershootAzimuth / 2:
             self.lastFinalAz = finalAz
 
+        self.log.debug(f'Overshoot: [{self.lastFinalAz}]')
         return self.lastFinalAz
 
     def slewDome(self, altitude=0, azimuth=0, follow=False):
@@ -330,10 +337,9 @@ class Dome:
             az = self.calcOvershoot(az)
             self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
             self.signals.message.emit('slewing')
-            delta = azimuth - az
         else:
             self.signals.slewFinished.emit()
-            delta = 0
+        delta = azimuth - az
 
         return delta
 

@@ -82,7 +82,7 @@ def test_getInitialConfig_2():
                                'getAscomProperty',
                                return_value=['test']):
             with mock.patch.object(app,
-                                   'storeAscomProperty'):
+                                   'storePropertyToData'):
                 suc = app.getInitialConfig()
                 assert suc
 
@@ -118,7 +118,7 @@ def test_workerPollData_3():
                            'getAscomProperty',
                            return_value=1):
         with mock.patch.object(app,
-                               'storeAscomProperty'):
+                               'storePropertyToData'):
             suc = app.workerPollData()
             assert suc
 

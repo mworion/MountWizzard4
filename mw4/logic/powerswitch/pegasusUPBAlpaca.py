@@ -140,7 +140,7 @@ class PegasusUPBAlpaca(AlpacaClass):
             self.client.setswitchvalue(Id=13, Value=val)
         return True
 
-    def sendDew(self, port='', value=None):
+    def sendDew(self, port=None, value=None):
         if not self.deviceConnected:
             return False
         if port is None:

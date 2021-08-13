@@ -54,7 +54,7 @@ class FilterAscom(AscomClass):
             return False
 
         for i, name in enumerate(names):
-            self.storeAscomProperty(name, f'FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}')
+            self.storePropertyToData(name, f'FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}')
         return True
 
     def workerPollData(self):
@@ -68,7 +68,7 @@ class FilterAscom(AscomClass):
         if position == -1 or position is None:
             return False
 
-        self.storeAscomProperty(position, 'FILTER_SLOT.FILTER_SLOT_VALUE')
+        self.storePropertyToData(position, 'FILTER_SLOT.FILTER_SLOT_VALUE')
         return True
 
     def sendFilterNumber(self, filterNumber=0):

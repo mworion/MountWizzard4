@@ -23,33 +23,15 @@ if platform.system() == 'Windows':
     import pythoncom
 
 # external packages
-from PyQt5.QtCore import QObject, pyqtSignal, QTimer
+from PyQt5.QtCore import QTimer
 from PyQt5.QtTest import QTest
 
 # local imports
 from base.tpool import Worker
+from base.driverDataClass import DriverData, Signals
 
 
-class AscomSignals(QObject):
-
-    """
-    The AscomSignals class offers a list of signals to be used and instantiated
-    by the Ascom class to get signals for triggers for finished tasks to
-    enable a gui to update their values transferred to the caller back.
-
-    This has to be done in a separate class as the signals have to be subclassed
-    from QObject and the Mount class itself is subclassed from object
-    """
-
-    __all__ = ['AscomSignals']
-
-    serverConnected = pyqtSignal()
-    serverDisconnected = pyqtSignal(object)
-    deviceConnected = pyqtSignal(str)
-    deviceDisconnected = pyqtSignal(str)
-
-
-class AscomClass(object):
+class AscomClass(DriverData, Signals):
     """
     the class AscomClass inherits all information and handling of ascom devices
     this class will be only referenced from other classes and not directly used
@@ -66,7 +48,7 @@ class AscomClass(object):
 
         self.app = app
         self.threadPool = threadPool
-        self.ascomSignals = AscomSignals()
+        self.ascomSignals = Signals()
 
         self.client = None
         self.data = data
@@ -232,32 +214,6 @@ class AscomClass(object):
             self.log.trace(f'Method [{method}] is set to [{param}]')
             return True
 
-    def storeAscomProperty(self, value, element, elementInv=None):
-        """
-        :param value:
-        :param element:
-        :param elementInv:
-        :return: reset entry
-        """
-        removeElement = value is None
-
-        if removeElement and element in self.data:
-            del self.data[element]
-
-        if removeElement and elementInv is not None:
-            if elementInv in self.data:
-                del self.data[elementInv]
-
-        if removeElement:
-            return False
-
-        self.data[element] = value
-
-        if elementInv is not None:
-            self.data[elementInv] = value
-
-        return True
-
     def getAndStoreAscomProperty(self, valueProp, element, elementInv=None):
         """
         :param valueProp:
@@ -266,7 +222,7 @@ class AscomClass(object):
         :return: reset entry
         """
         value = self.getAscomProperty(valueProp)
-        self.storeAscomProperty(value, element, elementInv)
+        self.storePropertyToData(value, element, elementInv)
         return True
 
     def pollStatusWorker(self):

@@ -35,6 +35,7 @@ class DomeAscom(AscomClass):
 
     CYCLE_DEVICE = 3000
     CYCLE_DATA = 1000
+    shutterStates = ['Open', 'Closed', 'Opening', 'Closing', 'Error']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
@@ -55,13 +56,11 @@ class DomeAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        shutterStates = ['Open', 'Closed', 'Opening', 'Closing', 'Error']
-
         if not self.deviceConnected:
             return False
 
         azimuth = self.getAscomProperty('Azimuth')
-        self.storeAscomProperty(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
+        self.storePropertyToData(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
         self.getAndStoreAscomProperty('Slewing', 'Slewing')
         self.getAndStoreAscomProperty('CanSetAltitude', 'CanSetAltitude')
@@ -70,17 +69,17 @@ class DomeAscom(AscomClass):
 
         state = self.getAscomProperty('ShutterStatus')
         if state == 0:
-            stateText = shutterStates[state]
-            self.storeAscomProperty(stateText, 'Status.Shutter')
-            self.storeAscomProperty(True,
+            stateText = self.shutterStates[state]
+            self.storePropertyToData(stateText, 'Status.Shutter')
+            self.storePropertyToData(True,
                                     'DOME_SHUTTER.SHUTTER_OPEN',
-                                    elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
+                                     elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         elif state == 1:
             stateText = shutterStates[state]
-            self.storeAscomProperty(stateText, 'Status.Shutter')
-            self.storeAscomProperty(False,
+            self.storePropertyToData(stateText, 'Status.Shutter')
+            self.storePropertyToData(False,
                                     'DOME_SHUTTER.SHUTTER_OPEN',
-                                    elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
+                                     elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         else:
             self.data['DOME_SHUTTER.SHUTTER_OPEN'] = None
             self.data['DOME_SHUTTER.SHUTTER_CLOSED'] = None

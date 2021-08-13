@@ -23,10 +23,11 @@ from PyQt5.QtCore import QTimer
 
 # local imports
 from base.alpacaBase import AlpacaBase
+from base.driverDataClass import DriverData
 from base.tpool import Worker
 
 
-class AlpacaClass:
+class AlpacaClass(DriverData):
     """
     the class AlpacaClass inherits all information and handling of alpaca devices
     this class will be only referenced from other classes and not directly used
@@ -170,31 +171,6 @@ class AlpacaClass:
         self.cycleData.stop()
         self.cycleDevice.stop()
         return True
-
-    def dataEntry(self, value, element, elementInv=None):
-        """
-        :param value:
-        :param element:
-        :param elementInv:
-        :return: reset entry
-        """
-
-        resetValue = value is None and element in self.data
-        if resetValue:
-            del self.data[element]
-        else:
-            self.data[element] = value
-
-        if elementInv is None:
-            return resetValue
-
-        resetValue = value is None and elementInv in self.data
-        if resetValue:
-            del self.data[elementInv]
-        else:
-            self.data[elementInv] = value
-
-        return resetValue
 
     def workerPollStatus(self):
         """

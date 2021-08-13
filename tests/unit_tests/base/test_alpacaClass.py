@@ -99,34 +99,6 @@ def test_stopTimer():
         assert suc
 
 
-def test_dataEntry_1():
-    app.data = {'YES': 0}
-
-    res = app.dataEntry(None, 'YES')
-    assert res
-    assert 'YES' not in app.data
-
-
-def test_dataEntry_2():
-    app.data = {'YES': 0,
-                'NO': 0}
-
-    res = app.dataEntry(None, 'YES', 'NO')
-    assert res
-    assert 'YES' not in app.data
-    assert 'NO' not in app.data
-
-
-def test_dataEntry_3():
-    app.data = {'YES': 0,
-                'NO': 0}
-
-    res = app.dataEntry(10, 'YES', 'NO')
-    assert not res
-    assert 'YES' in app.data
-    assert 'NO' in app.data
-
-
 def test_pollStatus_1():
     app.deviceConnected = True
     with mock.patch.object(app.client,

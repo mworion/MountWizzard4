@@ -54,20 +54,20 @@ class CameraAlpaca(AlpacaClass):
 
         super().getInitialConfig()
 
-        self.dataEntry(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
-        self.dataEntry(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
-        self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
-        self.dataEntry(self.client.canstopexposure(), 'CAN_ABORT')
-        self.dataEntry(self.client.cansetccdtemperature(), 'CAN_SET_CCD_TEMPERATURE')
-        self.dataEntry(self.client.cangetcoolerpower(), 'CAN_GET_COOLER_POWER')
-        self.dataEntry(self.client.pixelsizex(), 'CCD_INFO.CCD_PIXEL_SIZE_X')
-        self.dataEntry(self.client.pixelsizey(), 'CCD_INFO.CCD_PIXEL_SIZE_Y')
-        self.dataEntry(self.client.maxbinx(), 'CCD_BINNING.HOR_BIN_MAX')
-        self.dataEntry(self.client.maxbiny(), 'CCD_BINNING.VERT_BIN_MAX')
-        self.dataEntry(self.client.gainmax(), 'CCD_INFO.GAIN_MAX')
-        self.dataEntry(self.client.gainmin(), 'CCD_INFO.GAIN_MIN')
-        self.dataEntry(self.client.startx(), 'CCD_FRAME.X')
-        self.dataEntry(self.client.starty(), 'CCD_FRAME.Y')
+        self.storePropertyToData(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
+        self.storePropertyToData(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
+        self.storePropertyToData(self.client.canfastreadout(), 'CAN_FAST')
+        self.storePropertyToData(self.client.canstopexposure(), 'CAN_ABORT')
+        self.storePropertyToData(self.client.cansetccdtemperature(), 'CAN_SET_CCD_TEMPERATURE')
+        self.storePropertyToData(self.client.cangetcoolerpower(), 'CAN_GET_COOLER_POWER')
+        self.storePropertyToData(self.client.pixelsizex(), 'CCD_INFO.CCD_PIXEL_SIZE_X')
+        self.storePropertyToData(self.client.pixelsizey(), 'CCD_INFO.CCD_PIXEL_SIZE_Y')
+        self.storePropertyToData(self.client.maxbinx(), 'CCD_BINNING.HOR_BIN_MAX')
+        self.storePropertyToData(self.client.maxbiny(), 'CCD_BINNING.VERT_BIN_MAX')
+        self.storePropertyToData(self.client.gainmax(), 'CCD_INFO.GAIN_MAX')
+        self.storePropertyToData(self.client.gainmin(), 'CCD_INFO.GAIN_MIN')
+        self.storePropertyToData(self.client.startx(), 'CCD_FRAME.X')
+        self.storePropertyToData(self.client.starty(), 'CCD_FRAME.Y')
         self.log.debug(f'Initial data: {self.data}')
 
         return True
@@ -80,18 +80,18 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.dataEntry(self.client.binx(), 'CCD_BINNING.HOR_BIN')
-        self.dataEntry(self.client.biny(), 'CCD_BINNING.VERT_BIN')
-        self.dataEntry(self.client.camerastate(), 'CAMERA.STATE')
-        self.dataEntry(self.client.gain(), 'CCD_GAIN.GAIN')
-        self.dataEntry(self.client.offset(), 'CCD_OFFSET.OFFSET')
-        self.dataEntry(self.client.fastreadout(),
+        self.storePropertyToData(self.client.binx(), 'CCD_BINNING.HOR_BIN')
+        self.storePropertyToData(self.client.biny(), 'CCD_BINNING.VERT_BIN')
+        self.storePropertyToData(self.client.camerastate(), 'CAMERA.STATE')
+        self.storePropertyToData(self.client.gain(), 'CCD_GAIN.GAIN')
+        self.storePropertyToData(self.client.offset(), 'CCD_OFFSET.OFFSET')
+        self.storePropertyToData(self.client.fastreadout(),
                        'READOUT_QUALITY.QUALITY_LOW',
                        'READOUT_QUALITY.QUALITY_HIGH')
-        self.dataEntry(self.client.ccdtemperature(),
+        self.storePropertyToData(self.client.ccdtemperature(),
                        'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-        self.dataEntry(self.client.cooleron(), 'CCD_COOLER.COOLER_ON')
-        self.dataEntry(self.client.coolerpower(),
+        self.storePropertyToData(self.client.cooleron(), 'CCD_COOLER.COOLER_ON')
+        self.storePropertyToData(self.client.coolerpower(),
                        'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         return True
@@ -171,11 +171,8 @@ class CameraAlpaca(AlpacaClass):
                 break
 
         self.signals.integrated.emit()
-
-        if not self.abortExpose:
-            self.signals.message.emit('download')
-            data = np.array(self.client.imagearray(), dtype=np.uint16)
-            data = np.transpose(data)
+        self.signals.message.emit('download')
+        data = np.array(self.client.imagearray(), dtype=np.uint16).transpose()
 
         if not self.abortExpose:
             self.signals.message.emit('saving')

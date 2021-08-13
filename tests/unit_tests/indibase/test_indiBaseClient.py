@@ -993,7 +993,8 @@ def test_parseCmd_8(function):
 
 def test_parseCmd_9(function):
     class Test:
-        attr = {'name': 'test'}
+        attr = {'name': 'test',
+                'device': 'test'}
 
     function.connected = True
     suc = function._parseCmd(chunk=Test())

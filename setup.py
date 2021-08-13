@@ -56,7 +56,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b38',
+    version='2.0.0b39',
     packages=[
         'mw4',
         'mw4.base',
@@ -89,7 +89,7 @@ setup(
     install_requires=[
         'numpy==1.21.1',
         'pillow==8.3.1',
-        'matplotlib==3.4.3',
+        'matplotlib==3.4.2',
         'pyerfa==2.0.0',
         'astropy==4.3.1',
         'scipy==1.7.1',

@@ -461,7 +461,7 @@ def test_slewDome_3():
                                    'checkSlewNeeded',
                                    return_value=False):
                 delta = app.slewDome(0, 0, False)
-                assert delta == 0
+                assert delta == -10
 
 
 def test_slewDome_4():
@@ -479,7 +479,7 @@ def test_slewDome_4():
                                    'checkSlewNeeded',
                                    return_value=False):
                 delta = app.slewDome(0, 0, True)
-                assert delta == 0
+                assert delta == -10
 
 
 def test_avoidFirstOvershoot():

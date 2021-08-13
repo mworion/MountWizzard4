@@ -28,9 +28,10 @@ from PyQt5.QtTest import QTest
 
 # local imports
 from base.tpool import Worker
+from base.driverDataClass import DriverData
 
 
-class AscomSignals(QObject):
+class AscomSignals(DriverData):
 
     """
     The AscomSignals class offers a list of signals to be used and instantiated
@@ -231,32 +232,6 @@ class AscomClass(object):
         else:
             self.log.trace(f'Method [{method}] is set to [{param}]')
             return True
-
-    def storeAscomProperty(self, value, element, elementInv=None):
-        """
-        :param value:
-        :param element:
-        :param elementInv:
-        :return: reset entry
-        """
-        removeElement = value is None
-
-        if removeElement and element in self.data:
-            del self.data[element]
-
-        if removeElement and elementInv is not None:
-            if elementInv in self.data:
-                del self.data[elementInv]
-
-        if removeElement:
-            return False
-
-        self.data[element] = value
-
-        if elementInv is not None:
-            self.data[elementInv] = value
-
-        return True
 
     def getAndStoreAscomProperty(self, valueProp, element, elementInv=None):
         """

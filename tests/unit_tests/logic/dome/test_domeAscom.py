@@ -83,40 +83,41 @@ def test_workerPollData_1():
 
 def test_workerPollData_2():
     app.deviceConnected = True
-    suc = app.workerPollData()
-    assert suc
+    with mock.patch.object(app,
+                           'getAscomProperty',
+                           return_value=0):
+        with mock.patch.object(app,
+                               'storePropertyToData'):
+            with mock.patch.object(app,
+                                   'getAndStoreAscomProperty'):
+                suc = app.workerPollData()
+                assert not suc
 
 
 def test_workerPollData_3():
-    class Test:
-        ShutterStatus = 0
-        Slewing = False
-        Azimuth = 0
-        CanSetAltitude = True
-        CanSetAzimuth = True
-        CanSetShutter = True
-
-    app.clientProps = ['ShutterStatus']
     app.deviceConnected = True
-    app.client = Test()
-    suc = app.workerPollData()
-    assert suc
+    with mock.patch.object(app,
+                           'getAscomProperty',
+                           return_value=1):
+        with mock.patch.object(app,
+                               'storePropertyToData'):
+            with mock.patch.object(app,
+                                   'getAndStoreAscomProperty'):
+                suc = app.workerPollData()
+                assert not suc
 
 
 def test_workerPollData_4():
-    class Test:
-        ShutterStatus = 1
-        Slewing = False
-        Azimuth = 0
-        CanSetAltitude = True
-        CanSetAzimuth = True
-        CanSetShutter = True
-
-    app.clientProps = ['ShutterStatus']
     app.deviceConnected = True
-    app.client = Test()
-    suc = app.workerPollData()
-    assert suc
+    with mock.patch.object(app,
+                           'getAscomProperty',
+                           return_value=2):
+        with mock.patch.object(app,
+                               'storePropertyToData'):
+            with mock.patch.object(app,
+                                   'getAndStoreAscomProperty'):
+                suc = app.workerPollData()
+                assert not suc
 
 
 def test_slewToAltAz_1():

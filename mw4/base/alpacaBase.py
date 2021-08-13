@@ -22,32 +22,13 @@ import uuid
 from dateutil.parser import parser
 
 # external packages
-from PyQt5.QtCore import QObject, pyqtSignal
 import requests
 
 # local imports
+from base.driverDataClass import DriverData, Signals
 
 
-class AlpacaSignals(QObject):
-
-    """
-    The AlpacaSignals class offers a list of signals to be used and instantiated by
-    the Alpaca class to get signals for triggers for finished tasks to
-    enable a gui to update their values transferred to the caller back.
-
-    This has to be done in a separate class as the signals have to be subclassed from
-    QObject.
-    """
-
-    __all__ = ['AlpacaSignals']
-
-    serverConnected = pyqtSignal()
-    serverDisconnected = pyqtSignal(object)
-    deviceConnected = pyqtSignal(str)
-    deviceDisconnected = pyqtSignal(str)
-
-
-class AlpacaBase:
+class AlpacaBase(DriverData, Signals):
     """
     the class AlpacaBase inherits all information and handling of alpaca devices
     this class will be only referenced from other classes and will be not used
@@ -63,7 +44,7 @@ class AlpacaBase:
     def __init__(self):
         super().__init__()
 
-        self.signals = AlpacaSignals()
+        self.signals = Signals()
 
         self.protocol = 'http'
         self.host = ('localhost', 11111)

@@ -17,6 +17,18 @@
 # standard libraries
 import logging
 
+# external packages
+from PyQt5.QtCore import pyqtSignal, QObject
+
+
+class Signals(QObject):
+    __all__ = ['Signals']
+
+    serverConnected = pyqtSignal()
+    serverDisconnected = pyqtSignal(object)
+    deviceConnected = pyqtSignal(str)
+    deviceDisconnected = pyqtSignal(str)
+
 
 class DriverData:
     log = logging.getLogger(__name__)

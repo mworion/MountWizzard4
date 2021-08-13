@@ -69,7 +69,9 @@ def test_initConfig_4(function):
     function.screenSizeX = 1000
     function.screenSizeY = 1000
     function.app.config['analyseW'] = {'winPosX': 100,
-                                       'winPosY': 100}
+                                       'winPosY': 100,
+                                       'height': 10,
+                                       'width': 10}
     suc = function.initConfig()
     assert suc
 

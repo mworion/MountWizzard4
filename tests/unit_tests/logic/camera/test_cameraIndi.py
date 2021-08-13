@@ -194,6 +194,16 @@ def test_updateNumber_2():
         assert suc
 
 
+def test_updateNumber_3():
+    app.data = {'AUTO_DEW.DEW_C': 1,
+                'VERSION.UPB': 1}
+    with mock.patch.object(IndiClass,
+                           'updateNumber',
+                           return_value=True):
+        suc = app.updateNumber('test', 'CAN_SET_CCD_TEMPERATURE')
+        assert suc
+
+
 def test_updateHeaderInfo_1():
     header = {}
     app.ra = Angle(hours=12)

@@ -20,7 +20,6 @@
 # external packages
 from astropy.io import fits
 from PyQt5.QtTest import QTest
-from comtypes.safearray import safearray_as_ndarray
 import numpy as np
 
 # local imports

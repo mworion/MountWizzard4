@@ -70,7 +70,6 @@ class Model:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.checkDisableDAT.setChecked(config.get('checkDisableDAT', True))
         self.ui.retriesReverse.setChecked(config.get('retriesReverse', False))
         self.ui.parkMountAfterModel.setChecked(config.get('parkMountAfterModel', False))
         self.ui.numberBuildRetries.setValue(config.get('numberBuildRetries', 0))
@@ -81,7 +80,6 @@ class Model:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['checkDisableDAT'] = self.ui.checkDisableDAT.isChecked()
         config['retriesReverse'] = self.ui.retriesReverse.isChecked()
         config['parkMountAfterModel'] = self.ui.parkMountAfterModel.isChecked()
         config['numberBuildRetries'] = self.ui.numberBuildRetries.value()
@@ -400,8 +398,6 @@ class Model:
         """
         :return: True for test purpose
         """
-        if not self.ui.checkDisableDAT.isChecked():
-            return False
         if self.statusDAT is None:
             self.statusDAT = self.app.mount.setting.statusDualAxisTracking
 
@@ -414,8 +410,6 @@ class Model:
         """
         :return: true for test purpose
         """
-        if not self.ui.checkDisableDAT.isChecked():
-            return False
         if self.statusDAT is None:
             return False
 

@@ -585,8 +585,7 @@ def test_modelSlew_4(function):
                 assert suc
 
 
-def test_changeStatusDAT_1(function):
-    function.ui.checkDisableDAT.setChecked(True)
+def test_disableDAT_1(function):
     function.app.mount.setting.statusDualAxisTracking = True
     with mock.patch.object(function.app.mount.setting,
                            'setDualAxisTracking'):
@@ -595,8 +594,7 @@ def test_changeStatusDAT_1(function):
         assert function.statusDAT
 
 
-def test_changeStatusDAT_2(function):
-    function.ui.checkDisableDAT.setChecked(True)
+def test_disableDAT_2(function):
     function.app.mount.setting.statusDualAxisTracking = False
     with mock.patch.object(function.app.mount.setting,
                            'setDualAxisTracking'):
@@ -605,8 +603,7 @@ def test_changeStatusDAT_2(function):
         assert not function.statusDAT
 
 
-def test_changeStatusDAT_3(function):
-    function.ui.checkDisableDAT.setChecked(True)
+def test_disableDAT_3(function):
     function.statusDAT = True
     function.app.mount.setting.statusDualAxisTracking = True
     with mock.patch.object(function.app.mount.setting,
@@ -616,26 +613,7 @@ def test_changeStatusDAT_3(function):
         assert function.statusDAT
 
 
-def test_changeStatusDAT_4(function):
-    function.ui.checkDisableDAT.setChecked(False)
-    function.statusDAT = True
-    function.app.mount.setting.statusDualAxisTracking = True
-    with mock.patch.object(function.app.mount.setting,
-                           'setDualAxisTracking'):
-        suc = function.disableDAT()
-        assert not suc
-        assert function.statusDAT
-
-
 def test_restoreStatusDAT_1(function):
-    function.ui.checkDisableDAT.setChecked(True)
-    function.statusDAT = None
-    suc = function.restoreStatusDAT()
-    assert not suc
-
-
-def test_restoreStatusDAT_2(function):
-    function.ui.checkDisableDAT.setChecked(True)
     function.statusDAT = True
     with mock.patch.object(function.app.mount.setting,
                            'setDualAxisTracking'):
@@ -643,8 +621,7 @@ def test_restoreStatusDAT_2(function):
         assert suc
 
 
-def test_restoreStatusDAT_3(function):
-    function.ui.checkDisableDAT.setChecked(False)
+def test_restoreStatusDAT_2(function):
     suc = function.restoreStatusDAT()
     assert not suc
 

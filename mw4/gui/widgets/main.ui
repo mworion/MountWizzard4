@@ -8538,7 +8538,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>310</y>
+       <y>305</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -8610,7 +8610,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>410</x>
        <y>15</y>
        <width>366</width>
-       <height>286</height>
+       <height>276</height>
       </rect>
      </property>
      <property name="title">
@@ -9036,7 +9036,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>135</y>
+        <y>140</y>
         <width>356</width>
         <height>21</height>
        </rect>
@@ -9169,38 +9169,11 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Pause</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkDisableDAT">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>160</y>
-        <width>356</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>Disables dual axis tracking and restores the status after model build. In case of automatic disabling a yellow frame shown around DAT setting.</string>
-      </property>
-      <property name="text">
-       <string>Disable dual axis tracking during model build</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
      <widget class="QCheckBox" name="parkMountAfterModel">
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>185</y>
+        <y>175</y>
         <width>266</width>
         <height>20</height>
        </rect>
@@ -9230,7 +9203,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>210</y>
+        <y>200</y>
         <width>336</width>
         <height>20</height>
        </rect>
@@ -9279,7 +9252,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>145</x>
-        <y>235</y>
+        <y>225</y>
         <width>41</width>
         <height>21</height>
        </rect>
@@ -9315,7 +9288,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>195</x>
-        <y>235</y>
+        <y>225</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -9336,7 +9309,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>235</y>
+        <y>225</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -9357,7 +9330,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>260</y>
+        <y>250</y>
         <width>356</width>
         <height>20</height>
        </rect>
@@ -28385,7 +28358,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>pauseModel</tabstop>
   <tabstop>endModel</tabstop>
   <tabstop>cancelModel</tabstop>
-  <tabstop>checkDisableDAT</tabstop>
   <tabstop>parkMountAfterModel</tabstop>
   <tabstop>excludeDonePoints</tabstop>
   <tabstop>numberBuildRetries</tabstop>

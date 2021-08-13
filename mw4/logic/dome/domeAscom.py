@@ -60,7 +60,7 @@ class DomeAscom(AscomClass):
             return False
 
         azimuth = self.getAscomProperty('Azimuth')
-        self.storeAscomProperty(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
+        self.storePropertyToData(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
         self.getAndStoreAscomProperty('Slewing', 'Slewing')
         self.getAndStoreAscomProperty('CanSetAltitude', 'CanSetAltitude')
@@ -70,16 +70,16 @@ class DomeAscom(AscomClass):
         state = self.getAscomProperty('ShutterStatus')
         if state == 0:
             stateText = self.shutterStates[state]
-            self.storeAscomProperty(stateText, 'Status.Shutter')
-            self.storeAscomProperty(True,
+            self.storePropertyToData(stateText, 'Status.Shutter')
+            self.storePropertyToData(True,
                                     'DOME_SHUTTER.SHUTTER_OPEN',
-                                    elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
+                                     elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         elif state == 1:
             stateText = shutterStates[state]
-            self.storeAscomProperty(stateText, 'Status.Shutter')
-            self.storeAscomProperty(False,
+            self.storePropertyToData(stateText, 'Status.Shutter')
+            self.storePropertyToData(False,
                                     'DOME_SHUTTER.SHUTTER_OPEN',
-                                    elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
+                                     elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         else:
             self.data['DOME_SHUTTER.SHUTTER_OPEN'] = None
             self.data['DOME_SHUTTER.SHUTTER_CLOSED'] = None

@@ -222,7 +222,7 @@ class AscomClass(DriverData, Signals):
         :return: reset entry
         """
         value = self.getAscomProperty(valueProp)
-        self.storeAscomProperty(value, element, elementInv)
+        self.storePropertyToData(value, element, elementInv)
         return True
 
     def pollStatusWorker(self):

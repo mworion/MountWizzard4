@@ -57,7 +57,7 @@ class CoverAscom(AscomClass):
 
         state = self.getAscomProperty('CoverState')
         stateText = coverStates[state]
-        self.storeAscomProperty(stateText, 'Status.Cover')
+        self.storePropertyToData(stateText, 'Status.Cover')
         return True
 
     def closeCover(self):

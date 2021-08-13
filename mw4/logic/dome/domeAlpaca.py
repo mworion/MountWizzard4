@@ -65,26 +65,26 @@ class DomeAlpaca(AlpacaClass):
         shutterStates = ['Open', 'Closed', 'Opening', 'Closing', 'Error']
 
         azimuth = self.client.azimuth()
-        self.dataEntry(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
+        self.storePropertyToData(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
-        self.dataEntry(self.client.slewing(), 'Slewing')
-        self.dataEntry(self.client.cansetaltitude(), 'CanSetAltitude')
-        self.dataEntry(self.client.cansetazimuth(), 'CanSetAzimuth')
-        self.dataEntry(self.client.cansetshutter(), 'CanSetShutter')
+        self.storePropertyToData(self.client.slewing(), 'Slewing')
+        self.storePropertyToData(self.client.cansetaltitude(), 'CanSetAltitude')
+        self.storePropertyToData(self.client.cansetazimuth(), 'CanSetAzimuth')
+        self.storePropertyToData(self.client.cansetshutter(), 'CanSetShutter')
 
         state = self.client.shutterstatus()
         if state == 0:
             stateText = shutterStates[state]
-            self.dataEntry(stateText, 'Status.Shutter')
-            self.dataEntry(True,
+            self.storePropertyToData(stateText, 'Status.Shutter')
+            self.storePropertyToData(True,
                            'DOME_SHUTTER.SHUTTER_OPEN',
-                           elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
+                                     elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         elif state == 1:
             stateText = shutterStates[state]
-            self.dataEntry(stateText, 'Status.Shutter')
-            self.dataEntry(False,
+            self.storePropertyToData(stateText, 'Status.Shutter')
+            self.storePropertyToData(False,
                            'DOME_SHUTTER.SHUTTER_OPEN',
-                           elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
+                                     elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         else:
             self.data['DOME_SHUTTER.SHUTTER_OPEN'] = None
             self.data['DOME_SHUTTER.SHUTTER_CLOSED'] = None

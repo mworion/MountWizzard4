@@ -25,10 +25,10 @@ from dateutil.parser import parser
 import requests
 
 # local imports
-from base.driverDataClass import DriverData, Signals
+from base.driverDataClass import Signals
 
 
-class AlpacaBase(DriverData, Signals):
+class AlpacaBase(Signals):
     """
     the class AlpacaBase inherits all information and handling of alpaca devices
     this class will be only referenced from other classes and will be not used

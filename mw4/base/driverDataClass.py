@@ -33,7 +33,7 @@ class Signals(QObject):
 class DriverData:
     log = logging.getLogger(__name__)
 
-    def storeAscomProperty(self, value, element, elementInv=None):
+    def storePropertyToData(self, value, element, elementInv=None):
         """
         :param value:
         :param element:

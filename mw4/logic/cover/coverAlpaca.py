@@ -61,7 +61,7 @@ class CoverAlpaca(AlpacaClass):
 
         state = self.client.coverstate()
         stateText = states[state]
-        self.dataEntry(stateText, 'Status.Cover')
+        self.storePropertyToData(stateText, 'Status.Cover')
         return True
 
     def closeCover(self):

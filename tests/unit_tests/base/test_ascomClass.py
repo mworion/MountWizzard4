@@ -280,7 +280,7 @@ def test_getAndStoreAscomProperty():
     with mock.patch.object(app,
                            'getAscomProperty'):
         with mock.patch.object(app,
-                               'storeAscomProperty'):
+                               'storePropertyToData'):
             suc = app.getAndStoreAscomProperty(10, 'YES', 'NO')
             assert suc
 

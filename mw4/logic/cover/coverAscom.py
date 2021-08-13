@@ -33,6 +33,7 @@ class CoverAscom(AscomClass):
                ]
 
     CYCLE_POLL_DATA = 1000
+    coverStates = ['NotPresent', 'Closed', 'Moving', 'Open', 'Unknown', 'Error']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
@@ -51,12 +52,11 @@ class CoverAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        coverStates = ['NotPresent', 'Closed', 'Moving', 'Open', 'Unknown', 'Error']
         if not self.deviceConnected:
             return False
 
         state = self.getAscomProperty('CoverState')
-        stateText = coverStates[state]
+        stateText = self.coverStates[state]
         self.storePropertyToData(stateText, 'Status.Cover')
         return True
 

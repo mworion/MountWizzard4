@@ -103,7 +103,8 @@ class AscomClass(DriverData, Signals):
 
             except Exception as e:
                 suc = False
-                self.log.warning(f'Connection error [{self.deviceName}]: [{e}]')
+                t = f'Connection retry [{retry}]: [{self.deviceName}]: [{e}]'
+                self.log.warning(t)
 
             else:
                 suc = self.isClientConnected()

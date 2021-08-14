@@ -263,7 +263,7 @@ def test_checkSlewNeeded_1():
                            'checkTargetConditions',
                            return_value=False):
         suc = app.checkSlewNeeded(0, 0)
-        assert not suc
+        assert suc
 
 
 def test_checkSlewNeeded_2():

@@ -178,11 +178,11 @@ class HemisphereWindowExt:
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
                                                     az_degrees=azimuth)
         if not suc:
-            t = f'Cannot slew to AZ: [{azimuthT}], ALT: [{altitudeT}]'
+            t = f'Cannot slew to AZ: [{azimuth}], ALT: [{altitude}]'
             self.app.message.emit(t, 2)
             return False
 
-        t = f'Slewing mount to AZ: [{azimuthT}], ALT: [{altitudeT}]'
+        t = f'Slewing mount to AZ: [{azimuth}], ALT: [{altitude}]'
         self.app.message.emit(t, 0)
         suc = self.slewSelectedTarget(slewType='keep')
         return suc

@@ -144,9 +144,10 @@ class HemisphereWindowExt:
         suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
 
         if suc:
-            self.app.message.emit('Slewing mount', 0)
+            t = f'Slewing mount to AZ: [{azimuthT}], ALT: [{altitudeT}]'
+            self.app.message.emit(t, 0)
         else:
-            t = f'Cannot slew to: {azimuthT}, {altitudeT}'
+            t = f'Cannot slew to AZ: [{azimuthT}], ALT: [{altitudeT}]'
             self.app.message.emit(t, 2)
 
         return suc
@@ -177,10 +178,12 @@ class HemisphereWindowExt:
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
                                                     az_degrees=azimuth)
         if not suc:
-            t = f'Cannot slew to: {azimuth}, {altitude}'
+            t = f'Cannot slew to AZ: [{azimuthT}], ALT: [{altitudeT}]'
             self.app.message.emit(t, 2)
             return False
 
+        t = f'Slewing mount to AZ: [{azimuthT}], ALT: [{altitudeT}]'
+        self.app.message.emit(t, 0)
         suc = self.slewSelectedTarget(slewType='keep')
         return suc
 
@@ -382,9 +385,10 @@ class HemisphereWindowExt:
         suc = self.app.mount.obsSite.setTargetRaDec(ra_hours=ra,
                                                     dec_degrees=dec)
         if not suc:
-            self.app.message.emit(f'Cannot slew to: {name}', 2)
+            self.app.message.emit(f'Cannot slew to: [{name}]', 2)
             return False
 
+        self.app.message.emit(f'Slewing mount to: [{name}]', 2)
         suc = self.slewSelectedTarget(slewType=alignType)
         return suc
 

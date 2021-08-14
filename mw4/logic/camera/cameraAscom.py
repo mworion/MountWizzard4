@@ -172,8 +172,9 @@ class CameraAscom(AscomClass):
                 break
 
         self.signals.integrated.emit()
-        self.signals.message.emit('download')
-        data = np.array(self.client.ImageArray, dtype=np.uint16).transpose()
+        if not self.abortExpose:
+            self.signals.message.emit('download')
+            data = np.array(self.client.ImageArray, dtype=np.uint16).transpose()
 
         if not self.abortExpose:
             self.signals.message.emit('saving')
@@ -202,7 +203,7 @@ class CameraAscom(AscomClass):
                 header['DEC'] = dec.degrees
                 header['TELESCOP'] = self.app.mount.firmware.product
 
-            hdu.writeto(imagePath, overwrite=True)
+            hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
             self.log.info(f'Saved Image: [{imagePath}], FITS: [{header}]')
 
         if self.abortExpose:

@@ -58,7 +58,7 @@ def getCoordinates(header={}):
         ra = Angle(hours=0)
         dec = Angle(degrees=0)
 
-    log.debug(f'HasFloat: [{hasCoordFloat}], hasDeg: [{hasCoordDeg}]')
+    log.debug(f'HasFloat: [{hasCoordFloat}], HasDeg: [{hasCoordDeg}]')
     log.debug(f'Ra:[{ra}], Dec: [{dec}], Header:[{header}]')
 
     return ra, dec

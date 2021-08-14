@@ -108,9 +108,9 @@ class SettDome(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.domeClearOpening.setValue(config.get('domeClearOpening', 0.2))
+        self.ui.domeClearOpening.setValue(config.get('domeClearOpening', 0.4))
         self.ui.domeOpeningHysteresis.setValue(config.get('domeOpeningHysteresis',
-                                                          0.1))
+                                                          0.0))
         self.ui.domeClearanceZenith.setValue(config.get('domeClearanceZenith', 0.2))
         self.ui.useOvershoot.setChecked(config.get('useOvershoot', False))
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))

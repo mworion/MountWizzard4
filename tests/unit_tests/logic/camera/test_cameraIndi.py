@@ -200,7 +200,7 @@ def test_updateNumber_3():
     with mock.patch.object(IndiClass,
                            'updateNumber',
                            return_value=True):
-        suc = app.updateNumber('test', 'CAN_SET_CCD_TEMPERATURE')
+        suc = app.updateNumber('test', 'CCD_TEMPERATURE')
         assert suc
 
 

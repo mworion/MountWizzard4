@@ -88,6 +88,14 @@ def test_tab8(function):
     function.tab8()
 
 
+def test_tab9(function):
+    function.tab9()
+
+
+def test_tab10(function):
+    function.tab10()
+
+
 def test_initConfig_1(function):
     function.app.config['mainW'] = {}
     suc = function.initConfig()

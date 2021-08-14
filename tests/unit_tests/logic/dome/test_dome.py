@@ -426,6 +426,18 @@ def test_calcOvershoot_7():
     assert round(val, 3) == 22.405
 
 
+def test_calcOvershoot_8():
+    app.clearOpening = 0.8
+    app.openingHysteresis = 0.2
+    app.radius = 1.5
+    app.avoidFirstSlewOvershoot = False
+    app.app.mount.obsSite.AzDirection = -1
+    app.overshoot = True
+    app.lastFinalAz = 10
+    val = app.calcOvershoot(15)
+    assert round(val, 3) == 10
+
+
 def test_slewDome_1():
     app.data = {}
     suc = app.slewDome()

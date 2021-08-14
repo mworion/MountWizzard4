@@ -181,7 +181,8 @@ class CameraIndi(IndiClass):
             return True
 
         HDU[0].header = self.updateHeaderInfo(HDU[0].header)
-        fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
+        fits.writeto(self.imagePath, HDU[0].data, HDU[0].header,
+                     overwrite=True, output_verify='silentfix+warn')
 
         self.signals.saved.emit(self.imagePath)
         self.signals.message.emit('')

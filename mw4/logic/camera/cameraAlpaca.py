@@ -200,7 +200,7 @@ class CameraAlpaca(AlpacaClass):
                 header['DEC'] = dec.degrees
                 header['TELESCOP'] = self.app.mount.firmware.product
 
-            hdu.writeto(imagePath, overwrite=True)
+            hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
             self.log.info(f'Saved Image: [{imagePath}]')
 
         if self.abortExpose:

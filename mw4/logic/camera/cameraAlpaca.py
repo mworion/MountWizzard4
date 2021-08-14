@@ -174,8 +174,6 @@ class CameraAlpaca(AlpacaClass):
         if not self.abortExpose:
             self.signals.message.emit('download')
             data = np.array(self.client.imagearray(), dtype=np.uint16).transpose()
-
-        if not self.abortExpose:
             self.signals.message.emit('saving')
             hdu = fits.PrimaryHDU(data=data)
             header = hdu.header

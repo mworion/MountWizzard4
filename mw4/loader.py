@@ -173,11 +173,14 @@ class MyApp(QApplication):
         elif isinstance(obj, QPushButton):
             self.log.ui(f'Click Button  : [{obj.objectName()}]')
         elif isinstance(obj, QRadioButton):
-            self.log.ui(f'Click Radio   : [{obj.objectName()}]:{obj.isChecked()}')
+            self.log.ui(f'Click Radio   : [{obj.objectName()}]'
+                        f'old value: [{obj.isChecked()}]')
         elif isinstance(obj, QGroupBox):
-            self.log.ui(f'Click Group   : [{obj.objectName()}]:{obj.isChecked()}')
+            self.log.ui(f'Click Group   : [{obj.objectName()}]'
+                        f'old value: [{obj.isChecked()}]')
         elif isinstance(obj, QCheckBox):
-            self.log.ui(f'Click Checkbox: [{obj.objectName()}]:{obj.isChecked()}')
+            self.log.ui(f'Click Checkbox: [{obj.objectName()}]'
+                        f'old value: [{obj.isChecked()}]')
         elif isinstance(obj, QLineEdit):
             self.log.ui(f'Click EditLine: [{obj.objectName()}]:{obj.text()}')
         else:

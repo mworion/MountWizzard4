@@ -171,17 +171,23 @@ class Dome:
         :return:
         """
         if self.openingHysteresis is None:
+            self.log.debug('No opening hysteresis')
             return False
         if self.clearanceZenith is None:
+            self.log.debug('No clearance zenith')
             return False
         if self.overshoot is None:
+            self.log.debug('No overshoot')
             return False
         if self.radius is None:
+            self.log.debug('No radius')
             return False
         if self.clearOpening is None:
+            self.log.debug('No clear opening')
             return False
         BC = self.clearOpening - 2 * self.openingHysteresis
-        if BC <= 0:
+        if BC < 0:
+            self.log.debug('Resulting opening to small')
             return False
         return True
 
@@ -232,8 +238,8 @@ class Dome:
         :return:
         """
         if not self.checkTargetConditions():
-            self.log.debug('Slew needed: [False]')
-            return False
+            self.log.info('Target conditions not mez, slewing anyway')
+            return True
 
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
         A, B, C = self.calcTargetRectanglePoints(azimuth)

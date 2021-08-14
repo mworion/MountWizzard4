@@ -275,18 +275,17 @@ class Dome:
         """
         if not self.overshoot:
             self.lastFinalAz = None
-            self.log.debug(f'Overshoot: [{az}]')
             return az
 
         if self.avoidFirstSlewOvershoot:
             self.avoidFirstSlewOvershoot = False
             self.lastFinalAz = None
-            self.log.debug(f'Overshoot: [{az}]')
+            self.log.debug(f'First overshoot disabled: [{az}]')
             return az
 
         direction = self.app.mount.obsSite.AzDirection
         if direction is None:
-            self.log.debug(f'Overshoot: [{az}]')
+            self.log.debug(f'Overshoot discarded no direction: [{az}]')
             return az
 
         y = max(self.clearOpening / 2 - self.openingHysteresis, 0)
@@ -298,14 +297,17 @@ class Dome:
 
         if self.lastFinalAz is None:
             self.lastFinalAz = finalAz
-            self.log.debug(f'Overshoot: [{finalAz}]')
+            self.log.debug(f'First overshoot value: [{finalAz}]')
             return finalAz
 
         delta = diffModulusAbs(self.lastFinalAz, finalAz, 360)
         if delta > maxOvershootAzimuth / 2:
             self.lastFinalAz = finalAz
+            self.log.debug('New overshoot value')
+        else:
+            self.log.debug('Use old overshoot value')
 
-        self.log.debug(f'Overshoot: [{self.lastFinalAz}]')
+        self.log.debug(f'Overshoot value: [{self.lastFinalAz}]')
         return self.lastFinalAz
 
     def slewDome(self, altitude=0, azimuth=0, follow=False):

@@ -141,17 +141,10 @@ def test_sendDownloadMode_4():
     assert not suc
 
 
-def test_workerExpose_0():
-    app.deviceConnected = False
-    suc = app.workerExpose()
-    assert not suc
-
-
 def test_workerExpose_1():
     def mockGetAscomProperty(a):
         return False
 
-    app.deviceConnected = True
     app.data['CAN_FAST'] = False
     app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
     app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
@@ -173,7 +166,6 @@ def test_workerExpose_2():
     def mockGetAscomProperty(a):
         return False
 
-    app.deviceConnected = True
     app.data['CAN_FAST'] = False
     app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
     app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
@@ -195,7 +187,6 @@ def test_workerExpose_3():
     def mockGetAscomProperty(a):
         return True
 
-    app.deviceConnected = True
     app.data['CAN_FAST'] = False
     app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
     app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
@@ -213,15 +204,8 @@ def test_workerExpose_3():
 
 
 def test_expose_1():
-    app.deviceConnected = False
-    suc = app.expose()
-    assert not suc
-
-
-def test_expose_2():
-    app.deviceConnected = True
-    with mock.patch.object(app.threadPool,
-                           'start'):
+    with mock.patch.object(app,
+                           'callMethodThreaded'):
         suc = app.expose()
         assert suc
 

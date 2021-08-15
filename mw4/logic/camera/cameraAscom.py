@@ -127,9 +127,6 @@ class CameraAscom(AscomClass):
         :param focalLength:
         :return: success
         """
-        if not self.deviceConnected:
-            return False
-
         self.sendDownloadMode(fastReadout=fastReadout)
         self.setAscomProperty('BinX', int(binning))
         self.setAscomProperty('BinY', int(binning))
@@ -243,7 +240,6 @@ class CameraAscom(AscomClass):
             return False
 
         self.client.StopExposure()
-
         return True
 
     def sendCoolerSwitch(self, coolerOn=False):

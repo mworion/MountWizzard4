@@ -64,6 +64,7 @@ class Model:
         self.ui.endModel.clicked.connect(self.processModelData)
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
         self.ui.batchModel.clicked.connect(self.loadProgramModel)
+        self.ui.plateSolveSync.clicked.connect(self.plateSolveSync)
 
     def initConfig(self):
         """
@@ -995,3 +996,132 @@ class Model:
             self.app.message.emit('Model programming error', 2)
 
         return suc
+
+    def exposeRaw(self, expTime, binning):
+        """
+        :param expTime:
+        :param binning:
+        :return: True for test purpose
+        """
+        subFrame = self.app.camera.subFrame
+        fastReadout = self.app.camera.checkFastDownload
+
+        time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        fileName = time + '-sync.fits'
+        imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
+        focalLength = self.app.telescope.focalLength
+
+        self.app.camera.expose(imagePath=imagePath,
+                               expTime=expTime,
+                               binning=binning,
+                               subFrame=subFrame,
+                               fastReadout=fastReadout,
+                               focalLength=focalLength
+                               )
+
+        text = f'Exposing:            [{os.path.basename(imagePath)}]'
+        self.app.message.emit(text, 0)
+        text = f'Duration:{expTime:3.0f}s  '
+        text += f'Bin:{binning:1.0f}  Sub:{subFrame:3.0f}%'
+        self.app.message.emit(f'                     {text}', 0)
+
+        return True
+
+    def syncMountAndClearUp(self):
+        """
+        :return:
+        """
+        self.ui.runModel.setEnabled(True)
+        self.ui.batchModel.setEnabled(True)
+        self.ui.plateSolveSync.setEnabled(True)
+        self.ui.runFlexure.setEnabled(True)
+        self.ui.runHysteresis.setEnabled(True)
+        return True
+
+    def solveDone(self, result=None):
+        """
+        :param result: result (named tuple)
+        :return: success
+        """
+        self.app.astrometry.signals.done.disconnect(self.solveDone)
+
+        if not result:
+            self.app.message.emit('Solving error, result missing', 2)
+            return False
+
+        if result['success']:
+            text = 'Solved :             '
+            text += f'RA: {convertToHMS(result["raJ2000S"])} '
+            text += f'({result["raJ2000S"].hours:4.3f}), '
+            text += f'DEC: {convertToDMS(result["decJ2000S"])} '
+            text += f'({result["decJ2000S"].degrees:4.3f}), '
+            self.app.message.emit(text, 0)
+            text = '                     '
+            text += f'Angle: {result["angleS"]:3.0f}, '
+            text += f'Scale: {result["scaleS"]:4.3f}, '
+            text += f'Error: {result["errorRMS_S"]:4.1f}'
+            self.app.message.emit(text, 0)
+
+        else:
+            text = f'Solving error:       {result.get("message")}'
+            self.app.message.emit(text, 2)
+            return False
+
+        self.app.showImage.emit(result['solvedPath'])
+        self.app.message.emit('Successfully synced model in mount', 1)
+        return True
+
+    def solveImage(self, imagePath=''):
+        """
+        :param imagePath:
+        :return:
+        """
+        if not imagePath:
+            return False
+        if not os.path.isfile(imagePath):
+            return False
+
+        self.app.astrometry.signals.done.connect(self.solveDone)
+        self.app.astrometry.solveThreading(fitsPath=imagePath)
+        text = f'Solving:             [{os.path.basename(imagePath)}]'
+        self.app.message.emit(text, 0)
+        return True
+
+    def exposeImageDone(self, imagePath=''):
+        """
+        :param imagePath:
+        :return: True for test purpose
+        """
+        self.app.camera.signals.saved.disconnect(self.exposeImageDone)
+        text = f'Exposed:             [{os.path.basename(imagePath)}]'
+        self.app.message.emit(text, 0)
+        self.solveImage(imagePath)
+        return True
+
+    def exposeImage(self):
+        """
+        :return: success
+        """
+        expTime = self.app.camera.expTime
+        binning = self.app.camera.binning
+        self.app.camera.signals.saved.connect(self.exposeImageDone)
+        self.exposeRaw(expTime, binning)
+        return True
+
+    def plateSolveSync(self):
+        """
+        :return:
+        """
+        self.app.message.emit('Starting plate solve and sync model in mount', 1)
+        sucApp, sucIndex = self.app.astrometry.checkAvailability()
+        if not (sucApp and sucIndex):
+            self.app.message.emit('No valid configuration for plate solver', 2)
+            return False
+
+        self.ui.runModel.setEnabled(False)
+        self.ui.batchModel.setEnabled(False)
+        self.ui.plateSolveSync.setEnabled(False)
+        self.ui.runFlexure.setEnabled(False)
+        self.ui.runHysteresis.setEnabled(False)
+        self.exposeImage()
+        return True

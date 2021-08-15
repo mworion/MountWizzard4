@@ -993,16 +993,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         if not imagePath:
             return False
-
         if not os.path.isfile(imagePath):
             return False
 
         updateFits = self.ui.checkEmbedData.isChecked()
+        self.app.astrometry.signals.done.connect(self.solveDone)
         self.app.astrometry.solveThreading(fitsPath=imagePath,
                                            updateFits=updateFits,
                                            )
         self.deviceStat['solve'] = True
-        self.app.astrometry.signals.done.connect(self.solveDone)
         text = f'Solving:             [{os.path.basename(imagePath)}]'
         self.app.message.emit(text, 0)
         return True

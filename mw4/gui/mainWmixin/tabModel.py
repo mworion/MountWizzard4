@@ -1071,10 +1071,17 @@ class Model:
 
         obs = self.app.mount.obsSite
         timeJD = obs.timeJD
-        raJNow, decJNow = transform.J2000ToJNow(ra, dec, timeJD)
+        raJNow, decJNow = transform.J2000ToJNow(result['raJ2000S'],
+                                                result['decJ2000S'],
+                                                timeJD)
         obs.setTargetRaDec(raJNow, decJNow)
-
-        self.app.message.emit('Successfully synced model in mount', 1)
+        suc = obs.syncPositionToTarget()
+        if suc:
+            t = 'Successfully synced model in mount to coordinates'
+            self.app.message.emit(t, 1)
+        else:
+            t = 'No sync, match failed because coordinates to far off for model'
+            self.app.message.emit(t, 2)
         return True
 
     def solveImage(self, imagePath=''):

@@ -306,6 +306,7 @@ class MainWindow(
         :return:    nothing
         """
         self.closing = True
+        self.stopDrivers()
         self.app.timer0_1s.stop()
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.closeExtendedWindows()

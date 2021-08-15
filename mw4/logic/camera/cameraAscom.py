@@ -91,10 +91,7 @@ class CameraAscom(AscomClass):
         :return: success
         """
         canFast = self.data.get('CAN_FAST', False)
-
         if not canFast:
-            return False
-        if not self.deviceConnected:
             return False
         if fastReadout:
             self.setAscomProperty('FastReadout', True)
@@ -166,7 +163,7 @@ class CameraAscom(AscomClass):
             self.signals.message.emit('saving')
             hdu = fits.PrimaryHDU(data=data)
             header = hdu.header
-            header['OBJECT'] = 'skymodel'
+            header['OBJECT'] = 'SKY_OBJECT'
             header['FRAME'] = 'Light'
             header['EQUINOX'] = 2000
             header['PIXSIZE1'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning

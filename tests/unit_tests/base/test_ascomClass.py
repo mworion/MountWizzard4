@@ -29,7 +29,6 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
 if platform.system() == 'Windows':
     import win32com.client
-    import pythoncom
 
 # local import
 from base.ascomClass import AscomClass
@@ -49,7 +48,6 @@ def module_setup_teardown():
         app = AscomClass(app=Test(), data={}, threadPool=QThreadPool())
 
     yield
-
     app.threadPool.waitForDone(1000)
 
 
@@ -81,6 +79,39 @@ def test_isClientConnected():
     app.isClientConnected()
 
 
+def test_workerConnectAscomDevice_1():
+    class Client:
+        connected = False
+
+    app.serverConnected = False
+    app.deviceConnected = False
+    app.client = Client()
+    with mock.patch.object(QTest,
+                           'qWait'):
+        with mock.patch.object(app,
+                               'connectClient',
+                               side_effect=Exception):
+            suc = app.workerConnectAscomDevice()
+            assert not suc
+            assert not app.serverConnected
+            assert not app.deviceConnected
+
+
+def test_workerConnectAscomDevice_2():
+    class Client:
+        connected = False
+
+    app.serverConnected = False
+    app.deviceConnected = False
+    app.client = Client()
+    with mock.patch.object(QTest,
+                           'qWait'):
+        suc = app.workerConnectAscomDevice()
+        assert suc
+        assert app.serverConnected
+        assert app.deviceConnected
+
+
 def test_getInitialConfig_1():
     class Test:
         connected = False
@@ -88,37 +119,12 @@ def test_getInitialConfig_1():
         DriverVersion = '1'
         DriverInfo = 'test1'
 
-    app.serverConnected = False
-    app.deviceConnected = False
     app.client = Test()
-    with mock.patch.object(QTest,
-                           'qWait'):
-        suc = app.workerGetInitialConfig()
-        assert suc
-        assert app.serverConnected
-        assert app.deviceConnected
-        assert app.data['DRIVER_INFO.DRIVER_NAME'] == 'test'
-        assert app.data['DRIVER_INFO.DRIVER_VERSION'] == '1'
-        assert app.data['DRIVER_INFO.DRIVER_EXEC'] == 'test1'
-
-
-def test_getInitialConfig_2():
-    class Test:
-        connected = False
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
-
-    app.serverConnected = False
-    app.deviceConnected = False
-    app.client = Test()
-    with mock.patch.object(app,
-                           'connectClient',
-                           side_effect=Exception):
-        with mock.patch.object(QTest,
-                               'qWait'):
-            suc = app.workerGetInitialConfig()
-            assert not suc
+    suc = app.workerGetInitialConfig()
+    assert suc
+    assert app.data['DRIVER_INFO.DRIVER_NAME'] == 'test'
+    assert app.data['DRIVER_INFO.DRIVER_VERSION'] == '1'
+    assert app.data['DRIVER_INFO.DRIVER_EXEC'] == 'test1'
 
 
 def test_startTimer():
@@ -296,7 +302,7 @@ def test_pollStatus_1():
     app.deviceConnected = False
     app.client = Test()
 
-    suc = app.pollStatusWorker()
+    suc = app.workerPollStatus()
     assert not suc
     assert not app.deviceConnected
 
@@ -312,7 +318,7 @@ def test_pollStatus_2():
     app.deviceConnected = True
     app.client = Test()
 
-    suc = app.pollStatusWorker()
+    suc = app.workerPollStatus()
     assert not suc
     assert not app.deviceConnected
 
@@ -328,7 +334,7 @@ def test_pollStatus_3():
     app.deviceConnected = False
     app.client = Test()
 
-    suc = app.pollStatusWorker()
+    suc = app.workerPollStatus()
     assert suc
     assert app.deviceConnected
 
@@ -346,8 +352,15 @@ def test_pollStatus_4():
     with mock.patch.object(app,
                            'isClientConnected',
                            side_effect=Exception()):
-        suc = app.pollStatusWorker()
+        suc = app.workerPollStatus()
         assert not suc
+
+
+def test_callerInitUnInit_1():
+    def test():
+        return 1
+    result = app.callerInitUnInit(test)
+    assert result == 1
 
 
 def test_callMethodThreaded_1():
@@ -363,9 +376,22 @@ def test_callMethodThreaded_2():
     def test():
         return
 
+    app.deviceConnected = False
+    with mock.patch.object(app.threadPool,
+                           'start'):
+        suc = app.callMethodThreaded(test, check=False)
+        assert suc
+
+
+def test_callMethodThreaded_3():
+    def test():
+        return
+
     app.deviceConnected = True
-    suc = app.callMethodThreaded(test)
-    assert suc
+    with mock.patch.object(app.threadPool,
+                           'start'):
+        suc = app.callMethodThreaded(test, cb_fin=test, cb_res=test)
+        assert suc
 
 
 def test_processPolledData():
@@ -376,21 +402,25 @@ def test_workerPollData():
     app.workerPollData()
 
 
-def test_pollData_1():
-    app.deviceConnected = False
-    suc = app.pollData()
-    assert not suc
+def test_pollData():
+    with mock.patch.object(app,
+                           'callMethodThreaded'):
+        suc = app.pollData()
+        assert suc
 
 
-def test_pollData_2():
-    app.deviceConnected = True
-    suc = app.pollData()
-    assert suc
+def test_pollStatus():
+    with mock.patch.object(app,
+                           'callMethodThreaded'):
+        suc = app.pollStatus()
+        assert suc
 
 
-def test_startPollStatus():
-    suc = app.pollStatus()
-    assert suc
+def test_getInitialConfig():
+    with mock.patch.object(app,
+                           'callMethodThreaded'):
+        suc = app.getInitialConfig()
+        assert suc
 
 
 def test_startCommunication_1():
@@ -399,13 +429,11 @@ def test_startCommunication_1():
 
     app.deviceName = 'test'
     with mock.patch.object(app,
-                           'startTimer'):
-        with mock.patch.object(pythoncom,
-                               'CoInitialize'):
-            with mock.patch.object(win32com.client.dynamic,
-                                   'Dispatch'):
-                suc = app.startCommunication()
-                assert suc
+                           'callMethodThreaded'):
+        with mock.patch.object(win32com.client.dynamic,
+                               'Dispatch'):
+            suc = app.startCommunication()
+            assert suc
 
 
 def test_startCommunication_2():
@@ -413,15 +441,11 @@ def test_startCommunication_2():
         return
 
     app.deviceName = 'test'
-    with mock.patch.object(app,
-                           'startTimer'):
-        with mock.patch.object(pythoncom,
-                               'CoInitialize'):
-            with mock.patch.object(win32com.client.dynamic,
-                                   'Dispatch',
-                                   side_effect=Exception()):
-                suc = app.startCommunication()
-                assert not suc
+    with mock.patch.object(win32com.client.dynamic,
+                           'Dispatch',
+                           side_effect=Exception()):
+        suc = app.startCommunication()
+        assert not suc
 
 
 def test_startCommunication_3():
@@ -441,12 +465,10 @@ def test_stopCommunication_1():
     app.deviceName = 'test'
     with mock.patch.object(app,
                            'stopTimer'):
-        with mock.patch.object(pythoncom,
-                               'CoUninitialize'):
-            suc = app.stopCommunication()
-            assert suc
-            assert not app.serverConnected
-            assert not app.deviceConnected
+        suc = app.stopCommunication()
+        assert suc
+        assert not app.serverConnected
+        assert not app.deviceConnected
 
 
 def test_stopCommunication_2():
@@ -462,9 +484,7 @@ def test_stopCommunication_2():
                            side_effect=Exception()):
         with mock.patch.object(app,
                                'stopTimer'):
-            with mock.patch.object(pythoncom,
-                                   'CoUninitialize'):
-                suc = app.stopCommunication()
-                assert suc
-                assert not app.serverConnected
-                assert not app.deviceConnected
+            suc = app.stopCommunication()
+            assert suc
+            assert not app.serverConnected
+            assert not app.deviceConnected

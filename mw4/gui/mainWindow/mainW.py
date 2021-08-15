@@ -582,6 +582,9 @@ class MainWindow(
             self.ui.runFlexure.setEnabled(True)
             self.ui.runHysteresis.setEnabled(True)
 
+        elif isModelingReady and not isPause:
+            self.ui.plateSolveSync.setEnabled(True)
+
         else:
             self.ui.runModel.setEnabled(False)
             self.ui.plateSolveSync.setEnabled(False)

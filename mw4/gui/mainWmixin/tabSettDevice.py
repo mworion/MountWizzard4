@@ -193,7 +193,6 @@ class SettDevice:
         :param config:
         :return:
         """
-
         defaultConfig = self.drivers[driver]['class'].defaultConfig
         res = DeepDiff(defaultConfig, config['driversData'][driver])
 
@@ -206,16 +205,13 @@ class SettDevice:
 
     def setDefaultData(self, driver, config):
         """
-
         :param driver:
         :param config:
         :return:
         """
-
         config['driversData'][driver] = {}
         defaultConfig = self.drivers[driver]['class'].defaultConfig
         config['driversData'][driver].update(defaultConfig)
-
         return True
 
     def initConfig(self):
@@ -226,9 +222,7 @@ class SettDevice:
 
         :return: True for test purpose
         """
-
         config = self.app.config['mainW']
-
         if 'driversData' not in config:
             config['driversData'] = {}
 
@@ -240,7 +234,6 @@ class SettDevice:
 
         self.driversData.update(config.get('driversData', {}))
         self.ui.checkASCOMAutoConnect.setChecked(config.get('checkASCOMAutoConnect', False))
-
         self.setupDeviceGui()
         self.startDrivers()
 
@@ -254,12 +247,9 @@ class SettDevice:
 
         :return: True for test purpose
         """
-
         config = self.app.config['mainW']
-
         config['driversData'] = self.driversData
         config['checkASCOMAutoConnect'] = self.ui.checkASCOMAutoConnect.isChecked()
-
         return True
 
     def setupDeviceGui(self):
@@ -269,7 +259,6 @@ class SettDevice:
 
         :return: success for test
         """
-
         dropDowns = list(self.drivers[driver]['uiDropDown'] for driver in self.drivers)
         for dropDown in dropDowns:
             dropDown.clear()
@@ -307,10 +296,8 @@ class SettDevice:
 
         if not driver:
             return False
-
         if self.popupUi.returnValues.get('indiCopyConfig', False):
             self.copyConfig(driver=driver, framework='indi')
-
         if self.popupUi.returnValues.get('alpacaCopyConfig', False):
             self.copyConfig(driver=driver, framework='alpaca')
 
@@ -322,14 +309,12 @@ class SettDevice:
             return False
 
         itemText = f'{selectedFramework} - {name}'
-
         self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
         self.drivers[driver]['uiDropDown'].setItemText(index, itemText)
         self.drivers[driver]['uiDropDown'].update()
 
         self.stopDriver(driver=driver)
         self.startDriver(driver=driver)
-
         return True
 
     def copyConfig(self, driver='', framework=''):
@@ -342,7 +327,6 @@ class SettDevice:
         :param framework:
         :return: True for test purpose
         """
-
         for driverLoop in self.drivers:
             if driverLoop == driver:
                 # not copy on the same driver
@@ -352,10 +336,8 @@ class SettDevice:
 
             if driverClass.framework == framework:
                 self.stopDriver(driver=driver)
-
             if driverLoop not in self.driversData:
                 continue
-
             if framework not in self.driversData[driverLoop]['frameworks']:
                 continue
 
@@ -369,7 +351,6 @@ class SettDevice:
 
             if driverClass.framework == framework:
                 self.startDriver(driver=driver)
-
         return True
 
     def callPopup(self, driver):
@@ -382,7 +363,6 @@ class SettDevice:
         :param driver:
         :return: True for test purpose
         """
-
         data = self.driversData[driver]
         deviceType = self.drivers[driver]['deviceType']
 
@@ -393,38 +373,29 @@ class SettDevice:
                                    data=data)
 
         self.popupUi.ui.ok.clicked.connect(self.processPopupResults)
-
         return True
 
     def dispatchPopup(self):
         """
-
         :return: True for test purpose
         """
-
         sender = self.sender()
         driver = self.returnDriver(sender, self.drivers, addKey='uiSetup')
 
         if driver:
             self.callPopup(driver=driver)
-
         return True
 
     def stopDriver(self, driver=None):
         """
-        stopDriver stops the named driver.
-
         :param driver:
         :return: returns status if we are finished
         """
-
         if not driver:
             return False
 
         self.deviceStat[driver] = None
-
         framework = self.drivers[driver]['class'].framework
-
         if not framework:
             return False
 
@@ -444,38 +415,29 @@ class SettDevice:
 
     def stopDrivers(self):
         """
-        stopDrivers runs through all drivers and stops them
-
         :return: True for test purpose
         """
         for driver in self.drivers:
             self.stopDriver(driver=driver)
-
         return True
 
     def configDriver(self, driver=None):
         """
-        configDriver configures a driver if a framework has been set. otherwise does nothing
-
         :param driver:
         :return: success of config
         """
-
         if not driver:
             return False
 
         self.deviceStat[driver] = False
-
         framework = self.driversData[driver]['framework']
         if not framework:
             return False
 
         frameworkConfig = self.driversData[driver]['frameworks'][framework]
         driverClass = self.drivers[driver]['class'].run[framework]
-
         for attribute in frameworkConfig:
             setattr(driverClass, attribute, frameworkConfig[attribute])
-
         return True
 
     def startDriver(self, driver=None, autoStart=True):
@@ -493,32 +455,26 @@ class SettDevice:
         :param autoStart:
         :return: success if a driver has ben started
         """
-
         if not driver:
             return False
 
         data = self.driversData[driver]
         framework = data['framework']
-
         if not framework:
             return False
 
         loadConfig = data.get('loadConfig', False)
         driverClass = self.drivers[driver]['class']
-
         driverClass.framework = framework
         isInternal = framework == 'internal'
-
         if isInternal:
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 
         self.configDriver(driver=driver)
-
         if autoStart:
             driverClass.startCommunication(loadConfig=loadConfig)
 
         self.app.message.emit(f'Enabled device:      [{driver}]', 0)
-
         return True
 
     def startDrivers(self):
@@ -528,79 +484,60 @@ class SettDevice:
 
         :return: true for test purpose
         """
-
         isAscomAutoConnect = self.ui.checkASCOMAutoConnect.isChecked()
-
         for driver in self.drivers:
-
             if driver not in self.driversData:
                 continue
 
-            isValid = self.driversData[driver]['framework'] != ''
-
-            if not isValid:
+            invalid = self.driversData[driver]['framework'] == ''
+            if invalid:
                 continue
 
             isAscom = self.driversData[driver]['framework'] == 'ascom'
-
-            if isAscom and isAscomAutoConnect:
-                autoStart = True
-
-            elif isAscom and not isAscomAutoConnect:
+            if isAscom and not isAscomAutoConnect:
                 autoStart = False
-
             else:
                 autoStart = True
 
             self.startDriver(driver=driver, autoStart=autoStart)
-
         return True
 
     def manualStopAllAscomDrivers(self):
         """
-
         :return: True for test purpose
         """
         for driver in self.drivers:
-
             if driver not in self.driversData:
                 continue
 
             isAscom = self.driversData[driver]['framework'] == 'ascom'
-
             if isAscom:
                 self.stopDriver(driver=driver)
-
         return True
 
     def manualStartAllAscomDrivers(self):
         """
-
         :return: True for test purpose
         """
-
         for driver in self.drivers:
-
             if driver not in self.driversData:
                 continue
 
             isAscom = self.driversData[driver]['framework'] == 'ascom'
-
             if isAscom:
                 self.startDriver(driver=driver, autoStart=True)
-
         return True
 
     def dispatchDriverDropdown(self):
         """
-        dispatchDriverDropdown maps the gui event received from signals to the methods doing
-        the real stuff. this splits function and gui reaction into two separate tasks.
-        if a dropDown action is taken, this means and new driver has been selected,
-        so the old one has to be stopped, the new configured and started.
+        dispatchDriverDropdown maps the gui event received from signals to the
+        methods doing the real stuff. this splits function and gui reaction into
+        two separate tasks. if a dropDown action is taken, this means and new
+        driver has been selected, so the old one has to be stopped, the new
+        configured and started.
 
         :return: true for test purpose
         """
-
         sender = self.sender()
         isDisabled = sender.currentText() == 'device disabled'
         driver = self.returnDriver(sender, self.drivers, addKey='uiDropDown')
@@ -613,22 +550,19 @@ class SettDevice:
 
             self.driversData[driver]['framework'] = framework
             self.stopDriver(driver=driver)
-
             if framework:
                 self.startDriver(driver=driver)
-
         return True
 
     def scanValid(self, driver=None, deviceName=''):
         """
-        scanValid checks if the calling device fits to the summary of all devices and gives
-        back if it should be skipped
+        scanValid checks if the calling device fits to the summary of all
+        devices and gives back if it should be skipped
 
         :param deviceName:
         :param driver:
         :return:
         """
-
         if not driver:
             return False
         if not deviceName:
@@ -637,13 +571,10 @@ class SettDevice:
         if hasattr(self.drivers[driver]['class'], 'signals'):
             if self.sender() != self.drivers[driver]['class'].signals:
                 return False
-
         else:
             driverClass = self.drivers[driver]['class']
-
             if not driverClass.framework:
                 return False
-
             if driverClass.run[driverClass.framework].deviceName != deviceName:
                 return False
 
@@ -651,12 +582,9 @@ class SettDevice:
 
     def serverDisconnected(self, deviceList):
         """
-        serverDisconnected writes info to message window and recolors the status
-
         :param deviceList:
         :return: true for test purpose
         """
-
         if not deviceList:
             return False
 
@@ -672,9 +600,6 @@ class SettDevice:
 
     def deviceConnected(self, deviceName):
         """
-        showCoverDeviceConnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
         :param deviceName:
         :return: true for test purpose
         """
@@ -692,13 +617,9 @@ class SettDevice:
 
     def deviceDisconnected(self, deviceName):
         """
-        showCoverDeviceDisconnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
         :param deviceName:
         :return: true for test purpose
         """
-
         for driver in self.drivers:
             if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue

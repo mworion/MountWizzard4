@@ -1297,3 +1297,17 @@ class ObsSite(object):
             return False
 
         return True
+
+    def syncPositionToTarget(self):
+        """
+        :return:    success
+        """
+        conn = Connection(self.host)
+        commandString = ':CM#'
+        suc, response, numberOfChunks = conn.communicate(commandString)
+        if not suc:
+            return False
+        if not response[0].startswith('Coord'):
+            return False
+
+        return True

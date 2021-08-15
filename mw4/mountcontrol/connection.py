@@ -60,6 +60,7 @@ class Connection(object):
     # complete used command list to be checked first if valid
     # these are the commands, which were used in mountcontrol so far
     COMMANDS = [':AP',
+                ':CM',
                 ':FLIP',
                 ':GDW', ':GDA', ':GDF', ':GDS', ':GDGPS', ':GJD1',
                 ':GDUT', ':GDUTV',

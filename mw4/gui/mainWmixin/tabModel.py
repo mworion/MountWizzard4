@@ -1068,6 +1068,12 @@ class Model:
             return False
 
         self.app.showImage.emit(result['solvedPath'])
+
+        obs = self.app.mount.obsSite
+        timeJD = obs.timeJD
+        raJNow, decJNow = transform.J2000ToJNow(ra, dec, timeJD)
+        obs.setTargetRaDec(raJNow, decJNow)
+
         self.app.message.emit('Successfully synced model in mount', 1)
         return True
 

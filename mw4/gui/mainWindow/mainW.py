@@ -900,6 +900,7 @@ class MainWindow(
 
         # closing all windows to be base lined
         self.closeExtendedWindows()
+        self.stopDrivers()
         suc = self.app.loadConfig(name=name)
         if suc:
             self.app.config['profileName'] = name

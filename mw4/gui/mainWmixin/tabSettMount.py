@@ -74,8 +74,8 @@ class SettMount(object):
         """
         :return:
         """
-        bAddress = self.ui.mountWolAddress.text()
-        bPort = self.ui.mountWolPort.text()
+        bAddress = self.ui.mountWolAddress.text().strip()
+        bPort = self.ui.mountWolPort.text().strip()
         bPort = (int(bPort) if bPort else 0)
         if self.app.mount.bootMount(bAddress=bAddress,
                                     bPort=bPort):

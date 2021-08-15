@@ -1411,6 +1411,7 @@ def test_syncMountAndClearUp(function):
     suc = function.syncMountAndClearUp()
     assert suc
 
+
 def test_solveDone_1(function):
     function.app.astrometry.signals.done.connect(function.solveDone)
     suc = function.solveDone()
@@ -1450,8 +1451,33 @@ def test_solveDone_3(function):
     }
 
     function.app.astrometry.signals.done.connect(function.solveDone)
-    suc = function.solveDone(result=result)
-    assert suc
+    with mock.patch.object(function.app.mount.obsSite,
+                           'syncPositionToTarget',
+                           return_value=True):
+        suc = function.solveDone(result=result)
+        assert suc
+
+
+def test_solveDone_4(function):
+    result = {
+        'success': True,
+        'raJ2000S': Angle(hours=10),
+        'decJ2000S': Angle(degrees=20),
+        'angleS': 30,
+        'scaleS': 1,
+        'errorRMS_S': 3,
+        'flippedS': False,
+        'imagePath': 'test',
+        'message': 'test',
+        'solvedPath': 'test'
+    }
+
+    function.app.astrometry.signals.done.connect(function.solveDone)
+    with mock.patch.object(function.app.mount.obsSite,
+                           'syncPositionToTarget',
+                           return_value=False):
+        suc = function.solveDone(result=result)
+        assert not suc
 
 
 def test_solveImage_1(function):

@@ -1052,7 +1052,7 @@ class Model:
         else:
             t = 'No sync, match failed because coordinates to far off for model'
             self.app.message.emit(t, 2)
-        return True
+        return suc
 
     def solveImage(self, imagePath=''):
         """

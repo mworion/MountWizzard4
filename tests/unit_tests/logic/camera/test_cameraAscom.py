@@ -20,14 +20,15 @@ import pytest
 import unittest.mock as mock
 import platform
 
+if not platform.system() == 'Windows':
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
+
 # external packages
 from astropy.io import fits
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from skyfield.api import Angle
 import ctypes
 
-if not platform.system() == 'Windows':
-    pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 # local import
 from mountcontrol.mount import Mount

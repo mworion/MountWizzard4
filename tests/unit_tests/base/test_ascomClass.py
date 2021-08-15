@@ -19,16 +19,18 @@
 from unittest import mock
 import platform
 import builtins
+import pytest
+
+if not platform.system() == 'Windows':
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 # external packages
 import PyQt5
-import pytest
 from PyQt5.QtTest import QTest
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
-if platform.system() == 'Windows':
-    import win32com.client
+import win32com.client
 
 # local import
 from base.ascomClass import AscomClass

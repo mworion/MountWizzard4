@@ -49,6 +49,7 @@ releaseNotes = """
 - fix slewing message dome when disconnected
 - fix retry mechanism for failed build points
 - fix using builtins for skyfield and rotation update
+- fix plate solve sync 
  """
 
 with open('notes.txt', 'w') as f:

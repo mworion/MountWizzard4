@@ -41,20 +41,17 @@ class CoverAscom(AscomClass):
         self.signals = signals
         self.data = data
 
-    def getInitialConfig(self):
+    def workerGetInitialConfig(self):
         """
         :return: true for test purpose
         """
-        super().getInitialConfig()
+        super().workerGetInitialConfig()
         return True
 
     def workerPollData(self):
         """
         :return: true for test purpose
         """
-        if not self.deviceConnected:
-            return False
-
         state = self.getAscomProperty('CoverState')
         stateText = self.coverStates[state]
         self.storePropertyToData(stateText, 'Status.Cover')

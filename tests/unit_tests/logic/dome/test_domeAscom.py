@@ -76,13 +76,6 @@ def test_processPolledData_1():
 
 
 def test_workerPollData_1():
-    app.deviceConnected = False
-    suc = app.workerPollData()
-    assert not suc
-
-
-def test_workerPollData_2():
-    app.deviceConnected = True
     with mock.patch.object(app,
                            'getAscomProperty',
                            return_value=0):
@@ -94,8 +87,7 @@ def test_workerPollData_2():
                 assert suc
 
 
-def test_workerPollData_3():
-    app.deviceConnected = True
+def test_workerPollData_2():
     with mock.patch.object(app,
                            'getAscomProperty',
                            return_value=1):
@@ -107,8 +99,7 @@ def test_workerPollData_3():
                 assert suc
 
 
-def test_workerPollData_4():
-    app.deviceConnected = True
+def test_workerPollData_3():
     with mock.patch.object(app,
                            'getAscomProperty',
                            return_value=2):

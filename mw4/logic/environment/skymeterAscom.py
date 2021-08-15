@@ -38,21 +38,17 @@ class SkymeterAscom(AscomClass):
         self.signals = signals
         self.data = data
 
-    def getInitialConfig(self):
+    def workerGetInitialConfig(self):
         """
         :return: true for test purpose
         """
-        super().getInitialConfig()
+        super().workerGetInitialConfig()
         return True
 
     def workerPollData(self):
         """
         :return: true for test purpose
         """
-        if not self.deviceConnected:
-            return False
-
         self.getAndStoreAscomProperty('temperature', 'SKY_QUALITY.SKY_TEMPERATURE')
         self.getAndStoreAscomProperty('skyquality', 'SKY_QUALITY.SKY_BRIGHTNESS')
-
         return True

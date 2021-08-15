@@ -24,7 +24,6 @@ import numpy as np
 
 # local imports
 from base.ascomClass import AscomClass
-from base.tpool import Worker
 from base.transform import JNowToJ2000
 
 
@@ -45,15 +44,11 @@ class CameraAscom(AscomClass):
         self.data = data
         self.abortExpose = False
 
-    def getInitialConfig(self):
+    def workerGetInitialConfig(self):
         """
         :return: true for test purpose
         """
-        super().getInitialConfig()
-
-        if not self.deviceConnected:
-            return False
-
+        super().workerGetInitialConfig()
         self.getAndStoreAscomProperty('CameraXSize', 'CCD_INFO.CCD_MAX_X')
         self.getAndStoreAscomProperty('CameraYSize', 'CCD_INFO.CCD_MAX_Y')
         self.getAndStoreAscomProperty('CanFastReadout', 'CAN_FAST')
@@ -69,16 +64,12 @@ class CameraAscom(AscomClass):
         self.getAndStoreAscomProperty('StartX', 'CCD_FRAME.X')
         self.getAndStoreAscomProperty('StartY', 'CCD_FRAME.Y')
         self.log.debug(f'Initial data: {self.data}')
-
         return True
 
     def workerPollData(self):
         """
         :return: true for test purpose
         """
-        if not self.deviceConnected:
-            return False
-
         self.getAndStoreAscomProperty('BinX', 'CCD_BINNING.HOR_BIN')
         self.getAndStoreAscomProperty('BinY', 'CCD_BINNING.VERT_BIN')
         self.getAndStoreAscomProperty('CameraState', 'CAMERA.STATE')
@@ -226,22 +217,17 @@ class CameraAscom(AscomClass):
         """
         :return: success
         """
-        if not self.deviceConnected:
-            return False
-
         self.abortExpose = False
-        worker = Worker(self.workerExpose,
-                        imagePath=imagePath,
-                        expTime=expTime,
-                        binning=binning,
-                        fastReadout=fastReadout,
-                        posX=posX,
-                        posY=posY,
-                        width=width,
-                        height=height,
-                        focalLength=focalLength)
-
-        self.threadPool.start(worker)
+        self.callMethodThreaded(self.workerExpose,
+                                imagePath=imagePath,
+                                expTime=expTime,
+                                binning=binning,
+                                fastReadout=fastReadout,
+                                posX=posX,
+                                posY=posY,
+                                width=width,
+                                height=height,
+                                focalLength=focalLength)
         return True
 
     def abort(self):

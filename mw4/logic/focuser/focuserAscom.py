@@ -41,23 +41,17 @@ class FocuserAscom(AscomClass):
         self.signals = signals
         self.data = data
 
-    def getInitialConfig(self):
+    def workerGetInitialConfig(self):
         """
         :return: true for test purpose
         """
-        super().getInitialConfig()
-        if not self.deviceConnected:
-            return False
-
+        super().workerGetInitialConfig()
         return True
 
     def workerPollData(self):
         """
         :return: true for test purpose
         """
-        if not self.deviceConnected:
-            return False
-
         self.getAndStoreAscomProperty('Position',
                                       'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION')
         return True

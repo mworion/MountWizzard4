@@ -36,22 +36,18 @@ class WeatherUPBAscom(AscomClass):
         self.signals = signals
         self.data = data
 
-    def getInitialConfig(self):
+    def workerGetInitialConfig(self):
         """
         :return: true for test purpose
         """
-        super().getInitialConfig()
+        super().workerGetInitialConfig()
         return True
 
     def workerPollData(self):
         """
         :return: true for test purpose
         """
-        if not self.deviceConnected:
-            return False
-
         self.getAndStoreAscomProperty('temperature', 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
         self.getAndStoreAscomProperty('dewpoint', 'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
         self.getAndStoreAscomProperty('humidity', 'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
-
         return True

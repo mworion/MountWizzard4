@@ -52,57 +52,37 @@ def module_setup_teardown():
     yield
 
 
-def test_getInitialConfig_0():
-    app.deviceConnected = False
+def test_workerGetInitialConfig_1():
     with mock.patch.object(AscomClass,
-                           'getInitialConfig',
-                           return_value=True):
-        suc = app.getInitialConfig()
-        assert not suc
-
-
-def test_getInitialConfig_1():
-    app.deviceConnected = True
-    with mock.patch.object(AscomClass,
-                           'getInitialConfig',
+                           'workerGetInitialConfig',
                            return_value=True):
         with mock.patch.object(app,
                                'getAscomProperty',
                                return_value=None):
-            suc = app.getInitialConfig()
+            suc = app.workerGetInitialConfig()
             assert not suc
 
 
-def test_getInitialConfig_2():
-    app.deviceConnected = True
+def test_workerGetInitialConfig_2():
     with mock.patch.object(AscomClass,
-                           'getInitialConfig',
+                           'workerGetInitialConfig',
                            return_value=True):
         with mock.patch.object(app,
                                'getAscomProperty',
                                return_value=['test']):
             with mock.patch.object(app,
                                    'storePropertyToData'):
-                suc = app.getInitialConfig()
+                suc = app.workerGetInitialConfig()
                 assert suc
 
 
-def test_workerPollData_0():
-    app.deviceConnected = False
-    app.client.Position = -1
-    suc = app.workerPollData()
-    assert not suc
-
-
 def test_workerPollData_1():
-    app.deviceConnected = True
     app.client.Position = -1
     suc = app.workerPollData()
     assert not suc
 
 
 def test_workerPollData_2():
-    app.deviceConnected = True
     app.client.Position = 1
     with mock.patch.object(app,
                            'getAscomProperty',
@@ -112,7 +92,6 @@ def test_workerPollData_2():
 
 
 def test_workerPollData_3():
-    app.deviceConnected = True
     app.client.Position = 1
     with mock.patch.object(app,
                            'getAscomProperty',

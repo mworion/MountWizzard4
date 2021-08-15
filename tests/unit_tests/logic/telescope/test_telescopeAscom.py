@@ -58,45 +58,33 @@ def module_setup_teardown():
         yield
 
 
-def test_getInitialConfig_0():
-    app.deviceConnected = False
+def test_workerGetInitialConfig_1():
     with mock.patch.object(AscomClass,
-                           'getInitialConfig',
+                           'workerGetInitialConfig',
                            return_value=True):
-        suc = app.getInitialConfig()
-        assert not suc
-
-
-def test_getInitialConfig_1():
-    app.deviceConnected = True
-    with mock.patch.object(AscomClass,
-                           'getInitialConfig',
-                           return_value=True):
-        suc = app.getInitialConfig()
+        suc = app.workerGetInitialConfig()
         assert suc
 
 
-def test_getInitialConfig_2():
-    app.deviceConnected = True
+def test_workerGetInitialConfig_2():
     app.clientProps = ['ApertureDiameter', 'FocalLength']
     with mock.patch.object(AscomClass,
-                           'getInitialConfig',
+                           'workerGetInitialConfig',
                            return_value=True):
-        suc = app.getInitialConfig()
+        suc = app.workerGetInitialConfig()
         assert suc
         assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100
         assert app.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570
 
 
-def test_getInitialConfig_3():
-    app.deviceConnected = True
+def test_workerGetInitialConfig_3():
     app.clientProps = ['ApertureDiameter', 'FocalLength']
     app.client.ApertureDiameter = 0.100
     app.client.FocalLength = 0.570
     with mock.patch.object(AscomClass,
-                           'getInitialConfig',
+                           'workerGetInitialConfig',
                            return_value=True):
-        suc = app.getInitialConfig()
+        suc = app.workerGetInitialConfig()
         assert suc
         assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100
         assert app.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570

@@ -37,20 +37,17 @@ class PegasusUPBAscom(AscomClass):
         self.signals = signals
         self.data = data
 
-    def getInitialConfig(self):
+    def workerGetInitialConfig(self):
         """
         :return: true for test purpose
         """
-        super().getInitialConfig()
+        super().workerGetInitialConfig()
         return True
 
     def workerPollData(self):
         """
         :return: true for test purpose
         """
-        if not self.deviceConnected:
-            return False
-
         maxSwitch = self.getAscomProperty('maxswitch')
         model = 'UPB' if maxSwitch == 15 else 'UPBv2'
 
@@ -88,7 +85,6 @@ class PegasusUPBAscom(AscomClass):
             self.getAndStoreAscomProperty('getswitchvalue(17) / 10', 'POWER_SENSORS.SENSOR_VOLTAGE')
             self.getAndStoreAscomProperty('getswitchvalue(18) / 10', 'POWER_SENSORS.SENSOR_CURRENT')
             self.getAndStoreAscomProperty('getswitchvalue(19)', 'POWER_SENSORS.SENSOR_POWER')
-
         return True
 
     def togglePowerPort(self, port=None):

@@ -58,22 +58,12 @@ def module_setup_teardown():
     yield
 
 
-def test_getInitialConfig_1():
-    suc = app.getInitialConfig()
+def test_workerGetInitialConfig_1():
+    suc = app.workerGetInitialConfig()
     assert suc
 
 
 def test_workerPollData_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
-                           'getAscomProperty',
-                           return_value=15):
-        suc = app.workerPollData()
-        assert not suc
-
-
-def test_workerPollData_2():
-    app.deviceConnected = True
     with mock.patch.object(app,
                            'getAscomProperty',
                            return_value=15):
@@ -81,8 +71,7 @@ def test_workerPollData_2():
         assert suc
 
 
-def test_workerPollData_3():
-    app.deviceConnected = True
+def test_workerPollData_2():
     with mock.patch.object(app,
                            'getAscomProperty',
                            return_value=21):

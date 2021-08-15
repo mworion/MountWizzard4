@@ -33,30 +33,24 @@ class SensorWeatherAscom(AscomClass):
         self.signals = signals
         self.data = data
 
-    def getInitialConfig(self):
+    def workerGetInitialConfig(self):
         """
         :return: true for test purpose
         """
-        super().getInitialConfig()
+        super().workerGetInitialConfig()
         return True
 
     def workerPollData(self):
         """
-
         :return: true for test purpose
         """
-        if not self.deviceConnected:
-            return False
-
         self.getAndStoreAscomProperty('temperature', 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
         self.getAndStoreAscomProperty('pressure', 'WEATHER_PARAMETERS.WEATHER_PRESSURE')
         self.getAndStoreAscomProperty('dewpoint', 'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
         self.getAndStoreAscomProperty('humidity', 'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
-
         self.getAndStoreAscomProperty('skyquality', 'SKY_QUALITY.SKY_BRIGHTNESS')
         self.getAndStoreAscomProperty('cloudcover', 'cloudCover')
         self.getAndStoreAscomProperty('rainrate', 'rain')
         self.getAndStoreAscomProperty('winddirection', 'windDir')
         self.getAndStoreAscomProperty('windspeed', 'windSpeed')
-
         return True

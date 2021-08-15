@@ -36,13 +36,11 @@ class TelescopeAscom(AscomClass):
         self.signals = signals
         self.data = data
 
-    def getInitialConfig(self):
+    def workerGetInitialConfig(self):
         """
         :return: true for test purpose
         """
-        super().getInitialConfig()
-        if not self.deviceConnected:
-            return False
+        super().workerGetInitialConfig()
 
         value = self.getAscomProperty('ApertureDiameter')
         if isinstance(value, float):

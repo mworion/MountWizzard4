@@ -41,14 +41,11 @@ class FilterAscom(AscomClass):
         self.signals = signals
         self.data = data
 
-    def getInitialConfig(self):
+    def workerGetInitialConfig(self):
         """
         :return: success
         """
-        super().getInitialConfig()
-        if not self.deviceConnected:
-            return False
-
+        super().workerGetInitialConfig()
         names = self.getAscomProperty('Names')
         if names is None:
             return False
@@ -61,9 +58,6 @@ class FilterAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        if not self.deviceConnected:
-            return False
-
         position = self.getAscomProperty('Position')
         if position == -1 or position is None:
             return False

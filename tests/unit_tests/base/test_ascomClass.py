@@ -93,7 +93,7 @@ def test_getInitialConfig_1():
     app.client = Test()
     with mock.patch.object(QTest,
                            'qWait'):
-        suc = app.getInitialConfig()
+        suc = app.workerGetInitialConfig()
         assert suc
         assert app.serverConnected
         assert app.deviceConnected
@@ -117,7 +117,7 @@ def test_getInitialConfig_2():
                            side_effect=Exception):
         with mock.patch.object(QTest,
                                'qWait'):
-            suc = app.getInitialConfig()
+            suc = app.workerGetInitialConfig()
             assert not suc
 
 

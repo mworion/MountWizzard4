@@ -56,9 +56,6 @@ class DomeAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        if not self.deviceConnected:
-            return False
-
         azimuth = self.getAscomProperty('Azimuth')
         self.storePropertyToData(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)

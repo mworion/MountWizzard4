@@ -19,8 +19,8 @@ import logging
 import platform
 
 if platform.system() == 'Windows':
-    from win32com import client
     import pythoncom
+    from win32com import client
 
 # external packages
 from PyQt5.QtCore import QTimer
@@ -93,13 +93,14 @@ class AscomClass(DriverData, Signals):
         """
         return self.client.connected
 
-    def getInitialConfig(self):
+    def workerConnectAscomDevice(self):
         """
-        :return: success of reconnecting to server
+        :return: true for test purpose
         """
         for retry in range(0, 10):
             try:
                 self.connectClient()
+                self.log.debug(f'Connect to [{self.deviceName}]')
 
             except Exception as e:
                 suc = False
@@ -131,10 +132,15 @@ class AscomClass(DriverData, Signals):
             self.deviceConnected = True
             self.ascomSignals.deviceConnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ASCOM device found:  [{self.deviceName}]', 0)
+        return True
 
-        self.getAndStoreAscomProperty('Name', 'DRIVER_INFO.DRIVER_NAME')
-        self.getAndStoreAscomProperty('DriverVersion', 'DRIVER_INFO.DRIVER_VERSION')
-        self.getAndStoreAscomProperty('DriverInfo', 'DRIVER_INFO.DRIVER_EXEC')
+    def workerGetInitialConfig(self):
+        """
+        :return: success of reconnecting to server
+        """
+        self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.Name
+        self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.DriverVersion
+        self.data['DRIVER_INFO.DRIVER_EXEC'] = self.client.DriverInfo
         return True
 
     def startTimer(self):
@@ -226,7 +232,7 @@ class AscomClass(DriverData, Signals):
         self.storePropertyToData(value, element, elementInv)
         return True
 
-    def pollStatusWorker(self):
+    def workerPollStatus(self):
         """
         :return: success
         """
@@ -252,17 +258,34 @@ class AscomClass(DriverData, Signals):
 
         return suc
 
-    def callMethodThreaded(self, fn, *args, **kwargs):
+    @staticmethod
+    def callerInitUnInit(fn, *args, **kwargs):
         """
-        :param fn:
+        :return: success
+        """
+        pythoncom.CoInitialize()
+        result = fn(*args, **kwargs)
+        pythoncom.CoUninitialize()
+        return result
+
+    def callMethodThreaded(self, fn, cb_res=None, cb_fin=None, check=True, *args, **kwargs):
+        """
+        :param fn: function
+        :param cb_res: callback
+        :param cb_fin: callback
+        :param check: callback
         :param args:
         :param kwargs:
         :return:
         """
-        if not self.deviceConnected:
+        if check and not self.deviceConnected:
             return False
 
-        worker = Worker(fn, *args, **kwargs)
+        worker = Worker(self.callerInitUnInit, fn, *args, **kwargs)
+        if cb_res:
+            worker.signals.finished.connect(cb_res)
+        if cb_fin:
+            worker.signals.finished.connect(cb_fin)
         self.threadPool.start(worker)
         return True
 
@@ -282,20 +305,22 @@ class AscomClass(DriverData, Signals):
         """
         :return: success
         """
-        if not self.deviceConnected:
-            return False
-
-        worker = Worker(self.workerPollData)
-        worker.signals.result.connect(self.processPolledData)
-        self.threadPool.start(worker)
+        self.callMethodThreaded(self.workerPollData,
+                                cb_res=self.processPolledData)
         return True
 
     def pollStatus(self):
         """
         :return: success
         """
-        worker = Worker(self.pollStatusWorker)
-        self.threadPool.start(worker)
+        self.callMethodThreaded(self.workerPollStatus)
+        return True
+
+    def getInitialConfig(self):
+        """
+        :return: success
+        """
+        self.callMethodThreaded(self.workerGetInitialConfig)
         return True
 
     def startCommunication(self, loadConfig=False):
@@ -306,19 +331,19 @@ class AscomClass(DriverData, Signals):
         if not self.deviceName:
             return False
 
-        pythoncom.CoInitialize()
         try:
             self.client = client.dynamic.Dispatch(self.deviceName)
+            self.log.debug(f'Dispatch [{self.deviceName}]')
 
         except Exception as e:
             self.log.error(f'Dispatch for [{self.deviceName}] error: {e}')
             return False
 
         else:
-            worker = Worker(self.getInitialConfig)
-            worker.signals.finished.connect(self.startTimer)
-            self.threadPool.start(worker)
-
+            self.callMethodThreaded(self.workerConnectAscomDevice,
+                                    check=False,
+                                    cb_res=self.getInitialConfig,
+                                    cb_fin=self.startTimer)
         return True
 
     def stopCommunication(self):
@@ -338,7 +363,6 @@ class AscomClass(DriverData, Signals):
         self.serverConnected = False
         self.client = None
         self.propertyExceptions = []
-        pythoncom.CoUninitialize()
         self.ascomSignals.deviceDisconnected.emit(f'{self.deviceName}')
         self.ascomSignals.serverDisconnected.emit({f'{self.deviceName}': 0})
         self.app.message.emit(f'ASCOM device remove: [{self.deviceName}]', 0)

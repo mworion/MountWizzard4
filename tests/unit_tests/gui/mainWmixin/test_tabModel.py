@@ -1405,3 +1405,109 @@ def test_loadProgramModel_5(function):
 
         suc = function.loadProgramModel()
         assert not suc
+
+
+def test_syncMountAndClearUp(function):
+    suc = function.syncMountAndClearUp()
+    assert suc
+
+def test_solveDone_1(function):
+    function.app.astrometry.signals.done.connect(function.solveDone)
+    suc = function.solveDone()
+    assert not suc
+
+
+def test_solveDone_2(function):
+    result = {
+        'success': False,
+        'raJ2000S': Angle(hours=10),
+        'decJ2000S': Angle(degrees=20),
+        'angleS': 30,
+        'scaleS': 1,
+        'errorRMS_S': 3,
+        'flippedS': False,
+        'imagePath': 'test',
+        'message': 'test',
+    }
+
+    function.app.astrometry.signals.done.connect(function.solveDone)
+    suc = function.solveDone(result=result)
+    assert not suc
+
+
+def test_solveDone_3(function):
+    result = {
+        'success': True,
+        'raJ2000S': Angle(hours=10),
+        'decJ2000S': Angle(degrees=20),
+        'angleS': 30,
+        'scaleS': 1,
+        'errorRMS_S': 3,
+        'flippedS': False,
+        'imagePath': 'test',
+        'message': 'test',
+        'solvedPath': 'test'
+    }
+
+    function.app.astrometry.signals.done.connect(function.solveDone)
+    suc = function.solveDone(result=result)
+    assert suc
+
+
+def test_solveImage_1(function):
+    suc = function.solveImage()
+    assert not suc
+
+
+def test_solveImage_2(function):
+    suc = function.solveImage(imagePath='testFile')
+    assert not suc
+
+
+def test_solveImage_3(function):
+    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    file = 'tests/image/m51.fit'
+    with mock.patch.object(function.app.astrometry,
+                           'solveThreading'):
+        suc = function.solveImage(imagePath=file)
+        assert suc
+
+
+def test_exposeRaw_1(function, qtbot):
+    with mock.patch.object(function.app.camera,
+                           'expose'):
+        suc = function.exposeRaw(3, 1, 100, False, 100)
+        assert suc
+
+
+def test_exposeImageDone_1(function):
+    function.app.camera.signals.saved.connect(function.exposeImageDone)
+    with mock.patch.object(function,
+                           'solveImage'):
+        suc = function.exposeImageDone()
+        assert suc
+
+
+def test_exposeImage_1(function):
+    with mock.patch.object(function,
+                           'exposeRaw'):
+        suc = function.exposeImage()
+        assert suc
+
+
+def test_plateSolveSync_1(function):
+    with mock.patch.object(function.app.astrometry,
+                           'checkAvailability',
+                           return_value=(False, False)):
+        suc = function.plateSolveSync()
+        assert not suc
+
+
+def test_plateSolveSync_2(function):
+    with mock.patch.object(function.app.astrometry,
+                           'checkAvailability',
+                           return_value=(True, True)):
+        with mock.patch.object(function,
+                               'exposeImage'):
+            suc = function.plateSolveSync()
+            assert suc

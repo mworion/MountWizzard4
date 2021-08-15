@@ -997,36 +997,6 @@ class Model:
 
         return suc
 
-    def exposeRaw(self, expTime, binning):
-        """
-        :param expTime:
-        :param binning:
-        :return: True for test purpose
-        """
-        subFrame = self.app.camera.subFrame
-        fastReadout = self.app.camera.checkFastDownload
-
-        time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        fileName = time + '-sync.fits'
-        imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
-        focalLength = self.app.telescope.focalLength
-
-        self.app.camera.expose(imagePath=imagePath,
-                               expTime=expTime,
-                               binning=binning,
-                               subFrame=subFrame,
-                               fastReadout=fastReadout,
-                               focalLength=focalLength
-                               )
-
-        text = f'Exposing:            [{os.path.basename(imagePath)}]'
-        self.app.message.emit(text, 0)
-        text = f'Duration:{expTime:3.0f}s  '
-        text += f'Bin:{binning:1.0f}  Sub:{subFrame:3.0f}%'
-        self.app.message.emit(f'                     {text}', 0)
-
-        return True
-
     def syncMountAndClearUp(self):
         """
         :return:
@@ -1100,6 +1070,34 @@ class Model:
         self.app.message.emit(text, 0)
         return True
 
+    def exposeRaw(self, expTime, binning, subFrame, fastReadout, focalLength):
+        """
+        :param expTime:
+        :param binning:
+        :param subFrame:
+        :param fastReadout:
+        :param focalLength:
+        :return: True for test purpose
+        """
+        time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        fileName = time + '-sync.fits'
+        imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
+
+        self.app.camera.expose(imagePath=imagePath,
+                               expTime=expTime,
+                               binning=binning,
+                               subFrame=subFrame,
+                               fastReadout=fastReadout,
+                               focalLength=focalLength
+                               )
+
+        text = f'Exposing:            [{os.path.basename(imagePath)}]'
+        self.app.message.emit(text, 0)
+        text = f'Duration:{expTime:3.0f}s  '
+        text += f'Bin:{binning:1.0f}  Sub:{subFrame:3.0f}%'
+        self.app.message.emit(f'                     {text}', 0)
+        return True
+
     def exposeImageDone(self, imagePath=''):
         """
         :param imagePath:
@@ -1115,10 +1113,13 @@ class Model:
         """
         :return: success
         """
-        expTime = self.app.camera.expTime
-        binning = self.app.camera.binning
+        expTime = self.ui.expTime.value()
+        binning = self.ui.binning.value()
+        subFrame = self.ui.subFrame.value()
+        fastReadout = self.ui.checkFastDownload.isChecked()
+        focalLength = self.ui.focalLength.value()
         self.app.camera.signals.saved.connect(self.exposeImageDone)
-        self.exposeRaw(expTime, binning)
+        self.exposeRaw(expTime, binning, subFrame, fastReadout, focalLength)
         return True
 
     def plateSolveSync(self):

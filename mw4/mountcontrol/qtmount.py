@@ -537,6 +537,8 @@ class Mount(mountcontrol.mount.Mount):
         :param bPort:
         :return:    True if success
         """
+        t = f'MAC: [{self.MAC}], broadcast address: [{bAddress}], port: [{bPort}]'
+        self.log.debug(t)
         if self.MAC is None:
             return False
         if bAddress and bPort:

@@ -50,8 +50,8 @@ class SettMount(object):
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
         self.ui.mountWolAddress.setText(config.get('mountWolAddress',
-                                                   ''))
-        self.ui.mountWolPort.setText(config.get('mountWolPort', ''))
+                                                   '255.255.255.255'))
+        self.ui.mountWolPort.setText(config.get('mountWolPort', '9'))
         self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
         self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 0))
         return True

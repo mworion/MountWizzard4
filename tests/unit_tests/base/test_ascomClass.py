@@ -426,9 +426,6 @@ def test_getInitialConfig():
 
 
 def test_startCommunication_1():
-    if platform.system() != 'Windows':
-        return
-
     app.deviceName = 'test'
     with mock.patch.object(app,
                            'callMethodThreaded'):
@@ -439,9 +436,6 @@ def test_startCommunication_1():
 
 
 def test_startCommunication_2():
-    if platform.system() != 'Windows':
-        return
-
     app.deviceName = 'test'
     with mock.patch.object(win32com.client.dynamic,
                            'Dispatch',
@@ -451,9 +445,6 @@ def test_startCommunication_2():
 
 
 def test_startCommunication_3():
-    if platform.system() != 'Windows':
-        return
-
     suc = app.startCommunication()
     assert not suc
 
@@ -474,9 +465,6 @@ def test_stopCommunication_1():
 
 
 def test_stopCommunication_2():
-    if platform.system() != 'Windows':
-        return
-
     app.deviceConnected = True
     app.serverConnected = True
     app.deviceName = 'test'
@@ -490,3 +478,19 @@ def test_stopCommunication_2():
             assert suc
             assert not app.serverConnected
             assert not app.deviceConnected
+
+
+def test_stopCommunication_3():
+    class Test:
+        connected = False
+
+    app.deviceConnected = True
+    app.serverConnected = True
+    app.deviceName = 'test'
+    app.client = Test()
+    with mock.patch.object(app,
+                           'stopTimer'):
+        suc = app.stopCommunication()
+        assert suc
+        assert not app.serverConnected
+        assert not app.deviceConnected

@@ -95,6 +95,10 @@ class AscomClass(DriverData, Signals):
 
     def workerConnectAscomDevice(self):
         """
+        As some ASCOM devices need some time to be able to connect, we try to
+        connect multiply (10) times with an waiting period 0f 250ms, so 2,5
+        seconds in total.
+
         :return: true for test purpose
         """
         for retry in range(0, 10):
@@ -110,8 +114,8 @@ class AscomClass(DriverData, Signals):
             else:
                 suc = self.isClientConnected()
                 if suc:
-                    text = f'[{self.deviceName}] connected, [{retry}] retries'
-                    self.log.debug(text)
+                    t = f'[{self.deviceName}] connected, [{retry}] retries'
+                    self.log.debug(t)
                     break
 
             finally:
@@ -136,7 +140,7 @@ class AscomClass(DriverData, Signals):
 
     def workerGetInitialConfig(self):
         """
-        :return: success of reconnecting to server
+        :return: true for test purpose
         """
         self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.Name
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.DriverVersion
@@ -270,6 +274,15 @@ class AscomClass(DriverData, Signals):
 
     def callMethodThreaded(self, fn, cb_res=None, cb_fin=None, check=True, *args, **kwargs):
         """
+        callMethodThreaded is done mainly for ASCOM ctypes interfaces which take
+        longer to end and should not slow down the gui thread itself. All called
+        functions run in PyQt5 threadPool and could have callback after result is
+        processed or the thread task is finished. It does not call directly the
+        defined function, but the callerInitUnInit method, which does the necessary
+        pythoncom.Initialize() before running win32 functions in another thread
+        than the dispatch was done (in our case the main gui thread) and call
+        pythoncom.CoUninitialize() after the functions finished.
+
         :param fn: function
         :param cb_res: callback
         :param cb_fin: callback
@@ -356,8 +369,12 @@ class AscomClass(DriverData, Signals):
                 self.disconnectClient()
 
             except Exception as e:
-                text = f'Connection to [{self.deviceName}] could not be closed, {e}'
-                self.log.debug(text)
+                t = f'Connection to [{self.deviceName}] could not be closed, {e}'
+                self.log.debug(t)
+
+            else:
+                t = f'Connection to [{self.deviceName}] closed'
+                self.log.debug(t)
 
         self.deviceConnected = False
         self.serverConnected = False

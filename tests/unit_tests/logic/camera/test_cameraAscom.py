@@ -20,14 +20,15 @@ import pytest
 import unittest.mock as mock
 import platform
 
+if not platform.system() == 'Windows':
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
+
 # external packages
 from astropy.io import fits
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from skyfield.api import Angle
 import ctypes
 
-if not platform.system() == 'Windows':
-    pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 # local import
 from mountcontrol.mount import Mount
@@ -114,29 +115,19 @@ def test_workerPollData_1():
 
 
 def test_sendDownloadMode_1():
-    app.deviceConnected = True
     app.data['CAN_FAST'] = True
     suc = app.sendDownloadMode()
     assert suc
 
 
 def test_sendDownloadMode_2():
-    app.deviceConnected = True
     app.data['CAN_FAST'] = True
     suc = app.sendDownloadMode(fastReadout=True)
     assert suc
 
 
 def test_sendDownloadMode_3():
-    app.deviceConnected = True
     app.data['CAN_FAST'] = False
-    suc = app.sendDownloadMode()
-    assert not suc
-
-
-def test_sendDownloadMode_4():
-    app.deviceConnected = False
-    app.data['CAN_FAST'] = True
     suc = app.sendDownloadMode()
     assert not suc
 

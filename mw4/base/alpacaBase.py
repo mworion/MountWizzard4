@@ -216,8 +216,8 @@ class AlpacaBase(Signals):
         response = response.json()
 
         if response['ErrorNumber'] != 0:
-            self.log.warning(f'{response} err:{response["ErrorNumber"]}'
-                             f',{response["ErrorMessage"]}')
+            self.log.debug(f'{response} err:{response["ErrorNumber"]}'
+                           f',{response["ErrorMessage"]}')
             return None
 
         self.log.trace(f'[{uid:10d}] response:{response}')

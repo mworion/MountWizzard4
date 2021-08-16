@@ -220,7 +220,7 @@ class SettMisc(object):
         if StrictVersion(availPackage) <= StrictVersion(actPackage):
             return True
 
-        t = 'A new version of MountWizzard is available!'
+        t = f'A new version ({availPackage}) of MountWizzard is available!'
         self.app.message.emit(t, 1)
 
         if not self.ui.versionReleaseNotes.isChecked():

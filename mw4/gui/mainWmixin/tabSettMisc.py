@@ -217,7 +217,7 @@ class SettMisc(object):
         self.ui.versionAvailable.setText(availPackage)
         self.ui.installVersion.setEnabled(True)
 
-        if StrictVersion(availPackage) < StrictVersion(actPackage):
+        if StrictVersion(availPackage) <= StrictVersion(actPackage):
             return True
 
         t = 'A new version of MountWizzard is available!'

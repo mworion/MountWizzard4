@@ -33,89 +33,89 @@ def module_setup_teardown():
 
 def test_averageperiod_1():
     val = app.averageperiod()
-    assert val == []
+    val is None
 
 
 def test_averageperiod_2():
     val = app.averageperiod(AveragePeriod=0)
-    assert val == []
+    val is None
 
 
 def test_cloudcover():
     val = app.cloudcover()
-    assert val == []
+    val is None
 
 
 def test_dewpoint():
     val = app.dewpoint()
-    assert val == []
+    val is None
 
 
 def test_humidity():
     val = app.humidity()
-    assert val == []
+    val is None
 
 
 def test_pressure():
     val = app.pressure()
-    assert val == []
+    val is None
 
 
 def test_rainrate():
     val = app.rainrate()
-    assert val == []
+    val is None
 
 
 def test_skybrightness():
     val = app.skybrightness()
-    assert val == []
+    val is None
 
 
 def test_skyquality():
     val = app.skyquality()
-    assert val == []
+    val is None
 
 
 def test_skytemperature():
     val = app.skytemperature()
-    assert val == []
+    val is None
 
 
 def test_starfwhm():
     val = app.starfwhm()
-    assert val == []
+    val is None
 
 
 def test_temperature():
     val = app.temperature()
-    assert val == []
+    val is None
 
 
 def test_winddirection():
     val = app.winddirection()
-    assert val == []
+    val is None
 
 
 def test_windgust():
     val = app.windgust()
-    assert val == []
+    val is None
 
 
 def test_windspeed():
     val = app.windspeed()
-    assert val == []
+    val is None
 
 
 def test_refresh():
     val = app.refresh()
-    assert val == []
+    val is None
 
 
 def test_sensordescription():
     val = app.sensordescription()
-    assert val == []
+    val is None
 
 
 def test_timesincelastupdate():
     val = app.timesincelastupdate()
-    assert val == []
+    val is None

@@ -33,124 +33,124 @@ def module_setup_teardown():
 
 def test_altitude():
     val = app.altitude()
-    assert val == []
+    val is None
 
 
 def test_athome():
     val = app.athome()
-    assert val == []
+    val is None
 
 
 def test_atpark():
     val = app.atpark()
-    assert val == []
+    val is None
 
 
 def test_azimuth():
     val = app.azimuth()
-    assert val == []
+    val is None
 
 
 def test_canfindhome():
     val = app.canfindhome()
-    assert val == []
+    val is None
 
 
 def test_canpark():
     val = app.canpark()
-    assert val == []
+    val is None
 
 
 def test_cansetaltitude():
     val = app.cansetaltitude()
-    assert val == []
+    val is None
 
 
 def test_cansetazimuth():
     val = app.cansetazimuth()
-    assert val == []
+    val is None
 
 
 def test_cansetpark():
     val = app.cansetpark()
-    assert val == []
+    val is None
 
 
 def test_cansetshutter():
     val = app.cansetshutter()
-    assert val == []
+    val is None
 
 
 def test_canslave():
     val = app.canslave()
-    assert val == []
+    val is None
 
 
 def test_cansyncazimuth():
     val = app.cansyncazimuth()
-    assert val == []
+    val is None
 
 
 def test_shutterstatus():
     val = app.shutterstatus()
-    assert val == []
+    val is None
 
 
 def test_slaved_1():
     val = app.slaved()
-    assert val == []
+    val is None
 
 
 def test_slaved_2():
     val = app.slaved(Slaved=True)
-    assert val == []
+    val is None
 
 
 def test_slewing():
     val = app.slewing()
-    assert val == []
+    val is None
 
 
 def test_abortslew():
     val = app.abortslew()
-    assert val == []
+    val is None
 
 
 def test_closeshutter():
     val = app.closeshutter()
-    assert val == []
+    val is None
 
 
 def test_findhome():
     val = app.findhome()
-    assert val == []
+    val is None
 
 
 def test_openshutter():
     val = app.openshutter()
-    assert val == []
+    val is None
 
 
 def test_park():
     val = app.park()
-    assert val == []
+    val is None
 
 
 def test_setpark():
     val = app.setpark()
-    assert val == []
+    val is None
 
 
 def test_slewtoaltitude():
     val = app.slewtoaltitude(Altitude=10)
-    assert val == []
+    val is None
 
 
 def test_slewtoazimuth():
     val = app.slewtoazimuth(Azimuth=10)
-    assert val == []
+    val is None
 
 
 def test_synctoazimuth():
     val = app.synctoazimuth(Azimuth=10)
-    assert val == []
+    val is None

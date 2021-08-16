@@ -33,64 +33,64 @@ def module_setup_teardown():
 
 def test_absolut():
     val = app.absolut()
-    assert val == []
+    val is None
 
 
 def test_ismoving():
     val = app.ismoving()
-    assert val == []
+    val is None
 
 
 def test_maxincrement():
     val = app.maxincrement()
-    assert val == []
+    val is None
 
 
 def test_maxstep():
     val = app.maxstep()
-    assert val == []
+    val is None
 
 
 def test_position():
     val = app.position()
-    assert val == []
+    val is None
 
 
 def test_stepsize():
     val = app.stepsize()
-    assert val == []
+    val is None
 
 
 def test_tempcomp_1():
     val = app.tempcomp()
-    assert val == []
+    val is None
 
 
 def test_tempcomp_2():
     val = app.tempcomp(TempComp=1)
-    assert val == []
+    val is None
 
 
 def test_tempcompavailable():
     val = app.tempcompavailable()
-    assert val == []
+    val is None
 
 
 def test_temperature():
     val = app.temperature()
-    assert val == []
+    val is None
 
 
 def test_halt():
     val = app.halt()
-    assert val == []
+    val is None
 
 
 def test_move_1():
     val = app.move()
-    assert val == []
+    val is None
 
 
 def test_move_2():
     val = app.move(Position=1)
-    assert val == []
+    val is None

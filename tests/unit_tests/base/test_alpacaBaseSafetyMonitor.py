@@ -34,5 +34,5 @@ def module_setup_teardown():
 
 def test_issafe():
     val = app.issafe()
-    assert val == []
+    val is None
 

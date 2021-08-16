@@ -38,49 +38,49 @@ def test_maxswitch():
 
 def test_canwrite():
     val = app.canwrite(Id=0)
-    assert val == []
+    val is None
 
 
 def test_getswitch():
     val = app.getswitch(Id=0)
-    assert val == []
+    val is None
 
 
 def test_getswitchdescription():
     val = app.getswitchdescription()
-    assert val == []
+    val is None
 
 
 def test_getswitchname():
     val = app.getswitchname()
-    assert val == []
+    val is None
 
 
 def test_getswitchvalue():
     val = app.getswitchvalue()
-    assert val == []
+    val is None
 
 
 def test_minswitchvalue():
     val = app.minswitchvalue()
-    assert val == []
+    val is None
 
 
 def test_setswitch():
     val = app.setswitch(Id=0, State=True)
-    assert val == []
+    val is None
 
 
 def test_setswitchname():
     val = app.setswitchname(Id=0, Name='test')
-    assert val == []
+    val is None
 
 
 def test_setswitchvalue():
     val = app.setswitchvalue(Id=0, Value='test')
-    assert val == []
+    val is None
 
 
 def test_switchstep():
     val = app.switchstep(Id=0)
-    assert val == []
+    val is None

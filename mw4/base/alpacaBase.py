@@ -1378,7 +1378,6 @@ class Telescope(AlpacaBase):
             Alignment mode of the mount (Alt/Az, Polar, German Polar).
 
         """
-
         return self.get("alignmentmode")
 
     def altitude(self):
@@ -1387,7 +1386,6 @@ class Telescope(AlpacaBase):
         :return:
             Altitude of the telescope's current position (degrees, positive up).
         """
-
         return self.get("altitude")
 
     def aperturearea(self):
@@ -1396,7 +1394,6 @@ class Telescope(AlpacaBase):
         :return:
             Area of the telescope's aperture (square meters).
         """
-
         return self.get("aperturearea")
 
     def aperturediameter(self):
@@ -1405,7 +1402,6 @@ class Telescope(AlpacaBase):
         :return:
             Telescope's effective aperture diameter (meters).
         """
-
         value = self.get("aperturediameter")
         if value:
             return value * 1000

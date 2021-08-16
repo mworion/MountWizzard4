@@ -490,7 +490,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
             return False
         if not formatElement:
             return False
-        if value is None:
+        if value is None or value == []:
             text = '-'
         elif formatElement.startswith('HSTR'):
             text = self.formatHstrToText(value)

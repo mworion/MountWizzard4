@@ -33,19 +33,19 @@ def module_setup_teardown():
 
 def test_focusoffsets():
     val = app.focusoffsets()
-    assert val is None
+    assert val == []
 
 
 def test_names():
     val = app.names()
-    assert val is None
+    assert val == []
 
 
 def test_position_1():
     val = app.position()
-    assert val is None
+    assert val == []
 
 
 def test_position_2():
     val = app.position(Position=0)
-    assert val is None
+    assert val == []

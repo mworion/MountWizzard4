@@ -342,7 +342,7 @@ class AlpacaBase(Signals):
         """
         val = self.get('driverinfo')
 
-        if val is None:
+        if not val:
             return ''
 
         return [i.strip() for i in val.split(',')]

@@ -34,7 +34,7 @@ def module_setup_teardown():
 
 def test_brightness():
     val = app.brightness()
-    assert val is None
+    assert val == []
 
 
 def test_calibratoroff():
@@ -43,17 +43,17 @@ def test_calibratoroff():
 
 def test_calibratoron_1():
     val = app.calibratoron()
-    assert val is None
+    assert val == []
 
 
 def test_calibratoron_2():
     val = app.calibratoron(Brightness=1)
-    assert val is None
+    assert val == []
 
 
 def test_calibratorstate():
     val = app.calibratorstate()
-    assert val is None
+    assert val == []
 
 
 def test_closecover():
@@ -70,10 +70,10 @@ def test_haltcover():
 
 def test_coverstate():
     val = app.coverstate()
-    assert val is None
+    assert val == []
 
 
 def test_maxbrightness():
     val = app.maxbrightness()
-    assert val is None
+    assert val == []
 

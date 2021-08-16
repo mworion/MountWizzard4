@@ -216,6 +216,7 @@ class AlpacaBase(Signals):
 
         if attr != 'imagearray':
             self.log.trace(f'[{uid:10d}] response:{response}')
+
         return response['Value']
 
     def put(self, attr: str, **data):
@@ -263,7 +264,6 @@ class AlpacaBase(Signals):
             return []
 
         self.log.trace(f'[{uid:10d}] response:{response}')
-
         return response
 
     def action(self, Action: str, *Parameters):

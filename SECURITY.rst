@@ -5,14 +5,14 @@ Supported Versions
 ------------------
 Security updates will be supported for version
 
-+----------+--------------------+
-| Version  | Supported          |
-|----------+------------------- +
-| 2.0.x    | :white_check_mark: |
-| 1.1.x    | :white_check_mark: |
-| 1.0.x    | :x:                |
-| < 1.0    | :x:                |
-+----------+--------------------+
++----------+---------------+
+| Version  | Supported     |
+|----------+-------------- +
+| 2.0.x    | yes           |
+| 1.1.x    | yes           |
+| 1.0.x    | no            |
+| < 1.0    | no            |
++----------+---------------+
 
 Reporting a Vulnerability
 -------------------------

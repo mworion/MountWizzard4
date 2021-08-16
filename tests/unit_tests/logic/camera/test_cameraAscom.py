@@ -103,7 +103,7 @@ def test_workerGetInitialConfig_1():
                            'workerGetInitialConfig',
                            return_value=True):
         suc = app.workerGetInitialConfig()
-        assert not suc
+        assert suc
 
 
 def test_workerPollData_1():
@@ -190,6 +190,26 @@ def test_workerExpose_3():
         with mock.patch.object(app.client,
                                'StartExposure'):
             suc = app.workerExpose(expTime=0)
+        assert suc
+    app.getAscomProperty = tmp
+
+
+def test_workerExpose_4():
+    def mockGetAscomProperty(a):
+        return True
+
+    app.data['CAN_FAST'] = False
+    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
+    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
+    app.imagePath = ''
+    app.app.deviceStat['mount'] = True
+    tmp = app.getAscomProperty
+    app.getAscomProperty = mockGetAscomProperty
+    with mock.patch.object(fits.PrimaryHDU,
+                           'writeto'):
+        with mock.patch.object(app.client,
+                               'StartExposure'):
+            suc = app.workerExpose(expTime=0, focalLength=0)
         assert suc
     app.getAscomProperty = tmp
 

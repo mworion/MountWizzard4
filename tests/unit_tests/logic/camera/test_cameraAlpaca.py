@@ -178,6 +178,25 @@ def test_workerExpose_3():
                 assert suc
 
 
+def test_workerExpose_4():
+    app.data['CAN_FAST'] = False
+    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
+    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
+    app.imagePath = ''
+    app.abortExpose = True
+
+    with mock.patch.object(AlpacaBase,
+                           'get',
+                           return_value=True):
+        with mock.patch.object(app.client,
+                               'imageready',
+                               return_value=False):
+            with mock.patch.object(fits.PrimaryHDU,
+                                   'writeto'):
+                suc = app.workerExpose(expTime=0.05, focalLength=0)
+                assert suc
+
+
 def test_expose_1():
     app.deviceConnected = False
     with mock.patch.object(app.threadPool,

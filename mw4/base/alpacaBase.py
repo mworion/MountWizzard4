@@ -141,7 +141,7 @@ class AlpacaBase(Signals):
         )
 
         try:
-            response = requests.get(url, timeout=3)
+            response = requests.get(url, timeout=10)
 
         except requests.exceptions.Timeout:
             self.log.info('timeout')
@@ -189,7 +189,7 @@ class AlpacaBase(Signals):
         self.log.trace(f'[{uid:10d}] {self.baseUrl}/{attr}], data:[{data}]')
 
         try:
-            response = requests.get(f'{self.baseUrl}/{attr}', params=data, timeout=5)
+            response = requests.get(f'{self.baseUrl}/{attr}', params=data, timeout=10)
 
         except requests.exceptions.Timeout:
             self.log.info(f'[{uid:10d}] timeout')
@@ -238,7 +238,7 @@ class AlpacaBase(Signals):
         self.log.trace(f'[{uid:08d}] {self.baseUrl}, attr:[{attr}]')
 
         try:
-            response = requests.put(f'{self.baseUrl}/{attr}', data=data, timeout=5)
+            response = requests.put(f'{self.baseUrl}/{attr}', data=data, timeout=10)
 
         except requests.exceptions.Timeout:
             self.log.info(f'[{uid:10d}] timeout')

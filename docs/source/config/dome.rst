@@ -87,6 +87,8 @@ zone". If so, the dome azimuth will be corrected and the dome will slew to it's
 new centered position. If there is still a reasonable distance, your telescope
 still could view your target and no dome movement is necessary.
 
+.. hint:: See also on youtube: https://youtu.be/ZmDz-rtvFzc
+
 
 Top view of your dome setup:
 

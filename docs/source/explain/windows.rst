@@ -15,7 +15,7 @@ the message window shows all messages during the work of MW4. You could scroll
 through the content and clear the window. All messages are logged in the logfile
 for later analyse if needed. The window is sizable in height.
 
-There is a video on youtube with some explanations: https://youtu.be/6jiCOqKgzZY
+.. hint:: See also on youtube:  https://youtu.be/6jiCOqKgzZY
 
 Measure Window
 --------------
@@ -55,8 +55,7 @@ The time interval range varies from 1s ticks (makes 4 minute view) to 128s
 ticks (makes 9 hour view) and they double every step in between. The window is
 sizable in width and height.
 
-There is a video on youtube with some explanations about working with measurements:
-https://youtu.be/ZWQBa714DjE
+.. hint:: See also on youtube: https://youtu.be/ZWQBa714DjE
 
 
 Hemisphere Windows
@@ -110,8 +109,7 @@ closest point to the mouse pointer.
     :align: center
     :scale: 71%
 
-There is a video on youtube with sme explanations about edit modes:
-https://youtu.be/PPG-aCEZZxE
+.. hint:: See also on youtube: https://youtu.be/PPG-aCEZZxE
 
 Hemisphere Points Polar
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -165,8 +163,7 @@ rely on the tracking quality of the mount.
     :align: center
     :scale: 71%
 
-There is a video on youtube with some explanations about image stacking:
-https://youtu.be/I5i8ihvtbgY
+.. hint:: See also on youtube: https://youtu.be/I5i8ihvtbgY
 
 Image Distortion Coordinates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -204,8 +201,7 @@ and above horizon, you will see it's track in the fourth quadrant.
     :align: center
     :scale: 71%
 
-There is a video on youtube with some explanations about working with satellites:
-https://youtu.be/3QCJRAfSaaY
+.. hint:: See also on youtube: https://youtu.be/3QCJRAfSaaY
 
 
 Satellite Visible Turned
@@ -238,4 +234,4 @@ performs. This should help in finding problems in your setup.
     :align: center
     :scale: 25%
 
-There is a video on youtube with some explanations: https://youtu.be/6jiCOqKgzZY
+.. hint:: See also on youtube:  https://youtu.be/6jiCOqKgzZY

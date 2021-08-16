@@ -84,7 +84,7 @@ def test_getInitialConfig_2():
         assert app.deviceConnected
         assert app.data['DRIVER_INFO.DRIVER_NAME'] in [[], None]
         assert app.data['DRIVER_INFO.DRIVER_VERSION'] in [[], None]
-        assert app.data['DRIVER_INFO.DRIVER_EXEC'] in [[], None]
+        assert app.data['DRIVER_INFO.DRIVER_EXEC'] == ''
 
 
 def test_startTimer():

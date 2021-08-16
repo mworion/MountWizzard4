@@ -101,33 +101,31 @@ class AlpacaBase(Signals):
         )
 
         try:
-            response = requests.get(url, timeout=3)
+            response = requests.get(url, timeout=5)
 
         except requests.exceptions.Timeout:
             self.log.info('timeout')
-            return None
+            return []
 
         except requests.exceptions.ConnectionError:
             self.log.debug('[connection error')
-            return None
+            return []
 
         except Exception as e:
             self.log.critical(f'[error in request: {e}')
-            return None
+            return []
 
         if response.status_code == 400 or response.status_code == 500:
             self.log.debug(f'{response.text}')
-            return None
+            return []
 
         response = response.json()
-
         if response['ErrorNumber'] != 0:
             self.log.warning(f'{response} err:{response["ErrorNumber"]}'
                              f',{response["ErrorMessage"]}')
-            return None
+            return []
 
         self.log.trace(f'[response:{response}')
-
         return response['Value']
 
     def discoverDevices(self):

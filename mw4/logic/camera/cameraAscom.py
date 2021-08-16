@@ -171,7 +171,11 @@ class CameraAscom(AscomClass):
             header['XPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning
             header['YPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning
 
-            factor = binning / focalLength * 206.265
+            if focalLength:
+                factor = binning / focalLength * 206.265
+            else:
+                factor = 1
+
             header['SCALE'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * factor
             header['XBINNING'] = binning
             header['YBINNING'] = binning

@@ -46,7 +46,7 @@ releaseNotes = """
 - update debug standard moved from WARN to INFO
 - update underlying libraries
 - fix for INDI cameras sending two times busy and exposure=0
-- fix slewing message dome when disconnected
+- fix slewing message dome when disconnecte
 - fix retry mechanism for failed build points
 - fix using builtins for skyfield and rotation update
 - fix plate solve sync 
@@ -57,7 +57,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b41',
+    version='2.0.0b43',
     packages=[
         'mw4',
         'mw4.base',

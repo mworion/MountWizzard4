@@ -119,6 +119,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.pointsPolarBuildAnnotate = None
         self.imageTerrain = None
         self.closingWindow = False
+        self.hemMouse = None
 
         self.ui.hemisphereMove.stackUnder(self.ui.hemisphere)
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
@@ -212,6 +213,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.app.updatePointMarker.disconnect(self.updatePointMarker)
         self.app.updatePointMarker.disconnect(self.updatePolarPointMarker)
         self.app.mount.signals.settingDone.disconnect(self.updateOnChangedParams)
+        self.app.enableEditPoints.disconnect(self.enableEditPoints)
         self.ui.checkShowSlewPath.clicked.disconnect(self.drawHemisphere)
         self.ui.checkShowMeridian.clicked.disconnect(self.drawHemisphere)
         self.ui.checkShowCelestial.clicked.disconnect(self.drawHemisphere)
@@ -272,6 +274,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.app.dome.signals.azimuth.connect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.connect(self.updateDome)
         self.app.dome.signals.serverDisconnected.connect(self.updateDome)
+        self.app.enableEditPoints.connect(self.enableEditPoints)
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
         self.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
         self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
@@ -287,11 +290,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
         self.ui.showPolar.clicked.connect(self.togglePolar)
         self.ui.addPositionToHorizon.clicked.connect(self.addHorizonPointManual)
-
-        self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
-                                                     self.onMouseDispatcher)
-        self.hemisphereMat.figure.canvas.mpl_connect('motion_notify_event',
-                                                     self.showMouseCoordinates)
+        hem = self.hemisphereMat.figure.canvas
+        self.hemMouse = hem.mpl_connect('button_press_event', self.onMouseDispatcher)
+        hem.mpl_connect('motion_notify_event', self.showMouseCoordinates)
         self.togglePolar()
         self.show()
         return True

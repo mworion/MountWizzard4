@@ -71,6 +71,7 @@ class MountWizzard4(QObject):
     redrawHemisphere = pyqtSignal()
     updatePointMarker = pyqtSignal()
     drawBuildPoints = pyqtSignal()
+    enableEditPoints = pyqtSignal(object)
     drawHorizonPoints = pyqtSignal()
     updateDomeSettings = pyqtSignal()
     sendSatelliteData = pyqtSignal()

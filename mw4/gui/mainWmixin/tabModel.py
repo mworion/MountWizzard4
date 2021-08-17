@@ -444,6 +444,7 @@ class Model:
         self.ui.runFlexure.setEnabled(False)
         self.ui.runHysteresis.setEnabled(False)
         self.ui.batchModel.setEnabled(False)
+        self.app.enableEditPoints.emit(False)
 
         winImage = self.app.uiWindows['showImageW']['classObj']
         if not winImage:
@@ -486,6 +487,7 @@ class Model:
         self.ui.mImage.setText('-')
         self.ui.mSolve.setText('-')
         self.ui.modelProgress.setValue(0)
+        self.app.enableEditPoints.emit(True)
         return True
 
     def setupSignalsForModelRun(self):

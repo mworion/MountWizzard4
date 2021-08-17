@@ -102,7 +102,20 @@ class HemisphereWindowExt:
             self.ui.addPositionToHorizon.setEnabled(False)
 
         self.drawHemisphere()
+        return True
 
+    def enableEditPoints(self, status):
+        """
+        :param status:
+        :return:
+        """
+        self.ui.operationMode.setEnabled(status)
+        hem = self.hemisphereMat.figure.canvas
+        if status:
+            self.hemMouse = hem.mpl_connect('button_press_event',
+                                            self.onMouseDispatcher)
+        else:
+            hem.mpl_disconnect(self.hemMouse)
         return True
 
     def showMouseCoordinates(self, event):

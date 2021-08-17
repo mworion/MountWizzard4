@@ -87,6 +87,16 @@ def test_setOperationMode_4(function):
         assert function.operationMode == 'star'
 
 
+def test_enableEditPoints_1(function):
+    suc = function.enableEditPoints(True)
+    assert suc
+
+
+def test_enableEditPoints_2(function):
+    suc = function.enableEditPoints(False)
+    assert suc
+
+
 def test_showMouseCoordinates_1(function):
     class Event:
         inaxes = False

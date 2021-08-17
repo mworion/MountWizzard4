@@ -23,7 +23,7 @@ releaseNotes = """
 - add mount clock sync feature
 - add simulator feature
 - add terrain image feature
-- add dome following when mount is in satellite tracking mode 
+- add dome following when mount is in satellite tracking mode
 - add dome dynamic following feature: reduction of slews for dome
 - add setting label support for UPB dew entries
 - add auto dew control support for Pegasus UPB
@@ -31,11 +31,11 @@ releaseNotes = """
 - add observation condition support for ASCOM/ALPACA Pegasus UPB
 - add feature for RA/DEC FITS writing for INDI server without snooping
 - add completely revised satellite tracking menu gui
-- add partially satellite tracking before / after possible flip 
+- add partially satellite tracking before / after possible flip
 - add satellite track respect horizon line and meridian limits
 - add tracking simulator feature to test without waiting for satellite
 - add alt/az pointer to satellite view
-- add reverse order for failed build point retry 
+- add reverse order for failed build point retry
 - add automatic enable webinterface for keypad use
 - add broadcast address and port for WOL
 - add new IERS and lead second download
@@ -45,6 +45,7 @@ releaseNotes = """
 - add disable model point edit during model build run
 - update debug standard moved from WARN to INFO
 - update underlying libraries
+- update GUI improvements
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected
 - fix retry mechanism for failed build points

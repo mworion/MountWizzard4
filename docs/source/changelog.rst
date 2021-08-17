@@ -42,6 +42,7 @@ Released beta version of MW4
 - add disable model point edit during model build run
 - update debug standard moved from WARN to INFO
 - update underlying libraries
+- update GUI improvements
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected
 - fix retry mechanism for failed build points

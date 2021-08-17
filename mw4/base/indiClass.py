@@ -191,7 +191,7 @@ class IndiClass:
         """
         if self.deviceName:
             suc = self.client.watchDevice(self.deviceName)
-            self.log.debug(f'INDI watch: {self.deviceName}, watch: result:{suc}')
+            self.log.debug(f'INDI watch: [{self.deviceName}], result: [{suc}]')
             return suc
         return False
 
@@ -218,7 +218,7 @@ class IndiClass:
             self.device = self.client.getDevice(deviceName)
             self.app.message.emit(f'INDI device found:   [{deviceName}]', 0)
         else:
-            self.log.info(f'INDI device snoop: {deviceName}')
+            self.log.info(f'INDI device snoop: [{deviceName}]')
         return True
 
     def removeDevice(self, deviceName):
@@ -256,7 +256,7 @@ class IndiClass:
         if suc:
             return True
 
-        t = f'Cannot start to: {self.deviceName} retry: {self.retryCounter}'
+        t = f'Cannot start: [{self.deviceName}] retries: [{self.retryCounter}]'
         self.log.debug(t)
         if self.retryCounter < self.NUMBER_RETRY:
             self.timerRetry.start(self.RETRY_DELAY)
@@ -272,7 +272,7 @@ class IndiClass:
         self.client.startTimers()
         suc = self.client.connectServer()
         if not suc:
-            t = f'Cannot start to: {self.deviceName} retry: {self.retryCounter}'
+            t = f'Cannot start: [{self.deviceName}] retries: [{self.retryCounter}]'
             self.log.debug(t)
         else:
             self.timerRetry.start(self.RETRY_DELAY)

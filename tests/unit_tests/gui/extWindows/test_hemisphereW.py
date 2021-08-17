@@ -29,7 +29,7 @@ from skyfield.api import Angle
 from PIL import Image
 
 # local import
-from unit_tests.importAddOns.baseTestSetupExtWindows import App
+from tests.unit_tests.importAddOns.baseTestSetupExtWindows import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.hemisphereW import HemisphereWindow
 

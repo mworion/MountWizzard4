@@ -26,7 +26,7 @@ import builtins
 from PyQt5.QtCore import QThreadPool
 
 # local import
-from unit_tests.importAddOns.baseTestSetupMixins import App
+from tests.unit_tests.importAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime

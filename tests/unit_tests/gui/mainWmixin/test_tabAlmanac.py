@@ -24,7 +24,7 @@ from PyQt5.QtWidgets import QWidget
 from skyfield.api import wgs84
 
 # local import
-from unit_tests.importAddOns.baseTestSetupMixins import App
+from tests.unit_tests.importAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabAlmanac import Almanac

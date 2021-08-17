@@ -26,6 +26,7 @@ import math
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle, QPushButton
 from PyQt5.QtCore import pyqtSignal, QObject, QEvent
 from skyfield.api import Angle
+import numpy as np
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
@@ -482,6 +483,18 @@ def test_guiSetText_3(function):
     suc = function.guiSetText(pb, '3.5f')
     assert suc
     assert pb.text() == '-'
+
+
+def test_guiSetText_3b(function):
+    pb = QPushButton()
+    suc = function.guiSetText(pb, '3.5f', [])
+    assert suc
+
+
+def test_guiSetText_3c(function):
+    pb = QPushButton()
+    suc = function.guiSetText(pb, '3.5f', np.array([]))
+    assert suc
 
 
 def test_guiSetText_4(function):

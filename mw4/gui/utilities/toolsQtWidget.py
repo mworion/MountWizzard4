@@ -26,6 +26,7 @@ from PyQt5.QtGui import QPalette, QIcon, QPixmap
 from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
 from PyQt5.QtCore import Qt, QSize, QEvent
 from skyfield.api import Angle
+import numpy as np
 
 # local imports
 from gui.utilities.stylesQtCss import Styles
@@ -490,7 +491,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
             return False
         if not formatElement:
             return False
-        if value is None or len(value) == 0:
+        if value is None:
+            text = '-'
+        elif isinstance(value, (list, np.ndarray)) and len(value) == 0:
             text = '-'
         elif formatElement.startswith('HSTR'):
             text = self.formatHstrToText(value)

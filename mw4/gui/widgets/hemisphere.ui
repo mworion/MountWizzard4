@@ -103,7 +103,10 @@
         <property name="bottomMargin">
          <number>4</number>
         </property>
-        <property name="spacing">
+        <property name="horizontalSpacing">
+         <number>12</number>
+        </property>
+        <property name="verticalSpacing">
          <number>4</number>
         </property>
         <item row="1" column="0">
@@ -293,7 +296,10 @@
         <property name="bottomMargin">
          <number>4</number>
         </property>
-        <property name="spacing">
+        <property name="horizontalSpacing">
+         <number>8</number>
+        </property>
+        <property name="verticalSpacing">
          <number>4</number>
         </property>
         <item row="0" column="2">
@@ -597,7 +603,10 @@
         <property name="bottomMargin">
          <number>4</number>
         </property>
-        <property name="spacing">
+        <property name="horizontalSpacing">
+         <number>12</number>
+        </property>
+        <property name="verticalSpacing">
          <number>4</number>
         </property>
         <item row="2" column="1">

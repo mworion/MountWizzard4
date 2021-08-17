@@ -24,6 +24,8 @@ from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
 from skyfield.api import wgs84, load
 
 # local import
+import resource.resources as res
+res.qInitResources()
 
 
 class Astrometry:
@@ -251,4 +253,6 @@ class App(QObject):
     mwGlob = {'modelDir': 'tests/workDir/model',
               'imageDir': 'tests/workDir/image',
               'configDir': 'tests/workDir/config',
+              'dataDir': 'tests/workDir/data',
+              'modelDir': 'tests/workDir/model',
               }

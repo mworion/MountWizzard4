@@ -40,9 +40,9 @@ def module_setup_teardown():
             return True
 
     class Test:
-        mwGlob = {'measureDir': 'tests/measure'}
+        mwGlob = {'measureDir': 'tests/workDir/measure'}
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
 
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
@@ -76,13 +76,13 @@ def test_writeCSV_1():
 
 
 def test_writeCSV_2():
-    app.csvFile = open('tests/temp/test.csv', 'w')
+    app.csvFile = open('tests/workDir/temp/test.csv', 'w')
     suc = app.writeCSV()
     assert not suc
 
 
 def test_writeCSV_3():
-    app.csvFile = open('tests/temp/test.csv', 'w')
+    app.csvFile = open('tests/workDir/temp/test.csv', 'w')
     app.csvWriter = csv.DictWriter(app.csvFile, ['test'])
     app.data = {'test': [1, 2]}
     suc = app.writeCSV()
@@ -95,13 +95,13 @@ def test_closeCSV_1():
 
 
 def test_closeCSV_2():
-    app.csvFile = open('tests/temp/test.csv', 'w')
+    app.csvFile = open('tests/workDir/temp/test.csv', 'w')
     suc = app.closeCSV()
     assert not suc
 
 
 def test_closeCSV_3():
-    app.csvFile = open('tests/temp/test.csv', 'w')
+    app.csvFile = open('tests/workDir/temp/test.csv', 'w')
     app.csvWriter = csv.DictWriter(app.csvFile, ['test'])
     suc = app.closeCSV()
     assert suc

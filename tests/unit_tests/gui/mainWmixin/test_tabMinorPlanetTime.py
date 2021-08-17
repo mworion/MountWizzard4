@@ -26,7 +26,7 @@ import builtins
 from PyQt5.QtCore import QThreadPool
 
 # local import
-from tests.unit_tests.importAddOns.baseTestSetupMixins import App
+from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
@@ -60,7 +60,7 @@ def test_initConfig_1(function):
                            'setupMinorPlanetSourceURLsDropDown'):
         suc = function.initConfig()
         assert suc
-        assert function.installPath == 'tests/data'
+        assert function.installPath == 'tests/workDir/data'
 
 
 def test_initConfig_2(function):
@@ -69,7 +69,7 @@ def test_initConfig_2(function):
                            'setupMinorPlanetSourceURLsDropDown'):
         suc = function.initConfig()
         assert suc
-        assert function.installPath == 'tests/data'
+        assert function.installPath == 'tests/workDir/data'
 
 
 def test_initConfig_3(function):

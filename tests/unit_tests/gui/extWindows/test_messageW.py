@@ -23,7 +23,7 @@ import unittest.mock as mock
 from PyQt5.QtGui import QCloseEvent
 
 # local import
-from tests.unit_tests.importAddOns.baseTestSetupExtWindows import App
+from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.messageW import MessageWindow
 

@@ -30,7 +30,7 @@ from skyfield.api import Angle
 import numpy as np
 
 # local import
-from tests.unit_tests.importAddOns.baseTestSetupExtWindows import App
+from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.imageW import ImageWindow
 
@@ -684,11 +684,11 @@ def test_showImage_3(function):
             return
 
     function.ui.zoom.addItem(' 1x Zoom')
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     with mock.patch.object(fits,
                            'open',
                            return_value=FitsHandle()):
-        suc = function.showImage(imagePath='tests/image/m51.fit')
+        suc = function.showImage(imagePath='tests/workDir/image/m51.fit')
         assert not suc
 
 
@@ -707,24 +707,24 @@ def test_showImage_4(function):
             return
 
     function.ui.zoom.addItem(' 1x Zoom')
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     with mock.patch.object(fits,
                            'open',
                            return_value=FitsHandle()):
-        suc = function.showImage(imagePath='tests/image/m51.fit')
+        suc = function.showImage(imagePath='tests/workDir/image/m51.fit')
         assert not suc
 
 
 def test_showImage_5(function):
     function.ui.zoom.addItem(' 1x Zoom')
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     with mock.patch.object(function,
                            'zoomImage'):
         with mock.patch.object(function,
                                'stackImages'):
             with mock.patch.object(function,
                                    'prepareImageForPhotometry'):
-                suc = function.showImage(imagePath='tests/image/m51.fit')
+                suc = function.showImage(imagePath='tests/workDir/image/m51.fit')
                 assert suc
 
 
@@ -746,7 +746,7 @@ def test_showImage_6(function):
             return
 
     function.ui.zoom.addItem(' 1x Zoom')
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     with mock.patch.object(fits,
                            'open',
                            return_value=FitsHandle()):
@@ -756,7 +756,7 @@ def test_showImage_6(function):
                                    'stackImages'):
                 with mock.patch.object(function,
                                        'prepareImageForPhotometry'):
-                    suc = function.showImage(imagePath='tests/image/m51.fit')
+                    suc = function.showImage(imagePath='tests/workDir/image/m51.fit')
                     assert suc
 
 
@@ -968,8 +968,8 @@ def test_solveImage_2(function, qtbot):
 
 
 def test_solveImage_3(function, qtbot):
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-    file = 'tests/image/m51.fit'
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+    file = 'tests/workDir/image/m51.fit'
     with mock.patch.object(function.app.astrometry,
                            'solveThreading'):
         suc = function.solveImage(imagePath=file)

@@ -30,7 +30,7 @@ import importlib_metadata
 
 # local import
 from gui.mainWmixin.tabSettMisc import SettMisc
-from tests.unit_tests.importAddOns.baseTestSetupMixins import App
+from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
@@ -675,7 +675,7 @@ def test_syncClock_3(function):
     assert not suc
 
 
-@mock.patch('tests.tests.unit_tests.importAddOns.App.mount.obsSite.timeDiff', 0.005)
+@mock.patch('tests.tests.unit_tests.unitTestAddons.App.mount.obsSite.timeDiff', 0.005)
 def test_syncClock_4(function):
     function.ui.syncTimePC2Mount.setChecked(True)
     function.ui.syncNotTracking.setChecked(False)
@@ -685,7 +685,7 @@ def test_syncClock_4(function):
     assert not suc
 
 
-@mock.patch('tests.tests.unit_tests.importAddOns.App.mount.obsSite.timeDiff', 1)
+@mock.patch('tests.tests.unit_tests.unitTestAddons.App.mount.obsSite.timeDiff', 1)
 def test_syncClock_5(function):
     function.ui.syncTimePC2Mount.setChecked(True)
     function.ui.syncNotTracking.setChecked(False)
@@ -698,7 +698,7 @@ def test_syncClock_5(function):
         assert not suc
 
 
-@mock.patch('tests.tests.unit_tests.importAddOns.App.mount.obsSite.timeDiff', -1)
+@mock.patch('tests.tests.unit_tests.unitTestAddons.App.mount.obsSite.timeDiff', -1)
 def test_syncClock_6(function):
     function.ui.syncTimePC2Mount.setChecked(True)
     function.ui.syncNotTracking.setChecked(False)

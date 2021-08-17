@@ -69,14 +69,14 @@ def function(module):
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         update1s = pyqtSignal()
         update10s = pyqtSignal()
         threadPool = QThreadPool()
-        mwGlob = {'modelDir': 'tests/model',
-                  'imageDir': 'tests/image',
-                  'configDir': 'tests/config',
-                  'tempDir': 'tests/temp'}
+        mwGlob = {'modelDir': 'tests/workDir/model',
+                  'imageDir': 'tests/workDir/image',
+                  'configDir': 'tests/workDir/config',
+                  'tempDir': 'tests/workDir/temp'}
 
     class Test(QObject):
         config = {'mainW': {}}
@@ -88,7 +88,7 @@ def function(module):
         __version__ = 'test'
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                               longitude_degrees=10,
                                               elevation_m=500)
@@ -96,9 +96,9 @@ def function(module):
         camera = Camera(app=Test1())
         astrometry = Astrometry(app=Test1())
         dome = Dome(app=Test1())
-        mwGlob = {'modelDir': 'tests/model',
-                  'configDir': 'tests/config',
-                  'imageDir': 'tests/image'}
+        mwGlob = {'modelDir': 'tests/workDir/model',
+                  'configDir': 'tests/workDir/config',
+                  'imageDir': 'tests/workDir/image'}
         uiWindows = {'showImageW': {'classObj': Test2()}}
 
     class Mixin(MWidget, Model):
@@ -116,10 +116,10 @@ def function(module):
     window = Mixin()
     yield window
 
-    files = glob.glob('tests/model/m-*.model')
+    files = glob.glob('tests/workDir/model/m-*.model')
     for f in files:
         os.remove(f)
-    for path in glob.glob('tests/image/m-*'):
+    for path in glob.glob('tests/workDir/image/m-*'):
         shutil.rmtree(path)
 
 
@@ -768,7 +768,7 @@ def test_generateSaveModel_1(function):
 
 
 def test_saveModelFinish_1(function):
-    shutil.copy('tests/testData/test.model', 'tests/model/test.model')
+    shutil.copy('tests/testData/test.model', 'tests/workDir/model/test.model')
     function.modelName = 'test'
     function.app.mount.signals.alignDone.connect(function.saveModelFinish)
     suc = function.saveModelFinish()
@@ -1336,10 +1336,10 @@ def test_loadProgramModel_1(function):
 
 
 def test_loadProgramModel_2(function):
-    shutil.copy('tests/testData/test.model', 'tests/model/test.model')
+    shutil.copy('tests/testData/test.model', 'tests/workDir/model/test.model')
 
     def openFile(a, b, c, d, multiple=False):
-        return ('tests/model/test.model',
+        return ('tests/workDir/model/test.model',
                 'test',
                 '.model')
     function.openFile = openFile
@@ -1352,10 +1352,10 @@ def test_loadProgramModel_2(function):
 
 
 def test_loadProgramModel_3(function):
-    shutil.copy('tests/testData/test.model', 'tests/model/test.model')
+    shutil.copy('tests/testData/test.model', 'tests/workDir/model/test.model')
 
     def openFile(a, b, c, d, multiple=False):
-        return (['tests/model/test.model'],
+        return (['tests/workDir/model/test.model'],
                 ['test'],
                 ['.model'])
     function.openFile = openFile
@@ -1371,10 +1371,10 @@ def test_loadProgramModel_3(function):
 
 
 def test_loadProgramModel_4(function):
-    shutil.copy('tests/testData/test.model', 'tests/model/test.model')
+    shutil.copy('tests/testData/test.model', 'tests/workDir/model/test.model')
 
     def openFile(a, b, c, d, multiple=False):
-        return (['tests/model/test.model'],
+        return (['tests/workDir/model/test.model'],
                 ['test'],
                 ['.model'])
     function.openFile = openFile
@@ -1390,12 +1390,12 @@ def test_loadProgramModel_4(function):
 
 
 def test_loadProgramModel_5(function):
-    shutil.copy('tests/testData/test.model', 'tests/model/test.model')
-    shutil.copy('tests/testData/test1.model', 'tests/model/test1.model')
+    shutil.copy('tests/testData/test.model', 'tests/workDir/model/test.model')
+    shutil.copy('tests/testData/test1.model', 'tests/workDir/model/test1.model')
 
     def openFile(a, b, c, d, multiple=False):
-        return (['tests/model/test.model',
-                 'tests/model/test1.model'],
+        return (['tests/workDir/model/test.model',
+                 'tests/workDir/model/test1.model'],
                 ['test', 'test1'],
                 ['.model', '.model'])
     function.openFile = openFile
@@ -1492,8 +1492,8 @@ def test_solveImage_2(function):
 
 
 def test_solveImage_3(function):
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-    file = 'tests/image/m51.fit'
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+    file = 'tests/workDir/image/m51.fit'
     with mock.patch.object(function.app.astrometry,
                            'solveThreading'):
         suc = function.solveImage(imagePath=file)

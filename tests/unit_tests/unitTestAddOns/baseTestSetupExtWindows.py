@@ -248,7 +248,7 @@ class App(QObject):
     astrometry = Astrometry()
     deviceStat = {}
     threadPool = QThreadPool()
-    mwGlob = {'modelDir': 'tests/model',
-              'imageDir': 'tests/image',
-              'configDir': 'tests/config',
+    mwGlob = {'modelDir': 'tests/workDir/model',
+              'imageDir': 'tests/workDir/image',
+              'configDir': 'tests/workDir/config',
               }

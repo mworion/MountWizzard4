@@ -342,7 +342,7 @@ class App(QObject):
     __version__ = 'test'
     threadPool = QThreadPool()
     ephemeris = load('tests/testData/de421_23.bsp')
-    mwGlob = {'modelDir': 'tests/model',
-              'imageDir': 'tests/image'}
+    mwGlob = {'modelDir': 'tests/workDir/model',
+              'imageDir': 'tests/workDir/image'}
 
 

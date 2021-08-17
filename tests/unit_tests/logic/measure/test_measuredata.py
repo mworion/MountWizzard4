@@ -34,14 +34,14 @@ def module_setup_teardown():
 
     class Test(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         sensorWeather = Test1()
         onlineWeather = Test1()
         skymeter = Test1()
         filter = Test1()
         focuser = Test1()
         power = Test1()
-        mwGlob = {'dataDir': 'tests/data'}
+        mwGlob = {'dataDir': 'tests/workDir/data'}
         deviceStat = {
             'dome': None,
             'mount': None,

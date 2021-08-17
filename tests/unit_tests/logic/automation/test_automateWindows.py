@@ -50,12 +50,12 @@ def function(module):
     class Test(QObject):
         threadPool = QThreadPool()
         mount = Mount()
-        mwGlob = {'tempDir': 'tests/temp',
-                  'dataDir': 'tests/data',
+        mwGlob = {'tempDir': 'tests/workDir/temp',
+                  'dataDir': 'tests/workDir/data',
                   }
 
     for file in ['tai-utc.dat', 'finals2000A.all']:
-        path = 'tests/data/' + file
+        path = 'tests/workDir/data/' + file
         if os.path.isfile(path):
             os.remove(path)
 

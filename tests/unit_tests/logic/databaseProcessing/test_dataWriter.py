@@ -47,12 +47,12 @@ def function(module):
     class Test(QObject):
         threadPool = QThreadPool()
         mount = Mount()
-        mwGlob = {'tempDir': 'tests/temp',
-                  'dataDir': 'tests/data',
+        mwGlob = {'tempDir': 'tests/workDir/temp',
+                  'dataDir': 'tests/workDir/data',
                   }
 
     for file in ['CDFLeapSeconds.txt', 'finals.data']:
-        path = 'tests/data/' + file
+        path = 'tests/workDir/data/' + file
         if os.path.isfile(path):
             os.remove(path)
 
@@ -66,15 +66,15 @@ def test_writeEarthRotationData_1(function):
 
 
 def test_writeEarthRotationData_2(function):
-    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/data/CDFLeapSeconds.txt')
+    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
     suc = function.writeEarthRotationData()
     assert not suc
 
 
 def test_writeEarthRotationData_3(function):
-    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/data/CDFLeapSeconds.txt')
-    shutil.copy('tests/testData/finals.data', 'tests/data/finals.data')
-    suc = function.writeEarthRotationData(installPath='tests/temp')
+    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
+    shutil.copy('tests/testData/finals.data', 'tests/workDir/data/finals.data')
+    suc = function.writeEarthRotationData(installPath='tests/workDir/temp')
     assert suc
 
 
@@ -86,16 +86,16 @@ def test_writeCometMPC_1(function):
 def test_writeCometMPC_2(function):
     data = {'test': 'test'}
 
-    suc = function.writeCometMPC(datas=data, installPath='tests/temp')
+    suc = function.writeCometMPC(datas=data, installPath='tests/workDir/temp')
     assert not suc
 
 
 def test_writeCometMPC_3(function):
     data = [{'test': 'test'}]
 
-    suc = function.writeCometMPC(datas=data, installPath='tests/temp')
+    suc = function.writeCometMPC(datas=data, installPath='tests/workDir/temp')
     assert suc
-    assert os.path.isfile('tests/temp/minorPlanets.mpc')
+    assert os.path.isfile('tests/workDir/temp/minorPlanets.mpc')
 
 
 def test_writeCometMPC_4(function):
@@ -104,7 +104,7 @@ def test_writeCometMPC_4(function):
 
     testData = [data[0]]
 
-    suc = function.writeCometMPC(datas=testData, installPath='tests/temp')
+    suc = function.writeCometMPC(datas=testData, installPath='tests/workDir/temp')
     assert suc
 
 
@@ -114,10 +114,10 @@ def test_writeCometMPC_5(function):
 
     testData = [data[0]]
 
-    suc = function.writeCometMPC(datas=testData, installPath='tests/temp')
+    suc = function.writeCometMPC(datas=testData, installPath='tests/workDir/temp')
     assert suc
 
-    with open('tests/temp/minorPlanets.mpc', 'r') as f:
+    with open('tests/workDir/temp/minorPlanets.mpc', 'r') as f:
         testLine = f.readline()
 
     with open('tests/testData/mpc_comet_test.txt', 'r') as f:
@@ -232,16 +232,16 @@ def test_writeAsteroidMPC_1(function):
 def test_writeAsteroidMPC_2(function):
     data = {'Principal_desig': '2016 NU22'}
 
-    suc = function.writeAsteroidMPC(datas=data, installPath='tests/temp')
+    suc = function.writeAsteroidMPC(datas=data, installPath='tests/workDir/temp')
     assert not suc
 
 
 def test_writeAsteroidMPC_3(function):
     data = [{}]
 
-    suc = function.writeAsteroidMPC(datas=data, installPath='tests/temp')
+    suc = function.writeAsteroidMPC(datas=data, installPath='tests/workDir/temp')
     assert suc
-    assert os.path.isfile('tests/temp/minorPlanets.mpc')
+    assert os.path.isfile('tests/workDir/temp/minorPlanets.mpc')
 
 
 def test_writeAsteroidMPC_4(function):
@@ -250,7 +250,7 @@ def test_writeAsteroidMPC_4(function):
 
     testData = [data[0]]
 
-    suc = function.writeAsteroidMPC(datas=testData, installPath='tests/temp')
+    suc = function.writeAsteroidMPC(datas=testData, installPath='tests/workDir/temp')
     assert suc
 
 
@@ -260,10 +260,10 @@ def test_writeAsteroidMPC_5(function):
 
     testData = [data[0]]
 
-    suc = function.writeAsteroidMPC(datas=testData, installPath='tests/temp')
+    suc = function.writeAsteroidMPC(datas=testData, installPath='tests/workDir/temp')
     assert suc
 
-    with open('tests/temp/minorPlanets.mpc', 'r') as f:
+    with open('tests/workDir/temp/minorPlanets.mpc', 'r') as f:
         testLine = f.readline()
 
     with open('tests/testData/mpc_asteroid_test.txt', 'r') as f:
@@ -276,10 +276,10 @@ def test_writeAsteroidMPC_6(function):
     with open('tests/testData/mpc_asteroid_test.json') as f:
         data = json.load(f)
 
-    suc = function.writeAsteroidMPC(datas=data, installPath='tests/temp')
+    suc = function.writeAsteroidMPC(datas=data, installPath='tests/workDir/temp')
     assert suc
 
-    with open('tests/temp/minorPlanets.mpc', 'r') as f:
+    with open('tests/workDir/temp/minorPlanets.mpc', 'r') as f:
         testLines = f.readlines()
 
     with open('tests/testData/mpc_asteroid_test.txt', 'r') as f:
@@ -296,10 +296,10 @@ def test_writeAsteroidMPC_7(function):
 
     testData = [data[0]]
 
-    suc = function.writeAsteroidMPC(datas=testData, installPath='tests/temp')
+    suc = function.writeAsteroidMPC(datas=testData, installPath='tests/workDir/temp')
     assert suc
 
-    with open('tests/temp/minorPlanets.mpc', 'r') as f:
+    with open('tests/workDir/temp/minorPlanets.mpc', 'r') as f:
         testLine = f.readline()
 
     with open('tests/testData/nea_extended_test.txt', 'r') as f:
@@ -312,10 +312,10 @@ def test_writeAsteroidMPC_8(function):
     with open('tests/testData/nea_extended_test.json') as f:
         data = json.load(f)
 
-    suc = function.writeAsteroidMPC(datas=data, installPath='tests/temp')
+    suc = function.writeAsteroidMPC(datas=data, installPath='tests/workDir/temp')
     assert suc
 
-    with open('tests/temp/minorPlanets.mpc', 'r') as f:
+    with open('tests/workDir/temp/minorPlanets.mpc', 'r') as f:
         testLines = f.readlines()
 
     with open('tests/testData/nea_extended_test.txt', 'r') as f:
@@ -332,13 +332,13 @@ def test_writeAsteroidMPC_8(function):
 
 def test_writeSatelliteTLE_1(function):
     data = None
-    suc = function.writeSatelliteTLE(datas=data, installPath='tests/temp')
+    suc = function.writeSatelliteTLE(datas=data, installPath='tests/workDir/temp')
     assert not suc
 
 
 def test_writeSatelliteTLE_2(function):
     data = 'test'
-    suc = function.writeSatelliteTLE(datas=data, installPath='tests/temp')
+    suc = function.writeSatelliteTLE(datas=data, installPath='tests/workDir/temp')
     assert not suc
 
 
@@ -347,10 +347,10 @@ def test_writeSatelliteTLE_3(function):
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     data = {'NOAA 8': EarthSatellite(tle[1], tle[2],  name=tle[0])}
-    suc = function.writeSatelliteTLE(datas=data, installPath='tests/temp')
+    suc = function.writeSatelliteTLE(datas=data, installPath='tests/workDir/temp')
     assert suc
 
-    with open('tests/temp/satellites.tle', 'r') as f:
+    with open('tests/workDir/temp/satellites.tle', 'r') as f:
         refLines = f.readlines()
 
     assert tle[0] == refLines[0].strip('\n')
@@ -363,10 +363,10 @@ def t_writeSatelliteTLE_4(function):
            "1 44542U 19061A   21180.78220369 -.00000015  00000-0 -66561+1 0  9997",
            "2 44542  54.7025 244.1098 0007981 318.8601 283.5781  1.86231125 12011"]
     data = {'BEIDOU-3 M23': EarthSatellite(tle[1], tle[2],  name=tle[0])}
-    suc = function.writeSatelliteTLE(datas=data, installPath='tests/temp')
+    suc = function.writeSatelliteTLE(datas=data, installPath='tests/workDir/temp')
     assert suc
 
-    with open('tests/temp/satellites.tle', 'r') as f:
+    with open('tests/workDir/temp/satellites.tle', 'r') as f:
         refLines = f.readlines()
 
     assert tle[0] == refLines[0].strip('\n')

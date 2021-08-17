@@ -38,7 +38,7 @@ def module_setup_teardown():
 
     yield
 
-    files = glob.glob('tests/image/*.fit*')
+    files = glob.glob('tests/workDir/image/*.fit*')
     for f in files:
         os.remove(f)
 
@@ -47,17 +47,17 @@ def module_setup_teardown():
 def app():
     class Test:
         threadPool = QThreadPool()
-        mwGlob = {'tempDir': 'tests/temp'}
+        mwGlob = {'tempDir': 'tests/workDir/temp'}
 
     parent = Astrometry(app=Test())
     app = AstrometryASTAP(parent=parent)
 
-    for file in os.listdir('tests/temp'):
-        fileP = os.path.join('tests/temp', file)
+    for file in os.listdir('tests/workDir/temp'):
+        fileP = os.path.join('tests/workDir/temp', file)
         if 'temp' not in file:
             continue
         os.remove(fileP)
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
 
     yield app
 
@@ -144,8 +144,8 @@ def test_getWCSHeader_1(app):
 
 
 def test_getWCSHeader_2(app):
-    shutil.copy('tests/testData/tempASTAP.wcs', 'tests/temp/temp.wcs')
-    val = app.getWCSHeader(wcsTextFile='tests/temp/temp.wcs')
+    shutil.copy('tests/testData/tempASTAP.wcs', 'tests/workDir/temp/temp.wcs')
+    val = app.getWCSHeader(wcsTextFile='tests/workDir/temp/temp.wcs')
     assert val
 
 
@@ -163,7 +163,7 @@ def test_solveASTAP_3(app):
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=(False, 1)):
-        suc = app.solve(fitsPath='tests/image/m51.fit')
+        suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
         assert not suc
 
 
@@ -171,7 +171,7 @@ def test_solveASTAP_4(app):
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=(True, 0)):
-        suc = app.solve(fitsPath='tests/image/m51.fit')
+        suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
         assert not suc
 
 
@@ -182,8 +182,8 @@ def test_solveASTAP_5(app):
         with mock.patch.object(os,
                                'remove',
                                return_value=True):
-            shutil.copy('tests/testData/tempASTAP.wcs', 'tests/temp/temp.wcs')
-            suc = app.solve(fitsPath='tests/image/m51.fit')
+            shutil.copy('tests/testData/tempASTAP.wcs', 'tests/workDir/temp/temp.wcs')
+            suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
             assert suc
 
 

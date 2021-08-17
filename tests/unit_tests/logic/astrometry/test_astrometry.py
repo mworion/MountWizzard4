@@ -35,7 +35,7 @@ def module_setup_teardown():
 
     yield
 
-    files = glob.glob('tests/image/*.fit*')
+    files = glob.glob('tests/workDir/image/*.fit*')
     for f in files:
         os.remove(f)
 
@@ -45,10 +45,10 @@ def app():
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(object, object)
-        mwGlob = {'tempDir': 'tests/temp'}
+        mwGlob = {'tempDir': 'tests/workDir/temp'}
 
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-    shutil.copy('tests/testData/astrometry.cfg', 'tests/temp/astrometry.cfg')
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+    shutil.copy('tests/testData/astrometry.cfg', 'tests/workDir/temp/astrometry.cfg')
     app = Astrometry(app=Test())
 
     yield app
@@ -95,7 +95,7 @@ def test_init_1(app):
 
 
 def test_readFitsData_1(app):
-    file = 'tests/image/test1.fit'
+    file = 'tests/workDir/image/test1.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -273,7 +273,7 @@ def test_solveThreading_2(app):
 
 def test_solveThreading_3(app):
     app.framework = 'astap'
-    file = 'tests/image/m51.fit'
+    file = 'tests/workDir/image/m51.fit'
     app.mutexSolve.lock()
     suc = app.solveThreading(fitsPath=file)
     assert not suc
@@ -282,7 +282,7 @@ def test_solveThreading_3(app):
 
 def test_solveThreading_4(app):
     app.framework = 'astap'
-    file = 'tests/image/m51.fit'
+    file = 'tests/workDir/image/m51.fit'
     with mock.patch.object(app.threadPool,
                            'start'):
         suc = app.solveThreading(fitsPath=file)

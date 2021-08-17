@@ -30,10 +30,10 @@ from logic.modeldata.hipparcos import Hipparcos
 def module_setup_teardown():
     class Test():
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
+                                              longitude_degrees=10,
+                                              elevation_m=500)
 
     global app
     app = Hipparcos(app=Test())

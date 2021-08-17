@@ -40,9 +40,9 @@ def module(qapp):
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
     class Test1(QObject):
-        mwGlob = {'configDir': 'tests/config'}
+        mwGlob = {'configDir': 'tests/workDir/config'}
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
 
     class Test(QObject):
         config = {'mainW': {}}
@@ -50,9 +50,9 @@ def function(module):
         drawBuildPoints = pyqtSignal()
         message = pyqtSignal(str, int)
         sendBuildPoints = pyqtSignal(object)
-        mwGlob = {'configDir': 'tests/config'}
+        mwGlob = {'configDir': 'tests/workDir/config'}
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                               longitude_degrees=10,
                                               elevation_m=500)

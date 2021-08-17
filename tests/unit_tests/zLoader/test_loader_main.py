@@ -58,16 +58,16 @@ def test_main_1():
         def close():
             return
 
-    files = glob.glob('tests/config/*.cfg')
+    files = glob.glob('tests/workDir/config/*.cfg')
     for f in files:
         os.remove(f)
 
-    mwGlob = {'configDir': 'tests/config',
-              'dataDir': 'tests/data',
-              'tempDir': 'tests/temp',
-              'imageDir': 'tests/image',
-              'modelDir': 'tests/model',
-              'workDir': 'mw4/test',
+    mwGlob = {'configDir': 'tests/workDir/config',
+              'dataDir': 'tests/workDir/data',
+              'tempDir': 'tests/workDir/temp',
+              'imageDir': 'tests/workDir/image',
+              'modelDir': 'tests/workDir/model',
+              'workDir': 'mw4/tests/workDir',
               'modeldata': '4.0',
               }
     with mock.patch.object(PyQt5.QtCore.QBasicTimer,

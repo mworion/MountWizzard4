@@ -245,7 +245,7 @@ class Mount(QObject):
         ts = load.timescale(builtin=True)
         timeJD = ts.now()
         timeDiff = 0
-        loader = Loader('tests/temp', verbose=False)
+        loader = Loader('tests/workDir/temp', verbose=False)
         status = 0
         statusSat = 'E'
         UTC2TT = 69.184
@@ -517,10 +517,10 @@ class App(QObject):
     astrometry = Astrometry()
     onlineWeather = OnlineWeather()
     ephemeris = load('tests/testData/de421_23.bsp')
-    mwGlob = {'modelDir': 'tests/model',
-              'imageDir': 'tests/image',
-              'dataDir': 'tests/data',
-              'configDir': 'tests/config',
+    mwGlob = {'modelDir': 'tests/workDir/model',
+              'imageDir': 'tests/workDir/image',
+              'dataDir': 'tests/workDir/data',
+              'configDir': 'tests/workDir/config',
               }
     uiWindows = {}
     threadPool = QThreadPool()

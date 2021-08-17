@@ -36,10 +36,10 @@ from loader import getWindowPos
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown(qtbot):
-    files = glob.glob('tests/config/*.cfg')
+    files = glob.glob('tests/workDir/config/*.cfg')
     for f in files:
         os.remove(f)
-    files = glob.glob('tests/config/profile')
+    files = glob.glob('tests/workDir/config/profile')
     for f in files:
         os.remove(f)
     yield
@@ -109,7 +109,7 @@ def test_extractDataFiles_1(qtbot):
 
 def test_extractDataFiles_2(qtbot):
     mwGlob = dict()
-    mwGlob['dataDir'] = 'tests/data'
+    mwGlob['dataDir'] = 'tests/workDir/data'
     suc = extractDataFiles(mwGlob=mwGlob)
     assert suc
 
@@ -121,14 +121,14 @@ def test_extractDataFiles_3(qtbot):
             return
 
     mwGlob = dict()
-    mwGlob['dataDir'] = 'tests/data'
+    mwGlob['dataDir'] = 'tests/workDir/data'
     suc = extractDataFiles(mwGlob=mwGlob, splashW=Splash())
     assert suc
 
 
 def test_extractDataFiles_4(qtbot):
     mwGlob = dict()
-    mwGlob['dataDir'] = 'tests/data'
+    mwGlob['dataDir'] = 'tests/workDir/data'
     suc = extractDataFiles(mwGlob=mwGlob)
     assert suc
 
@@ -137,17 +137,17 @@ def test_extractDataFiles_5(qtbot):
     if platform.system() == 'Windows':
         return
 
-    mwGlob = {'dataDir': 'tests/data'}
+    mwGlob = {'dataDir': 'tests/workDir/data'}
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
         suc = extractDataFiles(mwGlob=mwGlob)
         assert suc
-    assert os.path.isfile('tests/data/de421_23.bsp')
-    assert os.path.isfile('tests/data/active.txt')
-    assert os.path.isfile('tests/data/finals2000A.all')
-    assert os.path.isfile('tests/data/finals.data')
-    assert os.path.isfile('tests/data/CDFLeapSeconds.txt')
+    assert os.path.isfile('tests/workDir/data/de421_23.bsp')
+    assert os.path.isfile('tests/workDir/data/active.txt')
+    assert os.path.isfile('tests/workDir/data/finals2000A.all')
+    assert os.path.isfile('tests/workDir/data/finals.data')
+    assert os.path.isfile('tests/workDir/data/CDFLeapSeconds.txt')
 
 
 def test_extractDataFiles_6(qtbot):
@@ -157,8 +157,8 @@ def test_extractDataFiles_6(qtbot):
     class MTime:
         st_mtime = 1000000000.0
 
-    shutil.copy('tests/testData/finals2000A.all', 'tests/data/finals2000A.all')
-    mwGlob = {'dataDir': 'tests/data'}
+    shutil.copy('tests/testData/finals2000A.all', 'tests/workDir/ata/finals2000A.all')
+    mwGlob = {'dataDir': 'tests/workDir/data'}
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=True):

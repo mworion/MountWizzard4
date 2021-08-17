@@ -39,7 +39,7 @@ def module_setup_teardown(qtbot):
 
     class Test1(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         update1s = pyqtSignal()
         threadPool = QThreadPool()
 
@@ -50,7 +50,7 @@ def module_setup_teardown(qtbot):
         update30m = pyqtSignal()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)

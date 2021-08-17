@@ -36,7 +36,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
         update1s = pyqtSignal()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
     global app
     app = Dome(app=Test())
 

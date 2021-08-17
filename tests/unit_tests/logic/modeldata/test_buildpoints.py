@@ -39,15 +39,15 @@ from base import transform
 def module_setup_teardown():
     class Test():
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                               longitude_degrees=10,
                                               elevation_m=500)
-        mwGlob = {'configDir': 'tests/config'}
+        mwGlob = {'configDir': 'tests/workDir/config'}
 
     global app
 
-    config = 'tests/config'
+    config = 'tests/workDir/config'
     testdir = os.listdir(config)
     for item in testdir:
         if item.endswith('.bpts'):
@@ -701,7 +701,7 @@ def test_loadJSON_1():
 
 
 def test_loadJSON_2():
-    with open('tests/config/test.bpts', 'w') as outfile:
+    with open('tests/workDir/config/test.bpts', 'w') as outfile:
         outfile.writelines('[test, ]],[]}')
 
     val = app.loadJSON('test', '.bpts')
@@ -709,7 +709,7 @@ def test_loadJSON_2():
 
 
 def test_loadJSON_3():
-    with open('tests/config/test.bpts', 'wb') as outfile:
+    with open('tests/workDir/config/test.bpts', 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
 
     val = app.loadJSON('test', '.bpts')
@@ -718,7 +718,7 @@ def test_loadJSON_3():
 
 def test_loadJSON_4():
     values = [(1, 1), (2, 2)]
-    with open('tests/config/test.bpts', 'w') as outfile:
+    with open('tests/workDir/config/test.bpts', 'w') as outfile:
         json.dump(values,
                   outfile,
                   indent=4)
@@ -733,7 +733,7 @@ def test_loadCSV_1():
 
 
 def test_loadCSV_2():
-    with open('tests/config/test.csv', 'w') as outfile:
+    with open('tests/workDir/config/test.csv', 'w') as outfile:
         outfile.writelines('[test, ]],[]}')
 
     val = app.loadCSV('test', '.csv')
@@ -741,7 +741,7 @@ def test_loadCSV_2():
 
 
 def test_loadCSV_3():
-    with open('tests/config/test.csv', 'wb') as outfile:
+    with open('tests/workDir/config/test.csv', 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
 
     val = app.loadCSV('test', '.csv')
@@ -750,7 +750,7 @@ def test_loadCSV_3():
 
 def test_loadCSV_4():
     values = [(1, 1), (2, 2)]
-    with open('tests/config/test.csv', 'w') as outfile:
+    with open('tests/workDir/config/test.csv', 'w') as outfile:
         outfile.writelines('1, 1\n')
         outfile.writelines('2, 2\n')
 
@@ -773,7 +773,7 @@ def test_loadBuildP_2():
 def test_loadBuildP_3():
     # load file with path
     app.buildPFile = ''
-    fileName = 'tests/config/test.bpts'
+    fileName = 'tests/workDir/config/test.bpts'
     values = [(1, 1), (2, 2)]
     with open(fileName, 'w') as outfile:
         json.dump(values,
@@ -786,7 +786,7 @@ def test_loadBuildP_3():
 
 def test_loadBuildP_4():
     # load file without path
-    fileName = 'tests/config/test.bpts'
+    fileName = 'tests/workDir/config/test.bpts'
     app.buildPFile = 'test'
     values = [(1, 1), (2, 2)]
     with open(fileName, 'w') as outfile:
@@ -803,7 +803,7 @@ def test_loadBuildP_4():
 def test_loadBuildP_5():
     # load file with path
     app.buildPFile = ''
-    fileName = 'tests/config/test.csv'
+    fileName = 'tests/workDir/config/test.csv'
     values = [(1, 1), (2, 2)]
     with open(fileName, 'w') as outfile:
         outfile.write('1,1\n2,2\n')
@@ -815,7 +815,7 @@ def test_loadBuildP_5():
 def test_loadBuildP_6():
     # load file with path
     app.buildPFile = ''
-    fileName = 'tests/config/test.txt'
+    fileName = 'tests/workDir/config/test.txt'
     values = [(1, 1, True), (2, 2, True)]
     with open(fileName, 'w') as outfile:
         outfile.write('1:1\n2:2\n')
@@ -827,7 +827,7 @@ def test_loadBuildP_6():
 def test_loadBuildP_7():
     # load file with path
     app.buildPFile = ''
-    fileName = 'tests/config/test.txt'
+    fileName = 'tests/workDir/config/test.txt'
     values = [(1, 1, True), (2, 2, True)]
     with open(fileName, 'w') as outfile:
         outfile.write('1:1\n2:2\n')
@@ -843,7 +843,7 @@ def test_saveBuildP_11():
 
 
 def test_saveBuildP_12():
-    fileName = 'tests/config/save_test.bpts'
+    fileName = 'tests/workDir/config/save_test.bpts'
     app.genGreaterCircle('min')
     suc = app.saveBuildP('save_test')
     assert suc
@@ -864,14 +864,14 @@ def test_loadHorizonP_2():
 
 def test_loadHorizonP_3():
     # path with not existent file given
-    fileName = 'tests/config/test_load_horizon.hpts'
+    fileName = 'tests/workDir/config/test_load_horizon.hpts'
     suc = app.loadHorizonP(fileName, '.hpts')
     assert not suc
 
 
 def test_loadHorizonP_4():
     # load file with path
-    fileName = 'tests/config/test_horizon_2.hpts'
+    fileName = 'tests/workDir/config/test_horizon_2.hpts'
     values = [(1, 1), (2, 2)]
     with open(fileName, 'w') as outfile:
         json.dump(values,
@@ -885,7 +885,7 @@ def test_loadHorizonP_4():
 def test_loadHorizonP_5():
     # load with wrong content
     app.horizonPFile = ''
-    fileName = 'tests/config/test_horizon_2.hpts'
+    fileName = 'tests/workDir/config/test_horizon_2.hpts'
     with open(fileName, 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
     suc = app.loadHorizonP('test_horizon_2', '.hpts')
@@ -896,7 +896,7 @@ def test_loadHorizonP_5():
 def test_loadHorizonP_6():
     # load with wrong content 2
     app.horizonPFile = ''
-    fileName = 'tests/config/test_horizon_2.hpts'
+    fileName = 'tests/workDir/config/test_horizon_2.hpts'
     with open(fileName, 'w') as outfile:
         outfile.writelines('[test, ]],[]}')
     suc = app.loadHorizonP('test_horizon_2', '.hpts')
@@ -906,7 +906,7 @@ def test_loadHorizonP_6():
 
 def test_loadHorizonP_7():
     # load file with path
-    fileName = 'tests/config/test_horizon_2.txt'
+    fileName = 'tests/workDir/config/test_horizon_2.txt'
     values = [(1.0, 1.0), (2.0, 2.0)]
     with open(fileName, 'w') as outfile:
         outfile.write('1:1\n2:2\n')
@@ -918,7 +918,7 @@ def test_loadHorizonP_7():
 
 def test_loadHorizonP_8():
     # load file with path
-    fileName = 'tests/config/test_horizon_2.csv'
+    fileName = 'tests/workDir/config/test_horizon_2.csv'
     values = [(1.0, 1.0), (2.0, 2.0)]
     with open(fileName, 'w') as outfile:
         outfile.write('1,1\n2,2\n')
@@ -944,7 +944,7 @@ def test_saveHorizonP_12():
     app._horizonP = [(0, 1), (0, 2)]
     suc = app.saveHorizonP(fileName='test_horizon_1')
     assert suc
-    fileName = 'tests/config/' + 'test_horizon_1' + '.hpts'
+    fileName = 'tests/workDir/config/' + 'test_horizon_1' + '.hpts'
     with open(fileName, 'r') as infile:
         value = json.load(infile)
         assert value[0] == [0, 1]

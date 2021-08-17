@@ -22,7 +22,7 @@ import pytest
 # local import
 from gui.mainWmixin.tabSettRelay import SettRelay
 from gui.mainWmixin.tabRelay import Relay
-from tests.unit_tests.importAddOns.baseTestSetupMixins import App
+from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 

@@ -189,7 +189,7 @@ def test_expose_2(function):
 
 def test_expose_3(function):
     function.framework = 'indi'
-    suc = function.expose(imagePath='tests/image')
+    suc = function.expose(imagePath='tests/workDir/image')
     assert not suc
 
 
@@ -198,7 +198,7 @@ def test_expose_4(function):
     with mock.patch.object(function,
                            'canSubFrame',
                            return_value=True):
-        suc = function.expose(imagePath='tests/image')
+        suc = function.expose(imagePath='tests/workDir/image')
         assert not suc
 
 
@@ -216,7 +216,7 @@ def test_expose_5(function):
                 with mock.patch.object(function,
                                        'calcSubFrame',
                                        return_value=None):
-                    suc = function.expose(imagePath='tests/image')
+                    suc = function.expose(imagePath='tests/workDir/image')
                     assert not suc
 
 
@@ -234,7 +234,7 @@ def test_expose_6(function):
                 with mock.patch.object(function,
                                        'calcSubFrame',
                                        return_value=(0, 0, 10, 10)):
-                    suc = function.expose(imagePath='tests/image')
+                    suc = function.expose(imagePath='tests/workDir/image')
                     assert suc
 
 
@@ -254,7 +254,7 @@ def test_expose_7(function):
                 with mock.patch.object(function,
                                        'calcSubFrame',
                                        return_value=(0, 0, 10, 10)):
-                    suc = function.expose(imagePath='tests/image')
+                    suc = function.expose(imagePath='tests/workDir/image')
                     assert not suc
 
 
@@ -279,7 +279,7 @@ def test_expose_8(function):
                 with mock.patch.object(function,
                                        'calcSubFrame',
                                        return_value=(0, 0, 10, 10)):
-                    suc = function.expose(imagePath='tests/image')
+                    suc = function.expose(imagePath='tests/workDir/image')
                     assert suc
 
 

@@ -37,7 +37,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
         update10s = pyqtSignal()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)

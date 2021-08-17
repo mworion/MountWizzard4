@@ -74,7 +74,7 @@ def function_setup_teardown(qtbot):
     class Test1(QObject):
         threadPool = QThreadPool()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         update10s = pyqtSignal()
         update30s = pyqtSignal()
         update1s = pyqtSignal()
@@ -82,11 +82,11 @@ def function_setup_teardown(qtbot):
         start1s = pyqtSignal()
         start3s = pyqtSignal()
         start5s = pyqtSignal()
-        mwGlob = {'imageDir': 'tests/image',
-                  'dataDir': 'tests/data',
-                  'modelDir': 'tests/model',
-                  'tempDir': 'tests/temp',
-                  'configDir': 'tests/config'}
+        mwGlob = {'imageDir': 'tests/workDir/image',
+                  'dataDir': 'tests/workDir/data',
+                  'modelDir': 'tests/workDir/model',
+                  'tempDir': 'tests/workDir/temp',
+                  'configDir': 'tests/workDir/config'}
 
     @staticmethod
     def testShowWindows():
@@ -130,10 +130,10 @@ def function_setup_teardown(qtbot):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
+                                              longitude_degrees=10,
+                                              elevation_m=500)
         camera = Camera(app=Test1())
         filter = Filter(app=Test1())
         focuser = Focuser(app=Test1())
@@ -156,10 +156,10 @@ def function_setup_teardown(qtbot):
         timer0_1s = QTimer()
 
         uiWindows = {'showImageW': {'classObj': None}}
-        mwGlob = {'imageDir': 'tests/image',
-                  'dataDir': 'tests/data',
-                  'modelDir': 'tests/model',
-                  'configDir': 'tests/config'}
+        mwGlob = {'imageDir': 'tests/workDir/image',
+                  'dataDir': 'tests/workDir/data',
+                  'modelDir': 'tests/workDir/model',
+                  'configDir': 'tests/workDir/config'}
         deviceStat = {'camera': True,
                       'astrometry': True,
                       'mount': True}
@@ -171,7 +171,7 @@ def function_setup_teardown(qtbot):
         showWindows = testShowWindows
         initConfig = testInitConfig
 
-    shutil.copy('tests/testData/active.txt', 'tests/data/active.txt')
+    shutil.copy('tests/testData/active.txt', 'tests/workDir/data/active.txt')
 
     with mock.patch.object(MainWindow,
                            'show'):
@@ -184,7 +184,7 @@ def function_setup_teardown(qtbot):
             addLoggingLevel('UI', 35)
             yield
 
-    files = glob.glob('tests/config/*.cfg')
+    files = glob.glob('tests/workDir/config/*.cfg')
     for f in files:
         os.remove(f)
 
@@ -655,13 +655,13 @@ def test_closeExtendedWindows_1():
 
 
 def test_checkExtension_1():
-    val = app.checkExtension('tests/image/test.fit', 'fit')
-    assert val == 'tests/image/test.fit'
+    val = app.checkExtension('tests/workDir/image/test.fit', 'fit')
+    assert val == 'tests/workDir/image/test.fit'
 
 
 def test_checkExtension_2():
-    val = app.checkExtension('tests/image/test', '.fit')
-    assert val == 'tests/image/test.fit'
+    val = app.checkExtension('tests/workDir/image/test', '.fit')
+    assert val == 'tests/workDir/image/test.fit'
 
 
 def test_mountBoot2(qtbot):

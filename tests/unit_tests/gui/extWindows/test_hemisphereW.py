@@ -29,7 +29,7 @@ from skyfield.api import Angle
 from PIL import Image
 
 # local import
-from tests.unit_tests.importAddOns.baseTestSetupExtWindows import App
+from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.hemisphereW import HemisphereWindow
 
@@ -78,7 +78,7 @@ def test_initConfig_4(function):
 
 
 def test_initConfig_5(function):
-    shutil.copy('tests/testData/terrain.jpg', 'tests/config/terrain.jpg')
+    shutil.copy('tests/testData/terrain.jpg', 'tests/workDir/config/terrain.jpg')
     function.app.config['hemisphereW'] = {}
     function.app.config['hemisphereW']['winPosX'] = 100
     function.app.config['hemisphereW']['winPosY'] = 100

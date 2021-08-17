@@ -37,7 +37,7 @@ def module_setup_teardown():
 
     yield
 
-    files = glob.glob('tests/image/*.fit*')
+    files = glob.glob('tests/workDir/image/*.fit*')
     for f in files:
         os.remove(f)
 
@@ -46,13 +46,13 @@ def module_setup_teardown():
 def app():
     class Test:
         threadPool = QThreadPool()
-        mwGlob = {'tempDir': 'tests/temp'}
+        mwGlob = {'tempDir': 'tests/workDir/temp'}
 
     parent = Astrometry(app=Test())
     app = AstrometryNET(parent=parent)
 
-    for file in os.listdir('tests/temp'):
-        fileP = os.path.join('tests/temp', file)
+    for file in os.listdir('tests/workDir/temp'):
+        fileP = os.path.join('tests/workDir/temp', file)
         if 'temp' not in file:
             continue
         os.remove(fileP)
@@ -201,43 +201,43 @@ def test_solve_1(app):
 
 
 def test_solve_2(app):
-    app.indexPath = 'tests/temp'
+    app.indexPath = 'tests/workDir/temp'
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=False):
-        shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-        suc = app.solve(fitsPath='tests/image/m51.fit')
+        shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+        suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
         assert not suc
 
 
 def test_solve_3(app):
-    app.indexPath = 'tests/temp'
+    app.indexPath = 'tests/workDir/temp'
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=True):
         with mock.patch.object(app,
                                'runSolveField',
                                return_value=False):
-            shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-            suc = app.solve(fitsPath='tests/image/m51.fit')
+            shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+            suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
             assert not suc
 
 
 def test_solve_4(app):
-    app.indexPath = 'tests/temp'
+    app.indexPath = 'tests/workDir/temp'
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=True):
         with mock.patch.object(app,
                                'runSolveField',
                                return_value=True):
-            shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-            suc = app.solve(fitsPath='tests/image/m51.fit')
+            shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+            suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
             assert not suc
 
 
 def test_solve_5(app):
-    app.indexPath = 'tests/temp'
+    app.indexPath = 'tests/workDir/temp'
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=True):
@@ -247,14 +247,14 @@ def test_solve_5(app):
             with mock.patch.object(os,
                                    'remove',
                                    return_value=True):
-                shutil.copy('tests/testData/tempNET.wcs', 'tests/temp/temp.wcs')
-                shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-                suc = app.solve(fitsPath='tests/image/m51.fit')
+                shutil.copy('tests/testData/tempNET.wcs', 'tests/workDir/temp/temp.wcs')
+                shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+                suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
                 assert not suc
 
 
 def test_solve_6(app):
-    app.indexPath = 'tests/temp'
+    app.indexPath = 'tests/workDir/temp'
     with mock.patch.object(app,
                            'runImage2xy',
                            return_value=True):
@@ -264,14 +264,14 @@ def test_solve_6(app):
             with mock.patch.object(os,
                                    'remove',
                                    return_value=True):
-                shutil.copy('tests/testData/tempNET.solved', 'tests/temp/temp.solved')
-                shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-                suc = app.solve(fitsPath='tests/image/m51.fit')
+                shutil.copy('tests/testData/tempNET.solved', 'tests/workDir/temp/temp.solved')
+                shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+                suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
                 assert not suc
 
 
 def test_solve_7(app):
-    app.indexPath = 'tests/temp'
+    app.indexPath = 'tests/workDir/temp'
     app.appPath = 'Astrometry.app'
     with mock.patch.object(app,
                            'runImage2xy',
@@ -282,10 +282,10 @@ def test_solve_7(app):
             with mock.patch.object(os,
                                    'remove',
                                    return_value=True):
-                shutil.copy('tests/testData/tempNET.wcs', 'tests/temp/temp.wcs')
-                shutil.copy('tests/testData/tempNET.solved', 'tests/temp/temp.solved')
-                shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-                suc = app.solve(fitsPath='tests/image/m51.fit')
+                shutil.copy('tests/testData/tempNET.wcs', 'tests/workDir/temp/temp.wcs')
+                shutil.copy('tests/testData/tempNET.solved', 'tests/workDir/temp/temp.solved')
+                shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+                suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
                 assert suc
 
 

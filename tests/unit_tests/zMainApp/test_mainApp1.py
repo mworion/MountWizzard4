@@ -36,24 +36,24 @@ setupLogging()
 @pytest.fixture(autouse=True, scope='function')
 def app(qapp):
 
-    files = glob.glob('tests/data/*.bsp')
+    files = glob.glob('tests/workDir/data/*.bsp')
     for f in files:
         os.remove(f)
         yield
 
 
 def test_start_parameters_1(qapp):
-    mwGlob = {'configDir': 'tests/config',
-              'dataDir': 'tests/data',
-              'tempDir': 'tests/temp',
-              'imageDir': 'tests/image',
-              'modelDir': 'tests/model',
-              'workDir': 'tests/temp',
+    mwGlob = {'configDir': 'tests/workDir/config',
+              'dataDir': 'tests/workDir/data',
+              'tempDir': 'tests/workDir/temp',
+              'imageDir': 'tests/workDir/image',
+              'modelDir': 'tests/workDir/model',
+              'workDir': 'tests/workDir',
               }
     with open(mwGlob['workDir'] + '/test.txt', 'w+') as test:
         test.write('test')
 
-    shutil.copy(r'tests/testData/de421_23.bsp', r'tests/data/de421_23.bsp')
+    shutil.copy(r'tests/testData/de421_23.bsp', r'tests/workDir/data/de421_23.bsp')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):
@@ -69,17 +69,17 @@ def test_start_parameters_1(qapp):
 
 
 def test_start_parameters_2(qapp):
-    mwGlob = {'configDir': 'tests/config',
-              'dataDir': 'tests/data',
-              'tempDir': 'tests/temp',
-              'imageDir': 'tests/image',
-              'modelDir': 'tests/model',
-              'workDir': 'tests/temp',
+    mwGlob = {'configDir': 'tests/workDir/config',
+              'dataDir': 'tests/workDir/data',
+              'tempDir': 'tests/workDir/temp',
+              'imageDir': 'tests/workDir/image',
+              'modelDir': 'tests/workDir/model',
+              'workDir': 'tests/workDir',
               }
     with open(mwGlob['workDir'] + '/test.txt', 'w+') as test:
         test.write('test')
 
-    shutil.copy(r'tests/testData/de421_23.bsp', r'tests/data/de421_23.bsp')
+    shutil.copy(r'tests/testData/de421_23.bsp', r'tests/workDir/data/de421_23.bsp')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):

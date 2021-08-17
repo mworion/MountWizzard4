@@ -30,7 +30,7 @@ from sgp4.exporter import export_tle
 import numpy as np
 
 # local import
-from tests.unit_tests.importAddOns.baseTestSetupMixins import App
+from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabSatellite import Satellite
@@ -70,14 +70,14 @@ def test_initConfig_1(function):
     function.app.automation = Test()
     suc = function.initConfig()
     assert suc
-    assert function.installPath == 'tests/data'
+    assert function.installPath == 'tests/workDir/data'
 
 
 def test_initConfig_2(function):
     function.app.automation = None
     suc = function.initConfig()
     assert suc
-    assert function.installPath == 'tests/data'
+    assert function.installPath == 'tests/workDir/data'
 
 
 def test_initConfig_3(function):

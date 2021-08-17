@@ -39,19 +39,19 @@ setupLogging()
 @pytest.fixture(autouse=True, scope='module')
 def app(qapp):
     global mwGlob
-    mwGlob = {'configDir': 'tests/config',
-              'dataDir': 'tests/data',
-              'tempDir': 'tests/temp',
-              'imageDir': 'tests/image',
-              'modelDir': 'tests/model',
-              'workDir': 'mw4/test',
+    mwGlob = {'configDir': 'tests/workDir/config',
+              'dataDir': 'tests/workDir/data',
+              'tempDir': 'tests/workDir/temp',
+              'imageDir': 'tests/workDir/image',
+              'modelDir': 'tests/workDir/model',
+              'workDir': 'mw4/tests/workdir',
               }
 
-    files = glob.glob('tests/config/*.cfg')
+    files = glob.glob('tests/workDir/config/*.cfg')
     for f in files:
         os.remove(f)
 
-    shutil.copy(r'tests/testData/de421_23.bsp', r'tests/data/de421_23.bsp')
+    shutil.copy(r'tests/testData/de421_23.bsp', r'tests/workDir/data/de421_23.bsp')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):
@@ -68,12 +68,12 @@ def app(qapp):
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown_func(app):
 
-    if os.path.isfile('tests/config/config.cfg'):
-        os.remove('tests/config/config.cfg')
-    if os.path.isfile('tests/config/new.cfg'):
-        os.remove('tests/config/new.cfg')
-    if os.path.isfile('tests/config/profile'):
-        os.remove('tests/config/profile')
+    if os.path.isfile('tests/workDir/config/config.cfg'):
+        os.remove('tests/workDir/config/config.cfg')
+    if os.path.isfile('tests/workDir/config/new.cfg'):
+        os.remove('tests/workDir/config/new.cfg')
+    if os.path.isfile('tests/workDir/config/profile'):
+        os.remove('tests/workDir/config/profile')
 
     yield
 
@@ -239,7 +239,7 @@ def test_loadConfig_1(app):
 
 
 def test_loadConfig_2(app):
-    with open('tests/config/profile', 'w') as outfile:
+    with open('tests/workDir/config/profile', 'w') as outfile:
         outfile.write('config')
 
     suc = app.loadConfig()
@@ -248,11 +248,11 @@ def test_loadConfig_2(app):
 
 
 def test_loadConfig_3(app):
-    with open('tests/config/profile', 'w') as outfile:
+    with open('tests/workDir/config/profile', 'w') as outfile:
         outfile.write('config')
     config = app.defaultConfig()
 
-    with open('tests/config/config.cfg', 'w') as outfile:
+    with open('tests/workDir/config/config.cfg', 'w') as outfile:
         json.dump(config, outfile)
 
     suc = app.loadConfig()
@@ -262,12 +262,12 @@ def test_loadConfig_3(app):
 
 
 def test_loadConfig_4(app):
-    with open('tests/config/profile', 'w') as outfile:
+    with open('tests/workDir/config/profile', 'w') as outfile:
         outfile.write('config')
     config = app.defaultConfig()
     config['version'] = '5.0'
 
-    with open('tests/config/config.cfg', 'w') as outfile:
+    with open('tests/workDir/config/config.cfg', 'w') as outfile:
         json.dump(config, outfile)
 
     with mock.patch.object(json,
@@ -289,9 +289,9 @@ def test_saveConfig_1(app):
 
     suc = app.saveConfig()
     assert suc
-    assert os.path.isfile('tests/config/config.cfg')
-    assert os.path.isfile('tests/config/profile')
-    with open('tests/config/profile', 'r') as infile:
+    assert os.path.isfile('tests/workDir/config/config.cfg')
+    assert os.path.isfile('tests/workDir/config/profile')
+    with open('tests/workDir/config/profile', 'r') as infile:
         name = infile.readline().strip()
     assert name == 'config'
 
@@ -301,9 +301,9 @@ def test_saveConfig_2(app):
 
     suc = app.saveConfig('config')
     assert suc
-    assert os.path.isfile('tests/config/config.cfg')
-    assert os.path.isfile('tests/config/profile')
-    with open('tests/config/profile', 'r') as infile:
+    assert os.path.isfile('tests/workDir/config/config.cfg')
+    assert os.path.isfile('tests/workDir/config/profile')
+    with open('tests/workDir/config/profile', 'r') as infile:
         name = infile.readline().strip()
     assert name == 'config'
 
@@ -313,9 +313,9 @@ def test_saveConfig_3(app):
 
     suc = app.saveConfig('new')
     assert suc
-    assert os.path.isfile('tests/config/new.cfg')
-    assert os.path.isfile('tests/config/profile')
-    with open('tests/config/profile', 'r') as infile:
+    assert os.path.isfile('tests/workDir/config/new.cfg')
+    assert os.path.isfile('tests/workDir/config/profile')
+    with open('tests/workDir/config/profile', 'r') as infile:
         name = infile.readline().strip()
     assert name == 'new'
 
@@ -325,9 +325,9 @@ def test_saveConfig_4(app):
 
     suc = app.saveConfig()
     assert suc
-    assert os.path.isfile('tests/config/new.cfg')
-    assert os.path.isfile('tests/config/profile')
-    with open('tests/config/profile', 'r') as infile:
+    assert os.path.isfile('tests/workDir/config/new.cfg')
+    assert os.path.isfile('tests/workDir/config/profile')
+    with open('tests/workDir/config/profile', 'r') as infile:
         name = infile.readline().strip()
     assert name == 'new'
 

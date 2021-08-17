@@ -43,7 +43,7 @@ def module_setup_teardown():
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         mount.obsSite.raJNow = Angle(hours=12)
         mount.obsSite.decJNow = Angle(degrees=45)
         deviceStat = {'mount': True}

@@ -42,7 +42,7 @@ def setup_teardown(qapp):
 
     app = qapp
 
-    files = glob.glob('tests/config/*.cfg')
+    files = glob.glob('tests/workDir/config/*.cfg')
     for f in files:
         os.remove(f)
 

@@ -246,7 +246,7 @@ def test_updateHeaderInfo_4():
 
 
 def test_workerSaveBLOB_1():
-    app.imagePath = 'tests/image/test.fit'
+    app.imagePath = 'tests/workDir/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     data = {'value': '1',
@@ -260,7 +260,7 @@ def test_workerSaveBLOB_1():
 
 
 def test_workerSaveBLOB_2():
-    app.imagePath = 'tests/image/test.fit'
+    app.imagePath = 'tests/workDir/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     data = {'value': zlib.compress(b'1'),
@@ -274,7 +274,7 @@ def test_workerSaveBLOB_2():
 
 
 def test_workerSaveBLOB_3():
-    app.imagePath = 'tests/image/test.fit'
+    app.imagePath = 'tests/workDir/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     data = {'value': '1',
@@ -288,7 +288,7 @@ def test_workerSaveBLOB_3():
 
 
 def test_workerSaveBLOB_4():
-    app.imagePath = 'tests/image/test.fit'
+    app.imagePath = 'tests/workDir/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     data = {'value': '1',
@@ -392,7 +392,7 @@ def test_updateBLOB_7():
 
 def test_updateBLOB_8():
     app.device = Device()
-    app.imagePath = 'tests/image/test.fit'
+    app.imagePath = 'tests/workDir/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     with mock.patch.object(IndiClass,

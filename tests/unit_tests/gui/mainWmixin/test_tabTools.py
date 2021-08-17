@@ -30,7 +30,7 @@ from skyfield.api import Angle
 import numpy as np
 
 # local import
-from tests.unit_tests.importAddOns.baseTestSetupMixins import App
+from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabTools import Tools
@@ -56,7 +56,7 @@ def function(module):
     window = Mixin()
     yield window
 
-    files = glob.glob('tests/image/*.fit*')
+    files = glob.glob('tests/workDir/image/*.fit*')
     for f in files:
         os.remove(f)
 
@@ -206,37 +206,37 @@ def test_renameFile_1(function):
 
 
 def test_renameFile_2(function):
-    suc = function.renameFile('tests/image/m51.fit')
+    suc = function.renameFile('tests/workDir/image/m51.fit')
     assert not suc
 
 
 def test_renameFile_3(function):
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
 
     with mock.patch.object(os,
                            'rename'):
-        suc = function.renameFile('tests/image/m51.fit')
+        suc = function.renameFile('tests/workDir/image/m51.fit')
         assert suc
 
 
 def test_renameFile_4(function):
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     function.ui.newObjectName.setText('test')
 
     with mock.patch.object(os,
                            'rename'):
-        suc = function.renameFile('tests/image/m51.fit')
+        suc = function.renameFile('tests/workDir/image/m51.fit')
         assert suc
 
 
 def test_renameFile_5(function):
     hdu = fits.PrimaryHDU(np.arange(100.0))
     hduList = fits.HDUList([hdu])
-    hduList.writeto('tests/image/m51.fit')
+    hduList.writeto('tests/workDir/image/m51.fit')
 
     with mock.patch.object(os,
                            'rename'):
-        suc = function.renameFile('tests/image/m51.fit')
+        suc = function.renameFile('tests/workDir/image/m51.fit')
         assert suc
 
 
@@ -244,19 +244,19 @@ def test_renameFile_6(function):
     hdu = fits.PrimaryHDU(np.arange(100.0))
     hdu.header['FILTER'] = 'test'
     hduList = fits.HDUList([hdu])
-    hduList.writeto('tests/image/m51.fit')
+    hduList.writeto('tests/workDir/image/m51.fit')
 
     function.ui.rename1.clear()
     function.ui.rename1.addItem('Filter')
 
     with mock.patch.object(os,
                            'rename'):
-        suc = function.renameFile('tests/image/m51.fit')
+        suc = function.renameFile('tests/workDir/image/m51.fit')
         assert suc
 
 
 def test_renameRunGUI_1(function, qtbot):
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     function.ui.renameDir.setText('')
     with qtbot.waitSignal(function.app.message) as blocker:
         suc = function.renameRunGUI()
@@ -265,7 +265,7 @@ def test_renameRunGUI_1(function, qtbot):
 
 
 def test_renameRunGUI_2(function, qtbot):
-    function.ui.renameDir.setText('tests/image')
+    function.ui.renameDir.setText('tests/workDir/image')
     with qtbot.waitSignal(function.app.message) as blocker:
         suc = function.renameRunGUI()
         assert not suc
@@ -274,7 +274,7 @@ def test_renameRunGUI_2(function, qtbot):
 
 def test_renameRunGUI_3(function, qtbot):
     function.ui.checkIncludeSubdirs.setChecked(True)
-    function.ui.renameDir.setText('tests/image')
+    function.ui.renameDir.setText('tests/workDir/image')
     with qtbot.waitSignal(function.app.message) as blocker:
         suc = function.renameRunGUI()
         assert not suc
@@ -282,8 +282,8 @@ def test_renameRunGUI_3(function, qtbot):
 
 
 def test_renameRunGUI_4(function, qtbot):
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-    function.ui.renameDir.setText('tests/image')
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+    function.ui.renameDir.setText('tests/workDir/image')
     with mock.patch.object(function,
                            'renameFile',
                            return_value=True):
@@ -294,8 +294,8 @@ def test_renameRunGUI_4(function, qtbot):
 
 
 def test_renameRunGUI_5(function, qtbot):
-    shutil.copy('tests/testData/m51.fit', 'tests/image/m51.fit')
-    function.ui.renameDir.setText('tests/image')
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+    function.ui.renameDir.setText('tests/workDir/image')
     with mock.patch.object(function,
                            'renameFile',
                            return_value=False):

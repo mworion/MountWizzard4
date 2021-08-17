@@ -43,7 +43,7 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Data_without_ts(self):
-        obsSite = ObsSite(pathToData='tests/data')
+        obsSite = ObsSite(pathToData='tests/workDir/data')
         self.assertEqual(isinstance(obsSite.ts, Timescale), True)
 
     def test_Data_with_ts(self):

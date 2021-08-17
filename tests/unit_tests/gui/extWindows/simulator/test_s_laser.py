@@ -35,12 +35,12 @@ def module_setup_teardown():
 
     class Test(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
-        mwGlob = {'modelDir': 'tests/model',
-                  'imageDir': 'tests/image'}
+        mwGlob = {'modelDir': 'tests/workDir/model',
+                  'imageDir': 'tests/workDir/image'}
         uiWindows = {'showImageW': {'classObj': None}}
 
     app = SimulatorLaser(app=Test())

@@ -39,9 +39,9 @@ from gui.utilities.toolsQtWidget import MWidget
 
 @pytest.fixture(autouse=True, scope='module')
 def module(qapp):
-    shutil.copy('tests/testData/test.model', 'tests/model/test.model')
-    shutil.copy('tests/testData/test1.model', 'tests/model/test1.model')
-    shutil.copy('tests/testData/test-opt.model', 'tests/model/test-opt.model')
+    shutil.copy('tests/testData/test.model', 'tests/workDir/model/test.model')
+    shutil.copy('tests/testData/test1.model', 'tests/workDir/model/test1.model')
+    shutil.copy('tests/testData/test-opt.model', 'tests/workDir/model/test-opt.model')
     yield
 
 
@@ -51,13 +51,13 @@ def function(module):
         config = {'mainW': {}}
         threadPool = QThreadPool()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/data')
+                      pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         update1s = pyqtSignal()
         showAnalyse = pyqtSignal(object)
         message = pyqtSignal(str, int)
-        mwGlob = {'imageDir': 'tests/image',
-                  'modelDir': 'tests/model'}
+        mwGlob = {'imageDir': 'tests/workDir/image',
+                  'modelDir': 'tests/workDir/model'}
 
     class Mixin(MWidget, ManageModel):
         def __init__(self):
@@ -169,7 +169,7 @@ def test_findFittingModel_2(function):
         assert name == ''
         assert pointsIn == []
         assert pointsOut == []
-    function.app.mwGlob['modelDir'] = 'tests/model'
+    function.app.mwGlob['modelDir'] = 'tests/workDir/model'
 
 
 def test_findFittingModel_3(function):
@@ -194,7 +194,7 @@ def test_findFittingModel_3(function):
             assert name == ''
             assert pointsIn == []
             assert pointsOut == []
-    function.app.mwGlob['modelDir'] = 'tests/model'
+    function.app.mwGlob['modelDir'] = 'tests/workDir/model'
 
 
 def test_findFittingModel_4(function):
@@ -218,7 +218,7 @@ def test_findFittingModel_4(function):
             assert name == 'test'
             assert pointsIn == [1, 2, 3]
             assert pointsOut == [4]
-    function.app.mwGlob['modelDir'] = 'tests/model'
+    function.app.mwGlob['modelDir'] = 'tests/workDir/model'
 
 
 def test_showModelPosition_0(function):

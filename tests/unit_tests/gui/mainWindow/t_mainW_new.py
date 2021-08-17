@@ -26,7 +26,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QPushButton
 
 # local import
-from tests.unit_tests.importAddOns.baseTestSetupMainWindow import App
+from tests.unit_tests.unitTestAddOns.baseTestSetupMainWindow import App
 from gui.mainWindow.mainW import MainWindow
 
 
@@ -473,13 +473,13 @@ def test_closeExtendedWindows_1(function):
 
 
 def test_checkExtension_1(function):
-    val = function.checkExtension('tests/image/test.fit', 'fit')
-    assert val == 'tests/image/test.fit'
+    val = function.checkExtension('tests/workDir/image/test.fit', 'fit')
+    assert val == 'tests/workDir/image/test.fit'
 
 
 def test_checkExtension_2(function):
-    val = function.checkExtension('tests/image/test', '.fit')
-    assert val == 'tests/image/test.fit'
+    val = function.checkExtension('tests/workDir/image/test', '.fit')
+    assert val == 'tests/workDir/image/test.fit'
 
 
 def test_mountBoot2(function, qtbot):

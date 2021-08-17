@@ -157,7 +157,8 @@ def test_extractDataFiles_6(qtbot):
     class MTime:
         st_mtime = 1000000000.0
 
-    shutil.copy('tests/testData/finals2000A.all', 'tests/workDir/ata/finals2000A.all')
+    shutil.copy('tests/testData/finals2000A.all',
+                'tests/workDir/data/finals2000A.all')
     mwGlob = {'dataDir': 'tests/workDir/data'}
     with mock.patch.object(os.path,
                            'isfile',
@@ -180,7 +181,7 @@ def test_getWindowPos_1():
 
 
 def test_getWindowPos_2():
-    test = 'tests'
+    test = 'tests/workDir'
     with open(test + '/config/profile', 'w+') as f:
         f.write('config')
     with mock.patch.object(os,
@@ -192,7 +193,7 @@ def test_getWindowPos_2():
 
 
 def test_getWindowPos_3():
-    test = 'tests'
+    test = 'tests/workDir'
     with open(test + '/config/profile', 'w+') as f:
         f.write('config')
     with open(test + '/config/config.cfg', 'w+') as f:
@@ -206,7 +207,7 @@ def test_getWindowPos_3():
 
 
 def test_getWindowPos_4():
-    test = 'tests'
+    test = 'tests/workDir'
     with open(test + '/config/profile', 'w+') as f:
         f.write('config')
     with open(test + '/config/config.cfg', 'w+') as f:

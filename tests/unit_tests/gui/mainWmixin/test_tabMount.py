@@ -1499,7 +1499,7 @@ def test_showOffset_1(function):
     assert suc
 
 
-@mock.patch('tests.unit_tests.unitTestAddons.baseTestSetupMixins.App.mount'
+@mock.patch('tests.unit_tests.unitTestAddOns.baseTestSetupMixins.App.mount'
             '.obsSite.timeDiff', 0.003)
 def test_showOffset_2(function):
     function.ui.clockSync.setChecked(True)
@@ -1508,7 +1508,7 @@ def test_showOffset_2(function):
     assert suc
 
 
-@mock.patch('tests.unit_tests.unitTestAddons.baseTestSetupMixins.App.mount'
+@mock.patch('tests.unit_tests.unitTestAddOns.baseTestSetupMixins.App.mount'
             '.obsSite.timeDiff', 0.3)
 def test_showOffset_3(function):
     function.ui.clockSync.setChecked(True)
@@ -1518,7 +1518,7 @@ def test_showOffset_3(function):
     assert suc
 
 
-@mock.patch('tests.unit_tests.unitTestAddons.baseTestSetupMixins.App.mount.obsSite'
+@mock.patch('tests.unit_tests.unitTestAddOns.baseTestSetupMixins.App.mount.obsSite'
             '.timeDiff', 0.6)
 def test_showOffset_4(function):
     function.ui.clockSync.setChecked(True)

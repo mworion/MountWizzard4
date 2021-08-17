@@ -232,6 +232,7 @@ class App(QObject):
     updatePointMarker = pyqtSignal()
     updateDomeSettings = pyqtSignal()
     drawBuildPoints = pyqtSignal()
+    enableEditPoints = pyqtSignal(object)
     drawHorizonPoints = pyqtSignal()
     sendSatelliteData = pyqtSignal()
     showAnalyse = pyqtSignal(object)

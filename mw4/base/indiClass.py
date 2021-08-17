@@ -200,7 +200,9 @@ class IndiClass:
         :param devices:
         :return: true for test purpose
         """
-        self.log.debug(f'INDI server disconnected, devices: {devices.keys()}')
+        t = f'INDI server for [{self.deviceName}] disconnected, '
+        t += f'related devices: {devices.keys()}'
+        self.log.debug(t)
         return True
 
     def newDevice(self, deviceName):

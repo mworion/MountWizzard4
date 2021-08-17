@@ -9,7 +9,8 @@ Ideas for the future
 - implementing Baader dome control e.g. 10micron dome interface
 - split profiles in base and add-on
 - satellite search with constraints
-- Joystick support
+- receive video indi for sat tracking and horizon setup
+- joystick support
 
 
 Released beta version of MW4

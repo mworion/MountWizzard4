@@ -30,7 +30,7 @@ from sgp4.exporter import export_tle
 import numpy as np
 
 # local import
-from tests.baseTestSetupMixins import App
+from unit_tests.importAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabSatellite import Satellite

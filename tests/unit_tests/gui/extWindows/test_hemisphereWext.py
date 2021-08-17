@@ -19,11 +19,10 @@ import unittest.mock as mock
 import pytest
 
 # external packages
-from PyQt5.QtWidgets import QMessageBox
 from skyfield.api import Angle
 
 # local import
-from tests.baseTestSetupExtWindows import App
+from unit_tests.importAddOns.baseTestSetupExtWindows import App
 from gui.extWindows.hemisphereW import HemisphereWindow
 
 

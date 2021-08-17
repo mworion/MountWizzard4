@@ -83,7 +83,7 @@ def function(module):
         threadPool = QThreadPool()
         update1s = pyqtSignal()
         showImage = pyqtSignal(str)
-        enableEditPoints = pyqtSignal(str)
+        enableEditPoints = pyqtSignal(object)
         updatePointMarker = pyqtSignal()
         __version__ = 'test'
         message = pyqtSignal(str, int)

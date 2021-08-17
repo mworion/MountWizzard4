@@ -22,7 +22,6 @@ import logging
 import subprocess
 import platform
 import os
-import builtins
 
 # external packages
 from PyQt5.QtMultimedia import QSound
@@ -31,10 +30,9 @@ import importlib_metadata
 
 # local import
 from gui.mainWmixin.tabSettMisc import SettMisc
-from tests.baseTestSetupMixins import App
+from unit_tests.importAddOns.baseTestSetupMixins import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
-from base import packageConfig
 from base.loggerMW import setupLogging
 setupLogging()
 

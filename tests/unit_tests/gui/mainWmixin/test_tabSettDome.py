@@ -16,23 +16,15 @@
 ###########################################################
 # standard libraries
 import pytest
-import logging
 from unittest import mock
 
 # external packages
-from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from mountcontrol.qtmount import Mount
-from skyfield.api import wgs84
 
 # local import
-from tests.baseTestSetupMixins import App
+from unit_tests.importAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabSettDome import SettDome
-from logic.dome.dome import Dome
 
 
 @pytest.fixture(autouse=True, scope='module')

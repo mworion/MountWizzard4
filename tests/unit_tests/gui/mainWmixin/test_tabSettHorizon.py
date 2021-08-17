@@ -19,16 +19,10 @@ import unittest.mock as mock
 import pytest
 
 # external packages
-from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from mountcontrol.qtmount import Mount
 
 # local import
 from gui.mainWmixin.tabSettHorizon import SettHorizon
-from logic.modeldata.buildpoints import DataPoint
-from tests.baseTestSetupMixins import App
+from unit_tests.importAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 

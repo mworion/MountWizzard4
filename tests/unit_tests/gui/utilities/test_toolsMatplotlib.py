@@ -27,7 +27,7 @@ from mountcontrol.model import Model
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
-from tests.baseTestSetupExtWindows import App
+from unit_tests.importAddOns.baseTestSetupExtWindows import App
 
 
 @pytest.fixture(autouse=True, scope='module')

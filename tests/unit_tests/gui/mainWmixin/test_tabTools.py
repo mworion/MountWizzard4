@@ -23,14 +23,14 @@ import shutil
 import glob
 
 # external packages
-from PyQt5.QtWidgets import QWidget, QInputDialog
+from PyQt5.QtWidgets import QInputDialog
 from PyQt5.QtTest import QTest
 from astropy.io import fits
 from skyfield.api import Angle
 import numpy as np
 
 # local import
-from tests.baseTestSetupMixins import App
+from unit_tests.importAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabTools import Tools

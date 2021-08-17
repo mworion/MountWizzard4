@@ -17,24 +17,16 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import glob
-import os
 import gc
-import shutil
 
 # external packages
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtCore import QTimer
-from mountcontrol.qtmount import Mount
-from skyfield.api import wgs84
-from skyfield.api import load
 
 # local import
-from tests.baseTestSetupMainWindow import App
+from unit_tests.importAddOns.baseTestSetupMainWindow import App
 from gui.mainWindow.mainW import MainWindow
 
 

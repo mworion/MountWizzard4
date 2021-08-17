@@ -30,10 +30,9 @@ from skyfield.api import load
 import numpy as np
 
 # local import
-from tests.baseTestSetupExtWindows import App
+from unit_tests.importAddOns.baseTestSetupExtWindows import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.satelliteW import SatelliteWindow
-from resource import resources
 
 
 @pytest.fixture(autouse=True, scope='module')

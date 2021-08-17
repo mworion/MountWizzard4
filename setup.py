@@ -42,14 +42,14 @@ releaseNotes = """
 - add more functions are available without mount connected
 - add change mouse pointer in hemisphere
 - add offset and gain setting to imaging
-- performance faster ASCOM large image sensors download speed
+- add disable model point edit during model build run
 - update debug standard moved from WARN to INFO
 - update underlying libraries
 - fix for INDI cameras sending two times busy and exposure=0
-- fix slewing message dome when disconnecte
+- fix slewing message dome when disconnected
 - fix retry mechanism for failed build points
 - fix using builtins for skyfield and rotation update
-- fix plate solve sync 
+- fix plate solve sync function
  """
 
 with open('notes.txt', 'w') as f:
@@ -88,7 +88,7 @@ setup(
     ],
     python_requires='>=3.7.0, <3.10',
     install_requires=[
-        'numpy==1.21.1',
+        'numpy==1.21.2',
         'pillow==8.3.1',
         'matplotlib==3.4.2',
         'pyerfa==2.0.0',

@@ -14,7 +14,7 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.0.0b40
+2.0.0b44
 
 - add new updater concept
 - add mount clock sync feature
@@ -39,15 +39,14 @@ Released beta version of MW4
 - add more functions are available without mount connected
 - add change mouse pointer in hemisphere
 - add offset and gain setting to imaging
-- performance faster ASCOM large image sensors download speed
+- add disable model point edit during model build run
 - update debug standard moved from WARN to INFO
 - update underlying libraries
 - fix for INDI cameras sending two times busy and exposure=0
 - fix slewing message dome when disconnected
 - fix retry mechanism for failed build points
 - fix using builtins for skyfield and rotation update
-- fix plate solve sync
-
+- fix plate solve sync function
 
 Released version of MW4
 -----------------------

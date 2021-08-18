@@ -757,7 +757,9 @@ class MainWindow(
 
         t = f'{mode}  -  Active Threads: {self.threadPool.activeThreadCount():2d}'
         self.ui.statusOnline.setTitle(t)
-        t = f'Timezone: {time.tzname[0]}/{time.tzname[1]}'
+
+        tzT = time.tzname[1] if time.daylight else time.tzname[0]
+        t = f'Timezone: {tzT}'
         self.ui.statusTime.setTitle(t)
         return True
 

@@ -506,5 +506,5 @@ class SettMisc(object):
         :return:
         """
         isVirtual = self.ui.activateVirtualStop.isChecked()
-        self.ui.statusOnline.setEnabled(not isVirtual)
+        self.ui.statusTime.setEnabled(not isVirtual)
         return True

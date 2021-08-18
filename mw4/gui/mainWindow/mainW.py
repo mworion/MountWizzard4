@@ -19,6 +19,7 @@ from base import packageConfig
 # standard libraries
 from datetime import datetime
 import gc
+import time
 
 # external packages
 from PyQt5.QtGui import QPixmap
@@ -747,15 +748,17 @@ class MainWindow(
         timeJD = self.app.mount.obsSite.timeJD
         if timeJD is not None:
             text = timeJD.utc_strftime('%H:%M:%S')
-            self.ui.timeUTC.setText('UTC:' + text)
+            self.ui.timeUTC.setText('UTC:  ' + text)
 
         if self.ui.isOnline.isChecked():
-            text = 'Internet Online Mode'
+            mode = 'Internet Online Mode'
         else:
-            text = 'Offline Mode'
+            mode = 'Offline Mode'
 
-        text = f'{self.threadPool.activeThreadCount():2d} - {text}'
-        self.ui.statusOnline.setTitle(text)
+        t = f'{mode}  -  Active Threads: {self.threadPool.activeThreadCount():2d}'
+        self.ui.statusOnline.setTitle(t)
+        t = f'Timezone: {time.tzname[0]}/{time.tzname[1]}'
+        self.ui.statusTime.setTitle(t)
         return True
 
     def updateStatusGUI(self, obs):

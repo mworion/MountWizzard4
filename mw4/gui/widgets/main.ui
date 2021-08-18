@@ -27026,7 +27026,7 @@ Updater</string>
     </widget>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="status">
+  <widget class="QGroupBox" name="statusOnline">
    <property name="geometry">
     <rect>
      <x>5</x>
@@ -27790,7 +27790,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="statusOnline">
+  <widget class="QGroupBox" name="statusTime">
    <property name="geometry">
     <rect>
      <x>455</x>
@@ -28354,8 +28354,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   </widget>
   <zorder>virtualStop</zorder>
   <zorder>mainTabWidget</zorder>
-  <zorder>status</zorder>
   <zorder>statusOnline</zorder>
+  <zorder>statusTime</zorder>
   <zorder>main</zorder>
   <zorder>statusOnline_2</zorder>
  </widget>

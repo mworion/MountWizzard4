@@ -296,9 +296,6 @@ class Styles:
         color: rgb(32, 144, 196);
         background-color: #181818;
     }
-    QGroupBox::title:disabled {
-        color: #404040;
-    }
     QGroupBox::title[refraction='true']{
         color: rgb(32, 144, 192);
     }

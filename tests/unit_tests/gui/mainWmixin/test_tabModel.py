@@ -721,6 +721,7 @@ def test_cancelBuild(function, qtbot):
                 assert blocker.args == ['Modeling cancelled', 2]
 
 
+@mock.patch('gui.mainWmixin.tabManageModel.writeRetrofitData')
 def test_retrofitModel_1(function):
     function.app.mount.model.starList = list()
 
@@ -734,12 +735,8 @@ def test_retrofitModel_1(function):
     mPoint = {}
     function.model = list()
     function.model.append(mPoint)
-    with mock.patch.object(function,
-                           'writeRetrofitData',
-                           return_value={}):
-        suc = function.retrofitModel()
-        assert suc
-        assert function.model == {}
+    suc = function.retrofitModel()
+    assert suc
 
 
 def test_generateSaveModel_1(function):

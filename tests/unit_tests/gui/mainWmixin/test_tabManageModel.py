@@ -544,13 +544,13 @@ def test_deleteName_4(function, qtbot):
                     assert ['Model [test] cannot be deleted', 2] == blocker.args
 
 
+@mock.patch('gui.mainWmixin.tabManageModel.writeRetrofitData')
 def test_writeBuildModelOptimized_1(function):
-    with mock.patch.object(function,
-                           'writeRetrofitData',
-                           return_value={}):
+    with mock.patch.object(json,
+                           'load',
+                           return_value=[{'errorIndex': 1}, {'errorIndex': 3}]):
         with mock.patch.object(json,
-                               'load',
-                               return_value=[{'errorIndex': 1}, {'errorIndex': 3}]):
+                               'dump'):
             suc = function.writeBuildModelOptimized('test', [2], [1])
             assert suc
 

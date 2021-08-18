@@ -293,25 +293,3 @@ class ToolsMatplotlib:
         xt = [i[1] for i in plane]
         index = int(bisect.bisect_left(xt, x))
         return index
-
-    @staticmethod
-    def writeRetrofitData(mountModel, buildModel):
-        """
-        :param mountModel:
-        :param buildModel:
-        :return:
-        """
-        for i, mPoint in enumerate(buildModel):
-            mPoint['errorRMS'] = mountModel.starList[i].errorRMS
-            mPoint['errorAngle'] = mountModel.starList[i].errorAngle.degrees
-            mPoint['haMountModel'] = mountModel.starList[i].coord.ra.hours
-            mPoint['decMountModel'] = mountModel.starList[i].coord.dec.degrees
-            mPoint['errorRA'] = mountModel.starList[i].errorRA()
-            mPoint['errorDEC'] = mountModel.starList[i].errorDEC()
-            mPoint['errorIndex'] = mountModel.starList[i].number
-            mPoint['modelTerms'] = mountModel.terms
-            mPoint['modelErrorRMS'] = mountModel.errorRMS
-            mPoint['modelOrthoError'] = mountModel.orthoError.degrees * 3600
-            mPoint['modelPolarError'] = mountModel.polarError.degrees * 3600
-
-        return buildModel

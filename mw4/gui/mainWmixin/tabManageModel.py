@@ -26,6 +26,7 @@ import numpy as np
 import matplotlib.pyplot
 
 # local import
+from logic.modeldata.modelHandling import writeRetrofitData
 
 
 class ManageModel(object):
@@ -504,7 +505,7 @@ class ManageModel(object):
                 continue
             newModel.append(element)
 
-        newModel = self.writeRetrofitData(self.app.mount.model, newModel)
+        newModel = writeRetrofitData(self.app.mount.model, newModel)
 
         with open(newPath, 'w+') as newFile:
             json.dump(newModel, newFile, sort_keys=True, indent=4)

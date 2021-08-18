@@ -30,6 +30,7 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 # local import
 from base import transform
 from gui.utilities.toolsQtWidget import QMultiWait
+from logic.modeldata.modelHandling import writeRetrofitData
 
 
 class Model:
@@ -580,7 +581,7 @@ class Model:
             self.log.debug(text)
             self.model = []
 
-        self.model = self.writeRetrofitData(mountModel, self.model)
+        self.model = writeRetrofitData(mountModel, self.model)
         return True
 
     def generateSaveModel(self):

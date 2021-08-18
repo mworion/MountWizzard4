@@ -367,28 +367,3 @@ def test_getIndexPointX_6(function):
                                     plane=plane,
                                     )
     assert index == 1
-
-
-def test_writeRetrofitData_1(function):
-    val = function.writeRetrofitData({}, {})
-    assert val == {}
-
-
-def test_writeRetrofitData_2(function):
-    model = Model()
-    stars = list()
-    a = ModelStar()
-    a.obsSite = App().mount.obsSite
-    a.coord = Star(ra_hours=0, dec_degrees=0)
-    a.errorAngle = Angle(degrees=0)
-    a.errorRMS = 1
-    a.number = 1
-    stars.append(a)
-    model._starList = stars
-    model.terms = 22
-    model.errorRMS = 10
-    model.orthoError = 10
-    model.polarError = 10
-
-    val = function.writeRetrofitData(model, [{}])
-    assert val

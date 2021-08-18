@@ -177,7 +177,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
     @staticmethod
     def changeStyleDynamic(widget=None, widgetProperty=None, value=None):
         """
-        changeStyleDynamic changes the stylesheet of a given uii element and
+        changeStyleDynamic changes the stylesheet of a given ui element and
         makes it visible. therefore the element has to be unpolished and
         polished again.
 
@@ -447,10 +447,11 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
     @staticmethod
     def clickable(widget=None):
         """
-        It uses one filter object per label, which is created when the clickable()
-        function is called with the widget that is to be click-enabled. The function
-        returns a clicked() signal that actually belongs to the filter object. The caller
-        can connect this signal to a suitable callable object.
+        It uses one filter object per label, which is created when the
+        clickable() function is called with the widget that is to be
+        click-enabled. The function returns a clicked() signal that actually
+        belongs to the filter object. The caller can connect this signal to a
+        suitable callable object.
 
         :param widget:      widget for what the event filter works
         :return:            filtered event
@@ -544,12 +545,13 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
     @staticmethod
     def returnDriver(sender, searchDict, addKey=''):
         """
-        returnDriver takes the sender widget from a gui interaction and compares is to the
-        widget objects of a search dicts to retrieve is original name.
-        therefore we need to swap key value pais in the search dict as we make a reverse
-        search.
-        in addition to make it more usable the search dict might have some sub dicts where
-        to find the gui elements. if given, the will be extracted on the forehand.
+        returnDriver takes the sender widget from a gui interaction and compares
+        is to the widget objects of a search dicts to retrieve is original name.
+        therefore we need to swap key value pais in the search dict as we make a
+        reverse search.
+        in addition to make it more usable the search dict might have some sub
+        dicts where to find the gui elements. if given, the will be extracted on
+        the forehand.
 
         :param sender:
         :param searchDict:

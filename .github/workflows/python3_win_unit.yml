@@ -130,8 +130,6 @@ jobs:
           pytest tests/unit_tests/zLoader --cov=mw4/
           pytest tests/unit_tests/zUpdate --cov-append --cov=mw4/
           pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/
-          pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/
-          pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/
           pytest tests/unit_tests/base --cov-append --cov=mw4/
           pytest tests/unit_tests/logic --cov-append --cov=mw4/
           pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/
@@ -196,6 +194,8 @@ jobs:
         run: |
           pytest tests/unit_tests/gui/mainWindow --cov=mw4/
           pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/
+          pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/
+          pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/
           
       - name: rename_coveragefile
         run: mv .coverage coverage2.dat

@@ -131,6 +131,8 @@ jobs:
           pytest tests/unit_tests/logic
           pytest tests/unit_tests/mountcontrol
           pytest tests/unit_tests/indibase
+          pytest tests/unit_tests/gui/mainWindow
+
 
   run_tests_macos_2:
   
@@ -177,5 +179,4 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWindow
           pytest tests/unit_tests/gui/mainWmixin

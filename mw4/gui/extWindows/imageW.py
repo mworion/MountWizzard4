@@ -897,6 +897,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.deviceStat['expose'] = True
         self.ui.checkStackImages.setChecked(False)
         self.app.camera.signals.saved.connect(self.exposeImageDone)
+        self.ui.numberStacks.setText('...')
         self.exposeRaw()
         return True
 
@@ -926,6 +927,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.imageStack = None
         self.deviceStat['exposeN'] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
+        self.ui.numberStacks.setText('...')
         self.exposeRaw()
         return True
 

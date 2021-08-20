@@ -65,7 +65,7 @@ def test_workerGetInitialConfig_1():
                            'workerGetInitialConfig',
                            return_value=True):
         suc = app.workerGetInitialConfig()
-        assert not suc
+        assert suc
 
 
 def test_workerPollData_1():

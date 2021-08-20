@@ -39,7 +39,6 @@ def app(qapp):
     files = glob.glob('tests/workDir/data/*.bsp')
     for f in files:
         os.remove(f)
-        yield
 
 
 def test_start_parameters_1(qapp):

@@ -17,9 +17,10 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-from pathlib import Path
+import glob
 import json
 import shutil
+import os
 
 # external packages
 import PyQt5
@@ -39,6 +40,9 @@ from gui.utilities.toolsQtWidget import MWidget
 
 @pytest.fixture(autouse=True, scope='module')
 def module(qapp):
+    files = glob.glob('tests/workDir/model/*.model')
+    for f in files:
+        os.remove(f)
     shutil.copy('tests/testData/test.model', 'tests/workDir/model/test.model')
     shutil.copy('tests/testData/test1.model', 'tests/workDir/model/test1.model')
     shutil.copy('tests/testData/test-opt.model', 'tests/workDir/model/test-opt.model')
@@ -52,7 +56,8 @@ def function(module):
         threadPool = QThreadPool()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+        mount.obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0,
+                                              elevation_m=0)
         update1s = pyqtSignal()
         showAnalyse = pyqtSignal(object)
         message = pyqtSignal(str, int)
@@ -544,7 +549,11 @@ def test_deleteName_4(function, qtbot):
                     assert ['Model [test] cannot be deleted', 2] == blocker.args
 
 
-@mock.patch('gui.mainWmixin.tabManageModel.writeRetrofitData')
+def writeRFD(a, b):
+    return {}
+
+
+@mock.patch('gui.mainWmixin.tabManageModel.writeRetrofitData', writeRFD)
 def test_writeBuildModelOptimized_1(function):
     with mock.patch.object(json,
                            'load',

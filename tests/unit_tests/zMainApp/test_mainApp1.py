@@ -35,10 +35,9 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def app(qapp):
-
-    files = glob.glob('tests/workDir/data/*.bsp')
-    for f in files:
-        os.remove(f)
+    if not os.path.isfile('tests/workDir/data/de421_23.bsp'):
+        shutil.copy(r'tests/testData/de421_23.bsp',
+                    r'tests/workDir/data/de421_23.bsp')
 
 
 def test_start_parameters_1(qapp):
@@ -51,8 +50,6 @@ def test_start_parameters_1(qapp):
               }
     with open(mwGlob['workDir'] + '/test.txt', 'w+') as test:
         test.write('test')
-
-    shutil.copy(r'tests/testData/de421_23.bsp', r'tests/workDir/data/de421_23.bsp')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):
@@ -77,8 +74,6 @@ def test_start_parameters_2(qapp):
               }
     with open(mwGlob['workDir'] + '/test.txt', 'w+') as test:
         test.write('test')
-
-    shutil.copy(r'tests/testData/de421_23.bsp', r'tests/workDir/data/de421_23.bsp')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):

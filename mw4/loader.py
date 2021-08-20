@@ -51,7 +51,6 @@ log = logging.getLogger()
 
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 warnings.simplefilter("ignore", UserWarning)
-sys.coinit_flags = 2
 
 
 class QAwesomeTooltipEventFilter(QObject):

@@ -144,7 +144,7 @@ class Styles:
     QGroupBox {
         font-family: Arial;
         font-weight: normal;
-        font-size: 9pt;
+        font-size: 8pt;
     }
     QTextBrowser {
         font-family: Courier New;

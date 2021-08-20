@@ -58,7 +58,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0b44',
+    version='2.0.0',
     packages=[
         'mw4',
         'mw4.base',
@@ -101,11 +101,11 @@ setup(
         'skyfield==1.39',
         'sgp4==2.20',
         'qimage2ndarray==1.8.3',
-        'importlib_metadata==4.6.1',
+        'importlib_metadata==4.6.4',
         'deepdiff==5.5.0',
         'colour_demosaicing==0.1.6',
         'wakeonlan==2.0.1',
-        'pybase64==1.1.4',
+        'pybase64==1.2.0',
     ]
     + (['pywin32==301'] if "Windows" == platform.system() else [])
     + (['pywinauto==0.6.8'] if "Windows" == platform.system() else [])

@@ -15,7 +15,21 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.0.0b44
+2.1.0 (not released yet)
+
+-
+
+Released version of MW4
+-----------------------
+Version 2.0
+^^^^^^^^^^^
+
+2.0.1 (not released yet)
+
+- fix MW4 not shutting down, when device not connected, but dome configured
+- fix mirrored display of points in polar hemisphere view
+
+2.0.0
 
 - add new updater concept
 - add mount clock sync feature
@@ -49,14 +63,6 @@ Released beta version of MW4
 - fix retry mechanism for failed build points
 - fix using builtins for skyfield and rotation update
 - fix plate solve sync function
-
-Released version of MW4
------------------------
-Version 2.0
-^^^^^^^^^^^
-2.0.0
-
-- coming soon
 
 
 Version 1.1

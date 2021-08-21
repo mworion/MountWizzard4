@@ -19,38 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add new updater concept
-- add mount clock sync feature
-- add simulator feature
-- add terrain image feature
-- add dome following when mount is in satellite tracking mode
-- add dome dynamic following feature: reduction of slews for dome
-- add setting label support for UPB dew entries
-- add auto dew control support for Pegasus UPB
-- add switch support for ASCOM/ALPACA Pegasus UPB
-- add observation condition support for ASCOM/ALPACA Pegasus UPB
-- add feature for RA/DEC FITS writing for INDI server without snooping
-- add completely revised satellite tracking menu gui
-- add partially satellite tracking before / after possible flip
-- add satellite track respect horizon line and meridian limits
-- add tracking simulator feature to test without waiting for satellite
-- add alt/az pointer to satellite view
-- add reverse order for failed build point retry
-- add automatic enable webinterface for keypad use
-- add broadcast address and port for WOL
-- add new IERS and lead second download
-- add more functions are available without mount connected
-- add change mouse pointer in hemisphere
-- add offset and gain setting to imaging
-- add disable model point edit during model build run
-- update debug standard moved from WARN to INFO
-- update underlying libraries
-- update GUI improvements
-- fix for INDI cameras sending two times busy and exposure=0
-- fix slewing message dome when disconnected
-- fix retry mechanism for failed build points
-- fix using builtins for skyfield and rotation update
-- fix plate solve sync function
+- fix MW4 not shutting down, when device not connected, but dome configured
+- fix mirrored display of points in polar hemisphere view
  """
 
 with open('notes.txt', 'w') as f:
@@ -58,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.0',
+    version='2.0.1',
     packages=[
         'mw4',
         'mw4.base',

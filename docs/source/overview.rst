@@ -33,7 +33,7 @@ framework has some issues. MW4 also support ASCOM devices (camera, dome) in
 Windows environment.
 
 .. list-table:: Supported devices and frameworks in MW4
-    :widths: 20, 20, 20, 20, 20
+    :widths: 30, 20, 20, 20, 20
     :header-rows: 1
 
     *   - Device
@@ -76,9 +76,14 @@ Windows environment.
         - yes
         - yes
         - no
-    *   - Pegasus UPB
-        - no
-        - no
+    *   - Pegasus UPB Environ
+        - yes
+        - yes
+        - yes
+        - yes
+    *   - Pegasus UPB Switch
+        - yes
+        - yes
         - yes
         - yes
     *   - Cover

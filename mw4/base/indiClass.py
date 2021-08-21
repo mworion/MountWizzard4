@@ -110,6 +110,7 @@ class IndiClass:
         self.client = qtIndiBase.Client(host=None, threadPool=threadPool)
         self.deviceName = ''
         self.device = None
+        self.deviceConnected = False
         self._hostaddress = None
         self._host = None
         self._port = None
@@ -247,14 +248,14 @@ class IndiClass:
         """
         if not self.deviceName:
             return False
-
         if self.data:
             return True
 
         self.retryCounter += 1
         suc = self.client.connectServer()
+        self.deviceConnected = suc
         if suc:
-            return True
+            return suc
 
         t = f'Cannot start: [{self.deviceName}] retries: [{self.retryCounter}]'
         self.log.debug(t)
@@ -274,8 +275,8 @@ class IndiClass:
         if not suc:
             t = f'Cannot start: [{self.deviceName}] retries: [{self.retryCounter}]'
             self.log.debug(t)
-        else:
             self.timerRetry.start(self.RETRY_DELAY)
+        self.deviceConnected = suc
         return suc
 
     def stopCommunication(self):
@@ -285,6 +286,7 @@ class IndiClass:
         self.client.stopTimers()
         suc = self.client.disconnectServer(self.deviceName)
         self.deviceName = ''
+        self.deviceConnected = False
         return suc
 
     def connectDevice(self, deviceName, propertyName):

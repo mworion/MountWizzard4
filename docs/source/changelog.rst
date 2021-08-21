@@ -26,7 +26,7 @@ Version 2.0
 
 2.0.1 (not released yet)
 
-- fix MW4 not shutting down, when device not connected, but dome configured
+- fix: MW4 not shutting down when dome configured, but not connected
 - fix mirrored display of points in polar hemisphere view
 
 2.0.0

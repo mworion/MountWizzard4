@@ -19,8 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix MW4 not shutting down, when device not connected, but dome configured
-- fix mirrored display of points in polar hemisphere view
+- fix: MW4 not shutting down when dome configured, but not connected
+- fix: mirrored display of points in polar hemisphere view
  """
 
 with open('notes.txt', 'w') as f:

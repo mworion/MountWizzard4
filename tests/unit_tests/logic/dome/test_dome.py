@@ -51,15 +51,33 @@ def test_properties_1():
 
 
 def test_startCommunication_1():
+    app.domeStarted = False
     app.framework = ''
     suc = app.startCommunication()
     assert not suc
+    assert not app.domeStarted
 
 
 def test_startCommunication_2():
     app.framework = 'indi'
-    suc = app.startCommunication()
-    assert not suc
+    app.domeStarted = False
+    with mock.patch.object(app.run['indi'],
+                           'startCommunication',
+                           return_value=False):
+        suc = app.startCommunication()
+        assert not suc
+        assert app.domeStarted
+
+
+def test_startCommunication_3():
+    app.framework = 'indi'
+    app.domeStarted = False
+    with mock.patch.object(app.run['indi'],
+                           'startCommunication',
+                           return_value=True):
+        suc = app.startCommunication()
+        assert suc
+        assert app.domeStarted
 
 
 def test_stopCommunication_1():
@@ -70,9 +88,26 @@ def test_stopCommunication_1():
 
 def test_stopCommunication_2():
     app.framework = 'indi'
+    app.domeStarted = True
     app.app.update1s.connect(app.checkSlewingDome)
-    suc = app.stopCommunication()
-    assert suc
+    with mock.patch.object(app.run['indi'],
+                           'startCommunication',
+                           return_value=True):
+        suc = app.stopCommunication()
+        assert suc
+        assert not app.domeStarted
+
+
+def test_stopCommunication_3():
+    app.framework = 'indi'
+    app.domeStarted = True
+    app.app.update1s.connect(app.checkSlewingDome)
+    with mock.patch.object(app.run['indi'],
+                           'startCommunication',
+                           return_value=False):
+        suc = app.stopCommunication()
+        assert suc
+        assert not app.domeStarted
 
 
 def test_waitSettlingAndEmit():

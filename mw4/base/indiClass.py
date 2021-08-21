@@ -249,19 +249,19 @@ class IndiClass:
         if not self.deviceName:
             return False
         if self.data:
+            self.deviceConnected = True
             return True
 
         self.retryCounter += 1
         suc = self.client.connectServer()
-        self.deviceConnected = suc
         if suc:
-            return suc
+            return True
 
         t = f'Cannot start: [{self.deviceName}] retries: [{self.retryCounter}]'
         self.log.debug(t)
         if self.retryCounter < self.NUMBER_RETRY:
             self.timerRetry.start(self.RETRY_DELAY)
-        return True
+        return False
 
     def startCommunication(self, loadConfig=False):
         """
@@ -275,8 +275,8 @@ class IndiClass:
         if not suc:
             t = f'Cannot start: [{self.deviceName}] retries: [{self.retryCounter}]'
             self.log.debug(t)
+        else:
             self.timerRetry.start(self.RETRY_DELAY)
-        self.deviceConnected = suc
         return suc
 
     def stopCommunication(self):

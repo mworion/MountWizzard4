@@ -126,26 +126,33 @@ def test_startRetry_2():
     app.device = Device()
     app.data = {}
     suc = app.startRetry()
-    assert suc
+    assert not suc
 
 
 def test_startRetry_3():
+    app.deviceConnected = False
     app.deviceName = 'test'
     app.device = Device()
-    app.data = {'test': 1}
-    suc = app.startRetry()
-    assert suc
-
-
-def test_startRetry_4():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.data = None
+    app.data = {}
     with mock.patch.object(app.client,
                            'connectServer',
                            return_value=True):
         suc = app.startRetry()
         assert suc
+        assert not app.deviceConnected
+
+
+def test_startRetry_4():
+    app.deviceConnected = False
+    app.deviceName = 'test'
+    app.device = Device()
+    app.data = {'test': 1}
+    with mock.patch.object(app.client,
+                           'connectServer',
+                           return_value=False):
+        suc = app.startRetry()
+        assert suc
+        assert app.deviceConnected
 
 
 def test_startCommunication_1():

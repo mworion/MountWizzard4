@@ -605,7 +605,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
             if self.ui.checkShowSlewPath.isChecked() and index > 0:
                 if polar:
-                    axes.plot(np.radians((-points[index - 1][1], -points[index][1])),
+                    axes.plot(np.radians((points[index - 1][1], points[index][1])),
                               (90 - points[index - 1][0], 90 - points[index][0]),
                               ls=':', lw=1, color=self.M_WHITE, zorder=40)
 
@@ -615,7 +615,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                               ls=':', lw=1, color=self.M_WHITE, zorder=40)
 
             if polar:
-                p, = axes.plot(np.radians(-az), 90 - alt,
+                p, = axes.plot(np.radians(az), 90 - alt,
                                marker=marker,
                                markersize=mSize,
                                fillstyle='none',
@@ -636,7 +636,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
             if polar:
                 annotation = axes.annotate(text,
-                                           xy=(np.radians(-az), 90 - alt),
+                                           xy=(np.radians(az), 90 - alt),
                                            xytext=(2, -10),
                                            textcoords='offset points',
                                            color=color,

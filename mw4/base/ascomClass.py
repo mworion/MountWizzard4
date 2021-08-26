@@ -272,7 +272,7 @@ class AscomClass(DriverData, Signals):
         pythoncom.CoUninitialize()
         return result
 
-    def callMethodThreaded(self, fn, cb_res=None, cb_fin=None, check=True, *args, **kwargs):
+    def callMethodThreaded(self, fn, *args, cb_res=None, cb_fin=None, check=True, **kwargs):
         """
         callMethodThreaded is done mainly for ASCOM ctypes interfaces which take
         longer to end and should not slow down the gui thread itself. All called
@@ -284,10 +284,10 @@ class AscomClass(DriverData, Signals):
         pythoncom.CoUninitialize() after the functions finished.
 
         :param fn: function
+        :param args:
         :param cb_res: callback
         :param cb_fin: callback
         :param check: callback
-        :param args:
         :param kwargs:
         :return:
         """

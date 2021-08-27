@@ -396,6 +396,28 @@ def test_callMethodThreaded_3():
         assert suc
 
 
+def test_callMethodThreaded_4():
+    def test():
+        return
+
+    app.deviceConnected = True
+    with mock.patch.object(app.threadPool,
+                           'start'):
+        suc = app.callMethodThreaded(test, 10, 20, cb_fin=test, cb_res=test)
+        assert suc
+
+
+def test_callMethodThreaded_5():
+    def test():
+        return
+
+    app.deviceConnected = True
+    with mock.patch.object(app.threadPool,
+                           'start'):
+        suc = app.callMethodThreaded(test, 10, 20)
+        assert suc
+
+
 def test_processPolledData():
     app.processPolledData()
 

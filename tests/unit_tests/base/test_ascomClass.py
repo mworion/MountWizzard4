@@ -378,10 +378,10 @@ def test_callMethodThreaded_2():
     def test():
         return
 
-    app.deviceConnected = False
+    app.deviceConnected = True
     with mock.patch.object(app.threadPool,
                            'start'):
-        suc = app.callMethodThreaded(test, check=False)
+        suc = app.callMethodThreaded(test, cb_fin=test, cb_res=test)
         assert suc
 
 
@@ -392,22 +392,11 @@ def test_callMethodThreaded_3():
     app.deviceConnected = True
     with mock.patch.object(app.threadPool,
                            'start'):
-        suc = app.callMethodThreaded(test, cb_fin=test, cb_res=test)
-        assert suc
-
-
-def test_callMethodThreaded_4():
-    def test():
-        return
-
-    app.deviceConnected = True
-    with mock.patch.object(app.threadPool,
-                           'start'):
         suc = app.callMethodThreaded(test, 10, 20, cb_fin=test, cb_res=test)
         assert suc
 
 
-def test_callMethodThreaded_5():
+def test_callMethodThreaded_4():
     def test():
         return
 
@@ -449,8 +438,8 @@ def test_getInitialConfig():
 
 def test_startCommunication_1():
     app.deviceName = 'test'
-    with mock.patch.object(app,
-                           'callMethodThreaded'):
+    with mock.patch.object(app.threadPool,
+                           'start'):
         with mock.patch.object(win32com.client.dynamic,
                                'Dispatch'):
             suc = app.startCommunication()

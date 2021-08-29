@@ -272,7 +272,7 @@ class AscomClass(DriverData, Signals):
         pythoncom.CoUninitialize()
         return result
 
-    def callMethodThreaded(self, fn, *args, cb_res=None, cb_fin=None, check=True, **kwargs):
+    def callMethodThreaded(self, fn, *args, cb_res=None, cb_fin=None, **kwargs):
         """
         callMethodThreaded is done mainly for ASCOM ctypes interfaces which take
         longer to end and should not slow down the gui thread itself. All called
@@ -287,16 +287,15 @@ class AscomClass(DriverData, Signals):
         :param args:
         :param cb_res: callback
         :param cb_fin: callback
-        :param check: callback
         :param kwargs:
         :return:
         """
-        if check and not self.deviceConnected:
+        if not self.deviceConnected:
             return False
 
         worker = Worker(self.callerInitUnInit, fn, *args, **kwargs)
         if cb_res:
-            worker.signals.finished.connect(cb_res)
+            worker.signals.result.connect(cb_res)
         if cb_fin:
             worker.signals.finished.connect(cb_fin)
         self.threadPool.start(worker)
@@ -353,10 +352,11 @@ class AscomClass(DriverData, Signals):
             return False
 
         else:
-            self.callMethodThreaded(self.workerConnectAscomDevice,
-                                    check=False,
-                                    cb_res=self.getInitialConfig,
-                                    cb_fin=self.startTimer)
+            worker = Worker(self.callerInitUnInit, fn, *args, **kwargs)
+            worker.signals.result.connect(self.getInitialConfig)
+            worker.signals.finished.connect(self.startTimer)
+            self.threadPool.start(worker)
+
         return True
 
     def stopCommunication(self):

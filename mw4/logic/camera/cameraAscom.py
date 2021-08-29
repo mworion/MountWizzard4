@@ -157,9 +157,14 @@ class CameraAscom(AscomClass):
                 break
 
         self.signals.integrated.emit()
+        self.signals.message.emit('download')
+        tmp = self.client.ImageArray
+        if tmp is None:
+            self.abortExpose = True
+        else:
+            data = np.array(tmp, dtype=np.uint16).transpose()
+
         if not self.abortExpose:
-            self.signals.message.emit('download')
-            data = np.array(self.client.ImageArray, dtype=np.uint16).transpose()
             self.signals.message.emit('saving')
             hdu = fits.PrimaryHDU(data=data)
             header = hdu.header

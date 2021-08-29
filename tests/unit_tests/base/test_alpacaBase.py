@@ -60,7 +60,7 @@ def test_discoverAPIVersion_1():
                            'get',
                            side_effect=Exception()):
         val = app.discoverAPIVersion()
-        assert val == []
+        assert val is None
 
 
 def test_discoverAPIVersion_1b():
@@ -68,7 +68,7 @@ def test_discoverAPIVersion_1b():
                            'get',
                            side_effect=requests.exceptions.Timeout):
         val = app.discoverAPIVersion()
-        assert val == []
+        assert val is None
 
 
 def test_discoverAPIVersion_1c():
@@ -76,7 +76,7 @@ def test_discoverAPIVersion_1c():
                            'get',
                            side_effect=requests.exceptions.ConnectionError):
         val = app.discoverAPIVersion()
-        assert val == []
+        assert val is None
 
 
 def test_discoverAPIVersion_2():
@@ -90,7 +90,7 @@ def test_discoverAPIVersion_2():
                            'get',
                            return_value=Test()):
         val = app.discoverAPIVersion()
-        assert val == []
+        assert val is None
 
 
 def test_discoverAPIVersion_3():
@@ -108,7 +108,7 @@ def test_discoverAPIVersion_3():
                            'get',
                            return_value=Test()):
         val = app.discoverAPIVersion()
-        assert val == []
+        assert val is None
 
 
 def test_discoverAPIVersion_4():
@@ -134,7 +134,7 @@ def test_discoverDevices_1():
                            'get',
                            side_effect=Exception()):
         val = app.discoverDevices()
-        assert val == []
+        assert val is None
 
 
 def test_discoverDevices_1b():
@@ -142,7 +142,7 @@ def test_discoverDevices_1b():
                            'get',
                            side_effect=requests.exceptions.Timeout):
         val = app.discoverDevices()
-        assert val == []
+        assert val is None
 
 
 def test_discoverDevices_1c():
@@ -150,7 +150,7 @@ def test_discoverDevices_1c():
                            'get',
                            side_effect=requests.exceptions.ConnectionError):
         val = app.discoverDevices()
-        assert val == []
+        assert val is None
 
 
 def test_discoverDevices_2():
@@ -164,7 +164,7 @@ def test_discoverDevices_2():
                            'get',
                            return_value=Test()):
         val = app.discoverDevices()
-        assert val == []
+        assert val is None
 
 
 def test_discoverDevices_3():
@@ -182,7 +182,7 @@ def test_discoverDevices_3():
                            'get',
                            return_value=Test()):
         val = app.discoverDevices()
-        assert val == []
+        assert val is None
 
 
 def test_discoverDevices_4():
@@ -205,7 +205,7 @@ def test_discoverDevices_4():
 
 def test_get_1():
     val = app.get('')
-    assert val == []
+    assert val is None
 
 
 def test_get_2():
@@ -219,7 +219,7 @@ def test_get_2():
                            side_effect=requests.exceptions.Timeout,
                            return_value=Test()):
         val = app.get('')
-        assert val == []
+        assert val is None
 
 
 def test_get_2b():
@@ -233,7 +233,7 @@ def test_get_2b():
                            side_effect=requests.exceptions.ConnectionError,
                            return_value=Test()):
         val = app.get('')
-        assert val == []
+        assert val is None
 
 
 def test_get_2c():
@@ -247,7 +247,7 @@ def test_get_2c():
                            side_effect=Exception(),
                            return_value=Test()):
         val = app.get('')
-        assert val == []
+        assert val is None
 
 
 def test_get_3():
@@ -260,7 +260,7 @@ def test_get_3():
                            'get',
                            return_value=Test()):
         val = app.get('')
-        assert val == []
+        assert val is None
 
 
 def test_get_4():
@@ -279,7 +279,7 @@ def test_get_4():
                            'get',
                            return_value=Test()):
         val = app.get('')
-        assert val == []
+        assert val is None
 
 
 def test_get_5():
@@ -304,7 +304,7 @@ def test_get_5():
 
 def test_put_1():
     val = app.put('')
-    assert val == []
+    assert val is None
 
 
 def test_put_2():
@@ -318,7 +318,7 @@ def test_put_2():
                            side_effect=Exception(),
                            return_value=Test()):
         val = app.put('')
-        assert val == []
+        assert val is None
 
 
 def test_put_2b():
@@ -332,7 +332,7 @@ def test_put_2b():
                            side_effect=requests.exceptions.Timeout,
                            return_value=Test()):
         val = app.put('')
-        assert val == []
+        assert val is None
 
 
 def test_put_2c():
@@ -346,7 +346,7 @@ def test_put_2c():
                            side_effect=requests.exceptions.ConnectionError,
                            return_value=Test()):
         val = app.put('')
-        assert val == []
+        assert val is None
 
 
 def test_put_3():
@@ -359,7 +359,7 @@ def test_put_3():
                            'put',
                            return_value=Test()):
         val = app.put('')
-        assert val == []
+        assert val is None
 
 
 def test_put_4():
@@ -378,7 +378,7 @@ def test_put_4():
                            'put',
                            return_value=Test()):
         val = app.put('')
-        assert val == []
+        assert val is None
 
 
 def test_put_5():
@@ -427,12 +427,12 @@ def test_connected_2():
 
 def test_connected_3():
     val = app.connected()
-    assert val == []
+    assert val is None
 
 
 def test_description():
     val = app.description()
-    assert val == []
+    assert val is None
 
 
 def test_driverInfo_1():
@@ -453,19 +453,19 @@ def test_driverInfo_2():
 
 def test_driverVersion():
     val = app.driverVersion()
-    assert val == []
+    assert val is None
 
 
 def test_interfaceVersion():
     val = app.interfaceVersion()
-    assert val == []
+    assert val is None
 
 
 def test_nameDevice():
     val = app.nameDevice()
-    assert val == []
+    assert val is None
 
 
 def test_supportedActions():
     val = app.supportedActions()
-    assert val == []
+    assert val is None

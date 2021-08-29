@@ -804,6 +804,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         with fits.open(imagePath, mode='update') as fitsHandle:
             self.image = fitsHandle[0].data
             self.header = fitsHandle[0].header
+            
+        # todo: better checking if image is valid 
 
         if self.image is None:
             return False

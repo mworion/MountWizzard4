@@ -105,25 +105,25 @@ class AlpacaBase(Signals):
 
         except requests.exceptions.Timeout:
             self.log.info('timeout')
-            return []
+            return None
 
         except requests.exceptions.ConnectionError:
             self.log.debug('[connection error')
-            return []
+            return None
 
         except Exception as e:
             self.log.critical(f'[error in request: {e}')
-            return []
+            return None
 
         if response.status_code == 400 or response.status_code == 500:
             self.log.debug(f'{response.text}')
-            return []
+            return None
 
         response = response.json()
         if response['ErrorNumber'] != 0:
             self.log.warning(f'{response} err:{response["ErrorNumber"]}'
                              f',{response["ErrorMessage"]}')
-            return []
+            return None
 
         self.log.trace(f'[response:{response}')
         return response['Value']

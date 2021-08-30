@@ -182,32 +182,32 @@ class CameraAlpaca(AlpacaClass):
             self.signals.message.emit('saving')
             hdu = fits.PrimaryHDU(data=data)
             header = hdu.header
-            header['OBJECT'] = 'skymodel'
-            header['FRAME'] = 'Light'
-            header['EQUINOX'] = 2000
-            header['PIXSIZE1'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning
-            header['PIXSIZE2'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning
-            header['XPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning
-            header['YPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning
+            header.append('OBJECT', 'SKY_OBJECT', 'default name from MW4')
+            header.append('FRAME', 'Light', 'Modeling works with light frames')
+            header.append('EQUINOX', 2000, 'All data is dstored in J2000')
+            header.append('PIXSIZE1', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning)
+            header.append('PIXSIZE2', self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning)
+            header.append('XPIXSZ', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning)
+            header.append('YPIXSZ', self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning)
 
             if focalLength:
                 factor = binning / focalLength * 206.265
             else:
                 factor = 1
 
-            header['SCALE'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * factor
-            header['XBINNING'] = binning
-            header['YBINNING'] = binning
-            header['EXPTIME'] = expTime
-            header['OBSERVER'] = 'MW4'
-            header['DATE-OBS'] = self.app.mount.obsSite.timeJD.utc_iso()
-            header['CCD-TEMP'] = self.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
-            header['SQM'] = self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
+            header.append('SCALE', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * factor)
+            header.append('XBINNING', binning, 'MW4 is using the same binning for x and y')
+            header.append('YBINNING', binning, 'MW4 is using the same binning for x and y')
+            header.append('EXPTIME', expTime)
+            header.append('OBSERVER', 'MW4')
+            header.append('DATE-OBS', self.app.mount.obsSite.timeJD.utc_iso(), 'Time from UTC is ISO format')
+            header.append('CCD-TEMP', self.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0))
+            header.append('SQM', self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0))
 
             if isMount:
-                header['RA'] = ra._degrees
-                header['DEC'] = dec.degrees
-                header['TELESCOP'] = self.app.mount.firmware.product
+                header.append('RA', ra._degrees, 'Float value in degree')
+                header.append('DEC', dec.degrees, 'Float value in degree')
+                header.append('TELESCOP', self.app.mount.firmware.product, 'Mount version from firmware')
 
             hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
             self.log.info(f'Saved Image: [{imagePath}]')

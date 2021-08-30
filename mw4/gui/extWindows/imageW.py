@@ -805,9 +805,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.image = fitsHandle[0].data
             self.header = fitsHandle[0].header
             
-        # todo: better checking if image is valid 
-
-        if self.image is None:
+        if self.image is None or self.image == []:
             return False
 
         if self.header is None:

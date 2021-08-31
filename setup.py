@@ -19,8 +19,9 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: MW4 not shutting down when dome configured, but not connected
-- fix: mirrored display of points in polar hemisphere view
+- fix: robustness against errors in ALPACA server due to memory faults -174
+- fix: robustness against filter names / numbers from ALPACA server -174
+- fix: cleanup import for pywinauto timing import -175
  """
 
 with open('notes.txt', 'w') as f:
@@ -28,7 +29,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.1',
+    version='2.0.2b1',
     packages=[
         'mw4',
         'mw4.base',

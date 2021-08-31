@@ -21,7 +21,7 @@ import platform
 releaseNotes = """
 - fix: robustness against errors in ALPACA server due to memory faults -174
 - fix: robustness against filter names / numbers from ALPACA server -174
-- fix: cleanup import for pywinauto timing import -175
+- fix: cleanup import for pywinauto timings import -175
  """
 
 with open('notes.txt', 'w') as f:

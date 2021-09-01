@@ -23,7 +23,7 @@ of the core functions are provided by the mount computer.
 
 * :ref:`search`
 Tutorials
-HowTo QuickStart
+HowTo / QuickStart
 Explanation
 Reference
 Q&A
@@ -48,6 +48,8 @@ mount
     status
     coordinates
     moving
+    park positions
+    tracking states
 
 imaging
     setup
@@ -79,8 +81,25 @@ dome
     geometry
     following modes
     
+observation conditions
+    overview
+    using for refraction update
+
+almanac
+    features
+    
 simulator
     sim window
+    
+tools
+    file renaming
+    
+relay control
+
+power control
+    dew setup
+    USB control
+    power switches
     
 remote control
     commands

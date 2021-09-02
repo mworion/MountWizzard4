@@ -99,11 +99,37 @@ class CameraIndi(IndiClass):
 
     def setExposureState(self):
         """
+        setExposureState rebuilds the state information integrated and download as it
+        is not explicit defined in the INDI spec. So downloaded is reached when that        
+        INDI state for CCD_EXPOSURE goes to IDLE or OK -> Jasem Mutlaq. Another definition
+        is done by myself, when INDI state for CCD_EXPOSURE is BUSY and the CCD_EPOSURE_VALUE
+        is not 0, then we should be on integration side, else the download shoulds be started.
+        The whole stuff is made, because on ALPACA and ASCOM side it's a step by step 
+        sequence, which has very defined states for each step and I would like ta have a 
+        common approach for all frameworks. 
+  
         :return: success
         """
+        # todo: if setExp only called, when prop is CCD_EXP, then there 
+        # todo: should be no check against it. 
+        
         if not hasattr(self.device, 'CCD_EXPOSURE'):
             return False
 
+        # todo: does it makes sense not to set a default for the value,
+        # todo: but to check if the entry is already there if ..is None
+        
+        # if busy is set one packet before EXP_Value is set, then we send
+        # slew before we have integrated the image, just because we set the value
+        # to 0 if no entry is made.
+        
+        # What about setting busy, but keeping the old value of exposure in?
+        # This value will be in any case 0 after the last exposure. Does ist make
+        # sense to remove this value from the dict if we check for None in the future
+        
+        # Question to be answered: if a INDI driver reports back zero exposure, is he
+        # really in download mode ?
+        
         value = self.data.get('CCD_EXPOSURE.CCD_EXPOSURE_VALUE', 0)
         if self.device.CCD_EXPOSURE['state'] == 'Idle':
             self.signals.message.emit('')
@@ -120,10 +146,32 @@ class CameraIndi(IndiClass):
 
         elif self.device.CCD_EXPOSURE['state'] == 'Ok':
             pass
+            # why having here removed the message emit
             # self.signals.message.emit('')
 
         if self.device.CCD_EXPOSURE['state'] in ['Idle', 'Ok']:
             self.isDownloading = False
+            
+        """
+        as result the following solution would be there:
+        
+        value = self.data.get('CCD_EXPOSURE.CCD_EXPOSURE_VALUE')
+        if self.device.CCD_EXPOSURE['state'] == 'Busy':
+            if value is None:
+                return False
+            elif value == 0:
+                if not self.isDownloading:
+                    self.signals.integrated.emit()
+                self.isDownloading = True
+                self.signals.message.emit('download')
+            else:
+                self.signals.message.emit(f'expose {value:2.0f} s')
+
+        elif self.device.CCD_EXPOSURE['state'] in ['Idle', 'Ok']:
+            del(self.data['CCD_EXPOSURE.CCD_EXPOSURE_VALUE'])
+            self.signals.message.emit('')
+            self.isDownloading = False
+        """
 
         return True
 

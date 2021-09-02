@@ -359,10 +359,8 @@ class IndiClass:
 
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
-
             # print('number', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
-
             self.data[key] = float(value)
 
         return True
@@ -384,14 +382,11 @@ class IndiClass:
 
         for element, value in self.device.getSwitch(propertyName).items():
             key = propertyName + '.' + element
-
-            # is that the item which tells me it's an indigo server ?
+            # todo: is that the item which tells me it's an indigo server ?
             if propertyName == 'PROFILE':
                 self.isINDIGO = True
-
             # print('switch', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
-
             self.data[key] = value == 'On'
 
         return True
@@ -413,10 +408,8 @@ class IndiClass:
 
         for element, value in self.device.getText(propertyName).items():
             key = propertyName + '.' + element
-
             # print('text  ', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
-
             self.data[key] = value
 
         return True
@@ -438,10 +431,8 @@ class IndiClass:
 
         for element, value in self.device.getLight(propertyName).items():
             key = propertyName + '.' + element
-
             # print('light ', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
-
             self.data[key] = value
 
         return True
@@ -519,10 +510,8 @@ class IndiClass:
         interface = device.getText(propertyName).get('DRIVER_INTERFACE', None)
         if interface is None:
             return False
-
         if interface == '0':
             interface = 0xffff
-
         if self.discoverType is None:
             return False
 

@@ -58,6 +58,7 @@ class Camera:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = CameraSignals()
+        # todo: to be removed
         self.exposing = False
 
         self.data = {}
@@ -93,6 +94,7 @@ class Camera:
         indiSignals.deviceConnected.connect(self.signals.deviceConnected)
         indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
+        # todo: to be removed
         self.signals.saved.connect(self.resetExposed)
 
     def startCommunication(self, loadConfig=False):
@@ -182,6 +184,7 @@ class Camera:
         else:
             return False
 
+    # todo: to be removed
     def resetExposed(self):
         """
         :return: True for test purpose
@@ -220,16 +223,17 @@ class Camera:
 
         posX, posY, width, height = result
 
+        # todo: to be removed with new signal combination
         # this protects against overrun
         if self.exposing:
             self.log.warning('Expose overrun happened')
         while self.exposing:
             QTest.qWait(250)
+        self.exposing = True
 
         text = f'Image bin:{binning}, posX:{posX}, posY:{posY}'
         text += f', width:{width}, height:{height}, fast:{fastReadout}'
         self.log.debug(text)
-        self.exposing = True
         suc = self.run[self.framework].expose(imagePath=imagePath,
                                               expTime=expTime,
                                               binning=binning,
@@ -245,6 +249,7 @@ class Camera:
         """
         :return: success
         """
+        # todo: to be removed
         self.exposing = False
         if self.framework not in self.run.keys():
             return False

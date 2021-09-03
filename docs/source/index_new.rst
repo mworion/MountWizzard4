@@ -56,7 +56,11 @@ imaging
     expose
     exposeN
     solving
-    
+   
+alignment
+    polar
+    ortho 
+   
 modeling
     using build points
     run options

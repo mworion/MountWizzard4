@@ -126,9 +126,8 @@ class AlpacaClass(DriverData):
     def protocol(self, value):
         self.client.protocol = value
 
-    def getInitialConfig(self):
+    def workerConnectDevice(self):
         """
-
         :return: success of reconnecting to server
         """
         self.client.connected(Connected=True)
@@ -146,10 +145,15 @@ class AlpacaClass(DriverData):
             self.client.signals.deviceConnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ALPACA device found: [{self.deviceName}]', 0)
 
+        return True
+
+    def workerGetInitialConfig(self):
+        """
+        :return:
+        """
         self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.nameDevice()
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.driverVersion()
         self.data['DRIVER_INFO.DRIVER_EXEC'] = self.client.driverInfo()
-
         return True
 
     def startTimer(self):
@@ -204,10 +208,8 @@ class AlpacaClass(DriverData):
 
     def pollData(self):
         """
-
         :return: success
         """
-
         if not self.deviceConnected:
             return False
 
@@ -218,13 +220,24 @@ class AlpacaClass(DriverData):
 
     def pollStatus(self):
         """
-        workerPollStatus starts a thread every 1 second for polling.
-
         :return: success
         """
+        if not self.deviceConnected:
+            return False
+
         worker = Worker(self.workerPollStatus)
         self.threadPool.start(worker)
+        return True
 
+    def getInitialConfig(self):
+        """
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+
+        worker = Worker(self.workerGetInitialConfig)
+        self.threadPool.start(worker)
         return True
 
     def startCommunication(self, loadConfig=False):
@@ -234,11 +247,10 @@ class AlpacaClass(DriverData):
         :param loadConfig:
         :return: True for test purpose
         """
-
-        worker = Worker(self.getInitialConfig)
+        worker = Worker(self.workerConnectDevice)
+        worker.signals.result.connect(self.getInitialConfig)
         worker.signals.finished.connect(self.startTimer)
         self.threadPool.start(worker)
-
         return True
 
     def stopCommunication(self):

@@ -93,7 +93,7 @@ class AscomClass(DriverData, Signals):
         """
         return self.client.connected
 
-    def workerConnectAscomDevice(self):
+    def workerConnectDevice(self):
         """
         As some ASCOM devices need some time to be able to connect, we try to
         connect multiply (10) times with an waiting period 0f 250ms, so 2,5
@@ -352,7 +352,7 @@ class AscomClass(DriverData, Signals):
             return False
 
         else:
-            worker = Worker(self.callerInitUnInit, fn, *args, **kwargs)
+            worker = Worker(self.callerInitUnInit, workerConnectDevice)
             worker.signals.result.connect(self.getInitialConfig)
             worker.signals.finished.connect(self.startTimer)
             self.threadPool.start(worker)

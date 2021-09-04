@@ -81,7 +81,7 @@ def test_isClientConnected():
     app.isClientConnected()
 
 
-def test_workerConnectAscomDevice_1():
+def test_workerConnectDevice_1():
     class Client:
         connected = False
 
@@ -93,13 +93,13 @@ def test_workerConnectAscomDevice_1():
         with mock.patch.object(app,
                                'connectClient',
                                side_effect=Exception):
-            suc = app.workerConnectAscomDevice()
+            suc = app.workerConnectDevice()
             assert not suc
             assert not app.serverConnected
             assert not app.deviceConnected
 
 
-def test_workerConnectAscomDevice_2():
+def test_workerConnectDevice_2():
     class Client:
         connected = False
 
@@ -108,13 +108,13 @@ def test_workerConnectAscomDevice_2():
     app.client = Client()
     with mock.patch.object(QTest,
                            'qWait'):
-        suc = app.workerConnectAscomDevice()
+        suc = app.workerConnectDevice()
         assert suc
         assert app.serverConnected
         assert app.deviceConnected
 
 
-def test_getInitialConfig_1():
+def test_workerGetInitialConfig_1():
     class Test:
         connected = False
         Name = 'test'

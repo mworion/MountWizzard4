@@ -64,27 +64,41 @@ def test_properties_2():
     assert app.protocol == 'http'
 
 
-def test_getInitialConfig_1():
+def test_workerConnectDevice_1():
     with mock.patch.object(app.client,
                            'connected',
                            return_value=False):
-        suc = app.getInitialConfig()
+        suc = app.workerConnectDevice()
         assert not suc
 
 
-def test_getInitialConfig_2():
+def test_workerConnectDevice_2():
     app.serverConnected = False
     app.deviceConnected = False
     with mock.patch.object(app.client,
                            'connected',
                            return_value=True):
-        suc = app.getInitialConfig()
+        suc = app.workerConnectDevice()
         assert suc
         assert app.serverConnected
         assert app.deviceConnected
-        assert app.data['DRIVER_INFO.DRIVER_NAME'] in [[], None]
-        assert app.data['DRIVER_INFO.DRIVER_VERSION'] in [[], None]
-        assert app.data['DRIVER_INFO.DRIVER_EXEC'] == ''
+
+
+def test_workerGetInitialConfig_1():
+    with mock.patch.object(app.client,
+                           'nameDevice',
+                           return_value='Test1'):
+        with mock.patch.object(app.client,
+                               'driverVersion',
+                               return_value='Test2'):
+            with mock.patch.object(app.client,
+                                   'driverInfo',
+                                   return_value='Test3'):
+                suc = app.workerGetInitialConfig()
+                assert suc
+                assert app.data['DRIVER_INFO.DRIVER_NAME'] == 'Test1'
+                assert app.data['DRIVER_INFO.DRIVER_VERSION'] == 'Test2'
+                assert app.data['DRIVER_INFO.DRIVER_EXEC'] == 'Test3'
 
 
 def test_startTimer():
@@ -99,7 +113,7 @@ def test_stopTimer():
         assert suc
 
 
-def test_pollStatus_1():
+def test_workerPollStatus_1():
     app.deviceConnected = True
     with mock.patch.object(app.client,
                            'connected',
@@ -109,7 +123,7 @@ def test_pollStatus_1():
         assert not app.deviceConnected
 
 
-def test_pollStatus_2():
+def test_workerPollStatus_2():
     app.deviceConnected = False
     with mock.patch.object(app.client,
                            'connected',
@@ -159,9 +173,32 @@ def test_pollData_2():
     assert suc
 
 
-def test_startPollStatus():
+def test_pollStatus_1():
+    app.deviceConnected = False
     suc = app.pollStatus()
-    assert suc
+    assert not suc
+
+
+def test_pollStatus_2():
+    app.deviceConnected = True
+    with mock.patch.object(app.threadPool,
+                           'start'):
+        suc = app.pollStatus()
+        assert suc
+
+
+def test_getInitialConfig_1():
+    app.deviceConnected = False
+    suc = app.getInitialConfig()
+    assert not suc
+
+
+def test_getInitialConfig_2():
+    app.deviceConnected = True
+    with mock.patch.object(app.threadPool,
+                           'start'):
+        suc = app.getInitialConfig()
+        assert suc
 
 
 def test_startCommunication():

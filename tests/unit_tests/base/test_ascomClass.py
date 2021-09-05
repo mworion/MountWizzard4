@@ -73,12 +73,132 @@ def test_disconnectClient():
     assert app.propertyExceptions == []
 
 
-def test_isClientConnected():
-    class Test:
-        connected = False
+def test_startTimer():
+    with mock.patch.object(PyQt5.QtCore.QTimer,
+                           'start'):
+        suc = app.startTimer()
+        assert suc
 
-    app.client = Test()
-    app.isClientConnected()
+
+def test_stopTimer():
+    with mock.patch.object(PyQt5.QtCore.QTimer,
+                           'stop'):
+        suc = app.stopTimer()
+        assert suc
+
+
+def test_getAscomProperty_1():
+    app.propertyExceptions = ['Connect']
+    val = app.getAscomProperty('Connect')
+    assert val is None
+
+
+def test_getAscomProperty_2():
+    app.propertyExceptions = ['Test']
+    with mock.patch.object(builtins,
+                           'eval',
+                           side_effect=Exception):
+        val = app.getAscomProperty('Connect')
+        assert val is None
+        assert 'Connect' in app.propertyExceptions
+
+
+def test_getAscomProperty_3():
+    class Client:
+        Connect = True
+
+    app.client = Client()
+    app.propertyExceptions = ['Test']
+    val = app.getAscomProperty('Connect')
+    assert val
+
+
+def test_setAscomProperty_1():
+    app.propertyExceptions = ['Connect']
+    suc = app.setAscomProperty('Connect', True)
+    assert not suc
+
+
+def test_setAscomProperty_2():
+    app.propertyExceptions = ['Test']
+    with mock.patch.object(builtins,
+                           'exec',
+                           side_effect=Exception):
+        suc = app.setAscomProperty('Connect', True)
+        assert not suc
+        assert 'Connect' not in app.propertyExceptions
+
+
+def test_setAscomProperty_3():
+    app.propertyExceptions = ['Test']
+    with mock.patch.object(builtins,
+                           'exec',
+                           side_effect=Exception):
+        suc = app.setAscomProperty('Names', True)
+        assert not suc
+        assert 'Names' in app.propertyExceptions
+
+
+def test_setAscomProperty_4():
+    class Client:
+        Connect = False
+
+    app.client = Client()
+    app.propertyExceptions = ['Test']
+    suc = app.setAscomProperty('Connect', True)
+    assert suc
+    assert app.client
+
+
+def test_callAscomMethod_1():
+    app.propertyExceptions = ['Connect']
+    suc = app.callAscomMethod('Connect', True)
+    assert not suc
+
+
+def test_callAscomMethod_2():
+    app.propertyExceptions = ['Test']
+    with mock.patch.object(builtins,
+                           'exec',
+                           side_effect=Exception):
+        suc = app.callAscomMethod('Connect', True)
+        assert not suc
+        assert 'Connect' in app.propertyExceptions
+
+
+def test_callAscomMethod_3():
+    class Client:
+        Connect = False
+
+    app.client = Client()
+    app.propertyExceptions = ['Test']
+    with mock.patch.object(app.client,
+                           'Connect'):
+        suc = app.callAscomMethod('Connect', True)
+        assert suc
+        assert app.client
+
+
+def test_callAscomMethod_4():
+    class Client:
+        Connect = False
+
+    app.client = Client()
+    app.propertyExceptions = ['Test']
+    with mock.patch.object(app.client,
+                           'Connect'):
+        suc = app.callAscomMethod('Connect', (True, 1))
+        assert suc
+        assert app.client
+
+
+def test_getAndStoreAscomProperty():
+    with mock.patch.object(app,
+                           'getAscomProperty'):
+        with mock.patch.object(app,
+                               'storePropertyToData'):
+            suc = app.getAndStoreAscomProperty(10, 'YES', 'NO')
+            assert suc
 
 
 def test_workerConnectDevice_1():
@@ -129,233 +249,24 @@ def test_workerGetInitialConfig_1():
     assert app.data['DRIVER_INFO.DRIVER_EXEC'] == 'test1'
 
 
-def test_startTimer():
-    with mock.patch.object(PyQt5.QtCore.QTimer,
-                           'start'):
-        suc = app.startTimer()
-        assert suc
-
-
-def test_stopTimer():
-    with mock.patch.object(PyQt5.QtCore.QTimer,
-                           'stop'):
-        suc = app.stopTimer()
-        assert suc
-
-
-def test_getAscomProperty_1():
-    app.propertyExceptions = ['Connect']
-    val = app.getAscomProperty('Connect')
-    assert val is None
-
-
-def test_getAscomProperty_2():
-    app.propertyExceptions = ['Test']
-    with mock.patch.object(builtins,
-                           'eval',
-                           side_effect=Exception):
-        val = app.getAscomProperty('Connect')
-        assert val is None
-        assert 'Connect' in app.propertyExceptions
-
-
-def test_getAscomProperty_3():
-    class Client:
-        Connect = True
-
-    app.client = Client()
-    app.propertyExceptions = ['Test']
-    val = app.getAscomProperty('Connect')
-    assert val
-
-
-def test_callAscomMethod_1():
-    app.propertyExceptions = ['Connect']
-    suc = app.callAscomMethod('Connect', True)
-    assert not suc
-
-
-def test_callAscomMethod_2():
-    app.propertyExceptions = ['Test']
-    with mock.patch.object(builtins,
-                           'exec',
-                           side_effect=Exception):
-        suc = app.callAscomMethod('Connect', True)
-        assert not suc
-        assert 'Connect' in app.propertyExceptions
-
-
-def test_callAscomMethod_3():
-    class Client:
-        Connect = False
-
-    app.client = Client()
-    app.propertyExceptions = ['Test']
-    with mock.patch.object(app.client,
-                           'Connect'):
-        suc = app.callAscomMethod('Connect', True)
-        assert suc
-        assert app.client
-
-
-def test_callAscomMethod_4():
-    class Client:
-        Connect = False
-
-    app.client = Client()
-    app.propertyExceptions = ['Test']
-    with mock.patch.object(app.client,
-                           'Connect'):
-        suc = app.callAscomMethod('Connect', (True, 1))
-        assert suc
-        assert app.client
-
-
-def test_setAscomProperty_1():
-    app.propertyExceptions = ['Connect']
-    suc = app.setAscomProperty('Connect', True)
-    assert not suc
-
-
-def test_setAscomProperty_2():
-    app.propertyExceptions = ['Test']
-    with mock.patch.object(builtins,
-                           'exec',
-                           side_effect=Exception):
-        suc = app.setAscomProperty('Connect', True)
-        assert not suc
-        assert 'Connect' in app.propertyExceptions
-
-
-def test_setAscomProperty_3():
-    class Client:
-        Connect = False
-
-    app.client = Client()
-    app.propertyExceptions = ['Test']
-    suc = app.setAscomProperty('Connect', True)
-    assert suc
-    assert app.client
-
-
-def test_storeAscomProperty_1():
-    app.data = {'YES': 0}
-
-    res = app.storePropertyToData(None, 'YES')
-    assert not res
-    assert 'YES' not in app.data
-
-
-def test_storeAscomProperty_2():
-    app.data = {'YES': 0,
-                'NO': 0}
-
-    res = app.storePropertyToData(None, 'YES', 'NO')
-    assert not res
-    assert 'YES' not in app.data
-    assert 'NO' not in app.data
-
-
-def test_storeAscomProperty_3():
-    app.data = {'YES': 0,
-                'NO': 0}
-
-    res = app.storePropertyToData(10, 'YES', 'NO')
-    assert res
-    assert 'YES' in app.data
-    assert 'NO' in app.data
-
-
-def test_storeAscomProperty_4():
-    app.data = {}
-
-    res = app.storePropertyToData(10, 'YES', 'NO')
-    assert res
-    assert 'YES' in app.data
-    assert 'NO' in app.data
-
-
-def test_storeAscomProperty_5():
-    app.data = {'NO': 0}
-
-    res = app.storePropertyToData(None, 'YES', 'NO')
-    assert not res
-    assert 'YES' not in app.data
-    assert 'NO' not in app.data
-
-
-def test_getAndStoreAscomProperty():
-    with mock.patch.object(app,
-                           'getAscomProperty'):
-        with mock.patch.object(app,
-                               'storePropertyToData'):
-            suc = app.getAndStoreAscomProperty(10, 'YES', 'NO')
-            assert suc
-
-
 def test_pollStatus_1():
-    class Test:
-        connected = False
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
-
-    app.serverConnected = False
-    app.deviceConnected = False
-    app.client = Test()
-
-    suc = app.workerPollStatus()
-    assert not suc
-    assert not app.deviceConnected
+    app.deviceConnected = True
+    with mock.patch.object(app,
+                           'getAscomProperty',
+                           return_value=False):
+        suc = app.workerPollStatus()
+        assert not suc
+        assert not app.deviceConnected
 
 
 def test_pollStatus_2():
-    class Test:
-        connected = False
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
-
-    app.serverConnected = False
-    app.deviceConnected = True
-    app.client = Test()
-
-    suc = app.workerPollStatus()
-    assert not suc
-    assert not app.deviceConnected
-
-
-def test_pollStatus_3():
-    class Test:
-        connected = True
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
-
-    app.serverConnected = False
     app.deviceConnected = False
-    app.client = Test()
-
-    suc = app.workerPollStatus()
-    assert suc
-    assert app.deviceConnected
-
-
-def test_pollStatus_4():
-    class Test:
-        connected = True
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
-
-    app.serverConnected = False
-    app.deviceConnected = False
-    app.client = Test()
     with mock.patch.object(app,
-                           'isClientConnected',
-                           side_effect=Exception()):
+                           'getAscomProperty',
+                           return_value=True):
         suc = app.workerPollStatus()
-        assert not suc
+        assert suc
+        assert app.deviceConnected
 
 
 def test_callerInitUnInit_1():

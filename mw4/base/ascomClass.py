@@ -54,14 +54,14 @@ class AscomClass(DriverData, Signals):
         self.data = data
         self.propertyExceptions = []
         self.deviceName = ''
+        self.deviceConnected = False
+        self.serverConnected = False
+
         self.defaultConfig = {
             'ascom': {
                 'deviceName': '',
             }
         }
-
-        self.deviceConnected = False
-        self.serverConnected = False
 
         self.cyclePollStatus = QTimer()
         self.cyclePollStatus.setSingleShot(False)
@@ -85,66 +85,6 @@ class AscomClass(DriverData, Signals):
         """
         self.propertyExceptions = []
         self.client.connected = False
-        return True
-
-    def isClientConnected(self):
-        """
-        :return:
-        """
-        return self.client.connected
-
-    def workerConnectDevice(self):
-        """
-        As some ASCOM devices need some time to be able to connect, we try to
-        connect multiply (10) times with an waiting period 0f 250ms, so 2,5
-        seconds in total.
-
-        :return: true for test purpose
-        """
-        for retry in range(0, 10):
-            try:
-                self.connectClient()
-                self.log.debug(f'Connect to [{self.deviceName}]')
-
-            except Exception as e:
-                suc = False
-                t = f'Connection retry [{retry}]: [{self.deviceName}]: [{e}]'
-                self.log.warning(t)
-
-            else:
-                suc = self.isClientConnected()
-                if suc:
-                    t = f'[{self.deviceName}] connected, [{retry}] retries'
-                    self.log.debug(t)
-                    break
-
-            finally:
-                QTest.qWait(250)
-
-        else:
-            suc = False
-
-        if not suc:
-            self.app.message.emit(f'ASCOM connect error: [{self.deviceName}]', 2)
-            return False
-
-        if not self.serverConnected:
-            self.serverConnected = True
-            self.ascomSignals.serverConnected.emit()
-
-        if not self.deviceConnected:
-            self.deviceConnected = True
-            self.ascomSignals.deviceConnected.emit(f'{self.deviceName}')
-            self.app.message.emit(f'ASCOM device found:  [{self.deviceName}]', 0)
-        return True
-
-    def workerGetInitialConfig(self):
-        """
-        :return: true for test purpose
-        """
-        self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.Name
-        self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.DriverVersion
-        self.data['DRIVER_INFO.DRIVER_EXEC'] = self.client.DriverInfo
         return True
 
     def startTimer(self):
@@ -199,7 +139,8 @@ class AscomClass(DriverData, Signals):
         except Exception as e:
             t = f'[{self.deviceName}]:[{cmd}], property [{valueProp}] not implemented: {e}'
             self.log.debug(t)
-            self.propertyExceptions.append(valueProp)
+            if valueProp != 'Connect':
+                self.propertyExceptions.append(valueProp)
             return False
         else:
             t = f'[{self.deviceName}]: property [{valueProp}] set to [{value}]'
@@ -239,16 +180,62 @@ class AscomClass(DriverData, Signals):
         self.storePropertyToData(value, element, elementInv)
         return True
 
+    def workerConnectDevice(self):
+        """
+        As some ASCOM devices need some time to be able to connect, we try to
+        connect multiply (10) times with an waiting period 0f 250ms, so 2,5
+        seconds in total.
+
+        :return: true for test purpose
+        """
+        for retry in range(0, 10):
+            try:
+                self.connectClient()
+                self.log.debug(f'Connect to [{self.deviceName}]')
+            except Exception as e:
+                suc = False
+                t = f'Connection retry [{retry}]: [{self.deviceName}]: [{e}]'
+                self.log.warning(t)
+            else:
+                suc = self.getAscomProperty('connected')
+                if suc:
+                    t = f'[{self.deviceName}] connected, [{retry}] retries'
+                    self.log.debug(t)
+                    break
+            finally:
+                QTest.qWait(250)
+
+        else:
+            suc = False
+
+        if not suc:
+            self.app.message.emit(f'ASCOM connect error: [{self.deviceName}]', 2)
+            return False
+
+        if not self.serverConnected:
+            self.serverConnected = True
+            self.ascomSignals.serverConnected.emit()
+
+        if not self.deviceConnected:
+            self.deviceConnected = True
+            self.ascomSignals.deviceConnected.emit(f'{self.deviceName}')
+            self.app.message.emit(f'ASCOM device found:  [{self.deviceName}]', 0)
+        return True
+
+    def workerGetInitialConfig(self):
+        """
+        :return: true for test purpose
+        """
+        self.getAndStoreAscomProperty('Name', 'DRIVER_INFO.DRIVER_NAME')
+        self.getAndStoreAscomProperty('DriverVersion', 'DRIVER_INFO.DRIVER_VERSION')
+        self.getAndStoreAscomProperty('DriverInfo', 'DRIVER_INFO.DRIVER_EXEC')
+        return True
+
     def workerPollStatus(self):
         """
         :return: success
         """
-        try:
-            suc = self.isClientConnected()
-
-        except Exception as e:
-            self.log.info(f'Connection status error [{self.deviceName}]: [{e}]')
-            suc = False
+        suc = self.getAscomProperty('connected')
 
         if self.deviceConnected and not suc:
             self.deviceConnected = False
@@ -259,9 +246,6 @@ class AscomClass(DriverData, Signals):
             self.deviceConnected = True
             self.ascomSignals.deviceConnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ASCOM device found:  [{self.deviceName}]', 0)
-
-        else:
-            pass
 
         return suc
 

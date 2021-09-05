@@ -147,15 +147,6 @@ class AlpacaClass(DriverData):
 
         return True
 
-    def workerGetInitialConfig(self):
-        """
-        :return:
-        """
-        self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.nameDevice()
-        self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.driverVersion()
-        self.data['DRIVER_INFO.DRIVER_EXEC'] = self.client.driverInfo()
-        return True
-
     def startTimer(self):
         """
         startTimer enables the cyclic timer for polling information
@@ -176,15 +167,22 @@ class AlpacaClass(DriverData):
         self.cycleDevice.stop()
         return True
 
+    def workerGetInitialConfig(self):
+        """
+        :return:
+        """
+        self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.nameDevice()
+        self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.driverVersion()
+        self.data['DRIVER_INFO.DRIVER_EXEC'] = self.client.driverInfo()
+        return True
+
     def workerPollStatus(self):
         """
         pollStatusWorker is the thread method to be called for collecting data
 
         :return: success
         """
-
         suc = self.client.connected()
-
         if self.deviceConnected and not suc:
             self.deviceConnected = False
             self.client.signals.deviceDisconnected.emit(f'{self.deviceName}')
@@ -194,9 +192,6 @@ class AlpacaClass(DriverData):
             self.deviceConnected = True
             self.client.signals.deviceConnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ALPACA device found: [{self.deviceName}]', 0)
-
-        else:
-            pass
 
         return suc
 

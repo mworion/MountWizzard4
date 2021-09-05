@@ -125,7 +125,7 @@ def test_sendDownloadMode_3():
         assert not suc
 
 
-def test_workerExpose_1():
+def test_workerExpose_0():
     app.data['CAN_FAST'] = False
     app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
     app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
@@ -137,6 +137,21 @@ def test_workerExpose_1():
         with mock.patch.object(fits.PrimaryHDU,
                                'writeto'):
             suc = app.workerExpose()
+            assert suc
+
+
+def test_workerExpose_1():
+    app.data['CAN_FAST'] = False
+    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
+    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
+    app.imagePath = ''
+
+    with mock.patch.object(AlpacaBase,
+                           'get',
+                           return_value=True):
+        with mock.patch.object(fits.PrimaryHDU,
+                               'writeto'):
+            suc = app.workerExpose(focalLength=0)
             assert suc
 
 
@@ -193,6 +208,26 @@ def test_workerExpose_4():
                                return_value=False):
             with mock.patch.object(fits.PrimaryHDU,
                                    'writeto'):
+                suc = app.workerExpose(expTime=0.05, focalLength=0)
+                assert suc
+
+
+def test_workerExpose_5():
+    app.data['CAN_FAST'] = False
+    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
+    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
+    app.imagePath = ''
+    app.abortExpose = False
+
+    with mock.patch.object(AlpacaBase,
+                           'get',
+                           return_value=True):
+        with mock.patch.object(app.client,
+                               'imageready',
+                               return_value=True):
+            with mock.patch.object(app.client,
+                                   'imagearray',
+                                   return_value=None):
                 suc = app.workerExpose(expTime=0.05, focalLength=0)
                 assert suc
 

@@ -20,7 +20,6 @@ import logging
 import platform
 
 # external packages
-#todo: why checking for timings and enabling, but not working with it?
 try:
     from pywinauto import timings
 except Exception:

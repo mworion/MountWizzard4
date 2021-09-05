@@ -238,19 +238,8 @@ def test_checkFloatingPointErrorWindow_1(function):
         def window(handle=None):
             return {'OK': Test1()}
 
-    class Timings:
-        TimeoutError = TimeoutError
-
-        @staticmethod
-        def wait_until_passes():
-            return
-
-    #todo: why checking for timings?
-    if not hasattr(automateWindows, 'timings'):
-        automateWindows.timings = Timings()
-
     function.updater = Test()
-    with mock.patch.object(automateWindows.timings,
+    with mock.patch.object(automateWindows.application,
                            'wait_until_passes'):
         suc = function.checkFloatingPointErrorWindow()
         assert suc
@@ -267,19 +256,8 @@ def test_checkFloatingPointErrorWindow_2(function):
         def window(handle=None):
             return {'OK': Test1()}
 
-    class Timings:
-        TimeoutError = TimeoutError
-
-        @staticmethod
-        def wait_until_passes():
-            return
-
-    #todo: why checking for timings?
-    if not hasattr(automateWindows, 'timings'):
-        automateWindows.timings = Timings()
-
     function.updater = Test()
-    with mock.patch.object(automateWindows.timings,
+    with mock.patch.object(automateWindows.application,
                            'wait_until_passes',
                            side_effect=Exception):
         suc = function.checkFloatingPointErrorWindow()
@@ -297,19 +275,8 @@ def test_checkFloatingPointErrorWindow_3(function):
         def window(handle=None):
             return {'OK': Test1()}
 
-    class Timings:
-        TimeoutError = Exception
-
-        @staticmethod
-        def wait_until_passes():
-            return
-
-    #todo: why checking for timings?
-    if not hasattr(automateWindows, 'timings'):
-        automateWindows.timings = Timings()
-
     function.updater = Test()
-    with mock.patch.object(automateWindows.timings,
+    with mock.patch.object(automateWindows.application,
                            'wait_until_passes',
                            side_effect=automateWindows.timings.TimeoutError):
         suc = function.checkFloatingPointErrorWindow()

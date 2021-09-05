@@ -24,7 +24,6 @@ from PyQt5.QtTest import QTest
 
 # local imports
 from base.alpacaClass import AlpacaClass
-from base.alpacaBase import Camera
 from base.tpool import Worker
 from base.transform import JNowToJ2000
 
@@ -41,7 +40,6 @@ class CameraAlpaca(AlpacaClass):
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
-        self.client = Camera()
         self.signals = signals
         self.data = data
         self.abortExpose = False
@@ -86,13 +84,13 @@ class CameraAlpaca(AlpacaClass):
         self.storePropertyToData(self.client.gain(), 'CCD_GAIN.GAIN')
         self.storePropertyToData(self.client.offset(), 'CCD_OFFSET.OFFSET')
         self.storePropertyToData(self.client.fastreadout(),
-                       'READOUT_QUALITY.QUALITY_LOW',
-                       'READOUT_QUALITY.QUALITY_HIGH')
+                                 'READOUT_QUALITY.QUALITY_LOW',
+                                 'READOUT_QUALITY.QUALITY_HIGH')
         self.storePropertyToData(self.client.ccdtemperature(),
-                       'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+                                 'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
         self.storePropertyToData(self.client.cooleron(), 'CCD_COOLER.COOLER_ON')
         self.storePropertyToData(self.client.coolerpower(),
-                       'CCD_COOLER_POWER.CCD_COOLER_VALUE')
+                                 'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         return True
 
@@ -170,13 +168,14 @@ class CameraAlpaca(AlpacaClass):
             if self.abortExpose:
                 break
 
-        self.signals.integrated.emit()
-        self.signals.message.emit('download')
-        tmp = self.client.imagearray()
-        if tmp is None:
-            self.abortExpose = True
-        else:
-            data = np.array(tmp, dtype=np.uint16).transpose()
+        if not self.abortExpose:
+            self.signals.integrated.emit()
+            self.signals.message.emit('download')
+            tmp = self.client.imagearray()
+            if tmp is None:
+                self.abortExpose = True
+            else:
+                data = np.array(tmp, dtype=np.uint16).transpose()
         
         if not self.abortExpose:
             self.signals.message.emit('saving')

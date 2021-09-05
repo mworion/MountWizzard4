@@ -79,7 +79,7 @@ class PegasusUPB:
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
-        alpacaSignals = self.run['alpaca'].client.signals
+        alpacaSignals = self.run['alpaca'].alpacaSignals
         alpacaSignals.serverConnected.connect(self.signals.serverConnected)
         alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)
         alpacaSignals.deviceConnected.connect(self.signals.deviceConnected)

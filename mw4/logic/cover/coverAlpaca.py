@@ -20,7 +20,6 @@
 
 # local imports
 from base.alpacaClass import AlpacaClass
-from base.alpacaBase import Covercalibrator
 
 
 class CoverAlpaca(AlpacaClass):
@@ -38,10 +37,7 @@ class CoverAlpaca(AlpacaClass):
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
-        # as we have in the base class only the base client there, we will get more
-        # specialized with Dome (which is derived from the base class)
-        self.client = Covercalibrator()
-        self.signals = signals
+        self.alpacaSignals = signals
         self.data = data
 
     def getInitialConfig(self):

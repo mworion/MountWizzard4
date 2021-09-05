@@ -21,7 +21,6 @@
 
 # local imports
 from base.alpacaClass import AlpacaClass
-from base.alpacaBase import Switch
 
 
 class PegasusUPBAlpaca(AlpacaClass):
@@ -36,7 +35,6 @@ class PegasusUPBAlpaca(AlpacaClass):
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
-        self.client = Switch()
         self.signals = signals
         self.data = data
 

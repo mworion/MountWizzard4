@@ -20,7 +20,6 @@
 
 # local imports
 from base.alpacaClass import AlpacaClass
-from base.alpacaBase import ObservingConditions
 
 
 class SkymeterAlpaca(AlpacaClass):
@@ -33,7 +32,6 @@ class SkymeterAlpaca(AlpacaClass):
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
-        self.client = ObservingConditions()
         self.signals = signals
         self.data = data
 

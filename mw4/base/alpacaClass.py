@@ -228,8 +228,6 @@ class AlpacaClass(DriverData, Signals):
         """
         if not self.deviceName:
             return None
-        if not self.deviceConnected:
-            return None
         if valueProp in self.propertyExceptions:
             return None
 
@@ -280,8 +278,6 @@ class AlpacaClass(DriverData, Signals):
         """
         if not self.deviceName:
             return None
-        if not self.deviceConnected:
-            return None
         if valueProp in self.propertyExceptions:
             return None
 
@@ -319,6 +315,17 @@ class AlpacaClass(DriverData, Signals):
         t = f'[{self.deviceName}] [{uid:10d}], response: [{response}]'
         self.log.trace(t)
         return response
+
+    def getAndStoreAlpacaProperty(self, valueProp, element, elementInv=None):
+        """
+        :param valueProp:
+        :param element:
+        :param elementInv:
+        :return: reset entry
+        """
+        value = self.getAlpacaProperty(valueProp)
+        self.storePropertyToData(value, element, elementInv)
+        return True
 
     def workerConnectDevice(self):
         """
@@ -401,6 +408,8 @@ class AlpacaClass(DriverData, Signals):
         """
         :return: success
         """
+        if not self.deviceConnected:
+            return False
         worker = Worker(self.workerPollData)
         worker.signals.result.connect(self.processPolledData)
         self.threadPool.start(worker)
@@ -410,6 +419,8 @@ class AlpacaClass(DriverData, Signals):
         """
         :return: success
         """
+        if not self.deviceConnected:
+            return False
         worker = Worker(self.workerPollStatus)
         self.threadPool.start(worker)
         return True
@@ -418,6 +429,8 @@ class AlpacaClass(DriverData, Signals):
         """
         :return: success
         """
+        if not self.deviceConnected:
+            return False
         worker = Worker(self.workerGetInitialConfig)
         self.threadPool.start(worker)
         return True

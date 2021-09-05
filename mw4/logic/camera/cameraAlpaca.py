@@ -46,52 +46,44 @@ class CameraAlpaca(AlpacaClass):
 
     def getInitialConfig(self):
         """
-
         :return: true for test purpose
         """
-
         super().getInitialConfig()
-
-        self.storePropertyToData(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
-        self.storePropertyToData(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
-        self.storePropertyToData(self.client.canfastreadout(), 'CAN_FAST')
-        self.storePropertyToData(self.client.canstopexposure(), 'CAN_ABORT')
-        self.storePropertyToData(self.client.cansetccdtemperature(), 'CAN_SET_CCD_TEMPERATURE')
-        self.storePropertyToData(self.client.cangetcoolerpower(), 'CAN_GET_COOLER_POWER')
-        self.storePropertyToData(self.client.pixelsizex(), 'CCD_INFO.CCD_PIXEL_SIZE_X')
-        self.storePropertyToData(self.client.pixelsizey(), 'CCD_INFO.CCD_PIXEL_SIZE_Y')
-        self.storePropertyToData(self.client.maxbinx(), 'CCD_BINNING.HOR_BIN_MAX')
-        self.storePropertyToData(self.client.maxbiny(), 'CCD_BINNING.VERT_BIN_MAX')
-        self.storePropertyToData(self.client.gainmax(), 'CCD_INFO.GAIN_MAX')
-        self.storePropertyToData(self.client.gainmin(), 'CCD_INFO.GAIN_MIN')
-        self.storePropertyToData(self.client.startx(), 'CCD_FRAME.X')
-        self.storePropertyToData(self.client.starty(), 'CCD_FRAME.Y')
+        self.getAndStoreAlpacaProperty('CameraXSize', 'CCD_INFO.CCD_MAX_X')
+        self.getAndStoreAlpacaProperty('CameraYSize', 'CCD_INFO.CCD_MAX_Y')
+        self.getAndStoreAlpacaProperty('CanFastReadout', 'CAN_FAST')
+        self.getAndStoreAlpacaProperty('CanAbortExposure', 'CAN_ABORT')
+        self.getAndStoreAlpacaProperty('CanSetCCDTemperature', 'CAN_SET_CCD_TEMPERATURE')
+        self.getAndStoreAlpacaProperty('CanGetCoolerPower', 'CAN_GET_COOLER_POWER')
+        self.getAndStoreAlpacaProperty('PixelSizeX', 'CCD_INFO.CCD_PIXEL_SIZE_X')
+        self.getAndStoreAlpacaProperty('PixelSizeY', 'CCD_INFO.CCD_PIXEL_SIZE_Y')
+        self.getAndStoreAlpacaProperty('MaxBinX', 'CCD_BINNING.HOR_BIN_MAX')
+        self.getAndStoreAlpacaProperty('MaxBinY', 'CCD_BINNING.VERT_BIN_MAX')
+        self.getAndStoreAlpacaProperty('GainMax', 'CCD_INFO.GAIN_MAX')
+        self.getAndStoreAlpacaProperty('GainMin', 'CCD_INFO.GAIN_MIN')
+        self.getAndStoreAlpacaProperty('StartX', 'CCD_FRAME.X')
+        self.getAndStoreAlpacaProperty('StartY', 'CCD_FRAME.Y')
         self.log.debug(f'Initial data: {self.data}')
 
         return True
 
     def workerPollData(self):
         """
-
         :return: true for test purpose
         """
-        if not self.deviceConnected:
-            return False
-
-        self.storePropertyToData(self.client.binx(), 'CCD_BINNING.HOR_BIN')
-        self.storePropertyToData(self.client.biny(), 'CCD_BINNING.VERT_BIN')
-        self.storePropertyToData(self.client.camerastate(), 'CAMERA.STATE')
-        self.storePropertyToData(self.client.gain(), 'CCD_GAIN.GAIN')
-        self.storePropertyToData(self.client.offset(), 'CCD_OFFSET.OFFSET')
-        self.storePropertyToData(self.client.fastreadout(),
-                                 'READOUT_QUALITY.QUALITY_LOW',
-                                 'READOUT_QUALITY.QUALITY_HIGH')
-        self.storePropertyToData(self.client.ccdtemperature(),
-                                 'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-        self.storePropertyToData(self.client.cooleron(), 'CCD_COOLER.COOLER_ON')
-        self.storePropertyToData(self.client.coolerpower(),
-                                 'CCD_COOLER_POWER.CCD_COOLER_VALUE')
-
+        self.getAndStoreAlpacaProperty('BinX', 'CCD_BINNING.HOR_BIN')
+        self.getAndStoreAlpacaProperty('BinY', 'CCD_BINNING.VERT_BIN')
+        self.getAndStoreAlpacaProperty('CameraState', 'CAMERA.STATE')
+        self.getAndStoreAlpacaProperty('Gain', 'CCD_GAIN.GAIN')
+        self.getAndStoreAlpacaProperty('Offset', 'CCD_OFFSET.OFFSET')
+        self.getAndStoreAlpacaProperty('FastReadout',
+                                       'READOUT_QUALITY.QUALITY_LOW',
+                                       'READOUT_QUALITY.QUALITY_HIGH')
+        self.getAndStoreAlpacaProperty('CCDTemperature',
+                                       'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+        self.getAndStoreAlpacaProperty('CoolerOn', 'CCD_COOLER.COOLER_ON')
+        self.getAndStoreAlpacaProperty('CoolerPower',
+                                       'CCD_COOLER_POWER.CCD_COOLER_VALUE')
         return True
 
     def sendDownloadMode(self, fastReadout=False):
@@ -100,14 +92,11 @@ class CameraAlpaca(AlpacaClass):
 
         :return: success
         """
-
         canFast = self.data.get('CAN_FAST', False)
-
         if not canFast:
             return False
-
         if fastReadout:
-            self.client.fastreadout(FastReadout=True)
+            self.setAlpacaProperty('FastReadout', FastReadout=True)
 
         quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
         self.log.debug(f'camera has readout quality entry: {quality}')
@@ -126,7 +115,6 @@ class CameraAlpaca(AlpacaClass):
                      focalLength=1,
                      ):
         """
-
         :param imagePath:
         :param expTime:
         :param binning:
@@ -139,12 +127,12 @@ class CameraAlpaca(AlpacaClass):
         :return: success
         """
         self.sendDownloadMode(fastReadout=fastReadout)
-        self.client.binx(BinX=int(binning))
-        self.client.biny(BinY=int(binning))
-        self.client.startx(StartX=int(posX / binning))
-        self.client.starty(StartY=int(posY / binning))
-        self.client.numx(NumX=int(width / binning))
-        self.client.numy(NumY=int(height / binning))
+        self.setAlpacaProperty('binx', BinX=int(binning))
+        self.setAlpacaProperty('biny', iBinY=int(binning))
+        self.setAlpacaProperty('startx', StartX=int(posX / binning))
+        self.setAlpacaProperty('starty', StartY=int(posY / binning))
+        self.setAlpacaProperty('numx', NumX=int(width / binning))
+        self.setAlpacaProperty('numy', NumX=int(width / binning))
 
         isMount = self.app.deviceStat['mount']
         if isMount:
@@ -155,9 +143,8 @@ class CameraAlpaca(AlpacaClass):
                 ra, dec = JNowToJ2000(ra, dec, obsTime)
 
         self.client.startexposure(Duration=expTime, Light=True)
-
         timeLeft = expTime
-        while not self.client.imageready():
+        while not self.getAlpacaProperty('imageready'):
             text = f'expose {timeLeft:3.0f} s'
             QTest.qWait(100)
             if timeLeft >= 0.1:
@@ -171,7 +158,7 @@ class CameraAlpaca(AlpacaClass):
         if not self.abortExpose:
             self.signals.integrated.emit()
             self.signals.message.emit('download')
-            tmp = self.client.imagearray()
+            tmp = self.getAlpacaProperty('imagearray')
             if tmp is None:
                 self.abortExpose = True
             else:
@@ -234,9 +221,6 @@ class CameraAlpaca(AlpacaClass):
 
         :return: success
         """
-        if not self.deviceConnected:
-            return False
-
         self.abortExpose = False
         worker = Worker(self.workerExpose,
                         imagePath=imagePath,
@@ -248,15 +232,11 @@ class CameraAlpaca(AlpacaClass):
                         width=width,
                         height=height,
                         focalLength=focalLength)
-        # worker.signals.result.connect(self.emitStatus)
         self.threadPool.start(worker)
-
         return True
 
     def abort(self):
         """
-        abort cancels the exposing
-
         :return: success
         """
         if not self.deviceConnected:
@@ -264,25 +244,21 @@ class CameraAlpaca(AlpacaClass):
 
         self.abortExpose = True
         canAbort = self.data.get('CAN_ABORT', False)
-
         if not canAbort:
             return False
 
-        self.client.stopexposure()
-
+        self.getAscomProperty('stopexposure')
         return True
 
     def sendCoolerSwitch(self, coolerOn=False):
         """
-        sendCoolerTemp send the desired cooler temp, but does not switch on / off the cooler
-
         :param coolerOn:
         :return: success
         """
         if not self.deviceConnected:
             return False
 
-        self.client.cooleron(CoolerOn=coolerOn)
+        self.setAlpacaProperty('CoolerOn', CoolerOn=coolerOn)
         return True
 
     def sendCoolerTemp(self, temperature=0):
@@ -297,7 +273,7 @@ class CameraAlpaca(AlpacaClass):
         if not canSetCCDTemp:
             return False
 
-        self.client.setccdtemperature(SetCCDTemperature=temperature)
+        self.setAlpacaProperty('SetCCDTemperature', SetCCDTemperature=temperature)
         return True
 
     def sendOffset(self, offset=0):
@@ -308,7 +284,7 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.client.offset(Offset=offset)
+        self.setAlpacaProperty('Offset', Offset=offset)
         return True
 
     def sendGain(self, gain=0):
@@ -319,5 +295,5 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.client.gain(Gain=gain)
+        self.setAlpacaProperty('Gain', Gain=gain)
         return True

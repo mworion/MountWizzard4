@@ -141,17 +141,14 @@ class CameraAscom(AscomClass):
                 ra, dec = JNowToJ2000(ra, dec, obsTime)
 
         self.client.StartExposure(expTime, True)
-
         timeLeft = expTime
         while not self.getAscomProperty('ImageReady'):
             text = f'expose {timeLeft:3.0f} s'
             QTest.qWait(100)
             if timeLeft >= 0.1:
                 timeLeft -= 0.1
-
             else:
                 timeLeft = 0
-
             self.signals.message.emit(text)
             if self.abortExpose:
                 break
@@ -159,7 +156,7 @@ class CameraAscom(AscomClass):
         if not self.abortExpose:
             self.signals.integrated.emit()
             self.signals.message.emit('download')
-            tmp = self.client.ImageArray
+            tmp = self.getAscomProperty('ImageArray')
             if tmp is None:
                 self.abortExpose = True
             else:

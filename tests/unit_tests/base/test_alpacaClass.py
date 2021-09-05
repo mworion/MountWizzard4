@@ -24,9 +24,13 @@ import pytest
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
+import requests
 
 # local import
 from base.alpacaClass import AlpacaClass
+from base.loggerMW import setupLogging
+
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -62,6 +66,353 @@ def test_properties_2():
     assert app.deviceName == ''
     assert app.apiVersion == 1
     assert app.protocol == 'http'
+
+
+def test_discoverAPIVersion_1():
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=Exception()):
+        val = app.discoverAPIVersion()
+        assert val is None
+
+
+def test_discoverAPIVersion_1b():
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=requests.exceptions.Timeout):
+        val = app.discoverAPIVersion()
+        assert val is None
+
+
+def test_discoverAPIVersion_1c():
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=requests.exceptions.ConnectionError):
+        val = app.discoverAPIVersion()
+        assert val is None
+
+
+def test_discoverAPIVersion_2():
+    class Test:
+        status_code = 400
+        text = 'test'
+
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        val = app.discoverAPIVersion()
+        assert val is None
+
+
+def test_discoverAPIVersion_3():
+    class Test:
+        status_code = 200
+        text = 'test'
+
+        @staticmethod
+        def json():
+            return {'ErrorNumber': 1,
+                    'ErrorMessage': 'msg',
+                    'Value': 'test'}
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        val = app.discoverAPIVersion()
+        assert val is None
+
+
+def test_discoverAPIVersion_4():
+    class Test:
+        status_code = 200
+        text = 'test'
+
+        @staticmethod
+        def json():
+            return {'ErrorNumber': 0,
+                    'ErrorMessage': 'msg',
+                    'Value': 'test'}
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        val = app.discoverAPIVersion()
+        assert val == 'test'
+
+
+def test_discoverDevices_1():
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=Exception()):
+        val = app.discoverAlpacaDevices()
+        assert val is None
+
+
+def test_discoverDevices_1b():
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=requests.exceptions.Timeout):
+        val = app.discoverAlpacaDevices()
+        assert val is None
+
+
+def test_discoverDevices_1c():
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=requests.exceptions.ConnectionError):
+        val = app.discoverAlpacaDevices()
+        assert val is None
+
+
+def test_discoverDevices_2():
+    class Test:
+        status_code = 400
+        text = 'test'
+
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        val = app.discoverAlpacaDevices()
+        assert val is None
+
+
+def test_discoverDevices_3():
+    class Test:
+        status_code = 200
+        text = 'test'
+
+        @staticmethod
+        def json():
+            return {'ErrorNumber': 1,
+                    'ErrorMessage': 'msg',
+                    'Value': 'test'}
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        val = app.discoverAlpacaDevices()
+        assert val is None
+
+
+def test_discoverDevices_4():
+    class Test:
+        status_code = 200
+        text = 'test'
+
+        @staticmethod
+        def json():
+            return {'ErrorNumber': 0,
+                    'ErrorMessage': 'msg',
+                    'Value': 'test'}
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        val = app.discoverAlpacaDevices()
+        assert val == 'test'
+
+
+def test_getAlpacaProperty_1():
+    val = app.getAlpacaProperty('')
+    assert val is None
+
+
+def test_getAlpacaProperty_2():
+    class Test:
+        status_code = 400
+        text = 'test'
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=requests.exceptions.Timeout,
+                           return_value=Test()):
+        val = app.getAlpacaProperty('')
+        assert val is None
+
+
+def test_getAlpacaProperty_2b():
+    class Test:
+        status_code = 400
+        text = 'test'
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=requests.exceptions.ConnectionError,
+                           return_value=Test()):
+        val = app.getAlpacaProperty('')
+        assert val is None
+
+
+def test_getAlpacaProperty_2c():
+    class Test:
+        status_code = 400
+        text = 'test'
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=Exception(),
+                           return_value=Test()):
+        val = app.getAlpacaProperty('')
+        assert val is None
+
+
+def test_getAlpacaProperty_3():
+    class Test:
+        status_code = 400
+        text = 'test'
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        val = app.getAlpacaProperty('')
+        assert val is None
+
+
+def test_getAlpacaProperty_4():
+    class Test:
+        status_code = 200
+        text = 'test'
+
+        @staticmethod
+        def json():
+            return {'ErrorNumber': 1,
+                    'ErrorMessage': 'msg'}
+
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        val = app.getAlpacaProperty('')
+        assert val is None
+
+
+def test_getAlpacaProperty_5():
+    class Test:
+        status_code = 200
+        text = 'test'
+
+        @staticmethod
+        def json():
+            return {'ErrorNumber': 0,
+                    'ErrorMessage': 'msg',
+                    'Value': 'test'}
+
+    app.deviceName = 'test'
+    app.deviceConnected = True
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        val = app.getAlpacaProperty('')
+        assert val == 'test'
+
+
+def test_setAlpacaProperty_1():
+    val = app.setAlpacaProperty('')
+    assert val is None
+
+
+def test_setAlpacaProperty_2():
+    class Test:
+        status_code = 400
+        text = 'test'
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'put',
+                           side_effect=Exception(),
+                           return_value=Test()):
+        val = app.setAlpacaProperty('')
+        assert val is None
+
+
+def test_setAlpacaProperty_2b():
+    class Test:
+        status_code = 400
+        text = 'test'
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'put',
+                           side_effect=requests.exceptions.Timeout,
+                           return_value=Test()):
+        val = app.setAlpacaProperty('')
+        assert val is None
+
+
+def test_setAlpacaProperty_2c():
+    class Test:
+        status_code = 400
+        text = 'test'
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'put',
+                           side_effect=requests.exceptions.ConnectionError,
+                           return_value=Test()):
+        val = app.setAlpacaProperty('')
+        assert val is None
+
+
+def test_setAlpacaProperty_3():
+    class Test:
+        status_code = 400
+        text = 'test'
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'put',
+                           return_value=Test()):
+        val = app.setAlpacaProperty('')
+        assert val is None
+
+
+def test_setAlpacaProperty_4():
+    class Test:
+        status_code = 200
+        text = 'test'
+
+        @staticmethod
+        def json():
+            return {'ErrorNumber': 1,
+                    'ErrorMessage': 'msg'}
+
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'put',
+                           return_value=Test()):
+        val = app.setAlpacaProperty('')
+        assert val is None
+
+
+def test_setAlpacaProperty_5():
+    class Test:
+        status_code = 200
+        text = 'test'
+
+        @staticmethod
+        def json():
+            return {'ErrorNumber': 0,
+                    'ErrorMessage': 'msg',
+                    'Value': 'test'}
+
+    app.deviceName = 'test'
+
+    with mock.patch.object(requests,
+                           'put',
+                           return_value=Test()):
+        val = app.setAlpacaProperty('')
+        assert val == {'ErrorMessage': 'msg', 'ErrorNumber': 0, 'Value': 'test'}
 
 
 def test_workerConnectDevice_1():

@@ -29,7 +29,6 @@ from mountcontrol.mount import Mount
 from logic.environment.skymeter import Skymeter
 from logic.camera.cameraAlpaca import CameraAlpaca
 from logic.camera.camera import CameraSignals
-from base.alpacaBase import AlpacaBase
 from base.loggerMW import setupLogging
 setupLogging()
 

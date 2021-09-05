@@ -17,9 +17,11 @@
 ###########################################################
 # standard libraries
 import logging
+import uuid
 
 # external packages
 from PyQt5.QtCore import QTimer
+import requests
 
 # local imports
 from base.driverDataClass import DriverData, Signals
@@ -50,8 +52,10 @@ class AlpacaClass(DriverData, Signals):
         self.data = data
         self.propertyExceptions = []
 
+        self._host = ('localhost', 11111)
+        self._port = 11111
+        self._hostaddress = 'localhost'
         self.protocol = 'http'
-        self.host = ('localhost', 11111)
         self.apiVersion = 1
         self._deviceName = ''
         self.deviceType = ''
@@ -79,6 +83,32 @@ class AlpacaClass(DriverData, Signals):
         self.cycleData = QTimer()
         self.cycleData.setSingleShot(False)
         self.cycleData.timeout.connect(self.pollData)
+
+    @property
+    def host(self):
+        return self._host
+
+    @host.setter
+    def host(self, value):
+        self._host = value
+
+    @property
+    def hostaddress(self):
+        return self._hostaddress
+
+    @hostaddress.setter
+    def hostaddress(self, value):
+        self._hostaddress = value
+        self._host = (self._hostaddress, self._port)
+
+    @property
+    def port(self):
+        return self._port
+
+    @port.setter
+    def port(self, value):
+        self._port = int(value)
+        self._host = (self._hostaddress, self._port)
 
     @property
     def baseUrl(self):
@@ -146,7 +176,7 @@ class AlpacaClass(DriverData, Signals):
         self.log.trace(f'[response:{response}')
         return response['Value']
 
-    def discoverDevices(self):
+    def discoverAlpacaDevices(self):
         """
         :return:
         """
@@ -196,10 +226,10 @@ class AlpacaClass(DriverData, Signals):
 
         uid = uuid.uuid4().int % 2**32
         data['ClientTransactionID'] = uid
-        self.log.trace(f'[{uid:10d}] {self.baseUrl}/{attr}], data:[{data}]')
+        self.log.trace(f'[{uid:10d}] {self.baseUrl}/{valueProp}], data:[{data}]')
 
         try:
-            response = requests.get(f'{self.baseUrl}/{attr}', params=data, timeout=10)
+            response = requests.get(f'{self.baseUrl}/{valueProp}', params=data, timeout=10)
         except requests.exceptions.Timeout:
             self.log.info(f'[{uid:10d}] timeout')
             return None
@@ -221,7 +251,7 @@ class AlpacaClass(DriverData, Signals):
                            f',{response["ErrorMessage"]}')
             return None
 
-        if attr != 'imagearray':
+        if valueProp != 'imagearray':
             self.log.trace(f'[{uid:10d}] response:{response}')
 
         return response['Value']
@@ -241,10 +271,10 @@ class AlpacaClass(DriverData, Signals):
 
         uid = uuid.uuid4().int % 2**32
         data['ClientTransactionID'] = uid
-        self.log.trace(f'[{uid:08d}] {self.baseUrl}, attr:[{attr}]')
+        self.log.trace(f'[{uid:08d}] {self.baseUrl}, attr:[{valueProp}]')
 
         try:
-            response = requests.put(f'{self.baseUrl}/{attr}', data=data, timeout=10)
+            response = requests.put(f'{self.baseUrl}/{valueProp}', data=data, timeout=10)
         except requests.exceptions.Timeout:
             self.log.info(f'[{uid:10d}] timeout')
             return None
@@ -420,7 +450,7 @@ class AlpacaClass(DriverData, Signals):
         :param deviceType: device type of discovered indi devices
         :return: success
         """
-        devices = self.client.discoverDevices()
+        devices = self.discoverAlpacaDevices()
         if not devices:
             return []
 

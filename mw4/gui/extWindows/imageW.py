@@ -633,14 +633,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        if self.image is None:
-            self.preparePlotLock.unlock()
-            return False
-
-        if self.header is None:
-            self.preparePlotLock.unlock()
-            return False
-
         self.updateWindowsStats()
         if 'CTYPE1' in self.header:
             wcsObject = wcs.WCS(self.header, relax=True)
@@ -660,7 +652,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if hasDistortion and useWCS and canWCS:
             self.setupDistorted()
-
         else:
             self.setupNormal()
 
@@ -713,8 +704,9 @@ class ImageWindow(toolsQtWidget.MWidget):
             worker = Worker(self.workerPhotometry)
             worker.signals.finished.connect(self.preparePlot)
             self.threadPool.start(worker)
+        else:
+            self.preparePlot()
 
-        self.preparePlot()
         return True
 
     def stackImages(self):
@@ -732,7 +724,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         if self.imageStack is None:
             self.imageStack = self.image
             self.numberStack = 1
-
         else:
             self.imageStack = np.add(self.imageStack, self.image)
             self.numberStack += 1
@@ -790,10 +781,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param imagePath:
         :return:
         """
-        import time
         if not imagePath:
             return False
-
         if not os.path.isfile(imagePath):
             return False
 
@@ -807,7 +796,6 @@ class ImageWindow(toolsQtWidget.MWidget):
             
         if self.image is None or self.image == []:
             return False
-
         if self.header is None:
             return False
 
@@ -851,7 +839,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         focalLength = self.app.telescope.focalLength
 
         self.imageFileNameOld = self.imageFileName
-
         self.app.camera.expose(imagePath=imagePath,
                                expTime=self.expTime,
                                binning=self.binning,
@@ -881,7 +868,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
-
         else:
             self.app.showImage.emit(imagePath)
 
@@ -911,7 +897,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
-
         else:
             self.app.showImage.emit(imagePath)
 

@@ -481,22 +481,6 @@ def test_writeHeaderDataToGUI_4(function):
 
 def test_workerPreparePlot_1(function):
     function.preparePlotLock.lock()
-    function.image = None
-    function.header = None
-    suc = function.workerPreparePlot()
-    assert not suc
-
-
-def test_workerPreparePlot_2(function):
-    function.preparePlotLock.lock()
-    function.image = np.random.rand(100, 100)
-    function.header = None
-    suc = function.workerPreparePlot()
-    assert not suc
-
-
-def test_workerPreparePlot_3(function):
-    function.preparePlotLock.lock()
     function.ui.zoom.addItem(' 1x Zoom')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
@@ -504,7 +488,7 @@ def test_workerPreparePlot_3(function):
     assert suc
 
 
-def test_workerPreparePlot_4(function):
+def test_workerPreparePlot_2(function):
     function.preparePlotLock.lock()
     function.ui.zoom.addItem(' 1x Zoom')
     function.image = np.random.rand(100, 100)
@@ -519,7 +503,7 @@ def test_workerPreparePlot_4(function):
             assert suc
 
 
-def test_workerPreparePlot_5(function):
+def test_workerPreparePlot_3(function):
     function.preparePlotLock.lock()
     function.ui.view.addItem('test')
     function.ui.view.addItem('test')

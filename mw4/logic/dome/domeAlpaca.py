@@ -26,9 +26,9 @@ from base.alpacaBase import Dome
 
 class DomeAlpaca(AlpacaClass):
     """
-    the class Dome inherits all information and handling of the Dome device. there will be
-    some parameters who will define the slewing position of the dome relating to the
-    mount.dome = DomeAlpaca(app=None)
+    the class Dome inherits all information and handling of the Dome device.
+    there will be some parameters who will define the slewing position of the
+    dome relating to the mount.dome = DomeAlpaca(app=None)
     """
 
     __all__ = ['DomeAlpaca',
@@ -77,13 +77,13 @@ class DomeAlpaca(AlpacaClass):
             stateText = shutterStates[state]
             self.storePropertyToData(stateText, 'Status.Shutter')
             self.storePropertyToData(True,
-                           'DOME_SHUTTER.SHUTTER_OPEN',
+                                     'DOME_SHUTTER.SHUTTER_OPEN',
                                      elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         elif state == 1:
             stateText = shutterStates[state]
             self.storePropertyToData(stateText, 'Status.Shutter')
             self.storePropertyToData(False,
-                           'DOME_SHUTTER.SHUTTER_OPEN',
+                                     'DOME_SHUTTER.SHUTTER_OPEN',
                                      elementInv='DOME_SHUTTER.SHUTTER_CLOSED')
         else:
             self.data['DOME_SHUTTER.SHUTTER_OPEN'] = None
@@ -93,8 +93,8 @@ class DomeAlpaca(AlpacaClass):
 
     def slewToAltAz(self, altitude=0, azimuth=0):
         """
-        slewToAltAz sends a command to the dome to move to azimuth / altitude. if a dome
-        does support this
+        slewToAltAz sends a command to the dome to move to azimuth / altitude.
+        if a dome does support this
 
         :param altitude:
         :param azimuth:

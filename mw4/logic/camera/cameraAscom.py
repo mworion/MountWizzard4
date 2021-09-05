@@ -156,13 +156,14 @@ class CameraAscom(AscomClass):
             if self.abortExpose:
                 break
 
-        self.signals.integrated.emit()
-        self.signals.message.emit('download')
-        tmp = self.client.ImageArray
-        if tmp is None:
-            self.abortExpose = True
-        else:
-            data = np.array(tmp, dtype=np.uint16).transpose()
+        if not self.abortExpose:
+            self.signals.integrated.emit()
+            self.signals.message.emit('download')
+            tmp = self.client.ImageArray
+            if tmp is None:
+                self.abortExpose = True
+            else:
+                data = np.array(tmp, dtype=np.uint16).transpose()
 
         if not self.abortExpose:
             self.signals.message.emit('saving')
@@ -170,7 +171,7 @@ class CameraAscom(AscomClass):
             header = hdu.header
             header.append('OBJECT', 'SKY_OBJECT', 'default name from MW4')
             header.append('FRAME', 'Light', 'Modeling works with light frames')
-            header.append('EQUINOX', 2000, 'All data is dstored in J2000')
+            header.append('EQUINOX', 2000, 'All data is stored in J2000')
             header.append('PIXSIZE1', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning)
             header.append('PIXSIZE2', self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning)
             header.append('XPIXSZ', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning)
@@ -245,7 +246,7 @@ class CameraAscom(AscomClass):
         if not canAbort:
             return False
 
-        self.client.StopExposure()
+        self.callMethodThreaded('StopExposure')
         return True
 
     def sendCoolerSwitch(self, coolerOn=False):

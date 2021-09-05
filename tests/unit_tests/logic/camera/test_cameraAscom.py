@@ -237,8 +237,10 @@ def test_abort_2():
 def test_abort_3():
     app.deviceConnected = True
     app.data['CAN_ABORT'] = True
-    suc = app.abort()
-    assert suc
+    with mock.patch.object(app,
+                           'callMethodThreaded'):
+        suc = app.abort()
+        assert suc
 
 
 def test_sendCoolerSwitch_1():

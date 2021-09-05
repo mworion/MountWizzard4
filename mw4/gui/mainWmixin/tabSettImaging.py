@@ -143,7 +143,7 @@ class SettImaging(object):
         self.app.telescope.aperture = aperture
 
         key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
-        text = self.app.filter.data.get(key, 'not found')
+        filterName = self.app.filter.data.get(key, 'not found')
 
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
@@ -174,7 +174,7 @@ class SettImaging(object):
             FOVY = None
 
         self.guiSetText(self.ui.filterNumber, '1.0f', filterNumber)
-        self.guiSetText(self.ui.filterName, 's', text)
+        self.guiSetText(self.ui.filterName, 's', filterName)
         self.guiSetText(self.ui.speed, '2.1f', speed)
         self.guiSetText(self.ui.pixelSizeX, '2.2f', pixelSizeX)
         self.guiSetText(self.ui.pixelSizeY, '2.2f', pixelSizeY)

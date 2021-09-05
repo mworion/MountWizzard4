@@ -245,6 +245,7 @@ def test_checkFloatingPointErrorWindow_1(function):
         def wait_until_passes():
             return
 
+    #todo: why checking for timings?
     if not hasattr(automateWindows, 'timings'):
         automateWindows.timings = Timings()
 
@@ -273,6 +274,7 @@ def test_checkFloatingPointErrorWindow_2(function):
         def wait_until_passes():
             return
 
+    #todo: why checking for timings?
     if not hasattr(automateWindows, 'timings'):
         automateWindows.timings = Timings()
 
@@ -302,6 +304,7 @@ def test_checkFloatingPointErrorWindow_3(function):
         def wait_until_passes():
             return
 
+    #todo: why checking for timings?
     if not hasattr(automateWindows, 'timings'):
         automateWindows.timings = Timings()
 

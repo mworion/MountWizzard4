@@ -105,25 +105,25 @@ class AlpacaBase(Signals):
 
         except requests.exceptions.Timeout:
             self.log.info('timeout')
-            return []
+            return None
 
         except requests.exceptions.ConnectionError:
             self.log.debug('[connection error')
-            return []
+            return None
 
         except Exception as e:
             self.log.critical(f'[error in request: {e}')
-            return []
+            return None
 
         if response.status_code == 400 or response.status_code == 500:
             self.log.debug(f'{response.text}')
-            return []
+            return None
 
         response = response.json()
         if response['ErrorNumber'] != 0:
             self.log.warning(f'{response} err:{response["ErrorNumber"]}'
                              f',{response["ErrorMessage"]}')
-            return []
+            return None
 
         self.log.trace(f'[response:{response}')
         return response['Value']
@@ -145,26 +145,26 @@ class AlpacaBase(Signals):
 
         except requests.exceptions.Timeout:
             self.log.info('timeout')
-            return []
+            return None
 
         except requests.exceptions.ConnectionError:
             self.log.debug('[connection error')
-            return []
+            return None
 
         except Exception as e:
             self.log.critical(f'[error in request: {e}')
-            return []
+            return None
 
         if response.status_code == 400 or response.status_code == 500:
             self.log.debug(f'{response.text}')
-            return []
+            return None
 
         response = response.json()
 
         if response['ErrorNumber'] != 0:
             self.log.warning(f'{response} err:{response["ErrorNumber"]}'
                              f',{response["ErrorMessage"]}')
-            return []
+            return None
 
         self.log.trace(f'[response:{response}')
         return response['Value']
@@ -181,7 +181,7 @@ class AlpacaBase(Signals):
 
         """
         if not self.deviceName:
-            return []
+            return None
 
         uid = uuid.uuid4().int % 2**32
         data['ClientTransactionID'] = uid
@@ -193,26 +193,26 @@ class AlpacaBase(Signals):
 
         except requests.exceptions.Timeout:
             self.log.info(f'[{uid:10d}] timeout')
-            return []
+            return None
 
         except requests.exceptions.ConnectionError:
             self.log.debug(f'[{uid:10d}] connection error')
-            return []
+            return None
 
         except Exception as e:
             self.log.critical(f'[{uid:10d}] error in request: {e}')
-            return []
+            return None
 
         if response.status_code == 400 or response.status_code == 500:
             self.log.debug(f'{response.text}')
-            return []
+            return None
 
         response = response.json()
 
         if response['ErrorNumber'] != 0:
             self.log.debug(f'{response} err:{response["ErrorNumber"]}'
                            f',{response["ErrorMessage"]}')
-            return []
+            return None
 
         if attr != 'imagearray':
             self.log.trace(f'[{uid:10d}] response:{response}')
@@ -231,7 +231,7 @@ class AlpacaBase(Signals):
 
         """
         if not self.deviceName:
-            return []
+            return None
 
         uid = uuid.uuid4().int % 2**32
         data['ClientTransactionID'] = uid
@@ -243,25 +243,25 @@ class AlpacaBase(Signals):
 
         except requests.exceptions.Timeout:
             self.log.info(f'[{uid:10d}] timeout')
-            return []
+            return None
 
         except requests.exceptions.ConnectionError:
             self.log.debug(f'[{uid:10d}] connection error')
-            return []
+            return None
 
         except Exception as e:
             self.log.critical(f'[{uid:10d}] Error in request: {e}')
-            return []
+            return None
 
         if response.status_code == 400 or response.status_code == 500:
             self.log.debug(f'[{uid:10d}] {response.text}')
-            return []
+            return None
 
         response = response.json()
 
         if response['ErrorNumber'] != 0:
             self.log.warning(f'err:{response["ErrorNumber"]},{response["ErrorMessage"]}')
-            return []
+            return None
 
         self.log.trace(f'[{uid:10d}] response:{response}')
         return response

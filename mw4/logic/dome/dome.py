@@ -97,6 +97,7 @@ class Dome:
         self.useDynamicFollowing = False
         self.isSlewing = False
         self.overshoot = None
+        self.domeStarted = False
         self.lastFinalAz = None
         self.avoidFirstSlewOvershoot = True
         self.openingHysteresis = None
@@ -119,6 +120,7 @@ class Dome:
 
         suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
         self.app.update1s.connect(self.checkSlewingDome)
+        self.domeStarted = True
         return suc
 
     def stopCommunication(self):
@@ -130,7 +132,9 @@ class Dome:
 
         self.signals.message.emit('')
         suc = self.run[self.framework].stopCommunication()
-        self.app.update1s.disconnect(self.checkSlewingDome)
+        if self.domeStarted:
+            self.app.update1s.disconnect(self.checkSlewingDome)
+            self.domeStarted = False
         return suc
 
     def waitSettlingAndEmit(self):

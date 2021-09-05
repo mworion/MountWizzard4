@@ -20,12 +20,14 @@ import logging
 import platform
 
 # external packages
+#todo: why checking for timings and enabling, but not working with it?
 try:
     from pywinauto import timings
 except Exception:
     hasAutomation = False
 else:
     hasAutomation = True
+
 
 from PyQt5.QtCore import QObject
 from pywinauto.findwindows import find_windows
@@ -260,6 +262,7 @@ class AutomateWindows(QObject):
             winOK = self.updater.window(handle=dialog)
             winOK['OK'].click()
 
+        #todo: does timings in any case exist?
         except timings.TimeoutError:
             return True
 

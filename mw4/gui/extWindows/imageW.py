@@ -47,7 +47,6 @@ class ImageWindowSignals(PyQt5.QtCore.QObject):
     """
     """
     __all__ = ['ImageWindowSignals']
-    showCurrent = PyQt5.QtCore.pyqtSignal()
     solveImage = PyQt5.QtCore.pyqtSignal(object)
 
 
@@ -67,7 +66,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.imageFileName = ''
         self.imageFileNameOld = ''
-        self.preparePlotLock = QMutex()
         self.expTime = 1
         self.binning = 1
         self.image = None
@@ -208,7 +206,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.checkStackImages.clicked.connect(self.clearStack)
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
-        self.signals.showCurrent.connect(self.showCurrent)
         self.signals.solveImage.connect(self.solveImage)
         self.app.showImage.connect(self.showImage)
         self.show()
@@ -240,7 +237,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.checkStackImages.clicked.disconnect(self.clearStack)
         self.ui.abortImage.clicked.disconnect(self.abortImage)
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
-        self.signals.showCurrent.disconnect(self.showCurrent)
         self.signals.solveImage.disconnect(self.solveImage)
         self.app.showImage.disconnect(self.showImage)
         plt.close(self.imageMat.figure)
@@ -280,12 +276,10 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.ui.exposeN.setEnabled(False)
             self.ui.load.setEnabled(False)
             self.ui.abortImage.setEnabled(True)
-
         elif self.deviceStat['exposeN']:
             self.ui.expose.setEnabled(False)
             self.ui.load.setEnabled(False)
             self.ui.abortImage.setEnabled(True)
-
         else:
             self.ui.solve.setEnabled(True)
             self.ui.expose.setEnabled(True)
@@ -295,7 +289,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if self.deviceStat['solve']:
             self.ui.abortSolve.setEnabled(True)
-
         else:
             self.ui.abortSolve.setEnabled(False)
 
@@ -308,19 +301,17 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if self.deviceStat['expose']:
             self.changeStyleDynamic(self.ui.expose, 'running', 'true')
-
         elif self.deviceStat['exposeN']:
             self.changeStyleDynamic(self.ui.exposeN, 'running', 'true')
-
         else:
             self.changeStyleDynamic(self.ui.expose, 'running', 'false')
             self.changeStyleDynamic(self.ui.exposeN, 'running', 'false')
 
         if self.deviceStat['solve']:
             self.changeStyleDynamic(self.ui.solve, 'running', 'true')
-
         else:
             self.changeStyleDynamic(self.ui.solve, 'running', 'false')
+
         return True
 
     def selectImage(self):
@@ -659,15 +650,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.stretchImage()
         self.colorImage()
         self.imagePlot()
-        self.preparePlotLock.unlock()
         return True
 
     def preparePlot(self):
         """
         :return:
         """
-        if not self.preparePlotLock.tryLock():
-            return False
         worker = Worker(self.workerPreparePlot)
         self.threadPool.start(worker)
         return True
@@ -860,7 +848,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param imagePath:
         :return: True for test purpose
         """
-
         self.deviceStat['expose'] = False
         self.app.camera.signals.saved.disconnect(self.exposeImageDone)
         text = f'Exposed:             [{os.path.basename(imagePath)}]'

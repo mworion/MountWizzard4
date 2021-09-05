@@ -24,13 +24,11 @@ import platform
 try:
     from pywinauto import timings
 except Exception:
-    hasAutomation = False
-else:
-    hasAutomation = True
-
+    pass
 
 from PyQt5.QtCore import QObject
 from pywinauto.findwindows import find_windows
+from pywinauto import application
 from pywinauto.application import AppStartError, Application, Timings
 import pywinauto.controls.win32_controls as controls
 import winreg
@@ -255,15 +253,14 @@ class AutomateWindows(QObject):
         :return:
         """
         try:
-            dialog = timings.wait_until_passes(2,
-                                               0.2,
-                                               lambda: find_windows(title='GmQCIv2',
-                                                                    class_name='#32770')[0])
+            dialog = application.wait_until_passes(2,
+                                                   0.2,
+                                                   lambda: find_windows(title='GmQCIv2',
+                                                                        class_name='#32770')[0])
             winOK = self.updater.window(handle=dialog)
             winOK['OK'].click()
 
-        #todo: does timings in any case exist?
-        except timings.TimeoutError:
+        except application.TimeoutError:
             return True
 
         except Exception as e:
@@ -366,10 +363,10 @@ class AutomateWindows(QObject):
         """
         :return:
         """
-        dialog = timings.wait_until_passes(60,
-                                           0.5,
-                                           lambda: find_windows(title='Update completed',
-                                                                class_name='#32770')[0])
+        dialog = application.wait_until_passes(60,
+                                               0.5,
+                                               lambda: find_windows(title='Update completed',
+                                                                    class_name='#32770')[0])
         winOK = self.updater.window(handle=dialog)
         winOK['OK'].click()
 

@@ -176,11 +176,12 @@ class AscomClass(DriverData, Signals):
             cmd = 'self.client.' + valueProp
             value = eval(cmd)
         except Exception as e:
-            t = f'Property [{valueProp}] is not implemented: {e}, cmd: [{cmd}]'
+            t = f'[{self.deviceName}]:[{cmd}], property [{valueProp}] not implemented: {e}'
             self.log.debug(t)
             self.propertyExceptions.append(valueProp)
         else:
-            self.log.trace(f'Property [{valueProp}] has value: [{value}]')
+            t = f'[{self.deviceName}]: property [{valueProp}] set to [{value}]'
+            self.log.trace(t)
         finally:
             return value
 
@@ -196,12 +197,13 @@ class AscomClass(DriverData, Signals):
             cmd = 'self.client.' + valueProp + ' = value'
             exec(cmd)
         except Exception as e:
-            t = f'Property [{valueProp}] is not implemented: {e}, cmd: [{cmd}]'
+            t = f'[{self.deviceName}]:[{cmd}], property [{valueProp}] not implemented: {e}'
             self.log.debug(t)
             self.propertyExceptions.append(valueProp)
             return False
         else:
-            self.log.trace(f'Property [{valueProp}] is set to [{value}]')
+            t = f'[{self.deviceName}]: property [{valueProp}] set to [{value}]'
+            self.log.trace(t)
             return True
 
     def callAscomMethod(self, method, param):
@@ -217,12 +219,13 @@ class AscomClass(DriverData, Signals):
             cmd = 'self.client.' + method + f'({paramStr})'
             exec(cmd)
         except Exception as e:
-            t = f'Method [{method}] is not implemented: {e}, cmd: [{cmd}]'
+            t = f'[{self.deviceName}]:[{cmd}], method [{method}] not implemented: {e}'
             self.log.debug(t)
             self.propertyExceptions.append(method)
             return False
         else:
-            self.log.trace(f'Method [{method}] is set to [{param}]')
+            t = f'[{self.deviceName}]: method [{method}] called [{param}]'
+            self.log.trace(t)
             return True
 
     def getAndStoreAscomProperty(self, valueProp, element, elementInv=None):
@@ -352,7 +355,7 @@ class AscomClass(DriverData, Signals):
             return False
 
         else:
-            worker = Worker(self.callerInitUnInit, workerConnectDevice)
+            worker = Worker(self.callerInitUnInit, self.workerConnectDevice)
             worker.signals.result.connect(self.getInitialConfig)
             worker.signals.finished.connect(self.startTimer)
             self.threadPool.start(worker)

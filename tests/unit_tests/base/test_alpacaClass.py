@@ -68,6 +68,19 @@ def test_properties_2():
     assert app.protocol == 'http'
 
 
+def test_properties_3():
+    app.deviceName = 'test:camera:3'
+    assert app.deviceName == 'test:camera:3'
+    assert app.deviceType == 'camera'
+    assert app.number == 3
+
+
+def test_baseUrl_1():
+    app.deviceName = 'test:camera:3'
+    val = app.generateBaseUrl()
+    assert val == 'http://localhost:11111/api/v1/camera/3'
+
+
 def test_discoverAPIVersion_1():
     with mock.patch.object(requests,
                            'get',
@@ -76,7 +89,7 @@ def test_discoverAPIVersion_1():
         assert val is None
 
 
-def test_discoverAPIVersion_1b():
+def test_discoverAPIVersion_2():
     with mock.patch.object(requests,
                            'get',
                            side_effect=requests.exceptions.Timeout):
@@ -84,7 +97,7 @@ def test_discoverAPIVersion_1b():
         assert val is None
 
 
-def test_discoverAPIVersion_1c():
+def test_discoverAPIVersion_3():
     with mock.patch.object(requests,
                            'get',
                            side_effect=requests.exceptions.ConnectionError):
@@ -92,7 +105,7 @@ def test_discoverAPIVersion_1c():
         assert val is None
 
 
-def test_discoverAPIVersion_2():
+def test_discoverAPIVersion_4():
     class Test:
         status_code = 400
         text = 'test'
@@ -106,7 +119,7 @@ def test_discoverAPIVersion_2():
         assert val is None
 
 
-def test_discoverAPIVersion_3():
+def test_discoverAPIVersion_5():
     class Test:
         status_code = 200
         text = 'test'
@@ -124,7 +137,7 @@ def test_discoverAPIVersion_3():
         assert val is None
 
 
-def test_discoverAPIVersion_4():
+def test_discoverAPIVersion_6():
     class Test:
         status_code = 200
         text = 'test'
@@ -142,15 +155,15 @@ def test_discoverAPIVersion_4():
         assert val == 'test'
 
 
-def test_discoverDevices_1():
+def test_discoverAlpacaDevices_1():
     with mock.patch.object(requests,
                            'get',
-                           side_effect=Exception()):
+                           side_effect=Exception):
         val = app.discoverAlpacaDevices()
         assert val is None
 
 
-def test_discoverDevices_1b():
+def test_discoverAlpacaDevices_2():
     with mock.patch.object(requests,
                            'get',
                            side_effect=requests.exceptions.Timeout):
@@ -158,7 +171,7 @@ def test_discoverDevices_1b():
         assert val is None
 
 
-def test_discoverDevices_1c():
+def test_discoverAlpacaDevices_3():
     with mock.patch.object(requests,
                            'get',
                            side_effect=requests.exceptions.ConnectionError):
@@ -166,13 +179,12 @@ def test_discoverDevices_1c():
         assert val is None
 
 
-def test_discoverDevices_2():
+def test_discoverAlpacaDevices_4():
     class Test:
         status_code = 400
         text = 'test'
 
     app.deviceName = 'test'
-
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
@@ -180,7 +192,7 @@ def test_discoverDevices_2():
         assert val is None
 
 
-def test_discoverDevices_3():
+def test_discoverAlpacaDevices_5():
     class Test:
         status_code = 200
         text = 'test'
@@ -198,7 +210,7 @@ def test_discoverDevices_3():
         assert val is None
 
 
-def test_discoverDevices_4():
+def test_discoverAlpacaDevices_6():
     class Test:
         status_code = 200
         text = 'test'
@@ -222,61 +234,63 @@ def test_getAlpacaProperty_1():
 
 
 def test_getAlpacaProperty_2():
-    class Test:
-        status_code = 400
-        text = 'test'
     app.deviceName = 'test'
-
-    with mock.patch.object(requests,
-                           'get',
-                           side_effect=requests.exceptions.Timeout,
-                           return_value=Test()):
-        val = app.getAlpacaProperty('')
-        assert val is None
-
-
-def test_getAlpacaProperty_2b():
-    class Test:
-        status_code = 400
-        text = 'test'
-    app.deviceName = 'test'
-
-    with mock.patch.object(requests,
-                           'get',
-                           side_effect=requests.exceptions.ConnectionError,
-                           return_value=Test()):
-        val = app.getAlpacaProperty('')
-        assert val is None
-
-
-def test_getAlpacaProperty_2c():
-    class Test:
-        status_code = 400
-        text = 'test'
-    app.deviceName = 'test'
-
-    with mock.patch.object(requests,
-                           'get',
-                           side_effect=Exception(),
-                           return_value=Test()):
-        val = app.getAlpacaProperty('')
-        assert val is None
+    val = app.getAlpacaProperty('')
+    assert val is None
 
 
 def test_getAlpacaProperty_3():
+    app.deviceName = 'test'
+    app.deviceConnected = True
+    app.propertyExceptions = ['test']
+    val = app.getAlpacaProperty('test')
+    assert val is None
+
+
+def test_getAlpacaProperty_4():
+    app.deviceName = 'test'
+    app.deviceConnected = True
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=requests.exceptions.Timeout):
+        val = app.getAlpacaProperty('test')
+        assert val is None
+
+
+def test_getAlpacaProperty_5():
+    app.deviceName = 'test'
+    app.deviceConnected = True
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=requests.exceptions.ConnectionError):
+        val = app.getAlpacaProperty('test')
+        assert val is None
+
+
+def test_getAlpacaProperty_6():
+    app.deviceName = 'test'
+    app.deviceConnected = True
+    with mock.patch.object(requests,
+                           'get',
+                           side_effect=Exception):
+        val = app.getAlpacaProperty('test')
+        assert val is None
+
+
+def test_getAlpacaProperty_7():
     class Test:
         status_code = 400
         text = 'test'
     app.deviceName = 'test'
-
+    app.deviceConnected = True
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = app.getAlpacaProperty('')
+        val = app.getAlpacaProperty('test')
         assert val is None
 
 
-def test_getAlpacaProperty_4():
+def test_getAlpacaProperty_8():
     class Test:
         status_code = 200
         text = 'test'
@@ -287,15 +301,15 @@ def test_getAlpacaProperty_4():
                     'ErrorMessage': 'msg'}
 
     app.deviceName = 'test'
-
+    app.deviceConnected = True
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = app.getAlpacaProperty('')
+        val = app.getAlpacaProperty('test')
         assert val is None
 
 
-def test_getAlpacaProperty_5():
+def test_getAlpacaProperty_9():
     class Test:
         status_code = 200
         text = 'test'
@@ -308,11 +322,10 @@ def test_getAlpacaProperty_5():
 
     app.deviceName = 'test'
     app.deviceConnected = True
-
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = app.getAlpacaProperty('')
+        val = app.getAlpacaProperty('test')
         assert val == 'test'
 
 
@@ -322,61 +335,63 @@ def test_setAlpacaProperty_1():
 
 
 def test_setAlpacaProperty_2():
-    class Test:
-        status_code = 400
-        text = 'test'
     app.deviceName = 'test'
-
-    with mock.patch.object(requests,
-                           'put',
-                           side_effect=Exception(),
-                           return_value=Test()):
-        val = app.setAlpacaProperty('')
-        assert val is None
-
-
-def test_setAlpacaProperty_2b():
-    class Test:
-        status_code = 400
-        text = 'test'
-    app.deviceName = 'test'
-
-    with mock.patch.object(requests,
-                           'put',
-                           side_effect=requests.exceptions.Timeout,
-                           return_value=Test()):
-        val = app.setAlpacaProperty('')
-        assert val is None
-
-
-def test_setAlpacaProperty_2c():
-    class Test:
-        status_code = 400
-        text = 'test'
-    app.deviceName = 'test'
-
-    with mock.patch.object(requests,
-                           'put',
-                           side_effect=requests.exceptions.ConnectionError,
-                           return_value=Test()):
-        val = app.setAlpacaProperty('')
-        assert val is None
+    val = app.setAlpacaProperty('')
+    assert val is None
 
 
 def test_setAlpacaProperty_3():
+    app.deviceName = 'test'
+    app.deviceConnected = True
+    app.propertyExceptions = ['test']
+    val = app.setAlpacaProperty('test')
+    assert val is None
+
+
+def test_setAlpacaProperty_4():
+    app.deviceName = 'test'
+    app.deviceConnected = True
+    with mock.patch.object(requests,
+                           'put',
+                           side_effect=requests.exceptions.Timeout):
+        val = app.setAlpacaProperty('test')
+        assert val is None
+
+
+def test_setAlpacaProperty_5():
+    app.deviceName = 'test'
+    app.deviceConnected = True
+    with mock.patch.object(requests,
+                           'put',
+                           side_effect=requests.exceptions.ConnectionError):
+        val = app.setAlpacaProperty('test')
+        assert val is None
+
+
+def test_setAlpacaProperty_6():
+    app.deviceName = 'test'
+    app.deviceConnected = True
+    with mock.patch.object(requests,
+                           'put',
+                           side_effect=Exception):
+        val = app.setAlpacaProperty('test')
+        assert val is None
+
+
+def test_setAlpacaProperty_7():
     class Test:
         status_code = 400
         text = 'test'
     app.deviceName = 'test'
-
+    app.deviceConnected = True
     with mock.patch.object(requests,
                            'put',
                            return_value=Test()):
-        val = app.setAlpacaProperty('')
+        val = app.setAlpacaProperty('test')
         assert val is None
 
 
-def test_setAlpacaProperty_4():
+def test_setAlpacaProperty_8():
     class Test:
         status_code = 200
         text = 'test'
@@ -387,15 +402,15 @@ def test_setAlpacaProperty_4():
                     'ErrorMessage': 'msg'}
 
     app.deviceName = 'test'
-
+    app.deviceConnected = True
     with mock.patch.object(requests,
                            'put',
                            return_value=Test()):
-        val = app.setAlpacaProperty('')
+        val = app.setAlpacaProperty('test')
         assert val is None
 
 
-def test_setAlpacaProperty_5():
+def test_setAlpacaProperty_9():
     class Test:
         status_code = 200
         text = 'test'
@@ -407,49 +422,37 @@ def test_setAlpacaProperty_5():
                     'Value': 'test'}
 
     app.deviceName = 'test'
-
+    app.deviceConnected = True
     with mock.patch.object(requests,
                            'put',
                            return_value=Test()):
-        val = app.setAlpacaProperty('')
-        assert val == {'ErrorMessage': 'msg', 'ErrorNumber': 0, 'Value': 'test'}
+        val = app.setAlpacaProperty('test')
+        assert val == {'ErrorNumber': 0,
+                       'ErrorMessage': 'msg',
+                       'Value': 'test'}
 
 
 def test_workerConnectDevice_1():
-    with mock.patch.object(app.client,
-                           'connected',
+    app.serverConnected = False
+    app.deviceConnected = False
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=False):
         suc = app.workerConnectDevice()
         assert not suc
+        assert not app.deviceConnected
 
 
 def test_workerConnectDevice_2():
     app.serverConnected = False
     app.deviceConnected = False
-    with mock.patch.object(app.client,
-                           'connected',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=True):
         suc = app.workerConnectDevice()
         assert suc
         assert app.serverConnected
         assert app.deviceConnected
-
-
-def test_workerGetInitialConfig_1():
-    with mock.patch.object(app.client,
-                           'nameDevice',
-                           return_value='Test1'):
-        with mock.patch.object(app.client,
-                               'driverVersion',
-                               return_value='Test2'):
-            with mock.patch.object(app.client,
-                                   'driverInfo',
-                                   return_value='Test3'):
-                suc = app.workerGetInitialConfig()
-                assert suc
-                assert app.data['DRIVER_INFO.DRIVER_NAME'] == 'Test1'
-                assert app.data['DRIVER_INFO.DRIVER_VERSION'] == 'Test2'
-                assert app.data['DRIVER_INFO.DRIVER_EXEC'] == 'Test3'
 
 
 def test_startTimer():
@@ -464,10 +467,21 @@ def test_stopTimer():
         assert suc
 
 
+def test_workerGetInitialConfig_1():
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
+                           return_value='test'):
+        suc = app.workerGetInitialConfig()
+        assert suc
+        assert app.data['DRIVER_INFO.DRIVER_NAME'] == 'test'
+        assert app.data['DRIVER_INFO.DRIVER_VERSION'] == 'test'
+        assert app.data['DRIVER_INFO.DRIVER_EXEC'] == 'test'
+
+
 def test_workerPollStatus_1():
     app.deviceConnected = True
-    with mock.patch.object(app.client,
-                           'connected',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=False):
         suc = app.workerPollStatus()
         assert not suc
@@ -476,32 +490,12 @@ def test_workerPollStatus_1():
 
 def test_workerPollStatus_2():
     app.deviceConnected = False
-    with mock.patch.object(app.client,
-                           'connected',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=True):
         suc = app.workerPollStatus()
         assert suc
         assert app.deviceConnected
-
-
-def test_pollStatus_3():
-    app.deviceConnected = True
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=True):
-        suc = app.workerPollStatus()
-        assert suc
-        assert app.deviceConnected
-
-
-def test_pollStatus_4():
-    app.deviceConnected = False
-    with mock.patch.object(app.client,
-                           'connected',
-                           return_value=False):
-        suc = app.workerPollStatus()
-        assert not suc
-        assert not app.deviceConnected
 
 
 def test_processPolledData():
@@ -513,25 +507,13 @@ def test_workerPollData():
 
 
 def test_pollData_1():
-    app.deviceConnected = False
-    suc = app.pollData()
-    assert not suc
-
-
-def test_pollData_2():
-    app.deviceConnected = True
-    suc = app.pollData()
-    assert suc
+    with mock.patch.object(app.threadPool,
+                           'start'):
+        suc = app.pollData()
+        assert suc
 
 
 def test_pollStatus_1():
-    app.deviceConnected = False
-    suc = app.pollStatus()
-    assert not suc
-
-
-def test_pollStatus_2():
-    app.deviceConnected = True
     with mock.patch.object(app.threadPool,
                            'start'):
         suc = app.pollStatus()
@@ -539,13 +521,6 @@ def test_pollStatus_2():
 
 
 def test_getInitialConfig_1():
-    app.deviceConnected = False
-    suc = app.getInitialConfig()
-    assert not suc
-
-
-def test_getInitialConfig_2():
-    app.deviceConnected = True
     with mock.patch.object(app.threadPool,
                            'start'):
         suc = app.getInitialConfig()
@@ -553,8 +528,8 @@ def test_getInitialConfig_2():
 
 
 def test_startCommunication():
-    with mock.patch.object(app,
-                           'startTimer'):
+    with mock.patch.object(app.threadPool,
+                           'start'):
         suc = app.startCommunication()
         assert suc
 
@@ -571,8 +546,8 @@ def test_stopCommunication():
 
 
 def test_discoverDevices_1():
-    with mock.patch.object(app.client,
-                           'discoverDevices',
+    with mock.patch.object(app,
+                           'discoverAlpacaDevices',
                            return_value=[{'DeviceName': 'test',
                                           'DeviceNumber': 1,
                                           'DeviceType': 'Dome',
@@ -587,8 +562,8 @@ def test_discoverDevices_1():
 
 
 def test_discoverDevices_2():
-    with mock.patch.object(app.client,
-                           'discoverDevices',
+    with mock.patch.object(app,
+                           'discoverAlpacaDevices',
                            return_value=[]):
         val = app.discoverDevices('dome')
         assert val == []

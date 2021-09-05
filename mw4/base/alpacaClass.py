@@ -48,7 +48,6 @@ class AlpacaClass(DriverData, Signals):
         self.threadPool = threadPool
         self.alpacaSignals = Signals()
 
-        self.client = None
         self.data = data
         self.propertyExceptions = []
 
@@ -154,26 +153,31 @@ class AlpacaClass(DriverData, Signals):
         try:
             response = requests.get(url, timeout=5)
         except requests.exceptions.Timeout:
-            self.log.info('timeout')
+            t = f'[{self.deviceName}] has timeout'
+            self.log.debug(t)
             return None
         except requests.exceptions.ConnectionError:
-            self.log.debug('[connection error')
+            t = f'[{self.deviceName}] has connection error'
+            self.log.warning(t)
             return None
         except Exception as e:
-            self.log.critical(f'[error in request: {e}')
+            t = f'[{self.deviceName}] has exception: [{e}]'
+            self.log.error(t)
             return None
 
         if response.status_code == 400 or response.status_code == 500:
-            self.log.debug(f'{response.text}')
+            t = f'[{self.deviceName}] stat 400/500, [{response.text}]'
+            self.log.warning(t)
             return None
 
         response = response.json()
         if response['ErrorNumber'] != 0:
-            self.log.warning(f'{response} err:{response["ErrorNumber"]}'
-                             f',{response["ErrorMessage"]}')
+            t = f'[{self.deviceName}] response: [{response}]'
+            self.log.warning(t)
             return None
 
-        self.log.trace(f'[response:{response}')
+        t = f'[{self.deviceName}] response: [{response}]'
+        self.log.trace(t)
         return response['Value']
 
     def discoverAlpacaDevices(self):
@@ -189,26 +193,31 @@ class AlpacaClass(DriverData, Signals):
         try:
             response = requests.get(url, timeout=10)
         except requests.exceptions.Timeout:
-            self.log.info('timeout')
+            t = f'[{self.deviceName}] has timeout'
+            self.log.debug(t)
             return None
         except requests.exceptions.ConnectionError:
-            self.log.debug('[connection error')
+            t = f'[{self.deviceName}] has connection error'
+            self.log.warning(t)
             return None
         except Exception as e:
-            self.log.critical(f'[error in request: {e}')
+            t = f'[{self.deviceName}] has exception: [{e}]'
+            self.log.error(t)
             return None
 
         if response.status_code == 400 or response.status_code == 500:
-            self.log.debug(f'{response.text}')
+            t = f'[{self.deviceName}] stat 400/500, [{response.text}]'
+            self.log.warning(t)
             return None
 
         response = response.json()
         if response['ErrorNumber'] != 0:
-            self.log.warning(f'{response} err:{response["ErrorNumber"]}'
-                             f',{response["ErrorMessage"]}')
+            t = f'[{self.deviceName}] response: [{response}]'
+            self.log.warning(t)
             return None
 
-        self.log.trace(f'[response:{response}')
+        t = f'[{self.deviceName}] response: [{response}]'
+        self.log.trace(t)
         return response['Value']
 
     def getAlpacaProperty(self, valueProp, **data):
@@ -226,33 +235,40 @@ class AlpacaClass(DriverData, Signals):
 
         uid = uuid.uuid4().int % 2**32
         data['ClientTransactionID'] = uid
-        self.log.trace(f'[{uid:10d}] {self.baseUrl}/{valueProp}], data:[{data}]')
+
+        t = f'[{self.deviceName}] [{uid:10d}], get [{valueProp}], data:[{data}]'
+        self.log.trace(t)
 
         try:
-            response = requests.get(f'{self.baseUrl}/{valueProp}', params=data, timeout=10)
+            response = requests.get(f'{self.baseUrl}/{valueProp}',
+                                    params=data, timeout=10)
         except requests.exceptions.Timeout:
-            self.log.info(f'[{uid:10d}] timeout')
+            t = f'[{self.deviceName}] [{uid:10d}] has timeout'
+            self.log.debug(t)
             return None
         except requests.exceptions.ConnectionError:
-            self.log.debug(f'[{uid:10d}] connection error')
+            t = f'[{self.deviceName}] [{uid:10d}] has connection error'
+            self.log.warning(t)
             return None
         except Exception as e:
-            self.log.critical(f'[{uid:10d}] error in request: {e}')
+            t = f'[{self.deviceName}] [{uid:10d}] has exception: [{e}]'
+            self.log.error(t)
             return None
 
         if response.status_code == 400 or response.status_code == 500:
-            self.log.debug(f'{response.text}')
+            t = f'[{self.deviceName}] [{uid:10d}], stat 400/500, [{response.text}]'
+            self.log.warning(t)
             return None
 
         response = response.json()
-
         if response['ErrorNumber'] != 0:
-            self.log.debug(f'{response} err:{response["ErrorNumber"]}'
-                           f',{response["ErrorMessage"]}')
+            t = f'[{self.deviceName}] [{uid:10d}], response: [{response}]'
+            self.log.warning(t)
             return None
 
         if valueProp != 'imagearray':
-            self.log.trace(f'[{uid:10d}] response:{response}')
+            t = f'[{self.deviceName}] [{uid:10d}], response: [{response}]'
+            self.log.trace(t)
 
         return response['Value']
 
@@ -270,32 +286,38 @@ class AlpacaClass(DriverData, Signals):
             return None
 
         uid = uuid.uuid4().int % 2**32
-        data['ClientTransactionID'] = uid
-        self.log.trace(f'[{uid:08d}] {self.baseUrl}, attr:[{valueProp}]')
+        t = f'[{self.deviceName}] [{uid:10d}], set [{valueProp}], data:[{data}]'
+        self.log.trace(t)
 
         try:
-            response = requests.put(f'{self.baseUrl}/{valueProp}', data=data, timeout=10)
+            response = requests.put(f'{self.baseUrl}/{valueProp}',
+                                    data=data, timeout=10)
         except requests.exceptions.Timeout:
-            self.log.info(f'[{uid:10d}] timeout')
+            t = f'[{self.deviceName}] [{uid:10d}] has timeout'
+            self.log.debug(t)
             return None
         except requests.exceptions.ConnectionError:
-            self.log.debug(f'[{uid:10d}] connection error')
+            t = f'[{self.deviceName}] [{uid:10d}] has connection error'
+            self.log.warning(t)
             return None
         except Exception as e:
-            self.log.critical(f'[{uid:10d}] Error in request: {e}')
+            t = f'[{self.deviceName}] [{uid:10d}] has exception: [{e}]'
+            self.log.error(t)
             return None
 
         if response.status_code == 400 or response.status_code == 500:
-            self.log.debug(f'[{uid:10d}] {response.text}')
+            t = f'[{self.deviceName}] [{uid:10d}], stat 400/500, [{response.text}]'
+            self.log.warning(t)
             return None
 
         response = response.json()
-
         if response['ErrorNumber'] != 0:
-            self.log.warning(f'err:{response["ErrorNumber"]},{response["ErrorMessage"]}')
+            t = f'[{self.deviceName}] [{uid:10d}], response: [{response}]'
+            self.log.warning(t)
             return None
 
-        self.log.trace(f'[{uid:10d}] response:{response}')
+        t = f'[{self.deviceName}] [{uid:10d}], response: [{response}]'
+        self.log.trace(t)
         return response
 
     def workerConnectDevice(self):
@@ -303,10 +325,11 @@ class AlpacaClass(DriverData, Signals):
         :return: success of reconnecting to server
         """
         self.setAlpacaProperty('connected', Connected=True)
-        suc = getAlpacaProperty('connected')
+        suc = self.getAlpacaProperty('connected')
         self.propertyExceptions = []
         if not suc:
             self.app.message.emit(f'ALPACA connect error:[{self.deviceName}]', 2)
+            self.deviceConnected = False
             return False
 
         if not self.serverConnected:
@@ -355,15 +378,15 @@ class AlpacaClass(DriverData, Signals):
 
         :return: success
         """
-        suc = self.client.connected()
+        suc = self.getAlpacaProperty('connected')
         if self.deviceConnected and not suc:
             self.deviceConnected = False
-            self.signals.deviceDisconnected.emit(f'{self.deviceName}')
+            self.alpacaSignals.deviceDisconnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ALPACA device remove:[{self.deviceName}]', 0)
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
-            self.signals.deviceConnected.emit(f'{self.deviceName}')
+            self.alpacaSignals.deviceConnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ALPACA device found: [{self.deviceName}]', 0)
 
         return suc
@@ -378,9 +401,6 @@ class AlpacaClass(DriverData, Signals):
         """
         :return: success
         """
-        if not self.deviceConnected:
-            return False
-
         worker = Worker(self.workerPollData)
         worker.signals.result.connect(self.processPolledData)
         self.threadPool.start(worker)
@@ -390,9 +410,6 @@ class AlpacaClass(DriverData, Signals):
         """
         :return: success
         """
-        if not self.deviceConnected:
-            return False
-
         worker = Worker(self.workerPollStatus)
         self.threadPool.start(worker)
         return True
@@ -401,9 +418,6 @@ class AlpacaClass(DriverData, Signals):
         """
         :return: success
         """
-        if not self.deviceConnected:
-            return False
-
         worker = Worker(self.workerGetInitialConfig)
         self.threadPool.start(worker)
         return True
@@ -428,12 +442,12 @@ class AlpacaClass(DriverData, Signals):
         :return: true for test purpose
         """
         self.stopTimer()
-        self.client.connected(Connected=False)
+        self.setAlpacaProperty('connected', Cpnnected=False)
         self.deviceConnected = False
         self.serverConnected = False
         self.propertyExceptions = []
-        self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-        self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
+        self.alpacaSignals.deviceDisconnected.emit(f'{self.deviceName}')
+        self.alpacaSignals.serverDisconnected.emit({f'{self.deviceName}': 0})
         self.app.message.emit(f'ALPACA device remove:[{self.deviceName}]', 0)
         return True
 

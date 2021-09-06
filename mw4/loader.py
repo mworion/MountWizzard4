@@ -161,7 +161,6 @@ class MyApp(QApplication):
 
         if obj == self.last:
             return returnValue
-
         else:
             self.last = obj
 
@@ -210,7 +209,6 @@ class MyApp(QApplication):
 
         if not isinstance(event, QMouseEvent):
             return returnValue
-
         if not event.button():
             return returnValue
 

@@ -556,6 +556,12 @@ def test_autoSortPoints_3(function):
     assert suc
 
 
+def test_rebuildPoints_1(function):
+    function.lastGenerator = 'align3'
+    suc = function.rebuildPoints()
+    assert suc
+
+
 def test_processPoints(function):
     suc = function.processPoints()
     assert suc

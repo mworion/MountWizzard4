@@ -19,9 +19,11 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: robustness against errors in ALPACA server due to memory faults -174
-- fix: robustness against filter names / numbers from ALPACA server -174
-- fix: cleanup import for pywinauto timings import -175
+- fix: robustness against errors in ALPACA server due to memory faults #174
+- fix: robustness against filter names / numbers from ALPACA server #174
+- fix: cleanup import for pywinauto timings import #175
+- improvement: avoid meridian flip #177
+- improvement: retry numbers as int #178
  """
 
 with open('notes.txt', 'w') as f:
@@ -29,7 +31,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.2b1',
+    version='2.0.2b2',
     packages=[
         'mw4',
         'mw4.base',

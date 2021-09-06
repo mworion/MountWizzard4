@@ -224,6 +224,10 @@ class Mount(QObject):
     host = None
 
 
+class MainW:
+    lastGenerator = None
+
+
 class App(QObject):
     config = {}
     update10s = pyqtSignal()
@@ -248,6 +252,7 @@ class App(QObject):
     hipparcos = Hipparcos()
     telescope = Telescope()
     astrometry = Astrometry()
+    mainW = MainW()
     deviceStat = {}
     threadPool = QThreadPool()
     mwGlob = {'modelDir': 'tests/workDir/model',

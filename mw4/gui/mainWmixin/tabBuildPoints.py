@@ -62,13 +62,8 @@ class BuildPoints:
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
-
         config = self.app.config['mainW']
 
         self.ui.numberGridPointsCol.valueChanged.disconnect(self.genBuildGrid)
@@ -111,13 +106,8 @@ class BuildPoints:
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
-
         config = self.app.config['mainW']
         config['buildPFileName'] = self.ui.buildPFileName.text()
         config['numberGridPointsRow'] = self.ui.numberGridPointsRow.value()
@@ -156,7 +146,6 @@ class BuildPoints:
 
         row = self.ui.numberGridPointsRow.value()
         col = self.ui.numberGridPointsCol.value()
-
         # we only have equal cols
         col = 2 * int(col / 2)
         self.ui.numberGridPointsCol.setValue(col)
@@ -179,162 +168,142 @@ class BuildPoints:
             return False
 
         self.processPoints()
-
         self.ui.numberGridPointsRow.setEnabled(True)
         self.ui.numberGridPointsCol.setEnabled(True)
         self.ui.altitudeMin.setEnabled(True)
         self.ui.altitudeMax.setEnabled(True)
-
         return True
 
     def genBuildAlign3(self):
         """
-        genBuildAlign3 generates a grid of 3 point for model build based on gui data.
+        genBuildAlign3 generates a grid of 3 point for model build based on gui
+        data.
 
         :return: success
         """
-
         self.lastGenerator = 'align3'
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genAlign(altBase=55,
                                      azBase=10,
                                      numberBase=3,
                                      keep=keep)
-
         if not suc:
             self.app.message.emit('Could not generate 3 align stars', 2)
             return False
 
         self.processPoints()
-
         return True
 
     def genBuildAlign6(self):
         """
-        genBuildAlign6 generates a grid of 6 point for model build based on gui data.
+        genBuildAlign6 generates a grid of 6 point for model build based on gui
+        data.
 
         :return: success
         """
-
         self.lastGenerator = 'align6'
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genAlign(altBase=55,
                                      azBase=10,
                                      numberBase=6,
                                      keep=keep)
-
         if not suc:
             self.app.message.emit('Could not generate 6 align stars', 2)
             return False
 
         self.processPoints()
-
         return True
 
     def genBuildAlign9(self):
         """
-        genBuildAlign9 generates a grid of 9 point for model build based on gui data.
+        genBuildAlign9 generates a grid of 9 point for model build based on gui
+        data.
 
         :return: success
         """
-
         self.lastGenerator = 'align9'
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genAlign(altBase=55,
                                      azBase=10,
                                      numberBase=9,
                                      keep=keep)
-
         if not suc:
             self.app.message.emit('Could not generate 9 align stars', 2)
             return False
 
         self.processPoints()
-
         return True
 
     def genBuildMax(self):
         """
-        genBuildMax generates the point pattern based on greater circles for model build.
-        the point are calculated for the observers position. max goes for approx 100 points
-        effectively when removing the horizon.
+        genBuildMax generates the point pattern based on greater circles for
+        model build. the point are calculated for the observers position. max
+        goes for approx 100 points effectively when removing the horizon.
 
         :return: success
         """
-
         self.lastGenerator = 'max'
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection='max', keep=keep)
-
         if not suc:
             self.app.message.emit('Build points [max] cannot be generated', 2)
             return False
 
         self.processPoints()
-
         return True
 
     def genBuildMed(self):
         """
-        genBuildMed generates the point pattern based on greater circles for model build.
-        the point are calculated for the observers position. max goes for approx 70 points
-        effectively when removing the horizon.
+        genBuildMed generates the point pattern based on greater circles for
+        model build. the point are calculated for the observers position. max
+        goes for approx 70 points effectively when removing the horizon.
 
         :return: success
         """
-
         self.lastGenerator = 'med'
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection='med', keep=keep)
-
         if not suc:
             self.app.message.emit('Build points [med] cannot be generated', 2)
             return False
 
         self.processPoints()
-
         return True
 
     def genBuildNorm(self):
         """
-        genBuildNorm generates the point pattern based on greater circles for model build.
-        the point are calculated for the observers position. max goes for approx 40 points
-        effectively when removing the horizon.
+        genBuildNorm generates the point pattern based on greater circles for
+        model build. the point are calculated for the observers position. max
+        goes for approx 40 points effectively when removing the horizon.
 
         :return: success
         """
-
         self.lastGenerator = 'norm'
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection='norm', keep=keep)
-
         if not suc:
             self.app.message.emit('Build points [norm] cannot be generated', 2)
             return False
 
         self.processPoints()
-
         return True
 
     def genBuildMin(self):
         """
-        genBuildMin generates the point pattern based on greater circles for model build.
-        the point are calculated for the observers position. min goes for approx 25 points
-        effectively when removing the horizon.
+        genBuildMin generates the point pattern based on greater circles for
+        model build. the point are calculated for the observers position. min
+        goes for approx 25 points effectively when removing the horizon.
 
         :return: success
         """
-
         self.lastGenerator = 'min'
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection='min', keep=keep)
-
         if not suc:
             self.app.message.emit('Build points [min] cannot be generated', 2)
             return False
 
         self.processPoints()
-
         return True
 
     def genBuildDSO(self):
@@ -343,7 +312,6 @@ class BuildPoints:
 
         :return: success
         """
-
         self.lastGenerator = 'dso'
         ra = self.app.mount.obsSite.raJNow
         dec = self.app.mount.obsSite.decJNow
@@ -381,88 +349,71 @@ class BuildPoints:
             return False
 
         self.processPoints()
-
         self.ui.numberDSOPoints.setEnabled(True)
         self.ui.durationDSO.setEnabled(True)
         self.ui.timeShiftDSO.setEnabled(True)
-
         return True
 
     def genBuildSpiralMax(self):
         """
         genBuildGoldenSpiral generates points along the actual tracking path
-        as the processing might take to long (at least on ubuntu), we have to find a
-        workaround to this behavior:
+        as the processing might take to long (at least on ubuntu), we have to
+        find a workaround to this behavior:
         https://stackoverflow.com/questions/41568990/
         how-do-i-prevent-double-valuechanged-events-when-i-press-the-arrows-in-a-qspinbo
 
         :return: success
         """
-
         self.lastGenerator = 'spiralMax'
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.generateGoldenSpiral(numberPoints=350, keep=keep)
-
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
 
         self.processPoints()
-
         return True
 
     def genBuildSpiralMed(self):
         """
-
         :return: success
         """
-
         self.lastGenerator = 'spiralMed'
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.generateGoldenSpiral(numberPoints=250, keep=keep)
-
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
 
         self.processPoints()
-
         return True
 
     def genBuildSpiralNorm(self):
         """
-
         :return: success
         """
-
         self.lastGenerator = 'spiralNorm'
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.generateGoldenSpiral(numberPoints=150, keep=keep)
-
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
 
         self.processPoints()
-
         return True
 
     def genBuildSpiralMin(self):
         """
-
         :return: success
         """
-
         self.lastGenerator = 'spiralMin'
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.generateGoldenSpiral(numberPoints=75, keep=keep)
-
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
 
         self.processPoints()
-
         return True
 
     def genBuildFile(self):
@@ -471,7 +422,6 @@ class BuildPoints:
 
         :return: success
         """
-
         self.lastGenerator = 'file'
         fileName = self.ui.buildPFileName.text()
         if not fileName:
@@ -487,16 +437,12 @@ class BuildPoints:
             return False
 
         self.processPoints()
-
         return True
 
     def loadBuildFile(self):
         """
-        loadBuildFile calls a file selector box and selects the filename to be loaded
-
         :return: success
         """
-
         folder = self.app.mwGlob['configDir']
         fileTypes = 'Build Point Files (*.bpts);; CSV Files (*.csv);; MW3 Files (*.txt)'
         loadFilePath, fileName, ext = self.openFile(self,
@@ -508,7 +454,6 @@ class BuildPoints:
 
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.loadBuildP(fileName=fileName, ext=ext, keep=keep)
-
         if suc:
             self.ui.buildPFileName.setText(fileName)
             self.app.message.emit(f'Build file [{fileName}] loaded', 0)
@@ -516,23 +461,18 @@ class BuildPoints:
             self.app.message.emit(f'Build file [{fileName}] cannot no be loaded', 2)
 
         self.genBuildFile()
-
         return True
 
     def saveBuildFile(self):
         """
-        saveBuildFile calls saving the build file
-
         :return: success
         """
-
         fileName = self.ui.buildPFileName.text()
         if not fileName:
             self.app.message.emit('Build points file name not given', 2)
             return False
 
         suc = self.app.data.saveBuildP(fileName=fileName)
-
         if suc:
             self.app.message.emit(f'Build file [{fileName}] saved', 0)
         else:
@@ -546,7 +486,6 @@ class BuildPoints:
 
         :return: success
         """
-
         folder = self.app.mwGlob['configDir']
         saveFilePath, fileName, ext = self.saveFile(self,
                                                     'Save build point file',
@@ -557,7 +496,6 @@ class BuildPoints:
             return False
 
         suc = self.app.data.saveBuildP(fileName=fileName)
-
         if suc:
             self.ui.buildPFileName.setText(fileName)
             self.app.message.emit(f'Build file [{fileName}] saved', 0)
@@ -568,57 +506,48 @@ class BuildPoints:
 
     def clearBuildP(self):
         """
-
         :return: success
         """
-
         self.app.data.clearBuildP()
         self.app.drawBuildPoints.emit()
-
         if not self.app.uiWindows['showHemisphereW']['classObj']:
             return False
 
         self.app.uiWindows['showHemisphereW']['classObj'].clearHemisphere()
-
         return True
 
     def autoDeletePoints(self):
         """
-        autoDeletePoints removes all generated or visible build points below the horizon line
-        or within the limits of the meridian flip and redraws the hemisphere window.
+        autoDeletePoints removes all generated or visible build points below the
+        horizon line or within the limits of the meridian flip and redraws the
+        hemisphere window.
 
         :return: True for test purpose
         """
-
         if self.ui.checkAutoDeleteHorizon.isChecked():
             self.app.data.deleteBelowHorizon()
-
         if self.ui.checkAutoDeleteMeridian.isChecked():
             self.app.data.deleteCloseMeridian()
-
         if self.ui.checkSafetyMarginHorizon.isChecked():
             value = self.ui.safetyMarginHorizon.value()
             self.app.data.deleteCloseHorizonLine(value)
-
         return True
 
     def autoSortPoints(self):
         """
-        autoSortPoints sort the given build point first to east and west and than based
-        on the decision high altitude to low altitude or east to west in each hemisphere
+        autoSortPoints sort the given build point first to east and west and
+        than based on the decision high altitude to low altitude or east to west
+        in each hemisphere
 
         :return: success if sorted
         """
-
         eastwest = self.ui.checkSortEW.isChecked()
         highlow = self.ui.checkSortHL.isChecked()
         avoidFlip = self.ui.checkAvoidFlip.isChecked()
-
         pierside = self.app.mount.obsSite.pierside
 
         if pierside is None:
             avoidFlip = False
-
         if not eastwest and not highlow and not avoidFlip:
             return False
 
@@ -628,18 +557,14 @@ class BuildPoints:
                                pierside=pierside)
         else:
             self.app.data.sort(eastwest=eastwest, highlow=highlow)
-
         return True
 
     def processPoints(self):
         """
-
         :return: True for test purpose
         """
-
         self.autoDeletePoints()
         self.autoSortPoints()
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
-
         return True

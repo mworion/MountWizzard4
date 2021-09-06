@@ -27,6 +27,21 @@ class BuildPoints:
 
     def __init__(self):
         self.lastGenerator = 'none'
+        self.generators = {
+            'grid': self.genBuildGrid,
+            'align3': self.genBuildAlign3,
+            'align6': self.genBuildAlign6,
+            'align9': self.genBuildAlign9,
+            'max': self.genBuildMax,
+            'med': self.genBuildMed,
+            'norm': self.genBuildNorm,
+            'min': self.genBuildMin,
+            'dso': self.genBuildDSO,
+            'spiralMax': self.genBuildSpiralMax,
+            'spiralMed': self.genBuildSpiralMed,
+            'spiralMin': self.genBuildSpiralMin,
+            'file': self.genBuildFile,
+        }
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
         self.ui.genBuildAlign3.clicked.connect(self.genBuildAlign3)
@@ -53,12 +68,12 @@ class BuildPoints:
         self.ui.genBuildSpiralNorm.clicked.connect(self.genBuildSpiralNorm)
         self.ui.genBuildSpiralMin.clicked.connect(self.genBuildSpiralMin)
         self.ui.clearBuildP.clicked.connect(self.clearBuildP)
-        self.ui.checkSortNothing.clicked.connect(self.processPoints)
-        self.ui.checkSortEW.clicked.connect(self.processPoints)
-        self.ui.checkSortHL.clicked.connect(self.processPoints)
-        self.ui.checkAvoidFlip.clicked.connect(self.processPoints)
-        self.ui.checkAutoDeleteMeridian.clicked.connect(self.autoDeletePoints)
-        self.ui.checkAutoDeleteHorizon.clicked.connect(self.autoDeletePoints)
+        self.ui.checkSortNothing.clicked.connect(self.rebuildPoints)
+        self.ui.checkSortEW.clicked.connect(self.rebuildPoints)
+        self.ui.checkSortHL.clicked.connect(self.rebuildPoints)
+        self.ui.checkAvoidFlip.clicked.connect(self.rebuildPoints)
+        self.ui.checkAutoDeleteMeridian.clicked.connect(self.rebuildPoints)
+        self.ui.checkAutoDeleteHorizon.clicked.connect(self.rebuildPoints)
 
     def initConfig(self):
         """
@@ -136,9 +151,7 @@ class BuildPoints:
 
         :return: success
         """
-
         self.lastGenerator = 'grid'
-
         self.ui.numberGridPointsRow.setEnabled(False)
         self.ui.numberGridPointsCol.setEnabled(False)
         self.ui.altitudeMin.setEnabled(False)
@@ -556,7 +569,17 @@ class BuildPoints:
                                highlow=highlow,
                                pierside=pierside)
         else:
-            self.app.data.sort(eastwest=eastwest, highlow=highlow)
+            self.app.data.sort(eastwest=eastwest,
+                               highlow=highlow)
+        return True
+
+    def rebuildPoints(self):
+        """
+        :return:
+        """
+        if self.lastGenerator in self.generators:
+            self.generators[self.lastGenerator]()
+        self.processPoints()
         return True
 
     def processPoints(self):
@@ -568,3 +591,4 @@ class BuildPoints:
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
         return True
+

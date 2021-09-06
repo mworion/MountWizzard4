@@ -290,6 +290,9 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return:
         """
+        # todo: if I edit the build points, the generator goes to 'none'
+        # todo: it should not be done directly in hemisphere window
+        # todo: maybe it should be done by a signal to mainW
         self.app.mainW.lastGenerator = 'none'
         index = self.getIndexPoint(event=event, plane=data.buildP, epsilon=360)
         if index is None:
@@ -312,6 +315,9 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return: success
         """
+        # todo: if I edit the build points, the generator goes to 'none'
+        # todo: it should not be done directly in hemisphere window
+        # todo: maybe it should be done by a signal to mainW
         self.app.mainW.lastGenerator = 'none'
         index = self.getIndexPoint(event=event, plane=data.buildP)
         if index is None:

@@ -27,7 +27,7 @@ class BuildPoints:
 
     def __init__(self):
         self.lastGenerator = 'none'
-        self.generators = {
+        self.sortedGenerators = {
             'grid': self.genBuildGrid,
             'align3': self.genBuildAlign3,
             'align6': self.genBuildAlign6,
@@ -37,9 +37,6 @@ class BuildPoints:
             'norm': self.genBuildNorm,
             'min': self.genBuildMin,
             'dso': self.genBuildDSO,
-            'spiralMax': self.genBuildSpiralMax,
-            'spiralMed': self.genBuildSpiralMed,
-            'spiralMin': self.genBuildSpiralMin,
             'file': self.genBuildFile,
         }
 
@@ -74,6 +71,7 @@ class BuildPoints:
         self.ui.checkAvoidFlip.clicked.connect(self.rebuildPoints)
         self.ui.checkAutoDeleteMeridian.clicked.connect(self.rebuildPoints)
         self.ui.checkAutoDeleteHorizon.clicked.connect(self.rebuildPoints)
+        self.app.buildPointsChanged.connect(self.buildPointsChanged)
 
     def initConfig(self):
         """
@@ -573,12 +571,19 @@ class BuildPoints:
                                highlow=highlow)
         return True
 
+    def buildPointsChanged(self):
+        """
+        :return:
+        """
+        self.lastGenerator = 'none'
+        return True
+
     def rebuildPoints(self):
         """
         :return:
         """
-        if self.lastGenerator in self.generators:
-            self.generators[self.lastGenerator]()
+        if self.lastGenerator in self.sortedGenerators:
+            self.sortedGenerators[self.lastGenerator]()
         self.processPoints()
         return True
 

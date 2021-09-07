@@ -48,6 +48,7 @@ def function(module):
         config = {'mainW': {}}
         redrawHemisphere = pyqtSignal()
         drawBuildPoints = pyqtSignal()
+        buildPointsChanged = pyqtSignal()
         message = pyqtSignal(str, int)
         sendBuildPoints = pyqtSignal(object)
         mwGlob = {'configDir': 'tests/workDir/config'}
@@ -554,6 +555,13 @@ def test_autoSortPoints_3(function):
     function.app.mount.obsSite.pierside = 'E'
     suc = function.autoSortPoints()
     assert suc
+
+
+def test_buildPointsChanged(function):
+    function.lastGenerator = 'test'
+    suc = function.buildPointsChanged()
+    assert suc
+    assert function.lastGenerator == 'none'
 
 
 def test_rebuildPoints_1(function):

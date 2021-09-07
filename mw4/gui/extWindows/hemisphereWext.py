@@ -290,7 +290,7 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return:
         """
-        self.app.mainW.lastGenerator = 'none'
+        self.app.buildPointsChanged.emit()
         index = self.getIndexPoint(event=event, plane=data.buildP, epsilon=360)
         if index is None:
             return False
@@ -312,7 +312,7 @@ class HemisphereWindowExt:
         :param event: mouse event
         :return: success
         """
-        self.app.mainW.lastGenerator = 'none'
+        self.app.buildPointsChanged.emit()
         index = self.getIndexPoint(event=event, plane=data.buildP)
         if index is None:
             return False

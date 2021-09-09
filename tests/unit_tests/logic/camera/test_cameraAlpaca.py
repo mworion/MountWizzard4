@@ -55,28 +55,16 @@ def module_setup_teardown():
 
 
 def test_getInitialConfig_1():
-    with mock.patch.object(AlpacaBase,
-                           'get'):
+    with mock.patch.object(app,
+                           'getAndStoreAlpacaProperty'):
         suc = app.getInitialConfig()
         assert suc
 
 
 def test_workerPollData_1():
-    app.deviceConnected = False
     app.data['CAN_FAST'] = True
-    with mock.patch.object(AlpacaBase,
-                           'get'):
-        suc = app.workerPollData()
-        assert not suc
-
-
-def test_workerPollData_2():
-    app.deviceConnected = True
-    app.data['CAN_FAST'] = True
-    app.data['CAN_SET_CCD_TEMPERATURE'] = True
-    app.data['CAN_GET_COOLER_POWER'] = True
-    with mock.patch.object(AlpacaBase,
-                           'get'):
+    with mock.patch.object(app,
+                           'getAndStoreAlpacaProperty'):
         suc = app.workerPollData()
         assert suc
 
@@ -99,8 +87,8 @@ def test_pollData_2():
 
 def test_sendDownloadMode_1():
     app.data['CAN_FAST'] = True
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'setAlpacaProperty',
                            return_value=False):
         suc = app.sendDownloadMode()
         assert suc
@@ -108,8 +96,8 @@ def test_sendDownloadMode_1():
 
 def test_sendDownloadMode_2():
     app.data['CAN_FAST'] = True
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'setAlpacaProperty',
                            return_value=True):
         suc = app.sendDownloadMode(fastReadout=True)
         assert suc
@@ -117,126 +105,61 @@ def test_sendDownloadMode_2():
 
 def test_sendDownloadMode_3():
     app.data['CAN_FAST'] = False
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'setAlpacaProperty',
                            return_value=True):
         suc = app.sendDownloadMode()
         assert not suc
 
 
-def test_workerExpose_0():
-    app.data['CAN_FAST'] = False
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.imagePath = ''
-
-    with mock.patch.object(AlpacaBase,
-                           'get',
-                           return_value=True):
-        with mock.patch.object(fits.PrimaryHDU,
-                               'writeto'):
-            suc = app.workerExpose()
-            assert suc
-
-
 def test_workerExpose_1():
-    app.data['CAN_FAST'] = False
     app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
     app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.imagePath = ''
-
-    with mock.patch.object(AlpacaBase,
-                           'get',
-                           return_value=True):
-        with mock.patch.object(fits.PrimaryHDU,
-                               'writeto'):
-            suc = app.workerExpose(focalLength=0)
-            assert suc
+    with mock.patch.object(app,
+                           'setAlpacaProperty'):
+        with mock.patch.object(app,
+                               'getAlpacaProperty',
+                               return_value=True):
+            with mock.patch.object(fits.PrimaryHDU,
+                                   'writeto'):
+                suc = app.workerExpose()
+                assert suc
 
 
 def test_workerExpose_2():
-    app.data['CAN_FAST'] = False
     app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
     app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.imagePath = ''
-    app.abortExpose = True
+    with mock.patch.object(app,
+                           'setAlpacaProperty'):
+        with mock.patch.object(app,
+                               'getAlpacaProperty',
+                               return_value=True):
+            with mock.patch.object(fits.PrimaryHDU,
+                                   'writeto'):
+                suc = app.workerExpose(focalLength=0)
+                assert suc
 
-    with mock.patch.object(AlpacaBase,
-                           'get',
-                           return_value=True):
-        with mock.patch.object(app.client,
-                               'imageready',
-                               return_value=False):
+
+def test_workerExpose_3():
+    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
+    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
+    app.abortExpose = True
+    with mock.patch.object(app,
+                           'setAlpacaProperty'):
+        with mock.patch.object(app,
+                               'getAlpacaProperty',
+                               return_value=True):
             with mock.patch.object(fits.PrimaryHDU,
                                    'writeto'):
                 suc = app.workerExpose(expTime=0.3)
                 assert suc
 
 
-def test_workerExpose_3():
-    app.data['CAN_FAST'] = False
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.imagePath = ''
-    app.abortExpose = True
-
-    with mock.patch.object(AlpacaBase,
-                           'get',
-                           return_value=True):
-        with mock.patch.object(app.client,
-                               'imageready',
-                               return_value=False):
-            with mock.patch.object(fits.PrimaryHDU,
-                                   'writeto'):
-                suc = app.workerExpose(expTime=0.05)
-                assert suc
-
-
-def test_workerExpose_4():
-    app.data['CAN_FAST'] = False
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.imagePath = ''
-    app.abortExpose = True
-
-    with mock.patch.object(AlpacaBase,
-                           'get',
-                           return_value=True):
-        with mock.patch.object(app.client,
-                               'imageready',
-                               return_value=False):
-            with mock.patch.object(fits.PrimaryHDU,
-                                   'writeto'):
-                suc = app.workerExpose(expTime=0.05, focalLength=0)
-                assert suc
-
-
-def test_workerExpose_5():
-    app.data['CAN_FAST'] = False
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.imagePath = ''
-    app.abortExpose = False
-
-    with mock.patch.object(AlpacaBase,
-                           'get',
-                           return_value=True):
-        with mock.patch.object(app.client,
-                               'imageready',
-                               return_value=True):
-            with mock.patch.object(app.client,
-                                   'imagearray',
-                                   return_value=None):
-                suc = app.workerExpose(expTime=0.05, focalLength=0)
-                assert suc
-
-
 def test_expose_1():
-    app.deviceConnected = False
     with mock.patch.object(app.threadPool,
                            'start'):
         suc = app.expose()
-        assert not suc
+        assert suc
 
 
 def test_expose_2():
@@ -264,8 +187,8 @@ def test_expose_3():
 
 def test_abort_1():
     app.deviceConnected = False
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=True):
         suc = app.abort()
         assert not suc
@@ -274,8 +197,8 @@ def test_abort_1():
 def test_abort_2():
     app.deviceConnected = True
     app.data['CAN_ABORT'] = False
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=True):
         suc = app.abort()
         assert not suc
@@ -284,8 +207,8 @@ def test_abort_2():
 def test_abort_3():
     app.deviceConnected = True
     app.data['CAN_ABORT'] = True
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=True):
         suc = app.abort()
         assert suc
@@ -293,8 +216,8 @@ def test_abort_3():
 
 def test_sendCoolerSwitch_1():
     app.deviceConnected = False
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'setAlpacaProperty',
                            return_value=True):
         suc = app.sendCoolerSwitch()
         assert not suc
@@ -302,8 +225,8 @@ def test_sendCoolerSwitch_1():
 
 def test_sendCoolerSwitch_2():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'put',
+    with mock.patch.object(app,
+                           'setAlpacaProperty',
                            return_value=True):
         suc = app.sendCoolerSwitch(coolerOn=True)
         assert suc
@@ -312,8 +235,8 @@ def test_sendCoolerSwitch_2():
 def test_sendCoolerTemp_1():
     app.deviceConnected = False
     app.data['CAN_SET_CCD_TEMPERATURE'] = True
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'setAlpacaProperty',
                            return_value=True):
         suc = app.sendCoolerTemp()
         assert not suc
@@ -322,8 +245,8 @@ def test_sendCoolerTemp_1():
 def test_sendCoolerTemp_2():
     app.deviceConnected = True
     app.data['CAN_SET_CCD_TEMPERATURE'] = False
-    with mock.patch.object(AlpacaBase,
-                           'put',
+    with mock.patch.object(app,
+                           'setAlpacaProperty',
                            return_value=True):
         suc = app.sendCoolerTemp(temperature=-10)
         assert not suc
@@ -332,8 +255,8 @@ def test_sendCoolerTemp_2():
 def test_sendCoolerTemp_3():
     app.deviceConnected = True
     app.data['CAN_SET_CCD_TEMPERATURE'] = True
-    with mock.patch.object(AlpacaBase,
-                           'put',
+    with mock.patch.object(app,
+                           'setAlpacaProperty',
                            return_value=True):
         suc = app.sendCoolerTemp(temperature=-10)
         assert suc
@@ -341,8 +264,8 @@ def test_sendCoolerTemp_3():
 
 def test_sendOffset_1():
     app.deviceConnected = False
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'setAlpacaProperty',
                            return_value=True):
         suc = app.sendOffset()
         assert not suc
@@ -350,8 +273,8 @@ def test_sendOffset_1():
 
 def test_sendOffset_2():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'put',
+    with mock.patch.object(app,
+                           'setAlpacaProperty',
                            return_value=True):
         suc = app.sendOffset(offset=50)
         assert suc
@@ -359,8 +282,8 @@ def test_sendOffset_2():
 
 def test_sendGain_1():
     app.deviceConnected = False
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'setAlpacaProperty',
                            return_value=True):
         suc = app.sendGain()
         assert not suc
@@ -368,8 +291,8 @@ def test_sendGain_1():
 
 def test_sendGain_2():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'put',
+    with mock.patch.object(app,
+                           'setAlpacaProperty',
                            return_value=True):
         suc = app.sendGain(gain=50)
         assert suc

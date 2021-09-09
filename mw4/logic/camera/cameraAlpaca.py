@@ -142,7 +142,7 @@ class CameraAlpaca(AlpacaClass):
             if ra is not None and dec is not None and obsTime is not None:
                 ra, dec = JNowToJ2000(ra, dec, obsTime)
 
-        self.client.startexposure(Duration=expTime, Light=True)
+        self.getAlpacaProperty('startexposure', Duration=expTime, Light=True)
         timeLeft = expTime
         while not self.getAlpacaProperty('imageready'):
             text = f'expose {timeLeft:3.0f} s'
@@ -247,7 +247,7 @@ class CameraAlpaca(AlpacaClass):
         if not canAbort:
             return False
 
-        self.getAscomProperty('stopexposure')
+        self.getAlpacaProperty('stopexposure')
         return True
 
     def sendCoolerSwitch(self, coolerOn=False):

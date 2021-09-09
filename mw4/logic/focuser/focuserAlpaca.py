@@ -53,8 +53,8 @@ class FocuserAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        val = self.client.position()
-        self.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] = val
+        self.getAndStoreAlpacaProperty('position',
+                                       'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION')
         return True
 
     def move(self, position=None):
@@ -65,7 +65,7 @@ class FocuserAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.client.move(Position=position)
+        self.setAlpacaProperty('move', Position=position)
         return True
 
     def halt(self):
@@ -75,5 +75,5 @@ class FocuserAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.client.halt()
+        self.getAlpacaProperty('halt')
         return True

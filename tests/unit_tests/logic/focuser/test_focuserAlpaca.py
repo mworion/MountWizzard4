@@ -25,7 +25,6 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 # local import
 from logic.focuser.focuserAlpaca import FocuserAlpaca
 from logic.focuser.focuser import FocuserSignals
-from base.alpacaBase import AlpacaBase
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -41,16 +40,16 @@ def module_setup_teardown():
 
 
 def test_getInitialConfig_1():
-    with mock.patch.object(AlpacaBase,
-                           'get'):
+    with mock.patch.object(app,
+                           'getAlpacaProperty'):
         suc = app.getInitialConfig()
         assert suc
 
 
 def test_workerPollData_1():
     app.deviceConnected = False
-    with mock.patch.object(app.client,
-                           'position',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=1):
         suc = app.workerPollData()
         assert not suc
@@ -58,8 +57,8 @@ def test_workerPollData_1():
 
 def test_workerPollData_2():
     app.deviceConnected = True
-    with mock.patch.object(app.client,
-                           'position',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=1):
         suc = app.workerPollData()
         assert suc
@@ -68,31 +67,31 @@ def test_workerPollData_2():
 
 def test_move_1():
     app.deviceConnected = False
-    with mock.patch.object(AlpacaBase,
-                           'put'):
+    with mock.patch.object(app,
+                           'setAlpacaProperty'):
         suc = app.move(position=0)
         assert not suc
 
 
 def test_move_2():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'put'):
+    with mock.patch.object(app,
+                           'setAlpacaProperty'):
         suc = app.move(position=0)
         assert suc
 
 
 def test_halt_1():
     app.deviceConnected = False
-    with mock.patch.object(AlpacaBase,
-                           'put'):
+    with mock.patch.object(app,
+                           'getAlpacaProperty'):
         suc = app.halt()
         assert not suc
 
 
 def test_halt_2():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'put'):
+    with mock.patch.object(app,
+                           'getAlpacaProperty'):
         suc = app.halt()
         assert suc

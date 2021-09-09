@@ -44,7 +44,7 @@ class FilterAlpaca(AlpacaClass):
         :return: success
         """
         super().getInitialConfig()
-        names = self.client.names()
+        names = self.getAlpacaProperty('names')
         if names is None:
             return False
 
@@ -62,11 +62,11 @@ class FilterAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        position = self.client.position()
+        position = self.getAlpacaProperty('position')
         if position == -1 or position is None:
             return False
 
-        self.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = position
+        self.storePropertyToData(position, 'FILTER_SLOT.FILTER_SLOT_VALUE')
         return True
 
     def sendFilterNumber(self, filterNumber=0):
@@ -76,5 +76,5 @@ class FilterAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.client.position(Position=filterNumber)
+        self.setAlpacaProperty('position', Position=filterNumber)
         return True

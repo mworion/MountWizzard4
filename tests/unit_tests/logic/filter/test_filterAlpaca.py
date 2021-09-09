@@ -24,7 +24,6 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 # local import
 from logic.filter.filterAlpaca import FilterAlpaca
 from logic.filter.filter import FilterSignals
-from base.alpacaBase import AlpacaBase
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -40,23 +39,23 @@ def module_setup_teardown():
 
 
 def test_getInitialConfig_1():
-    with mock.patch.object(AlpacaBase,
-                           'get'):
+    with mock.patch.object(app,
+                           'getAlpacaProperty'):
         suc = app.getInitialConfig()
         assert suc
 
 
 def test_getInitialConfig_2():
-    with mock.patch.object(app.client,
-                           'names',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=None):
         suc = app.getInitialConfig()
         assert not suc
 
 
 def test_getInitialConfig_3():
-    with mock.patch.object(app.client,
-                           'names',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=['test', 'test1']):
         suc = app.getInitialConfig()
         assert suc
@@ -65,8 +64,8 @@ def test_getInitialConfig_3():
 
 
 def test_getInitialConfig_4():
-    with mock.patch.object(app.client,
-                           'names',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=['test', None]):
         suc = app.getInitialConfig()
         assert suc
@@ -75,8 +74,8 @@ def test_getInitialConfig_4():
 
 def test_workerPollData_1():
     app.deviceConnected = False
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=-1):
         suc = app.workerPollData()
         assert not suc
@@ -84,8 +83,8 @@ def test_workerPollData_1():
 
 def test_workerPollData_2():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=-1):
         suc = app.workerPollData()
         assert not suc
@@ -93,8 +92,8 @@ def test_workerPollData_2():
 
 def test_workerPollData_3():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'get',
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
                            return_value=1):
         suc = app.workerPollData()
         assert suc
@@ -103,15 +102,15 @@ def test_workerPollData_3():
 
 def test_sendFilterNumber_1():
     app.deviceConnected = False
-    with mock.patch.object(AlpacaBase,
-                           'put'):
+    with mock.patch.object(app,
+                           'setAlpacaProperty'):
         suc = app.sendFilterNumber()
         assert not suc
 
 
 def test_sendFilterNumber_2():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'put'):
+    with mock.patch.object(app,
+                           'setAlpacaProperty'):
         suc = app.sendFilterNumber()
         assert suc

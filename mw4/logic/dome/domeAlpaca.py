@@ -49,7 +49,6 @@ class DomeAlpaca(AlpacaClass):
         """
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
         self.signals.azimuth.emit(azimuth)
-
         return True
 
     def workerPollData(self):
@@ -61,16 +60,15 @@ class DomeAlpaca(AlpacaClass):
             return False
 
         shutterStates = ['Open', 'Closed', 'Opening', 'Closing', 'Error']
-
-        azimuth = self.client.azimuth()
+        azimuth = self.getAlpacaProperty('azimuth')
         self.storePropertyToData(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
-        self.storePropertyToData(self.client.slewing(), 'Slewing')
-        self.storePropertyToData(self.client.cansetaltitude(), 'CanSetAltitude')
-        self.storePropertyToData(self.client.cansetazimuth(), 'CanSetAzimuth')
-        self.storePropertyToData(self.client.cansetshutter(), 'CanSetShutter')
+        self.getAndStoreAlpacaProperty('slewing', 'Slewing')
+        self.getAndStoreAlpacaProperty('cansetaltitude', 'CanSetAltitude')
+        self.getAndStoreAlpacaProperty('cansetazimuth', 'CanSetAzimuth')
+        self.getAndStoreAlpacaProperty('cansetshutter', 'CanSetShutter')
 
-        state = self.client.shutterstatus()
+        state = self.getAlpacaProperty('shutterstatus')
         if state == 0:
             stateText = shutterStates[state]
             self.storePropertyToData(stateText, 'Status.Shutter')
@@ -102,9 +100,9 @@ class DomeAlpaca(AlpacaClass):
             return False
 
         if self.data.get('CanSetAzimuth'):
-            self.client.slewtoazimuth(Azimuth=azimuth)
+            self.setAlpacaProperty('slewtoazimuth', Azimuth=azimuth)
         if self.data.get('CanSetAltitude'):
-            self.client.slewtoaltitude(Altitude=altitude)
+            self.setAlpacaProperty('slewtoaltitude', Altitude=altitude)
         return True
 
     def openShutter(self):
@@ -115,7 +113,7 @@ class DomeAlpaca(AlpacaClass):
             return False
 
         if self.data.get('CanSetShutter'):
-            self.client.openshutter()
+            self.getAlpacaProperty('openshutter')
         return True
 
     def closeShutter(self):
@@ -126,7 +124,7 @@ class DomeAlpaca(AlpacaClass):
             return False
 
         if self.data.get('CanSetShutter'):
-            self.client.closeshutter()
+            self.getAlpacaProperty('closeshutter')
         return True
 
     def abortSlew(self):
@@ -136,5 +134,5 @@ class DomeAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.client.abortslew()
+        self.getAlpacaProperty('abortslew')
         return True

@@ -37,6 +37,7 @@ class CameraSignals(PyQt5.QtCore.QObject):
     __all__ = ['CameraSignals']
 
     integrated = PyQt5.QtCore.pyqtSignal()
+    downloaded = PyQt5.QtCore.pyqtSignal()
     saved = PyQt5.QtCore.pyqtSignal(object)
     message = PyQt5.QtCore.pyqtSignal(object)
 

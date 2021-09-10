@@ -262,6 +262,7 @@ class AlpacaClass(DriverData, Signals):
         if response['ErrorNumber'] != 0:
             t = f'[{self.deviceName}] [{uid:10d}], response: [{response}]'
             self.log.warning(t)
+            self.propertyExceptions.append(valueProp)
             return None
 
         if valueProp != 'imagearray':
@@ -310,6 +311,7 @@ class AlpacaClass(DriverData, Signals):
         if response['ErrorNumber'] != 0:
             t = f'[{self.deviceName}] [{uid:10d}], response: [{response}]'
             self.log.warning(t)
+            self.propertyExceptions.append(valueProp)
             return None
 
         t = f'[{self.deviceName}] [{uid:10d}], response: [{response}]'

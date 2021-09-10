@@ -49,20 +49,20 @@ class CameraAlpaca(AlpacaClass):
         :return: true for test purpose
         """
         super().getInitialConfig()
-        self.getAndStoreAlpacaProperty('CameraXSize', 'CCD_INFO.CCD_MAX_X')
-        self.getAndStoreAlpacaProperty('CameraYSize', 'CCD_INFO.CCD_MAX_Y')
-        self.getAndStoreAlpacaProperty('CanFastReadout', 'CAN_FAST')
-        self.getAndStoreAlpacaProperty('CanAbortExposure', 'CAN_ABORT')
-        self.getAndStoreAlpacaProperty('CanSetCCDTemperature', 'CAN_SET_CCD_TEMPERATURE')
-        self.getAndStoreAlpacaProperty('CanGetCoolerPower', 'CAN_GET_COOLER_POWER')
-        self.getAndStoreAlpacaProperty('PixelSizeX', 'CCD_INFO.CCD_PIXEL_SIZE_X')
-        self.getAndStoreAlpacaProperty('PixelSizeY', 'CCD_INFO.CCD_PIXEL_SIZE_Y')
-        self.getAndStoreAlpacaProperty('MaxBinX', 'CCD_BINNING.HOR_BIN_MAX')
-        self.getAndStoreAlpacaProperty('MaxBinY', 'CCD_BINNING.VERT_BIN_MAX')
-        self.getAndStoreAlpacaProperty('GainMax', 'CCD_INFO.GAIN_MAX')
-        self.getAndStoreAlpacaProperty('GainMin', 'CCD_INFO.GAIN_MIN')
-        self.getAndStoreAlpacaProperty('StartX', 'CCD_FRAME.X')
-        self.getAndStoreAlpacaProperty('StartY', 'CCD_FRAME.Y')
+        self.getAndStoreAlpacaProperty('cameraxsize', 'CCD_INFO.CCD_MAX_X')
+        self.getAndStoreAlpacaProperty('cameraysize', 'CCD_INFO.CCD_MAX_Y')
+        self.getAndStoreAlpacaProperty('canfastreadout', 'CAN_FAST')
+        self.getAndStoreAlpacaProperty('canabortexposure', 'CAN_ABORT')
+        self.getAndStoreAlpacaProperty('cansetccdtemperature', 'CAN_SET_CCD_TEMPERATURE')
+        self.getAndStoreAlpacaProperty('cangetcoolerpower', 'CAN_GET_COOLER_POWER')
+        self.getAndStoreAlpacaProperty('pixelsizex', 'CCD_INFO.CCD_PIXEL_SIZE_X')
+        self.getAndStoreAlpacaProperty('pixelsizey', 'CCD_INFO.CCD_PIXEL_SIZE_Y')
+        self.getAndStoreAlpacaProperty('maxBinX', 'CCD_BINNING.HOR_BIN_MAX')
+        self.getAndStoreAlpacaProperty('maxBinY', 'CCD_BINNING.VERT_BIN_MAX')
+        self.getAndStoreAlpacaProperty('gainMax', 'CCD_INFO.GAIN_MAX')
+        self.getAndStoreAlpacaProperty('gainMin', 'CCD_INFO.GAIN_MIN')
+        self.getAndStoreAlpacaProperty('startX', 'CCD_FRAME.X')
+        self.getAndStoreAlpacaProperty('startY', 'CCD_FRAME.Y')
         self.log.debug(f'Initial data: {self.data}')
 
         return True
@@ -71,18 +71,18 @@ class CameraAlpaca(AlpacaClass):
         """
         :return: true for test purpose
         """
-        self.getAndStoreAlpacaProperty('BinX', 'CCD_BINNING.HOR_BIN')
-        self.getAndStoreAlpacaProperty('BinY', 'CCD_BINNING.VERT_BIN')
-        self.getAndStoreAlpacaProperty('CameraState', 'CAMERA.STATE')
-        self.getAndStoreAlpacaProperty('Gain', 'CCD_GAIN.GAIN')
-        self.getAndStoreAlpacaProperty('Offset', 'CCD_OFFSET.OFFSET')
-        self.getAndStoreAlpacaProperty('FastReadout',
+        self.getAndStoreAlpacaProperty('binx', 'CCD_BINNING.HOR_BIN')
+        self.getAndStoreAlpacaProperty('biny', 'CCD_BINNING.VERT_BIN')
+        self.getAndStoreAlpacaProperty('camerastate', 'CAMERA.STATE')
+        self.getAndStoreAlpacaProperty('gain', 'CCD_GAIN.GAIN')
+        self.getAndStoreAlpacaProperty('offset', 'CCD_OFFSET.OFFSET')
+        self.getAndStoreAlpacaProperty('fastreadout',
                                        'READOUT_QUALITY.QUALITY_LOW',
                                        'READOUT_QUALITY.QUALITY_HIGH')
-        self.getAndStoreAlpacaProperty('CCDTemperature',
+        self.getAndStoreAlpacaProperty('ccdtemperature',
                                        'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-        self.getAndStoreAlpacaProperty('CoolerOn', 'CCD_COOLER.COOLER_ON')
-        self.getAndStoreAlpacaProperty('CoolerPower',
+        self.getAndStoreAlpacaProperty('cooleron', 'CCD_COOLER.COOLER_ON')
+        self.getAndStoreAlpacaProperty('coolerpower',
                                        'CCD_COOLER_POWER.CCD_COOLER_VALUE')
         return True
 
@@ -96,7 +96,7 @@ class CameraAlpaca(AlpacaClass):
         if not canFast:
             return False
         if fastReadout:
-            self.setAlpacaProperty('FastReadout', FastReadout=True)
+            self.setAlpacaProperty('fastreadout', FastReadout=True)
 
         quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
         self.log.debug(f'camera has readout quality entry: {quality}')
@@ -142,7 +142,7 @@ class CameraAlpaca(AlpacaClass):
             if ra is not None and dec is not None and obsTime is not None:
                 ra, dec = JNowToJ2000(ra, dec, obsTime)
 
-        self.getAlpacaProperty('startexposure', Duration=expTime, Light=True)
+        self.setAlpacaProperty('startexposure', Duration=expTime, Light=True)
         timeLeft = expTime
         while not self.getAlpacaProperty('imageready'):
             text = f'expose {timeLeft:3.0f} s'
@@ -258,7 +258,7 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.setAlpacaProperty('CoolerOn', CoolerOn=coolerOn)
+        self.setAlpacaProperty('cooleron', CoolerOn=coolerOn)
         return True
 
     def sendCoolerTemp(self, temperature=0):
@@ -273,7 +273,7 @@ class CameraAlpaca(AlpacaClass):
         if not canSetCCDTemp:
             return False
 
-        self.setAlpacaProperty('SetCCDTemperature', SetCCDTemperature=temperature)
+        self.setAlpacaProperty('setccdtemperature', SetCCDTemperature=temperature)
         return True
 
     def sendOffset(self, offset=0):
@@ -284,7 +284,7 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.setAlpacaProperty('Offset', Offset=offset)
+        self.setAlpacaProperty('offset', Offset=offset)
         return True
 
     def sendGain(self, gain=0):
@@ -295,5 +295,5 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.setAlpacaProperty('Gain', Gain=gain)
+        self.setAlpacaProperty('gain', Gain=gain)
         return True

@@ -295,6 +295,7 @@ def test_getAlpacaProperty_8():
                            return_value=Test()):
         val = app.getAlpacaProperty('test')
         assert val is None
+        assert 'test' in app.propertyExceptions
 
 
 def test_getAlpacaProperty_9():
@@ -383,6 +384,7 @@ def test_setAlpacaProperty_8():
                            return_value=Test()):
         val = app.setAlpacaProperty('test')
         assert val is None
+        assert 'test' in app.propertyExceptions
 
 
 def test_setAlpacaProperty_9():

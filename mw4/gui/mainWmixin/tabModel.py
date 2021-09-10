@@ -50,6 +50,7 @@ class Model:
         self.retryQueue = queue.Queue()
         self.collector = QMultiWait()
         self.startModeling = None
+        self.performanceTimingSignal = None
         self.modelName = ''
         self.model = []
         self.imageDir = ''
@@ -75,6 +76,10 @@ class Model:
         self.ui.retriesReverse.setChecked(config.get('retriesReverse', False))
         self.ui.parkMountAfterModel.setChecked(config.get('parkMountAfterModel', False))
         self.ui.numberBuildRetries.setValue(config.get('numberBuildRetries', 0))
+        self.ui.progressiveTiming.setChecked(config.get('progressiveTiming', False))
+        self.ui.normalTiming.setChecked(config.get('normalTiming', True))
+        self.ui.conservativeTiming.setChecked(config.get('conservativeTiming', False))
+
         return True
 
     def storeConfig(self):
@@ -85,6 +90,9 @@ class Model:
         config['retriesReverse'] = self.ui.retriesReverse.isChecked()
         config['parkMountAfterModel'] = self.ui.parkMountAfterModel.isChecked()
         config['numberBuildRetries'] = self.ui.numberBuildRetries.value()
+        config['progressiveTiming'] = self.ui.progressiveTiming.isChecked()
+        config['normalTiming'] = self.ui.normalTiming.isChecked()
+        config['conservativeTiming'] = self.ui.conservativeTiming.isChecked()
         return True
 
     def updateAlignGUI(self, model):
@@ -519,10 +527,18 @@ class Model:
         self.log.debug(t)
 
         self.collector.ready.connect(self.modelImage)
-        self.app.camera.signals.integrated.connect(self.modelSlew)
         self.app.camera.signals.saved.connect(self.modelSolve)
         self.app.astrometry.signals.done.connect(self.modelSolveDone)
         self.app.camera.signals.exposeReady.emit()
+
+        if self.ui.progressiveTiming.isChecked():
+            self.performanceTimingSignal = self.app.camera.signals.integrated
+        elif self.ui.normalTiming.isChecked():
+            self.performanceTimingSignal = self.app.camera.signals.downloaded
+        else:
+            self.performanceTimingSignal = self.app.camera.signals.saved
+
+        self.performanceTimingSignal.connect(self.modelSlew)
         return True
 
     def restoreSignalsModelDefault(self):
@@ -532,8 +548,8 @@ class Model:
 
         :return: true for test purpose
         """
+        self.performanceTimingSignal.disconnect(self.modelSlew)
         self.app.camera.signals.saved.disconnect(self.modelSolve)
-        self.app.camera.signals.integrated.disconnect(self.modelSlew)
         self.app.astrometry.signals.done.disconnect(self.modelSolveDone)
         self.collector.ready.disconnect(self.modelImage)
         self.collector.clear()

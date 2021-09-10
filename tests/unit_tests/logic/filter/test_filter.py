@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import unittest.mock as mock
 
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
@@ -55,8 +56,11 @@ def test_startCommunication_1():
 
 def test_startCommunication_2():
     app.framework = 'indi'
-    suc = app.startCommunication()
-    assert not suc
+    with mock.patch.object(app.run['indi'],
+                           'startCommunication',
+                           return_value=True):
+        suc = app.startCommunication()
+        assert not suc
 
 
 def test_stopCommunication_1():
@@ -67,8 +71,11 @@ def test_stopCommunication_1():
 
 def test_stopCommunication_2():
     app.framework = 'indi'
-    suc = app.stopCommunication()
-    assert suc
+    with mock.patch.object(app.run['indi'],
+                           'stopCommunication',
+                           return_value=True):
+        suc = app.stopCommunication()
+        assert suc
 
 
 def test_sendFilterNumber_1():

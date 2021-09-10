@@ -49,6 +49,8 @@ class SkymeterAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.data['SKY_QUALITY.SKY_TEMPERATURE'] = self.client.temperature()
-        self.data['SKY_QUALITY.SKY_BRIGHTNESS'] = self.client.skyquality()
+        self.getAndStoreAlpacaProperty('temperature',
+                                       'SKY_QUALITY.SKY_TEMPERATURE')
+        self.getAndStoreAlpacaProperty('skyquality',
+                                       'SKY_QUALITY.SKY_BRIGHTNESS')
         return True

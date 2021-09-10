@@ -43,6 +43,8 @@ class TelescopeAlpaca(AlpacaClass):
         """
         super().getInitialConfig()
 
-        self.storePropertyToData(self.client.aperturediameter(), 'TELESCOPE_INFO.TELESCOPE_APERTURE')
-        self.storePropertyToData(self.client.focallength(), 'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH')
+        self.getAndStoreAlpacaProperty('aperturediameter',
+                                       'TELESCOPE_INFO.TELESCOPE_APERTURE')
+        self.getAndStoreAlpacaProperty('focallength',
+                                       'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH')
         return True

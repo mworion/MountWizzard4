@@ -27,7 +27,6 @@ from PyQt5.QtCore import pyqtSignal
 # local import
 from logic.telescope.telescopeAlpaca import TelescopeAlpaca
 from logic.telescope.telescope import TelescopeSignals
-from base.alpacaBase import AlpacaBase
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -45,21 +44,15 @@ def module_setup_teardown():
 
 
 def test_getInitialConfig_1():
-    with mock.patch.object(AlpacaBase,
-                           'get'):
+    with mock.patch.object(app,
+                           'getAndStoreAlpacaProperty'):
         suc = app.getInitialConfig()
         assert suc
 
 
 def test_getInitialConfig_2():
-    with mock.patch.object(app.client,
-                           'aperturediameter',
+    with mock.patch.object(app,
+                           'getAndStoreAlpacaProperty',
                            return_value=100):
-        with mock.patch.object(app.client,
-                               'focallength',
-                               return_value=570):
-            suc = app.getInitialConfig()
-            assert suc
-            assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100
-            assert app.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570
-
+        suc = app.getInitialConfig()
+        assert suc

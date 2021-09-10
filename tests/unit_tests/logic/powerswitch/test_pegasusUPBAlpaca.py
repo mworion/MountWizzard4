@@ -24,7 +24,6 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 # local import
 from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
 from logic.powerswitch.pegasusUPB import PegasusUPBSignals
-from base.alpacaBase import AlpacaBase, Switch
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -40,38 +39,38 @@ def module_setup_teardown():
 
 
 def test_getInitialConfig_1():
-    with mock.patch.object(AlpacaBase,
-                           'get'):
+    with mock.patch.object(app,
+                           'getAlpacaProperty'):
         suc = app.getInitialConfig()
         assert suc
 
 
 def test_workerPollData_1():
     app.deviceConnected = False
-    with mock.patch.object(AlpacaBase,
-                           'get'):
+    with mock.patch.object(app,
+                           'getAlpacaProperty'):
         suc = app.workerPollData()
         assert not suc
 
 
 def test_workerPollData_2():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'get'):
-        with mock.patch.object(Switch,
-                               'maxswitch',
-                               return_value=15):
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
+                           return_value = 15):
+        with mock.patch.object(app,
+                               'storePropertyToData'):
             suc = app.workerPollData()
             assert suc
 
 
 def test_workerPollData_3():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'get'):
-        with mock.patch.object(Switch,
-                               'maxswitch',
-                               return_value=21):
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
+                           return_value=21):
+        with mock.patch.object(app,
+                               'storePropertyToData'):
             suc = app.workerPollData()
             assert suc
 
@@ -90,8 +89,8 @@ def test_togglePowerPort_2():
 
 def test_togglePowerPort_3():
     app.deviceConnected = True
-    with mock.patch.object(app.client,
-                           'setswitchvalue'):
+    with mock.patch.object(app,
+                           'setAlpacaProperty'):
         suc = app.togglePowerPort('1')
         assert suc
 
@@ -134,15 +133,13 @@ def test_togglePortUSB_2():
 
 def test_togglePortUSB_3():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'put'):
-        with mock.patch.object(app.client,
-                               'maxswitch',
-                               return_value=21):
-            with mock.patch.object(app.client,
-                                   'setswitchvalue'):
-                suc = app.togglePortUSB('1')
-                assert suc
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
+                           return_value=21):
+        with mock.patch.object(app,
+                               'setAlpacaProperty'):
+            suc = app.togglePortUSB('1')
+            assert suc
 
 
 def test_toggleAutoDew_1():
@@ -153,28 +150,24 @@ def test_toggleAutoDew_1():
 
 def test_toggleAutoDew_2():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'put'):
-        with mock.patch.object(app.client,
-                               'maxswitch',
-                               return_value=21):
-            with mock.patch.object(app.client,
-                                   'setswitchvalue'):
-                suc = app.toggleAutoDew()
-                assert suc
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
+                           return_value=21):
+        with mock.patch.object(app,
+                               'setAlpacaProperty'):
+            suc = app.toggleAutoDew()
+            assert suc
 
 
 def test_toggleAutoDew_3():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'put'):
-        with mock.patch.object(app.client,
-                               'maxswitch',
-                               return_value=15):
-            with mock.patch.object(app.client,
-                                   'setswitchvalue'):
-                suc = app.toggleAutoDew()
-                assert suc
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
+                           return_value=15):
+        with mock.patch.object(app,
+                               'setAlpacaProperty'):
+            suc = app.toggleAutoDew()
+            assert suc
 
 
 def test_sendDew_1():
@@ -197,15 +190,13 @@ def test_sendDew_3():
 
 def test_sendDew_4():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'put'):
-        with mock.patch.object(app.client,
-                               'maxswitch',
-                               return_value=21):
-            with mock.patch.object(app.client,
-                                   'setswitchvalue'):
-                suc = app.sendDew('1', 10)
-                assert suc
+    with mock.patch.object(app,
+                           'getAlpacaProperty',
+                           return_value=21):
+        with mock.patch.object(app,
+                               'setAlpacaProperty'):
+            suc = app.sendDew('1', 10)
+            assert suc
 
 
 def test_sendAdjustableOutput_1():

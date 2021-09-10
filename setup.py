@@ -20,7 +20,7 @@ import platform
 
 releaseNotes = """
 - improvement: GUI for earth rotation data update, now downloads
-- improvement performance for threads.
+- improvement: performance for threads.
  """
 
 with open('notes.txt', 'w') as f:

@@ -108,6 +108,8 @@ class ObsSite(object):
         self._sidereal = None
         self._angularPosRA = None
         self._angularPosDEC = None
+        self._errorAngularPosRA = None
+        self._errorAngularPosDEC = None
         self._angularPosRATarget = None
         self._angularPosDECTarget = None
         self._pierside = None
@@ -313,6 +315,28 @@ class ObsSite(object):
         self._angularPosDEC = valueToAngle(value, preference='degrees')
 
     @property
+    def errorAngularPosRA(self):
+        return self._errorAngularPosRA
+
+    @errorAngularPosRA.setter
+    def errorAngularPosRA(self, value):
+        if isinstance(value, Angle):
+            self._errorAngularPosRA = value
+            return
+        self._errorAngularPosRA = valueToAngle(value, preference='degrees')
+
+    @property
+    def errorAngularPosDEC(self):
+        return self._errorAngularPosDEC
+
+    @errorAngularPosDEC.setter
+    def errorAngularPosDEC(self, value):
+        if isinstance(value, Angle):
+            self._errorAngularPosDEC = value
+            return
+        self._errorAngularPosDEC = valueToAngle(value, preference='degrees')
+
+    @property
     def angularPosRATarget(self):
         return self._angularPosRATarget
 
@@ -508,10 +532,8 @@ class ObsSite(object):
         self.timeSidereal = response[0]
         # remove the leap seconds flag if present
         self.ut1_utc = response[1].replace('L', '')
-        self.angularPosRA = response[2]
-        self.angularPosDEC = response[3]
-        self.statusSat = response[4]
-        responseSplit = response[5].split(',')
+        self.statusSat = response[2]
+        responseSplit = response[3].split(',')
         self.raJNow = responseSplit[0]
         self.decJNow = responseSplit[1]
         self.pierside = responseSplit[2]
@@ -520,6 +542,11 @@ class ObsSite(object):
         self.timeJD = responseSplit[5]
         self.status = responseSplit[6]
         self.statusSlew = (responseSplit[7] == '1')
+        responseSplit = response[4].split(',')
+        self.angularPosRA = responseSplit[1]
+        self.angularPosDEC = responseSplit[2]
+        self.errorAngularPosRA = responseSplit[3]
+        self.errorAngularPosDEC = responseSplit[4]
         return True
 
     def pollPointing(self):
@@ -530,7 +557,7 @@ class ObsSite(object):
         :return: success:   True if ok, False if not
         """
         conn = Connection(self.host)
-        commandString = ':U2#:GS#:GDUT#:GaXa#:GaXb#:TLESCK#:Ginfo#'
+        commandString = ':U2#:GS#:GDUT#:TLESCK#:Ginfo#:GaE#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False

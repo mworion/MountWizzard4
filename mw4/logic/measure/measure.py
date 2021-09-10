@@ -131,8 +131,6 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.data['time'] = np.empty(shape=[0, 1], dtype='datetime64')
         self.data['deltaRaJNow'] = np.empty(shape=[0, 1])
         self.data['deltaDecJNow'] = np.empty(shape=[0, 1])
-        self.data['deltaAngularPosRA'] = np.empty(shape=[0, 1])
-        self.data['deltaAngularPosDEC'] = np.empty(shape=[0, 1])
         self.data['errorAngularPosRA'] = np.empty(shape=[0, 1])
         self.data['errorAngularPosDEC'] = np.empty(shape=[0, 1])
         self.data['status'] = np.empty(shape=[0, 1])
@@ -189,14 +187,13 @@ class MeasureData(PyQt5.QtCore.QObject):
         hasMean = length > 0 and period > 0
 
         if not hasMean:
-            return raJNow, decJNow, angPosRa, angPosDec, errAngPosRa, errAngPosDec
+            return raJNow, decJNow, errAngPosRa, errAngPosDec
 
         periodData = dat['status'][-period:]
         hasValidData = all(x is not None for x in periodData)
 
         if hasValidData:
             trackingIsStable = (periodData.mean() == 0)
-
         else:
             trackingIsStable = False
 
@@ -205,19 +202,9 @@ class MeasureData(PyQt5.QtCore.QObject):
                 self.raRef = obs.raJNow._degrees
             if self.decRef is None:
                 self.decRef = obs.decJNow.degrees
-            if self.angularPosRaRef is None:
-                self.angularPosRaRef = obs.angularPosRA.degrees
-            if self.angularPosDecRef is None:
-                self.angularPosDecRef = obs.angularPosDEC.degrees
 
-            # we would like to have the difference in arcsec
             raJNow = (obs.raJNow._degrees - self.raRef) * 3600
             decJNow = (obs.decJNow.degrees - self.decRef) * 3600
-
-            # we would like to have the difference in arcsec
-            angPosRa = (obs.angularPosRA.degrees - self.angularPosRaRef) * 3600
-            angPosDec = (obs.angularPosDEC.degrees - self.angularPosDecRef) * 3600
-
         else:
             self.raRef = None
             self.decRef = None
@@ -226,8 +213,7 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         errAngPosRa = obs.errorAngularPosRA.degrees * 3600
         errAngPosDec = obs.errorAngularPosDEC.degrees * 3600
-
-        return raJNow, decJNow, angPosRa, angPosDec, errAngPosRa, errAngPosDec
+        return raJNow, decJNow, errAngPosRa, errAngPosDec
 
     def checkStart(self, lenData):
         """
@@ -236,7 +222,6 @@ class MeasureData(PyQt5.QtCore.QObject):
         :param lenData:
         :return: True for test purpose
         """
-
         if self.shorteningStart and lenData > 2:
             self.shorteningStart = False
             for measure in self.data:
@@ -254,7 +239,6 @@ class MeasureData(PyQt5.QtCore.QObject):
         :param lenData:
         :return: True if splitting happens
         """
-
         if lenData < self.MAXSIZE:
             return False
 
@@ -269,7 +253,6 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         :return: values
         """
-
         temp = self.app.mount.setting.weatherTemperature
         if temp is None:
             temp = 0
@@ -298,7 +281,6 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         :return: success
         """
-
         if not self.mutexMeasure.tryLock():
             self.log.debug('overrun in measure')
             return False
@@ -306,19 +288,14 @@ class MeasureData(PyQt5.QtCore.QObject):
         lenData = len(self.data['time'])
         self.checkStart(lenData)
         self.checkSize(lenData)
-
         dat = self.data
-
         # gathering all the necessary data
-        t = self.calculateReference()
-        raJNowD, decJNowD, angPosRAD, angPosDECD, errAngPosRAD, errAngPosDECD = t
+        raJNowD, decJNowD, errAngPosRAD, errAngPosDECD = self.calculateReference()
 
         timeStamp = self.app.mount.obsSite.timeJD.utc_datetime().replace(tzinfo=None)
         dat['time'] = np.append(dat['time'], np.datetime64(timeStamp))
         dat['deltaRaJNow'] = np.append(dat['deltaRaJNow'], raJNowD)
         dat['deltaDecJNow'] = np.append(dat['deltaDecJNow'], decJNowD)
-        dat['deltaAngularPosRA'] = np.append(dat['deltaAngularPosRA'], angPosRAD)
-        dat['deltaAngularPosDEC'] = np.append(dat['deltaAngularPosDEC'], angPosDECD)
         dat['errorAngularPosRA'] = np.append(dat['errorAngularPosRA'], errAngPosRAD)
         dat['errorAngularPosDEC'] = np.append(dat['errorAngularPosDEC'], errAngPosDECD)
         dat['status'] = np.append(dat['status'], self.app.mount.obsSite.status)

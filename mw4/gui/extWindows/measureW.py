@@ -59,8 +59,6 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.plotFunc = {'No chart': None,
                          'RA Stability': self.plotRa,
                          'DEC Stability': self.plotDec,
-                         'RA Angular Stability': self.plotAngularPosRa,
-                         'DEC Angular Stability': self.plotAngularPosDec,
                          'RA Angular Error': self.plotErrorAngularPosRa,
                          'DEC Angular Error': self.plotErrorAngularPosDec,
                          'Temperature': self.plotTemperature,
@@ -285,76 +283,6 @@ class MeasureWindow(toolsQtWidget.MWidget):
                        fontsize=12)
         axe.plot(data['time'][start:-1:cycle],
                  data['deltaDecJNow'][start:-1:cycle],
-                 marker=None,
-                 markersize=3,
-                 color=self.M_WHITE,
-                 )
-        axe.grid(True, color=self.M_GREY, alpha=1)
-        axe.set_ylim(-4, 4)
-        axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
-                                                             integer=True,
-                                                             min_n_ticks=4,
-                                                             prune='both',
-                                                             ))
-        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
-                                                                      ))
-        return True
-
-    def plotAngularPosRa(self, axe=None, title='', data=None, cycle=None):
-        """
-        :param axe: axe for plotting
-        :param title: title text
-        :param data: data location
-        :param cycle: cycle time for measurement
-        :return: success
-        """
-        ylabel = 'Delta RA Angular [arcsec]'
-        start = -self.NUMBER_POINTS * cycle
-        axe.set_title(title,
-                      color=self.M_BLUE,
-                      fontweight='bold',
-                      fontsize=16)
-        axe.set_ylabel(ylabel,
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.plot(data['time'][start:-1:cycle],
-                 data['deltaAngularPosRA'][start:-1:cycle],
-                 marker=None,
-                 markersize=3,
-                 color=self.M_WHITE,
-                 )
-        axe.grid(True, color=self.M_GREY, alpha=1)
-        axe.set_ylim(-4, 4)
-        axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
-                                                             integer=True,
-                                                             min_n_ticks=4,
-                                                             prune='both',
-                                                             ))
-        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
-                                                                      ))
-        return True
-
-    def plotAngularPosDec(self, axe=None, title='', data=None, cycle=None):
-        """
-        :param axe: axe for plotting
-        :param title: title text
-        :param data: data location
-        :param cycle: cycle time for measurement
-        :return: success
-        """
-        ylabel = 'Delta DEC Angular [arcsec]'
-        start = -self.NUMBER_POINTS * cycle
-        axe.set_title(title,
-                      color=self.M_BLUE,
-                      fontweight='bold',
-                      fontsize=16)
-        axe.set_ylabel(ylabel,
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.plot(data['time'][start:-1:cycle],
-                 data['deltaAngularPosDEC'][start:-1:cycle],
                  marker=None,
                  markersize=3,
                  color=self.M_WHITE,

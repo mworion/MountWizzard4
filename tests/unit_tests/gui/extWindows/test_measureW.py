@@ -63,8 +63,6 @@ def function(module):
         'skyTemp': np.full([5, 1], 1.0),
         'deltaRaJNow': np.full([5, 1], 1.0),
         'deltaDecJNow': np.full([5, 1], 1.0),
-        'deltaAngularPosRA': np.full([5, 1], 1.0),
-        'deltaAngularPosDEC': np.full([5, 1], 1.0),
         'errorAngularPosRA': np.full([5, 1], 1.0),
         'errorAngularPosDEC': np.full([5, 1], 1.0),
         'status': np.full([5, 1], 1.0),
@@ -200,30 +198,6 @@ def test_plotDec_1(function):
                            data=function.app.measure.data,
                            cycle=1,
                            )
-    assert suc
-
-
-def test_plotAngularPosRA_1(function):
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotAngularPosRa(axe=axe,
-                                    title='test',
-                                    data=function.app.measure.data,
-                                    cycle=1,
-                                    )
-    assert suc
-
-
-def test_plotAngularPosDec_1(function):
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotAngularPosDec(axe=axe,
-                                     title='test',
-                                     data=function.app.measure.data,
-                                     cycle=1,
-                                     )
     assert suc
 
 

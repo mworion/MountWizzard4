@@ -82,6 +82,8 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
                       'deltaDecJNow',
                       'deltaAngularPosRA',
                       'deltaAngularPosDEC',
+                      'errorAngularPosRA',
+                      'errorAngularPosDEC',
                       'status',
                       'sensorWeatherTemp',
                       'sensorWeatherHum',

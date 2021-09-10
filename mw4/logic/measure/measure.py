@@ -133,6 +133,8 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.data['deltaDecJNow'] = np.empty(shape=[0, 1])
         self.data['deltaAngularPosRA'] = np.empty(shape=[0, 1])
         self.data['deltaAngularPosDEC'] = np.empty(shape=[0, 1])
+        self.data['errorAngularPosRA'] = np.empty(shape=[0, 1])
+        self.data['errorAngularPosDEC'] = np.empty(shape=[0, 1])
         self.data['status'] = np.empty(shape=[0, 1])
         self.data['sensorWeatherTemp'] = np.empty(shape=[0, 1])
         self.data['sensorWeatherHum'] = np.empty(shape=[0, 1])
@@ -176,16 +178,18 @@ class MeasureData(PyQt5.QtCore.QObject):
         decJNow = 0
         angPosRa = 0
         angPosDec = 0
+        errAngPosRa = 0
+        errAngPosDec = 0
 
         if obs.raJNow is None:
-            return raJNow, decJNow, angPosRa, angPosDec
+            return raJNow, decJNow, angPosRa, angPosDec, errAngPosRa, errAngPosDec
 
         length = len(dat['status'])
         period = min(length, 10)
         hasMean = length > 0 and period > 0
 
         if not hasMean:
-            return raJNow, decJNow, angPosRa, angPosDec
+            return raJNow, decJNow, angPosRa, angPosDec, errAngPosRa, errAngPosDec
 
         periodData = dat['status'][-period:]
         hasValidData = all(x is not None for x in periodData)
@@ -220,7 +224,10 @@ class MeasureData(PyQt5.QtCore.QObject):
             self.angularPosRaRef = None
             self.angularPosDecRef = None
 
-        return raJNow, decJNow, angPosRa, angPosDec
+        errAngPosRa = obs.errorAngularPosRA.degrees * 3600
+        errAngPosDec = obs.errorAngularPosDEC.degrees * 3600
+
+        return raJNow, decJNow, angPosRa, angPosDec, errAngPosRa, errAngPosDec
 
     def checkStart(self, lenData):
         """
@@ -303,13 +310,17 @@ class MeasureData(PyQt5.QtCore.QObject):
         dat = self.data
 
         # gathering all the necessary data
-        raJNowD, decJNowD, angularPosRAD, angularPosDECD = self.calculateReference()
+        t = self.calculateReference()
+        raJNowD, decJNowD, angPosRAD, angPosDECD, errAngPosRAD, errAngPosDECD = t
+
         timeStamp = self.app.mount.obsSite.timeJD.utc_datetime().replace(tzinfo=None)
         dat['time'] = np.append(dat['time'], np.datetime64(timeStamp))
         dat['deltaRaJNow'] = np.append(dat['deltaRaJNow'], raJNowD)
         dat['deltaDecJNow'] = np.append(dat['deltaDecJNow'], decJNowD)
-        dat['deltaAngularPosRA'] = np.append(dat['deltaAngularPosRA'], angularPosRAD)
-        dat['deltaAngularPosDEC'] = np.append(dat['deltaAngularPosDEC'], angularPosDECD)
+        dat['deltaAngularPosRA'] = np.append(dat['deltaAngularPosRA'], angPosRAD)
+        dat['deltaAngularPosDEC'] = np.append(dat['deltaAngularPosDEC'], angPosDECD)
+        dat['errorAngularPosRA'] = np.append(dat['errorAngularPosRA'], errAngPosRAD)
+        dat['errorAngularPosDEC'] = np.append(dat['errorAngularPosDEC'], errAngPosDECD)
         dat['status'] = np.append(dat['status'], self.app.mount.obsSite.status)
 
         sens = self.app.sensorWeather

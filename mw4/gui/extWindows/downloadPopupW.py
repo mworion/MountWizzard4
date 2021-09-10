@@ -179,6 +179,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         """
         :return:
         """
+        self.setVisible(False)
         if result:
             self.callBack()
 

@@ -25,6 +25,7 @@ from PyQt5.QtGui import QGuiApplication, QCursor
 import numpy as np
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
+import matplotlib.cm
 from PIL import Image
 
 # local import
@@ -248,7 +249,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         :param event:
         :return:
         """
-
         geometry = self.ui.hemisphere.geometry()
         newGeometry = QRect(0, 0, geometry.width(), geometry.height())
         self.ui.hemisphereMove.setGeometry(newGeometry)
@@ -352,7 +352,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         if obsSite.Alt is None or obsSite.Az is None:
             self.pointerAltAz.set_visible(False)
             return False
-
         else:
             self.pointerAltAz.set_visible(True)
 
@@ -372,7 +371,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         if obsSite.Alt is None or obsSite.Az is None:
             self.pointerPolarAltAz.set_visible(False)
             return False
-
         else:
             self.pointerPolarAltAz.set_visible(True)
 
@@ -392,7 +390,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         """
         if self.pointerDome is None:
             return False
-
         if not isinstance(azimuth, (int, float)):
             self.pointerDome.set_visible(False)
             return False
@@ -413,7 +410,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             color = self.MODE[self.operationMode]['buildPColor']
             mSize = 9
             annotationText = f'{index + 1:2d}'
-
         else:
             marker = '$\u2714$'
             color = self.M_YELLOW
@@ -483,13 +479,19 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.starsAlignAnnotate = list()
 
         for alt, az, name in zip(hip.alt, hip.az, hip.name):
+            if self.operationMode == 'star':
+                rel = self.calculateRelevance(alt=alt, az=az)
+                fontColor, fontSize = self.selectFontParam(rel)
+            else:
+                fontSize = 12
+                fontColor = self.M_WHITE_L
             annotation = axes.annotate(name,
                                        xy=(az, alt),
                                        xytext=(2, 2),
                                        textcoords='offset points',
                                        xycoords='data',
-                                       color=self.M_WHITE_L,
-                                       fontsize=12,
+                                       color=fontColor,
+                                       fontsize=fontSize,
                                        zorder=30,
                                        clip_on=True,
                                        )
@@ -586,14 +588,12 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         :return:
         """
         points = self.app.data.buildP
-
         if not points:
             return False
 
         if polar:
             self.pointsPolarBuild = list()
             self.pointsPolarBuildAnnotate = list()
-
         else:
             self.pointsBuild = list()
             self.pointsBuildAnnotate = list()
@@ -610,7 +610,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                     axes.plot(np.radians((points[index - 1][1], points[index][1])),
                               (90 - points[index - 1][0], 90 - points[index][0]),
                               ls=':', lw=1, color=self.M_WHITE, zorder=40)
-
                 else:
                     axes.plot((points[index - 1][1], points[index][1]),
                               (points[index - 1][0], points[index][0]),
@@ -625,7 +624,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                zorder=40,
                                )
                 self.pointsPolarBuild.append(p)
-
             else:
                 p, = axes.plot(az, alt,
                                marker=marker,
@@ -645,7 +643,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                            zorder=40,
                                            )
                 self.pointsPolarBuildAnnotate.append(annotation)
-
             else:
                 annotation = axes.annotate(text,
                                            xy=(az, alt),
@@ -697,7 +694,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         """
         slew = self.app.mount.setting.meridianLimitSlew
         track = self.app.mount.setting.meridianLimitTrack
-
         if slew is None or track is None:
             return False
 
@@ -726,13 +722,11 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         """
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
-
         else:
             high = 90
 
         if self.app.mount.setting.horizonLimitLow is not None:
             low = self.app.mount.setting.horizonLimitLow
-
         else:
             low = 0
 
@@ -809,7 +803,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
             if self.ui.checkUseTerrain.isChecked():
                 self.staticTerrainMask(axes=axes, polar=polar)
-
         else:
             if self.ui.checkUseHorizon.isChecked():
                 self.staticHorizon(axes=axes)
@@ -851,7 +844,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                 clip_on=False,
                                                 visible=False,
                                                 )
-
         else:
             self.pointerAltAz, = axes.plot(180, 45,
                                            zorder=10,
@@ -863,7 +855,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                            clip_on=False,
                                            visible=False,
                                            )
-
             self.pointerDome = mpatches.Rectangle((165, 1),
                                                   30,
                                                   88,
@@ -875,6 +866,29 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                   visible=False)
             axes.add_patch(self.pointerDome)
         return True
+
+    @staticmethod
+    def calculateRelevance(alt=None, az=None):
+        """
+        :param alt:
+        :param az:
+        :return:
+        """
+        altFak = 1 - np.minimum(np.abs(alt - 40), 30) / 30
+        azFak = 1 - np.minimum(np.abs(az - 180), 180) / 180
+        sumFak = np.sqrt(altFak * azFak)
+        return sumFak
+
+    @staticmethod
+    def selectFontParam(relevance):
+        """
+        :param relevance:
+        :return: calculated color
+        """
+        colorMap = matplotlib.cm.get_cmap('RdYlGn')
+        color = colorMap(relevance)
+        size = 10 + int(relevance * 5)
+        return color, size
 
     def drawAlignmentStars(self, axes=None):
         """
@@ -895,21 +909,27 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.starsAlign, = axes.plot(hip.az,
                                      hip.alt,
                                      marker=self.markerStar(),
-                                     markersize=7,
+                                     markersize=8,
                                      linestyle='None',
                                      color=self.MODE[self.operationMode]['starColor'],
                                      zorder=30,
                                      )
 
         for alt, az, name in zip(hip.alt, hip.az, hip.name):
+            if self.operationMode == 'star':
+                rel = self.calculateRelevance(alt=alt, az=az)
+                fontColor, fontSize = self.selectFontParam(rel)
+            else:
+                fontSize = 12
+                fontColor = self.M_WHITE_L
             annotation = axes.annotate(name,
                                        xy=(az, alt),
                                        xytext=(2, 2),
                                        textcoords='offset points',
                                        xycoords='data',
-                                       color=self.M_WHITE_L,
+                                       color=fontColor,
                                        zorder=30,
-                                       fontsize=12,
+                                       fontsize=fontSize,
                                        clip_on=True,
                                        )
             self.starsAlignAnnotate.append(annotation)
@@ -966,7 +986,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
         if self.ui.checkShowAlignStar.isChecked():
             self.drawAlignmentStars(axes=axe)
-
         else:
             self.starsAlign = None
             self.starsAlignAnnotate = None

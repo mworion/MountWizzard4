@@ -119,6 +119,38 @@ def test_showWindow_1(function):
             assert suc
 
 
+def test_calculateRelevance_1(function):
+    val = function.calculateRelevance(40, 180)
+    assert val == 1
+
+
+def test_calculateRelevance_2(function):
+    val = function.calculateRelevance(0, 0)
+    assert val == 0
+
+
+def test_calculateRelevance_3(function):
+    val = function.calculateRelevance(20, 180)
+    assert val > 0
+
+
+def test_calculateRelevance_4(function):
+    val = function.calculateRelevance(40, 10)
+    assert val > 0
+
+
+def test_selectFontParam_1(function):
+    col, size = function.selectFontParam(0)
+    assert col == (0.6470588235294118, 0.0, 0.14901960784313725, 1.0)
+    assert size == 10
+
+
+def test_selectFontParam_2(function):
+    col, size = function.selectFontParam(1)
+    assert col == (0.6547481737793157, 0.007381776239907728, 0.14917339484813533, 1.0)
+    assert size == 15
+
+
 def test_togglePolar_1(function):
     suc = function.togglePolar()
     assert suc

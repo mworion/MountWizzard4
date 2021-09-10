@@ -299,6 +299,29 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.show()
         return True
 
+    @staticmethod
+    def calculateRelevance(alt=None, az=None):
+        """
+        :param alt:
+        :param az:
+        :return:
+        """
+        altFak = 1 - np.minimum(np.abs(alt - 40), 30) / 30
+        azFak = 1 - np.minimum(np.abs(az - 180), 180) / 180
+        sumFak = np.sqrt(altFak * azFak)
+        return sumFak
+
+    @staticmethod
+    def selectFontParam(relevance):
+        """
+        :param relevance:
+        :return: calculated color
+        """
+        colorMap = matplotlib.cm.get_cmap('RdYlGn')
+        color = colorMap(relevance)
+        size = 10 + int(relevance * 5)
+        return color, size
+
     def togglePolar(self):
         """
         :return: success
@@ -866,29 +889,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                   visible=False)
             axes.add_patch(self.pointerDome)
         return True
-
-    @staticmethod
-    def calculateRelevance(alt=None, az=None):
-        """
-        :param alt:
-        :param az:
-        :return:
-        """
-        altFak = 1 - np.minimum(np.abs(alt - 40), 30) / 30
-        azFak = 1 - np.minimum(np.abs(az - 180), 180) / 180
-        sumFak = np.sqrt(altFak * azFak)
-        return sumFak
-
-    @staticmethod
-    def selectFontParam(relevance):
-        """
-        :param relevance:
-        :return: calculated color
-        """
-        colorMap = matplotlib.cm.get_cmap('RdYlGn')
-        color = colorMap(relevance)
-        size = 10 + int(relevance * 5)
-        return color, size
 
     def drawAlignmentStars(self, axes=None):
         """

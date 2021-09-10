@@ -343,6 +343,26 @@ class TestConfigData(unittest.TestCase):
         obsSite.angularPosDEC = Angle(degrees=12)
         assert obsSite.angularPosDEC.degrees == 12
 
+    def test_errorAngularPosRA_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite.errorAngularPosRA = 12
+        assert obsSite.errorAngularPosRA.degrees == 12
+
+    def test_errorAngularPosRA_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite.errorAngularPosRA = Angle(degrees=12)
+        assert obsSite.errorAngularPosRA.degrees == 12
+
+    def test_errorAngularPosDEC_1(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite.errorAngularPosDEC = 12
+        assert obsSite.errorAngularPosDEC.degrees == 12
+
+    def test_errorAngularPosDEC_2(self):
+        obsSite = ObsSite(pathToData=pathToData)
+        obsSite.errorAngularPosDEC = Angle(degrees=12)
+        assert obsSite.errorAngularPosDEC.degrees == 12
+
     def test_angularPosRATarget_1(self):
         obsSite = ObsSite(pathToData=pathToData)
         obsSite.angularPosRATarget = 12

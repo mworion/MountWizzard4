@@ -39,6 +39,7 @@ class CameraSignals(PyQt5.QtCore.QObject):
     integrated = PyQt5.QtCore.pyqtSignal()
     downloaded = PyQt5.QtCore.pyqtSignal()
     saved = PyQt5.QtCore.pyqtSignal(object)
+    exposeReady = PyQt5.QtCore.pyqtSignal()
     message = PyQt5.QtCore.pyqtSignal(object)
 
     serverConnected = PyQt5.QtCore.pyqtSignal()
@@ -59,9 +60,6 @@ class Camera:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = CameraSignals()
-        # todo: to be removed
-        self.exposing = False
-
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
@@ -94,9 +92,6 @@ class Camera:
         indiSignals.serverDisconnected.connect(self.signals.serverDisconnected)
         indiSignals.deviceConnected.connect(self.signals.deviceConnected)
         indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
-
-        # todo: to be removed
-        self.signals.saved.connect(self.resetExposed)
 
     def startCommunication(self, loadConfig=False):
         """
@@ -185,14 +180,6 @@ class Camera:
         else:
             return False
 
-    # todo: to be removed
-    def resetExposed(self):
-        """
-        :return: True for test purpose
-        """
-        self.exposing = False
-        return True
-
     def expose(self,
                imagePath='',
                expTime=3,
@@ -224,14 +211,6 @@ class Camera:
 
         posX, posY, width, height = result
 
-        # todo: to be removed with new signal combination
-        # this protects against overrun
-        if self.exposing:
-            self.log.warning('Expose overrun happened')
-        while self.exposing:
-            QTest.qWait(250)
-        self.exposing = True
-
         text = f'Image bin:{binning}, posX:{posX}, posY:{posY}'
         text += f', width:{width}, height:{height}, fast:{fastReadout}'
         self.log.debug(text)
@@ -250,8 +229,6 @@ class Camera:
         """
         :return: success
         """
-        # todo: to be removed
-        self.exposing = False
         if self.framework not in self.run.keys():
             return False
 

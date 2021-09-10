@@ -19,6 +19,7 @@
 import platform
 import os
 import re
+import logging
 
 # external packages
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
@@ -61,6 +62,7 @@ class QMultiWait(QObject):
     in addition all received signals could be reset
     """
     ready = pyqtSignal()
+    log = logging.getLogger(__name__)
 
     def __init__(self):
         super().__init__()
@@ -75,8 +77,10 @@ class QMultiWait(QObject):
     def checkSignal(self):
         sender = self.sender()
         self.waitready.add(sender)
+        self.log.debug(f'QMultiWait [{self}]: [{self.waitready}]')
 
         if len(self.waitready) == len(self.waitable):
+            self.log.debug(f'Firing QMultiWait for [{self}]')
             self.ready.emit()
 
     def resetSignals(self):

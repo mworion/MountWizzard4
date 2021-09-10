@@ -99,7 +99,7 @@ class CameraAlpaca(AlpacaClass):
             self.setAlpacaProperty('fastreadout', FastReadout=True)
 
         quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
-        self.log.debug(f'camera has readout quality entry: {quality}')
+        self.log.debug(f'Camera has readout quality entry: {quality}')
 
         return True
 
@@ -211,6 +211,7 @@ class CameraAlpaca(AlpacaClass):
             imagePath = ''
 
         self.signals.saved.emit(imagePath)
+        self.signals.exposeReady.emit()
         self.signals.message.emit('')
 
         return True

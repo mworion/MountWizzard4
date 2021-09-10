@@ -379,6 +379,20 @@ def test_updateAlignStar_5(function):
     assert suc
 
 
+def test_updateAlignStar_6(function):
+    function.ui.checkShowAlignStar.setChecked(True)
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.starsAlign, = axe.plot(0, 0)
+    function.starsAlignAnnotate = [axe.annotate('test', (0, 0))]
+    function.app.hipparcos.alt = [1]
+    function.app.hipparcos.az = [1]
+    function.app.hipparcos.name = ['test']
+
+    function.operationMode = 'star'
+    suc = function.updateAlignStar()
+    assert suc
+
+
 def test_clearHemisphere(function):
     with mock.patch.object(function,
                            'drawHemisphere'):
@@ -603,6 +617,17 @@ def test_drawAlignmentStars_1(function):
 
 
 def test_drawAlignmentStars_2(function):
+    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
+    function.app.hipparcos.alt = [1]
+    function.app.hipparcos.az = [1]
+    function.app.hipparcos.name = ['test']
+
+    suc = function.drawAlignmentStars(axe)
+    assert suc
+
+
+def test_drawAlignmentStars_3(function):
+    function.operationMode = 'star'
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.app.hipparcos.alt = [1]
     function.app.hipparcos.az = [1]

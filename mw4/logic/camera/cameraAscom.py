@@ -98,7 +98,7 @@ class CameraAscom(AscomClass):
 
         isQualityHigh = self.data.get('READOUT_QUALITY.QUALITY_HIGH', True)
         qualityText = 'High' if isQualityHigh else 'Low'
-        self.log.debug(f'camera has readout quality entry: {qualityText}')
+        self.log.debug(f'Camera has readout quality entry: {qualityText}')
         return True
 
     def workerExpose(self,
@@ -201,6 +201,7 @@ class CameraAscom(AscomClass):
             imagePath = ''
 
         self.signals.saved.emit(imagePath)
+        self.signals.exposeReady.emit()
         self.signals.message.emit('')
 
         return True

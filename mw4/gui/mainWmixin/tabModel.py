@@ -505,6 +505,7 @@ class Model:
         :return: true for test purpose
         """
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
+        self.collector.addWaitableSignal(self.app.camera.signals.exposeReady)
 
         hasDome = self.deviceStat.get('dome', False)
         hasAzimuth = 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION' in self.app.dome.data
@@ -514,10 +515,14 @@ class Model:
         elif hasDome and not hasAzimuth:
             self.app.message.emit('Dome without azimuth value used', 2)
 
+        t = f'Modeling config dome:[{hasDome}], hasAzimuth:[{hasAzimuth}]'
+        self.log.debug(t)
+
         self.collector.ready.connect(self.modelImage)
         self.app.camera.signals.integrated.connect(self.modelSlew)
         self.app.camera.signals.saved.connect(self.modelSolve)
         self.app.astrometry.signals.done.connect(self.modelSolveDone)
+        self.app.camera.signals.exposeReady.emit()
         return True
 
     def restoreSignalsModelDefault(self):

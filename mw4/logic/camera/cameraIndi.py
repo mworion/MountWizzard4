@@ -111,23 +111,20 @@ class CameraIndi(IndiClass):
   
         :return: success
         """
-        if not hasattr(self.device, 'CCD_EXPOSURE'):
-            return False
-
+        THRESHOLD = 0.00001
         value = self.data.get('CCD_EXPOSURE.CCD_EXPOSURE_VALUE')
         if self.device.CCD_EXPOSURE['state'] == 'Busy':
-            if value is None:
-                return False
-            elif value == 0:
+            if value <= THRESHOLD:
                 if not self.isDownloading:
                     self.signals.integrated.emit()
                 self.isDownloading = True
                 self.signals.message.emit('download')
-            else:
+            elif value > THRESHOLD:
                 self.signals.message.emit(f'expose {value:2.0f} s')
+            else:
+                return False
 
         elif self.device.CCD_EXPOSURE['state'] in ['Idle', 'Ok']:
-            del(self.data['CCD_EXPOSURE.CCD_EXPOSURE_VALUE'])
             self.signals.downloaded.emit()
             self.signals.message.emit('')
             self.isDownloading = False
@@ -164,6 +161,15 @@ class CameraIndi(IndiClass):
         header['DEC'] = self.dec.degrees
         return header
 
+    def workerSaveBlobSignalsFinished(self):
+        """
+        :return:
+        """
+        self.signals.saved.emit(self.imagePath)
+        self.signals.exposeReady.emit()
+        self.signals.message.emit('')
+        return True
+
     def workerSaveBLOB(self, data):
         """
         :param data:
@@ -183,16 +189,11 @@ class CameraIndi(IndiClass):
 
         else:
             self.log.info('Image BLOB is not supported')
-            self.signals.saved.emit(self.imagePath)
-            self.signals.message.emit('')
             return True
 
         HDU[0].header = self.updateHeaderInfo(HDU[0].header)
         fits.writeto(self.imagePath, HDU[0].data, HDU[0].header,
                      overwrite=True, output_verify='silentfix+warn')
-
-        self.signals.saved.emit(self.imagePath)
-        self.signals.message.emit('')
         return True
 
     def updateBLOB(self, deviceName, propertyName):
@@ -220,6 +221,7 @@ class CameraIndi(IndiClass):
 
         self.signals.message.emit('Saving')
         worker = Worker(self.workerSaveBLOB, data)
+        worker.signals.finished.connect(self.workerSaveBlobSignalsFinished)
         self.threadPool.start(worker)
         return True
 
@@ -231,7 +233,7 @@ class CameraIndi(IndiClass):
             return False
 
         quality = self.device.getSwitch('READOUT_QUALITY')
-        self.log.debug(f'camera has readout quality entry: {quality}')
+        self.log.debug(f'Camera has readout quality entry: {quality}')
 
         if fastReadout:
             quality['QUALITY_LOW'] = 'On'

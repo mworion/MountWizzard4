@@ -73,8 +73,6 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.shorteningStart = True
         self.raRef = None
         self.decRef = None
-        self.angularPosRaRef = None
-        self.angularPosDecRef = None
         self.devices = {}
         self.deviceName = ''
 
@@ -180,7 +178,7 @@ class MeasureData(PyQt5.QtCore.QObject):
         errAngPosDec = 0
 
         if obs.raJNow is None:
-            return raJNow, decJNow, angPosRa, angPosDec, errAngPosRa, errAngPosDec
+            return raJNow, decJNow, errAngPosRa, errAngPosDec
 
         length = len(dat['status'])
         period = min(length, 10)

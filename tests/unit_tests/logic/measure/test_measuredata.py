@@ -35,6 +35,8 @@ def module_setup_teardown():
     class Test(QObject):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')
+        mount.obsSite.errorAngularPosRA = 1
+        mount.obsSite.errorAngularPosDEC = 1
         sensorWeather = Test1()
         onlineWeather = Test1()
         skymeter = Test1()
@@ -65,7 +67,6 @@ def module_setup_teardown():
 
     global app
     app = MeasureData(app=Test())
-
     yield
 
 
@@ -109,8 +110,6 @@ def test_setEmptyData():
 def test_calculateReference_1():
     app.raRef = 0
     app.decRef = 0
-    app.angularPosRaRef = 0
-    app.angularPosDecRef = 0
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
     app.data['status'] = np.array([])
@@ -124,8 +123,6 @@ def test_calculateReference_1():
 def test_calculateReference_2():
     app.raRef = 0
     app.decRef = 0
-    app.angularPosRaRef = 0
-    app.angularPosDecRef = 0
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
     app.app.mount.obsSite.angularPosRA = 1
@@ -139,12 +136,8 @@ def test_calculateReference_2():
 def test_calculateReference_3():
     app.raRef = 7.5
     app.decRef = 0.5
-    app.angularPosRaRef = 7.5
-    app.angularPosDecRef = 0.5
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
-    app.app.mount.obsSite.angularPosRA = 1
-    app.app.mount.obsSite.angularPosDEC = 1
     app.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     ra, dec, raA, decA = app.calculateReference()
     assert round(ra, 0) == 27000
@@ -154,43 +147,25 @@ def test_calculateReference_3():
 def test_calculateReference_4():
     app.raRef = 27000
     app.decRef = 1800
-    app.angularPosRaRef = 27000
-    app.angularPosDecRef = 1800
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
-    app.app.mount.obsSite.angularPosRA = 1
-    app.app.mount.obsSite.angularPosDEC = 1
     app.data['status'] = np.array([0, 0, 0, 0, 1, 0, 0, 0])
     ra, dec, raA, decA = app.calculateReference()
     assert ra == 0
     assert dec == 0
-    assert app.raRef is None
-    assert app.decRef is None
-    assert raA == 0
-    assert decA == 0
-    assert app.angularPosRaRef is None
-    assert app.angularPosDecRef is None
 
 
 def test_calculateReference_5():
     app.raRef = None
     app.decRef = None
-    app.angularPosRaRef = None
-    app.angularPosDecRef = None
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
-    app.app.mount.obsSite.angularPosRA = 1
-    app.app.mount.obsSite.angularPosDEC = 1
     app.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     ra, dec, raA, decA = app.calculateReference()
     assert ra == 0
     assert dec == 0
     assert app.raRef is not None
     assert app.decRef is not None
-    assert raA == 0
-    assert decA == 0
-    assert app.angularPosRaRef is not None
-    assert app.angularPosDecRef is not None
 
 
 def test_calculateReference_6():
@@ -200,14 +175,10 @@ def test_calculateReference_6():
     app.angularPosDecRef = 0
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
-    app.app.mount.obsSite.angularPosRA = 1 / 24 * 360
-    app.app.mount.obsSite.angularPosDEC = 1
     app.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     ra, dec, raA, decA = app.calculateReference()
     assert round(ra, 0) == 54000
     assert dec == 3600.0
-    assert round(raA, 0) == 54000
-    assert decA == 3600.0
 
 
 def test_calculateReference_7():
@@ -217,14 +188,10 @@ def test_calculateReference_7():
     app.angularPosDecRef = 0
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
-    app.app.mount.obsSite.angularPosRA = 1
-    app.app.mount.obsSite.angularPosDEC = 1
     app.data['status'] = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
     ra, dec, raA, decA = app.calculateReference()
     assert ra == 0.0
     assert dec == 0.0
-    assert raA == 0.0
-    assert decA == 0.0
 
 
 def test_calculateReference_8():
@@ -234,14 +201,10 @@ def test_calculateReference_8():
     app.angularPosDecRef = 0
     app.app.mount.obsSite.raJNow = 1
     app.app.mount.obsSite.decJNow = 1
-    app.app.mount.obsSite.angularPosRA = 1
-    app.app.mount.obsSite.angularPosDEC = 1
     app.data['status'] = np.array([None] * 10)
     ra, dec, raA, decA = app.calculateReference()
     assert ra == 0.0
     assert dec == 0.0
-    assert raA == 0.0
-    assert decA == 0.0
 
 
 def test_checkStart_1():

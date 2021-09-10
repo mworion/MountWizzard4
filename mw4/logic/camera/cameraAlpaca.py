@@ -86,13 +86,13 @@ class CameraAlpaca(AlpacaClass):
         self.storePropertyToData(self.client.gain(), 'CCD_GAIN.GAIN')
         self.storePropertyToData(self.client.offset(), 'CCD_OFFSET.OFFSET')
         self.storePropertyToData(self.client.fastreadout(),
-                       'READOUT_QUALITY.QUALITY_LOW',
-                       'READOUT_QUALITY.QUALITY_HIGH')
+                                 'READOUT_QUALITY.QUALITY_LOW',
+                                 'READOUT_QUALITY.QUALITY_HIGH')
         self.storePropertyToData(self.client.ccdtemperature(),
-                       'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+                                 'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
         self.storePropertyToData(self.client.cooleron(), 'CCD_COOLER.COOLER_ON')
         self.storePropertyToData(self.client.coolerpower(),
-                       'CCD_COOLER_POWER.CCD_COOLER_VALUE')
+                                 'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         return True
 

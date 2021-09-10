@@ -471,7 +471,7 @@ def test_pressOK(function):
         automateWindows.timings = Timings()
 
     function.updater = Test()
-    with mock.patch.object(automateWindows.timings,
+    with mock.patch.object(automateWindows.application,
                            'wait_until_passes'):
         suc = function.pressOK()
         assert suc

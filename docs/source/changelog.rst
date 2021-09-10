@@ -17,7 +17,7 @@ Released beta version of MW4
 ----------------------------
 2.1.0 (not released yet)
 
-- add: hints for choosing the right star for polar alignment
+- add: hemisphere window: help for choosing the right star for polar alignment
 - improve: rewrite alpaca / ascom interface
 
 Released version of MW4

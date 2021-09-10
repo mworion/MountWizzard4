@@ -19,8 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: hints for choosing the right star for polar alignment
-- improve: rewrite alpaca / ascom interface  
+- add: hemisphere window: help for choosing the right star for polar alignment
+- improve: rewrite alpaca / ascom interface
  """
 
 with open('notes.txt', 'w') as f:

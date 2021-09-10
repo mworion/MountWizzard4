@@ -20,7 +20,8 @@
 import os.path
 
 import PyQt5
-from PyQt5.QtCore import QRect
+from PyQt5.QtCore import QRect, Qt
+from PyQt5.QtGui import QGuiApplication, QCursor
 import numpy as np
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
@@ -238,6 +239,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         plt.close(self.polarMat.figure)
         plt.close(self.hemisphereMatMove.figure)
         plt.close(self.polarMatMove.figure)
+        QGuiApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
 
         super().closeEvent(closeEvent)
 

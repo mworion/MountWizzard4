@@ -285,7 +285,6 @@ class Mount(mountcontrol.mount.Mount):
         """
         :return: success
         """
-
         if not self.mountUp:
             self.signals.pointDone.emit(self.obsSite)
             return False

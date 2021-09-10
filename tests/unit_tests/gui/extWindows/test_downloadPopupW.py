@@ -23,7 +23,7 @@ import shutil
 import time
 
 # external packages
-from PyQt5.QtCore import QThreadPool
+from PyQt5.QtCore import QThreadPool, pyqtSignal, QObject
 from PyQt5.QtWidgets import QWidget
 import requests
 
@@ -39,8 +39,11 @@ def module(qapp):
 
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
+    class Test(QObject):
+        message = pyqtSignal(str, int)
 
     widget = QWidget()
+    widget.app = Test()
     widget.threadPool = QThreadPool()
     with mock.patch.object(DownloadPopup,
                            'show'):

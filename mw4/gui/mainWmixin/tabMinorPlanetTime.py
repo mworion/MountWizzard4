@@ -56,7 +56,7 @@ class MinorPlanetTime:
         self.ui.listMinorPlanetNames.doubleClicked.connect(self.progMinorPlanetToMount)
         self.ui.progMinorPlanetsFull.clicked.connect(self.progMinorPlanetsFull)
         self.ui.progMinorPlanetsFiltered.clicked.connect(self.progMinorPlanetsFiltered)
-        self.ui.progEarthRotationData.clicked.connect(self.progEarthRotationDataToMount)
+        self.ui.progEarthRotationData.clicked.connect(self.startProgEarthRotationDataToMount)
         self.ui.downloadIERS.clicked.connect(self.loadTimeDataFromSourceURLs)
         self.ui.filterMinorPlanet.textChanged.connect(self.filterMinorPlanetNamesList)
         self.ui.minorPlanetSource.currentIndexChanged.connect(self.loadMPCDataFromSourceURLs)
@@ -245,6 +245,18 @@ class MinorPlanetTime:
             return False
 
         self.app.message.emit('Programming success', 1)
+        return True
+
+    def startProgEarthRotationDataToMount(self):
+        """
+        :return:
+        """
+        source = 'finals.data'
+        url = 'https://datacenter.iers.org/data/8/' + source
+        dest = self.app.mwGlob['dataDir'] + '/' + source
+        self.app.message.emit(f'Download mount earth rotation data: [{source}]', 1)
+        DownloadPopup(self, url=url, dest=dest, unzip=False,
+                      callBack=self.progEarthRotationDataToMount)
         return True
 
     def loadTimeDataFromSourceURLs(self):

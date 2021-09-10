@@ -333,16 +333,24 @@ def test_progEarthRotationDataToMount_7(function):
             assert suc
 
 
+def test_startProgEarthRotationDataToMount_1(function):
+    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+        suc = function.startProgEarthRotationDataToMount()
+        assert suc
+
+
 def test_loadTimeDataFromSourceURLs_1(function):
     function.ui.isOnline.setChecked(False)
-    suc = function.loadTimeDataFromSourceURLs()
-    assert not suc
+    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+        suc = function.loadTimeDataFromSourceURLs()
+        assert not suc
 
 
 def test_loadTimeDataFromSourceURLs_2(function):
     function.ui.isOnline.setChecked(True)
-    suc = function.loadTimeDataFromSourceURLs()
-    assert suc
+    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+        suc = function.loadTimeDataFromSourceURLs()
+        assert suc
 
 
 def test_progMinorPlanetToMount_1(function):

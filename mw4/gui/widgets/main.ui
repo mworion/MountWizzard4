@@ -12284,7 +12284,7 @@ Next point in time when satellite settles.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>25</y>
+        <y>60</y>
         <width>351</width>
         <height>26</height>
        </rect>
@@ -12293,23 +12293,23 @@ Next point in time when satellite settles.</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Downloads new databases from IERS service finals2000a.all to update the buildin ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string>Update IERS finals2000A.all </string>
+       <string>Download IERS data</string>
       </property>
      </widget>
      <widget class="QPushButton" name="progEarthRotationData">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>60</y>
+        <y>20</y>
         <width>351</width>
         <height>26</height>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual in /data existing earth rotation data to the mount computer. Therefore MW4 uses the built in databases from IERS service finals2000a.all and the actual tai-utc.dat.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual in /data existing earth rotation data to the mount computer. Therefore MW4 uses the built in databases from IERS service finals.data and the actual tai-utc.dat. it downloads the data first.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string>Program earth rotation data</string>
+       <string>Program earth rotation data to mount</string>
       </property>
      </widget>
     </widget>

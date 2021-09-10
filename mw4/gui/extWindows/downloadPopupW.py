@@ -54,6 +54,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         super().__init__()
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self)
+        self.returnValues = {'success': False}
         self.callBack = callBack
         self.worker = None
         self.setWindowModality(Qt.ApplicationModal)
@@ -139,13 +140,17 @@ class DownloadPopup(toolsQtWidget.MWidget):
             self.getFileFromUrl(url, dest)
 
         except TimeoutError:
-            self.log.debug(f'Download [{url}] timed out')
+            t = f'Download [{url}] timed out!'
+            self.app.message.emit(t, 2)
             self.signalProgressBarColor.emit('red')
             time.sleep(1)
             return False
 
         except Exception as e:
-            self.log.warning(f'Download [{url}] error: {e}')
+            t = f'Error in unzip [{url}]'
+            self.app.message.emit(t, 2)
+            t = f'Error in unzip [{url}], {e}'
+            self.log.warning(t)
             self.signalProgressBarColor.emit('red')
             time.sleep(1)
             return False
@@ -163,7 +168,10 @@ class DownloadPopup(toolsQtWidget.MWidget):
             self.unzipFile(dest)
 
         except Exception as e:
-            self.log.warning(f'Error in unzip [{url}], {e}')
+            t = f'Error in unzip [{url}]'
+            self.app.message.emit(t, 2)
+            t = f'Error in unzip [{url}], {e}'
+            self.log.warning(t)
             return False
         return True
 

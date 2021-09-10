@@ -182,18 +182,26 @@ class CameraAlpaca(AlpacaClass):
                 factor = 1
 
             header.append(('SCALE', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * factor))
-            header.append(('XBINNING', binning, 'MW4 is using the same binning for x and y'))
-            header.append(('YBINNING', binning, 'MW4 is using the same binning for x and y'))
+            header.append(('XBINNING',
+                           binning, 'MW4 is using the same binning for x and y'))
+            header.append(('YBINNING',
+                           binning, 'MW4 is using the same binning for x and y'))
             header.append(('EXPTIME', expTime))
             header.append(('OBSERVER', 'MW4'))
-            header.append(('DATE-OBS', self.app.mount.obsSite.timeJD.utc_iso(), 'Time from UTC is ISO format'))
-            header.append(('CCD-TEMP', self.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
-            header.append(('SQM', self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)))
+            header.append(('DATE-OBS',
+                           self.app.mount.obsSite.timeJD.utc_iso(),
+                           'Time from UTC is ISO format'))
+            header.append(('CCD-TEMP',
+                           self.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
+            header.append(('SQM',
+                           self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)))
 
             if isMount:
                 header.append(('RA', ra._degrees, 'Float value in degree'))
                 header.append(('DEC', dec.degrees, 'Float value in degree'))
-                header.append(('TELESCOP', self.app.mount.firmware.product, 'Mount version from firmware'))
+                header.append(('TELESCOP',
+                               self.app.mount.firmware.product,
+                               'Mount version from firmware'))
 
             hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
             self.log.info(f'Saved Image: [{imagePath}]')

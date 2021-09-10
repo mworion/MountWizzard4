@@ -57,9 +57,9 @@ def test_startCommunication_2():
     app.framework = 'indi'
     with mock.patch.object(app.run['indi'],
                            'startCommunication',
-                           return_value=False):
+                           return_value=True):
         suc = app.startCommunication()
-        assert not suc
+        assert suc
 
 
 def test_stopCommunication_1():
@@ -72,6 +72,6 @@ def test_stopCommunication_2():
     app.framework = 'indi'
     with mock.patch.object(app.run['indi'],
                            'stopCommunication',
-                           return_value=False):
+                           return_value=True):
         suc = app.stopCommunication()
         assert suc

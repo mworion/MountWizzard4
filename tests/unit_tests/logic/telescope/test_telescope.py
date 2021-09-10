@@ -62,7 +62,7 @@ def test_startCommunication_2():
                            'startCommunication',
                            return_value=True):
         suc = app.startCommunication()
-        assert not suc
+        assert suc
 
 
 def test_stopCommunication_1():

@@ -24,7 +24,6 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 # local import
 from logic.environment.weatherUPBAlpaca import WeatherUPBAlpaca
 from logic.environment.weatherUPB import WeatherUPBSignals
-from base.alpacaBase import AlpacaBase
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -40,23 +39,23 @@ def module_setup_teardown():
 
 
 def test_getInitialConfig_1():
-    with mock.patch.object(AlpacaBase,
-                           'get'):
+    with mock.patch.object(app,
+                           'getAndStoreAlpacaProperty'):
         suc = app.getInitialConfig()
         assert suc
 
 
 def test_workerPollData_1():
     app.deviceConnected = False
-    with mock.patch.object(AlpacaBase,
-                           'get'):
+    with mock.patch.object(app,
+                           'getAndStoreAlpacaProperty'):
         suc = app.workerPollData()
         assert not suc
 
 
 def test_workerPollData_2():
     app.deviceConnected = True
-    with mock.patch.object(AlpacaBase,
-                           'get'):
+    with mock.patch.object(app,
+                           'getAndStoreAlpacaProperty'):
         suc = app.workerPollData()
         assert suc

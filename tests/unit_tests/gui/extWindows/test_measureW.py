@@ -65,6 +65,8 @@ def function(module):
         'deltaDecJNow': np.full([5, 1], 1.0),
         'deltaAngularPosRA': np.full([5, 1], 1.0),
         'deltaAngularPosDEC': np.full([5, 1], 1.0),
+        'errorAngularPosRA': np.full([5, 1], 1.0),
+        'errorAngularPosDEC': np.full([5, 1], 1.0),
         'status': np.full([5, 1], 1.0),
         'powCurr1': np.full([5, 1], 1.0),
         'powCurr2': np.full([5, 1], 1.0),
@@ -222,6 +224,30 @@ def test_plotAngularPosDec_1(function):
                                      data=function.app.measure.data,
                                      cycle=1,
                                      )
+    assert suc
+
+
+def test_plotErrorAngularPosRA_1(function):
+    fig = function.measureMat.figure
+    function.setupAxes(figure=fig, numberPlots=1)
+    axe = function.measureMat.figure.axes[0]
+    suc = function.plotErrorAngularPosRa(axe=axe,
+                                         title='test',
+                                         data=function.app.measure.data,
+                                         cycle=1,
+                                         )
+    assert suc
+
+
+def test_plotErrorAngularPosDec_1(function):
+    fig = function.measureMat.figure
+    function.setupAxes(figure=fig, numberPlots=1)
+    axe = function.measureMat.figure.axes[0]
+    suc = function.plotErrorAngularPosDec(axe=axe,
+                                          title='test',
+                                          data=function.app.measure.data,
+                                          cycle=1,
+                                          )
     assert suc
 
 

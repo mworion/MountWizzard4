@@ -57,12 +57,12 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreAlpacaProperty('cangetcoolerpower', 'CAN_GET_COOLER_POWER')
         self.getAndStoreAlpacaProperty('pixelsizex', 'CCD_INFO.CCD_PIXEL_SIZE_X')
         self.getAndStoreAlpacaProperty('pixelsizey', 'CCD_INFO.CCD_PIXEL_SIZE_Y')
-        self.getAndStoreAlpacaProperty('maxBinX', 'CCD_BINNING.HOR_BIN_MAX')
-        self.getAndStoreAlpacaProperty('maxBinY', 'CCD_BINNING.VERT_BIN_MAX')
-        self.getAndStoreAlpacaProperty('gainMax', 'CCD_INFO.GAIN_MAX')
-        self.getAndStoreAlpacaProperty('gainMin', 'CCD_INFO.GAIN_MIN')
-        self.getAndStoreAlpacaProperty('startX', 'CCD_FRAME.X')
-        self.getAndStoreAlpacaProperty('startY', 'CCD_FRAME.Y')
+        self.getAndStoreAlpacaProperty('maxbinx', 'CCD_BINNING.HOR_BIN_MAX')
+        self.getAndStoreAlpacaProperty('maxbiny', 'CCD_BINNING.VERT_BIN_MAX')
+        self.getAndStoreAlpacaProperty('gainmax', 'CCD_INFO.GAIN_MAX')
+        self.getAndStoreAlpacaProperty('gainmin', 'CCD_INFO.GAIN_MIN')
+        self.getAndStoreAlpacaProperty('startx', 'CCD_FRAME.X')
+        self.getAndStoreAlpacaProperty('starty', 'CCD_FRAME.Y')
         self.log.debug(f'Initial data: {self.data}')
 
         return True

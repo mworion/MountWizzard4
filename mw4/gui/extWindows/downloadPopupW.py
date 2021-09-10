@@ -139,14 +139,12 @@ class DownloadPopup(toolsQtWidget.MWidget):
 
         try:
             self.getFileFromUrl(url, dest)
-
         except TimeoutError:
             t = f'Download [{url}] timed out!'
             self.parentWidget.app.message.emit(t, 2)
             self.signalProgressBarColor.emit('red')
             time.sleep(1)
             return False
-
         except Exception as e:
             t = f'Error in unzip [{url}]'
             self.parentWidget.app.message.emit(t, 2)
@@ -155,10 +153,8 @@ class DownloadPopup(toolsQtWidget.MWidget):
             self.signalProgressBarColor.emit('red')
             time.sleep(1)
             return False
-
         else:
             self.signalProgressBarColor.emit('green')
-
         finally:
             time.sleep(1)
 
@@ -167,7 +163,6 @@ class DownloadPopup(toolsQtWidget.MWidget):
 
         try:
             self.unzipFile(dest)
-
         except Exception as e:
             t = f'Error in unzip [{url}]'
             self.parentWidget.app.message.emit(t, 2)

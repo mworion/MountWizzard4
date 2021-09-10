@@ -19,8 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- improvement: GUI for earth rotation data update, now downloads
-- improvement: performance for threads.
+- add: hints for choosing the right star for polar alignment
+- improve: rewrite alpaca / ascom interface  
  """
 
 with open('notes.txt', 'w') as f:
@@ -28,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.3',
+    version='2.1.0b0',
     packages=[
         'mw4',
         'mw4.base',

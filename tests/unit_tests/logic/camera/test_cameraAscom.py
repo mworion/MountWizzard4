@@ -25,7 +25,7 @@ if not platform.system() == 'Windows':
 
 # external packages
 from astropy.io import fits
-from PyQt5.QtCore import QworkerExposeThreadPool, QObject, pyqtSignal
+from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from skyfield.api import Angle
 import ctypes
 

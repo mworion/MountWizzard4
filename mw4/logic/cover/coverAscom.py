@@ -40,7 +40,6 @@ class CoverAscom(AscomClass):
 
         self.signals = signals
         self.data = data
-        return True
 
     def workerPollData(self):
         """

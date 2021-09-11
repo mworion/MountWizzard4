@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -7861,7 +7861,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>15</x>
        <y>15</y>
        <width>366</width>
-       <height>146</height>
+       <height>131</height>
       </rect>
      </property>
      <property name="title">
@@ -7874,7 +7874,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>310</x>
-        <y>85</y>
+        <y>75</y>
         <width>46</width>
         <height>21</height>
        </rect>
@@ -7901,7 +7901,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>120</x>
-        <y>115</y>
+        <y>100</y>
         <width>16</width>
         <height>21</height>
        </rect>
@@ -7928,7 +7928,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>85</y>
+        <y>75</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -7949,7 +7949,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>55</y>
+        <y>50</y>
         <width>91</width>
         <height>21</height>
        </rect>
@@ -7973,7 +7973,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>75</x>
-        <y>115</y>
+        <y>100</y>
         <width>46</width>
         <height>21</height>
        </rect>
@@ -8015,7 +8015,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>150</x>
-        <y>55</y>
+        <y>50</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -8039,7 +8039,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>255</x>
-        <y>85</y>
+        <y>75</y>
         <width>56</width>
         <height>21</height>
        </rect>
@@ -8126,7 +8126,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>150</x>
-        <y>115</y>
+        <y>100</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -8177,7 +8177,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>255</x>
-        <y>55</y>
+        <y>50</y>
         <width>56</width>
         <height>21</height>
        </rect>
@@ -8243,7 +8243,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>150</x>
-        <y>85</y>
+        <y>75</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -8285,7 +8285,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>115</y>
+        <y>100</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -8354,7 +8354,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>75</x>
-        <y>55</y>
+        <y>50</y>
         <width>46</width>
         <height>21</height>
        </rect>
@@ -8396,7 +8396,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>310</x>
-        <y>115</y>
+        <y>100</y>
         <width>46</width>
         <height>21</height>
        </rect>
@@ -8426,7 +8426,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>75</x>
-        <y>85</y>
+        <y>75</y>
         <width>46</width>
         <height>21</height>
        </rect>
@@ -8471,7 +8471,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>255</x>
-        <y>115</y>
+        <y>100</y>
         <width>56</width>
         <height>21</height>
        </rect>
@@ -8513,7 +8513,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>310</x>
-        <y>55</y>
+        <y>50</y>
         <width>16</width>
         <height>21</height>
        </rect>
@@ -8540,8 +8540,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
     <widget class="QGroupBox" name="groupBox_9">
      <property name="geometry">
       <rect>
-       <x>410</x>
-       <y>315</y>
+       <x>15</x>
+       <y>155</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -8613,7 +8613,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>410</x>
        <y>15</y>
        <width>366</width>
-       <height>291</height>
+       <height>341</height>
       </rect>
      </property>
      <property name="title">
@@ -9039,7 +9039,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>140</y>
+        <y>145</y>
         <width>356</width>
         <height>21</height>
        </rect>
@@ -9175,8 +9175,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QCheckBox" name="parkMountAfterModel">
       <property name="geometry">
        <rect>
-        <x>5</x>
-        <y>170</y>
+        <x>10</x>
+        <y>180</y>
         <width>266</width>
         <height>21</height>
        </rect>
@@ -9205,8 +9205,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>5</x>
-        <y>190</y>
+        <x>10</x>
+        <y>205</y>
         <width>336</width>
         <height>21</height>
        </rect>
@@ -9254,8 +9254,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>145</x>
-        <y>210</y>
+        <x>150</x>
+        <y>230</y>
         <width>41</width>
         <height>21</height>
        </rect>
@@ -9290,8 +9290,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_36">
       <property name="geometry">
        <rect>
-        <x>195</x>
-        <y>210</y>
+        <x>200</x>
+        <y>230</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -9311,8 +9311,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_59">
       <property name="geometry">
        <rect>
-        <x>5</x>
-        <y>210</y>
+        <x>10</x>
+        <y>230</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -9332,9 +9332,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QCheckBox" name="retriesReverse">
       <property name="geometry">
        <rect>
-        <x>5</x>
-        <y>230</y>
-        <width>356</width>
+        <x>10</x>
+        <y>255</y>
+        <width>346</width>
         <height>21</height>
        </rect>
       </property>
@@ -9356,75 +9356,75 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="Line" name="line_89">
+     <widget class="QGroupBox" name="groupBoxCoordinateSystems_2">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>260</y>
+        <y>285</y>
         <width>346</width>
-        <height>1</height>
+        <height>46</height>
        </rect>
       </property>
-      <property name="styleSheet">
-       <string notr="true"/>
+      <property name="title">
+       <string>Timing during model run</string>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
-      </property>
-      <property name="lineWidth">
-       <number>1</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="progressiveTiming">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>265</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Progressive</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="normalTiming">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>265</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Normal</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="conservativeTiming">
-      <property name="geometry">
-       <rect>
-        <x>215</x>
-        <y>265</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Conservative</string>
-      </property>
+      <widget class="QRadioButton" name="normalTiming">
+       <property name="geometry">
+        <rect>
+         <x>115</x>
+         <y>20</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normal timing starts slew after an image is downloaded from the CCD cam. No wait for saving the image on your computer disc.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Normal</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="conservativeTiming">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>20</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Conservative timing starts slew after an image is fully saved on your computer disc.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Conservative</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="progressiveTiming">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Progressive starts slew immadiately after an image is integrated in the CCD cam. No wait for download or saving the image on your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Progressive</string>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_28">
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>200</y>
+       <y>220</y>
        <width>366</width>
-       <height>226</height>
+       <height>206</height>
       </rect>
      </property>
      <property name="title">
@@ -9437,7 +9437,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>25</y>
+        <y>15</y>
         <width>91</width>
         <height>21</height>
        </rect>
@@ -9458,7 +9458,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>70</y>
+        <y>55</y>
         <width>144</width>
         <height>144</height>
        </rect>
@@ -9486,7 +9486,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>45</y>
+        <y>35</y>
         <width>146</width>
         <height>21</height>
        </rect>
@@ -9528,7 +9528,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>205</x>
-        <y>25</y>
+        <y>15</y>
         <width>91</width>
         <height>21</height>
        </rect>
@@ -9552,7 +9552,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>205</x>
-        <y>45</y>
+        <y>35</y>
         <width>146</width>
         <height>21</height>
        </rect>
@@ -9594,7 +9594,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>205</x>
-        <y>70</y>
+        <y>55</y>
         <width>144</width>
         <height>144</height>
        </rect>
@@ -17090,7 +17090,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -18096,7 +18096,7 @@ Next point in time when satellite settles.</string>
         </rect>
        </property>
        <property name="title">
-        <string>ASCOM connect devices</string>
+        <string>ASCOM / ALPACA connect devices</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>

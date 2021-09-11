@@ -679,14 +679,29 @@ def test_setupSignalsForModelRun_2(function):
 
 def test_setupSignalsForModelRun_3(function):
     function.deviceStat['dome'] = True
+    function.ui.progressiveTiming.setChecked(True)
+    suc = function.setupSignalsForModelRun()
+    assert suc
 
+
+def test_setupSignalsForModelRun_4(function):
+    function.deviceStat['dome'] = True
+    function.ui.normalTiming.setChecked(True)
+    suc = function.setupSignalsForModelRun()
+    assert suc
+
+
+def test_setupSignalsForModelRun_5(function):
+    function.deviceStat['dome'] = True
+    function.ui.conservativeTiming.setChecked(True)
     suc = function.setupSignalsForModelRun()
     assert suc
 
 
 def test_restoreSignalsModelDefault(function):
+    function.performanceTimingSignal = function.app.camera.signals.integrated
     function.app.camera.signals.saved.connect(function.modelSolve)
-    function.app.camera.signals.integrated.connect(function.modelSlew)
+    function.performanceTimingSignal.connect(function.modelSlew)
     function.app.astrometry.signals.done.connect(function.modelSolveDone)
     function.collector.ready.connect(function.modelImage)
 

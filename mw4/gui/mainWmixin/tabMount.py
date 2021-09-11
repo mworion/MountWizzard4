@@ -403,7 +403,7 @@ class Mount(object):
         if not ok:
             return False
         if sett.setMeridianLimitTrack(value):
-            self.app.message.emit(f'Meridian Limit Track: [{value}]', 0)
+            self.app.message.emit(f'Meridian Lim Track: [{value}]', 0)
             return True
         else:
             self.app.message.emit('Meridian Limit Track cannot be set', 2)
@@ -473,7 +473,7 @@ class Mount(object):
         if not ok:
             return False
         if sett.setHorizonLimitHigh(value):
-            self.app.message.emit(f'Horizon Limit High: [{value}]', 0)
+            self.app.message.emit(f'Horizon Limit High:  [{value}]', 0)
             return True
         else:
             self.app.message.emit('Horizon Limit High cannot be set', 2)
@@ -508,7 +508,7 @@ class Mount(object):
         if not ok:
             return False
         if sett.setHorizonLimitLow(value):
-            self.app.message.emit(f'Horizon Limit Low: [{value}]', 0)
+            self.app.message.emit(f'Horizon Limit Low:   [{value}]', 0)
             return True
         else:
             self.app.message.emit('Horizon Limit Low cannot be set', 2)
@@ -545,7 +545,7 @@ class Mount(object):
         if not ok:
             return False
         if sett.setSlewRate(value):
-            self.app.message.emit(f'Slew Rate: [{value}]', 0)
+            self.app.message.emit(f'Slew Rate:           [{value}]', 0)
             return True
         else:
             self.app.message.emit('Slew Rate cannot be set', 2)
@@ -585,7 +585,7 @@ class Mount(object):
         obs.location = topo
 
         if obs.setLongitude(value):
-            self.app.message.emit(f'Longitude set to:    '
+            self.app.message.emit(f'Longitude:           '
                                   f'[{value}]', 0)
             self.app.mount.getLocation()
             return True
@@ -626,7 +626,7 @@ class Mount(object):
         obs.location = topo
 
         if obs.setLatitude(value):
-            self.app.message.emit(f'Latitude set to:     '
+            self.app.message.emit(f'Latitude:            '
                                   f'[{value}]', 0)
             self.app.mount.getLocation()
             return True
@@ -666,7 +666,7 @@ class Mount(object):
         obs.location = topo
 
         if obs.setElevation(value):
-            self.app.message.emit(f'Elevation set to:    [{value}]', 0)
+            self.app.message.emit(f'Elevation:           [{value}]', 0)
             self.app.mount.getLocation()
             return True
         else:
@@ -700,7 +700,7 @@ class Mount(object):
             return False
         suc = sett.setUnattendedFlip(value == 'ON')
         if suc:
-            self.app.message.emit(f'Unattended flip set to [{value}]', 0)
+            self.app.message.emit(f'Unattended flip      [{value}]', 0)
         else:
             self.app.message.emit('Unattended flip cannot be set', 2)
         return suc
@@ -733,9 +733,9 @@ class Mount(object):
 
         suc = sett.setDualAxisTracking(value == 'ON')
         if suc:
-            self.app.message.emit(f'Dual axis tracking set to [{value}]', 0)
+            self.app.message.emit(f'DualAxis tracking    [{value}]', 0)
         else:
-            self.app.message.emit('Dual axis tracking cannot be set', 2)
+            self.app.message.emit('DualAxis tracking cannot be set', 2)
         return suc
 
     def setWOL(self):
@@ -766,9 +766,9 @@ class Mount(object):
 
         suc = sett.setWOL(value == 'ON')
         if suc:
-            self.app.message.emit(f'WOL set to [{value}]', 0)
+            self.app.message.emit(f'Wake On Lan          [{value}]', 0)
         else:
-            self.app.message.emit('WOL cannot be set', 2)
+            self.app.message.emit('Wake On Lan cannot be set', 2)
         return suc
 
     def setRefraction(self):
@@ -799,7 +799,7 @@ class Mount(object):
 
         suc = sett.setRefraction(value == 'ON')
         if suc:
-            self.app.message.emit(f'Refraction correction set to [{value}]', 0)
+            self.app.message.emit(f'Refraction corr.     [{value}]', 0)
         else:
             self.app.message.emit('Refraction correction cannot be set', 2)
         return suc

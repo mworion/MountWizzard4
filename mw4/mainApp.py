@@ -138,8 +138,9 @@ class MountWizzard4(QObject):
         }
         profile = self.config.get('profileName', '-')
         self.messageQueue.put(('MountWizzard4 started', 1))
-        self.messageQueue.put((f'Workdir is: [{self.mwGlob["workDir"]}]', 1))
-        self.messageQueue.put((f'Profile              [{profile}] loaded', 1))
+        t = f'Workdir              [{self.mwGlob["workDir"]}]'
+        self.messageQueue.put((t, 1))
+        self.messageQueue.put((f'Loaded profile       [{profile}]', 1))
 
         # initialize commands to mount
         pathToData = self.mwGlob['dataDir']

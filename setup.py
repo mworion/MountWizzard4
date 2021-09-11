@@ -20,7 +20,8 @@ import platform
 
 releaseNotes = """
 - add: hemisphere window: help for choosing the right star for polar alignment
-- add: angular error ra / dec axis to measurement
+- add: angular error ra / dec axis in measurement
+- add: device connection similar for ASCOM and ALPACA devices
 - improve: rewrite alpaca / ascom interface
  """
 

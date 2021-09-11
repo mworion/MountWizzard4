@@ -24,6 +24,9 @@ from queue import Queue
 import platform
 
 # external packages
+if platform.system() == 'Windows':
+    from logic.automation.automateWindows import AutomateWindows
+
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
 from skyfield.api import wgs84
 from importlib_metadata import version
@@ -201,9 +204,7 @@ class MountWizzard4(QObject):
         if platform.python_version() < '3.8.2':
             return None
 
-        from logic.automation.automateWindows import AutomateWindows
         automation = AutomateWindows(self)
-
         return automation
 
     def initConfig(self):

@@ -278,7 +278,7 @@ def test_checkFloatingPointErrorWindow_3(function):
     function.updater = Test()
     with mock.patch.object(automateWindows.application,
                            'wait_until_passes',
-                           side_effect=automateWindows.timings.TimeoutError):
+                           side_effect=automateWindows.application.TimeoutError):
         suc = function.checkFloatingPointErrorWindow()
         assert suc
 

@@ -38,13 +38,6 @@ class SkymeterAscom(AscomClass):
         self.signals = signals
         self.data = data
 
-    def workerGetInitialConfig(self):
-        """
-        :return: true for test purpose
-        """
-        super().workerGetInitialConfig()
-        return True
-
     def workerPollData(self):
         """
         :return: true for test purpose

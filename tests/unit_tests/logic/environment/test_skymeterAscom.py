@@ -51,11 +51,6 @@ def module_setup_teardown():
     yield
 
 
-def test_workerGetInitialConfig_1():
-    suc = app.workerGetInitialConfig()
-    assert suc
-
-
 def test_workerPollData_1():
     suc = app.workerPollData()
     assert suc

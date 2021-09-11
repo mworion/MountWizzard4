@@ -334,7 +334,7 @@ class AlpacaClass(DriverData, Signals):
         """
         :return: success of reconnecting to server
         """
-        val = self.setAlpacaProperty('connected', Connected=True)
+        self.setAlpacaProperty('connected', Connected=True)
         suc = self.getAlpacaProperty('connected')
         self.propertyExceptions = []
         if not suc:
@@ -355,8 +355,6 @@ class AlpacaClass(DriverData, Signals):
 
     def startTimer(self):
         """
-        startTimer enables the cyclic timer for polling information
-
         :return: true for test purpose
         """
         self.cycleData.start(self.CYCLE_POLL_DATA)
@@ -365,8 +363,6 @@ class AlpacaClass(DriverData, Signals):
 
     def stopTimer(self):
         """
-        stopTimer disables the cyclic timer for polling information
-
         :return: true for test purpose
         """
         self.cycleData.stop()
@@ -384,8 +380,6 @@ class AlpacaClass(DriverData, Signals):
 
     def workerPollStatus(self):
         """
-        pollStatusWorker is the thread method to be called for collecting data
-
         :return: success
         """
         suc = self.getAlpacaProperty('connected')
@@ -440,8 +434,6 @@ class AlpacaClass(DriverData, Signals):
 
     def startCommunication(self, loadConfig=False):
         """
-        startCommunication starts cycling of the polling.
-
         :param loadConfig:
         :return: True for test purpose
         """
@@ -453,8 +445,6 @@ class AlpacaClass(DriverData, Signals):
 
     def stopCommunication(self):
         """
-        stopCommunication stops cycling of the server.
-
         :return: true for test purpose
         """
         self.stopTimer()

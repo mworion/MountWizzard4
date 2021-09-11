@@ -21,7 +21,6 @@ import platform
 
 # external packages
 import PyQt5
-from PyQt5.QtTest import QTest
 
 # local imports
 from logic.camera.cameraIndi import CameraIndi

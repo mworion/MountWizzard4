@@ -20,7 +20,6 @@ import os
 
 # external packages
 import PyQt5.QtWidgets
-from PyQt5.QtCore import QMutex
 import numpy as np
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter

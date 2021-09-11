@@ -172,8 +172,6 @@ class MeasureData(PyQt5.QtCore.QObject):
         obs = self.app.mount.obsSite
         raJNow = 0
         decJNow = 0
-        angPosRa = 0
-        angPosDec = 0
         errAngPosRa = 0
         errAngPosDec = 0
 

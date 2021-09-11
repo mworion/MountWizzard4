@@ -377,7 +377,7 @@ class AlpacaClass(DriverData, Signals):
         """
         :return:
         """
-        self.data['DRIVER_INFO.DRIVER_NAME'] = self.getAlpacaProperty('namedevice')
+        self.data['DRIVER_INFO.DRIVER_NAME'] = self.getAlpacaProperty('name')
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.getAlpacaProperty('driverversion')
         self.data['DRIVER_INFO.DRIVER_EXEC'] = self.getAlpacaProperty('driverinfo')
         return True
@@ -458,7 +458,7 @@ class AlpacaClass(DriverData, Signals):
         :return: true for test purpose
         """
         self.stopTimer()
-        self.setAlpacaProperty('connected', Cpnnected=False)
+        self.setAlpacaProperty('connected', Connected=False)
         self.deviceConnected = False
         self.serverConnected = False
         self.propertyExceptions = []
@@ -469,12 +469,13 @@ class AlpacaClass(DriverData, Signals):
 
     def discoverDevices(self, deviceType=''):
         """
-        discoverDevices implements a discover for devices of a certain device type. it is
-        called from a button press and checks which button it was. after that for the right
-        device it collects all necessary data for host value, instantiates an INDI client and
-        watches for all devices connected to this server. Than it connects a subroutine for
-        collecting the right device names and waits a certain amount of time. the data
-        collection takes place as long as the model dialog is open. when the user closes
+        discoverDevices implements a discover for devices of a certain device
+        type. it is called from a button press and checks which button it was.
+        after that for the right device it collects all necessary data for host
+        value, instantiates an INDI client and watches for all devices connected
+        to this server. Than it connects a subroutine for collecting the right
+        device names and waits a certain amount of time. the data collection
+        takes place as long as the model dialog is open. when the user closes
         this dialog, the collected data is written to the drop down list.
 
         :param deviceType: device type of discovered indi devices

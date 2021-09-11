@@ -544,8 +544,8 @@ class ObsSite(object):
         self.statusSlew = (responseSplit[7] == '1')
         responseSplit = response[4].split(',')
         self.angularPosRA = responseSplit[1]
-        self.angularPosDEC = responseSplit[2]
-        self.errorAngularPosRA = responseSplit[3]
+        self.angularPosDEC = responseSplit[3]
+        self.errorAngularPosRA = responseSplit[2]
         self.errorAngularPosDEC = responseSplit[4]
         return True
 

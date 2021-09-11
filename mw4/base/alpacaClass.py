@@ -21,6 +21,7 @@ import uuid
 
 # external packages
 from PyQt5.QtCore import QTimer
+from PyQt5.QtTest import QTest
 import requests
 
 # local imports
@@ -334,12 +335,24 @@ class AlpacaClass(DriverData, Signals):
         """
         :return: success of reconnecting to server
         """
-        self.setAlpacaProperty('connected', Connected=True)
-        suc = self.getAlpacaProperty('connected')
         self.propertyExceptions = []
+        for retry in range(0, 10):
+            self.setAlpacaProperty('connected', Connected=True)
+            suc = self.getAlpacaProperty('connected')
+
+            if suc:
+                t = f'[{self.deviceName}] connected, [{retry}] retries'
+                self.log.debug(t)
+                break
+            else:
+                t = f'Connection retry [{retry}]: [{self.deviceName}]'
+                self.log.info(t)
+                QTest.qWait(250)
+
         if not suc:
             self.app.message.emit(f'ALPACA connect error:[{self.deviceName}]', 2)
             self.deviceConnected = False
+            self.serverConnected = False
             return False
 
         if not self.serverConnected:

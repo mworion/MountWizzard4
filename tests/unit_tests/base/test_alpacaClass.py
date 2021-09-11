@@ -21,6 +21,7 @@ from unittest import mock
 # external packages
 import PyQt5
 import pytest
+from PyQt5.QtTest import QTest
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
@@ -420,24 +421,33 @@ def test_getAndStoreAlpacaProperty():
 def test_workerConnectDevice_1():
     app.serverConnected = False
     app.deviceConnected = False
-    with mock.patch.object(app,
-                           'getAlpacaProperty',
-                           return_value=False):
-        suc = app.workerConnectDevice()
-        assert not suc
-        assert not app.deviceConnected
+    with mock.patch.object(QTest,
+                           'qWait'):
+        with mock.patch.object(app,
+                               'setAlpacaProperty'):
+            with mock.patch.object(app,
+                                   'getAlpacaProperty',
+                                   return_value=False):
+                suc = app.workerConnectDevice()
+                assert not suc
+                assert not app.serverConnected
+                assert not app.deviceConnected
 
 
 def test_workerConnectDevice_2():
     app.serverConnected = False
     app.deviceConnected = False
-    with mock.patch.object(app,
-                           'getAlpacaProperty',
-                           return_value=True):
-        suc = app.workerConnectDevice()
-        assert suc
-        assert app.serverConnected
-        assert app.deviceConnected
+    with mock.patch.object(QTest,
+                           'qWait'):
+        with mock.patch.object(app,
+                               'setAlpacaProperty'):
+            with mock.patch.object(app,
+                                   'getAlpacaProperty',
+                                   return_value=True):
+                suc = app.workerConnectDevice()
+                assert suc
+                assert app.serverConnected
+                assert app.deviceConnected
 
 
 def test_startTimer():
@@ -546,15 +556,18 @@ def test_startCommunication():
         assert suc
 
 
-def test_stopCommunication():
+def test_stopCommunication_1():
     app.deviceConnected = True
     app.serverConnected = True
+    app.deviceName = 'test'
     with mock.patch.object(app,
                            'stopTimer'):
-        suc = app.stopCommunication()
-        assert suc
-        assert not app.serverConnected
-        assert not app.deviceConnected
+        with mock.patch.object(app,
+                               'setAlpacaProperty'):
+            suc = app.stopCommunication()
+            assert suc
+            assert not app.serverConnected
+            assert not app.deviceConnected
 
 
 def test_discoverDevices_1():

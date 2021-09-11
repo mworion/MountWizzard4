@@ -53,26 +53,6 @@ def module_setup_teardown():
     app.threadPool.waitForDone(1000)
 
 
-def test_connectClient():
-    class Test:
-        connected = False
-
-    app.propertyExceptions = ['Connected']
-    app.client = Test()
-    app.connectClient()
-    assert app.propertyExceptions == []
-
-
-def test_disconnectClient():
-    class Test:
-        connected = False
-
-    app.propertyExceptions = ['Connected']
-    app.client = Test()
-    app.disconnectClient()
-    assert app.propertyExceptions == []
-
-
 def test_startTimer():
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
@@ -202,36 +182,35 @@ def test_getAndStoreAscomProperty():
 
 
 def test_workerConnectDevice_1():
-    class Client:
-        connected = False
-
     app.serverConnected = False
     app.deviceConnected = False
-    app.client = Client()
     with mock.patch.object(QTest,
                            'qWait'):
         with mock.patch.object(app,
-                               'connectClient',
-                               side_effect=Exception):
-            suc = app.workerConnectDevice()
-            assert not suc
-            assert not app.serverConnected
-            assert not app.deviceConnected
+                               'setAscomProperty'):
+            with mock.patch.object(app,
+                                   'getAscomProperty',
+                                   return_value=False):
+                suc = app.workerConnectDevice()
+                assert not suc
+                assert not app.serverConnected
+                assert not app.deviceConnected
 
 
 def test_workerConnectDevice_2():
-    class Client:
-        connected = False
-
     app.serverConnected = False
     app.deviceConnected = False
-    app.client = Client()
     with mock.patch.object(QTest,
                            'qWait'):
-        suc = app.workerConnectDevice()
-        assert suc
-        assert app.serverConnected
-        assert app.deviceConnected
+        with mock.patch.object(app,
+                               'setAscomProperty'):
+            with mock.patch.object(app,
+                                   'getAscomProperty',
+                                   return_value=True):
+                suc = app.workerConnectDevice()
+                assert suc
+                assert app.serverConnected
+                assert app.deviceConnected
 
 
 def test_workerGetInitialConfig_1():
@@ -372,47 +351,14 @@ def test_startCommunication_3():
 
 
 def test_stopCommunication_1():
-    if platform.system() != 'Windows':
-        return
-
     app.deviceConnected = True
     app.serverConnected = True
     app.deviceName = 'test'
     with mock.patch.object(app,
                            'stopTimer'):
-        suc = app.stopCommunication()
-        assert suc
-        assert not app.serverConnected
-        assert not app.deviceConnected
-
-
-def test_stopCommunication_2():
-    app.deviceConnected = True
-    app.serverConnected = True
-    app.deviceName = 'test'
-    app.client = 'test'
-    with mock.patch.object(app,
-                           'disconnectClient',
-                           side_effect=Exception()):
         with mock.patch.object(app,
-                               'stopTimer'):
+                               'setAscomProperty'):
             suc = app.stopCommunication()
             assert suc
             assert not app.serverConnected
             assert not app.deviceConnected
-
-
-def test_stopCommunication_3():
-    class Test:
-        connected = False
-
-    app.deviceConnected = True
-    app.serverConnected = True
-    app.deviceName = 'test'
-    app.client = Test()
-    with mock.patch.object(app,
-                           'stopTimer'):
-        suc = app.stopCommunication()
-        assert suc
-        assert not app.serverConnected
-        assert not app.deviceConnected

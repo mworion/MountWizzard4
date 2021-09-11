@@ -71,22 +71,6 @@ class AscomClass(DriverData, Signals):
         self.cyclePollData.setSingleShot(False)
         self.cyclePollData.timeout.connect(self.pollData)
 
-    def connectClient(self):
-        """
-        :return:
-        """
-        self.propertyExceptions = []
-        self.client.connected = True
-        return True
-
-    def disconnectClient(self):
-        """
-        :return:
-        """
-        self.propertyExceptions = []
-        self.client.connected = False
-        return True
-
     def startTimer(self):
         """
         :return: true for test purpose
@@ -188,28 +172,26 @@ class AscomClass(DriverData, Signals):
 
         :return: true for test purpose
         """
+        self.propertyExceptions = []
         for retry in range(0, 10):
-            try:
-                self.connectClient()
-                self.log.debug(f'Connect to [{self.deviceName}]')
-            except Exception as e:
-                suc = False
-                t = f'Connection retry [{retry}]: [{self.deviceName}]: [{e}]'
-                self.log.warning(t)
-            else:
-                suc = self.getAscomProperty('connected')
-                if suc:
-                    t = f'[{self.deviceName}] connected, [{retry}] retries'
-                    self.log.debug(t)
-                    break
-            finally:
-                QTest.qWait(250)
+            self.setAscomProperty('connected', True)
+            suc = self.getAscomProperty('connected')
 
+            if suc:
+                t = f'[{self.deviceName}] connected, [{retry}] retries'
+                self.log.debug(t)
+                break
+            else:
+                t = f'Connection retry [{retry}]: [{self.deviceName}]'
+                self.log.info(t)
+                QTest.qWait(250)
         else:
             suc = False
 
         if not suc:
             self.app.message.emit(f'ASCOM connect error: [{self.deviceName}]', 2)
+            self.deviceConnected = False
+            self.serverConnected = False
             return False
 
         if not self.serverConnected:
@@ -351,18 +333,7 @@ class AscomClass(DriverData, Signals):
         :return: true for test purpose
         """
         self.stopTimer()
-        if self.client:
-            try:
-                self.disconnectClient()
-
-            except Exception as e:
-                t = f'Connection to [{self.deviceName}] could not be closed, {e}'
-                self.log.debug(t)
-
-            else:
-                t = f'Connection to [{self.deviceName}] closed'
-                self.log.debug(t)
-
+        self.setAscomProperty('Connected', False)
         self.deviceConnected = False
         self.serverConnected = False
         self.client = None

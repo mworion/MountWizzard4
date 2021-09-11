@@ -296,7 +296,7 @@ def main():
     simpleGui = sys.argv[4] == 'CLI'
 
     log.header('-' * 100)
-    log.header(f'Running updater')
+    log.header('Running updater')
     if simpleGui:
         log.header('Simple updater in CLI mode')
     else:

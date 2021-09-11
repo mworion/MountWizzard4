@@ -40,6 +40,7 @@ class AlpacaClass(DriverData, Signals):
 
     CYCLE_POLL_STATUS = 3000
     CYCLE_POLL_DATA = 3000
+    ALPACA_TIMEOUT = 3
 
     def __init__(self, app=None, data=None, threadPool=None):
         super().__init__()
@@ -151,7 +152,7 @@ class AlpacaClass(DriverData, Signals):
             self.host[1],
         )
         try:
-            response = requests.get(url, timeout=5)
+            response = requests.get(url, timeout=self.ALPACA_TIMEOUT)
         except requests.exceptions.Timeout:
             t = f'[{self.deviceName}] has timeout'
             self.log.debug(t)
@@ -191,7 +192,7 @@ class AlpacaClass(DriverData, Signals):
             self.apiVersion,
         )
         try:
-            response = requests.get(url, timeout=10)
+            response = requests.get(url, timeout=self.ALPACA_TIMEOUT)
         except requests.exceptions.Timeout:
             t = f'[{self.deviceName}] has timeout'
             self.log.debug(t)
@@ -239,7 +240,7 @@ class AlpacaClass(DriverData, Signals):
 
         try:
             response = requests.get(f'{self.baseUrl}/{valueProp}',
-                                    params=data, timeout=10)
+                                    params=data, timeout=self.ALPACA_TIMEOUT)
         except requests.exceptions.Timeout:
             t = f'[{self.deviceName}] [{uid:10d}] has timeout'
             self.log.debug(t)
@@ -288,7 +289,7 @@ class AlpacaClass(DriverData, Signals):
 
         try:
             response = requests.put(f'{self.baseUrl}/{valueProp}',
-                                    data=data, timeout=10)
+                                    data=data, timeout=self.ALPACA_TIMEOUT)
         except requests.exceptions.Timeout:
             t = f'[{self.deviceName}] [{uid:10d}] has timeout'
             self.log.debug(t)

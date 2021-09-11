@@ -38,13 +38,6 @@ def module_setup_teardown():
     yield
 
 
-def test_getInitialConfig_1():
-    with mock.patch.object(app,
-                           'getAndStoreAlpacaProperty'):
-        suc = app.getInitialConfig()
-        assert suc
-
-
 def test_workerPollData_1():
     app.deviceConnected = False
     with mock.patch.object(app,

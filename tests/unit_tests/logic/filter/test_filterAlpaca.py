@@ -38,36 +38,36 @@ def module_setup_teardown():
     yield
 
 
-def test_getInitialConfig_1():
+def test_workerGetInitialConfig_1():
     with mock.patch.object(app,
                            'getAlpacaProperty'):
-        suc = app.getInitialConfig()
+        suc = app.workerGetInitialConfig()
         assert suc
 
 
-def test_getInitialConfig_2():
+def test_workerGetInitialConfig_2():
     with mock.patch.object(app,
                            'getAlpacaProperty',
                            return_value=None):
-        suc = app.getInitialConfig()
+        suc = app.workerGetInitialConfig()
         assert not suc
 
 
-def test_getInitialConfig_3():
+def test_workerGetInitialConfig_3():
     with mock.patch.object(app,
                            'getAlpacaProperty',
                            return_value=['test', 'test1']):
-        suc = app.getInitialConfig()
+        suc = app.workerGetInitialConfig()
         assert suc
         assert app.data['FILTER_NAME.FILTER_SLOT_NAME_0'] == 'test'
         assert app.data['FILTER_NAME.FILTER_SLOT_NAME_1'] == 'test1'
 
 
-def test_getInitialConfig_4():
+def test_workerGetInitialConfig_4():
     with mock.patch.object(app,
                            'getAlpacaProperty',
                            return_value=['test', None]):
-        suc = app.getInitialConfig()
+        suc = app.workerGetInitialConfig()
         assert suc
         assert app.data['FILTER_NAME.FILTER_SLOT_NAME_0'] == 'test'
 

@@ -54,10 +54,10 @@ def module_setup_teardown():
     yield
 
 
-def test_getInitialConfig_1():
+def test_workerGetInitialConfig_1():
     with mock.patch.object(app,
                            'getAndStoreAlpacaProperty'):
-        suc = app.getInitialConfig()
+        suc = app.workerGetInitialConfig()
         assert suc
 
 
@@ -204,6 +204,7 @@ def test_workerExpose_6():
             suc = app.workerExpose(expTime=0.0)
             assert suc
     app.getAlpacaProperty = tmp
+
 
 def test_expose_1():
     with mock.patch.object(app.threadPool,

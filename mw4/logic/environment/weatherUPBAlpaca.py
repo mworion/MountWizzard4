@@ -37,13 +37,6 @@ class WeatherUPBAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
 
-    def getInitialConfig(self):
-        """
-        :return: true for test purpose
-        """
-        super().getInitialConfig()
-        return True
-
     def workerPollData(self):
         """
         :return: true for test purpose

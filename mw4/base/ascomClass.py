@@ -340,7 +340,7 @@ class AscomClass(DriverData, Signals):
 
         else:
             worker = Worker(self.callerInitUnInit, self.workerConnectDevice)
-            worker.signals.result.connect(self.getInitialConfig)
+            worker.signals.finished.connect(self.getInitialConfig)
             worker.signals.finished.connect(self.startTimer)
             self.threadPool.start(worker)
 

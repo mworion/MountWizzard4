@@ -43,16 +43,16 @@ def module_setup_teardown():
         yield
 
 
-def test_getInitialConfig_1():
+def test_workerGetInitialConfig_1():
     with mock.patch.object(app,
                            'getAndStoreAlpacaProperty'):
-        suc = app.getInitialConfig()
+        suc = app.workerGetInitialConfig()
         assert suc
 
 
-def test_getInitialConfig_2():
+def test_workerGetInitialConfig_2():
     with mock.patch.object(app,
                            'getAndStoreAlpacaProperty',
                            return_value=100):
-        suc = app.getInitialConfig()
+        suc = app.workerGetInitialConfig()
         assert suc

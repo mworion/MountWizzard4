@@ -39,11 +39,11 @@ class FilterAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
 
-    def getInitialConfig(self):
+    def workerGetInitialConfig(self):
         """
-        :return: success
+        :return: true for test purpose
         """
-        super().getInitialConfig()
+        super().workerGetInitialConfig()
         names = self.getAlpacaProperty('names')
         if names is None:
             return False

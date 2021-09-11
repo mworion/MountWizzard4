@@ -37,12 +37,11 @@ class TelescopeAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
 
-    def getInitialConfig(self):
+    def workerGetInitialConfig(self):
         """
         :return: true for test purpose
         """
-        super().getInitialConfig()
-
+        super().workerGetInitialConfig()
         self.getAndStoreAlpacaProperty('aperturediameter',
                                        'TELESCOPE_INFO.TELESCOPE_APERTURE')
         self.getAndStoreAlpacaProperty('focallength',

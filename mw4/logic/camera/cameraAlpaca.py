@@ -44,11 +44,11 @@ class CameraAlpaca(AlpacaClass):
         self.data = data
         self.abortExpose = False
 
-    def getInitialConfig(self):
+    def workerGetInitialConfig(self):
         """
         :return: true for test purpose
         """
-        super().getInitialConfig()
+        super().workerGetInitialConfig()
         self.getAndStoreAlpacaProperty('cameraxsize', 'CCD_INFO.CCD_MAX_X')
         self.getAndStoreAlpacaProperty('cameraysize', 'CCD_INFO.CCD_MAX_Y')
         self.getAndStoreAlpacaProperty('canfastreadout', 'CAN_FAST')
@@ -64,7 +64,6 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreAlpacaProperty('startx', 'CCD_FRAME.X')
         self.getAndStoreAlpacaProperty('starty', 'CCD_FRAME.Y')
         self.log.debug(f'Initial data: {self.data}')
-
         return True
 
     def workerPollData(self):

@@ -334,7 +334,7 @@ class AlpacaClass(DriverData, Signals):
         """
         :return: success of reconnecting to server
         """
-        self.setAlpacaProperty('connected', Connected=True)
+        val = self.setAlpacaProperty('connected', Connected=True)
         suc = self.getAlpacaProperty('connected')
         self.propertyExceptions = []
         if not suc:
@@ -446,7 +446,7 @@ class AlpacaClass(DriverData, Signals):
         :return: True for test purpose
         """
         worker = Worker(self.workerConnectDevice)
-        worker.signals.result.connect(self.getInitialConfig)
+        worker.signals.finished.connect(self.getInitialConfig)
         worker.signals.finished.connect(self.startTimer)
         self.threadPool.start(worker)
         return True

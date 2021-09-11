@@ -163,4 +163,3 @@ class PegasusUPBAscom(AscomClass):
         if not self.deviceConnected:
             return False
         return True
-

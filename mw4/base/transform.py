@@ -159,7 +159,7 @@ def diffModulusSign(x, y, m):
     y = (y + m) % m
     diff = y - x
     diff = diff % m
-    if diff > m/2:
+    if diff > m / 2:
         diff -= m
     return diff
 

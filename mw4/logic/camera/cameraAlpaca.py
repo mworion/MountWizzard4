@@ -163,7 +163,7 @@ class CameraAlpaca(AlpacaClass):
                 self.abortExpose = True
             else:
                 data = np.array(tmp, dtype=np.uint16).transpose()
-        
+
         if not self.abortExpose:
             self.signals.downloaded.emit()
             self.signals.message.emit('saving')

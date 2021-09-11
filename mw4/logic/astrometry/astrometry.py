@@ -181,7 +181,7 @@ class Astrometry:
         fitsHeader.append(('PIXSCALE', solve['scaleS'], 'MW4 - solved parameters'))
         fitsHeader.append(('ANGLE', solve['angleS'], 'MW4 - solved parameters'))
         fitsHeader.append(('MIRRORED', solve['mirroredS'], 'MW4 - solved parameters'))
-        fitsHeader.append(('COMMENT', 'There was a cleanup of parameters as well') )
+        fitsHeader.append(('COMMENT', 'There was a cleanup of parameters as well'))
 
         fitsHeader.extend(wcsHeader,
                           unique=True,

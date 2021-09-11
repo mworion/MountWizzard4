@@ -780,7 +780,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         with fits.open(imagePath, mode='update') as fitsHandle:
             self.image = fitsHandle[0].data
             self.header = fitsHandle[0].header
-            
+
         if self.image is None or len(self.image) == 0:
             return False
         if self.header is None:

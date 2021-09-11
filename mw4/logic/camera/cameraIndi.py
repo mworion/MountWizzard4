@@ -108,7 +108,7 @@ class CameraIndi(IndiClass):
         because on ALPACA and ASCOM side it's a step by step sequence, which has
         very defined states for each step and I would like ta have a common
         approach for all frameworks.
-  
+
         :return: success
         """
         THRESHOLD = 0.00001

@@ -596,4 +596,3 @@ class BuildPoints:
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
         return True
-

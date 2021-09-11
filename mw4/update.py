@@ -248,7 +248,7 @@ class UpdateGUI:
             text = f'Error installing {self.version}'
             self.writeText(text, 2)
 
-        self.writeText(f'Restarting MountWizzard4...', 1)
+        self.writeText('Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
         self.test.qWait(3000)
         self.update.restart(text)
@@ -272,7 +272,7 @@ class UpdateCLI:
             text = f'Error installing {self.version}'
             self.writeText(text, 2)
 
-        self.writeText(f'Restarting MountWizzard4...', 1)
+        self.writeText('Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
         self.update.restart(text)
 
@@ -298,9 +298,9 @@ def main():
     log.header('-' * 100)
     log.header(f'Running updater')
     if simpleGui:
-        log.header(f'Simple updater in CLI mode')
+        log.header('Simple updater in CLI mode')
     else:
-        log.header(f'Comfort updater in GUI mode')
+        log.header('Comfort updater in GUI mode')
 
     log.header('-' * 100)
 

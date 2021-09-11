@@ -114,20 +114,22 @@ class CameraIndi(IndiClass):
         THRESHOLD = 0.00001
         value = self.data.get('CCD_EXPOSURE.CCD_EXPOSURE_VALUE')
         if self.device.CCD_EXPOSURE['state'] == 'Busy':
-            if value <= THRESHOLD:
+            if value is None:
+                return False
+            elif value <= THRESHOLD:
                 if not self.isDownloading:
                     self.signals.integrated.emit()
                 self.isDownloading = True
                 self.signals.message.emit('download')
-            elif value > THRESHOLD:
-                self.signals.message.emit(f'expose {value:2.0f} s')
             else:
-                return False
-
+                self.signals.message.emit(f'expose {value:2.0f} s')
         elif self.device.CCD_EXPOSURE['state'] in ['Idle', 'Ok']:
             self.signals.downloaded.emit()
             self.signals.message.emit('')
             self.isDownloading = False
+        else:
+            t = f'[{self.deviceName}] state: [{self.device.CCD_EXPOSURE["state"]}]'
+            self.log.warning(t)
 
         return True
 

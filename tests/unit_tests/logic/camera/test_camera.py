@@ -168,13 +168,6 @@ def test_sendDownloadMode_2(function):
         assert suc
 
 
-def test_resetExposed(function):
-    function.exposing = True
-    suc = function.resetExposed()
-    assert suc
-    assert not function.exposing
-
-
 def test_expose_1(function):
     function.framework = ''
     suc = function.expose()

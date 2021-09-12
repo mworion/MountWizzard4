@@ -662,7 +662,7 @@ class Styles:
     QScrollBar:vertical
     {   background-color: #202020;
         width: 20px;
-        margin: 20px 3px 20px 3px;
+        margin: 0px 3px 0px 3px;
         border-width: 1px;
         border-color: #404040;
         border-style: outset;
@@ -670,9 +670,10 @@ class Styles:
     }
     QScrollBar::handle:vertical
     {   background-color:  rgb(32, 144, 192);
-        min-height: 10px;
+        min-height: 32px;
         border-radius: 2px;
     }
+    /*
     QScrollBar::sub-line:vertical
     {   margin: 2px 0px 2px 0px;
         border-image: url(:icon/arrow-up.ico);
@@ -713,7 +714,7 @@ class Styles:
     QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
     {   background: none;
     }
-
+    */
     /* progress bar */
     QProgressBar {
         color: white;

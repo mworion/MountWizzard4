@@ -304,6 +304,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         msg = QMessageBox()
         msg.setWindowModality(Qt.ApplicationModal)
         msg.setStyleSheet(self.getStyle())
+        msg.setTextFormat(Qt.AutoText)
         msg.setWindowTitle(title)
         pixmap = QPixmap(':/icon/question.svg').scaled(64, 64)
         msg.setIconPixmap(pixmap)

@@ -19,8 +19,8 @@ import os
 
 # external packages
 import PyQt5
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTableWidgetItem, QHeaderView, QAbstractItemView
+from PyQt5.QtCore import Qt, QRect, QPoint
+from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QHeaderView, QAbstractItemView
 import numpy as np
 from sgp4.exporter import export_tle
 from skyfield import almanac
@@ -118,7 +118,6 @@ class Satellite(object):
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadDataFromSourceURLs)
-        self.ui.isOnline.stateChanged.connect(self.loadDataFromSourceURLs)
         self.ui.filterSatellite.textChanged.connect(self.filterSatelliteNamesList)
         self.app.sendSatelliteData.connect(self.sendSatelliteData)
         self.ui.satAfterFlip.clicked.connect(self.showSatPasses)
@@ -128,6 +127,7 @@ class Satellite(object):
         self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.progTrajectory.clicked.connect(self.startProg)
         self.app.update1s.connect(self.updateOrbit)
+        self.app.update3s.connect(self.recalcTableEntries)
 
     def initConfig(self):
         """
@@ -521,12 +521,12 @@ class Satellite(object):
                 continue
             isFound = filterStr.lower() in item.lower()
             listSat.setRowHidden(row, not isFound)
-
         return True
 
     @staticmethod
     def findRangeRate(sat, loc, tEv):
         """
+        :param sat:
         :param loc:
         :param tEv:
         :return:
@@ -535,12 +535,71 @@ class Satellite(object):
         _, _, the_range, _, _, range_rate = pos.frame_latlon_and_rates(loc)
         return the_range.km, range_rate.km_per_s
 
+    @staticmethod
+    def updateTableEntries(satTab, row, name, number, satRange, satRate):
+        """
+        :param satTab:
+        :param row:
+        :param name:
+        :param number:
+        :param satRange:
+        :param satRate:
+        :return:
+        """
+        entry = QTableWidgetItem(f'{number:5d}')
+        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        satTab.setItem(row, 0, entry)
+
+        entry = QTableWidgetItem(name)
+        entry.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        satTab.setItem(row, 1, entry)
+
+        entry = QTableWidgetItem(f'{satRange:5.0f}')
+        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        satTab.setItem(row, 2, entry)
+
+        entry = QTableWidgetItem(f'{satRate:+2.3f}')
+        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        satTab.setItem(row, 3, entry)
+        return True
+
+    def recalcTableEntries(self):
+        """
+        :return:
+        """
+        tabWidget = self.ui.mainTabWidget.findChild(QWidget, 'Satellite')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        currIndex = self.ui.mainTabWidget.currentIndex()
+        if tabIndex != currIndex:
+            return
+
+        satTab = self.ui.listSatelliteNames
+        loc = self.app.mount.obsSite.location
+        timeNow = self.app.mount.obsSite.ts.now()
+
+        viewPortRect = QRect(QPoint(0, 0), satTab.viewport().size())
+
+        for row in range(satTab.rowCount()):
+            rect = satTab.visualRect(satTab.model().index(row, 0))
+            isVisible = viewPortRect.intersects(rect)
+            if not isVisible:
+                continue
+            if satTab.isRowHidden(row):
+                continue
+            name = satTab.model().index(row, 1).data()
+            number = int(satTab.model().index(row, 0).data())
+            satRange, satRate = self.findRangeRate(self.satellites[name],
+                                                   loc,
+                                                   timeNow)
+            self.updateTableEntries(satTab, row, name, number, satRange, satRate)
+        return True
+
     def setupSatelliteNameList(self):
         """
         :return: success for test
         """
         satTab = self.ui.listSatelliteNames
-        satTab.clear()
+        satTab.setRowCount(0)
         satTab.setColumnCount(4)
         satTab.setHorizontalHeaderLabels(['ID', 'Name', 'Dist [km]', 'Rate [km/s]'])
         satTab.setColumnWidth(0, 50)
@@ -548,7 +607,6 @@ class Satellite(object):
         satTab.setColumnWidth(2, 60)
         satTab.setColumnWidth(3, 70)
         satTab.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
-        satTab.horizontalHeader().setLineWidth(0)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         loc = self.app.mount.obsSite.location
@@ -562,49 +620,22 @@ class Satellite(object):
                                                    loc,
                                                    timeNow)
             satTab.insertRow(satTab.rowCount())
-            entry = QTableWidgetItem(f'{number:5d}')
-            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-            satTab.setItem(satTab.rowCount() - 1, 0, entry)
+            row = satTab.rowCount() - 1
+            self.updateTableEntries(satTab, row, name, number, satRange, satRate)
 
-            entry = QTableWidgetItem(name)
-            entry.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-            satTab.setItem(satTab.rowCount() - 1, 1, entry)
-
-            entry = QTableWidgetItem(f'{satRange:5.0f}')
-            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-            satTab.setItem(satTab.rowCount() - 1, 2, entry)
-
-            entry = QTableWidgetItem(f'{satRate:+2.3f}')
-            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-            satTab.setItem(satTab.rowCount() - 1, 3, entry)
-
-        satTab.sortItems(0)
         satTab.update()
         self.filterSatelliteNamesList()
         return True
 
-    def setupSatelliteNameList_old(self):
-        """
-        :return: success for test
-        """
-        satTab = self.ui.listSatelliteNames
-        satTab.clear()
-        for name, _ in self.satellites.items():
-            if not isinstance(name, str):
-                continue
-            entryName = f'{self.satellites[name].model.satnum:5d}: {name}'
-            satTab.addItem(entryName)
-        satTab.sortItems()
-        satTab.update()
-        self.filterSatelliteNamesList()
-        return True
-
-    def loadDataFromSourceURLsWorker(self, source='', isOnline=False):
+    def workerLoadDataFromSourceURLs(self, source='', isOnline=False):
         """
         :return: success
         """
         if not source:
             return False
+
+        self.app.update1s.disconnect(self.updateOrbit)
+        self.app.update3s.disconnect(self.recalcTableEntries)
 
         fileName = os.path.basename(source)
         dirPath = self.app.mwGlob['dataDir']
@@ -612,6 +643,9 @@ class Satellite(object):
 
         satellites = self.app.mount.obsSite.loader.tle_file(source, reload=isOnline)
         self.satellites = {sat.name: sat for sat in satellites}
+
+        self.app.update1s.connect(self.updateOrbit)
+        self.app.update3s.connect(self.recalcTableEntries)
 
         if not os.path.isfile(filePath):
             return False
@@ -627,7 +661,7 @@ class Satellite(object):
 
         source = self.satelliteSourceURLs[key]
         isOnline = self.ui.isOnline.isChecked()
-        worker = Worker(self.loadDataFromSourceURLsWorker,
+        worker = Worker(self.workerLoadDataFromSourceURLs,
                         source=source,
                         isOnline=isOnline)
         worker.signals.finished.connect(self.setupSatelliteNameList)

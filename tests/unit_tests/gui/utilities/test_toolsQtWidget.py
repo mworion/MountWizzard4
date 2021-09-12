@@ -88,6 +88,60 @@ def test_FileSortProxyModel_1():
     dialog.setProxyModel(FileSortProxyModel(w))
 
 
+def test_findIndexValue_0(function):
+    ui = QComboBox()
+    ui.addItem('')
+    val = function.findIndexValue(ui=ui,
+                                  searchString='dome')
+    assert val == 0
+
+
+def test_findIndexValue_1(function):
+    ui = QComboBox()
+    ui.addItem('dome')
+    ui.addItem('test')
+    val = function.findIndexValue(ui=ui,
+                                  searchString='dome')
+    assert val == 0
+
+
+def test_findIndexValue_2(function):
+    ui = QComboBox()
+    ui.addItem('dome')
+    ui.addItem('indi')
+    val = function.findIndexValue(ui=ui,
+                                  searchString='indi')
+    assert val == 1
+
+
+def test_findIndexValue_3(function):
+    ui = QComboBox()
+    ui.addItem('dome')
+    ui.addItem('test')
+    ui.addItem('indi - test')
+    val = function.findIndexValue(ui=ui,
+                                  searchString='indi')
+    assert val == 2
+
+
+def test_findIndexValue_4(function):
+    ui = QComboBox()
+    ui.addItem('dome')
+    ui.addItem('test')
+    ui.addItem('indi - test')
+    val = function.findIndexValue(ui=ui,
+                                  searchString='indi',
+                                  relaxed=True)
+    assert val == 2
+
+
+def test_findIndexValue_5(function):
+    ui = QComboBox()
+    val = function.findIndexValue(ui=ui,
+                                  searchString='indi')
+    assert val == 0
+
+
 def test_wIcon_1(function):
     suc = function.wIcon()
     assert not suc

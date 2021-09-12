@@ -127,6 +127,31 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         self.setWindowIcon(QIcon(':/icon/mw4.png'))
 
     @staticmethod
+    def findIndexValue(ui, searchString, relaxed=False):
+        """
+        :param ui:
+        :param searchString:
+        :param relaxed:
+        :return:
+        """
+        for index in range(ui.model().rowCount()):
+            modelIndex = ui.model().index(index, 0)
+            indexValue = ui.model().data(modelIndex)
+
+            if not indexValue:
+                continue
+
+            if relaxed:
+                if searchString in indexValue:
+                    return index
+
+            else:
+                if indexValue.startswith(searchString):
+                    return index
+
+        return 0
+
+    @staticmethod
     def wIcon(gui=None, name=''):
         """
         widget icon adds an icon to a gui element like an button.

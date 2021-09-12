@@ -44,31 +44,6 @@ class ToolsMatplotlib:
     log = logging.getLogger(__name__)
 
     @staticmethod
-    def findIndexValue(ui, searchString, relaxed=False):
-        """
-        :param ui:
-        :param searchString:
-        :param relaxed:
-        :return:
-        """
-        for index in range(ui.model().rowCount()):
-            modelIndex = ui.model().index(index, 0)
-            indexValue = ui.model().data(modelIndex)
-
-            if not indexValue:
-                continue
-
-            if relaxed:
-                if searchString in indexValue:
-                    return index
-
-            else:
-                if indexValue.startswith(searchString):
-                    return index
-
-        return 0
-
-    @staticmethod
     def embedMatplot(widget=None, constrainedLayout=True):
         """
         embedMatplot provides the wrapper to use matplotlib drawings inside a

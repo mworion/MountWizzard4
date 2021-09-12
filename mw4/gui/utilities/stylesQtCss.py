@@ -493,17 +493,14 @@ class Styles:
         border-style: outset;
         border-radius: 2px;
         color: #C0C0C0;
-        padding-left: 5px;
         padding-top: 5px;
     }
-    QPushButton:pressed {
+    QTableWidget {
         border-color: #404040;
-        border-width: 2px;
-        border-style: inset;
-        border-radius: 2px;
-        /*
-        border-image: url(:/icon/check-circle.svg)
-        */
+        border-width: 0px;
+        border-style: plain;
+        border-radius: 0px;
+        color: #C0C0C0;
     }
     QPushButton[running='false'] {
         background-color: #202020;
@@ -662,15 +659,15 @@ class Styles:
         border-width: 1px;
         border-color: #404040;
         border-style: outset;
-        border-radius: 3px;
+        border-radius: 2px;
     }
     QScrollBar::handle:vertical
     {   background-color:  rgb(32, 144, 192);
         min-height: 10px;
-        border-radius: 3px;
+        border-radius: 2px;
     }
     QScrollBar::sub-line:vertical
-    {   margin: 3px 0px 3px 0px;
+    {   margin: 2px 0px 2px 0px;
         border-image: url(:icon/arrow-up.ico);
         height: 16px;
         width: 16px;
@@ -678,7 +675,7 @@ class Styles:
         subcontrol-origin: margin;
     }
     QScrollBar::add-line:vertical
-    {   margin: 3px 0px 3px 0px;
+    {   margin: 2px 0px 2px 0px;
         border-image: url(:icon/arrow-down.ico);
         height: 16px;
         width: 16px;
@@ -704,7 +701,7 @@ class Styles:
         border-width: 1px;
         border-color: #404040;
         border-style: outset;
-        border-radius: 4px;
+        border-radius: 2px;
     }
     QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
     {   background: none;

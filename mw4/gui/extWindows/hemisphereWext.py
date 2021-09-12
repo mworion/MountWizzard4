@@ -393,8 +393,17 @@ class HemisphereWindowExt:
 
         name = hip.name[index]
         ra, dec = hip.getAlignStarRaDecFromName(hip.name[index])
-        textFormat = 'Align: {0}\nDo you want to slew the mount to:\n\n{1}'
-        question = textFormat.format(alignType, name)
+        question = f'<b>The selected alignment type is {alignType}!</b>'
+        question += '<br><br>Selected alignment star is '
+        question += f'<font color={self.M_BLUE}>{name}</font>'
+        question += '<br>Would you like to start alignment?<br>'
+
+        isDAT = self.app.mount.setting.statusDualAxisTracking
+        warning = f'<br><i><font color={self.M_YELLOW}>'
+        warning += 'Dual Axis Tracking is actually enabled!<br>'
+        warning += 'It should be off during alignment process.</font></i>'
+
+        question = question + warning if isDAT else question
 
         suc = self.messageDialog(self, 'Slewing mount', question)
         if not suc:

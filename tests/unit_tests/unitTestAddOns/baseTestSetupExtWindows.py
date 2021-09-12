@@ -162,6 +162,9 @@ class Dome(QObject):
 
 
 class Mount(QObject):
+    class Model:
+        numberStars = None
+
     class MountGeometry:
         offNorth = 0
         offEast = 0

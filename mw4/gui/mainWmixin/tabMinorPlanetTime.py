@@ -214,8 +214,12 @@ class MinorPlanetTime:
         """
         :return: success
         """
-        text = 'Should \n\n[Earth Rotation Data]\n\nbe programmed to mount ?'
-        suc = self.messageDialog(self, 'Program with QCI Updater', text)
+        question = '<b>Earth Rotation Data programming</b>'
+        question += '<br><br>The 10micron updater will be used.'
+        question += '<br>Would you like to start?<br>'
+        question += f'<br><i><font color={self.M_YELLOW}>'
+        question += 'Please wait until updater is closed!</font></i>'
+        suc = self.messageDialog(self, 'Program with QCI Updater', question)
 
         if not suc:
             return False
@@ -290,8 +294,14 @@ class MinorPlanetTime:
         isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
         isAsteroid = not isComet
 
-        text = f'Should \n\n[{source}]\n\nbe programmed to mount ?'
-        suc = self.messageDialog(self, 'Program with QCI Updater', text)
+        question = '<b>Single MPC Data programming</b>'
+        question += '<br><br>The 10micron updater will be used.'
+        question += '<br>Selected source is '
+        question += f'<font color={self.M_BLUE}>{source}</font>'
+        question += '<br>Would you like to start?<br>'
+        question += f'<br><i><font color={self.M_YELLOW}>'
+        question += 'Please wait until updater is closed!</font></i>'
+        suc = self.messageDialog(self, 'Program with QCI Updater', question)
 
         if not suc:
             return False
@@ -338,8 +348,14 @@ class MinorPlanetTime:
         if source.startswith('Please'):
             return False
 
-        text = f'Should filtered database\n\n[{source}]\n\nbe programmed to mount ?'
-        suc = self.messageDialog(self, 'Program with QCI Updater', text)
+        question = '<b>Filtered MPC Data programming</b>'
+        question += '<br><br>The 10micron updater will be used.'
+        question += '<br>Selected source is '
+        question += f'<font color={self.M_BLUE}>{source}</font>'
+        question += '<br>Would you like to start?<br>'
+        question += f'<br><i><font color={self.M_YELLOW}>'
+        question += 'Please wait until updater is closed!</font></i>'
+        suc = self.messageDialog(self, 'Program with QCI Updater', question)
 
         if not suc:
             return False
@@ -398,8 +414,14 @@ class MinorPlanetTime:
         if source.startswith('Please'):
             return False
 
-        text = f'Should full database\n\n[{source}]\n\nbe programmed to mount ?'
-        suc = self.messageDialog(self, 'Program with QCI Updater', text)
+        question = '<b>Full MPC Data programming</b>'
+        question += '<br><br>The 10micron updater will be used.'
+        question += '<br>Selected source is '
+        question += f'<font color={self.M_BLUE}>{source}</font>'
+        question += '<br>Would you like to start?<br>'
+        question += f'<br><i><font color={self.M_YELLOW}>'
+        question += 'Please wait until updater is closed!</font></i>'
+        suc = self.messageDialog(self, 'Program with QCI Updater', question)
 
         if not suc:
             return False

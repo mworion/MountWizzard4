@@ -398,9 +398,10 @@ class HemisphereWindowExt:
         name = hip.name[index]
         ra, dec = hip.getAlignStarRaDecFromName(hip.name[index])
         question = '<b>Polar / Ortho Alignment procedure</b>'
-        question += f'<br><br>The selected alignment type is {alignType}.'
-        question += '<br>Selected alignment star is '
-        question += f'<font color={self.M_BLUE}>{name}</font>'
+        question += f'<br><br>Selected alignment type: '
+        question += f'<font color={self.M_BLUE}>{alignType}.</font>'
+        question += '<br>Selected alignment star: '
+        question += f'<font color={self.M_BLUE}>{name}.</font>'
         question += '<br>Would you like to start alignment?<br>'
 
         isDAT = self.app.mount.setting.statusDualAxisTracking

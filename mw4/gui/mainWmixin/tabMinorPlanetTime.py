@@ -131,16 +131,12 @@ class MinorPlanetTime:
         """
         if 'Designation_and_name' in mp:
             name = f'{index:5d}: {mp["Designation_and_name"]}'
-
         elif 'Name' in mp and 'Principal_desig' in mp:
             name = f'{index:5d}: {mp["Principal_desig"]} - {mp["Name"]} {mp["Number"]}'
-
         elif 'Principal_desig' in mp:
             name = f'{index:5d}: {mp["Principal_desig"]}'
-
         elif 'Name' in mp:
             name = f'{index:5d}: {mp["Name"]} {mp["Number"]}'
-
         else:
             name = ''
 
@@ -150,7 +146,6 @@ class MinorPlanetTime:
         """
         :return: success for test
         """
-
         self.ui.listMinorPlanetNames.clear()
         for index, mp in enumerate(self.minorPlanets):
             text = self.generateName(index, mp)
@@ -193,7 +188,6 @@ class MinorPlanetTime:
         :return: success
         """
         source = self.ui.minorPlanetSource.currentText()
-
         if source not in self.minorPlanetSourceURLs:
             return False
         if source == 'Please select':
@@ -220,7 +214,6 @@ class MinorPlanetTime:
         question += f'<br><i><font color={self.M_YELLOW}>'
         question += 'Please wait until updater is closed!</font></i>'
         suc = self.messageDialog(self, 'Program with QCI Updater', question)
-
         if not suc:
             return False
 
@@ -228,15 +221,12 @@ class MinorPlanetTime:
         self.app.message.emit('Writing files: finals.data, tai-utc.dat', 0)
 
         suc = self.databaseProcessing.writeEarthRotationData(self.installPath)
-
         if not suc:
             self.app.message.emit('Data could not be copied - stopping', 2)
             return False
-
         if not self.app.automation:
             self.app.message.emit('Not running windows - upload not possible', 2)
             return False
-
         if not self.app.automation.installPath:
             self.app.message.emit('No QCI updater available - upload not possible', 2)
             return False
@@ -296,13 +286,12 @@ class MinorPlanetTime:
 
         question = '<b>Single MPC Data programming</b>'
         question += '<br><br>The 10micron updater will be used.'
-        question += '<br>Selected source is '
-        question += f'<font color={self.M_BLUE}>{source}</font>'
+        question += '<br>Selected source: '
+        question += f'<font color={self.M_BLUE}>{source}.</font>'
         question += '<br>Would you like to start?<br>'
         question += f'<br><i><font color={self.M_YELLOW}>'
         question += 'Please wait until updater is closed!</font></i>'
         suc = self.messageDialog(self, 'Program with QCI Updater', question)
-
         if not suc:
             return False
 
@@ -311,18 +300,14 @@ class MinorPlanetTime:
 
         if isComet:
             suc = self.databaseProcessing.writeCometMPC(mpc, self.installPath)
-
         if isAsteroid:
             suc = self.databaseProcessing.writeAsteroidMPC(mpc, self.installPath)
-
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
             return False
-
         if not self.app.automation:
             self.app.message.emit('Not running windows - upload not possible', 2)
             return False
-
         if not self.app.automation.installPath:
             self.app.message.emit(
                 'No QCI updater available - upload not possible', 2)
@@ -330,7 +315,6 @@ class MinorPlanetTime:
 
         self.app.message.emit('Uploading to mount', 0)
         suc = self.app.automation.uploadMPCData(comets=isComet)
-
         if not suc:
             self.app.message.emit('Uploading error', 2)
         else:
@@ -350,13 +334,12 @@ class MinorPlanetTime:
 
         question = '<b>Filtered MPC Data programming</b>'
         question += '<br><br>The 10micron updater will be used.'
-        question += '<br>Selected source is '
+        question += '<br>Selected source: '
         question += f'<font color={self.M_BLUE}>{source}</font>'
         question += '<br>Would you like to start?<br>'
         question += f'<br><i><font color={self.M_YELLOW}>'
         question += 'Please wait until updater is closed!</font></i>'
         suc = self.messageDialog(self, 'Program with QCI Updater', question)
-
         if not suc:
             return False
 
@@ -364,7 +347,6 @@ class MinorPlanetTime:
         self.app.message.emit('Exporting MPC data', 0)
 
         filterStr = self.ui.filterMinorPlanet.text().lower()
-
         filtered = list()
         for index, mp in enumerate(self.minorPlanets):
             text = self.generateName(index, mp)
@@ -377,26 +359,21 @@ class MinorPlanetTime:
         if isComet:
             suc = self.databaseProcessing.writeCometMPC(filtered,
                                                         self.installPath)
-
         if isAsteroid:
             suc = self.databaseProcessing.writeAsteroidMPC(filtered,
                                                            self.installPath)
-
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
             return False
-
         if not self.app.automation:
             self.app.message.emit('Not running windows - upload not possible', 2)
             return False
-
         if not self.app.automation.installPath:
             self.app.message.emit('No QCI updater available - upload not possible', 2)
             return False
 
         self.app.message.emit('Uploading MPC data to mount', 0)
         suc = self.app.automation.uploadMPCData(comets=isComet)
-
         if not suc:
             self.app.message.emit('Uploading error', 2)
         else:
@@ -410,19 +387,17 @@ class MinorPlanetTime:
         source = self.ui.minorPlanetSource.currentText()
         isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
         isAsteroid = not isComet
-
         if source.startswith('Please'):
             return False
 
         question = '<b>Full MPC Data programming</b>'
         question += '<br><br>The 10micron updater will be used.'
-        question += '<br>Selected source is '
+        question += '<br>Selected source: '
         question += f'<font color={self.M_BLUE}>{source}</font>'
         question += '<br>Would you like to start?<br>'
         question += f'<br><i><font color={self.M_YELLOW}>'
         question += 'Please wait until updater is closed!</font></i>'
         suc = self.messageDialog(self, 'Program with QCI Updater', question)
-
         if not suc:
             return False
 
@@ -432,19 +407,15 @@ class MinorPlanetTime:
         if isComet:
             suc = self.databaseProcessing.writeCometMPC(self.minorPlanets,
                                                         self.installPath)
-
         if isAsteroid:
             suc = self.databaseProcessing.writeAsteroidMPC(self.minorPlanets,
                                                            self.installPath)
-
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
             return False
-
         if not self.app.automation:
             self.app.message.emit('Not running windows - upload not possible', 2)
             return False
-
         if not self.app.automation.installPath:
             self.app.message.emit('No QCI updater available - upload not possible', 2)
             return False

@@ -439,8 +439,7 @@ class Satellite(object):
         item = result[0]
         index = satTab.row(item)
         satTab.selectRow(index)
-        position = QAbstractItemView.EnsureVisible
-        satTab.scrollToItem(item, position)
+        satTab.scrollToItem(item, QAbstractItemView.PositionAtCenter)
 
         self.satellite = self.satellites[satName]
         self.ui.satelliteName.setText(self.satellite.name)
@@ -506,21 +505,6 @@ class Satellite(object):
 
         self.extractSatelliteData(satName=tleParams.name)
         self.showSatPasses()
-        return True
-
-    def filterSatelliteNamesList(self):
-        """
-        :return: true for test purpose
-        """
-        listSat = self.ui.listSatelliteNames
-        filterStr = self.ui.filterSatellite.text()
-
-        for row in range(listSat.model().rowCount()):
-            item = listSat.model().index(row, 1).data()
-            if item is None:
-                continue
-            isFound = filterStr.lower() in item.lower()
-            listSat.setRowHidden(row, not isFound)
         return True
 
     @staticmethod
@@ -605,7 +589,7 @@ class Satellite(object):
         loc = self.app.mount.obsSite.location
         ts = self.app.mount.obsSite.ts
         timeNow = ts.now()
-        timeNext = ts.tt_jd(timeNow.tt + 0.01)
+        timeNext = ts.tt_jd(timeNow.tt + 60 / 86400)
         eph = self.app.ephemeris
 
         viewPortRect = QRect(QPoint(0, 0), satTab.viewport().size())
@@ -623,16 +607,39 @@ class Satellite(object):
             number = int(satTab.model().index(row, 0).data())
             sat = self.satellites[name]
             isSunlit = self.findSunlit(sat, eph, timeNow)
-            isUp = self.findSatUp(sat, loc, timeNow, timeNext, 10)
+            isUp, _ = self.findSatUp(sat, loc, timeNow, timeNext, 10)
             satRange, satRate = self.findRangeRate(sat, loc, timeNow)
             self.updateTableEntries(satTab, row, name, number, satRange, satRate)
-            if isSunlit:
-                satTab.item(row, 1).setBackground(self.COLOR_GREEN)
-            elif isUp:
-                satTab.item(row, 1).setBackground(self.COLOR_YELLOW)
+            if isUp and isSunlit:
+                satTab.item(row, 1).setForeground(self.COLOR_GREEN)
             else:
-                satTab.item(row, 1).setBackground(self.COLOR_BACKGROUND)
+                satTab.item(row, 1).setForeground(self.COLOR_ASTRO)
 
+        return True
+
+    def filterSatelliteNamesList(self):
+        """
+        :return: true for test purpose
+        """
+        satTab = self.ui.listSatelliteNames
+        filterStr = self.ui.filterSatellite.text()
+
+        eph = self.app.ephemeris
+        loc = self.app.mount.obsSite.location
+        ts = self.app.mount.obsSite.ts
+        timeNow = ts.now()
+        timeNext = ts.tt_jd(timeNow.tt + 60 / 86400)
+
+        for row in range(satTab.model().rowCount()):
+            name = satTab.model().index(row, 1).data()
+            if name is None:
+                continue
+            isFound = filterStr.lower() in name.lower()
+            sat = self.satellites[name]
+            isSunlit = self.findSunlit(sat, eph, timeNow)
+            isUp, _ = self.findSatUp(sat, loc, timeNow, timeNext, 10)
+            showON = isFound and isUp and isSunlit
+            satTab.setRowHidden(row, not showON)
         return True
 
     def setupSatelliteNameList(self):
@@ -650,7 +657,9 @@ class Satellite(object):
         satTab.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-
+        satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        satTab.setSelectionBehavior(QAbstractItemView.SelectRows)
+        satTab.setSelectionMode(QAbstractItemView.NoSelection)
         loc = self.app.mount.obsSite.location
         timeNow = self.app.mount.obsSite.ts.now()
 

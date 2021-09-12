@@ -487,7 +487,7 @@ class Styles:
         border-width: 2px;
         border-color: rgb(32, 144, 192);
     }
-    QListWidget {
+    QListView {
         border-color: #404040;
         border-width: 0px;
         border-style: plain;
@@ -497,12 +497,11 @@ class Styles:
         margin: 0px;
         border: 0px;
     }
-    QTableWidget {
+    QTableView {
         border-color: #404040;
         border-width: 0px;
         border-style: plain;
         border-radius: 0px;
-        color: #C0C0C0;
         padding: 0px;
         margin: 0px;
         border: 0px;
@@ -514,6 +513,14 @@ class Styles:
         border-color: #202020;
         background-color: #202020;
     }
+    QTableView::item:selected {
+        border-width: 1px;
+        border-style: outset;
+        border-radius: 2px;
+        border-color: #606060;
+        background-color: #202020;
+    }
+    
     QPushButton[running='false'] {
         background-color: #202020;
         color: #C0C0C0;
@@ -612,8 +619,6 @@ class Styles:
         border-radius: 2px;
         color: #101010;
         background-color: rgb(32, 144, 192);
-    }
-    QComboBox QListView::item:!selected {
     }
 
     /* lines */

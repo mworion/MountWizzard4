@@ -182,8 +182,12 @@ class HemisphereWindowExt:
         azimuth = int(event.xdata + 0.5)
         altitude = int(event.ydata + 0.5)
 
-        question = 'Do you want to slew the mount to:'
-        question += f'\n\nAzimuth:\t{azimuth}°\nAltitude:\t{altitude}°'
+        question = '<b>Manual slewing to coordinate</b>'
+        question += '<br><br>Selected coordinates are:<br>'
+        question += f'<font color={self.M_BLUE}> Altitude: {altitude:3.1f}°'
+        question += f'   Azimuth: {azimuth:3.1f}°</font>'
+        question += '<br><br>Would you like to start slewing?<br>'
+
         suc = self.messageDialog(self, 'Slewing mount', question)
         if not suc:
             return False
@@ -393,8 +397,9 @@ class HemisphereWindowExt:
 
         name = hip.name[index]
         ra, dec = hip.getAlignStarRaDecFromName(hip.name[index])
-        question = f'<b>The selected alignment type is {alignType}!</b>'
-        question += '<br><br>Selected alignment star is '
+        question = '<b>Polar / Ortho Alignment procedure</b>'
+        question += f'<br><br>The selected alignment type is {alignType}.'
+        question += '<br>Selected alignment star is '
         question += f'<font color={self.M_BLUE}>{name}</font>'
         question += '<br>Would you like to start alignment?<br>'
 

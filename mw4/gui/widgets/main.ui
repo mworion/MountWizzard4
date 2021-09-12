@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>7</number>
+    <number>6</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -10481,43 +10481,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_52">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>371</width>
-       <height>306</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>List of available satellites</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QListWidget" name="listSatelliteNames">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>25</y>
-        <width>361</width>
-        <height>276</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier New</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>List of satellites.</string>
-      </property>
-     </widget>
-    </widget>
     <widget class="QPushButton" name="progSatellitesFiltered">
      <property name="geometry">
       <rect>
@@ -12156,6 +12119,81 @@ Next point in time when satellite settles.</string>
      <property name="text">
       <string>Start satellite tracking</string>
      </property>
+    </widget>
+    <widget class="QTableWidget" name="listSatelliteNames">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>376</width>
+       <height>301</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Courier New</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>List of satellites.</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="showGrid">
+      <bool>false</bool>
+     </property>
+     <property name="gridStyle">
+      <enum>Qt::DotLine</enum>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="wordWrap">
+      <bool>false</bool>
+     </property>
+     <property name="cornerButtonEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="columnCount">
+      <number>0</number>
+     </property>
+     <attribute name="horizontalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>5</number>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>80</number>
+     </attribute>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>15</number>
+     </attribute>
+     <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+      <bool>false</bool>
+     </attribute>
     </widget>
    </widget>
    <widget class="QWidget" name="MPC">
@@ -28567,7 +28605,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>refreshName</tabstop>
   <tabstop>satelliteSource</tabstop>
   <tabstop>filterSatellite</tabstop>
-  <tabstop>listSatelliteNames</tabstop>
   <tabstop>progSatellitesFull</tabstop>
   <tabstop>progSatellitesFiltered</tabstop>
   <tabstop>minorPlanetSource</tabstop>

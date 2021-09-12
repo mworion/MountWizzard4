@@ -502,6 +502,13 @@ class Styles:
         border-radius: 0px;
         color: #C0C0C0;
     }
+    QTableView QHeaderView:section{
+        border-width: 1px;
+        border-style: outset;
+        border-radius: 2px;
+        border-color: #202020;
+        background-color: #202020;
+    }
     QPushButton[running='false'] {
         background-color: #202020;
         color: #C0C0C0;

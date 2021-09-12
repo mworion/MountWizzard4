@@ -19,6 +19,8 @@ import os
 
 # external packages
 import PyQt5
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QTableWidgetItem, QHeaderView, QAbstractItemView
 import numpy as np
 from sgp4.exporter import export_tle
 from skyfield import almanac
@@ -427,18 +429,19 @@ class Satellite(object):
         :param satName: additional parameter for calling this method
         :return: success
         """
+        satTab = self.ui.listSatelliteNames
         if satName not in self.satellites:
             return False
 
-        index = self.findIndexValue(self.ui.listSatelliteNames, satName,
-                                    relaxed=True)
-        item = self.ui.listSatelliteNames.item(index)
-        if item is None:
+        result = satTab.findItems(satName, Qt.MatchExactly)
+        if len(result) == 0:
             return False
+        item = result[0]
+        index = satTab.row(item)
+        satTab.selectRow(index)
+        position = QAbstractItemView.EnsureVisible
+        satTab.scrollToItem(item, position)
 
-        item.setSelected(True)
-        position = PyQt5.QtWidgets.QAbstractItemView.EnsureVisible
-        self.ui.listSatelliteNames.scrollToItem(item, position)
         self.satellite = self.satellites[satName]
         self.ui.satelliteName.setText(self.satellite.name)
         epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M')
@@ -484,7 +487,8 @@ class Satellite(object):
         """
         :return: True for test purpose
         """
-        satName = self.ui.listSatelliteNames.currentItem().text()[8:]
+        satTab = self.ui.listSatelliteNames
+        satName = satTab.item(satTab.currentRow(), 1).text()
         if self.app.deviceStat['mount']:
             self.programDataToMount(satName=satName)
         else:
@@ -512,23 +516,86 @@ class Satellite(object):
         filterStr = self.ui.filterSatellite.text()
 
         for row in range(listSat.model().rowCount()):
-            isFound = filterStr.lower() in listSat.model().index(row).data().lower()
+            item = listSat.model().index(row, 1).data()
+            if item is None:
+                continue
+            isFound = filterStr.lower() in item.lower()
             listSat.setRowHidden(row, not isFound)
 
         return True
+
+    @staticmethod
+    def findRangeRate(sat, loc, tEv):
+        """
+        :param loc:
+        :param tEv:
+        :return:
+        """
+        pos = (sat - loc).at(tEv)
+        _, _, the_range, _, _, range_rate = pos.frame_latlon_and_rates(loc)
+        return the_range.km, range_rate.km_per_s
 
     def setupSatelliteNameList(self):
         """
         :return: success for test
         """
-        self.ui.listSatelliteNames.clear()
+        satTab = self.ui.listSatelliteNames
+        satTab.clear()
+        satTab.setColumnCount(4)
+        satTab.setHorizontalHeaderLabels(['ID', 'Name', 'Dist [km]', 'Rate [km/s]'])
+        satTab.setColumnWidth(0, 50)
+        satTab.setColumnWidth(1, 180)
+        satTab.setColumnWidth(2, 60)
+        satTab.setColumnWidth(3, 70)
+        satTab.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        satTab.horizontalHeader().setLineWidth(0)
+        satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+        loc = self.app.mount.obsSite.location
+        timeNow = self.app.mount.obsSite.ts.now()
+
         for name, _ in self.satellites.items():
             if not isinstance(name, str):
                 continue
-            entryName = f'{self.satellites[name].model.satnum:6d}: {name}'
-            self.ui.listSatelliteNames.addItem(entryName)
-        self.ui.listSatelliteNames.sortItems()
-        self.ui.listSatelliteNames.update()
+            number = self.satellites[name].model.satnum
+            satRange, satRate = self.findRangeRate(self.satellites[name],
+                                                   loc,
+                                                   timeNow)
+            satTab.insertRow(satTab.rowCount())
+            entry = QTableWidgetItem(f'{number:5d}')
+            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            satTab.setItem(satTab.rowCount() - 1, 0, entry)
+
+            entry = QTableWidgetItem(name)
+            entry.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+            satTab.setItem(satTab.rowCount() - 1, 1, entry)
+
+            entry = QTableWidgetItem(f'{satRange:5.0f}')
+            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            satTab.setItem(satTab.rowCount() - 1, 2, entry)
+
+            entry = QTableWidgetItem(f'{satRate:+2.3f}')
+            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            satTab.setItem(satTab.rowCount() - 1, 3, entry)
+
+        satTab.sortItems(0)
+        satTab.update()
+        self.filterSatelliteNamesList()
+        return True
+
+    def setupSatelliteNameList_old(self):
+        """
+        :return: success for test
+        """
+        satTab = self.ui.listSatelliteNames
+        satTab.clear()
+        for name, _ in self.satellites.items():
+            if not isinstance(name, str):
+                continue
+            entryName = f'{self.satellites[name].model.satnum:5d}: {name}'
+            satTab.addItem(entryName)
+        satTab.sortItems()
+        satTab.update()
         self.filterSatelliteNamesList()
         return True
 
@@ -827,7 +894,7 @@ class Satellite(object):
             if not isinstance(name, str):
                 continue
 
-            text = f'{self.satellites[name].model.satnum:6d}: {name}'
+            text = f'{name}'
             if filterStr.lower() not in text.lower():
                 continue
 

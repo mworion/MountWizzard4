@@ -524,6 +524,33 @@ class Satellite(object):
         return True
 
     @staticmethod
+    def findSunlit(sat, eph, tEv):
+        """
+        :param sat:
+        :param eph:
+        :param tEv:
+        :return:
+        """
+        sunlit = sat.at(tEv).is_sunlit(eph)
+        return sunlit
+
+    @staticmethod
+    def findSatUp(sat, loc, tStart, tEnd, alt):
+        """
+        :param sat:
+        :param loc:
+        :param tStart:
+        :param tEnd:
+        :param alt:
+        :return:
+        """
+        t, events = sat.find_events(loc, tStart, tEnd, altitude_degrees=alt)
+        if 1 in events:
+            return True, t.tt[np.equal(events, 1)]
+        else:
+            return False, []
+
+    @staticmethod
     def findRangeRate(sat, loc, tEv):
         """
         :param sat:
@@ -576,23 +603,36 @@ class Satellite(object):
 
         satTab = self.ui.listSatelliteNames
         loc = self.app.mount.obsSite.location
-        timeNow = self.app.mount.obsSite.ts.now()
+        ts = self.app.mount.obsSite.ts
+        timeNow = ts.now()
+        timeNext = ts.tt_jd(timeNow.tt + 0.01)
+        eph = self.app.ephemeris
 
         viewPortRect = QRect(QPoint(0, 0), satTab.viewport().size())
 
         for row in range(satTab.rowCount()):
             rect = satTab.visualRect(satTab.model().index(row, 0))
             isVisible = viewPortRect.intersects(rect)
+
             if not isVisible:
                 continue
             if satTab.isRowHidden(row):
                 continue
+
             name = satTab.model().index(row, 1).data()
             number = int(satTab.model().index(row, 0).data())
-            satRange, satRate = self.findRangeRate(self.satellites[name],
-                                                   loc,
-                                                   timeNow)
+            sat = self.satellites[name]
+            isSunlit = self.findSunlit(sat, eph, timeNow)
+            isUp = self.findSatUp(sat, loc, timeNow, timeNext, 10)
+            satRange, satRate = self.findRangeRate(sat, loc, timeNow)
             self.updateTableEntries(satTab, row, name, number, satRange, satRate)
+            if isSunlit:
+                satTab.item(row, 1).setBackground(self.COLOR_GREEN)
+            elif isUp:
+                satTab.item(row, 1).setBackground(self.COLOR_YELLOW)
+            else:
+                satTab.item(row, 1).setBackground(self.COLOR_BACKGROUND)
+
         return True
 
     def setupSatelliteNameList(self):

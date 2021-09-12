@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>7</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -10390,7 +10390,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>10</x>
         <y>25</y>
-        <width>261</width>
+        <width>226</width>
         <height>26</height>
        </rect>
       </property>
@@ -10407,7 +10407,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLineEdit" name="filterSatellite">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>245</x>
         <y>30</y>
         <width>81</width>
         <height>21</height>
@@ -10443,7 +10443,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_269">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>245</x>
         <y>10</y>
         <width>81</width>
         <height>16</height>
@@ -10459,6 +10459,25 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="text">
        <string>search string</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="satExtendedFilter">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>335</x>
+        <y>25</y>
+        <width>26</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </widget>
@@ -12163,7 +12182,7 @@ Next point in time when satellite settles.</string>
        <rect>
         <x>10</x>
         <y>25</y>
-        <width>261</width>
+        <width>226</width>
         <height>26</height>
        </rect>
       </property>
@@ -12180,7 +12199,7 @@ Next point in time when satellite settles.</string>
      <widget class="QLineEdit" name="filterMinorPlanet">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>245</x>
         <y>30</y>
         <width>81</width>
         <height>21</height>
@@ -12216,7 +12235,7 @@ Next point in time when satellite settles.</string>
      <widget class="QLabel" name="label_270">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>245</x>
         <y>10</y>
         <width>81</width>
         <height>16</height>
@@ -12232,6 +12251,25 @@ Next point in time when satellite settles.</string>
       </property>
       <property name="text">
        <string>search string</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="mpcExtendedFilter">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>335</x>
+        <y>25</y>
+        <width>26</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </widget>

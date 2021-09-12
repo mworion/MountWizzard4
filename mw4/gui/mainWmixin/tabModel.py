@@ -54,7 +54,6 @@ class Model:
         self.modelName = ''
         self.model = []
         self.imageDir = ''
-        self.statusDAT = None
         self.modelBuildRetryCounter = 0
 
         ms = self.app.mount.signals
@@ -404,29 +403,6 @@ class Model:
 
         return True
 
-    def disableDAT(self):
-        """
-        :return: True for test purpose
-        """
-        if self.statusDAT is None:
-            self.statusDAT = self.app.mount.setting.statusDualAxisTracking
-
-        self.statusDAT = self.app.mount.setting.statusDualAxisTracking
-        self.app.mount.setting.setDualAxisTracking(False)
-        self.changeStyleDynamic(self.ui.statusDualAxisTracking, 'color', 'yellow')
-        return True
-
-    def restoreStatusDAT(self):
-        """
-        :return: true for test purpose
-        """
-        if self.statusDAT is None:
-            return False
-
-        self.app.mount.setting.setDualAxisTracking(self.statusDAT)
-        self.changeStyleDynamic(self.ui.statusDualAxisTracking, 'color', '')
-        return True
-
     def clearQueues(self):
         """
         :return: true for test purpose
@@ -575,7 +551,6 @@ class Model:
 
         :return: true for test purpose
         """
-        self.restoreStatusDAT()
         self.app.camera.abort()
         self.app.astrometry.abort()
         self.restoreSignalsModelDefault()
@@ -712,7 +687,6 @@ class Model:
         self.restoreSignalsModelDefault()
         self.clearQueues()
         self.restoreModelDefaultContextAndGuiStatus()
-        self.restoreStatusDAT()
         if len(self.model) < 3:
             return False
 
@@ -973,7 +947,6 @@ class Model:
             return False
 
         self.setupModelRunContextAndGuiStatus()
-        self.disableDAT()
         self.app.message.emit(f'Modeling start:      {self.modelName}', 1)
         self.modelBuildRetryCounter = self.ui.numberBuildRetries.value()
         self.modelCycleThroughBuildPoints(modelPoints=modelPoints)

@@ -561,6 +561,7 @@ class Satellite(object):
         entry = QTableWidgetItem(f'{satRate:+2.3f}')
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
         satTab.setItem(row, 3, entry)
+        satTab.resizeRowToContents(row)
         return True
 
     def recalcTableEntries(self):
@@ -607,6 +608,7 @@ class Satellite(object):
         satTab.setColumnWidth(2, 60)
         satTab.setColumnWidth(3, 70)
         satTab.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        satTab.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         loc = self.app.mount.obsSite.location

@@ -489,11 +489,13 @@ class Styles:
     }
     QListWidget {
         border-color: #404040;
-        border-width: 1px;
-        border-style: outset;
-        border-radius: 2px;
+        border-width: 0px;
+        border-style: plain;
+        border-radius: 0px;
         color: #C0C0C0;
-        padding-top: 5px;
+        padding: 0px;
+        margin: 0px;
+        border: 0px;
     }
     QTableWidget {
         border-color: #404040;
@@ -501,6 +503,9 @@ class Styles:
         border-style: plain;
         border-radius: 0px;
         color: #C0C0C0;
+        padding: 0px;
+        margin: 0px;
+        border: 0px;
     }
     QTableView QHeaderView:section{
         border-width: 1px;

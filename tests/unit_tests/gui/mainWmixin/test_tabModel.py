@@ -586,47 +586,6 @@ def test_modelSlew_4(function):
                 assert suc
 
 
-def test_disableDAT_1(function):
-    function.app.mount.setting.statusDualAxisTracking = True
-    with mock.patch.object(function.app.mount.setting,
-                           'setDualAxisTracking'):
-        suc = function.disableDAT()
-        assert suc
-        assert function.statusDAT
-
-
-def test_disableDAT_2(function):
-    function.app.mount.setting.statusDualAxisTracking = False
-    with mock.patch.object(function.app.mount.setting,
-                           'setDualAxisTracking'):
-        suc = function.disableDAT()
-        assert suc
-        assert not function.statusDAT
-
-
-def test_disableDAT_3(function):
-    function.statusDAT = True
-    function.app.mount.setting.statusDualAxisTracking = True
-    with mock.patch.object(function.app.mount.setting,
-                           'setDualAxisTracking'):
-        suc = function.disableDAT()
-        assert suc
-        assert function.statusDAT
-
-
-def test_restoreStatusDAT_1(function):
-    function.statusDAT = True
-    with mock.patch.object(function.app.mount.setting,
-                           'setDualAxisTracking'):
-        suc = function.restoreStatusDAT()
-        assert suc
-
-
-def test_restoreStatusDAT_2(function):
-    suc = function.restoreStatusDAT()
-    assert not suc
-
-
 def test_clearQueues(function):
     suc = function.clearQueues()
     assert suc
@@ -917,10 +876,8 @@ def test_collectingModelRunOutput_1(function):
                            'restoreSignalsModelDefault'):
         with mock.patch.object(function,
                                'restoreModelDefaultContextAndGuiStatus'):
-            with mock.patch.object(function,
-                                   'restoreStatusDAT'):
-                suc = function.collectingModelRunOutput()
-                assert not suc
+            suc = function.collectingModelRunOutput()
+            assert not suc
 
 
 def test_collectingModelRunOutput_2(function):
@@ -956,10 +913,8 @@ def test_collectingModelRunOutput_2(function):
                            'restoreSignalsModelDefault'):
         with mock.patch.object(function,
                                'restoreModelDefaultContextAndGuiStatus'):
-            with mock.patch.object(function,
-                                   'restoreStatusDAT'):
-                suc = function.collectingModelRunOutput()
-                assert suc
+            suc = function.collectingModelRunOutput()
+            assert suc
 
 
 def test_programModelToMount_1(function):
@@ -1318,11 +1273,9 @@ def test_modelBuild_4(function):
                     with mock.patch.object(function,
                                            'setupModelRunContextAndGuiStatus'):
                         with mock.patch.object(function,
-                                               'disableDAT'):
-                            with mock.patch.object(function,
-                                                   'modelCycleThroughBuildPoints'):
-                                suc = function.modelBuild()
-                                assert suc
+                                               'modelCycleThroughBuildPoints'):
+                            suc = function.modelBuild()
+                            assert suc
 
 
 def test_loadProgramModel_1(function):

@@ -554,7 +554,6 @@ class Model:
 
         :return: true for test purpose
         """
-        self.restoreStatusDAT()
         self.app.camera.abort()
         self.app.astrometry.abort()
         self.restoreSignalsModelDefault()
@@ -691,7 +690,6 @@ class Model:
         self.restoreSignalsModelDefault()
         self.clearQueues()
         self.restoreModelDefaultContextAndGuiStatus()
-        self.restoreStatusDAT()
         if len(self.model) < 3:
             return False
 
@@ -952,7 +950,6 @@ class Model:
             return False
 
         self.setupModelRunContextAndGuiStatus()
-        self.disableDAT()
         self.app.message.emit(f'Modeling start:      {self.modelName}', 1)
         self.modelBuildRetryCounter = self.ui.numberBuildRetries.value()
         self.modelCycleThroughBuildPoints(modelPoints=modelPoints)

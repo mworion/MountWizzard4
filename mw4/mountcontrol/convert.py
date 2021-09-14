@@ -83,7 +83,6 @@ def stringToDegree(value):
 
     try:
         value = [float(x) for x in value]
-
     except Exception:
         return None
 
@@ -97,7 +96,6 @@ def stringToDegree(value):
     elif len(value) == 2:
         value = sign * (value[0] + value[1] / 60)
         return value
-
     else:
         return None
 
@@ -112,7 +110,6 @@ def stringToAngle(value, preference='degrees'):
     if value is not None:
         if preference == 'degrees':
             value = Angle(degrees=value, preference='degrees')
-
         else:
             value = Angle(hours=value, preference='hours')
 
@@ -121,7 +118,6 @@ def stringToAngle(value, preference='degrees'):
 
 def valueToAngle(value, preference='degrees'):
     """
-
     :param value:
     :param preference:
     :return:
@@ -130,7 +126,6 @@ def valueToAngle(value, preference='degrees'):
     if value is not None:
         if preference == 'degrees':
             value = Angle(degrees=value, preference='degrees')
-
         else:
             value = Angle(hours=value, preference='hours')
 
@@ -144,13 +139,10 @@ def valueToFloat(value):
     """
     if value == 'E':
         return None
-
     try:
         value = float(value)
-
     except Exception:
         value = None
-
     return value
 
 
@@ -161,10 +153,8 @@ def valueToInt(value):
     """
     try:
         value = int(value)
-
     except Exception:
         value = None
-
     return value
 
 
@@ -194,7 +184,6 @@ def topoToAltAz(ha, dec, lat):
 
     if np.sin(ha) >= 0.0:
         az = 360.0 - A
-
     else:
         az = A
 
@@ -227,13 +216,10 @@ def checkIsHours(value):
     """
     if not isinstance(value, str):
         return False
-
     if '*' in value:
         return False
-
     if '+' in value:
         return False
-
     if '-' in value:
         return False
 
@@ -256,14 +242,12 @@ def convertToAngle(value, isHours=None):
         value = stringToDegree(value)
         if value is None:
             return None
-
     else:
         if isHours:
             value *= 24 / 360
 
     if isHours:
         angle = Angle(hours=value)
-
     else:
         angle = Angle(degrees=value)
 
@@ -280,7 +264,6 @@ def convertToDMS(dec):
     """
     if isinstance(dec, (float, int)):
         dec = Angle(degrees=dec)
-
     if isinstance(dec, str):
         return ''
 

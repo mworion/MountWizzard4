@@ -27,7 +27,7 @@ from base.alpacaClass import AlpacaClass
 from base.alpacaBase import Camera
 from base.tpool import Worker
 from base.transform import JNowToJ2000
-
+from gui.utilities.toolsQtWidget import formatDstrToText
 
 class CameraAlpaca(AlpacaClass):
     """
@@ -192,6 +192,8 @@ class CameraAlpaca(AlpacaClass):
 
             if focalLength:
                 factor = binning / focalLength * 206.265
+                header.append(('FOCALLEN', focalLength,
+                               'Data taken from driver or manual input'))
             else:
                 factor = 1
 
@@ -200,14 +202,22 @@ class CameraAlpaca(AlpacaClass):
             header.append(('YBINNING', binning, 'MW4 is using the same binning for x and y'))
             header.append(('EXPTIME', expTime))
             header.append(('OBSERVER', 'MW4'))
-            header.append(('DATE-OBS', self.app.mount.obsSite.timeJD.utc_iso(), 'Time from UTC is ISO format'))
+            timeJD = self.app.mount.obsSite.timeJD
+            header.append(('DATE-OBS', timeJD.tt_strftime('%Y-%m-%dT%H:%M:%S'),
+                           'Time is UTC of mount'))
             header.append(('CCD-TEMP', self.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
             header.append(('SQM', self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)))
 
             if isMount:
-                header.append(('RA', ra._degrees, 'Float value in degree'))
-                header.append(('DEC', dec.degrees, 'Float value in degree'))
-                header.append(('TELESCOP', self.app.mount.firmware.product, 'Mount version from firmware'))
+                header.append(('RA', ra._degrees))
+                header.append(('DEC', dec.degrees))
+                header.append(('TELESCOP',
+                               self.app.mount.firmware.product,
+                               'Mount version from firmware'))
+                lat = self.app.mount.obsSite.location.latitude
+                header.append(('SITELAT', formatDstrToText(lat)))
+                lon = self.app.mount.obsSite.location.longitude
+                header.append(('SITELON', formatDstrToText(lon)))
 
             hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
             self.log.info(f'Saved Image: [{imagePath}]')

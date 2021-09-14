@@ -737,9 +737,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param angle:
         :return:
         """
-        sgn, h, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
+        sgn, d, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
         sign = '+' if sgn >= 0 else '-'
-        text = f'{sign}{h:02d} {m:02d} {s:02d}'
+        text = f'{sign}{d:02d} {m:02d} {s:02d}'
         return text
 
     @staticmethod

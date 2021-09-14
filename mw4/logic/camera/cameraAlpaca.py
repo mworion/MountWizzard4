@@ -218,6 +218,8 @@ class CameraAlpaca(AlpacaClass):
                 header.append(('SITELAT', formatDstrToText(lat)))
                 lon = self.app.mount.obsSite.location.longitude
                 header.append(('SITELON', formatDstrToText(lon)))
+                elev = self.app.mount.obsSite.location.elevation.m
+                header.append(('SITEELEV', elev))
 
             hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
             self.log.info(f'Saved Image: [{imagePath}]')

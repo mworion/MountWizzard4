@@ -178,6 +178,7 @@ class Mount(QObject):
         horizonLimitHigh = 0
         horizonLimitLow = 0
         webInterfaceStat = 0
+        statusDualAxisTracking = False
 
         @staticmethod
         def setWebInterface(a):

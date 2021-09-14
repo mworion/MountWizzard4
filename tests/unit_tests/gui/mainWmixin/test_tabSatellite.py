@@ -23,7 +23,8 @@ import os
 import skyfield.timelib
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, QModelIndex
+from PyQt5.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle, wgs84
 from sgp4.exporter import export_tle
@@ -650,29 +651,29 @@ def test_programDataToMount_4(function):
 
 
 def test_chooseSatellite_1(function):
-    function.ui.listSatelliteNames.clear()
-    function.ui.listSatelliteNames.addItem('TIANGONG 2')
-    function.ui.listSatelliteNames.setCurrentRow(0)
+    satTab = function.ui.listSatelliteNames
     function.app.deviceStat['mount'] = True
-    with mock.patch.object(function,
-                           'programDataToMount'):
+    with mock.patch.object(satTab,
+                           'item'):
         with mock.patch.object(function,
-                               'showSatPasses'):
-            suc = function.chooseSatellite()
-            assert suc
+                               'extractSatelliteData'):
+            with mock.patch.object(function,
+                                   'showSatPasses'):
+                suc = function.chooseSatellite()
+                assert suc
 
 
 def test_chooseSatellite_2(function):
-    function.ui.listSatelliteNames.clear()
-    function.ui.listSatelliteNames.addItem('TIANGONG 2')
-    function.ui.listSatelliteNames.setCurrentRow(0)
+    satTab = function.ui.listSatelliteNames
     function.app.deviceStat['mount'] = False
-    with mock.patch.object(function,
-                           'extractSatelliteData'):
+    with mock.patch.object(satTab,
+                           'item'):
         with mock.patch.object(function,
-                               'showSatPasses'):
-            suc = function.chooseSatellite()
-            assert suc
+                               'extractSatelliteData'):
+            with mock.patch.object(function,
+                                   'showSatPasses'):
+                suc = function.chooseSatellite()
+                assert suc
 
 
 def test_getSatelliteDataFromDatabase_1(function):
@@ -705,7 +706,7 @@ def test_filterSatelliteNamesList_1(function):
 
 
 def test_filterSatelliteNamesList_2(function):
-    function.ui.listSatelliteNames.addItem('test')
+    function.ui.listSatelliteNames.insertRow(0)
     function.ui.filterSatellite.setText('abc')
     suc = function.filterSatelliteNamesList()
     assert suc
@@ -724,8 +725,18 @@ def test_setupSatelliteNameList_2(function):
         model = Test1()
 
     function.satellites = {'sat1': Test()}
-    suc = function.setupSatelliteNameList()
-    assert suc
+
+    with mock.patch.object(function,
+                           'findRangeRate',
+                           return_value=(0, 0)):
+        with mock.patch.object(function,
+                               'findSatUp',
+                               return_value=(True, [])):
+            with mock.patch.object(function,
+                                   'findSunlit',
+                                   return_value=True):
+                suc = function.setupSatelliteNameList()
+                assert suc
 
 
 def test_setupSatelliteNameList_3(function):
@@ -740,12 +751,12 @@ def test_setupSatelliteNameList_3(function):
     assert suc
 
 
-def test_loadSatelliteSourceWorker_1(function):
-    suc = function.loadDataFromSourceURLsWorker()
+def test_workerLoadDataFromSourceURLs_1(function):
+    suc = function.workerLoadDataFromSourceURLs()
     assert not suc
 
 
-def test_loadSatelliteSourceWorker_2(function):
+def test_workerLoadDataFromSourceURLs_2(function):
     source = 'test'
     with mock.patch.object(function.app.mount.obsSite.loader,
                            'tle_file',
@@ -753,11 +764,11 @@ def test_loadSatelliteSourceWorker_2(function):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=False):
-            suc = function.loadDataFromSourceURLsWorker(source=source, isOnline=False)
+            suc = function.workerLoadDataFromSourceURLs(source=source, isOnline=False)
             assert not suc
 
 
-def test_loadSatelliteSourceWorker_3(function):
+def test_workerLoadDataFromSourceURLs_3(function):
     source = 'test'
     with mock.patch.object(function.app.mount.obsSite.loader,
                            'tle_file',
@@ -765,7 +776,7 @@ def test_loadSatelliteSourceWorker_3(function):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=True):
-            suc = function.loadDataFromSourceURLsWorker(source=source, isOnline=False)
+            suc = function.workerLoadDataFromSourceURLs(source=source, isOnline=False)
             assert suc
 
 

@@ -23,7 +23,8 @@ import os
 import math
 
 # external packages
-from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle, QPushButton
+from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle
+from PyQt5.QtWidgets import QPushButton, QComboBox
 from PyQt5.QtCore import pyqtSignal, QObject, QEvent
 from skyfield.api import Angle
 import numpy as np

@@ -223,6 +223,7 @@ class Mount(QObject):
     signals = MountSignals()
     setting = MountSetting()
     obsSite = MountObsSite()
+    model = Model()
     geometry = MountGeometry()
     host = None
 

@@ -83,8 +83,8 @@ class MessageWindow(toolsQtWidget.MWidget):
         if 'messageW' not in self.app.config:
             self.app.config['messageW'] = {}
         config = self.app.config['messageW']
-        config['winPosX'] = self.pos().x()
-        config['winPosY'] = self.pos().y()
+        config['winPosX'] = max(self.pos().x(), 0)
+        config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         return True
 

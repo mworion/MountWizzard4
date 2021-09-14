@@ -87,8 +87,8 @@ class KeypadWindow(toolsQtWidget.MWidget):
             self.app.config['keypadW'] = {}
 
         config = self.app.config['keypadW']
-        config['winPosX'] = self.pos().x()
-        config['winPosY'] = self.pos().y()
+        config['winPosX'] = max(self.pos().x(), 0)
+        config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
         return True

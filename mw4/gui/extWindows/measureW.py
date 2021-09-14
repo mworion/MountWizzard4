@@ -115,8 +115,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
         if 'measureW' not in self.app.config:
             self.app.config['measureW'] = {}
         config = self.app.config['measureW']
-        config['winPosX'] = self.pos().x()
-        config['winPosY'] = self.pos().y()
+        config['winPosX'] = max(self.pos().x(), 0)
+        config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
         config['measureSet1'] = self.ui.measureSet1.currentIndex()

@@ -128,8 +128,8 @@ class SimulatorWindow(toolsQtWidget.MWidget):
             self.app.config['simulatorW'] = {}
 
         config = self.app.config['simulatorW']
-        config['winPosX'] = self.pos().x()
-        config['winPosY'] = self.pos().y()
+        config['winPosX'] = max(self.pos().x(), 0)
+        config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
         pos = self.camera.position()

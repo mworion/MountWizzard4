@@ -132,8 +132,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.app.config['analyseW'] = {}
 
         config = self.app.config['analyseW']
-        config['winPosX'] = self.pos().x()
-        config['winPosY'] = self.pos().y()
+        config['winPosX'] = max(self.pos().x(), 0)
+        config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
         config['winsorizedLimit'] = self.ui.winsorizedLimit.isChecked()

@@ -109,8 +109,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             self.app.config['satelliteW'] = {}
 
         config = self.app.config['satelliteW']
-        config['winPosX'] = self.pos().x()
-        config['winPosY'] = self.pos().y()
+        config['winPosX'] = max(self.pos().x(), 0)
+        config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
         config['tabWidget'] = self.ui.tabWidget.currentIndex()

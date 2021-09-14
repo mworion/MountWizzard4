@@ -746,6 +746,19 @@ def test_onMouseStar_2(function):
     assert not suc
 
 
+def test_onMouseStar_2b(function):
+    class Event:
+        xdata = 10
+        ydata = 10
+        inaxes = True
+        dblclick = True
+        button = 3
+
+    function.app.mount.model.numberStars = 3
+    suc = function.onMouseStar(Event())
+    assert not suc
+
+
 def test_onMouseStar_3(function):
     class Event:
         xdata = 10
@@ -754,6 +767,7 @@ def test_onMouseStar_3(function):
         dblclick = True
         button = 3
 
+    function.app.mount.model.numberStars = 3
     suc = function.onMouseStar(Event())
     assert not suc
 
@@ -766,6 +780,7 @@ def test_onMouseStar_4(function):
         dblclick = False
         button = 1
 
+    function.app.mount.model.numberStars = 3
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=False):
@@ -784,6 +799,7 @@ def test_onMouseStar_5(function):
         dblclick = False
         button = 3
 
+    function.app.mount.model.numberStars = 3
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=False):
@@ -804,6 +820,7 @@ def test_onMouseStar_6(function):
         dblclick = False
         button = 1
 
+    function.app.mount.model.numberStars = 3
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=False):
@@ -827,6 +844,7 @@ def test_onMouseStar_7(function):
         dblclick = False
         button = 1
 
+    function.app.mount.model.numberStars = 3
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -853,6 +871,7 @@ def test_onMouseStar_8(function):
         dblclick = False
         button = 1
 
+    function.app.mount.model.numberStars = 3
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):

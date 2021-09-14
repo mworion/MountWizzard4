@@ -24,6 +24,8 @@ from skyfield.api import wgs84
 
 # local import
 from base import transform
+from mountcontrol.convert import convertLatToAngle, convertLonToAngle
+from mountcontrol.convert import formatLatToText, formatLonToText
 
 
 class Mount(object):
@@ -215,8 +217,8 @@ class Mount(object):
         if location is None:
             return False
 
-        self.ui.siteLongitude.setText(self.formatLonToText(location.longitude))
-        self.ui.siteLatitude.setText(self.formatLatToText(location.latitude))
+        self.ui.siteLongitude.setText(formatLonToText(location.longitude))
+        self.ui.siteLatitude.setText(formatLatToText(location.latitude))
         self.ui.siteElevation.setText(str(location.elevation.m))
         return True
 

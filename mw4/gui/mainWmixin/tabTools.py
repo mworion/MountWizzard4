@@ -25,6 +25,8 @@ from astropy.io import fits
 from base.transform import J2000ToJNow
 
 # local import
+from mountcontrol.convert import convertRaToAngle
+from mountcontrol.convert import convertDecToAngle
 
 
 class Tools(object):
@@ -504,12 +506,12 @@ class Tools(object):
         if not ok:
             return False
 
-        value = self.convertRaToAngle(value)
+        value = convertRaToAngle(value)
         if value is None:
             self.ui.moveCoordinateRaFloat.setText('')
             return False
 
-        text = self.formatHstrToText(value)
+        text = formatHstrToText(value)
         self.ui.moveCoordinateRa.setText(text)
         self.ui.moveCoordinateRaFloat.setText(f'{value.hours:2.4f}')
         return True
@@ -528,12 +530,12 @@ class Tools(object):
         if not ok:
             return False
 
-        value = self.convertDecToAngle(value)
+        value = convertDecToAngle(value)
         if value is None:
             self.ui.moveCoordinateDecFloat.setText('')
             return False
 
-        text = self.formatDstrToText(value)
+        text = formatDstrToText(value)
         self.ui.moveCoordinateDec.setText(text)
         self.ui.moveCoordinateDecFloat.setText(f'{value.degrees:2.4f}')
         return True
@@ -606,12 +608,12 @@ class Tools(object):
         :return:
         """
         value = self.ui.moveCoordinateRa.text()
-        ra = self.convertRaToAngle(value)
+        ra = convertRaToAngle(value)
         if ra is None:
             return False
 
         value = self.ui.moveCoordinateDec.text()
-        dec = self.convertDecToAngle(value)
+        dec = convertDecToAngle(value)
         if dec is None:
             return False
 

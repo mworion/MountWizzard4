@@ -36,6 +36,7 @@ import sep
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
+from mountcontrol.convert import formatHstrToText, formatDstrToText
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
 from gui.utilities import toolsQtWidget
 from gui.widgets import image_ui
@@ -588,8 +589,8 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         ra, dec = getCoordinates(header=self.header)
 
-        self.ui.ra.setText(f'{self.formatHstrToText(ra)}')
-        self.ui.dec.setText(f'{self.formatDstrToText(dec)}')
+        self.ui.ra.setText(f'{formatHstrToText(ra)}')
+        self.ui.dec.setText(f'{formatDstrToText(dec)}')
 
         scale = getScale(header=self.header)
         rotation = self.header.get('ANGLE', 0)

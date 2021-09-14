@@ -32,7 +32,7 @@ import numpy as np
 # local imports
 from gui.utilities.stylesQtCss import Styles
 from gui.utilities.toolsMatplotlib import ToolsMatplotlib
-from mountcontrol.convert import sexagesimalizeToInt
+from mountcontrol.convert import formatHstrToText, formatDstrToText
 
 __all__ = [
     'MWidget',
@@ -527,9 +527,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         elif isinstance(value, (list, np.ndarray)) and len(value) == 0:
             text = '-'
         elif formatElement.startswith('HSTR'):
-            text = self.formatHstrToText(value)
+            text = formatHstrToText(value)
         elif formatElement.startswith('DSTR'):
-            text = self.formatDstrToText(value)
+            text = formatDstrToText(value)
         elif formatElement.startswith('D'):
             formatStr = '{0:' + formatElement.lstrip('D') + '}'
             text = formatStr.format(value.degrees)

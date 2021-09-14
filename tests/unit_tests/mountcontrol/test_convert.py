@@ -16,11 +16,14 @@
 ###########################################################
 # standard libraries
 import unittest
+import unittest.mock as mock
+import math
 
 # external packages
 from skyfield.api import Angle
 
 # local imports
+import mountcontrol
 from mountcontrol.convert import stringToDegree
 from mountcontrol.convert import stringToAngle
 from mountcontrol.convert import valueToFloat
@@ -32,6 +35,15 @@ from mountcontrol.convert import checkIsHours
 from mountcontrol.convert import convertToAngle
 from mountcontrol.convert import convertToHMS
 from mountcontrol.convert import convertToDMS
+from mountcontrol.convert import formatLatLonToAngle
+from mountcontrol.convert import convertLatToAngle
+from mountcontrol.convert import convertLonToAngle
+from mountcontrol.convert import convertRaToAngle
+from mountcontrol.convert import convertDecToAngle
+from mountcontrol.convert import formatHstrToText
+from mountcontrol.convert import formatDstrToText
+from mountcontrol.convert import formatLatToText
+from mountcontrol.convert import formatLonToText
 
 
 class TestConfigData(unittest.TestCase):
@@ -394,3 +406,183 @@ class TestConfigData(unittest.TestCase):
     def test_convertToAngle_5(self):
         value = convertToAngle('+12:00:00.0')
         assert value.degrees == 12
+
+
+def test_formatLatLonToAngle_1():
+    values = [
+        ['+12.5', 'SN', 12.5],
+        ['12.5', 'SN', 12.5],
+        ['-12.5', 'SN', -12.5],
+        ['+12.5', 'WE', 12.5],
+        ['12.5', 'WE', 12.5],
+        ['-12.5', 'WE', -12.5],
+        ['12N 30 30.55', 'SN', 12.508333],
+        ['12N 30 30.5', 'SN', 12.508333],
+        ['12N 30 30,5', 'SN', 12.508333],
+        ['12 30 30.5N', 'SN', None],
+        ['12 30 30.5 N', 'SN', None],
+        ['+12N 30 30.5', 'SN', None],
+        ['12N 30 30', 'SN', 12.508333],
+        ['12S 30 30', 'SN', -12.508333],
+        ['12N 30', 'SN', 12.5],
+        ['12NS 30', 'SN', None],
+        ['12W ', 'SN', None],
+        ['12E 30 30.55', 'WE', 12.508333],
+        ['12E 30 30.5', 'WE', 12.508333],
+        ['12 30 30.5E', 'WE', None],
+        ['12 30 30.5 E', 'WE', None],
+        ['+12E 30 30.5', 'WE', None],
+        ['12E 30 30', 'WE', 12.508333],
+        ['12W 30 30', 'WE', -12.508333],
+        ['12E 30', 'WE', 12.5],
+        ['12WE 30', 'WE', None],
+        ['12N ', 'WE', None],
+        ['99N ', 'SN', None],
+        ['99S ', 'SN', None],
+        ['190E ', 'WE', None],
+        ['190W ', 'WE', None],
+        ['12N 30  30.5 ', 'SN', 12.508333],
+        ['12N  30 30.5', 'SN', 12.508333],
+        ['12N  30  30.5', 'SN', 12.508333],
+    ]
+    for value in values:
+        angle = formatLatLonToAngle(value[0], value[1])
+
+        if angle is None:
+            assert value[2] is None
+        else:
+            assert math.isclose(angle.degrees, value[2], abs_tol=0.000001)
+
+
+def test_formatLatLonToAngle_2():
+    val = formatLatLonToAngle(None, 'NS')
+    assert val is None
+
+
+def test_formatLat():
+    with mock.patch.object(mountcontrol.convert,
+                           'formatLatLonToAngle',
+                           return_value=10):
+        angle = convertLatToAngle('12345')
+        assert angle == 10
+
+
+def test_formatLon():
+    with mock.patch.object(mountcontrol.convert,
+                           'formatLatLonToAngle',
+                           return_value=10):
+        angle = convertLonToAngle('12345')
+        assert angle == 10
+
+
+def test_convertRaToAngle_1():
+    values = [
+        ['+12.5', 12.5],
+        ['12,5', 12.5],
+        ['-12.5', None],
+        ['-190.5', None],
+        ['190.5', None],
+        ['12H 30 30', 187.624999],
+        ['12D 30 30', None],
+        ['12 30 30', 187.624999],
+        ['12H 30 30.55', 187.624999],
+        ['12H  30 30', 187.624999],
+        ['12H 30  30', 187.624999],
+        ['12H  30   30.50', 187.624999],
+        ['12  30 30', 187.624999],
+        ['12 30  30', 187.624999],
+        ['12  30   30.50', 187.624999],
+    ]
+    for value in values:
+        angle = convertRaToAngle(value[0])
+
+        if angle is None:
+            assert value[1] is None
+        else:
+            assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
+
+
+def test_convertRaToAngle_2():
+    val = convertRaToAngle(None)
+    assert val is None
+
+
+def test_convertDecToAngle_1():
+    values = [
+        ['+12.5', 12.5],
+        ['12,5', 12.5],
+        ['-12.5', -12.5],
+        ['-90.5', None],
+        ['90.5', None],
+        ['12Deg 30 30', 12.508333],
+        ['12Deg 30 30.55', 12.508333],
+        ['12H 30 30.55', None],
+        ['12 30 30.55', 12.508333],
+        ['-12Deg 30 30.55', -12.508333],
+        ['-12 30 30.55', -12.508333],
+        ['12Deg 30  30.55', 12.508333],
+        ['12Deg  30 30.55', 12.508333],
+        ['12Deg  30  30.55', 12.508333],
+        ['12 30  30.55', 12.508333],
+        ['12  30 30.55', 12.508333],
+        ['12  30  30.55', 12.508333],
+    ]
+    for value in values:
+        angle = convertDecToAngle(value[0])
+
+        if angle is None:
+            assert value[1] is None
+        else:
+            assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
+
+
+def test_convertDecToAngle_2():
+    val = convertDecToAngle(None)
+    assert val is None
+
+
+def test_formatHstrToText():
+    values = [
+        [Angle(hours=12), '12 00 00'],
+        [Angle(hours=12.000001), '12 00 00'],
+        [Angle(hours=6), '06 00 00'],
+    ]
+    for value in values:
+        text = formatHstrToText(value[0])
+        assert text == value[1]
+
+
+def test_formatDstrToText():
+    values = [
+        [Angle(degrees=12), '+12 00 00'],
+        [Angle(degrees=12.000001), '+12 00 00'],
+        [Angle(degrees=6), '+06 00 00'],
+        [Angle(degrees=-6), '-06 00 00'],
+    ]
+    for value in values:
+        text = formatDstrToText(value[0])
+        assert text == value[1]
+
+
+def test_formatLatToText():
+    values = [
+        [Angle(degrees=12), '12N 00 00'],
+        [Angle(degrees=12.000001), '12N 00 00'],
+        [Angle(degrees=6), '06N 00 00'],
+        [Angle(degrees=-6), '06S 00 00'],
+    ]
+    for value in values:
+        text = formatLatToText(value[0])
+        assert text == value[1]
+
+
+def test_formatLonToText():
+    values = [
+        [Angle(degrees=12), '012E 00 00'],
+        [Angle(degrees=12.000001), '012E 00 00'],
+        [Angle(degrees=6), '006E 00 00'],
+        [Angle(degrees=-6), '006W 00 00'],
+    ]
+    for value in values:
+        text = formatLonToText(value[0])
+        assert text == value[1]

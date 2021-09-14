@@ -23,9 +23,20 @@ from PyQt5.QtTest import QTest
 import numpy as np
 
 # local imports
+from mountcontrol.convert import sexagesimalizeToInt
 from base.ascomClass import AscomClass
 from base.transform import JNowToJ2000
-from gui.utilities.toolsQtWidget import formatDstrToText
+
+
+def formatDstrToText(angle):
+    """
+    :param angle:
+    :return:
+    """
+    sgn, d, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
+    sign = '+' if sgn >= 0 else '-'
+    text = f'{sign}{d:02d} {m:02d} {s:02d}'
+    return text
 
 
 class CameraAscom(AscomClass):

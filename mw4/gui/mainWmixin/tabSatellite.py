@@ -141,6 +141,7 @@ class Satellite(object):
             self.ui.satelliteSource.addItem(name)
 
         self.ui.filterSatellite.setText(config.get('filterSatellite'))
+        self.ui.switchTracking.setChecked(config.get('switchTracking', False))
         self.ui.domeAutoFollowSat.setChecked(config.get('domeAutoFollowSat', False))
         self.ui.useInternalSatCalc.setChecked(config.get('useInternalSatCalc',
                                                          False))
@@ -163,6 +164,7 @@ class Satellite(object):
         """
         config = self.app.config['mainW']
         config['filterSatellite'] = self.ui.filterSatellite.text()
+        config['switchTracking'] = self.ui.switchTracking.isChecked()
         config['domeAutoFollowSat'] = self.ui.domeAutoFollowSat.isChecked()
         config['useInternalSatCalc'] = self.ui.useInternalSatCalc.isChecked()
         config['satBeforeFlip'] = self.ui.satBeforeFlip.isChecked()
@@ -493,6 +495,8 @@ class Satellite(object):
         else:
             self.extractSatelliteData(satName=satName)
             self.showSatPasses()
+        if self.ui.switchTracking.isChecked():
+            self.ui.satTabWidget.setCurrentIndex(1)
         return True
 
     def getSatelliteDataFromDatabase(self, tleParams=None):
@@ -530,7 +534,7 @@ class Satellite(object):
         """
         t, events = sat.find_events(loc, tStart, tEnd, altitude_degrees=alt)
         if 1 in events:
-            return True, t.tt[np.equal(events, 1)]
+            return True, t[np.equal(events, 1)]
         else:
             return False, []
 
@@ -543,18 +547,22 @@ class Satellite(object):
         :return:
         """
         pos = (sat - loc).at(tEv)
-        _, _, the_range, _, _, range_rate = pos.frame_latlon_and_rates(loc)
-        return the_range.km, range_rate.km_per_s
+        _, _, satRange, latRate, lonRate, radRate = pos.frame_latlon_and_rates(loc)
+        return (satRange.km,
+                radRate.km_per_s,
+                latRate.degrees.per_second,
+                lonRate.degrees.per_second)
 
     @staticmethod
-    def updateTableEntries(satTab, row, name, number, satRange, satRate):
+    def updateTableEntries(satTab, row, name, number, satParam, isUp, isSunlit):
         """
         :param satTab:
         :param row:
         :param name:
         :param number:
-        :param satRange:
-        :param satRate:
+        :param satParam:
+        :param isUp:
+        :param isSunlit:
         :return:
         """
         entry = QTableWidgetItem(f'{number:5d}')
@@ -565,31 +573,54 @@ class Satellite(object):
         entry.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         satTab.setItem(row, 1, entry)
 
-        entry = QTableWidgetItem(f'{satRange:5.0f}')
+        entry = QTableWidgetItem(f'{satParam[0]:5.0f}')
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
         satTab.setItem(row, 2, entry)
 
-        entry = QTableWidgetItem(f'{satRate:+2.3f}')
+        entry = QTableWidgetItem(f'{satParam[1]:+2.2f}')
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
         satTab.setItem(row, 3, entry)
-        satTab.resizeRowToContents(row)
+
+        entry = QTableWidgetItem(f'{satParam[2]:+2.2f}')
+        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        satTab.setItem(row, 4, entry)
+
+        entry = QTableWidgetItem(f'{satParam[3]:+2.2f}')
+        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        satTab.setItem(row, 5, entry)
+
+        if isUp[0]:
+            t1 = f'{isUp[1][0].tt_strftime("%m-%d")}'
+            t2 = f'{isUp[1][0].tt_strftime("%H:%M:%S")}'
+        else:
+            t1 = t2 = ' '
+
+        entry = QTableWidgetItem(t1)
+        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        satTab.setItem(row, 6, entry)
+
+        entry = QTableWidgetItem(t2)
+        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        satTab.setItem(row, 7, entry)
+
+        entry = QTableWidgetItem('*' if isSunlit else ' ')
+        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        satTab.setItem(row, 8, entry)
         return True
 
     def recalcTableEntries(self):
         """
         :return:
         """
-        tabWidget = self.ui.mainTabWidget.findChild(QWidget, 'Satellite')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        currIndex = self.ui.mainTabWidget.currentIndex()
-        if tabIndex != currIndex:
+        currIndex = self.ui.satTabWidget.currentIndex()
+        if currIndex != 0:
             return
 
         satTab = self.ui.listSatelliteNames
         loc = self.app.mount.obsSite.location
         ts = self.app.mount.obsSite.ts
         timeNow = ts.now()
-        timeNext = ts.tt_jd(timeNow.tt + 60 / 86400)
+        timeNext = ts.tt_jd(timeNow.tt + 3600 / 86400)
         eph = self.app.ephemeris
 
         viewPortRect = QRect(QPoint(0, 0), satTab.viewport().size())
@@ -606,14 +637,11 @@ class Satellite(object):
             name = satTab.model().index(row, 1).data()
             number = int(satTab.model().index(row, 0).data())
             sat = self.satellites[name]
+            satParam = self.findRangeRate(sat, loc, timeNow)
             isSunlit = self.findSunlit(sat, eph, timeNow)
-            isUp, _ = self.findSatUp(sat, loc, timeNow, timeNext, 10)
-            satRange, satRate = self.findRangeRate(sat, loc, timeNow)
-            self.updateTableEntries(satTab, row, name, number, satRange, satRate)
-            if isUp and isSunlit:
-                satTab.item(row, 1).setForeground(self.COLOR_GREEN)
-            else:
-                satTab.item(row, 1).setForeground(self.COLOR_ASTRO)
+            isUp = self.findSatUp(sat, loc, timeNow, timeNext, 10)
+            self.updateTableEntries(satTab, row, name, number, satParam,
+                                    isUp, isSunlit)
 
         return True
 
@@ -624,22 +652,13 @@ class Satellite(object):
         satTab = self.ui.listSatelliteNames
         filterStr = self.ui.filterSatellite.text()
 
-        eph = self.app.ephemeris
-        loc = self.app.mount.obsSite.location
-        ts = self.app.mount.obsSite.ts
-        timeNow = ts.now()
-        timeNext = ts.tt_jd(timeNow.tt + 60 / 86400)
-
         for row in range(satTab.model().rowCount()):
             name = satTab.model().index(row, 1).data()
             if name is None:
                 continue
             isFound = filterStr.lower() in name.lower()
-            sat = self.satellites[name]
-            isSunlit = self.findSunlit(sat, eph, timeNow)
-            isUp, _ = self.findSatUp(sat, loc, timeNow, timeNext, 10)
-            showON = isFound and isUp and isSunlit
-            satTab.setRowHidden(row, not showON)
+            show = isFound
+            satTab.setRowHidden(row, not show)
         return True
 
     def setupSatelliteNameList(self):
@@ -648,18 +667,25 @@ class Satellite(object):
         """
         satTab = self.ui.listSatelliteNames
         satTab.setRowCount(0)
-        satTab.setColumnCount(4)
-        satTab.setHorizontalHeaderLabels(['ID', 'Name', 'Dist [km]', 'Rate [km/s]'])
+        satTab.setColumnCount(9)
+        satTab.setHorizontalHeaderLabels(['ID', 'Name', 'Dist\n[km]',
+                                          'Radial\n[km/s]', 'Lat\n[deg/s]',
+                                          'Lon\n[deg/s]', 'Date\n[m-d]',
+                                          'Time\n[H:M:S]', 'Sun'])
         satTab.setColumnWidth(0, 50)
-        satTab.setColumnWidth(1, 180)
-        satTab.setColumnWidth(2, 60)
-        satTab.setColumnWidth(3, 70)
+        satTab.setColumnWidth(1, 155)
+        satTab.setColumnWidth(2, 50)
+        satTab.setColumnWidth(3, 50)
+        satTab.setColumnWidth(4, 50)
+        satTab.setColumnWidth(5, 50)
+        satTab.setColumnWidth(6, 45)
+        satTab.setColumnWidth(7, 65)
+        satTab.setColumnWidth(8, 25)
         satTab.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        satTab.setSelectionBehavior(QAbstractItemView.SelectRows)
-        satTab.setSelectionMode(QAbstractItemView.NoSelection)
+
         loc = self.app.mount.obsSite.location
         timeNow = self.app.mount.obsSite.ts.now()
 
@@ -667,12 +693,11 @@ class Satellite(object):
             if not isinstance(name, str):
                 continue
             number = self.satellites[name].model.satnum
-            satRange, satRate = self.findRangeRate(self.satellites[name],
-                                                   loc,
-                                                   timeNow)
+            satParam = self.findRangeRate(self.satellites[name], loc, timeNow)
             satTab.insertRow(satTab.rowCount())
             row = satTab.rowCount() - 1
-            self.updateTableEntries(satTab, row, name, number, satRange, satRate)
+            self.updateTableEntries(satTab, row, name, number, satParam,
+                                    (False, []), False)
 
         satTab.update()
         self.filterSatelliteNamesList()

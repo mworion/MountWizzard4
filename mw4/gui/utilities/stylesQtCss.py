@@ -508,19 +508,22 @@ class Styles:
     }
     QTableView QHeaderView:section{
         border-width: 1px;
-        border-style: outset;
+        border-style: plain;
         border-radius: 2px;
         border-color: #202020;
-        background-color: #202020;
+        background-color: #404040;
+        color: #C0C0C0;
+    }
+    QTableWidget QHeaderView::down-arrow{
+        subcontrol-position: upper right;
+        subcontrol-origin: padding;
+        width: 15px;
+        height: 6px;
     }
     QTableView::item:selected {
-        border-width: 1px;
-        border-style: outset;
-        border-radius: 2px;
-        border-color: #606060;
-        background-color: #202020;
+        background-color: rgb(32, 144, 192);
+        color: #101010;
     }
-    
     QPushButton[running='false'] {
         background-color: #202020;
         color: #C0C0C0;

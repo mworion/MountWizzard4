@@ -412,7 +412,6 @@ class MainWindow(
         self.wIcon(self.ui.downloadIERS, 'run')
 
         # satellite
-        self.wIcon(self.ui.satExtendedFilter, 'cogs')
         self.wIcon(self.ui.stopSatelliteTracking, 'cross-circle')
         self.wIcon(self.ui.startSatelliteTracking, 'start')
         self.wIcon(self.ui.progSatellitesFull, 'run')

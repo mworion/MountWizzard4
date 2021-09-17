@@ -19,7 +19,7 @@ import os
 
 # external packages
 import PyQt5
-from PyQt5.QtCore import Qt, QRect, QPoint
+from PyQt5.QtCore import Qt, QRect, QPoint, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QHeaderView, QAbstractItemView
 import numpy as np
 from sgp4.exporter import export_tle
@@ -55,12 +55,15 @@ class Satellite(object):
     5. If a mount upload is chosen (only available on windows) if prepares the
     data in the necessary mount format and calls the updater.
     """
+    sigSetSatTableEntry = pyqtSignal(int, int, object)
 
     def __init__(self):
         self.satellites = dict()
         self.satellite = None
+        self.satSourceValid = False
+        self.satTableBaseValid = False
+        self.satTableDynamicValid = False
         self.satOrbits = None
-        self.listSatelliteNamesProxy = None
         self.satellitesRawTLE = {}
         self.databaseProcessing = DataWriter(self.app)
         self.installPath = ''
@@ -127,7 +130,8 @@ class Satellite(object):
         self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.progTrajectory.clicked.connect(self.startProg)
         self.app.update1s.connect(self.updateOrbit)
-        self.app.update3s.connect(self.recalcTableEntries)
+        self.app.update1s.connect(self.satCalcDynamicTable)
+        self.sigSetSatTableEntry.connect(self.setSatTableEntry)
 
     def initConfig(self):
         """
@@ -553,41 +557,46 @@ class Satellite(object):
                 latRate.degrees.per_second,
                 lonRate.degrees.per_second)
 
-    @staticmethod
-    def updateTableEntries(satTab, row, name, number, satParam, isUp, isSunlit):
+    def setSatTableEntry(self, row, col, entry):
         """
-        :param satTab:
         :param row:
-        :param name:
-        :param number:
+        :param col:
+        :param entry:
+        :return:
+        """
+        self.ui.listSatelliteNames.setItem(row, col, entry)
+        return True
+
+    def updateTableEntries(self, row, satParam, isUp, isSunlit):
+        """
+        :param row:
         :param satParam:
         :param isUp:
         :param isSunlit:
         :return:
         """
-        entry = QTableWidgetItem(f'{number:5d}')
-        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        satTab.setItem(row, 0, entry)
-
-        entry = QTableWidgetItem(name)
-        entry.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        satTab.setItem(row, 1, entry)
-
         entry = QTableWidgetItem(f'{satParam[0]:5.0f}')
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        satTab.setItem(row, 2, entry)
+        self.sigSetSatTableEntry.emit(row, 2, entry)
 
         entry = QTableWidgetItem(f'{satParam[1]:+2.2f}')
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        satTab.setItem(row, 3, entry)
+        self.sigSetSatTableEntry.emit(row, 3, entry)
 
         entry = QTableWidgetItem(f'{satParam[2]:+2.2f}')
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        satTab.setItem(row, 4, entry)
+        self.sigSetSatTableEntry.emit(row, 4, entry)
 
         entry = QTableWidgetItem(f'{satParam[3]:+2.2f}')
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        satTab.setItem(row, 5, entry)
+        self.sigSetSatTableEntry.emit(row, 5, entry)
+
+        entry = QTableWidgetItem('*' if isSunlit else ' ')
+        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        self.sigSetSatTableEntry.emit(row, 8, entry)
+
+        if isUp is None:
+            return True
 
         if isUp[0]:
             t1 = f'{isUp[1][0].tt_strftime("%m-%d")}'
@@ -597,32 +606,30 @@ class Satellite(object):
 
         entry = QTableWidgetItem(t1)
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        satTab.setItem(row, 6, entry)
+        self.sigSetSatTableEntry.emit(row, 6, entry)
 
         entry = QTableWidgetItem(t2)
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        satTab.setItem(row, 7, entry)
+        self.sigSetSatTableEntry.emit(row, 7, entry)
 
-        entry = QTableWidgetItem('*' if isSunlit else ' ')
-        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        satTab.setItem(row, 8, entry)
         return True
 
-    def recalcTableEntries(self):
+    def satCalcDynamicTable(self):
         """
         :return:
         """
-        currIndex = self.ui.satTabWidget.currentIndex()
-        if currIndex != 0:
-            return
+        if not self.satTableDynamicValid:
+            return False
+        if self.ui.satTabWidget.currentIndex() != 0:
+            return False
+        if self.ui.mainTabWidget.currentIndex() != 6:
+            return False
 
         satTab = self.ui.listSatelliteNames
         loc = self.app.mount.obsSite.location
         ts = self.app.mount.obsSite.ts
         timeNow = ts.now()
-        timeNext = ts.tt_jd(timeNow.tt + 3600 / 86400)
         eph = self.app.ephemeris
-
         viewPortRect = QRect(QPoint(0, 0), satTab.viewport().size())
 
         for row in range(satTab.rowCount()):
@@ -635,14 +642,52 @@ class Satellite(object):
                 continue
 
             name = satTab.model().index(row, 1).data()
-            number = int(satTab.model().index(row, 0).data())
             sat = self.satellites[name]
             satParam = self.findRangeRate(sat, loc, timeNow)
             isSunlit = self.findSunlit(sat, eph, timeNow)
-            isUp = self.findSatUp(sat, loc, timeNow, timeNext, 10)
-            self.updateTableEntries(satTab, row, name, number, satParam,
-                                    isUp, isSunlit)
+            self.updateTableEntries(row, satParam, None, isSunlit)
 
+        return True
+
+    def workerSatCalcTable(self):
+        """
+        :return:
+        """
+        satTab = self.ui.listSatelliteNames
+        loc = self.app.mount.obsSite.location
+        ts = self.app.mount.obsSite.ts
+        timeNow = ts.now()
+        timeWin = self.ui.satUpTimeWindow.value()
+        timeNext = ts.tt_jd(timeNow.tt + timeWin * 60 / 86400)
+        altMin = self.ui.satAltitudeMin.value()
+        eph = self.app.ephemeris
+
+        for row in range(satTab.rowCount()):
+            if not self.satTableBaseValid:
+                break
+            name = satTab.model().index(row, 1).data()
+            sat = self.satellites[name]
+            satParam = self.findRangeRate(sat, loc, timeNow)
+            isSunlit = self.findSunlit(sat, eph, timeNow)
+            isUp = self.findSatUp(sat, loc, timeNow, timeNext, altMin)
+            self.updateTableEntries(row, satParam, isUp, isSunlit)
+        else:
+            self.satTableDynamicValid = True
+            return True
+        return False
+
+    def satCalcTable(self):
+        """
+        :return:
+        """
+        if not self.satTableBaseValid:
+            return False
+        currIndex = self.ui.satTabWidget.currentIndex()
+        if currIndex != 0:
+            return False
+
+        worker = Worker(self.workerSatCalcTable)
+        self.threadPool.start(worker)
         return True
 
     def filterSatelliteNamesList(self):
@@ -661,17 +706,16 @@ class Satellite(object):
             satTab.setRowHidden(row, not show)
         return True
 
-    def setupSatelliteNameList(self):
+    def prepareSatTable(self):
         """
-        :return: success for test
+        :return:
         """
         satTab = self.ui.listSatelliteNames
         satTab.setRowCount(0)
         satTab.setColumnCount(9)
-        satTab.setHorizontalHeaderLabels(['ID', 'Name', 'Dist\n[km]',
-                                          'Radial\n[km/s]', 'Lat\n[deg/s]',
-                                          'Lon\n[deg/s]', 'Date\n[m-d]',
-                                          'Time\n[H:M:S]', 'Sun'])
+        hl = ['ID', 'Name', 'Dist\n[km]', 'Radial\n[km/s]', 'Lat\n[deg/s]',
+              'Lon\n[deg/s]', 'Date\n[m-d]', 'Time\n[H:M:S]', 'Sun']
+        satTab.setHorizontalHeaderLabels(hl)
         satTab.setColumnWidth(0, 50)
         satTab.setColumnWidth(1, 155)
         satTab.setColumnWidth(2, 50)
@@ -680,28 +724,40 @@ class Satellite(object):
         satTab.setColumnWidth(5, 50)
         satTab.setColumnWidth(6, 45)
         satTab.setColumnWidth(7, 65)
-        satTab.setColumnWidth(8, 25)
+        satTab.setColumnWidth(8, 30)
         satTab.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        return True
 
-        loc = self.app.mount.obsSite.location
-        timeNow = self.app.mount.obsSite.ts.now()
+    def setupSatelliteNameList(self):
+        """
+        :return: success for test
+        """
+        satTab = self.ui.listSatelliteNames
+        self.prepareSatTable()
 
         for name, _ in self.satellites.items():
+            if not self.satSourceValid:
+                break
             if not isinstance(name, str):
                 continue
             number = self.satellites[name].model.satnum
-            satParam = self.findRangeRate(self.satellites[name], loc, timeNow)
             satTab.insertRow(satTab.rowCount())
             row = satTab.rowCount() - 1
-            self.updateTableEntries(satTab, row, name, number, satParam,
-                                    (False, []), False)
+            entry = QTableWidgetItem(f'{number:5d}')
+            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            satTab.setItem(row, 0, entry)
+            entry = QTableWidgetItem(name)
+            entry.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+            satTab.setItem(row, 1, entry)
 
-        satTab.update()
-        self.filterSatelliteNamesList()
-        return True
+        else:
+            self.satTableBaseValid = True
+            self.satCalcTable()
+            return True
+        return False
 
     def workerLoadDataFromSourceURLs(self, source='', isOnline=False):
         """
@@ -710,9 +766,6 @@ class Satellite(object):
         if not source:
             return False
 
-        self.app.update1s.disconnect(self.updateOrbit)
-        self.app.update3s.disconnect(self.recalcTableEntries)
-
         fileName = os.path.basename(source)
         dirPath = self.app.mwGlob['dataDir']
         filePath = f'{dirPath}/{fileName}'
@@ -720,17 +773,21 @@ class Satellite(object):
         satellites = self.app.mount.obsSite.loader.tle_file(source, reload=isOnline)
         self.satellites = {sat.name: sat for sat in satellites}
 
-        self.app.update1s.connect(self.updateOrbit)
-        self.app.update3s.connect(self.recalcTableEntries)
-
         if not os.path.isfile(filePath):
             return False
+
+        self.satSourceValid = True
         return True
 
     def loadDataFromSourceURLs(self):
         """
         :return: success
         """
+        self.satSourceValid = False
+        self.satTableBaseValid = False
+        self.satTableDynamicValid = False
+        self.satellites = None
+
         key = self.ui.satelliteSource.currentText()
         if key not in self.satelliteSourceURLs:
             return False
@@ -748,6 +805,9 @@ class Satellite(object):
         """
         :return: success
         """
+        if not self.satSourceValid:
+            return False
+
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
             self.ui.stopSatelliteTracking.setEnabled(False)

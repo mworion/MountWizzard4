@@ -10369,7 +10369,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <rect>
          <x>5</x>
          <y>10</y>
-         <width>546</width>
+         <width>566</width>
          <height>376</height>
         </rect>
        </property>
@@ -10469,9 +10469,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <widget class="QGroupBox" name="groupBox_27">
        <property name="geometry">
         <rect>
-         <x>560</x>
+         <x>580</x>
          <y>5</y>
-         <width>211</width>
+         <width>191</width>
          <height>56</height>
         </rect>
        </property>
@@ -10486,7 +10486,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <rect>
           <x>5</x>
           <y>20</y>
-          <width>201</width>
+          <width>181</width>
           <height>26</height>
          </rect>
         </property>
@@ -10504,14 +10504,14 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <widget class="QGroupBox" name="groupBox_52">
        <property name="geometry">
         <rect>
-         <x>560</x>
+         <x>580</x>
          <y>335</y>
-         <width>211</width>
+         <width>191</width>
          <height>51</height>
         </rect>
        </property>
        <property name="title">
-        <string>Programming database to mount</string>
+        <string>Programming database</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -10521,7 +10521,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <rect>
           <x>5</x>
           <y>20</y>
-          <width>91</width>
+          <width>86</width>
           <height>26</height>
          </rect>
         </property>
@@ -10535,9 +10535,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QPushButton" name="progSatellitesFull">
         <property name="geometry">
          <rect>
-          <x>110</x>
+          <x>100</x>
           <y>20</y>
-          <width>91</width>
+          <width>86</width>
           <height>26</height>
          </rect>
         </property>
@@ -10552,9 +10552,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <widget class="QGroupBox" name="groupBox_61">
        <property name="geometry">
         <rect>
-         <x>560</x>
+         <x>580</x>
          <y>70</y>
-         <width>211</width>
+         <width>191</width>
          <height>196</height>
         </rect>
        </property>
@@ -10567,9 +10567,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QLineEdit" name="filterSatellite">
         <property name="geometry">
          <rect>
-          <x>100</x>
+          <x>105</x>
           <y>20</y>
-          <width>101</width>
+          <width>81</width>
           <height>21</height>
          </rect>
         </property>
@@ -10618,7 +10618,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          </font>
         </property>
         <property name="text">
-         <string>search string:</string>
+         <string>Search string:</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_271">
@@ -10639,13 +10639,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
          </font>
         </property>
         <property name="text">
-         <string>up within next </string>
+         <string>Up within next</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="satUpStepMin">
+       <widget class="QDoubleSpinBox" name="satUpTimeWindow">
         <property name="geometry">
          <rect>
-          <x>100</x>
+          <x>105</x>
           <y>45</y>
           <width>51</width>
           <height>21</height>
@@ -10686,7 +10686,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <rect>
           <x>165</x>
           <y>45</y>
-          <width>36</width>
+          <width>21</width>
           <height>21</height>
          </rect>
         </property>
@@ -10702,6 +10702,87 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>min</string>
         </property>
        </widget>
+       <widget class="QLabel" name="label_273">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>70</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Altitude min</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="satAltitudeMin">
+        <property name="geometry">
+         <rect>
+          <x>105</x>
+          <y>70</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the DSO track in hours.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>60.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_297">
+        <property name="geometry">
+         <rect>
+          <x>165</x>
+          <y>70</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>deg</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QCheckBox" name="switchTracking">
        <property name="enabled">
@@ -10709,9 +10790,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>560</x>
+         <x>580</x>
          <y>305</y>
-         <width>201</width>
+         <width>191</width>
          <height>25</height>
         </rect>
        </property>

@@ -69,9 +69,9 @@ class SatSearch(object):
 
         baseUrl = 'http://www.celestrak.com/NORAD/elements/'
         self.satelliteSourceURLs = {
+            '100 brightest': baseUrl + 'visual.txt',
             'Active': baseUrl + 'active.txt',
             'Space Stations': baseUrl + 'stations.txt',
-            '100 brightest': baseUrl + 'visual.txt',
             'NOAA': baseUrl + 'noaa.txt',
             'GEOS': baseUrl + 'goes.txt',
             'Weather': baseUrl + 'weather.txt',

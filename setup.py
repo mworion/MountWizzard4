@@ -22,6 +22,7 @@ releaseNotes = """
 - add: hemisphere window: help for choosing the right star for polar alignment
 - add: angular error ra / dec axis in measurement
 - add: device connection similar for ASCOM and ALPACA devices
+- add: satellite search 
 - improve: rewrite alpaca / ascom interface
  """
 
@@ -30,7 +31,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.0b0',
+    version='2.0.1b1',
     packages=[
         'mw4',
         'mw4.base',

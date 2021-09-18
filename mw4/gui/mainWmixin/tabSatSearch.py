@@ -111,7 +111,6 @@ class SatSearch(object):
         self.ui.listSatelliteNames.doubleClicked.connect(self.chooseSatellite)
         self.ui.satelliteSource.activated.connect(self.loadDataFromSourceURLs)
         self.ui.filterSatellite.textChanged.connect(self.filterSatelliteNamesList)
-        self.app.sendSatelliteData.connect(self.sendSatelliteData)
         self.ui.satIsSunlit.clicked.connect(self.filterSatelliteNamesList)
         self.ui.satIsUp.clicked.connect(self.filterSatelliteNamesList)
         self.sigSetSatTableEntry.connect(self.setSatTableEntry)
@@ -177,27 +176,6 @@ class SatSearch(object):
         self.ui.progTrajectory.setEnabled(progAvailable)
         return True
 
-    def programDataToMount(self, satName=''):
-        """
-        :return: success
-        """
-        if not satName:
-            return False
-        if satName not in self.satellites:
-            return False
-
-        satellite = self.app.mount.satellite
-        self.app.message.emit(f'Programming [{satName}] to mount', 0)
-        line1, line2 = export_tle(self.satellites[satName].model)
-        suc = satellite.setTLE(line0=satName,
-                               line1=line1,
-                               line2=line2)
-        if not suc:
-            self.app.message.emit('Error program TLE', 2)
-            return False
-        self.app.mount.getTLE()
-        return True
-
     def chooseSatellite(self):
         """
         :return: True for test purpose
@@ -213,27 +191,15 @@ class SatSearch(object):
             self.ui.satTabWidget.setCurrentIndex(1)
         return True
 
-    def getSatelliteDataFromDatabase(self, tleParams=None):
-        """
-        :param tleParams:
-        :return: True for test purpose
-        """
-        if tleParams is None:
-            return False
-
-        self.extractSatelliteData(satName=tleParams.name)
-        self.showSatPasses()
-        return True
-
     @staticmethod
-    def findSunlit(sat, eph, tEv):
+    def findSunlit(sat, ephemeris, tEvent):
         """
         :param sat:
-        :param eph:
-        :param tEv:
+        :param ephemeris:
+        :param tEvent:
         :return:
         """
-        sunlit = sat.at(tEv).is_sunlit(eph)
+        sunlit = sat.at(tEvent).is_sunlit(ephemeris)
         return sunlit
 
     @staticmethod
@@ -302,7 +268,7 @@ class SatSearch(object):
         self.sigSetSatTableEntry.emit(row, 5, entry)
 
         if isUp is None:
-            return
+            return False
 
         if isUp[0]:
             t1 = f'{isUp[1][0].tt_strftime("%m-%d")}'
@@ -353,7 +319,6 @@ class SatSearch(object):
             sat = self.satellites[name]
             satParam = self.findRangeRate(sat, loc, timeNow)
             self.updateTableEntries(row, satParam)
-
         return True
 
     def filterSatelliteNamesList(self):
@@ -371,10 +336,10 @@ class SatSearch(object):
         for row in range(satTab.model().rowCount()):
             name = satTab.model().index(row, 1).data()
             show = filterStr.lower() in name.lower()
-            if checkIsSunlit:
-                show = show and satTab.model().index(row, 8).data() == '*'
             if checkIsUp:
                 show = show and satTab.model().index(row, 7).data() != ''
+            if checkIsSunlit:
+                show = show and satTab.model().index(row, 8).data() == '*'
             satTab.setRowHidden(row, not show)
         return True
 
@@ -462,11 +427,9 @@ class SatSearch(object):
         satTab = self.ui.listSatelliteNames
         self.prepareSatTable()
 
-        for name, _ in self.satellites.items():
+        for name in self.satellites:
             if not self.satSourceValid:
                 break
-            if not isinstance(name, str):
-                continue
             number = self.satellites[name].model.satnum
             satTab.insertRow(satTab.rowCount())
             row = satTab.rowCount() - 1

@@ -412,6 +412,18 @@ class SatTrack(object):
         self.app.mount.getTLE()
         return True
 
+    def getSatelliteDataFromDatabase(self, tleParams=None):
+        """
+        :param tleParams:
+        :return: True for test purpose
+        """
+        if tleParams is None:
+            return False
+
+        self.extractSatelliteData(satName=tleParams.name)
+        self.showSatPasses()
+        return True
+
     def updateOrbit(self):
         """
         :return: success

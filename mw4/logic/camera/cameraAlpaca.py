@@ -40,7 +40,6 @@ def formatDstrToText(angle):
     return text
 
 
-
 class CameraAlpaca(AlpacaClass):
     """
     the class CameraAlpaca inherits all information and handling of the CameraAlpaca device.

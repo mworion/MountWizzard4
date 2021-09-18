@@ -34,7 +34,8 @@ import numpy as np
 from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabSatellite import Satellite
+from gui.mainWmixin.tabSatTrack import SatTrack
+from gui.mainWmixin.tabSatSearch import SatSearch
 from logic.databaseProcessing.dataWriter import DataWriter
 
 
@@ -46,7 +47,7 @@ def module(qapp):
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
 
-    class Mixin(MWidget, Satellite):
+    class Mixin(MWidget, SatTrack, SatSearch):
         def __init__(self):
             super().__init__()
             self.app = App()
@@ -54,7 +55,8 @@ def function(module):
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            Satellite.__init__(self)
+            SatTrack.__init__(self)
+            SatSearch.__init__(self)
 
     window = Mixin()
     yield window
@@ -530,16 +532,14 @@ def test_extractSatelliteData_2(function):
 
 
 def test_extractSatelliteData_3(function):
-    class Test1(QObject):
-        update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
-    function.ui.listSatelliteNames.clear()
-    function.ui.listSatelliteNames.addItem('NOAA 8')
-    function.ui.listSatelliteNames.addItem('Test1')
+    function.ui.listSatelliteNames.setRowCount(0)
+    function.ui.listSatelliteNames.setColumnCount(2)
+    function.ui.listSatelliteNames.insertRow(0)
+    entry = QTableWidgetItem('NOAA 8')
+    function.ui.listSatelliteNames.setItem(0, 1, entry)
+    function.ui.listSatelliteNames.insertRow(0)
+    entry = QTableWidgetItem('Test1')
+    function.ui.listSatelliteNames.setItem(0, 1, entry)
 
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
@@ -557,16 +557,14 @@ def test_extractSatelliteData_3(function):
 
 
 def test_extractSatelliteData_4(function):
-    class Test1(QObject):
-        update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
-    function.ui.listSatelliteNames.clear()
-    function.ui.listSatelliteNames.addItem('NOAA 8')
-    function.ui.listSatelliteNames.addItem('Test1')
+    function.ui.listSatelliteNames.setRowCount(0)
+    function.ui.listSatelliteNames.setColumnCount(2)
+    function.ui.listSatelliteNames.insertRow(0)
+    entry = QTableWidgetItem('NOAA 8')
+    function.ui.listSatelliteNames.setItem(0, 1, entry)
+    function.ui.listSatelliteNames.insertRow(0)
+    entry = QTableWidgetItem('Test1')
+    function.ui.listSatelliteNames.setItem(0, 1, entry)
 
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
@@ -584,16 +582,14 @@ def test_extractSatelliteData_4(function):
 
 
 def test_extractSatelliteData_5(function):
-    class Test1(QObject):
-        update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
-    function.ui.listSatelliteNames.clear()
-    function.ui.listSatelliteNames.addItem('NOAA 8')
-    function.ui.listSatelliteNames.addItem('Test1')
+    function.ui.listSatelliteNames.setRowCount(0)
+    function.ui.listSatelliteNames.setColumnCount(2)
+    function.ui.listSatelliteNames.insertRow(0)
+    entry = QTableWidgetItem('NOAA 8')
+    function.ui.listSatelliteNames.setItem(0, 1, entry)
+    function.ui.listSatelliteNames.insertRow(0)
+    entry = QTableWidgetItem('Test1')
+    function.ui.listSatelliteNames.setItem(0, 1, entry)
 
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
@@ -700,117 +696,36 @@ def test_getSatelliteDataFromDatabase_2(function):
     assert suc
 
 
-def test_filterSatelliteNamesList_1(function):
-    suc = function.filterSatelliteNamesList()
-    assert suc
-
-
-def test_filterSatelliteNamesList_2(function):
-    function.ui.listSatelliteNames.insertRow(0)
-    function.ui.filterSatellite.setText('abc')
-    suc = function.filterSatelliteNamesList()
-    assert suc
-
-
-def test_setupSatelliteNameList_1(function):
-    suc = function.setupSatelliteNameList()
-    assert suc
-
-
-def test_setupSatelliteNameList_2(function):
-    class Test1:
-        satnum = 12345
-
-    class Test:
-        model = Test1()
-
-    function.satellites = {'sat1': Test()}
-
-    with mock.patch.object(function,
-                           'findRangeRate',
-                           return_value=(0, 0)):
-        with mock.patch.object(function,
-                               'findSatUp',
-                               return_value=(True, [])):
-            with mock.patch.object(function,
-                                   'findSunlit',
-                                   return_value=True):
-                suc = function.setupSatelliteNameList()
-                assert suc
-
-
-def test_setupSatelliteNameList_3(function):
-    class Test1:
-        satnum = 12345
-
-    class Test:
-        model = Test1()
-
-    function.satellites = {0: Test()}
-    suc = function.setupSatelliteNameList()
-    assert suc
-
-
-def test_workerLoadDataFromSourceURLs_1(function):
-    suc = function.workerLoadDataFromSourceURLs()
-    assert not suc
-
-
-def test_workerLoadDataFromSourceURLs_2(function):
-    source = 'test'
-    with mock.patch.object(function.app.mount.obsSite.loader,
-                           'tle_file',
-                           return_value={}):
-        with mock.patch.object(os.path,
-                               'isfile',
-                               return_value=False):
-            suc = function.workerLoadDataFromSourceURLs(source=source, isOnline=False)
-            assert not suc
-
-
-def test_workerLoadDataFromSourceURLs_3(function):
-    source = 'test'
-    with mock.patch.object(function.app.mount.obsSite.loader,
-                           'tle_file',
-                           return_value={}):
-        with mock.patch.object(os.path,
-                               'isfile',
-                               return_value=True):
-            suc = function.workerLoadDataFromSourceURLs(source=source, isOnline=False)
-            assert suc
-
-
-def test_loadTLEDataFromSourceURLs_1(function):
-    suc = function.loadDataFromSourceURLs()
-    assert not suc
-
-
-def test_loadTLEDataFromSourceURLs_2(function):
-    function.ui.satelliteSource.addItem('Active')
-    suc = function.loadDataFromSourceURLs()
-    assert suc
-
-
 def test_updateOrbit_1(function):
     function.satellite = None
+    function.satSourceValid = False
     suc = function.updateOrbit()
     assert not suc
 
 
 def test_updateOrbit_2(function):
+    function.satellite = None
+    function.satSourceValid = True
+    suc = function.updateOrbit()
+    assert not suc
+
+
+def test_updateOrbit_3(function):
+    function.satSourceValid = True
     function.satellite = 'test'
     function.app.uiWindows['showSatelliteW'] = {}
     suc = function.updateOrbit()
     assert not suc
 
 
-def test_updateOrbit_3(function):
+def test_updateOrbit_4(function):
     class Test1(QObject):
         update = pyqtSignal(object, object)
 
     class Test(QObject):
         signals = Test1()
 
+    function.satSourceValid = True
     function.satellite = 'test'
     function.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
     suc = function.updateOrbit()

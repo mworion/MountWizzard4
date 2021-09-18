@@ -23,10 +23,22 @@ from astropy.io import fits
 from PyQt5.QtTest import QTest
 
 # local imports
+from mountcontrol.convert import sexagesimalizeToInt
 from base.alpacaClass import AlpacaClass
 from base.tpool import Worker
 from base.transform import JNowToJ2000
-from gui.utilities.toolsQtWidget import formatDstrToText
+
+
+def formatDstrToText(angle):
+    """
+    :param angle:
+    :return:
+    """
+    sgn, d, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
+    sign = '+' if sgn >= 0 else '-'
+    text = f'{sign}{d:02d} {m:02d} {s:02d}'
+    return text
+
 
 
 class CameraAlpaca(AlpacaClass):
@@ -209,6 +221,8 @@ class CameraAlpaca(AlpacaClass):
                 header.append(('SITELAT', formatDstrToText(lat)))
                 lon = self.app.mount.obsSite.location.longitude
                 header.append(('SITELON', formatDstrToText(lon)))
+                elev = self.app.mount.obsSite.location.elevation.m
+                header.append(('SITEELEV', elev))
 
             hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
             self.log.info(f'Saved Image: [{imagePath}]')

@@ -26,7 +26,7 @@ if not platform.system() == 'Windows':
 # external packages
 from astropy.io import fits
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
-from skyfield.api import Angle
+from skyfield.api import Angle, wgs84
 import ctypes
 
 
@@ -86,6 +86,10 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')
+        mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
+                                              longitude_degrees=0,
+                                              elevation_m=0)
+
         mount.obsSite.raJNow = Angle(hours=12)
         mount.obsSite.decJNow = Angle(degrees=45)
         deviceStat = {'mount': True}

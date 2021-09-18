@@ -292,7 +292,7 @@ class SatSearch(object):
         """
         :return:
         """
-        if not self.satTableDynamicValid:
+        if not self.satTableDynamicValid or self.closing:
             return False
         if self.ui.satTabWidget.currentIndex() != 0:
             return False
@@ -320,6 +320,22 @@ class SatSearch(object):
             self.updateTableEntries(row, satParam)
         return True
 
+    @staticmethod
+    def positionCursorInSatTable(satTab, satName):
+        """
+        :param satTab:
+        :param satName:
+        :return:
+        """
+        result = satTab.findItems(satName, Qt.MatchExactly)
+        if len(result) == 0:
+            return False
+        item = result[0]
+        index = satTab.row(item)
+        satTab.selectRow(index)
+        satTab.scrollToItem(item, QAbstractItemView.PositionAtCenter)
+        return True
+
     def filterSatelliteNamesList(self):
         """
         :return: true for test purpose
@@ -340,6 +356,8 @@ class SatSearch(object):
             if checkIsSunlit:
                 show = show and satTab.model().index(row, 8).data() == '*'
             satTab.setRowHidden(row, not show)
+        satName = self.ui.satelliteName.text()
+        self.positionCursorInSatTable(satTab, satName)
         return True
 
     def workerSatCalcTable(self):
@@ -358,7 +376,7 @@ class SatSearch(object):
 
         for row in range(numSats):
             QApplication.processEvents()
-            if not self.satTableBaseValid:
+            if not self.satTableBaseValid or self.closing:
                 break
             name = satTab.model().index(row, 1).data()
             sat = self.satellites[name]
@@ -380,7 +398,7 @@ class SatSearch(object):
         """
         :return:
         """
-        if not self.satTableBaseValid:
+        if not self.satTableBaseValid or self.closing:
             return False
 
         self.satTableDynamicValid = False
@@ -455,10 +473,8 @@ class SatSearch(object):
         fileName = os.path.basename(source)
         dirPath = self.app.mwGlob['dataDir']
         filePath = f'{dirPath}/{fileName}'
-
         satellites = self.app.mount.obsSite.loader.tle_file(source, reload=isOnline)
         self.satellites = {sat.name: sat for sat in satellites}
-
         if not os.path.isfile(filePath):
             return False
 
@@ -499,7 +515,6 @@ class SatSearch(object):
         source = self.ui.satelliteSource.currentText()
         text = f'Should filtered database\n\n[{source}]\n\nbe programmed to mount ?'
         suc = self.messageDialog(self, 'Program with QCI Updater', text)
-
         if not suc:
             return False
 
@@ -520,16 +535,13 @@ class SatSearch(object):
 
         suc = self.databaseProcessing.writeSatelliteTLE(filtered,
                                                         self.installPath)
-
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
             return False
-
         if not self.app.automation:
             t = 'Not running windows - upload not possible'
             self.app.message.emit(t, 2)
             return False
-
         if not self.app.automation.installPath:
             t = 'No QCI updater available - upload not possible'
             self.app.message.emit(t, 2)
@@ -537,7 +549,6 @@ class SatSearch(object):
 
         self.app.message.emit('Uploading TLE data to mount', 0)
         suc = self.app.automation.uploadTLEData()
-
         if not suc:
             self.app.message.emit('Uploading error', 2)
         else:
@@ -551,7 +562,6 @@ class SatSearch(object):
         source = self.ui.satelliteSource.currentText()
         text = f'Should full database\n\n[{source}]\n\nbe programmed to mount ?'
         suc = self.messageDialog(self, 'Program with QCI Updater', text)
-
         if not suc:
             return False
 
@@ -563,12 +573,10 @@ class SatSearch(object):
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
             return False
-
         if not self.app.automation:
             t = 'Not running windows - upload not possible'
             self.app.message.emit(t, 2)
             return False
-
         if not self.app.automation.installPath:
             t = 'No QCI updater available - upload not possible'
             self.app.message.emit(t, 2)

@@ -363,14 +363,7 @@ class SatTrack(object):
         if satName not in self.satellites:
             return False
 
-        result = satTab.findItems(satName, Qt.MatchExactly)
-        if len(result) == 0:
-            return False
-        item = result[0]
-        index = satTab.row(item)
-        satTab.selectRow(index)
-        satTab.scrollToItem(item, QAbstractItemView.PositionAtCenter)
-
+        self.positionCursorInSatTable(satTab, satName)
         self.satellite = self.satellites[satName]
         self.ui.satelliteName.setText(self.satellite.name)
         epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M')

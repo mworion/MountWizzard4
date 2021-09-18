@@ -128,7 +128,6 @@ class SatSearch(object):
             self.ui.satelliteSource.addItem(name)
         self.ui.satelliteSource.setCurrentIndex(config.get('satelliteSource', 0))
         self.loadDataFromSourceURLs()
-
         self.ui.filterSatellite.setText(config.get('filterSatellite'))
         self.ui.switchToTrackingTab.setChecked(config.get('switchToTrackingTab',
                                                           False))

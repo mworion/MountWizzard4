@@ -246,6 +246,7 @@ class MainWindow(
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
         self.ui.toolsTabWidget.setCurrentIndex(config.get('toolsTabWidget', 0))
+        self.ui.satTabWidget.setCurrentIndex(config.get('satTabWidget', 0))
         if not packageConfig.isAnalyse:
             tabWidget = self.ui.toolsTabWidget.findChild(QWidget, 'Analyse')
             tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
@@ -292,6 +293,7 @@ class MainWindow(
         config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
         config['toolsTabWidget'] = self.ui.toolsTabWidget.currentIndex()
+        config['satTabWidget'] = self.ui.satTabWidget.currentIndex()
         self.mwSuper('storeConfig')
         self.storeConfigExtendedWindows()
         return True

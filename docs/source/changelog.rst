@@ -32,7 +32,16 @@ Version 2.0
 
 2.0.3
 
+- improvement: GUI for earth rotation data update, now downloads
+- improvement: performance for threads.
+
 2.0.2
+
+- fix: robustness against errors in ALPACA server due to memory faults #174
+- fix: robustness against filter names / numbers from ALPACA server #174
+- fix: cleanup import for pywinauto timings import #175
+- improvement: avoid meridian flip #177
+- improvement: retry numbers as int #178
 
 2.0.1 (not released yet)
 

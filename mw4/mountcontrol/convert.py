@@ -40,7 +40,7 @@ __all__ = [
     'convertLatToAngle',
     'convertLonToAngle',
     'convertRaToAngle',
-    'convertDecToAngle'
+    'convertDecToAngle',
     'formatHstrToText',
     'formatDstrToText',
     'formatLatToText',

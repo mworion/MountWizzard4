@@ -509,24 +509,30 @@ def test_showSatPasses_3(function):
                         assert suc
 
 
+def test_extractSatelliteData_0(function):
+    function.satellites = {'NOAA 8': 'sat',
+                           'Test1': 'sat'}
+
+    function.satTableBaseValid = False
+    suc = function.extractSatelliteData(satName='Tjan')
+    assert not suc
+
+
 def test_extractSatelliteData_1(function):
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.satellites = {'NOAA 8': 'sat',
+                           'Test1': 'sat'}
 
-    function.satellites = {'NOAA 8': sat,
-                           'Test1': sat}
-
+    function.satTableBaseValid = True
     suc = function.extractSatelliteData(satName='Tjan')
     assert not suc
 
 
 def test_extractSatelliteData_2(function):
     function.ui.listSatelliteNames.clear()
-    function.satellites = {'NOAA 8': '',
+    function.satellites = {'Test0': '',
                            'Test1': ''}
 
+    function.satTableBaseValid = True
     suc = function.extractSatelliteData(satName='NOAA 8')
     assert not suc
 
@@ -548,6 +554,7 @@ def test_extractSatelliteData_3(function):
 
     function.satellites = {'NOAA 8': sat,
                            'Test1': sat}
+    function.satTableBaseValid = True
     ts = function.app.mount.obsSite.ts
     with mock.patch.object(function.app.mount.obsSite.ts,
                            'now',
@@ -573,6 +580,7 @@ def test_extractSatelliteData_4(function):
 
     function.satellites = {'NOAA 8': sat,
                            'Test1': sat}
+    function.satTableBaseValid = True
     ts = function.app.mount.obsSite.ts
     with mock.patch.object(function.app.mount.obsSite.ts,
                            'now',
@@ -598,6 +606,7 @@ def test_extractSatelliteData_5(function):
 
     function.satellites = {'NOAA 8': sat,
                            'Test1': sat}
+    function.satTableBaseValid = True
     ts = function.app.mount.obsSite.ts
     with mock.patch.object(function.app.mount.obsSite.ts,
                            'now',

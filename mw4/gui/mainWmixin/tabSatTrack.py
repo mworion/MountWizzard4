@@ -359,6 +359,8 @@ class SatTrack(object):
         :param satName: additional parameter for calling this method
         :return: success
         """
+        if not self.satTableBaseValid:
+            return False
         satTab = self.ui.listSatelliteNames
         if satName not in self.satellites:
             return False

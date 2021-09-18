@@ -223,8 +223,10 @@ def test_sendUpdate_14(app):
 def test_quit_1(app):
     with mock.patch.object(PyQt5.QtCore.QCoreApplication,
                            'quit'):
-        suc = app.quit()
-        assert suc
+        with mock.patch.object(app.mount,
+                               'stopTimers'):
+            suc = app.quit()
+            assert suc
 
 
 def test_defaultConfig(app):

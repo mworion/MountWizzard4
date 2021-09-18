@@ -511,7 +511,8 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         widget.installEventFilter(doubleClickEventFilter)
         return doubleClickEventFilter.clicked
 
-    def guiSetText(self, ui, formatElement, value=None):
+    @staticmethod
+    def guiSetText(ui, formatElement, value=None):
         """
         :param ui:
         :param formatElement:
@@ -552,7 +553,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         ui.setText(text)
         return True
 
-    def guiSetStyle(self, ui, pStyle='', value=None, pVals=['', '', '']):
+    def guiSetStyle(self, ui, pStyle='', value=None, pVals=None):
         """
         :param ui:
         :param pStyle:
@@ -560,6 +561,8 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param pVals:
         :return:
         """
+        if pVals is None:
+            pVals = ['', '', '']
         if not pStyle:
             return False
         if value is None:

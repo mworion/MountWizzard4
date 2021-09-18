@@ -23,6 +23,16 @@ Released version of MW4
 -----------------------
 Version 2.0
 ^^^^^^^^^^^
+2.0.4
+
+- improvement: GUI for earth rotation data update, now downloads
+- improvement: performance for threads.
+- improvement: added FITS header entries for ALPACA and ASCOM
+- fix: removed stopping DAT when starting model
+
+2.0.3
+
+2.0.2
 
 2.0.1 (not released yet)
 

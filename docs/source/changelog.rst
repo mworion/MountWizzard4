@@ -15,10 +15,13 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.1.0 (not released yet)
+2.1.0b0 (not released yet)
 
 - add: hemisphere window: help for choosing the right star for polar alignment
-- add: angular error ra / dec axis to measurement
+- add: angular error ra / dec axis in measurement
+- add: device connection similar for ASCOM and ALPACA devices
+- add: satellite search
+- improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
 
 Released version of MW4

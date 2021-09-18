@@ -60,8 +60,8 @@ def test_start_parameters_1(qapp):
                 with mock.patch.object(MountWizzard4,
                                        'checkAndSetAutomation',
                                        return_value=None):
-                    MountWizzard4(mwGlob=mwGlob, application=qapp)
-                    time.sleep(5)
+                    app = MountWizzard4(mwGlob=mwGlob, application=qapp)
+                    app.threadPool.waitForDone(5000)
 
 
 def test_start_parameters_2(qapp):
@@ -84,5 +84,5 @@ def test_start_parameters_2(qapp):
                 with mock.patch.object(MountWizzard4,
                                        'checkAndSetAutomation',
                                        return_value=None):
-                    MountWizzard4(mwGlob=mwGlob, application=qapp)
-                    time.sleep(5)
+                    app = MountWizzard4(mwGlob=mwGlob, application=qapp)
+                    app.threadPool.waitForDone(5000)

@@ -23,6 +23,7 @@ releaseNotes = """
 - add: angular error ra / dec axis in measurement
 - add: device connection similar for ASCOM and ALPACA devices
 - add: satellite search 
+- improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
  """
 

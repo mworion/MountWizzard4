@@ -62,7 +62,7 @@ def app(qapp):
                 app = MountWizzard4(mwGlob=mwGlob, application=qapp)
                 app.log = logging.getLogger()
                 yield app
-                time.sleep(10)
+                app.threadPool.waitForDone(5000)
 
 
 @pytest.fixture(autouse=True, scope='function')

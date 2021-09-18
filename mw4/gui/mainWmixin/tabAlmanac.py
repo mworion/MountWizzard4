@@ -90,7 +90,7 @@ class Almanac:
         }
 
         self.app.start1s.connect(self.searchTwilightList)
-        self.app.start3s.connect(self.searchTwilightPlot)
+        self.app.start5s.connect(self.searchTwilightPlot)
         self.app.update30m.connect(self.updateMoonPhase)
         self.ui.almanacCivil.setStyleSheet(self.BACK_BLUE1)
         self.ui.almanacNautical.setStyleSheet(self.BACK_BLUE2)

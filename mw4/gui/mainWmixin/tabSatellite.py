@@ -20,7 +20,8 @@ import os
 # external packages
 import PyQt5
 from PyQt5.QtCore import Qt, QRect, QPoint, pyqtSignal
-from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QHeaderView, QAbstractItemView
+from PyQt5.QtWidgets import QApplication, QAbstractItemView
+from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QHeaderView
 import numpy as np
 from sgp4.exporter import export_tle
 from skyfield import almanac
@@ -120,7 +121,7 @@ class Satellite(object):
         self.ui.listSatelliteNames.doubleClicked.connect(self.chooseSatellite)
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
-        self.ui.satelliteSource.currentIndexChanged.connect(self.loadDataFromSourceURLs)
+        self.ui.satelliteSource.activated.connect(self.loadDataFromSourceURLs)
         self.ui.filterSatellite.textChanged.connect(self.filterSatelliteNamesList)
         self.app.sendSatelliteData.connect(self.sendSatelliteData)
         self.ui.satAfterFlip.clicked.connect(self.showSatPasses)
@@ -140,11 +141,12 @@ class Satellite(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-
         self.ui.satelliteSource.clear()
         self.ui.satelliteSource.setView(PyQt5.QtWidgets.QListView())
         for name in self.satelliteSourceURLs.keys():
             self.ui.satelliteSource.addItem(name)
+        self.ui.satelliteSource.setCurrentIndex(config.get('satelliteSource', 0))
+        self.loadDataFromSourceURLs()
 
         self.ui.filterSatellite.setText(config.get('filterSatellite'))
         self.ui.switchToTrackingTab.setChecked(config.get('switchToTrackingTab',
@@ -176,6 +178,7 @@ class Satellite(object):
         :return:
         """
         config = self.app.config['mainW']
+        config['satelliteSource'] = self.ui.satelliteSource.currentIndex()
         config['filterSatellite'] = self.ui.filterSatellite.text()
         config['switchToTrackingTab'] = self.ui.switchToTrackingTab.isChecked()
         config['satCyclicUpdates'] = self.ui.satCyclicUpdates.isChecked()
@@ -513,7 +516,7 @@ class Satellite(object):
         else:
             self.extractSatelliteData(satName=satName)
             self.showSatPasses()
-        if self.ui.switchToTracking.isChecked():
+        if self.ui.switchToTrackingTab.isChecked():
             self.ui.satTabWidget.setCurrentIndex(1)
         return True
 
@@ -694,8 +697,10 @@ class Satellite(object):
         timeNext = ts.tt_jd(timeNow.tt + timeWin * 3600 / 86400)
         altMin = self.ui.satAltitudeMin.value()
         eph = self.app.ephemeris
+        numSats = satTab.rowCount()
 
-        for row in range(satTab.rowCount()):
+        for row in range(numSats):
+            QApplication.processEvents()
             if not self.satTableBaseValid:
                 break
             name = satTab.model().index(row, 1).data()
@@ -706,6 +711,9 @@ class Satellite(object):
                 isUp = self.findSatUp(sat, loc, timeNow, timeNext, altMin)
             else:
                 isUp = False, []
+            finished = (row + 1) / numSats * 100
+            t = f'Filter - processed: {finished:3.0f}%'
+            self.ui.satFilterGroup.setTitle(t)
             self.updateTableEntries(row, satParam, isUp, isSunlit)
         else:
             self.satTableDynamicValid = True

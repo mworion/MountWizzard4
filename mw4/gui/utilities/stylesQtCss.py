@@ -510,12 +510,12 @@ class Styles:
         border-width: 1px;
         border-style: plain;
         border-radius: 2px;
-        border-color: #202020;
-        background-color: #404040;
+        border-color: #181818;
+        background-color: #303030;
         color: #C0C0C0;
     }
     QTableWidget QHeaderView::down-arrow{
-        subcontrol-position: upper right;
+        subcontrol-position: upper;
         subcontrol-origin: padding;
         width: 15px;
         height: 6px;

@@ -577,7 +577,7 @@ class Mount(object):
         if not ok:
             return False
 
-        value = self.convertLonToAngle(value)
+        value = convertLonToAngle(value)
         if value is None:
             return False
 
@@ -618,7 +618,7 @@ class Mount(object):
         if not ok:
             return False
 
-        value = self.convertLatToAngle(value)
+        value = convertLatToAngle(value)
         if value is None:
             return False
 

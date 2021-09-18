@@ -123,8 +123,14 @@ def test_generateDataSets(function):
 
 
 def test_processModel_1(function):
-    suc = function.processModel('tests/testData/test.model')
-    assert suc
+    with mock.patch.object(function,
+                           'writeGui'):
+        with mock.patch.object(function,
+                               'generateDataSets'):
+            with mock.patch.object(function,
+                                   'drawAll'):
+                suc = function.processModel('tests/testData/test.model')
+                assert suc
 
 
 def test_loadModel_1(function):
@@ -155,7 +161,7 @@ def test_showAnalyse_1(function):
 
 
 def test_plotFigureFlat_1(function):
-    axe, _ = function.generateFlat(widget=function.raPointErrorsRaw)
+    axe, _ = function.generateFlat(widget=function.raRawErrors)
 
     with mock.patch.object(axe.figure.canvas,
                            'draw'):
@@ -164,7 +170,7 @@ def test_plotFigureFlat_1(function):
 
 
 def test_plotFigureFlat_2(function):
-    axe, _ = function.generateFlat(widget=function.raPointErrorsRaw)
+    axe, _ = function.generateFlat(widget=function.raRawErrors)
 
     function.ui.winsorizedLimit.setChecked(True)
     with mock.patch.object(axe.figure.canvas,
@@ -174,7 +180,7 @@ def test_plotFigureFlat_2(function):
 
 
 def test_plotFigureFlat_3(function):
-    axe, _ = function.generateFlat(widget=function.raPointErrorsRaw)
+    axe, _ = function.generateFlat(widget=function.raRawErrors)
 
     function.ui.winsorizedLimit.setChecked(True)
     with mock.patch.object(axe.figure.canvas,
@@ -185,7 +191,7 @@ def test_plotFigureFlat_3(function):
 
 
 def test_plotFigureFlat_4(function):
-    axe, _ = function.generateFlat(widget=function.raPointErrorsRaw)
+    axe, _ = function.generateFlat(widget=function.raRawErrors)
 
     function.ui.winsorizedLimit.setChecked(True)
     with mock.patch.object(axe.figure.canvas,
@@ -196,7 +202,7 @@ def test_plotFigureFlat_4(function):
 
 
 def test_plotFigureFlat_5(function):
-    axe, _ = function.generateFlat(widget=function.raPointErrorsRaw)
+    axe, _ = function.generateFlat(widget=function.raRawErrors)
 
     function.ui.winsorizedLimit.setChecked(True)
     with mock.patch.object(axe.figure.canvas,
@@ -207,7 +213,7 @@ def test_plotFigureFlat_5(function):
 
 
 def test_plotFigureFlat_6(function):
-    axe, _ = function.generateFlat(widget=function.raPointErrorsRaw)
+    axe, _ = function.generateFlat(widget=function.raRawErrors)
 
     function.ui.winsorizedLimit.setChecked(True)
     with mock.patch.object(axe.figure.canvas,
@@ -217,91 +223,115 @@ def test_plotFigureFlat_6(function):
         assert suc
 
 
-def test_draw_raPointErrorsRaw(function):
-    function.index = [0, 1, 2]
-    function.errorRA_S = [0, 0, 0]
-    function.pierside = ['E', 'W', 'E']
+def test_scatterFigureFlat_1(function):
+    axe, _ = function.generateFlat(widget=function.raRawErrors)
 
-    with mock.patch.object(function,
-                           'plotFigureFlat'):
-        suc = function.draw_raPointErrorsRaw()
+    function.ui.winsorizedLimit.setChecked(False)
+    with mock.patch.object(axe.figure.canvas,
+                           'draw'):
+        suc = function.scatterFigureFlat(axe, [0, 1], [0, 1], [0, 1], 'X', 'Y')
         assert suc
 
 
-def test_draw_decPointErrorsRaw(function):
-    function.index = [0, 1, 2]
-    function.errorDEC_S = [0, 0, 0]
-    function.pierside = ['E', 'W', 'E']
+def test_scatterFigureFlat_2(function):
+    axe, _ = function.generateFlat(widget=function.raRawErrors)
 
-    with mock.patch.object(function,
-                           'plotFigureFlat'):
-        suc = function.draw_decPointErrorsRaw()
+    function.ui.winsorizedLimit.setChecked(True)
+    with mock.patch.object(axe.figure.canvas,
+                           'draw'):
+        suc = function.scatterFigureFlat(axe, [0, 1], [0, 1], [0, 1], 'X', 'Y')
         assert suc
 
 
-def test_draw_raModelErrors(function):
+def test_draw_raRawErrors(function):
+    function.errorRA_S = [0, 1, 2]
+    function.errorDEC_S = [0, 1, 2]
+    function.azimuth = [0, 1, 2]
+    function.altitude = [0, 1, 2]
+
+    with mock.patch.object(function,
+                           'scatterFigureFlat'):
+        suc = function.draw_raRawErrors()
+        assert suc
+
+
+def test_draw_decRawErrors(function):
+    function.errorRA_S = [0, 1, 2]
+    function.errorDEC_S = [0, 1, 2]
+    function.azimuth = [0, 1, 2]
+    function.altitude = [0, 1, 2]
+
+    with mock.patch.object(function,
+                           'scatterFigureFlat'):
+        suc = function.draw_decRawErrors()
+        assert suc
+
+
+def test_draw_raErrors(function):
+    function.errorRA = [0, 1, 2]
+    function.errorDEC = [0, 1, 2]
+    function.azimuth = [0, 1, 2]
+    function.altitude = [0, 1, 2]
+
+    with mock.patch.object(function,
+                           'scatterFigureFlat'):
+        suc = function.draw_raErrors()
+        assert suc
+
+
+def test_draw_decErrors(function):
+    function.errorRA = [0, 1, 2]
+    function.errorDEC = [0, 1, 2]
+    function.azimuth = [0, 1, 2]
+    function.altitude = [0, 1, 2]
+
+    with mock.patch.object(function,
+                           'scatterFigureFlat'):
+        suc = function.draw_decError()
+        assert suc
+
+
+def test_draw_raErrorsRef(function):
     function.index = [0, 1, 2]
     function.errorRA = [0, 0, 0]
     function.pierside = ['E', 'W', 'E']
 
     with mock.patch.object(function,
                            'plotFigureFlat'):
-        suc = function.draw_raModelErrors()
+        suc = function.draw_raErrorsRef()
         assert suc
 
 
-def test_draw_decModelErrors(function):
+def test_draw_decErrorsRef(function):
     function.index = [0, 1, 2]
     function.errorDEC = [0, 0, 0]
     function.pierside = ['E', 'W', 'E']
 
     with mock.patch.object(function,
                            'plotFigureFlat'):
-        suc = function.draw_decModelErrors()
+        suc = function.draw_decErrorsRef()
         assert suc
 
 
-def test_draw_raModelErrorsRef(function):
-    function.errorRA = [0, 1, 2]
-    function.angularPosRA = [0, 0, 0]
-    function.pierside = ['E', 'W', 'E']
-
-    with mock.patch.object(function,
-                           'plotFigureFlat'):
-        suc = function.draw_raModelErrorsRef()
-        assert suc
-
-
-def test_draw_decModelErrorsRef(function):
-    function.errorDEC = [0, 1, 2]
-    function.angularPosDEC = [0, 0, 0]
-    function.pierside = ['E', 'W', 'E']
-
-    with mock.patch.object(function,
-                           'plotFigureFlat'):
-        suc = function.draw_decModelErrorsRef()
-        assert suc
-
-
-def test_draw_raPointErrorsRawRef(function):
-    function.angularPosRA = [0, 1, 2]
+def test_draw_raRawErrorsRef(function):
+    function.index = [0, 1, 2]
     function.errorRA_S = [0, 0, 0]
     function.pierside = ['E', 'W', 'E']
 
     with mock.patch.object(function,
                            'plotFigureFlat'):
-        suc = function.draw_raPointErrorsRawRef()
+        suc = function.draw_raRawErrorsRef()
         assert suc
 
 
-def test_draw_decPointErrorsRawRef(function):
-    function.angularPosDEC = [0, 1, 2]
+def test_draw_decRawErrorsRef(function):
+    function.index = [0, 1, 2]
     function.errorDEC_S = [0, 0, 0]
     function.pierside = ['E', 'W', 'E']
 
     with mock.patch.object(function,
                            'plotFigureFlat'):
-        suc = function.draw_decPointErrorsRawRef()
+        suc = function.draw_decRawErrorsRef()
         assert suc
 
 

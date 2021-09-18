@@ -1610,7 +1610,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Model errors overview in hemisphere</string>
+        <string>Overview</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -1742,7 +1742,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Declination - Raw Error (PlateSolve)</string>
+        <string>DEC Raw Error (PlateSolve)</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -1764,7 +1764,7 @@
          <number>0</number>
         </property>
         <item row="0" column="0">
-         <widget class="QWidget" name="decPointErrorsRaw" native="true">
+         <widget class="QWidget" name="decRawErrors" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -1788,7 +1788,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Right Ascension - Raw Error (PlateSolve)</string>
+        <string>RA Raw Error (PlateSolve)</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -1810,7 +1810,7 @@
          <number>0</number>
         </property>
         <item row="0" column="0">
-         <widget class="QWidget" name="raPointErrorsRaw" native="true">
+         <widget class="QWidget" name="raRawErrors" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -1874,7 +1874,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Right Ascension - Model Error (Mount)</string>
+        <string>RA Error (Model)</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -1896,7 +1896,7 @@
          <number>0</number>
         </property>
         <item row="0" column="0">
-         <widget class="QWidget" name="raModelErrors" native="true">
+         <widget class="QWidget" name="raErrors" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -1914,7 +1914,7 @@
      <item row="1" column="2">
       <widget class="QGroupBox" name="groupBox_10">
        <property name="title">
-        <string>Right Ascension - Model Error over Encoder value</string>
+        <string>RA Raw Error (PlateSolve)</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -1936,7 +1936,7 @@
          <number>0</number>
         </property>
         <item row="0" column="0">
-         <widget class="QWidget" name="raModelErrorsRef" native="true">
+         <widget class="QWidget" name="raRawErrorsRef" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -1954,7 +1954,7 @@
      <item row="1" column="3">
       <widget class="QGroupBox" name="groupBox_12">
        <property name="title">
-        <string>Right Ascension - Raw Error over Encoder value</string>
+        <string>RA Error (Model)</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -1976,7 +1976,7 @@
          <number>0</number>
         </property>
         <item row="0" column="0">
-         <widget class="QWidget" name="raPointErrorsRawRef" native="true">
+         <widget class="QWidget" name="raErrorsRef" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -2000,7 +2000,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Declination - Model Error (Mount)</string>
+        <string>DEC Error (Model)</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -2022,7 +2022,7 @@
          <number>0</number>
         </property>
         <item row="0" column="0">
-         <widget class="QWidget" name="decModelErrors" native="true">
+         <widget class="QWidget" name="decErrors" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -2040,7 +2040,7 @@
      <item row="2" column="2">
       <widget class="QGroupBox" name="groupBox_13">
        <property name="title">
-        <string>Declination - Raw Error over Encoder value</string>
+        <string>DEC Raw Error (PlateSolve)</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -2062,7 +2062,7 @@
          <number>0</number>
         </property>
         <item row="0" column="0">
-         <widget class="QWidget" name="decPointErrorsRawRef" native="true">
+         <widget class="QWidget" name="decRawErrorsRef" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -2080,7 +2080,7 @@
      <item row="2" column="3">
       <widget class="QGroupBox" name="groupBox_11">
        <property name="title">
-        <string>Declination - Model Error over Encoder value</string>
+        <string>DEC Error (Model)</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -2102,7 +2102,7 @@
          <number>0</number>
         </property>
         <item row="0" column="0">
-         <widget class="QWidget" name="decModelErrorsRef" native="true">
+         <widget class="QWidget" name="decErrorsRef" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>

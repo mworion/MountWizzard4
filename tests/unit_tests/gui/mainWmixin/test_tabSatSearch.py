@@ -392,38 +392,7 @@ def test_workerSatCalcTable_3(function):
 
     function.satTableBaseValid = True
     function.satTableDynamicValid = False
-    function.ui.satUpTimeWindow.setValue(0)
-    with mock.patch.object(function,
-                           'findRangeRate'):
-        with mock.patch.object(function,
-                               'findSunlit'):
-            with mock.patch.object(function,
-                                   'findSatUp'):
-                with mock.patch.object(function,
-                                       'updateTableEntries'):
-                    suc = function.workerSatCalcTable()
-                    assert suc
-                    assert function.satTableDynamicValid
-
-
-def test_workerSatCalcTable_4(function):
-    class Test1:
-        satnum = 12345
-
-    class Test:
-        model = Test1()
-
-    function.satellites = {'sat1': Test()}
-
-    function.ui.listSatelliteNames.setRowCount(0)
-    function.ui.listSatelliteNames.setColumnCount(9)
-    function.ui.listSatelliteNames.insertRow(0)
-    entry = QTableWidgetItem('sat1')
-    function.ui.listSatelliteNames.setItem(0, 1, entry)
-
-    function.satTableBaseValid = True
-    function.satTableDynamicValid = False
-    function.ui.satUpTimeWindow.setValue(30)
+    function.ui.satUpTimeWindow.setValue(2)
     with mock.patch.object(function,
                            'findRangeRate'):
         with mock.patch.object(function,

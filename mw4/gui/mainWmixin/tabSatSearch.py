@@ -365,10 +365,7 @@ class SatSearch(object):
             sat = self.satellites[name]
             satParam = self.findRangeRate(sat, loc, timeNow)
             isSunlit = self.findSunlit(sat, eph, timeNow)
-            if timeWin:
-                isUp = self.findSatUp(sat, loc, timeNow, timeNext, altMin)
-            else:
-                isUp = False, []
+            isUp = self.findSatUp(sat, loc, timeNow, timeNext, altMin)
             finished = (row + 1) / numSats * 100
             t = f'Filter - processed: {finished:3.0f}%'
             self.ui.satFilterGroup.setTitle(t)

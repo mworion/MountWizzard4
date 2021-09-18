@@ -25,8 +25,8 @@ from astropy.io import fits
 from base.transform import J2000ToJNow
 
 # local import
-from mountcontrol.convert import convertRaToAngle
-from mountcontrol.convert import convertDecToAngle
+from mountcontrol.convert import convertRaToAngle, convertDecToAngle
+from mountcontrol.convert import formatHstrToText, formatDstrToText
 
 
 class Tools(object):

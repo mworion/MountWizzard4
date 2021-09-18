@@ -46,7 +46,8 @@ from gui.mainWmixin.tabAlmanac import Almanac
 from gui.mainWmixin.tabModel import Model
 from gui.mainWmixin.tabBuildPoints import BuildPoints
 from gui.mainWmixin.tabManageModel import ManageModel
-from gui.mainWmixin.tabSatellite import Satellite
+from gui.mainWmixin.tabSatSearch import SatSearch
+from gui.mainWmixin.tabSatTrack import SatTrack
 from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
 from gui.mainWmixin.tabRelay import Relay
 from gui.mainWmixin.tabTools import Tools
@@ -70,7 +71,8 @@ class MainWindow(
     Model,
     BuildPoints,
     ManageModel,
-    Satellite,
+    SatSearch,
+    SatTrack,
     MinorPlanetTime,
     Relay,
     Power,
@@ -277,10 +279,6 @@ class MainWindow(
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config
@@ -300,10 +298,6 @@ class MainWindow(
 
     def closeEvent(self, closeEvent):
         """
-        we overwrite the close event of the window just for the main window to
-        close the application as well. because it does not make sense to have
-        child windows open if main is already closed.
-
         :return:    nothing
         """
         self.closing = True
@@ -316,9 +310,6 @@ class MainWindow(
 
     def quitSave(self):
         """
-        quitSave finished up and calls the quit save function in main for
-        saving the parameters
-
         :return:    true for test purpose
         """
         self.saveProfile()
@@ -328,9 +319,6 @@ class MainWindow(
 
     def setupIcons(self):
         """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
         :return:    True if success for test
         """
         # main window

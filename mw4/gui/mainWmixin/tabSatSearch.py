@@ -333,7 +333,9 @@ class SatSearch(object):
         item = result[0]
         index = satTab.row(item)
         satTab.selectRow(index)
-        satTab.scrollToItem(item, QAbstractItemView.PositionAtCenter)
+        satTab.scrollToItem(item,
+                            QAbstractItemView.PositionAtCenter
+                            | QAbstractItemView.EnsureVisible)
         return True
 
     def filterSatelliteNamesList(self):

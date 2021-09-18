@@ -61,8 +61,10 @@ def app(qapp):
                                    'start'):
                 app = MountWizzard4(mwGlob=mwGlob, application=qapp)
                 app.log = logging.getLogger()
-                yield app
-                app.threadPool.waitForDone(5000)
+                with mock.patch.object(app.mainW,
+                                       'setupSatelliteNameList'):
+                    yield app
+                    app.threadPool.waitForDone(5000)
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -305,6 +305,7 @@ class MainWindow(
         self.app.timer0_1s.stop()
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.closeExtendedWindows()
+        self.threadPool.waitForDone(5000)
         super().closeEvent(closeEvent)
         self.app.quit()
 

@@ -31,7 +31,7 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
-from gui.utilities.toolsQtWidget import MWidget
+from mountcontrol.convert import formatDstrToText, formatDstrToText
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabTools import Tools
 

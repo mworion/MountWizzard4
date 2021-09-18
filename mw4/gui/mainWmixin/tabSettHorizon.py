@@ -43,7 +43,6 @@ class SettHorizon:
         self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
         fileName = self.app.config['mainW'].get('horizonFileName')
         self.app.data.loadHorizonP(fileName=fileName)
-
         return True
 
     def storeConfig(self):
@@ -72,18 +71,13 @@ class SettHorizon:
             return False
 
         suc = self.app.data.loadHorizonP(fileName=fileName, ext=ext)
-
         if suc:
             self.ui.horizonFileName.setText(fileName)
             self.app.message.emit(f'Horizon mask [{fileName}] loaded', 0)
-            self.app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
-            self.app.drawHorizonPoints.emit()
-
         else:
             self.app.message.emit(f'Horizon mask [{fileName}] cannot no be loaded', 2)
 
         self.app.redrawHemisphere.emit()
-
         return True
 
     def saveHorizonMask(self):
@@ -98,10 +92,8 @@ class SettHorizon:
         suc = self.app.data.saveHorizonP(fileName=fileName)
         if suc:
             self.app.message.emit(f'Horizon mask [{fileName}] saved', 0)
-
         else:
             self.app.message.emit(f'Horizon mask [{fileName}] cannot no be saved', 2)
-
         return True
 
     def saveHorizonMaskAs(self):
@@ -121,10 +113,8 @@ class SettHorizon:
         if suc:
             self.ui.horizonFileName.setText(fileName)
             self.app.message.emit(f'Horizon mask [{fileName}] saved', 0)
-
         else:
             self.app.message.emit(f'Horizon mask [{fileName}] cannot no be saved', 2)
-
         return True
 
     def clearHorizonMask(self):

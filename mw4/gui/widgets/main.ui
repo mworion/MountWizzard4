@@ -10501,7 +10501,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_52">
+      <widget class="QGroupBox" name="satProgDatabaseGroup">
        <property name="geometry">
         <rect>
          <x>580</x>
@@ -10549,17 +10549,233 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_61">
+      <widget class="QGroupBox" name="satSetupGroup">
        <property name="geometry">
         <rect>
          <x>580</x>
-         <y>70</y>
+         <y>190</y>
          <width>191</width>
-         <height>196</height>
+         <height>131</height>
         </rect>
        </property>
        <property name="title">
-        <string>Setting filters parameters</string>
+        <string>Setup</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_271">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Up within next</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="satUpTimeWindow">
+        <property name="geometry">
+         <rect>
+          <x>105</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the DSO track in hours.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>24.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>2.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>24.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_272">
+        <property name="geometry">
+         <rect>
+          <x>165</x>
+          <y>20</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>h</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_273">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>45</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Altitude min</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="satAltitudeMin">
+        <property name="geometry">
+         <rect>
+          <x>105</x>
+          <y>45</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the DSO track in hours.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>60.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_297">
+        <property name="geometry">
+         <rect>
+          <x>165</x>
+          <y>45</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>deg</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="satCyclicUpdates">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>75</y>
+          <width>151</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked MW4 will calculate the satellite track on it's own with more features&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Do cyclic update in list</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="switchToTrackingTab">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>136</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked MW4 will calculate the satellite track on it's own with more features&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Select switch to tracking</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="satFilterGroup">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>75</y>
+         <width>191</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Filter</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -10600,10 +10816,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLabel" name="label_269">
+       <widget class="QLabel" name="label_298">
         <property name="geometry">
          <rect>
-          <x>5</x>
+          <x>10</x>
           <y>20</y>
           <width>81</width>
           <height>21</height>
@@ -10618,190 +10834,47 @@ MW4 will show the actual day always in the middel of the chart.</string>
          </font>
         </property>
         <property name="text">
-         <string>Search string:</string>
+         <string>Search string</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_271">
+       <widget class="QCheckBox" name="satIsSunlit">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="geometry">
          <rect>
-          <x>5</x>
-          <y>45</y>
-          <width>81</width>
-          <height>21</height>
+          <x>10</x>
+          <y>70</y>
+          <width>171</width>
+          <height>25</height>
          </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Up within next</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="satUpTimeWindow">
-        <property name="geometry">
-         <rect>
-          <x>105</x>
-          <y>45</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the DSO track in hours.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking on west meridian side only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1440.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>60.000000000000000</double>
+        <property name="text">
+         <string>Satellite is sunlit</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_272">
+       <widget class="QCheckBox" name="satIsUp">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="geometry">
          <rect>
-          <x>165</x>
+          <x>10</x>
           <y>45</y>
-          <width>21</width>
-          <height>21</height>
+          <width>171</width>
+          <height>25</height>
          </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>min</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_273">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>70</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Altitude min</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="satAltitudeMin">
-        <property name="geometry">
-         <rect>
-          <x>105</x>
-          <y>70</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the DSO track in hours.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>5.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>90.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>5.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>60.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_297">
-        <property name="geometry">
-         <rect>
-          <x>165</x>
-          <y>70</y>
-          <width>21</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking on west meridian side only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>deg</string>
+         <string>Satellite is up</string>
         </property>
        </widget>
-      </widget>
-      <widget class="QCheckBox" name="switchTracking">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>580</x>
-         <y>305</y>
-         <width>191</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked MW4 will calculate the satellite track on it's own with more features&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Select switch to tracking</string>
-       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="Tracking">

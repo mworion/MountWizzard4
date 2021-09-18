@@ -131,6 +131,8 @@ class Satellite(object):
         self.ui.progTrajectory.clicked.connect(self.startProg)
         self.app.update1s.connect(self.updateOrbit)
         self.app.update1s.connect(self.satCalcDynamicTable)
+        self.ui.satIsSunlit.clicked.connect(self.filterSatelliteNamesList)
+        self.ui.satIsUp.clicked.connect(self.filterSatelliteNamesList)
         self.sigSetSatTableEntry.connect(self.setSatTableEntry)
 
     def initConfig(self):
@@ -145,8 +147,15 @@ class Satellite(object):
             self.ui.satelliteSource.addItem(name)
 
         self.ui.filterSatellite.setText(config.get('filterSatellite'))
-        self.ui.switchTracking.setChecked(config.get('switchTracking', False))
-        self.ui.domeAutoFollowSat.setChecked(config.get('domeAutoFollowSat', False))
+        self.ui.switchToTrackingTab.setChecked(config.get('switchToTrackingTab',
+                                                          False))
+        self.ui.satCyclicUpdates.setChecked(config.get('satCyclicUpdates', False))
+        self.ui.satIsSunlit.setChecked(config.get('satIsSunlit', False))
+        self.ui.satIsUp.setChecked(config.get('satIsUp', False))
+        self.ui.satUpTimeWindow.setValue(config.get('satUpTimeWindow', 2))
+        self.ui.satAltitudeMin.setValue(config.get('satAltitudeMin', 30))
+        self.ui.domeAutoFollowSat.setChecked(config.get('domeAutoFollowSat',
+                                                        False))
         self.ui.useInternalSatCalc.setChecked(config.get('useInternalSatCalc',
                                                          False))
         self.ui.satBeforeFlip.setChecked(config.get('satBeforeFlip', True))
@@ -168,7 +177,12 @@ class Satellite(object):
         """
         config = self.app.config['mainW']
         config['filterSatellite'] = self.ui.filterSatellite.text()
-        config['switchTracking'] = self.ui.switchTracking.isChecked()
+        config['switchToTrackingTab'] = self.ui.switchToTrackingTab.isChecked()
+        config['satCyclicUpdates'] = self.ui.satCyclicUpdates.isChecked()
+        config['satIsSunlit'] = self.ui.satIsSunlit.isChecked()
+        config['satIsUp'] = self.ui.satIsUp.isChecked()
+        config['satUpTimeWindow'] = self.ui.satUpTimeWindow.value()
+        config['satAltitudeMin'] = self.ui.satAltitudeMin.value()
         config['domeAutoFollowSat'] = self.ui.domeAutoFollowSat.isChecked()
         config['useInternalSatCalc'] = self.ui.useInternalSatCalc.isChecked()
         config['satBeforeFlip'] = self.ui.satBeforeFlip.isChecked()
@@ -499,7 +513,7 @@ class Satellite(object):
         else:
             self.extractSatelliteData(satName=satName)
             self.showSatPasses()
-        if self.ui.switchTracking.isChecked():
+        if self.ui.switchToTracking.isChecked():
             self.ui.satTabWidget.setCurrentIndex(1)
         return True
 
@@ -567,7 +581,7 @@ class Satellite(object):
         self.ui.listSatelliteNames.setItem(row, col, entry)
         return True
 
-    def updateTableEntries(self, row, satParam, isUp, isSunlit):
+    def updateTableEntries(self, row, satParam, isUp=None, isSunlit=None):
         """
         :param row:
         :param satParam:
@@ -591,18 +605,14 @@ class Satellite(object):
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
         self.sigSetSatTableEntry.emit(row, 5, entry)
 
-        entry = QTableWidgetItem('*' if isSunlit else ' ')
-        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        self.sigSetSatTableEntry.emit(row, 8, entry)
-
         if isUp is None:
-            return True
+            return
 
         if isUp[0]:
             t1 = f'{isUp[1][0].tt_strftime("%m-%d")}'
             t2 = f'{isUp[1][0].tt_strftime("%H:%M:%S")}'
         else:
-            t1 = t2 = ' '
+            t1 = t2 = ''
 
         entry = QTableWidgetItem(t1)
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
@@ -612,6 +622,9 @@ class Satellite(object):
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
         self.sigSetSatTableEntry.emit(row, 7, entry)
 
+        entry = QTableWidgetItem('*' if isSunlit else ' ')
+        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        self.sigSetSatTableEntry.emit(row, 8, entry)
         return True
 
     def satCalcDynamicTable(self):
@@ -629,7 +642,6 @@ class Satellite(object):
         loc = self.app.mount.obsSite.location
         ts = self.app.mount.obsSite.ts
         timeNow = ts.now()
-        eph = self.app.ephemeris
         viewPortRect = QRect(QPoint(0, 0), satTab.viewport().size())
 
         for row in range(satTab.rowCount()):
@@ -644,9 +656,30 @@ class Satellite(object):
             name = satTab.model().index(row, 1).data()
             sat = self.satellites[name]
             satParam = self.findRangeRate(sat, loc, timeNow)
-            isSunlit = self.findSunlit(sat, eph, timeNow)
-            self.updateTableEntries(row, satParam, None, isSunlit)
+            self.updateTableEntries(row, satParam)
 
+        return True
+
+    def filterSatelliteNamesList(self):
+        """
+        :return: true for test purpose
+        """
+        satTab = self.ui.listSatelliteNames
+        filterStr = self.ui.filterSatellite.text()
+        satIsUp = self.ui.satIsUp
+        satIsSunlit = self.ui.satIsSunlit
+
+        checkIsUp = satIsUp.isChecked() and satIsUp.isEnabled()
+        checkIsSunlit = satIsSunlit.isChecked() and satIsSunlit.isEnabled()
+
+        for row in range(satTab.model().rowCount()):
+            name = satTab.model().index(row, 1).data()
+            show = filterStr.lower() in name.lower()
+            if checkIsSunlit:
+                show = show and satTab.model().index(row, 8).data() == '*'
+            if checkIsUp:
+                show = show and satTab.model().index(row, 7).data() != ''
+            satTab.setRowHidden(row, not show)
         return True
 
     def workerSatCalcTable(self):
@@ -658,7 +691,7 @@ class Satellite(object):
         ts = self.app.mount.obsSite.ts
         timeNow = ts.now()
         timeWin = self.ui.satUpTimeWindow.value()
-        timeNext = ts.tt_jd(timeNow.tt + timeWin * 60 / 86400)
+        timeNext = ts.tt_jd(timeNow.tt + timeWin * 3600 / 86400)
         altMin = self.ui.satAltitudeMin.value()
         eph = self.app.ephemeris
 
@@ -669,10 +702,15 @@ class Satellite(object):
             sat = self.satellites[name]
             satParam = self.findRangeRate(sat, loc, timeNow)
             isSunlit = self.findSunlit(sat, eph, timeNow)
-            isUp = self.findSatUp(sat, loc, timeNow, timeNext, altMin)
+            if timeWin:
+                isUp = self.findSatUp(sat, loc, timeNow, timeNext, altMin)
+            else:
+                isUp = False, []
             self.updateTableEntries(row, satParam, isUp, isSunlit)
         else:
             self.satTableDynamicValid = True
+            self.ui.satIsUp.setEnabled(True)
+            self.ui.satIsSunlit.setEnabled(True)
             return True
         return False
 
@@ -682,28 +720,13 @@ class Satellite(object):
         """
         if not self.satTableBaseValid:
             return False
-        currIndex = self.ui.satTabWidget.currentIndex()
-        if currIndex != 0:
-            return False
 
+        self.satTableDynamicValid = False
+        self.ui.satIsUp.setEnabled(False)
+        self.ui.satIsSunlit.setEnabled(False)
         worker = Worker(self.workerSatCalcTable)
+        worker.signals.finished.connect(self.filterSatelliteNamesList)
         self.threadPool.start(worker)
-        return True
-
-    def filterSatelliteNamesList(self):
-        """
-        :return: true for test purpose
-        """
-        satTab = self.ui.listSatelliteNames
-        filterStr = self.ui.filterSatellite.text()
-
-        for row in range(satTab.model().rowCount()):
-            name = satTab.model().index(row, 1).data()
-            if name is None:
-                continue
-            isFound = filterStr.lower() in name.lower()
-            show = isFound
-            satTab.setRowHidden(row, not show)
         return True
 
     def prepareSatTable(self):
@@ -754,6 +777,9 @@ class Satellite(object):
             satTab.setItem(row, 1, entry)
 
         else:
+            self.filterSatelliteNamesList()
+            self.ui.satFilterGroup.setEnabled(True)
+            self.ui.satProgDatabaseGroup.setEnabled(True)
             self.satTableBaseValid = True
             self.satCalcTable()
             return True
@@ -787,6 +813,11 @@ class Satellite(object):
         self.satTableBaseValid = False
         self.satTableDynamicValid = False
         self.satellites = None
+        self.ui.satFilterGroup.setEnabled(False)
+        self.ui.satIsUp.setEnabled(False)
+        self.ui.satIsSunlit.setEnabled(False)
+        self.ui.satFilterGroup.setEnabled(False)
+        self.ui.satProgDatabaseGroup.setEnabled(False)
 
         key = self.ui.satelliteSource.currentText()
         if key not in self.satelliteSourceURLs:

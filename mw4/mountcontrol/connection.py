@@ -85,7 +85,7 @@ class Connection(object):
                 ':Sdat', ':Sev', ':Sev', ':Sg', ':Sg', ':Sh', ':Slms', ':Slmt',
                 ':So', ':Sr', ':St', ':Suaf', ':Sw', ':Sz',
                 ':TLEG', ':TLEL0', ':TLEGAZ', ':TLEGEQ', ':TLEP', ':TLES',
-                ':TLESCK',
+                ':TLESCK', ':TROFFADD', ':TROFFCLR', ':TROFFGET', ':TROFFSET',
                 ':TRNEW', ':TRADD', ':TRP', ':TRREPLAY',
                 ':U2',
                 ':delalig', ':delalst',
@@ -369,3 +369,14 @@ class Connection(object):
         del client
 
         return suc, response, numberOfChunks
+
+    def communicateRaw(self, commandString):
+        client = self.buildClient()
+        client.settimeout(1)
+        suc = self.sendData(client=client, commandString=commandString)
+        try:
+            chunkRaw = client.recv(2048)
+            chunk = chunkRaw.decode('ASCII')
+        except Exception:
+            pass
+        return suc, chunk

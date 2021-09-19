@@ -199,6 +199,10 @@ class TrajectoryParams(object):
         self._flip = None
         self._message = None
         self.obsSite = obsSite
+        self.offsetRA = None
+        self.offsetDEC = None
+        self.offsetDECcorr = None
+        self.offsetTime = None
 
     @property
     def flip(self):
@@ -265,7 +269,6 @@ class Satellite(object):
     waits for it. when satellite reaches the altitude minimum, the mount
     starts to track.
 
-        >>> fw = Satellite(host='', parent=None)
     """
 
     __all__ = ['Satellite',
@@ -708,3 +711,152 @@ class Satellite(object):
         self.trajectoryParams.jdStart = start
         self.trajectoryParams.jdEnd = end
         return True
+
+    def getTrackingOffsets(self):
+        """
+        :return: success
+        """
+        cmd = ':TROFFGET1#:TROFFGET2#:TROFFGET3#:TROFFGET4#'
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        if not suc:
+            return False
+
+        if len(response) != numberOfChunks:
+            self.log.warning('wrong number of chunks')
+            return False
+        if len(response) != 4:
+            self.log.warning('wrong number of chunks')
+            return False
+
+        val = valueToFloat(response[0])
+        if val is None:
+            return False
+        else:
+            self.trajectoryParams.offsetRA = val
+
+        val = valueToFloat(response[1])
+        if val is None:
+            return False
+        else:
+            self.trajectoryParams.offsetDEC = val
+
+        val = valueToFloat(response[2])
+        if val is None:
+            return False
+        else:
+            self.trajectoryParams.offsetDECcorr = val
+        return True
+
+        val = valueToFloat(response[3])
+        if val is None:
+            return False
+        else:
+            self.trajectoryParams.offsetTime = val
+
+    def setTrackingOffsets(self, RA=None, DEC=None, DECcorr=None, Time=None):
+        """
+        :param RA:
+        :param DEC:
+        :param DECcorr:
+        :param Time:
+        :return:
+        """
+        cmd = ''
+        responseLen = 0
+        if RA is not None:
+            cmd += f':TROFFSET1,{RA:+04.1f}#'
+            responseLen += 1
+        if DEC is not None:
+            cmd += f':TROFFSET1,{DEC:+04.1f}#'
+        responseLen += 1
+        if DECcorr is not None:
+            cmd += f':TROFFSET1,{DECcorr:+04.1f}#'
+        responseLen += 1
+        if Time is not None:
+            cmd += f':TROFFSET1,{Time:+04.1f}#'
+            responseLen += 1
+
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        if not suc:
+            return False
+
+        if len(response) != numberOfChunks:
+            self.log.warning('wrong number of chunks')
+            return False
+        if len(response) != responseLen:
+            self.log.warning('wrong number of chunks')
+            return False
+
+        for res in response:
+            if res == 'E':
+                break
+        else:
+            return True
+        return False
+
+    def addTrackingOffsets(self, RA=None, DEC=None, DECcorr=None, Time=None):
+        """
+        :param RA:
+        :param DEC:
+        :param DECcorr:
+        :param Time:
+        :return:
+        """
+        cmd = ''
+        responseLen = 0
+        if RA is not None:
+            cmd += f':TROFFADD1,{RA:+04.1f}#'
+            responseLen += 1
+        if DEC is not None:
+            cmd += f':TROFFADD1,{DEC:+04.1f}#'
+        responseLen += 1
+        if DECcorr is not None:
+            cmd += f':TROFFADD1,{DECcorr:+04.1f}#'
+        responseLen += 1
+        if Time is not None:
+            cmd += f':TROFFADD1,{Time:+04.1f}#'
+            responseLen += 1
+
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        if not suc:
+            return False
+
+        if len(response) != numberOfChunks:
+            self.log.warning('wrong number of chunks')
+            return False
+        if len(response) != responseLen:
+            self.log.warning('wrong number of chunks')
+            return False
+
+        for res in response:
+            if res == 'E':
+                break
+        else:
+            return True
+        return False
+
+    def clearTrackingOffsets(self):
+        """
+        :return:
+        """
+        cmd = ':TROFFCLR#'
+
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        if not suc:
+            return False
+
+        if len(response) != numberOfChunks:
+            self.log.warning('wrong number of chunks')
+            return False
+        if len(response) != 1:
+            self.log.warning('wrong number of chunks')
+            return False
+
+        if response[0] == 'E':
+            return False
+        else:
+            return True

@@ -671,8 +671,37 @@ class Styles:
         padding: 0;
         border: none;
     }
+    /* slider */
+    QSlider
+    {   background-color: #202020;
+        width: 16px;
+        height: 16px;
+        margin: 0px 3px 0px 3px;
+        border-width: 1px;
+        border-color: #404040;
+        border-style: outset;
+        border-radius: 2px;
+    }
+    QSlider::handle
+    {   background-color:  rgb(32, 144, 192);
+        border-radius: 2px;
+        border-style: outset;
+        border-width: 1px;
+    }
+    QSlider::add-page
+    {   background-color: #202020;
+        border-color: #404040;
+        border-style: outset;
+        border-radius: 2px;
+    }
+    QSlider::sub-page
+    {   background-color: #202020;
+        border-color: #404040;
+        border-style: outset;
+        border-radius: 2px;
+    }
     /* scroll bar */
-    QScrollBar:vertical
+    QScrollBar
     {   background-color: #202020;
         width: 20px;
         margin: 0px 3px 0px 3px;
@@ -681,13 +710,13 @@ class Styles:
         border-style: outset;
         border-radius: 2px;
     }
-    QScrollBar::handle:vertical
+    QScrollBar::handle
     {   background-color:  rgb(32, 144, 192);
         min-height: 32px;
         border-radius: 2px;
     }
     /*
-    QScrollBar::sub-line:vertical
+    QScrollBar::sub-line
     {   margin: 2px 0px 2px 0px;
         border-image: url(:icon/arrow-up.ico);
         height: 16px;
@@ -695,7 +724,7 @@ class Styles:
         subcontrol-position: top;
         subcontrol-origin: margin;
     }
-    QScrollBar::add-line:vertical
+    QScrollBar::add-line
     {   margin: 2px 0px 2px 0px;
         border-image: url(:icon/arrow-down.ico);
         height: 16px;
@@ -703,14 +732,14 @@ class Styles:
         subcontrol-position: bottom;
         subcontrol-origin: margin;
     }
-    QScrollBar::sub-line:vertical:on
+    QScrollBar::sub-line:on
     {   border-image: url(:icon/arrow-up.ico);
         height: 16px;
         width: 16px;
         subcontrol-position: top;
         subcontrol-origin: margin;
     }
-    QScrollBar::add-line:vertical:on
+    QScrollBar::add-line:on
     {   border-image: url(:icon/arrow-down.ico);
         height: 16px;
         width: 16px;
@@ -724,7 +753,7 @@ class Styles:
         border-style: outset;
         border-radius: 2px;
     }
-    QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+    QScrollBar::add-page, QScrollBar::sub-page
     {   background: none;
     }
     */

@@ -88,9 +88,11 @@ class SatControlWidget(MWidget):
         if val is None:
             val = self.ui[0].value()
             self.ui[1].setText(str(val))
-            self.valueChanged.emit(val)
         else:
+            val = min(self.maxVal, val)
+            val = max(self.minVal, val)
             self.ui[0].setValue(val)
+            self.valueChanged.emit(val)
         return True
 
 

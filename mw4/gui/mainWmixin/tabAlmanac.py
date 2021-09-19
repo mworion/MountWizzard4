@@ -140,20 +140,21 @@ class Almanac:
 
         for ti, event in zip(t, e):
             QApplication.processEvents()
+            if self.closing:
+                break
             hour = int(ti.astimezone(tzlocal()).strftime('%H'))
             minute = int(ti.astimezone(tzlocal()).strftime('%M'))
             y = (hour + 12 + minute / 60) % 24
             day = round(ti.tt + 0.5, 0)
             axe.bar(day, height=24 - y, bottom=y, width=1,
                     color=self.colors[event]['plot'])
-
-        x = [midLim - 1, midLim - 1, midLim + 1, midLim + 1]
-        y = [0, 24, 24, 0]
-        axe.fill(x, y, self.M_GREY, alpha=0.5)
-        if self.closing:
-            return False
-        axe.figure.canvas.draw()
-        return True
+        else:
+            x = [midLim - 1, midLim - 1, midLim + 1, midLim + 1]
+            y = [0, 24, 24, 0]
+            axe.fill(x, y, self.M_GREY, alpha=0.5)
+            axe.figure.canvas.draw()
+            return True
+        return False
 
     def displayTwilightData(self, timeEvents, events):
         """

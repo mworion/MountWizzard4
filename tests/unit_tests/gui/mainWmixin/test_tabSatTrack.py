@@ -562,8 +562,10 @@ def test_extractSatelliteData_3(function):
     with mock.patch.object(function.app.mount.obsSite.ts,
                            'now',
                            return_value=ts.tt_jd(2458925.404976551)):
-        suc = function.extractSatelliteData(satName='NOAA 8')
-        assert suc
+        with mock.patch.object(function,
+                               'positionCursorInSatTable'):
+            suc = function.extractSatelliteData(satName='NOAA 8')
+            assert suc
 
 
 def test_extractSatelliteData_4(function):
@@ -588,8 +590,10 @@ def test_extractSatelliteData_4(function):
     with mock.patch.object(function.app.mount.obsSite.ts,
                            'now',
                            return_value=ts.tt_jd(2458930.404976551)):
-        suc = function.extractSatelliteData(satName='NOAA 8')
-        assert suc
+        with mock.patch.object(function,
+                               'positionCursorInSatTable'):
+            suc = function.extractSatelliteData(satName='NOAA 8')
+            assert suc
 
 
 def test_extractSatelliteData_5(function):
@@ -614,8 +618,10 @@ def test_extractSatelliteData_5(function):
     with mock.patch.object(function.app.mount.obsSite.ts,
                            'now',
                            return_value=ts.tt_jd(2458950.404976551)):
-        suc = function.extractSatelliteData(satName='NOAA 8')
-        assert suc
+        with mock.patch.object(function,
+                               'positionCursorInSatTable'):
+            suc = function.extractSatelliteData(satName='NOAA 8')
+            assert suc
 
 
 def test_programDataToMount_1(function):

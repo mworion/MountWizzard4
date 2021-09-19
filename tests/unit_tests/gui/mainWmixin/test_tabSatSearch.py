@@ -317,6 +317,30 @@ def test_satCalcDynamicTable_7(function):
                 assert suc
 
 
+def test_positionCursorInSatTable_1(function):
+    satTab = function.ui.listSatelliteNames
+    satTab.setRowCount(0)
+    satTab.setColumnCount(2)
+    satTab.insertRow(0)
+    entry = QTableWidgetItem('NOAA 8')
+    satTab.setItem(0, 1, entry)
+
+    suc = function.positionCursorInSatTable(satTab, 'test')
+    assert not suc
+
+
+def test_positionCursorInSatTable_2(function):
+    satTab = function.ui.listSatelliteNames
+    satTab.setRowCount(0)
+    satTab.setColumnCount(2)
+    satTab.insertRow(0)
+    entry = QTableWidgetItem('NOAA 8')
+    satTab.setItem(0, 1, entry)
+
+    suc = function.positionCursorInSatTable(satTab, 'NOAA 8')
+    assert suc
+
+
 def test_filterSatelliteNamesList_1(function):
     suc = function.filterSatelliteNamesList()
     assert suc
@@ -466,8 +490,11 @@ def test_setupSatelliteNameList_2(function):
 
 
 def test_workerLoadDataFromSourceURLs_1(function):
-    suc = function.workerLoadDataFromSourceURLs()
-    assert not suc
+    with mock.patch.object(function.app.mount.obsSite.loader,
+                           'tle_file',
+                           return_value={}):
+        suc = function.workerLoadDataFromSourceURLs()
+        assert not suc
 
 
 def test_workerLoadDataFromSourceURLs_2(function):
@@ -478,28 +505,41 @@ def test_workerLoadDataFromSourceURLs_2(function):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=False):
-            suc = function.workerLoadDataFromSourceURLs(source=source, isOnline=False)
+            suc = function.workerLoadDataFromSourceURLs(source=source,
+                                                        isOnline=False)
             assert not suc
 
 
 def test_workerLoadDataFromSourceURLs_3(function):
     source = 'test'
+    function.satSourceValid = False
     with mock.patch.object(function.app.mount.obsSite.loader,
                            'tle_file',
                            return_value={}):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=True):
-            suc = function.workerLoadDataFromSourceURLs(source=source, isOnline=False)
-            assert suc
+            with mock.patch.object(function.app.mount.obsSite.loader,
+                                   'days_old',
+                                   return_value=5):
+                suc = function.workerLoadDataFromSourceURLs(source=source,
+                                                            isOnline=True)
+                assert suc
+                assert function.satSourceValid
 
 
-def test_loadTLEDataFromSourceURLs_1(function):
+def test_loadDataFromSourceURLs_1(function):
     suc = function.loadDataFromSourceURLs()
     assert not suc
 
 
-def test_loadTLEDataFromSourceURLs_2(function):
+def test_loadDataFromSourceURLs_2(function):
+    function.ui.satelliteSource.addItem('test')
+    suc = function.loadDataFromSourceURLs()
+    assert not suc
+
+
+def test_loadDataFromSourceURLs_3(function):
     function.ui.satelliteSource.addItem('Active')
     suc = function.loadDataFromSourceURLs()
     assert suc

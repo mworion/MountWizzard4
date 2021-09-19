@@ -15,20 +15,13 @@
 #
 ###########################################################
 # standard libraries
-import os
 
 # external packages
-import PyQt5
-from PyQt5.QtCore import Qt, QRect, QPoint, pyqtSignal
-from PyQt5.QtWidgets import QApplication, QAbstractItemView
-from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QHeaderView
 import numpy as np
 from sgp4.exporter import export_tle
 from skyfield import almanac
 
 # local import
-from base.tpool import Worker
-from logic.databaseProcessing.dataWriter import DataWriter
 
 
 class SatTrack(object):

@@ -245,7 +245,7 @@ class Mount(QObject):
         ts = load.timescale(builtin=True)
         timeJD = ts.now()
         timeDiff = 0
-        loader = Loader('tests/workDir/temp', verbose=False)
+        loader = Loader('tests/workDir', verbose=False)
         status = 0
         statusSat = 'E'
         UTC2TT = 69.184

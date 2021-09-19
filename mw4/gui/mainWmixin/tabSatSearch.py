@@ -21,10 +21,8 @@ import os
 import PyQt5
 from PyQt5.QtCore import Qt, QRect, QPoint, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QAbstractItemView
-from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QHeaderView
+from PyQt5.QtWidgets import QTableWidgetItem, QHeaderView
 import numpy as np
-from sgp4.exporter import export_tle
-from skyfield import almanac
 
 # local import
 from base.tpool import Worker
@@ -440,6 +438,9 @@ class SatSearch(object):
         """
         :return: success for test
         """
+        if not self.satSourceValid:
+            return False
+
         satTab = self.ui.listSatelliteNames
         self.prepareSatTable()
 
@@ -469,17 +470,19 @@ class SatSearch(object):
         """
         :return: success
         """
-        if not source:
-            return False
-
+        loader = self.app.mount.obsSite.loader
         fileName = os.path.basename(source)
         dirPath = self.app.mwGlob['dataDir']
         filePath = f'{dirPath}/{fileName}'
-        satellites = self.app.mount.obsSite.loader.tle_file(source, reload=isOnline)
+        if not isOnline:
+            source = filePath
+        satellites = loader.tle_file(source, reload=isOnline)
         self.satellites = {sat.name: sat for sat in satellites}
         if not os.path.isfile(filePath):
             return False
 
+        daysOld = loader.days_old(filePath)
+        self.ui.satSourceGroup.setTitle(f'Satellite data - age:{daysOld:2.0f}d')
         self.satSourceValid = True
         return True
 
@@ -500,8 +503,10 @@ class SatSearch(object):
         key = self.ui.satelliteSource.currentText()
         if key not in self.satelliteSourceURLs:
             return False
-
         source = self.satelliteSourceURLs[key]
+        if not source:
+            return False
+        self.ui.listSatelliteNames.setRowCount(0)
         isOnline = self.ui.isOnline.isChecked()
         worker = Worker(self.workerLoadDataFromSourceURLs,
                         source=source,

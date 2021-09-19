@@ -341,7 +341,7 @@ class SatSearch(object):
         :return: true for test purpose
         """
         satTab = self.ui.listSatelliteNames
-        filterStr = self.ui.filterSatellite.text()
+        filterStr = self.ui.filterSatellite.text().lower()
         satIsUp = self.ui.satIsUp
         satIsSunlit = self.ui.satIsSunlit
 
@@ -349,8 +349,9 @@ class SatSearch(object):
         checkIsSunlit = satIsSunlit.isChecked() and satIsSunlit.isEnabled()
 
         for row in range(satTab.model().rowCount()):
-            name = satTab.model().index(row, 1).data()
-            show = filterStr.lower() in name.lower()
+            name = satTab.model().index(row, 1).data().lower()
+            number = satTab.model().index(row, 0).data().lower()
+            show = filterStr in number + name
             if checkIsUp:
                 show = show and satTab.model().index(row, 7).data() != ''
             if checkIsSunlit:

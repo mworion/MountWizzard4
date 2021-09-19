@@ -484,6 +484,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         axe, fig = self.generateFlat(widget=self.satEarthMat)
         axe.set_xticks(np.arange(-180, 181, 45))
+        axe.set_xticklabels(['180 W', '135 W', '90 W', '45 W', '0',
+                             '45 E', '90 E', '135 E', '180 E'],
+                            rotation=30)
         axe.set_xlabel('Longitude in degrees')
         axe.set_ylabel('Latitude in degrees')
         axe.set_ylim([-90, 90])

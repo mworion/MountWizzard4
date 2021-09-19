@@ -90,17 +90,14 @@ class ToolsMatplotlib:
         if showAxes:
             color = self.M_BLUE
             colorGrid = self.M_GREY
-
         else:
             color = self.M_TRANS
             colorGrid = self.M_TRANS
 
         figure = widget.figure
-
         if figure.axes:
             axe = figure.axes[0]
             axe.cla()
-
         else:
             figure.clf()
             axe = figure.add_subplot(1, 1, 1, polar=True, facecolor='None')
@@ -110,10 +107,10 @@ class ToolsMatplotlib:
         if title:
             axe.set_title(title, color=color, fontweight='bold', pad=15)
 
-        axe.set_xlabel('', color=color, fontweight='bold', fontsize=12)
-        axe.set_ylabel('', color=color, fontweight='bold', fontsize=12)
-        axe.tick_params(axis='x', colors=color, labelsize=12)
-        axe.tick_params(axis='y', colors=color, labelsize=12)
+        axe.set_xlabel('', color=color, fontweight='bold')
+        axe.set_ylabel('', color=color, fontweight='bold')
+        axe.tick_params(axis='x', colors=color)
+        axe.tick_params(axis='y', colors=color)
         axe.set_theta_zero_location('N')
         axe.set_rlabel_position(45)
         axe.spines['polar'].set_color(color)
@@ -153,7 +150,6 @@ class ToolsMatplotlib:
             color = self.M_TRANS
 
         figure = widget.figure
-
         if figure.axes:
             axe = figure.axes[0]
             axe.cla()
@@ -174,10 +170,10 @@ class ToolsMatplotlib:
         if title:
             axe.set_title(title, color=color, fontweight='bold', pad=15)
 
-        axe.set_xlabel('', color=color, fontweight='bold', fontsize=12)
-        axe.set_ylabel('', color=color, fontweight='bold', fontsize=12)
-        axe.tick_params(axis='x', colors=color, labelsize=12)
-        axe.tick_params(axis='y', colors=color, labelsize=12)
+        axe.set_xlabel('', color=color, fontweight='bold')
+        axe.set_ylabel('', color=color, fontweight='bold')
+        axe.tick_params(axis='x', colors=color)
+        axe.tick_params(axis='y', colors=color)
 
         if not horizon:
             return axe, figure
@@ -186,11 +182,10 @@ class ToolsMatplotlib:
         axe.set_ylim(0, 90)
         axe.set_xticks(np.arange(0, 361, 45))
         axe.set_xticklabels(['0 N', '45 NE', '90 E', '135 SE', '180 S',
-                             '225 SW', '270 W', '315 NW', '360 N'])
-        axe.set_xlabel('Azimuth [degrees]', color=color, fontweight='bold',
-                       fontsize=12)
-        axe.set_ylabel('Altitude [degrees]', color=color, fontweight='bold',
-                       fontsize=12)
+                             '225 SW', '270 W', '315 NW', '360 N'],
+                            rotation=30)
+        axe.set_xlabel('Azimuth [degrees]', color=color, fontweight='bold')
+        axe.set_ylabel('Altitude [degrees]', color=color, fontweight='bold')
 
         return axe, figure
 

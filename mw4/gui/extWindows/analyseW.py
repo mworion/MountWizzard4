@@ -339,7 +339,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        axe, _ = self.generateFlat(widget=self.raRawErrors)
+        axe, _ = self.generateFlat(widget=self.raRawErrors, horizon=True)
         x = self.azimuth
         y = self.altitude
         z = np.abs(self.errorRA_S)
@@ -352,7 +352,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        axe, _ = self.generateFlat(widget=self.decRawErrors)
+        axe, _ = self.generateFlat(widget=self.decRawErrors, horizon=True)
         x = self.azimuth
         y = self.altitude
         z = np.abs(self.errorDEC_S)
@@ -365,7 +365,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        axe, _ = self.generateFlat(widget=self.raErrors)
+        axe, _ = self.generateFlat(widget=self.raErrors, horizon=True)
         x = self.azimuth
         y = self.altitude
         z = np.abs(self.errorRA)
@@ -378,7 +378,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        axe, _ = self.generateFlat(widget=self.decErrors)
+        axe, _ = self.generateFlat(widget=self.decErrors, horizon=True)
         x = self.azimuth
         y = self.altitude
         z = np.abs(self.errorDEC)

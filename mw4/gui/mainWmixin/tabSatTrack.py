@@ -26,7 +26,6 @@ from skyfield import almanac
 # local import
 from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.convert import valueToInt
-from mountcontrol.connection import Connection
 
 
 class SatControlWidget(MWidget):

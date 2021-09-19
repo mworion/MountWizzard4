@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>6</number>
+    <number>9</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -14830,7 +14830,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_8">
       <attribute name="title">
@@ -16822,6 +16822,77 @@ Next point in time when satellite settles.</string>
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_12">
+       <property name="geometry">
+        <rect>
+         <x>395</x>
+         <y>15</y>
+         <width>366</width>
+         <height>241</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Mount command terminal</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLineEdit" name="commandInput">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>346</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_13">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Input</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_16">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>65</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Output</string>
+        </property>
+       </widget>
+       <widget class="QTextBrowser" name="commandOutput">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>85</y>
+          <width>346</width>
+          <height>146</height>
+         </rect>
+        </property>
+       </widget>
       </widget>
      </widget>
      <widget class="QWidget" name="Relay">

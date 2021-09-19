@@ -16,10 +16,12 @@
 ###########################################################
 # standard libraries
 import os
+import time
 from pathlib import Path
 
 # external packages
 import PyQt5
+from PyQt5.QtGui import QTextCursor
 from PyQt5.QtTest import QTest
 from astropy.io import fits
 from base.transform import J2000ToJNow
@@ -27,6 +29,7 @@ from base.transform import J2000ToJNow
 # local import
 from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatHstrToText, formatDstrToText
+from mountcontrol.connection import Connection
 
 
 class Tools(object):
@@ -98,6 +101,8 @@ class Tools(object):
         self.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
         self.ui.moveCoordinateDec.textEdited.connect(self.setDEC)
         self.ui.moveCoordinateDec.returnPressed.connect(self.setDEC)
+
+        self.ui.commandInput.returnPressed.connect(self.commandRaw)
 
     def initConfig(self):
         """
@@ -626,3 +631,25 @@ class Tools(object):
                                               dec=decJNow)
         suc = self.slewSelectedTargetWithDome(slewType='keep')
         return suc
+
+    def commandRaw(self):
+        """
+        :return:
+        """
+        host = self.app.mount.host
+        conn = Connection(host)
+        cmd = self.ui.commandInput.text()
+        startTime = time.time()
+        sucSend, sucRec, val = conn.communicateRaw(cmd)
+        endTime = time.time()
+        delta = endTime - startTime
+        self.ui.commandOutput.clear()
+        if sucSend:
+            t = f'Command OK, took {delta:2.3f}s \n'
+            self.ui.commandOutput.insertPlainText(t)
+        if not sucRec:
+            t = 'Receive ERROR\n'
+            self.ui.commandOutput.insertPlainText(t)
+
+        self.ui.commandOutput.insertPlainText(val + '\n')
+        self.ui.commandOutput.moveCursor(QTextCursor.End)

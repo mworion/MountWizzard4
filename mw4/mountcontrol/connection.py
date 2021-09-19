@@ -373,10 +373,19 @@ class Connection(object):
     def communicateRaw(self, commandString):
         client = self.buildClient()
         client.settimeout(1)
-        suc = self.sendData(client=client, commandString=commandString)
+        sucSend = self.sendData(client=client, commandString=commandString)
         try:
             chunkRaw = client.recv(2048)
             chunk = chunkRaw.decode('ASCII')
-        except Exception:
-            pass
-        return suc, chunk
+        except socket.timeout:
+            self.log.debug(f'[{self.id}] socket timeout')
+            chunk = 'Timeout'
+            sucRec = False
+        except Exception as e:
+            self.log.debug(f'[{self.id}] socket error: {e}')
+            chunk = 'Exception'
+            sucRec = False
+        else:
+            sucRec = True
+        finally:
+            return sucSend, sucRec, chunk

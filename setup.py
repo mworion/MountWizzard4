@@ -22,7 +22,9 @@ releaseNotes = """
 - add: hemisphere window: help for choosing the right star for polar alignment
 - add: angular error ra / dec axis in measurement
 - add: device connection similar for ASCOM and ALPACA devices
-- add: satellite search 
+- add: extended satellite search and filter capabilities
+- add: extended satellite tracking and tuning capabilities
+- add: command window for manual mount commands
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
  """

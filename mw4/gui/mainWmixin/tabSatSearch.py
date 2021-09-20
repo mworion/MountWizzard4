@@ -80,6 +80,7 @@ class SatSearch(object):
             'Space & Earth Science': baseUrl + 'science.txt',
             'Engineering': baseUrl + 'engineering.txt',
             'Last 30 days launch': baseUrl + 'tle-new.txt',
+            'Custom': 'custom.txt',
         }
 
         self.passUI = {
@@ -111,6 +112,7 @@ class SatSearch(object):
         self.ui.filterSatellite.textChanged.connect(self.filterSatelliteNamesList)
         self.ui.satIsSunlit.clicked.connect(self.filterSatelliteNamesList)
         self.ui.satIsUp.clicked.connect(self.filterSatelliteNamesList)
+        self.ui.satRemoveSO.clicked.connect(self.filterSatelliteNamesList)
         self.sigSetSatTableEntry.connect(self.setSatTableEntry)
 
         self.app.update1s.connect(self.satCalcDynamicTable)
@@ -131,6 +133,7 @@ class SatSearch(object):
                                                           False))
         self.ui.satCyclicUpdates.setChecked(config.get('satCyclicUpdates', False))
         self.ui.satIsSunlit.setChecked(config.get('satIsSunlit', False))
+        self.ui.satRemoveSO.setChecked(config.get('satRemoveSO', False))
         self.ui.satIsUp.setChecked(config.get('satIsUp', False))
         self.ui.satUpTimeWindow.setValue(config.get('satUpTimeWindow', 2))
         self.ui.satAltitudeMin.setValue(config.get('satAltitudeMin', 30))
@@ -153,6 +156,7 @@ class SatSearch(object):
         config['switchToTrackingTab'] = self.ui.switchToTrackingTab.isChecked()
         config['satCyclicUpdates'] = self.ui.satCyclicUpdates.isChecked()
         config['satIsSunlit'] = self.ui.satIsSunlit.isChecked()
+        config['satRemoveSO'] = self.ui.satRemoveSO.isChecked()
         config['satIsUp'] = self.ui.satIsUp.isChecked()
         config['satUpTimeWindow'] = self.ui.satUpTimeWindow.value()
         config['satAltitudeMin'] = self.ui.satAltitudeMin.value()
@@ -347,6 +351,7 @@ class SatSearch(object):
 
         checkIsUp = satIsUp.isChecked() and satIsUp.isEnabled()
         checkIsSunlit = satIsSunlit.isChecked() and satIsSunlit.isEnabled()
+        checkRemoveSO = self.ui.satRemoveSO.isChecked()
 
         for row in range(satTab.model().rowCount()):
             name = satTab.model().index(row, 1).data().lower()
@@ -356,6 +361,10 @@ class SatSearch(object):
                 show = show and satTab.model().index(row, 7).data() != ''
             if checkIsSunlit:
                 show = show and satTab.model().index(row, 8).data() == '*'
+            if checkRemoveSO:
+                show = show and 'starlink' not in name
+                show = show and 'oneweb' not in name
+
             satTab.setRowHidden(row, not show)
         satName = self.ui.satelliteName.text()
         self.positionCursorInSatTable(satTab, satName)

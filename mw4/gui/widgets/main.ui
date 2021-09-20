@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>9</number>
+    <number>6</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -10358,7 +10358,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Searching">
       <attribute name="title">
@@ -10553,9 +10553,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>580</x>
-         <y>190</y>
+         <y>200</y>
          <width>191</width>
-         <height>131</height>
+         <height>121</height>
         </rect>
        </property>
        <property name="title">
@@ -10752,7 +10752,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>100</y>
+          <y>95</y>
           <width>176</width>
           <height>25</height>
          </rect>
@@ -10769,9 +10769,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>580</x>
-         <y>75</y>
+         <y>70</y>
          <width>191</width>
-         <height>101</height>
+         <height>111</height>
         </rect>
        </property>
        <property name="title">
@@ -10844,7 +10844,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>70</y>
+          <y>65</y>
           <width>171</width>
           <height>25</height>
          </rect>
@@ -10873,6 +10873,25 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="text">
          <string>Satellite is up</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="satRemoveSO">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>85</y>
+          <width>171</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which were lit be sun Pease be reminded, that there is no recalculation!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Remove Starlink/Oneweb</string>
         </property>
        </widget>
       </widget>

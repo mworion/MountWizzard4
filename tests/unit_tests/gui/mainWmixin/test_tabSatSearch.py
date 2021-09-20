@@ -351,6 +351,7 @@ def test_filterSatelliteNamesList_2(function):
     function.ui.satIsUp.setChecked(True)
     function.ui.satIsSunlit.setEnabled(True)
     function.ui.satIsSunlit.setChecked(True)
+    function.ui.satRemoveSO.setChecked(True)
     function.ui.listSatelliteNames.setRowCount(0)
     function.ui.listSatelliteNames.setColumnCount(9)
     function.ui.listSatelliteNames.insertRow(0)

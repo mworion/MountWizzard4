@@ -364,6 +364,8 @@ class SatSearch(object):
             if checkRemoveSO:
                 show = show and 'starlink' not in name
                 show = show and 'oneweb' not in name
+                show = show and 'globalstar' not in name
+                show = show and 'navstar' not in name
 
             satTab.setRowHidden(row, not show)
         satName = self.ui.satelliteName.text()

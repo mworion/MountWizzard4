@@ -90,11 +90,7 @@ def test_SatControlWidget_4(function):
     suc = function.satOffTime.updateSatOffVal()
     assert suc
 
-
-def test_sources(function):
-    assert len(function.satelliteSourceURLs) == 13
-
-
+    
 def test_initConfig_1(function):
     class Test:
         installPath = ''

@@ -730,29 +730,22 @@ class Satellite(object):
             return False
 
         val = valueToFloat(response[0])
-        if val is None:
-            return False
-        else:
+        if val is not None:
             self.trajectoryParams.offsetRA = val
 
         val = valueToFloat(response[1])
-        if val is None:
-            return False
-        else:
+        if val is not None:
             self.trajectoryParams.offsetDEC = val
 
         val = valueToFloat(response[2])
-        if val is None:
-            return False
-        else:
+        if val is not None:
             self.trajectoryParams.offsetDECcorr = val
-        return True
 
         val = valueToFloat(response[3])
-        if val is None:
-            return False
-        else:
+        if val is not None:
             self.trajectoryParams.offsetTime = val
+            
+        return True
 
         return True
 

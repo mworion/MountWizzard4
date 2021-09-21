@@ -65,7 +65,7 @@ def function(module):
 
 
 def test_sources(function):
-    assert len(function.satelliteSourceURLs) == 13
+    assert len(function.satelliteSourceURLs) == 14
 
 
 def test_initConfig_1(function):
@@ -355,6 +355,8 @@ def test_filterSatelliteNamesList_2(function):
     function.ui.listSatelliteNames.setRowCount(0)
     function.ui.listSatelliteNames.setColumnCount(9)
     function.ui.listSatelliteNames.insertRow(0)
+    entry = QTableWidgetItem('1234')
+    function.ui.listSatelliteNames.setItem(0, 0, entry)
     entry = QTableWidgetItem('NOAA 8')
     function.ui.listSatelliteNames.setItem(0, 1, entry)
     entry = QTableWidgetItem('*')

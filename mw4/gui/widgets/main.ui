@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>6</number>
+    <number>9</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -16420,7 +16420,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QWidget" name="tab_17">
       <attribute name="title">
-       <string>File Renaming</string>
+       <string>File Renaming / Terminal</string>
       </attribute>
       <widget class="QGroupBox" name="groupBox_46">
        <property name="geometry">
@@ -16848,7 +16848,7 @@ Next point in time when satellite settles.</string>
          <x>395</x>
          <y>15</y>
          <width>366</width>
-         <height>241</height>
+         <height>371</height>
         </rect>
        </property>
        <property name="title">
@@ -16893,7 +16893,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>65</y>
+          <y>145</y>
           <width>66</width>
           <height>21</height>
          </rect>
@@ -16906,10 +16906,33 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>85</y>
+          <y>165</y>
           <width>346</width>
-          <height>146</height>
+          <height>196</height>
          </rect>
+        </property>
+       </widget>
+       <widget class="QTextBrowser" name="commandStatus">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>346</width>
+          <height>46</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_17">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Staus</string>
         </property>
        </widget>
       </widget>

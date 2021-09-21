@@ -639,17 +639,23 @@ class Tools(object):
         host = self.app.mount.host
         conn = Connection(host)
         cmd = self.ui.commandInput.text()
+        self.ui.commandStatus.clear()
+        self.ui.commandOutput.clear()
         startTime = time.time()
         sucSend, sucRec, val = conn.communicateRaw(cmd)
         endTime = time.time()
         delta = endTime - startTime
         self.ui.commandOutput.clear()
         if sucSend:
-            t = f'Command OK, took {delta:2.3f}s \n'
-            self.ui.commandOutput.insertPlainText(t)
-        if not sucRec:
-            t = 'Receive ERROR\n'
-            self.ui.commandOutput.insertPlainText(t)
+            t = 'Command OK\n'
+            self.ui.commandStatus.insertPlainText(t)
+        if sucRec:
+            t = f'Receive OK, took {delta:2.3f}s'
+            self.ui.commandStatus.insertPlainText(t)
+        else:
+            t = f'Receive ERROR, took {delta:2.3f}s'
+            self.ui.commandStatus.insertPlainText(t)
 
         self.ui.commandOutput.insertPlainText(val + '\n')
         self.ui.commandOutput.moveCursor(QTextCursor.End)
+        return True

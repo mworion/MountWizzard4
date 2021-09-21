@@ -35,6 +35,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.convert import formatDstrToText, formatDstrToText
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabTools import Tools
+import mountcontrol
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -782,3 +783,19 @@ def test_moveRaDecAbsolute_6(function):
                                    return_value=False):
                 suc = function.moveRaDecAbsolute()
                 assert not suc
+
+
+def test_commandRaw_1(function):
+    with mock.patch.object(mountcontrol.connection.Connection,
+                           'communicateRaw',
+                           return_value=(True, False, '')):
+        suc = function.commandRaw()
+        assert suc
+
+
+def test_commandRaw_2(function):
+    with mock.patch.object(mountcontrol.connection.Connection,
+                           'communicateRaw',
+                           return_value=(True, True, '')):
+        suc = function.commandRaw()
+        assert suc

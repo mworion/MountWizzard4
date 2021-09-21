@@ -225,7 +225,6 @@ class Connection(object):
         if not self.host:
             self.log.info(f'[{self.id}] no host defined')
             return None
-
         if not isinstance(self.host, tuple):
             self.log.info(f'[{self.id}] host entry malformed')
             return None
@@ -233,7 +232,6 @@ class Connection(object):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.settimeout(self.SOCKET_TIMEOUT)
         client.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
-
         try:
             client.connect(self.host)
 
@@ -265,12 +263,10 @@ class Connection(object):
         """
         try:
             client.sendall(commandString.encode())
-
         except Exception as e:
             self.closeClientHard(client)
             self.log.debug(f'[{self.id}] socket error: {e}')
             return False
-
         else:
             return True
 
@@ -286,7 +282,6 @@ class Connection(object):
         :param minBytes: minimum number of data bytes
         :return: success and response data
         """
-
         response = ''
         receiving = True
         try:
@@ -294,7 +289,6 @@ class Connection(object):
                 chunkRaw = client.recv(2048)
                 try:
                     chunk = chunkRaw.decode('ASCII')
-
                 except Exception as e:
                     self.log.warning(f'[{self.id}] {e}, {chunkRaw}')
                     return False, ''
@@ -305,7 +299,6 @@ class Connection(object):
                 response += chunk
                 if numberOfChunks == 0 and len(response) == minBytes:
                     break
-
                 elif numberOfChunks != 0 and numberOfChunks == response.count('#'):
                     break
 
@@ -334,7 +327,6 @@ class Connection(object):
                  numberOfChunks:    number of responses chunks which were
                                     split with #
         """
-
         if not self.validCommandSet(commandString):
             self.log.warning(f'[{self.id}] unknown commands: {commandString}')
             return False, 'wrong commands', 0
@@ -376,7 +368,10 @@ class Connection(object):
         :return:
         """
         client = self.buildClient()
+        if client is None:
+            return False, False, 'Socket error'
         client.settimeout(1)
+        self.log.trace(f'[{self.id}] sending  : {commandString}')
         sucSend = self.sendData(client=client, commandString=commandString)
         try:
             chunkRaw = client.recv(2048)
@@ -390,6 +385,7 @@ class Connection(object):
             chunk = 'Exception'
             sucRec = False
         else:
+            self.log.trace(f'[{self.id}] response : {chunk}')
             sucRec = True
         finally:
             return sucSend, sucRec, chunk

@@ -364,6 +364,35 @@ class TestConnection(unittest.TestCase):
             val = conn.receiveData(client=client, numberOfChunks=0, minBytes=5)
             assert val == (True, ['12345'])
 
+    def test_communicateRaw_0(self):
+        class Test:
+            @staticmethod
+            def decode(a):
+                return
+
+            @staticmethod
+            def settimeout(a):
+                return
+
+            @staticmethod
+            def recv(a):
+                return 'test'.encode('ASCII')
+
+        conn = Connection()
+        with mock.patch.object(conn,
+                               'buildClient',
+                               return_value=None):
+            with mock.patch.object(conn,
+                                   'sendData',
+                                   return_value=False):
+                with mock.patch.object(Test,
+                                       'recv',
+                                       side_effect=socket.timeout):
+                    suc = conn.communicateRaw('test')
+                    assert not suc[0]
+                    assert not suc[1]
+                    assert suc[2] == 'Socket error'
+
     def test_communicateRaw_1(self):
         class Test:
             @staticmethod

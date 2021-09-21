@@ -758,16 +758,16 @@ class Satellite(object):
         cmd = ''
         responseLen = 0
         if RA is not None:
-            cmd += f':TROFFSET1,{RA:+04.1f}#'
+            cmd += f':TROFFSET1,{RA:+05.1f}#'
             responseLen += 1
         if DEC is not None:
-            cmd += f':TROFFSET1,{DEC:+04.1f}#'
-        responseLen += 1
+            cmd += f':TROFFSET2,{DEC:+05.1f}#'
+            responseLen += 1
         if DECcorr is not None:
-            cmd += f':TROFFSET1,{DECcorr:+04.1f}#'
+            cmd += f':TROFFSET3,{DECcorr:+05.1f}#'
             responseLen += 1
         if Time is not None:
-            cmd += f':TROFFSET1,{Time:+04.1f}#'
+            cmd += f':TROFFSET4,{Time:+05.1f}#'
             responseLen += 1
 
         conn = Connection(self.host)
@@ -800,16 +800,16 @@ class Satellite(object):
         cmd = ''
         responseLen = 0
         if RA is not None:
-            cmd += f':TROFFADD1,{RA:+04.1f}#'
+            cmd += f':TROFFADD1,{RA:+05.1f}#'
             responseLen += 1
         if DEC is not None:
-            cmd += f':TROFFADD1,{DEC:+04.1f}#'
+            cmd += f':TROFFADD2,{DEC:+05.1f}#'
         responseLen += 1
         if DECcorr is not None:
-            cmd += f':TROFFADD1,{DECcorr:+04.1f}#'
+            cmd += f':TROFFADD3,{DECcorr:+05.1f}#'
         responseLen += 1
         if Time is not None:
-            cmd += f':TROFFADD1,{Time:+04.1f}#'
+            cmd += f':TROFFADD4,{Time:+05.1f}#'
             responseLen += 1
 
         conn = Connection(self.host)

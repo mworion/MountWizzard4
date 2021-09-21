@@ -172,6 +172,10 @@ class SatTrack(object):
                                            self.ui.satOffDecM1,
                                            ], -1800, 1800)
 
+        self.ui.satOffTime.valueChanged.connect(self.setTrackingOffsets)
+        self.ui.satOffRa.valueChanged.connect(self.setTrackingOffsets)
+        self.ui.satOffDec.valueChanged.connect(self.setTrackingOffsets)
+
     def initConfig(self):
         """
         :return: True for test purpose
@@ -734,6 +738,10 @@ class SatTrack(object):
 
         self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', True)
         self.app.message.emit(message, 0)
+        suc = self.app.mount.satellite.clearTrackingOffsets()
+        if suc:
+            self.app.message.emit('Cleared tracking offsets', 0)
+
         return True
 
     def stopTrack(self):
@@ -780,4 +788,15 @@ class SatTrack(object):
         azimuth = obs.Az.degrees
         altitude = obs.Alt.degrees
         self.app.dome.slewDome(altitude=altitude, azimuth=azimuth, follow=True)
+        return True
+
+    def setTrackingOffsets(self):
+        valT = self.ui.satOffTime.value()
+        valR = self.ui.satOffRa.value()
+        valD = self.ui.satOffDec.value()
+        suc = self.app.mount.satellite.setTrackingOffsets(Time=valT,
+                                                          RA=valR,
+                                                          DECcorr=valD)
+        if not suc:
+            self.app.message.emit('Cannot change offset', 2)
         return True

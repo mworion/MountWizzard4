@@ -765,7 +765,7 @@ class Satellite(object):
         responseLen += 1
         if DECcorr is not None:
             cmd += f':TROFFSET1,{DECcorr:+04.1f}#'
-        responseLen += 1
+            responseLen += 1
         if Time is not None:
             cmd += f':TROFFSET1,{Time:+04.1f}#'
             responseLen += 1

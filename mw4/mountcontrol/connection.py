@@ -371,6 +371,10 @@ class Connection(object):
         return suc, response, numberOfChunks
 
     def communicateRaw(self, commandString):
+        """
+        :param commandString:
+        :return:
+        """
         client = self.buildClient()
         client.settimeout(1)
         sucSend = self.sendData(client=client, commandString=commandString)

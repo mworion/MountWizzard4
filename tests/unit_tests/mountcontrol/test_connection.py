@@ -363,3 +363,87 @@ class TestConnection(unittest.TestCase):
                                return_value=Test()):
             val = conn.receiveData(client=client, numberOfChunks=0, minBytes=5)
             assert val == (True, ['12345'])
+
+    def test_communicateRaw_1(self):
+        class Test:
+            @staticmethod
+            def decode(a):
+                return
+
+            @staticmethod
+            def settimeout(a):
+                return
+
+            @staticmethod
+            def recv(a):
+                return 'test'.encode('ASCII')
+
+        conn = Connection()
+        with mock.patch.object(conn,
+                               'buildClient',
+                               return_value=Test()):
+            with mock.patch.object(conn,
+                                   'sendData',
+                                   return_value=False):
+                with mock.patch.object(Test,
+                                       'recv',
+                                       side_effect=socket.timeout):
+                    suc = conn.communicateRaw('test')
+                    assert not suc[0]
+                    assert not suc[1]
+                    assert suc[2] == 'Timeout'
+
+    def test_communicateRaw_2(self):
+        class Test:
+            @staticmethod
+            def decode(a):
+                return
+
+            @staticmethod
+            def settimeout(a):
+                return
+
+            @staticmethod
+            def recv(a):
+                return 'test'.encode('ASCII')
+
+        conn = Connection()
+        with mock.patch.object(conn,
+                               'buildClient',
+                               return_value=Test()):
+            with mock.patch.object(conn,
+                                   'sendData',
+                                   return_value=True):
+                with mock.patch.object(Test,
+                                       'recv',
+                                       side_effect=Exception):
+                    suc = conn.communicateRaw('test')
+                    assert suc[0]
+                    assert not suc[1]
+                    assert suc[2] == 'Exception'
+
+    def test_communicateRaw_3(self):
+        class Test:
+            @staticmethod
+            def decode(a):
+                return
+
+            @staticmethod
+            def settimeout(a):
+                return
+
+            @staticmethod
+            def recv(a):
+                return 'test'.encode('ASCII')
+
+        conn = Connection()
+        with mock.patch.object(conn,
+                               'buildClient',
+                               return_value=Test()):
+            with mock.patch.object(conn,
+                                   'sendData',
+                                   return_value=True):
+                suc = conn.communicateRaw('test')
+                assert suc[0]
+                assert suc[1]
+                assert suc[2] == 'test'

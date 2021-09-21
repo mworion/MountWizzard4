@@ -754,6 +754,8 @@ class Satellite(object):
         else:
             self.trajectoryParams.offsetTime = val
 
+        return True
+
     def setTrackingOffsets(self, RA=None, DEC=None, DECcorr=None, Time=None):
         """
         :param RA:

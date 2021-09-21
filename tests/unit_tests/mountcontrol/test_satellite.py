@@ -1470,3 +1470,63 @@ class TestConfigData(unittest.TestCase):
                                return_value=val):
             suc = sat.calcTrajectory()
             assert suc
+
+    def test_getTrackingOffsets_1(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        suc = sat.getTrackingOffsets()
+        self.assertFalse(suc)
+
+    def test_getTrackingOffsets_1(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        ts = load.timescale()
+        julD = ts.tt_jd(1234567.8)
+
+        sat = Satellite(parent=Parent())
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, 'E', 1
+
+            suc = sat.getTrackingOffsets(julD=julD)
+            self.assertFalse(suc)
+
+    def test_getTrackingOffsets_2(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+        sat = Satellite(parent=Parent())
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, 'E', 1
+
+            suc = sat.getTrackingOffsets(julD=1234567.8)
+            self.assertFalse(suc)
+
+    def test_getTrackingOffsets_3(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+        sat = Satellite(parent=Parent())
+        response = ['E', 'E']
+        ret = (True, response, 2)
+        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = ret
+
+            suc = sat.getTrackingOffsets(julD=1234567.8)
+            self.assertFalse(suc)

@@ -24,6 +24,7 @@ releaseNotes = """
 - add: device connection similar for ASCOM and ALPACA devices
 - add: extended satellite search and filter capabilities
 - add: extended satellite tracking and tuning capabilities
+- add: enabling loading a custom satellite TLE data file
 - add: command window for manual mount commands
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
@@ -34,7 +35,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.1b1',
+    version='2.0.1b2',
     packages=[
         'mw4',
         'mw4.base',

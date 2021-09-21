@@ -24,6 +24,9 @@ from skyfield.api import Angle, load
 # local imports
 from mountcontrol.satellite import Satellite, TLEParams, TrajectoryParams
 from mountcontrol.connection import Connection
+from base.loggerMW import setupLogging
+
+setupLogging()
 
 
 class TestConfigData(unittest.TestCase):
@@ -1483,24 +1486,6 @@ class TestConfigData(unittest.TestCase):
         suc = sat.getTrackingOffsets()
         self.assertFalse(suc)
 
-    def test_getTrackingOffsets_1(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-
-        ts = load.timescale()
-        julD = ts.tt_jd(1234567.8)
-
-        sat = Satellite(parent=Parent())
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, 'E', 1
-
-            suc = sat.getTrackingOffsets(julD=julD)
-            self.assertFalse(suc)
-
     def test_getTrackingOffsets_2(self):
         class ObsSite:
             UTC2TT = 69
@@ -1508,11 +1493,13 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
-        sat = Satellite(parent=Parent())
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, 'E', 1
 
-            suc = sat.getTrackingOffsets(julD=1234567.8)
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, [1, 2, 3], 1)):
+
+            suc = sat.getTrackingOffsets()
             self.assertFalse(suc)
 
     def test_getTrackingOffsets_3(self):
@@ -1522,11 +1509,260 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
-        sat = Satellite(parent=Parent())
-        response = ['E', 'E']
-        ret = (True, response, 2)
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = ret
 
-            suc = sat.getTrackingOffsets(julD=1234567.8)
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, [1, 2, 3], 3)):
+
+            suc = sat.getTrackingOffsets()
             self.assertFalse(suc)
+
+    def test_getTrackingOffsets_4(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, [1, 2, 3, 4], 4)):
+
+            suc = sat.getTrackingOffsets()
+            self.assertTrue(suc)
+
+    def test_setTrackingOffsets_1(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(False, [1, 2, 3, 4], 4)):
+            suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertFalse(suc)
+
+    def test_setTrackingOffsets_2(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, [1, 2, 3, 4], 1)):
+
+            suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertFalse(suc)
+
+    def test_setTrackingOffsets_3(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, ['E', 2, 3], 3)):
+
+            suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertFalse(suc)
+
+    def test_setTrackingOffsets_4(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, ['E', 2, 3, 4], 4)):
+
+            suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertFalse(suc)
+
+    def test_setTrackingOffsets_5(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, [1, 2, 3, 4], 4)):
+
+            suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertTrue(suc)
+
+    def test_addTrackingOffsets_1(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(False, [1, 2, 3, 4], 4)):
+            suc = sat.addTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertFalse(suc)
+
+    def test_addTrackingOffsets_2(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, [1, 2, 3, 4], 1)):
+
+            suc = sat.addTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertFalse(suc)
+
+    def test_addTrackingOffsets_3(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, ['E', 2, 3], 3)):
+
+            suc = sat.addTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertFalse(suc)
+
+    def test_addTrackingOffsets_4(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, ['E', 2, 3, 4], 4)):
+
+            suc = sat.addTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertFalse(suc)
+
+    def test_addTrackingOffsets_5(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, [1, 2, 3, 4], 4)):
+
+            suc = sat.addTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertTrue(suc)
+
+    def test_clearTrackingOffsets_1(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(False, [1, 2, 3, 4], 4)):
+            suc = sat.clearTrackingOffsets()
+            self.assertFalse(suc)
+
+    def test_clearTrackingOffsets_2(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, [1], 4)):
+            suc = sat.clearTrackingOffsets()
+            self.assertFalse(suc)
+
+    def test_clearTrackingOffsets_3(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, ['E', 'E'], 2)):
+            suc = sat.clearTrackingOffsets()
+            self.assertFalse(suc)
+
+    def test_clearTrackingOffsets_4(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, ['E'], 1)):
+            suc = sat.clearTrackingOffsets()
+            self.assertFalse(suc)
+
+    def test_clearTrackingOffsets_5(self):
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        class Parent:
+            obsSite = ObsSite()
+
+        sat = Satellite(parent=Parent())
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, ['V'], 1)):
+            suc = sat.clearTrackingOffsets()
+            self.assertTrue(suc)

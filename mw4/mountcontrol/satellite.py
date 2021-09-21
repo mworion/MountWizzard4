@@ -747,8 +747,6 @@ class Satellite(object):
             
         return True
 
-        return True
-
     def setTrackingOffsets(self, RA=None, DEC=None, DECcorr=None, Time=None):
         """
         :param RA:

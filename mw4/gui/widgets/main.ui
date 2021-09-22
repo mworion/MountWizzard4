@@ -10850,7 +10850,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          </rect>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which were lit be sun Pease be reminded, that there is no recalculation!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which were lit be sun.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Satellite is sunlit</string>
@@ -10869,7 +10869,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          </rect>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which were up (meaning above the selected altitude) within the selected time window. Pease be reminded, that there is no recalculation!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which were up (meaning above the selected altitude) within the selected time window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Satellite is up</string>
@@ -10888,7 +10888,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          </rect>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which were lit be sun Pease be reminded, that there is no recalculation!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which do not contain the text string &amp;quot;STARLINK&amp;quot;, &amp;quot;ONEWEB&amp;quot;, &amp;quot;NAVSTAR&amp;quot;, &amp;quot;GLOBALSTAR&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Remove Starlink/Oneweb</string>
@@ -12541,6 +12541,9 @@ Next point in time when satellite settles.</string>
          <height>76</height>
         </rect>
        </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Changing the offset in time when mount is in satellite tracking state. Available for firmware 3.x ongoing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="title">
         <string>Time offset: (-1000... 1000 ms)</string>
        </property>
@@ -12751,6 +12754,9 @@ Next point in time when satellite settles.</string>
          <height>76</height>
         </rect>
        </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Changing the offset in DEC axis when mount is in satellite tracking state. Available for firmware 3.x ongoing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="title">
         <string>DEC offset: (-1800... 1800 arcsec)</string>
        </property>
@@ -12960,6 +12966,9 @@ Next point in time when satellite settles.</string>
          <width>366</width>
          <height>76</height>
         </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Changing the offset in RA axis when mount is in satellite tracking state. Available for firmware 3.x ongoing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="title">
         <string>RA offset: (-1800... 1800 arcsec)</string>
@@ -14858,7 +14867,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_8">
       <attribute name="title">
@@ -16884,6 +16893,9 @@ Next point in time when satellite settles.</string>
           <height>0</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10micron command from command protocol input. Please use the full command with ':' and '#'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
        </widget>
        <widget class="QLabel" name="label_13">
         <property name="geometry">
@@ -16920,6 +16932,9 @@ Next point in time when satellite settles.</string>
           <height>196</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Result of the mount command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
        </widget>
        <widget class="QTextBrowser" name="commandStatus">
         <property name="geometry">
@@ -16929,6 +16944,9 @@ Next point in time when satellite settles.</string>
           <width>346</width>
           <height>46</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some status information during sending and getting result from mount command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_17">

@@ -8,7 +8,6 @@ Ideas for the future
 
 - implementing Baader dome control e.g. 10micron dome interface
 - split profiles in base and add-on
-- satellite search with constraints
 - receive video indi for sat tracking and horizon setup
 - joystick support
 
@@ -20,7 +19,10 @@ Released beta version of MW4
 - add: hemisphere window: help for choosing the right star for polar alignment
 - add: angular error ra / dec axis in measurement
 - add: device connection similar for ASCOM and ALPACA devices
-- add: satellite search
+- add: extended satellite search and filter capabilities
+- add: extended satellite tracking and tuning capabilities
+- add: enabling loading a custom satellite TLE data file
+- add: command window for manual mount commands
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
 

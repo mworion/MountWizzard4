@@ -438,7 +438,7 @@ def test_sendSatelliteData_2(function):
 def test_sendSatelliteData_3(function):
     class Test1(QObject):
         update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object, object, object, object)
+        show = pyqtSignal(object, object, object, object)
 
     class Test(QObject):
         signals = Test1()
@@ -773,10 +773,9 @@ def test_updateOrbit_4(function):
 
 
 def test_calcTrajectoryData_1(function):
-    alt, az, isSunlit = function.calcTrajectoryData(100, 100)
+    alt, az = function.calcTrajectoryData(100, 100)
     assert len(alt) == 0
     assert len(az) == 0
-    assert len(isSunlit) == 0
 
 
 def test_calcTrajectoryData_2(function):
@@ -786,10 +785,9 @@ def test_calcTrajectoryData_2(function):
 
     function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     start = 2459215.0
-    alt, az, isSunlit = function.calcTrajectoryData(start, start + 2 / 86400)
+    alt, az = function.calcTrajectoryData(start, start + 2 / 86400)
     assert len(alt)
     assert len(az)
-    assert len(isSunlit)
 
 
 def test_filterHorizon_1(function):
@@ -935,7 +933,7 @@ def test_progTrajectoryToMount_3(function):
                            return_value=(1, 2)):
         with mock.patch.object(function,
                                'calcTrajectoryData',
-                               return_value=(0, 0, False)):
+                               return_value=(0, 0)):
             with mock.patch.object(function,
                                    'filterHorizon',
                                    return_value=(0, 0, 0, 0)):
@@ -953,7 +951,7 @@ def test_startProg_1(function):
                                return_value=(1, 2)):
             with mock.patch.object(function,
                                    'calcTrajectoryData',
-                                   return_value=(0, 0, False)):
+                                   return_value=(0, 0)):
                 with mock.patch.object(function,
                                        'filterHorizon',
                                        return_value=(0, 0, 0, 0)):
@@ -1420,16 +1418,33 @@ def test_toggleTrackingOffset_1(function):
     class OBS:
         status = 10
 
-    suc = function.toggleTrackingOffset(obs=OBS())
-    assert suc
+    with mock.patch.object(function.app.mount.firmware,
+                           'checkNewer',
+                           return_value=True):
+        suc = function.toggleTrackingOffset(obs=OBS())
+        assert suc
 
 
 def test_toggleTrackingOffset_2(function):
     class OBS:
         status = 1
 
-    suc = function.toggleTrackingOffset(obs=OBS())
-    assert suc
+    with mock.patch.object(function.app.mount.firmware,
+                           'checkNewer',
+                           return_value=True):
+        suc = function.toggleTrackingOffset(obs=OBS())
+        assert suc
+
+
+def test_toggleTrackingOffset_3(function):
+    class OBS:
+        status = 1
+
+    with mock.patch.object(function.app.mount.firmware,
+                           'checkNewer',
+                           return_value=False):
+        suc = function.toggleTrackingOffset(obs=OBS())
+        assert not suc
 
 
 def test_followMount_1(function):

@@ -347,11 +347,10 @@ class SatTrack(object):
             self.sortFlipEvents(satOrbit, t0, t1, t2)
         return True
 
-    def sendSatelliteData(self, alt=[], az=[], isSunlit=[]):
+    def sendSatelliteData(self, alt=[], az=[]):
         """
         :param alt:
         :param az:
-        :param isSunlit:
         :return:
         """
         if not self.satellite:
@@ -364,8 +363,7 @@ class SatTrack(object):
         winObj['classObj'].signals.show.emit(self.satellite,
                                              self.satOrbits,
                                              alt,
-                                             az,
-                                             isSunlit)
+                                             az)
         return True
 
     def clearTrackingParameters(self):
@@ -546,7 +544,7 @@ class SatTrack(object):
         """
         duration = min(end - start, 900 / 86400)
         if duration < 1 / 86400:
-            return [], [], []
+            return [], []
 
         m = self.app.mount
         temp = m.setting.refractionTemp
@@ -559,8 +557,7 @@ class SatTrack(object):
         ssb_loc = earth + m.obsSite.location
         topocentric = ssb_loc.at(timeVec).observe(ssb_sat).apparent()
         alt, az, _ = topocentric.altaz(pressure_mbar=press, temperature_C=temp)
-        isSunlit = self.satellite.at(timeVec).is_sunlit(self.app.ephemeris)
-        return alt.degrees, az.degrees, isSunlit
+        return alt.degrees, az.degrees
 
     def filterHorizon(self, start, end, alt, az):
         """
@@ -639,13 +636,12 @@ class SatTrack(object):
 
         useInternal = self.ui.useInternalSatCalc.isChecked()
         if useInternal:
-            alt, az, isSunlit = self.calcTrajectoryData(start, end)
+            alt, az = self.calcTrajectoryData(start, end)
             start, end, alt, az = self.filterHorizon(start, end, alt, az)
         else:
             alt = []
             az = []
-            isSunlit = []
-        self.sendSatelliteData(alt=alt, az=az, isSunlit=isSunlit)
+        self.sendSatelliteData(alt=alt, az=az)
         if self.app.deviceStat['mount'] and not useInternal:
             self.app.mount.calcTLE(start)
 
@@ -662,7 +658,7 @@ class SatTrack(object):
         start, end = self.selectStartEnd()
         if not start or not end:
             return False
-        alt, az, isSunlit = self.calcTrajectoryData(start, end)
+        alt, az = self.calcTrajectoryData(start, end)
         start, end, alt, az = self.filterHorizon(start, end, alt, az)
         self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)
         self.app.mount.progTrajectory(start, alt=alt, az=az, sim=isSim)
@@ -768,6 +764,9 @@ class SatTrack(object):
         :param obs:
         :return:
         """
+        if not self.app.mount.firmware.checkNewer(21699):
+            return False
+
         if obs.status == 10:
             self.ui.satOffGroupTime.setEnabled(True)
             self.ui.satOffGroupRa.setEnabled(True)

@@ -41,7 +41,7 @@ class SatControlWidget(MWidget):
         self.maxVal = maxVal
         self.ui[0].setMinimum(minVal)
         self.ui[0].setMaximum(maxVal)
-        self.ui[0].valueChanged.connect(self.updateSatOff)
+        self.ui[0].sliderReleased.connect(self.updateSatOff)
         self.ui[1].editingFinished.connect(self.updateSatOffVal)
         self.ui[2].clicked.connect(self.updateSatOffButton)
         self.ui[3].clicked.connect(self.updateSatOffButton)
@@ -54,6 +54,7 @@ class SatControlWidget(MWidget):
         """
         :return:
         """
+        print('Relesed')
         val = self.ui[0].value()
         self.ui[1].setText(str(val))
         self.valueChanged.emit(val)
@@ -132,6 +133,7 @@ class SatTrack(object):
         msig.trajectoryProgress.connect(self.trajectoryProgress)
         msig.pointDone.connect(self.followMount)
         msig.settingDone.connect(self.updatePasses)
+        msig.pointDone.connect(self.toggleTrackingOffset)
 
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
@@ -762,6 +764,21 @@ class SatTrack(object):
         self.app.message.emit('Stopped tracking', 0)
         return suc
 
+    def toggleTrackingOffset(self, obs):
+        """
+        :param obs:
+        :return:
+        """
+        if obs.status == 10:
+            self.ui.satOffGroupTime.setEnabled(True)
+            self.ui.satOffGroupRa.setEnabled(True)
+            self.ui.satOffGroupDec.setEnabled(True)
+        else:
+            self.ui.satOffGroupTime.setEnabled(False)
+            self.ui.satOffGroupRa.setEnabled(False)
+            self.ui.satOffGroupDec.setEnabled(False)
+        return False
+
     def followMount(self, obs):
         """
         :return:
@@ -791,6 +808,10 @@ class SatTrack(object):
         return True
 
     def setTrackingOffsets(self):
+        """
+        :return:
+        """
+        print('set values')
         valT = self.ui.satOffTime.value()
         valR = self.ui.satOffRa.value()
         valD = self.ui.satOffDec.value()

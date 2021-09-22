@@ -91,6 +91,10 @@ class Mount(QObject):
         def calcTLE():
             return
 
+        @staticmethod
+        def setTrackingOffsets():
+            return
+
     class MountFirmware:
         product = 'test'
         hardware = 'test'

@@ -92,7 +92,10 @@ class Mount(QObject):
             return
 
         @staticmethod
-        def setTrackingOffsets():
+        def setTrackingOffsets(Time=None,
+                              RA=None,
+                              DEC=None,
+                              DECcorr=None):
             return
 
     class MountFirmware:

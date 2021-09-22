@@ -305,7 +305,10 @@ class Styles:
     }
     QGroupBox:disabled{
         border-width: 2px;
-        border-color: red;
+        border-color: '#802020';
+    }
+    QGroupBox::title:disabled{
+        color: #104860;
     }
     QGroupBox::indicator {
         border-width: 1px;
@@ -687,6 +690,9 @@ class Styles:
         border-radius: 2px;
         border-style: outset;
         border-width: 1px;
+    }
+    QSlider::handle:disabled {
+       background-color:  #104860;
     }
     QSlider::add-page
     {   background-color: #202020;

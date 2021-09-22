@@ -98,6 +98,10 @@ class Mount(QObject):
                               DECcorr=None):
             return
 
+        @staticmethod
+        def clearTrackingOffsets():
+            return
+
     class MountFirmware:
         product = 'test'
         hardware = 'test'

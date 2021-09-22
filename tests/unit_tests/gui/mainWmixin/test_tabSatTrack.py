@@ -1416,6 +1416,22 @@ def test_progSatellitesFull_5(function):
                 assert suc
 
 
+def test_toggleTrackingOffset_1(function):
+    class OBS:
+        status = 10
+
+    suc = function.toggleTrackingOffset(obs=OBS())
+    assert suc
+
+
+def test_toggleTrackingOffset_2(function):
+    class OBS:
+        status = 1
+
+    suc = function.toggleTrackingOffset(obs=OBS())
+    assert suc
+
+
 def test_followMount_1(function):
     obs = function.app.mount.obsSite
     function.ui.domeAutoFollowSat.setChecked(False)

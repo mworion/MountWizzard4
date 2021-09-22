@@ -54,7 +54,6 @@ class SatControlWidget(MWidget):
         """
         :return:
         """
-        print('Relesed')
         val = self.ui[0].value()
         self.ui[1].setText(str(val))
         self.valueChanged.emit(val)
@@ -174,9 +173,9 @@ class SatTrack(object):
                                            self.ui.satOffDecM1,
                                            ], -1800, 1800)
 
-        self.ui.satOffTime.valueChanged.connect(self.setTrackingOffsets)
-        self.ui.satOffRa.valueChanged.connect(self.setTrackingOffsets)
-        self.ui.satOffDec.valueChanged.connect(self.setTrackingOffsets)
+        self.satOffTime.valueChanged.connect(self.setTrackingOffsets)
+        self.satOffRa.valueChanged.connect(self.setTrackingOffsets)
+        self.satOffDec.valueChanged.connect(self.setTrackingOffsets)
 
     def initConfig(self):
         """
@@ -777,7 +776,7 @@ class SatTrack(object):
             self.ui.satOffGroupTime.setEnabled(False)
             self.ui.satOffGroupRa.setEnabled(False)
             self.ui.satOffGroupDec.setEnabled(False)
-        return False
+        return True
 
     def followMount(self, obs):
         """
@@ -811,7 +810,6 @@ class SatTrack(object):
         """
         :return:
         """
-        print('set values')
         valT = self.ui.satOffTime.value()
         valR = self.ui.satOffRa.value()
         valD = self.ui.satOffDec.value()

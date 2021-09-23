@@ -210,7 +210,7 @@ class Connection(object):
             client.close()
 
         except Exception as e:
-            self.log.warning(f'hard close: {e}')
+            self.log.warning(f'Hard close, error: [{e}]')
             return False
 
         return True
@@ -242,12 +242,12 @@ class Connection(object):
 
         except socket.error as e:
             self.closeClientHard(client)
-            self.log.debug(f'[{self.id}] socket error: {e}')
+            self.log.debug(f'[{self.id}] socket error: [{e}]')
             return None
 
         except Exception as e:
             self.closeClientHard(client)
-            self.log.debug(f'[{self.id}] socket error: {e}')
+            self.log.debug(f'[{self.id}] socket error: [{e}]')
             return None
 
         else:
@@ -265,7 +265,7 @@ class Connection(object):
             client.sendall(commandString.encode())
         except Exception as e:
             self.closeClientHard(client)
-            self.log.debug(f'[{self.id}] socket error: {e}')
+            self.log.debug(f'[{self.id}] socket error: [{e}]')
             return False
         else:
             return True
@@ -290,7 +290,7 @@ class Connection(object):
                 try:
                     chunk = chunkRaw.decode('ASCII')
                 except Exception as e:
-                    self.log.warning(f'[{self.id}] {e}, {chunkRaw}')
+                    self.log.warning(f'[{self.id}] error: [{e}], received: [{chunkRaw}]')
                     return False, ''
 
                 if not chunk:
@@ -307,12 +307,12 @@ class Connection(object):
             return False, response
 
         except Exception as e:
-            self.log.debug(f'[{self.id}] socket error: {e}')
+            self.log.debug(f'[{self.id}] socket error: [{e}]')
             return False, response
 
         else:
             response = response.rstrip('#').split('#')
-            self.log.trace(f'[{self.id}] response : {response}')
+            self.log.trace(f'[{self.id}] response: [{response}]')
             return True, response
 
     def communicate(self, commandString):
@@ -332,14 +332,10 @@ class Connection(object):
             return False, 'wrong commands', 0
 
         numberOfChunks, getData, minBytes = self.analyseCommand(commandString)
-        logFormat = '[{0}] sending  : {1}, getData: {2}, minBytes: {3}, chunks: {4}, host: {5}'
-        self.log.trace(logFormat.format(self.id,
-                                        commandString,
-                                        getData,
-                                        minBytes,
-                                        numberOfChunks,
-                                        self.host,
-                                        ))
+        
+        t = f'[{self.id}] sending: [{commandString}], getData: [{getData}],'
+        t += f'minBytes: [{minBytes}], numOfChunks: [{numberOfChunks}], host: [{self.host}]'
+        self.log.trace(t)
 
         client = self.buildClient()
         if client is None:
@@ -381,11 +377,11 @@ class Connection(object):
             chunk = 'Timeout'
             sucRec = False
         except Exception as e:
-            self.log.debug(f'[{self.id}] socket error: {e}')
+            self.log.debug(f'[{self.id}] socket error: [{e}]')
             chunk = 'Exception'
             sucRec = False
         else:
-            self.log.trace(f'[{self.id}] response : {chunk}')
+            self.log.trace(f'[{self.id}] response: [{chunk}]')
             sucRec = True
         finally:
             return sucSend, sucRec, chunk

@@ -25,7 +25,6 @@ from base.ascomClass import AscomClass
 
 class FocuserAscom(AscomClass):
     """
-    the class focuser inherits all information and handling of the focuser device.
     """
 
     __all__ = ['FocuserAscom',
@@ -36,8 +35,6 @@ class FocuserAscom(AscomClass):
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 
-        # as we have in the base class only the base client there, we will get more
-        # specialized with Dome (which is derived from the base class)
         self.signals = signals
         self.data = data
 

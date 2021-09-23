@@ -32,9 +32,6 @@ class TelescopeIndi(IndiClass):
     __all__ = ['TelescopeIndi',
                ]
 
-    # update rate to 10 seconds for setting indi server
-    UPDATE_RATE = 10
-
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 

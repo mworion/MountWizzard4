@@ -31,8 +31,6 @@ class CoverAscom(AscomClass):
 
     __all__ = ['CoverAscom',
                ]
-
-    CYCLE_POLL_DATA = 1000
     coverStates = ['NotPresent', 'Closed', 'Moving', 'Open', 'Unknown', 'Error']
 
     def __init__(self, app=None, signals=None, data=None):

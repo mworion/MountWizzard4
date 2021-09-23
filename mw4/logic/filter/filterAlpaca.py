@@ -31,8 +31,6 @@ class FilterAlpaca(AlpacaClass):
     __all__ = ['FilterAlpaca',
                ]
 
-    CYCLE_POLL_DATA = 1000
-
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 

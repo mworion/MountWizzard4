@@ -33,8 +33,6 @@ class DomeAscom(AscomClass):
     __all__ = ['DomeAscom',
                ]
 
-    CYCLE_DEVICE = 3000
-    CYCLE_DATA = 1000
     shutterStates = ['Open', 'Closed', 'Opening', 'Closing', 'Error']
 
     def __init__(self, app=None, signals=None, data=None):

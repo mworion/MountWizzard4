@@ -99,7 +99,7 @@ class SensorWeather:
         if self.framework not in self.run.keys():
             return False
 
-        suc = self.run[self.framework].startCommunication()
+        suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
         return suc
 
     def stopCommunication(self):

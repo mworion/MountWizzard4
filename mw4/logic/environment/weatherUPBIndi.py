@@ -33,9 +33,6 @@ class WeatherUPBIndi(IndiClass):
     __all__ = ['WeatherUPBIndi',
                ]
 
-    # update rate to 1000 milli seconds for setting indi server
-    UPDATE_RATE = 1000
-
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
 

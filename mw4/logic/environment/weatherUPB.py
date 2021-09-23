@@ -51,7 +51,6 @@ class WeatherUPBSignals(PyQt5.QtCore.QObject):
 class WeatherUPB:
 
     __all__ = ['WeatherUPB']
-
     log = logging.getLogger(__name__)
 
     def __init__(self, app):

@@ -48,9 +48,7 @@ class SkymeterSignals(PyQt5.QtCore.QObject):
 
 class Skymeter:
 
-    __all__ = ['Skymeter',
-               ]
-
+    __all__ = ['Skymeter']
     log = logging.getLogger(__name__)
 
     def __init__(self, app):
@@ -58,7 +56,6 @@ class Skymeter:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = SkymeterSignals()
-
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
@@ -93,15 +90,13 @@ class Skymeter:
 
     def startCommunication(self, loadConfig=False):
         """
-        startCommunication enables the cyclic polling in framework driver
-
         :param loadConfig:
         :return: success
         """
         if self.framework not in self.run.keys():
             return False
 
-        suc = self.run[self.framework].startCommunication()
+        suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
         return suc
 
     def stopCommunication(self):

@@ -24,9 +24,6 @@ from base.ascomClass import AscomClass
 
 class SkymeterAscom(AscomClass):
     """
-    the class SkymeterAscom inherits all information and handling of the Dome device.
-    there will be some parameters who will define the slewing position of the dome relating
-    to the
     """
 
     __all__ = ['SkymeterAscom',
@@ -42,6 +39,7 @@ class SkymeterAscom(AscomClass):
         """
         :return: true for test purpose
         """
+        return
         self.getAndStoreAscomProperty('temperature', 'SKY_QUALITY.SKY_TEMPERATURE')
         self.getAndStoreAscomProperty('skyquality', 'SKY_QUALITY.SKY_BRIGHTNESS')
         return True

@@ -26,6 +26,16 @@ import socket
 import sys
 import traceback
 import warnings
+#
+# the following lines should avoid errors messages from OLE Automation with PyQt5
+# see
+# https://stackoverflow.com/questions/51284268/
+#         windowscontext-oleinitialize-failed-com-error-0x80010106-rpc-e-changed-mode
+# and https://github.com/pywinauto/pywinauto/issues/472
+# order is important to set sys.coinit_flags = 2 before import pywinauto
+#
+warnings.simplefilter("ignore", UserWarning)
+sys.coinit_flags = 2
 
 # external packages
 import astropy
@@ -48,10 +58,6 @@ matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False
 astropy.utils.data.conf.allow_internet = False
 log = logging.getLogger()
-
-# the following lines should avoid errors messages from OLE Automation with PyQt5
-warnings.simplefilter("ignore", UserWarning)
-sys.coinit_flags = 2
 
 
 class QAwesomeTooltipEventFilter(QObject):

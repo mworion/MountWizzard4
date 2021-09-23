@@ -39,7 +39,6 @@ class SkymeterAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        return
         self.getAndStoreAscomProperty('temperature', 'SKY_QUALITY.SKY_TEMPERATURE')
         self.getAndStoreAscomProperty('skyquality', 'SKY_QUALITY.SKY_BRIGHTNESS')
         return True

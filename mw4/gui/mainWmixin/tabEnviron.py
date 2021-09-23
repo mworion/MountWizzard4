@@ -194,15 +194,14 @@ class Environ(object):
         if self.refractionSource == 'onlineWeather':
             if not self.app.onlineWeather.data:
                 return False
+
             temp = self.app.onlineWeather.data['temperature']
             press = self.app.onlineWeather.data['pressure']
-
         elif self.refractionSource == 'sensorWeather':
             key = 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE'
             temp = self.app.sensorWeather.data.get(key, None)
             key = 'WEATHER_PARAMETERS.WEATHER_PRESSURE'
             press = self.app.sensorWeather.data.get(key, None)
-
         else:
             temp = None
             press = None
@@ -214,14 +213,12 @@ class Environ(object):
 
         if self.filteredTemperature is None:
             self.filteredTemperature = np.full(100, temp)
-
         else:
             self.filteredTemperature = np.roll(self.filteredTemperature, 1)
             self.filteredTemperature[0] = temp
 
         if self.filteredPressure is None:
             self.filteredPressure = np.full(100, press)
-
         else:
             self.filteredPressure = np.roll(self.filteredPressure, 1)
             self.filteredPressure[0] = press
@@ -355,11 +352,9 @@ class Environ(object):
 
         :return: success for test
         """
-
         self.ui.powerTemp.setText('-')
         self.ui.powerHumidity.setText('-')
         self.ui.powerDewPoint.setText('-')
-
         return True
 
     def updatePowerWeatherGui(self):
@@ -369,7 +364,6 @@ class Environ(object):
 
         :return: success for test
         """
-
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
         self.guiSetText(self.ui.powerTemp, '4.1f', value)
 
@@ -378,7 +372,6 @@ class Environ(object):
 
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
         self.guiSetText(self.ui.powerDewPoint, '4.1f', value)
-
         return True
 
     def getWebDataWorker(self, url=''):
@@ -391,7 +384,6 @@ class Environ(object):
 
         try:
             data = requests.get(url, timeout=30)
-
         except Exception as e:
             self.log.critical(f'{url} general exception: {e}')
             return None

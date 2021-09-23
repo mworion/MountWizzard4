@@ -49,9 +49,7 @@ class FocuserSignals(PyQt5.QtCore.QObject):
 
 class Focuser:
 
-    __all__ = ['Focuser',
-               ]
-
+    __all__ = ['Focuser']
     log = logging.getLogger(__name__)
 
     def __init__(self, app):
@@ -59,7 +57,6 @@ class Focuser:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = FocuserSignals()
-
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}

@@ -25,6 +25,7 @@ from base.alpacaClass import AlpacaClass
 class SkymeterAlpaca(AlpacaClass):
     """
     """
+
     __all__ = ['SkymeterAlpaca']
 
     def __init__(self, app=None, signals=None, data=None):

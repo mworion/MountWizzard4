@@ -24,16 +24,9 @@ import logging
 
 class DirectWeather:
     """
-    the class DirectWeather inherits all information and handling of the environment device
-
-        >>> DirectWeather(host=None,
-        >>>         name=''
-        >>>         )
     """
 
-    __all__ = ['DirectWeather',
-               ]
-
+    __all__ = ['DirectWeather']
     log = logging.getLogger(__name__)
 
     def __init__(self, app=None):

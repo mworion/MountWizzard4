@@ -26,8 +26,7 @@ class WeatherUPBAscom(AscomClass):
     """
     """
 
-    __all__ = ['WeatherUPBAscom',
-               ]
+    __all__ = ['WeatherUPBAscom']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
@@ -39,7 +38,10 @@ class WeatherUPBAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        self.getAndStoreAscomProperty('temperature', 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
-        self.getAndStoreAscomProperty('dewpoint', 'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
-        self.getAndStoreAscomProperty('humidity', 'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
+        self.getAndStoreAscomProperty('temperature',
+                                      'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
+        self.getAndStoreAscomProperty('dewpoint',
+                                      'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
+        self.getAndStoreAscomProperty('humidity',
+                                      'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
         return True

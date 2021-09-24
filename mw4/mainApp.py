@@ -66,7 +66,6 @@ class MountWizzard4(QObject):
 
     __all__ = ['MountWizzard4']
     __version__ = version('mountwizzard4')
-
     log = logging.getLogger(__name__)
 
     message = pyqtSignal(str, int)
@@ -99,11 +98,7 @@ class MountWizzard4(QObject):
     start10s = pyqtSignal()
     start30s = pyqtSignal()
 
-    def __init__(self,
-                 mwGlob=None,
-                 application=None
-                 ):
-
+    def __init__(self, mwGlob=None, application=None):
         super().__init__()
 
         self.application = application
@@ -150,7 +145,6 @@ class MountWizzard4(QObject):
                                    pathToData=pathToData,
                                    verbose=False,
                                    )
-
         # setting location to last know config
         topo = self.initConfig()
         self.mount.obsSite.location = topo

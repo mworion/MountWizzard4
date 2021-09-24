@@ -26,8 +26,7 @@ class SkymeterAscom(AscomClass):
     """
     """
 
-    __all__ = ['SkymeterAscom',
-               ]
+    __all__ = ['SkymeterAscom']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)

@@ -28,16 +28,9 @@ from base.tpool import Worker
 
 class WeatherSignals(PyQt5.QtCore.QObject):
     """
-    The WeatherSignals class offers a list of signals to be used and instantiated by
-    the Mount class to get signals for triggers for finished tasks to
-    enable a gui to update their values transferred to the caller back.
-
-    This has to be done in a separate class as the signals have to be subclassed from
-    QObject and the Mount class itself is subclassed from object
     """
 
     __all__ = ['WeatherSignals']
-
     dataReceived = PyQt5.QtCore.pyqtSignal(object)
 
     serverConnected = PyQt5.QtCore.pyqtSignal()
@@ -48,14 +41,9 @@ class WeatherSignals(PyQt5.QtCore.QObject):
 
 class OnlineWeather(PyQt5.QtCore.QObject):
     """
-    the class Skymeter inherits all information and handling of the Skymeter device
-
-        >>> weather = OnlineWeather(app)
     """
 
-    __all__ = ['OnlineWeather',
-               ]
-
+    __all__ = ['OnlineWeather']
     log = logging.getLogger(__name__)
 
     def __init__(self,

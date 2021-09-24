@@ -25,15 +25,9 @@ from base.indiClass import IndiClass
 
 class SensorWeatherIndi(IndiClass):
     """
-    the class SensorWeatherIndi inherits all information and handling of the SensorWeather device
-
-        >>> SensorWeatherIndi(host=None,
-        >>>         name=''
-        >>>         )
     """
 
-    __all__ = ['SensorWeatherIndi',
-               ]
+    __all__ = ['SensorWeatherIndi']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)

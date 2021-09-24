@@ -27,8 +27,7 @@ class WeatherUPBAlpaca(AlpacaClass):
     """
     """
 
-    __all__ = ['WeatherUPBAlpaca',
-               ]
+    __all__ = ['WeatherUPBAlpaca']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)

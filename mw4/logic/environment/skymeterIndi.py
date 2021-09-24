@@ -24,13 +24,9 @@ from base.indiClass import IndiClass
 
 class SkymeterIndi(IndiClass):
     """
-    the class SkymeterIndi inherits all information and handling of the Skymeter device
-
-        >>> s = SkymeterIndi(app=None)
     """
 
-    __all__ = ['SkymeterIndi',
-               ]
+    __all__ = ['SkymeterIndi']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)

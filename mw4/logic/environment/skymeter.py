@@ -30,12 +30,6 @@ if platform.system() == 'Windows':
 
 class SkymeterSignals(PyQt5.QtCore.QObject):
     """
-    The SkymeterSignals class offers a list of signals to be used and instantiated by
-    the Mount class to get signals for triggers for finished tasks to
-    enable a gui to update their values transferred to the caller back.
-
-    This has to be done in a separate class as the signals have to be subclassed from
-    QObject and the Mount class itself is subclassed from object
     """
 
     __all__ = ['SkymeterSignals']
@@ -47,6 +41,8 @@ class SkymeterSignals(PyQt5.QtCore.QObject):
 
 
 class Skymeter:
+    """
+    """
 
     __all__ = ['Skymeter']
     log = logging.getLogger(__name__)

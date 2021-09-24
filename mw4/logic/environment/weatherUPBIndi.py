@@ -25,13 +25,9 @@ from base.indiClass import IndiClass
 
 class WeatherUPBIndi(IndiClass):
     """
-    the class PegasusUPBIndi inherits all information and handling of the PegasusUPB device
-
-        >>> power = WeatherUPBIndi(app=None)
     """
 
-    __all__ = ['WeatherUPBIndi',
-               ]
+    __all__ = ['WeatherUPBIndi']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)

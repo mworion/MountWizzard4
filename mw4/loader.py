@@ -34,7 +34,6 @@ import warnings
 # and https://github.com/pywinauto/pywinauto/issues/472
 # order is important to set sys.coinit_flags = 2 before import pywinauto
 #
-warnings.simplefilter("ignore", UserWarning)
 sys.coinit_flags = 2
 
 # external packages
@@ -58,6 +57,14 @@ matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False
 astropy.utils.data.conf.allow_internet = False
 log = logging.getLogger()
+
+
+# redirect all python warning to debug log
+def customWarn(message, category, filename, lineno, file=None, line=None):
+    log.warning(warnings.formatwarning(message, category, filename, lineno))
+
+
+warnings.showwarning = customWarn
 
 
 class QAwesomeTooltipEventFilter(QObject):

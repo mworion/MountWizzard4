@@ -234,6 +234,41 @@ class SatSearch(object):
                 latRate.degrees.per_second,
                 lonRate.degrees.per_second)
 
+    @staticmethod
+    def calcSatMagnitude(sat, loc, ephemeris, satRange, tEv):
+        """
+        :param sat:
+        :param loc:
+        :param ephemeris:
+        :param satRange:
+        :param tEv:
+        :return:
+        """
+        """
+        intMag = -1.8
+        earth = ephemeris['earth']
+        satPos = (earth + sat).at(tEv)
+        obsPos = (earth + loc).at(tEv)
+        obsSat = satPos - obsPos
+        phase = satPos.separation_from(obsSat).radians
+        """
+        intMag = -1.3
+        earth = ephemeris['earth']
+        sun = ephemeris['sun']
+        satP = (earth + sat).at(tEv)
+        obs = earth + loc
+
+        s = satP.observe(sun).apparent()
+        o = satP.observe(obs).apparent()
+        phase = s.separation_from(o).radians
+
+        term1 = intMag
+        term2 = +5.0 * np.log10(satRange / 1000.)
+        arg = np.sin(phase) + (np.pi - phase) * np.cos(phase)
+        term3 = -2.5 * np.log10(arg)
+        absMag = term1 + term2 + term3
+        return absMag
+
     def setSatTableEntry(self, row, col, entry):
         """
         :param row:
@@ -244,12 +279,14 @@ class SatSearch(object):
         self.ui.listSatelliteNames.setItem(row, col, entry)
         return True
 
-    def updateTableEntries(self, row, satParam, isUp=None, isSunlit=None):
+    def updateTableEntries(self, row, satParam, isUp=None, isSunlit=None,
+                           absMag=None):
         """
         :param row:
         :param satParam:
         :param isUp:
         :param isSunlit:
+        :param absMag:
         :return:
         """
         entry = QTableWidgetItem(f'{satParam[0]:5.0f}')
@@ -285,7 +322,11 @@ class SatSearch(object):
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
         self.sigSetSatTableEntry.emit(row, 7, entry)
 
-        entry = QTableWidgetItem('*' if isSunlit else ' ')
+        if isSunlit:
+            value = f'{absMag:1.1f}'
+        else:
+            value = ''
+        entry = QTableWidgetItem(value)
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
         self.sigSetSatTableEntry.emit(row, 8, entry)
         return True
@@ -360,7 +401,7 @@ class SatSearch(object):
             if checkIsUp:
                 show = show and satTab.model().index(row, 7).data() != ''
             if checkIsSunlit:
-                show = show and satTab.model().index(row, 8).data() == '*'
+                show = show and satTab.model().index(row, 8).data() != ''
             if checkRemoveSO:
                 show = show and 'starlink' not in name
                 show = show and 'oneweb' not in name
@@ -393,12 +434,23 @@ class SatSearch(object):
             name = satTab.model().index(row, 1).data()
             sat = self.satellites[name]
             satParam = self.findRangeRate(sat, loc, timeNow)
-            isSunlit = self.findSunlit(sat, eph, timeNow)
-            isUp = self.findSatUp(sat, loc, timeNow, timeNext, altMin)
+            if not np.isnan(satParam[0]):
+                isSunlit = self.findSunlit(sat, eph, timeNow)
+                isUp = self.findSatUp(sat, loc, timeNow, timeNext, altMin)
+                satRange = satParam[0]
+                if isSunlit:
+                    absMag = self.calcSatMagnitude(sat, loc, eph, satRange, timeNow)
+                else:
+                    absMag = 99
+            else:
+                isSunlit = False
+                isUp = False, []
+                absMag = 99
+
             finished = (row + 1) / numSats * 100
             t = f'Filter - processed: {finished:3.0f}%'
             self.ui.satFilterGroup.setTitle(t)
-            self.updateTableEntries(row, satParam, isUp, isSunlit)
+            self.updateTableEntries(row, satParam, isUp, isSunlit, absMag)
         else:
             self.satTableDynamicValid = True
             self.ui.satIsUp.setEnabled(True)
@@ -429,17 +481,17 @@ class SatSearch(object):
         satTab.setRowCount(0)
         satTab.setColumnCount(9)
         hl = ['ID', 'Name', 'Dist\n[km]', 'Radial\n[km/s]', 'Lat\n[deg/s]',
-              'Lon\n[deg/s]', 'Date\n[m-d]', 'Time\n[H:M:S]', 'Sun']
+              'Lon\n[deg/s]', 'Date\n[m-d]', 'Time\n[H:M:S]', 'Sat\n[mag]']
         satTab.setHorizontalHeaderLabels(hl)
         satTab.setColumnWidth(0, 50)
         satTab.setColumnWidth(1, 155)
         satTab.setColumnWidth(2, 50)
         satTab.setColumnWidth(3, 50)
-        satTab.setColumnWidth(4, 50)
-        satTab.setColumnWidth(5, 50)
+        satTab.setColumnWidth(4, 45)
+        satTab.setColumnWidth(5, 45)
         satTab.setColumnWidth(6, 45)
         satTab.setColumnWidth(7, 65)
-        satTab.setColumnWidth(8, 30)
+        satTab.setColumnWidth(8, 40)
         satTab.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)

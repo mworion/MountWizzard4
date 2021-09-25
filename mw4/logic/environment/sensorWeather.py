@@ -41,6 +41,8 @@ class SensorWeatherSignals(PyQt5.QtCore.QObject):
 
 
 class SensorWeather:
+    """
+    """
 
     __all__ = ['SensorWeather']
     log = logging.getLogger(__name__)
@@ -70,7 +72,6 @@ class SensorWeather:
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
-        # signalling from subclasses to main
         alpacaSignals = self.run['alpaca'].alpacaSignals
         alpacaSignals.serverConnected.connect(self.signals.serverConnected)
         alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)

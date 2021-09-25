@@ -23,7 +23,7 @@ if platform.system() == 'Windows':
     from win32com import client
 
 # external packages
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, QMutex
 from PyQt5.QtTest import QTest
 
 # local imports
@@ -33,10 +33,6 @@ from base.driverDataClass import DriverData, Signals
 
 class AscomClass(DriverData, Signals):
     """
-    the class AscomClass inherits all information and handling of ascom devices
-    this class will be only referenced from other classes and not directly used
-
-        >>> a = AscomClass(app=None, data=None, threadPool=None)
     """
 
     log = logging.getLogger(__name__)
@@ -49,6 +45,7 @@ class AscomClass(DriverData, Signals):
         self.app = app
         self.threadPool = threadPool
         self.ascomSignals = Signals()
+        self.tM = QMutex()
 
         self.client = None
         self.data = data

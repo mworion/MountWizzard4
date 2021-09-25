@@ -53,9 +53,7 @@ class FilterSignals(PyQt5.QtCore.QObject):
 
 class Filter:
 
-    __all__ = ['Filter',
-               ]
-
+    __all__ = ['Filter']
     log = logging.getLogger(__name__)
 
     def __init__(self, app):

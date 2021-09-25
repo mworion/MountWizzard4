@@ -216,10 +216,6 @@ class SettDevice:
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict. if some drivers configuration
-        are missing, the default values are loaded from the drivers. after that we have a
-        fully cleaned config dict and we can proceed initializing the gui and the drivers
-
         :return: True for test purpose
         """
         config = self.app.config['mainW']
@@ -241,10 +237,6 @@ class SettDevice:
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config['mainW']

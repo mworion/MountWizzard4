@@ -28,12 +28,6 @@ from logic.measure.measureCSV import MeasureDataCSV
 
 class MeasureSignals(PyQt5.QtCore.QObject):
     """
-    The DomeSignals class offers a list of signals to be used and instantiated by
-    the Mount class to get signals for triggers for finished tasks to
-    enable a gui to update their values transferred to the caller back.
-
-    This has to be done in a separate class as the signals have to be subclassed from
-    QObject and the Mount class itself is subclassed from object
     """
 
     __all__ = ['MeasureSignals']
@@ -46,20 +40,11 @@ class MeasureSignals(PyQt5.QtCore.QObject):
 
 class MeasureData(PyQt5.QtCore.QObject):
     """
-    the class MeasureData inherits all information and handling of data management and
-    storage
-
-        >>> measure = MeasureData(
-        >>>                 )
     """
 
-    __all__ = ['MeasureData',
-               ]
-
+    __all__ = ['MeasureData']
     log = logging.getLogger(__name__)
 
-    # update rate to 1 seconds for setting indi server
-    CYCLE_UPDATE_TASK = 1000
     # maximum size of measurement task
     MAXSIZE = 24 * 60 * 60
 

@@ -92,9 +92,7 @@ class MainWindow(
     for managing async processing if needed.
     """
 
-    __all__ = [
-        "MainWindow",
-    ]
+    __all__ = ['MainWindow']
 
     def __init__(self, app):
         super().__init__()

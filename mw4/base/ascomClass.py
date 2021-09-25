@@ -100,11 +100,11 @@ class AscomClass(DriverData, Signals):
             cmd = 'self.client.' + valueProp
             value = eval(cmd)
         except Exception as e:
-            t = f'[{self.deviceName}]:[{cmd}], property [{valueProp}] not implemented: {e}'
+            t = f'[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}'
             self.log.debug(t)
             self.propertyExceptions.append(valueProp)
         else:
-            t = f'[{self.deviceName}]: property [{valueProp}] set to [{value}]'
+            t = f'[{self.deviceName}] property [{valueProp}] has value: [{value}]'
             self.log.trace(t)
         finally:
             return value
@@ -121,13 +121,13 @@ class AscomClass(DriverData, Signals):
             cmd = 'self.client.' + valueProp + ' = value'
             exec(cmd)
         except Exception as e:
-            t = f'[{self.deviceName}]:[{cmd}], property [{valueProp}] not implemented: {e}'
+            t = f'[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}'
             self.log.debug(t)
             if valueProp != 'Connect':
                 self.propertyExceptions.append(valueProp)
             return False
         else:
-            t = f'[{self.deviceName}]: property [{valueProp}] set to [{value}]'
+            t = f'[{self.deviceName}] property [{valueProp}] set to: [{value}]'
             self.log.trace(t)
             return True
 
@@ -144,12 +144,12 @@ class AscomClass(DriverData, Signals):
             cmd = 'self.client.' + method + f'({paramStr})'
             exec(cmd)
         except Exception as e:
-            t = f'[{self.deviceName}]:[{cmd}], method [{method}] not implemented: {e}'
+            t = f'[{self.deviceName}] [{cmd}], method [{method}] not implemented: {e}'
             self.log.debug(t)
             self.propertyExceptions.append(method)
             return False
         else:
-            t = f'[{self.deviceName}]: method [{method}] called [{param}]'
+            t = f'[{self.deviceName}] method [{method}] called [{param}]'
             self.log.trace(t)
             return True
 
@@ -178,11 +178,11 @@ class AscomClass(DriverData, Signals):
             suc = self.getAscomProperty('connected')
 
             if suc:
-                t = f'[{self.deviceName}] connected, [{retry}] retries'
+                t = f'[{self.deviceName}] connected, retries: [{retry}]'
                 self.log.debug(t)
                 break
             else:
-                t = f'Connection retry [{retry}]: [{self.deviceName}]'
+                t = f'[{self.deviceName}] Connection retry: [{retry}]'
                 self.log.info(t)
                 QTest.qWait(250)
         else:
@@ -314,10 +314,10 @@ class AscomClass(DriverData, Signals):
 
         try:
             self.client = client.dynamic.Dispatch(self.deviceName)
-            self.log.debug(f'Dispatch [{self.deviceName}]')
+            self.log.debug(f'[{self.deviceName}] Dispatching')
 
         except Exception as e:
-            self.log.error(f'Dispatch for [{self.deviceName}] error: {e}')
+            self.log.error(f'[{self.deviceName}] Dispatch error: [{e}]')
             return False
 
         else:

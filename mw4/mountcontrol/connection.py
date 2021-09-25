@@ -332,7 +332,7 @@ class Connection(object):
             return False, 'wrong commands', 0
 
         numberOfChunks, getData, minBytes = self.analyseCommand(commandString)
-        
+
         t = f'[{self.id}] sending: [{commandString}], getData: [{getData}],'
         t += f'minBytes: [{minBytes}], numOfChunks: [{numberOfChunks}], host: [{self.host}]'
         self.log.trace(t)

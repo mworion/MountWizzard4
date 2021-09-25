@@ -39,7 +39,7 @@ class LoggerWriter:
                 self.level(f'[{self.mode}] ' + line.strip())
                 first = False
             else:
-                self.level(' '*9 + line.strip())
+                self.level(' ' * 9 + line.strip())
 
     def flush(self):
         pass

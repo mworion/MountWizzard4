@@ -398,7 +398,7 @@ class HemisphereWindowExt:
         name = hip.name[index]
         ra, dec = hip.getAlignStarRaDecFromName(hip.name[index])
         question = '<b>Polar / Ortho Alignment procedure</b>'
-        question += f'<br><br>Selected alignment type: '
+        question += '<br><br>Selected alignment type: '
         question += f'<font color={self.M_BLUE}>{alignType}.</font>'
         question += '<br>Selected alignment star: '
         question += f'<font color={self.M_BLUE}>{name}.</font>'

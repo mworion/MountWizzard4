@@ -744,7 +744,7 @@ class Satellite(object):
         val = valueToFloat(response[3])
         if val is not None:
             self.trajectoryParams.offsetTime = val
-            
+
         return True
 
     def setTrackingOffsets(self, RA=None, DEC=None, DECcorr=None, Time=None):

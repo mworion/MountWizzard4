@@ -28,12 +28,18 @@ class LoggerWriter:
     # taken from:
     # https://stackoverflow.com/questions/19425736/
     # how-to-redirect-stdout-and-stderr-to-logger-in-python
-    def __init__(self, level):
+    def __init__(self, level, mode):
         self.level = level
+        self.mode = mode
 
     def write(self, message):
+        first = True
         for line in message.rstrip().splitlines():
-            self.level('[WARNINGS] ' + line.strip())
+            if first:
+                self.level(f'[{self.mode}] ' + line.strip())
+                first = False
+            else:
+                self.level(' '*9 + line.strip())
 
     def flush(self):
         pass
@@ -127,9 +133,9 @@ def setupLogging():
     addLoggingLevel('HEADER', 55)
     addLoggingLevel('UI', 35)
     addLoggingLevel('TRACE', 5)
-    # transfer all warnings.warn to logging
-    sys.stderr = LoggerWriter(logging.getLogger().info)
-    sys.stdout = LoggerWriter(logging.getLogger().info)
+    # transfer all sys outputs to logging
+    sys.stderr = LoggerWriter(logging.getLogger().debug, 'STDERR')
+    sys.stdout = LoggerWriter(logging.getLogger().debug, 'STDOUT')
     return True
 
 

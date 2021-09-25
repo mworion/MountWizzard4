@@ -24,12 +24,9 @@ from base.alpacaClass import AlpacaClass
 
 class TelescopeAlpaca(AlpacaClass):
     """
-    the class Telescope inherits all information and handling of the
-    Telescope device.
     """
 
-    __all__ = ['TelescopeAlpaca',
-               ]
+    __all__ = ['TelescopeAlpaca']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)

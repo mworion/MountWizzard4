@@ -30,12 +30,6 @@ if platform.system() == 'Windows':
 
 class TelescopeSignals(PyQt5.QtCore.QObject):
     """
-    The TelescopeSignals class offers a list of signals to be used and instantiated by
-    the Mount class to get signals for triggers for finished tasks to
-    enable a gui to update their values transferred to the caller back.
-
-    This has to be done in a separate class as the signals have to be subclassed from
-    QObject and the Mount class itself is subclassed from object
     """
 
     __all__ = ['TelescopeSignals']
@@ -47,10 +41,10 @@ class TelescopeSignals(PyQt5.QtCore.QObject):
 
 
 class Telescope:
+    """
+    """
 
-    __all__ = ['Telescope',
-               ]
-
+    __all__ = ['Telescope']
     log = logging.getLogger(__name__)
 
     def __init__(self, app):
@@ -58,10 +52,8 @@ class Telescope:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = TelescopeSignals()
-
         self.data = {}
         self.framework = ''
-        self.defaultConfig = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}
         self.run = {

@@ -45,7 +45,6 @@ class DomeAlpaca(AlpacaClass):
 
     def workerPollData(self):
         """
-
         :return: true for test purpose
         """
         if not self.deviceConnected:

@@ -24,13 +24,9 @@ from base.indiClass import IndiClass
 
 class TelescopeIndi(IndiClass):
     """
-    the class TelescopeIndi inherits all information and handling of the Skymeter device
-
-        >>>  t = TelescopeIndi(app=None)
     """
 
-    __all__ = ['TelescopeIndi',
-               ]
+    __all__ = ['TelescopeIndi']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
@@ -40,9 +36,6 @@ class TelescopeIndi(IndiClass):
 
     def setUpdateConfig(self, deviceName):
         """
-        _setUpdateRate corrects the update rate of weather devices to get an defined
-        setting regardless, what is setup in server side.
-
         :param deviceName:
         :return: success
         """

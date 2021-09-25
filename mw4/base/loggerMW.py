@@ -18,10 +18,25 @@
 import logging
 import datetime
 from dateutil.tz import tzutc
-
+import sys
 # external packages
 
 # local imports
+
+
+class LoggerWriter:
+    # taken from:
+    # https://stackoverflow.com/questions/19425736/
+    # how-to-redirect-stdout-and-stderr-to-logger-in-python
+    def __init__(self, level):
+        self.level = level
+
+    def write(self, message):
+        for line in message.rstrip().splitlines():
+            self.level('[WARNINGS] ' + line.strip())
+
+    def flush(self):
+        pass
 
 
 def timeTz(*args):
@@ -112,6 +127,9 @@ def setupLogging():
     addLoggingLevel('HEADER', 55)
     addLoggingLevel('UI', 35)
     addLoggingLevel('TRACE', 5)
+    # transfer all warnings.warn to logging
+    sys.stderr = LoggerWriter(logging.getLogger().info)
+    sys.stdout = LoggerWriter(logging.getLogger().info)
     return True
 
 

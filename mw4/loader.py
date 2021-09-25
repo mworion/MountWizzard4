@@ -25,7 +25,8 @@ import platform
 import socket
 import sys
 import traceback
-import warnings
+from base.loggerMW import setupLogging
+setupLogging()
 #
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 # see
@@ -46,7 +47,7 @@ from PyQt5.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButt
 from importlib_metadata import version
 
 # local import
-from base.loggerMW import setupLogging
+
 from gui.utilities.splashScreen import SplashScreen
 from mainApp import MountWizzard4
 import resource.resources as res
@@ -57,14 +58,6 @@ matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False
 astropy.utils.data.conf.allow_internet = False
 log = logging.getLogger()
-
-
-# redirect all python warning to debug log
-def customWarn(message, category, filename, lineno, file=None, line=None):
-    log.warning(warnings.formatwarning(message, category, filename, lineno))
-
-
-warnings.showwarning = customWarn
 
 
 class QAwesomeTooltipEventFilter(QObject):

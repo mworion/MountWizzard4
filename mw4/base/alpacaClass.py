@@ -285,7 +285,7 @@ class AlpacaClass(DriverData, Signals):
             return None
 
         uid = uuid.uuid4().int % 2**32
-        t = f'[{self.deviceName}] [{uid:10d}], set [{valueProp}], data:[{data}]'
+        t = f'[{self.deviceName}] [{uid:10d}], set [{valueProp}] to: [{data}]'
         self.log.trace(t)
 
         try:
@@ -345,7 +345,7 @@ class AlpacaClass(DriverData, Signals):
                 self.log.debug(t)
                 break
             else:
-                t = f'Connection retry [{retry}]: [{self.deviceName}]'
+                t = f' [{self.deviceName}] Connection retry: [{retry}]'
                 self.log.info(t)
                 QTest.qWait(250)
 

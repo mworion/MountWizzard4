@@ -96,6 +96,7 @@ class AscomClass(DriverData, Signals):
         if valueProp in self.propertyExceptions:
             return value
 
+        valueProp = valueProp.lower()
         try:
             cmd = 'self.client.' + valueProp
             value = eval(cmd)
@@ -117,6 +118,7 @@ class AscomClass(DriverData, Signals):
         if valueProp in self.propertyExceptions:
             return False
 
+        valueProp = valueProp.lower()
         try:
             cmd = 'self.client.' + valueProp + ' = value'
             exec(cmd)
@@ -182,7 +184,7 @@ class AscomClass(DriverData, Signals):
                 self.log.debug(t)
                 break
             else:
-                t = f'[{self.deviceName}] Connection retry: [{retry}]'
+                t = f'[{self.deviceName}] connection retry: [{retry}]'
                 self.log.info(t)
                 QTest.qWait(250)
         else:
@@ -333,11 +335,12 @@ class AscomClass(DriverData, Signals):
         :return: true for test purpose
         """
         self.stopTimer()
-        self.setAscomProperty('Connected', False)
-        self.deviceConnected = False
-        self.serverConnected = False
-        self.client = None
-        self.propertyExceptions = []
+        if self.client:
+            self.setAscomProperty('Connected', False)
+            self.deviceConnected = False
+            self.serverConnected = False
+            self.client = None
+            self.propertyExceptions = []
         self.ascomSignals.deviceDisconnected.emit(f'{self.deviceName}')
         self.ascomSignals.serverDisconnected.emit({f'{self.deviceName}': 0})
         self.app.message.emit(f'ASCOM device remove: [{self.deviceName}]', 0)

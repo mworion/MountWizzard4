@@ -30,11 +30,9 @@ from base.transform import JNowToJ2000
 
 class CameraAscom(AscomClass):
     """
-    the class CameraAscom inherits all information and handling of the Ascom device.
     """
 
-    __all__ = ['CameraAscom',
-               ]
+    __all__ = ['CameraAscom']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)

@@ -25,13 +25,9 @@ from base.ascomClass import AscomClass
 
 class DomeAscom(AscomClass):
     """
-    the class Dome inherits all information and handling of the Dome device. there will be
-    some parameters who will define the slewing position of the dome relating to the
-    mount.dome = DomeAscom(app=None)
     """
 
-    __all__ = ['DomeAscom',
-               ]
+    __all__ = ['DomeAscom']
 
     shutterStates = ['Open', 'Closed', 'Opening', 'Closing', 'Error']
 

@@ -31,11 +31,9 @@ from base.transform import JNowToJ2000
 
 class CameraAlpaca(AlpacaClass):
     """
-    the class CameraAlpaca inherits all information and handling of the CameraAlpaca device.
     """
 
-    __all__ = ['CameraAlpaca',
-               ]
+    __all__ = ['CameraAlpaca']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)

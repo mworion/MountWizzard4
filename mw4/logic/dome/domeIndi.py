@@ -25,15 +25,9 @@ from base.indiClass import IndiClass
 
 class DomeIndi(IndiClass):
     """
-    the class Dome inherits all information and handling of the Dome device.
-    There will be some parameters who will define the slewing position of the
-    dome relating to the mount.
-
-        >>> dome = DomeIndi(app=None)
     """
 
-    __all__ = ['DomeIndi',
-               ]
+    __all__ = ['DomeIndi']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)

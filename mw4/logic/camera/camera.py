@@ -48,10 +48,10 @@ class CameraSignals(PyQt5.QtCore.QObject):
 
 
 class Camera:
+    """
+    """
 
-    __all__ = ['Camera',
-               ]
-
+    __all__ = ['Camera']
     log = logging.getLogger(__name__)
 
     def __init__(self, app):

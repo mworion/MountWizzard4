@@ -46,22 +46,17 @@ class Environ(object):
         # environment functions
         signals = self.app.sensorWeather.signals
         signals.deviceDisconnected.connect(self.clearSensorWeatherGui)
-
         # skymeter functions
         signals = self.app.skymeter.signals
         signals.deviceDisconnected.connect(self.clearSkymeterGui)
-
         # power weather functions
         signals = self.app.powerWeather.signals
         signals.deviceDisconnected.connect(self.clearPowerWeatherGui)
-
         # weather functions
         self.app.onlineWeather.signals.dataReceived.connect(self.updateOnlineWeatherGui)
-
         # weather functions
         self.app.mount.signals.settingDone.connect(self.updateDirectWeatherGui)
         self.app.mount.signals.settingDone.connect(self.updateRefractionUpdateType)
-
         # gui connections
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
         self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
@@ -71,7 +66,6 @@ class Environ(object):
         self.ui.checkRefracNone.clicked.connect(self.setRefractionUpdateType)
         self.ui.checkRefracCont.clicked.connect(self.setRefractionUpdateType)
         self.ui.checkRefracNoTrack.clicked.connect(self.setRefractionUpdateType)
-
         # cyclic functions
         self.app.update1s.connect(self.updateFilterRefractionParameters)
         self.app.update1s.connect(self.updateRefractionParameters)
@@ -88,7 +82,6 @@ class Environ(object):
         self.ui.checkRefracNone.setChecked(config.get('checkRefracNone', False))
         self.ui.checkRefracCont.setChecked(config.get('checkRefracCont', False))
         self.ui.checkRefracNoTrack.setChecked(config.get('checkRefracNoTrack', False))
-
         self.refractionSource = config.get('refractionSource', '')
         self.setRefractionSourceGui()
         return True

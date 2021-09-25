@@ -24,13 +24,9 @@ from base.indiClass import IndiClass
 
 class CoverIndi(IndiClass):
     """
-    the class FlipFlatIndi inherits all information and handling of the FlipFlat device
-
-        >>> f = CoverIndi(app=None)
     """
 
-    __all__ = ['CoverIndi',
-               ]
+    __all__ = ['CoverIndi']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, threadPool=app.threadPool)

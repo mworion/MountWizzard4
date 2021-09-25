@@ -24,13 +24,9 @@ from base.alpacaClass import AlpacaClass
 
 class CoverAlpaca(AlpacaClass):
     """
-    the class Dome inherits all information and handling of the Dome device. there will be
-    some parameters who will define the slewing position of the dome relating to the
-    mount.dome = DomeAlpaca(app=None)
     """
 
-    __all__ = ['CoverAlpaca',
-               ]
+    __all__ = ['CoverAlpaca']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)

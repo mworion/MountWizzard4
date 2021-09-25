@@ -30,11 +30,9 @@ from base.transform import JNowToJ2000
 
 class CameraIndi(IndiClass):
     """
-        >>> c = CameraIndi(app=None, signals=None, data=None)
     """
 
-    __all__ = ['CameraIndi',
-               ]
+    __all__ = ['CameraIndi']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)

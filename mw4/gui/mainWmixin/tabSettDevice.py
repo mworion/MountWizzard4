@@ -399,9 +399,7 @@ class SettDevice:
             return False
 
         driverClass = self.drivers[driver]['class']
-        isRunning = driverClass.run[framework].deviceName != ''
-
-        if isRunning:
+        if self.deviceStat[driver]:
             driverClass.stopCommunication()
             driverClass.data.clear()
             driverClass.run[framework].deviceName = ''
@@ -540,6 +538,8 @@ class SettDevice:
         sender = self.sender()
         isDisabled = sender.currentText() == 'device disabled'
         driver = self.returnDriver(sender, self.drivers, addKey='uiDropDown')
+
+        print(sender.currentText(), driver)
 
         if driver:
             if isDisabled:

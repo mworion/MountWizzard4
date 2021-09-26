@@ -19,7 +19,7 @@ import logging
 import platform
 
 # external packages
-import PyQt5
+from PyQt5.QtCore import pyqtSignal, QObject
 
 # local imports
 from logic.environment.weatherUPBIndi import WeatherUPBIndi
@@ -28,26 +28,27 @@ if platform.system() == 'Windows':
     from logic.environment.weatherUPBAscom import WeatherUPBAscom
 
 
-class WeatherUPBSignals(PyQt5.QtCore.QObject):
+class WeatherUPBSignals(QObject):
     """
     """
 
     __all__ = ['WeatherUPBSignals']
-    version = PyQt5.QtCore.pyqtSignal(int)
+    version = pyqtSignal(int)
 
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
+    serverConnected = pyqtSignal()
+    serverDisconnected = pyqtSignal(object)
+    deviceConnected = pyqtSignal(str)
+    deviceDisconnected = pyqtSignal(str)
 
 
 class WeatherUPB:
+    """
+    """
 
     __all__ = ['WeatherUPB']
     log = logging.getLogger(__name__)
 
     def __init__(self, app):
-
         self.app = app
         self.threadPool = app.threadPool
         self.signals = WeatherUPBSignals()

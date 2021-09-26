@@ -19,7 +19,7 @@ import logging
 import platform
 
 # external packages
-import PyQt5
+from PyQt5.QtCore import pyqtSignal, QObject
 
 # local imports
 from logic.environment.skymeterIndi import SkymeterIndi
@@ -28,16 +28,16 @@ if platform.system() == 'Windows':
     from logic.environment.skymeterAscom import SkymeterAscom
 
 
-class SkymeterSignals(PyQt5.QtCore.QObject):
+class SkymeterSignals(QObject):
     """
     """
 
     __all__ = ['SkymeterSignals']
 
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
+    serverConnected = pyqtSignal()
+    serverDisconnected = pyqtSignal(object)
+    deviceConnected = pyqtSignal(str)
+    deviceDisconnected = pyqtSignal(str)
 
 
 class Skymeter:
@@ -48,7 +48,6 @@ class Skymeter:
     log = logging.getLogger(__name__)
 
     def __init__(self, app):
-
         self.app = app
         self.threadPool = app.threadPool
         self.signals = SkymeterSignals()
@@ -72,7 +71,7 @@ class Skymeter:
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
-        alpacaSignals = self.run['alpaca'].signals
+        alpacaSignals = self.run['alpaca'].alpacaSignals
         alpacaSignals.serverConnected.connect(self.signals.serverConnected)
         alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)
         alpacaSignals.deviceConnected.connect(self.signals.deviceConnected)

@@ -237,31 +237,26 @@ class SatSearch(object):
     @staticmethod
     def calcSatSunPhase(sat, loc, ephemeris, tEv):
         """
+        https://stackoverflow.com/questions/19759501
+            /calculating-the-phase-angle-between-the-sun-iss-and-an-observer-on-the
+            -earth
+        https://space.stackexchange.com/questions/26286
+            /how-to-calculate-cone-angle-between-two-satellites-given-their-look-angles
         :param sat:
         :param loc:
         :param ephemeris:
         :param tEv:
         :return:
         """
-        """
-        intMag = -1.8
-        earth = ephemeris['earth']
-        satPos = (earth + sat).at(tEv)
-        obsPos = (earth + loc).at(tEv)
-        obsSat = satPos - obsPos
-        phase = satPos.separation_from(obsSat).radians
-        """
-        earth = ephemeris['earth']
         sun = ephemeris['sun']
-        satP = (earth + sat).at(tEv)
-        obs = earth + loc
+        earth = ephemeris['earth']
 
-        s = satP.observe(sun).apparent()
-        o = satP.observe(obs).apparent()
-        phase = s.separation_from(o).radians
+        vecObserverSat = (sat - loc).at(tEv)
+        vecObserverSun = (sun - (earth + loc)).at(tEv)
+        phase = vecObserverSat.separation_from(vecObserverSun)
         return phase
 
-    def calcApparentMagnitude(self, sat, loc, ephemeris, satRange, tEv):
+    def calcAppMag(self, sat, loc, ephemeris, satRange, tEv):
         """
         solution base on the work from:
         https://astronomy.stackexchange.com/questions/28744
@@ -280,7 +275,7 @@ class SatSearch(object):
         :param tEv:
         :return:
         """
-        phase = self.calcSatSunPhase(sat, loc, ephemeris, tEv)
+        phase = self.calcSatSunPhase(sat, loc, ephemeris, tEv).radians
         intMag = -1.3
 
         term1 = intMag
@@ -301,13 +296,13 @@ class SatSearch(object):
         return True
 
     def updateTableEntries(self, row, satParam, isUp=None, isSunlit=None,
-                           absMag=None):
+                           appMag=None):
         """
         :param row:
         :param satParam:
         :param isUp:
         :param isSunlit:
-        :param absMag:
+        :param appMag:
         :return:
         """
         entry = QTableWidgetItem(f'{satParam[0]:5.0f}')
@@ -344,9 +339,10 @@ class SatSearch(object):
         self.sigSetSatTableEntry.emit(row, 7, entry)
 
         if isSunlit:
-            value = f'{absMag:1.1f}'
+            value = f'{appMag:+04.1f}'
         else:
             value = ''
+
         entry = QTableWidgetItem(value)
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
         self.sigSetSatTableEntry.emit(row, 8, entry)
@@ -460,18 +456,18 @@ class SatSearch(object):
                 isUp = self.findSatUp(sat, loc, timeNow, timeNext, altMin)
                 satRange = satParam[0]
                 if isSunlit:
-                    absMag = self.calcSatMagnitude(sat, loc, eph, satRange, timeNow)
+                    appMag = self.calcAppMag(sat, loc, eph, satRange, timeNow)
                 else:
-                    absMag = 99
+                    appMag = 99
             else:
                 isSunlit = False
                 isUp = False, []
-                absMag = 99
+                appMag = 99
 
             finished = (row + 1) / numSats * 100
             t = f'Filter - processed: {finished:3.0f}%'
             self.ui.satFilterGroup.setTitle(t)
-            self.updateTableEntries(row, satParam, isUp, isSunlit, absMag)
+            self.updateTableEntries(row, satParam, isUp, isSunlit, appMag)
         else:
             self.satTableDynamicValid = True
             self.ui.satIsUp.setEnabled(True)

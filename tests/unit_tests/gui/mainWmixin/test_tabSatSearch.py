@@ -199,6 +199,35 @@ def test_findSatUp_2(function):
     assert val[1] == [5]
 
 
+def test_calcSatSunPhase_1(function):
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
+    ephemeris = function.app.ephemeris
+    tEv = function.app.mount.obsSite.ts.tt_jd(2459215.5)
+    val = function.calcSatSunPhase(sat, loc, ephemeris, tEv)
+    assert val.degrees == 0
+
+
+def test_calcAppMag_1(function):
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
+    ephemeris = function.app.ephemeris
+    satRange = 483
+    phase = np.radians(113)
+    tEv = function.app.mount.obsSite.ts.now()
+    with mock.patch.object(function,
+                           'calcSatSunPhase',
+                           return_value=phase):
+        val = function.calcAppMag(sat, loc, ephemeris, satRange, tEv)
+        assert round(val, 4) == -2.0456
+
+
 def test_setSatTableEntry(function):
     function.ui.listSatelliteNames.setRowCount(0)
     function.ui.listSatelliteNames.insertRow(0)
@@ -441,7 +470,7 @@ def test_workerSatCalcTable_3(function):
                 with mock.patch.object(function,
                                        'updateTableEntries'):
                     with mock.patch.object(function,
-                                           'calcSatMagnitude',
+                                           'calcApparentMagnitude',
                                            return_value=0):
                         suc = function.workerSatCalcTable()
                         assert suc
@@ -476,7 +505,7 @@ def test_workerSatCalcTable_4(function):
                 with mock.patch.object(function,
                                        'updateTableEntries'):
                     with mock.patch.object(function,
-                                           'calcSatMagnitude',
+                                           'calcApparentMagnitude',
                                            return_value=0):
                         suc = function.workerSatCalcTable()
                         assert suc
@@ -512,7 +541,7 @@ def test_workerSatCalcTable_5(function):
                 with mock.patch.object(function,
                                        'updateTableEntries'):
                     with mock.patch.object(function,
-                                           'calcSatMagnitude',
+                                           'calcApparentMagnitude',
                                            return_value=0):
                         suc = function.workerSatCalcTable()
                         assert suc

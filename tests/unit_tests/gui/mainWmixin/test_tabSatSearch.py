@@ -208,7 +208,7 @@ def test_calcSatSunPhase_1(function):
     ephemeris = function.app.ephemeris
     tEv = function.app.mount.obsSite.ts.tt_jd(2459215.5)
     val = function.calcSatSunPhase(sat, loc, ephemeris, tEv)
-    assert val.degrees == 0
+    assert round(val.degrees, 5) == 50.05382
 
 
 def test_calcAppMag_1(function):
@@ -219,7 +219,7 @@ def test_calcAppMag_1(function):
     loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
     ephemeris = function.app.ephemeris
     satRange = 483
-    phase = np.radians(113)
+    phase = Angle(degrees=113)
     tEv = function.app.mount.obsSite.ts.now()
     with mock.patch.object(function,
                            'calcSatSunPhase',
@@ -239,7 +239,7 @@ def test_setSatTableEntry(function):
 def test_updateTableEntries_1(function):
     param = [1, 2, 3, 4]
     suc = function.updateTableEntries(0, param)
-    assert not suc
+    assert suc
 
 
 def test_updateTableEntries_2(function):
@@ -263,6 +263,14 @@ def test_updateTableEntries_4(function):
     ts = function.app.mount.obsSite.ts.now()
     isUp = (False, [ts])
     suc = function.updateTableEntries(0, param, isUp, True, 5)
+    assert suc
+
+
+def test_updateTableEntries_5(function):
+    param = [1, 2, 3, 4]
+    ts = function.app.mount.obsSite.ts.now()
+    isUp = (False, [ts])
+    suc = function.updateTableEntries(0, param, isUp, False, 5)
     assert suc
 
 

@@ -46,9 +46,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
     __all__ = ['OnlineWeather']
     log = logging.getLogger(__name__)
 
-    def __init__(self,
-                 app=None,
-                 ):
+    def __init__(self, app=None):
         super().__init__()
 
         self.app = app
@@ -74,12 +72,10 @@ class OnlineWeather(PyQt5.QtCore.QObject):
                 }
             }
         }
-
         self.running = False
         self.hostaddress = ''
         self.apiKey = ''
         self._online = False
-
         self.app.update10s.connect(self.updateOpenWeatherMapData)
 
     @property
@@ -94,31 +90,24 @@ class OnlineWeather(PyQt5.QtCore.QObject):
 
     def startCommunication(self, loadConfig=False):
         """
-        startCommunication adds a device on the watch list of the server.
-
         :param loadConfig:
         :return: success of reconnecting to server
         """
-
         if not self.apiKey:
             return False
 
         self.running = True
         self.updateOpenWeatherMapData()
-
+        self.signals.deviceConnected.emit('OnlineWeather')
         return True
 
     def stopCommunication(self):
         """
-        stopCommunication adds a device on the watch list of the server.
-
         :return: success of reconnecting to server
         """
-
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit('OnlineWeather')
-
         return True
 
     @staticmethod
@@ -130,10 +119,8 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         :param relativeHumidity: relative humidity in %
         :return: the dew point in degrees Celsius
         """
-
         if tempAir < -40 or tempAir > 80:
             return 0
-
         if relativeHumidity < 0 or relativeHumidity > 100:
             return 0
 
@@ -141,35 +128,23 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         B = 237.7
         alpha = ((A * tempAir) / (B + tempAir)) + np.log(relativeHumidity / 100.0)
         dewPoint = (B * alpha) / (A - alpha)
-
         return dewPoint
 
     def updateOpenWeatherMapDataWorker(self, data=None):
         """
-        updateOpenWeatherMapDataWorker takes the returned data from a web fetch and puts
-        the data in a dict
-
         :param data:
-
         :return: success
         """
-
         if data is None:
             self.signals.dataReceived.emit(None)
-            self.signals.deviceDisconnected.emit('OnlineWeather')
-
             return False
 
         if 'list' not in data:
             self.signals.dataReceived.emit(None)
-            self.signals.deviceDisconnected.emit('OnlineWeather')
-
             return False
 
         if len(data['list']) == 0:
             self.signals.dataReceived.emit(None)
-            self.signals.deviceDisconnected.emit('OnlineWeather')
-
             return False
 
         val = data['list'][0]
@@ -192,75 +167,55 @@ class OnlineWeather(PyQt5.QtCore.QObject):
             self.data['rain'] = val['rain']['3h']
 
         self.signals.dataReceived.emit(self.data)
-        self.signals.deviceConnected.emit('OnlineWeather')
-
         return True
 
     def getOpenWeatherMapDataWorker(self, url=''):
         """
-        getOpenWeatherMapDataWorker fetches a given url and does the error handling.
-
         :param url:
         :return: data
         """
-
         if not url:
             return None
 
         try:
             data = requests.get(url, timeout=30)
-
         except TimeoutError:
-            self.log.warning(f'{url} not reachable')
+            self.log.warning(f'[{url}] not reachable')
             return None
-
         except Exception as e:
-            self.log.critical(f'{url} general exception: {e}')
+            self.log.critical(f'[{url}] general exception: [{e}]')
             return None
-
         if data.status_code != 200:
-            self.log.warning(f'{url}: status nok')
+            self.log.warning(f'[{url}] status is not 200')
             return None
 
         return data.json()
 
     def getOpenWeatherMapData(self, url=''):
         """
-        getOpenWeatherMapData initiates the worker thread to get the web data fetched
-
         :param url:
         :return: true for test purpose
         """
-
         worker = Worker(self.getOpenWeatherMapDataWorker, url)
         worker.signals.result.connect(self.updateOpenWeatherMapDataWorker)
         self.threadPool.start(worker)
-
         return True
 
     def updateOpenWeatherMapData(self):
         """
-        updateOpenWeatherMap downloads the actual OpenWeatherMap image and displays it in
-        environment tab. it checks first if online is set, otherwise not download will take
-        place. it will be updated every 10 minutes.
+        updateOpenWeatherMap downloads the actual OpenWeatherMap image and
+        displays it in environment tab. it checks first if online is set,
+        otherwise not download will take place. it will be updated every 10 minutes.
 
         :return: success
         """
-
-        if not self.apiKey:
-            self.signals.deviceDisconnected.emit('OnlineWeather')
-            return False
-
         if not self.online:
-            self.signals.deviceDisconnected.emit('OnlineWeather')
             self.signals.dataReceived.emit(None)
+            self.stopCommunication()
             return False
-
         if not self.running:
-            self.signals.deviceDisconnected.emit('OnlineWeather')
             return False
 
-        # prepare coordinates for website
         lat = self.location.latitude.degrees
         lon = self.location.longitude.degrees
 
@@ -268,5 +223,4 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&APPID={self.apiKey}'
         self.getOpenWeatherMapData(url=url)
         self.log.debug(f'{url}')
-
         return True

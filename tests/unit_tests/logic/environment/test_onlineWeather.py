@@ -210,20 +210,12 @@ def test_updateOpenWeatherMapData_1():
 
 
 def test_updateOpenWeatherMapData_2():
-    app.apiKey = 'test'
-    suc = app.updateOpenWeatherMapData()
-    assert not suc
-
-
-def test_updateOpenWeatherMapData_3():
-    app.apiKey = 'test'
     app.online = True
     suc = app.updateOpenWeatherMapData()
     assert not suc
 
 
-def test_updateOpenWeatherMapData_4():
-    app.apiKey = 'test'
+def test_updateOpenWeatherMapData_3():
     app.online = True
     app.running = True
     suc = app.updateOpenWeatherMapData()

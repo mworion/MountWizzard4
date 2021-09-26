@@ -586,7 +586,7 @@ class SettDevice:
                 continue
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
-            # self.app.message.emit(f'Disconnected server: [{driver}] ', 0)
+            self.app.message.emit(f'Disconnected server: [{driver}] ', 0)
         return True
 
     def deviceConnected(self, deviceName):
@@ -599,12 +599,11 @@ class SettDevice:
 
         for driver in self.drivers:
             if not self.scanValid(driver=driver, deviceName=deviceName):
-                print(deviceName, driver)
                 continue
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[driver] = True
-            # self.app.message.emit(f'{driver} connected', 0)
+            self.app.message.emit(f'Device connected:    [{driver}]', 0)
         return True
 
     def deviceDisconnected(self, deviceName):
@@ -618,5 +617,5 @@ class SettDevice:
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
             self.deviceStat[driver] = False
-            # self.app.message.emit(f'{driver} disconnected', 0)
+            self.app.message.emit(f'Disconnected device: [{driver}]', 0)
         return True

@@ -18,19 +18,19 @@
 import logging
 
 # external packages
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, QObject
 import numpy as np
 from sgp4.exporter import export_tle
 from skyfield import almanac
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.convert import valueToInt
 
 
-class SatControlWidget(MWidget):
+class SatControlWidget(QObject):
     """
     """
+
     log = logging.getLogger(__name__)
     valueChanged = pyqtSignal(object)
 

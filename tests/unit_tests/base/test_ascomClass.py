@@ -362,3 +362,18 @@ def test_stopCommunication_1():
             assert suc
             assert not app.serverConnected
             assert not app.deviceConnected
+
+
+def test_stopCommunication_2():
+    app.client = 1
+    app.deviceConnected = True
+    app.serverConnected = True
+    app.deviceName = 'test'
+    with mock.patch.object(app,
+                           'stopTimer'):
+        with mock.patch.object(app,
+                               'setAscomProperty'):
+            suc = app.stopCommunication()
+            assert suc
+            assert not app.serverConnected
+            assert not app.deviceConnected

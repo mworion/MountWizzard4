@@ -23,6 +23,7 @@ from unittest import mock
 
 # local import
 from base import loggerMW
+from base.loggerMW import LoggerWriter
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -30,6 +31,12 @@ def module_setup_teardown():
     global app
 
     yield
+
+
+def test_loggerWriter():
+    a = LoggerWriter(logging.getLogger().debug, mode='Test')
+    a.write('asdfahdf\najdfhasf')
+    a.flush()
 
 
 def test_timeTz():

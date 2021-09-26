@@ -599,6 +599,7 @@ class SettDevice:
 
         for driver in self.drivers:
             if not self.scanValid(driver=driver, deviceName=deviceName):
+                print(deviceName, driver)
                 continue
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)

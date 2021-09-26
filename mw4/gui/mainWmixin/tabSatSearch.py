@@ -235,12 +235,11 @@ class SatSearch(object):
                 lonRate.degrees.per_second)
 
     @staticmethod
-    def calcSatMagnitude(sat, loc, ephemeris, satRange, tEv):
+    def calcSatSunPhase(sat, loc, ephemeris, tEv):
         """
         :param sat:
         :param loc:
         :param ephemeris:
-        :param satRange:
         :param tEv:
         :return:
         """
@@ -252,7 +251,6 @@ class SatSearch(object):
         obsSat = satPos - obsPos
         phase = satPos.separation_from(obsSat).radians
         """
-        intMag = -1.3
         earth = ephemeris['earth']
         sun = ephemeris['sun']
         satP = (earth + sat).at(tEv)
@@ -261,13 +259,36 @@ class SatSearch(object):
         s = satP.observe(sun).apparent()
         o = satP.observe(obs).apparent()
         phase = s.separation_from(o).radians
+        return phase
+
+    def calcApparentMagnitude(self, sat, loc, ephemeris, satRange, tEv):
+        """
+        solution base on the work from:
+        https://astronomy.stackexchange.com/questions/28744
+            /calculating-the-apparent-magnitude-of-a-satellite/28765#28765
+        https://astronomy.stackexchange.com/q/28744/7982
+        https://www.researchgate.net/publication
+            /268194552_Large_phase_angle_observations_of_GEO_satellites
+        https://amostech.com/TechnicalPapers/2013/POSTER/COGNION.pdf
+        https://apps.dtic.mil/dtic/tr/fulltext/u2/785380.pdf
+
+        :param sat:
+        :param loc:
+        :param ephemeris:
+        :param sat:
+        :param satRange:
+        :param tEv:
+        :return:
+        """
+        phase = self.calcSatSunPhase(sat, loc, ephemeris, tEv)
+        intMag = -1.3
 
         term1 = intMag
         term2 = +5.0 * np.log10(satRange / 1000.)
         arg = np.sin(phase) + (np.pi - phase) * np.cos(phase)
         term3 = -2.5 * np.log10(arg)
-        absMag = term1 + term2 + term3
-        return absMag
+        appMag = term1 + term2 + term3
+        return appMag
 
     def setSatTableEntry(self, row, col, entry):
         """
@@ -568,8 +589,6 @@ class SatSearch(object):
         if key not in self.satelliteSourceURLs:
             return False
         source = self.satelliteSourceURLs[key]
-        if not source:
-            return False
         self.ui.listSatelliteNames.setRowCount(0)
         isOnline = self.ui.isOnline.isChecked()
         worker = Worker(self.workerLoadDataFromSourceURLs,

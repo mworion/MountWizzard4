@@ -321,31 +321,30 @@ class SatSearch(object):
         entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
         self.sigSetSatTableEntry.emit(row, 5, entry)
 
-        if isUp is None:
-            return False
+        if isUp is not None:
+            if isUp[0]:
+                t1 = f'{isUp[1][0].tt_strftime("%m-%d")}'
+                t2 = f'{isUp[1][0].tt_strftime("%H:%M:%S")}'
+            else:
+                t1 = t2 = ''
 
-        if isUp[0]:
-            t1 = f'{isUp[1][0].tt_strftime("%m-%d")}'
-            t2 = f'{isUp[1][0].tt_strftime("%H:%M:%S")}'
-        else:
-            t1 = t2 = ''
+            entry = QTableWidgetItem(t1)
+            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            self.sigSetSatTableEntry.emit(row, 6, entry)
 
-        entry = QTableWidgetItem(t1)
-        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        self.sigSetSatTableEntry.emit(row, 6, entry)
+            entry = QTableWidgetItem(t2)
+            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            self.sigSetSatTableEntry.emit(row, 7, entry)
 
-        entry = QTableWidgetItem(t2)
-        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        self.sigSetSatTableEntry.emit(row, 7, entry)
+        if isSunlit is not None:
+            if isSunlit:
+                value = f'{appMag:+05.1f}'
+            else:
+                value = ''
 
-        if isSunlit:
-            value = f'{appMag:+04.1f}'
-        else:
-            value = ''
-
-        entry = QTableWidgetItem(value)
-        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        self.sigSetSatTableEntry.emit(row, 8, entry)
+            entry = QTableWidgetItem(value)
+            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            self.sigSetSatTableEntry.emit(row, 8, entry)
         return True
 
     def satCalcDynamicTable(self):
@@ -361,6 +360,7 @@ class SatSearch(object):
 
         satTab = self.ui.listSatelliteNames
         loc = self.app.mount.obsSite.location
+        eph = self.app.ephemeris
         ts = self.app.mount.obsSite.ts
         timeNow = ts.now()
         viewPortRect = QRect(QPoint(0, 0), satTab.viewport().size())
@@ -368,7 +368,6 @@ class SatSearch(object):
         for row in range(satTab.rowCount()):
             rect = satTab.visualRect(satTab.model().index(row, 0))
             isVisible = viewPortRect.intersects(rect)
-
             if not isVisible:
                 continue
             if satTab.isRowHidden(row):
@@ -377,7 +376,16 @@ class SatSearch(object):
             name = satTab.model().index(row, 1).data()
             sat = self.satellites[name]
             satParam = self.findRangeRate(sat, loc, timeNow)
-            self.updateTableEntries(row, satParam)
+            if not np.isnan(satParam[0]):
+                isSunlit = self.findSunlit(sat, eph, timeNow)
+                satRange = satParam[0]
+                if isSunlit:
+                    appMag = self.calcAppMag(sat, loc, eph, satRange, timeNow)
+                else:
+                    appMag = 99
+
+            self.updateTableEntries(row, satParam, isSunlit=isSunlit,
+                                    appMag=appMag)
         return True
 
     @staticmethod
@@ -504,11 +512,11 @@ class SatSearch(object):
         satTab.setColumnWidth(1, 155)
         satTab.setColumnWidth(2, 50)
         satTab.setColumnWidth(3, 50)
-        satTab.setColumnWidth(4, 45)
-        satTab.setColumnWidth(5, 45)
-        satTab.setColumnWidth(6, 45)
-        satTab.setColumnWidth(7, 65)
-        satTab.setColumnWidth(8, 40)
+        satTab.setColumnWidth(4, 44)
+        satTab.setColumnWidth(5, 44)
+        satTab.setColumnWidth(6, 44)
+        satTab.setColumnWidth(7, 63)
+        satTab.setColumnWidth(8, 45)
         satTab.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)

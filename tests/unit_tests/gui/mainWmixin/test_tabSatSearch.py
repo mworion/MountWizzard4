@@ -470,7 +470,7 @@ def test_workerSatCalcTable_3(function):
                 with mock.patch.object(function,
                                        'updateTableEntries'):
                     with mock.patch.object(function,
-                                           'calcApparentMagnitude',
+                                           'calcAppMag',
                                            return_value=0):
                         suc = function.workerSatCalcTable()
                         assert suc
@@ -505,7 +505,7 @@ def test_workerSatCalcTable_4(function):
                 with mock.patch.object(function,
                                        'updateTableEntries'):
                     with mock.patch.object(function,
-                                           'calcApparentMagnitude',
+                                           'calcAppMag',
                                            return_value=0):
                         suc = function.workerSatCalcTable()
                         assert suc
@@ -541,7 +541,7 @@ def test_workerSatCalcTable_5(function):
                 with mock.patch.object(function,
                                        'updateTableEntries'):
                     with mock.patch.object(function,
-                                           'calcApparentMagnitude',
+                                           'calcAppMag',
                                            return_value=0):
                         suc = function.workerSatCalcTable()
                         assert suc

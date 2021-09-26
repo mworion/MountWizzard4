@@ -277,8 +277,9 @@ class SettDevice:
 
     def processPopupResults(self):
         """
-        processPopupResults takes sets the actual drop down in the device settings lists to
-        the choice of the popup window. after that it starts the driver again.
+        processPopupResults takes sets the actual drop down in the device settings
+        lists to the choice of the popup window. after that it starts the driver
+        again.
 
         :return: success if new device could be selected
         """
@@ -310,9 +311,10 @@ class SettDevice:
 
     def copyConfig(self, driver='', framework=''):
         """
-        copyConfig transfers all information of the actual driver to all other drivers of
-        the same framework. if done so, all other drivers running on the same framework have
-        to be stopped, copied parameters, initialized and started, too.
+        copyConfig transfers all information of the actual driver to all other
+        drivers of the same framework. if done so, all other drivers running on
+        the same framework have to be stopped, copied parameters, initialized and
+        started, too.
 
         :param driver:
         :param framework:
@@ -346,10 +348,10 @@ class SettDevice:
 
     def callPopup(self, driver):
         """
-        callPopup prepares the data and calls and processes the returned data for the given
-        driver.
-        if copy flags for some frameworks are given, the properties of the actual driver
-        will be copied to all other drivers with the same framework.
+        callPopup prepares the data and calls and processes the returned data for
+        the given driver.
+        if copy flags for some frameworks are given, the properties of the actual
+        driver will be copied to all other drivers with the same framework.
 
         :param driver:
         :return: True for test purpose
@@ -438,9 +440,9 @@ class SettDevice:
         but for internal driver this has to be done separately.
 
         as the configuration is stored in the config, start also stores the selected
-        framework in the framework attribute of the driver's class. this is needed as when
-        stopping the driver the config dict already has the new framework set and we have to
-        remember it.
+        framework in the framework attribute of the driver's class. this is needed as
+        when stopping the driver the config dict already has the new framework set
+        and we have to remember it.
 
         :param driver:
         :param autoStart:

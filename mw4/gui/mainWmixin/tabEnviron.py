@@ -378,14 +378,14 @@ class Environ(object):
         try:
             data = requests.get(url, timeout=30)
         except Exception as e:
-            self.log.critical(f'{url} general exception: {e}')
+            self.log.critical(f'URL: [{url}] general exception: [{e}]')
             return None
 
         if data.status_code != 200:
-            self.log.warning(f'{url}: status nok')
+            self.log.warning(f'URL: [{url}] status nok')
             return None
 
-        self.log.trace(f'{url}: {data.status_code}')
+        self.log.trace(f'URL: [{url}] status: [{data.status_code}]')
         return data
 
     @staticmethod

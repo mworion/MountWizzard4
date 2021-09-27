@@ -73,8 +73,8 @@ def test_workerGetInitialConfig_2():
                            return_value=True):
         suc = app.workerGetInitialConfig()
         assert suc
-        assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100
-        assert app.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570
+        assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100.0
+        assert app.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570.0
 
 
 def test_workerGetInitialConfig_3():
@@ -86,6 +86,6 @@ def test_workerGetInitialConfig_3():
                            return_value=True):
         suc = app.workerGetInitialConfig()
         assert suc
-        assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100
-        assert app.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570
+        assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100.0
+        assert app.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570.0
 

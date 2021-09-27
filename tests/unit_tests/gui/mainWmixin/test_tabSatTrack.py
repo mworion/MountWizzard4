@@ -222,7 +222,6 @@ def test_extractOrbits_3(function):
     events = [0, 1, 2, 0, 1, 2, 0, 1, 2]
 
     function.extractOrbits(now, times, events)
-    print(function.satOrbits)
     assert len(function.satOrbits) == 1
 
 
@@ -265,7 +264,6 @@ def test_extractOrbits_5(function):
     events = [0, 1, 2, 0, 1, 2, 0, 1, 1]
 
     function.extractOrbits(now, times, events)
-    print(function.satOrbits)
     assert len(function.satOrbits) == 0
 
 

@@ -23,6 +23,7 @@ releaseNotes = """
 - add: angular error ra / dec axis in measurement
 - add: device connection similar for ASCOM and ALPACA devices
 - add: extended satellite search and filter capabilities
+- add: estimation of satellite apparent magnitude
 - add: extended satellite tracking and tuning capabilities
 - add: enabling loading a custom satellite TLE data file
 - add: command window for manual mount commands
@@ -35,7 +36,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.0b2',
+    version='2.1.0b3',
     packages=[
         'mw4',
         'mw4.base',

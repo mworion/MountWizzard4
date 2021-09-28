@@ -199,6 +199,20 @@ def test_findSatUp_2(function):
     assert val[1] == [5]
 
 
+def test_findRangeRate(function):
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
+    tEv = function.app.mount.obsSite.ts.tt_jd(2459215.5)
+    val = function.findRangeRate(sat, loc, tEv)
+    assert round(val[0], 3) == 5694.271
+    assert round(val[1], 3) == -0.678
+    assert round(val[2], 3) == 0.004
+    assert round(val[3], 3) == 0.079
+
+
 def test_calcSatSunPhase_1(function):
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",

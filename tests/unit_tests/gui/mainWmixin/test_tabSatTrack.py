@@ -1096,8 +1096,11 @@ def test_startTrack_7(function):
         with mock.patch.object(function.app.mount.obsSite,
                                'unpark',
                                return_value=False):
-            suc = function.startTrack()
-            assert suc
+            with mock.patch.object(function.app.mount.satellite,
+                                   'clearTrackingOffsets',
+                                   return_value=False):
+                suc = function.startTrack()
+                assert suc
 
 
 def test_stopTrack_1(function):

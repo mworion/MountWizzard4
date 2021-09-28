@@ -24,7 +24,7 @@ import math
 
 # external packages
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle
-from PyQt5.QtWidgets import QPushButton, QComboBox
+from PyQt5.QtWidgets import QPushButton, QComboBox, QTableWidgetItem
 from PyQt5.QtCore import pyqtSignal, QObject, QEvent
 from skyfield.api import Angle
 import numpy as np
@@ -32,7 +32,7 @@ import numpy as np
 # local import
 from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.toolsQtWidget import FileSortProxyModel
-from gui.utilities.toolsQtWidget import QMultiWait
+from gui.utilities.toolsQtWidget import QMultiWait, QCustomTableWidgetItem
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -81,6 +81,30 @@ def test_QMultiWait_4():
     A = Test()
     w.addWaitableSignal(A.a)
     w.clear()
+
+
+def test_QCustomTableWidgetItem_1():
+    i1 = QCustomTableWidgetItem('')
+    i2 = QCustomTableWidgetItem('')
+    assert not (i1 < i2)
+
+
+def test_QCustomTableWidgetItem_2():
+    i1 = QCustomTableWidgetItem('-2.0')
+    i2 = QCustomTableWidgetItem('')
+    assert i1 < i2
+
+
+def test_QCustomTableWidgetItem_3():
+    i1 = QCustomTableWidgetItem('-2.0')
+    i2 = QCustomTableWidgetItem('5')
+    assert i1 < i2
+
+
+def test_QCustomTableWidgetItem_4():
+    i1 = QCustomTableWidgetItem('-2.0')
+    i2 = QTableWidgetItem('5')
+    assert i1 < i2
 
 
 def test_FileSortProxyModel_1():

@@ -55,7 +55,6 @@ class Camera:
     log = logging.getLogger(__name__)
 
     def __init__(self, app):
-
         self.app = app
         self.threadPool = app.threadPool
         self.signals = CameraSignals()

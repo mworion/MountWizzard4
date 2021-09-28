@@ -27,14 +27,9 @@ from indibase import qtIndiBase
 
 class IndiClass:
     """
-    the class indiClass inherits all information and handling of indi devices
-    this class will be only referenced from other classes and not directly used
-
-        >>> indi = IndiClass(app=None, data=None)
     """
 
     __all__ = ['IndiClass']
-
     log = logging.getLogger(__name__)
 
     RETRY_DELAY = 1500
@@ -103,8 +98,6 @@ class IndiClass:
     }
 
     def __init__(self, app=None, data=None, threadPool=None):
-        super().__init__()
-
         self.app = app
         self.data = data
         self.client = qtIndiBase.Client(host=None, threadPool=threadPool)

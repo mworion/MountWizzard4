@@ -22,7 +22,7 @@ releaseNotes = """
 - add: hemisphere window: help for choosing the right star for polar alignment
 - add: angular error ra / dec axis in measurement
 - add: device connection similar for ASCOM and ALPACA devices
-- add: extended satellite search and filter capabilities
+- add: extended satellite search and filter capabilities (spreadsheet style)
 - add: estimation of satellite apparent magnitude
 - add: extended satellite tracking and tuning capabilities
 - add: enabling loading a custom satellite TLE data file
@@ -36,7 +36,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.0b3',
+    version='2.1.0b4',
     packages=[
         'mw4',
         'mw4.base',

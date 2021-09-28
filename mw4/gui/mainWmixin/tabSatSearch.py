@@ -324,7 +324,7 @@ class SatSearch(object):
 
         if isUp is not None:
             if isUp[0]:
-                t = f'{isUp[1][0].tt_strftime("%H:%M:%S")}'
+                t = f'{isUp[1][0].tt_strftime("%H:%M")}'
             else:
                 t = ''
 
@@ -503,15 +503,15 @@ class SatSearch(object):
         satTab.setColumnCount(8)
         hl = ['Num', 'Satellite Name', 'Dist\n[km]', 'Rad v\n[km/s]',
               'Lat v\n[deg/s]', 'Lon v\n[deg/s]',
-              'Time rise\n[H:M:S]', 'Sat\n[mag]']
+              'Time\n[H:M]', 'Sat\n[mag]']
         satTab.setHorizontalHeaderLabels(hl)
         satTab.setColumnWidth(0, 50)
-        satTab.setColumnWidth(1, 200)
+        satTab.setColumnWidth(1, 205)
         satTab.setColumnWidth(2, 50)
         satTab.setColumnWidth(3, 50)
-        satTab.setColumnWidth(4, 44)
-        satTab.setColumnWidth(5, 44)
-        satTab.setColumnWidth(6, 63)
+        satTab.setColumnWidth(4, 45)
+        satTab.setColumnWidth(5, 45)
+        satTab.setColumnWidth(6, 50)
         satTab.setColumnWidth(7, 45)
         satTab.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)

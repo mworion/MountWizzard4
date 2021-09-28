@@ -27,6 +27,7 @@ import numpy as np
 # local import
 from base.tpool import Worker
 from logic.databaseProcessing.dataWriter import DataWriter
+from gui.utilities.toolsQtWidget import QCustomTableWidgetItem
 
 
 class SatSearch(object):
@@ -323,28 +324,23 @@ class SatSearch(object):
 
         if isUp is not None:
             if isUp[0]:
-                t1 = f'{isUp[1][0].tt_strftime("%m-%d")}'
-                t2 = f'{isUp[1][0].tt_strftime("%H:%M:%S")}'
+                t = f'{isUp[1][0].tt_strftime("%H:%M:%S")}'
             else:
-                t1 = t2 = ''
+                t = ''
 
-            entry = QTableWidgetItem(t1)
+            entry = QTableWidgetItem(t)
             entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
             self.sigSetSatTableEntry.emit(row, 6, entry)
 
-            entry = QTableWidgetItem(t2)
-            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-            self.sigSetSatTableEntry.emit(row, 7, entry)
-
         if isSunlit is not None:
             if isSunlit:
-                value = f'{appMag:+05.1f}'
+                value = f'{appMag:1.1f}'
             else:
                 value = ''
 
-            entry = QTableWidgetItem(value)
+            entry = QCustomTableWidgetItem(value)
             entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
-            self.sigSetSatTableEntry.emit(row, 8, entry)
+            self.sigSetSatTableEntry.emit(row, 7, entry)
         return True
 
     def satCalcDynamicTable(self):
@@ -424,9 +420,9 @@ class SatSearch(object):
             number = satTab.model().index(row, 0).data().lower()
             show = filterStr in number + name
             if checkIsUp:
-                show = show and satTab.model().index(row, 7).data() != ''
+                show = show and satTab.model().index(row, 6).data() != ''
             if checkIsSunlit:
-                show = show and satTab.model().index(row, 8).data() != ''
+                show = show and satTab.model().index(row, 7).data() != ''
             if checkRemoveSO:
                 show = show and 'starlink' not in name
                 show = show and 'oneweb' not in name
@@ -504,19 +500,19 @@ class SatSearch(object):
         """
         satTab = self.ui.listSatelliteNames
         satTab.setRowCount(0)
-        satTab.setColumnCount(9)
-        hl = ['ID', 'Name', 'Dist\n[km]', 'Radial\n[km/s]', 'Lat\n[deg/s]',
-              'Lon\n[deg/s]', 'Date\n[m-d]', 'Time\n[H:M:S]', 'Sat\n[mag]']
+        satTab.setColumnCount(8)
+        hl = ['Num', 'Satellite Name', 'Dist\n[km]', 'Rad v\n[km/s]',
+              'Lat v\n[deg/s]', 'Lon v\n[deg/s]',
+              'Time rise\n[H:M:S]', 'Sat\n[mag]']
         satTab.setHorizontalHeaderLabels(hl)
         satTab.setColumnWidth(0, 50)
-        satTab.setColumnWidth(1, 155)
+        satTab.setColumnWidth(1, 200)
         satTab.setColumnWidth(2, 50)
         satTab.setColumnWidth(3, 50)
         satTab.setColumnWidth(4, 44)
         satTab.setColumnWidth(5, 44)
-        satTab.setColumnWidth(6, 44)
-        satTab.setColumnWidth(7, 63)
-        satTab.setColumnWidth(8, 45)
+        satTab.setColumnWidth(6, 63)
+        satTab.setColumnWidth(7, 45)
         satTab.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)

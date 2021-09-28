@@ -22,9 +22,11 @@ import logging
 
 # external packages
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtGui import QPalette, QIcon, QPixmap
 from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
 from PyQt5.QtCore import Qt, QSize, QEvent
+
 import numpy as np
 
 # local imports
@@ -90,6 +92,29 @@ class QMultiWait(QObject):
 
         self.waitable = set()
         self.waitready = set()
+
+
+class QCustomTableWidgetItem(QTableWidgetItem):
+    """
+    """
+    def __init__(self, value):
+        super().__init__(value)
+
+    def __lt__(self, other):
+        if (isinstance(other, QCustomTableWidgetItem)):
+            selfData = self.data(Qt.EditRole)
+            if selfData == '':
+                selfDataValue = 99
+            else:
+                selfDataValue = float(selfData)
+            otherData = other.data(Qt.EditRole)
+            if otherData == '':
+                otherDataValue = 99
+            else:
+                otherDataValue = float(otherData)
+            return selfDataValue < otherDataValue
+        else:
+            return QTableWidgetItem.__lt__(self, other)
 
 
 class MWidget(QWidget, Styles, ToolsMatplotlib):

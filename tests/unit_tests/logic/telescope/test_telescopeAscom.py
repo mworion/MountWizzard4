@@ -67,25 +67,11 @@ def test_workerGetInitialConfig_1():
 
 
 def test_workerGetInitialConfig_2():
-    app.clientProps = ['ApertureDiameter', 'FocalLength']
-    with mock.patch.object(AscomClass,
-                           'workerGetInitialConfig',
-                           return_value=True):
+    with mock.patch.object(app,
+                           'getAscomProperty',
+                           return_value=0.57):
         suc = app.workerGetInitialConfig()
         assert suc
-        assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100.0
-        assert app.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570.0
-
-
-def test_workerGetInitialConfig_3():
-    app.clientProps = ['ApertureDiameter', 'FocalLength']
-    app.client.ApertureDiameter = 0.100
-    app.client.FocalLength = 0.570
-    with mock.patch.object(AscomClass,
-                           'workerGetInitialConfig',
-                           return_value=True):
-        suc = app.workerGetInitialConfig()
-        assert suc
-        assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100.0
+        assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 570.0
         assert app.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570.0
 

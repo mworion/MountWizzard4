@@ -101,6 +101,18 @@ class IndiClass:
         self.app = app
         self.data = data
         self.client = qtIndiBase.Client(host=None, threadPool=threadPool)
+
+        if self.app is not None:
+            # this is for direct use of indiClass in devicePopupW for
+            # device discovery as we have in this case no app link, but we
+            # need the signaling work.
+            clientSig = self.client.signals
+            selfSig = self.signals
+            clientSig.deviceConnected.connect(selfSig.deviceConnected)
+            clientSig.deviceDisconnected.connect(selfSig.deviceDisconnected)
+            clientSig.serverConnected.connect(selfSig.serverConnected)
+            clientSig.serverDisconnected.connect(selfSig.serverDisconnected)
+
         self.deviceName = ''
         self.device = None
         self.deviceConnected = False

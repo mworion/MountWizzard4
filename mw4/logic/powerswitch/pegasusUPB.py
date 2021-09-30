@@ -62,14 +62,11 @@ class PegasusUPB:
             'indi': PegasusUPBIndi(self.app, self.signals, self.data),
             'alpaca': PegasusUPBAlpaca(self.app, self.signals, self.data),
         }
+        if platform.system() == 'Windows':
+            self.run['ascom'] = PegasusUPBAscom(self.app, self.signals, self.data)
+
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
-
-        indiSignals = self.run['indi'].client.signals
-        indiSignals.serverConnected.connect(self.signals.serverConnected)
-        indiSignals.serverDisconnected.connect(self.signals.serverDisconnected)
-        indiSignals.deviceConnected.connect(self.signals.deviceConnected)
-        indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
     def startCommunication(self, loadConfig=False):
         """

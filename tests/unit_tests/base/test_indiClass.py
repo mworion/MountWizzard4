@@ -26,6 +26,7 @@ from base.indiClass import IndiClass
 
 # local import
 from base import indiClass
+from base.driverDataClass import Signals
 
 host_ip = 'astro-mount.fritz.box'
 
@@ -34,15 +35,26 @@ class Signal(PyQt5.QtCore.QObject):
     message = PyQt5.QtCore.pyqtSignal(str, int)
 
 
+class Test(indiClass.IndiClass):
+    signals = Signals()
+
+    def __init__(self, app=None):
+        super().__init__(app=app)
+
+
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
     m = Signal()
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = indiClass.IndiClass(m)
+        app = Test(m)
 
     yield
+
+
+def test_class_without_app():
+    a = indiClass.IndiClass()
 
 
 def test_properties():

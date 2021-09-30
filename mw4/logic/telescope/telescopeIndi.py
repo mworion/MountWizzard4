@@ -29,9 +29,8 @@ class TelescopeIndi(IndiClass):
     __all__ = ['TelescopeIndi']
 
     def __init__(self, app=None, signals=None, data=None):
-        super().__init__(app=app, data=data, threadPool=app.threadPool)
-
         self.signals = signals
+        super().__init__(app=app, data=data, threadPool=app.threadPool)
         self.data = data
 
     def setUpdateConfig(self, deviceName):

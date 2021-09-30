@@ -29,9 +29,8 @@ class CoverIndi(IndiClass):
     __all__ = ['CoverIndi']
 
     def __init__(self, app=None, signals=None, data=None):
-        super().__init__(app=app, threadPool=app.threadPool)
-
         self.signals = signals
+        super().__init__(app=app, threadPool=app.threadPool)
         self.data = data
 
     def setUpdateConfig(self, deviceName):

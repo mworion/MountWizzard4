@@ -35,11 +35,11 @@ class Signal(PyQt5.QtCore.QObject):
     message = PyQt5.QtCore.pyqtSignal(str, int)
 
 
-class Test(indiClass.IndiClass):
+class TestSignals(IndiClass):
     signals = Signals()
 
-    def __init__(self, app=None):
-        super().__init__(app=app)
+    def __init__(self, app=None, data=None, threadPool=None):
+        super().__init__(app=app, data=data, threadPool=threadPool)
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -48,7 +48,7 @@ def module_setup_teardown():
     m = Signal()
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = Test(m)
+        app = TestSignals(m)
         yield
 
 

@@ -35,8 +35,16 @@ import win32com.client
 # local import
 from base.ascomClass import AscomClass
 from base.loggerMW import setupLogging
+from base.driverDataClass import Signals
 
 setupLogging()
+
+
+class TestSignals(AscomClass):
+    signals = Signals()
+
+    def __init__(self, app=None, data=None, threadPool=None):
+        super().__init__(app=app, data=data, threadPool=threadPool)
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -47,7 +55,7 @@ def module_setup_teardown():
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = AscomClass(app=Test(), data={}, threadPool=QThreadPool())
+        app = TestSignals(app=Test(), data={}, threadPool=QThreadPool())
 
     yield
     app.threadPool.waitForDone(1000)
@@ -80,15 +88,15 @@ def test_getAscomProperty_2():
                            side_effect=Exception):
         val = app.getAscomProperty('Connect')
         assert val is None
-        assert 'Connect' in app.propertyExceptions
+        assert 'connect' in app.propertyExceptions
 
 
 def test_getAscomProperty_3():
     class Client:
-        Connect = True
+        connect = True
 
     app.client = Client()
-    app.propertyExceptions = ['Test']
+    app.propertyExceptions = ['test']
     val = app.getAscomProperty('Connect')
     assert val
 
@@ -116,7 +124,7 @@ def test_setAscomProperty_3():
                            side_effect=Exception):
         suc = app.setAscomProperty('Names', True)
         assert not suc
-        assert 'Names' in app.propertyExceptions
+        assert 'names' in app.propertyExceptions
 
 
 def test_setAscomProperty_4():
@@ -214,18 +222,11 @@ def test_workerConnectDevice_2():
 
 
 def test_workerGetInitialConfig_1():
-    class Test:
-        connected = False
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
-
-    app.client = Test()
-    suc = app.workerGetInitialConfig()
-    assert suc
-    assert app.data['DRIVER_INFO.DRIVER_NAME'] == 'test'
-    assert app.data['DRIVER_INFO.DRIVER_VERSION'] == '1'
-    assert app.data['DRIVER_INFO.DRIVER_EXEC'] == 'test1'
+    with mock.patch.object(app,
+                           'getAndStoreAscomProperty',
+                           return_value='test'):
+        suc = app.workerGetInitialConfig()
+        assert suc
 
 
 def test_pollStatus_1():
@@ -360,8 +361,6 @@ def test_stopCommunication_1():
                                'setAscomProperty'):
             suc = app.stopCommunication()
             assert suc
-            assert not app.serverConnected
-            assert not app.deviceConnected
 
 
 def test_stopCommunication_2():

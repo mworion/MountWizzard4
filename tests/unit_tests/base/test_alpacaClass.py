@@ -30,8 +30,16 @@ import requests
 # local import
 from base.alpacaClass import AlpacaClass
 from base.loggerMW import setupLogging
+from base.driverDataClass import Signals
 
 setupLogging()
+
+
+class TestSignals(AlpacaClass):
+    signals = Signals()
+
+    def __init__(self, app=None, data=None, threadPool=None):
+        super().__init__(app=app, data=data, threadPool=threadPool)
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -42,7 +50,7 @@ def module_setup_teardown():
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = AlpacaClass(app=Test(), data={}, threadPool=QThreadPool())
+        app = TestSignals(app=Test(), data={}, threadPool=QThreadPool())
 
     yield
 

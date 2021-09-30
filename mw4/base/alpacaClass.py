@@ -25,16 +25,12 @@ from PyQt5.QtTest import QTest
 import requests
 
 # local imports
-from base.driverDataClass import DriverData, Signals
+from base.driverDataClass import DriverData
 from base.tpool import Worker
 
 
-class AlpacaClass(DriverData, Signals):
+class AlpacaClass(DriverData):
     """
-    the class AlpacaClass inherits all information and handling of alpaca devices
-    this class will be only referenced from other classes and not directly used
-
-        >>> a = AlpacaClass(app=None, data=None, threadPool=None)
     """
 
     log = logging.getLogger(__name__)
@@ -48,7 +44,6 @@ class AlpacaClass(DriverData, Signals):
 
         self.app = app
         self.threadPool = threadPool
-        self.alpacaSignals = Signals()
 
         self.data = data
         self.propertyExceptions = []
@@ -357,11 +352,11 @@ class AlpacaClass(DriverData, Signals):
 
         if not self.serverConnected:
             self.serverConnected = True
-            self.alpacaSignals.serverConnected.emit()
+            self.signals.serverConnected.emit()
 
         if not self.deviceConnected:
             self.deviceConnected = True
-            self.alpacaSignals.deviceConnected.emit(f'{self.deviceName}')
+            self.signals.deviceConnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ALPACA device found: [{self.deviceName}]', 0)
 
         return True
@@ -398,12 +393,12 @@ class AlpacaClass(DriverData, Signals):
         suc = self.getAlpacaProperty('connected')
         if self.deviceConnected and not suc:
             self.deviceConnected = False
-            self.alpacaSignals.deviceDisconnected.emit(f'{self.deviceName}')
+            self.signals.deviceDisconnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ALPACA device remove:[{self.deviceName}]', 0)
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
-            self.alpacaSignals.deviceConnected.emit(f'{self.deviceName}')
+            self.signals.deviceConnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ALPACA device found: [{self.deviceName}]', 0)
 
         return suc
@@ -465,8 +460,8 @@ class AlpacaClass(DriverData, Signals):
         self.deviceConnected = False
         self.serverConnected = False
         self.propertyExceptions = []
-        self.alpacaSignals.deviceDisconnected.emit(f'{self.deviceName}')
-        self.alpacaSignals.serverDisconnected.emit({f'{self.deviceName}': 0})
+        self.signals.deviceDisconnected.emit(f'{self.deviceName}')
+        self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
         self.app.message.emit(f'ALPACA device remove:[{self.deviceName}]', 0)
         return True
 

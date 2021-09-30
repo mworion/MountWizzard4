@@ -28,10 +28,10 @@ from PyQt5.QtTest import QTest
 
 # local imports
 from base.tpool import Worker
-from base.driverDataClass import DriverData, Signals
+from base.driverDataClass import DriverData
 
 
-class AscomClass(DriverData, Signals):
+class AscomClass(DriverData):
     """
     """
 
@@ -44,7 +44,6 @@ class AscomClass(DriverData, Signals):
 
         self.app = app
         self.threadPool = threadPool
-        self.ascomSignals = Signals()
         self.tM = QMutex()
 
         self.client = None
@@ -195,11 +194,11 @@ class AscomClass(DriverData, Signals):
 
         if not self.serverConnected:
             self.serverConnected = True
-            self.ascomSignals.serverConnected.emit()
+            self.signals.serverConnected.emit()
 
         if not self.deviceConnected:
             self.deviceConnected = True
-            self.ascomSignals.deviceConnected.emit(f'{self.deviceName}')
+            self.signals.deviceConnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ASCOM device found:  [{self.deviceName}]', 0)
         return True
 
@@ -220,12 +219,12 @@ class AscomClass(DriverData, Signals):
 
         if self.deviceConnected and not suc:
             self.deviceConnected = False
-            self.ascomSignals.deviceDisconnected.emit(f'{self.deviceName}')
+            self.signals.deviceDisconnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ASCOM device remove: [{self.deviceName}]', 0)
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
-            self.ascomSignals.deviceConnected.emit(f'{self.deviceName}')
+            self.signals.deviceConnected.emit(f'{self.deviceName}')
             self.app.message.emit(f'ASCOM device found:  [{self.deviceName}]', 0)
 
         return suc
@@ -338,7 +337,7 @@ class AscomClass(DriverData, Signals):
             self.serverConnected = False
             self.client = None
             self.propertyExceptions = []
-        self.ascomSignals.deviceDisconnected.emit(f'{self.deviceName}')
-        self.ascomSignals.serverDisconnected.emit({f'{self.deviceName}': 0})
+        self.signals.deviceDisconnected.emit(f'{self.deviceName}')
+        self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
         self.app.message.emit(f'ASCOM device remove: [{self.deviceName}]', 0)
         return True

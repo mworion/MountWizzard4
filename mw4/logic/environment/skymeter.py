@@ -59,23 +59,8 @@ class Skymeter:
             'indi': SkymeterIndi(self.app, self.signals, self.data),
             'alpaca': SkymeterAlpaca(self.app, self.signals, self.data),
         }
-
-        if platform.system() == 'Windows':
-            self.run['ascom'] = SkymeterAscom(self.app, self.signals, self.data)
-            ascomSignals = self.run['ascom'].ascomSignals
-            ascomSignals.serverConnected.connect(self.signals.serverConnected)
-            ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
-            ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
-            ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
-
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
-
-        alpacaSignals = self.run['alpaca'].alpacaSignals
-        alpacaSignals.serverConnected.connect(self.signals.serverConnected)
-        alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)
-        alpacaSignals.deviceConnected.connect(self.signals.deviceConnected)
-        alpacaSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
         indiSignals = self.run['indi'].client.signals
         indiSignals.serverConnected.connect(self.signals.serverConnected)

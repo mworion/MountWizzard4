@@ -31,12 +31,6 @@ if platform.system() == 'Windows':
 
 class FocuserSignals(PyQt5.QtCore.QObject):
     """
-    The FocuserSignals class offers a list of signals to be used and instantiated by
-    the Mount class to get signals for triggers for finished tasks to
-    enable a gui to update their values transferred to the caller back.
-
-    This has to be done in a separate class as the signals have to be subclassed from
-    QObject and the Mount class itself is subclassed from object
     """
 
     __all__ = ['FocuserSignals']
@@ -65,23 +59,8 @@ class Focuser:
             'indi': FocuserIndi(self.app, self.signals, self.data),
             'alpaca': FocuserAlpaca(self.app, self.signals, self.data),
         }
-
-        if platform.system() == 'Windows':
-            self.run['ascom'] = FocuserAscom(self.app, self.signals, self.data)
-            ascomSignals = self.run['ascom'].ascomSignals
-            ascomSignals.serverConnected.connect(self.signals.serverConnected)
-            ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
-            ascomSignals.deviceConnected.connect(self.signals.deviceConnected)
-            ascomSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
-
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
-
-        alpacaSignals = self.run['alpaca'].alpacaSignals
-        alpacaSignals.serverConnected.connect(self.signals.serverConnected)
-        alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)
-        alpacaSignals.deviceConnected.connect(self.signals.deviceConnected)
-        alpacaSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
         indiSignals = self.run['indi'].client.signals
         indiSignals.serverConnected.connect(self.signals.serverConnected)

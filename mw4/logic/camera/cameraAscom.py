@@ -270,7 +270,7 @@ class CameraAscom(AscomClass):
         if not canAbort:
             return False
 
-        self.callMethodThreaded('StopExposure')
+        self.callMethodThreaded(self.client.StopExposure)
         return True
 
     def sendCoolerSwitch(self, coolerOn=False):

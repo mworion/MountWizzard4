@@ -19,10 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- improvement: GUI for earth rotation data update, now downloads
-- improvement: performance for threads.
-- improvement: added FITS header entries for ALPACA and ASCOM
-- fix: removed stopping DAT when starting model
+- fix: bug in calling StopExposure on ascom
  """
 
 with open('notes.txt', 'w') as f:
@@ -30,7 +27,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.4',
+    version='2.0.5',
     packages=[
         'mw4',
         'mw4.base',

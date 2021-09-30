@@ -48,7 +48,6 @@ class Telescope:
     log = logging.getLogger(__name__)
 
     def __init__(self, app):
-
         self.app = app
         self.threadPool = app.threadPool
         self.signals = TelescopeSignals()
@@ -60,7 +59,6 @@ class Telescope:
             'indi': TelescopeIndi(self.app, self.signals, self.data),
             'alpaca': TelescopeAlpaca(self.app, self.signals, self.data),
         }
-
         if platform.system() == 'Windows':
             self.run['ascom'] = TelescopeAscom(self.app, self.signals, self.data)
 
@@ -69,9 +67,9 @@ class Telescope:
 
     def startCommunication(self, loadConfig=False):
         """
-
+        :param loadConfig:
+        :return:
         """
-
         if self.framework not in self.run.keys():
             return False
 
@@ -80,9 +78,8 @@ class Telescope:
 
     def stopCommunication(self):
         """
-
+        :return:
         """
-
         if self.framework not in self.run.keys():
             return False
 

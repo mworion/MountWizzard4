@@ -57,7 +57,6 @@ class Dome:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = DomeSignals()
-
         self.data = {
             'Slewing': False,
         }

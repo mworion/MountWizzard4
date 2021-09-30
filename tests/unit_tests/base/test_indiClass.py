@@ -49,8 +49,7 @@ def module_setup_teardown():
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
         app = Test(m)
-
-    yield
+        yield
 
 
 def test_class_without_app():

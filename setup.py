@@ -27,6 +27,7 @@ releaseNotes = """
 - add: extended satellite tracking and tuning capabilities
 - add: enabling loading a custom satellite TLE data file
 - add: command window for manual mount commands
+- improve: simplified signals generation
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
  """
@@ -36,7 +37,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.0b4',
+    version='2.1.0b5',
     packages=[
         'mw4',
         'mw4.base',

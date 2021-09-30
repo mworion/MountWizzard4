@@ -10,19 +10,22 @@ Ideas for the future
 - split profiles in base and add-on
 - receive video indi for sat tracking and horizon setup
 - joystick support
+- data exchange to EKOS SQLite for Location and horizon
 
 
 Released beta version of MW4
 ----------------------------
-2.1.0b0 (not released yet)
+2.1.0b5 (not released yet)
 
 - add: hemisphere window: help for choosing the right star for polar alignment
 - add: angular error ra / dec axis in measurement
 - add: device connection similar for ASCOM and ALPACA devices
-- add: extended satellite search and filter capabilities
+- add: extended satellite search and filter capabilities (spreadsheet style)
+- add: estimation of satellite apparent magnitude
 - add: extended satellite tracking and tuning capabilities
 - add: enabling loading a custom satellite TLE data file
 - add: command window for manual mount commands
+- improve: simplified signals generation
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
 
@@ -30,6 +33,10 @@ Released version of MW4
 -----------------------
 Version 2.0
 ^^^^^^^^^^^
+2.0.5
+
+- fix: bug when running "stop exposure" in ASCOM
+
 2.0.4
 
 - improvement: GUI for earth rotation data update, now downloads

@@ -45,6 +45,7 @@ class TelescopeAscom(AscomClass):
             value = value * 1000
 
         self.storePropertyToData(value, 'TELESCOPE_INFO.TELESCOPE_APERTURE')
+
         value = self.getAscomProperty('FocalLength')
         if isinstance(value, float):
             value = value * 1000

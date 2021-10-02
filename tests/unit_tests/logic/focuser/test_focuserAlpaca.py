@@ -24,7 +24,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.focuser.focuserAlpaca import FocuserAlpaca
-from logic.focuser.focuser import FocuserSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -34,7 +34,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
 
     global app
-    app = FocuserAlpaca(app=Test(), signals=FocuserSignals(), data={})
+    app = FocuserAlpaca(app=Test(), signals=Signals(), data={})
 
     yield
 

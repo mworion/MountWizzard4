@@ -25,7 +25,7 @@ from indibase.indiBase import Device, Client
 
 # local import
 from logic.focuser.focuserIndi import FocuserIndi
-from logic.focuser.focuser import FocuserSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -34,7 +34,7 @@ def module_setup_teardown():
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
     global app
-    app = FocuserIndi(app=Test(), signals=FocuserSignals(), data={})
+    app = FocuserIndi(app=Test(), signals=Signals(), data={})
 
     yield
 

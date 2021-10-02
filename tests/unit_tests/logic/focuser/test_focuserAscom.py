@@ -25,7 +25,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.focuser.focuserAscom import FocuserAscom
-from logic.focuser.focuser import FocuserSignals
+from base.driverDataClass import Signals
 from base.ascomClass import AscomClass
 
 if not platform.system() == 'Windows':
@@ -53,7 +53,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
 
     global app
-    app = FocuserAscom(app=Test(), signals=FocuserSignals(), data={})
+    app = FocuserAscom(app=Test(), signals=Signals(), data={})
     app.clientProps = []
     app.client = Test1()
 

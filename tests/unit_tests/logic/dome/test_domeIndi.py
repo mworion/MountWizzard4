@@ -25,7 +25,7 @@ from indibase.indiBase import Device, Client
 
 # local import
 from logic.dome.domeIndi import DomeIndi
-from logic.dome.dome import DomeSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -35,7 +35,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
         update1s = pyqtSignal()
     global app
-    app = DomeIndi(app=Test(), signals=DomeSignals(), data={})
+    app = DomeIndi(app=Test(), signals=Signals(), data={})
 
     yield
 

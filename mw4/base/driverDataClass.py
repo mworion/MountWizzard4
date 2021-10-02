@@ -29,6 +29,15 @@ class Signals(QObject):
     deviceConnected = pyqtSignal(str)
     deviceDisconnected = pyqtSignal(str)
 
+    integrated = pyqtSignal()
+    downloaded = pyqtSignal()
+    saved = pyqtSignal(object)
+    exposeReady = pyqtSignal()
+    azimuth = pyqtSignal(object)
+    slewFinished = pyqtSignal()
+    message = pyqtSignal(object)
+    version = pyqtSignal(int)
+
 
 class DriverData:
     log = logging.getLogger(__name__)

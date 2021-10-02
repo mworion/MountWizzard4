@@ -23,7 +23,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.filter.filterAlpaca import FilterAlpaca
-from logic.filter.filter import FilterSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -33,7 +33,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
 
     global app
-    app = FilterAlpaca(app=Test(), signals=FilterSignals(), data={})
+    app = FilterAlpaca(app=Test(), signals=Signals(), data={})
 
     yield
 

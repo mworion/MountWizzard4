@@ -24,7 +24,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.environment.weatherUPBAscom import WeatherUPBAscom
-from logic.environment.weatherUPB import WeatherUPBSignals
+from base.driverDataClass import Signals
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
@@ -47,7 +47,7 @@ def module_setup_teardown():
 
     global app
 
-    app = WeatherUPBAscom(app=Test(), signals=WeatherUPBSignals(), data={})
+    app = WeatherUPBAscom(app=Test(), signals=Signals(), data={})
     app.client = Test1()
     app.clientProps = []
     yield

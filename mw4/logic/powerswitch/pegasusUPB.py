@@ -20,19 +20,12 @@ import logging
 import platform
 
 # external packages
-import PyQt5
 
 # local imports
 from base.driverDataClass import Signals
 from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
-
-
-class PegasusUPBSignals(Signals):
-    """
-    """
-    version = PyQt5.QtCore.pyqtSignal(int)
 
 
 class PegasusUPB:
@@ -44,7 +37,7 @@ class PegasusUPB:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = PegasusUPBSignals()
+        self.signals = Signals()
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}

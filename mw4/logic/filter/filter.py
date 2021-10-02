@@ -20,22 +20,12 @@ import logging
 import platform
 
 # external packages
-import PyQt5
-
 # local imports
 from base.driverDataClass import Signals
 from logic.filter.filterIndi import FilterIndi
 from logic.filter.filterAlpaca import FilterAlpaca
 if platform.system() == 'Windows':
     from logic.filter.filterAscom import FilterAscom
-
-
-class FilterSignals(Signals):
-    """
-    """
-    azimuth = PyQt5.QtCore.pyqtSignal(object)
-    slewFinished = PyQt5.QtCore.pyqtSignal()
-    message = PyQt5.QtCore.pyqtSignal(object)
 
 
 class Filter:
@@ -46,7 +36,7 @@ class Filter:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = FilterSignals()
+        self.signals = Signals()
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}

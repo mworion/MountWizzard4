@@ -34,7 +34,7 @@ import ctypes
 from mountcontrol.mount import Mount
 from logic.environment.skymeter import Skymeter
 from logic.camera.cameraAscom import CameraAscom
-from logic.camera.camera import CameraSignals
+from base.driverDataClass import Signals
 from base.ascomClass import AscomClass
 from base.loggerMW import setupLogging
 setupLogging()
@@ -96,7 +96,7 @@ def module_setup_teardown():
         skymeter = Skymeter(app=TestApp())
 
     global app
-    app = CameraAscom(app=Test(), signals=CameraSignals(), data={})
+    app = CameraAscom(app=Test(), signals=Signals(), data={})
     app.client = Test1()
     app.clientProps = []
     yield

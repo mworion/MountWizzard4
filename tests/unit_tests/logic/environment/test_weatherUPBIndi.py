@@ -24,7 +24,7 @@ from indibase.indiBase import Device, Client
 
 # local import
 from logic.environment.weatherUPBIndi import WeatherUPBIndi
-from logic.environment.weatherUPB import WeatherUPBSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -33,7 +33,7 @@ def module_setup_teardown():
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
     global app
-    app = WeatherUPBIndi(app=Test(), signals=WeatherUPBSignals(), data={})
+    app = WeatherUPBIndi(app=Test(), signals=Signals(), data={})
 
     yield
 

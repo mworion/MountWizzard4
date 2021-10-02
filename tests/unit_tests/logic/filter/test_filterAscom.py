@@ -25,7 +25,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.filter.filterAscom import FilterAscom
-from logic.filter.filter import FilterSignals
+from base.driverDataClass import Signals
 from base.ascomClass import AscomClass
 
 if not platform.system() == 'Windows':
@@ -46,7 +46,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
 
     global app
-    app = FilterAscom(app=Test(), signals=FilterSignals(), data={})
+    app = FilterAscom(app=Test(), signals=Signals(), data={})
     app.clientProps = []
     app.client = Test1()
     yield

@@ -23,7 +23,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.environment.weatherUPBAlpaca import WeatherUPBAlpaca
-from logic.environment.weatherUPB import WeatherUPBSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -33,7 +33,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
 
     global app
-    app = WeatherUPBAlpaca(app=Test(), signals=WeatherUPBSignals(), data={})
+    app = WeatherUPBAlpaca(app=Test(), signals=Signals(), data={})
 
     yield
 

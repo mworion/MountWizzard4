@@ -20,7 +20,6 @@ import logging
 import platform
 
 # external packages
-from PyQt5.QtCore import pyqtSignal
 
 # local imports
 from base.driverDataClass import Signals
@@ -28,16 +27,6 @@ from logic.camera.cameraIndi import CameraIndi
 from logic.camera.cameraAlpaca import CameraAlpaca
 if platform.system() == 'Windows':
     from logic.camera.cameraAscom import CameraAscom
-
-
-class CameraSignals(Signals):
-    """
-    """
-    integrated = pyqtSignal()
-    downloaded = pyqtSignal()
-    saved = pyqtSignal(object)
-    exposeReady = pyqtSignal()
-    message = pyqtSignal(object)
 
 
 class Camera:
@@ -50,7 +39,7 @@ class Camera:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = CameraSignals()
+        self.signals = Signals()
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}

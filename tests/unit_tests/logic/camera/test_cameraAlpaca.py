@@ -28,7 +28,7 @@ from skyfield.api import Angle, wgs84
 from mountcontrol.mount import Mount
 from logic.environment.skymeter import Skymeter
 from logic.camera.cameraAlpaca import CameraAlpaca
-from logic.camera.camera import CameraSignals
+from base.driverDataClass import Signalsnals
 from base.loggerMW import setupLogging
 setupLogging()
 
@@ -52,7 +52,7 @@ def module_setup_teardown():
         skymeter = Skymeter(app=TestApp())
 
     global app
-    app = CameraAlpaca(app=Test(), signals=CameraSignals(), data={})
+    app = CameraAlpaca(app=Test(), signals=Signals(), data={})
 
     yield
 

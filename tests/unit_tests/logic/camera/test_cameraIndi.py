@@ -27,7 +27,7 @@ from skyfield.api import Angle, load
 
 # local import
 from logic.camera.cameraIndi import CameraIndi
-from logic.camera.camera import CameraSignals
+from base.driverDataClass import Signals
 from base.indiClass import IndiClass
 
 
@@ -48,7 +48,7 @@ def module_setup_teardown():
         mount = Test1()
 
     global app
-    app = CameraIndi(app=Test(), signals=CameraSignals(), data={})
+    app = CameraIndi(app=Test(), signals=Signals(), data={})
 
     yield
 

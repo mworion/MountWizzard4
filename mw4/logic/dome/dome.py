@@ -31,14 +31,6 @@ if platform.system() == 'Windows':
     from logic.dome.domeAscom import DomeAscom
 
 
-class DomeSignals(Signals):
-    """
-    """
-    azimuth = PyQt5.QtCore.pyqtSignal(object)
-    slewFinished = PyQt5.QtCore.pyqtSignal()
-    message = PyQt5.QtCore.pyqtSignal(object)
-
-
 class Dome:
 
     __all__ = ['Dome']
@@ -47,7 +39,7 @@ class Dome:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = DomeSignals()
+        self.signals = Signals()
         self.data = {
             'Slewing': False,
         }

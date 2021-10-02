@@ -19,7 +19,6 @@ import logging
 import platform
 
 # external packages
-from PyQt5.QtCore import pyqtSignal
 
 # local imports
 from base.driverDataClass import Signals
@@ -27,12 +26,6 @@ from logic.environment.weatherUPBIndi import WeatherUPBIndi
 from logic.environment.weatherUPBAlpaca import WeatherUPBAlpaca
 if platform.system() == 'Windows':
     from logic.environment.weatherUPBAscom import WeatherUPBAscom
-
-
-class WeatherUPBSignals(Signals):
-    """
-    """
-    version = pyqtSignal(int)
 
 
 class WeatherUPB:
@@ -45,7 +38,7 @@ class WeatherUPB:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = WeatherUPBSignals()
+        self.signals = Signals()
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}

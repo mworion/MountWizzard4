@@ -25,7 +25,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.dome.domeAlpaca import DomeAlpaca
-from logic.dome.dome import DomeSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -37,7 +37,7 @@ def module_setup_teardown():
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = DomeAlpaca(app=Test(), signals=DomeSignals(), data={})
+        app = DomeAlpaca(app=Test(), signals=Signals(), data={})
         yield
 
 

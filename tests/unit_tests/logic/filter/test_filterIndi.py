@@ -24,7 +24,7 @@ from indibase.indiBase import Device, Client
 
 # local import
 from logic.filter.filterIndi import FilterIndi
-from logic.filter.filter import FilterSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -33,7 +33,7 @@ def module_setup_teardown():
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
     global app
-    app = FilterIndi(app=Test(), signals=FilterSignals(), data={})
+    app = FilterIndi(app=Test(), signals=Signals(), data={})
 
     yield
 

@@ -23,7 +23,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
-from logic.powerswitch.pegasusUPB import PegasusUPBSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -33,7 +33,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
 
     global app
-    app = PegasusUPBAlpaca(app=Test(), signals=PegasusUPBSignals(), data={})
+    app = PegasusUPBAlpaca(app=Test(), signals=Signals(), data={})
 
     yield
 
@@ -50,7 +50,7 @@ def test_workerPollData_2():
     app.deviceConnected = True
     with mock.patch.object(app,
                            'getAlpacaProperty',
-                           return_value = 15):
+                           return_value=15):
         with mock.patch.object(app,
                                'storePropertyToData'):
             suc = app.workerPollData()

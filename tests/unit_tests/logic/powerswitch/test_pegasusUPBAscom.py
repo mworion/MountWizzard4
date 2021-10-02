@@ -25,7 +25,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
-from logic.powerswitch.pegasusUPB import PegasusUPBSignals
+from base.driverDataClass import Signals
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
@@ -52,7 +52,7 @@ def module_setup_teardown():
 
     global app
 
-    app = PegasusUPBAscom(app=Test(), signals=PegasusUPBSignals(), data={})
+    app = PegasusUPBAscom(app=Test(), signals=Signals(), data={})
     app.clientProps = []
     app.client = Test1()
     yield

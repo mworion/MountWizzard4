@@ -26,7 +26,7 @@ from indibase.indiBase import Device, Client
 
 # local import
 from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
-from logic.powerswitch.pegasusUPB import PegasusUPBSignals
+from base.driverDataClass import Signals
 from base.indiClass import IndiClass
 
 
@@ -36,7 +36,7 @@ def module_setup_teardown():
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
     global app
-    app = PegasusUPBIndi(app=Test(), signals=PegasusUPBSignals(), data={})
+    app = PegasusUPBIndi(app=Test(), signals=Signals(), data={})
 
     yield
 

@@ -181,7 +181,7 @@ class SettImaging(object):
         self.guiSetText(self.ui.pixelX, '5.0f', pixelX)
         self.guiSetText(self.ui.pixelY, '5.0f', pixelY)
         self.guiSetText(self.ui.rotation, '3.1f', rotation)
-        self.guiSetText(self.ui.humidityCCD, '3.2f', humidityCCD)
+        self.guiSetText(self.ui.humidityCCD, '3.1f', humidityCCD)
         self.guiSetText(self.ui.coolerTemp, '3.1f', coolerTemp)
         self.guiSetText(self.ui.coolerPower, '3.1f', coolerPower)
         self.guiSetText(self.ui.gainCam, '3.0f', gainCam)

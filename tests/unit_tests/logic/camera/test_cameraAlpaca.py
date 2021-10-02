@@ -28,7 +28,7 @@ from skyfield.api import Angle, wgs84
 from mountcontrol.mount import Mount
 from logic.environment.skymeter import Skymeter
 from logic.camera.cameraAlpaca import CameraAlpaca
-from base.driverDataClass import Signalsnals
+from base.driverDataClass import Signals
 from base.loggerMW import setupLogging
 setupLogging()
 

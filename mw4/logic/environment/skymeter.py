@@ -22,22 +22,11 @@ import platform
 from PyQt5.QtCore import pyqtSignal, QObject
 
 # local imports
+from base.driverDataClass import Signals
 from logic.environment.skymeterIndi import SkymeterIndi
 from logic.environment.skymeterAlpaca import SkymeterAlpaca
 if platform.system() == 'Windows':
     from logic.environment.skymeterAscom import SkymeterAscom
-
-
-class SkymeterSignals(QObject):
-    """
-    """
-
-    __all__ = ['SkymeterSignals']
-
-    serverConnected = pyqtSignal()
-    serverDisconnected = pyqtSignal(object)
-    deviceConnected = pyqtSignal(str)
-    deviceDisconnected = pyqtSignal(str)
 
 
 class Skymeter:
@@ -50,7 +39,7 @@ class Skymeter:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = SkymeterSignals()
+        self.signals = Signals()
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}

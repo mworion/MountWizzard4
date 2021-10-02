@@ -23,22 +23,11 @@ import platform
 import PyQt5
 
 # local imports
+from base.driverDataClass import Signals
 from logic.focuser.focuserIndi import FocuserIndi
 from logic.focuser.focuserAlpaca import FocuserAlpaca
 if platform.system() == 'Windows':
     from logic.focuser.focuserAscom import FocuserAscom
-
-
-class FocuserSignals(PyQt5.QtCore.QObject):
-    """
-    """
-
-    __all__ = ['FocuserSignals']
-
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
 
 
 class Focuser:
@@ -49,7 +38,7 @@ class Focuser:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = FocuserSignals()
+        self.signals = Signals()
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}

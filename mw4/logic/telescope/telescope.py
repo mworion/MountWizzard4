@@ -22,22 +22,11 @@ import platform
 import PyQt5
 
 # local imports
+from base.driverDataClass import Signals
 from logic.telescope.telescopeIndi import TelescopeIndi
 from logic.telescope.telescopeAlpaca import TelescopeAlpaca
 if platform.system() == 'Windows':
     from logic.telescope.telescopeAscom import TelescopeAscom
-
-
-class TelescopeSignals(PyQt5.QtCore.QObject):
-    """
-    """
-
-    __all__ = ['TelescopeSignals']
-
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
 
 
 class Telescope:
@@ -50,7 +39,7 @@ class Telescope:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = TelescopeSignals()
+        self.signals = Signals()
         self.data = {}
         self.framework = ''
         self.defaultConfig = {'framework': '',

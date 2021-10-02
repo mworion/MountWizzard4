@@ -22,23 +22,17 @@ import platform
 from PyQt5.QtCore import pyqtSignal, QObject
 
 # local imports
+from base.driverDataClass import Signals
 from logic.environment.weatherUPBIndi import WeatherUPBIndi
 from logic.environment.weatherUPBAlpaca import WeatherUPBAlpaca
 if platform.system() == 'Windows':
     from logic.environment.weatherUPBAscom import WeatherUPBAscom
 
 
-class WeatherUPBSignals(QObject):
+class WeatherUPBSignals(Signals):
     """
     """
-
-    __all__ = ['WeatherUPBSignals']
     version = pyqtSignal(int)
-
-    serverConnected = pyqtSignal()
-    serverDisconnected = pyqtSignal(object)
-    deviceConnected = pyqtSignal(str)
-    deviceDisconnected = pyqtSignal(str)
 
 
 class WeatherUPB:

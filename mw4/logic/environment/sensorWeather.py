@@ -22,22 +22,11 @@ import platform
 import PyQt5
 
 # local imports
+from base.driverDataClass import Signals
 from logic.environment.sensorWeatherIndi import SensorWeatherIndi
 from logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
 if platform.system() == 'Windows':
     from logic.environment.sensorWeatherAscom import SensorWeatherAscom
-
-
-class SensorWeatherSignals(PyQt5.QtCore.QObject):
-    """
-    """
-
-    __all__ = ['SensorWeatherSignals']
-
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
 
 
 class SensorWeather:
@@ -50,7 +39,7 @@ class SensorWeather:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = SensorWeatherSignals()
+        self.signals = Signals()
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}

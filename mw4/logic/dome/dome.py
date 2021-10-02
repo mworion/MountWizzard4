@@ -23,6 +23,7 @@ import PyQt5
 import numpy as np
 
 # local imports
+from base.driverDataClass import Signals
 from base.transform import diffModulusAbs
 from logic.dome.domeIndi import DomeIndi
 from logic.dome.domeAlpaca import DomeAlpaca
@@ -30,20 +31,12 @@ if platform.system() == 'Windows':
     from logic.dome.domeAscom import DomeAscom
 
 
-class DomeSignals(PyQt5.QtCore.QObject):
+class DomeSignals(Signals):
     """
     """
-
-    __all__ = ['DomeSignals']
-
     azimuth = PyQt5.QtCore.pyqtSignal(object)
     slewFinished = PyQt5.QtCore.pyqtSignal()
     message = PyQt5.QtCore.pyqtSignal(object)
-
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
 
 
 class Dome:

@@ -23,23 +23,16 @@ import platform
 import PyQt5
 
 # local imports
+from base.driverDataClass import Signals
 from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
 
 
-class PegasusUPBSignals(PyQt5.QtCore.QObject):
+class PegasusUPBSignals(Signals):
     """
     """
-
-    __all__ = ['PegasusUPBSignals']
-
     version = PyQt5.QtCore.pyqtSignal(int)
-
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
 
 
 class PegasusUPB:

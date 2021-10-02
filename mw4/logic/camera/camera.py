@@ -23,28 +23,21 @@ import platform
 import PyQt5
 
 # local imports
+from base.driverDataClass import Signals
 from logic.camera.cameraIndi import CameraIndi
 from logic.camera.cameraAlpaca import CameraAlpaca
 if platform.system() == 'Windows':
     from logic.camera.cameraAscom import CameraAscom
 
 
-class CameraSignals(PyQt5.QtCore.QObject):
+class CameraSignals(Signals):
     """
     """
-
-    __all__ = ['CameraSignals']
-
     integrated = PyQt5.QtCore.pyqtSignal()
     downloaded = PyQt5.QtCore.pyqtSignal()
     saved = PyQt5.QtCore.pyqtSignal(object)
     exposeReady = PyQt5.QtCore.pyqtSignal()
     message = PyQt5.QtCore.pyqtSignal(object)
-
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
 
 
 class Camera:

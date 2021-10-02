@@ -23,26 +23,19 @@ import platform
 import PyQt5
 
 # local imports
+from base.driverDataClass import Signals
 from logic.filter.filterIndi import FilterIndi
 from logic.filter.filterAlpaca import FilterAlpaca
 if platform.system() == 'Windows':
     from logic.filter.filterAscom import FilterAscom
 
 
-class FilterSignals(PyQt5.QtCore.QObject):
+class FilterSignals(Signals):
     """
     """
-
-    __all__ = ['FilterSignals']
-
     azimuth = PyQt5.QtCore.pyqtSignal(object)
     slewFinished = PyQt5.QtCore.pyqtSignal()
     message = PyQt5.QtCore.pyqtSignal(object)
-
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
 
 
 class Filter:

@@ -22,22 +22,11 @@ import platform
 from PyQt5.QtCore import QObject, pyqtSignal
 
 # local imports
+from base.driverDataClass import Signals
 from logic.cover.coverIndi import CoverIndi
 from logic.cover.coverAlpaca import CoverAlpaca
 if platform.system() == 'Windows':
     from logic.cover.coverAscom import CoverAscom
-
-
-class CoverSignals(QObject):
-    """
-    """
-
-    __all__ = ['CoverSignals']
-
-    serverConnected = pyqtSignal()
-    serverDisconnected = pyqtSignal(object)
-    deviceConnected = pyqtSignal(str)
-    deviceDisconnected = pyqtSignal(str)
 
 
 class Cover:
@@ -48,7 +37,7 @@ class Cover:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = CoverSignals()
+        self.signals = Signals()
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {}}

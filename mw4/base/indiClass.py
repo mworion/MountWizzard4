@@ -34,6 +34,7 @@ class IndiClass:
 
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
+    UPDATE_RATE = 1000
 
     INDIGO = {
         # numbers

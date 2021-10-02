@@ -41,9 +41,7 @@ class DomeSignals(Signals):
 
 class Dome:
 
-    __all__ = ['Dome',
-               ]
-
+    __all__ = ['Dome']
     log = logging.getLogger(__name__)
 
     def __init__(self, app):

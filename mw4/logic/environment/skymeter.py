@@ -19,7 +19,6 @@ import logging
 import platform
 
 # external packages
-from PyQt5.QtCore import pyqtSignal, QObject
 
 # local imports
 from base.driverDataClass import Signals

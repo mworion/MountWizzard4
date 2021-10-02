@@ -20,7 +20,7 @@ import logging
 import platform
 
 # external packages
-import PyQt5
+from PyQt5.QtCore import pyqtSignal
 
 # local imports
 from base.driverDataClass import Signals
@@ -33,11 +33,11 @@ if platform.system() == 'Windows':
 class CameraSignals(Signals):
     """
     """
-    integrated = PyQt5.QtCore.pyqtSignal()
-    downloaded = PyQt5.QtCore.pyqtSignal()
-    saved = PyQt5.QtCore.pyqtSignal(object)
-    exposeReady = PyQt5.QtCore.pyqtSignal()
-    message = PyQt5.QtCore.pyqtSignal(object)
+    integrated = pyqtSignal()
+    downloaded = pyqtSignal()
+    saved = pyqtSignal(object)
+    exposeReady = pyqtSignal()
+    message = pyqtSignal(object)
 
 
 class Camera:

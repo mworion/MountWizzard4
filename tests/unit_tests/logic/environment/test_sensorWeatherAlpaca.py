@@ -23,7 +23,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
-from logic.environment.sensorWeather import SensorWeatherSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -33,7 +33,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
 
     global app
-    app = SensorWeatherAlpaca(app=Test(), signals=SensorWeatherSignals(), data={})
+    app = SensorWeatherAlpaca(app=Test(), signals=Signals(), data={})
 
     yield
 

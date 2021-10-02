@@ -25,7 +25,7 @@ from indibase.indiBase import Device, Client
 
 # local import
 from logic.environment.sensorWeatherIndi import SensorWeatherIndi
-from logic.environment.sensorWeather import SensorWeatherSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -34,7 +34,7 @@ def module_setup_teardown():
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
     global app
-    app = SensorWeatherIndi(app=Test(), signals=SensorWeatherSignals(), data={})
+    app = SensorWeatherIndi(app=Test(), signals=Signals(), data={})
 
     yield
 

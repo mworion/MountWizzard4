@@ -28,7 +28,7 @@ from PyQt5.QtCore import pyqtSignal
 
 # local import
 from logic.telescope.telescopeAscom import TelescopeAscom
-from logic.telescope.telescope import TelescopeSignals
+from base.driverDataClass import Signals
 from base.ascomClass import AscomClass
 
 if not platform.system() == 'Windows':
@@ -52,7 +52,7 @@ def module_setup_teardown():
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = TelescopeAscom(app=Test(), signals=TelescopeSignals(), data={})
+        app = TelescopeAscom(app=Test(), signals=Signals(), data={})
         app.client = Test1()
         app.clientProps = []
         yield

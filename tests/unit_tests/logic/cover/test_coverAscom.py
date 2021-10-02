@@ -25,7 +25,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.cover.coverAscom import CoverAscom
-from logic.cover.cover import CoverSignals
+from base.driverDataClass import Signals
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
@@ -70,7 +70,7 @@ def module_setup_teardown():
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = CoverAscom(app=Test(), signals=CoverSignals(), data={})
+        app = CoverAscom(app=Test(), signals=Signals(), data={})
         app.client = Test1()
         app.clientProps = []
         yield

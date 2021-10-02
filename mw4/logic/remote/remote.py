@@ -25,53 +25,35 @@ from PyQt5 import QtNetwork
 
 class Remote(QObject):
     """
-    The class Remote inherits all information and handling of remotely controlling
-    mountwizzard 4.
-
-        >>> remote = Remote(app=None)
-
     """
 
-    __all__ = ['Remote',
-               ]
-
+    __all__ = ['Remote']
     log = logging.getLogger(__name__)
 
-    def __init__(self,
-                 app=None,
-                 ):
+    def __init__(self, app=None):
         super().__init__()
-
         self.app = app
-
         self.data = {}
         self.defaultConfig = {'framework': '',
                               'frameworks': {'internal': {'deviceName': 'TCP'}}}
-
         self.framework = ''
         self.run = {
             'internal': self
         }
         self.deviceName = ''
-
         self.clientConnection = None
         self.tcpServer = None
 
     def startCommunication(self, loadConfig=False):
         """
-        startCommunication prepares the remote listening by starting a tcp server listening
-        on localhost and port 3490.
-
         :param loadConfig:
         :return: success
         """
-
         if self.tcpServer is not None:
             return False
 
         self.tcpServer = QtNetwork.QTcpServer(self)
         hostAddress = QtNetwork.QHostAddress('127.0.0.1')
-
         if not self.tcpServer.listen(hostAddress, 3490):
             self.log.info('Port already in use')
             self.tcpServer = None
@@ -83,32 +65,22 @@ class Remote(QObject):
 
     def stopCommunication(self):
         """
-        stopCommunication kills all connections and stops the tcpServer
-
         :return: true for test purpose
         """
-
         if self.clientConnection is not None:
             self.clientConnection.close()
-
         if self.tcpServer is not None:
             self.tcpServer = None
-
         return True
 
     def addConnection(self):
         """
-        addConnection allows a new connection for remote access to mw4 only one connection
-        is allowed.
-
         :return: success
         """
-
         if self.tcpServer is None:
             return False
 
         self.clientConnection = self.tcpServer.nextPendingConnection()
-
         if self.clientConnection == 0:
             self.log.warning('Cannot establish incoming connection')
             return False
@@ -119,16 +91,12 @@ class Remote(QObject):
         self.clientConnection.error.connect(self.handleError)
         connection = self.clientConnection.peerAddress().toString()
         self.log.debug(f'Connection to MountWizzard from {connection}')
-
         return True
 
     def receiveMessage(self):
         """
-        receiveMessage is the command dispatcher for remote access
-
         :return: success
         """
-
         if self.clientConnection.bytesAvailable() == 0:
             return False
 
@@ -143,7 +111,6 @@ class Remote(QObject):
         command = command.replace('\r', '')
 
         self.log.debug(f'Command {command} from {connection} received')
-
         if command in validCommands:
             self.app.remoteCommand.emit(command)
         else:
@@ -153,26 +120,18 @@ class Remote(QObject):
 
     def removeConnection(self):
         """
-        removeConnection clear the existing connection
-
         :return: true for test purpose
         """
-
         connection = self.clientConnection.peerAddress().toString()
         self.clientConnection.close()
         self.log.debug(f'Connection from {connection} closed')
-
         return True
 
     def handleError(self, socketError):
         """
-        handleError does error handling -> writing to log
-
         :param socketError:
         :return: true for test purpose
         """
-
         connection = self.clientConnection.peerAddress().toString()
         self.log.critical(f'Connection from {connection} failed, error: {socketError}')
-
         return True

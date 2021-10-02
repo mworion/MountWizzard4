@@ -26,7 +26,7 @@ from indibase.indiBase import Device, Client
 
 # local import
 from logic.telescope.telescopeIndi import TelescopeIndi
-from logic.telescope.telescope import TelescopeSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -35,7 +35,7 @@ def module_setup_teardown():
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
     global app
-    app = TelescopeIndi(app=Test(), signals=TelescopeSignals(), data={})
+    app = TelescopeIndi(app=Test(), signals=Signals(), data={})
 
     yield
 

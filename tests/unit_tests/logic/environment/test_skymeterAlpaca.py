@@ -23,7 +23,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.environment.skymeterAlpaca import SkymeterAlpaca
-from logic.environment.skymeter import SkymeterSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -33,7 +33,7 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
 
     global app
-    app = SkymeterAlpaca(app=Test(), signals=SkymeterSignals(), data={})
+    app = SkymeterAlpaca(app=Test(), signals=Signals(), data={})
 
     yield
 

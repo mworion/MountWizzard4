@@ -24,7 +24,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from logic.cover.coverAlpaca import CoverAlpaca
-from logic.cover.cover import CoverSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -36,7 +36,7 @@ def module_setup_teardown():
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = CoverAlpaca(app=Test(), signals=CoverSignals(), data={})
+        app = CoverAlpaca(app=Test(), signals=Signals(), data={})
 
         yield
 

@@ -18,27 +18,16 @@
 import logging
 
 # external packages
-import PyQt5
+from PyQt5.QtCore import QMutex
 import numpy as np
 
 # local imports
+from base.driverDataClass import Signals
 from logic.measure.measureRaw import MeasureDataRaw
 from logic.measure.measureCSV import MeasureDataCSV
 
 
-class MeasureSignals(PyQt5.QtCore.QObject):
-    """
-    """
-
-    __all__ = ['MeasureSignals']
-
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
-
-
-class MeasureData(PyQt5.QtCore.QObject):
+class MeasureData:
     """
     """
 
@@ -51,8 +40,8 @@ class MeasureData(PyQt5.QtCore.QObject):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.signals = MeasureSignals()
-        self.mutexMeasure = PyQt5.QtCore.QMutex()
+        self.signals = Signals()
+        self.mutexMeasure = QMutex()
 
         # internal calculations
         self.shorteningStart = True

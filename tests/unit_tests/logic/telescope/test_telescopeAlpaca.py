@@ -26,7 +26,7 @@ from PyQt5.QtCore import pyqtSignal
 
 # local import
 from logic.telescope.telescopeAlpaca import TelescopeAlpaca
-from logic.telescope.telescope import TelescopeSignals
+from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -38,7 +38,7 @@ def module_setup_teardown():
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = TelescopeAlpaca(app=Test(), signals=TelescopeSignals(), data={})
+        app = TelescopeAlpaca(app=Test(), signals=Signals(), data={})
 
         yield
 

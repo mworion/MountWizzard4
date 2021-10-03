@@ -172,7 +172,7 @@ def function_setup_teardown(qtbot):
         showWindows = testShowWindows
         initConfig = testInitConfig
 
-    shutil.copy('tests/testData/active.txt', 'tests/workDir/data/active.txt')
+    shutil.copy('tests/testData/visual.txt', 'tests/workDir/data/visual.txt')
 
     with mock.patch.object(MainWindow,
                            'show'):

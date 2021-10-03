@@ -108,7 +108,7 @@ def test_downloadFileWorker_1(function):
 
 
 def test_downloadFileWorker_2(function):
-    shutil.copy('tests/testData/active.txt', 'tests/workDir/temp/test.txt')
+    shutil.copy('tests/testData/visual.txt', 'tests/workDir/temp/test.txt')
     with mock.patch.object(function,
                            'getFileFromUrl',
                            side_effect=TimeoutError):

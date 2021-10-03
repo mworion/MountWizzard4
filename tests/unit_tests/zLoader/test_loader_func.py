@@ -144,7 +144,7 @@ def test_extractDataFiles_5(qtbot):
         suc = extractDataFiles(mwGlob=mwGlob)
         assert suc
     assert os.path.isfile('tests/workDir/data/de421_23.bsp')
-    assert os.path.isfile('tests/workDir/data/active.txt')
+    assert os.path.isfile('tests/workDir/data/visual.txt')
     assert os.path.isfile('tests/workDir/data/finals2000A.all')
     assert os.path.isfile('tests/workDir/data/finals.data')
     assert os.path.isfile('tests/workDir/data/CDFLeapSeconds.txt')

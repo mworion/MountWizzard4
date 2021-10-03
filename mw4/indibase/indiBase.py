@@ -304,14 +304,11 @@ class Client(QObject):
         """
         if not value:
             return None
-
         if not isinstance(value, (tuple, str)):
             self.log.info(f'wrong host value: {value}')
             return None
-
         if isinstance(value, str):
             value = (value, self.DEFAULT_PORT)
-
         if not value[0]:
             return None
 
@@ -442,13 +439,10 @@ class Client(QObject):
         :param deviceName: name string of INDI device
         :return: success
         """
-        # todo: do connected state for each device
         if not self.connected:
             return False
-
         if not deviceName:
             return False
-
         if deviceName not in self.devices:
             return False
 
@@ -475,13 +469,10 @@ class Client(QObject):
         :param deviceName: name string of INDI device
         :return: success
         """
-        # todo: do connected state for each device
         if not self.connected:
             return False
-
         if not deviceName:
             return False
-
         if deviceName not in self.devices:
             return False
 
@@ -536,7 +527,6 @@ class Client(QObject):
         """
         if not deviceName:
             return False
-
         if deviceName not in self.devices:
             return False
 
@@ -727,9 +717,6 @@ class Client(QObject):
 
     def _sendCmd(self, indiCommand):
         """
-        sendCmd take an XML indi command, converts it and sends it over the
-        network and flushes the buffer
-
         :param indiCommand: XML command to send
         :return: success of sending
         """
@@ -740,10 +727,8 @@ class Client(QObject):
             self.socket.flush()
             if number > 0:
                 return True
-
             else:
                 return False
-
         else:
             return False
 
@@ -755,7 +740,6 @@ class Client(QObject):
         :param deviceName: device name
         :return: binary value of type of device drivers interface
         """
-
         device = self.devices[deviceName]
         if not hasattr(device, 'DRIVER_INFO'):
             return -1
@@ -859,7 +843,6 @@ class Client(QObject):
         """
         if deviceName not in self.devices:
             return False
-
         if 'name' not in chunk.attr:
             return False
 
@@ -890,16 +873,12 @@ class Client(QObject):
 
         if isinstance(chunk, indiXML.SetBLOBVector):
             self.signals.newBLOB.emit(deviceName, iProperty)
-
         elif isinstance(chunk, indiXML.SetSwitchVector):
             self.signals.newSwitch.emit(deviceName, iProperty)
-
         elif isinstance(chunk, indiXML.SetNumberVector):
             self.signals.newNumber.emit(deviceName, iProperty)
-
         elif isinstance(chunk, indiXML.SetTextVector):
             self.signals.newText.emit(deviceName, iProperty)
-
         elif isinstance(chunk, indiXML.SetLightVector):
             self.signals.newLight.emit(deviceName, iProperty)
 
@@ -925,16 +904,12 @@ class Client(QObject):
         self.signals.newProperty.emit(deviceName, iProperty)
         if isinstance(chunk, indiXML.DefBLOBVector):
             self.signals.defBLOB.emit(deviceName, iProperty)
-
         elif isinstance(chunk, indiXML.DefSwitchVector):
             self.signals.defSwitch.emit(deviceName, iProperty)
-
         elif isinstance(chunk, indiXML.DefNumberVector):
             self.signals.defNumber.emit(deviceName, iProperty)
-
         elif isinstance(chunk, indiXML.DefTextVector):
             self.signals.defText.emit(deviceName, iProperty)
-
         elif isinstance(chunk, indiXML.DefLightVector):
             self.signals.defLight.emit(deviceName, iProperty)
         return True
@@ -970,12 +945,12 @@ class Client(QObject):
         :param chunk: raw indi XML element
         :return: success if it could be parsed
         """
-        self.log.trace(f'RecvCmd: [{chunk}]')
+        self.log.trace(f'ReceiveCommand: [{chunk}]')
         if not self.connected:
             return False
 
         if 'device' not in chunk.attr:
-            self.log.warning('No device in chunk: {0}'.format(chunk))
+            self.log.warning(f'No device in chunk: [{chunk}]')
             return False
 
         device, deviceName = self._getDeviceReference(chunk=chunk)
@@ -986,7 +961,7 @@ class Client(QObject):
             return True
 
         if 'name' not in chunk.attr:
-            self.log.warning('No property in chunk: {0}'.format(chunk))
+            self.log.warning(f'No property in chunk: [{chunk}]')
             return False
 
         if isinstance(chunk, indiXML.DelProperty):
@@ -1036,7 +1011,7 @@ class Client(QObject):
             # todo: what to do with the "One" vector ?
             return True
 
-        self.log.error('Unknown vectors: {0}'.format(chunk))
+        self.log.error(f'Unknown vectors: [{chunk}]')
         return False
 
     @PyQt5.QtCore.pyqtSlot()
@@ -1060,14 +1035,14 @@ class Client(QObject):
                     self.curDepth -= 1
 
                 else:
-                    self.log.critical('Problem parsing event: {0}'.format(event))
+                    self.log.critical(f'Problem parsing event: [{event}]')
                     continue
 
                 if self.curDepth > 0:
                     continue
 
                 if self.curDepth < 0:
-                    self.log.critical('Problem parsing event: {0}'.format(event))
+                    self.log.critical(f'Problem parsing event: [{event}]')
                     continue
 
                 elemParsed = indiXML.parseETree(elem)
@@ -1089,6 +1064,6 @@ class Client(QObject):
         if not self.connected:
             return False
 
-        self.log.error('INDI connection fault, error: {0}'.format(socketError))
+        self.log.error(f'INDI connection fault, error: [{socketError}]')
         self.disconnectServer()
         return True

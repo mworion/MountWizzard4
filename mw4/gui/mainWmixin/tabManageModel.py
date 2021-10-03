@@ -210,7 +210,6 @@ class ManageModel(object):
         model = self.app.mount.model
         if model is None:
             hasNoStars = True
-
         else:
             hasNoStars = model.starList is None or not model.starList
 

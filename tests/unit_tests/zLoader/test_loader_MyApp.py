@@ -97,6 +97,20 @@ def test_handleButtons_8():
     assert val == 10
 
 
+def test_handleButtons_8a():
+    ui = QtWidgets.QLCDNumber()
+    ui.setObjectName('qt_scrollarea_viewport')
+    val = app.handleButtons(obj=ui, returnValue=10)
+    assert val == 10
+
+
+def test_handleButtons_8b():
+    ui = QtWidgets.QLCDNumber()
+    ui.setObjectName('test')
+    val = app.handleButtons(obj=ui, returnValue=10)
+    assert val == 10
+
+
 def test_handleButtons_9():
     ui = QtWidgets.QLineEdit()
     app.last = ui

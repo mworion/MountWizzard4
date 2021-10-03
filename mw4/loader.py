@@ -189,7 +189,10 @@ class MyApp(QApplication):
         elif isinstance(obj, QLineEdit):
             self.log.ui(f'Click EditLine: [{obj.objectName()}]:{obj.text()}')
         else:
-            self.log.ui(f'Click Object  : [{obj.objectName()}]')
+            if obj.objectName() not in ['qt_scrollarea_viewport',
+                                        'QComboBoxPrivateContainerClassWindow',
+                                        '']:
+                self.log.ui(f'Click Object  : [{obj.objectName()}]')
 
         return returnValue
 

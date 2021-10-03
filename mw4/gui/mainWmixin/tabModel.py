@@ -38,7 +38,7 @@ class Model:
     """
 
     # define a max error which throws point out of queue in arcsec (this is
-    # 10 degrees
+    # 10 degrees)
     MAX_ERROR_MODEL_POINT = 10 * 60 * 60
 
     def __init__(self):

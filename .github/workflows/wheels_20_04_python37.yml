@@ -61,7 +61,7 @@ jobs:
             apt-get update -y
             apt-get upgrade -y
             apt-get install -y wget gcc build-essential zlib1g-dev libjpeg-dev
-            apt-get install -y software-properties-common
+
             add-apt-repository ppa:deadsnakes/ppa
             apt-get update -y
             

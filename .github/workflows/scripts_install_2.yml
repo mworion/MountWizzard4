@@ -59,12 +59,10 @@ jobs:
           # no secrets are present in the container state or logs.
           #  apt-get -y install qt5-default pyqt5-dev pyqt5-dev-tools
           install: |
-            apt-get update -y
-            apt-get upgrade -y
-            apt-get install -y wget gcc build-essential zlib1g-dev libjpeg-dev
             apt-get install -y software-properties-common
             add-apt-repository ppa:deadsnakes/ppa
             apt-get update -y
+            apt-get -y install python3.9 python3-pip python3.9-venv python3.9-dev
           
           # Produce a binary artifact and place it in the mounted volume
           run: |

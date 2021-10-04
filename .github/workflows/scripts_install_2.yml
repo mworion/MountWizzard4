@@ -64,4 +64,6 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             ls -la
+            python --version
+            python3 --version
             ./support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh

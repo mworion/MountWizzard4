@@ -107,11 +107,11 @@ PY38="-cp38-38-"
 PY39="-cp39-39-"
 
 if [ "${P_VER:0:9}" == "python3.9" ]; then
-  PY=$"{PY39}"
+  PY="${PY39}"
 elif [ "${P_VER:0:9}" == "python3.8" ]; then
-  PY=$"{PY38}"
+  PY="${PY38}"
 elif [ "${P_VER:0:9}" == "python3.7" ]; then
-  PY=$"{PY37}"
+  PY="${PY37}"
 fi
   
 pip install "${WHL}"/pyerfa-2.0.0"${PY}"linux"${ARCH}" >> install.log 2>&1

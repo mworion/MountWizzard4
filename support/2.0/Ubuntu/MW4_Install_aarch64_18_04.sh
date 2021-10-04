@@ -66,7 +66,7 @@ echo --------------------------------------------------------
 echo Installing $P_VER in virtual environ >> install.log 2>&1
 
 {
-virtualenv venv >> install.log 2>&1
+python3 -m venv venv >> install.log 2>&1
 } || {
   echo
   echo --------------------------------------------------------

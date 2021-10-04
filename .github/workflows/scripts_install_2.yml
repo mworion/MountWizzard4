@@ -72,7 +72,7 @@ jobs:
           mkdir data
           ls -la > data/dir.txt
           mv install.log data/install.log
-          mv run.log data/run.log
+          # mv run.log data/run.log
   
       - name: upload_log
         uses: actions/upload-artifact@v2

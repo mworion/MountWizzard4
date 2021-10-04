@@ -66,6 +66,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             mkdir test
+            touch test/test.txt
             mv support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh test
             cd test
             ./MW4_Install_aarch64_20_04.sh

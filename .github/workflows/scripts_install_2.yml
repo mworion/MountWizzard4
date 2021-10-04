@@ -25,8 +25,8 @@ jobs:
             distro: ubuntu20.04
 
     steps:
-      - uses: actions/checkout@v2.3.4
-      - uses: uraimo/run-on-arch-action@v2.1.1
+      - uses: actions/checkout@v2.1.0
+      - uses: uraimo/run-on-arch-action@v2.0.5
         name: build_artifact
         id: build
         with:
@@ -58,8 +58,8 @@ jobs:
           # publicly in your project's package repository, so it is vital that
           # no secrets are present in the container state or logs.
           install: |
-            apt-get update -y
-            apt-get upgrade -y
+          #  apt-get update -y
+          #  apt-get upgrade -y
             add-apt-repository ppa:deadsnakes/ppa
             apt-get update -y
             apt-get -y install python3.9 python3-pip python3.9-venv python3.9-dev

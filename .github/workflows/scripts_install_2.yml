@@ -57,13 +57,13 @@ jobs:
           # builds don't have to re-install them. The image layer is cached
           # publicly in your project's package repository, so it is vital that
           # no secrets are present in the container state or logs.
-          install: |
           #  apt-get update -y
           #  apt-get upgrade -y
+          #  apt-get -y install qt5-default pyqt5-dev pyqt5-dev-tools
+          install: |
             add-apt-repository ppa:deadsnakes/ppa
             apt-get update -y
             apt-get -y install python3.9 python3-pip python3.9-venv python3.9-dev
-          #  apt-get -y install qt5-default pyqt5-dev pyqt5-dev-tools
           
           # Produce a binary artifact and place it in the mounted volume
           run: |

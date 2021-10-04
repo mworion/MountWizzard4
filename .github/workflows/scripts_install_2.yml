@@ -65,15 +65,17 @@ jobs:
           
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            mv support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh .
+            mkdir test
+            mv support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh test
+            cd test
             ./MW4_Install_aarch64_20_04.sh
   
       - name: collect_info
         run: |
           mkdir data
-          ls -la > data/dir.txt
-          mv install.log data/install.log
-          # mv run.log data/run.log
+          ls -la test > data/dir.txt
+          [ -f test/install.log ] && mv test/install.log data/install.log
+          [ -f test/run.log ] && mv test/run.log data/run.log
   
       - name: upload_log
         uses: actions/upload-artifact@v2

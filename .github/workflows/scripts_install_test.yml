@@ -3,7 +3,7 @@
 #
 # v0.1,  Michael Wuertenberger
 #
-name: scripts_install_2
+name: scripts_install_test
 
 on:
   push:

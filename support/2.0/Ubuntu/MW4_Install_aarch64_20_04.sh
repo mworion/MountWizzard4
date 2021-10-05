@@ -17,10 +17,10 @@ echo "         ██║ ╚═╝ ██║╚███╔███╔╝     �
 echo "         ╚═╝     ╚═╝ ╚══╝╚══╝      ╚═╝"
 echo
 echo --------------------------------------------------------
-echo install script version 2.0 aarch64
+echo install script version 2.1 aarch64
 echo --------------------------------------------------------
 
-echo install script version 2.0 aarch64 > install.log 2>&1
+echo install script version 2.1 aarch64 > install.log 2>&1
 
 echo
 echo --------------------------------------------------------
@@ -101,7 +101,6 @@ echo --------------------------------------------------------
 echo installing precompiled packages
 echo --------------------------------------------------------
 
-
 WHL="https://github.com/mworion/mountwizzard4/raw/master/support/wheels/ubuntu20.04"
 ARCH="_aarch64.whl  >> install.log 2>&1"
 PY37="-cp37-37m-"
@@ -122,8 +121,6 @@ pip install "${WHL}"/sep-1.2.0"${PY}"linux"${ARCH}"
 pip install "${WHL}"/sgp4-2.20"${PY}"manylinux2014"${ARCH}"
 pip install "${WHL}"/PyQt5_sip-12.8.1"${PY}"linux"${ARCH}"
 pip install "${WHL}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}"
-
-exit
 
 echo
 echo --------------------------------------------------------

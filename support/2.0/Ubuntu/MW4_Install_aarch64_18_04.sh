@@ -16,10 +16,10 @@ echo "         ██║ ╚═╝ ██║╚███╔███╔╝     �
 echo "         ╚═╝     ╚═╝ ╚══╝╚══╝      ╚═╝"
 echo
 echo --------------------------------------------------------
-echo install script version 2.0 aarch64
+echo install script version 2.1 aarch64
 echo --------------------------------------------------------
 
-echo install script version 2.0 aarch64 > install.log 2>&1
+echo install script version 2.1 aarch64 > install.log 2>&1
 
 echo
 echo --------------------------------------------------------

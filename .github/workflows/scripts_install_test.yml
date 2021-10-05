@@ -3,13 +3,13 @@
 #
 # v0.1,  Michael Wuertenberger
 #
-name: scripts_install_test
+name: scripts_install
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/scripts_install_test.yml'
+      - '.github/workflows/scripts_install.yml'
       - 'support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh'
 
 jobs:

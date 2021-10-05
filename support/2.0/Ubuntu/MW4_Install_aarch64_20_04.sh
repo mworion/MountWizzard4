@@ -103,7 +103,7 @@ echo --------------------------------------------------------
 
 
 WHL="https://github.com/mworion/mountwizzard4/raw/master/support/wheels/ubuntu20.04"
-ARCH="_aarch64.whl"
+ARCH="_aarch64.whl  >> install.log 2>&1"
 PY37="-cp37-37m-"
 PY38="-cp38-38-"
 PY39="-cp39-39-"
@@ -116,12 +116,12 @@ elif [ "${P_VER:0:9}" == "python3.7" ]; then
   PY="${PY37}"
 fi
   
-pip install "${WHL}"/pyerfa-2.0.0"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/astropy-4.3.1"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/sep-1.2.0"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/sgp4-2.20"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/PyQt5_sip-12.8.1"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}" >> install.log 2>&1
+pip install "${WHL}"/pyerfa-2.0.0"${PY}"linux"${ARCH}"
+pip install "${WHL}"/astropy-4.3.1"${PY}"linux"${ARCH}"
+pip install "${WHL}"/sep-1.2.0"${PY}"linux"${ARCH}"
+pip install "${WHL}"/sgp4-2.20"${PY}"manylinux2014"${ARCH}"
+pip install "${WHL}"/PyQt5_sip-12.8.1"${PY}"linux"${ARCH}"
+pip install "${WHL}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}"
 
 exit
 

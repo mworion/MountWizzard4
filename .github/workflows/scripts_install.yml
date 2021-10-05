@@ -10,7 +10,6 @@ on:
     # Run this action on the trigger event when specific files are touched
     paths:
       - '.github/workflows/scripts_install.yml'
-      - 'support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh'
 
 jobs:
   build_job:
@@ -29,6 +28,7 @@ jobs:
       - uses: actions/checkout@v2.1.0
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: build_artifact
+        id: build
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}

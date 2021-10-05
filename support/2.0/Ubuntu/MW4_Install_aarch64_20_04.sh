@@ -102,7 +102,7 @@ echo installing precompiled packages
 echo --------------------------------------------------------
 
 
-WHL="https://github.com/mworion/mountwizzard4/raw/master/support/wheels/ubuntu18.04"
+WHL="https://github.com/mworion/mountwizzard4/raw/master/support/wheels/ubuntu20.04"
 ARCH="_aarch64.whl"
 PY37="-cp37-37m-"
 PY38="-cp38-38-"

@@ -66,6 +66,7 @@ jobs:
           run: |
             python3 -m venv venv
             source venv/bin/activate
+            python -m pip install pip --upgrade
             python --version
             ARCH="_aarch64.whl"
             PY="-cp38-38-"

@@ -25,7 +25,6 @@ jobs:
             distro: ubuntu20.04
 
     steps:
-      - uses: actions/checkout@v2.1.0
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: build_artifact
         id: build
@@ -57,9 +56,8 @@ jobs:
           # builds don't have to re-install them. The image layer is cached
           # publicly in your project's package repository, so it is vital that
           # no secrets are present in the container state or logs.
-          #  apt-get -y install qt5-default pyqt5-dev pyqt5-dev-tools
+          
           install: |
-            apt-get update -y
             apt-get -y install python3.8 python3-pip python3.8-venv
             apt-get -y install wget
           

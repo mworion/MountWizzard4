@@ -1,0 +1,77 @@
+#
+# GitHub actions for running the unit test of the mountwizzard4 package
+#
+# v0.1,  Michael Wuertenberger
+#
+name: scripts_install_2
+
+on:
+  push:
+    # Run this action on the trigger event when specific files are touched
+    paths:
+      - '.github/workflows/scripts_install_test.yml'
+      - 'support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh'
+
+jobs:
+  build_job:
+    # The host should always be linux
+    runs-on: ubuntu-20.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    # Run steps on a matrix of 3 arch/distro combinations
+    strategy:
+      matrix:
+        include:
+          - arch: aarch64
+            distro: ubuntu20.04
+
+    steps:
+      - uses: uraimo/run-on-arch-action@v2.0.5
+        name: build_artifact
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
+
+          # Not required, but speeds up builds
+          githubToken: ${{ github.token }}
+
+          # Create an artifacts directory
+          setup: |
+            mkdir -p "${PWD}/artifacts"
+
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}/artifacts:/artifacts"
+
+          # Pass some environment variables to the container
+          env: | # YAML, but pipe character is necessary
+            artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
+
+          # The shell to run commands with in the container
+          shell: /bin/bash
+
+          # Install some dependencies in the container. This speeds up builds if
+          # you are also using githubToken. Any dependencies installed here will
+          # be part of the container image that gets cached, so subsequent
+          # builds don't have to re-install them. The image layer is cached
+          # publicly in your project's package repository, so it is vital that
+          # no secrets are present in the container state or logs.
+          #  apt-get -y install qt5-default pyqt5-dev pyqt5-dev-tools
+          install: |
+            apt-get update -y
+            apt-get -y install python3.8 python3-pip python3.8-venv
+            apt-get install wget
+          
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
+            python3 -m venv venv
+            source venv/bin/activate
+            python --version
+            ARCH="_aarch64.whl"
+            PY="-cp38-38-"
+            pip install "${WHL}"/pyerfa-2.0.0"${PY}"linux"${ARCH}"
+            pip install "${WHL}"/astropy-4.3.1"${PY}"linux"${ARCH}"
+            pip install "${WHL}"/sep-1.2.0"${PY}"linux"${ARCH}"
+            pip install "${WHL}"/sgp4-2.20"${PY}"manylinux2014"${ARCH}"
+            pip install "${WHL}"/PyQt5_sip-12.8.1"${PY}"linux"${ARCH}"
+            pip install "${WHL}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}"

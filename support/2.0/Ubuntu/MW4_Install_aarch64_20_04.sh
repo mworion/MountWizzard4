@@ -123,6 +123,8 @@ pip install "${WHL}"/sgp4-2.20"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/PyQt5_sip-12.8.1"${PY}"linux"${ARCH}" >> install.log 2>&1
 pip install "${WHL}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}" >> install.log 2>&1
 
+exit
+
 echo
 echo --------------------------------------------------------
 echo installing mountwizzard4

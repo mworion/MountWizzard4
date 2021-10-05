@@ -61,13 +61,16 @@ jobs:
           #  apt-get -y install qt5-default pyqt5-dev pyqt5-dev-tools
           install: |
             apt-get update -y
+            apt-get upgrade -y
             apt-get -y install python3.8 python3-pip python3.8-venv
           
           # Produce a binary artifact and place it in the mounted volume
           run: |
             mv support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh .
             ./MW4_Install_aarch64_20_04.sh
+            echo -----------------------------------------
             cat install.log
+            cp install.log data/install.log
   
       - name: upload_log
         uses: actions/upload-artifact@v2

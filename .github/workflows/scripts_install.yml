@@ -42,6 +42,7 @@ jobs:
           # Mount the artifacts directory as /artifacts in the container
           dockerRunArgs: |
             --volume "${PWD}/artifacts:/artifacts"
+            --platform linux/arm64/v8
 
           # Pass some environment variables to the container
           env: | # YAML, but pipe character is necessary
@@ -70,7 +71,6 @@ jobs:
           run: |
             python3 -m venv venv
             source venv/bin/activate
-            python -m pip install pip --upgrade
             python --version
             ARCH="_aarch64.whl"
             PY="-cp38-38-"

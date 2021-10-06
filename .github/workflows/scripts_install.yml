@@ -72,7 +72,7 @@ jobs:
             python3 -m venv venv
             source venv/bin/activate
             python -m pip install pip --upgrade
-            pip install setuptools --upgrade
+            python -m pip install setuptools --upgrade
             ARCH="aarch64.whl"
             PY="-cp38-"
             WHL="https://github.com/mworion/MountWizzard4/tree/master/support"

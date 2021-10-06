@@ -79,5 +79,5 @@ jobs:
             pip install "${WHL}"/astropy-4.3.1"${PY}"linux"${ARCH}"
             pip install "${WHL}"/sep-1.2.0"${PY}"linux"${ARCH}"
             pip install "${WHL}"/sgp4-2.20"${PY}"manylinux2014"${ARCH}"
-            pip install "${WHL}"/PyQt5_sip-12.8.1"${PY}"linux"${ARCH}"
+            pip install "${WHL}"/PyQt5_sip-12.9.0"${PY}"linux"${ARCH}"
             pip install "${WHL}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}"

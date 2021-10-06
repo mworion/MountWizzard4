@@ -79,6 +79,7 @@ jobs:
             #pip install pyerfa==2.0.0 --find-links "${GITHUB}${UBUNTU}" --no-index
             #pip install sgp4==2.20 --find-links "${GITHUB}${UBUNTU}" --no-index
             #pip install sep==1.2.0 --find-links "${GITHUB}${UBUNTU}" --no-index
-            pip install PyQt5-sip --find-links "${GITHUB}${UBUNTU}" --no-index
-            pip install PyQt5 --find-links "${GITHUB}${UBUNTU}" --no-index
+            pip install PyQt5-sip==12.8.1 --find-links "${GITHUB}${UBUNTU}" --no-index
+            pip install PyQt5==5.15.4 --find-links "${GITHUB}${UBUNTU}" --no-index
+          
             #pip install mountwizzard4

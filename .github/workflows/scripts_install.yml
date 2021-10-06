@@ -71,6 +71,7 @@ jobs:
           run: |
             python3.8 -m venv venv
             source venv/bin/activate
+            pip install wheel >> test.log
             python3 -c "from wheel.pep425tags import get_abi_tag; print(get_abi_tag())" >> test.log
             python3 -c "import platform; print(platform.python_version())" >> test.log
             python --version >> test.log

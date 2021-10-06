@@ -72,7 +72,7 @@ jobs:
             python3 -m venv venv
             source venv/bin/activate
             GITHUB="https://github.com/mworion/MountWizzard4/tree/master/support"
-            UBUNTU="/2.0/wheels/ubuntu20.04/"
+            UBUNTU="/2.0/wheels/ubuntu20.04"
             pip install numpy==1.21.2 --index-url "${GITHUB}${UBUNTU}"
             #pip install --find-links=. pyerfa==2.0.0
             #pip install --find-links=. sgp4==2.20

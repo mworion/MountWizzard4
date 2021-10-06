@@ -72,8 +72,8 @@ jobs:
             python3 -m venv venv
             source venv/bin/activate
             WHL="https://github.com/mworion/MountWizzard4/tree/master/support"
-            UBUNTU="/2.0/wheels/ubuntu20.04"
-            wget "${WHL}${UBUNTU}/*.whl"
+            UBUNTU="/2.0/wheels/ubuntu20.04/"
+            wget -r --no-parent -A '*-cp38-*' "${WHL}${UBUNTU}"
             pip install --find-links=. numpy==1.21.2
 
 

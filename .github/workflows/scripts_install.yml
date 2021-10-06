@@ -73,17 +73,17 @@ jobs:
             source venv/bin/activate
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
-            ARCH="_aarch64.whl"
+            ARCH="aarch64.whl"
             PY="-cp38-"
             WHL="https://github.com/mworion/MountWizzard4/tree/master/support"
             UBUNTU="/2.0/wheels/ubuntu20.04"
-            #pip install "${WHL}"/numpy-1.21.2"${PY}${ARCH}"
-            #pip install "${WHL}${UBUNTU}"/pyerfa-2.0.0"${PY}${ARCH}"
-            #pip install "${WHL}${UBUNTU}"/astropy-4.3.1"${PY}${ARCH}"
-            #pip install "${WHL}${UBUNTU}"/sep-1.2.0"${PY}${ARCH}"
-            pip install "${WHL}${UBUNTU}"/sgp4-2.20"${PY}${ARCH}"
-            pip install "${WHL}${UBUNTU}"/PyQt5_sip-12.8.1"${PY}${ARCH}"
-            pip install "${WHL}${UBUNTU}"/PyQt5-5.15.4"${PY}${ARCH}"
+            #pip install "${WHL}${UBUNTU}/numpy-1.21.2${PY}${ARCH}"
+            #pip install "${WHL}${UBUNTU}/pyerfa-2.0.0${PY}${ARCH}"
+            #pip install "${WHL}${UBUNTU}/astropy-4.3.1${PY}${ARCH}"
+            #pip install "${WHL}${UBUNTU}/sep-1.2.0${PY}${ARCH}"
+            pip install "${WHL}${UBUNTU}/sgp4-2.20${PY}${ARCH}"
+            pip install "${WHL}${UBUNTU}/PyQt5_sip-12.8.1${PY}${ARCH}"
+            pip install "${WHL}${UBUNTU}/PyQt5-5.15.4${PY}${ARCH}"
 
       - name: show_log
         run: |

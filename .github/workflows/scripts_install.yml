@@ -77,4 +77,6 @@ jobs:
             pip install --find-links=. numpy==1.21.2
             pip install --find-links=. pyerfa==2.0.0
             pip install --find-links=. sgp4==2.20
-            pip install --find-links=. numpy==1.21.2
+            pip install --find-links=. sep==1.2.0
+            pip install --find-links=. PyQt5-sip=12.8.1
+            pip install --find-links=. PyQt5==5.15.4

@@ -74,7 +74,7 @@ jobs:
             WHL="https://github.com/mworion/MountWizzard4/tree/master/support"
             UBUNTU="/2.0/wheels/ubuntu20.04/"
             PY="*-cp38-*.whl"
-            wget -r --no-parent -nd -A ${PY} ${WHL}${UBUNTU}
+            wget -r -nd -A "${PY} "${WHL}${UBUNTU}"
             pip install --find-links=. numpy==1.21.2
             #pip install --find-links=. pyerfa==2.0.0
             #pip install --find-links=. sgp4==2.20

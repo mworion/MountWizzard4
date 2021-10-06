@@ -75,9 +75,6 @@ jobs:
             UBUNTU="/2.0/wheels/ubuntu20.04/"
             wget -r --no-parent -A '*-cp38-*' "${WHL}${UBUNTU}"
             pip install --find-links=. numpy==1.21.2
-
-
-
-      - name: show_log
-        run: |
-          cat test.log
+            pip install --find-links=. pyerfa==2.0.0
+            pip install --find-links=. sgp4==2.20
+            pip install --find-links=. numpy==1.21.2

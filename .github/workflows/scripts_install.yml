@@ -69,15 +69,18 @@ jobs:
           
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            python3 -m venv venv
+            python3 -m venv venv >> test.log
             source venv/bin/activate
-            python --version
+            python --version >> test.log
             ARCH="_aarch64.whl"
             PY="-cp38-38-"
             WHL="https://github.com/mworion/mountwizzard4/raw/master/support/wheels/ubuntu20.04"
-            pip install "${WHL}"/pyerfa-2.0.0"${PY}"linux"${ARCH}"
-            pip install "${WHL}"/astropy-4.3.1"${PY}"linux"${ARCH}"
-            pip install "${WHL}"/sep-1.2.0"${PY}"linux"${ARCH}"
-            pip install "${WHL}"/sgp4-2.20"${PY}"manylinux2014"${ARCH}"
-            pip install "${WHL}"/PyQt5_sip-12.9.0"${PY}"linux"${ARCH}"
-            pip install "${WHL}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}"
+            #pip install "${WHL}"/pyerfa-2.0.0"${PY}"linux"${ARCH}"
+            #pip install "${WHL}"/astropy-4.3.1"${PY}"linux"${ARCH}"
+            #pip install "${WHL}"/sep-1.2.0"${PY}"linux"${ARCH}"
+            #pip install "${WHL}"/sgp4-2.20"${PY}"manylinux2014"${ARCH}"
+            #pip install "${WHL}"/PyQt5_sip-12.9.0"${PY}"linux"${ARCH}"
+            #pip install "${WHL}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}"
+
+      - run: |
+       cat test.log

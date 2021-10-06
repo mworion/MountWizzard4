@@ -70,6 +70,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             python3 -m venv venv >> test.log
+            python3 -c "from wheel.pep425tags import get_abi_tag; get_abi_tag()" >> test.log
             source venv/bin/activate
             python --version >> test.log
             ARCH="_aarch64.whl"

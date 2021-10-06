@@ -71,12 +71,12 @@ jobs:
           run: |
             python3 -m venv venv
             source venv/bin/activate
+            python -m pip install pip --upgrade
             ARCH="_aarch64.whl"
             PY="-cp38-cp38-"
             WHL="https://github.com/mworion/MountWizzard4/tree/master/support/2.0/wheels/ubuntu20.04"
             #pip install "${WHL}"/numpy-1.21.2"${PY}"manylinux_2_17_aarch64
             #.manylinux2014"${ARCH}"
-            rm -rf ~/.cache/pip
             #pip install "${WHL}"/pyerfa-2.0.0"${PY}"linux"${ARCH}"
             #pip install "${WHL}"/astropy-4.3.1"${PY}"linux"${ARCH}"
             pip install "${WHL}"/sep-1.2.0"${PY}"linux"${ARCH}"

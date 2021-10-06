@@ -82,5 +82,6 @@ jobs:
             #pip install "${WHL}"/PyQt5_sip-12.9.0"${PY}"linux"${ARCH}"
             #pip install "${WHL}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}"
 
-      - run: |
-       cat test.log
+      - name: show_log
+        run: |
+          cat test.log

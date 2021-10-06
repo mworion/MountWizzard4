@@ -74,16 +74,16 @@ jobs:
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
             ARCH="_aarch64.whl"
-            PY="-cp38-cp38-"
-            WHL="https://github.com/mworion/MountWizzard4/tree/master/support/2.0/wheels/ubuntu20.04"
-            #pip install "${WHL}"/numpy-1.21.2"${PY}"manylinux_2_17_aarch64
-            #.manylinux2014"${ARCH}"
-            #pip install "${WHL}"/pyerfa-2.0.0"${PY}"linux"${ARCH}"
-            #pip install "${WHL}"/astropy-4.3.1"${PY}"linux"${ARCH}"
-            # pip install "${WHL}"/sep-1.2.0"${PY}"linux"${ARCH}"
-            pip install "${WHL}"/sgp4-2.20"${PY}"manylinux2014"${ARCH}"
-            pip install "${WHL}"/PyQt5_sip-12.8.1"${PY}"linux"${ARCH}"
-            pip install "${WHL}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}"
+            PY="-cp38-"
+            WHL="https://github.com/mworion/MountWizzard4/tree/master/support"
+            UBUNTU="/2.0/wheels/ubuntu20.04"
+            #pip install "${WHL}"/numpy-1.21.2"${PY}${ARCH}"
+            #pip install "${WHL}${UBUNTU}"/pyerfa-2.0.0"${PY}${ARCH}"
+            #pip install "${WHL}${UBUNTU}"/astropy-4.3.1"${PY}${ARCH}"
+            #pip install "${WHL}${UBUNTU}"/sep-1.2.0"${PY}${ARCH}"
+            pip install "${WHL}${UBUNTU}"/sgp4-2.20"${PY}${ARCH}"
+            pip install "${WHL}${UBUNTU}"/PyQt5_sip-12.8.1"${PY}${ARCH}"
+            pip install "${WHL}${UBUNTU}"/PyQt5-5.15.4"${PY}${ARCH}"
 
       - name: show_log
         run: |

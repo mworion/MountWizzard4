@@ -10,6 +10,8 @@ on:
     # Run this action on the trigger event when specific files are touched
     paths:
       - '.github/workflows/scripts_install.yml'
+      - 'support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh'
+      - 'support/2.0/Ubuntu/MW4_Install_aarch64_18_04.sh'
 
 jobs:
   build_job:
@@ -73,9 +75,10 @@ jobs:
             source venv/bin/activate
             GITHUB="https://github.com/mworion/MountWizzard4/tree/master/support"
             UBUNTU="/2.0/wheels/ubuntu20.04"
-            pip install numpy==1.21.2 --find-links "${GITHUB}${UBUNTU}"
-            pip install pyerfa==2.0.0 --find-links "${GITHUB}${UBUNTU}"
-            pip install sgp4==2.20 --find-links "${GITHUB}${UBUNTU}"
-            pip install sep==1.2.0 --find-links "${GITHUB}${UBUNTU}"
+            #pip install numpy==1.21.2 --find-links "${GITHUB}${UBUNTU}"
+            #pip install pyerfa==2.0.0 --find-links "${GITHUB}${UBUNTU}"
+            #pip install sgp4==2.20 --find-links "${GITHUB}${UBUNTU}"
+            #pip install sep==1.2.0 --find-links "${GITHUB}${UBUNTU}"
             pip install PyQt5-sip=12.8.1 --find-links "${GITHUB}${UBUNTU}"
             pip install PyQt5==5.15.4 --find-links "${GITHUB}${UBUNTU}"
+            #pip install mountwizzard4

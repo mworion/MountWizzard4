@@ -73,7 +73,8 @@ jobs:
             source venv/bin/activate
             WHL="https://github.com/mworion/MountWizzard4/tree/master/support"
             UBUNTU="/2.0/wheels/ubuntu20.04/"
-            wget -r --no-parent -A '*-cp38-*' "${WHL}${UBUNTU}"
+            PY="-cp38-"
+            wget -r --no-parent -A '"${PY}"' "${WHL}${UBUNTU}"
             pip install --find-links=. numpy==1.21.2
             pip install --find-links=. pyerfa==2.0.0
             pip install --find-links=. sgp4==2.20

@@ -75,10 +75,10 @@ jobs:
             source venv/bin/activate
             GITHUB="https://github.com/mworion/MountWizzard4/tree/master/support"
             UBUNTU="/2.0/wheels/ubuntu20.04"
-            #pip install numpy==1.21.2 --find-links "${GITHUB}${UBUNTU}"
-            #pip install pyerfa==2.0.0 --find-links "${GITHUB}${UBUNTU}"
-            #pip install sgp4==2.20 --find-links "${GITHUB}${UBUNTU}"
-            #pip install sep==1.2.0 --find-links "${GITHUB}${UBUNTU}"
-            pip install PyQt5-sip --find-links "${GITHUB}${UBUNTU}"
-            pip install PyQt5 --find-links "${GITHUB}${UBUNTU}"
+            #pip install numpy==1.21.2 --find-links "${GITHUB}${UBUNTU}" --no-index
+            #pip install pyerfa==2.0.0 --find-links "${GITHUB}${UBUNTU}" --no-index
+            #pip install sgp4==2.20 --find-links "${GITHUB}${UBUNTU}" --no-index
+            #pip install sep==1.2.0 --find-links "${GITHUB}${UBUNTU}" --no-index
+            pip install PyQt5-sip --find-links "${GITHUB}${UBUNTU}" --no-index
+            pip install PyQt5 --find-links "${GITHUB}${UBUNTU}" --no-index
             #pip install mountwizzard4

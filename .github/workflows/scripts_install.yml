@@ -76,11 +76,11 @@ jobs:
             GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master/support"
             GITHUB="https://github.com/mworion/mountwizzard4/raw/master/support"
             UBUNTU="/2.0/wheels/ubuntu20.04"
-            #pip install numpy==1.21.2 --find-links "${GITHUB}${UBUNTU}" --no-index
-            #pip install pyerfa==2.0.0 --find-links "${GITHUB}${UBUNTU}" --no-index
+            pip install numpy==1.21.2 --find-links "${GITHUB}${UBUNTU}" --no-index
+            pip install pyerfa==2.0.0 --find-links "${GITHUB}${UBUNTU}" --no-index
             #pip install sgp4==2.20 --find-links "${GITHUB}${UBUNTU}" --no-index
             #pip install sep==1.2.0 --find-links "${GITHUB}${UBUNTU}" --no-index
-            pip install "${GITHUB}${UBUNTU}/PyQt5_sip-12.8.1-cp38-cp38-linux_aarch64.whl"
+            #pip install "${GITHUB}${UBUNTU}/PyQt5_sip-12.8.1-cp38-cp38-linux_aarch64.whl"
             #pip install PyQt5==5.15.4 --find-links "${GITHUB}${UBUNTU}" --no-index
           
             #pip install mountwizzard4

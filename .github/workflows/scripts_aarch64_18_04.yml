@@ -3,20 +3,19 @@
 #
 # v0.1,  Michael Wuertenberger
 #
-name: scripts_install
+name: scripts_aarch64_18_04
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/scripts_install.yml'
-      - 'support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh'
+      - '.github/workflows/scripts_aarch64_18_04.yml'
       - 'support/2.0/Ubuntu/MW4_Install_aarch64_18_04.sh'
 
 jobs:
   build_job:
     # The host should always be linux
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     # Run steps on a matrix of 3 arch/distro combinations
@@ -24,7 +23,7 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu20.04
+            distro: ubuntu18.04
 
     steps:
       - uses: uraimo/run-on-arch-action@v2.1.1
@@ -75,5 +74,6 @@ jobs:
             source venv/bin/activate
             GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
             SCRIPT="/support/2.0/Ubuntu"
-            wget "${GITHUB}${SCRIPT}/MW4_Install_aarch64_20_04.sh"
-            ./MW4_Install_aarch64_20_04.sh
+            wget "${GITHUB}${SCRIPT}/MW4_Install_aarch64_18_04.sh"
+            chmod 777 MW4_Install_aarch64_18_04.sh
+            ./MW4_Install_aarch64_18_04.sh

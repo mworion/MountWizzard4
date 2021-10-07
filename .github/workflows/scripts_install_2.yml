@@ -13,7 +13,7 @@ on:
       - 'support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh'
 
 jobs:
-  build_job:
+  install_job:
     # The host should always be linux
     runs-on: ubuntu-20.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
@@ -23,7 +23,7 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu20.04
+            distro: [ubuntu20.04, ubuntu18.04]
 
     steps:
       - uses: actions/checkout@v2.1.0

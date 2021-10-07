@@ -1,25 +1,28 @@
 #
-# GitHub actions for checking the installation of mountwizzard4 packages
+# GitHub actions for running the unit test of the mountwizzard4 package
 #
 # v0.1, Michael Wuertenberger
 #
-name: python3_package
+name: win_unit
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
       - 'mw4/**'
+      - 'tests/unit_tests/**'
       - 'setup.py'
       - 'tox.ini'
-      - '.github/workflows/python3_package.yml'
+      - '.github/workflows/win_unit.yml'
 
 jobs:
 
-  # This action is split into two jobs:
+  # This action is split into four jobs:
   # 1 Building the distribution
-  # 2 Installing the distribution in a multiple os and python versions
-  # Job 2 need 1 to be finished without error.
+  # 2 Running the unit tests on macOS part 1
+  # 3 Running the unit tests on macOS part 2
+  # 4 Combining the coverage and uploading it
+  # Job 2 + 3 need 1, Job 4 needs 2 + 3 to be finished without error.
 
   build_widgets_resource:
 
@@ -43,7 +46,7 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
-          
+
     - uses: actions/setup-python@v2
       with:
         python-version: '3.9'
@@ -63,7 +66,7 @@ jobs:
         python -m PyQt5.uic.pyuic mw4/gui/widgets/analyse.ui -o mw4/gui/widgets/analyse_ui.py
         python -m PyQt5.uic.pyuic mw4/gui/widgets/simulator.ui -o mw4/gui/widgets/simulator_ui.py
         python -m PyQt5.pyrcc_main mw4/resource/resources.qrc -o mw4/resource/resources.py
-
+        
     - name: build_package
       run: |
         python -m pip install setuptools wheel
@@ -87,142 +90,171 @@ jobs:
       with:
         name: resource
         path: mw4/resource/*.py
+
+  run_tests_windows_1:
+  
+    # The package has 3000+ unit tests, which will be tested on macOS as
+    # the ubuntu version does not have a headless Qt5
+  
+    needs: [build_widgets_resource]
+    runs-on: [windows-latest]
+    
+    steps:
+
+      - uses: actions/checkout@v2
+  
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          architecture: 'x86'
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: widgets
+          path: mw4/gui/widgets
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: resource
+          path: mw4/resource
+          
+      - name: install_package
+        run: |
+          python -m pip install cython wheel
+          python -m pip install dist/mountwizzard4.tar.gz
+          python -m pip install comtypes==1.1.7
+
+      - name: install_pytest
+        run: |
+          python -m pip install pytest
+          python -m pip install pytest-qt
+          python -m pip install pytest-cov
+          python -m pip install pytest-pythonpath
+  
+      - name: running_unit_tests
+        run: |
+          pytest tests/unit_tests/zLoader --cov=mw4/
+          pytest tests/unit_tests/zUpdate --cov-append --cov=mw4/
+          pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/
+          pytest tests/unit_tests/base --cov-append --cov=mw4/
+          pytest tests/unit_tests/logic --cov-append --cov=mw4/
+          pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/
+          pytest tests/unit_tests/indibase --cov-append --cov=mw4/
+          
+      - name: rename_coveragefile
+        run: mv .coverage coverage1.dat
         
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./coverage1.dat
+
+  run_tests_windows_2:
+  
+    # The package has 3000+ unit tests, which will be tested on macOS as
+    # the ubuntu version does not have a headless Qt5
+  
+    needs: [build_widgets_resource]
+    runs-on: [windows-latest]
+    
+    steps:
+  
+      - uses: actions/checkout@v2
+  
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          architecture: 'x86'
+          
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: widgets
+          path: mw4/gui/widgets
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: resource
+          path: mw4/resource
+          
+      - name: install_package
+        run: |
+          python -m pip install cython wheel
+          python -m pip install dist/mountwizzard4.tar.gz
+          python -m pip install comtypes==1.1.7
+
+      - name: install_pytest
+        run: |
+          python -m pip install pytest
+          python -m pip install pytest-qt
+          python -m pip install pytest-cov
+          python -m pip install pytest-pythonpath
+  
+      - name: running_unit_tests
+        run: |
+          pytest tests/unit_tests/gui/mainWindow --cov=mw4/
+          pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/
+          pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/
+          pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/
+          
+      - name: rename_coveragefile
+        run: mv .coverage coverage2.dat
         
-  install_package_windows:
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./coverage2.dat
 
-    needs: [build_widgets_resource]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      max-parallel: 3
-      matrix:
-        os: [windows-latest]
-        python-version: [3.7, 3.8, 3.9]
+  coverage:
 
+    # Combining all results and uploading the coverage data.
+    
+    needs: [ run_tests_windows_1, run_tests_windows_2 ]
+    runs-on: [ windows-latest ]
+    
     steps:
 
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
   
-      - name: setup_python_windows ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-  
-      - name: show_python_version
-        run: python -c 'import platform; print(platform.architecture()[0])'
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: dist
-          path: dist
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: widgets
-          path: mw4/gui/widgets
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: resource
-          path: mw4/resource
-  
-      - name: install_package
-        run: |
-          python -m pip install cython
-          python -m pip install dist/mountwizzard4.tar.gz
+    - uses: actions/download-artifact@v2
+      with:
+        name: widgets
+        path: mw4/gui/widgets
 
-      - name: check_dependencies_explicit
-        run: |
-          python -m pip check mountwizzard4
+    - uses: actions/download-artifact@v2
+      with:
+        name: resource
+        path: mw4/resource
+    
+    - name: collecting_data
+      uses: actions/download-artifact@v2
+      with:
+        name: coverage
+        path: .
+        
+    - name: combining_data
+      run: |
+        python -m pip install coverage
+        python -m coverage combine coverage1.dat coverage2.dat
+        python -m coverage xml
 
-
-  install_package_ubuntu:
-
-    needs: [build_widgets_resource]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      max-parallel: 3
-      matrix:
-        os: [ubuntu-latest]
-        python-version: [3.7, 3.8, 3.9]
-
-    steps:
-      
-      - uses: actions/checkout@v2
-  
-      - name: setup_python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: dist
-          path: dist
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: widgets
-          path: mw4/gui/widgets
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: resource
-          path: mw4/resource
-  
-      - name: install_package
-        run: |
-          python -m pip install cython
-          python -m pip install dist/mountwizzard4.tar.gz
-  
-      - name: check_dependencies_explicit
-        run: |
-          python -m pip check mountwizzard4
-
-
-  install_package_macOS:
-
-    needs: [build_widgets_resource]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      max-parallel: 3
-      matrix:
-        os: [macos-latest]
-        python-version: [3.7, 3.8, 3.9]
-
-    steps:
-      
-      - uses: actions/checkout@v2
-      - name: setup_python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: dist
-          path: dist
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: widgets
-          path: mw4/gui/widgets
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: resource
-          path: mw4/resource
-  
-      - name: install_package
-        run: |
-          python -m pip install cython
-          python -m pip install dist/mountwizzard4.tar.gz
-  
-      - name: check_dependencies_explicit
-        run: |
-          python -m pip check mountwizzard4
-  
-      - name: make_test_run
-        run: |
-          touch test.txt
-          # python mw4/loader.py
+    - name: upload
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: coverage.xml
+        flags: unittests
+        name: codecov-umbrella

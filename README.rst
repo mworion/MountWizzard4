@@ -41,7 +41,7 @@ Version, build and code coverage status
 
 |PYTEST macOS| |PYTEST Windows|
 
-|PYTHON3_PACKAGE| |Install_AARCH64_18_04| |Install_AARCH64_20_04|
+|PACKAGE_INSTALL| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
 
 |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES|
 
@@ -101,10 +101,10 @@ CS Michel
     :alt: Documentation Status
 
 .. |PYTEST macOS| image::
-    https://github.com/mworion/MountWizzard4/workflows/python3_macOS_unit/badge.svg
+    https://github.com/mworion/MountWizzard4/workflows/macOS_unit/badge.svg
 
 .. |PYTEST Windows| image::
-    https://github.com/mworion/MountWizzard4/workflows/python3_win_unit/badge.svg
+    https://github.com/mworion/MountWizzard4/workflows/win_unit/badge.svg
 
 .. |CODECOV| image::
     https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
@@ -135,14 +135,14 @@ CS Michel
 .. |COMMITS_WEEK| image::
     https://img.shields.io/github/commit-activity/w/mworion/mountwizzard4
 
-.. |PYTHON3_PACKAGE| image::
-    https://github.com/mworion/MountWizzard4/workflows/python3_package/badge.svg
+.. |PACKAGE_INSTALL| image::
+    https://github.com/mworion/MountWizzard4/workflows/package_install/badge.svg
 
-.. |Install_AARCH64_18_04| image::
-    https://github.com/mworion/MountWizzard4/workflows/scripts_aarch64_18_04/badge.svg
+.. |RPI4_Mate_18_04| image::
+    https://github.com/mworion/MountWizzard4/workflows/rpi4_mate_18_04/badge.svg
 
-.. |Install_AARCH64_20_04| image::
-    https://github.com/mworion/MountWizzard4/workflows/scripts_aarch64_20_04/badge.svg
+.. |RPI4_Mate_20_04| image::
+    https://github.com/mworion/MountWizzard4/workflows/rpi4_mate_20_04/badge.svg
 
 .. |PYPI_VERSION| image::
     https://img.shields.io/pypi/v/mountwizzard4.svg

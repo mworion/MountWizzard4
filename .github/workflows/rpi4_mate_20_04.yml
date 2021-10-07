@@ -3,13 +3,13 @@
 #
 # v0.1,  Michael Wuertenberger
 #
-name: scripts_aarch64_20_04
+name: rpi4_mate_20_04
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/scripts_aarch64_20_04.yml'
+      - '.github/workflows/rpi4_mate_20_04.yml'
       - 'support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh'
 
 jobs:

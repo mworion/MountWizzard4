@@ -17,10 +17,10 @@ echo "         ██║ ╚═╝ ██║╚███╔███╔╝     �
 echo "         ╚═╝     ╚═╝ ╚══╝╚══╝      ╚═╝"
 echo
 echo --------------------------------------------------------
-echo install script version 2.0 aarch64
+echo install script version 2.1 aarch64
 echo --------------------------------------------------------
 
-echo install script version 2.0 aarch64 > install.log 2>&1
+echo install script version 2.1 aarch64 > install.log 2>&1
 
 echo
 echo --------------------------------------------------------
@@ -91,37 +91,25 @@ echo --------------------------------------------------------
 echo start virtualenv and update tools
 echo --------------------------------------------------------
 
-source ./venv/bin/activate venv >> install.log 2>&1
+source venv/bin/activate >> install.log 2>&1
 pip install pip --upgrade >> install.log 2>&1
 pip install setuptools --upgrade >> install.log 2>&1
 pip install wheel --upgrade >> install.log 2>&1
+
+GITHUB="https://github.com/mworion/MountWizzard4/tree/master/support"
+UBUNTU="/2.0/wheels/ubuntu20.04"
 
 echo
 echo --------------------------------------------------------
 echo installing precompiled packages
 echo --------------------------------------------------------
 
-
-WHL="https://github.com/mworion/mountwizzard4/raw/master/support/wheels/ubuntu18.04"
-ARCH="_aarch64.whl"
-PY37="-cp37-37m-"
-PY38="-cp38-38-"
-PY39="-cp39-39-"
-
-if [ "${P_VER:0:9}" == "python3.9" ]; then
-  PY="${PY39}"
-elif [ "${P_VER:0:9}" == "python3.8" ]; then
-  PY="${PY38}"
-elif [ "${P_VER:0:9}" == "python3.7" ]; then
-  PY="${PY37}"
-fi
-  
-pip install "${WHL}"/pyerfa-2.0.0"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/astropy-4.3.1"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/sep-1.2.0"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/sgp4-2.20"${PY}"manylinux2014"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/PyQt5_sip-12.8.1"${PY}"linux"${ARCH}" >> install.log 2>&1
-pip install "${WHL}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${ARCH}" >> install.log 2>&1
+pip install numpy==1.21.2 --find-links "${GITHUB}${UBUNTU}" >> install.log 2>&1
+pip install pyerfa==2.0.0 --find-links "${GITHUB}${UBUNTU}" >> install.log 2>&1
+pip install sgp4==2.20 --find-links "${GITHUB}${UBUNTU}" >> install.log 2>&1
+pip install sep==1.2.0 --find-links "${GITHUB}${UBUNTU}" >> install.log 2>&1
+pip install PyQt5-sip==12.8.1 --find-links "${GITHUB}${UBUNTU}" >> install.log 2>&1
+pip install PyQt5==5.15.4 --find-links "${GITHUB}${UBUNTU}" >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------

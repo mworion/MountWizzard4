@@ -43,6 +43,7 @@ jobs:
           # Mount the artifacts directory as /artifacts in the container
           dockerRunArgs: |
             --volume "${PWD}/artifacts:/artifacts"
+            --platform linux/arm64/v8
 
           # Pass some environment variables to the container
           env: | # YAML, but pipe character is necessary
@@ -69,7 +70,7 @@ jobs:
           run: |
             apt-get -y install python3.8 python3-pip python3.8-venv python3.8-dev
             apt-get -y install qt5-default pyqt5-dev pyqt5-dev-tools
-            python3.8 -m venv venv
+            python3 -m venv venv
             source venv/bin/activate
             
             python --version
@@ -77,11 +78,11 @@ jobs:
             pip install setuptools --upgrade
             pip install wheel
             pip wheel astropy==4.3.1 -w "support/wheels/${{ matrix.distro}}"
-            # pip wheel pyerfa==2.0.0 -w "support/wheels/${{ matrix.distro}}"
-            # pip wheel sep==1.2.0 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel pyerfa==2.0.0 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel sep==1.2.0 -w "support/wheels/${{ matrix.distro}}"
             pip wheel sgp4==2.20 -w "support/wheels/${{ matrix.distro}}"
-            #pip wheel pyqt5_sip==12.8.1 -w "support/wheels/${{ matrix.distro}}"
-            #pip wheel pyqt5==5.15.2 -w "support/wheels/${{ matrix.distro}}"
+            # pip wheel pyqt5_sip==12.9.0 -w "support/wheels/${{ matrix.distro}}"
+            # pip wheel pyqt5==5.15.4 -w "support/wheels/${{ matrix.distro}}"
 
       - name: upload_wheels
         uses: actions/upload-artifact@v2

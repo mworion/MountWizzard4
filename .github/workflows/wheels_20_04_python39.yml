@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.1.0
-      - uses: uraimo/run-on-arch-action@v2.0.5
+      - uses: uraimo/run-on-arch-action@v2.1.1
         name: build_artifact
         id: build
         with:
@@ -43,7 +43,8 @@ jobs:
           # Mount the artifacts directory as /artifacts in the container
           dockerRunArgs: |
             --volume "${PWD}/artifacts:/artifacts"
-
+            --platform linux/arm64/v8
+            
           # Pass some environment variables to the container
           env: | # YAML, but pipe character is necessary
             artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
@@ -76,12 +77,12 @@ jobs:
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
             pip install wheel
-            pip wheel astropy==4.3.1 -w "support/wheels/${{ matrix.distro}}"
-            # pip wheel pyerfa==2.0.0 -w "support/wheels/${{ matrix.distro}}"
-            # pip wheel sep==1.2.0 -w "support/wheels/${{ matrix.distro}}"
-            pip wheel sgp4==2.20 -w "support/wheels/${{ matrix.distro}}"
+            #pip wheel astropy==4.3.1 -w "support/wheels/${{ matrix.distro}}"
+            #pip wheel pyerfa==2.0.0 -w "support/wheels/${{ matrix.distro}}"
+            #pip wheel sep==1.2.0 -w "support/wheels/${{ matrix.distro}}"
+            #pip wheel sgp4==2.20 -w "support/wheels/${{ matrix.distro}}"
             #pip wheel pyqt5_sip==12.8.1 -w "support/wheels/${{ matrix.distro}}"
-            #pip wheel pyqt5==5.15.2 -w "support/wheels/${{ matrix.distro}}"
+            #pip wheel pyqt5==5.15.4 -w "support/wheels/${{ matrix.distro}}"
 
       - name: upload_wheels
         uses: actions/upload-artifact@v2

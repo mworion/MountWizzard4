@@ -93,13 +93,13 @@ pip install wheel --upgrade >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------
-echo installing precompiled packages from github
+echo installing precompiled packages
 echo --------------------------------------------------------
 
 GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
 WHEELS="/support/2.0/wheels/ubuntu20.04"
 PRE="${GITHUB}${WHEELS}"
-POST="_aarch64.whl >> install.log 2>&1"
+POST="_aarch64.whl"
 
 PY37="-cp37-cp37m-"
 PY38="-cp38-cp38-"

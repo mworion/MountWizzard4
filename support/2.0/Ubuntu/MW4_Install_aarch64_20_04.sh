@@ -2,7 +2,7 @@
 cd $(dirname "$0")
 
 #
-# Installer for Ubuntu 20.04 for aarch64
+# Installer for Ubuntu Mate 20.04 for aarch64
 # (c) 2021 mworion
 #
 
@@ -108,11 +108,11 @@ PY38="-cp38-cp38-"
 PY39="-cp39-cp39-"
 
 if [ "${P_VER:0:9}" == "python3.9" ]; then
-  PY=PY39
+  PY="${PY39}"
 elif [ "${P_VER:0:9}" == "python3.8" ]; then
-  PY=PY38
+  PY="${PY38}"
 elif [ "${P_VER:0:9}" == "python3.7" ]; then
-  PY=PY37
+  PY="${PY37}"
 fi
 
 pip install "${PRE}"/numpy-1.21.2"${PY}"manylinux_2_17_arch64.manylinux2014"${POST}"

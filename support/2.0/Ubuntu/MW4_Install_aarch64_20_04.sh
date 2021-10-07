@@ -83,11 +83,6 @@ python3 -m venv venv >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------
-echo installing application - takes some time
-echo --------------------------------------------------------
-
-echo
-echo --------------------------------------------------------
 echo start virtualenv and update tools
 echo --------------------------------------------------------
 
@@ -101,7 +96,7 @@ echo --------------------------------------------------------
 echo installing precompiled packages
 echo --------------------------------------------------------
 
-PRE="https://github.com/mworion/mountwizzard4/raw/master/support/wheels/ubuntu20.04"
+PRE="https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/wheels/ubuntu20.04"
 POST="_aarch64.whl >> install.log 2>&1"
 PY37="-cp37-cp37m-"
 PY38="-cp38-cp38-"

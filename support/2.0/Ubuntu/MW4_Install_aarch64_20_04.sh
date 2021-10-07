@@ -93,7 +93,7 @@ pip install wheel --upgrade >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------
-echo installing precompiled packages
+echo installing precompiled packages from github
 echo --------------------------------------------------------
 
 GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"

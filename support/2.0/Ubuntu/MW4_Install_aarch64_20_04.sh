@@ -99,7 +99,7 @@ echo --------------------------------------------------------
 GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
 WHEELS="/support/2.0/wheels/ubuntu20.04"
 PRE="${GITHUB}${WHEELS}"
-POST="_aarch64.whl"
+POST="_aarch64.whl >> install.log 2>&1"
 
 PY37="-cp37-cp37m-"
 PY38="-cp38-cp38-"
@@ -113,7 +113,7 @@ elif [ "${P_VER:0:9}" == "python3.7" ]; then
   PY="${PY37}"
 fi
 
-pip install "${PRE}"/numpy-1.21.2"${PY}"manylinux_2_17_arch64.manylinux2014"${POST}"
+pip install "${PRE}"/numpy-1.21.2"${PY}"manylinux_2_17_aarch64.manylinux2014"${POST}"
 pip install "${PRE}"/pyerfa-2.0.0"${PY}"linux"${POST}"
 pip install "${PRE}"/astropy-4.3.1"${PY}"linux"${POST}"
 pip install "${PRE}"/sep-1.2.0"${PY}"linux"${POST}"

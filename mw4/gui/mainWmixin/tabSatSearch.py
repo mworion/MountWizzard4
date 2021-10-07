@@ -249,12 +249,11 @@ class SatSearch(object):
         :param tEv:
         :return:
         """
-        sun = ephemeris['sun']
         earth = ephemeris['earth']
 
         vecObserverSat = (sat - loc).at(tEv)
-        vecObserverSun = (sun - (earth + loc)).at(tEv)
-        phase = vecObserverSat.separation_from(vecObserverSun)
+        vecSunSat = (earth + sat).at(tEv)
+        phase = vecObserverSat.separation_from(vecSunSat)
         return phase
 
     def calcAppMag(self, sat, loc, ephemeris, satRange, tEv):

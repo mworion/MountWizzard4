@@ -3,7 +3,7 @@
 #
 # v0.1, Michael Wuertenberger
 #
-name: python3_macOS_unit
+name: macOS_unit
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
       - 'mw4/**'
       - 'tests/unit_tests/**'
       - 'setup.py'
-      - '.github/workflows/python3_macOS_unit.yml'
+      - '.github/workflows/macOS_unit.yml'
 
 jobs:
 

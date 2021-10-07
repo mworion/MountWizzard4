@@ -39,7 +39,9 @@ Version, build and code coverage status
 
 |DOCS|
 
-|PYTEST macOS| |PYTEST Windows| |PYTHON3_PACKAGE|
+|PYTEST macOS| |PYTEST Windows|
+
+|PYTHON3_PACKAGE| |Install_AARCH64_18_04| |Install_AARCH64_20_04|
 
 |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES|
 
@@ -135,6 +137,12 @@ CS Michel
 
 .. |PYTHON3_PACKAGE| image::
     https://github.com/mworion/MountWizzard4/workflows/python3_package/badge.svg
+
+.. |Install_AARCH64_18_04| image::
+    https://github.com/mworion/MountWizzard4/workflows/scripts_aarch64_18_04/badge.svg
+
+.. |Install_AARCH64_20_04| image::
+    https://github.com/mworion/MountWizzard4/workflows/scripts_aarch64_20_04/badge.svg
 
 .. |PYPI_VERSION| image::
     https://img.shields.io/pypi/v/mountwizzard4.svg

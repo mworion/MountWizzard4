@@ -96,8 +96,11 @@ echo --------------------------------------------------------
 echo installing precompiled packages
 echo --------------------------------------------------------
 
-PRE="https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/wheels/ubuntu20.04"
+GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
+WHEELS="/support/2.0/wheels/ubuntu20.04"
+PRE="${GITHUB}${WHEELS}"
 POST="_aarch64.whl >> install.log 2>&1"
+
 PY37="-cp37-cp37m-"
 PY38="-cp38-cp38-"
 PY39="-cp39-cp39-"

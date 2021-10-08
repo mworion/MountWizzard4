@@ -222,13 +222,27 @@ class Mount(object):
         self.ui.siteElevation.setText(str(location.elevation.m))
         return True
 
+    def checkMount(self):
+        """
+        :return:
+        """
+        msg = PyQt5.QtWidgets.QMessageBox
+        isMount = self.deviceStat.get('mount', False)
+        isObsSite = self.app.mount.obsSite is not None
+        isSetting = self.app.mount.setting is not None
+        if not isMount or not isObsSite or not isSetting:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when mount not connected !')
+            return False
+        else:
+            return True
+
     def changeTracking(self):
         """
         :return:
         """
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.obsSite is not None
-        if not isMount or not isData:
+        if not self.checkMount():
             return False
 
         obs = self.app.mount.obsSite
@@ -252,9 +266,7 @@ class Mount(object):
         """
         :return:
         """
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.obsSite is not None
-        if not isMount or not isData:
+        if not self.checkMount():
             return False
 
         obs = self.app.mount.obsSite
@@ -264,7 +276,6 @@ class Mount(object):
                 self.app.message.emit('Cannot unpark mount', 2)
             else:
                 self.app.message.emit('Mount unparked', 0)
-
         else:
             suc = obs.park()
             if not suc:
@@ -278,9 +289,7 @@ class Mount(object):
         """
         :return:
         """
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.setting is not None
-        if not isMount or not isData:
+        if not self.checkMount():
             return False
 
         sett = self.app.mount.setting
@@ -288,7 +297,6 @@ class Mount(object):
         if not suc:
             self.app.message.emit('Cannot set tracking to Lunar', 2)
             return False
-
         else:
             self.app.message.emit('Tracking set to Lunar', 0)
             return True
@@ -297,28 +305,22 @@ class Mount(object):
         """
         :return:
         """
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.setting is not None
-        if not isMount or not isData:
+        if not self.checkMount():
             return False
 
         sett = self.app.mount.setting
         suc = sett.setSiderealTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Sidereal', 2)
-            return False
-
         else:
             self.app.message.emit('Tracking set to Sidereal', 0)
-            return True
+        return suc
 
     def setSolarTracking(self):
         """
         :return:
         """
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.setting is not None
-        if not isMount or not isData:
+        if not self.checkMount():
             return False
 
         sett = self.app.mount.setting
@@ -326,7 +328,6 @@ class Mount(object):
         if not suc:
             self.app.message.emit('Cannot set tracking to Solar', 2)
             return False
-
         else:
             self.app.message.emit('Tracking set to Solar', 0)
             return True
@@ -335,9 +336,7 @@ class Mount(object):
         """
         :return:
         """
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.obsSite is not None
-        if not isMount or not isData:
+        if not self.checkMount():
             return False
 
         obs = self.app.mount.obsSite
@@ -345,7 +344,6 @@ class Mount(object):
         if not suc:
             self.app.message.emit('Cannot flip mount', 2)
             return False
-
         else:
             self.app.message.emit('Mount flipped', 0)
             return True
@@ -354,9 +352,7 @@ class Mount(object):
         """
         :return:
         """
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.obsSite is not None
-        if not isMount or not isData:
+        if not self.checkMount():
             return False
 
         obs = self.app.mount.obsSite
@@ -364,7 +360,6 @@ class Mount(object):
         if not suc:
             self.app.message.emit('Cannot stop mount', 2)
             return False
-
         else:
             self.app.message.emit('Mount stopped', 0)
             return True
@@ -380,18 +375,11 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
-        msg = PyQt5.QtWidgets.QMessageBox
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.setting is not None
-        if not isMount or not isData:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
+        if not self.checkMount():
             return False
 
         sett = self.app.mount.setting
         actValue = sett.meridianLimitTrack
-
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set Meridian Limit Track',
@@ -415,18 +403,11 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
-        msg = PyQt5.QtWidgets.QMessageBox
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.setting is not None
-        if not isMount or not isData:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
+        if not self.checkMount():
             return False
 
         sett = self.app.mount.setting
         actValue = sett.meridianLimitSlew
-
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set Meridian Limit Slew',
@@ -450,18 +431,11 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
-        msg = PyQt5.QtWidgets.QMessageBox
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.setting is not None
-        if not isMount or not isData:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
+        if not self.checkMount():
             return False
 
         sett = self.app.mount.setting
         actValue = sett.horizonLimitHigh
-
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set Horizon Limit High',
@@ -485,18 +459,11 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
-        msg = PyQt5.QtWidgets.QMessageBox
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.setting is not None
-        if not isMount or not isData:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
+        if not self.checkMount():
             return False
 
         sett = self.app.mount.setting
         actValue = sett.horizonLimitLow
-
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set Horizon Limit Low',
@@ -520,18 +487,11 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
-        msg = PyQt5.QtWidgets.QMessageBox
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.setting is not None
-        if not isMount or not isData:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
+        if not self.checkMount():
             return False
 
         sett = self.app.mount.setting
         actValue = sett.slewRate
-
         minRate = sett.slewRateMin
         maxRate = sett.slewRateMax
         dlg = PyQt5.QtWidgets.QInputDialog()
@@ -553,15 +513,39 @@ class Mount(object):
             self.app.message.emit('Slew Rate cannot be set', 2)
             return False
 
+    def setLocationValues(self, lat=None, lon=None, elev=None):
+        """
+        :param lat:
+        :param lon:
+        :param elev:
+        :return:
+        """
+        obs = self.app.mount.obsSite
+        loc = obs.location
+        lat = loc.latitude if lat is None else lat
+        lon = loc.longitude if lon is None else lon
+        elev = loc.elevation.m if elev is None else elev
+
+        topo = wgs84.latlon(longitude_degrees=lon.degrees,
+                            latitude_degrees=lat.degrees,
+                            elevation_m=elev)
+
+        if self.app.deviceStat['mount']:
+            obs.setLocation(topo)
+            self.app.mount.getLocation()
+        else:
+            obs.location = topo
+            self.updateLocGUI(self.app.mount.obsSite)
+
+        t = f'Location set to:     [{lat.degrees:3.2f} deg, '
+        t += f'{lon.degrees:3.2f} deg, {elev:4.1f} m]'
+        self.app.message.emit(t, 0)
+        return True
+
     def setLongitude(self):
         """
         :return:    success as bool if value could be changed
         """
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.obsSite is not None
-        if not isMount or not isData:
-            return False
-
         obs = self.app.mount.obsSite
         if obs.location is None:
             return False
@@ -578,32 +562,13 @@ class Mount(object):
             return False
 
         value = convertLonToAngle(value)
-        if value is None:
-            return False
-
-        topo = wgs84.latlon(longitude_degrees=value.degrees,
-                            latitude_degrees=obs.location.latitude.degrees,
-                            elevation_m=obs.location.elevation.m)
-        obs.location = topo
-
-        if obs.setLongitude(value):
-            self.app.message.emit(f'Longitude:           '
-                                  f'[{value}]', 0)
-            self.app.mount.getLocation()
-            return True
-        else:
-            self.app.message.emit('Longitude cannot be set', 2)
-            return False
+        self.setLocationValues(lon=value)
+        return True
 
     def setLatitude(self):
         """
         :return:    success as bool if value could be changed
         """
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.obsSite is not None
-        if not isMount or not isData:
-            return False
-
         obs = self.app.mount.obsSite
         if obs.location is None:
             return False
@@ -619,34 +584,14 @@ class Mount(object):
             return False
 
         value = convertLatToAngle(value)
-        if value is None:
-            return False
-
-        topo = wgs84.latlon(longitude_degrees=obs.location.longitude.degrees,
-                            latitude_degrees=value.degrees,
-                            elevation_m=obs.location.elevation.m)
-        obs.location = topo
-
-        if obs.setLatitude(value):
-            self.app.message.emit(f'Latitude:            '
-                                  f'[{value}]', 0)
-            self.app.mount.getLocation()
-            return True
-        else:
-            self.app.message.emit('Latitude cannot be set', 2)
-            return False
+        self.setLocationValues(lat=value)
+        return True
 
     def setElevation(self):
         """
         :return:    success as bool if value could be changed
         """
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.obsSite is not None
-        if not isMount or not isData:
-            return False
-
         obs = self.app.mount.obsSite
-
         if obs.location is None:
             return False
 
@@ -662,34 +607,17 @@ class Mount(object):
         if not ok:
             return False
 
-        topo = wgs84.latlon(longitude_degrees=obs.location.longitude.degrees,
-                            latitude_degrees=obs.location.latitude.degrees,
-                            elevation_m=value)
-        obs.location = topo
-
-        if obs.setElevation(value):
-            self.app.message.emit(f'Elevation:           [{value}]', 0)
-            self.app.mount.getLocation()
-            return True
-        else:
-            self.app.message.emit('Elevation cannot be set', 2)
-            return False
+        self.setLocationValues(elev=value)
+        return True
 
     def setUnattendedFlip(self):
         """
         :return:    success as bool if value could be changed
         """
-        msg = PyQt5.QtWidgets.QMessageBox
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.setting is not None
-        if not isMount or not isData:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
+        if not self.checkMount():
             return False
 
         sett = self.app.mount.setting
-
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getItem(self,
                                 'Set Unattended Flip',
@@ -711,17 +639,10 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
-        msg = PyQt5.QtWidgets.QMessageBox
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.setting is not None
-        if not isMount or not isData:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
+        if not self.checkMount():
             return False
 
         sett = self.app.mount.setting
-
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getItem(self,
                                 'Set Dual Axis Tracking',
@@ -744,17 +665,10 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
-        msg = PyQt5.QtWidgets.QMessageBox
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.setting is not None
-        if not isMount or not isData:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
+        if not self.checkMount():
             return False
 
         sett = self.app.mount.setting
-
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getItem(self,
                                 'Set Wake On Lan',
@@ -777,17 +691,10 @@ class Mount(object):
         """
         :return:    success as bool if value could be changed
         """
-        msg = PyQt5.QtWidgets.QMessageBox
-        isMount = self.deviceStat.get('mount', False)
-        isData = self.app.mount.setting is not None
-        if not isMount or not isData:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
+        if not self.checkMount():
             return False
 
         sett = self.app.mount.setting
-
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getItem(self,
                                 'Set Refraction Correction',

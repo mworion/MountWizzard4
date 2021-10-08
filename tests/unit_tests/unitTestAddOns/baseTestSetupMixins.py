@@ -335,6 +335,10 @@ class Mount(QObject):
                            dec_degrees=0):
             return True
 
+        @staticmethod
+        def setLocation(loc):
+            return True
+
     signals = MountSignals()
     obsSite = MountObsSite()
     geometry = MountGeometry()

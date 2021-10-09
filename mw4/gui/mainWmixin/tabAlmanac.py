@@ -23,6 +23,7 @@ from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
 from PyQt5.QtCore import Qt, QPointF
 from PyQt5.QtWidgets import QApplication
 from skyfield import almanac
+from skyfield.trigonometry import position_angle_of
 import numpy as np
 
 # local import
@@ -185,7 +186,6 @@ class Almanac:
         t1 = ts.tt_jd(int(timeJD.tt) + timeWindow + 1)
 
         f = almanac.dark_twilight_day(self.app.ephemeris, location)
-        f.step_days = 0.04
         timeEvents, events = almanac.find_discrete(t0, t1, f)
         return timeEvents, events
 
@@ -237,6 +237,7 @@ class Almanac:
         moon = self.app.ephemeris['moon']
         earth = self.app.ephemeris['earth']
         now = self.app.mount.obsSite.ts.now()
+        loc = self.app.mount.obsSite.location + earth
 
         e = earth.at(self.app.mount.obsSite.timeJD)
         _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
@@ -247,7 +248,13 @@ class Almanac:
         mpDegree = (moonLon.degrees - sunLon.degrees) % 360.0
         mpPercent = mpDegree / 360
 
-        return mpIllumination, mpDegree, mpPercent
+        locObserver = loc.at(self.app.mount.obsSite.timeJD)
+        moonApparent = locObserver.observe(moon).apparent()
+        sunApparent = locObserver.observe(sun).apparent()
+
+        moonAngle = position_angle_of(moonApparent.altaz(), sunApparent.altaz())
+
+        return mpIllumination, mpDegree, mpPercent, moonAngle
 
     @staticmethod
     def generateMoonMask(width, height, mpDegree):
@@ -310,7 +317,8 @@ class Almanac:
 
         :return: true for test purpose
         """
-        mpIllumination, mpDegree, mpPercent = self.calcMoonPhase()
+        mpIllumination, mpDegree, mpPercent, mAngle = self.calcMoonPhase()
+        print(mAngle)
 
         self.ui.moonPhaseIllumination.setText(f'{mpIllumination * 100:3.2f}')
         self.ui.moonPhasePercent.setText(f'{100* mpPercent:3.0f}')

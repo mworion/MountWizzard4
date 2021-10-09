@@ -176,10 +176,11 @@ def test_displayTwilightData_1(function):
 
 
 def test_calcMoonPhase_1(function):
-    a, b, c = function.calcMoonPhase()
+    a, b, c, d = function.calcMoonPhase()
     assert a is not None
     assert b is not None
     assert c is not None
+    assert d is not None
 
 
 def test_generateMoonMask_1(function):
@@ -201,7 +202,7 @@ def test_generateMoonMask_4(function):
 def test_updateMoonPhase_1(function):
     with mock.patch.object(function,
                            'calcMoonPhase',
-                           return_value=(20, 45, .20)):
+                           return_value=(20, 45, .20, 0)):
         suc = function.updateMoonPhase()
         assert suc
 
@@ -209,7 +210,7 @@ def test_updateMoonPhase_1(function):
 def test_updateMoonPhase_2(function):
     with mock.patch.object(function,
                            'calcMoonPhase',
-                           return_value=(45, 135, .45)):
+                           return_value=(45, 135, .45, 0)):
         suc = function.updateMoonPhase()
         assert suc
 

@@ -121,7 +121,7 @@ def test_showWindow_1(function):
 
 def test_calculateRelevance_1(function):
     val = function.calculateRelevance(40, 180)
-    assert val == 1
+    assert round(val, 3) == 0.816
 
 
 def test_calculateRelevance_2(function):

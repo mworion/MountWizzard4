@@ -305,8 +305,8 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         :param az:
         :return:
         """
-        altFak = 1 - np.minimum(np.abs(alt - 40), 30) / 30
-        azFak = 1 - np.minimum(np.abs(az - 180), 180) / 180
+        altFak = 1 - np.minimum(np.abs(alt - 30), 30) / 30
+        azFak = 1 - np.abs(np.sin(np.radians(az)))
         sumFak = np.sqrt(altFak * azFak)
         return sumFak
 

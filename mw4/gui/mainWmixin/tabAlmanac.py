@@ -251,7 +251,6 @@ class Almanac:
         locObserver = loc.at(self.app.mount.obsSite.timeJD)
         moonApparent = locObserver.observe(moon).apparent()
         sunApparent = locObserver.observe(sun).apparent()
-
         moonAngle = position_angle_of(moonApparent.altaz(), sunApparent.altaz())
 
         return mpIllumination, mpDegree, mpPercent, moonAngle
@@ -318,7 +317,6 @@ class Almanac:
         :return: true for test purpose
         """
         mpIllumination, mpDegree, mpPercent, mAngle = self.calcMoonPhase()
-        print(mAngle)
 
         self.ui.moonPhaseIllumination.setText(f'{mpIllumination * 100:3.2f}')
         self.ui.moonPhasePercent.setText(f'{100* mpPercent:3.0f}')

@@ -8,29 +8,42 @@ each basic step.
     :align: center
 
 The necessary steps follow the order in MW4 main tab:
-Step 1:
+
+Step 1: polar alignment
+-----------------------
+Description :ref:`Polar align your mount`
 
 .. image:: image/model_polar_align.png
     :align: center
     :scale: 50%
 
-Step 2.
+Step 2: selecting model points
+------------------------------
+Description :ref:`Selecting model points`
 
 .. image:: image/model_points.png
     :align: center
     :scale: 50%
 
-Step 3
+Step 3: running the model build
+-------------------------------
+Description :ref:`Running a model build`
 
 .. image:: image/model_build.png
     :align: center
     :scale: 50%
 
-Step 4
+Step 4: managing mount models
+-----------------------------
+Description :ref:`Managing mount models`
 
 .. image:: image/manage_model.png
     :align: center
     :scale: 50%
+
+General remarks:
+----------------
+Description :ref:`Model Building Remarks`
 
 .. toctree::
     :maxdepth: 1
@@ -40,4 +53,3 @@ Step 4
     model_build
     manage_model
     remarks
-

@@ -1,4 +1,4 @@
-Managing Mount Models
+Managing mount models
 =====================
 
 Managing your models is a central task especially if you image in a mobile environment. MW4

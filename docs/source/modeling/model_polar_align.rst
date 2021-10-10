@@ -1,5 +1,5 @@
-Polar align you mount
-=====================
+Polar align your mount
+======================
 
 .. note:: All credits for explaining the following section go to 10micron and
           many experts using the mount.
@@ -23,6 +23,7 @@ using few stars, how the stars are chosen is critical.
 
 .. note:: MW4 helps here by automating the spread of points to avoid the problems
           listed through its various point layout patterns
+          (see image on :ref:`Step 1: polar alignment`)
 
 As you add stars, more and more model terms will be added um of either
 (# points - 1) or 11 terms for a single all sky model - 11 terms meaning all
@@ -35,7 +36,7 @@ If you are using Dual Axis Tracking it sorts all this out for you. (A 10 minute
 exposure with a 10 arc minute (1/6 degree) PAE will not show field rotation on a
 large full frame sensor up to latitude 60 north or south)
 
-How Polar Align Works
+How polar align works
 ---------------------
 The polar align function works in a really easy way. It removes the polar axis
 error from the model before pointing at the star, so when you center the star with
@@ -58,9 +59,9 @@ this mode, you could select a star in the hemisphere window with a mouse click a
 start slew the mount to the reference star. All you need is to center the selected
 reference star in you image.
 
-.. not:: For centering a star you could use the image window, select for continuous
-         exposure and enable the crosshair. You could also magnify the region
-         around the crosshair center to improve the precision.
+.. note:: For centering a star you could use the image window, select for continuous
+          exposure and enable the crosshair. You could also magnify the region
+          around the crosshair center to improve the precision.
 
 Should I deactivate the dual axis tracking?
 -------------------------------------------

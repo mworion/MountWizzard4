@@ -1,4 +1,4 @@
-Model Building Remarks
+Model building remarks
 ======================
 First of all a disclaimer to all what I have written here:
 

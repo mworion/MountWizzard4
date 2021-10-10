@@ -12,7 +12,7 @@ Ideas for the future
 - joystick support
 - data exchange to EKOS SQLite for Location and horizon
 - dome optimized model point slew path:
-"""
+
 To minimize the dome slewing I have tried to follow the slot with the telescope.
 Set the dome in a certain azimuth. Then take 5 shots with the telescope at
 increasing altitude. Say 5 shots. Flip the telescope over and take another 5 shots
@@ -34,7 +34,6 @@ dome position encoder, which has a limited "max" value. When this will be exceed
 with a slew, the dome rotates the other way around to reduce the encoder position
 value. It is not as straight forward as it should be. I also guess that different
 domes use different control soft and hard ware, for simplicity.
-"""
 
 Released beta version of MW4
 ----------------------------

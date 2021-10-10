@@ -20,11 +20,9 @@ As a python application, it should run in all environments which support python
 3.7, 3.8 or 3.9 including Qt as a Gui framework. Please notice that python 3.9 and
 older python version prior to 3.7 and python 2 is not supported.
 
-There are some video about modeling: https://youtu.be/8YWLLo3siUY
+Many video's are linked in the youtube channel:
 
-and Polar alignment as well: https://youtu.be/Hc49N12fjVo
-
-Some more video's are linked from the documentation.
+https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA
 
 For full operation MW4 needs actually running INDI / INDIGO Server(s), connected
 to your devices. In addition an online connection is used for some services which
@@ -145,8 +143,8 @@ necessary to choose 32/64 bit python according to the drivers as windows does no
 allow to mix it. MW4 could handle the 32 bit QCI update program even if you have
 installed a 64 bit python version, but execution is very slow.
 
-If you are using the QCI updater features on windows, MW4 does automate the gui
-interactions. Please do not interrupt this automation.
+If you are using the QCI / 10micron updater features on windows, MW4 does automate
+the gui interactions. Please do not interrupt this automation.
 
 Installing MW on a raspberry pi will need to compile packages as they ar not
 provided from the package manager pypi.org.
@@ -176,11 +174,17 @@ quality and usability any feedback is highly welcome. To maintain a good
 transparency and a doable work for my, please respect some recommendations how
 to feed back.
 
-.. note:: Please report back under: https://github.com/mworion/MountWizzard4/issues.
-          This is good for any feedback (bug reports, other issues, usability, 
-          feature requests, etc).
-          In https://github.com/mworion/MountWizzard4/discussions there is a good
-          place to start discussions for all other topics of interest.
+.. note:: Please report back under:
+
+          https://github.com/mworion/MountWizzard4/issues.
+
+          This is good for any feedback (bug reports, other issues, usability,
+          feature requests, etc). In
+
+          https://github.com/mworion/MountWizzard4/discussions
+
+          there is a good place to start discussions for all other topics of
+          interest.
 
 In case of a bug report please have a good description (maybe a screenshot if it‘s
 related to GUI) and add the log file(s) to the issue. Normally you just could drop

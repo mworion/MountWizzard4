@@ -7,7 +7,6 @@ each basic step.
 .. image:: image/workflow.drawio.svg
     :align: center
 
-The necessary steps follow the order in MW4 main tab:
 
 Step 1: polar alignment
 -----------------------

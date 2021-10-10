@@ -3,7 +3,7 @@
 #
 # v0.1, Michael Wuertenberger
 #
-name: Package_Install
+name: package_install
 
 on:
   push:

@@ -942,7 +942,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         layers of transparent widgets for static content, moving content and star
         maps. this is mainly done to get a reasonable performance when redrawing
         the canvas. in addition it initializes the objects for points markers,
-        patches, lines etc. for making the window nice and user friendly. the
+        patches, lines etc. for making the window nice and user-friendly. the
         user interaction on the hemisphere windows is done by the event handler
         of matplotlib itself implementing an on Mouse handler, which takes care
         of functions.

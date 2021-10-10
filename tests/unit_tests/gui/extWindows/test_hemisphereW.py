@@ -25,7 +25,7 @@ import shutil
 from PyQt5.QtCore import QEvent
 from PyQt5.QtGui import QCloseEvent
 import matplotlib.patches as mpatches
-from skyfield.api import Angle
+from skyfield.api import Angle, wgs84
 from PIL import Image
 
 # local import
@@ -120,21 +120,36 @@ def test_showWindow_1(function):
 
 
 def test_calculateRelevance_1(function):
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0,
+                                                       latitude_degrees=45)
     val = function.calculateRelevance(40, 180)
-    assert round(val, 3) == 0.816
+    assert round(val, 3) == 0.845
 
 
 def test_calculateRelevance_2(function):
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0,
+                                                       latitude_degrees=45)
     val = function.calculateRelevance(0, 0)
     assert val == 0
 
 
 def test_calculateRelevance_3(function):
-    val = function.calculateRelevance(20, 180)
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0,
+                                                       latitude_degrees=45)
+    val = function.calculateRelevance(30, 180)
     assert val > 0
 
 
 def test_calculateRelevance_4(function):
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0,
+                                                       latitude_degrees=45)
+    val = function.calculateRelevance(40, 10)
+    assert val == 0
+
+
+def test_calculateRelevance_5(function):
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0,
+                                                       latitude_degrees=-45)
     val = function.calculateRelevance(40, 10)
     assert val > 0
 

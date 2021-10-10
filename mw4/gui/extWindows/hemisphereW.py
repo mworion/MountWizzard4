@@ -32,6 +32,7 @@ from PIL import Image
 from gui.utilities import toolsQtWidget
 from gui.widgets import hemisphere_ui
 from gui.extWindows.hemisphereWext import HemisphereWindowExt
+from base.transform import diffModulusAbs
 
 
 class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
@@ -298,15 +299,18 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.show()
         return True
 
-    @staticmethod
-    def calculateRelevance(alt=None, az=None):
+    def calculateRelevance(self, alt=None, az=None):
         """
         :param alt:
         :param az:
         :return:
         """
-        altFak = 1 - np.minimum(np.abs(alt - 30), 30) / 30
-        azFak = 1 - np.abs(np.sin(np.radians(az)))
+        isNorth = self.app.mount.obsSite.location.latitude.degrees > 0
+        altFak = 1 - np.minimum(np.abs(alt - 30), 35) / 35
+        if isNorth:
+            azFak = 1 - np.minimum(diffModulusAbs(0, az - 180, 360), 75) / 75
+        else:
+            azFak = 1 - np.minimum(diffModulusAbs(0, az, 360), 75) / 75
         sumFak = np.sqrt(altFak * azFak)
         return sumFak
 

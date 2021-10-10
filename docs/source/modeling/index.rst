@@ -8,20 +8,25 @@ each basic step.
     :align: center
 
 The necessary steps follow the order in MW4 main tab:
+Step 1:
 
-Step 1
+.. image:: image/model_polar_align.png
+    :align: center
+    :scale: 50%
+
+Step 2.
 
 .. image:: image/model_points.png
     :align: center
     :scale: 50%
 
-Step 2
+Step 3
 
 .. image:: image/model_build.png
     :align: center
     :scale: 50%
 
-Step 3
+Step 4
 
 .. image:: image/manage_model.png
     :align: center
@@ -30,6 +35,7 @@ Step 3
 .. toctree::
     :maxdepth: 1
 
+    model_polar_align
     model_points
     model_build
     manage_model

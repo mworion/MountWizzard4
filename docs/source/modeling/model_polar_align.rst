@@ -1,8 +1,8 @@
 Polar align your mount
 ======================
 
-.. note:: All credits for explaining the following section go to 10micron and
-          many experts using the mount.
+All credits for explaining the following section go to 10micron and many experts
+using the mount.
 
 Initial alignment
 -----------------
@@ -22,8 +22,13 @@ not all near the same right ascension, or all near the same azimuth, etc.). When
 using few stars, how the stars are chosen is critical.
 
 .. note:: MW4 helps here by automating the spread of points to avoid the problems
-          listed through its various point layout patterns
-          (see image on :ref:`Step 1: polar alignment`)
+          listed through its various point layout patterns.
+
+          .. image:: image/model_polar_align.png
+            :align: center
+            :scale: 71%
+
+          showing different colors and sizes for selecting the right stars.
 
 As you add stars, more and more model terms will be added um of either
 (# points - 1) or 11 terms for a single all sky model - 11 terms meaning all
@@ -74,6 +79,10 @@ You will not be getting the correct tracking rate while you adjust the alt/az kn
 So if you wait too much before centering the star and giving confirmation to the
 mount controller, or if the initial error is very large, there will be a drift.
 Therefore you must turn off dual tracking while performing the PA procedure.
+
+.. image:: image/model_disable_dat.png
+    :align: center
+    :scale: 71%
 
 Effects of polar misalignment
 -----------------------------

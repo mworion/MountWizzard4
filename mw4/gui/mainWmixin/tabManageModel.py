@@ -415,10 +415,10 @@ class ManageModel(object):
         modelName = self.ui.nameList.currentItem().text()
         suc = self.app.mount.model.loadName(modelName)
         if not suc:
-            self.app.message.emit('Model [{0}] cannot be loaded'.format(modelName), 2)
+            self.app.message.emit(f'Model load failed:   [{modelName}]', 2)
             return False
         else:
-            self.app.message.emit('Model [{0}] loaded'.format(modelName), 0)
+            self.app.message.emit(f'Model loaded:        [{modelName}]', 0)
             self.refreshModel()
             return True
 

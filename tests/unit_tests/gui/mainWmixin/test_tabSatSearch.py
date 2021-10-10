@@ -586,6 +586,20 @@ def test_satCalcTable_2(function):
         assert not function.satTableDynamicValid
 
 
+def test_updateSatTable_1(function):
+    function.ui.satCyclicUpdates.setChecked(False)
+    suc = function.updateSatTable()
+    assert not suc
+
+
+def test_updateSatTable_2(function):
+    function.ui.satCyclicUpdates.setChecked(True)
+    with mock.patch.object(function,
+                           'satCalcTable'):
+        suc = function.updateSatTable()
+        assert suc
+
+
 def test_prepareSatTable_1(function):
     suc = function.prepareSatTable()
     assert suc

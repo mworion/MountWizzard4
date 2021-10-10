@@ -117,6 +117,7 @@ class SatSearch(object):
         self.sigSetSatTableEntry.connect(self.setSatTableEntry)
 
         self.app.update1s.connect(self.satCalcDynamicTable)
+        self.app.update10m.connect(self.updateSatTable)
 
     def initConfig(self):
         """
@@ -491,6 +492,15 @@ class SatSearch(object):
         worker = Worker(self.workerSatCalcTable)
         worker.signals.finished.connect(self.filterSatelliteNamesList)
         self.threadPool.start(worker)
+        return True
+
+    def updateSatTable(self):
+        """
+        :return:
+        """
+        if not self.ui.satCyclicUpdates.isChecked():
+            return False
+        self.satCalcTable()
         return True
 
     def prepareSatTable(self):

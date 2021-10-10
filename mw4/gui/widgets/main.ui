@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -10728,7 +10728,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QCheckBox" name="satCyclicUpdates">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -10742,7 +10742,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked MW4 will calculate the satellite track on it's own with more features&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Do cyclic update in list</string>
+         <string>Do updates every 10min</string>
         </property>
        </widget>
        <widget class="QCheckBox" name="switchToTrackingTab">

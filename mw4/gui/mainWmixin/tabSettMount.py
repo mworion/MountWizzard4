@@ -76,7 +76,6 @@ class SettMount(object):
         :return:
         """
         ui = self.ui.mountOn
-        self.changeStyleDynamic(ui, 'running', True)
         bAddress = self.ui.mountWolAddress.text().strip()
         bPort = self.ui.mountWolPort.text().strip()
         bPort = (int(bPort) if bPort else 0)
@@ -86,9 +85,6 @@ class SettMount(object):
             self.app.message.emit('Sent boot command to mount', 0)
         else:
             self.app.message.emit('Mount cannot be booted', 2)
-
-        QTest.qWait(500)
-        self.changeStyleDynamic(ui, 'running', False)
         return suc
 
     def mountShutdown(self):
@@ -96,14 +92,11 @@ class SettMount(object):
         :return:
         """
         ui = self.ui.mountOff
-        self.changeStyleDynamic(ui, 'running', True)
         suc = self.app.mount.shutdown()
         if suc:
             self.app.message.emit('Shutting mount down', 0)
         else:
             self.app.message.emit('Mount cannot be shutdown', 2)
-        QTest.qWait(500)
-        self.changeStyleDynamic(ui, 'running', False)
         return suc
 
     def checkFormatMAC(self, value):

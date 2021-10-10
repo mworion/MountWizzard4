@@ -467,6 +467,63 @@ class Styles:
     QPushButton:focus {
         outline: none;
     }
+    QPushButton:pressed {
+        background-color: rgb(32, 144, 192);
+        color: #000000;
+    }
+    QPushButton[running='false'] {
+        background-color: #202020;
+        color: #C0C0C0;
+    }
+    QPushButton[running='true'] {
+        background-color: rgb(32, 144, 192);
+        color: #000000;
+    }
+    QPushButton[pause='false'] {
+        background-color: #202020;
+        color: #C0C0C0;
+    }
+    QPushButton[pause='true'] {
+        background-color: #00C000;
+        color: #000000;
+    }
+    QPushButton[cancel='true'] {
+        background-color: rgb(192,0, 0);
+        color: #C0C0C0;
+    }
+    QPushButton[cancel='false'] {
+        background-color: #202020;
+        color: #C0C0C0;
+    }
+    QPushButton:disabled {
+        background-color: #101010;
+        color: #404040;
+        border-color: #202020;
+        border-width: 1px;
+        border-style: outset;
+        border-radius: 2px;
+    }
+    QPushButton[color='gray'] {
+        background-color: gray;
+        color: #000000;
+    }
+    QPushButton[color='red'] {
+        background-color: red;
+        color: #000000;
+    }
+    QPushButton[color='yellow'] {
+        background-color: yellow;
+        color: #000000;
+    }
+    QPushButton[color='green'] {
+        background-color: green;
+        color: #000000;
+    }
+    QPushButton[stop='true'] {
+        background-color: transparent;
+        color: transparent;
+        border-color: transparent;
+    }
     QPushButton {
         background-color: #202020;
         color: #C0C0C0;
@@ -526,59 +583,6 @@ class Styles:
     QTableView::item:selected {
         background-color: rgb(32, 144, 192);
         color: #101010;
-    }
-    QPushButton[running='false'] {
-        background-color: #202020;
-        color: #C0C0C0;
-    }
-    QPushButton[running='true'] {
-        background-color: rgb(32, 144, 192);
-        color: #000000;
-    }
-    QPushButton[pause='false'] {
-        background-color: #202020;
-        color: #C0C0C0;
-    }
-    QPushButton[pause='true'] {
-        background-color: #00C000;
-        color: #000000;
-    }
-    QPushButton[cancel='true'] {
-        background-color: rgb(192,0, 0);
-        color: #C0C0C0;
-    }
-    QPushButton[cancel='false'] {
-        background-color: #202020;
-        color: #C0C0C0;
-    }
-    QPushButton:disabled {
-        background-color: #101010;
-        color: #404040;
-        border-color: #202020;
-        border-width: 1px;
-        border-style: outset;
-        border-radius: 2px;
-    }
-    QPushButton[color='gray'] {
-        background-color: gray;
-        color: #000000;
-    }
-    QPushButton[color='red'] {
-        background-color: red;
-        color: #000000;
-    }
-    QPushButton[color='yellow'] {
-        background-color: yellow;
-        color: #000000;
-    }
-    QPushButton[color='green'] {
-        background-color: green;
-        color: #000000;
-    }
-    QPushButton[stop='true'] {
-        background-color: transparent;
-        color: transparent;
-        border-color: transparent;
     }
     /* Combo Boxes */
     QComboBox {

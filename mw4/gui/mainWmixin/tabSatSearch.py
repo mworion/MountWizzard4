@@ -576,7 +576,7 @@ class SatSearch(object):
             return False
 
         daysOld = loader.days_old(filePath)
-        self.ui.satSourceGroup.setTitle(f'Satellite data - age:{daysOld:2.0f}d')
+        self.ui.satSourceGroup.setTitle(f'Satellite data - age: {daysOld:2.1f}d')
         self.satSourceValid = True
         return True
 

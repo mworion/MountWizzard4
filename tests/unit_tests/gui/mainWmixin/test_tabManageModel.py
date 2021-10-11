@@ -587,7 +587,7 @@ def test_clearModel_2(function):
             assert not suc
 
 
-def test_clearModel_3(functionot):
+def test_clearModel_3(function):
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.Yes):
